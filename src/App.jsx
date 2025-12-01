@@ -3323,21 +3323,29 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [showComparison, setShowComparison] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
   const filterScrollRef = useRef(null);
-  const savedScrollY = useRef(0);
-  
-  // Save scroll position on any interaction with sliders
-  const saveScroll = () => {
-    savedScrollY.current = window.scrollY;
-  };
+  const scrollLockRef = useRef(null);
   
   // Helper to update slider values with scroll position preservation
   const updateSlider = (setter) => (e) => {
+    // Capture scroll position
+    const scrollY = window.scrollY;
+    
+    // Clear any pending scroll restoration
+    if (scrollLockRef.current) {
+      clearInterval(scrollLockRef.current);
+    }
+    
+    // Update the value
     setter(Number(e.target.value));
-    // Restore scroll position after React re-render
-    const scrollY = savedScrollY.current;
-    requestAnimationFrame(() => {
+    
+    // Restore scroll repeatedly for 200ms to fight browser behavior
+    const startTime = Date.now();
+    scrollLockRef.current = setInterval(() => {
       window.scrollTo(0, scrollY);
-    });
+      if (Date.now() - startTime > 200) {
+        clearInterval(scrollLockRef.current);
+      }
+    }, 10);
   };
 
   // Handle initial selected test
@@ -3384,6 +3392,15 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
     };
   }, [category]);
+  
+  // Cleanup scroll lock interval on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollLockRef.current) {
+        clearInterval(scrollLockRef.current);
+      }
+    };
+  }, []);
 
   const filteredTests = useMemo(() => {
     return tests.filter(test => {
@@ -3473,8 +3490,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="1000"
                       step="100"
                       value={minParticipants}
-                      onMouseDown={saveScroll}
-                      onTouchStart={saveScroll}
+                      
+                      
                       onChange={updateSlider(setMinParticipants)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
@@ -3494,8 +3511,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="100"
                       step="5"
                       value={minPublications}
-                      onMouseDown={saveScroll}
-                      onTouchStart={saveScroll}
+                      
+                      
                       onChange={updateSlider(setMinPublications)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
@@ -3528,8 +3545,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="100000"
                       step="10000"
                       value={minParticipants}
-                      onMouseDown={saveScroll}
-                      onTouchStart={saveScroll}
+                      
+                      
                       onChange={updateSlider(setMinParticipants)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
@@ -3549,8 +3566,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="20"
                       step="2"
                       value={minPublications}
-                      onMouseDown={saveScroll}
-                      onTouchStart={saveScroll}
+                      
+                      
                       onChange={updateSlider(setMinPublications)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
@@ -3583,8 +3600,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="1000"
                       step="100"
                       value={minParticipants}
-                      onMouseDown={saveScroll}
-                      onTouchStart={saveScroll}
+                      
+                      
                       onChange={updateSlider(setMinParticipants)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
@@ -3604,8 +3621,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="100"
                       step="10"
                       value={minPublications}
-                      onMouseDown={saveScroll}
-                      onTouchStart={saveScroll}
+                      
+                      
                       onChange={updateSlider(setMinPublications)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
@@ -3626,7 +3643,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
             </div>
           </aside>
 
-          <div className="flex-1" style={{ overflowAnchor: 'none' }}>
+          <div className="flex-1" style={{ overflowAnchor: 'none', contain: 'layout' }}>
             <div className="flex justify-between items-center mb-4">
               <p className="text-sm text-gray-500">Showing {filteredTests.length} of {tests.length} tests</p>
               {selectedTests.length === 0 && (
@@ -3642,7 +3659,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 </button>
               )}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '400px', overflowAnchor: 'none' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} />)}
             </div>
             {filteredTests.length === 0 && <div className="text-center py-12 text-gray-500"><p>No tests match your filters.</p><button onClick={clearFilters} className="text-emerald-600 text-sm mt-2">Clear filters</button></div>}
