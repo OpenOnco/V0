@@ -138,6 +138,116 @@ const Markdown = ({ children, className = '' }) => {
 };
 
 // ============================================
+// News Ticker Component - GenomeWeb RSS feed
+// ============================================
+const NewsTicker = () => {
+  const [headlines, setHeadlines] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fallbackHeadlines = [
+    { title: 'Liquid Biopsy Market Continues Rapid Expansion as Adoption Grows', url: '#' },
+    { title: 'FDA Clears New ctDNA-Based Companion Diagnostic for Targeted Therapy', url: '#' },
+    { title: 'Multi-Cancer Early Detection Tests Show Promise in Large-Scale Studies', url: '#' },
+    { title: 'Natera Reports Strong Growth in Signatera MRD Test Orders', url: '#' },
+    { title: 'Guardant Health Advances Shield Test for Colorectal Cancer Screening', url: '#' },
+    { title: 'New Research Highlights Role of ctDNA in Treatment Response Monitoring', url: '#' },
+  ];
+
+  const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  const GENOMEWEB_FEED = encodeURIComponent('https://www.genomeweb.com/section/rss/news');
+  const CACHE_KEY = 'openonco_ticker_genomeweb';
+  const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+
+  useEffect(() => {
+    const fetchHeadlines = async () => {
+      // Check cache first
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            setHeadlines(data);
+            setIsLoading(false);
+            return;
+          }
+        }
+      } catch (e) {}
+
+      // Fetch fresh data
+      try {
+        const response = await fetch(`${RSS2JSON_API}${GENOMEWEB_FEED}`);
+        const json = await response.json();
+        
+        if (json.status === 'ok' && json.items && json.items.length > 0) {
+          const items = json.items.slice(0, 15).map(item => ({
+            title: item.title,
+            url: item.link
+          }));
+          
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+              data: items,
+              timestamp: Date.now()
+            }));
+          } catch (e) {}
+          
+          setHeadlines(items);
+        } else {
+          setHeadlines(fallbackHeadlines);
+        }
+      } catch (e) {
+        setHeadlines(fallbackHeadlines);
+      }
+      setIsLoading(false);
+    };
+    
+    fetchHeadlines();
+  }, []);
+
+  const displayHeadlines = headlines.length > 0 ? headlines : fallbackHeadlines;
+  // Duplicate headlines for seamless loop
+  const tickerContent = [...displayHeadlines, ...displayHeadlines];
+
+  return (
+    <div className="bg-gray-50 py-2 overflow-hidden border border-gray-200 rounded-xl">
+      <div className="flex items-center">
+        <div className="flex-shrink-0 px-4 py-1 font-bold text-sm text-white rounded-l-lg" style={{ backgroundColor: '#2A63A4' }}>
+          GenomeWeb
+        </div>
+        <div className="flex-1 overflow-hidden relative">
+          <div 
+            className="flex whitespace-nowrap animate-ticker"
+            style={{
+              animation: 'ticker 60s linear infinite',
+            }}
+          >
+            {tickerContent.map((item, idx) => (
+              <a
+                key={idx}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 text-sm transition-colors hover:opacity-70"
+                style={{ color: '#2A63A4' }}
+              >
+                {item.title}
+                <span className="mx-4 text-gray-300">•</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+      <style>{`
+        @keyframes ticker {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// ============================================
 // NewsFeed Component - Live RSS feeds with 1-hour cache
 // ============================================
 const NewsFeed = () => {
@@ -316,10 +426,10 @@ const NewsFeed = () => {
   if (!currentArticle) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-slate-800">Liquid Biopsy News for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</h3>
+          <h3 className="text-base font-semibold text-slate-800">OpenOnco News for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</h3>
           {isLoading && (
             <div className="w-3 h-3 border-2 border-[#2A63A4] border-t-transparent rounded-full animate-spin"></div>
           )}
@@ -327,7 +437,7 @@ const NewsFeed = () => {
         <div className="flex items-center gap-2 bg-slate-100 rounded-full p-1">
           <button
             onClick={() => setCategory('science')}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
               category === 'science'
                 ? 'text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-800'
@@ -338,7 +448,7 @@ const NewsFeed = () => {
           </button>
           <button
             onClick={() => setCategory('business')}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
               category === 'business'
                 ? 'text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-800'
@@ -350,7 +460,7 @@ const NewsFeed = () => {
         </div>
       </div>
 
-      <div className="relative h-20 overflow-hidden">
+      <div className="relative h-12 overflow-hidden">
         <div
           className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
@@ -360,17 +470,17 @@ const NewsFeed = () => {
             rel="noopener noreferrer"
             className="block group"
           >
-            <p className="text-xs text-slate-400 mb-1">
+            <p className="text-xs text-slate-400">
               {currentArticle.date} • {currentArticle.source}
             </p>
-            <p className="text-base text-slate-800 group-hover:text-[#2A63A4] transition-colors leading-snug">
+            <p className="text-sm text-slate-800 group-hover:text-[#2A63A4] transition-colors leading-snug truncate">
               {currentArticle.title}
             </p>
           </a>
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+      <div className="flex items-center justify-between pt-2 border-t border-slate-100">
         <div className="flex gap-1">
           {displayArticles.slice(0, 10).map((_, idx) => (
             <button
@@ -441,7 +551,9 @@ const mrdTestData = [
     "reimbursement": "Coverage emerging; case-by-case payer review; national Medicare coverage not yet established.",
     "reimbursementNote": "Quest/Haystack describe active engagement with CMS and commercial payers plus patient access programs; no finalized broad LCD as of late 2025.",
     "cptCodes": "0561U",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping"
+    "clinicalAvailability": "Clinical LDT \u2013 shipping",
+    "clinicalTrials": "NCT07125729 (150); NCT06979661 (25)",
+    "totalParticipants": 175
   },
   {
     "id": "mrd-2",
@@ -484,7 +596,9 @@ const mrdTestData = [
     "reimbursement": "Coverage limited/early; verify per payer",
     "cptCodes": "81479 (MolDX with DEX Z-code)",
     "clinicalAvailability": "Clinical LDT \u2013 shipping (initial market availability)",
-    "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf"
+    "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf",
+    "clinicalTrials": "NCT06230185 (422); VICTORI study (~71)",
+    "totalParticipants": 493
   },
   {
     "id": "mrd-3",
@@ -540,7 +654,9 @@ const mrdTestData = [
     "cptCodes": "81479 (MolDX with DEX Z-code); PLA pending",
     "cptCodesNotes": "MolDX unlisted code; payer policies vary.",
     "clinicalAvailability": "Clinical LDT \u2013 shipping",
-    "exampleTestReport": "https://www.exactsciences.com/-/media/project/headless/one-exact-web/documents/products-services/oncodetect/providers/sample-report-stage-iii-escalation.pdf?rev=10365d7a28c8467eb25d253943ce8fe9"
+    "exampleTestReport": "https://www.exactsciences.com/-/media/project/headless/one-exact-web/documents/products-services/oncodetect/providers/sample-report-stage-iii-escalation.pdf?rev=10365d7a28c8467eb25d253943ce8fe9",
+    "clinicalTrials": "NCT06398743 (416); α-CORRECT study (124)",
+    "totalParticipants": 540
   },
   {
     "id": "mrd-4",
@@ -667,7 +783,9 @@ const mrdTestData = [
     "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025; historically billed under 81479/MolDX).",
     "cptCodesNotes": "Guardant Reveal PLA (2025).",
     "clinicalAvailability": "Clinical LDT \u2013 shipping",
-    "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf"
+    "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf",
+    "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000)",
+    "totalParticipants": 2000
   },
   {
     "id": "mrd-7",
@@ -842,7 +960,9 @@ const ecdTestData = [
     "sampleStability": "7 days at ambient temperature",
     "cptCode": "0537U",
     "listPrice": 895.0,
-    "screeningInterval": "Every 3 years"
+    "screeningInterval": "Every 3 years",
+    "clinicalTrials": "NCT04136002 ECLIPSE (22877); NCT05716477 OSU Project (300)",
+    "totalParticipants": 23177
   },
   {
     "id": "ecd-2",
@@ -879,7 +999,9 @@ const ecdTestData = [
     "sampleStability": "7 days at ambient temperature (1-40\u00b0C); do not refrigerate/freeze",
     "cptCode": "Proprietary",
     "listPrice": 949.0,
-    "screeningInterval": "Annual recommended"
+    "screeningInterval": "Annual recommended",
+    "clinicalTrials": "NCT05611632 NHS-Galleri (~140000); NCT06450171 PATHFINDER 2 (~35500); NCT03934866 SUMMIT (13035)",
+    "totalParticipants": 188535
   },
   {
     "id": "ecd-3",
@@ -919,7 +1041,9 @@ const ecdTestData = [
     "sampleStability": "Extended return window vs original",
     "cptCode": "0464U",
     "listPrice": 790.0,
-    "screeningInterval": "Every 3 years"
+    "screeningInterval": "Every 3 years",
+    "clinicalTrials": "NCT04144738 BLUE-C pivotal trial (26758)",
+    "totalParticipants": 26758
   },
   {
     "id": "ecd-4",
@@ -957,7 +1081,9 @@ const ecdTestData = [
     "sampleStability": "Not specified",
     "cptCode": "0421U",
     "listPrice": 508.87,
-    "screeningInterval": "Every 3 years (USPSTF)"
+    "screeningInterval": "Every 3 years (USPSTF)",
+    "clinicalTrials": "NCT04739722 CRC-PREVENT pivotal trial (14263)",
+    "totalParticipants": 14263
   },
   {
     "id": "ecd-5",
@@ -1025,7 +1151,9 @@ const ecdTestData = [
     "sampleType": "Blood",
     "sampleVolume": "Not specified",
     "sampleStability": "Not specified",
-    "screeningInterval": "Expected every 3 years"
+    "screeningInterval": "Expected every 3 years",
+    "clinicalTrials": "NCT04369053 PREEMPT CRC study (~35000)",
+    "totalParticipants": 35000
   },
   {
     "id": "ecd-7",
@@ -1216,7 +1344,9 @@ const trmTestData = [
     "lod": "~3.45 PPM (~0.000345% VAF)",
     "fdaStatus": "High-complexity LDT in CLIA/CAP lab; not FDA-approved",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus\u2019 MRD portfolio and covered by Medicare for select solid tumor indications (for example, stage II\u2013III breast cancer surveillance)."
+    "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus\u2019 MRD portfolio and covered by Medicare for select solid tumor indications (for example, stage II\u2013III breast cancer surveillance).",
+    "clinicalTrials": "NCT06230185 B-STRONGER I (422); VICTORI study (~71)",
+    "totalParticipants": 493
   },
   {
     "id": "trm-4",
@@ -1395,6 +1525,7 @@ const Badge = ({ children, variant = 'default' }) => {
     orange: 'bg-orange-50 text-orange-700 border-orange-200',
     green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     red: 'bg-sky-100 text-sky-700 border-sky-300',
+    blue: 'bg-blue-50 text-blue-700 border-blue-200',
   };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`}>
@@ -1899,6 +2030,14 @@ const TestShowcase = ({ onNavigate }) => {
   const getParams = (test) => {
     const params = [];
     
+    // Helper to extract just the number from a value that might have notes
+    const extractNumber = (val) => {
+      if (val == null) return null;
+      if (typeof val === 'number') return val;
+      const match = String(val).match(/^[~]?[\d.]+/);
+      return match ? match[0] : null;
+    };
+    
     if (test.sensitivity != null) params.push({ label: 'Sensitivity', value: `${test.sensitivity}%` });
     if (test.specificity != null) params.push({ label: 'Specificity', value: `${test.specificity}%` });
     if (test.lod != null) params.push({ label: 'LOD', value: `${test.lod}%` });
@@ -1906,14 +2045,23 @@ const TestShowcase = ({ onNavigate }) => {
     if (test.npv != null) params.push({ label: 'NPV', value: `${test.npv}%` });
     if (test.stageISensitivity != null) params.push({ label: 'Stage I Sens.', value: `${test.stageISensitivity}%` });
     if (test.stageIISensitivity != null) params.push({ label: 'Stage II Sens.', value: `${test.stageIISensitivity}%` });
-    if (test.initialTat != null) params.push({ label: 'Initial TAT', value: `${test.initialTat} days` });
-    if (test.followUpTat != null) params.push({ label: 'Follow-up TAT', value: `${test.followUpTat} days` });
-    if (test.tat != null && !test.initialTat) params.push({ label: 'TAT', value: `${test.tat} days` });
+    
+    // Handle TAT fields - extract just the number
+    const initialTat = extractNumber(test.initialTat);
+    const followUpTat = extractNumber(test.followUpTat);
+    const tat = extractNumber(test.tat);
+    
+    if (initialTat != null) params.push({ label: 'Initial TAT', value: `${initialTat} days` });
+    if (followUpTat != null) params.push({ label: 'Follow-up TAT', value: `${followUpTat} days` });
+    if (tat != null && initialTat == null) params.push({ label: 'TAT', value: `${tat} days` });
+    
     if (test.listPrice != null) params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}` });
-    if (test.variantsTracked != null) params.push({ label: 'Variants Tracked', value: test.variantsTracked });
+    if (test.variantsTracked != null && typeof test.variantsTracked === 'number') params.push({ label: 'Variants Tracked', value: test.variantsTracked });
     if (test.bloodVolume != null) params.push({ label: 'Blood Volume', value: `${test.bloodVolume} mL` });
-    if (test.cancersDetected != null) params.push({ label: 'Cancers Detected', value: test.cancersDetected });
-    if (test.leadTimeVsImaging != null) params.push({ label: 'Lead Time vs Imaging', value: `${test.leadTimeVsImaging} days` });
+    if (test.cancersDetected != null && typeof test.cancersDetected === 'number') params.push({ label: 'Cancers Detected', value: test.cancersDetected });
+    
+    const leadTime = extractNumber(test.leadTimeVsImaging);
+    if (leadTime != null) params.push({ label: 'Lead Time vs Imaging', value: `${leadTime} days` });
     
     return params.length > 0 ? params : [{ label: 'Category', value: test.category }];
   };
@@ -1943,6 +2091,7 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+      <h3 className="text-xl font-bold text-slate-800 text-center mb-2">Tests We Are Tracking</h3>
       <div className="flex items-center justify-center mb-4">
         <div className="flex items-center gap-3 text-base font-bold">
           <span className="text-orange-600">Minimal Residual Disease (MRD)</span>
@@ -1978,7 +2127,7 @@ const TestShowcase = ({ onNavigate }) => {
               
               <div className="h-10 flex flex-col justify-center">
                 <p className="text-xs text-slate-500">{currentParam.label}</p>
-                <p className={`text-base font-bold ${colors.text} transition-all`}>
+                <p className={`text-base font-bold ${colors.text} transition-all truncate`}>
                   {currentParam.value}
                 </p>
               </div>
@@ -2024,7 +2173,7 @@ const TestShowcase = ({ onNavigate }) => {
                 Close
               </button>
               <button
-                onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category); }}
+                onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
                 className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
                 style={{ backgroundColor: '#2A63A4' }}
               >
@@ -2039,6 +2188,99 @@ const TestShowcase = ({ onNavigate }) => {
 };
 
 // ============================================
+// Stat of the Day Component
+// ============================================
+const StatOfTheDay = ({ onNavigate }) => {
+  // Day-based stat rotation
+  const dayStats = [
+    { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString() },
+    { key: 'sensitivity', label: 'Sensitivity', unit: '%', description: 'Highest sensitivity', higherIsBetter: true, format: (v) => v },
+    { key: 'specificity', label: 'Specificity', unit: '%', description: 'Highest specificity', higherIsBetter: true, format: (v) => v },
+    { key: 'lod', label: 'Limit of Detection', unit: '% VAF', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => v < 0.01 ? v.toExponential(1) : v },
+    { key: 'npv', label: 'NPV', unit: '%', description: 'Highest NPV', higherIsBetter: true, format: (v) => v },
+    { key: 'ppv', label: 'PPV', unit: '%', description: 'Highest PPV', higherIsBetter: true, format: (v) => v },
+    { key: 'stageISensitivity', label: 'Stage I Sens.', unit: '%', description: 'Best early-stage detection', higherIsBetter: true, format: (v) => v },
+  ];
+  
+  // Combine all tests
+  const allTests = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' }))
+  ];
+  
+  // Find a stat where at least 50% of tests have data, starting from today's day
+  const dayOfWeek = new Date().getDay();
+  let todayStat = null;
+  let testsWithStat = [];
+  
+  for (let i = 0; i < dayStats.length; i++) {
+    const statIndex = (dayOfWeek + i) % dayStats.length;
+    const stat = dayStats[statIndex];
+    const testsHavingStat = allTests.filter(t => t[stat.key] != null);
+    
+    if (testsHavingStat.length >= allTests.length * 0.5) {
+      todayStat = stat;
+      testsWithStat = testsHavingStat
+        .sort((a, b) => {
+          const aVal = a[stat.key];
+          const bVal = b[stat.key];
+          return stat.higherIsBetter ? bVal - aVal : aVal - bVal;
+        })
+        .slice(0, 3);
+      break;
+    }
+  }
+  
+  const categoryColors = {
+    MRD: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
+    ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
+    TRM: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' }
+  };
+
+  if (!todayStat || testsWithStat.length === 0) return null;
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">📊</span>
+          <h3 className="text-base font-bold text-slate-800">Stat of the Day: <span style={{ color: '#2A63A4' }}>{todayStat.label}</span></h3>
+        </div>
+        <p className="text-xs text-slate-400">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
+      </div>
+      
+      <div className="flex gap-3">
+        {testsWithStat.map((test, idx) => {
+          const colors = categoryColors[test.category];
+          return (
+            <div
+              key={test.id}
+              onClick={() => onNavigate(test.category, test.id)}
+              className={`flex-1 ${colors.bg} ${colors.border} border rounded-lg p-3 cursor-pointer hover:shadow-md transition-all`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1">
+                  <span className="text-lg font-bold text-slate-300">#{idx + 1}</span>
+                  <span className={`${colors.badge} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
+                    {test.category}
+                  </span>
+                </div>
+                <p className={`text-lg font-bold ${colors.text}`}>
+                  {todayStat.format(test[todayStat.key])}{todayStat.unit}
+                </p>
+              </div>
+              <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
+              <p className="text-xs text-slate-500 truncate">{test.vendor}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // Home Page (intro and news)
 // ============================================
 const HomePage = ({ onNavigate }) => {
@@ -2046,8 +2288,13 @@ const HomePage = ({ onNavigate }) => {
     <div>
       <div className="max-w-6xl mx-auto px-6 py-12">
         {/* News Feed */}
-        <div className="mb-8">
+        <div className="mb-4">
           <NewsFeed />
+        </div>
+
+        {/* GenomeWeb Ticker */}
+        <div className="mb-8">
+          <NewsTicker />
         </div>
 
         {/* Explore Button */}
@@ -2064,6 +2311,11 @@ const HomePage = ({ onNavigate }) => {
         {/* Test Showcase */}
         <div className="mb-8">
           <TestShowcase onNavigate={onNavigate} />
+        </div>
+
+        {/* Stat of the Day */}
+        <div className="mb-8">
+          <StatOfTheDay onNavigate={onNavigate} />
         </div>
 
         {/* Intro Text */}
@@ -2725,13 +2977,14 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   
   return (
-    <div className={`bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div id={`test-card-${test.id}`} className={`bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* Header - clickable for selection */}
       <div className="cursor-pointer" onClick={() => onSelect(test.id)}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {test.reimbursement?.toLowerCase().includes('medicare') && <Badge variant="success">Medicare</Badge>}
+              {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} participants</Badge>}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
@@ -2887,6 +3140,50 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
             </>
           )}
+          
+          {/* Clinical Trials section - shown for all categories if data exists */}
+          {(test.clinicalTrials || test.totalParticipants) && (
+            <>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Clinical Trial Evidence</p>
+              {test.totalParticipants && (
+                <div className="py-1.5 flex justify-between items-center">
+                  <span className="text-xs text-gray-500">Total Trial Participants</span>
+                  <span className="text-sm font-semibold" style={{ color: '#2A63A4' }}>{test.totalParticipants.toLocaleString()}</span>
+                </div>
+              )}
+              {test.clinicalTrials && (
+                <div className="py-1.5">
+                  <p className="text-xs text-gray-500 mb-1">Trials</p>
+                  <div className="text-xs text-gray-700 space-y-1">
+                    {test.clinicalTrials.split(/[;|]/).map((trial, idx) => {
+                      const trimmed = trial.trim();
+                      if (!trimmed) return null;
+                      // Extract NCT number if present for linking
+                      const nctMatch = trimmed.match(/NCT\d+/);
+                      return (
+                        <div key={idx} className="flex items-start gap-1">
+                          <span className="text-gray-400">•</span>
+                          {nctMatch ? (
+                            <a 
+                              href={`https://clinicaltrials.gov/study/${nctMatch[0]}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:underline"
+                              style={{ color: '#2A63A4' }}
+                            >
+                              {trimmed.replace(/https?:\/\/[^\s]+/g, '').trim()}
+                            </a>
+                          ) : (
+                            <span>{trimmed.replace(/https?:\/\/[^\s]+/g, '').trim()}</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       )}
     </div>
@@ -2941,7 +3238,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
 // ============================================
 // Category Page
 // ============================================
-const CategoryPage = ({ category }) => {
+const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) => {
   const meta = categoryMeta[category];
   const config = filterConfigs[category];
   const tests = meta.tests;
@@ -2953,13 +3250,32 @@ const CategoryPage = ({ category }) => {
   const [selectedTestScopes, setSelectedTestScopes] = useState([]);
   const [selectedTumorTissue, setSelectedTumorTissue] = useState([]);
   const [selectedFdaStatus, setSelectedFdaStatus] = useState([]);
-  const [selectedTests, setSelectedTests] = useState([]);
+  const [minParticipants, setMinParticipants] = useState(0);
+  const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
   const filterScrollRef = useRef(null);
 
+  // Handle initial selected test
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (initialSelectedTestId) {
+      setSelectedTests([initialSelectedTestId]);
+      onClearInitialTest?.();
+      // Scroll to the test card after a short delay to allow rendering
+      setTimeout(() => {
+        const element = document.getElementById(`test-card-${initialSelectedTestId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, [initialSelectedTestId]);
+
+  useEffect(() => {
+    // Only scroll to top if not navigating to a specific test
+    if (!initialSelectedTestId) {
+      window.scrollTo(0, 0);
+    }
   }, [category]);
 
   useEffect(() => {
@@ -2996,6 +3312,7 @@ const CategoryPage = ({ category }) => {
       if (selectedReimbursement.length > 0 && !selectedReimbursement.includes(test.reimbursement)) return false;
       if (selectedTestScopes.length > 0 && !selectedTestScopes.includes(test.testScope)) return false;
       if (selectedTumorTissue.length > 0 && !selectedTumorTissue.includes(test.requiresTumorTissue)) return false;
+      if (minParticipants > 0 && (!test.totalParticipants || test.totalParticipants < minParticipants)) return false;
       if (selectedFdaStatus.length > 0) {
         const testFda = test.fdaStatus || '';
         const matchesFda = selectedFdaStatus.some(status => {
@@ -3009,17 +3326,17 @@ const CategoryPage = ({ category }) => {
       }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus, minParticipants]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="max-w-7xl mx-auto px-6 py-8" style={{ overflowAnchor: 'none' }}>
       <div className="mb-8">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${colorClasses[meta.color]} text-white text-sm font-medium mb-3`}>{meta.shortTitle}</div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{meta.title}</h1>
@@ -3062,6 +3379,25 @@ const CategoryPage = ({ category }) => {
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="100"
+                      value={minParticipants}
+                      onChange={(e) => setMinParticipants(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>500</span>
+                      <span>1,000+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
                     {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
                   </div>
@@ -3081,6 +3417,25 @@ const CategoryPage = ({ category }) => {
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100000"
+                      step="10000"
+                      value={minParticipants}
+                      onChange={(e) => setMinParticipants(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>50k</span>
+                      <span>100k+</span>
+                    </div>
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
@@ -3103,6 +3458,25 @@ const CategoryPage = ({ category }) => {
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="100"
+                      value={minParticipants}
+                      onChange={(e) => setMinParticipants(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>500</span>
+                      <span>1,000+</span>
+                    </div>
+                  </div>
                 </>
               )}
               </div>
@@ -3114,7 +3488,7 @@ const CategoryPage = ({ category }) => {
             </div>
           </aside>
 
-          <div className="flex-1">
+          <div className="flex-1" style={{ overflowAnchor: 'none' }}>
             <div className="flex justify-between items-center mb-4">
               <p className="text-sm text-gray-500">Showing {filteredTests.length} of {tests.length} tests</p>
               {selectedTests.length === 0 && (
@@ -3130,7 +3504,7 @@ const CategoryPage = ({ category }) => {
                 </button>
               )}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '400px', overflowAnchor: 'none' }}>
               {filteredTests.map(test => <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} />)}
             </div>
             {filteredTests.length === 0 && <div className="text-center py-12 text-gray-500"><p>No tests match your filters.</p><button onClick={clearFilters} className="text-emerald-600 text-sm mt-2">Clear filters</button></div>}
@@ -3155,23 +3529,29 @@ const CategoryPage = ({ category }) => {
 // ============================================
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
+
+  const handleNavigate = (page, testId = null) => {
+    setCurrentPage(page);
+    setInitialSelectedTestId(testId);
+  };
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'home': return <HomePage onNavigate={setCurrentPage} />;
-      case 'test-tools': return <TestNavigationPage onNavigate={setCurrentPage} />;
-      case 'MRD': case 'ECD': case 'TRM': return <CategoryPage category={currentPage} />;
+      case 'home': return <HomePage onNavigate={handleNavigate} />;
+      case 'test-tools': return <TestNavigationPage onNavigate={handleNavigate} />;
+      case 'MRD': case 'ECD': case 'TRM': return <CategoryPage category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'get-involved': return <GetInvolvedPage />;
       case 'about': return <AboutPage />;
-      default: return <HomePage onNavigate={setCurrentPage} />;
+      default: return <HomePage onNavigate={handleNavigate} />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header currentPage={currentPage} onNavigate={setCurrentPage} />
+      <Header currentPage={currentPage} onNavigate={handleNavigate} />
       <main className="flex-1">{renderPage()}</main>
       <Footer />
     </div>
