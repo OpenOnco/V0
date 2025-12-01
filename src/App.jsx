@@ -1333,11 +1333,18 @@ Guidelines:
     setIsLoading(false);
   };
 
-  const handleSubmit = () => {
-    const value = input.trim();
-    if (!value || isLoading) return;
+  const handleSubmit = async () => {
+    if (!input.trim() || isLoading) return;
+    const userMessage = input.trim();
     setInput('');
-    submitQuestion(value);
+    submitQuestion(userMessage);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
   };
 
   return (
@@ -1345,7 +1352,7 @@ Guidelines:
       <div className="bg-gradient-to-r from-teal-50 to-emerald-50 px-5 py-3 border-b border-teal-100 flex items-center justify-between flex-shrink-0">
         <p className="text-teal-800 text-sm">Query our database of {totalTests} MRD, ECD, and TRM tests</p>
         {isFloating && onClose && (
-          <button type="button" onClick={onClose} className="text-teal-600 hover:text-teal-800 p-1">
+          <button onClick={onClose} className="text-teal-600 hover:text-teal-800 p-1">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -1399,22 +1406,23 @@ Guidelines:
         <div ref={messagesEndRef} />
       </div>
       
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="border-t border-gray-200 p-4 bg-white flex gap-3 flex-shrink-0">
+      <div className="border-t border-gray-200 p-4 bg-white flex gap-3 flex-shrink-0">
         <input 
           type="text" 
           value={input} 
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Type your question here..." 
           className="flex-1 px-4 py-3 bg-white border-2 border-teal-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm placeholder:text-gray-400" 
         />
         <button 
-          type="submit"
+          onClick={handleSubmit}
           disabled={isLoading} 
           className="bg-teal-500 hover:bg-teal-600 disabled:bg-teal-300 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm"
         >
           Ask
         </button>
-      </form>
+      </div>
     </div>
   );
 };
@@ -2151,29 +2159,36 @@ Guidelines:
 - Keep responses concise but thorough`;
   };
 
-  const handleSubmit = () => {
-    const value = input.trim();
-    if (!value || isLoading) return;
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!input.trim() || isLoading) return;
+    const userMessage = input.trim();
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: value }]);
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-    chatAPI([
-      { 
-        role: 'user', 
-        content: getSystemPrompt() + '\n\n---\n\nUser question: ' + value
-      }
-    ], 1024).then(data => {
+    try {
+      const data = await chatAPI([
+        { 
+          role: 'user', 
+          content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
+        }
+      ], 1024);
       if (data && data.content && data.content[0] && data.content[0].text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
       }
-    }).catch(error => {
+    } catch (error) {
       setMessages(prev => [...prev, { role: 'assistant', content: "Connection error. Please try again." }]);
-    }).finally(() => {
-      setIsLoading(false);
-    });
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -2201,10 +2216,10 @@ Guidelines:
         )}
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="border-t border-gray-200 p-3 flex gap-2">
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-        <button type="submit" disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
-      </form>
+      <div className="border-t border-gray-200 p-3 flex gap-2">
+        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+        <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
+      </div>
     </div>
   );
 };
