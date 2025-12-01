@@ -216,7 +216,7 @@ const NewsTicker = () => {
         </div>
         <div className="flex-1 overflow-hidden relative">
           <div 
-            className="flex whitespace-nowrap animate-ticker"
+            className="flex whitespace-nowrap"
             style={{
               animation: 'ticker 60s linear infinite',
             }}
@@ -227,8 +227,9 @@ const NewsTicker = () => {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-6 text-sm transition-colors hover:opacity-70"
-                style={{ color: '#2A63A4' }}
+                onClick={(e) => e.stopPropagation()}
+                className="inline-block px-6 text-sm transition-colors hover:underline cursor-pointer"
+                style={{ color: '#2A63A4', pointerEvents: 'auto' }}
               >
                 {item.title}
                 <span className="mx-4 text-gray-300">•</span>
@@ -2245,7 +2246,7 @@ const StatOfTheDay = ({ onNavigate }) => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">📊</span>
-          <h3 className="text-base font-bold text-slate-800">Stat of the Day: <span style={{ color: '#2A63A4' }}>{todayStat.label}</span></h3>
+          <h3 className="text-base font-bold text-slate-800">Stat of the Day Top 3: <span style={{ color: '#2A63A4' }}>{todayStat.label}</span></h3>
         </div>
         <p className="text-xs text-slate-400">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
       </div>
