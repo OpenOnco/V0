@@ -319,9 +319,9 @@ const NewsFeed = () => {
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-slate-800">Industry News</h3>
+          <h3 className="text-lg font-semibold text-slate-800">Liquid Biopsy News for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</h3>
           {isLoading && (
-            <div className="w-3 h-3 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-3 h-3 border-2 border-[#2A63A4] border-t-transparent rounded-full animate-spin"></div>
           )}
         </div>
         <div className="flex items-center gap-2 bg-slate-100 rounded-full p-1">
@@ -329,9 +329,10 @@ const NewsFeed = () => {
             onClick={() => setCategory('science')}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
               category === 'science'
-                ? 'bg-teal-500 text-white shadow-sm'
+                ? 'text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-800'
             }`}
+            style={category === 'science' ? { backgroundColor: '#2A63A4' } : {}}
           >
             Science
           </button>
@@ -339,9 +340,10 @@ const NewsFeed = () => {
             onClick={() => setCategory('business')}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
               category === 'business'
-                ? 'bg-teal-500 text-white shadow-sm'
+                ? 'text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-800'
             }`}
+            style={category === 'business' ? { backgroundColor: '#2A63A4' } : {}}
           >
             Business
           </button>
@@ -361,7 +363,7 @@ const NewsFeed = () => {
             <p className="text-xs text-slate-400 mb-1">
               {currentArticle.date} • {currentArticle.source}
             </p>
-            <p className="text-base text-slate-800 group-hover:text-teal-600 transition-colors leading-snug">
+            <p className="text-base text-slate-800 group-hover:text-[#2A63A4] transition-colors leading-snug">
               {currentArticle.title}
             </p>
           </a>
@@ -374,9 +376,10 @@ const NewsFeed = () => {
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                idx === currentIndex % 10 ? 'bg-teal-500 w-4' : 'bg-slate-200 hover:bg-slate-300'
+              className={`h-2 rounded-full transition-all ${
+                idx === currentIndex % 10 ? 'w-4' : 'w-2 bg-slate-200 hover:bg-slate-300'
               }`}
+              style={idx === currentIndex % 10 ? { backgroundColor: '#2A63A4' } : {}}
             />
           ))}
         </div>
@@ -1391,7 +1394,7 @@ const Badge = ({ children, variant = 'default' }) => {
     success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     orange: 'bg-orange-50 text-orange-700 border-orange-200',
     green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    red: 'bg-red-50 text-red-700 border-red-200',
+    red: 'bg-sky-100 text-sky-700 border-sky-300',
   };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`}>
@@ -1416,7 +1419,7 @@ const Header = ({ currentPage, onNavigate }) => {
         <img src="data:image/jpeg;base64,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" alt="OpenOnco" className="h-14" />
       </div>
       <nav className="flex items-center flex-1 justify-evenly">
-        {['home', 'how-it-works', 'data-sources', 'get-involved', 'about'].map(page => (
+        {['home', 'test-tools', 'how-it-works', 'data-sources', 'get-involved', 'about'].map(page => (
           <button
             key={page}
             onClick={() => handleNavigate(page)}
@@ -1424,7 +1427,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'How it Works' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
+            {page === 'home' ? 'Home' : page === 'test-tools' ? 'Test Navigation' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'How it Works' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
           </button>
         ))}
       </nav>
@@ -1566,11 +1569,11 @@ Guidelines:
   };
 
   return (
-    <div className={`bg-white rounded-2xl border-2 border-teal-200 overflow-hidden shadow-lg ${isFloating ? 'flex flex-col' : ''}`} style={isFloating ? { height: '500px' } : {}}>
-      <div className="bg-gradient-to-r from-teal-50 to-emerald-50 px-5 py-3 border-b border-teal-100 flex items-center justify-between flex-shrink-0">
-        <p className="text-teal-800 text-sm">Query our database of {totalTests} MRD, ECD, and TRM tests</p>
+    <div className={`bg-white rounded-2xl border-2 border-[#9FC4E0] overflow-hidden shadow-lg ${isFloating ? 'flex flex-col' : ''}`} style={isFloating ? { height: '500px' } : {}}>
+      <div className="bg-gradient-to-r from-[#EAF1F8] to-emerald-50 px-5 py-3 border-b border-[#D5E3F0] flex items-center justify-between flex-shrink-0">
+        <p className="text-[#163A5E] text-sm">Query our database of {totalTests} MRD, ECD, and TRM tests</p>
         {isFloating && onClose && (
-          <button onClick={onClose} className="text-teal-600 hover:text-teal-800 p-1">
+          <button onClick={onClose} className="text-[#2A63A4] hover:text-[#163A5E] p-1">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -1588,7 +1591,7 @@ Guidelines:
                 <button
                   key={i}
                   onClick={() => handleSuggestionClick(question)}
-                  className="text-left px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-teal-50 hover:border-teal-300 transition-colors shadow-sm"
+                  className="text-left px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] transition-colors shadow-sm"
                 >
                   {question}
                 </button>
@@ -1599,11 +1602,14 @@ Guidelines:
         
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-              msg.role === 'user' 
-                ? 'bg-teal-500 text-white rounded-br-md' 
-                : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
-            }`}>
+            <div 
+              className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                msg.role === 'user' 
+                  ? 'text-white rounded-br-md' 
+                  : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
+              }`}
+              style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+            >
               {msg.role === 'user' ? (
                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
               ) : (
@@ -1615,9 +1621,9 @@ Guidelines:
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm flex space-x-1.5">
-              <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="w-2 h-2 bg-[#4A82B0] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-[#4A82B0] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-[#4A82B0] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
           </div>
         )}
@@ -1631,12 +1637,14 @@ Guidelines:
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your question here..." 
-          className="flex-1 px-4 py-3 bg-white border-2 border-teal-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm placeholder:text-gray-400" 
+          className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
+          style={{ borderColor: '#6AA1C8' }}
         />
         <button 
           onClick={handleSubmit}
           disabled={isLoading} 
-          className="bg-teal-500 hover:bg-teal-600 disabled:bg-teal-300 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm"
+          className="text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+          style={{ backgroundColor: '#2A63A4' }}
         >
           Ask
         </button>
@@ -1646,9 +1654,9 @@ Guidelines:
 };
 
 // ============================================
-// Home Page
+// Test Navigation Tools Page (formerly HomePage)
 // ============================================
-const HomePage = ({ onNavigate }) => {
+const TestNavigationPage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -1656,8 +1664,8 @@ const HomePage = ({ onNavigate }) => {
   const colorClasses = {
     orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-300 hover:shadow-md', btn: 'from-orange-500 to-orange-600' },
     green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300 hover:shadow-md', btn: 'from-emerald-500 to-emerald-600' },
-    red: { card: 'bg-red-50 border-red-200 hover:border-red-300 hover:shadow-md', btn: 'from-red-500 to-red-600' },
-    teal: { card: 'bg-white border-slate-200 hover:border-slate-400 hover:shadow-md', btn: 'from-teal-600 to-teal-700' },
+    red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
+    teal: { card: 'bg-white border-slate-200 hover:border-slate-400 hover:shadow-md', btn: 'from-[#2A63A4] to-[#1E4A7A]' },
   };
 
   const navButtons = [
@@ -1734,7 +1742,7 @@ const HomePage = ({ onNavigate }) => {
                   <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
                 </div>
               </div>
-              <span className="text-sm font-medium text-teal-600">→</span>
+              <span className="text-sm font-medium text-[#2A63A4]">→</span>
             </div>
           </div>
           
@@ -1756,7 +1764,7 @@ const HomePage = ({ onNavigate }) => {
                   <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
                 </div>
               </div>
-              <span className="text-sm font-medium text-teal-600">→</span>
+              <span className="text-sm font-medium text-[#2A63A4]">→</span>
             </div>
           </div>
           
@@ -1778,7 +1786,7 @@ const HomePage = ({ onNavigate }) => {
                   <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
                 </div>
               </div>
-              <span className="text-sm font-medium text-teal-600">→</span>
+              <span className="text-sm font-medium text-[#2A63A4]">→</span>
             </div>
           </div>
         </div>
@@ -1791,7 +1799,7 @@ const HomePage = ({ onNavigate }) => {
         {/* Inline Chat Box */}
         <div className="rounded-xl border-2 border-slate-200 bg-white mb-12 overflow-hidden">
           {/* Chat Header */}
-          <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-4 py-3">
+          <div className="px-4 py-3" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
             <div className="flex items-center gap-3">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -1805,7 +1813,10 @@ const HomePage = ({ onNavigate }) => {
             <div className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-teal-600 text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}>
+                  <div 
+                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                    style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                  >
                     {msg.role === 'user' ? (
                       <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     ) : (
@@ -1833,7 +1844,7 @@ const HomePage = ({ onNavigate }) => {
                   <button
                     key={i}
                     onClick={() => handleSubmit(q)}
-                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-teal-50 hover:border-teal-300 hover:text-teal-700 transition-colors"
+                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
                     {q}
                   </button>
@@ -1850,29 +1861,215 @@ const HomePage = ({ onNavigate }) => {
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Type your question here..."
-                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:border-teal-500"
+                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 focus:outline-none"
+                style={{ '--tw-ring-color': '#2A63A4' }}
                 disabled={isLoading}
               />
               <button
                 type="submit"
                 disabled={isLoading || !chatInput.trim()}
-                className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-2 rounded-lg font-medium hover:from-teal-700 hover:to-teal-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
               >
                 Ask
               </button>
             </form>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
 
-        {/* Intro Text - moved below tools */}
+// ============================================
+// Test Showcase Component - Rotating parameters for each test
+// ============================================
+const TestShowcase = ({ onNavigate }) => {
+  const [paramIndices, setParamIndices] = useState({});
+  const [selectedTest, setSelectedTest] = useState(null);
+
+  // Combine all tests with their category
+  const allTests = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'red' }))
+  ];
+
+  // Get numerical parameters for a test
+  const getParams = (test) => {
+    const params = [];
+    
+    if (test.sensitivity != null) params.push({ label: 'Sensitivity', value: `${test.sensitivity}%` });
+    if (test.specificity != null) params.push({ label: 'Specificity', value: `${test.specificity}%` });
+    if (test.lod != null) params.push({ label: 'LOD', value: `${test.lod}%` });
+    if (test.ppv != null) params.push({ label: 'PPV', value: `${test.ppv}%` });
+    if (test.npv != null) params.push({ label: 'NPV', value: `${test.npv}%` });
+    if (test.stageISensitivity != null) params.push({ label: 'Stage I Sens.', value: `${test.stageISensitivity}%` });
+    if (test.stageIISensitivity != null) params.push({ label: 'Stage II Sens.', value: `${test.stageIISensitivity}%` });
+    if (test.initialTat != null) params.push({ label: 'Initial TAT', value: `${test.initialTat} days` });
+    if (test.followUpTat != null) params.push({ label: 'Follow-up TAT', value: `${test.followUpTat} days` });
+    if (test.tat != null && !test.initialTat) params.push({ label: 'TAT', value: `${test.tat} days` });
+    if (test.listPrice != null) params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}` });
+    if (test.variantsTracked != null) params.push({ label: 'Variants Tracked', value: test.variantsTracked });
+    if (test.bloodVolume != null) params.push({ label: 'Blood Volume', value: `${test.bloodVolume} mL` });
+    if (test.cancersDetected != null) params.push({ label: 'Cancers Detected', value: test.cancersDetected });
+    if (test.leadTimeVsImaging != null) params.push({ label: 'Lead Time vs Imaging', value: `${test.leadTimeVsImaging} days` });
+    
+    return params.length > 0 ? params : [{ label: 'Category', value: test.category }];
+  };
+
+  // Rotate parameters every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setParamIndices(prev => {
+        const next = { ...prev };
+        allTests.forEach(test => {
+          const params = getParams(test);
+          const currentIdx = prev[test.id] || 0;
+          next[test.id] = (currentIdx + 1) % params.length;
+        });
+        return next;
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const colorClasses = {
+    orange: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
+    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
+    red: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' }
+  };
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+      <div className="flex items-center justify-center mb-4">
+        <div className="flex items-center gap-3 text-base font-bold">
+          <span className="text-orange-600">Minimal Residual Disease (MRD)</span>
+          <span className="text-slate-300 font-normal">|</span>
+          <span className="text-emerald-600">Early Cancer Detection (ECD)</span>
+          <span className="text-slate-300 font-normal">|</span>
+          <span className="text-sky-600">Treatment Response Monitoring (TRM)</span>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        {allTests.map(test => {
+          const params = getParams(test);
+          const currentIdx = paramIndices[test.id] || 0;
+          const currentParam = params[currentIdx];
+          const colors = colorClasses[test.color];
+          
+          return (
+            <div
+              key={test.id}
+              onClick={() => setSelectedTest(test)}
+              className={`${colors.bg} ${colors.border} border rounded-xl p-3 cursor-pointer hover:shadow-md transition-all`}
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
+                  <p className="text-xs text-slate-500 truncate">{test.vendor}</p>
+                </div>
+                <span className={`${colors.badge} text-white text-xs px-1.5 py-0.5 rounded font-medium ml-2 flex-shrink-0`}>
+                  {test.category}
+                </span>
+              </div>
+              
+              <div className="h-10 flex flex-col justify-center">
+                <p className="text-xs text-slate-500">{currentParam.label}</p>
+                <p className={`text-base font-bold ${colors.text} transition-all`}>
+                  {currentParam.value}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Test Card Modal */}
+      {selectedTest && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedTest(null)}
+        >
+          <div 
+            className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between rounded-t-2xl">
+              <h3 className="font-semibold text-gray-900">{selectedTest.name}</h3>
+              <button 
+                onClick={() => setSelectedTest(null)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4">
+              <TestCard 
+                test={selectedTest} 
+                category={selectedTest.category} 
+                isSelected={false} 
+                onSelect={() => {}} 
+              />
+            </div>
+            <div className="sticky bottom-0 bg-white border-t border-gray-200 px-4 py-3 flex justify-end gap-2 rounded-b-2xl">
+              <button
+                onClick={() => setSelectedTest(null)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category); }}
+                className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
+                style={{ backgroundColor: '#2A63A4' }}
+              >
+                View in {selectedTest.category} Navigator
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ============================================
+// Home Page (intro and news)
+// ============================================
+const HomePage = ({ onNavigate }) => {
+  return (
+    <div>
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* News Feed */}
+        <div className="mb-8">
+          <NewsFeed />
+        </div>
+
+        {/* Explore Button */}
+        <div className="mb-8">
+          <button
+            onClick={() => onNavigate('test-tools')}
+            className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90"
+            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+          >
+            Explore Liquid Biopsy Tests with our Navigation Tools →
+          </button>
+        </div>
+
+        {/* Test Showcase */}
+        <div className="mb-8">
+          <TestShowcase onNavigate={onNavigate} />
+        </div>
+
+        {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
           <p className="text-lg text-slate-700 mb-4">Liquid biopsy (LBx) tests enable detection and monitoring of cancers at the molecular level from a simple blood draw, opening up entirely new possibilities for cancer treatment. But LBx test complexity can be perplexing to both patients and their physicians - and the options are only increasing in number and technical diversity.</p>
           <p className="text-lg text-slate-700">OpenOnco is a non-profit independent website dedicated to helping organize and navigate the new world of LBx.</p>
-        </div>
-
-        {/* News Feed */}
-        <div className="mt-8">
-          <NewsFeed />
         </div>
       </div>
     </div>
@@ -1956,7 +2153,7 @@ const DatabaseSummary = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-sky-500"></div>
             <div>
               <p className="text-sm font-medium text-slate-800">TRM</p>
               <p className="text-xs text-slate-600">{trmTestData.length} tests • {trmParams} params</p>
@@ -2057,9 +2254,9 @@ const HowItWorksPage = () => (
         The OpenOnco platform has four primary elements:
       </p>
 
-      <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
+      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -2071,9 +2268,9 @@ const HowItWorksPage = () => (
         </p>
       </div>
 
-      <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
+      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
             </svg>
@@ -2085,9 +2282,9 @@ const HowItWorksPage = () => (
         </p>
       </div>
 
-      <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
+      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
@@ -2099,9 +2296,9 @@ const HowItWorksPage = () => (
         </p>
       </div>
 
-      <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
+      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
@@ -2221,7 +2418,7 @@ const SourceDataPage = () => {
   const colorClasses = {
     orange: 'from-orange-500 to-orange-600 border-orange-200 bg-orange-50',
     green: 'from-emerald-500 to-emerald-600 border-emerald-200 bg-emerald-50',
-    red: 'from-red-500 to-red-600 border-red-200 bg-red-50'
+    red: 'from-sky-500 to-sky-600 border-sky-300 bg-sky-100'
   };
 
   return (
@@ -2485,7 +2682,7 @@ const InfoIcon = ({ citations, notes }) => {
           {citations && (
             <div className="mb-2">
               <p className="text-xs font-medium text-gray-700 mb-1">Citations:</p>
-              <p className="text-xs text-blue-600 break-all">{citations.split('|').map((c, i) => (
+              <p className="text-xs text-[#2A63A4] break-all">{citations.split('|').map((c, i) => (
                 <a key={i} href={c.trim().startsWith('http') ? c.trim() : '#'} target="_blank" rel="noopener noreferrer" className="block hover:underline mb-1">
                   {c.trim().length > 60 ? c.trim().slice(0, 60) + '...' : c.trim()}
                 </a>
@@ -2549,12 +2746,12 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
           {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Sensitivity</p></div>}
-          {test.specificity != null && <div><p className="text-lg font-bold text-blue-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
+          {test.specificity != null && <div><p className="text-lg font-bold text-[#2A63A4]">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
           {test.lod != null && <div><p className="text-lg font-bold text-purple-600">{test.lod < 0.01 ? test.lod.toExponential(1) : test.lod}%</p><p className="text-xs text-gray-500">LOD</p></div>}
           {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-gray-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
-          {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-red-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
+          {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-sky-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
-          {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-teal-600">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
+          {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-[#2A63A4]">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
         </div>
         
         {/* Cancer types */}
@@ -2819,7 +3016,7 @@ const CategoryPage = ({ category }) => {
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); };
   const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length;
 
-  const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-red-500 to-red-600' };
+  const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
@@ -2962,6 +3159,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={setCurrentPage} />;
+      case 'test-tools': return <TestNavigationPage onNavigate={setCurrentPage} />;
       case 'MRD': case 'ECD': case 'TRM': return <CategoryPage category={currentPage} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
