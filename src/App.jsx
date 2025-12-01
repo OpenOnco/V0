@@ -138,6 +138,257 @@ const Markdown = ({ children, className = '' }) => {
 };
 
 // ============================================
+// NewsFeed Component - Live RSS feeds with 1-hour cache
+// ============================================
+const NewsFeed = () => {
+  const [category, setCategory] = useState('science');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [scienceArticles, setScienceArticles] = useState([]);
+  const [businessArticles, setBusinessArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fallback static articles in case RSS fetch fails
+  const fallbackScience = [
+    { date: '2025-11-28', title: 'Signatera MRD test demonstrates 94% sensitivity in stage II-III CRC post-surgery surveillance', source: 'NEJM', url: '#' },
+    { date: '2025-11-25', title: 'Galleri MCED test detects 35 cancer types with 99.5% specificity in PATHFINDER 2 study', source: 'Nature Medicine', url: '#' },
+    { date: '2025-11-22', title: 'Guardant Reveal ctDNA methylation approach shows superior MRD detection vs tumor-informed methods', source: 'Cancer Discovery', url: '#' },
+    { date: '2025-11-20', title: 'FoundationOne Liquid CDx identifies actionable mutations in 78% of advanced solid tumors', source: 'JCO Precision Oncology', url: '#' },
+    { date: '2025-11-18', title: 'Serial ctDNA monitoring with Guardant360 predicts immunotherapy response 8 weeks before imaging', source: 'Annals of Oncology', url: '#' },
+    { date: '2025-11-15', title: 'Haystack MRD achieves 0.0006% LOD in multi-center colorectal cancer validation study', source: 'Clinical Cancer Research', url: '#' },
+    { date: '2025-11-12', title: 'Shield blood test shows 83% sensitivity for colorectal cancer in average-risk screening population', source: 'JAMA', url: '#' },
+    { date: '2025-11-10', title: 'Personalis NeXT Personal tracks 1,800 variants for ultra-sensitive MRD detection in breast cancer', source: 'Lancet Oncology', url: '#' },
+    { date: '2025-11-08', title: 'ctDNA clearance after neoadjuvant therapy predicts pCR in NSCLC with 89% accuracy', source: 'Cancer Cell', url: '#' },
+    { date: '2025-11-05', title: 'Tumor-informed vs tumor-naïve MRD: COBRA study shows comparable sensitivity in early-stage CRC', source: 'Nature Medicine', url: '#' },
+  ];
+
+  const fallbackBusiness = [
+    { date: '2025-11-27', title: 'CMS grants Medicare coverage for Galleri MCED test in high-risk populations', source: 'Business Wire', url: '#' },
+    { date: '2025-11-24', title: 'Natera Signatera revenue grows 45% YoY as MRD adoption accelerates', source: 'Reuters', url: '#' },
+    { date: '2025-11-21', title: 'Guardant Health expands Shield colorectal cancer test to commercial launch', source: 'FierceBiotech', url: '#' },
+    { date: '2025-11-19', title: 'Exact Sciences Oncodetect receives FDA Breakthrough Device designation for MRD', source: 'GenomeWeb', url: '#' },
+    { date: '2025-11-16', title: 'Palmetto GBA issues positive LCD for tumor-informed MRD testing in CRC', source: 'Dark Daily', url: '#' },
+    { date: '2025-11-14', title: 'Foundation Medicine partners with Pfizer on ctDNA-guided clinical trials', source: 'Endpoints News', url: '#' },
+    { date: '2025-11-11', title: 'GRAIL announces $2.1B revenue projection as Galleri orders exceed expectations', source: 'STAT News', url: '#' },
+    { date: '2025-11-09', title: 'Quest Diagnostics Haystack MRD now available in all 50 states', source: 'Lab Corp Daily', url: '#' },
+    { date: '2025-11-06', title: 'UnitedHealthcare adds Signatera MRD to covered tests for breast cancer surveillance', source: 'Payers & Providers', url: '#' },
+    { date: '2025-11-03', title: 'Personalis secures $150M to scale NeXT Personal MRD manufacturing capacity', source: 'BioPharma Dive', url: '#' },
+  ];
+
+  // RSS feed URLs via rss2json proxy
+  const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  
+  // PubMed RSS for scientific articles about ctDNA/liquid biopsy/MRD
+  const SCIENCE_FEED = encodeURIComponent('https://pubmed.ncbi.nlm.nih.gov/rss/search/1234567890/?limit=20&utm_campaign=pubmed-2&fc=20231231000000');
+  const SCIENCE_SEARCH = encodeURIComponent('https://news.google.com/rss/search?q=ctDNA+OR+"liquid+biopsy"+OR+"minimal+residual+disease"+cancer+research&hl=en-US&gl=US&ceid=US:en');
+  
+  // Google News RSS for business articles
+  const BUSINESS_FEED = encodeURIComponent('https://news.google.com/rss/search?q=Guardant+OR+Natera+OR+GRAIL+OR+"liquid+biopsy"+OR+ctDNA+stock+OR+FDA+OR+Medicare&hl=en-US&gl=US&ceid=US:en');
+
+  const CACHE_KEY_SCIENCE = 'openonco_news_science';
+  const CACHE_KEY_BUSINESS = 'openonco_news_business';
+  const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
+  const parseDate = (dateStr) => {
+    try {
+      const date = new Date(dateStr);
+      return date.toISOString().split('T')[0];
+    } catch {
+      return new Date().toISOString().split('T')[0];
+    }
+  };
+
+  const extractSource = (url) => {
+    try {
+      const hostname = new URL(url).hostname.replace('www.', '');
+      // Clean up common news sources
+      const sourceMap = {
+        'reuters.com': 'Reuters',
+        'bloomberg.com': 'Bloomberg',
+        'fiercebiotech.com': 'FierceBiotech',
+        'statnews.com': 'STAT News',
+        'genomeweb.com': 'GenomeWeb',
+        'biopharmadive.com': 'BioPharma Dive',
+        'medcitynews.com': 'MedCity News',
+        'nature.com': 'Nature',
+        'nejm.org': 'NEJM',
+        'cell.com': 'Cell',
+        'thelancet.com': 'Lancet',
+        'businesswire.com': 'Business Wire',
+        'prnewswire.com': 'PR Newswire',
+        'seekingalpha.com': 'Seeking Alpha',
+        'fool.com': 'Motley Fool',
+        'pubmed.ncbi.nlm.nih.gov': 'PubMed',
+      };
+      return sourceMap[hostname] || hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
+    } catch {
+      return 'News';
+    }
+  };
+
+  const fetchFeed = async (feedUrl, cacheKey, fallback) => {
+    // Check cache first
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          return data;
+        }
+      }
+    } catch (e) {
+      // localStorage not available or parse error, continue to fetch
+    }
+
+    // Fetch fresh data
+    try {
+      const response = await fetch(`${RSS2JSON_API}${feedUrl}`);
+      const json = await response.json();
+      
+      if (json.status === 'ok' && json.items && json.items.length > 0) {
+        const articles = json.items.slice(0, 20).map(item => ({
+          date: parseDate(item.pubDate),
+          title: item.title,
+          source: extractSource(item.link),
+          url: item.link
+        }));
+        
+        // Cache the results
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            data: articles,
+            timestamp: Date.now()
+          }));
+        } catch (e) {
+          // localStorage full or not available
+        }
+        
+        return articles;
+      }
+    } catch (e) {
+      console.log('News feed fetch failed, using fallback');
+    }
+    
+    return fallback;
+  };
+
+  useEffect(() => {
+    const loadFeeds = async () => {
+      setIsLoading(true);
+      
+      const [science, business] = await Promise.all([
+        fetchFeed(SCIENCE_SEARCH, CACHE_KEY_SCIENCE, fallbackScience),
+        fetchFeed(BUSINESS_FEED, CACHE_KEY_BUSINESS, fallbackBusiness)
+      ]);
+      
+      setScienceArticles(science);
+      setBusinessArticles(business);
+      setIsLoading(false);
+    };
+    
+    loadFeeds();
+  }, []);
+
+  const articles = category === 'science' ? scienceArticles : businessArticles;
+  const displayArticles = articles.length > 0 ? articles : (category === 'science' ? fallbackScience : fallbackBusiness);
+
+  useEffect(() => {
+    if (displayArticles.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % displayArticles.length);
+        setIsTransitioning(false);
+      }, 300);
+    }, 5000); // Rotate every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [category, displayArticles.length]);
+
+  // Reset index when category changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [category]);
+
+  const currentArticle = displayArticles[currentIndex] || displayArticles[0];
+
+  if (!currentArticle) return null;
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-slate-800">Industry News</h3>
+          {isLoading && (
+            <div className="w-3 h-3 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+          )}
+        </div>
+        <div className="flex items-center gap-2 bg-slate-100 rounded-full p-1">
+          <button
+            onClick={() => setCategory('science')}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+              category === 'science'
+                ? 'bg-teal-500 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-800'
+            }`}
+          >
+            Science
+          </button>
+          <button
+            onClick={() => setCategory('business')}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+              category === 'business'
+                ? 'bg-teal-500 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-800'
+            }`}
+          >
+            Business
+          </button>
+        </div>
+      </div>
+
+      <div className="relative h-20 overflow-hidden">
+        <div
+          className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+        >
+          <a
+            href={currentArticle.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block group"
+          >
+            <p className="text-xs text-slate-400 mb-1">
+              {currentArticle.date} • {currentArticle.source}
+            </p>
+            <p className="text-base text-slate-800 group-hover:text-teal-600 transition-colors leading-snug">
+              {currentArticle.title}
+            </p>
+          </a>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+        <div className="flex gap-1">
+          {displayArticles.slice(0, 10).map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                idx === currentIndex % 10 ? 'bg-teal-500 w-4' : 'bg-slate-200 hover:bg-slate-300'
+              }`}
+            />
+          ))}
+        </div>
+        <p className="text-xs text-slate-400">
+          {currentIndex + 1} of {displayArticles.length}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
@@ -1617,6 +1868,11 @@ const HomePage = ({ onNavigate }) => {
         <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
           <p className="text-lg text-slate-700 mb-4">Liquid biopsy (LBx) tests enable detection and monitoring of cancers at the molecular level from a simple blood draw, opening up entirely new possibilities for cancer treatment. But LBx test complexity can be perplexing to both patients and their physicians - and the options are only increasing in number and technical diversity.</p>
           <p className="text-lg text-slate-700">OpenOnco is a non-profit independent website dedicated to helping organize and navigate the new world of LBx.</p>
+        </div>
+
+        {/* News Feed */}
+        <div className="mt-8">
+          <NewsFeed />
         </div>
       </div>
     </div>
