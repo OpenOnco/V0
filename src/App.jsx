@@ -508,7 +508,7 @@ const NewsFeed = () => {
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
-  date: '2025-11-30 00:30 PST',
+  date: '2025-12-01 23:30 PST',
   sources: {
     MRD: 'https://docs.google.com/spreadsheets/d/16F_QRjpiqlrCK1f5fPSHQsODdE5QVPrrdx-0rfKAa5U/edit',
     ECD: 'https://docs.google.com/spreadsheets/d/1eFZg2EtdnR4Ly_lrXoZxzI4Z2bH23LDkCAVCXrewwnI/edit',
@@ -2416,7 +2416,7 @@ const DatabaseSummary = () => {
     ...mrdTestData,
     ...ecdTestData,
     ...trmTestData
-  ].reduce((sum, t) => sum + (t.medicareIndications || 0), 0);
+  ].filter(t => t.reimbursement?.toLowerCase().includes('medicare')).length;
 
   return (
     <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-2xl p-6">
@@ -2440,7 +2440,7 @@ const DatabaseSummary = () => {
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
           <p className="text-3xl font-bold text-slate-800">{medicareIndicationsCount}</p>
-          <p className="text-sm text-slate-600">Medicare Indications</p>
+          <p className="text-sm text-slate-600">Medicare Covered</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
           <p className="text-lg font-bold text-slate-800">{BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</p>
