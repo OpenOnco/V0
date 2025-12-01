@@ -1658,7 +1658,7 @@ const HowItWorksPage = () => (
     <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
       <p>
-        The OpenOnco platform has four major components. Each of these is replicated for each LBx area: MRD, ECD, and TRM.
+        The OpenOnco platform has four primary elements:
       </p>
 
       <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
@@ -1668,10 +1668,10 @@ const HowItWorksPage = () => (
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">Whiteboards (Data Sources tab)</h3>
+          <h3 className="text-xl font-semibold text-gray-900 m-0">MRD/ECD/TRM Whiteboards (see the Data Sources tab)</h3>
         </div>
         <p className="mb-0 text-gray-700">
-          This is an interactive spreadsheet where LBx experts and vendors can collaborate in real time to reach consensus on the key parameters that underlie a test. These parameters range from technical (e.g. sensitivity) to financial (e.g. reimbursement) to experiential (e.g. turn-around-time). Data can come from numerous sources including but not limited to vendor documentation, clinical trials, or patient and physician experience. Each source is cited to the best of our ability, disagreements are noted and explained where possible. New vendors and tests will be added as those tests enter the US (now) or other markets (when feasible).
+          This is an interactive spreadsheet where experts and vendors can collaborate to reach consensus on the key parameters that underlie each test. These parameters range from technical (e.g. sensitivity) to financial (e.g. reimbursement) to experiential (e.g. turn-around-time). Data comes from numerous sources including but not limited to vendor documentation, clinical trials, or patient and physician experience. Sources are cited to the best of our ability and disagreement noted and explained where possible. New vendors and tests will be added as those tests enter the US (now) or other markets (when feasible).
         </p>
       </div>
 
@@ -1682,10 +1682,10 @@ const HowItWorksPage = () => (
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">Build Database (Data Sources tab)</h3>
+          <h3 className="text-xl font-semibold text-gray-900 m-0">MRD/ECD/TRM Build Databases (see Data Sources tab)</h3>
         </div>
         <p className="mb-0 text-gray-700">
-          At regular intervals the consensus LBx whiteboard will be snapshotted and that frozen dataset becomes the current source of data for the user browsing and chat tools. You'll see the timestamp for the current release under the Data Sources tab.
+          At regular intervals the consensus whiteboards are snapshotted and that frozen dataset becomes the source of data for the new version of the browsing and chat tools. You'll see the timestamp for the current release under the Data Sources tab.
         </p>
       </div>
 
@@ -1696,10 +1696,10 @@ const HowItWorksPage = () => (
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">Navigator (Home tab)</h3>
+          <h3 className="text-xl font-semibold text-gray-900 m-0">MRD/ECD/TRM Navigators (see Home tab)</h3>
         </div>
         <p className="mb-0 text-gray-700">
-          An interactive browser inspired by Google Flights that allows users to filter tests based on test parameters, dig into the full parameter set of a test including expert and vendor comments, and select a subset of tests for side-by-side comparison.
+          An interactive browser inspired by Google Flights (🤷‍♂️) that enables users to filter tests based on test parameters, dig into the full parameter set of a test including citations and other notes, and select a subset of tests for side-by-side comparisons.
         </p>
       </div>
 
@@ -1713,7 +1713,7 @@ const HowItWorksPage = () => (
           <h3 className="text-xl font-semibold text-gray-900 m-0">Natural Language Query (Home tab)</h3>
         </div>
         <p className="mb-0 text-gray-700">
-          This is a natural language chat interface built on the Anthropic Claude 4.5 foundation model API. It has all of the intelligence of that model, but uses in-context learning to ensure that all its LBx test parameter information comes from the LBx database. Queries can range from specific test parameters to recommendations of a test for a specific patient profile.
+          This is a natural language chat interface built on the Anthropic's Claude LLM. It has all of the intelligence of that model, but uses in-context learning to ensure that all its test parameter information comes from the OpenOnco database. Queries can range from specific test parameters to recommendations of a test for a specific patient profile.
         </p>
       </div>
 
@@ -1727,6 +1727,7 @@ const HowItWorksPage = () => (
         <li>A new version of each whiteboard is then drafted by feeding the current whiteboard to GPT5.1 PRO with direction to search all public sources to update all current data.</li>
         <li>This new draft is then verified for sourcing by Opus 4.5 and once both LLMs agree, this version is released as the new whiteboard for human critique as a Google Sheet. Google manages authentication and a history of all spreadsheet changes.</li>
       </ol>
+
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10">The Open in OpenOnco</h2>
       
