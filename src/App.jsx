@@ -142,18 +142,24 @@ const Markdown = ({ children, className = '' }) => {
 // Chat API Helper - Works in both Claude.ai artifacts and deployed environments
 // ============================================
 const chatAPI = async (messages, maxTokens = 1500) => {
-  // Try deployed backend first, fall back to direct Anthropic API (for Claude.ai artifacts)
+  // Try deployed backend first with a short timeout, fall back to direct Anthropic API
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+    
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         max_tokens: maxTokens,
         messages: messages
-      })
+      }),
+      signal: controller.signal
     });
     
-    // If we get a valid response (even an error response), use it
+    clearTimeout(timeoutId);
+    
+    // If we get a valid response, use it
     if (response.ok) {
       return response.json();
     }
@@ -1251,7 +1257,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const suggestedQuestions = [
     "Best MRD test for stage II-III colorectal cancer?",
     "Compare tumor-informed vs tumor-naïve MRD approaches",
-    "Which early detection tests have Medicare coverage?",
+    "Which MRD tests have Medicare coverage?",
     "Most sensitive blood test for lung cancer screening?",
     "MRD tests that don't require tumor tissue?",
     "Compare Signatera vs Guardant Reveal for breast cancer"
@@ -1327,18 +1333,11 @@ Guidelines:
     setIsLoading(false);
   };
 
-  const handleSubmit = async () => {
-    if (!input.trim() || isLoading) return;
-    const userMessage = input.trim();
+  const handleSubmit = () => {
+    const value = input.trim();
+    if (!value || isLoading) return;
     setInput('');
-    submitQuestion(userMessage);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
+    submitQuestion(value);
   };
 
   return (
@@ -1346,7 +1345,7 @@ Guidelines:
       <div className="bg-gradient-to-r from-teal-50 to-emerald-50 px-5 py-3 border-b border-teal-100 flex items-center justify-between flex-shrink-0">
         <p className="text-teal-800 text-sm">Query our database of {totalTests} MRD, ECD, and TRM tests</p>
         {isFloating && onClose && (
-          <button onClick={onClose} className="text-teal-600 hover:text-teal-800 p-1">
+          <button type="button" onClick={onClose} className="text-teal-600 hover:text-teal-800 p-1">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -1400,23 +1399,22 @@ Guidelines:
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="border-t border-gray-200 p-4 bg-white flex gap-3 flex-shrink-0">
+      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="border-t border-gray-200 p-4 bg-white flex gap-3 flex-shrink-0">
         <input 
           type="text" 
           value={input} 
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
           placeholder="Type your question here..." 
           className="flex-1 px-4 py-3 bg-white border-2 border-teal-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm placeholder:text-gray-400" 
         />
         <button 
-          onClick={handleSubmit}
+          type="submit"
           disabled={isLoading} 
           className="bg-teal-500 hover:bg-teal-600 disabled:bg-teal-300 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm"
         >
           Ask
         </button>
-      </div>
+      </form>
     </div>
   );
 };
@@ -1444,7 +1442,7 @@ const HomePage = ({ onNavigate }) => {
 
   const exampleQuestions = [
     "MRD testing options for colorectal cancer?",
-    "Which early detection tests have Medicare coverage?",
+    "Which MRD tests have Medicare coverage?",
     "Compare Signatera vs Guardant Reveal"
   ];
 
@@ -1814,7 +1812,7 @@ const HowItWorksPage = () => (
       <h2 className="text-2xl font-bold text-gray-900">The Open in OpenOnco</h2>
       
       <p>
-        Our test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
+        Our compilation of test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
       </p>
 
       <p>
@@ -2153,36 +2151,29 @@ Guidelines:
 - Keep responses concise but thorough`;
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!input.trim() || isLoading) return;
-    const userMessage = input.trim();
+  const handleSubmit = () => {
+    const value = input.trim();
+    if (!value || isLoading) return;
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setMessages(prev => [...prev, { role: 'user', content: value }]);
     setIsLoading(true);
 
-    try {
-      const data = await chatAPI([
-        { 
-          role: 'user', 
-          content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
-        }
-      ], 1024);
+    chatAPI([
+      { 
+        role: 'user', 
+        content: getSystemPrompt() + '\n\n---\n\nUser question: ' + value
+      }
+    ], 1024).then(data => {
       if (data && data.content && data.content[0] && data.content[0].text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
       }
-    } catch (error) {
+    }).catch(error => {
       setMessages(prev => [...prev, { role: 'assistant', content: "Connection error. Please try again." }]);
-    }
-    setIsLoading(false);
+    }).finally(() => {
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -2210,10 +2201,10 @@ Guidelines:
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="border-t border-gray-200 p-3 flex gap-2">
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-        <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
-      </div>
+      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="border-t border-gray-200 p-3 flex gap-2">
+        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+        <button type="submit" disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
+      </form>
     </div>
   );
 };
