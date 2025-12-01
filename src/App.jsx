@@ -1657,6 +1657,13 @@ const HowItWorksPage = () => (
   <div className="max-w-3xl mx-auto px-6 py-16">
     <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
+
+      <h2 className="text-2xl font-bold text-gray-900">The Open in OpenOnco</h2>
+      
+      <p>
+        Our test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
+      </p>
+
       <p>
         The OpenOnco platform has four primary elements:
       </p>
@@ -1728,12 +1735,6 @@ const HowItWorksPage = () => (
         <li>This new draft is then verified for sourcing by Opus 4.5 and once both LLMs agree, this version is released as the new whiteboard for human critique as a Google Sheet. Google manages authentication and a history of all spreadsheet changes.</li>
       </ol>
 
-
-      <h2 className="text-2xl font-bold text-gray-900 mt-10">The Open in OpenOnco</h2>
-      
-      <p>
-        Our test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
-      </p>
     </div>
   </div>
 );
