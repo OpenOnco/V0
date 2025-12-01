@@ -2251,46 +2251,46 @@ const TestShowcase = ({ onNavigate }) => {
 // Stat of the Day Component
 // ============================================
 const StatOfTheDay = ({ onNavigate }) => {
-  // Day-based stat rotation
+  // Day-based stat rotation (0=Sunday through 6=Saturday)
   const dayStats = [
-    { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString() },
-    { key: 'sensitivity', label: 'Sensitivity', unit: '%', description: 'Highest sensitivity', higherIsBetter: true, format: (v) => v },
-    { key: 'specificity', label: 'Specificity', unit: '%', description: 'Highest specificity', higherIsBetter: true, format: (v) => v },
-    { key: 'lod', label: 'Limit of Detection', unit: '% VAF', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => v < 0.01 ? v.toExponential(1) : v },
-    { key: 'npv', label: 'NPV', unit: '%', description: 'Highest NPV', higherIsBetter: true, format: (v) => v },
-    { key: 'ppv', label: 'PPV', unit: '%', description: 'Highest PPV', higherIsBetter: true, format: (v) => v },
-    { key: 'stageISensitivity', label: 'Stage I Sens.', unit: '%', description: 'Best early-stage detection', higherIsBetter: true, format: (v) => v },
+    { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
+    { key: 'lod', label: 'Limit of Detection', unit: '% VAF', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => v < 0.01 ? v.toExponential(1) : v, filter: (v) => v != null && v > 0 },
+    { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
+    { key: 'tat', label: 'Turnaround Time', unit: ' days', description: 'Fastest turnaround', higherIsBetter: false, format: (v) => v, filter: (v) => v != null && v > 0 },
+    { key: 'sensitivity', label: 'Sensitivity', unit: '%', description: 'Highest sensitivity', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
+    { key: 'specificity', label: 'Specificity', unit: '%', description: 'Highest specificity', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
+    { key: 'numIndications', label: 'Cancer Indications', unit: '', description: 'Most cancer types covered', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0, getValue: (t) => t.cancerTypes?.length || 0 },
   ];
   
   // Combine all tests
   const allTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' }))
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD', numIndications: t.cancerTypes?.length || 0 })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD', numIndications: t.cancerTypes?.length || 0 })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM', numIndications: t.cancerTypes?.length || 0 }))
   ];
   
-  // Find a stat where at least 50% of tests have data, starting from today's day
+  // Get today's stat based on day of week
   const dayOfWeek = new Date().getDay();
-  let todayStat = null;
-  let testsWithStat = [];
+  const todayStat = dayStats[dayOfWeek];
   
-  for (let i = 0; i < dayStats.length; i++) {
-    const statIndex = (dayOfWeek + i) % dayStats.length;
-    const stat = dayStats[statIndex];
-    const testsHavingStat = allTests.filter(t => t[stat.key] != null);
-    
-    if (testsHavingStat.length >= allTests.length * 0.5) {
-      todayStat = stat;
-      testsWithStat = testsHavingStat
-        .sort((a, b) => {
-          const aVal = a[stat.key];
-          const bVal = b[stat.key];
-          return stat.higherIsBetter ? bVal - aVal : aVal - bVal;
-        })
-        .slice(0, 3);
-      break;
-    }
-  }
+  // Get value for a test (using custom getValue if defined)
+  const getStatValue = (test) => {
+    if (todayStat.getValue) return todayStat.getValue(test);
+    return test[todayStat.key];
+  };
+  
+  // Filter tests that have valid data for today's stat
+  const testsWithStat = allTests
+    .filter(t => {
+      const val = getStatValue(t);
+      return todayStat.filter(val);
+    })
+    .sort((a, b) => {
+      const aVal = getStatValue(a);
+      const bVal = getStatValue(b);
+      return todayStat.higherIsBetter ? bVal - aVal : aVal - bVal;
+    })
+    .slice(0, 3);
   
   const categoryColors = {
     MRD: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
@@ -2313,6 +2313,7 @@ const StatOfTheDay = ({ onNavigate }) => {
       <div className="flex gap-3">
         {testsWithStat.map((test, idx) => {
           const colors = categoryColors[test.category];
+          const statValue = getStatValue(test);
           return (
             <div
               key={test.id}
@@ -2327,7 +2328,7 @@ const StatOfTheDay = ({ onNavigate }) => {
                   </span>
                 </div>
                 <p className={`text-lg font-bold ${colors.text}`}>
-                  {todayStat.format(test[todayStat.key])}{todayStat.unit}
+                  {todayStat.format(statValue)}{todayStat.unit}
                 </p>
               </div>
               <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
