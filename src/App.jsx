@@ -139,6 +139,43 @@ const Markdown = ({ children, className = '' }) => {
 };
 
 // ============================================
+// Chat API Helper - Works in both Claude.ai artifacts and deployed environments
+// ============================================
+const chatAPI = async (messages, maxTokens = 1500) => {
+  // Try deployed backend first, fall back to direct Anthropic API (for Claude.ai artifacts)
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        max_tokens: maxTokens,
+        messages: messages
+      })
+    });
+    
+    // If we get a valid response (even an error response), use it
+    if (response.ok) {
+      return response.json();
+    }
+    
+    // If /api/chat doesn't exist (404) or fails, fall through to Anthropic API
+    throw new Error('Backend unavailable');
+  } catch (error) {
+    // Fallback: Use direct Anthropic API (works in Claude.ai artifacts)
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: maxTokens,
+        messages: messages
+      })
+    });
+    return response.json();
+  }
+};
+
+// ============================================
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
@@ -1270,24 +1307,12 @@ Guidelines:
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1500,
-          messages: [
-            { 
-              role: "user", 
-              content: getSystemPrompt() + "\n\n---\n\nUser question: " + question
-            }
-          ]
-        })
-      });
-      
-      const data = await response.json();
+      const data = await chatAPI([
+        { 
+          role: "user", 
+          content: getSystemPrompt() + "\n\n---\n\nUser question: " + question
+        }
+      ], 1500);
       
       if (data && data.content && data.content[0] && data.content[0].text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
@@ -1439,17 +1464,9 @@ const HomePage = ({ onNavigate }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1500,
-          messages: [{ role: "user", content: getSystemPrompt() + "\n\n---\n\nUser question: " + q }]
-        })
-      });
-      
-      const data = await response.json();
+      const data = await chatAPI([
+        { role: "user", content: getSystemPrompt() + "\n\n---\n\nUser question: " + q }
+      ], 1500);
       
       if (data?.content?.[0]?.text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
@@ -2151,21 +2168,12 @@ Guidelines:
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          messages: [
-            { 
-              role: 'user', 
-              content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
-            }
-          ]
-        })
-      });
-      const data = await response.json();
+      const data = await chatAPI([
+        { 
+          role: 'user', 
+          content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
+        }
+      ], 1024);
       if (data && data.content && data.content[0] && data.content[0].text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
       } else {
