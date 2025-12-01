@@ -145,17 +145,17 @@ const NewsTicker = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fallbackHeadlines = [
-    { title: 'Liquid Biopsy Market Continues Rapid Expansion as Adoption Grows', url: '#' },
-    { title: 'FDA Clears New ctDNA-Based Companion Diagnostic for Targeted Therapy', url: '#' },
-    { title: 'Multi-Cancer Early Detection Tests Show Promise in Large-Scale Studies', url: '#' },
-    { title: 'Natera Reports Strong Growth in Signatera MRD Test Orders', url: '#' },
-    { title: 'Guardant Health Advances Shield Test for Colorectal Cancer Screening', url: '#' },
-    { title: 'New Research Highlights Role of ctDNA in Treatment Response Monitoring', url: '#' },
+    { title: 'Liquid Biopsy Market Continues Rapid Expansion as Adoption Grows', url: 'https://www.genomeweb.com/liquid-biopsy' },
+    { title: 'FDA Clears New ctDNA-Based Companion Diagnostic for Targeted Therapy', url: 'https://www.genomeweb.com/regulatory-news' },
+    { title: 'Multi-Cancer Early Detection Tests Show Promise in Large-Scale Studies', url: 'https://www.genomeweb.com/cancer' },
+    { title: 'Natera Reports Strong Growth in Signatera MRD Test Orders', url: 'https://www.genomeweb.com/business-news' },
+    { title: 'Guardant Health Advances Shield Test for Colorectal Cancer Screening', url: 'https://www.genomeweb.com/liquid-biopsy' },
+    { title: 'New Research Highlights Role of ctDNA in Treatment Response Monitoring', url: 'https://www.genomeweb.com/cancer' },
   ];
 
   const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
   const GENOMEWEB_FEED = encodeURIComponent('https://www.genomeweb.com/section/rss/news');
-  const CACHE_KEY = 'openonco_ticker_genomeweb';
+  const CACHE_KEY = 'openonco_ticker_genomeweb_v2';
   const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
   useEffect(() => {
@@ -165,7 +165,8 @@ const NewsTicker = () => {
         const cached = localStorage.getItem(CACHE_KEY);
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_DURATION) {
+          // Only use cache if URLs are valid (not '#')
+          if (Date.now() - timestamp < CACHE_DURATION && data[0]?.url && data[0].url !== '#') {
             setHeadlines(data);
             setIsLoading(false);
             return;
@@ -205,8 +206,9 @@ const NewsTicker = () => {
   }, []);
 
   const displayHeadlines = headlines.length > 0 ? headlines : fallbackHeadlines;
-  // Duplicate headlines for seamless loop
-  const tickerContent = [...displayHeadlines, ...displayHeadlines];
+  // Filter to only items with valid URLs, then duplicate for seamless loop
+  const validHeadlines = displayHeadlines.filter(h => h.url && h.url !== '#');
+  const tickerContent = [...(validHeadlines.length > 0 ? validHeadlines : fallbackHeadlines), ...(validHeadlines.length > 0 ? validHeadlines : fallbackHeadlines)];
 
   return (
     <div className="bg-gray-50 py-2 overflow-hidden border border-gray-200 rounded-xl">
@@ -214,26 +216,23 @@ const NewsTicker = () => {
         <div className="flex-shrink-0 px-4 py-1 font-bold text-sm text-white rounded-l-lg" style={{ backgroundColor: '#2A63A4' }}>
           GenomeWeb
         </div>
-        <div className="flex-1 overflow-hidden relative">
+        <div className="flex-1 overflow-hidden relative ticker-container">
           <div 
-            className="flex whitespace-nowrap"
+            className="flex whitespace-nowrap ticker-scroll"
             style={{
               animation: 'ticker 60s linear infinite',
             }}
           >
             {tickerContent.map((item, idx) => (
-              <a
+              <span
                 key={idx}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
+                onClick={() => item.url && item.url !== '#' && window.open(item.url, '_blank')}
                 className="inline-block px-6 text-sm transition-colors hover:underline cursor-pointer"
-                style={{ color: '#2A63A4', pointerEvents: 'auto' }}
+                style={{ color: '#2A63A4' }}
               >
                 {item.title}
                 <span className="mx-4 text-gray-300">•</span>
-              </a>
+              </span>
             ))}
           </div>
         </div>
@@ -242,6 +241,9 @@ const NewsTicker = () => {
         @keyframes ticker {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
+        }
+        .ticker-container:hover .ticker-scroll {
+          animation-play-state: paused;
         }
       `}</style>
     </div>
