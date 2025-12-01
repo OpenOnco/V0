@@ -220,7 +220,7 @@ const NewsTicker = () => {
           <div 
             className="flex whitespace-nowrap ticker-scroll"
             style={{
-              animation: 'ticker 60s linear infinite',
+              animation: 'ticker 20s linear infinite',
             }}
           >
             {tickerContent.map((item, idx) => (
