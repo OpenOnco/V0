@@ -526,7 +526,7 @@ const mrdTestData = [
     "name": "Haystack MRD",
     "vendor": "Quest Diagnostics",
     "approach": "Tumor-informed",
-    "method": "Whole-genome\u2013derived personalized panel; ~50 variants tracked; ultra-low error suppression",
+    "method": "Whole-genome–derived personalized panel; ~50 variants tracked; ultra-low error suppression",
     "cancerTypes": [
       "Multi-solid"
     ],
@@ -545,25 +545,26 @@ const mrdTestData = [
     "initialTat": 30.0,
     "initialTatNotes": "Baseline tumor+normal whole-exome profiling and panel design typically ~4 weeks (~30 days) from sample receipt.",
     "followUpTat": 7.0,
-    "followUpTatNotes": "Post-baseline MRD blood draws generally reported within about 5\u20137 days (Quest/Haystack FAQs; Quest Q&A sometimes quotes 7\u201310 days).",
+    "followUpTatNotes": "Post-baseline MRD blood draws generally reported within about 5–7 days (Quest/Haystack FAQs; Quest Q&A sometimes quotes 7–10 days).",
     "bloodVolume": 30.0,
-    "bloodVolumeNotes": "Quest test directory for Haystack MRD monitoring lists three 10 mL cfDNA tubes (\u224830 mL total) as standard collection; minimum acceptable volume ~24 mL.",
+    "bloodVolumeNotes": "Quest test directory for Haystack MRD monitoring lists three 10 mL cfDNA tubes (≈30 mL total) as standard collection; minimum acceptable volume ~24 mL.",
     "tat": 30.0,
     "tatNotes": "Overall paradigm: ~4 weeks for initial panel build, ~1 week for subsequent MRD timepoints.",
     "fdaStatus": "CLIA LDT (Quest Diagnostics); FDA Breakthrough Device designation for stage II colorectal cancer (Aug 2025).",
     "reimbursement": "Coverage emerging; case-by-case payer review; national Medicare coverage not yet established.",
     "reimbursementNote": "Quest/Haystack describe active engagement with CMS and commercial payers plus patient access programs; no finalized broad LCD as of late 2025.",
     "cptCodes": "0561U",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping",
-    "clinicalTrials": "NCT07125729 (150); NCT06979661 (25)",
-    "totalParticipants": 175
+    "clinicalAvailability": "Clinical LDT – shipping",
+    "clinicalTrials": "NCT07125729 (150; resectable stage II–IV CRC; Haystack vs Signatera head-to-head); NCT06979661 (25; MRD-PORT trial; post-op stage II–III NSCLC; Haystack MRD-guided RT); NCT05798663/AFT-57 (158; unresectable stage III NSCLC; atezolizumab ± tiragolumab CRT; Haystack MRD used for correlative MRD analyses)",
+    "totalParticipants": 333,
+    "numPublications": 17
   },
   {
     "id": "mrd-2",
     "name": "NeXT Personal Dx",
     "vendor": "Personalis",
     "approach": "Tumor-informed",
-    "method": "Tumor-informed, whole-genome-based MRD assay: WGS of tumor and matched normal identifies up to ~1,800 patient-specific variants, which are tracked at ultra-high depth in plasma to detect ctDNA down to ~1\u20133 parts per million (ppm).",
+    "method": "Tumor-informed, whole-genome-based MRD assay: WGS of tumor and matched normal identifies up to ~1,800 patient-specific variants, which are tracked at ultra-high depth in plasma to detect ctDNA down to ~1–3 parts per million (ppm).",
     "cancerTypes": [
       "Breast",
       "Colorectal",
@@ -580,28 +581,30 @@ const mrdTestData = [
     "longitudinalSpecificityCitations": "https://investors.personalis.com/static-files/ef5485c7-4866-449d-9dcb-bfaf081bf97d",
     "lod": 0.000167,
     "lodCitations": "https://investors.personalis.com/static-files/ef5485c7-4866-449d-9dcb-bfaf081bf97d",
-    "lodNotes": "Analytical and clinical validation support ctDNA detection in the ~1\u20133 ppm range (\u22480.0001\u20130.0003% tumor fraction); 0.000167% here represents an approximate mid-point.",
+    "lodNotes": "Analytical and clinical validation support ctDNA detection in the ~1–3 ppm range (≈0.0001–0.0003% tumor fraction); 0.000167% here represents an approximate mid-point.",
     "leadTimeVsImaging": 182.0,
-    "leadTimeVsImagingNotes": "Recent NSCLC data with NeXT Personal Dx in the TRACERx cohort report median ctDNA lead time \u22486 months (~182 days) over radiographic imaging; early-stage breast cancer data show ~15 months lead time in another cohort.",
+    "leadTimeVsImagingNotes": "Recent NSCLC data with NeXT Personal Dx in the TRACERx cohort report median ctDNA lead time ≈6 months (~182 days) over radiographic imaging; early-stage breast cancer data show ~15 months lead time in another cohort.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "variantsTracked": "1800",
     "variantsTrackedNotes": "Personalized panels track on the order of 1,800 tumor-specific variants per patient based on tumor/normal whole-genome sequencing, with additional investigational content in some implementations.",
     "initialTat": 35.0,
-    "initialTatNotes": "Personalis materials state that initial tissue profiling and panel design take approximately 4\u20135 weeks from receipt of tumor and normal samples.",
+    "initialTatNotes": "Personalis materials state that initial tissue profiling and panel design take approximately 4–5 weeks from receipt of tumor and normal samples.",
     "followUpTat": 12.0,
-    "followUpTatNotes": "Subsequent MRD blood tests are typically reported within about 10\u201314 days after sample receipt.",
+    "followUpTatNotes": "Subsequent MRD blood tests are typically reported within about 10–14 days after sample receipt.",
     "bloodVolume": 20.0,
-    "bloodVolumeNotes": "Monitoring commonly uses two 10 mL Streck cfDNA tubes (\u224820 mL total); baseline also requires FFPE tumor tissue and matched-normal blood.",
+    "bloodVolumeNotes": "Monitoring commonly uses two 10 mL Streck cfDNA tubes (≈20 mL total); baseline also requires FFPE tumor tissue and matched-normal blood.",
     "tat": 35.0,
-    "tatNotes": "Overall paradigm: ~4\u20135 weeks for initial panel creation, ~2 weeks for follow-up MRD timepoints.",
+    "tatNotes": "Overall paradigm: ~4–5 weeks for initial panel creation, ~2 weeks for follow-up MRD timepoints.",
     "fdaStatus": "CLIA LDT (early access / clinical offering)",
     "reimbursement": "Coverage limited/early; verify per payer",
     "cptCodes": "81479 (MolDX with DEX Z-code)",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping (initial market availability)",
+    "clinicalAvailability": "Clinical LDT – shipping (initial market availability)",
     "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf",
-    "clinicalTrials": "NCT06230185 (422); VICTORI study (~71)",
-    "totalParticipants": 493
+    "clinicalTrials": "NCT06230185 (422); VICTORI study interim cohort (~71)",
+    "totalParticipants": 493,
+    "numPublications": 4,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-3",
@@ -635,7 +638,7 @@ const mrdTestData = [
     "lod": 0.005,
     "lodNotes": "Exact Sciences reports analytical sensitivity for ctDNA detection at or below ~0.005% variant allele fraction in contrived samples, with high specificity via CHIP-aware filtering.",
     "leadTimeVsImaging": 317.0,
-    "leadTimeVsImagingNotes": "Alpha-/Beta-CORRECT stage III CRC data show median lead time \u224810.4 months (~317 days) from first MRD-positive Oncodetect result to radiologic recurrence.",
+    "leadTimeVsImagingNotes": "Alpha-/Beta-CORRECT stage III CRC data show median lead time ≈10.4 months (~317 days) from first MRD-positive Oncodetect result to radiologic recurrence.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "requiresMatchedNormalNotes": "White paper: WES tumor + matched-normal buffy coat.",
@@ -651,15 +654,16 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT",
     "reimbursement": "Medicare covered for CRC MRD (including surveillance)",
     "reimbursementNote": "Coverage announced July 2025; broader payer adoption evolving",
-    "medicareIndications": 1,
-    "independentValidation": "Yes",
-    "independentValidationNotes": "Prospective Alpha-/Beta-CORRECT CRC cohorts.",
     "cptCodes": "81479 (MolDX with DEX Z-code); PLA pending",
     "cptCodesNotes": "MolDX unlisted code; payer policies vary.",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping",
+    "clinicalAvailability": "Clinical LDT – shipping",
+    "independentValidation": "Yes",
+    "independentValidationNotes": "Prospective Alpha-/Beta-CORRECT CRC cohorts.",
     "exampleTestReport": "https://www.exactsciences.com/-/media/project/headless/one-exact-web/documents/products-services/oncodetect/providers/sample-report-stage-iii-escalation.pdf?rev=10365d7a28c8467eb25d253943ce8fe9",
-    "clinicalTrials": "NCT06398743 (416); α-CORRECT study (124)",
-    "totalParticipants": 540
+    "clinicalTrials": "NCT06398743 (416); α-CORRECT observational study (124)",
+    "totalParticipants": 540,
+    "numPublications": 1,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-4",
@@ -690,20 +694,22 @@ const mrdTestData = [
     "lodNotes": "SAGA materials describe an LoD95 on the order of 5 ppm (~0.00052% VAF) in analytical studies of SV-based assays.",
     "leadTimeVsImaging": 411.0,
     "leadTimeVsImagingCitations": "https://sagadiagnostics.com/saga-diagnostics-announces-u-s-commercial-launch/",
-    "leadTimeVsImagingNotes": "Early-stage breast cancer cohort data highlight median lead time \u224813.7 months (~411 days) between MRD positivity and clinical/radiologic recurrence.",
+    "leadTimeVsImagingNotes": "Early-stage breast cancer cohort data highlight median lead time ≈13.7 months (~411 days) between MRD positivity and clinical/radiologic recurrence.",
     "requiresTumorTissue": "Yes",
     "requiresTumorTissueNotes": "Tumor-informed (WGS of tumor); structural variants tracked by dPCR.",
     "requiresMatchedNormal": "Yes",
-    "initialTat": 28.0,
     "tat": 28.0,
-    "tatNotes": "Initial tumor profiling and personalized assay build typically reported in ~3\u20134 weeks; subsequent blood tests often return in ~3\u20135 days in published experience.",
+    "tatNotes": "Initial tumor profiling and personalized assay build typically reported in ~3–4 weeks; subsequent blood tests often return in ~3–5 days in published experience.",
     "fdaStatus": "CLIA LDT (US) with international laboratory service offerings.",
     "reimbursement": "Medicare covered for early-stage breast cancer; additional coverage emerging.",
     "reimbursementNote": "CMS coverage established for Pathlight MRD in early-stage breast cancer across all subtypes (2025); other indications and payers evolving.",
-    "medicareIndications": 1,
     "cptCodes": "81479 (MolDX/other payer-specific coding; no dedicated PLA as of 2025).",
     "cptCodesNotes": "MolDX unlisted molecular pathology code with DEX Z-code.",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping (select geographies)"
+    "clinicalAvailability": "Clinical LDT – shipping (select geographies)",
+    "clinicalTrials": "TRACER study (cTdna evaluation in eaRly breAst canCER); 100 patients with stage I–III breast cancer of all subtypes; Clinical Cancer Research, Jan 2025",
+    "totalParticipants": 100,
+    "numPublications": 8,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-5",
@@ -723,7 +729,7 @@ const mrdTestData = [
     "specificityNotes": "RaDaR ST demonstrated 97% concordance and maintained equivalent sensitivity with RaDaR 1.0\n\nIn breast, 95.7% sens. And 91.0% spec. (https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/) | Sources: https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/)",
     "lod": 0.001,
     "lodCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/310/neogenomics-to-present-radar-st-bridging-study-at-islb-2025-demonstrating-reliable-mrd-detection-across-solid-tumors",
-    "lodNotes": "Analytical validation for the RaDaR assay supports reliable detection around 10 ppm (~0.001% VAF) with \u226570\u201390% sensitivity at that level in contrived samples.",
+    "lodNotes": "Analytical validation for the RaDaR assay supports reliable detection around 10 ppm (~0.001% VAF) with ≥70–90% sensitivity at that level in contrived samples.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "requiresMatchedNormalNotes": "Buffy coat matched normal used for germline filtering in studies.",
@@ -738,29 +744,32 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT",
     "reimbursement": "Medicare covered for selected indications; MolDX framework applied.",
     "reimbursementNote": "LCDs describe coverage in specific solid tumors (e.g., breast and HPV-negative head & neck cancer) with broader multi-tumor positioning in trials.",
-    "medicareIndications": 2,
     "cptCodes": "81479 (MolDX with DEX Z-code); PLA under consideration.",
     "cptCodesNotes": "MolDX unlisted molecular pathology code with DEX Z-code.",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping"
+    "clinicalAvailability": "Clinical LDT – shipping",
+    "clinicalTrials": "ISLB 2025 bridging study, 'Performance Comparison of RaDaR 1.0 and RaDaR ST Assays for Circulating Tumor DNA Detection Across Solid Tumor Types'; 166 patients across 15 solid tumor types; 97% concordance with RaDaR 1.0",
+    "totalParticipants": 166,
+    "numPublications": 10,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-6",
     "name": "Reveal",
     "vendor": "Guardant",
-    "approach": "Tumor-na\u00efve",
-    "method": "Tumor-na\u00efve, blood-only ctDNA MRD test that integrates variant-based and methylation/epigenomic signals to detect residual disease and recurrence without requiring tumor tissue.",
+    "approach": "Tumor-naïve",
+    "method": "Tumor-naïve, blood-only ctDNA MRD test that integrates variant-based and methylation/epigenomic signals to detect residual disease and recurrence without requiring tumor tissue.",
     "cancerTypes": [
       "Colorectal"
     ],
-    "indicationsNotes": "Guardant Reveal tumor-na\u00efve ctDNA MRD test with Medicare coverage for colorectal cancer (CRC) post-surgery and surveillance after curative-intent treatment.",
+    "indicationsNotes": "Guardant Reveal tumor-naïve ctDNA MRD test with Medicare coverage for colorectal cancer (CRC) post-surgery and surveillance after curative-intent treatment.",
     "sensitivity": 60.0,
     "sensitivityNotes": "Large CRC MRD studies; surveillance coverage and therapy response monitoring expansion announced in 2025",
     "specificity": 100.0,
     "specificityNotes": "60% sens., 100% spec. for detecting recurrence in breast cancer (https://doi.org/10.1158/1538-7445.AM2022-3403)\n\nIn CRC, landmark recurrence sensitivity and specificity were 55.6% and 100%. Incorporating serial longitudinal and surveillance (drawn within 4 months of recurrence) samples, sensitivity improved to 69% and 91% (https://doi.org/10.1158/1078-0432.CCR-21-0410) | Sources: https://doi.org/10.1158/1538-7445.AM2022-3403) | https://doi.org/10.1158/1078-0432.CCR-21-0410)",
     "landmarkSensitivity": 63.0,
-    "landmarkSensitivityNotes": "CRC landmark sensitivity (stage II\u2013III).",
+    "landmarkSensitivityNotes": "CRC landmark sensitivity (stage II–III).",
     "landmarkSpecificity": 100.0,
-    "landmarkSpecificityNotes": "CRC landmark specificity (stage II\u2013III).",
+    "landmarkSpecificityNotes": "CRC landmark specificity (stage II–III).",
     "longitudinalSensitivity": 81.0,
     "longitudinalSensitivityCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-COSMOS-Study-Published-in-Clinical-Cancer-Research-Validates-Utility-of-Guardant-Reveal-Liquid-Biopsy-Test-for-Predicting-Recurrence-in-Colorectal-Cancer/default.aspx",
     "longitudinalSpecificity": 98.0,
@@ -769,33 +778,36 @@ const mrdTestData = [
     "leadTimeVsImaging": 159.0,
     "leadTimeVsImagingCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-COSMOS-Study-Published-in-Clinical-Cancer-Research-Validates-Utility-of-Guardant-Reveal-Liquid-Biopsy-Test-for-Predicting-Recurrence-in-Colorectal-Cancer/default.aspx",
     "leadTimeVsImagingNotes": "CRC median 4.77 months from MRD+ to recurrence.",
+    "requiresTumorTissue": null,
     "requiresTumorTissueNotes": "Plasma-only (tissue-free) MRD assay; tumor tissue is not required for panel design.",
+    "requiresMatchedNormal": null,
     "requiresMatchedNormalNotes": "Does not require a matched-normal blood sample.",
     "initialTat": 7.0,
     "initialTatNotes": "Vendor-reported 7-day median TAT.",
     "followUpTat": 7.0,
     "followUpTatNotes": "Vendor-reported 7-day median TAT.",
     "bloodVolume": 20.0,
-    "bloodVolumeNotes": "Commonly collected as two 10 mL Streck cfDNA tubes (\u224820 mL).",
+    "bloodVolumeNotes": "Commonly collected as two 10 mL Streck cfDNA tubes (≈20 mL).",
     "tat": 7.0,
     "tatNotes": "Guardant reports a typical ~7-day turnaround from sample receipt for Reveal.",
     "fdaStatus": "CLIA LDT; not FDA cleared/approved as of 2025.",
     "reimbursement": "Medicare covered for colorectal cancer MRD including post-surgical and surveillance settings; commercial coverage expanding.",
     "reimbursementNote": "Initial Medicare LCD for CRC MRD after curative-intent treatment; subsequent updates extended coverage to surveillance and broader CRC use; additional payer adoption ongoing.",
-    "medicareIndications": 1,
     "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025; historically billed under 81479/MolDX).",
     "cptCodesNotes": "Guardant Reveal PLA (2025).",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping",
+    "clinicalAvailability": "Clinical LDT – shipping",
     "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf",
-    "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000)",
-    "totalParticipants": 2000
+    "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000; Guardant Reveal ctDNA analysis)",
+    "totalParticipants": 2000,
+    "numPublications": 10,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-7",
     "name": "Signatera",
     "vendor": "Natera",
     "approach": "Tumor-informed",
-    "method": "Tumor-informed, multiplex PCR\u2013NGS ctDNA assay: tumor and matched-normal WES identify personal SNVs, and a 16-variant (or higher in newer versions) customized panel is tracked in serial plasma at high depth.",
+    "method": "Tumor-informed, multiplex PCR–NGS ctDNA assay: tumor and matched-normal WES identify personal SNVs, and a 16-variant (or higher in newer versions) customized panel is tracked in serial plasma at high depth.",
     "cancerTypes": [
       "Colorectal",
       "Breast",
@@ -804,7 +816,7 @@ const mrdTestData = [
       "Ovarian/Fallopian/Primary peritoneal",
       "Pan-solid ICI"
     ],
-    "indicationsNotes": "Natera Signatera tumor-informed MRD assay with Medicare coverage for multiple solid-tumor indications: CRC (stage II\u2013IV & oligometastatic, adjuvant & recurrence), breast cancer (neoadjuvant and stage IIb+ adjuvant & recurrence), bladder cancer (MIBC), NSCLC (stage I\u2013III surveillance), and ovarian/fallopian/primary peritoneal cancer (adjuvant & recurrence), plus pan-solid tumor immune-checkpoint inhibitor (ICI) response monitoring.",
+    "indicationsNotes": "Natera Signatera tumor-informed MRD assay with Medicare coverage for multiple solid-tumor indications: CRC (stage II–IV & oligometastatic, adjuvant & recurrence), breast cancer (neoadjuvant and stage IIb+ adjuvant & recurrence), bladder cancer (MIBC), NSCLC (stage I–III surveillance), and ovarian/fallopian/primary peritoneal cancer (adjuvant & recurrence), plus pan-solid tumor immune-checkpoint inhibitor (ICI) response monitoring.",
     "sensitivity": 94.0,
     "sensitivityCitations": "https://investor.natera.com/news/news-details/2025/SignateraTM-Genome-Clinical-Performance-Highlighted-at-ASCO-2025/default.aspx",
     "sensitivityNotes": "Recurrence Surveillance:\nCRC: 88-93% sens., 98% spec.\nBreast: 88-89% sens., 95-99% spec.\nLung: 80-99% sens., 96-99% spec.\nBladder: 99% sens., 98% spec.\nOvarian: 99% sens.\n\nhttps://www.natera.com/oncology/signatera-advanced-cancer-detection/ | Sources: https://www.natera.com/oncology/signatera-advanced-cancer-detection/",
@@ -832,36 +844,39 @@ const mrdTestData = [
     "requiresMatchedNormal": "Yes",
     "requiresMatchedNormalNotes": "Matched normal blood required.",
     "variantsTracked": "16",
-    "variantsTrackedNotes": "Original commercial design tracks 16 somatic variants per patient; some research/\u201cGenome\u201d configurations track more (e.g., 64) but 16 remains the standard clinical panel.",
+    "variantsTrackedNotes": "Original commercial design tracks 16 somatic variants per patient; some research/“Genome” configurations track more (e.g., 64) but 16 remains the standard clinical panel.",
     "initialTat": 28.0,
-    "initialTatNotes": "Baseline tumor/normal sequencing and panel design typically require ~3\u20134 weeks.",
+    "initialTatNotes": "Baseline tumor/normal sequencing and panel design typically require ~3–4 weeks.",
     "followUpTat": 9.0,
-    "followUpTatNotes": "Longitudinal MRD blood draws generally reported within ~7\u201310 days.",
+    "followUpTatNotes": "Longitudinal MRD blood draws generally reported within ~7–10 days.",
     "bloodVolume": 20.0,
     "bloodVolumeNotes": "Commonly two Streck cfDNA tubes (~10 mL each) for monitoring; tissue + matched normal required at baseline",
     "tat": 28.0,
-    "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1\u20131.5 weeks for follow-up tests.",
+    "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1–1.5 weeks for follow-up tests.",
     "fdaStatus": "CLIA LDT; not FDA-cleared/approved as of late 2025 (clinical validation via numerous peer-reviewed studies).",
     "reimbursement": "Broad Medicare (MolDX) coverage across multiple solid tumors; ADLT pricing in place.",
     "reimbursementNote": "Signatera is covered by Medicare for several indications (CRC, breast, others) and uses ADLT/PLA coding with widespread commercial payer recognition.",
-    "medicareIndications": 6,
-    "independentValidation": "Yes",
-    "independentValidationNotes": "Multiple peer-reviewed and prospective studies across tumors.",
     "cptCodes": "0340U (ADLT)",
     "cptCodesNotes": "Signatera PLA (ADLT pricing).",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping",
-    "exampleTestReport": "https://www.natera.com/resource-library/signatera/signatera-patient-test-sample-report/"
+    "clinicalAvailability": "Clinical LDT – shipping",
+    "independentValidation": "Yes",
+    "independentValidationNotes": "Multiple peer-reviewed and prospective studies across tumors.",
+    "exampleTestReport": "https://www.natera.com/resource-library/signatera/signatera-patient-test-sample-report/",
+    "clinicalTrials": "BESPOKE CRC (NCT04264702); multicentre prospective observational study of ~2,000 stage I–IV colorectal cancer patients at up to 200 U.S. sites (MRD and surveillance cohorts)",
+    "totalParticipants": 2000,
+    "numPublications": 100,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-8",
     "name": "Tempus xM MRD",
     "vendor": "Tempus",
-    "approach": "Tumor-na\u00efve",
-    "method": "Tumor-na\u00efve MRD assay that combines variant-based ctDNA detection with methylation/fragmentomics signals in a dual-workflow, blood-only design; current clinical positioning focuses on colorectal cancer.",
+    "approach": "Tumor-naïve",
+    "method": "Tumor-naïve MRD assay that combines variant-based ctDNA detection with methylation/fragmentomics signals in a dual-workflow, blood-only design; current clinical positioning focuses on colorectal cancer.",
     "cancerTypes": [
       "Colorectal"
     ],
-    "indicationsNotes": "Tempus xM tumor-na\u00efve MRD assay currently marketed for colorectal cancer, with coverage and data focused on CRC; separate Tempus xM (NeXT Personal Dx) tumor-informed offering for solid tumors, including breast.",
+    "indicationsNotes": "Tempus xM tumor-naïve MRD assay currently marketed for colorectal cancer, with coverage and data focused on CRC; separate Tempus xM (NeXT Personal Dx) tumor-informed offering for solid tumors, including breast.",
     "landmarkSensitivity": 61.1,
     "landmarkSpecificity": 94.0,
     "longitudinalSensitivity": 83.3,
@@ -869,6 +884,8 @@ const mrdTestData = [
     "longitudinalSpecificity": 89.5,
     "longitudinalSpecificityCitations": "https://www.businesswire.com/news/home/20240531484360/en/Tempus-Announces-the-Clinical-Launch-of-its-MRD-Testing-Portfolio",
     "lodNotes": "Tempus has published performance at very low ctDNA levels in colorectal cancer trials (e.g., CIRCULATE-Japan) but does not advertise a single, assay-wide LoD figure; numeric field left blank.",
+    "requiresTumorTissue": null,
+    "requiresMatchedNormal": null,
     "initialTatNotes": "Tempus positions xM as having a relatively rapid turnaround because tumor tissue is not required; detailed baseline TAT figures are not consistently disclosed, so no single value is encoded.",
     "followUpTatNotes": "Public materials emphasize rapid repeat testing from blood-only workflows; specific day counts vary by context and are not standardized in a single published metric.",
     "bloodVolume": 17.0,
@@ -878,7 +895,11 @@ const mrdTestData = [
     "reimbursement": "Coverage emerging; verify payer-specific policies.",
     "reimbursementNote": "xM MRD is newer than some competitors; commercial and Medicare coverage are evolving and may currently be more limited than for Signatera or Guardant Reveal.",
     "cptCodes": "81479 (MolDX with DEX Z-code)",
-    "clinicalAvailability": "Clinical LDT \u2013 shipping for colorectal cancer; RUO version also available via Tempus Life Sciences."
+    "clinicalAvailability": "Clinical LDT – shipping for colorectal cancer; RUO version also available via Tempus Life Sciences.",
+    "clinicalTrials": "GALAXY (CIRCULATE-Japan) subset analysis; 80 resected stage II–III colorectal cancer patients randomly selected and enriched for recurrence; Tempus xM tumor-naïve MRD assay with methylation + variant classifiers",
+    "totalParticipants": 80,
+    "numPublications": 3,
+    "numPublicationsPlus": true
   },
   {
     "id": "mrd-9",
@@ -895,11 +916,11 @@ const mrdTestData = [
     "specificityNotes": "Analytical specificity ~99.4% for ctDNA-negative reference specimens in internal validation; clinical specificity for recurrence is still being characterized (PROVENC3 and related studies).",
     "lod": 0.005,
     "lodCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect; https://ismrc-symposium.eu/_Resources/Persistent/f0607069e3aaad66b7ef9a95afad4f655696b5d3/PS-01-012_Carmen%20Rubio-Alarcon_PLCRC-PROVENC3%20assessing%20the%20prognostic%20value%20of%20post-sur.pdf",
-    "lodNotes": "Analytical LoD around 0.005% ctDNA content (LoD95) in contrived reference samples, with analytical specificity ~99.4\u201399.6% across noncancer donor specimens (Plasma Detect assay specifications and PROVENC3 analytical validation poster).",
+    "lodNotes": "Analytical LoD around 0.005% ctDNA content (LoD95) in contrived reference samples, with analytical specificity ~99.4–99.6% across noncancer donor specimens (Plasma Detect assay specifications and PROVENC3 analytical validation poster).",
     "requiresTumorTissue": "Yes",
     "requiresTumorTissueNotes": "Requires FFPE tumor tissue at the landmark time point for WGS to define the tumor-informed MRD signature (Labcorp Plasma Detect workflow).",
     "requiresMatchedNormal": "Yes",
-    "requiresMatchedNormalNotes": "Uses buffy coat (PBMC) germline DNA to filter germline and non\u2013tumor-specific variants; germline input is required for assay design.",
+    "requiresMatchedNormalNotes": "Uses buffy coat (PBMC) germline DNA to filter germline and non–tumor-specific variants; germline input is required for assay design.",
     "variantsTracked": "5000",
     "variantsTrackedCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect",
     "variantsTrackedNotes": "Median of ~5000 high-confidence tumor-specific single nucleotide variants (SNVs) per patient in the MRD signature, tracked longitudinally.",
@@ -917,12 +938,16 @@ const mrdTestData = [
     "fdaStatus": "CLIA / CAP laboratory-developed test offered via Early Experience Program for stage III colon cancer; also available as a Research Use Only (RUO) service for biopharma trials; not FDA-cleared/approved.",
     "reimbursement": "No established routine coverage; early-access / research-focused offering",
     "reimbursementNote": "Positioned primarily for research, clinical trials, and an Early Experience Program in stage III colon cancer. No public Medicare LCD or dedicated PLA code as of 2025; confirm billing and coverage with Labcorp / payers.",
+    "cptCodesNotes": "No public PLA/CPT code specific to Labcorp Plasma Detect as of 2025; billing typically requires payer-specific guidance and may rely on unlisted molecular pathology codes (e.g., 81479).",
+    "clinicalAvailability": "Early Experience Program for stage III colon cancer in clinical practice; broader use as RUO test for translational research and clinical trials across solid tumors.",
     "independentValidation": "Yes",
     "independentValidationNotes": "Clinically validated in the PROVENC3 stage III colon cancer cohort (AACR 2024) and related ASCO/ESMO presentations assessing post-surgery and post-adjuvant ctDNA status and recurrence risk.",
-    "cptCodesNotes": "No public PLA/CPT code specific to Labcorp Plasma Detect as of 2025; billing typically requires payer-specific guidance and may rely on unlisted molecular pathology codes (e.g., 81479).",
-    "clinicalAvailability": "Early Experience Program for stage III colon cancer in clinical practice; broader use as RUO test for translational research and clinical trials across solid tumors."
+    "clinicalTrials": "PROVENC3 (PROgnostic Value of Early Notification by ctDNA in Colon Cancer stage III) within the PLCRC cohort; 236 stage III colon cancer patients, observational ctDNA MRD study using Labcorp Plasma Detect",
+    "totalParticipants": 236,
+    "numPublications": 2
   }
 ];
+
 
 const ECD_DATA_TIMESTAMP = '2025-11-30';
 
@@ -955,7 +980,6 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA (P230009) July 26 2024 - First blood test for primary CRC screening; NCCN-recommended",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare covered per NCD 210.3; commercial coverage expanding",
-    "medicareIndications": 1,
     "clinicalAvailability": "Commercially available in US since August 2024",
     "tat": "~14 days",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes",
@@ -964,8 +988,10 @@ const ecdTestData = [
     "cptCode": "0537U",
     "listPrice": 895.0,
     "screeningInterval": "Every 3 years",
-    "clinicalTrials": "NCT04136002 ECLIPSE (22877); NCT05716477 OSU Project (300)",
-    "totalParticipants": 23177
+    "clinicalTrials": "NCT04136002 ECLIPSE CRC screening study (22877); NCT05716477 OSU Guardant Shield CRC Screening Project (300)",
+    "totalParticipants": 23177,
+    "numPublications": 5,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-2",
@@ -973,11 +999,11 @@ const ecdTestData = [
     "vendor": "GRAIL",
     "testScope": "Multi-cancer (MCED)",
     "approach": "Blood-based cfDNA methylation MCED (plasma)",
-    "method": "Tumor-na\u00efve cfDNA methylation profiling with targeted NGS + machine-learning classifier; predicts cancer signal and tissue of origin (CSO)",
+    "method": "Tumor-naïve cfDNA methylation profiling with targeted NGS + machine-learning classifier; predicts cancer signal and tissue of origin (CSO)",
     "cancerTypes": [
       "50+ cancer types including colorectal, lung, pancreas, ovary, liver, head & neck, lymphoma, esophagus, stomach, bile duct, etc."
     ],
-    "targetPopulation": "Asymptomatic adults \u226550 years as adjunct to standard single-cancer screening",
+    "targetPopulation": "Asymptomatic adults ≥50 years as adjunct to standard single-cancer screening",
     "indicationGroup": "MCED",
     "sensitivity": 51.5,
     "stageISensitivity": 16.8,
@@ -994,17 +1020,19 @@ const ecdTestData = [
     "leadTimeNotes": "PATHFINDER and PATHFINDER 2 show ~7-fold increase in cancers detected when added to USPSTF A/B screening; median diagnostic resolution ~1.5 months",
     "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; not FDA-approved; Breakthrough Device designation; PMA submission expected H1 2026",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for \u226550 with elevated risk",
+    "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk",
     "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
     "sampleType": "Whole blood in Streck cfDNA BCT tubes",
     "sampleVolume": "2 tubes",
-    "sampleStability": "7 days at ambient temperature (1-40\u00b0C); do not refrigerate/freeze",
+    "sampleStability": "7 days at ambient temperature (1-40°C); do not refrigerate/freeze",
     "cptCode": "Proprietary",
     "listPrice": 949.0,
     "screeningInterval": "Annual recommended",
-    "clinicalTrials": "NCT05611632 NHS-Galleri (~140000); NCT06450171 PATHFINDER 2 (~35500); NCT03934866 SUMMIT (13035)",
-    "totalParticipants": 188535
+    "clinicalTrials": "NCT05611632 NHS-Galleri randomized screening trial (~140000); NCT06450171 PATHFINDER 2 safety/performance study (~35500); NCT03934866 SUMMIT high-risk lung cohort (13035)",
+    "totalParticipants": 188535,
+    "numPublications": 20,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-3",
@@ -1014,9 +1042,7 @@ const ecdTestData = [
     "approach": "Stool-based multitarget DNA test",
     "method": "Multitarget stool DNA assay with 5 novel methylation markers + hemoglobin immunoassay; streamlined from original 11 markers",
     "cancerTypes": [
-      "Colorectal cancer",
-      "Advanced precancerous lesions (APL)",
-      "High-grade dysplasia"
+      "Colorectal cancer; Advanced precancerous lesions (APL); High-grade dysplasia"
     ],
     "targetPopulation": "Average-risk adults 45-75 years for CRC screening at home",
     "indicationGroup": "CRC",
@@ -1036,7 +1062,6 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA October 4 2024",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare covered; $0 out-of-pocket for eligible; broad commercial payer coverage",
-    "medicareIndications": 1,
     "clinicalAvailability": "Commercially launched late March 2025 via ExactNexus (350+ health systems)",
     "tat": "3-5 days from receipt",
     "sampleType": "At-home stool collection with enhanced preservatives",
@@ -1045,8 +1070,10 @@ const ecdTestData = [
     "cptCode": "0464U",
     "listPrice": 790.0,
     "screeningInterval": "Every 3 years",
-    "clinicalTrials": "NCT04144738 BLUE-C pivotal trial (26758)",
-    "totalParticipants": 26758
+    "clinicalTrials": "NCT04144738 BLUE-C pivotal Cologuard Plus CRC screening trial (26758)",
+    "totalParticipants": 26758,
+    "numPublications": 2,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-4",
@@ -1056,9 +1083,7 @@ const ecdTestData = [
     "approach": "Stool-based multitarget RNA test",
     "method": "8 stool-derived eukaryotic RNA (seRNA) transcripts via ddPCR + FIT - first FDA-approved RNA-based cancer screening test",
     "cancerTypes": [
-      "Colorectal cancer",
-      "Advanced adenomas",
-      "Sessile serrated lesions"
+      "Colorectal cancer; Advanced adenomas; Sessile serrated lesions"
     ],
     "targetPopulation": "Average-risk adults 45+ years for CRC screening",
     "indicationGroup": "CRC",
@@ -1085,8 +1110,10 @@ const ecdTestData = [
     "cptCode": "0421U",
     "listPrice": 508.87,
     "screeningInterval": "Every 3 years (USPSTF)",
-    "clinicalTrials": "NCT04739722 CRC-PREVENT pivotal trial (14263)",
-    "totalParticipants": 14263
+    "clinicalTrials": "NCT04739722 CRC-PREVENT pivotal ColoSense stool RNA CRC screening trial (14263)",
+    "totalParticipants": 8920,
+    "numPublications": 3,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-5",
@@ -1096,8 +1123,7 @@ const ecdTestData = [
     "approach": "Blood-based multi-biomarker MCED (plasma)",
     "method": "cfDNA methylation + tumor-associated proteins + DNA mutation reflex testing - first multi-biomarker class MCED",
     "cancerTypes": [
-      "50+ cancer types (excludes breast and prostate)",
-      "6 deadliest cancers: pancreatic, lung, liver, esophageal, stomach, ovarian"
+      "50+ cancer types (excludes breast and prostate); 6 deadliest cancers: pancreatic, lung, liver, esophageal, stomach, ovarian"
     ],
     "targetPopulation": "Adults 50-84 years with no cancer diagnosis in past 3 years",
     "indicationGroup": "MCED",
@@ -1116,11 +1142,15 @@ const ecdTestData = [
     "clinicalAvailability": "Launched September 2025 via Quest Diagnostics (7000+ sites)",
     "tat": "Not publicly specified",
     "sampleType": "Whole blood in LBgard tubes",
-    "sampleVolume": "4 tubes \u00d7 8.5 mL = 34 mL total",
-    "sampleStability": "72 hours at room temperature (15-25\u00b0C)",
+    "sampleVolume": "4 tubes × 8.5 mL = 34 mL total",
+    "sampleStability": "72 hours at room temperature (15-25°C)",
     "cptCode": "Proprietary",
     "listPrice": 689.0,
-    "screeningInterval": "Annual recommended"
+    "screeningInterval": "Annual recommended",
+    "clinicalTrials": "DETECT-A prospective interventional MCED (10006); ASCEND-2 classifier development (6354); NCT06589310 FALCON Registry (25000 target)",
+    "totalParticipants": 16360,
+    "numPublications": 2,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-6",
@@ -1130,8 +1160,7 @@ const ecdTestData = [
     "approach": "Blood-based cfDNA multiomics (plasma)",
     "method": "AI/ML analyzing genomic + epigenomic (single-base methylation) + proteomic biomarkers",
     "cancerTypes": [
-      "Colorectal cancer",
-      "Advanced adenomas"
+      "Colorectal cancer; Advanced adenomas"
     ],
     "targetPopulation": "Average-risk adults for CRC screening",
     "indicationGroup": "CRC",
@@ -1154,9 +1183,12 @@ const ecdTestData = [
     "sampleType": "Blood",
     "sampleVolume": "Not specified",
     "sampleStability": "Not specified",
+    "cptCode": "UNKNOWN",
     "screeningInterval": "Expected every 3 years",
-    "clinicalTrials": "NCT04369053 PREEMPT CRC study (~35000)",
-    "totalParticipants": 35000
+    "clinicalTrials": "NCT04369053 PREEMPT CRC registrational Freenome blood-based CRC screening study (48995 enrolled; 27010 analyzed)",
+    "totalParticipants": 48995,
+    "numPublications": 2,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-7",
@@ -1168,7 +1200,7 @@ const ecdTestData = [
     "cancerTypes": [
       "Lung cancer (screening enhancement - pre-LDCT risk stratification)"
     ],
-    "targetPopulation": "USPSTF-eligible: Adults 50-80 years; \u226520 pack-years smoking history; current smokers or quit within 15 years",
+    "targetPopulation": "USPSTF-eligible: Adults 50-80 years; ≥20 pack-years smoking history; current smokers or quit within 15 years",
     "indicationGroup": "Lung",
     "sensitivity": 80.0,
     "stageISensitivity": 71.0,
@@ -1181,7 +1213,7 @@ const ecdTestData = [
     "npvDefinition": "NPV for being lung-cancer free among Not Elevated results in high-risk USPSTF screening population",
     "performanceCitations": "DELFI-L101 Cancer Discovery 2024 (n=958); CASCADE-LUNG/L201 (NCT05306288); FIRSTLung/L301 (NCT06145750)",
     "performanceNotes": "80% overall sensitivity (71% Stage I; 98% Stage IV); 58% specificity; 99.7% NPV; fragmentomics approach novel mechanism.",
-    "leadTimeNotes": "Pre-LDCT risk stratification; 5.5\u00d7 higher cancer likelihood with Elevated result; designed to increase LDCT uptake (currently only 6% eligible adults screened)",
+    "leadTimeNotes": "Pre-LDCT risk stratification; 5.5× higher cancer likelihood with Elevated result; designed to increase LDCT uptake (currently only 6% eligible adults screened)",
     "fdaStatus": "LDT; FDA IVD submission planned",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not established; not covered by Medicare",
@@ -1190,8 +1222,13 @@ const ecdTestData = [
     "sampleType": "Standard blood draw",
     "sampleVolume": "<1 mL plasma required",
     "sampleStability": "Standard",
+    "cptCode": "UNKNOWN",
     "listPrice": 300.0,
-    "screeningInterval": "Annual (complement to LDCT)"
+    "screeningInterval": "Annual (complement to LDCT)",
+    "clinicalTrials": "NCT05306288 CASCADE-LUNG prospective validation (15000 target); NCT04825834 DELFI-L101 case-control development (958); NCT06145750 FIRSTLung cluster RCT (ongoing)",
+    "totalParticipants": 15958,
+    "numPublications": 3,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-8",
@@ -1222,7 +1259,11 @@ const ecdTestData = [
     "sampleVolume": "Standard blood draw",
     "sampleStability": "Standard",
     "cptCode": "0333U",
-    "screeningInterval": "Every 6 months (per AASLD)"
+    "screeningInterval": "Every 6 months (per AASLD)",
+    "clinicalTrials": "NCT05059665 ENCORE validation (247); NCT03694600 CLiMB prospective HCC surveillance (1968); VICTORY study (1100)",
+    "totalParticipants": 3315,
+    "numPublications": 2,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-9",
@@ -1243,7 +1284,7 @@ const ecdTestData = [
     "npvDefinition": "NPV for absence of HCC in high-risk surveillance population (ALTUS / validation cohorts)",
     "performanceCitations": "Phase II validation CGH 2021; ALTUS NCT05064553 (n>3000) November 2025",
     "performanceNotes": "88% overall sensitivity; 82% early-stage (BCLC 0/A); 87% specificity; AUC 0.91 vs AFP 0.84 and GALAD 0.88.",
-    "leadTimeNotes": "ALTUS study shows 77% early-stage vs 36% for ultrasound; 64% very early-stage vs 9% for ultrasound (6-7\u00d7 improvement)",
+    "leadTimeNotes": "ALTUS study shows 77% early-stage vs 36% for ultrasound; 64% very early-stage vs 9% for ultrasound (6-7× improvement)",
     "fdaStatus": "LDT; Breakthrough Device Designation October 2019",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "NOT covered by Medicare; financial assistance available (1-844-870-8870)",
@@ -1253,7 +1294,11 @@ const ecdTestData = [
     "sampleVolume": "Standard blood draw",
     "sampleStability": "Standard",
     "cptCode": "81599",
-    "screeningInterval": "Every 3-6 months"
+    "screeningInterval": "Every 3-6 months",
+    "clinicalTrials": "NCT05064553 ALTUS prospective HCC surveillance (3000+); Phase II validation CGH 2021",
+    "totalParticipants": 3000,
+    "numPublications": 3,
+    "numPublicationsPlus": true
   },
   {
     "id": "ecd-10",
@@ -1263,16 +1308,7 @@ const ecdTestData = [
     "approach": "Blood-based cfDNA methylation MCED (plasma)",
     "method": "Methylation-based NGS cfDNA platform detecting 10 cancer types; same Shield platform as CRC test with expanded analysis; requires physician opt-in and patient authorization for EMR data release",
     "cancerTypes": [
-      "Bladder",
-      "Colorectal",
-      "Esophageal",
-      "Gastric",
-      "Liver",
-      "Lung",
-      "Ovarian",
-      "Pancreas",
-      "Breast",
-      "Prostate (10 tumor types)"
+      "Bladder; Colorectal; Esophageal; Gastric; Liver; Lung; Ovarian; Pancreas; Breast; Prostate (10 tumor types)"
     ],
     "targetPopulation": "Average-risk adults 45+ years; ordered as add-on when physician requests Shield CRC test",
     "indicationGroup": "MCED",
@@ -1289,13 +1325,15 @@ const ecdTestData = [
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes (same sample as Shield CRC)",
     "sampleVolume": "4 tubes (no additional blood draw required)",
     "sampleStability": "7 days at ambient temperature",
-    "screeningInterval": "Annual recommended (with Shield CRC every 3 years)"
+    "cptCode": "UNKNOWN",
+    "screeningInterval": "Annual recommended (with Shield CRC every 3 years)",
+    "clinicalTrials": "NCI Vanguard Study multi-cancer detection feasibility (24000 target); AACR 2025 presentations; ASCO 2025 presentations",
+    "totalParticipants": 24000,
+    "numPublications": 0
   }
 ];
 
 
-// DATA: TRM Tests
-// ============================================
 const TRM_DATA_TIMESTAMP = '2025-11-30';
 
 const trmTestData = [
@@ -1309,12 +1347,16 @@ const trmTestData = [
       "Advanced solid tumors (NSCLC, bladder, breast, GI, others)"
     ],
     "targetPopulation": "Patients with measurable or evaluable advanced solid tumors starting systemic therapy",
-    "responseDefinition": "\u226550% decrease in ctDNA level from baseline to first on-treatment time point; increase from baseline defines molecular non-response",
+    "responseDefinition": "≥50% decrease in ctDNA level from baseline to first on-treatment time point; increase from baseline defines molecular non-response",
     "leadTimeVsImaging": 56.0,
-    "lod": "~0.1\u20130.2% VAF",
+    "lod": "~0.1–0.2% VAF",
     "fdaStatus": "CLIA LDT; not FDA-approved as a CDx; used alongside FDA-approved Guardant360 CDx",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Billed as laboratory-developed test; payer coverage variable and often indication-specific"
+    "reimbursementNote": "Billed as laboratory-developed test; payer coverage variable and often indication-specific",
+    "clinicalTrials": "SERENA-6 Phase III ESR1-mutant advanced breast cancer (866); clinical validation supported by 40+ studies using Guardant360 platform for ctDNA response assessment",
+    "totalParticipants": 866,
+    "numPublications": 40,
+    "numPublicationsPlus": true
   },
   {
     "id": "trm-2",
@@ -1330,8 +1372,11 @@ const trmTestData = [
     "lod": "~0.01% VAF",
     "fdaStatus": "LDT in CLIA/CAP lab; covered by Medicare for ICI treatment response monitoring",
     "reimbursement": "Medicare",
-    "reimbursementNote": "Medicare-covered under LCD L38779 for colorectal, breast, bladder, ovarian, and lung cancers, including ovarian cancer in adjuvant/surveillance settings, neoadjuvant and adjuvant breast cancer, and stage I\u2013III NSCLC surveillance, as well as pan-cancer immunotherapy response monitoring. As of June 2025, the genome-based Signatera Genome assay has matching Medicare coverage for these indications.",
-    "medicareIndications": 6
+    "reimbursementNote": "Medicare-covered under LCD L38779 for colorectal, breast, bladder, ovarian, and lung cancers, including ovarian cancer in adjuvant/surveillance settings, neoadjuvant and adjuvant breast cancer, and stage I–III NSCLC surveillance, as well as pan-cancer immunotherapy response monitoring. As of June 2025, the genome-based Signatera Genome assay has matching Medicare coverage for these indications.",
+    "clinicalTrials": "NCT04660344 IMvigor011 Phase III bladder cancer (760); NCT05987241 MODERN (Alliance A032103) Phase 2/3 bladder cancer (~400 target); BESPOKE IO prospective observational study (multi-center)",
+    "totalParticipants": 1160,
+    "numPublications": 125,
+    "numPublicationsPlus": true
   },
   {
     "id": "trm-3",
@@ -1347,25 +1392,29 @@ const trmTestData = [
     "lod": "~3.45 PPM (~0.000345% VAF)",
     "fdaStatus": "High-complexity LDT in CLIA/CAP lab; not FDA-approved",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus\u2019 MRD portfolio and covered by Medicare for select solid tumor indications (for example, stage II\u2013III breast cancer surveillance).",
-    "clinicalTrials": "NCT06230185 B-STRONGER I (422); VICTORI study (~71)",
-    "totalParticipants": 493
+    "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus’ MRD portfolio and covered by Medicare for select solid tumor indications (for example, stage II–III breast cancer surveillance).",
+    "clinicalTrials": "NCT06230185 B-STRONGER I TNBC MRD/monitoring study (422); VICTORI resectable colorectal cancer MRD study (~71, interim cohort)",
+    "totalParticipants": 493,
+    "numPublications": 5,
+    "numPublicationsPlus": true
   },
   {
     "id": "trm-4",
     "name": "Tempus xM for TRM",
     "vendor": "Tempus",
-    "approach": "Tumor-na\u00efve",
+    "approach": "Tumor-naïve",
     "method": "Algorithmic estimation of ctDNA tumor fraction from Tempus xF/xF+ liquid biopsy data using diverse genomic events and germline-informed modeling",
     "cancerTypes": [
       "Advanced solid tumors on ICI"
     ],
     "targetPopulation": "Patients with advanced cancers receiving ICI-based therapy",
-    "responseDefinition": "\u226550% reduction in ctDNA tumor fraction from baseline to early on-treatment time point (e.g., post-cycle 1)",
+    "responseDefinition": "≥50% reduction in ctDNA tumor fraction from baseline to early on-treatment time point (e.g., post-cycle 1)",
     "lod": "~0.1% VAF",
     "fdaStatus": "Research-use-only biomarker and clinical-development tool",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Currently available for research use only, with clinical availability expected later in 2025 per Tempus\u2019 June 2025 xM for TRM announcement; used mainly in research and biopharma collaborations and not yet a standard reimbursed clinical assay."
+    "reimbursementNote": "Currently available for research use only, with clinical availability expected later in 2025 per Tempus’ June 2025 xM for TRM announcement; used mainly in research and biopharma collaborations and not yet a standard reimbursed clinical assay.",
+    "numPublications": 3,
+    "numPublicationsPlus": true
   },
   {
     "id": "trm-5",
@@ -1378,16 +1427,18 @@ const trmTestData = [
     ],
     "targetPopulation": "High-risk early-stage and advanced solid-tumor patients followed longitudinally after treatment or on systemic therapy",
     "responseDefinition": "Track ctDNA levels over serial time points; response often defined as rapid fall or clearance vs persistent or rising ctDNA",
-    "lod": "~10\u207b\u2075\u201310\u207b\u2076 ctDNA levels",
+    "lod": "~10⁻⁵–10⁻⁶ ctDNA levels",
     "fdaStatus": "LDT in NeoGenomics CLIA/CAP lab; not FDA-approved",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Used in clinical research and select clinical programs; payer coverage still emerging. NeoGenomics has also introduced a WES-based RaDaR ST assay, currently positioned for biopharma partners and interventional trials."
+    "reimbursementNote": "Used in clinical research and select clinical programs; payer coverage still emerging. NeoGenomics has also introduced a WES-based RaDaR ST assay, currently positioned for biopharma partners and interventional trials.",
+    "clinicalTrials": "ISLB 2025 bridging study (166; 15 solid tumor types; 97% concordance RaDaR ST vs RaDaR 1.0); c-TRAK TN TNBC study (161); TRACER breast cancer MRD study (~100); CHiRP breast cancer study (~100); NABUCCO bladder cancer study (54); LUCID NSCLC study (88); CLEAR-Me melanoma study (66)",
+    "totalParticipants": 735,
+    "numPublications": 15,
+    "numPublicationsPlus": true
   }
 ];
 
-// ============================================
-// Filter configs by category
-// ============================================
+
 const filterConfigs = {
   MRD: {
     // Oncologist priority: What cancer? Do I have tumor tissue? Is it covered? Is it FDA approved?
@@ -1427,6 +1478,8 @@ const comparisonParams = {
     { key: 'initialTat', label: 'Initial TAT (days)' },
     { key: 'followUpTat', label: 'Follow-up TAT (days)' },
     { key: 'requiresTumorTissue', label: 'Requires Tumor' },
+    { key: 'totalParticipants', label: 'Trial Participants' },
+    { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursementNote', label: 'Reimbursement' },
   ],
@@ -1445,6 +1498,8 @@ const comparisonParams = {
     { key: 'ppv', label: 'PPV (%)' },
     { key: 'npv', label: 'NPV (%)' },
     { key: 'leadTimeNotes', label: 'Lead Time vs Screening' },
+    { key: 'totalParticipants', label: 'Trial Participants' },
+    { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursementNote', label: 'Reimbursement' },
     { key: 'clinicalAvailability', label: 'Clinical Availability' },
@@ -1463,8 +1518,9 @@ const comparisonParams = {
     { key: 'targetPopulation', label: 'Population' },
     { key: 'responseDefinition', label: 'Response Definition' },
     { key: 'leadTimeVsImaging', label: 'Lead Time (days)' },
-    { key: 'associationWithResponse', label: 'Association with Response' },
     { key: 'lod', label: 'LOD' },
+    { key: 'totalParticipants', label: 'Trial Participants' },
+    { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursementNote', label: 'Reimbursement' },
   ],
@@ -1529,6 +1585,7 @@ const Badge = ({ children, variant = 'default' }) => {
     green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     red: 'bg-sky-100 text-sky-700 border-sky-300',
     blue: 'bg-blue-50 text-blue-700 border-blue-200',
+    purple: 'bg-purple-50 text-purple-700 border-purple-200',
   };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`}>
@@ -1561,7 +1618,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'test-tools' ? 'Test Navigation' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'How it Works' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
+            {page === 'home' ? 'Home' : page === 'test-tools' ? 'All the Tests!' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'Geek Stuff' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
           </button>
         ))}
       </nav>
@@ -2290,6 +2347,17 @@ const HomePage = ({ onNavigate }) => {
   return (
     <div>
       <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* Explore Button - First item */}
+        <div className="mb-8">
+          <button
+            onClick={() => onNavigate('test-tools')}
+            className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90"
+            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+          >
+            → Explore Liquid Biopsy Tests with our Navigation Tools ←
+          </button>
+        </div>
+
         {/* News Feed */}
         <div className="mb-4">
           <NewsFeed />
@@ -2298,17 +2366,6 @@ const HomePage = ({ onNavigate }) => {
         {/* GenomeWeb Ticker */}
         <div className="mb-8">
           <NewsTicker />
-        </div>
-
-        {/* Explore Button */}
-        <div className="mb-8">
-          <button
-            onClick={() => onNavigate('test-tools')}
-            className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90"
-            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-          >
-            Explore Liquid Biopsy Tests with our Navigation Tools →
-          </button>
         </div>
 
         {/* Test Showcase */}
@@ -2987,7 +3044,8 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {test.reimbursement?.toLowerCase().includes('medicare') && <Badge variant="success">Medicare</Badge>}
-              {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} participants</Badge>}
+              {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
+              {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
@@ -3144,19 +3202,25 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
             </>
           )}
           
-          {/* Clinical Trials section - shown for all categories if data exists */}
-          {(test.clinicalTrials || test.totalParticipants) && (
+          {/* Clinical Trials & Publications section - shown for all categories if data exists */}
+          {(test.clinicalTrials || test.totalParticipants || test.numPublications) && (
             <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Clinical Trial Evidence</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Clinical Evidence</p>
               {test.totalParticipants && (
                 <div className="py-1.5 flex justify-between items-center">
                   <span className="text-xs text-gray-500">Total Trial Participants</span>
                   <span className="text-sm font-semibold" style={{ color: '#2A63A4' }}>{test.totalParticipants.toLocaleString()}</span>
                 </div>
               )}
+              {test.numPublications && (
+                <div className="py-1.5 flex justify-between items-center">
+                  <span className="text-xs text-gray-500">Peer-Reviewed Publications</span>
+                  <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
+                </div>
+              )}
               {test.clinicalTrials && (
                 <div className="py-1.5">
-                  <p className="text-xs text-gray-500 mb-1">Trials</p>
+                  <p className="text-xs text-gray-500 mb-1">Key Trials</p>
                   <div className="text-xs text-gray-700 space-y-1">
                     {test.clinicalTrials.split(/[;|]/).map((trial, idx) => {
                       const trimmed = trial.trim();
@@ -3254,10 +3318,27 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [selectedTumorTissue, setSelectedTumorTissue] = useState([]);
   const [selectedFdaStatus, setSelectedFdaStatus] = useState([]);
   const [minParticipants, setMinParticipants] = useState(0);
+  const [minPublications, setMinPublications] = useState(0);
   const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
   const filterScrollRef = useRef(null);
+  const savedScrollY = useRef(0);
+  
+  // Save scroll position on any interaction with sliders
+  const saveScroll = () => {
+    savedScrollY.current = window.scrollY;
+  };
+  
+  // Helper to update slider values with scroll position preservation
+  const updateSlider = (setter) => (e) => {
+    setter(Number(e.target.value));
+    // Restore scroll position after React re-render
+    const scrollY = savedScrollY.current;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+    });
+  };
 
   // Handle initial selected test
   useEffect(() => {
@@ -3316,6 +3397,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       if (selectedTestScopes.length > 0 && !selectedTestScopes.includes(test.testScope)) return false;
       if (selectedTumorTissue.length > 0 && !selectedTumorTissue.includes(test.requiresTumorTissue)) return false;
       if (minParticipants > 0 && (!test.totalParticipants || test.totalParticipants < minParticipants)) return false;
+      if (minPublications > 0 && (!test.numPublications || test.numPublications < minPublications)) return false;
       if (selectedFdaStatus.length > 0) {
         const testFda = test.fdaStatus || '';
         const matchesFda = selectedFdaStatus.some(status => {
@@ -3329,17 +3411,21 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus, minParticipants]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus, minParticipants, minPublications]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8" style={{ overflowAnchor: 'none' }}>
+    <>
+      <style>{`
+        * { overflow-anchor: none !important; }
+      `}</style>
+      <div className="max-w-7xl mx-auto px-6 py-8" style={{ overflowAnchor: 'none' }}>
       <div className="mb-8">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${colorClasses[meta.color]} text-white text-sm font-medium mb-3`}>{meta.shortTitle}</div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{meta.title}</h1>
@@ -3374,10 +3460,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     {config.tumorTissueOptions.map(o => <Checkbox key={o} label={o} checked={selectedTumorTissue.includes(o)} onChange={() => toggle(setSelectedTumorTissue)(o)} />)}
                   </div>
                   <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">FDA Status</label>
-                    {config.fdaStatuses.map(s => <Checkbox key={s} label={s} checked={selectedFdaStatus.includes(s)} onChange={() => toggle(setSelectedFdaStatus)(s)} />)}
-                  </div>
-                  <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
@@ -3391,7 +3473,9 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="1000"
                       step="100"
                       value={minParticipants}
-                      onChange={(e) => setMinParticipants(Number(e.target.value))}
+                      onMouseDown={saveScroll}
+                      onTouchStart={saveScroll}
+                      onChange={updateSlider(setMinParticipants)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
@@ -3401,8 +3485,25 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     </div>
                   </div>
                   <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
-                    {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="5"
+                      value={minPublications}
+                      onMouseDown={saveScroll}
+                      onTouchStart={saveScroll}
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>50</span>
+                      <span>100+</span>
+                    </div>
                   </div>
                 </>
               )}
@@ -3412,10 +3513,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Test Scope</label>
                     {config.testScopes.map(s => <Checkbox key={s} label={s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">FDA Status</label>
-                    {config.fdaStatuses.map(s => <Checkbox key={s} label={s} checked={selectedFdaStatus.includes(s)} onChange={() => toggle(setSelectedFdaStatus)(s)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
@@ -3431,7 +3528,9 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="100000"
                       step="10000"
                       value={minParticipants}
-                      onChange={(e) => setMinParticipants(Number(e.target.value))}
+                      onMouseDown={saveScroll}
+                      onTouchStart={saveScroll}
+                      onChange={updateSlider(setMinParticipants)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
@@ -3441,8 +3540,25 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     </div>
                   </div>
                   <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
-                    {config.approaches.map(a => <Checkbox key={a} label={a.length > 30 ? a.slice(0,30)+'...' : a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 20 ? '20+' : minPublications}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="20"
+                      step="2"
+                      value={minPublications}
+                      onMouseDown={saveScroll}
+                      onTouchStart={saveScroll}
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>10</span>
+                      <span>20+</span>
+                    </div>
                   </div>
                 </>
               )}
@@ -3452,10 +3568,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
-                    {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
@@ -3471,13 +3583,36 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="1000"
                       step="100"
                       value={minParticipants}
-                      onChange={(e) => setMinParticipants(Number(e.target.value))}
+                      onMouseDown={saveScroll}
+                      onTouchStart={saveScroll}
+                      onChange={updateSlider(setMinParticipants)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
                       <span>0</span>
                       <span>500</span>
                       <span>1,000+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="10"
+                      value={minPublications}
+                      onMouseDown={saveScroll}
+                      onTouchStart={saveScroll}
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>50</span>
+                      <span>100+</span>
                     </div>
                   </div>
                 </>
@@ -3524,6 +3659,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
         <ComparisonModal tests={testsToCompare} category={category} onClose={() => setShowComparison(false)} onRemoveTest={(id) => { setSelectedTests(prev => prev.filter(i => i !== id)); if (selectedTests.length <= 2) setShowComparison(false); }} />
       )}
     </div>
+    </>
   );
 };
 
