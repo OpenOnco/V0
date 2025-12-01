@@ -1606,7 +1606,7 @@ const AboutPage = () => (
         Unsurprisingly, this is a very complex field and the technology and options can be overwhelming to doctors and patients. This confusion will only increase as LBx options are rapidly expanding due to advances in the technology and increasing regulatory freedom for test vendors.
       </p>
       <p>
-        OpenOnco is my effort to build a platform to help those of us who are LBx-curious to document and navigate this fascinating and profound technology.
+        OpenOnco is a group effort to make it easier to navigate the complex world of LBx tests - many thanks to all those who have provided, and continue to provide advice for this project.
       </p>
       <p>
         For any comments or questions about OpenOnco feel free to contact me directly via <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">LinkedIn</a> (please include #openonco in your message).
