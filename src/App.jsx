@@ -1,187 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 
 // ============================================
-// Markdown Renderer Component
-// ============================================
-const Markdown = ({ children, className = '' }) => {
-  if (!children) return null;
-  
-  const renderMarkdown = (text) => {
-    // Split into lines for block-level processing
-    const lines = text.split('\n');
-    const elements = [];
-    let currentList = [];
-    let listType = null;
-    let key = 0;
-
-    const flushList = () => {
-      if (currentList.length > 0) {
-        if (listType === 'ul') {
-          elements.push(<ul key={key++} className="list-disc list-inside my-2 space-y-1">{currentList}</ul>);
-        } else {
-          elements.push(<ol key={key++} className="list-decimal list-inside my-2 space-y-1">{currentList}</ol>);
-        }
-        currentList = [];
-        listType = null;
-      }
-    };
-
-    const parseInline = (text) => {
-      const parts = [];
-      let remaining = text;
-      let partKey = 0;
-
-      while (remaining.length > 0) {
-        // Bold: **text** or __text__
-        let match = remaining.match(/^(\*\*|__)(.+?)\1/);
-        if (match) {
-          parts.push(<strong key={partKey++} className="font-semibold">{parseInline(match[2])}</strong>);
-          remaining = remaining.slice(match[0].length);
-          continue;
-        }
-
-        // Italic: *text* or _text_ (but not inside words for _)
-        match = remaining.match(/^(\*|_)(.+?)\1/);
-        if (match) {
-          parts.push(<em key={partKey++} className="italic">{parseInline(match[2])}</em>);
-          remaining = remaining.slice(match[0].length);
-          continue;
-        }
-
-        // Inline code: `code`
-        match = remaining.match(/^`([^`]+)`/);
-        if (match) {
-          parts.push(<code key={partKey++} className="bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded text-xs font-mono">{match[1]}</code>);
-          remaining = remaining.slice(match[0].length);
-          continue;
-        }
-
-        // Links: [text](url)
-        match = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/);
-        if (match) {
-          parts.push(<a key={partKey++} href={match[2]} target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline hover:text-emerald-700">{match[1]}</a>);
-          remaining = remaining.slice(match[0].length);
-          continue;
-        }
-
-        // Plain text (up to next special char or end)
-        match = remaining.match(/^[^*_`\[]+/);
-        if (match) {
-          parts.push(match[0]);
-          remaining = remaining.slice(match[0].length);
-          continue;
-        }
-
-        // Single special char that didn't match a pattern
-        parts.push(remaining[0]);
-        remaining = remaining.slice(1);
-      }
-
-      return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : parts;
-    };
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-
-      // Headers
-      const headerMatch = line.match(/^(#{1,6})\s+(.+)$/);
-      if (headerMatch) {
-        flushList();
-        const level = headerMatch[1].length;
-        const content = parseInline(headerMatch[2]);
-        const headerClasses = {
-          1: 'text-lg font-bold mt-3 mb-2',
-          2: 'text-base font-bold mt-3 mb-1.5',
-          3: 'text-sm font-semibold mt-2 mb-1',
-          4: 'text-sm font-semibold mt-2 mb-1',
-          5: 'text-sm font-medium mt-1 mb-1',
-          6: 'text-sm font-medium mt-1 mb-1'
-        };
-        const Tag = `h${level}`;
-        elements.push(<Tag key={key++} className={headerClasses[level]}>{content}</Tag>);
-        continue;
-      }
-
-      // Unordered list: - item or * item
-      const ulMatch = line.match(/^[\s]*[-*]\s+(.+)$/);
-      if (ulMatch) {
-        if (listType !== 'ul') flushList();
-        listType = 'ul';
-        currentList.push(<li key={key++}>{parseInline(ulMatch[1])}</li>);
-        continue;
-      }
-
-      // Ordered list: 1. item
-      const olMatch = line.match(/^[\s]*\d+\.\s+(.+)$/);
-      if (olMatch) {
-        if (listType !== 'ol') flushList();
-        listType = 'ol';
-        currentList.push(<li key={key++}>{parseInline(olMatch[1])}</li>);
-        continue;
-      }
-
-      // Empty line
-      if (line.trim() === '') {
-        flushList();
-        continue;
-      }
-
-      // Regular paragraph
-      flushList();
-      elements.push(<p key={key++} className="my-1">{parseInline(line)}</p>);
-    }
-
-    flushList();
-    return elements;
-  };
-
-  return <div className={className}>{renderMarkdown(children)}</div>;
-};
-
-// ============================================
-// Chat API Helper - Works in both Claude.ai artifacts and deployed environments
-// ============================================
-const chatAPI = async (messages, maxTokens = 1500) => {
-  // Try deployed backend first with a short timeout, fall back to direct Anthropic API
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
-    
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        max_tokens: maxTokens,
-        messages: messages
-      }),
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    
-    // If we get a valid response, use it
-    if (response.ok) {
-      return response.json();
-    }
-    
-    // If /api/chat doesn't exist (404) or fails, fall through to Anthropic API
-    throw new Error('Backend unavailable');
-  } catch (error) {
-    // Fallback: Use direct Anthropic API (works in Claude.ai artifacts)
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: maxTokens,
-        messages: messages
-      })
-    });
-    return response.json();
-  }
-};
-
-// ============================================
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
@@ -1257,7 +1076,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const suggestedQuestions = [
     "Best MRD test for stage II-III colorectal cancer?",
     "Compare tumor-informed vs tumor-naïve MRD approaches",
-    "Which MRD tests have Medicare coverage?",
+    "Which early detection tests have Medicare coverage?",
     "Most sensitive blood test for lung cancer screening?",
     "MRD tests that don't require tumor tissue?",
     "Compare Signatera vs Guardant Reveal for breast cancer"
@@ -1313,12 +1132,23 @@ Guidelines:
     setIsLoading(true);
 
     try {
-      const data = await chatAPI([
-        { 
-          role: "user", 
-          content: getSystemPrompt() + "\n\n---\n\nUser question: " + question
-        }
-      ], 1500);
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          max_tokens: 1500,
+          messages: [
+            { 
+              role: "user", 
+              content: getSystemPrompt() + "\n\n---\n\nUser question: " + question
+            }
+          ]
+        })
+      });
+      
+      const data = await response.json();
       
       if (data && data.content && data.content[0] && data.content[0].text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
@@ -1379,21 +1209,29 @@ Guidelines:
           </div>
         )}
         
-        {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-              msg.role === 'user' 
-                ? 'bg-teal-500 text-white rounded-br-md' 
-                : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
-            }`}>
-              {msg.role === 'user' ? (
-                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-              ) : (
-                <Markdown className="text-sm">{msg.content}</Markdown>
-              )}
+        {messages.map((msg, i) => {
+          // Convert markdown bold (**text** or *text*) to HTML
+          const formatMessage = (text) => {
+            return text
+              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+              .replace(/\*(.+?)\*/g, '<strong>$1</strong>');
+          };
+          
+          return (
+            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                msg.role === 'user' 
+                  ? 'bg-teal-500 text-white rounded-br-md' 
+                  : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
+              }`}>
+                <p 
+                  className="text-sm whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm flex space-x-1.5">
@@ -1450,7 +1288,7 @@ const HomePage = ({ onNavigate }) => {
 
   const exampleQuestions = [
     "MRD testing options for colorectal cancer?",
-    "Which MRD tests have Medicare coverage?",
+    "Which early detection tests have Medicare coverage?",
     "Compare Signatera vs Guardant Reveal"
   ];
 
@@ -1470,9 +1308,16 @@ const HomePage = ({ onNavigate }) => {
     setIsLoading(true);
 
     try {
-      const data = await chatAPI([
-        { role: "user", content: getSystemPrompt() + "\n\n---\n\nUser question: " + q }
-      ], 1500);
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          max_tokens: 1500,
+          messages: [{ role: "user", content: getSystemPrompt() + "\n\n---\n\nUser question: " + q }]
+        })
+      });
+      
+      const data = await response.json();
       
       if (data?.content?.[0]?.text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
@@ -1581,11 +1426,7 @@ const HomePage = ({ onNavigate }) => {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-teal-600 text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}>
-                    {msg.role === 'user' ? (
-                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                    ) : (
-                      <Markdown className="text-sm">{msg.content}</Markdown>
-                    )}
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                   </div>
                 </div>
               ))}
@@ -1820,7 +1661,7 @@ const HowItWorksPage = () => (
       <h2 className="text-2xl font-bold text-gray-900">The Open in OpenOnco</h2>
       
       <p>
-        Our compilation of test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
+        Our test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
       </p>
 
       <p>
@@ -2174,12 +2015,20 @@ Guidelines:
     setIsLoading(true);
 
     try {
-      const data = await chatAPI([
-        { 
-          role: 'user', 
-          content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
-        }
-      ], 1024);
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          max_tokens: 1024,
+          messages: [
+            { 
+              role: 'user', 
+              content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
+            }
+          ]
+        })
+      });
+      const data = await response.json();
       if (data && data.content && data.content[0] && data.content[0].text) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
       } else {
@@ -2197,11 +2046,7 @@ Guidelines:
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-emerald-500 text-white rounded-br-md' : 'bg-gray-100 text-gray-800 rounded-bl-md'}`}>
-              {msg.role === 'user' ? (
-                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-              ) : (
-                <Markdown className="text-sm">{msg.content}</Markdown>
-              )}
+              <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
             </div>
           </div>
         ))}
