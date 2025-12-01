@@ -1,6 +1,143 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 
 // ============================================
+// Markdown Renderer Component
+// ============================================
+const Markdown = ({ children, className = '' }) => {
+  if (!children) return null;
+  
+  const renderMarkdown = (text) => {
+    const lines = text.split('\n');
+    const elements = [];
+    let currentList = [];
+    let listType = null;
+    let key = 0;
+
+    const flushList = () => {
+      if (currentList.length > 0) {
+        if (listType === 'ul') {
+          elements.push(<ul key={key++} className="list-disc list-inside my-2 space-y-1">{currentList}</ul>);
+        } else {
+          elements.push(<ol key={key++} className="list-decimal list-inside my-2 space-y-1">{currentList}</ol>);
+        }
+        currentList = [];
+        listType = null;
+      }
+    };
+
+    const parseInline = (text) => {
+      const parts = [];
+      let remaining = text;
+      let partKey = 0;
+
+      while (remaining.length > 0) {
+        // Bold: **text** or __text__
+        let match = remaining.match(/^(\*\*|__)(.+?)\1/);
+        if (match) {
+          parts.push(<strong key={partKey++} className="font-semibold">{parseInline(match[2])}</strong>);
+          remaining = remaining.slice(match[0].length);
+          continue;
+        }
+
+        // Italic: *text* or _text_
+        match = remaining.match(/^(\*|_)(.+?)\1/);
+        if (match) {
+          parts.push(<em key={partKey++} className="italic">{parseInline(match[2])}</em>);
+          remaining = remaining.slice(match[0].length);
+          continue;
+        }
+
+        // Inline code: `code`
+        match = remaining.match(/^`([^`]+)`/);
+        if (match) {
+          parts.push(<code key={partKey++} className="bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded text-xs font-mono">{match[1]}</code>);
+          remaining = remaining.slice(match[0].length);
+          continue;
+        }
+
+        // Links: [text](url)
+        match = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/);
+        if (match) {
+          parts.push(<a key={partKey++} href={match[2]} target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline hover:text-emerald-700">{match[1]}</a>);
+          remaining = remaining.slice(match[0].length);
+          continue;
+        }
+
+        // Plain text up to next special char
+        match = remaining.match(/^[^*_`\[]+/);
+        if (match) {
+          parts.push(match[0]);
+          remaining = remaining.slice(match[0].length);
+          continue;
+        }
+
+        // Single special char that didn't match
+        parts.push(remaining[0]);
+        remaining = remaining.slice(1);
+      }
+
+      return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : parts;
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Headers
+      const headerMatch = line.match(/^(#{1,6})\s+(.+)$/);
+      if (headerMatch) {
+        flushList();
+        const level = headerMatch[1].length;
+        const content = parseInline(headerMatch[2]);
+        const headerClasses = {
+          1: 'text-lg font-bold mt-3 mb-2',
+          2: 'text-base font-bold mt-3 mb-1.5',
+          3: 'text-sm font-semibold mt-2 mb-1',
+          4: 'text-sm font-semibold mt-2 mb-1',
+          5: 'text-sm font-medium mt-1 mb-1',
+          6: 'text-sm font-medium mt-1 mb-1'
+        };
+        const Tag = `h${level}`;
+        elements.push(<Tag key={key++} className={headerClasses[level]}>{content}</Tag>);
+        continue;
+      }
+
+      // Unordered list
+      const ulMatch = line.match(/^[\s]*[-*]\s+(.+)$/);
+      if (ulMatch) {
+        if (listType !== 'ul') flushList();
+        listType = 'ul';
+        currentList.push(<li key={key++}>{parseInline(ulMatch[1])}</li>);
+        continue;
+      }
+
+      // Ordered list
+      const olMatch = line.match(/^[\s]*\d+\.\s+(.+)$/);
+      if (olMatch) {
+        if (listType !== 'ol') flushList();
+        listType = 'ol';
+        currentList.push(<li key={key++}>{parseInline(olMatch[1])}</li>);
+        continue;
+      }
+
+      // Empty line
+      if (line.trim() === '') {
+        flushList();
+        continue;
+      }
+
+      // Regular paragraph
+      flushList();
+      elements.push(<p key={key++} className="my-1">{parseInline(line)}</p>);
+    }
+
+    flushList();
+    return elements;
+  };
+
+  return <div className={className}>{renderMarkdown(children)}</div>;
+};
+
+// ============================================
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
@@ -1209,29 +1346,21 @@ Guidelines:
           </div>
         )}
         
-        {messages.map((msg, i) => {
-          // Convert markdown bold (**text** or *text*) to HTML
-          const formatMessage = (text) => {
-            return text
-              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\*(.+?)\*/g, '<strong>$1</strong>');
-          };
-          
-          return (
-            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                msg.role === 'user' 
-                  ? 'bg-teal-500 text-white rounded-br-md' 
-                  : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
-              }`}>
-                <p 
-                  className="text-sm whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
-                />
-              </div>
+        {messages.map((msg, i) => (
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+              msg.role === 'user' 
+                ? 'bg-teal-500 text-white rounded-br-md' 
+                : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
+            }`}>
+              {msg.role === 'user' ? (
+                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              ) : (
+                <Markdown className="text-sm">{msg.content}</Markdown>
+              )}
             </div>
-          );
-        })}
+          </div>
+        ))}
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm flex space-x-1.5">
@@ -1426,7 +1555,11 @@ const HomePage = ({ onNavigate }) => {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-teal-600 text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}>
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    {msg.role === 'user' ? (
+                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    ) : (
+                      <Markdown className="text-sm">{msg.content}</Markdown>
+                    )}
                   </div>
                 </div>
               ))}
@@ -2046,7 +2179,11 @@ Guidelines:
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-emerald-500 text-white rounded-br-md' : 'bg-gray-100 text-gray-800 rounded-bl-md'}`}>
-              <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              {msg.role === 'user' ? (
+                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              ) : (
+                <Markdown className="text-sm">{msg.content}</Markdown>
+              )}
             </div>
           </div>
         ))}
