@@ -1287,7 +1287,7 @@ const HomePage = ({ onNavigate }) => {
   ];
 
   const exampleQuestions = [
-    "Best MRD test for colorectal cancer?",
+    "MRD testing options for colorectal cancer?",
     "Which early detection tests have Medicare coverage?",
     "Compare Signatera vs Guardant Reveal"
   ];
