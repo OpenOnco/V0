@@ -1269,7 +1269,9 @@ Guidelines:
 // Home Page
 // ============================================
 const HomePage = ({ onNavigate }) => {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   const colorClasses = {
     orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-300 hover:shadow-md', btn: 'from-orange-500 to-orange-600' },
@@ -1283,6 +1285,50 @@ const HomePage = ({ onNavigate }) => {
     { key: 'ECD', title: 'Early Cancer Detection (ECD)', color: 'green' },
     { key: 'TRM', title: 'Treatment Response Monitoring (TRM)', color: 'red' },
   ];
+
+  const exampleQuestions = [
+    "Best MRD test for colorectal cancer?",
+    "Which early detection tests have Medicare coverage?",
+    "Compare Signatera vs Guardant Reveal"
+  ];
+
+  const getSystemPrompt = () => {
+    const mrdSummary = mrdTestData.map(t => `${t.name} by ${t.vendor}: ${t.approach} approach, ${t.cancerTypes?.join(', ') || 'various cancers'}, sensitivity ${t.sensitivity || 'not specified'}%, specificity ${t.specificity || 'not specified'}%, requires tumor tissue: ${t.requiresTumorTissue || 'not specified'}, FDA status: ${t.fdaStatus || 'not specified'}, reimbursement: ${t.reimbursement || 'not specified'}`).join('\n');
+    const ecdSummary = ecdTestData.map(t => `${t.name} by ${t.vendor}: detects ${t.cancersDetected || 'multiple'} cancers, sensitivity ${t.sensitivity || 'not specified'}%, specificity ${t.specificity || 'not specified'}%, FDA status: ${t.fdaStatus || 'not specified'}, Medicare coverage: ${t.medicareCoverage || 'not specified'}`).join('\n');
+    const trmSummary = trmTestData.map(t => `${t.name} by ${t.vendor}: ${t.method || 'not specified'} method, cancer types: ${t.cancerTypes?.join(', ') || 'various'}, TAT: ${t.tat || 'not specified'}`).join('\n');
+    return `You are a helpful assistant for OpenOnco, a liquid biopsy test comparison platform. Answer questions about these tests based on the following data:\n\nMRD TESTS:\n${mrdSummary}\n\nECD TESTS:\n${ecdSummary}\n\nTRM TESTS:\n${trmSummary}\n\nBe concise but thorough. If information isn't available, say so.`;
+  };
+
+  const handleSubmit = async (question) => {
+    const q = question || chatInput;
+    if (!q.trim()) return;
+    
+    setChatInput('');
+    setMessages(prev => [...prev, { role: 'user', content: q }]);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          max_tokens: 1500,
+          messages: [{ role: "user", content: getSystemPrompt() + "\n\n---\n\nUser question: " + q }]
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data?.content?.[0]?.text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
+    }
+    setIsLoading(false);
+  };
 
   return (
     <div>
@@ -1303,7 +1349,7 @@ const HomePage = ({ onNavigate }) => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-800">MRD</h3>
+                  <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
                   <p className="text-xs text-gray-500">Minimal Residual Disease</p>
                   <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
                 </div>
@@ -1325,7 +1371,7 @@ const HomePage = ({ onNavigate }) => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-800">ECD</h3>
+                  <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
                   <p className="text-xs text-gray-500">Early Cancer Detection</p>
                   <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
                 </div>
@@ -1347,7 +1393,7 @@ const HomePage = ({ onNavigate }) => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-800">TRM</h3>
+                  <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
                   <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
                   <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
                 </div>
@@ -1357,24 +1403,75 @@ const HomePage = ({ onNavigate }) => {
           </div>
         </div>
         
-        {/* Chat Button - Full Width */}
-        <div
-          className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.teal.card} mb-12`}
-          onClick={() => setIsChatOpen(true)}
-        >
-          <div className="flex items-center justify-between">
+        {/* Inline Chat Box */}
+        <div className="rounded-xl border-2 border-slate-200 bg-white mb-12 overflow-hidden">
+          {/* Chat Header */}
+          <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-4 py-3">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.teal.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-slate-800">Conversational query about all our MRD, ECD, and TRM test data</h3>
-                <p className="text-xs text-slate-500">Query all {mrdTestData.length + ecdTestData.length + trmTestData.length} tests</p>
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              <h3 className="text-white font-semibold">Ask about any of our {mrdTestData.length + ecdTestData.length + trmTestData.length} liquid biopsy tests</h3>
+            </div>
+          </div>
+          
+          {/* Messages Area */}
+          {messages.length > 0 && (
+            <div className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+              {messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-teal-600 text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}>
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                    <p className="text-sm text-slate-500">Thinking...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Example Questions (only show when no messages) */}
+          {messages.length === 0 && (
+            <div className="p-4 bg-slate-50">
+              <p className="text-xs text-slate-500 mb-2">Try asking:</p>
+              <div className="flex flex-wrap gap-2">
+                {exampleQuestions.map((q, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleSubmit(q)}
+                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-teal-50 hover:border-teal-300 hover:text-teal-700 transition-colors"
+                  >
+                    {q}
+                  </button>
+                ))}
               </div>
             </div>
-            <span className="text-sm font-medium text-teal-600">→</span>
+          )}
+          
+          {/* Input Area */}
+          <div className="p-4 border-t border-slate-200 bg-white">
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Type your question here..."
+                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:border-teal-500"
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !chatInput.trim()}
+                className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-2 rounded-lg font-medium hover:from-teal-700 hover:to-teal-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              >
+                Ask
+              </button>
+            </form>
           </div>
         </div>
 
@@ -1384,15 +1481,6 @@ const HomePage = ({ onNavigate }) => {
           <p className="text-lg text-slate-700">OpenOnco is a non-profit independent website dedicated to helping organize and navigate the new world of LBx.</p>
         </div>
       </div>
-      
-      {/* Chat Dialog */}
-      {isChatOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <div className="w-full max-w-2xl mx-4">
-            <UnifiedChat isFloating={true} onClose={() => setIsChatOpen(false)} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
