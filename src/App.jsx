@@ -1613,7 +1613,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'test-tools' ? 'All the Tests!' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'Geek Stuff' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
+            {page === 'home' ? 'Home' : page === 'test-tools' ? 'All the Tests!' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'How it Works' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
           </button>
         ))}
       </nav>
@@ -2552,81 +2552,45 @@ const HowItWorksPage = () => (
     <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
 
-      <h2 className="text-2xl font-bold text-gray-900">The Open in OpenOnco</h2>
+      <h2 className="text-2xl font-bold text-gray-900">OpenOnco is Open</h2>
       
       <p>
-        Our test data is visible to the world. Anyone can go to the Data Sources tab and download all of the data being used by the current build, and see the live google sheets being used as a discussion whiteboard to generate the next data set. We encourage expert and vendor participation, if you're interested please go to the Get Involved tab.
+        The OpenOnco database is assembled from a wide variety of public sources including vendor databases, peer reviewed publications, and clinical trial registries. Sources are cited to the best of our ability along with context and notes on possible contradictory data and its resolution. Information on the database update process can be found below in the Technical Information section.
       </p>
 
       <p>
-        The OpenOnco platform has four primary elements:
+        The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Sources</strong> tab.
       </p>
 
-      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">MRD/ECD/TRM Whiteboards (see the Data Sources tab)</h3>
-        </div>
-        <p className="mb-0 text-gray-700">
-          This is an interactive spreadsheet where experts and vendors can collaborate to reach consensus on the key parameters that underlie each test. These parameters range from technical (e.g. sensitivity) to financial (e.g. reimbursement) to experiential (e.g. turn-around-time). Data comes from numerous sources including but not limited to vendor documentation, clinical trials, or patient and physician experience. Sources are cited to the best of our ability and disagreement noted and explained where possible. New vendors and tests will be added as those tests enter the US (now) or other markets (when feasible).
-        </p>
-      </div>
+      <p>
+        We are eager to receive any information that might be useful for inclusion in the database, for example:
+      </p>
 
-      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">MRD/ECD/TRM Build Databases (see Data Sources tab)</h3>
-        </div>
-        <p className="mb-0 text-gray-700">
-          At regular intervals the consensus whiteboards are snapshotted and that frozen dataset becomes the source of data for the new version of the browsing and chat tools. You'll see the timestamp for the current release under the Data Sources tab.
-        </p>
-      </div>
+      <ul className="list-disc list-inside space-y-2 ml-4">
+        <li>Corrections to existing data from liquid biopsy experts and vendors</li>
+        <li>Data on new liquid biopsy tests, clinical trial results, and peer reviewed publications</li>
+        <li>First-hand experience from physicians and patients on items such as turn-around-time, reimbursement, and out of pocket expenses</li>
+      </ul>
 
-      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">MRD/ECD/TRM Navigators (see Home tab)</h3>
-        </div>
-        <p className="mb-0 text-gray-700">
-          An interactive browser inspired by Google Flights (🤷‍♂️) that enables users to filter tests based on test parameters, dig into the full parameter set of a test including citations and other notes, and select a subset of tests for side-by-side comparisons.
-        </p>
-      </div>
-
-      <div className="bg-[#EAF1F8] rounded-xl p-6 border-2 border-[#9FC4E0]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: '#2A63A4' }}>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 m-0">Natural Language Query (Home tab)</h3>
-        </div>
-        <p className="mb-0 text-gray-700">
-          This is a natural language chat interface built on the Anthropic's Claude LLM. It has all of the intelligence of that model, but uses in-context learning to ensure that all its test parameter information comes from the OpenOnco database. Queries can range from specific test parameters to recommendations of a test for a specific patient profile.
-        </p>
-      </div>
+      <p>
+        For contact information go to the <strong>About Us</strong> tab.
+      </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
       
-      <p className="mb-4">
-        OpenOnco was entirely vibe coded using Opus 4.5. There is an "as-needed" test data update cycle (typically every month though critical corrections can be made immediately):
+      <p>
+        OpenOnco is coded in Javascript React with the assistance of Opus 4.5 and the current version of the database is hard-coded in the app.
       </p>
+
+      <p>
+        We run an "as-needed" test data update cycle (typically monthly):
+      </p>
+
       <ol className="list-decimal list-inside space-y-3 ml-4">
-        <li>The 3 (MRD/ECD/TRM) whiteboards are snapshotted as CSV files and hard coded by Opus into a new version of the Javascript/React code base which then becomes the current release version.</li>
-        <li>A new version of each whiteboard is then drafted by feeding the current whiteboard to GPT5.1 PRO with direction to search all public sources to update all current data.</li>
-        <li>This new draft is then verified for sourcing by Opus 4.5 and once both LLMs agree, this version is released as the new whiteboard for human critique as a Google Sheet. Google manages authentication and a history of all spreadsheet changes.</li>
+        <li>Corrections are made and new data including new categories of data are added to the JSON database</li>
+        <li>The database is cross-checked for consistency by both Opus 4.5 and GPTPro 5.1</li>
+        <li>The app code is adjusted for changes in the database (e.g. add tool functionality for new classes/ranges of data)</li>
+        <li>The new version (dated as per the Data Sources tab) is released via Github and deployed by our hosting service (Vercel)</li>
       </ol>
 
     </div>
