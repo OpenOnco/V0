@@ -1588,6 +1588,7 @@ const Badge = ({ children, variant = 'default' }) => {
     red: 'bg-sky-100 text-sky-700 border-sky-300',
     blue: 'bg-blue-50 text-blue-700 border-blue-200',
     purple: 'bg-purple-50 text-purple-700 border-purple-200',
+    amber: 'bg-amber-50 text-amber-700 border-amber-200',
   };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`}>
@@ -1703,6 +1704,8 @@ Guidelines:
 - Use appropriate medical and scientific terminology
 - Focus on clinical utility, sensitivity/specificity, LOD, PPV/NPV, and evidence base
 - Discuss practical considerations: turnaround time, sample requirements, reimbursement, pricing
+- ECD tests have list prices included in the data above - use these when discussing pricing
+- MRD and TRM tests do not have public list prices in our database
 - Provide detailed technical information on assay methodologies when relevant
 - Compare technical approaches (tumor-informed vs tumor-naive, blood vs stool, etc.)
 - Reference performance data, validation studies, and regulatory status
@@ -2988,6 +2991,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {test.reimbursement?.toLowerCase().includes('medicare') && <Badge variant="success">Medicare</Badge>}
+              {category === 'ECD' && test.listPrice && <Badge variant="amber">${test.listPrice}</Badge>}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
@@ -3263,6 +3267,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [selectedFdaStatus, setSelectedFdaStatus] = useState([]);
   const [minParticipants, setMinParticipants] = useState(0);
   const [minPublications, setMinPublications] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(1000);
   const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
@@ -3359,6 +3364,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       if (selectedTumorTissue.length > 0 && !selectedTumorTissue.includes(test.requiresTumorTissue)) return false;
       if (minParticipants > 0 && (!test.totalParticipants || test.totalParticipants < minParticipants)) return false;
       if (minPublications > 0 && (!test.numPublications || test.numPublications < minPublications)) return false;
+      if (category === 'ECD' && maxPrice < 1000 && test.listPrice && test.listPrice > maxPrice) return false;
       if (selectedFdaStatus.length > 0) {
         const testFda = test.fdaStatus || '';
         const matchesFda = selectedFdaStatus.some(status => {
@@ -3372,12 +3378,12 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus, minParticipants, minPublications]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus, minParticipants, minPublications, maxPrice, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
@@ -3519,6 +3525,27 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       <span>0</span>
                       <span>10</span>
                       <span>20+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Max List Price: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="50"
+                      value={maxPrice}
+                      
+                      
+                      onChange={updateSlider(setMaxPrice)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>$0</span>
+                      <span>$500</span>
+                      <span>$1000+</span>
                     </div>
                   </div>
                 </>
