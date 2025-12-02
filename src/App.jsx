@@ -1572,69 +1572,78 @@ const TestNavigationPage = ({ onNavigate }) => {
       <div className="max-w-6xl mx-auto px-6 py-12">
         <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Browse and Compare Liquid Biopsy Tests</h2>
         <div className="grid grid-cols-3 gap-4 mb-6">
-          {/* MRD Button */}
-          <div
-            className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
-            onClick={() => onNavigate('MRD')}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                  </svg>
+          {/* MRD Column */}
+          <div className="flex flex-col">
+            <p className="text-sm text-gray-600 mb-3 px-2 text-center">After cancer treatment, detect tiny amounts of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
+            <div
+              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
+              onClick={() => onNavigate('MRD')}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
+                    <p className="text-xs text-gray-500">Minimal Residual Disease</p>
+                    <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
-                  <p className="text-xs text-gray-500">Minimal Residual Disease</p>
-                  <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
-                </div>
+                <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
-              <span className="text-sm font-medium text-[#2A63A4]">→</span>
             </div>
           </div>
           
-          {/* ECD Button */}
-          <div
-            className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
-            onClick={() => onNavigate('ECD')}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                  </svg>
+          {/* ECD Column */}
+          <div className="flex flex-col">
+            <p className="text-sm text-gray-600 mb-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at its earliest, most treatable stage.</p>
+            <div
+              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
+              onClick={() => onNavigate('ECD')}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
+                    <p className="text-xs text-gray-500">Early Cancer Detection</p>
+                    <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
-                  <p className="text-xs text-gray-500">Early Cancer Detection</p>
-                  <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
-                </div>
+                <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
-              <span className="text-sm font-medium text-[#2A63A4]">→</span>
             </div>
           </div>
           
-          {/* TRM Button */}
-          <div
-            className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
-            onClick={() => onNavigate('TRM')}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                  </svg>
+          {/* TRM Column */}
+          <div className="flex flex-col">
+            <p className="text-sm text-gray-600 mb-3 px-2 text-center">During active treatment, track how your cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
+            <div
+              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
+              onClick={() => onNavigate('TRM')}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
+                    <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
+                    <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
-                  <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
-                  <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
-                </div>
+                <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
-              <span className="text-sm font-medium text-[#2A63A4]">→</span>
             </div>
           </div>
         </div>
