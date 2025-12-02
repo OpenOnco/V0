@@ -1316,14 +1316,16 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
     "Which early detection tests have Medicare coverage?",
     "Most sensitive blood test for lung cancer screening?",
     "MRD tests that don't require tumor tissue?",
-    "Compare Signatera vs Guardant Reveal for breast cancer"
+    "Compare Signatera vs Guardant Reveal for breast cancer",
+    "I am a patient, keep answers basic",
+    "I am a physician, I like detailed answers"
   ];
 
   useEffect(() => { 
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const handleSuggestionClick = (question) => {
     setShowSuggestions(false);
@@ -1481,6 +1483,14 @@ const TestNavigationPage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef(null);
+
+  // Auto-scroll to bottom when messages or loading state changes
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
   
   const colorClasses = {
     orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-300 hover:shadow-md', btn: 'from-orange-500 to-orange-600' },
@@ -1498,7 +1508,9 @@ const TestNavigationPage = ({ onNavigate }) => {
   const exampleQuestions = [
     "MRD testing options for colorectal cancer?",
     "Which early detection tests have Medicare coverage?",
-    "Compare Signatera vs Guardant Reveal"
+    "Compare Signatera vs Guardant Reveal",
+    "I am a patient, keep answers basic",
+    "I am a physician, I like detailed answers"
   ];
 
   // Memoize system prompt - only computed once
@@ -1647,7 +1659,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           
           {/* Messages Area */}
           {messages.length > 0 && (
-            <div className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+            <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div 
@@ -2423,7 +2435,7 @@ const CategoryChat = ({ category }) => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
 
   // Memoize system prompt - only recomputed if category changes
   const systemPrompt = useMemo(() => {
