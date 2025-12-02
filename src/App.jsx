@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 
 // ============================================
 // Markdown Renderer Component
@@ -3678,6 +3679,7 @@ export default function App() {
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
       <main className="flex-1">{renderPage()}</main>
       <Footer />
+      <Analytics />
     </div>
   );
 }
