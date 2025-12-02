@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import * as XLSX from 'xlsx';
 
 // ============================================
 // Markdown Renderer Component
@@ -2638,48 +2637,44 @@ const HowItWorksPage = () => (
 // Source Data Page
 // ============================================
 const SourceDataPage = () => {
-  const downloadExcel = () => {
-    const wb = XLSX.utils.book_new();
-    const unknown = (val) => val ?? 'UNKNOWN';
-    
-    // MRD Sheet
-    const mrdHeaders = ['Test Name', 'Vendor', 'Approach', 'Method', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'PPV (%)', 'NPV (%)', 'Variants Tracked', 'Requires Tumor Tissue', 'Requires Matched Normal', 'Initial TAT (days)', 'Follow-up TAT (days)', 'Lead Time vs Imaging (days)', 'Blood Volume (mL)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'CPT Code', 'Trial Participants', 'Publications'];
-    const mrdRows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.sensitivity), unknown(t.specificity), unknown(t.lod), unknown(t.ppv), unknown(t.npv), unknown(t.variantsTracked), unknown(t.requiresTumorTissue), unknown(t.requiresMatchedNormal), unknown(t.initialTat), unknown(t.followUpTat), unknown(t.leadTimeVsImaging), unknown(t.bloodVolume), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.cptCodes), unknown(t.totalParticipants), t.numPublicationsPlus ? `${t.numPublications}+` : unknown(t.numPublications)
-    ]);
-    const mrdWs = XLSX.utils.aoa_to_sheet([mrdHeaders, ...mrdRows]);
-    mrdWs['!cols'] = mrdHeaders.map(() => ({ wch: 18 }));
-    XLSX.utils.book_append_sheet(wb, mrdWs, 'MRD');
-    
-    // ECD Sheet
-    const ecdHeaders = ['Test Name', 'Vendor', 'Test Scope', 'Approach', 'Method', 'Cancer Types', 'Target Population', 'Sensitivity (%)', 'Stage I Sens (%)', 'Stage II Sens (%)', 'Stage III Sens (%)', 'Stage IV Sens (%)', 'Specificity (%)', 'PPV (%)', 'NPV (%)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'TAT', 'Sample Type', 'List Price (USD)', 'Trial Participants', 'Publications'];
-    const ecdRows = ecdTestData.map(t => [
-      t.name, t.vendor, unknown(t.testScope), t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.targetPopulation), unknown(t.sensitivity), unknown(t.stageISensitivity), unknown(t.stageIISensitivity), unknown(t.stageIIISensitivity), unknown(t.stageIVSensitivity), unknown(t.specificity), unknown(t.ppv), unknown(t.npv), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.tat), unknown(t.sampleType), unknown(t.listPrice), unknown(t.totalParticipants), t.numPublicationsPlus ? `${t.numPublications}+` : unknown(t.numPublications)
-    ]);
-    const ecdWs = XLSX.utils.aoa_to_sheet([ecdHeaders, ...ecdRows]);
-    ecdWs['!cols'] = ecdHeaders.map(() => ({ wch: 18 }));
-    XLSX.utils.book_append_sheet(wb, ecdWs, 'ECD');
-    
-    // TRM Sheet
-    const trmHeaders = ['Test Name', 'Vendor', 'Approach', 'Method', 'Cancer Types', 'Target Population', 'Response Definition', 'Lead Time vs Imaging (days)', 'LOD (VAF %)', 'Variants Tracked', 'Sensitivity (%)', 'Specificity (%)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'Trial Participants', 'Publications'];
-    const trmRows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.targetPopulation), unknown(t.responseDefinition), unknown(t.leadTimeVsImaging), unknown(t.lod), unknown(t.variantsTracked), unknown(t.sensitivity), unknown(t.specificity), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.totalParticipants), t.numPublicationsPlus ? `${t.numPublications}+` : unknown(t.numPublications)
-    ]);
-    const trmWs = XLSX.utils.aoa_to_sheet([trmHeaders, ...trmRows]);
-    trmWs['!cols'] = trmHeaders.map(() => ({ wch: 18 }));
-    XLSX.utils.book_append_sheet(wb, trmWs, 'TRM');
-    
-    // Write and download
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const downloadFile = (content, filename, type) => {
+    const blob = new Blob([content], { type });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'OpenOnco_AllTests.xlsx';
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+
+  const generateCsv = (headers, rows) => {
+    return [headers, ...rows].map(row => row.map(cell => `"${String(cell ?? 'UNKNOWN').replace(/"/g, '""')}"`).join(',')).join('\n');
+  };
+
+  const downloadMrdCsv = () => {
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const rows = mrdTestData.map(t => [
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+    ]);
+    downloadFile(generateCsv(headers, rows), 'OpenOnco_MRD.csv', 'text/csv;charset=utf-8;');
+  };
+
+  const downloadEcdCsv = () => {
+    const headers = ['Test Name', 'Vendor', 'Test Scope', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'List Price', 'Trial Participants', 'Publications'];
+    const rows = ecdTestData.map(t => [
+      t.name, t.vendor, t.testScope, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.tat, t.fdaStatus, t.reimbursement, t.listPrice, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+    ]);
+    downloadFile(generateCsv(headers, rows), 'OpenOnco_ECD.csv', 'text/csv;charset=utf-8;');
+  };
+
+  const downloadTrmCsv = () => {
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const rows = trmTestData.map(t => [
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+    ]);
+    downloadFile(generateCsv(headers, rows), 'OpenOnco_TRM.csv', 'text/csv;charset=utf-8;');
   };
 
   const generateAllTestsJson = () => {
@@ -2716,16 +2711,7 @@ const SourceDataPage = () => {
   };
 
   const downloadJson = () => {
-    const jsonContent = generateAllTestsJson();
-    const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'OpenOnco_AllTests.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    downloadFile(generateAllTestsJson(), 'OpenOnco_AllTests.json', 'application/json;charset=utf-8;');
   };
 
   return (
@@ -2778,30 +2764,32 @@ const SourceDataPage = () => {
             </button>
           </div>
         </div>
-        
-        {/* Excel Download */}
-        <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50 p-5 mt-4">
+
+        {/* CSV Downloads */}
+        <div className="rounded-xl border-2 border-gray-200 bg-gray-50 p-5 mt-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
-                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length} tests • MRD + ECD + TRM on separate worksheets • Excel format</p>
+                <h3 className="font-bold text-gray-900">Individual Category Downloads</h3>
+                <p className="text-sm text-gray-500">Separate CSV files for each test category</p>
               </div>
             </div>
-            <button
-              onClick={downloadExcel}
-              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-700 border border-emerald-600 rounded-lg hover:bg-emerald-800 transition-colors text-sm font-medium text-white shadow-sm"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download Excel
-            </button>
+            <div className="flex gap-2">
+              <button onClick={downloadMrdCsv} className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">
+                MRD
+              </button>
+              <button onClick={downloadEcdCsv} className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors">
+                ECD
+              </button>
+              <button onClick={downloadTrmCsv} className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium rounded-lg transition-colors">
+                TRM
+              </button>
+            </div>
           </div>
         </div>
       </div>
