@@ -2375,6 +2375,11 @@ const HomePage = ({ onNavigate }) => {
           Build: {BUILD_INFO.date}
         </div>
 
+        {/* Intro Text */}
+        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8">
+          <p className="text-lg text-slate-700">Liquid biopsy tests are shaping cancer treatment by detecting cancers at the molecular level from a simple blood draw. Fortunately the tests are advancing rapidly - but that's leading to complex choices for doctors and patients. OpenOnco is an independent non-profit effort to consolidate and standardized test information and provide navigation tools to help match the right test to the right patient.</p>
+        </div>
+
         {/* Test Showcase */}
         <div className="mb-8">
           <TestShowcase onNavigate={onNavigate} />
@@ -2394,12 +2399,6 @@ const HomePage = ({ onNavigate }) => {
         {/* Stat of the Day */}
         <div className="mb-8">
           <StatOfTheDay onNavigate={onNavigate} />
-        </div>
-
-        {/* Intro Text */}
-        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8">
-          <p className="text-lg text-slate-700 mb-4">Liquid biopsy (LBx) tests enable detection and monitoring of cancers at the molecular level from a simple blood draw, opening up entirely new possibilities for cancer treatment. But LBx test complexity can be perplexing to both patients and their physicians - and the options are only increasing in number and technical diversity.</p>
-          <p className="text-lg text-slate-700">OpenOnco is a non-profit independent website dedicated to helping organize and navigate the new world of LBx.</p>
         </div>
 
         {/* News Feed */}
