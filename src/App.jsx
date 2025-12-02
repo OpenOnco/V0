@@ -1331,28 +1331,16 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
     submitQuestion(question);
   };
 
-  const getSystemPrompt = () => {
-    const testDatabase = {
-      MRD: mrdTestData,
-      ECD: ecdTestData,
-      TRM: trmTestData
-    };
-    
-    return `You are an expert oncology diagnostics advisor for OpenOnco. You have access to a structured database of liquid biopsy tests.
+  // Memoize system prompt - only computed once
+  const systemPrompt = useMemo(() => {
+    const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
+    return `You are an expert oncology diagnostics advisor for OpenOnco with access to a liquid biopsy test database.
 
-TEST DATABASE (JSON format):
-${JSON.stringify(testDatabase, null, 2)}
+TEST DATABASE:
+${JSON.stringify(testDatabase)}
 
-RESPONSE STYLE:
-- Be conversational and concise, like a knowledgeable colleague
-- Lead with the key insight or recommendation
-- Include only the most relevant 2-3 data points to support your answer
-- Avoid long bullet-pointed lists of specs - weave key facts into sentences
-- Use prose paragraphs, not exhaustive feature comparisons
-- If asked to compare tests, highlight the 1-2 most meaningful differences
-- Report field values accurately from the JSON data
-- If a field is null or missing, say "not specified in our database"`;
-  };
+RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+  }, []);
 
   const submitQuestion = async (question) => {
     setShowSuggestions(false);
@@ -1362,21 +1350,13 @@ RESPONSE STYLE:
     setIsLoading(true);
 
     try {
-      // Build conversation history for API
-      const apiMessages = [
-        { role: 'user', content: getSystemPrompt() },
-        { role: 'assistant', content: 'I understand. I have access to the OpenOnco test database and will answer questions conversationally.' },
-        ...updatedMessages
-      ];
-
       const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           max_tokens: 1500,
-          messages: apiMessages
+          system: systemPrompt,
+          messages: updatedMessages
         })
       });
       
@@ -1521,28 +1501,16 @@ const TestNavigationPage = ({ onNavigate }) => {
     "Compare Signatera vs Guardant Reveal"
   ];
 
-  const getSystemPrompt = () => {
-    const testDatabase = {
-      MRD: mrdTestData,
-      ECD: ecdTestData,
-      TRM: trmTestData
-    };
-    
-    return `You are an expert oncology diagnostics advisor for OpenOnco. You have access to a structured database of liquid biopsy tests.
+  // Memoize system prompt - only computed once
+  const systemPrompt = useMemo(() => {
+    const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
+    return `You are an expert oncology diagnostics advisor for OpenOnco with access to a liquid biopsy test database.
 
-TEST DATABASE (JSON format):
-${JSON.stringify(testDatabase, null, 2)}
+TEST DATABASE:
+${JSON.stringify(testDatabase)}
 
-RESPONSE STYLE:
-- Be conversational and concise, like a knowledgeable colleague
-- Lead with the key insight or recommendation
-- Include only the most relevant 2-3 data points to support your answer
-- Avoid long bullet-pointed lists of specs - weave key facts into sentences
-- Use prose paragraphs, not exhaustive feature comparisons
-- If asked to compare tests, highlight the 1-2 most meaningful differences
-- Report field values accurately from the JSON data
-- If a field is null or missing, say "not specified in our database"`;
-  };
+RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+  }, []);
 
   const handleSubmit = async (question) => {
     const q = question || chatInput;
@@ -1555,19 +1523,13 @@ RESPONSE STYLE:
     setIsLoading(true);
 
     try {
-      // Build conversation history for API
-      const apiMessages = [
-        { role: 'user', content: getSystemPrompt() },
-        { role: 'assistant', content: 'I understand. I have access to the OpenOnco test database and will answer questions conversationally.' },
-        ...updatedMessages
-      ];
-
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           max_tokens: 1500,
-          messages: apiMessages
+          system: systemPrompt,
+          messages: updatedMessages
         })
       });
       
@@ -2463,22 +2425,15 @@ const CategoryChat = ({ category }) => {
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  const getSystemPrompt = () => {
+  // Memoize system prompt - only recomputed if category changes
+  const systemPrompt = useMemo(() => {
     return `You are an expert oncology diagnostics advisor specializing in ${meta.title} testing.
 
-${category} TEST DATABASE (JSON format):
-${JSON.stringify(meta.tests, null, 2)}
+${category} TEST DATABASE:
+${JSON.stringify(meta.tests)}
 
-RESPONSE STYLE:
-- Be conversational and concise, like a knowledgeable colleague
-- Lead with the key insight or recommendation
-- Include only the most relevant 2-3 data points to support your answer
-- Avoid long bullet-pointed lists of specs - weave key facts into sentences
-- Use prose paragraphs, not exhaustive feature comparisons
-- If asked to compare tests, highlight the 1-2 most meaningful differences
-- Report field values accurately from the JSON data
-- If a field is null or missing, say "not specified in our database"`;
-  };
+RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+  }, [category, meta]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -2497,20 +2452,16 @@ RESPONSE STYLE:
     setIsLoading(true);
 
     try {
-      // Build conversation history for API (skip the initial greeting)
-      const conversationHistory = updatedMessages.slice(1); // Skip initial assistant greeting
-      const apiMessages = [
-        { role: 'user', content: getSystemPrompt() },
-        { role: 'assistant', content: `I understand. I'm ready to help with ${meta.title} tests.` },
-        ...conversationHistory
-      ];
+      // Skip the initial greeting for API calls
+      const conversationHistory = updatedMessages.slice(1);
 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           max_tokens: 1024,
-          messages: apiMessages
+          system: systemPrompt,
+          messages: conversationHistory
         })
       });
       const data = await response.json();
