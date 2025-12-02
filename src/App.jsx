@@ -1617,7 +1617,7 @@ const Header = ({ currentPage, onNavigate }) => {
   const navItems = ['home', 'test-tools', 'how-it-works', 'data-sources', 'submissions', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
-    'test-tools': 'All the Tests!',
+    'test-tools': 'Discover the Tests!',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
     'submissions': 'Submissions',
@@ -1639,7 +1639,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'test-tools' ? 'All the Tests!' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About Us'}
+            {page === 'home' ? 'Home' : page === 'test-tools' ? 'Discover the Tests!' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About Us'}
           </button>
         ))}
       </nav>
@@ -2377,7 +2377,7 @@ const HomePage = ({ onNavigate }) => {
         </div>
 
         {/* Intro Text */}
-        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8 max-w-3xl mx-auto">
+        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8">
           <p className="text-xl text-slate-700 text-justify">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly resulting in complex choices for doctors and patients. OpenOnco is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
