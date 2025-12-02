@@ -1574,7 +1574,6 @@ const TestNavigationPage = ({ onNavigate }) => {
         <div className="grid grid-cols-3 gap-4 mb-6">
           {/* MRD Column */}
           <div className="flex flex-col">
-            <p className="text-sm text-gray-600 mb-3 px-2 text-center">After cancer treatment, detect tiny amounts of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
             <div
               className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
               onClick={() => onNavigate('MRD')}
@@ -1595,11 +1594,11 @@ const TestNavigationPage = ({ onNavigate }) => {
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
             </div>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect tiny amounts of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
           </div>
           
           {/* ECD Column */}
           <div className="flex flex-col">
-            <p className="text-sm text-gray-600 mb-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at its earliest, most treatable stage.</p>
             <div
               className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
               onClick={() => onNavigate('ECD')}
@@ -1620,11 +1619,11 @@ const TestNavigationPage = ({ onNavigate }) => {
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
             </div>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at its earliest, most treatable stage.</p>
           </div>
           
           {/* TRM Column */}
           <div className="flex flex-col">
-            <p className="text-sm text-gray-600 mb-3 px-2 text-center">During active treatment, track how your cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
             <div
               className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
               onClick={() => onNavigate('TRM')}
@@ -1645,6 +1644,7 @@ const TestNavigationPage = ({ onNavigate }) => {
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
             </div>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how your cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
           </div>
         </div>
         
@@ -1661,7 +1661,7 @@ const TestNavigationPage = ({ onNavigate }) => {
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <h3 className="text-white font-semibold">Ask about anything in our database of MRD, ECD, and TRM tests</h3>
+              <h3 className="text-white font-semibold">Ask Claude anything about the data we have on these tests</h3>
             </div>
           </div>
           
