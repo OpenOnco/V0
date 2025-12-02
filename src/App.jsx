@@ -2581,7 +2581,7 @@ const SubmissionsPage = () => (
       </ul>
 
       <p>
-        For contact information go to the <strong>About Us</strong> tab.
+        Please contact me directly with submissions via <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">LinkedIn</a> (please include #openonco in your message).
       </p>
     </div>
   </div>
