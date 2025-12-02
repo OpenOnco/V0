@@ -1934,8 +1934,8 @@ const TestNavigationPage = ({ onNavigate }) => {
   return (
     <div>
       {/* Main Content */}
-      <div className="max-w-6xl w-full mx-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6 text-center">Browse and Compare Liquid Biopsy Tests</h2>
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Browse and Compare Liquid Biopsy Tests</h2>
         <div className="grid grid-cols-3 gap-4 mb-6">
           {/* MRD Button */}
           <div
@@ -2057,7 +2057,7 @@ const TestNavigationPage = ({ onNavigate }) => {
                   <button
                     key={i}
                     onClick={() => handleSubmit(q)}
-                    className="text-sm bg-white border border-slate-200 rounded-full px-4 py-2 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
                     {q}
                   </button>
@@ -2369,7 +2369,7 @@ const StatOfTheDay = ({ onNavigate }) => {
 const HomePage = ({ onNavigate }) => {
   return (
     <div>
-      <div className="max-w-6xl w-full mx-4">
+      <div className="max-w-6xl mx-auto px-6 py-12 relative">
         {/* Build timestamp */}
         <div className="absolute top-2 right-6 text-xs text-gray-400">
           Build: {BUILD_INFO.date}
@@ -2451,23 +2451,23 @@ const DatabaseSummary = () => {
       <h2 className="text-lg font-semibold mb-4 text-slate-700">Database Summary</h2>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-2xl sm:text-3xl font-bold text-slate-800">{totalTests}</p>
+          <p className="text-3xl font-bold text-slate-800">{totalTests}</p>
           <p className="text-sm text-slate-600">Total Tests</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-2xl sm:text-3xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
           <p className="text-sm text-slate-600">Data Points</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-2xl sm:text-3xl font-bold text-slate-800">{allVendors.size}</p>
+          <p className="text-3xl font-bold text-slate-800">{allVendors.size}</p>
           <p className="text-sm text-slate-600">Vendors</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-2xl sm:text-3xl font-bold text-slate-800">{fdaApprovedCount}</p>
+          <p className="text-3xl font-bold text-slate-800">{fdaApprovedCount}</p>
           <p className="text-sm text-slate-600">FDA Approved</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-2xl sm:text-3xl font-bold text-slate-800">{medicareIndicationsCount}</p>
+          <p className="text-3xl font-bold text-slate-800">{medicareIndicationsCount}</p>
           <p className="text-sm text-slate-600">Medicare Covered</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
@@ -2511,7 +2511,7 @@ const DatabaseSummary = () => {
 // ============================================
 const PlaceholderPage = ({ title, description }) => (
   <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">{title}</h1>
+    <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
     <p className="text-gray-600">{description}</p>
   </div>
 );
@@ -2521,7 +2521,7 @@ const PlaceholderPage = ({ title, description }) => (
 // ============================================
 const AboutPage = () => (
   <div className="max-w-3xl mx-auto px-6 py-16">
-    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">About Us</h1>
+    <h1 className="text-3xl font-bold text-gray-900 mb-8">About Us</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
       <p>
         Hi, my name is Alex Dickinson. Like you, my friends and family have been impacted by cancer throughout my life.
@@ -2547,10 +2547,10 @@ const AboutPage = () => (
 // ============================================
 const HowItWorksPage = () => (
   <div className="max-w-3xl mx-auto px-6 py-16">
-    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
+    <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
 
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900">OpenOnco is Open</h2>
+      <h2 className="text-2xl font-bold text-gray-900">OpenOnco is Open</h2>
       
       <p>
         The OpenOnco database is assembled from a wide variety of public sources including vendor databases, peer reviewed publications, and clinical trial registries. Sources are cited to the best of our ability along with context and notes on possible contradictory data and its resolution. Information on the database update process can be found below in the Technical Information section.
@@ -2560,7 +2560,7 @@ const HowItWorksPage = () => (
         The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab.
       </p>
 
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
       
       <p>
         OpenOnco is coded in Javascript React with the assistance of Opus 4.5 and the current version of the database is hard-coded in the app.
@@ -2586,7 +2586,7 @@ const HowItWorksPage = () => (
 // ============================================
 const SubmissionsPage = () => (
   <div className="max-w-3xl mx-auto px-6 py-16">
-    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Submissions</h1>
+    <h1 className="text-3xl font-bold text-gray-900 mb-8">Submissions</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
       <p>
         We are eager to receive any information that might be useful for inclusion in the database, for example:
@@ -2690,7 +2690,7 @@ const SourceDataPage = () => {
     <div className="max-w-4xl mx-auto px-6 py-12">
       {/* Header with Build Date */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
         <p className="text-gray-600 mb-4">
           OpenOnco is committed to transparency. All data is open and downloadable.
         </p>
@@ -3269,7 +3269,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const filterScrollRef = useRef(null);
   const scrollLockRef = useRef(null);
   
@@ -3384,131 +3383,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
   const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
 
-  // Render filter content (reused in both desktop sidebar and mobile modal)
-  const renderFilterContent = () => (
-    <>
-      {category === 'MRD' && (
-        <>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
-            <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Tumor Tissue Required?</label>
-            {config.tumorTissueOptions.map(o => <Checkbox key={o} label={o} checked={selectedTumorTissue.includes(o)} onChange={() => toggle(setSelectedTumorTissue)(o)} />)}
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-            {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
-            </label>
-            <input type="range" min="0" max="1000" step="100" value={minParticipants} onChange={updateSlider(setMinParticipants)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>0</span>
-              <span>500</span>
-              <span>1,000+</span>
-            </div>
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
-            </label>
-            <input type="range" min="0" max="100" step="5" value={minPublications} onChange={updateSlider(setMinPublications)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>0</span>
-              <span>50</span>
-              <span>100+</span>
-            </div>
-          </div>
-        </>
-      )}
-
-      {category === 'ECD' && (
-        <>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Test Scope</label>
-            {config.testScopes.map(s => <Checkbox key={s} label={s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-            {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()}
-            </label>
-            <input type="range" min="0" max="100000" step="10000" value={minParticipants} onChange={updateSlider(setMinParticipants)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>0</span>
-              <span>50k</span>
-              <span>100k+</span>
-            </div>
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 20 ? '20+' : minPublications}
-            </label>
-            <input type="range" min="0" max="20" step="2" value={minPublications} onChange={updateSlider(setMinPublications)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>0</span>
-              <span>10</span>
-              <span>20+</span>
-            </div>
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Max List Price: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
-            </label>
-            <input type="range" min="0" max="1000" step="50" value={maxPrice} onChange={updateSlider(setMaxPrice)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>$0</span>
-              <span>$500</span>
-              <span>$1000+</span>
-            </div>
-          </div>
-        </>
-      )}
-
-      {category === 'TRM' && (
-        <>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
-            <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-            {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
-            </label>
-            <input type="range" min="0" max="1000" step="100" value={minParticipants} onChange={updateSlider(setMinParticipants)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>0</span>
-              <span>500</span>
-              <span>1,000+</span>
-            </div>
-          </div>
-          <div className="mb-5">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-              Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
-            </label>
-            <input type="range" min="0" max="100" step="10" value={minPublications} onChange={updateSlider(setMinPublications)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>0</span>
-              <span>50</span>
-              <span>100+</span>
-            </div>
-          </div>
-        </>
-      )}
-    </>
-  );
-
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
   return (
@@ -3519,53 +3393,14 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       <div className="max-w-7xl mx-auto px-6 py-8" style={{ overflowAnchor: 'none' }}>
       <div className="mb-8">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${colorClasses[meta.color]} text-white text-sm font-medium mb-3`}>{meta.shortTitle}</div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{meta.title}</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{meta.title}</h1>
         <p className="text-gray-600">{meta.description}</p>
       </div>
 
       <section>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Browse Tests</h2>
-          <button 
-            onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="lg:hidden flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-            Filters
-          </button>
-        </div>
-        
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Mobile Filter Modal Overlay */}
-          {showMobileFilters && (
-            <div className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setShowMobileFilters(false)}>
-              <div className="absolute inset-y-0 left-0 w-full sm:w-96 bg-white shadow-xl overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                <div className="p-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
-                  <h3 className="font-semibold text-gray-900">Filters</h3>
-                  <button onClick={() => setShowMobileFilters(false)} className="p-2 hover:bg-gray-100 rounded-lg">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-                <div className="p-4">
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Search</label>
-                    <input type="text" placeholder="Test or vendor..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-                  </div>
-                  {hasFilters && (
-                    <button onClick={() => { clearFilters(); setShowMobileFilters(false); }} className="w-full mb-4 px-4 py-2 text-sm text-emerald-600 hover:text-emerald-700 border border-emerald-600 rounded-lg hover:bg-emerald-50">Clear all filters</button>
-                  )}
-                  {renderFilterContent()}
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Desktop Filters Sidebar */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Browse Tests</h2>
+        <div className="flex gap-6">
+          <aside className="w-64 flex-shrink-0">
             <div className="bg-white rounded-xl border border-gray-200 sticky top-24 max-h-[calc(100vh-120px)] flex flex-col overflow-hidden">
               <div className="p-5 pb-0 flex-shrink-0">
                 <div className="flex justify-between items-center mb-4">
@@ -3578,7 +3413,196 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 </div>
               </div>
               <div ref={filterScrollRef} className="flex-1 overflow-y-auto px-5 pb-5 overscroll-contain">
-                {renderFilterContent()}
+
+              {category === 'MRD' && (
+                <>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
+                    <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Tumor Tissue Required?</label>
+                    {config.tumorTissueOptions.map(o => <Checkbox key={o} label={o} checked={selectedTumorTissue.includes(o)} onChange={() => toggle(setSelectedTumorTissue)(o)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="100"
+                      value={minParticipants}
+                      
+                      
+                      onChange={updateSlider(setMinParticipants)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>500</span>
+                      <span>1,000+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="5"
+                      value={minPublications}
+                      
+                      
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>50</span>
+                      <span>100+</span>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {category === 'ECD' && (
+                <>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Test Scope</label>
+                    {config.testScopes.map(s => <Checkbox key={s} label={s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100000"
+                      step="10000"
+                      value={minParticipants}
+                      
+                      
+                      onChange={updateSlider(setMinParticipants)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>50k</span>
+                      <span>100k+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 20 ? '20+' : minPublications}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="20"
+                      step="2"
+                      value={minPublications}
+                      
+                      
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>10</span>
+                      <span>20+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Max List Price: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="50"
+                      value={maxPrice}
+                      
+                      
+                      onChange={updateSlider(setMaxPrice)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>$0</span>
+                      <span>$500</span>
+                      <span>$1000+</span>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {category === 'TRM' && (
+                <>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
+                    <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="100"
+                      value={minParticipants}
+                      
+                      
+                      onChange={updateSlider(setMinParticipants)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>500</span>
+                      <span>1,000+</span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="10"
+                      value={minPublications}
+                      
+                      
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>50</span>
+                      <span>100+</span>
+                    </div>
+                  </div>
+                </>
+              )}
               </div>
               {canScrollMore && (
                 <div className="h-8 bg-gradient-to-t from-white via-white to-transparent flex-shrink-0 -mt-8 relative z-10 pointer-events-none flex items-end justify-center pb-1">
@@ -3604,7 +3628,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 </button>
               )}
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} />)}
             </div>
             {filteredTests.length === 0 && <div className="text-center py-12 text-gray-500"><p>No tests match your filters.</p><button onClick={clearFilters} className="text-emerald-600 text-sm mt-2">Clear filters</button></div>}
