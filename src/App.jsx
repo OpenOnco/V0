@@ -1255,7 +1255,7 @@ const Header = ({ currentPage, onNavigate }) => {
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
     'submissions': 'Submissions',
-    'about': 'About Us'
+    'about': 'About'
   }[page] || page);
   
   return (
@@ -1273,7 +1273,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'test-tools' ? 'Discover the Tests!' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About Us'}
+            {page === 'home' ? 'Home' : page === 'test-tools' ? 'Discover the Tests!' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About'}
           </button>
         ))}
       </nav>
@@ -2012,7 +2012,7 @@ const HomePage = ({ onNavigate }) => {
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8 mx-6">
-          <p className="text-xl text-slate-700 text-justify">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly resulting in complex choices for doctors and patients. OpenOnco is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
+          <p className="text-xl text-slate-700">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly resulting in complex choices for doctors and patients. OpenOnco is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
         {/* Test Showcase */}
@@ -2145,7 +2145,7 @@ const PlaceholderPage = ({ title, description }) => (
 // ============================================
 const AboutPage = () => (
   <div className="max-w-3xl mx-auto px-6 py-16">
-    <h1 className="text-3xl font-bold text-gray-900 mb-8">About Us</h1>
+    <h1 className="text-3xl font-bold text-gray-900 mb-8">About</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
       <p>
         Hi, my name is Alex Dickinson. Like you, my friends and family have been impacted by cancer throughout my life.
