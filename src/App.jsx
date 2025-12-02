@@ -1599,7 +1599,7 @@ RESPONSE STYLE:
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect tiny amounts of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect faint traces of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
           </div>
           
           {/* ECD Column */}
@@ -1624,7 +1624,7 @@ RESPONSE STYLE:
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at its earliest, most treatable stage.</p>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
           </div>
           
           {/* TRM Column */}
@@ -1649,7 +1649,7 @@ RESPONSE STYLE:
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how your cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
           </div>
         </div>
         
@@ -1797,7 +1797,7 @@ const TestShowcase = ({ onNavigate }) => {
     return params.length > 0 ? params : [{ label: 'Category', value: test.category }];
   };
 
-  // Rotate parameters every 2 seconds
+  // Rotate parameters every 1 second
   useEffect(() => {
     const interval = setInterval(() => {
       setParamIndices(prev => {
@@ -1809,7 +1809,7 @@ const TestShowcase = ({ onNavigate }) => {
         });
         return next;
       });
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
