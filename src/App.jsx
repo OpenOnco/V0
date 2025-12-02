@@ -1620,7 +1620,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'test-tools' ? 'All the Tests!' : page === 'data-sources' ? 'Data Sources' : page === 'how-it-works' ? 'How it Works' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
+            {page === 'home' ? 'Home' : page === 'test-tools' ? 'All the Tests!' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'get-involved' ? 'Get Involved' : 'About Us'}
           </button>
         ))}
       </nav>
@@ -2567,7 +2567,7 @@ const HowItWorksPage = () => (
       </p>
 
       <p>
-        The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Sources</strong> tab.
+        The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab.
       </p>
 
       <p>
@@ -2598,7 +2598,7 @@ const HowItWorksPage = () => (
         <li>Corrections are made and new data including new categories of data are added to the JSON database</li>
         <li>The database is cross-checked for consistency by both Opus 4.5 and GPTPro 5.1</li>
         <li>The app code is adjusted for changes in the database (e.g. add tool functionality for new classes/ranges of data)</li>
-        <li>The new version (dated as per the Data Sources tab) is released via Github and deployed by our hosting service (Vercel)</li>
+        <li>The new version (dated as per the Data Download tab) is released via Github and deployed by our hosting service (Vercel)</li>
       </ol>
 
     </div>
@@ -2690,7 +2690,7 @@ const SourceDataPage = () => {
     <div className="max-w-4xl mx-auto px-6 py-12">
       {/* Header with Build Date */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Sources</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
         <p className="text-gray-600 mb-4">
           OpenOnco is committed to transparency. All data is open and downloadable.
         </p>
