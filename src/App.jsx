@@ -1356,10 +1356,19 @@ RESPONSE STYLE:
 
   const submitQuestion = async (question) => {
     setShowSuggestions(false);
-    setMessages(prev => [...prev, { role: 'user', content: question }]);
+    const newUserMessage = { role: 'user', content: question };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
+      // Build conversation history for API
+      const apiMessages = [
+        { role: 'user', content: getSystemPrompt() },
+        { role: 'assistant', content: 'I understand. I have access to the OpenOnco test database and will answer questions conversationally.' },
+        ...updatedMessages
+      ];
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -1367,12 +1376,7 @@ RESPONSE STYLE:
         },
         body: JSON.stringify({
           max_tokens: 1500,
-          messages: [
-            { 
-              role: "user", 
-              content: getSystemPrompt() + "\n\n---\n\nUser question: " + question
-            }
-          ]
+          messages: apiMessages
         })
       });
       
@@ -1545,16 +1549,25 @@ RESPONSE STYLE:
     if (!q.trim()) return;
     
     setChatInput('');
-    setMessages(prev => [...prev, { role: 'user', content: q }]);
+    const newUserMessage = { role: 'user', content: q };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
+      // Build conversation history for API
+      const apiMessages = [
+        { role: 'user', content: getSystemPrompt() },
+        { role: 'assistant', content: 'I understand. I have access to the OpenOnco test database and will answer questions conversationally.' },
+        ...updatedMessages
+      ];
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           max_tokens: 1500,
-          messages: [{ role: "user", content: getSystemPrompt() + "\n\n---\n\nUser question: " + q }]
+          messages: apiMessages
         })
       });
       
@@ -2478,21 +2491,26 @@ RESPONSE STYLE:
     if (!input.trim() || isLoading) return;
     const userMessage = input.trim();
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    const newUserMessage = { role: 'user', content: userMessage };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
+      // Build conversation history for API (skip the initial greeting)
+      const conversationHistory = updatedMessages.slice(1); // Skip initial assistant greeting
+      const apiMessages = [
+        { role: 'user', content: getSystemPrompt() },
+        { role: 'assistant', content: `I understand. I'm ready to help with ${meta.title} tests.` },
+        ...conversationHistory
+      ];
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           max_tokens: 1024,
-          messages: [
-            { 
-              role: 'user', 
-              content: getSystemPrompt() + '\n\n---\n\nUser question: ' + userMessage
-            }
-          ]
+          messages: apiMessages
         })
       });
       const data = await response.json();
