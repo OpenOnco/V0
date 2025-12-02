@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 
 // ============================================
 // Markdown Renderer Component
@@ -518,7 +519,6 @@ const BUILD_INFO = {
 // ============================================
 // DATA: MRD Tests (from OpenOncoCurrentRelease sheet)
 // ============================================
-const MRD_DATA_TIMESTAMP = '2025-11-29';
 
 const mrdTestData = [
   {
@@ -949,8 +949,6 @@ const mrdTestData = [
 ];
 
 
-const ECD_DATA_TIMESTAMP = '2025-11-30';
-
 const ecdTestData = [
   {
     "id": "ecd-1",
@@ -1333,8 +1331,6 @@ const ecdTestData = [
   }
 ];
 
-
-const TRM_DATA_TIMESTAMP = '2025-11-30';
 
 const trmTestData = [
   {
@@ -2642,96 +2638,94 @@ const HowItWorksPage = () => (
 // Source Data Page
 // ============================================
 const SourceDataPage = () => {
-  // CSV generation functions
-  const generateMRDCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Method', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'PPV (%)', 'NPV (%)', 'Variants Tracked', 'Requires Tumor Tissue', 'Requires Matched Normal', 'Initial TAT (days)', 'Follow-up TAT (days)', 'Lead Time vs Imaging (days)', 'Blood Volume (mL)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'CPT Code'];
-    const unknown = (val) => val || 'UNKNOWN';
-    const rows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.sensitivity), unknown(t.specificity), unknown(t.lod), unknown(t.ppv), unknown(t.npv), unknown(t.variantsTracked), unknown(t.requiresTumorTissue), unknown(t.requiresMatchedNormal), unknown(t.initialTat), unknown(t.followUpTat), unknown(t.leadTimeVsImaging), unknown(t.bloodVolume), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.cptCodes)
+  const downloadExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const unknown = (val) => val ?? 'UNKNOWN';
+    
+    // MRD Sheet
+    const mrdHeaders = ['Test Name', 'Vendor', 'Approach', 'Method', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'PPV (%)', 'NPV (%)', 'Variants Tracked', 'Requires Tumor Tissue', 'Requires Matched Normal', 'Initial TAT (days)', 'Follow-up TAT (days)', 'Lead Time vs Imaging (days)', 'Blood Volume (mL)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'CPT Code', 'Trial Participants', 'Publications'];
+    const mrdRows = mrdTestData.map(t => [
+      t.name, t.vendor, t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.sensitivity), unknown(t.specificity), unknown(t.lod), unknown(t.ppv), unknown(t.npv), unknown(t.variantsTracked), unknown(t.requiresTumorTissue), unknown(t.requiresMatchedNormal), unknown(t.initialTat), unknown(t.followUpTat), unknown(t.leadTimeVsImaging), unknown(t.bloodVolume), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.cptCodes), unknown(t.totalParticipants), t.numPublicationsPlus ? `${t.numPublications}+` : unknown(t.numPublications)
     ]);
-    // Add timestamp row at end
-    const timestampRow = [`Data Version: ${MRD_DATA_TIMESTAMP}`, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
-    return [headers, ...rows, timestampRow].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
-  };
-
-  const generateECDCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Test Scope', 'Approach', 'Method', 'Cancer Types', 'Target Population', 'Sensitivity (%)', 'Stage I Sens (%)', 'Stage II Sens (%)', 'Stage III Sens (%)', 'Stage IV Sens (%)', 'Specificity (%)', 'PPV (%)', 'NPV (%)', 'Lead Time Notes', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'Clinical Availability', 'TAT', 'Sample Type', 'Sample Volume', 'Sample Stability', 'CPT Code', 'List Price (USD)', 'Screening Interval', 'Performance Citations', 'Performance Notes', 'Indication Group', 'PPV Definition', 'NPV Definition'];
-    const unknown = (val) => val || 'UNKNOWN';
-    const rows = ecdTestData.map(t => [
-      t.name, t.vendor, unknown(t.testScope), t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.targetPopulation), unknown(t.sensitivity), unknown(t.stageISensitivity), unknown(t.stageIISensitivity), unknown(t.stageIIISensitivity), unknown(t.stageIVSensitivity), unknown(t.specificity), unknown(t.ppv), unknown(t.npv), unknown(t.leadTimeNotes), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.clinicalAvailability), unknown(t.tat), unknown(t.sampleType), unknown(t.sampleVolume), unknown(t.sampleStability), unknown(t.cptCode), unknown(t.listPrice), unknown(t.screeningInterval), unknown(t.performanceCitations), unknown(t.performanceNotes), unknown(t.indicationGroup), unknown(t.ppvDefinition), unknown(t.npvDefinition)
+    const mrdWs = XLSX.utils.aoa_to_sheet([mrdHeaders, ...mrdRows]);
+    mrdWs['!cols'] = mrdHeaders.map(() => ({ wch: 18 }));
+    XLSX.utils.book_append_sheet(wb, mrdWs, 'MRD');
+    
+    // ECD Sheet
+    const ecdHeaders = ['Test Name', 'Vendor', 'Test Scope', 'Approach', 'Method', 'Cancer Types', 'Target Population', 'Sensitivity (%)', 'Stage I Sens (%)', 'Stage II Sens (%)', 'Stage III Sens (%)', 'Stage IV Sens (%)', 'Specificity (%)', 'PPV (%)', 'NPV (%)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'TAT', 'Sample Type', 'List Price (USD)', 'Trial Participants', 'Publications'];
+    const ecdRows = ecdTestData.map(t => [
+      t.name, t.vendor, unknown(t.testScope), t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.targetPopulation), unknown(t.sensitivity), unknown(t.stageISensitivity), unknown(t.stageIISensitivity), unknown(t.stageIIISensitivity), unknown(t.stageIVSensitivity), unknown(t.specificity), unknown(t.ppv), unknown(t.npv), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.tat), unknown(t.sampleType), unknown(t.listPrice), unknown(t.totalParticipants), t.numPublicationsPlus ? `${t.numPublications}+` : unknown(t.numPublications)
     ]);
-    // Add timestamp row at end
-    const timestampRow = [`Data Version: ${ECD_DATA_TIMESTAMP}`, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
-    return [headers, ...rows, timestampRow].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
-  };
-
-  const generateTRMCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Method', 'Cancer Types', 'Target Population', 'Response Definition', 'Lead Time vs Imaging (days)', 'LOD (VAF %)', 'Variants Tracked', 'Sensitivity (%)', 'Specificity (%)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes'];
-    const unknown = (val) => val || 'UNKNOWN';
-    const rows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.targetPopulation), unknown(t.responseDefinition), unknown(t.leadTimeVsImaging), unknown(t.lod), unknown(t.variantsTracked), unknown(t.sensitivity), unknown(t.specificity), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote)
+    const ecdWs = XLSX.utils.aoa_to_sheet([ecdHeaders, ...ecdRows]);
+    ecdWs['!cols'] = ecdHeaders.map(() => ({ wch: 18 }));
+    XLSX.utils.book_append_sheet(wb, ecdWs, 'ECD');
+    
+    // TRM Sheet
+    const trmHeaders = ['Test Name', 'Vendor', 'Approach', 'Method', 'Cancer Types', 'Target Population', 'Response Definition', 'Lead Time vs Imaging (days)', 'LOD (VAF %)', 'Variants Tracked', 'Sensitivity (%)', 'Specificity (%)', 'FDA Status', 'Reimbursement', 'Reimbursement Notes', 'Trial Participants', 'Publications'];
+    const trmRows = trmTestData.map(t => [
+      t.name, t.vendor, t.approach, t.method, t.cancerTypes?.join('; ') || 'UNKNOWN', unknown(t.targetPopulation), unknown(t.responseDefinition), unknown(t.leadTimeVsImaging), unknown(t.lod), unknown(t.variantsTracked), unknown(t.sensitivity), unknown(t.specificity), unknown(t.fdaStatus), unknown(t.reimbursement), unknown(t.reimbursementNote), unknown(t.totalParticipants), t.numPublicationsPlus ? `${t.numPublications}+` : unknown(t.numPublications)
     ]);
-    // Add timestamp row at end
-    const timestampRow = [`Data Version: ${TRM_DATA_TIMESTAMP}`, '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
-    return [headers, ...rows, timestampRow].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
-  };
-
-  const downloadCsv = (csvContent, filename) => {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const trmWs = XLSX.utils.aoa_to_sheet([trmHeaders, ...trmRows]);
+    trmWs['!cols'] = trmHeaders.map(() => ({ wch: 18 }));
+    XLSX.utils.book_append_sheet(wb, trmWs, 'TRM');
+    
+    // Write and download
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename;
+    link.download = 'OpenOnco_AllTests.xlsx';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
 
-  const mrdParams = 45;
-  const ecdParams = 32;
-  const trmParams = 15;
+  const generateAllTestsJson = () => {
+    const allData = {
+      meta: {
+        version: BUILD_INFO.date,
+        generatedAt: new Date().toISOString(),
+        source: 'OpenOnco',
+        website: 'https://openonco.org'
+      },
+      categories: {
+        MRD: {
+          name: 'Molecular Residual Disease',
+          description: 'Tests for detecting minimal/molecular residual disease after treatment',
+          testCount: mrdTestData.length,
+          tests: mrdTestData
+        },
+        ECD: {
+          name: 'Early Cancer Detection',
+          description: 'Screening and early detection tests including MCED',
+          testCount: ecdTestData.length,
+          tests: ecdTestData
+        },
+        TRM: {
+          name: 'Treatment Response Monitoring',
+          description: 'Tests for monitoring treatment response during therapy',
+          testCount: trmTestData.length,
+          tests: trmTestData
+        }
+      },
+      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length
+    };
+    return JSON.stringify(allData, null, 2);
+  };
 
-  const datasets = [
-    {
-      id: 'MRD',
-      title: 'Molecular Residual Disease (MRD)',
-      description: 'Tests for detecting minimal/molecular residual disease after treatment, used to assess treatment response and risk of recurrence.',
-      testCount: mrdTestData.length,
-      paramCount: mrdParams,
-      color: 'orange',
-      generateCsv: generateMRDCsv,
-      filename: 'OpenOnco_MRD_Data.csv',
-      timestamp: MRD_DATA_TIMESTAMP
-    },
-    {
-      id: 'ECD',
-      title: 'Early Cancer Detection (ECD)',
-      description: 'Screening and early detection tests including multi-cancer early detection (MCED) and single-cancer screening tests.',
-      testCount: ecdTestData.length,
-      paramCount: ecdParams,
-      color: 'green',
-      generateCsv: generateECDCsv,
-      filename: 'OpenOnco_ECD_Data.csv',
-      timestamp: ECD_DATA_TIMESTAMP
-    },
-    {
-      id: 'TRM',
-      title: 'Treatment Response Monitoring (TRM)',
-      description: 'Tests for monitoring treatment response and disease progression during active therapy.',
-      testCount: trmTestData.length,
-      paramCount: trmParams,
-      color: 'red',
-      generateCsv: generateTRMCsv,
-      filename: 'OpenOnco_TRM_Data.csv',
-      timestamp: TRM_DATA_TIMESTAMP
-    }
-  ];
-
-  const colorClasses = {
-    orange: 'from-orange-500 to-orange-600 border-orange-200 bg-orange-50',
-    green: 'from-emerald-500 to-emerald-600 border-emerald-200 bg-emerald-50',
-    red: 'from-sky-500 to-sky-600 border-sky-300 bg-sky-100'
+  const downloadJson = () => {
+    const jsonContent = generateAllTestsJson();
+    const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'OpenOnco_AllTests.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -2756,71 +2750,60 @@ const SourceDataPage = () => {
       </div>
 
       {/* Download Section */}
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Data Used for this Build</h2>
-      <div className="grid gap-4 mb-8">
-        {datasets.map(dataset => (
-          <div key={dataset.id} className={`rounded-xl border-2 ${colorClasses[dataset.color].split(' ').slice(1).join(' ')} p-5`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClasses[dataset.color].split(' ').slice(0, 2).join(' ')} flex items-center justify-center`}>
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900">{dataset.title}</h3>
-                  <p className="text-sm text-gray-500">{dataset.testCount} tests • Updated {dataset.timestamp}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => downloadCsv(dataset.generateCsv(), dataset.filename)}
-                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm font-medium text-gray-700 shadow-sm"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Download CSV
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <h2 className="text-xl font-bold text-gray-900 mb-4">Download Complete Dataset</h2>
 
-      {/* Whiteboards Section */}
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Data Whiteboards/Discussion for Next Build</h2>
-      <div className="grid gap-4 mb-8">
-        {[
-          { id: 'MRD', title: 'Molecular Residual Disease (MRD)', description: 'Working draft for MRD test data updates and additions.', color: 'orange', url: 'https://docs.google.com/spreadsheets/d/15o0Nd5xH_mge2l3yD1CUUmg_gsBv1_Gy1oCLTz3CV1Q/edit?usp=sharing' },
-          { id: 'ECD', title: 'Early Cancer Detection (ECD)', description: 'Working draft for ECD test data updates and additions.', color: 'green', url: 'https://docs.google.com/spreadsheets/d/15o0Nd5xH_mge2l3yD1CUUmg_gsBv1_Gy1oCLTz3CV1Q/edit?usp=sharing' },
-          { id: 'TRM', title: 'Treatment Response Monitoring (TRM)', description: 'Working draft for TRM test data updates and additions.', color: 'red', url: 'https://docs.google.com/spreadsheets/d/1ZgvK8AgZzZ4XuZEija_m1FSffnnhvIgmVCkQvP1AIXE/edit?usp=sharing' }
-        ].map(whiteboard => (
-          <div key={whiteboard.id} className={`rounded-xl border-2 ${colorClasses[whiteboard.color].split(' ').slice(1).join(' ')} p-5`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClasses[whiteboard.color].split(' ').slice(0, 2).join(' ')} flex items-center justify-center`}>
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900">{whiteboard.title}</h3>
-                  <p className="text-sm text-gray-500">{whiteboard.description}</p>
-                </div>
-              </div>
-              <a
-                href={whiteboard.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm font-medium text-gray-700 shadow-sm"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+      {/* Combined JSON Download */}
+      <div className="mb-8">
+        <div className="rounded-xl border-2 border-slate-300 bg-slate-50 p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
                 </svg>
-                Open Sheet
-              </a>
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
+                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length} tests • MRD + ECD + TRM combined • JSON format</p>
+              </div>
             </div>
+            <button
+              onClick={downloadJson}
+              className="flex items-center gap-2 px-5 py-2.5 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium text-white shadow-sm"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download JSON
+            </button>
           </div>
-        ))}
+        </div>
+        
+        {/* Excel Download */}
+        <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50 p-5 mt-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
+                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length} tests • MRD + ECD + TRM on separate worksheets • Excel format</p>
+              </div>
+            </div>
+            <button
+              onClick={downloadExcel}
+              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-700 border border-emerald-600 rounded-lg hover:bg-emerald-800 transition-colors text-sm font-medium text-white shadow-sm"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download Excel
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Data Attribution */}
