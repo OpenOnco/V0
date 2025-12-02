@@ -2359,7 +2359,7 @@ const HomePage = ({ onNavigate }) => {
       <div className="max-w-6xl mx-auto px-6 py-12 relative">
         {/* Build timestamp */}
         <div className="absolute top-2 right-6 text-xs text-gray-400">
-          {BUILD_INFO.date}
+          Build: {BUILD_INFO.date}
         </div>
 
         {/* Explore Button - First item */}
