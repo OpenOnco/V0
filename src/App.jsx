@@ -1517,10 +1517,25 @@ const TestNavigationPage = ({ onNavigate }) => {
   ];
 
   const getSystemPrompt = () => {
-    const mrdSummary = mrdTestData.map(t => `${t.name} by ${t.vendor}: ${t.approach} approach, ${t.cancerTypes?.join(', ') || 'various cancers'}, sensitivity ${t.sensitivity || 'not specified'}%, specificity ${t.specificity || 'not specified'}%, requires tumor tissue: ${t.requiresTumorTissue || 'not specified'}, FDA status: ${t.fdaStatus || 'not specified'}, reimbursement: ${t.reimbursement || 'not specified'}`).join('\n');
-    const ecdSummary = ecdTestData.map(t => `${t.name} by ${t.vendor}: detects ${t.cancersDetected || 'multiple'} cancers, sensitivity ${t.sensitivity || 'not specified'}%, specificity ${t.specificity || 'not specified'}%, FDA status: ${t.fdaStatus || 'not specified'}, Medicare coverage: ${t.medicareCoverage || 'not specified'}`).join('\n');
-    const trmSummary = trmTestData.map(t => `${t.name} by ${t.vendor}: ${t.method || 'not specified'} method, cancer types: ${t.cancerTypes?.join(', ') || 'various'}, TAT: ${t.tat || 'not specified'}`).join('\n');
-    return `You are a helpful assistant for OpenOnco, a liquid biopsy test comparison platform. Answer questions about these tests based on the following data:\n\nMRD TESTS:\n${mrdSummary}\n\nECD TESTS:\n${ecdSummary}\n\nTRM TESTS:\n${trmSummary}\n\nBe concise but thorough. If information isn't available, say so.`;
+    const testDatabase = {
+      MRD: mrdTestData,
+      ECD: ecdTestData,
+      TRM: trmTestData
+    };
+    
+    return `You are an expert oncology diagnostics advisor for OpenOnco. You have access to a structured database of liquid biopsy tests. Answer questions using ONLY the data provided below.
+
+TEST DATABASE (JSON format):
+${JSON.stringify(testDatabase, null, 2)}
+
+INSTRUCTIONS:
+- The database above contains complete, accurate information for each test
+- When answering questions, look up the exact field values from the JSON
+- Key fields: reimbursement, reimbursementNote, fdaStatus, sensitivity, specificity, listPrice, cancerTypes
+- Report field values exactly as they appear in the data
+- If a field is null or missing, say "not specified in our database"
+- Use appropriate medical terminology
+- Be concise but thorough`;
   };
 
   const handleSubmit = async (question) => {
