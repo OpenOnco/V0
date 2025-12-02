@@ -508,7 +508,14 @@ const NewsFeed = () => {
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
-  date: '2025-12-01 23:30 PST',
+  date: new Date(__BUILD_DATE__).toLocaleString('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  }),
   sources: {
     MRD: 'https://docs.google.com/spreadsheets/d/16F_QRjpiqlrCK1f5fPSHQsODdE5QVPrrdx-0rfKAa5U/edit',
     ECD: 'https://docs.google.com/spreadsheets/d/1eFZg2EtdnR4Ly_lrXoZxzI4Z2bH23LDkCAVCXrewwnI/edit',
@@ -2388,9 +2395,10 @@ const HomePage = ({ onNavigate }) => {
 // Database Summary Component (Reusable)
 // ============================================
 const DatabaseSummary = () => {
-  const mrdParams = 45;
-  const ecdParams = 32;
-  const trmParams = 15;
+  // Dynamically count actual fields per test
+  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
+  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
+  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
   
   const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length;
   const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams);
