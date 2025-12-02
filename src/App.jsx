@@ -1331,38 +1331,26 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
     submitQuestion(question);
   };
 
-  const buildTestSummary = () => {
-    const mrdSummary = mrdTestData.map(t => 
-      `${t.name} (${t.vendor}): ${t.approach}, sensitivity ${t.sensitivity || 'N/A'}%, specificity ${t.specificity || 'N/A'}%, LOD ${t.lod || 'N/A'}%, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, reimbursement: ${t.reimbursement}, requires tumor tissue: ${t.requiresTumorTissue || 'N/A'}`
-    ).join('\n');
-    
-    const ecdSummary = ecdTestData.map(t => 
-      `${t.name} (${t.vendor}): ${t.testScope}, sensitivity ${t.sensitivity || 'N/A'}%, Stage I: ${t.stageISensitivity || 'N/A'}%, Stage II: ${t.stageIISensitivity || 'N/A'}%, Stage III: ${t.stageIIISensitivity || 'N/A'}%, Stage IV: ${t.stageIVSensitivity || 'N/A'}%, specificity ${t.specificity || 'N/A'}%, PPV: ${t.ppv || 'N/A'}%, NPV: ${t.npv || 'N/A'}%, target: ${t.cancerTypes?.join(', ') || 'N/A'}, population: ${t.targetPopulation || 'N/A'}, TAT: ${t.tat || 'N/A'}, list price: $${t.listPrice || 'N/A'}, screening interval: ${t.screeningInterval || 'N/A'}, reimbursement: ${t.reimbursement}, FDA: ${t.fdaStatus || 'N/A'}`
-    ).join('\n');
-    
-    const trmSummary = trmTestData.map(t => 
-      `${t.name} (${t.vendor}): ${t.approach}, response definition: ${t.responseDefinition || 'N/A'}, lead time vs imaging: ${t.leadTimeVsImaging || 'N/A'} days, LOD: ${t.lod || 'N/A'}, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, reimbursement: ${t.reimbursement}`
-    ).join('\n');
-
-    return `MRD TESTS (Molecular Residual Disease):\n${mrdSummary}\n\nECD TESTS (Early Cancer Detection):\n${ecdSummary}\n\nTRM TESTS (Treatment Response Monitoring):\n${trmSummary}`;
-  };
-
   const getSystemPrompt = () => {
-    return `You are an expert oncology diagnostics advisor for OpenOnco, serving clinical and scientific professionals. You have comprehensive knowledge of cancer diagnostic tests across three categories. Only discuss tests from the data provided below.
+    const testDatabase = {
+      MRD: mrdTestData,
+      ECD: ecdTestData,
+      TRM: trmTestData
+    };
+    
+    return `You are an expert oncology diagnostics advisor for OpenOnco. You have access to a structured database of liquid biopsy tests. Answer questions using ONLY the data provided below.
 
-${buildTestSummary()}
+TEST DATABASE (JSON format):
+${JSON.stringify(testDatabase, null, 2)}
 
-Guidelines:
-- Use appropriate medical and scientific terminology
-- Focus on clinical utility, sensitivity/specificity, LOD, PPV/NPV, and evidence base
-- Discuss practical considerations: turnaround time, sample requirements, reimbursement, pricing
-- ECD tests have list prices included in the data above - use these when discussing pricing
-- MRD and TRM tests do not have public list prices in our database
-- Provide detailed technical information on assay methodologies when relevant
-- Compare technical approaches (tumor-informed vs tumor-naive, blood vs stool, etc.)
-- Reference performance data, validation studies, and regulatory status
-- Be precise about limitations and caveats in the data
-- Keep responses concise but thorough`;
+INSTRUCTIONS:
+- The database above contains complete, accurate information for each test
+- When answering questions, look up the exact field values from the JSON
+- Key fields: reimbursement, reimbursementNote, fdaStatus, sensitivity, specificity, listPrice, cancerTypes
+- Report field values exactly as they appear in the data
+- If a field is null or missing, say "not specified in our database"
+- Use appropriate medical terminology
+- Be concise but thorough`;
   };
 
   const submitQuestion = async (question) => {
@@ -2445,35 +2433,20 @@ const CategoryChat = ({ category }) => {
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  const buildTestSummary = () => {
-    if (category === 'MRD') {
-      return meta.tests.map(t => 
-        `${t.name} (${t.vendor}): ${t.approach}, method: ${t.method || 'N/A'}, sensitivity: ${t.sensitivity || 'N/A'}%, specificity: ${t.specificity || 'N/A'}%, LOD: ${t.lod || 'N/A'}%, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, requires tumor tissue: ${t.requiresTumorTissue || 'N/A'}, TAT: ${t.initialTat || 'N/A'} days initial, FDA: ${t.fdaStatus || 'N/A'}, reimbursement: ${t.reimbursement}`
-      ).join('\n');
-    } else if (category === 'ECD') {
-      return meta.tests.map(t => 
-        `${t.name} (${t.vendor}): ${t.testScope}, approach: ${t.approach || 'N/A'}, sensitivity: ${t.sensitivity || 'N/A'}%, specificity: ${t.specificity || 'N/A'}%, PPV: ${t.ppv || 'N/A'}%, NPV: ${t.npv || 'N/A'}%, stage I sensitivity: ${t.stageISensitivity || 'N/A'}%, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, list price: $${t.listPrice || 'N/A'}, FDA: ${t.fdaStatus || 'N/A'}, reimbursement: ${t.reimbursement}`
-      ).join('\n');
-    } else {
-      return meta.tests.map(t => 
-        `${t.name} (${t.vendor}): ${t.approach}, response definition: ${t.responseDefinition || 'N/A'}, lead time vs imaging: ${t.leadTimeVsImaging || 'N/A'} days, LOD: ${t.lod || 'N/A'}, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, FDA: ${t.fdaStatus || 'N/A'}, reimbursement: ${t.reimbursement}`
-      ).join('\n');
-    }
-  };
-
   const getSystemPrompt = () => {
-    const priceNote = category === 'ECD' ? '\n- ECD tests include list prices where available - use these when discussing pricing' : '';
-    return `You are an expert oncology diagnostics advisor specializing in ${meta.title} testing. Only discuss tests from the data provided below.
+    return `You are an expert oncology diagnostics advisor specializing in ${meta.title} testing. Answer questions using ONLY the data provided below.
 
-${category} TESTS:
-${buildTestSummary()}
+${category} TEST DATABASE (JSON format):
+${JSON.stringify(meta.tests, null, 2)}
 
-Guidelines:
-- Use appropriate medical and scientific terminology
-- Focus on clinical utility, sensitivity/specificity, LOD, PPV/NPV
-- Discuss practical considerations: turnaround time, sample requirements, reimbursement, pricing${priceNote}
-- Be precise about limitations and caveats
-- Keep responses concise but thorough`;
+INSTRUCTIONS:
+- The database above contains complete, accurate information for each ${category} test
+- When answering questions, look up the exact field values from the JSON
+- Key fields: reimbursement, reimbursementNote, fdaStatus, sensitivity, specificity, listPrice, cancerTypes
+- Report field values exactly as they appear in the data
+- If a field is null or missing, say "not specified in our database"
+- Use appropriate medical terminology
+- Be concise but thorough`;
   };
 
   const handleKeyDown = (e) => {
