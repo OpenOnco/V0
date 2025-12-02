@@ -2377,7 +2377,8 @@ const HomePage = ({ onNavigate }) => {
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8">
-          <p className="text-lg text-slate-700">Liquid biopsy tests are shaping cancer treatment by detecting cancers at the molecular level from a simple blood draw. Fortunately the tests are advancing rapidly - but that's leading to complex choices for doctors and patients. OpenOnco is an independent non-profit effort to consolidate and standardized test information and provide navigation tools to help match the right test to the right patient.</p>
+          <p className="text-lg text-slate-700 mb-4">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly resulting in complex choices for doctors and patients.</p>
+          <p className="text-lg text-slate-700">OpenOnco is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
         {/* Test Showcase */}
