@@ -2822,7 +2822,7 @@ const CategoryChat = ({ category }) => {
       ).join('\n');
     } else if (category === 'ECD') {
       return meta.tests.map(t => 
-        `${t.name} (${t.vendor}): ${t.testScope}, approach: ${t.approach || 'N/A'}, sensitivity: ${t.sensitivity || 'N/A'}%, specificity: ${t.specificity || 'N/A'}%, PPV: ${t.ppv || 'N/A'}%, NPV: ${t.npv || 'N/A'}%, stage I sensitivity: ${t.stageISensitivity || 'N/A'}%, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, FDA: ${t.fdaStatus || 'N/A'}, reimbursement: ${t.reimbursement}`
+        `${t.name} (${t.vendor}): ${t.testScope}, approach: ${t.approach || 'N/A'}, sensitivity: ${t.sensitivity || 'N/A'}%, specificity: ${t.specificity || 'N/A'}%, PPV: ${t.ppv || 'N/A'}%, NPV: ${t.npv || 'N/A'}%, stage I sensitivity: ${t.stageISensitivity || 'N/A'}%, cancers: ${t.cancerTypes?.join(', ') || 'N/A'}, list price: $${t.listPrice || 'N/A'}, FDA: ${t.fdaStatus || 'N/A'}, reimbursement: ${t.reimbursement}`
       ).join('\n');
     } else {
       return meta.tests.map(t => 
@@ -2832,6 +2832,7 @@ const CategoryChat = ({ category }) => {
   };
 
   const getSystemPrompt = () => {
+    const priceNote = category === 'ECD' ? '\n- ECD tests include list prices where available - use these when discussing pricing' : '';
     return `You are an expert oncology diagnostics advisor specializing in ${meta.title} testing. Only discuss tests from the data provided below.
 
 ${category} TESTS:
@@ -2840,7 +2841,7 @@ ${buildTestSummary()}
 Guidelines:
 - Use appropriate medical and scientific terminology
 - Focus on clinical utility, sensitivity/specificity, LOD, PPV/NPV
-- Discuss practical considerations: turnaround time, sample requirements, reimbursement
+- Discuss practical considerations: turnaround time, sample requirements, reimbursement, pricing${priceNote}
 - Be precise about limitations and caveats
 - Keep responses concise but thorough`;
   };
