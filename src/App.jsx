@@ -1494,10 +1494,9 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const navItems = ['home', 'test-tools', 'how-it-works', 'data-sources', 'submissions', 'about'];
+  const navItems = ['home', 'how-it-works', 'data-sources', 'submissions', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
-    'test-tools': 'Discover the Tests!',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
     'submissions': 'Submissions',
@@ -1512,7 +1511,7 @@ const Header = ({ currentPage, onNavigate }) => {
       </div>
       <span className="sm:hidden text-xl font-bold text-[#2A63A4] cursor-pointer" onClick={() => handleNavigate('home')}>OpenOnco</span>
       <nav className="hidden sm:flex items-center flex-1 justify-evenly overflow-x-auto">
-        {['home', 'test-tools', 'how-it-works', 'data-sources', 'submissions', 'about'].map(page => (
+        {['home', 'how-it-works', 'data-sources', 'submissions', 'about'].map(page => (
           <button
             key={page}
             onClick={() => handleNavigate(page)}
@@ -1520,7 +1519,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'test-tools' ? 'Discover the Tests!' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About'}
+            {page === 'home' ? 'Home' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About'}
           </button>
         ))}
       </nav>
@@ -1757,278 +1756,6 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
   );
 };
 
-// ============================================
-// Test Navigation Tools Page (formerly HomePage)
-// ============================================
-const TestNavigationPage = ({ onNavigate }) => {
-  const [chatInput, setChatInput] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const chatContainerRef = useRef(null);
-
-  // Auto-scroll to bottom when messages or loading state changes
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }, [messages, isLoading]);
-  
-  const colorClasses = {
-    orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-300 hover:shadow-md', btn: 'from-orange-500 to-orange-600' },
-    green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300 hover:shadow-md', btn: 'from-emerald-500 to-emerald-600' },
-    red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
-    teal: { card: 'bg-white border-slate-200 hover:border-slate-400 hover:shadow-md', btn: 'from-[#2A63A4] to-[#1E4A7A]' },
-  };
-
-  const navButtons = [
-    { key: 'MRD', title: 'Minimal Residual Disease (MRD)', color: 'orange' },
-    { key: 'ECD', title: 'Early Cancer Detection (ECD)', color: 'green' },
-    { key: 'TRM', title: 'Treatment Response Monitoring (TRM)', color: 'red' },
-  ];
-
-  const exampleQuestions = [
-    "MRD testing options for colorectal cancer?",
-    "Which early detection tests have Medicare coverage?",
-    "Compare Signatera vs Guardant Reveal",
-    "I am a patient, keep answers basic",
-    "I am a physician, I like detailed answers",
-    "Vergleichen Sie Signatera mit Guardant Reveal"
-  ];
-
-  // Memoize system prompt - only computed once
-  const systemPrompt = useMemo(() => {
-    const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
-    return `You are an expert oncology diagnostics advisor for OpenOnco with access to a liquid biopsy test database.
-
-TEST DATABASE:
-${JSON.stringify(testDatabase)}
-
-RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
-  }, []);
-
-  const handleSubmit = async (question) => {
-    const q = question || chatInput;
-    if (!q.trim()) return;
-    
-    setChatInput('');
-    const newUserMessage = { role: 'user', content: q };
-    const updatedMessages = [...messages, newUserMessage];
-    setMessages(updatedMessages);
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          max_tokens: 1500,
-          system: systemPrompt,
-          messages: updatedMessages
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (data?.content?.[0]?.text) {
-        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
-      } else {
-        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
-      }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
-    }
-    setIsLoading(false);
-  };
-
-  return (
-    <div>
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <h2 className="text-2xl font-bold text-slate-800 mb-2 text-center">Browse and Compare Liquid Biopsy Tests</h2>
-        
-        {/* Parameter type legend */}
-        <div className="flex items-center justify-center gap-4 mb-6 text-xs">
-          <span className="text-slate-500">Data types:</span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="text-slate-500">Clinical</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-violet-500"></span>
-            <span className="text-slate-500">Analytical</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-            <span className="text-slate-500">Operational</span>
-          </span>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          {/* MRD Column */}
-          <div className="flex flex-col">
-            <div
-              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
-              onClick={() => onNavigate('MRD')}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
-                    <p className="text-xs text-gray-500">Minimal Residual Disease</p>
-                    <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
-                  </div>
-                </div>
-                <span className="text-sm font-medium text-[#2A63A4]">→</span>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect faint traces of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
-          </div>
-          
-          {/* ECD Column */}
-          <div className="flex flex-col">
-            <div
-              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
-              onClick={() => onNavigate('ECD')}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
-                    <p className="text-xs text-gray-500">Early Cancer Detection</p>
-                    <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
-                  </div>
-                </div>
-                <span className="text-sm font-medium text-[#2A63A4]">→</span>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
-          </div>
-          
-          {/* TRM Column */}
-          <div className="flex flex-col">
-            <div
-              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
-              onClick={() => onNavigate('TRM')}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
-                    <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
-                    <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
-                  </div>
-                </div>
-                <span className="text-sm font-medium text-[#2A63A4]">→</span>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
-          </div>
-        </div>
-        
-        {/* OR Divider */}
-        <div className="text-center mb-6">
-          <span className="text-xl font-bold text-black">OR</span>
-        </div>
-        
-        {/* Inline Chat Box */}
-        <div className="rounded-xl border-2 border-slate-200 bg-white mb-12 overflow-hidden">
-          {/* Chat Header */}
-          <div className="px-4 py-3" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
-            <div className="flex items-center gap-3">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              <h3 className="text-white font-semibold">Ask Claude anything about the data we have on these tests</h3>
-            </div>
-          </div>
-          
-          {/* Messages Area */}
-          {messages.length > 0 && (
-            <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div 
-                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                    style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                  >
-                    {msg.role === 'user' ? (
-                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                    ) : (
-                      <Markdown className="text-sm">{msg.content}</Markdown>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                    <p className="text-sm text-slate-500">Thinking...</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-          
-          {/* Example Questions (only show when no messages) */}
-          {messages.length === 0 && (
-            <div className="p-4 bg-slate-50">
-              <p className="text-xs text-slate-500 mb-2">Try asking:</p>
-              <div className="flex flex-wrap gap-2">
-                {exampleQuestions.map((q, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSubmit(q)}
-                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {/* Input Area */}
-          <div className="p-4 border-t border-slate-200 bg-white">
-            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Type your question here..."
-                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 focus:outline-none"
-                style={{ '--tw-ring-color': '#2A63A4' }}
-                disabled={isLoading}
-              />
-              <button
-                type="submit"
-                disabled={isLoading || !chatInput.trim()}
-                className="text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-              >
-                Ask
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // ============================================
 // Test Showcase Component - Rotating parameters for each test
@@ -2120,13 +1847,7 @@ const TestShowcase = ({ onNavigate }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
       <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
-        Liquid Biopsy Tests We Track: Browse or chat with the data{' '}
-        <button 
-          onClick={() => onNavigate('test-tools')} 
-          className="text-[#2A63A4] hover:text-[#1E4A7A] underline cursor-pointer"
-        >
-          here
-        </button>
+        Liquid Biopsy Tests We Track
       </h3>
       <div className="flex items-center justify-center mb-4">
         <div className="flex items-center gap-3 text-base font-bold">
@@ -2318,9 +2039,81 @@ const StatOfTheDay = ({ onNavigate }) => {
 };
 
 // ============================================
-// Home Page (intro and news)
+// Home Page (intro, navs, chat, and news)
 // ============================================
 const HomePage = ({ onNavigate }) => {
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef(null);
+
+  // Auto-scroll to bottom when messages or loading state changes
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+  
+  const colorClasses = {
+    orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-300 hover:shadow-md', btn: 'from-orange-500 to-orange-600' },
+    green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300 hover:shadow-md', btn: 'from-emerald-500 to-emerald-600' },
+    red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
+  };
+
+  const exampleQuestions = [
+    "MRD testing options for colorectal cancer?",
+    "Which early detection tests have Medicare coverage?",
+    "Compare Signatera vs Guardant Reveal",
+    "I am a patient, keep answers basic",
+    "I am a physician, I like detailed answers",
+    "Vergleichen Sie Signatera mit Guardant Reveal"
+  ];
+
+  // Memoize system prompt - only computed once
+  const systemPrompt = useMemo(() => {
+    const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
+    return `You are an expert oncology diagnostics advisor for OpenOnco with access to a liquid biopsy test database.
+
+TEST DATABASE:
+${JSON.stringify(testDatabase)}
+
+RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+  }, []);
+
+  const handleSubmit = async (question) => {
+    const q = question || chatInput;
+    if (!q.trim()) return;
+    
+    setChatInput('');
+    const newUserMessage = { role: 'user', content: q };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          max_tokens: 1500,
+          system: systemPrompt,
+          messages: updatedMessages
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data?.content?.[0]?.text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">
@@ -2334,20 +2127,173 @@ const HomePage = ({ onNavigate }) => {
           <p className="text-base sm:text-xl text-slate-700">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
+        {/* Category Navigators */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* MRD Column */}
+          <div className="flex flex-col">
+            <div
+              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
+              onClick={() => onNavigate('MRD')}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
+                    <p className="text-xs text-gray-500">Minimal Residual Disease</p>
+                    <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-[#2A63A4]">→</span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect faint traces of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
+          </div>
+          
+          {/* ECD Column */}
+          <div className="flex flex-col">
+            <div
+              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
+              onClick={() => onNavigate('ECD')}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
+                    <p className="text-xs text-gray-500">Early Cancer Detection</p>
+                    <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-[#2A63A4]">→</span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
+          </div>
+          
+          {/* TRM Column */}
+          <div className="flex flex-col">
+            <div
+              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
+              onClick={() => onNavigate('TRM')}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
+                    <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
+                    <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-[#2A63A4]">→</span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
+          </div>
+        </div>
+        
+        {/* OR Divider */}
+        <div className="text-center mb-6">
+          <span className="text-xl font-bold text-black">OR</span>
+        </div>
+        
+        {/* Inline Chat Box */}
+        <div className="rounded-xl border-2 border-slate-200 bg-white mb-8 overflow-hidden">
+          {/* Chat Header */}
+          <div className="px-4 py-3" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
+            <div className="flex items-center gap-3">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              <h3 className="text-white font-semibold">Ask Claude anything about the data we have on these tests</h3>
+            </div>
+          </div>
+          
+          {/* Messages Area */}
+          {messages.length > 0 && (
+            <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+              {messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div 
+                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                    style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                  >
+                    {msg.role === 'user' ? (
+                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    ) : (
+                      <Markdown className="text-sm">{msg.content}</Markdown>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                    <p className="text-sm text-slate-500">Thinking...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Example Questions (only show when no messages) */}
+          {messages.length === 0 && (
+            <div className="p-4 bg-slate-50">
+              <p className="text-xs text-slate-500 mb-2">Try asking:</p>
+              <div className="flex flex-wrap gap-2">
+                {exampleQuestions.map((q, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleSubmit(q)}
+                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Input Area */}
+          <div className="p-4 border-t border-slate-200 bg-white">
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Type your question here..."
+                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 focus:outline-none"
+                style={{ '--tw-ring-color': '#2A63A4' }}
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !chatInput.trim()}
+                className="text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+              >
+                Ask
+              </button>
+            </form>
+          </div>
+        </div>
+
         {/* Test Showcase */}
         <div className="mb-8">
           <TestShowcase onNavigate={onNavigate} />
-        </div>
-
-        {/* Explore Button */}
-        <div className="mb-8">
-          <button
-            onClick={() => onNavigate('test-tools')}
-            className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90"
-            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-          >
-            → Explore Liquid Biopsy Tests with our Navigation Tools ←
-          </button>
         </div>
 
         {/* Stat of the Day */}
@@ -3618,7 +3564,6 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
-      case 'test-tools': return <TestNavigationPage onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': return <CategoryPage category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
