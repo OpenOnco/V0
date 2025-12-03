@@ -1848,9 +1848,26 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <h3 className="text-xl font-bold text-slate-800 text-center mb-4">
+      <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
         Just for fun: All the Liquid Biopsy Tests We Track
       </h3>
+      
+      {/* Parameter type legend */}
+      <div className="flex items-center justify-center gap-4 mb-4 text-xs">
+        <span className="text-slate-500">Data types:</span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span className="text-slate-500">Clinical</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+          <span className="text-slate-500">Analytical</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+          <span className="text-slate-500">Operational</span>
+        </span>
+      </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {allTests.map(test => {
