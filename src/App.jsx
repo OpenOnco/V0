@@ -2051,18 +2051,17 @@ const HomePage = ({ onNavigate }) => {
     red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
   };
 
-  // Rotating test name indices
+  // Rotating test name indices for nav buttons
   const [testIndices, setTestIndices] = useState({ MRD: 0, ECD: 0, TRM: 0 });
-  const [chatTestIndex, setChatTestIndex] = useState(0);
   
-  // All tests combined for chat header
+  // All tests combined for chat header ticker
   const allTestNames = useMemo(() => [
     ...mrdTestData.map(t => t.name),
     ...ecdTestData.map(t => t.name),
     ...trmTestData.map(t => t.name)
   ], []);
   
-  // Rotate test names every 2 seconds
+  // Rotate test names every 2 seconds for nav buttons
   useEffect(() => {
     const interval = setInterval(() => {
       setTestIndices(prev => ({
@@ -2070,10 +2069,9 @@ const HomePage = ({ onNavigate }) => {
         ECD: (prev.ECD + 1) % ecdTestData.length,
         TRM: (prev.TRM + 1) % trmTestData.length,
       }));
-      setChatTestIndex(prev => (prev + 1) % allTestNames.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, [allTestNames.length]);
+  }, []);
 
   const exampleQuestions = [
     "MRD testing options for colorectal cancer?",
@@ -2228,15 +2226,37 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         {/* Inline Chat Box */}
         <div className="rounded-xl border-2 border-slate-200 bg-white mb-8 overflow-hidden">
           {/* Chat Header */}
-          <div className="px-4 py-3" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
-            <div className="flex items-center gap-3">
+          <div className="py-3 overflow-hidden" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
+            <div className="flex items-center gap-3 px-4 mb-2">
               <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-white font-semibold">Ask Claude about these tests</h3>
-                <p className="text-white/70 text-sm truncate">{allTestNames[chatTestIndex]}</p>
+              <h3 className="text-white font-semibold">Ask Claude about these tests</h3>
+            </div>
+            <div className="relative overflow-hidden">
+              <div 
+                className="flex whitespace-nowrap text-white/70 text-sm"
+                style={{
+                  animation: 'ticker 60s linear infinite',
+                }}
+              >
+                <span className="inline-block">
+                  {allTestNames.map((name, i) => (
+                    <span key={i}>{name} &nbsp;•&nbsp; </span>
+                  ))}
+                </span>
+                <span className="inline-block">
+                  {allTestNames.map((name, i) => (
+                    <span key={`dup-${i}`}>{name} &nbsp;•&nbsp; </span>
+                  ))}
+                </span>
               </div>
+              <style>{`
+                @keyframes ticker {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+              `}</style>
             </div>
           </div>
           
