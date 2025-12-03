@@ -1846,18 +1846,9 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
-        Liquid Biopsy Tests We Track
+      <h3 className="text-xl font-bold text-slate-800 text-center mb-4">
+        Just for fun: All teh Liquid Biopsy Tests We Track
       </h3>
-      <div className="flex items-center justify-center mb-4">
-        <div className="flex items-center gap-3 text-base font-bold">
-          <span className="text-orange-600">Minimal Residual Disease (MRD)</span>
-          <span className="text-slate-300 font-normal">|</span>
-          <span className="text-emerald-600">Early Cancer Detection (ECD)</span>
-          <span className="text-slate-300 font-normal">|</span>
-          <span className="text-sky-600">Treatment Response Monitoring (TRM)</span>
-        </div>
-      </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {allTests.map(test => {
@@ -2060,6 +2051,21 @@ const HomePage = ({ onNavigate }) => {
     red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
   };
 
+  // Rotating test name indices
+  const [testIndices, setTestIndices] = useState({ MRD: 0, ECD: 0, TRM: 0 });
+  
+  // Rotate test names every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTestIndices(prev => ({
+        MRD: (prev.MRD + 1) % mrdTestData.length,
+        ECD: (prev.ECD + 1) % ecdTestData.length,
+        TRM: (prev.TRM + 1) % trmTestData.length,
+      }));
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   const exampleQuestions = [
     "MRD testing options for colorectal cancer?",
     "Which early detection tests have Medicare coverage?",
@@ -2145,7 +2151,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <div>
                     <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
                     <p className="text-xs text-gray-500">Minimal Residual Disease</p>
-                    <p className="text-xs text-gray-400">{mrdTestData.length} tests</p>
+                    <p className="text-xs text-orange-600 font-medium truncate max-w-[140px]">{mrdTestData[testIndices.MRD]?.name}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
@@ -2170,7 +2176,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <div>
                     <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
                     <p className="text-xs text-gray-500">Early Cancer Detection</p>
-                    <p className="text-xs text-gray-400">{ecdTestData.length} tests</p>
+                    <p className="text-xs text-emerald-600 font-medium truncate max-w-[140px]">{ecdTestData[testIndices.ECD]?.name}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
@@ -2195,7 +2201,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <div>
                     <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
                     <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
-                    <p className="text-xs text-gray-400">{trmTestData.length} tests</p>
+                    <p className="text-xs text-sky-600 font-medium truncate max-w-[140px]">{trmTestData[testIndices.TRM]?.name}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
