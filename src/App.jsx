@@ -1810,7 +1810,25 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
     <div>
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Browse and Compare Liquid Biopsy Tests</h2>
+        <h2 className="text-2xl font-bold text-slate-800 mb-2 text-center">Browse and Compare Liquid Biopsy Tests</h2>
+        
+        {/* Parameter type legend */}
+        <div className="flex items-center justify-center gap-4 mb-6 text-xs">
+          <span className="text-slate-500">Data types:</span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-slate-500">Clinical</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+            <span className="text-slate-500">Analytical</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+            <span className="text-slate-500">Operational</span>
+          </span>
+        </div>
+        
         <div className="grid grid-cols-3 gap-4 mb-6">
           {/* MRD Column */}
           <div className="flex flex-col">
@@ -2898,12 +2916,12 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
           {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Sensitivity</p></div>}
-          {test.specificity != null && <div><p className="text-lg font-bold text-[#2A63A4]">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
-          {test.lod != null && <div><p className="text-lg font-bold text-purple-600">{test.lod < 0.01 ? test.lod.toExponential(1) : test.lod}%</p><p className="text-xs text-gray-500">LOD</p></div>}
-          {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-gray-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
-          {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-sky-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
+          {test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
+          {test.lod != null && <div><p className="text-lg font-bold text-violet-600">{test.lod < 0.01 ? test.lod.toExponential(1) : test.lod}%</p><p className="text-xs text-gray-500">LOD</p></div>}
+          {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-slate-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
+          {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
-          {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-[#2A63A4]">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
+          {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-emerald-600">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
         </div>
         
         {/* Cancer types */}
@@ -3287,6 +3305,23 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${colorClasses[meta.color]} text-white text-sm font-medium mb-3`}>{meta.shortTitle}</div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{meta.title}</h1>
         <p className="text-gray-600">{meta.description}</p>
+        
+        {/* Parameter type legend */}
+        <div className="flex items-center gap-4 mt-3 text-xs">
+          <span className="text-slate-500">Data types:</span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-slate-500">Clinical</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+            <span className="text-slate-500">Analytical</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+            <span className="text-slate-500">Operational</span>
+          </span>
+        </div>
       </div>
 
       <section>
