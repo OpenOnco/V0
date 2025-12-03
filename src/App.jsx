@@ -2910,13 +2910,30 @@ const InfoIcon = ({ citations, notes }) => {
 // ============================================
 const DataRow = ({ label, value, unit, citations, notes }) => {
   if (value === null || value === undefined) return null;
+  const displayValue = `${value}${unit || ''}`;
+  const isLongValue = typeof displayValue === 'string' && displayValue.length > 60;
+  
+  if (isLongValue) {
+    // Stack layout for long values
+    return (
+      <div className="py-2 border-b border-gray-100 last:border-0">
+        <span className="text-sm text-gray-600 flex items-center mb-1">
+          {label}
+          <InfoIcon citations={citations} notes={notes} />
+        </span>
+        <span className="text-sm font-medium text-gray-900 block">{displayValue}</span>
+      </div>
+    );
+  }
+  
+  // Side-by-side layout for short values
   return (
-    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 last:border-0">
-      <span className="text-sm text-gray-600 flex items-center">
+    <div className="flex items-start justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4">
+      <span className="text-sm text-gray-600 flex items-center flex-shrink-0">
         {label}
         <InfoIcon citations={citations} notes={notes} />
       </span>
-      <span className="text-sm font-medium text-gray-900">{value}{unit || ''}</span>
+      <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
     </div>
   );
 };
