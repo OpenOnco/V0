@@ -1852,6 +1852,23 @@ const TestShowcase = ({ onNavigate }) => {
         Just for fun: All the Liquid Biopsy Tests We Track
       </h3>
       
+      {/* Category legend */}
+      <div className="flex items-center justify-center gap-4 mb-2 text-xs">
+        <span className="text-slate-500">Categories:</span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+          <span className="text-slate-500">MRD</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span className="text-slate-500">ECD</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-sky-500"></span>
+          <span className="text-slate-500">TRM</span>
+        </span>
+      </div>
+      
       {/* Parameter type legend */}
       <div className="flex items-center justify-center gap-4 mb-4 text-xs">
         <span className="text-slate-500">Data types:</span>
