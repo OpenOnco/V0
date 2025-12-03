@@ -2050,9 +2050,6 @@ const HomePage = ({ onNavigate }) => {
     green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300 hover:shadow-md', btn: 'from-emerald-500 to-emerald-600' },
     red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
   };
-
-  // Rotating test name indices for nav buttons
-  const [testIndices, setTestIndices] = useState({ MRD: 0, ECD: 0, TRM: 0 });
   
   // All tests combined for chat header ticker
   const allTestNames = useMemo(() => [
@@ -2060,18 +2057,6 @@ const HomePage = ({ onNavigate }) => {
     ...ecdTestData.map(t => t.name),
     ...trmTestData.map(t => t.name)
   ], []);
-  
-  // Rotate test names every 2 seconds for nav buttons
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTestIndices(prev => ({
-        MRD: (prev.MRD + 1) % mrdTestData.length,
-        ECD: (prev.ECD + 1) % ecdTestData.length,
-        TRM: (prev.TRM + 1) % trmTestData.length,
-      }));
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
 
   const exampleQuestions = [
     "MRD testing options for colorectal cancer?",
@@ -2148,7 +2133,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
               className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
               onClick={() => onNavigate('MRD')}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -2158,10 +2143,22 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <div>
                     <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
                     <p className="text-xs text-gray-500">Minimal Residual Disease</p>
-                    <p className="text-xs text-orange-600 font-medium truncate max-w-[140px]">{mrdTestData[testIndices.MRD]?.name}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
+              </div>
+              <div className="overflow-hidden -mx-5 px-0">
+                <div 
+                  className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
+                  style={{ animation: 'tickerMRD 20s linear infinite' }}
+                >
+                  <span className="inline-block">
+                    {mrdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                  </span>
+                  <span className="inline-block">
+                    {mrdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                  </span>
+                </div>
               </div>
             </div>
             <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect faint traces of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
@@ -2173,7 +2170,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
               className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
               onClick={() => onNavigate('ECD')}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -2183,10 +2180,22 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <div>
                     <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
                     <p className="text-xs text-gray-500">Early Cancer Detection</p>
-                    <p className="text-xs text-emerald-600 font-medium truncate max-w-[140px]">{ecdTestData[testIndices.ECD]?.name}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
+              </div>
+              <div className="overflow-hidden -mx-5 px-0">
+                <div 
+                  className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
+                  style={{ animation: 'tickerECD 25s linear infinite' }}
+                >
+                  <span className="inline-block">
+                    {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                  </span>
+                  <span className="inline-block">
+                    {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                  </span>
+                </div>
               </div>
             </div>
             <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
@@ -2198,7 +2207,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
               className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
               onClick={() => onNavigate('TRM')}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -2208,10 +2217,22 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <div>
                     <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
                     <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
-                    <p className="text-xs text-sky-600 font-medium truncate max-w-[140px]">{trmTestData[testIndices.TRM]?.name}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
+              </div>
+              <div className="overflow-hidden -mx-5 px-0">
+                <div 
+                  className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
+                  style={{ animation: 'tickerTRM 15s linear infinite' }}
+                >
+                  <span className="inline-block">
+                    {trmTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                  </span>
+                  <span className="inline-block">
+                    {trmTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                  </span>
+                </div>
               </div>
             </div>
             <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
@@ -2253,6 +2274,18 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
               </div>
               <style>{`
                 @keyframes ticker {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                @keyframes tickerMRD {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                @keyframes tickerECD {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                @keyframes tickerTRM {
                   0% { transform: translateX(0); }
                   100% { transform: translateX(-50%); }
                 }
