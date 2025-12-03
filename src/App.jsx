@@ -1318,7 +1318,8 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
     "MRD tests that don't require tumor tissue?",
     "Compare Signatera vs Guardant Reveal for breast cancer",
     "I am a patient, keep answers basic",
-    "I am a physician, I like detailed answers"
+    "I am a physician, I like detailed answers",
+    "Vergleichen Sie Signatera mit Guardant Reveal"
   ];
 
   useEffect(() => { 
@@ -1510,7 +1511,8 @@ const TestNavigationPage = ({ onNavigate }) => {
     "Which early detection tests have Medicare coverage?",
     "Compare Signatera vs Guardant Reveal",
     "I am a patient, keep answers basic",
-    "I am a physician, I like detailed answers"
+    "I am a physician, I like detailed answers",
+    "Vergleichen Sie Signatera mit Guardant Reveal"
   ];
 
   // Memoize system prompt - only computed once
