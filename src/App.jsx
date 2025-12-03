@@ -1811,7 +1811,15 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <h3 className="text-xl font-bold text-slate-800 text-center mb-2">Liquid Biopsy Tests We Are Tracking</h3>
+      <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
+        Liquid Biopsy Tests We Are Tracking: Browse them{' '}
+        <button 
+          onClick={() => onNavigate('test-tools')} 
+          className="text-[#2A63A4] hover:text-[#1E4A7A] underline cursor-pointer"
+        >
+          here
+        </button>
+      </h3>
       <div className="flex items-center justify-center mb-4">
         <div className="flex items-center gap-3 text-base font-bold">
           <span className="text-orange-600">Minimal Residual Disease (MRD)</span>
