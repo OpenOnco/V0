@@ -1879,7 +1879,7 @@ const TestShowcase = ({ onNavigate }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
       <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
-        Overview: Tests We Track
+        Overview: Tests We Track (use the tools above to dig in)
       </h3>
       
       {/* Category legend */}
