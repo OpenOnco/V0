@@ -1648,7 +1648,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   // Memoize system prompt - only computed once
   const systemPrompt = useMemo(() => {
     const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
-    return `You are an expert oncology diagnostics advisor for OpenOnco with access to a liquid biopsy test database.
+    return `You are a liquid biopsy test data assistant for OpenOnco. You help users explore and compare tests in our database. You are not a clinical advisor and do not provide medical advice.
 
 TEST DATABASE:
 ${JSON.stringify(testDatabase)}
@@ -2136,7 +2136,7 @@ const HomePage = ({ onNavigate }) => {
   // Memoize system prompt - only computed once
   const systemPrompt = useMemo(() => {
     const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
-    return `You are an expert oncology diagnostics advisor for OpenOnco with access to a liquid biopsy test database.
+    return `You are a liquid biopsy test data assistant for OpenOnco. You help users explore and compare tests in our database. You are not a clinical advisor and do not provide medical advice.
 
 TEST DATABASE:
 ${JSON.stringify(testDatabase)}
@@ -2845,7 +2845,7 @@ const CategoryChat = ({ category }) => {
 
   // Memoize system prompt - only recomputed if category changes
   const systemPrompt = useMemo(() => {
-    return `You are an expert oncology diagnostics advisor specializing in ${meta.title} testing.
+    return `You are a liquid biopsy test data assistant for OpenOnco, focused on ${meta.title} testing. You help users explore and compare tests in our database. You are not a clinical advisor and do not provide medical advice.
 
 ${category} TEST DATABASE:
 ${JSON.stringify(meta.tests)}
