@@ -2192,7 +2192,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         </div>
 
         {/* Category Navigators */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
           {/* MRD Column */}
           <div className="flex flex-col">
             <div
@@ -2227,7 +2227,6 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm lg:text-base text-gray-600 mt-3 px-2 text-center">After cancer treatment these tests detect traces of any remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
           </div>
           
           {/* ECD Column */}
@@ -2264,7 +2263,6 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm lg:text-base text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
           </div>
           
           {/* TRM Column */}
@@ -2301,13 +2299,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm lg:text-base text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
           </div>
-        </div>
-        
-        {/* OR Divider */}
-        <div className="text-center mb-6">
-          <span className="text-xl lg:text-2xl font-bold text-black">OR</span>
         </div>
         
         {/* Inline Chat Box */}
