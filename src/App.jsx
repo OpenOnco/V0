@@ -1398,7 +1398,7 @@ const comparisonParams = {
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Medicare Coverage' },
-    { key: 'commercialPayersStr', label: 'Commercial Payers' },
+    { key: 'commercialPayersStr', label: 'Private Payers' },
   ],
   ECD: [
     { key: 'testScope', label: 'Scope' },
@@ -1419,7 +1419,7 @@ const comparisonParams = {
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Medicare Coverage' },
-    { key: 'commercialPayersStr', label: 'Commercial Payers' },
+    { key: 'commercialPayersStr', label: 'Private Payers' },
     { key: 'clinicalAvailability', label: 'Clinical Availability' },
     { key: 'tat', label: 'Turnaround Time' },
     { key: 'sampleType', label: 'Sample Type' },
@@ -1441,7 +1441,7 @@ const comparisonParams = {
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Medicare Coverage' },
-    { key: 'commercialPayersStr', label: 'Commercial Payers' },
+    { key: 'commercialPayersStr', label: 'Private Payers' },
   ],
 };
 
@@ -1879,7 +1879,7 @@ const TestShowcase = ({ onNavigate }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
       <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
-        Just for fun: All the Liquid Biopsy Tests We Track
+        Overview: Tests We Track
       </h3>
       
       {/* Category legend */}
@@ -2320,7 +2320,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
               </svg>
               <h3 className="text-white font-semibold">Ask Claude about these tests</h3>
             </div>
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden px-4">
               <div 
                 className="flex whitespace-nowrap text-white/70 text-sm"
                 style={{
@@ -3016,8 +3016,13 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              {test.reimbursement?.toLowerCase().includes('medicare') && <Badge variant="success">Medicare</Badge>}
-              {test.commercialPayers && test.commercialPayers.length >= 3 && <Badge variant="blue">Commercial</Badge>}
+              {test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0 
+                ? <Badge variant="success">Medicare+Private</Badge>
+                : test.reimbursement?.toLowerCase().includes('medicare') 
+                  ? <Badge variant="success">Medicare</Badge>
+                  : test.commercialPayers && test.commercialPayers.length > 0 
+                    ? <Badge variant="blue">Private</Badge>
+                    : null}
               {category === 'ECD' && test.listPrice && <Badge variant="amber">${test.listPrice}</Badge>}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
@@ -3101,7 +3106,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="FDA Status" value={test.fdaStatus} />
               <DataRow label="Reimbursement" value={test.reimbursement} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
-                <DataRow label="Commercial Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
+                <DataRow label="Private Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
               <DataRow label="CPT Codes" value={test.cptCodes} notes={test.cptCodesNotes} />
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
@@ -3154,7 +3159,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="FDA Status" value={test.fdaStatus} />
               <DataRow label="Reimbursement" value={test.reimbursement} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
-                <DataRow label="Commercial Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
+                <DataRow label="Private Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
               <DataRow label="CPT Code" value={test.cptCode} />
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
@@ -3180,7 +3185,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="FDA Status" value={test.fdaStatus} />
               <DataRow label="Reimbursement" value={test.reimbursement} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
-                <DataRow label="Commercial Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
+                <DataRow label="Private Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
             </>
@@ -3498,7 +3503,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Commercial Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Private Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
@@ -3553,7 +3558,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Commercial Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Private Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
@@ -3629,7 +3634,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Commercial Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Private Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
