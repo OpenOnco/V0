@@ -2616,20 +2616,35 @@ const HowItWorksPage = () => (
 // ============================================
 const SubmissionsPage = () => {
   const [submissionType, setSubmissionType] = useState('');
+  const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
   const [category, setCategory] = useState('');
-  const [formData, setFormData] = useState({});
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  
+  // New test fields
+  const [newTestName, setNewTestName] = useState('');
+  const [newTestVendor, setNewTestVendor] = useState('');
+  const [newTestUrl, setNewTestUrl] = useState('');
+  const [newTestNotes, setNewTestNotes] = useState('');
+  
+  // Correction fields
   const [existingTest, setExistingTest] = useState('');
+  const [selectedParameter, setSelectedParameter] = useState('');
+  const [newValue, setNewValue] = useState('');
+  const [citation, setCitation] = useState('');
   
   // Email verification states
-  const [verificationStep, setVerificationStep] = useState('form'); // 'form', 'verify', 'verified'
+  const [verificationStep, setVerificationStep] = useState('form');
   const [verificationCode, setVerificationCode] = useState('');
+  const [verificationToken, setVerificationToken] = useState('');
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState('');
-  const [verificationToken, setVerificationToken] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   // Get existing tests for correction dropdown
   const existingTests = {
@@ -2638,69 +2653,72 @@ const SubmissionsPage = () => {
     TRM: trmTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
   };
 
-  // Field definitions by category
-  const fieldDefinitions = {
+  // Parameters available for correction by category
+  const parameterOptions = {
     MRD: [
-      { key: 'name', label: 'Test Name', type: 'text', required: true },
-      { key: 'vendor', label: 'Vendor/Company', type: 'text', required: true },
-      { key: 'approach', label: 'Approach', type: 'select', options: ['Tumor-informed', 'Tumor-agnostic', 'Hybrid'], required: true },
-      { key: 'method', label: 'Method Description', type: 'textarea' },
-      { key: 'cancerTypes', label: 'Cancer Types (comma-separated)', type: 'text' },
-      { key: 'sensitivity', label: 'Sensitivity (%)', type: 'number' },
-      { key: 'specificity', label: 'Specificity (%)', type: 'number' },
-      { key: 'lod', label: 'Limit of Detection (VAF %)', type: 'number', step: '0.0001' },
-      { key: 'variantsTracked', label: 'Variants Tracked', type: 'text' },
-      { key: 'requiresTumorTissue', label: 'Requires Tumor Tissue', type: 'select', options: ['Yes', 'No'] },
-      { key: 'initialTat', label: 'Initial TAT (days)', type: 'number' },
-      { key: 'followUpTat', label: 'Follow-up TAT (days)', type: 'number' },
-      { key: 'bloodVolume', label: 'Blood Volume (mL)', type: 'number' },
-      { key: 'fdaStatus', label: 'FDA Status', type: 'text' },
-      { key: 'reimbursement', label: 'Reimbursement', type: 'select', options: ['Medicare', 'Coverage Varies', 'Not Covered', 'Pending'] },
-      { key: 'cptCodes', label: 'CPT Code(s)', type: 'text' },
-      { key: 'clinicalTrials', label: 'Clinical Trials (NCT numbers)', type: 'textarea' },
-      { key: 'totalParticipants', label: 'Total Trial Participants', type: 'number' },
-      { key: 'numPublications', label: 'Number of Publications', type: 'number' },
+      { key: 'sensitivity', label: 'Sensitivity (%)' },
+      { key: 'specificity', label: 'Specificity (%)' },
+      { key: 'lod', label: 'Limit of Detection (VAF %)' },
+      { key: 'variantsTracked', label: 'Variants Tracked' },
+      { key: 'initialTat', label: 'Initial Turnaround Time (days)' },
+      { key: 'followUpTat', label: 'Follow-up Turnaround Time (days)' },
+      { key: 'bloodVolume', label: 'Blood Volume (mL)' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Reimbursement Status' },
+      { key: 'cptCodes', label: 'CPT Codes' },
+      { key: 'clinicalTrials', label: 'Clinical Trials' },
+      { key: 'totalParticipants', label: 'Total Trial Participants' },
+      { key: 'numPublications', label: 'Number of Publications' },
+      { key: 'other', label: 'Other (specify in notes)' },
     ],
     ECD: [
-      { key: 'name', label: 'Test Name', type: 'text', required: true },
-      { key: 'vendor', label: 'Vendor/Company', type: 'text', required: true },
-      { key: 'testScope', label: 'Test Scope', type: 'select', options: ['Multi-cancer (MCED)', 'Single-cancer (CRC)', 'Single-cancer (Lung)', 'Single-cancer (Breast)', 'Single-cancer (Liver)', 'Single-cancer (Other)'], required: true },
-      { key: 'approach', label: 'Approach', type: 'text' },
-      { key: 'method', label: 'Method Description', type: 'textarea' },
-      { key: 'cancerTypes', label: 'Cancer Types Detected (comma-separated)', type: 'text' },
-      { key: 'targetPopulation', label: 'Target Population', type: 'text' },
-      { key: 'sensitivity', label: 'Overall Sensitivity (%)', type: 'number' },
-      { key: 'stageISensitivity', label: 'Stage I Sensitivity (%)', type: 'number' },
-      { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)', type: 'number' },
-      { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)', type: 'number' },
-      { key: 'specificity', label: 'Specificity (%)', type: 'number' },
-      { key: 'ppv', label: 'Positive Predictive Value (%)', type: 'number', step: '0.01' },
-      { key: 'npv', label: 'Negative Predictive Value (%)', type: 'number', step: '0.01' },
-      { key: 'tat', label: 'Turnaround Time (days)', type: 'text' },
-      { key: 'listPrice', label: 'List Price ($)', type: 'number' },
-      { key: 'fdaStatus', label: 'FDA Status', type: 'text' },
-      { key: 'reimbursement', label: 'Reimbursement', type: 'select', options: ['Medicare', 'Coverage Varies', 'Not Covered', 'Self-Pay Only'] },
-      { key: 'screeningInterval', label: 'Screening Interval', type: 'text' },
-      { key: 'clinicalTrials', label: 'Clinical Trials (NCT numbers)', type: 'textarea' },
-      { key: 'totalParticipants', label: 'Total Trial Participants', type: 'number' },
-      { key: 'numPublications', label: 'Number of Publications', type: 'number' },
+      { key: 'sensitivity', label: 'Overall Sensitivity (%)' },
+      { key: 'stageISensitivity', label: 'Stage I Sensitivity (%)' },
+      { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)' },
+      { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)' },
+      { key: 'specificity', label: 'Specificity (%)' },
+      { key: 'ppv', label: 'Positive Predictive Value (%)' },
+      { key: 'npv', label: 'Negative Predictive Value (%)' },
+      { key: 'tat', label: 'Turnaround Time (days)' },
+      { key: 'listPrice', label: 'List Price ($)' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Reimbursement Status' },
+      { key: 'screeningInterval', label: 'Screening Interval' },
+      { key: 'clinicalTrials', label: 'Clinical Trials' },
+      { key: 'totalParticipants', label: 'Total Trial Participants' },
+      { key: 'numPublications', label: 'Number of Publications' },
+      { key: 'other', label: 'Other (specify in notes)' },
     ],
     TRM: [
-      { key: 'name', label: 'Test Name', type: 'text', required: true },
-      { key: 'vendor', label: 'Vendor/Company', type: 'text', required: true },
-      { key: 'approach', label: 'Approach', type: 'select', options: ['Tumor-informed', 'Tumor-agnostic'], required: true },
-      { key: 'method', label: 'Method Description', type: 'textarea' },
-      { key: 'cancerTypes', label: 'Cancer Types (comma-separated)', type: 'text' },
-      { key: 'targetPopulation', label: 'Target Population', type: 'text' },
-      { key: 'responseDefinition', label: 'Response Definition', type: 'textarea' },
-      { key: 'leadTimeVsImaging', label: 'Lead Time vs Imaging (days)', type: 'number' },
-      { key: 'lod', label: 'Limit of Detection', type: 'text' },
-      { key: 'fdaStatus', label: 'FDA Status', type: 'text' },
-      { key: 'reimbursement', label: 'Reimbursement', type: 'select', options: ['Medicare', 'Coverage Varies', 'Not Covered'] },
-      { key: 'clinicalTrials', label: 'Clinical Trials (NCT numbers)', type: 'textarea' },
-      { key: 'totalParticipants', label: 'Total Trial Participants', type: 'number' },
-      { key: 'numPublications', label: 'Number of Publications', type: 'number' },
+      { key: 'sensitivity', label: 'Sensitivity (%)' },
+      { key: 'specificity', label: 'Specificity (%)' },
+      { key: 'lod', label: 'Limit of Detection' },
+      { key: 'leadTimeVsImaging', label: 'Lead Time vs Imaging (days)' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Reimbursement Status' },
+      { key: 'clinicalTrials', label: 'Clinical Trials' },
+      { key: 'totalParticipants', label: 'Total Trial Participants' },
+      { key: 'numPublications', label: 'Number of Publications' },
+      { key: 'other', label: 'Other (specify in notes)' },
     ],
+  };
+
+  // Get current value of selected parameter for the selected test
+  const getCurrentValue = () => {
+    if (!existingTest || !selectedParameter || !category) return '';
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : trmTestData;
+    const test = testList.find(t => t.id === existingTest);
+    if (!test || selectedParameter === 'other') return '';
+    const value = test[selectedParameter];
+    return value !== null && value !== undefined ? String(value) : 'Not specified';
+  };
+
+  // Get vendor name for selected test (for email validation)
+  const getSelectedTestVendor = () => {
+    if (!existingTest || !category) return '';
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : trmTestData;
+    const test = testList.find(t => t.id === existingTest);
+    return test?.vendor || '';
   };
 
   // Validate email format
@@ -2709,49 +2727,55 @@ const SubmissionsPage = () => {
     return emailRegex.test(email);
   };
 
-  // Check if email domain looks corporate (not gmail, yahoo, etc.)
-  const isCorpEmail = (email) => {
-    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com', 'protonmail.com'];
+  // Check if email domain is free (Gmail, Yahoo, etc.)
+  const isFreeEmail = (email) => {
+    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com', 'protonmail.com', 'live.com', 'msn.com'];
     const domain = email.split('@')[1]?.toLowerCase();
-    return domain && !freeProviders.includes(domain);
+    return freeProviders.includes(domain);
   };
 
-  const handleFieldChange = (key, value) => {
-    setFormData(prev => ({ ...prev, [key]: value }));
+  // Check if email domain matches vendor
+  const emailMatchesVendor = (email, vendor) => {
+    if (!email || !vendor) return false;
+    const emailDomain = email.split('@')[1]?.toLowerCase().split('.')[0];
+    const vendorClean = vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
+    // Check if domain contains vendor name or vice versa
+    return emailDomain.includes(vendorClean) || vendorClean.includes(emailDomain);
   };
 
-  const handleEmailChange = (email) => {
-    setContactEmail(email);
-    setEmailError('');
-    setVerificationStep('form');
-    setVerificationCode('');
-  };
+  // Validate email based on submitter type
+  const validateEmail = () => {
+    if (!validateEmailFormat(contactEmail)) {
+      setEmailError('Please enter a valid email address');
+      return false;
+    }
 
-  const handleExistingTestSelect = (testId) => {
-    setExistingTest(testId);
-    if (testId && category) {
-      const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : trmTestData;
-      const test = testList.find(t => t.id === testId);
-      if (test) {
-        setFormData({ ...test, cancerTypes: test.cancerTypes?.join(', ') || '' });
+    if (isFreeEmail(contactEmail)) {
+      setEmailError('Please use a company/institutional email (not Gmail, Yahoo, etc.)');
+      return false;
+    }
+
+    if (submitterType === 'vendor') {
+      const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
+      if (!emailMatchesVendor(contactEmail, vendor)) {
+        setEmailError(`For vendor submissions, email domain must match ${vendor || 'the vendor'}`);
+        return false;
       }
     }
+
+    setEmailError('');
+    return true;
   };
 
   // Send verification code
   const sendVerificationCode = async () => {
-    if (!validateEmailFormat(contactEmail)) {
-      setEmailError('Please enter a valid email address');
-      return;
-    }
-
-    if (!isCorpEmail(contactEmail)) {
-      setEmailError('Please use your company email address (not Gmail, Yahoo, etc.)');
-      return;
-    }
+    if (!validateEmail()) return;
 
     setIsSendingCode(true);
     setVerificationError('');
+
+    const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
+    const testName = submissionType === 'new' ? newTestName : existingTests[category]?.find(t => t.id === existingTest)?.name;
 
     try {
       const response = await fetch('/api/send-verification', {
@@ -2759,8 +2783,8 @@ const SubmissionsPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: contactEmail,
-          vendor: formData.vendor,
-          testName: formData.name
+          vendor: vendor,
+          testName: testName
         })
       });
 
@@ -2813,9 +2837,6 @@ const SubmissionsPage = () => {
     setIsVerifying(false);
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -2829,12 +2850,34 @@ const SubmissionsPage = () => {
 
     const submission = {
       submissionType,
+      submitterType,
       category,
-      contactEmail,
+      submitter: {
+        firstName,
+        lastName,
+        email: contactEmail,
+      },
       emailVerified: true,
       timestamp: new Date().toISOString(),
-      existingTestId: submissionType === 'correction' ? existingTest : null,
-      data: formData,
+      ...(submissionType === 'new' ? {
+        newTest: {
+          name: newTestName,
+          vendor: newTestVendor,
+          performanceUrl: newTestUrl,
+          additionalNotes: newTestNotes,
+        }
+      } : {
+        correction: {
+          testId: existingTest,
+          testName: existingTests[category]?.find(t => t.id === existingTest)?.name,
+          vendor: getSelectedTestVendor(),
+          parameter: selectedParameter,
+          parameterLabel: parameterOptions[category]?.find(p => p.key === selectedParameter)?.label,
+          currentValue: getCurrentValue(),
+          newValue: newValue,
+          citation: citation,
+        }
+      })
     };
 
     try {
@@ -2860,16 +2903,25 @@ const SubmissionsPage = () => {
 
   const resetForm = () => {
     setSubmissionType('');
+    setSubmitterType('');
     setCategory('');
-    setFormData({});
+    setFirstName('');
+    setLastName('');
     setContactEmail('');
     setEmailError('');
     setSubmitted(false);
+    setNewTestName('');
+    setNewTestVendor('');
+    setNewTestUrl('');
+    setNewTestNotes('');
     setExistingTest('');
+    setSelectedParameter('');
+    setNewValue('');
+    setCitation('');
     setVerificationStep('form');
     setVerificationCode('');
-    setVerificationError('');
     setVerificationToken('');
+    setVerificationError('');
     setIsSubmitting(false);
     setSubmitError('');
   };
@@ -2891,19 +2943,30 @@ const SubmissionsPage = () => {
     );
   }
 
+  // Check if form is ready for email verification
+  const isReadyForVerification = () => {
+    if (!submissionType || !submitterType || !category || !firstName || !lastName || !contactEmail) return false;
+    if (submissionType === 'new') {
+      return newTestName && newTestVendor && newTestUrl;
+    } else {
+      return existingTest && selectedParameter && newValue && citation;
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Submit Test Data</h1>
-      <p className="text-gray-600 mb-8">Help us keep our database accurate and comprehensive. Vendor submissions require email verification.</p>
+      <p className="text-gray-600 mb-8">Help us keep our database accurate and comprehensive.</p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        
         {/* Submission Type */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">What would you like to submit?</label>
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setCategory(''); setFormData({}); setExistingTest(''); setVerificationStep('form'); }}
+              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">New Test</div>
@@ -2911,7 +2974,7 @@ const SubmissionsPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setCategory(''); setFormData({}); setExistingTest(''); setVerificationStep('form'); }}
+              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">Correction</div>
@@ -2920,8 +2983,30 @@ const SubmissionsPage = () => {
           </div>
         </div>
 
-        {/* Category Selection */}
+        {/* Submitter Type */}
         {submissionType && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
+            <select
+              value={submitterType}
+              onChange={(e) => { setSubmitterType(e.target.value); setEmailError(''); setVerificationStep('form'); }}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+            >
+              <option value="">-- Select --</option>
+              <option value="vendor">Test Vendor Representative</option>
+              <option value="expert">Independent Expert / Researcher</option>
+            </select>
+            {submitterType === 'vendor' && (
+              <p className="text-sm text-amber-600 mt-2">⚠️ Vendor submissions require an email from your company domain</p>
+            )}
+            {submitterType === 'expert' && (
+              <p className="text-sm text-gray-500 mt-2">Expert submissions require a company or institutional email</p>
+            )}
+          </div>
+        )}
+
+        {/* Category Selection */}
+        {submitterType && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
             <div className="grid grid-cols-3 gap-3">
@@ -2933,7 +3018,7 @@ const SubmissionsPage = () => {
                 <button
                   key={cat.key}
                   type="button"
-                  onClick={() => { setCategory(cat.key); setFormData({}); setExistingTest(''); }}
+                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); }}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${category === cat.key ? `border-${cat.color}-500 bg-${cat.color}-50` : 'border-gray-200 hover:border-gray-300'}`}
                 >
                   <div className={`font-bold ${category === cat.key ? `text-${cat.color}-700` : 'text-gray-800'}`}>{cat.label}</div>
@@ -2944,107 +3029,182 @@ const SubmissionsPage = () => {
           </div>
         )}
 
-        {/* Existing Test Selection (for corrections) */}
+        {/* NEW TEST: Basic Info + URL */}
+        {submissionType === 'new' && category && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">New Test Information</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Test Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  value={newTestName}
+                  onChange={(e) => setNewTestName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  placeholder="e.g., Signatera, Galleri, etc."
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Vendor/Company <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  value={newTestVendor}
+                  onChange={(e) => { setNewTestVendor(e.target.value); setEmailError(''); setVerificationStep('form'); }}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  placeholder="e.g., Natera, GRAIL, etc."
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">URL with Test Performance Data <span className="text-red-500">*</span></label>
+                <input
+                  type="url"
+                  value={newTestUrl}
+                  onChange={(e) => setNewTestUrl(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  placeholder="https://..."
+                  required
+                />
+                <p className="text-sm text-gray-500 mt-1">Link to publication, vendor page, or FDA approval with performance data</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Additional Notes</label>
+                <textarea
+                  value={newTestNotes}
+                  onChange={(e) => setNewTestNotes(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  rows={3}
+                  placeholder="Any additional context about this test..."
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CORRECTION: Select Test → Select Parameter → New Value */}
         {submissionType === 'correction' && category && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Select Test to Correct</label>
-            <select
-              value={existingTest}
-              onChange={(e) => handleExistingTestSelect(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-              required
-            >
-              <option value="">-- Select a test --</option>
-              {existingTests[category]?.map(test => (
-                <option key={test.id} value={test.id}>{test.name} ({test.vendor})</option>
-              ))}
-            </select>
-          </div>
-        )}
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Correction Details</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
+                <select
+                  value={existingTest}
+                  onChange={(e) => { setExistingTest(e.target.value); setSelectedParameter(''); setNewValue(''); setEmailError(''); setVerificationStep('form'); }}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  required
+                >
+                  <option value="">-- Select a test --</option>
+                  {existingTests[category]?.map(test => (
+                    <option key={test.id} value={test.id}>{test.name} ({test.vendor})</option>
+                  ))}
+                </select>
+              </div>
 
-        {/* Dynamic Form Fields */}
-        {category && (submissionType === 'new' || existingTest) && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              {submissionType === 'new' ? 'Test Information' : 'Update Fields (modify only what needs correction)'}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {fieldDefinitions[category]?.map(field => (
-                <div key={field.key} className={field.type === 'textarea' ? 'md:col-span-2' : ''}>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    {field.label} {field.required && <span className="text-red-500">*</span>}
-                  </label>
-                  {field.type === 'select' ? (
-                    <select
-                      value={formData[field.key] || ''}
-                      onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                      required={field.required && submissionType === 'new'}
-                    >
-                      <option value="">-- Select --</option>
-                      {field.options.map(opt => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
-                  ) : field.type === 'textarea' ? (
-                    <textarea
-                      value={formData[field.key] || ''}
-                      onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                      rows={3}
-                    />
-                  ) : (
-                    <input
-                      type={field.type}
-                      step={field.step}
-                      value={formData[field.key] || ''}
-                      onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                      required={field.required && submissionType === 'new'}
-                    />
-                  )}
+              {existingTest && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">Parameter to Correct <span className="text-red-500">*</span></label>
+                  <select
+                    value={selectedParameter}
+                    onChange={(e) => { setSelectedParameter(e.target.value); setNewValue(''); }}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                    required
+                  >
+                    <option value="">-- Select parameter --</option>
+                    {parameterOptions[category]?.map(param => (
+                      <option key={param.key} value={param.key}>{param.label}</option>
+                    ))}
+                  </select>
                 </div>
-              ))}
-            </div>
+              )}
 
-            {/* Additional Notes */}
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-600 mb-1">Additional Notes / Citations</label>
-              <textarea
-                value={formData.additionalNotes || ''}
-                onChange={(e) => handleFieldChange('additionalNotes', e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                rows={3}
-                placeholder="Include URLs to sources, publications, or any additional context..."
-              />
+              {selectedParameter && (
+                <>
+                  {selectedParameter !== 'other' && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <span className="text-sm text-gray-500">Current value: </span>
+                      <span className="text-sm font-medium text-gray-800">{getCurrentValue()}</span>
+                    </div>
+                  )}
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      {selectedParameter === 'other' ? 'Describe the correction' : 'New Value'} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={newValue}
+                      onChange={(e) => setNewValue(e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                      placeholder={selectedParameter === 'other' ? 'Describe the parameter and new value...' : 'Enter the correct value'}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Citation/Source URL <span className="text-red-500">*</span></label>
+                    <input
+                      type="url"
+                      value={citation}
+                      onChange={(e) => setCitation(e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                      placeholder="https://..."
+                      required
+                    />
+                    <p className="text-sm text-gray-500 mt-1">Link to publication or source supporting this value</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
 
-        {/* Email Verification Section */}
-        {category && (submissionType === 'new' || existingTest) && (
+        {/* Your Information */}
+        {category && (submissionType === 'new' ? newTestName && newTestVendor : existingTest && selectedParameter) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Email Verification <span className="text-red-500">*</span>
-            </h3>
-            
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">First Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Last Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Email Verification */}
             {verificationStep === 'form' && (
               <>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
-                  Your Work Email
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Work Email <span className="text-red-500">*</span>
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="email"
                     value={contactEmail}
-                    onChange={(e) => handleEmailChange(e.target.value)}
+                    onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); }}
                     className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="you@vendorcompany.com"
+                    placeholder={submitterType === 'vendor' ? `you@${(submissionType === 'new' ? newTestVendor : getSelectedTestVendor()).toLowerCase().replace(/[^a-z]/g, '')}.com` : 'you@company.com'}
                   />
                   <button
                     type="button"
                     onClick={sendVerificationCode}
-                    disabled={isSendingCode || !contactEmail || !formData.vendor}
+                    disabled={isSendingCode || !contactEmail || !firstName || !lastName}
                     className="bg-[#2A63A4] text-white px-4 py-2 rounded-lg hover:bg-[#1E4A7A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
                   >
                     {isSendingCode ? 'Sending...' : 'Send Code'}
@@ -3052,14 +3212,6 @@ const SubmissionsPage = () => {
                 </div>
                 {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                 {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
-                <p className="text-gray-500 text-sm mt-2">
-                  Enter your company email and click "Send Code". We'll send a 6-digit verification code.
-                </p>
-                {!formData.vendor && (
-                  <p className="text-amber-600 text-sm mt-1">
-                    ⚠️ Please fill in the Vendor/Company name above first.
-                  </p>
-                )}
               </>
             )}
 
@@ -3070,9 +3222,7 @@ const SubmissionsPage = () => {
                     A verification code has been sent to <strong>{contactEmail}</strong>
                   </p>
                 </div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
-                  Enter 6-digit code
-                </label>
+                <label className="block text-sm font-medium text-gray-600 mb-2">Enter 6-digit code</label>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -3117,7 +3267,7 @@ const SubmissionsPage = () => {
         )}
 
         {/* Submit Button */}
-        {category && (submissionType === 'new' || existingTest) && (
+        {isReadyForVerification() && (
           <>
             {submitError && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
@@ -3130,7 +3280,7 @@ const SubmissionsPage = () => {
               className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
             >
-              {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit' : 'Submit Data'}
+              {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit' : 'Submit'}
             </button>
           </>
         )}
@@ -3138,7 +3288,7 @@ const SubmissionsPage = () => {
 
       {/* Alternative Contact */}
       <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>Having trouble with verification? Contact via{' '}
+        <p>Questions? Contact via{' '}
           <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-[#2A63A4] hover:underline">
             LinkedIn
           </a>
@@ -3149,8 +3299,6 @@ const SubmissionsPage = () => {
   );
 };
 
-// Source Data Page
-// ============================================
 const SourceDataPage = () => {
   const downloadFile = (content, filename, type) => {
     const blob = new Blob([content], { type });
