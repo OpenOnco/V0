@@ -2204,8 +2204,8 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-base lg:text-lg font-bold text-slate-800">MRD Navigator</h3>
-                    <p className="text-xs lg:text-sm text-gray-500">Minimal Residual Disease</p>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Navigator</h3>
                   </div>
                 </div>
                 <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
@@ -2240,8 +2240,8 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-base lg:text-lg font-bold text-slate-800">ECD Navigator</h3>
-                    <p className="text-xs lg:text-sm text-gray-500">Early Cancer Detection</p>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Navigator</h3>
                   </div>
                 </div>
                 <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
@@ -2276,8 +2276,8 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
-                    <p className="text-xs lg:text-sm text-gray-500">Treatment Response Monitoring</p>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Navigator</h3>
                   </div>
                 </div>
                 <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
