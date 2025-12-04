@@ -1878,43 +1878,9 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <h3 className="text-xl font-bold text-slate-800 text-center mb-2">
+      <h3 className="text-xl font-bold text-slate-800 text-center mb-4">
         Overview: Tests We Track (use the tools above to dig in)
       </h3>
-      
-      {/* Category legend */}
-      <div className="flex items-center justify-center gap-4 mb-2 text-xs">
-        <span className="text-slate-500">Categories:</span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-          <span className="text-slate-500">MRD</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span className="text-slate-500">ECD</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-sky-500"></span>
-          <span className="text-slate-500">TRM</span>
-        </span>
-      </div>
-      
-      {/* Parameter type legend */}
-      <div className="flex items-center justify-center gap-4 mb-4 text-xs">
-        <span className="text-slate-500">Data types:</span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span className="text-slate-500">Clinical</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-violet-500"></span>
-          <span className="text-slate-500">Analytical</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-          <span className="text-slate-500">Operational</span>
-        </span>
-      </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {allTests.map(test => {
@@ -1948,6 +1914,37 @@ const TestShowcase = ({ onNavigate }) => {
             </div>
           );
         })}
+      </div>
+
+      {/* Legend at bottom */}
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-4 pt-4 border-t border-slate-200 text-xs">
+        <span className="text-slate-500">Categories:</span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+          <span className="text-slate-500">MRD</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span className="text-slate-500">ECD</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-sky-500"></span>
+          <span className="text-slate-500">TRM</span>
+        </span>
+        <span className="mx-2 text-slate-300">|</span>
+        <span className="text-slate-500">Data types:</span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span className="text-slate-500">Clinical</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+          <span className="text-slate-500">Analytical</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+          <span className="text-slate-500">Operational</span>
+        </span>
       </div>
 
       {/* Test Card Modal */}
@@ -2187,7 +2184,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         </div>
 
         {/* Intro Text */}
-        <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 lg:p-10 border border-slate-200 mb-8">
+        <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-8">
           <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
