@@ -2813,13 +2813,19 @@ const SubmissionsPage = () => {
     setIsVerifying(false);
   };
 
-  const handleSubmit = (e) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (verificationStep !== 'verified') {
       setEmailError('Please verify your email first');
       return;
     }
+
+    setIsSubmitting(true);
+    setSubmitError('');
 
     const submission = {
       submissionType,
@@ -2831,14 +2837,25 @@ const SubmissionsPage = () => {
       data: formData,
     };
 
-    const jsonString = JSON.stringify(submission, null, 2);
-    
-    // Create mailto link with JSON body
-    const subject = encodeURIComponent(`OpenOnco ${submissionType === 'new' ? 'New Test' : 'Correction'} Submission: ${formData.name || 'Unknown'} (${category}) - VERIFIED`);
-    const body = encodeURIComponent(`New submission from OpenOnco:\n\nContact: ${contactEmail} ✓ VERIFIED\nType: ${submissionType === 'new' ? 'New Test' : 'Correction'}\nCategory: ${category}\n\n--- JSON DATA ---\n${jsonString}`);
-    
-    window.location.href = `mailto:alexgdickinson@gmail.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    try {
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submission })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'Failed to submit. Please try again.');
+      }
+    } catch (error) {
+      setSubmitError('Network error. Please try again.');
+    }
+
+    setIsSubmitting(false);
   };
 
   const resetForm = () => {
@@ -2853,6 +2870,8 @@ const SubmissionsPage = () => {
     setVerificationCode('');
     setVerificationError('');
     setVerificationToken('');
+    setIsSubmitting(false);
+    setSubmitError('');
   };
 
   if (submitted) {
@@ -2862,8 +2881,8 @@ const SubmissionsPage = () => {
           <svg className="w-16 h-16 text-emerald-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-2xl font-bold text-emerald-800 mb-2">Submission Prepared!</h2>
-          <p className="text-emerald-700 mb-6">Your email client should have opened with the submission data. Please send the email to complete your submission.</p>
+          <h2 className="text-2xl font-bold text-emerald-800 mb-2">Submission Sent!</h2>
+          <p className="text-emerald-700 mb-6">Your data has been submitted successfully. We'll review it and update our database soon. Thank you for contributing!</p>
           <button onClick={resetForm} className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors">
             Submit Another
           </button>
@@ -3099,14 +3118,21 @@ const SubmissionsPage = () => {
 
         {/* Submit Button */}
         {category && (submissionType === 'new' || existingTest) && (
-          <button
-            type="submit"
-            disabled={verificationStep !== 'verified'}
-            className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-          >
-            {verificationStep !== 'verified' ? 'Verify Email to Submit' : 'Submit Data'}
-          </button>
+          <>
+            {submitError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+                {submitError}
+              </div>
+            )}
+            <button
+              type="submit"
+              disabled={verificationStep !== 'verified' || isSubmitting}
+              className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+            >
+              {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit' : 'Submit Data'}
+            </button>
+          </>
         )}
       </form>
 
