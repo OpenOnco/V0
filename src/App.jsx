@@ -2180,15 +2180,15 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
 
   return (
     <div>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative">
         {/* Build timestamp */}
         <div className="absolute top-2 right-6 text-xs text-gray-400">
           Build: {BUILD_INFO.date}
         </div>
 
         {/* Intro Text */}
-        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 mb-8 mx-10">
-          <p className="text-base sm:text-xl text-slate-700">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
+        <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 lg:p-10 border border-slate-200 mb-8">
+          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
         {/* Category Navigators */}
@@ -2196,26 +2196,26 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           {/* MRD Column */}
           <div className="flex flex-col">
             <div
-              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
+              className={`rounded-xl border-2 p-5 lg:p-6 cursor-pointer transition-all ${colorClasses.orange.card}`}
               onClick={() => onNavigate('MRD')}
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-800">MRD Navigator</h3>
-                    <p className="text-xs text-gray-500">Minimal Residual Disease</p>
+                    <h3 className="text-base lg:text-lg font-bold text-slate-800">MRD Navigator</h3>
+                    <p className="text-xs lg:text-sm text-gray-500">Minimal Residual Disease</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-[#2A63A4]">→</span>
+                <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
               </div>
               <div className="overflow-hidden">
                 <div 
-                  className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
+                  className="flex whitespace-nowrap text-xs lg:text-sm text-orange-600 font-medium"
                   style={{ animation: 'tickerMRD 20s linear infinite' }}
                 >
                   <span className="inline-block">
@@ -2227,32 +2227,32 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment these tests detect traces of any remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
+            <p className="text-sm lg:text-base text-gray-600 mt-3 px-2 text-center">After cancer treatment these tests detect traces of any remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
           </div>
           
           {/* ECD Column */}
           <div className="flex flex-col">
             <div
-              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
+              className={`rounded-xl border-2 p-5 lg:p-6 cursor-pointer transition-all ${colorClasses.green.card}`}
               onClick={() => onNavigate('ECD')}
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-800">ECD Navigator</h3>
-                    <p className="text-xs text-gray-500">Early Cancer Detection</p>
+                    <h3 className="text-base lg:text-lg font-bold text-slate-800">ECD Navigator</h3>
+                    <p className="text-xs lg:text-sm text-gray-500">Early Cancer Detection</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-[#2A63A4]">→</span>
+                <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
               </div>
               <div className="overflow-hidden">
                 <div 
-                  className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
+                  className="flex whitespace-nowrap text-xs lg:text-sm text-emerald-600 font-medium"
                   style={{ animation: 'tickerECD 25s linear infinite' }}
                 >
                   <span className="inline-block">
@@ -2264,32 +2264,32 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
+            <p className="text-sm lg:text-base text-gray-600 mt-3 px-2 text-center">Screen for cancer before symptoms appear by detecting cancer DNA in blood, potentially finding cancer at early stage when it is more treatable.</p>
           </div>
           
           {/* TRM Column */}
           <div className="flex flex-col">
             <div
-              className={`rounded-xl border-2 p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
+              className={`rounded-xl border-2 p-5 lg:p-6 cursor-pointer transition-all ${colorClasses.red.card}`}
               onClick={() => onNavigate('TRM')}
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                    <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
                     </svg>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-slate-800">TRM Navigator</h3>
-                    <p className="text-xs text-gray-500">Treatment Response Monitoring</p>
+                    <p className="text-xs lg:text-sm text-gray-500">Treatment Response Monitoring</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-[#2A63A4]">→</span>
+                <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
               </div>
               <div className="overflow-hidden">
                 <div 
-                  className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
+                  className="flex whitespace-nowrap text-xs lg:text-sm text-sky-600 font-medium"
                   style={{ animation: 'tickerTRM 15s linear infinite' }}
                 >
                   <span className="inline-block">
@@ -2301,13 +2301,13 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
+            <p className="text-sm lg:text-base text-gray-600 mt-3 px-2 text-center">During active treatment, track how a cancer is responding to therapy by measuring changes in tumor DNA levels over time.</p>
           </div>
         </div>
         
         {/* OR Divider */}
         <div className="text-center mb-6">
-          <span className="text-xl font-bold text-black">OR</span>
+          <span className="text-xl lg:text-2xl font-bold text-black">OR</span>
         </div>
         
         {/* Inline Chat Box */}
@@ -2315,14 +2315,14 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           {/* Chat Header */}
           <div className="py-3 overflow-hidden" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
             <div className="flex items-center gap-3 px-4 mb-2">
-              <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <h3 className="text-white font-semibold">Ask Claude about data for these tests</h3>
+              <h3 className="text-white font-semibold text-base lg:text-lg">Ask Claude about data for these tests</h3>
             </div>
             <div className="relative overflow-hidden px-4">
               <div 
-                className="flex whitespace-nowrap text-white/70 text-sm"
+                className="flex whitespace-nowrap text-white/70 text-sm lg:text-base"
                 style={{
                   animation: 'ticker 60s linear infinite',
                 }}
@@ -2388,14 +2388,14 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           
           {/* Example Questions (only show when no messages) */}
           {messages.length === 0 && (
-            <div className="p-4 bg-slate-50">
-              <p className="text-xs text-slate-500 mb-2">Try asking:</p>
-              <div className="flex flex-wrap gap-2">
+            <div className="p-4 lg:p-6 bg-slate-50">
+              <p className="text-xs lg:text-sm text-slate-500 mb-2 lg:mb-3">Try asking:</p>
+              <div className="flex flex-wrap gap-2 lg:gap-3">
                 {exampleQuestions.map((q, i) => (
                   <button
                     key={i}
                     onClick={() => handleSubmit(q)}
-                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    className="text-sm lg:text-base bg-white border border-slate-200 rounded-full px-3 lg:px-4 py-1 lg:py-2 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
                     {q}
                   </button>
@@ -2405,21 +2405,21 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           )}
           
           {/* Input Area */}
-          <div className="p-4 border-t border-slate-200 bg-white">
-            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+          <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
               <input
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Type your question here..."
-                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 focus:outline-none"
+                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none"
                 style={{ '--tw-ring-color': '#2A63A4' }}
                 disabled={isLoading}
               />
               <button
                 type="submit"
                 disabled={isLoading || !chatInput.trim()}
-                className="text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
                 style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
               >
                 Ask
