@@ -2177,23 +2177,23 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
 
   return (
     <div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative">
         {/* Build timestamp */}
         <div className="absolute top-2 right-6 text-xs text-gray-400">
           Build: {BUILD_INFO.date}
         </div>
 
         {/* Intro Text */}
-        <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-8">
+        <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
           <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
         </div>
 
         {/* Category Navigators */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4 mb-4">
           {/* MRD Column */}
           <div className="flex flex-col">
             <div
-              className={`rounded-xl border-2 p-5 lg:p-6 cursor-pointer transition-all ${colorClasses.orange.card}`}
+              className={`rounded-xl border-2 p-4 lg:p-5 cursor-pointer transition-all ${colorClasses.orange.card}`}
               onClick={() => onNavigate('MRD')}
             >
               <div className="flex items-center justify-between mb-2">
@@ -2205,7 +2205,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   </div>
                   <div>
                     <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
-                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Navigator</h3>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">(MRD) Navigator</h3>
                   </div>
                 </div>
                 <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
@@ -2229,7 +2229,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           {/* ECD Column */}
           <div className="flex flex-col">
             <div
-              className={`rounded-xl border-2 p-5 lg:p-6 cursor-pointer transition-all ${colorClasses.green.card}`}
+              className={`rounded-xl border-2 p-4 lg:p-5 cursor-pointer transition-all ${colorClasses.green.card}`}
               onClick={() => onNavigate('ECD')}
             >
               <div className="flex items-center justify-between mb-2">
@@ -2241,7 +2241,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   </div>
                   <div>
                     <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Navigator</h3>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">(ECD) Navigator</h3>
                   </div>
                 </div>
                 <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
@@ -2265,7 +2265,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           {/* TRM Column */}
           <div className="flex flex-col">
             <div
-              className={`rounded-xl border-2 p-5 lg:p-6 cursor-pointer transition-all ${colorClasses.red.card}`}
+              className={`rounded-xl border-2 p-4 lg:p-5 cursor-pointer transition-all ${colorClasses.red.card}`}
               onClick={() => onNavigate('TRM')}
             >
               <div className="flex items-center justify-between mb-2">
@@ -2277,7 +2277,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   </div>
                   <div>
                     <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
-                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Navigator</h3>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">(TRM) Navigator</h3>
                   </div>
                 </div>
                 <span className="text-sm lg:text-base font-medium text-[#2A63A4]">→</span>
@@ -2300,7 +2300,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         </div>
         
         {/* Inline Chat Box */}
-        <div className="rounded-xl border-2 border-slate-200 bg-white mb-8 overflow-hidden">
+        <div className="rounded-xl border-2 border-slate-200 bg-white mb-4 overflow-hidden">
           {/* Chat Header */}
           <div className="py-3 overflow-hidden" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
             <div className="flex items-center gap-3 px-4 mb-2">
@@ -2418,17 +2418,17 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         </div>
 
         {/* Test Showcase */}
-        <div className="mb-8">
+        <div className="mb-4">
           <TestShowcase onNavigate={onNavigate} />
         </div>
 
         {/* Stat of the Day */}
-        <div className="mb-8">
+        <div className="mb-4">
           <StatOfTheDay onNavigate={onNavigate} />
         </div>
 
         {/* News Feed */}
-        <div className="mb-8">
+        <div className="mb-4">
           <NewsFeed />
         </div>
       </div>
