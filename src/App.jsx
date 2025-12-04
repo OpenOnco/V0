@@ -691,7 +691,7 @@ const mrdTestData = [
     "reimbursementNote": "Initial Medicare LCD for CRC MRD after curative-intent treatment; subsequent updates extended coverage to surveillance and broader CRC use; additional payer adoption ongoing.",
     "commercialPayers": ["BCBS Louisiana", "Geisinger Health Plan"],
     "commercialPayersCitations": "https://www.businesswire.com/news/home/20230720806084/en/Guardant-Health-receives-first-commercial-payor-coverage-for-Guardant-Reveal%E2%84%A2-test-from-Blue-Cross-and-Blue-Shield-of-Louisiana/",
-    "commercialPayersNotes": "Blue Cross Blue Shield of Louisiana became first commercial payer to cover Guardant Reveal in July 2023. Geisinger Health Plan added coverage later in 2023. Commercial coverage continues to expand.",
+    "commercialPayersNotes": "Blue Cross Blue Shield of Louisiana became first commercial payer to cover Guardant Reveal in July 2023. Geisinger Health Plan added coverage later in 2023. Additional BCBS plans (including BCBS Massachusetts) appear to have medical policies; verify with specific plan.",
     "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025; historically billed under 81479/MolDX).",
     "cptCodesNotes": "Guardant Reveal PLA (2025).",
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -755,9 +755,9 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT; not FDA-cleared/approved as of late 2025 (clinical validation via numerous peer-reviewed studies).",
     "reimbursement": "Broad Medicare (MolDX) coverage across multiple solid tumors; ADLT pricing in place.",
     "reimbursementNote": "Signatera is covered by Medicare for several indications (CRC, breast, others) and uses ADLT/PLA coding with widespread commercial payer recognition.",
-    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "Aetna", "BCBS Louisiana"],
+    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California"],
     "commercialPayersCitations": "https://www.natera.com/oncology/billing/",
-    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna and UnitedHealthcare. BCBS Louisiana provides explicit coverage. State biomarker laws in states covering >50% of U.S. population may require commercial payers to cover tests with Medicare coverage.",
+    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan.",
     "cptCodes": "0340U (ADLT)",
     "cptCodesNotes": "Signatera PLA (ADLT pricing).",
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -880,9 +880,9 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA (P230009) July 26 2024 - First blood test for primary CRC screening; NCCN-recommended",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare covered per NCD 210.3; commercial coverage expanding",
-    "commercialPayers": ["VA Community Care", "TRICARE"],
+    "commercialPayers": [],
     "commercialPayersCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/Guardant-Healths-Shield-Blood-Test-Now-Covered-for-VA-Community-Care-Beneficiaries/default.aspx",
-    "commercialPayersNotes": "VA Community Care Network covers Shield with no copay for average-risk individuals 45+. TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
+    "commercialPayersNotes": "No commercial payer coverage yet. Government programs: VA Community Care Network covers Shield with no copay for average-risk individuals 45+; TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
     "clinicalAvailability": "Commercially available in US since August 2024",
     "tat": "~14 days",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes",
@@ -924,9 +924,9 @@ const ecdTestData = [
     "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; not FDA-approved; Breakthrough Device designation; PMA submission expected H1 2026",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk",
-    "commercialPayers": ["TRICARE", "Curative Insurance", "Fountain Health", "Alignment Health Plan"],
+    "commercialPayers": ["Curative Insurance", "Fountain Health", "Alignment Health Plan"],
     "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
-    "commercialPayersNotes": "Limited commercial coverage. TRICARE covers with prior authorization for eligible beneficiaries ≥50. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Most major commercial insurers consider investigational.",
+    "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational.",
     "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
     "sampleType": "Whole blood in Streck cfDNA BCT tubes",
@@ -968,9 +968,9 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA October 4 2024",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare covered; $0 out-of-pocket for eligible; broad commercial payer coverage",
-    "commercialPayers": ["UnitedHealthcare", "Aetna", "Humana", "Cigna", "Anthem BCBS", "TRICARE"],
+    "commercialPayers": ["Humana"],
     "commercialPayersCitations": "https://www.cologuard.com/insurance",
-    "commercialPayersNotes": "Covered by most major commercial insurers under ACA preventive services. >96% of eligible patients aged 45+ have no out-of-pocket costs. Nationwide in-network coverage with most national and regional health plans.",
+    "commercialPayersNotes": "Cologuard Plus confirmed coverage: Medicare Part B and Humana Medicare Advantage. Government programs: TRICARE expected based on legacy Cologuard coverage. Other major commercial payers (UnitedHealthcare, Aetna, Cigna, Anthem BCBS) anticipated to extend legacy Cologuard coverage to Plus but should be validated per plan.",
     "clinicalAvailability": "Commercially launched late March 2025 via ExactNexus (350+ health systems)",
     "tat": "3-5 days from receipt",
     "sampleType": "At-home stool collection with enhanced preservatives",
@@ -1011,6 +1011,9 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA May 3 2024; Breakthrough Device Designation January 2020",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Medicare coverage pending - NCD reconsideration requested; NCCN Guidelines included",
+    "commercialPayers": [],
+    "commercialPayersCitations": "",
+    "commercialPayersNotes": "Emerging commercial and Medicaid coverage; no stable payer list yet. Medicare coverage pending NCD reconsideration.",
     "clinicalAvailability": "Launched via Labcorp partnership late 2024/early 2025",
     "tat": "Not publicly specified",
     "sampleType": "At-home stool collection (simplified kit FDA-approved 2025)",
@@ -1280,9 +1283,9 @@ const trmTestData = [
     "fdaStatus": "LDT in CLIA/CAP lab; covered by Medicare for ICI treatment response monitoring",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare-covered under LCD L38779 for colorectal, breast, bladder, ovarian, and lung cancers, including ovarian cancer in adjuvant/surveillance settings, neoadjuvant and adjuvant breast cancer, and stage I–III NSCLC surveillance, as well as pan-cancer immunotherapy response monitoring. As of June 2025, the genome-based Signatera Genome assay has matching Medicare coverage for these indications.",
-    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "Aetna", "BCBS Louisiana"],
+    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California"],
     "commercialPayersCitations": "https://www.natera.com/oncology/billing/",
-    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna and UnitedHealthcare. BCBS Louisiana provides explicit coverage. State biomarker laws in states covering >50% of U.S. population may require commercial payers to cover tests with Medicare coverage.",
+    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan.",
     "clinicalTrials": "NCT04660344 IMvigor011 Phase III bladder cancer (760); NCT05987241 MODERN (Alliance A032103) Phase 2/3 bladder cancer (~400 target); BESPOKE IO prospective observational study (multi-center)",
     "totalParticipants": 1160,
     "numPublications": 125,
@@ -1394,7 +1397,8 @@ const comparisonParams = {
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
-    { key: 'reimbursementNote', label: 'Reimbursement' },
+    { key: 'reimbursement', label: 'Medicare Coverage' },
+    { key: 'commercialPayersStr', label: 'Commercial Payers' },
   ],
   ECD: [
     { key: 'testScope', label: 'Scope' },
@@ -1414,7 +1418,8 @@ const comparisonParams = {
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
-    { key: 'reimbursementNote', label: 'Reimbursement' },
+    { key: 'reimbursement', label: 'Medicare Coverage' },
+    { key: 'commercialPayersStr', label: 'Commercial Payers' },
     { key: 'clinicalAvailability', label: 'Clinical Availability' },
     { key: 'tat', label: 'Turnaround Time' },
     { key: 'sampleType', label: 'Sample Type' },
@@ -1435,7 +1440,8 @@ const comparisonParams = {
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
-    { key: 'reimbursementNote', label: 'Reimbursement' },
+    { key: 'reimbursement', label: 'Medicare Coverage' },
+    { key: 'commercialPayersStr', label: 'Commercial Payers' },
   ],
 };
 
@@ -2207,7 +2213,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
-              <div className="overflow-hidden -mx-5 px-0">
+              <div className="overflow-hidden">
                 <div 
                   className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
                   style={{ animation: 'tickerMRD 20s linear infinite' }}
@@ -2244,7 +2250,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
-              <div className="overflow-hidden -mx-5 px-0">
+              <div className="overflow-hidden">
                 <div 
                   className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
                   style={{ animation: 'tickerECD 25s linear infinite' }}
@@ -2281,7 +2287,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
                 <span className="text-sm font-medium text-[#2A63A4]">→</span>
               </div>
-              <div className="overflow-hidden -mx-5 px-0">
+              <div className="overflow-hidden">
                 <div 
                   className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
                   style={{ animation: 'tickerTRM 15s linear infinite' }}
@@ -3267,7 +3273,9 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                 <tr key={param.key} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="p-3 text-sm font-medium text-gray-600 border-b border-gray-100">{param.label}</td>
                   {tests.map(test => {
-                    let value = param.key === 'cancerTypesStr' ? test.cancerTypes?.join(', ') : test[param.key];
+                    let value = param.key === 'cancerTypesStr' ? test.cancerTypes?.join(', ') 
+                      : param.key === 'commercialPayersStr' ? test.commercialPayers?.join(', ')
+                      : test[param.key];
                     return <td key={test.id} className="p-3 text-sm text-gray-900 border-b border-gray-100">{value != null && value !== '' ? String(value) : '—'}</td>;
                   })}
                 </tr>
