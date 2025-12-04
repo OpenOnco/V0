@@ -2221,7 +2221,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 </div>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment, detect faint traces of remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
+            <p className="text-sm text-gray-600 mt-3 px-2 text-center">After cancer treatment these tests detect traces of any remaining cancer DNA to determine if treatment worked and monitor for recurrence.</p>
           </div>
           
           {/* ECD Column */}
