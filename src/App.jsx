@@ -2735,12 +2735,17 @@ const SubmissionsPage = () => {
   };
 
   // Check if email domain matches vendor
+  // Check if email domain contains vendor name (loose match)
   const emailMatchesVendor = (email, vendor) => {
     if (!email || !vendor) return false;
-    const emailDomain = email.split('@')[1]?.toLowerCase().split('.')[0];
+    // Get full domain after @ (e.g., "ryght.ai" or "ryghtinc.com")
+    const fullDomain = email.split('@')[1]?.toLowerCase() || '';
+    // Clean vendor name to just alphanumeric (e.g., "Ryght Inc." -> "ryghtinc")
     const vendorClean = vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-    // Check if domain contains vendor name or vice versa
-    return emailDomain.includes(vendorClean) || vendorClean.includes(emailDomain);
+    // Clean domain to just alphanumeric for matching (e.g., "ryght.ai" -> "ryghtai")
+    const domainClean = fullDomain.replace(/[^a-z0-9]/g, '');
+    // Check if vendor name appears in domain
+    return domainClean.includes(vendorClean);
   };
 
   // Validate email based on submitter type
@@ -2758,7 +2763,7 @@ const SubmissionsPage = () => {
     if (submitterType === 'vendor') {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
       if (!emailMatchesVendor(contactEmail, vendor)) {
-        setEmailError(`For vendor submissions, email domain must match ${vendor || 'the vendor'}`);
+        setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
         return false;
       }
     }
@@ -3199,7 +3204,7 @@ const SubmissionsPage = () => {
                     value={contactEmail}
                     onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); }}
                     className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder={submitterType === 'vendor' ? `you@${(submissionType === 'new' ? newTestVendor : getSelectedTestVendor()).toLowerCase().replace(/[^a-z]/g, '')}.com` : 'you@company.com'}
+                    placeholder={submitterType === 'vendor' ? `you@${(submissionType === 'new' ? newTestVendor : getSelectedTestVendor()).toLowerCase().replace(/[^a-z]/g, '')}...` : 'you@company.com'}
                   />
                   <button
                     type="button"
