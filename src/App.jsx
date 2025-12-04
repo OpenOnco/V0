@@ -1358,21 +1358,21 @@ const filterConfigs = {
     cancerTypes: [...new Set(mrdTestData.flatMap(t => t.cancerTypes || []))].sort(),
     tumorTissueOptions: ['Yes', 'No'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
-    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies'],
+    reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
   },
   ECD: {
     // Oncologist priority: Single cancer or multi? What's the target population? Covered? FDA status?
     testScopes: ['Single-cancer (CRC)', 'Multi-cancer (MCED)'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
-    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies'],
+    reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)'],
   },
   TRM: {
     // Oncologist priority: What cancer? Approach? Covered?
     cancerTypes: [...new Set(trmTestData.flatMap(t => t.cancerTypes || []))].sort(),
     approaches: ['Tumor-informed', 'Tumor-naïve', 'Tumor-agnostic'],
-    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies'],
+    reimbursements: ['Medicare', 'Commercial'],
   }
 };
 
