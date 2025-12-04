@@ -2997,7 +2997,7 @@ const SubmissionsPage = () => {
               <option value="expert">Independent Expert / Researcher</option>
             </select>
             {submitterType === 'vendor' && (
-              <p className="text-sm text-amber-600 mt-2">⚠️ Vendor submissions require an email from your company domain</p>
+              <p className="text-sm text-amber-600 mt-2">⚠️ We will verify that your email comes from the vendor's domain</p>
             )}
             {submitterType === 'expert' && (
               <p className="text-sm text-gray-500 mt-2">Expert submissions require a company or institutional email</p>
