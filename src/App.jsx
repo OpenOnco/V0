@@ -2622,6 +2622,13 @@ const SubmissionsPage = () => {
   const [emailError, setEmailError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [existingTest, setExistingTest] = useState('');
+  
+  // Email verification states
+  const [verificationStep, setVerificationStep] = useState('form'); // 'form', 'verify', 'verified'
+  const [verificationCode, setVerificationCode] = useState('');
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationError, setVerificationError] = useState('');
 
   // Get existing tests for correction dropdown
   const existingTests = {
@@ -2695,40 +2702,28 @@ const SubmissionsPage = () => {
     ],
   };
 
-  // Validate email domain matches vendor
-  const validateEmail = (email, vendor) => {
-    if (!email || !vendor) return true; // Don't validate if either is missing
-    const emailDomain = email.split('@')[1]?.toLowerCase();
-    const vendorLower = vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-    
-    if (!emailDomain) {
-      setEmailError('Please enter a valid email address');
-      return false;
-    }
-    
-    // Extract domain name without TLD
-    const domainName = emailDomain.split('.')[0];
-    
-    // Check if domain contains vendor name or vice versa
-    if (!domainName.includes(vendorLower) && !vendorLower.includes(domainName)) {
-      setEmailError(`Email domain must be from ${vendor}'s company domain`);
-      return false;
-    }
-    
-    setEmailError('');
-    return true;
+  // Validate email format
+  const validateEmailFormat = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Check if email domain looks corporate (not gmail, yahoo, etc.)
+  const isCorpEmail = (email) => {
+    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com', 'protonmail.com'];
+    const domain = email.split('@')[1]?.toLowerCase();
+    return domain && !freeProviders.includes(domain);
   };
 
   const handleFieldChange = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));
-    if (key === 'vendor') {
-      validateEmail(contactEmail, value);
-    }
   };
 
   const handleEmailChange = (email) => {
     setContactEmail(email);
-    validateEmail(email, formData.vendor);
+    setEmailError('');
+    setVerificationStep('form');
+    setVerificationCode('');
   };
 
   const handleExistingTestSelect = (testId) => {
@@ -2742,10 +2737,85 @@ const SubmissionsPage = () => {
     }
   };
 
+  // Send verification code
+  const sendVerificationCode = async () => {
+    if (!validateEmailFormat(contactEmail)) {
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+
+    if (!isCorpEmail(contactEmail)) {
+      setEmailError('Please use your company email address (not Gmail, Yahoo, etc.)');
+      return;
+    }
+
+    setIsSendingCode(true);
+    setVerificationError('');
+
+    try {
+      const response = await fetch('/api/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: contactEmail,
+          vendor: formData.vendor,
+          testName: formData.name
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setVerificationStep('verify');
+      } else {
+        setVerificationError(data.error || 'Failed to send verification code');
+      }
+    } catch (error) {
+      setVerificationError('Network error. Please try again.');
+    }
+
+    setIsSendingCode(false);
+  };
+
+  // Verify the code
+  const verifyCode = async () => {
+    if (verificationCode.length !== 6) {
+      setVerificationError('Please enter the 6-digit code');
+      return;
+    }
+
+    setIsVerifying(true);
+    setVerificationError('');
+
+    try {
+      const response = await fetch('/api/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: contactEmail,
+          code: verificationCode
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setVerificationStep('verified');
+      } else {
+        setVerificationError(data.error || 'Verification failed');
+      }
+    } catch (error) {
+      setVerificationError('Network error. Please try again.');
+    }
+
+    setIsVerifying(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (!validateEmail(contactEmail, formData.vendor)) {
+    if (verificationStep !== 'verified') {
+      setEmailError('Please verify your email first');
       return;
     }
 
@@ -2753,6 +2823,7 @@ const SubmissionsPage = () => {
       submissionType,
       category,
       contactEmail,
+      emailVerified: true,
       timestamp: new Date().toISOString(),
       existingTestId: submissionType === 'correction' ? existingTest : null,
       data: formData,
@@ -2761,8 +2832,8 @@ const SubmissionsPage = () => {
     const jsonString = JSON.stringify(submission, null, 2);
     
     // Create mailto link with JSON body
-    const subject = encodeURIComponent(`OpenOnco ${submissionType === 'new' ? 'New Test' : 'Correction'} Submission: ${formData.name || 'Unknown'} (${category})`);
-    const body = encodeURIComponent(`New submission from OpenOnco:\n\nContact: ${contactEmail}\nType: ${submissionType === 'new' ? 'New Test' : 'Correction'}\nCategory: ${category}\n\n--- JSON DATA ---\n${jsonString}`);
+    const subject = encodeURIComponent(`OpenOnco ${submissionType === 'new' ? 'New Test' : 'Correction'} Submission: ${formData.name || 'Unknown'} (${category}) - VERIFIED`);
+    const body = encodeURIComponent(`New submission from OpenOnco:\n\nContact: ${contactEmail} ✓ VERIFIED\nType: ${submissionType === 'new' ? 'New Test' : 'Correction'}\nCategory: ${category}\n\n--- JSON DATA ---\n${jsonString}`);
     
     window.location.href = `mailto:alexgdickinson@gmail.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
@@ -2776,6 +2847,9 @@ const SubmissionsPage = () => {
     setEmailError('');
     setSubmitted(false);
     setExistingTest('');
+    setVerificationStep('form');
+    setVerificationCode('');
+    setVerificationError('');
   };
 
   if (submitted) {
@@ -2798,7 +2872,7 @@ const SubmissionsPage = () => {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Submit Test Data</h1>
-      <p className="text-gray-600 mb-8">Help us keep our database accurate and comprehensive. Submissions from test vendors are verified via email domain.</p>
+      <p className="text-gray-600 mb-8">Help us keep our database accurate and comprehensive. Vendor submissions require email verification.</p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Submission Type */}
@@ -2807,7 +2881,7 @@ const SubmissionsPage = () => {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setCategory(''); setFormData({}); setExistingTest(''); }}
+              onClick={() => { setSubmissionType('new'); setCategory(''); setFormData({}); setExistingTest(''); setVerificationStep('form'); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">New Test</div>
@@ -2815,7 +2889,7 @@ const SubmissionsPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setCategory(''); setFormData({}); setExistingTest(''); }}
+              onClick={() => { setSubmissionType('correction'); setCategory(''); setFormData({}); setExistingTest(''); setVerificationStep('form'); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">Correction</div>
@@ -2925,24 +2999,98 @@ const SubmissionsPage = () => {
           </div>
         )}
 
-        {/* Contact Email */}
+        {/* Email Verification Section */}
         {category && (submissionType === 'new' || existingTest) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Your Work Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              value={contactEmail}
-              onChange={(e) => handleEmailChange(e.target.value)}
-              className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="you@vendorcompany.com"
-              required
-            />
-            {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-            <p className="text-gray-500 text-sm mt-2">
-              For verification, your email domain should match the test vendor's company domain.
-            </p>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Email Verification <span className="text-red-500">*</span>
+            </h3>
+            
+            {verificationStep === 'form' && (
+              <>
+                <label className="block text-sm font-medium text-gray-600 mb-2">
+                  Your Work Email
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
+                    placeholder="you@vendorcompany.com"
+                  />
+                  <button
+                    type="button"
+                    onClick={sendVerificationCode}
+                    disabled={isSendingCode || !contactEmail || !formData.vendor}
+                    className="bg-[#2A63A4] text-white px-4 py-2 rounded-lg hover:bg-[#1E4A7A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                  >
+                    {isSendingCode ? 'Sending...' : 'Send Code'}
+                  </button>
+                </div>
+                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
+                <p className="text-gray-500 text-sm mt-2">
+                  Enter your company email and click "Send Code". We'll send a 6-digit verification code.
+                </p>
+                {!formData.vendor && (
+                  <p className="text-amber-600 text-sm mt-1">
+                    ⚠️ Please fill in the Vendor/Company name above first.
+                  </p>
+                )}
+              </>
+            )}
+
+            {verificationStep === 'verify' && (
+              <>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-blue-800">
+                    A verification code has been sent to <strong>{contactEmail}</strong>
+                  </p>
+                </div>
+                <label className="block text-sm font-medium text-gray-600 mb-2">
+                  Enter 6-digit code
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] text-center text-2xl tracking-widest"
+                    placeholder="000000"
+                    maxLength={6}
+                  />
+                  <button
+                    type="button"
+                    onClick={verifyCode}
+                    disabled={isVerifying || verificationCode.length !== 6}
+                    className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {isVerifying ? 'Verifying...' : 'Verify'}
+                  </button>
+                </div>
+                {verificationError && <p className="text-red-500 text-sm mt-2">{verificationError}</p>}
+                <button
+                  type="button"
+                  onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); }}
+                  className="text-[#2A63A4] text-sm mt-2 hover:underline"
+                >
+                  ← Use a different email
+                </button>
+              </>
+            )}
+
+            {verificationStep === 'verified' && (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
+                <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="text-emerald-800 font-medium">Email Verified!</p>
+                  <p className="text-emerald-700 text-sm">{contactEmail}</p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -2950,18 +3098,18 @@ const SubmissionsPage = () => {
         {category && (submissionType === 'new' || existingTest) && (
           <button
             type="submit"
-            disabled={emailError}
+            disabled={verificationStep !== 'verified'}
             className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
           >
-            Prepare Email Submission
+            {verificationStep !== 'verified' ? 'Verify Email to Submit' : 'Submit Data'}
           </button>
         )}
       </form>
 
       {/* Alternative Contact */}
       <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>Prefer to reach out directly? Contact via{' '}
+        <p>Having trouble with verification? Contact via{' '}
           <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-[#2A63A4] hover:underline">
             LinkedIn
           </a>
@@ -2972,7 +3120,6 @@ const SubmissionsPage = () => {
   );
 };
 
-// ============================================
 // Source Data Page
 // ============================================
 const SourceDataPage = () => {
