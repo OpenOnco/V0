@@ -637,6 +637,9 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT",
     "reimbursement": "Medicare covered for selected indications; MolDX framework applied.",
     "reimbursementNote": "LCDs describe coverage in specific solid tumors (e.g., breast and HPV-negative head & neck cancer) with broader multi-tumor positioning in trials.",
+    "commercialPayers": ["Blue Shield of California"],
+    "commercialPayersCitations": "https://www.decibio.com/",
+    "commercialPayersNotes": "Blue Shield of California covers RaDaR for MRD testing. Coverage continues to expand as clinical evidence builds.",
     "cptCodes": "81479 (MolDX with DEX Z-code); PLA under consideration.",
     "cptCodesNotes": "MolDX unlisted molecular pathology code with DEX Z-code.",
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -686,6 +689,9 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT; not FDA cleared/approved as of 2025.",
     "reimbursement": "Medicare covered for colorectal cancer MRD including post-surgical and surveillance settings; commercial coverage expanding.",
     "reimbursementNote": "Initial Medicare LCD for CRC MRD after curative-intent treatment; subsequent updates extended coverage to surveillance and broader CRC use; additional payer adoption ongoing.",
+    "commercialPayers": ["BCBS Louisiana", "Geisinger Health Plan"],
+    "commercialPayersCitations": "https://www.businesswire.com/news/home/20230720806084/en/Guardant-Health-receives-first-commercial-payor-coverage-for-Guardant-Reveal%E2%84%A2-test-from-Blue-Cross-and-Blue-Shield-of-Louisiana/",
+    "commercialPayersNotes": "Blue Cross Blue Shield of Louisiana became first commercial payer to cover Guardant Reveal in July 2023. Geisinger Health Plan added coverage later in 2023. Commercial coverage continues to expand.",
     "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025; historically billed under 81479/MolDX).",
     "cptCodesNotes": "Guardant Reveal PLA (2025).",
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -749,6 +755,9 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT; not FDA-cleared/approved as of late 2025 (clinical validation via numerous peer-reviewed studies).",
     "reimbursement": "Broad Medicare (MolDX) coverage across multiple solid tumors; ADLT pricing in place.",
     "reimbursementNote": "Signatera is covered by Medicare for several indications (CRC, breast, others) and uses ADLT/PLA coding with widespread commercial payer recognition.",
+    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "Aetna", "BCBS Louisiana"],
+    "commercialPayersCitations": "https://www.natera.com/oncology/billing/",
+    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna and UnitedHealthcare. BCBS Louisiana provides explicit coverage. State biomarker laws in states covering >50% of U.S. population may require commercial payers to cover tests with Medicare coverage.",
     "cptCodes": "0340U (ADLT)",
     "cptCodesNotes": "Signatera PLA (ADLT pricing).",
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -871,6 +880,9 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA (P230009) July 26 2024 - First blood test for primary CRC screening; NCCN-recommended",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare covered per NCD 210.3; commercial coverage expanding",
+    "commercialPayers": ["VA Community Care", "TRICARE"],
+    "commercialPayersCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/Guardant-Healths-Shield-Blood-Test-Now-Covered-for-VA-Community-Care-Beneficiaries/default.aspx",
+    "commercialPayersNotes": "VA Community Care Network covers Shield with no copay for average-risk individuals 45+. TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
     "clinicalAvailability": "Commercially available in US since August 2024",
     "tat": "~14 days",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes",
@@ -912,6 +924,9 @@ const ecdTestData = [
     "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; not FDA-approved; Breakthrough Device designation; PMA submission expected H1 2026",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk",
+    "commercialPayers": ["TRICARE", "Curative Insurance", "Fountain Health", "Alignment Health Plan"],
+    "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
+    "commercialPayersNotes": "Limited commercial coverage. TRICARE covers with prior authorization for eligible beneficiaries ≥50. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Most major commercial insurers consider investigational.",
     "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
     "sampleType": "Whole blood in Streck cfDNA BCT tubes",
@@ -953,6 +968,9 @@ const ecdTestData = [
     "fdaStatus": "FDA-approved PMA October 4 2024",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare covered; $0 out-of-pocket for eligible; broad commercial payer coverage",
+    "commercialPayers": ["UnitedHealthcare", "Aetna", "Humana", "Cigna", "Anthem BCBS", "TRICARE"],
+    "commercialPayersCitations": "https://www.cologuard.com/insurance",
+    "commercialPayersNotes": "Covered by most major commercial insurers under ACA preventive services. >96% of eligible patients aged 45+ have no out-of-pocket costs. Nationwide in-network coverage with most national and regional health plans.",
     "clinicalAvailability": "Commercially launched late March 2025 via ExactNexus (350+ health systems)",
     "tat": "3-5 days from receipt",
     "sampleType": "At-home stool collection with enhanced preservatives",
@@ -1262,6 +1280,9 @@ const trmTestData = [
     "fdaStatus": "LDT in CLIA/CAP lab; covered by Medicare for ICI treatment response monitoring",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare-covered under LCD L38779 for colorectal, breast, bladder, ovarian, and lung cancers, including ovarian cancer in adjuvant/surveillance settings, neoadjuvant and adjuvant breast cancer, and stage I–III NSCLC surveillance, as well as pan-cancer immunotherapy response monitoring. As of June 2025, the genome-based Signatera Genome assay has matching Medicare coverage for these indications.",
+    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "Aetna", "BCBS Louisiana"],
+    "commercialPayersCitations": "https://www.natera.com/oncology/billing/",
+    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna and UnitedHealthcare. BCBS Louisiana provides explicit coverage. State biomarker laws in states covering >50% of U.S. population may require commercial payers to cover tests with Medicare coverage.",
     "clinicalTrials": "NCT04660344 IMvigor011 Phase III bladder cancer (760); NCT05987241 MODERN (Alliance A032103) Phase 2/3 bladder cancer (~400 target); BESPOKE IO prospective observational study (multi-center)",
     "totalParticipants": 1160,
     "numPublications": 125,
@@ -1320,6 +1341,9 @@ const trmTestData = [
     "fdaStatus": "LDT in NeoGenomics CLIA/CAP lab; not FDA-approved",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Used in clinical research and select clinical programs; payer coverage still emerging. NeoGenomics has also introduced a WES-based RaDaR ST assay, currently positioned for biopharma partners and interventional trials.",
+    "commercialPayers": ["Blue Shield of California"],
+    "commercialPayersCitations": "https://www.decibio.com/",
+    "commercialPayersNotes": "Blue Shield of California covers RaDaR. Coverage is still emerging for TRM applications.",
     "clinicalTrials": "ISLB 2025 bridging study (166; 15 solid tumor types; 97% concordance RaDaR ST vs RaDaR 1.0); c-TRAK TN TNBC study (161); TRACER breast cancer MRD study (~100); CHiRP breast cancer study (~100); NABUCCO bladder cancer study (54); LUCID NSCLC study (88); CLEAR-Me melanoma study (66)",
     "totalParticipants": 735,
     "numPublications": 15,
@@ -1334,21 +1358,21 @@ const filterConfigs = {
     cancerTypes: [...new Set(mrdTestData.flatMap(t => t.cancerTypes || []))].sort(),
     tumorTissueOptions: ['Yes', 'No'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
-    reimbursements: ['Medicare', 'Coverage Varies'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
   },
   ECD: {
     // Oncologist priority: Single cancer or multi? What's the target population? Covered? FDA status?
     testScopes: ['Single-cancer (CRC)', 'Multi-cancer (MCED)'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
-    reimbursements: ['Medicare', 'Coverage Varies'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies'],
     approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)'],
   },
   TRM: {
     // Oncologist priority: What cancer? Approach? Covered?
     cancerTypes: [...new Set(trmTestData.flatMap(t => t.cancerTypes || []))].sort(),
     approaches: ['Tumor-informed', 'Tumor-naïve', 'Tumor-agnostic'],
-    reimbursements: ['Medicare', 'Coverage Varies'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies'],
   }
 };
 
@@ -2987,6 +3011,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {test.reimbursement?.toLowerCase().includes('medicare') && <Badge variant="success">Medicare</Badge>}
+              {test.commercialPayers && test.commercialPayers.length >= 3 && <Badge variant="blue">Commercial</Badge>}
               {category === 'ECD' && test.listPrice && <Badge variant="amber">${test.listPrice}</Badge>}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
@@ -3069,6 +3094,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
               <DataRow label="Reimbursement" value={test.reimbursement} notes={test.reimbursementNote} />
+              {test.commercialPayers && test.commercialPayers.length > 0 && (
+                <DataRow label="Commercial Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
+              )}
               <DataRow label="CPT Codes" value={test.cptCodes} notes={test.cptCodesNotes} />
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
               <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} />
@@ -3119,6 +3147,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
               <DataRow label="Reimbursement" value={test.reimbursement} notes={test.reimbursementNote} />
+              {test.commercialPayers && test.commercialPayers.length > 0 && (
+                <DataRow label="Commercial Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
+              )}
               <DataRow label="CPT Code" value={test.cptCode} />
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
             </>
@@ -3142,6 +3173,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
               <DataRow label="Reimbursement" value={test.reimbursement} notes={test.reimbursementNote} />
+              {test.commercialPayers && test.commercialPayers.length > 0 && (
+                <DataRow label="Commercial Payers" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
+              )}
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
             </>
           )}
@@ -3356,7 +3390,13 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
       if (selectedApproaches.length > 0 && !selectedApproaches.includes(test.approach)) return false;
       if (selectedCancerTypes.length > 0 && !test.cancerTypes?.some(ct => selectedCancerTypes.includes(ct))) return false;
-      if (selectedReimbursement.length > 0 && !selectedReimbursement.includes(test.reimbursement)) return false;
+      if (selectedReimbursement.length > 0) {
+        const matchesReimbursement = selectedReimbursement.some(r => {
+          if (r === 'Commercial') return test.commercialPayers && test.commercialPayers.length > 0;
+          return test.reimbursement === r || (r === 'Medicare' && test.reimbursement?.toLowerCase().includes('medicare'));
+        });
+        if (!matchesReimbursement) return false;
+      }
       if (selectedTestScopes.length > 0 && !selectedTestScopes.includes(test.testScope)) return false;
       if (selectedTumorTissue.length > 0 && !selectedTumorTissue.includes(test.requiresTumorTissue)) return false;
       if (minParticipants > 0 && (!test.totalParticipants || test.totalParticipants < minParticipants)) return false;
@@ -3450,7 +3490,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Commercial Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
@@ -3505,7 +3545,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Commercial Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
@@ -3581,7 +3621,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare Covered' : r === 'Commercial' ? 'Commercial Covered' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
