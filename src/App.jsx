@@ -2593,20 +2593,9 @@ const HowItWorksPage = () => (
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
       
-      <p>
-        OpenOnco is coded in Javascript React with the assistance of Opus 4.5 and the current version of the database is hard-coded in the app.
+      <p className="mt-4">
+        OpenOnco is vibe-coded in React using Opus 4.5. The test database is hardcoded as a JSON structure inside the app. The app (and embedded database) are updated as-needed when new data or tools are added. You can find the build date of the version you are running under the "Data Download" tab. Data for each build is cross-checked by GPT Pro 5.1, Gemini 3, and Opus 4.5. Once the models are in agreement, the new code is committed to GitHub and deployed on Vercel.
       </p>
-
-      <p>
-        We run an "as-needed" test data update cycle (typically monthly):
-      </p>
-
-      <ol className="list-decimal list-inside space-y-3 ml-4">
-        <li>Corrections are made and new data including new categories of data are added to the JSON database</li>
-        <li>The database is cross-checked for consistency by both Opus 4.5 and GPTPro 5.1</li>
-        <li>The app code is adjusted for changes in the database (e.g. add tool functionality for new classes/ranges of data)</li>
-        <li>The new version (dated as per the Data Download tab) is released via Github and deployed by our hosting service (Vercel)</li>
-      </ol>
 
     </div>
   </div>
