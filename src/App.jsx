@@ -1526,7 +1526,7 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const navItems = ['home', 'how-it-works', 'data-sources', 'submissions', 'about'];
+  const navItems = ['home', 'how-it-works', 'submissions', 'data-sources', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
     'data-sources': 'Data Download',
