@@ -2629,6 +2629,7 @@ const SubmissionsPage = () => {
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState('');
+  const [verificationToken, setVerificationToken] = useState('');
 
   // Get existing tests for correction dropdown
   const existingTests = {
@@ -2766,6 +2767,7 @@ const SubmissionsPage = () => {
       const data = await response.json();
 
       if (response.ok) {
+        setVerificationToken(data.token);
         setVerificationStep('verify');
       } else {
         setVerificationError(data.error || 'Failed to send verification code');
@@ -2792,7 +2794,7 @@ const SubmissionsPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: contactEmail,
+          token: verificationToken,
           code: verificationCode
         })
       });
@@ -2850,6 +2852,7 @@ const SubmissionsPage = () => {
     setVerificationStep('form');
     setVerificationCode('');
     setVerificationError('');
+    setVerificationToken('');
   };
 
   if (submitted) {
@@ -3072,7 +3075,7 @@ const SubmissionsPage = () => {
                 {verificationError && <p className="text-red-500 text-sm mt-2">{verificationError}</p>}
                 <button
                   type="button"
-                  onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); }}
+                  onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); setVerificationToken(''); }}
                   className="text-[#2A63A4] text-sm mt-2 hover:underline"
                 >
                   ← Use a different email

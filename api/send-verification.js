@@ -1,19 +1,19 @@
 import { Resend } from 'resend';
+import crypto from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Simple in-memory store for verification codes
-// In production, you might want to use Vercel KV or a database
-const verificationCodes = new Map();
-
-// Clean up expired codes (older than 10 minutes)
-const cleanupExpiredCodes = () => {
-  const now = Date.now();
-  for (const [email, data] of verificationCodes.entries()) {
-    if (now - data.timestamp > 10 * 60 * 1000) {
-      verificationCodes.delete(email);
-    }
-  }
+// Create a signed token containing the code
+const createToken = (email, code) => {
+  const secret = process.env.RESEND_API_KEY;
+  const payload = {
+    email: email.toLowerCase(),
+    code,
+    exp: Date.now() + 10 * 60 * 1000 // 10 minutes
+  };
+  const data = Buffer.from(JSON.stringify(payload)).toString('base64');
+  const signature = crypto.createHmac('sha256', secret).update(data).digest('hex');
+  return `${data}.${signature}`;
 };
 
 export default async function handler(req, res) {
@@ -27,28 +27,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Email and vendor are required' });
   }
 
-  // Validate email format
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ error: 'Invalid email format' });
   }
 
-  // Generate 6-digit code
   const code = Math.floor(100000 + Math.random() * 900000).toString();
-
-  // Clean up old codes
-  cleanupExpiredCodes();
-
-  // Store the code with timestamp
-  verificationCodes.set(email.toLowerCase(), {
-    code,
-    vendor,
-    timestamp: Date.now(),
-    attempts: 0
-  });
-
-  // Make code available for verification endpoint
-  global.verificationCodes = verificationCodes;
+  const token = createToken(email, code);
 
   try {
     await resend.emails.send({
@@ -71,7 +56,7 @@ export default async function handler(req, res) {
       `
     });
 
-    return res.status(200).json({ success: true, message: 'Verification code sent' });
+    return res.status(200).json({ success: true, token });
   } catch (error) {
     console.error('Error sending email:', error);
     return res.status(500).json({ error: 'Failed to send verification email' });
