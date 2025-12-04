@@ -2056,12 +2056,12 @@ const StatOfTheDay = ({ onNavigate }) => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">📊</span>
-          <h3 className="text-sm font-bold text-slate-800">Stat of the Day: <span style={{ color: '#2A63A4' }}>{todayStat.label}</span></h3>
+          <h3 className="text-base font-bold text-slate-800">Stat of the Day Top 3: <span style={{ color: '#2A63A4' }}>{todayStat.label}</span></h3>
         </div>
+        <p className="text-xs text-slate-400">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
       </div>
-      <p className="text-xs text-slate-400 mb-3">{todayStat.description}</p>
       
-      <div className="flex flex-col gap-2">
+      <div className="flex gap-3">
         {testsWithStat.map((test, idx) => {
           const colors = categoryColors[test.category];
           const statValue = getStatValue(test);
@@ -2069,20 +2069,21 @@ const StatOfTheDay = ({ onNavigate }) => {
             <div
               key={test.id}
               onClick={() => onNavigate(test.category, test.id)}
-              className={`${colors.bg} ${colors.border} border rounded-lg p-2.5 cursor-pointer hover:shadow-md transition-all`}
+              className={`flex-1 ${colors.bg} ${colors.border} border rounded-lg p-3 cursor-pointer hover:shadow-md transition-all`}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 min-w-0 flex-1">
-                  <span className="text-sm font-bold text-slate-300">#{idx + 1}</span>
-                  <span className={`${colors.badge} text-white text-[10px] px-1.5 py-0.5 rounded font-medium flex-shrink-0`}>
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1">
+                  <span className="text-lg font-bold text-slate-300">#{idx + 1}</span>
+                  <span className={`${colors.badge} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
                     {test.category}
                   </span>
-                  <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
                 </div>
-                <p className={`text-sm font-bold ${colors.text} flex-shrink-0 ml-2`}>
+                <p className={`text-lg font-bold ${colors.text}`}>
                   {todayStat.format(statValue)}{todayStat.unit}
                 </p>
               </div>
+              <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
+              <p className="text-xs text-slate-500 truncate">{test.vendor}</p>
             </div>
           );
         })}
@@ -2416,18 +2417,19 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           </div>
         </div>
 
-        {/* Main Content Area - Test Showcase with Sidebar */}
-        <div className="flex flex-col xl:flex-row gap-6 mb-8">
-          {/* Test Showcase - Main Content */}
-          <div className="xl:flex-1">
-            <TestShowcase onNavigate={onNavigate} />
-          </div>
+        {/* Test Showcase */}
+        <div className="mb-8">
+          <TestShowcase onNavigate={onNavigate} />
+        </div>
 
-          {/* Sidebar - Stat of the Day + News */}
-          <div className="xl:w-80 flex flex-col gap-6">
-            <StatOfTheDay onNavigate={onNavigate} />
-            <NewsFeed />
-          </div>
+        {/* Stat of the Day */}
+        <div className="mb-8">
+          <StatOfTheDay onNavigate={onNavigate} />
+        </div>
+
+        {/* News Feed */}
+        <div className="mb-8">
+          <NewsFeed />
         </div>
       </div>
     </div>
