@@ -2615,7 +2615,7 @@ const HowItWorksPage = () => (
 // Submissions Page
 // ============================================
 const SubmissionsPage = () => {
-  const [submissionType, setSubmissionType] = useState('');
+  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
   const [category, setCategory] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -2635,6 +2635,9 @@ const SubmissionsPage = () => {
   const [selectedParameter, setSelectedParameter] = useState('');
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
+  
+  // Bug/Feature feedback fields
+  const [feedbackDescription, setFeedbackDescription] = useState('');
   
   // Email verification states
   const [verificationStep, setVerificationStep] = useState('form');
@@ -2760,7 +2763,8 @@ const SubmissionsPage = () => {
       return false;
     }
 
-    if (submitterType === 'vendor') {
+    // Only check vendor email match for vendor submissions on test data
+    if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction')) {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
       if (!emailMatchesVendor(contactEmail, vendor)) {
         setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
@@ -2779,8 +2783,16 @@ const SubmissionsPage = () => {
     setIsSendingCode(true);
     setVerificationError('');
 
-    const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
-    const testName = submissionType === 'new' ? newTestName : existingTests[category]?.find(t => t.id === existingTest)?.name;
+    let vendor = 'OpenOnco';
+    let testName = submissionType === 'bug' ? 'Bug Report' : submissionType === 'feature' ? 'Feature Request' : '';
+    
+    if (submissionType === 'new') {
+      vendor = newTestVendor;
+      testName = newTestName;
+    } else if (submissionType === 'correction') {
+      vendor = getSelectedTestVendor();
+      testName = existingTests[category]?.find(t => t.id === existingTest)?.name;
+    }
 
     try {
       const response = await fetch('/api/send-verification', {
@@ -2853,10 +2865,8 @@ const SubmissionsPage = () => {
     setIsSubmitting(true);
     setSubmitError('');
 
-    const submission = {
+    let submission = {
       submissionType,
-      submitterType,
-      category,
       submitter: {
         firstName,
         lastName,
@@ -2864,15 +2874,26 @@ const SubmissionsPage = () => {
       },
       emailVerified: true,
       timestamp: new Date().toISOString(),
-      ...(submissionType === 'new' ? {
-        newTest: {
+    };
+
+    if (submissionType === 'bug' || submissionType === 'feature') {
+      submission.feedback = {
+        type: submissionType === 'bug' ? 'Bug Report' : 'Feature Request',
+        description: feedbackDescription,
+      };
+    } else {
+      submission.submitterType = submitterType;
+      submission.category = category;
+      
+      if (submissionType === 'new') {
+        submission.newTest = {
           name: newTestName,
           vendor: newTestVendor,
           performanceUrl: newTestUrl,
           additionalNotes: newTestNotes,
-        }
-      } : {
-        correction: {
+        };
+      } else if (submissionType === 'correction') {
+        submission.correction = {
           testId: existingTest,
           testName: existingTests[category]?.find(t => t.id === existingTest)?.name,
           vendor: getSelectedTestVendor(),
@@ -2881,9 +2902,9 @@ const SubmissionsPage = () => {
           currentValue: getCurrentValue(),
           newValue: newValue,
           citation: citation,
-        }
-      })
-    };
+        };
+      }
+    }
 
     try {
       const response = await fetch('/api/submit-form', {
@@ -2923,6 +2944,7 @@ const SubmissionsPage = () => {
     setSelectedParameter('');
     setNewValue('');
     setCitation('');
+    setFeedbackDescription('');
     setVerificationStep('form');
     setVerificationCode('');
     setVerificationToken('');
@@ -2938,10 +2960,10 @@ const SubmissionsPage = () => {
           <svg className="w-16 h-16 text-emerald-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-2xl font-bold text-emerald-800 mb-2">Submission Sent!</h2>
-          <p className="text-emerald-700 mb-6">Your data has been submitted successfully. We'll review it and update our database soon. Thank you for contributing!</p>
+          <h2 className="text-2xl font-bold text-emerald-800 mb-2">Request Submitted!</h2>
+          <p className="text-emerald-700 mb-6">Your request has been submitted successfully. We'll review it and update our database soon. Thank you for contributing!</p>
           <button onClick={resetForm} className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors">
-            Submit Another
+            Submit Another Request
           </button>
         </div>
       </div>
@@ -2950,46 +2972,75 @@ const SubmissionsPage = () => {
 
   // Check if form is ready for email verification
   const isReadyForVerification = () => {
-    if (!submissionType || !submitterType || !category || !firstName || !lastName || !contactEmail) return false;
+    if (!submissionType || !firstName || !lastName || !contactEmail) return false;
+    
+    if (submissionType === 'bug' || submissionType === 'feature') {
+      return feedbackDescription.trim().length > 0;
+    }
+    
+    if (!submitterType || !category) return false;
+    
     if (submissionType === 'new') {
       return newTestName && newTestVendor && newTestUrl;
-    } else {
+    } else if (submissionType === 'correction') {
       return existingTest && selectedParameter && newValue && citation;
     }
+    
+    return false;
   };
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
-      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Submit Test Data</h1>
-      <p className="text-gray-600 mb-8">Help us keep our database accurate and comprehensive.</p>
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Submissions</h1>
+      <p className="text-gray-600 mb-8">Help us improve OpenOnco with your feedback and data contributions.</p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Submission Type */}
+        {/* Test Data Requests */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <label className="block text-sm font-semibold text-gray-700 mb-3">What would you like to submit?</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Requests</label>
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); }}
+              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className="font-semibold text-gray-800">New Test</div>
-              <div className="text-sm text-gray-500">Add a test not in our database</div>
+              <div className="font-semibold text-gray-800">Request New Test</div>
+              <div className="text-sm text-gray-500">Request addition of a test not in our database</div>
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); }}
+              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className="font-semibold text-gray-800">Correction</div>
-              <div className="text-sm text-gray-500">Update existing test data</div>
+              <div className="font-semibold text-gray-800">Request Correction</div>
+              <div className="text-sm text-gray-500">Request update to existing test data</div>
+            </button>
+          </div>
+          
+          <label className="block text-sm font-semibold text-gray-700 mt-6 mb-3">Bug Reports & Feature Requests</label>
+          <div className="grid grid-cols-2 gap-4">
+            <button
+              type="button"
+              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); }}
+              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'bug' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
+            >
+              <div className={`font-semibold ${submissionType === 'bug' ? 'text-red-700' : 'text-gray-800'}`}>Report a Bug</div>
+              <div className="text-sm text-gray-500">Something isn't working correctly</div>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); }}
+              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'feature' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}`}
+            >
+              <div className={`font-semibold ${submissionType === 'feature' ? 'text-purple-700' : 'text-gray-800'}`}>Request a Feature</div>
+              <div className="text-sm text-gray-500">Suggest an improvement or new capability</div>
             </button>
           </div>
         </div>
 
         {/* Submitter Type */}
-        {submissionType && (
+        {(submissionType === 'new' || submissionType === 'correction') && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
             <select
@@ -3037,7 +3088,7 @@ const SubmissionsPage = () => {
         {/* NEW TEST: Basic Info + URL */}
         {submissionType === 'new' && category && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">New Test Information</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">New Test Request</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">Test Name <span className="text-red-500">*</span></label>
@@ -3090,7 +3141,7 @@ const SubmissionsPage = () => {
         {/* CORRECTION: Select Test → Select Parameter → New Value */}
         {submissionType === 'correction' && category && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Correction Details</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Correction Request</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
@@ -3165,7 +3216,138 @@ const SubmissionsPage = () => {
           </div>
         )}
 
-        {/* Your Information */}
+        {/* Bug Report / Feature Request Form */}
+        {(submissionType === 'bug' || submissionType === 'feature') && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className={`text-lg font-semibold mb-4 ${submissionType === 'bug' ? 'text-red-700' : 'text-purple-700'}`}>
+              {submissionType === 'bug' ? 'Bug Report' : 'Feature Request'}
+            </h3>
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                {submissionType === 'bug' ? 'Describe the bug' : 'Describe your feature idea'} <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                value={feedbackDescription}
+                onChange={(e) => setFeedbackDescription(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                rows={6}
+                placeholder={submissionType === 'bug' 
+                  ? 'Please describe what happened, what you expected to happen, and steps to reproduce the issue...'
+                  : 'Please describe the feature you would like to see and how it would help you...'}
+                required
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Your Information - Bug/Feature */}
+        {(submissionType === 'bug' || submissionType === 'feature') && feedbackDescription && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">First Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Last Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Email Verification for Bug/Feature */}
+            {verificationStep === 'form' && (
+              <>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Work Email <span className="text-red-500">*</span>
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); }}
+                    className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
+                    placeholder="you@company.com"
+                  />
+                  <button
+                    type="button"
+                    onClick={sendVerificationCode}
+                    disabled={isSendingCode || !contactEmail || !firstName || !lastName}
+                    className="bg-[#2A63A4] text-white px-4 py-2 rounded-lg hover:bg-[#1E4A7A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                  >
+                    {isSendingCode ? 'Sending...' : 'Send Code'}
+                  </button>
+                </div>
+                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
+                <p className="text-sm text-gray-500 mt-2">Company or institutional email required (not Gmail, Yahoo, etc.)</p>
+              </>
+            )}
+
+            {verificationStep === 'verify' && (
+              <>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-blue-800">
+                    A verification code has been sent to <strong>{contactEmail}</strong>
+                  </p>
+                </div>
+                <label className="block text-sm font-medium text-gray-600 mb-2">Enter 6-digit code</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] text-center text-2xl tracking-widest"
+                    placeholder="• • • • • •"
+                    maxLength={6}
+                  />
+                  <button
+                    type="button"
+                    onClick={verifyCode}
+                    disabled={isVerifying || verificationCode.length !== 6}
+                    className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {isVerifying ? 'Verifying...' : 'Verify'}
+                  </button>
+                </div>
+                {verificationError && <p className="text-red-500 text-sm mt-2">{verificationError}</p>}
+                <button
+                  type="button"
+                  onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); setVerificationToken(''); }}
+                  className="text-[#2A63A4] text-sm mt-2 hover:underline"
+                >
+                  ← Use a different email
+                </button>
+              </>
+            )}
+
+            {verificationStep === 'verified' && (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
+                <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="text-emerald-800 font-medium">Email Verified!</p>
+                  <p className="text-emerald-700 text-sm">{contactEmail}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Your Information - Test Data */}
         {category && (submissionType === 'new' ? newTestName && newTestVendor : existingTest && selectedParameter) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
@@ -3234,7 +3416,7 @@ const SubmissionsPage = () => {
                     value={verificationCode}
                     onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] text-center text-2xl tracking-widest"
-                    placeholder="000000"
+                    placeholder="• • • • • •"
                     maxLength={6}
                   />
                   <button
@@ -3285,7 +3467,7 @@ const SubmissionsPage = () => {
               className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
             >
-              {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit' : 'Submit'}
+              {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit Request' : 'Submit Request'}
             </button>
           </>
         )}
