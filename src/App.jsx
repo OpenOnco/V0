@@ -889,8 +889,8 @@ const mrdTestData = [
     "numPublicationsPlus": true,
     "isRUO": false,
     "isInvestigational": true,
-    "isClinicalLDT": false,
-    "regulatoryStatusNotes": "Holds FDA Breakthrough Device designation for MRD but is not yet FDA cleared. MRD applications remain investigational. The TRM application has achieved clinical LDT status with Medicare coverage."
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "Holds FDA Breakthrough Device designation for MRD but is not yet FDA cleared. The underlying assay platform is a clinical LDT (same technology as FoundationOne Tracker TRM which has Medicare coverage), but MRD-specific applications remain investigational."
   },
   {
     "id": "mrd-11",
@@ -979,9 +979,9 @@ const mrdTestData = [
     "numPublications": 2,
     "numPublicationsPlus": true,
     "isRUO": true,
-    "isInvestigational": false,
+    "isInvestigational": true,
     "isClinicalLDT": false,
-    "regulatoryStatusNotes": "Pre-commercial WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. First clinical test for MIBC expected H1 2026."
+    "regulatoryStatusNotes": "Pre-commercial investigational WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. First clinical test for MIBC expected H1 2026."
   },
   {
     "id": "mrd-13",
@@ -1578,23 +1578,23 @@ const trmTestData = [
     "responseDefinition": "Percentage change in ctDNA tumor fraction between baseline and early on-treatment timepoints; incorporates multi-omic information (aneuploidy, VAFs, CNVs, fragment length) with CHIP filtering.",
     "leadTimeVsImaging": null,
     "leadTimeVsImagingNotes": "In mCRPC study (IMbassador250), ctDNA tumor fraction detected treatment response earlier than radiographic progression.",
-    "lod": "~0.1-0.2% ctDNA tumor fraction",
+    "lod": "Detects ctDNA tumor fraction; analytical sensitivity varies by sample and tumor characteristics",
     "lodCitations": "Foundation Medicine Monitoring Portfolio; Woodhouse R et al. PLoS One 2020;15:e0237802.",
-    "fdaStatus": "Investigational Use Only (IUO) clinical-trial assay – built on FDA-approved FoundationOne Liquid CDx but NOT separately approved",
-    "fdaStatusCitations": "Foundation Medicine press release June 2023.",
-    "reimbursement": "Not applicable",
-    "reimbursementNote": "Investigational clinical-trial assay; costs sponsor-funded. Not billed as routine clinical LDT.",
-    "cptCodesNotes": "None (investigational assay).",
-    "clinicalAvailability": "Available to biopharma partners for clinical trials. Launched June 2023. Not available as routine clinical test.",
+    "fdaStatus": "Clinical LDT – built on FDA-approved FoundationOne Liquid CDx platform; not separately FDA approved",
+    "fdaStatusCitations": "Foundation Medicine press release June 2023; Foundation Medicine monitoring portfolio.",
+    "reimbursement": "No specific coverage",
+    "reimbursementNote": "Clinical LDT without dedicated reimbursement pathway; coverage may depend on institution and context.",
+    "cptCodesNotes": "No specific CPT codes; may be billed under general CGP codes.",
+    "clinicalAvailability": "Available as clinical LDT. Initially launched June 2023 for biopharma partners; now available for clinical use.",
     "clinicalTrials": "IMbassador250 (mCRPC, enzalutamide ± atezolizumab); multiple biopharma-sponsored early-phase and response-adaptive studies.",
     "clinicalTrialsCitations": "Sweeney CJ et al. Clin Cancer Res 2024;30:4115-4122.",
     "totalParticipants": null,
     "numPublications": 3,
     "numPublicationsPlus": true,
-    "isRUO": true,
-    "isInvestigational": true,
-    "isClinicalLDT": false,
-    "regulatoryStatusNotes": "Tissue-naïve investigational ctDNA tumor-fraction assay for TRM and resistance detection. Available to biopharma partners. Launched June 2023. Positioned as option when tumor tissue is not available."
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "Tissue-naïve ctDNA tumor-fraction assay for TRM and resistance detection. Available as clinical LDT built on FDA-approved FoundationOne Liquid CDx platform. No dedicated payer coverage pathway yet. Positioned as option when tumor tissue is not available."
   }
 ];
 
@@ -2360,11 +2360,9 @@ const HomePage = ({ onNavigate }) => {
   
   // All tests combined for chat header ticker
   const exampleQuestions = [
-    "MRD testing options for colorectal cancer?",
-    "Which early detection tests have Medicare coverage?",
+    "MRD tests for colorectal cancer?",
     "Compare Signatera vs Guardant Reveal",
-    "I am a patient, keep answers basic",
-    "I am a physician, I like detailed answers"
+    "Which tests have Medicare coverage?"
   ];
 
   // Memoize system prompt - only computed once
@@ -2440,19 +2438,29 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.orange.card}`}
                 onClick={() => onNavigate('MRD')}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
                       </svg>
                     </div>
-                    <div>
-                      <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">{mrdTestData.length} tests</p>
-                    </div>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
                   </div>
                   <span className="text-lg font-medium text-[#2A63A4]">→</span>
+                </div>
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
+                    style={{ animation: 'tickerMRD 20s linear infinite' }}
+                  >
+                    <span className="inline-block">
+                      {mrdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                    </span>
+                    <span className="inline-block">
+                      {mrdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                    </span>
+                  </div>
                 </div>
               </div>
               
@@ -2461,19 +2469,29 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.green.card}`}
                 onClick={() => onNavigate('ECD')}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                       </svg>
                     </div>
-                    <div>
-                      <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">{ecdTestData.length} tests</p>
-                    </div>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
                   </div>
                   <span className="text-lg font-medium text-[#2A63A4]">→</span>
+                </div>
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
+                    style={{ animation: 'tickerECD 25s linear infinite' }}
+                  >
+                    <span className="inline-block">
+                      {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                    </span>
+                    <span className="inline-block">
+                      {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                    </span>
+                  </div>
                 </div>
               </div>
               
@@ -2482,22 +2500,46 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                 className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.red.card}`}
                 onClick={() => onNavigate('TRM')}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                       </svg>
                     </div>
-                    <div>
-                      <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">{trmTestData.length} tests</p>
-                    </div>
+                    <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
                   </div>
                   <span className="text-lg font-medium text-[#2A63A4]">→</span>
                 </div>
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
+                    style={{ animation: 'tickerTRM 15s linear infinite' }}
+                  >
+                    <span className="inline-block">
+                      {trmTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                    </span>
+                    <span className="inline-block">
+                      {trmTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
+            <style>{`
+              @keyframes tickerMRD {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              @keyframes tickerECD {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              @keyframes tickerTRM {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+            `}</style>
           </div>
           
           {/* Divider */}
@@ -2544,14 +2586,14 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           
           {/* Example Questions (only show when no messages) */}
           {messages.length === 0 && (
-            <div className="p-4 lg:p-6 bg-slate-50">
-              <p className="text-xs lg:text-sm text-slate-500 mb-2 lg:mb-3">Try asking:</p>
-              <div className="flex flex-wrap gap-2 lg:gap-3">
+            <div className="px-4 lg:px-6 py-3 bg-slate-50">
+              <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
                 {exampleQuestions.map((q, i) => (
                   <button
                     key={i}
                     onClick={() => handleSubmit(q)}
-                    className="text-sm lg:text-base bg-white border border-slate-200 rounded-full px-3 lg:px-4 py-1 lg:py-2 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
                   >
                     {q}
                   </button>
