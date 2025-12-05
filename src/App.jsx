@@ -2605,13 +2605,8 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
           {/* Chat Section */}
           <div className="bg-white">
             {/* Chat Header */}
-            <div className="px-4 lg:px-6 py-3 flex items-center gap-3 border-b border-slate-100">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </div>
-              <h3 className="text-slate-700 font-semibold text-sm lg:text-base">Ask Claude Questions about the OpenOnco Database</h3>
+            <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
+              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Ask Claude Questions about the OpenOnco Database</h3>
             </div>
           
           {/* Messages Area */}
