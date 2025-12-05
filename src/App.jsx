@@ -1236,8 +1236,10 @@ const ecdTestData = [
     "ppvDefinition": "PPV for any cancer among participants with Cancer Signal Detected",
     "npv": 99.1,
     "npvDefinition": "NPV for remaining cancer-free after No Cancer Signal Detected (12-month follow-up)",
+    "tumorOriginAccuracy": 93,
+    "tumorOriginAccuracyNotes": "Cancer Signal Origin (CSO) prediction accuracy: 93% top-1 prediction, 97% top-2 predictions in CCGA validation studies",
     "performanceCitations": "CCGA case-control studies (n=15254); PATHFINDER (n=6662); PATHFINDER 2 (n=35878); NHS-Galleri (n=140000+)",
-    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%; CSO prediction accuracy ~93.4%.",
+    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%.",
     "leadTimeNotes": "PATHFINDER and PATHFINDER 2 show ~7-fold increase in cancers detected when added to USPSTF A/B screening; median diagnostic resolution ~1.5 months",
     "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; not FDA-approved; Breakthrough Device designation; PMA submission expected H1 2026",
     "reimbursement": "Coverage Varies",
@@ -1366,9 +1368,11 @@ const ecdTestData = [
     "ppvDefinition": "PPV for any cancer in DETECT-A CancerSEEK interventional study",
     "npv": 99.3,
     "npvDefinition": "NPV for absence of any cancer in DETECT-A CancerSEEK interventional study",
+    "tumorOriginAccuracy": null,
+    "tumorOriginAccuracyNotes": "Does not predict tissue of origin; uses imaging-guided diagnostic resolution pathway instead (up to $6,000 covered imaging workup)",
     "performanceCitations": "DETECT-A (n=10006); ASCEND-2 (n=6354); FALCON Registry (n=25000 ongoing)",
     "performanceNotes": "64% sensitivity for 17 cancer types excluding breast/prostate; 68% for 6 deadliest cancers; >33% early-stage (I-II) detected; 97.4% specificity.",
-    "leadTimeNotes": "First-of-its-kind multi-biomarker approach; imaging-guided resolution (no tissue of origin prediction); up to $6000 imaging program for non-covered follow-up",
+    "leadTimeNotes": "First-of-its-kind multi-biomarker approach; imaging-guided resolution (no tissue of origin prediction)",
     "fdaStatus": "LDT; not FDA-approved; Breakthrough Device Designation (via CancerSEEK)",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not covered by Medicare or commercial payers; not billed to insurance; FSA/HSA eligible",
@@ -1550,6 +1554,8 @@ const ecdTestData = [
     ],
     "targetPopulation": "Average-risk adults 45+ years; ordered as add-on when physician requests Shield CRC test",
     "indicationGroup": "MCED",
+    "tumorOriginAccuracy": null,
+    "tumorOriginAccuracyNotes": "Cancer signal of origin prediction included; specific accuracy not yet publicly disclosed; performance data presented at AACR/ASCO 2025",
     "ppvDefinition": "PPV for any of 10 target cancers among positive Shield MCD results (not yet reported)",
     "npvDefinition": "NPV for remaining cancer-free among negative Shield MCD results (not yet reported)",
     "performanceCitations": "AACR 2025 oral presentation; ASCO 2025; NCI Vanguard Study (NCT pending; n=24000)",
@@ -1576,16 +1582,19 @@ const ecdTestData = [
     "vendor": "Precision Epigenomics",
     "testScope": "Multi-cancer (MCED)",
     "approach": "Blood-based cfDNA methylation MCED (plasma)",
-    "method": "Methylation-specific PCR detecting hypermethylated cfDNA loci across 60+ cancer types; does not use NGS; analyzes 10 cancer biomarkers; returns results in 2-3 days",
+    "method": "Methylation-specific PCR detecting hypermethylated cfDNA loci across 60+ cancer types including all 20 most fatal cancers; does not use NGS; analyzes 10 cancer biomarkers",
     "cancerTypes": [
-      "60+ cancer types including lung, liver, pancreas, esophageal, bladder, stomach, head & neck SCC, uterine, brain"
+      "60+ cancer types including all 20 most fatal cancers: lung, liver, pancreas, esophageal, bladder, stomach, head & neck SCC, uterine, low-grade glioma, high-grade glioma (brain cancer detection believed unique among blood-based MCED tests)"
     ],
     "targetPopulation": "Adults 45+ years with elevated cancer risk; can be considered from age 21 with risk factors (smoking, family history)",
     "indicationGroup": "MCED",
-    "sensitivity": 45.0,
-    "sensitivityNotes": "Incidence-adjusted sensitivity (IAS) for Stage I/II cancers. For aggressive unscreened cancers (bladder, esophagus, liver, H&N, lung, pancreas, stomach, uterine) Stage I/II sensitivity is 57%.",
-    "stageISensitivity": null,
-    "stageIISensitivity": null,
+    "tumorOriginAccuracy": null,
+    "tumorOriginAccuracyNotes": "Does not predict tissue of origin (no CSO/TOO); requires standard diagnostic workup to localize cancer source",
+    "sensitivity": 54.0,
+    "sensitivityNotes": "Overall incidence-adjusted sensitivity (IAS) across all stages. IAS is more conservative than observed sensitivity as it weights by cancer incidence.",
+    "stageISensitivity": 45.0,
+    "stageIISensitivity": 45.0,
+    "stageISensitivityNotes": "Combined Stage I/II IAS = 45%. For aggressive unscreened cancers (bladder, esophagus, liver, H&N, lung, pancreas, stomach, uterine) Stage I/II sensitivity is 57%.",
     "stageIIISensitivity": 73.0,
     "stageIVSensitivity": 74.0,
     "specificity": 99.5,
@@ -1601,12 +1610,12 @@ const ecdTestData = [
     "reimbursementNote": "No Medicare or commercial insurance coverage. Positioned as affordable/accessible alternative to NGS-based MCED tests.",
     "commercialPayers": [],
     "clinicalAvailability": "Commercially available in US via CLIA-certified lab in Tucson, AZ. Physician-ordered (not direct-to-consumer).",
-    "tat": "2-3 days",
-    "sampleType": "Whole blood",
-    "sampleVolume": "Standard blood draw",
+    "tat": "5 days",
+    "tatNotes": "Collection to report turnaround time (includes shipping and processing). Lab processing time is 2-3 days.",
+    "sampleType": "Two 10-mL Streck cfDNA BCT tubes",
+    "sampleVolume": "20 mL whole blood (two 10-mL tubes)",
     "cptCode": "UNKNOWN",
-    "listPrice": null,
-    "listPriceNotes": "Positioned as more affordable than competitors; specific pricing not publicly disclosed",
+    "listPrice": 699,
     "screeningInterval": "Not specified",
     "clinicalTrials": "ASCO 2025 validation study (n=482); simulated 100,000-patient SEER-based screening cohort modeling",
     "totalParticipants": 482,
@@ -1795,6 +1804,55 @@ const trmTestData = [
 ];
 
 
+// Compressed test data for chatbot - keeps all fields but shortens keys and removes nulls/citations
+const compressTestForChat = (test) => {
+  // Key mapping: long names → short names
+  const keyMap = {
+    id: 'id', name: 'nm', vendor: 'vn', approach: 'ap', method: 'mt', sampleCategory: 'samp',
+    cancerTypes: 'ca', indicationsNotes: 'ind', sensitivity: 'sens', specificity: 'spec',
+    ppv: 'ppv', npv: 'npv', lod: 'lod', lodNotes: 'lodN', requiresTumorTissue: 'tumorReq',
+    requiresMatchedNormal: 'normReq', variantsTracked: 'vars', initialTat: 'tat1', followUpTat: 'tat2',
+    leadTimeVsImaging: 'lead', bloodVolume: 'bvol', fdaStatus: 'fda', reimbursement: 'reimb',
+    reimbursementNote: 'reimbN', commercialPayers: 'privIns', clinicalAvailability: 'avail',
+    cptCodes: 'cpt', cptCode: 'cpt', totalParticipants: 'trial', numPublications: 'pubs',
+    numPublicationsPlus: 'pubsPlus', exampleTestReport: 'rpt', clinicalTrials: 'trials',
+    testScope: 'scope', targetPopulation: 'pop', indicationGroup: 'indGrp',
+    stageISensitivity: 's1', stageIISensitivity: 's2', stageIIISensitivity: 's3', stageIVSensitivity: 's4',
+    tumorOriginAccuracy: 'origAcc', tumorOriginAccuracyNotes: 'origN',
+    performanceNotes: 'perfN', leadTimeNotes: 'leadN', tat: 'tat',
+    sampleType: 'sampT', sampleVolume: 'sampV', sampleStability: 'sampStab',
+    listPrice: 'price', screeningInterval: 'interval',
+    landmarkSensitivity: 'lmSens', landmarkSpecificity: 'lmSpec',
+    longitudinalSensitivity: 'loSens', longitudinalSpecificity: 'loSpec',
+    responseDefinition: 'respDef', independentValidation: 'indepVal',
+    nccnGuidelines: 'nccn', technologyDifferentiator: 'techDiff',
+    sensitivityNotes: 'sensN', specificityNotes: 'specN', ppvDefinition: 'ppvDef', npvDefinition: 'npvDef',
+  };
+  
+  const compressed = {};
+  for (const [key, value] of Object.entries(test)) {
+    // Skip null, undefined, empty arrays, and citation fields
+    if (value === null || value === undefined) continue;
+    if (Array.isArray(value) && value.length === 0) continue;
+    if (key.toLowerCase().includes('citation')) continue;
+    
+    // Use short key if available
+    const shortKey = keyMap[key] || key;
+    compressed[shortKey] = value;
+  }
+  return compressed;
+};
+
+const chatTestData = {
+  MRD: mrdTestData.map(compressTestForChat),
+  ECD: ecdTestData.map(compressTestForChat),
+  TRM: trmTestData.map(compressTestForChat),
+};
+
+// Key legend for chatbot prompt
+const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=limit of detection, tumorReq=requires tumor, vars=variants tracked, tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, avail=availability, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
+
+
 const filterConfigs = {
   MRD: {
     // Oncologist priority: What cancer? Sample type? Is it covered? Is it FDA approved?
@@ -1858,6 +1916,7 @@ const comparisonParams = {
     { key: 'specificity', label: 'Specificity (%)' },
     { key: 'ppv', label: 'PPV (%)' },
     { key: 'npv', label: 'NPV (%)' },
+    { key: 'tumorOriginAccuracy', label: 'Origin Prediction (%)' },
     { key: 'leadTimeNotes', label: 'Lead Time vs Screening' },
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
@@ -2092,13 +2151,14 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
 
   // Memoize system prompt - only computed once
   const systemPrompt = useMemo(() => {
-    const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
-    return `You are a liquid biopsy test data assistant for OpenOnco. You help users explore and compare tests in our database. You are not a clinical advisor and do not provide medical advice.
+    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor.
 
-TEST DATABASE:
-${JSON.stringify(testDatabase)}
+DATABASE:
+${JSON.stringify(chatTestData)}
 
-RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+${chatKeyLegend}
+
+STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified" for missing data.`;
   }, []);
 
   const submitQuestion = async (question) => {
@@ -2109,13 +2169,17 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
     setIsLoading(true);
 
     try {
+      // Limit history to last 6 messages to reduce token usage
+      const recentMessages = updatedMessages.slice(-6);
+      
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          max_tokens: 1500,
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 1000,
           system: systemPrompt,
-          messages: updatedMessages
+          messages: recentMessages
         })
       });
       
@@ -2575,13 +2639,14 @@ const HomePage = ({ onNavigate }) => {
 
   // Memoize system prompt - only computed once
   const systemPrompt = useMemo(() => {
-    const testDatabase = { MRD: mrdTestData, ECD: ecdTestData, TRM: trmTestData };
-    return `You are a liquid biopsy test data assistant for OpenOnco. You help users explore and compare tests in our database. You are not a clinical advisor and do not provide medical advice.
+    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor.
 
-TEST DATABASE:
-${JSON.stringify(testDatabase)}
+DATABASE:
+${JSON.stringify(chatTestData)}
 
-RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+${chatKeyLegend}
+
+STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified" for missing data.`;
   }, []);
 
   const handleSubmit = async (question) => {
@@ -2595,13 +2660,17 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
     setIsLoading(true);
 
     try {
+      // Limit history to last 6 messages to reduce token usage
+      const recentMessages = updatedMessages.slice(-6);
+      
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          max_tokens: 1500,
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 1000,
           system: systemPrompt,
-          messages: updatedMessages
+          messages: recentMessages
         })
       });
       
@@ -4094,12 +4163,14 @@ const CategoryChat = ({ category }) => {
 
   // Memoize system prompt - only recomputed if category changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test data assistant for OpenOnco, focused on ${meta.title} testing. You help users explore and compare tests in our database. You are not a clinical advisor and do not provide medical advice.
+    return `You are a liquid biopsy test assistant for OpenOnco, focused on ${meta.title} testing. Help users explore and compare tests. You are not a clinical advisor.
 
-${category} TEST DATABASE:
-${JSON.stringify(meta.tests)}
+${category} DATABASE:
+${JSON.stringify(chatTestData[category])}
 
-RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include only 2-3 relevant data points. Use prose, not bullet lists. For comparisons, highlight 1-2 meaningful differences. Report field values accurately. Say "not specified" for null/missing fields.`;
+${chatKeyLegend}
+
+STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified" for missing data.`;
   }, [category, meta]);
 
   const handleKeyDown = (e) => {
@@ -4119,14 +4190,15 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
     setIsLoading(true);
 
     try {
-      // Skip the initial greeting for API calls
-      const conversationHistory = updatedMessages.slice(1);
+      // Skip the initial greeting, limit to last 6 messages
+      const conversationHistory = updatedMessages.slice(1).slice(-6);
 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          max_tokens: 1024,
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 800,
           system: systemPrompt,
           messages: conversationHistory
         })
@@ -4429,6 +4501,14 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Specificity" value={test.specificity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.performanceCitations} notes={test.ppvDefinition} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.performanceCitations} notes={test.npvDefinition} />
+              {test.testScope?.includes('Multi-cancer') && (
+                <DataRow 
+                  label="Tumor Origin Prediction" 
+                  value={test.tumorOriginAccuracy != null ? test.tumorOriginAccuracy : (test.tumorOriginAccuracyNotes ? 'See notes' : null)} 
+                  unit={test.tumorOriginAccuracy != null ? '%' : ''} 
+                  notes={test.tumorOriginAccuracyNotes} 
+                />
+              )}
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
               <DataRow label="Method" value={test.method} />
