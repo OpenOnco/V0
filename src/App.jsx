@@ -2987,6 +2987,11 @@ Say "not specified" for missing data.`;
         <div className="mb-4">
           <NewsFeed />
         </div>
+
+        {/* Database Summary */}
+        <div className="mb-4">
+          <DatabaseSummary />
+        </div>
       </div>
     </div>
   );
