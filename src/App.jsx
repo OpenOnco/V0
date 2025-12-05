@@ -1115,8 +1115,8 @@ const mrdTestData = [
     "leadTimeVsImaging": 200,
     "leadTimeVsImagingCitations": "Foresight CLARITY product page; Roschewski M et al. ASH 2023.",
     "leadTimeVsImagingNotes": "Detects relapse approximately 200 days earlier than PET/CT imaging in DLBCL. PhasED-Seq correctly identified 90% of patients who later relapsed vs 45% identified by PET/CT.",
-    "requiresTumorTissue": "No",
-    "requiresTumorTissueNotes": "Phased variants can be determined from either pre-treatment plasma OR tumor tissue sample. Fixed off-the-shelf panel for B-cell lymphoma; personalized panel for solid tumors.",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Tumor-informed assay requiring tumor-derived material. For B-cell lymphoma: fixed off-the-shelf panel uses pre-treatment plasma (when tumor is actively shedding) OR tumor tissue. For solid tumors: personalized panel requires tumor profiling.",
     "requiresMatchedNormal": "No",
     "requiresMatchedNormalNotes": "Pre-treatment plasma can serve as tumor DNA source for phased variant identification.",
     "variantsTracked": "Phased variants",
@@ -1752,7 +1752,7 @@ const comparisonParams = {
     { key: 'cancerTypesStr', label: 'Cancer Types' },
     { key: 'sensitivity', label: 'Sensitivity (%)' },
     { key: 'specificity', label: 'Specificity (%)' },
-    { key: 'lod', label: 'LOD (VAF %)' },
+    { key: 'lod', label: 'LOD (ppm)' },
     { key: 'variantsTracked', label: 'Variants Tracked' },
     { key: 'initialTat', label: 'Initial TAT (days)' },
     { key: 'followUpTat', label: 'Follow-up TAT (days)' },
@@ -2194,7 +2194,7 @@ const TestShowcase = ({ onNavigate }) => {
     if (test.numPublications != null && test.numPublications > 0) params.push({ label: 'Publications', value: test.numPublicationsPlus ? `${test.numPublications}+` : test.numPublications, type: 'clinical' });
     
     // Analytical parameters (lab validation)
-    if (test.lod != null && typeof test.lod === 'number') params.push({ label: 'LOD', value: `${test.lod}%`, type: 'analytical' });
+    if (test.lod != null && typeof test.lod === 'number') params.push({ label: 'LOD', value: `${(test.lod * 10000).toFixed(1).replace(/\.0$/, '')} ppm`, type: 'analytical' });
     if (test.variantsTracked != null && typeof test.variantsTracked === 'number') params.push({ label: 'Variants Tracked', value: test.variantsTracked, type: 'analytical' });
     
     // Cancer coverage
@@ -2375,7 +2375,7 @@ const StatOfTheDay = ({ onNavigate }) => {
   // Day-based stat rotation (0=Sunday through 6=Saturday)
   const dayStats = [
     { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
-    { key: 'lod', label: 'Limit of Detection', unit: '% VAF', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => v < 0.01 ? v.toExponential(1) : v, filter: (v) => v != null && typeof v === 'number' && v > 0 },
+    { key: 'lod', label: 'Limit of Detection', unit: '', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => { const ppm = v * 10000; return ppm >= 1 ? `${ppm.toFixed(1).replace(/\.0$/, '')} ppm` : `${ppm.toPrecision(2)} ppm`; }, filter: (v) => v != null && typeof v === 'number' && v > 0 },
     { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
     { key: 'tat', label: 'Turnaround Time', unit: ' days', description: 'Fastest turnaround', higherIsBetter: false, format: (v) => v, filter: (v) => v != null && v > 0 },
     { key: 'sensitivity', label: 'Sensitivity', unit: '%', description: 'Highest sensitivity', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
@@ -2981,7 +2981,7 @@ const SubmissionsPage = () => {
     MRD: [
       { key: 'sensitivity', label: 'Sensitivity (%)' },
       { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'lod', label: 'Limit of Detection (VAF %)' },
+      { key: 'lod', label: 'Limit of Detection (ppm)' },
       { key: 'variantsTracked', label: 'Variants Tracked' },
       { key: 'initialTat', label: 'Initial Turnaround Time (days)' },
       { key: 'followUpTat', label: 'Follow-up Turnaround Time (days)' },
@@ -3824,9 +3824,9 @@ const SourceDataPage = () => {
   };
 
   const downloadMrdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (ppm)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
     const rows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod != null ? (t.lod * 10000).toFixed(2) : null, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_MRD.csv', 'text/csv;charset=utf-8;');
   };
@@ -3840,9 +3840,9 @@ const SourceDataPage = () => {
   };
 
   const downloadTrmCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (VAF %)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (ppm)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
     const rows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, typeof t.lod === 'number' ? (t.lod * 10000).toFixed(2) : t.lod, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_TRM.csv', 'text/csv;charset=utf-8;');
   };
@@ -4097,6 +4097,31 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
 // ============================================
 // Info Icon Component (shows citations/notes on click)
 // ============================================
+// Helper function to format LOD as "ppm (% VAF)"
+const formatLOD = (lodPercent) => {
+  if (lodPercent == null || typeof lodPercent !== 'number') return null;
+  const ppm = lodPercent * 10000; // Convert % to ppm
+  // Format ppm nicely
+  let ppmStr;
+  if (ppm >= 100) {
+    ppmStr = Math.round(ppm).toString();
+  } else if (ppm >= 1) {
+    ppmStr = ppm.toFixed(1).replace(/\.0$/, '');
+  } else if (ppm >= 0.1) {
+    ppmStr = ppm.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+  } else {
+    ppmStr = ppm.toPrecision(2);
+  }
+  // Format % nicely
+  let pctStr;
+  if (lodPercent >= 0.01) {
+    pctStr = lodPercent.toString();
+  } else {
+    pctStr = lodPercent.toExponential(1);
+  }
+  return `${ppmStr} ppm (${pctStr}%)`;
+};
+
 const InfoIcon = ({ citations, notes }) => {
   const [isOpen, setIsOpen] = useState(false);
   if (!citations && !notes) return null;
@@ -4208,7 +4233,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         <div className="grid grid-cols-4 gap-2 mb-3">
           {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Sensitivity</p></div>}
           {test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
-          {test.lod != null && <div><p className="text-lg font-bold text-violet-600">{test.lod < 0.01 ? test.lod.toExponential(1) : test.lod}%</p><p className="text-xs text-gray-500">LOD</p></div>}
+          {test.lod != null && typeof test.lod === 'number' && <div><p className="text-lg font-bold text-violet-600">{(test.lod * 10000) >= 1 ? (test.lod * 10000).toFixed(1).replace(/\.0$/, '') : (test.lod * 10000).toPrecision(2)} ppm</p><p className="text-xs text-gray-500">LOD</p></div>}
           {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-slate-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
           {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
@@ -4246,7 +4271,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Headline Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} />
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-              <DataRow label="Limit of Detection" value={test.lod != null ? (test.lod < 0.01 ? test.lod.toExponential(2) : test.lod) : null} unit="% VAF" citations={test.lodCitations} notes={test.lodNotes} />
+              <DataRow label="Limit of Detection" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} />
               
               {(test.landmarkSensitivity || test.landmarkSpecificity || test.longitudinalSensitivity || test.longitudinalSpecificity) && (
                 <>
@@ -4339,7 +4364,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
               <DataRow label="Sensitivity" value={test.sensitivity} unit="%" />
               <DataRow label="Specificity" value={test.specificity} unit="%" />
-              <DataRow label="LOD" value={test.lod} unit="% VAF" />
+              <DataRow label="LOD" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
