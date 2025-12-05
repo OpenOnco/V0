@@ -2319,7 +2319,7 @@ Say "not specified" for missing data.`;
           value={input} 
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask Claude about liquid biopsy tests here" 
+          placeholder="Type your liquid biopsy test question here..." 
           className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
           style={{ borderColor: '#6AA1C8' }}
         />
@@ -2909,7 +2909,7 @@ Say "not specified" for missing data.`;
           <div className="bg-white">
             {/* Chat Header */}
             <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
-              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Ask Claude About Liquid Biopsy Tests</h3>
+              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or Browse the data with Claude:</h3>
             </div>
           
           {/* Messages Area */}
@@ -2939,24 +2939,6 @@ Say "not specified" for missing data.`;
             </div>
           )}
           
-          {/* Example Questions (only show when no messages) */}
-          {messages.length === 0 && (
-            <div className="px-4 lg:px-6 py-3 bg-slate-50">
-              <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
-                <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
-                {exampleQuestions.map((q, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSubmit(q)}
-                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-          
           {/* Input Area */}
           <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
             <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
@@ -2964,7 +2946,7 @@ Say "not specified" for missing data.`;
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Ask Claude about liquid biopsy tests here"
+                placeholder="Type your liquid biopsy test question here..."
                 className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none"
                 style={{ '--tw-ring-color': '#2A63A4' }}
                 disabled={isLoading}
@@ -2979,6 +2961,24 @@ Say "not specified" for missing data.`;
               </button>
             </form>
           </div>
+          
+          {/* Example Questions (show below input when no messages) */}
+          {messages.length === 0 && (
+            <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+              <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                {exampleQuestions.map((q, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleSubmit(q)}
+                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           </div>
         </div>
 
