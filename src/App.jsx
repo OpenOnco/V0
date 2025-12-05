@@ -2719,6 +2719,12 @@ const HomePage = ({ onNavigate }) => {
     green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300 hover:shadow-md', btn: 'from-emerald-500 to-emerald-600' },
     red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
   };
+
+  // Calculate total data points dynamically
+  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
+  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
+  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams);
   
   // All tests combined for chat header ticker
   const exampleQuestions = [
@@ -2814,7 +2820,7 @@ Say "not specified" for missing data.`;
         <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
           {/* Container Header */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests using &gt;1,000 Data Points</h2>
+            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests using {totalDataPoints.toLocaleString()} Data Points</h2>
           </div>
           
           {/* Category Navigators */}
