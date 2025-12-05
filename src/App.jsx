@@ -2127,9 +2127,16 @@ const TestShowcase = ({ onNavigate }) => {
     const leadTime = extractNumber(test.leadTimeVsImaging);
     if (leadTime != null) params.push({ label: 'Lead Time vs Imaging', value: `${leadTime} days`, type: 'clinical' });
     
+    // Trial/publication parameters (evidence base)
+    if (test.totalParticipants != null && test.totalParticipants > 0) params.push({ label: 'Trial Participants', value: test.totalParticipants.toLocaleString(), type: 'clinical' });
+    if (test.numPublications != null && test.numPublications > 0) params.push({ label: 'Publications', value: test.numPublicationsPlus ? `${test.numPublications}+` : test.numPublications, type: 'clinical' });
+    
     // Analytical parameters (lab validation)
     if (test.lod != null && typeof test.lod === 'number') params.push({ label: 'LOD', value: `${test.lod}%`, type: 'analytical' });
     if (test.variantsTracked != null && typeof test.variantsTracked === 'number') params.push({ label: 'Variants Tracked', value: test.variantsTracked, type: 'analytical' });
+    
+    // Cancer coverage
+    if (test.cancerTypes != null && test.cancerTypes.length > 0) params.push({ label: 'Cancer Types', value: test.cancerTypes.length, type: 'analytical' });
     
     // Operational parameters (logistics/specs)
     const initialTat = extractNumber(test.initialTat);
