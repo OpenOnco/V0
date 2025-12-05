@@ -1857,6 +1857,32 @@ const chatTestData = {
 // Key legend for chatbot prompt
 const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=limit of detection, tumorReq=requires tumor, vars=variants tracked, tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, avail=availability, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
 
+// Persona-specific chatbot style instructions
+const getPersonaStyle = (persona) => {
+  switch(persona) {
+    case 'Patient':
+      return `AUDIENCE: Patient or caregiver seeking to understand options.
+STYLE: Use clear, accessible language. Avoid jargon - if you must use technical terms, briefly explain them. Be warm and reassuring. Always remind them to discuss options with their healthcare provider. Focus on practical aspects: What does this test do? Is it covered by insurance? What's involved in getting tested?`;
+    case 'Clinician':
+      return `AUDIENCE: Healthcare professional comparing tests for patients.
+STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on actionable metrics: sensitivity, specificity, LOD, TAT, reimbursement status, FDA clearance. Skip basic explanations. Highlight clinically meaningful differences between tests.`;
+    case 'Research and Development':
+      return `AUDIENCE: Researcher or industry professional studying the landscape.
+STYLE: Be technical and detailed. Include methodology details, analytical performance metrics, and validation data. Reference publications and trial data when relevant. Discuss technology differentiators and emerging approaches.`;
+    default:
+      return `STYLE: Be concise and helpful. Lead with key insights. Use prose not bullets.`;
+  }
+};
+
+// Helper to get persona from localStorage
+const getStoredPersona = () => {
+  try {
+    return localStorage.getItem('openonco-persona');
+  } catch {
+    return null;
+  }
+};
+
 
 const filterConfigs = {
   MRD: {
@@ -2148,23 +2174,31 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
     }
   }, [messages, isLoading]);
 
+  // Track persona from localStorage
+  const [persona, setPersona] = useState(null);
+  useEffect(() => {
+    setPersona(getStoredPersona());
+  }, []);
+
   const handleSuggestionClick = (question) => {
     setShowSuggestions(false);
     setInput('');
     submitQuestion(question);
   };
 
-  // Memoize system prompt - only computed once
+  // Memoize system prompt - recompute when persona changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor.
+    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor and cannot provide medical advice.
 
 DATABASE:
 ${JSON.stringify(chatTestData)}
 
 ${chatKeyLegend}
 
-STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified" for missing data.`;
-  }, []);
+${getPersonaStyle(persona)}
+
+Say "not specified" for missing data.`;
+  }, [persona]);
 
   const submitQuestion = async (question) => {
     setShowSuggestions(false);
@@ -2620,7 +2654,22 @@ const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [persona, setPersona] = useState(null);
   const chatContainerRef = useRef(null);
+
+  // Load persona from localStorage on mount
+  useEffect(() => {
+    const savedPersona = localStorage.getItem('openonco-persona');
+    if (savedPersona) {
+      setPersona(savedPersona);
+    }
+  }, []);
+
+  // Save persona to localStorage when changed
+  const handlePersonaSelect = (selectedPersona) => {
+    setPersona(selectedPersona);
+    localStorage.setItem('openonco-persona', selectedPersona);
+  };
 
   // Auto-scroll to bottom when messages or loading state changes
   useEffect(() => {
@@ -2642,17 +2691,19 @@ const HomePage = ({ onNavigate }) => {
     "Which tests have Medicare coverage?"
   ];
 
-  // Memoize system prompt - only computed once
+  // Memoize system prompt - recompute when persona changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor.
+    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor and cannot provide medical advice.
 
 DATABASE:
 ${JSON.stringify(chatTestData)}
 
 ${chatKeyLegend}
 
-STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified" for missing data.`;
-  }, []);
+${getPersonaStyle(persona)}
+
+Say "not specified" for missing data.`;
+  }, [persona]);
 
   const handleSubmit = async (question) => {
     const q = question || chatInput;
@@ -2703,6 +2754,24 @@ STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
           <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
+          
+          {/* Persona Selector */}
+          <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="text-sm sm:text-base text-slate-600">My interest is</span>
+            {['Research and Development', 'Patient', 'Clinician'].map((p) => (
+              <button
+                key={p}
+                onClick={() => handlePersonaSelect(p)}
+                className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium transition-all ${
+                  persona === p
+                    ? 'bg-[#2A63A4] text-white shadow-md'
+                    : 'bg-white border border-slate-300 text-slate-600 hover:border-[#2A63A4] hover:text-[#2A63A4]'
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Unified Database Access Container */}
@@ -4162,21 +4231,29 @@ const CategoryChat = ({ category }) => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [persona, setPersona] = useState(null);
   const messagesEndRef = useRef(null);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
+  
+  // Load persona from localStorage
+  useEffect(() => {
+    setPersona(getStoredPersona());
+  }, []);
 
-  // Memoize system prompt - only recomputed if category changes
+  // Memoize system prompt - recomputed if category or persona changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test assistant for OpenOnco, focused on ${meta.title} testing. Help users explore and compare tests. You are not a clinical advisor.
+    return `You are a liquid biopsy test assistant for OpenOnco, focused on ${meta.title} testing. Help users explore and compare tests. You are not a clinical advisor and cannot provide medical advice.
 
 ${category} DATABASE:
 ${JSON.stringify(chatTestData[category])}
 
 ${chatKeyLegend}
 
-STYLE: Be concise. Lead with insights. Use prose not bullets. Say "not specified" for missing data.`;
-  }, [category, meta]);
+${getPersonaStyle(persona)}
+
+Say "not specified" for missing data.`;
+  }, [category, meta, persona]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
