@@ -2484,7 +2484,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
           {/* Container Header */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests</h2>
+            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests using &gt;1,000 Data Points</h2>
           </div>
           
           {/* Category Navigators */}
