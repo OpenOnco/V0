@@ -410,6 +410,7 @@ const BUILD_INFO = {
 const mrdTestData = [
   {
     "id": "mrd-1",
+    "sampleCategory": "Blood/Plasma",
     "name": "Haystack MRD",
     "vendor": "Quest Diagnostics",
     "approach": "Tumor-informed",
@@ -448,6 +449,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-2",
+    "sampleCategory": "Blood/Plasma",
     "name": "NeXT Personal Dx",
     "vendor": "Personalis",
     "approach": "Tumor-informed",
@@ -501,6 +503,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-3",
+    "sampleCategory": "Blood/Plasma",
     "name": "Oncodetect",
     "vendor": "Exact Sciences",
     "approach": "Tumor-informed",
@@ -560,6 +563,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-4",
+    "sampleCategory": "Blood/Plasma",
     "name": "Pathlight",
     "vendor": "SAGA Diagnostics",
     "approach": "Tumor-informed",
@@ -606,6 +610,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-5",
+    "sampleCategory": "Blood/Plasma",
     "name": "RaDaR ST",
     "vendor": "NeoGenomics",
     "approach": "Tumor-informed",
@@ -650,6 +655,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-6",
+    "sampleCategory": "Blood/Plasma",
     "name": "Reveal",
     "vendor": "Guardant",
     "approach": "Tumor-naïve",
@@ -703,6 +709,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-7",
+    "sampleCategory": "Blood/Plasma",
     "name": "Signatera",
     "vendor": "Natera",
     "approach": "Tumor-informed",
@@ -771,6 +778,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-8",
+    "sampleCategory": "Blood/Plasma",
     "name": "Tempus xM MRD",
     "vendor": "Tempus",
     "approach": "Tumor-naïve",
@@ -805,6 +813,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-9",
+    "sampleCategory": "Blood/Plasma",
     "name": "Labcorp Plasma Detect",
     "vendor": "Labcorp",
     "approach": "Tumor-informed",
@@ -850,6 +859,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-10",
+    "sampleCategory": "Blood/Plasma",
     "name": "FoundationOne Tracker (MRD)",
     "vendor": "Foundation Medicine / Natera",
     "approach": "Tumor-informed",
@@ -894,6 +904,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-11",
+    "sampleCategory": "Blood/Plasma",
     "name": "Foundation TI-WGS MRD (RUO)",
     "vendor": "Foundation Medicine",
     "approach": "Tumor-informed",
@@ -938,6 +949,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-12",
+    "sampleCategory": "Blood/Plasma",
     "name": "Veracyte MRD (C2i Genomics platform)",
     "vendor": "Veracyte (C2i Genomics)",
     "approach": "Tumor-informed",
@@ -985,6 +997,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-13",
+    "sampleCategory": "Blood/Plasma",
     "name": "Guardant LUNAR (RUO platform)",
     "vendor": "Guardant Health",
     "approach": "Tumor-naïve",
@@ -1032,6 +1045,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-14",
+    "sampleCategory": "Blood/Plasma",
     "name": "NavDx",
     "vendor": "Naveris",
     "approach": "Tumor-naïve",
@@ -1089,6 +1103,7 @@ const mrdTestData = [
   },
   {
     "id": "mrd-15",
+    "sampleCategory": "Blood/Plasma",
     "name": "Foresight CLARITY",
     "vendor": "Natera",
     "vendorOriginal": "Foresight Diagnostics",
@@ -1155,6 +1170,7 @@ const mrdTestData = [
 const ecdTestData = [
   {
     "id": "ecd-1",
+    "sampleCategory": "Blood/Plasma",
     "name": "Shield",
     "vendor": "Guardant Health",
     "testScope": "Single-cancer (CRC)",
@@ -1199,6 +1215,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-2",
+    "sampleCategory": "Blood/Plasma",
     "name": "Galleri",
     "vendor": "GRAIL",
     "testScope": "Multi-cancer (MCED)",
@@ -1243,6 +1260,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-3",
+    "sampleCategory": "Stool",
     "name": "Cologuard Plus",
     "vendor": "Exact Sciences",
     "testScope": "Single-cancer (CRC)",
@@ -1287,6 +1305,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-4",
+    "sampleCategory": "Stool",
     "name": "ColoSense",
     "vendor": "Geneoscopy",
     "testScope": "Single-cancer (CRC)",
@@ -1330,6 +1349,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-5",
+    "sampleCategory": "Blood/Plasma",
     "name": "Cancerguard",
     "vendor": "Exact Sciences",
     "testScope": "Multi-cancer (MCED)",
@@ -1367,6 +1387,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-6",
+    "sampleCategory": "Blood/Plasma",
     "name": "Freenome CRC Blood Test",
     "vendor": "Freenome",
     "testScope": "Single-cancer (CRC)",
@@ -1405,6 +1426,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-7",
+    "sampleCategory": "Blood/Plasma",
     "name": "FirstLook Lung",
     "vendor": "DELFI Diagnostics",
     "testScope": "Single-cancer (Lung)",
@@ -1445,6 +1467,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-8",
+    "sampleCategory": "Blood/Plasma",
     "name": "HelioLiver",
     "vendor": "Helio Genomics",
     "testScope": "Single-cancer (HCC/Liver)",
@@ -1480,6 +1503,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-9",
+    "sampleCategory": "Blood/Plasma",
     "name": "Oncoguard Liver",
     "vendor": "Exact Sciences",
     "testScope": "Single-cancer (HCC/Liver)",
@@ -1515,6 +1539,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-10",
+    "sampleCategory": "Blood/Plasma",
     "name": "Shield MCD",
     "vendor": "Guardant Health",
     "testScope": "Multi-cancer (MCED)",
@@ -1546,6 +1571,7 @@ const ecdTestData = [
   },
   {
     "id": "ecd-11",
+    "sampleCategory": "Blood/Plasma",
     "name": "EPISEEK",
     "vendor": "Precision Epigenomics",
     "testScope": "Multi-cancer (MCED)",
@@ -1594,6 +1620,7 @@ const ecdTestData = [
 const trmTestData = [
   {
     "id": "trm-1",
+    "sampleCategory": "Blood/Plasma",
     "name": "Guardant360 Response",
     "vendor": "Guardant Health",
     "approach": "Tumor-agnostic",
@@ -1615,6 +1642,7 @@ const trmTestData = [
   },
   {
     "id": "trm-2",
+    "sampleCategory": "Blood/Plasma",
     "name": "Signatera (IO Monitoring)",
     "vendor": "Natera",
     "approach": "Tumor-informed",
@@ -1638,6 +1666,7 @@ const trmTestData = [
   },
   {
     "id": "trm-3",
+    "sampleCategory": "Blood/Plasma",
     "name": "NeXT Personal",
     "vendor": "Personalis",
     "approach": "Tumor-informed",
@@ -1658,6 +1687,7 @@ const trmTestData = [
   },
   {
     "id": "trm-4",
+    "sampleCategory": "Blood/Plasma",
     "name": "Tempus xM for TRM",
     "vendor": "Tempus",
     "approach": "Tumor-naïve",
@@ -1676,6 +1706,7 @@ const trmTestData = [
   },
   {
     "id": "trm-5",
+    "sampleCategory": "Blood/Plasma",
     "name": "RaDaR",
     "vendor": "NeoGenomics",
     "approach": "Tumor-informed",
@@ -1699,6 +1730,7 @@ const trmTestData = [
   },
   {
     "id": "trm-6",
+    "sampleCategory": "Blood/Plasma",
     "name": "FoundationOne Tracker (TRM)",
     "vendor": "Foundation Medicine / Natera",
     "approach": "Tumor-informed",
@@ -1730,6 +1762,7 @@ const trmTestData = [
   },
   {
     "id": "trm-7",
+    "sampleCategory": "Blood/Plasma",
     "name": "FoundationOne Monitor",
     "vendor": "Foundation Medicine",
     "approach": "Tumor-naïve",
@@ -1764,23 +1797,25 @@ const trmTestData = [
 
 const filterConfigs = {
   MRD: {
-    // Oncologist priority: What cancer? Do I have tumor tissue? Is it covered? Is it FDA approved?
+    // Oncologist priority: What cancer? Sample type? Is it covered? Is it FDA approved?
     cancerTypes: [...new Set(mrdTestData.flatMap(t => t.cancerTypes || []))].sort(),
-    tumorTissueOptions: ['Yes', 'No'],
+    sampleCategories: ['Blood/Plasma'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
     reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
   },
   ECD: {
-    // Oncologist priority: Single cancer or multi? What's the target population? Covered? FDA status?
+    // Oncologist priority: Single cancer or multi? Sample type? What's the target population? Covered?
     testScopes: ['Single-cancer (CRC)', 'Multi-cancer (MCED)'],
+    sampleCategories: ['Blood/Plasma', 'Stool'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
     reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)'],
   },
   TRM: {
-    // Oncologist priority: What cancer? Approach? Covered?
+    // Oncologist priority: What cancer? Sample type? Approach? Covered?
     cancerTypes: [...new Set(trmTestData.flatMap(t => t.cancerTypes || []))].sort(),
+    sampleCategories: ['Blood/Plasma'],
     approaches: ['Tumor-informed', 'Tumor-naïve', 'Tumor-agnostic'],
     reimbursements: ['Medicare', 'Commercial'],
   }
@@ -1793,6 +1828,7 @@ const comparisonParams = {
   MRD: [
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
+    { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Cancer Types' },
     { key: 'sensitivity', label: 'Sensitivity (%)' },
     { key: 'specificity', label: 'Specificity (%)' },
@@ -1811,6 +1847,7 @@ const comparisonParams = {
     { key: 'testScope', label: 'Scope' },
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
+    { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Target Cancers' },
     { key: 'targetPopulation', label: 'Population' },
     { key: 'sensitivity', label: 'Sensitivity (%)' },
@@ -1829,7 +1866,7 @@ const comparisonParams = {
     { key: 'commercialPayersStr', label: 'Private Insurance' },
     { key: 'clinicalAvailability', label: 'Clinical Availability' },
     { key: 'tat', label: 'Turnaround Time' },
-    { key: 'sampleType', label: 'Sample Type' },
+    { key: 'sampleType', label: 'Sample Details' },
     { key: 'listPrice', label: 'List Price (USD)' },
     { key: 'screeningInterval', label: 'Screening Interval' },
     { key: 'cptCode', label: 'CPT Code' },
@@ -1839,6 +1876,7 @@ const comparisonParams = {
   TRM: [
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
+    { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Target Cancers' },
     { key: 'targetPopulation', label: 'Population' },
     { key: 'responseDefinition', label: 'Response Definition' },
@@ -4342,6 +4380,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               )}
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Turnaround & Sample</p>
+              <DataRow label="Sample Type" value={test.sampleCategory} />
               <DataRow label="Initial TAT" value={test.initialTat} unit=" days" citations={test.initialTatCitations} notes={test.initialTatNotes} />
               <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />
@@ -4399,8 +4438,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               {test.leadTimeNotes && <DataRow label="Lead Time Notes" value={test.leadTimeNotes} />}
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Sample & Logistics</p>
+              <DataRow label="Sample Category" value={test.sampleCategory} />
               <DataRow label="TAT" value={test.tat} />
-              <DataRow label="Sample Type" value={test.sampleType} />
+              <DataRow label="Sample Details" value={test.sampleType} />
               <DataRow label="Sample Volume" value={test.sampleVolume} />
               <DataRow label="Sample Stability" value={test.sampleStability} />
               <DataRow label="List Price" value={test.listPrice ? `$${test.listPrice}` : null} />
@@ -4426,6 +4466,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
+              <DataRow label="Sample Type" value={test.sampleCategory} />
               <DataRow label="Method" value={test.method} />
               <DataRow label="Response Definition" value={test.responseDefinition} />
               <DataRow label="Target Population" value={test.targetPopulation} />
@@ -4634,7 +4675,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [selectedCancerTypes, setSelectedCancerTypes] = useState([]);
   const [selectedReimbursement, setSelectedReimbursement] = useState([]);
   const [selectedTestScopes, setSelectedTestScopes] = useState([]);
-  const [selectedTumorTissue, setSelectedTumorTissue] = useState([]);
+  const [selectedSampleCategories, setSelectedSampleCategories] = useState([]);
   const [selectedFdaStatus, setSelectedFdaStatus] = useState([]);
   const [minParticipants, setMinParticipants] = useState(0);
   const [minPublications, setMinPublications] = useState(0);
@@ -4739,7 +4780,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
         if (!matchesReimbursement) return false;
       }
       if (selectedTestScopes.length > 0 && !selectedTestScopes.includes(test.testScope)) return false;
-      if (selectedTumorTissue.length > 0 && !selectedTumorTissue.includes(test.requiresTumorTissue)) return false;
+      if (selectedSampleCategories.length > 0 && !selectedSampleCategories.includes(test.sampleCategory)) return false;
       if (minParticipants > 0 && (!test.totalParticipants || test.totalParticipants < minParticipants)) return false;
       if (minPublications > 0 && (!test.numPublications || test.numPublications < minPublications)) return false;
       if (category === 'ECD' && maxPrice < 1000 && test.listPrice && test.listPrice > maxPrice) return false;
@@ -4756,12 +4797,12 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedTumorTissue, selectedFdaStatus, minParticipants, minPublications, maxPrice, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, minParticipants, minPublications, maxPrice, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedTumorTissue([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedTumorTissue.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
@@ -4826,8 +4867,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
                   </div>
                   <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Tumor Tissue Required?</label>
-                    {config.tumorTissueOptions.map(o => <Checkbox key={o} label={o} checked={selectedTumorTissue.includes(o)} onChange={() => toggle(setSelectedTumorTissue)(o)} />)}
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
+                    {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
@@ -4883,6 +4924,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Test Scope</label>
                     {config.testScopes.map(s => <Checkbox key={s} label={s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
+                    {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
@@ -4959,6 +5004,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
+                    {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
