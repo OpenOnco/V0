@@ -1805,6 +1805,42 @@ const trmTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Tissue-naïve ctDNA tumor-fraction assay for TRM and resistance detection. Available as clinical LDT built on FDA-approved FoundationOne Liquid CDx platform. No dedicated payer coverage pathway yet. Positioned as option when tumor tissue is not available."
+  },
+  {
+    "id": "trm-8",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Northstar Response",
+    "vendor": "BillionToOne",
+    "approach": "Tumor-naïve",
+    "method": "Single-molecule NGS (smNGS) with patented Quantitative Counting Templates (QCT) technology; measures >500 cancer-specific methylated genomic loci; provides absolute quantification of methylated ctDNA molecules with WBC noise filtering via buffy coat sequencing.",
+    "cancerTypes": [
+      "Pan-cancer: all advanced solid tumors (validated in lung, colorectal, pancreatic, GI cancers, and others)"
+    ],
+    "targetPopulation": "Patients with Stage III-IV solid tumors on any systemic treatment regimen (chemotherapy, immunotherapy, targeted therapy)",
+    "responseDefinition": "Tumor Methylation Score (TMS) - total methylated tumor molecules per 1000 assayed genomic equivalents; serial quantification tracks response, progression, or stable disease over time",
+    "leadTimeVsImaging": null,
+    "leadTimeVsImagingNotes": "In NSCLC study, detected treatment response and progression earlier than CT scans. Can provide actionable signals weeks in advance of imaging.",
+    "lod": "0.01% tumor fraction",
+    "lodNotes": "Can accurately discriminate tumor fraction changes as small as 0.25%. Single-molecule precision enables detection of subtle shifts in tumor burden.",
+    "lodCitations": "Ye PP et al. Sci Rep 2025;15:5869; Hsiao A et al. Clin Lung Cancer 2025;26(1):72-77.",
+    "fdaStatus": "CLIA LDT – NOT FDA approved",
+    "reimbursement": "Self-Pay",
+    "reimbursementNote": "No Medicare or commercial coverage established. Available as CLIA-certified laboratory test.",
+    "tat": "10 days",
+    "tatNotes": "Turnaround time typically within 10 days from sample receipt to results.",
+    "clinicalAvailability": "Commercially available in US via CLIA-certified laboratory in Menlo Park, CA. Physician-ordered.",
+    "clinicalTrials": "Prospective observational study at University of Florida (advanced GI cancers, n=73+); UCSD NSCLC collaboration; multiple ongoing clinical validity studies",
+    "clinicalTrialsCitations": "Sahin I et al. JCO 2024;42(3_suppl):756; Sahin I et al. JCO 2025;43(4_suppl):839.",
+    "totalParticipants": 100,
+    "totalParticipantsNotes": "Initial validation cohort of 100 advanced GI cancer patients; additional cohorts in lung and other solid tumors.",
+    "numPublications": 5,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "Ye PP et al. Sci Rep 2025;15:5869; Hsiao A et al. Clin Lung Cancer 2025;26(1):72-77; JCO 2024 and 2025 abstracts.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "technologyDifferentiator": "Methylation-based (not mutation/VAF-based) - measures epigenetic signal across >500 loci rather than tracking somatic variants. Tissue-free with no tumor biopsy required. QCT technology enables single-molecule counting precision for absolute quantification.",
+    "regulatoryStatusNotes": "CLIA-certified laboratory test. Methylation-based approach differentiates from SNV/VAF-based response monitoring assays. Measures 10x more informative loci (average 90 vs 9) compared to SNV-based ctDNA monitoring. Part of BillionToOne's Northstar oncology portfolio alongside Northstar Select (therapy selection)."
   }
 ];
 
