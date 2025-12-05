@@ -4851,6 +4851,21 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
+      {currentPage !== 'home' && (
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-2">
+            <button
+              onClick={() => handleNavigate('home')}
+              className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors group"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="text-sm font-medium">Back to Home</span>
+            </button>
+          </div>
+        </div>
+      )}
       <main className="flex-1">{renderPage()}</main>
       <Footer />
       <Analytics />
