@@ -3195,25 +3195,25 @@ const SubmissionsPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Test Data Requests */}
+        {/* Test Data Update */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Requests</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
               onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className="font-semibold text-gray-800">Request New Test</div>
-              <div className="text-sm text-gray-500">Request addition of a test not in our database</div>
+              <div className="font-semibold text-gray-800">Suggest New Test</div>
+              <div className="text-sm text-gray-500">Notify us of a test not in our database</div>
             </button>
             <button
               type="button"
               onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className="font-semibold text-gray-800">Request Correction</div>
-              <div className="text-sm text-gray-500">Request update to existing test data</div>
+              <div className="font-semibold text-gray-800">File a Correction</div>
+              <div className="text-sm text-gray-500">Suggest an update to existing test data</div>
             </button>
           </div>
           
