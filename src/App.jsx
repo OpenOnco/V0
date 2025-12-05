@@ -4501,23 +4501,87 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
 // ============================================
 const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   const params = comparisonParams[category] || comparisonParams.MRD;
+  const meta = categoryMeta[category];
+  
+  // Category-specific color schemes
+  const colorSchemes = {
+    MRD: { 
+      headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500', 
+      headerText: 'text-white',
+      accent: 'bg-orange-50 border-orange-200',
+      accentText: 'text-orange-700',
+      lightBg: 'bg-orange-50/50',
+      border: 'border-orange-100',
+      closeBtnHover: 'hover:bg-orange-400/20'
+    },
+    ECD: { 
+      headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500', 
+      headerText: 'text-white',
+      accent: 'bg-emerald-50 border-emerald-200',
+      accentText: 'text-emerald-700',
+      lightBg: 'bg-emerald-50/50',
+      border: 'border-emerald-100',
+      closeBtnHover: 'hover:bg-emerald-400/20'
+    },
+    TRM: { 
+      headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500', 
+      headerText: 'text-white',
+      accent: 'bg-rose-50 border-rose-200',
+      accentText: 'text-rose-700',
+      lightBg: 'bg-rose-50/50',
+      border: 'border-rose-100',
+      closeBtnHover: 'hover:bg-rose-400/20'
+    }
+  };
+  const colors = colorSchemes[category] || colorSchemes.MRD;
+  
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-2xl max-w-5xl w-full" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
-        <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-gray-50" style={{ flexShrink: 0 }}>
-          <h2 className="text-lg font-semibold text-gray-900">Comparing {tests.length} Tests</h2>
-          <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-lg"><svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Colored Header */}
+        <div className={`flex justify-between items-center p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className={`text-xl font-bold ${colors.headerText}`}>Comparing {tests.length} Tests</h2>
+              <p className="text-white/80 text-sm">{meta?.title || category} Category</p>
+            </div>
+          </div>
+          <button onClick={onClose} className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors`}>
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
+        
+        {/* Table Content */}
         <div style={{ overflow: 'auto', flex: '1 1 auto' }}>
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="text-left p-3 font-medium text-gray-500 text-xs uppercase border-b border-gray-200 min-w-[140px] sticky top-0 bg-gray-50 z-10">Parameter</th>
-                {tests.map(test => (
-                  <th key={test.id} className="text-left p-3 border-b border-gray-200 min-w-[180px] sticky top-0 bg-gray-50 z-10">
-                    <div className="flex justify-between items-start">
-                      <div><p className="font-semibold text-gray-900">{test.name}</p><p className="text-xs text-gray-500 font-normal">{test.vendor}</p></div>
-                      <button onClick={() => onRemoveTest(test.id)} className="p-1 hover:bg-gray-200 rounded"><svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+              <tr>
+                <th className={`text-left p-4 font-semibold text-gray-500 text-xs uppercase tracking-wider ${colors.lightBg} min-w-[140px] sticky top-0 z-10`}>
+                  Parameter
+                </th>
+                {tests.map((test, i) => (
+                  <th key={test.id} className={`text-left p-4 min-w-[200px] sticky top-0 z-10 ${colors.lightBg}`}>
+                    <div className="flex justify-between items-start gap-2">
+                      <div className={`flex-1 p-3 rounded-xl ${colors.accent} border`}>
+                        <p className={`font-bold ${colors.accentText}`}>{test.name}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{test.vendor}</p>
+                      </div>
+                      <button 
+                        onClick={() => onRemoveTest(test.id)} 
+                        className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0"
+                        title="Remove from comparison"
+                      >
+                        <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
                   </th>
                 ))}
@@ -4525,18 +4589,32 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
             </thead>
             <tbody>
               {params.map((param, idx) => (
-                <tr key={param.key} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  <td className="p-3 text-sm font-medium text-gray-600 border-b border-gray-100">{param.label}</td>
+                <tr key={param.key} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/70'} hover:bg-gray-100/50 transition-colors`}>
+                  <td className={`p-4 text-sm font-medium text-gray-600 ${colors.border} border-b`}>
+                    {param.label}
+                  </td>
                   {tests.map(test => {
                     let value = param.key === 'cancerTypesStr' ? test.cancerTypes?.join(', ') 
                       : param.key === 'commercialPayersStr' ? test.commercialPayers?.join(', ')
                       : test[param.key];
-                    return <td key={test.id} className="p-3 text-sm text-gray-900 border-b border-gray-100">{value != null && value !== '' ? String(value) : '—'}</td>;
+                    const hasValue = value != null && value !== '';
+                    return (
+                      <td key={test.id} className={`p-4 text-sm ${colors.border} border-b ${hasValue ? 'text-gray-900' : 'text-gray-300'}`}>
+                        {hasValue ? String(value) : '—'}
+                      </td>
+                    );
                   })}
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        
+        {/* Footer */}
+        <div className={`p-4 ${colors.lightBg} border-t ${colors.border} flex-shrink-0`}>
+          <p className="text-xs text-gray-500 text-center">
+            Click the × next to a test name to remove it from comparison
+          </p>
         </div>
       </div>
     </div>
