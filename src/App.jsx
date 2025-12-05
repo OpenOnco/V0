@@ -2484,7 +2484,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
         <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
           {/* Container Header */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Explore the Database</h2>
+            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse the OpenOnco Database</h2>
           </div>
           
           {/* Category Navigators */}
@@ -2611,7 +2611,7 @@ RESPONSE STYLE: Be conversational and concise. Lead with key insights. Include o
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
-              <h3 className="text-slate-700 font-semibold text-sm lg:text-base">Or ask Claude about the data</h3>
+              <h3 className="text-slate-700 font-semibold text-sm lg:text-base">Ask Claude Questions about the OpenOnco Database</h3>
             </div>
           
           {/* Messages Area */}
