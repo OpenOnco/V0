@@ -2128,7 +2128,7 @@ const TestShowcase = ({ onNavigate }) => {
     if (leadTime != null) params.push({ label: 'Lead Time vs Imaging', value: `${leadTime} days`, type: 'clinical' });
     
     // Analytical parameters (lab validation)
-    if (test.lod != null) params.push({ label: 'LOD', value: `${test.lod}%`, type: 'analytical' });
+    if (test.lod != null && typeof test.lod === 'number') params.push({ label: 'LOD', value: `${test.lod}%`, type: 'analytical' });
     if (test.variantsTracked != null && typeof test.variantsTracked === 'number') params.push({ label: 'Variants Tracked', value: test.variantsTracked, type: 'analytical' });
     
     // Operational parameters (logistics/specs)
@@ -2306,7 +2306,7 @@ const StatOfTheDay = ({ onNavigate }) => {
   // Day-based stat rotation (0=Sunday through 6=Saturday)
   const dayStats = [
     { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
-    { key: 'lod', label: 'Limit of Detection', unit: '% VAF', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => v < 0.01 ? v.toExponential(1) : v, filter: (v) => v != null && v > 0 },
+    { key: 'lod', label: 'Limit of Detection', unit: '% VAF', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => v < 0.01 ? v.toExponential(1) : v, filter: (v) => v != null && typeof v === 'number' && v > 0 },
     { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
     { key: 'tat', label: 'Turnaround Time', unit: ' days', description: 'Fastest turnaround', higherIsBetter: false, format: (v) => v, filter: (v) => v != null && v > 0 },
     { key: 'sensitivity', label: 'Sensitivity', unit: '%', description: 'Highest sensitivity', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
