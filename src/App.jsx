@@ -195,23 +195,23 @@ const NewsFeed = ({ onNavigate }) => {
 
 **1. The MRD Sensitivity Arms Race: Natera's $450M Bet on 0.3 ppm Detection (Dec 5)**
 Natera closed its acquisition of Foresight Diagnostics ($275M upfront, $175M earnouts), gaining PhasED-Seq technology with LOD95 of 0.3 ppm. Foresight's CLARITY assay was the first ctDNA-MRD test in NCCN Guidelines for DLBCL. Integration into Signatera expected 2026. Combined portfolio: 15 abstracts at ASH 2025 including 7 orals.
-[Read more →](https://www.natera.com/company/news/natera-completes-acquisition-of-foresight-diagnostics/)
+[Read more →](https://www.fiercebiotech.com/medtech/natera-buys-foresight-diagnostics-cancer-mrd-deal-worth-450m)
 
 **2. Can SimpleScreen Dethrone Shield? Freenome's $330M Gamble (Dec 5)**
-Freenome's SPAC merger funds SimpleScreen CRC test commercialization ahead of mid-2026 FDA decision. Head-to-head competition with Shield (Guardant) anticipated. Exact Sciences paid $75M for U.S. CRC rights; Roche secured international MCED rights.
-[Read more →](https://www.fiercebiotech.com/medtech/freenome-nabs-330m-spac-deal-support-cancer-blood-test)
+Freenome's SPAC merger funds SimpleScreen CRC test commercialization ahead of mid-2026 FDA decision. Head-to-head competition with Shield (Guardant) anticipated. The transaction includes $90M from trust plus $240M PIPE led by Perceptive Advisors and RA Capital.
+[Read more →](https://www.statnews.com/2025/12/05/freenome-plans-go-public-early-cancer-detection/)
 
 **3. Is ctDNA Enough? cfRNA Emerges as Complementary Signal at SABCS (Dec 9-12)**
 SERENA-6 data showing benefit from ESR1 mutation-guided therapy modification sparks debate on ctDNA escalation/de-escalation protocols. Sessions cover cfRNA sequencing and novel ctDNA analyses for breast cancer MRD—suggesting DNA alone may miss key biology.
-[Read more →](https://www.sabcs.org/2025-SABCS)
+[Read more →](https://sabcs.org/)
 
 **4. Why 26% of Oncologists Still Don't Know MRD Guidelines Exist (Dec 2)**
 Market valued at $4.93B (2024), 12.5% CAGR projected. IASLC survey reveals startling awareness gap: 26% of institutions unaware of biomarker testing guidelines—standardization remains the key barrier to adoption.
-[Read more →](https://www.globenewswire.com/news-release/2024/liquid-biopsy-market-report)
+[Read more →](https://www.marketsandmarkets.com/Market-Reports/liquid-biopsy-market-13966350.html)
 
 **5. Beyond DNA: Can Exosomes Catch What ctDNA Misses? (Dec 2)**
 Exosome liquid biopsy market growing from $91M to $159M by 2030. Multi-omic exosome analysis via AI enables detection of protein, RNA, and lipid cancer signatures beyond ctDNA—potentially filling gaps in ctDNA-low tumors.
-[Read more →](https://www.nature.com/articles/s41568-024-00750-8)
+[Read more →](https://www.grandviewresearch.com/industry-analysis/liquid-biopsy-market)
 
 *Conferences: ASH 2025 (Dec 6-10), SABCS 2025 (Dec 9-12)*`,
 
@@ -219,23 +219,23 @@ Exosome liquid biopsy market growing from $91M to $159M by 2030. Multi-omic exos
 
 **1. Could Your Blood Test Detect Cancer Traces 10x Smaller? (Dec 5)**
 Natera, a leading cancer testing company, acquired Foresight Diagnostics to improve their ability to detect tiny traces of cancer in blood tests. This means more sensitive tests may become available to help doctors catch cancer recurrence earlier. The combined company will be presenting new research at major medical conferences this month.
-[Read more →](https://www.natera.com/company/news/natera-completes-acquisition-of-foresight-diagnostics/)
+[Read more →](https://www.fiercebiotech.com/medtech/natera-buys-foresight-diagnostics-cancer-mrd-deal-worth-450m)
 
 **2. A Blood Test Instead of Colonoscopy? New Option Coming in 2026 (Dec 5)**
 Freenome is moving forward with their SimpleScreen blood test for colon cancer detection, which could be approved by mid-2026. This would give patients an alternative to colonoscopies for initial screening. The test would compete with Guardant's Shield test, giving patients more choices.
-[Read more →](https://www.freenome.com/news/)
+[Read more →](https://www.statnews.com/2025/12/05/freenome-plans-go-public-early-cancer-detection/)
 
 **3. Should You Get More Chemo—or Less? Blood Tests May Soon Help Decide (Dec 9-12)**
 The San Antonio Breast Cancer Symposium will feature discussions on how blood tests can help guide treatment decisions. Researchers are exploring whether these tests can help determine if patients need more or less aggressive treatment, potentially sparing some patients from unnecessary chemotherapy.
-[Read more →](https://www.sabcs.org/2025-SABCS)
+[Read more →](https://sabcs.org/)
 
 **4. Is Your Doctor Using the Latest Cancer Testing? Many Aren't (Dec 2)**
 The market for blood-based cancer tests is expected to double to $10 billion by 2030. But a surprising survey found 26% of cancer centers don't know current testing guidelines exist—ask your oncologist if they're up to date on liquid biopsy options.
-[Read more →](https://www.cancer.gov/about-cancer/diagnosis-staging/liquid-biopsy)
+[Read more →](https://www.marketsandmarkets.com/Market-Reports/liquid-biopsy-market-13966350.html)
 
 **5. What If DNA Tests Miss Your Cancer? Scientists Have New Ideas (Dec 2)**
 Scientists are exploring ways to detect cancer signals beyond just DNA in blood. New approaches analyze tiny particles called exosomes that carry multiple types of cancer markers, potentially catching cancers that current DNA-only tests might miss.
-[Read more →](https://www.cancer.gov/news-events/cancer-currents-blog/liquid-biopsy)
+[Read more →](https://www.grandviewresearch.com/industry-analysis/liquid-biopsy-market)
 
 *Major cancer conferences this month may announce new findings that could affect available testing options.*`,
 
@@ -243,23 +243,23 @@ Scientists are exploring ways to detect cancer signals beyond just DNA in blood.
 
 **1. 0.3 ppm LOD95: Has Natera Just Raised the MRD Sensitivity Bar? (Dec 5)**
 Natera's $275M upfront ($175M earnouts) acquisition of Foresight consolidates phased variant IP and lymphoma market position. Foresight's PhasED-Seq (LOD95: 0.3 ppm, detection <0.1 ppm) complements Signatera's tumor-informed approach. Strategic rationale: NCCN DLBCL guideline inclusion, 3 prospective MRD-driven trials, 40+ publications. Integration timeline: research use immediate, clinical launch 2026.
-[Read more →](https://investor.natera.com/news-releases/)
+[Read more →](https://www.fiercebiotech.com/medtech/natera-buys-foresight-diagnostics-cancer-mrd-deal-worth-450m)
 
 **2. Pre-FDA SPAC at $330M: Is Freenome Overvalued or Underappreciated? (Dec 5)**
-$330M SPAC merger (Perceptive Capital) values Freenome's multiomics platform pre-FDA decision. SimpleScreen pivotal data pending; mid-2026 approval expected. Partnership structure: Exact Sciences ($75M, U.S. CRC single-indication), Roche (international kitted MCED). Competitive positioning vs. Shield hinges on sensitivity/specificity trade-offs in average-risk population.
-[Read more →](https://www.fiercebiotech.com/medtech/freenome-nabs-330m-spac-deal-support-cancer-blood-test)
+$330M SPAC merger (Perceptive Capital) values Freenome's multiomics platform pre-FDA decision. SimpleScreen pivotal data pending; mid-2026 approval expected. PIPE led by Perceptive Advisors and RA Capital with participation from ADAR1, Bain Capital Life Sciences, and Farallon. Post-transaction equity value approximately $1.1B.
+[Read more →](https://www.statnews.com/2025/12/05/freenome-plans-go-public-early-cancer-detection/)
 
 **3. ctDNA's Blind Spots: Why cfRNA Is Getting Serious Attention at SABCS (Dec 9-12)**
 SERENA-6 ESR1 mutation data catalyzes debate on MRD-adaptive trial designs. Key questions: optimal assay selection (tumor-informed vs. methylation vs. hybrid), timing of intervention, regulatory pathway for response-guided labeling. cfRNA sequencing emerging as complementary modality for transcriptional dynamics ctDNA can't capture.
-[Read more →](https://www.sabcs.org/2025-SABCS)
+[Read more →](https://sabcs.org/)
 
 **4. The Adoption Paradox: $5B Market, 26% Guideline Unawareness (Dec 2)**
 ResearchAndMarkets projects liquid biopsy market doubles by 2030. Adoption headwinds: IASLC survey shows 26% guideline unawareness, 46% non-CAP/IASLC/AMP adherence. Multi-cancer screening technology driving growth; standardization critical for payer confidence.
-[Read more →](https://www.researchandmarkets.com/liquid-biopsy-market)
+[Read more →](https://www.marketsandmarkets.com/Market-Reports/liquid-biopsy-market-13966350.html)
 
 **5. Orthogonal to ctDNA: Can EV Cargo Fill the Detection Gaps? (Dec 2)**
 Extracellular vesicle diagnostics gaining traction as orthogonal signal to ctDNA. AI-enabled multiomics (protein, RNA, lipid cargo) addresses ctDNA-low tumor types. Platform players positioning for MCED integration. Market: $91M→$159M by 2030.
-[Read more →](https://pubs.acs.org/doi/10.1021/acs.chemrev.4c00323)
+[Read more →](https://www.grandviewresearch.com/industry-analysis/liquid-biopsy-market)
 
 *Key data readouts: ASH 2025 (MRD heme), SABCS 2025 (breast MRD), FDA calendar (Shield MCD indication)*`
   };
@@ -2261,7 +2261,7 @@ const comparisonParams = {
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
-    { key: 'reimbursement', label: 'Government Insurance' },
+    { key: 'reimbursement', label: 'Medicare' },
     { key: 'commercialPayersStr', label: 'Private Insurance' },
     { key: 'availableRegionsStr', label: 'Availability' },
   ],
@@ -2285,7 +2285,7 @@ const comparisonParams = {
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
-    { key: 'reimbursement', label: 'Government Insurance' },
+    { key: 'reimbursement', label: 'Medicare' },
     { key: 'commercialPayersStr', label: 'Private Insurance' },
     { key: 'availableRegionsStr', label: 'Availability' },
     { key: 'clinicalAvailability', label: 'Clinical Availability' },
@@ -2312,7 +2312,7 @@ const comparisonParams = {
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
-    { key: 'reimbursement', label: 'Government Insurance' },
+    { key: 'reimbursement', label: 'Medicare' },
     { key: 'commercialPayersStr', label: 'Private Insurance' },
     { key: 'availableRegionsStr', label: 'Availability' },
   ],
@@ -3503,7 +3503,7 @@ const DatabaseSummary = () => {
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
           <p className="text-3xl font-bold text-slate-800">{medicareIndicationsCount}</p>
-          <p className="text-sm text-slate-600">Government Insurance</p>
+          <p className="text-sm text-slate-600">Medicare</p>
         </div>
         <div className="bg-white/40 rounded-xl p-4 text-center">
           <p className="text-3xl font-bold text-slate-800">{allPrivateInsurers.size}</p>
@@ -5266,7 +5266,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Government Insurance" value={test.reimbursement} notes={test.reimbursementNote} />
+              <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
                 <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
@@ -5333,7 +5333,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Government Insurance" value={test.reimbursement} notes={test.reimbursementNote} />
+              <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
                 <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
@@ -5361,7 +5361,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Government Insurance" value={test.reimbursement} notes={test.reimbursementNote} />
+              <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
                 <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
@@ -6039,7 +6039,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
                       {isPatient ? 'My Insurance' : 'Coverage'}
                     </label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Government Insurance') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   {!isPatient && (
                     <>
@@ -6122,7 +6122,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
                       {isPatient ? 'My Insurance' : 'Coverage'}
                     </label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Government Insurance') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   {!isPatient && (
                     <>
@@ -6214,7 +6214,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
                       {isPatient ? 'My Insurance' : 'Coverage'}
                     </label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Government Insurance') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   {!isPatient && (
                     <>
