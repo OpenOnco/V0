@@ -646,7 +646,7 @@ const mrdTestData = [
     "sensitivityNotes": "In CRC, results from Alpha-CORRECT, a study with one of the longest MRD surveillance monitoring periods to date, showed the Oncodetect test achieved 78% sensitivity at the post-surgical timepoint and 91% sensitivity during the surveillance monitoring period, with specificities of 80% and 94%, respectively (https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease) | Sources: https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease)",
     "sensitivityStagesReported": "Stage II–III combined (CRC)",
     "stageIISensitivity": null,
-    "stageIISensitivityNotes": "Stage II-specific CRC sensitivity not separately reported in Alpha-CORRECT publications; combined with Stage III. ⚠️ Alpha-CORRECT cohort includes Stage II patients—breakdown should be feasible but is not disclosed.",
+    "stageIISensitivityNotes": "Stage II-specific CRC sensitivity not separately reported in Alpha-CORRECT publications; combined with Stage III. Stage-specific breakdowns would be informative for treatment decisions.",
     "stageIIISensitivity": null,
     "stageIIISensitivityNotes": "Alpha-CORRECT cohort primarily Stage III CRC; stage-specific breakdown not published.",
     "stageDataExpected": true,
@@ -805,7 +805,7 @@ const mrdTestData = [
     "sensitivityNotes": "COSMOS 2024 longitudinal sensitivity for stage II+ CRC is ~81%. Earlier landmark/Reinert 2021 data showed 55-63% sensitivity. Headline value reflects current COSMOS longitudinal performance.",
     "sensitivityStagesReported": "Stage II–IV combined",
     "stageIISensitivity": null,
-    "stageIISensitivityNotes": "Stage II-specific sensitivity not separately reported; combined with stages III–IV in headline figures. ⚠️ COSMOS study and Medicare coverage suggest sufficient data exists for stage-specific reporting.",
+    "stageIISensitivityNotes": "Stage II-specific sensitivity not separately reported; combined with stages III–IV in headline figures. Stage-specific data would help clinicians counsel Stage II patients.",
     "stageIIISensitivity": null,
     "stageIIISensitivityNotes": "Stage III-specific sensitivity not separately reported.",
     "stageDataExpected": true,
@@ -871,7 +871,7 @@ const mrdTestData = [
     "sensitivityNotes": "Recurrence Surveillance:\nCRC: 88-93% sens., 98% spec.\nBreast: 88-89% sens., 95-99% spec.\nLung: 80-99% sens., 96-99% spec.\nBladder: 99% sens., 98% spec.\nOvarian: 99% sens.\n\nhttps://www.natera.com/oncology/signatera-advanced-cancer-detection/ | Sources: https://www.natera.com/oncology/signatera-advanced-cancer-detection/",
     "sensitivityStagesReported": "Stage II–IV combined (varies by cancer type)",
     "stageIISensitivity": null,
-    "stageIISensitivityNotes": "CRC Stage II landmark ~65-73% in CIRCULATE-Japan; longitudinal higher. Stage II not separately reported for other cancer types. ⚠️ With 100+ publications and 2,000+ trial participants, stage-specific data should be available but is not routinely disclosed.",
+    "stageIISensitivityNotes": "CRC Stage II landmark ~65-73% in CIRCULATE-Japan; longitudinal higher. Stage II not separately reported for other cancer types. Stage-specific breakdowns would help inform treatment decisions.",
     "stageIIISensitivity": null,
     "stageIIISensitivityNotes": "Stage III typically shows higher sensitivity than Stage II due to higher tumor burden; specific values combined with other stages in most publications.",
     "stageDataExpected": true,
@@ -5488,31 +5488,31 @@ Always ask: What type? At what timeframe? For which stages? Sample size?`
     title: "Why Stage-Specific Sensitivity Matters",
     content: `Many companies combine stages II, III, and IV when reporting clinical sensitivity—this hides critical performance differences.
 
-• Stage II is hardest: Lower tumor burden = less ctDNA = harder to detect. But Stage II is WHERE MRD DECISIONS MATTER MOST for adjuvant therapy.
+• Stage II is hardest: Lower tumor burden = less ctDNA = harder to detect. But Stage II is where MRD-guided therapy decisions often matter most.
 
-• Stage III/IV inflate numbers: Higher stages have more ctDNA and are easier to detect. Including them makes overall sensitivity look better.
+• Stage III/IV inflate numbers: Higher stages have more ctDNA and are easier to detect. Including them improves overall sensitivity figures.
 
-• The real question: If you're a Stage II patient deciding on chemo, you need Stage II sensitivity—not a blended number that's 70% Stage III/IV patients.
+• The real question: If you're a Stage II patient considering adjuvant therapy, ideally you'd want Stage II-specific sensitivity—not a blended number weighted toward Stage III/IV patients.
 
-• What to look for: Tests that report stage-specific data separately. If only combined stages are reported, assume Stage II performance is significantly lower than the headline number.
+• What to look for: Tests that report stage-specific data separately. If only combined stages are reported, Stage II performance may be lower than the headline number.
 
-When a test reports "95% sensitivity for Stage II-IV combined," the Stage II-only number might be 60-70%.
+When a test reports "95% sensitivity for Stage II-IV combined," the Stage II-only number is often lower—sometimes substantially so.
 
-⚠️ TRANSPARENCY GAP: Most major MRD tests have sufficient clinical trial data to report stage-specific sensitivity, but choose not to. This is a significant omission that makes informed comparison difficult.`
+Stage-specific reporting would help clinicians and patients make more informed comparisons, and we encourage vendors to provide this breakdown where feasible.`
   },
   stageMissing: {
-    title: "Missing Stage-Specific Data",
-    content: `This test reports combined-stage sensitivity but does not break out Stage II performance separately.
+    title: "Stage-Specific Data Would Help",
+    content: `This test reports combined-stage sensitivity but does not currently break out Stage II performance separately.
 
-For a test with significant clinical trial data and/or Medicare coverage, stage-specific reporting should be expected and is technically feasible from their existing datasets.
+For tests with substantial clinical validation data, stage-specific reporting would ideally be available to help inform treatment decisions.
 
-• Why it matters: Stage II patients have the most to gain (or lose) from MRD-guided therapy decisions, yet are shown headline numbers inflated by Stage III/IV patients.
+• Why it matters: Stage II patients considering adjuvant therapy benefit from understanding how the test performs specifically for their situation.
 
-• What you can do: Ask the vendor directly for stage-specific performance data. If they have it, they should share it. If they don't, ask why not.
+• What you can do: Consider asking the vendor about stage-specific performance data—they may have additional information available.
 
-• Industry standard: Some vendors (e.g., in the ECD space) routinely report stage-specific sensitivity. MRD vendors should be held to the same standard.
+• Industry context: Some tests (particularly in early cancer detection) routinely report stage-specific sensitivity. Similar reporting for MRD tests would make comparison more straightforward.
 
-The absence of stage-specific data from a major commercial test is a choice, not a limitation.`
+We recognize that clinical trial design and sample sizes can make stage-specific reporting more challenging in some cases.`
   },
   specificity: {
     title: "Why Specificity Matters More Than You Think",
@@ -5573,25 +5573,27 @@ const ExpertInsight = ({ topic }) => {
   if (!insight) return null;
   
   return (
-    <span className="relative inline-block ml-1">
+    <span 
+      className="relative inline-block ml-1"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <button 
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
         className="w-4 h-4 rounded-full bg-amber-100 border border-amber-300 text-amber-700 text-[10px] font-bold inline-flex items-center justify-center hover:bg-amber-200 hover:border-amber-400 transition-colors cursor-help"
         title="Expert insight available"
       >
         E
       </button>
       {isOpen && (
-        <div className="absolute z-50 left-0 bottom-full mb-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="absolute z-50 left-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-2 border-b border-amber-100">
             <div className="flex items-center gap-2">
               <div className="w-5 h-5 rounded-full bg-amber-400 text-white text-[10px] font-bold flex items-center justify-center">E</div>
               <h4 className="font-semibold text-slate-800 text-sm">{insight.title}</h4>
             </div>
           </div>
-          <div className="px-4 py-3 text-xs text-slate-600 leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto">
+          <div className="px-4 py-3 text-xs text-slate-600 leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto">
             {insight.content}
           </div>
           <div className="px-4 py-2 bg-slate-50 border-t border-slate-100">
@@ -5752,15 +5754,15 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
                     Sensitivity by Stage <ExpertInsight topic="stageSpecific" />
                   </p>
                   {test.sensitivityStagesReported && !test.stageIISensitivity && !test.stageIIISensitivity && (
-                    <div className={`py-2 px-3 ${test.stageDataExpected ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'} border rounded-lg mb-2`}>
-                      <p className={`text-xs ${test.stageDataExpected ? 'text-red-700' : 'text-amber-700'} flex items-center gap-1`}>
-                        <span className="font-medium">⚠️ Combined stages reported:</span> {test.sensitivityStagesReported}
+                    <div className="py-2 px-3 bg-orange-50 border-orange-200 border rounded-lg mb-2">
+                      <p className="text-xs text-orange-700 flex items-center gap-1">
+                        <span className="font-medium">ℹ️ Combined stages reported:</span> {test.sensitivityStagesReported}
                         {test.stageDataExpected && <ExpertInsight topic="stageMissing" />}
                       </p>
-                      <p className={`text-[10px] ${test.stageDataExpected ? 'text-red-600' : 'text-amber-600'} mt-1`}>
+                      <p className="text-[10px] text-orange-600 mt-1">
                         {test.stageDataExpected 
-                          ? 'Stage II sensitivity may be significantly lower than headline. This test has sufficient data to report stage-specific performance but does not disclose it.'
-                          : 'Stage II sensitivity may be significantly lower than headline. See expert note.'}
+                          ? 'Stage II sensitivity may differ from the headline figure. Stage-specific data would help inform treatment decisions.'
+                          : 'Stage II sensitivity may differ from the headline figure. See expert note for context.'}
                       </p>
                     </div>
                   )}
