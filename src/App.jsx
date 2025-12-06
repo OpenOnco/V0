@@ -189,25 +189,67 @@ const NewsFeed = ({ onNavigate }) => {
     return () => window.removeEventListener('personaChanged', handlePersonaChange);
   }, []);
 
-  // Fallback digest if API fails
-  const fallbackDigest = `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
+  // Persona-specific fallback digests if API fails
+  const fallbackDigests = {
+    'Clinician': `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
 
-**1. Natera Closes $450M Acquisition of Foresight Diagnostics (Dec 5)**
-The biggest deal of the week: Natera completed its acquisition of Foresight Diagnostics for $275M upfront plus $175M in earnouts. Foresight brings its ultrasensitive PhasED-Seq technology (LOD95 of 0.3 ppm, detection below 0.1 ppm) and leadership in lymphoma MRD, where its CLARITY assay became the first ctDNA-MRD test included in NCCN Guidelines for DLBCL. Natera plans to integrate phased variant technology into Signatera, with clinical launch expected in 2026. The combined company will present 15 abstracts (7 oral) at ASH 2025 starting December 6.
+**1. Natera Acquires Foresight Diagnostics for $450M (Dec 5)**
+Natera closed its acquisition of Foresight Diagnostics ($275M upfront, $175M earnouts), gaining PhasED-Seq technology with LOD95 of 0.3 ppm. Foresight's CLARITY assay was the first ctDNA-MRD test in NCCN Guidelines for DLBCL. Integration into Signatera expected 2026. Combined portfolio: 15 abstracts at ASH 2025 including 7 orals.
 
-**2. Freenome Goes Public via $330M SPAC Merger (Dec 5)**
-Freenome announced a SPAC merger with Perceptive Capital Solutions that will bring $330M to support commercialization of its AI-powered liquid biopsy platform. The company's SimpleScreen colorectal cancer test is under FDA review with a decision expected mid-2026, where it will compete against Guardant's Shield. Freenome has already secured partnerships with Exact Sciences ($75M for U.S. CRC rights) and Roche (international multi-cancer detection rights). The company will trade on Nasdaq under "FRNM."
+**2. Freenome SPAC: SimpleScreen Nears FDA Decision (Dec 5)**
+Freenome's $330M SPAC merger funds SimpleScreen CRC test commercialization ahead of mid-2026 FDA decision. Head-to-head competition with Shield (Guardant) anticipated. Exact Sciences paid $75M for U.S. CRC rights; Roche secured international MCED rights.
 
-**3. SABCS 2025 Spotlights Liquid Biopsy in Breast Cancer (Dec 9-12)**
-The San Antonio Breast Cancer Symposium will feature multiple sessions on liquid biopsy advances, including a translational workshop on cell-free RNA sequencing and novel ctDNA analyses, and a "State of the Art" session on MRD-guided adaptive therapy. The SERENA-6 trial results—showing benefit from modifying therapy based on early ESR1 mutation detection via serial ctDNA monitoring—have sparked intense debate about when and how to use liquid biopsy for treatment escalation/de-escalation decisions.
+**3. SABCS 2025: ctDNA-Guided Adaptive Therapy Debated (Dec 9-12)**
+SERENA-6 data showing benefit from ESR1 mutation-guided therapy modification sparks debate on ctDNA escalation/de-escalation protocols. Sessions cover cfRNA sequencing and novel ctDNA analyses for breast cancer MRD.
 
-**4. Global Liquid Biopsy Market Projected to Reach $10B by 2030 (Dec 2)**
-Multiple market research reports valued the global liquid biopsy market at $4.93B in 2024, projecting 12.5% CAGR to reach nearly $10B by 2030. Key growth drivers include rising cancer incidence (20M new cases globally in 2022), demand for non-invasive diagnostics, and multi-cancer early detection development. Challenges remain around test standardization—a 2024 IASLC survey found 26% of institutions were unaware of biomarker testing guidelines.
+**4. Liquid Biopsy Market: $10B by 2030 (Dec 2)**
+Market valued at $4.93B (2024), 12.5% CAGR projected. IASLC survey: 26% of institutions unaware of biomarker testing guidelines—standardization remains key barrier to adoption.
 
-**5. AI + Exosomes: Next Frontier for Non-Invasive Cancer Detection (Dec 2)**
-Researchers highlighted the emerging convergence of AI and exosome-based liquid biopsy for early cancer detection. Unlike ctDNA, exosomes carry molecular signatures including proteins, nucleic acids, and lipids that can be collected from blood or urine. AI analysis of these multi-omic datasets can identify cancer biomarkers invisible to human interpretation. The EV-based liquid biopsy market is projected to grow from $91M to $159M by 2030.
+**5. EV-Based Diagnostics: AI + Exosomes Emerging (Dec 2)**
+Exosome liquid biopsy market growing from $91M to $159M by 2030. Multi-omic exosome analysis via AI enables detection of protein, RNA, and lipid cancer signatures beyond ctDNA.
 
-*Key conferences to watch: ASH 2025 (Dec 6-10, San Diego) and SABCS 2025 (Dec 9-12, San Antonio) will feature significant new liquid biopsy data.*`;
+*Conferences: ASH 2025 (Dec 6-10), SABCS 2025 (Dec 9-12)*`,
+
+    'Patient': `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
+
+**1. More Options for Cancer Monitoring: Natera Expands Testing (Dec 5)**
+Natera, a leading cancer testing company, acquired Foresight Diagnostics to improve their ability to detect tiny traces of cancer in blood tests. This means more sensitive tests may become available to help doctors catch cancer recurrence earlier. The combined company will be presenting new research at major medical conferences this month.
+
+**2. New Blood Test for Colon Cancer Screening Coming (Dec 5)**
+Freenome is moving forward with their SimpleScreen blood test for colon cancer detection, which could be approved by mid-2026. This would give patients an alternative to colonoscopies for initial screening. The test would compete with Guardant's Shield test, giving patients more choices.
+
+**3. Breast Cancer Conference Highlights Blood Testing (Dec 9-12)**
+The San Antonio Breast Cancer Symposium will feature discussions on how blood tests can help guide treatment decisions. Researchers are exploring whether these tests can help determine if patients need more or less aggressive treatment, potentially sparing some patients from unnecessary chemotherapy.
+
+**4. Blood-Based Cancer Testing Market Growing (Dec 2)**
+The market for blood-based cancer tests is expected to double to $10 billion by 2030. More insurance companies are covering these tests, and awareness among doctors is increasing—though more education is still needed.
+
+**5. New Technology Beyond DNA Testing (Dec 2)**
+Scientists are exploring ways to detect cancer signals beyond just DNA in blood. New approaches analyze tiny particles called exosomes that carry multiple types of cancer markers, potentially catching cancers that current tests might miss.
+
+*Major cancer conferences this month may announce new findings that could affect available testing options.*`,
+
+    'Academic/Industry': `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
+
+**1. Natera-Foresight Deal Reshapes MRD Competitive Landscape (Dec 5)**
+Natera's $275M upfront ($175M earnouts) acquisition of Foresight consolidates phased variant IP and lymphoma market position. Foresight's PhasED-Seq (LOD95: 0.3 ppm, detection <0.1 ppm) complements Signatera's tumor-informed approach. Strategic rationale: NCCN DLBCL guideline inclusion, 3 prospective MRD-driven trials, 40+ publications. Integration timeline: research use immediate, clinical launch 2026.
+
+**2. Freenome Goes Public: SPAC Values AI-Based Platform (Dec 5)**
+$330M SPAC merger (Perceptive Capital) values Freenome's multiomics platform pre-FDA decision. SimpleScreen pivotal data pending; mid-2026 approval expected. Partnership structure: Exact Sciences ($75M, U.S. CRC single-indication), Roche (international kitted MCED). Competitive positioning vs. Shield hinges on sensitivity/specificity trade-offs in average-risk population.
+
+**3. SABCS 2025: ctDNA-Guided Therapy Intensification/De-escalation (Dec 9-12)**
+SERENA-6 ESR1 mutation data catalyzes debate on MRD-adaptive trial designs. Key questions: optimal assay selection (tumor-informed vs. methylation vs. hybrid), timing of intervention, regulatory pathway for response-guided labeling. cfRNA sequencing emerging as complementary modality.
+
+**4. Market Dynamics: $5B→$10B at 12.5% CAGR (Dec 2)**
+ResearchAndMarkets projects liquid biopsy market doubles by 2030. Adoption headwinds: IASLC survey shows 26% guideline unawareness, 46% non-CAP/IASLC/AMP adherence. Multi-cancer screening technology driving growth; standardization critical for payer confidence.
+
+**5. EV-Based Liquid Biopsy: $91M→$159M Market (Dec 2)**
+Extracellular vesicle diagnostics gaining traction as orthogonal signal to ctDNA. AI-enabled multiomics (protein, RNA, lipid cargo) addresses ctDNA-low tumor types. Platform players positioning for MCED integration.
+
+*Key data readouts: ASH 2025 (MRD heme), SABCS 2025 (breast MRD), FDA calendar (Shield MCD indication)*`
+  };
+
+  const fallbackDigest = fallbackDigests[persona] || fallbackDigests['Clinician'];
 
   const getPersonaPrompt = (p) => {
     switch(p) {
@@ -222,24 +264,28 @@ Researchers highlighted the emerging convergence of AI and exosome-based liquid 
     }
   };
 
-  const generateDigest = async () => {
+  const generateDigest = async (forceRefresh = false) => {
     const cacheKey = `openonco_digest_${persona}_v1`;
     const today = new Date().toDateString();
     
-    // Check cache first
-    try {
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) {
-        const { text, date, generatedAt } = JSON.parse(cached);
-        if (date === today && text) {
-          setDigest(text);
-          setLastGenerated(new Date(generatedAt));
-          setIsLoading(false);
-          return;
+    // Check cache first (unless forcing refresh)
+    if (!forceRefresh) {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const { text, date, generatedAt } = JSON.parse(cached);
+          if (date === today && text) {
+            console.log(`NewsFeed: Using cached digest for ${persona}`);
+            setDigest(text);
+            setLastGenerated(new Date(generatedAt));
+            setIsLoading(false);
+            return;
+          }
         }
-      }
-    } catch (e) {}
+      } catch (e) {}
+    }
 
+    console.log(`NewsFeed: Generating new digest for ${persona}`);
     setIsLoading(true);
 
     try {
@@ -303,8 +349,16 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     setIsLoading(false);
   };
 
+  // Generate on mount
   useEffect(() => {
     generateDigest();
+  }, []);
+
+  // Regenerate when persona changes
+  useEffect(() => {
+    if (persona) {
+      generateDigest();
+    }
   }, [persona]);
 
   // Smooth vertical scroll - scroll down, reset at halfway (where duplicate starts) for seamless loop
@@ -382,7 +436,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
 
       {/* Recently Added Tests - 3 line compact display */}
       <div className="mb-3 pb-3 border-b border-slate-100">
-        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">Recently Added</p>
+        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">Recently Added OpenOnco Tests</p>
         <div className="space-y-1">
           {RECENTLY_ADDED_TESTS.map((test) => (
             <div
@@ -2582,7 +2636,7 @@ const TestShowcase = ({ onNavigate }) => {
         });
         return next;
       });
-    }, 1000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
