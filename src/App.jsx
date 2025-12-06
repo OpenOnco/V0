@@ -1,6 +1,14 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 
+// Recently added tests - update this when adding new tests to the database
+// Format: { id, name, vendor, category, dateAdded }
+const RECENTLY_ADDED_TESTS = [
+  { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
+  { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 4, 2025' },
+  { id: 'trm-8', name: 'Northstar Response', vendor: 'BillionToOne', category: 'TRM', dateAdded: 'Dec 3, 2025' },
+];
+
 // ============================================
 // Markdown Renderer Component
 // ============================================
@@ -150,13 +158,27 @@ const getStoredPersona = () => {
 // ============================================
 // NewsFeed Component - AI-generated prose digest, vertical scroll
 // ============================================
-const NewsFeed = () => {
+const NewsFeed = ({ onNavigate }) => {
   const [isPaused, setIsPaused] = useState(false);
   const [digest, setDigest] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [lastGenerated, setLastGenerated] = useState(null);
   const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
   const scrollRef = useRef(null);
+
+  // Category colors for recently added badges
+  const categoryColors = {
+    MRD: 'bg-orange-500',
+    ECD: 'bg-emerald-500',
+    TRM: 'bg-sky-500'
+  };
+
+  // Handle click on recently added test
+  const handleTestClick = (test) => {
+    if (onNavigate) {
+      onNavigate(test.category, test.id);
+    }
+  };
 
   // Listen for persona changes from other components
   useEffect(() => {
@@ -356,6 +378,33 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
         }`}>
           {isLoading ? '🔄 Loading...' : isPaused ? '⏸ Paused' : '▶ Scrolling'}
         </span>
+      </div>
+
+      {/* Recently Added Tests - 3 line compact display */}
+      <div className="mb-3 pb-3 border-b border-slate-100">
+        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">Recently Added</p>
+        <div className="space-y-1">
+          {RECENTLY_ADDED_TESTS.map((test) => (
+            <div
+              key={test.id}
+              onClick={() => handleTestClick(test)}
+              className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 rounded px-1 py-0.5 -mx-1 transition-colors group"
+            >
+              <span className={`${categoryColors[test.category]} text-white text-[9px] px-1.5 py-0.5 rounded font-medium`}>
+                {test.category}
+              </span>
+              <span className="text-xs font-medium text-slate-700 group-hover:text-[#2A63A4] transition-colors">
+                {test.name}
+              </span>
+              <span className="text-[10px] text-slate-400">
+                {test.vendor}
+              </span>
+              <span className="text-[10px] text-slate-300 ml-auto">
+                {test.dateAdded}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {isLoading ? (
@@ -1931,7 +1980,6 @@ const trmTestData = [
   }
 ];
 
-
 // Compressed test data for chatbot - keeps all fields but shortens keys and removes nulls/citations
 const compressTestForChat = (test) => {
   // Key mapping: long names → short names
@@ -3096,7 +3144,7 @@ Say "not specified" for missing data.`;
           </div>
           <div className="lg:col-span-2 relative min-h-[400px] lg:min-h-0">
             <div className="absolute inset-0">
-              <NewsFeed />
+              <NewsFeed onNavigate={onNavigate} />
             </div>
           </div>
         </div>
