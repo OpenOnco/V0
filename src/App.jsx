@@ -291,21 +291,22 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     if (!el || isPaused || !digest) return;
 
     let animationId;
-    let scrollPos = el.scrollTop;
-    const speed = 0.4;
+    const speed = 0.5;
 
     const animate = () => {
-      scrollPos += speed;
-      const maxScroll = el.scrollHeight - el.clientHeight;
+      const maxScroll = el.scrollHeight / 2; // Loop at halfway (where duplicate starts)
       
-      if (scrollPos >= maxScroll) {
-        scrollPos = 0;
+      if (el.scrollTop >= maxScroll) {
+        el.scrollTop = 0; // Jump back to start
+      } else {
+        el.scrollTop += speed;
       }
       
-      el.scrollTop = scrollPos;
       animationId = requestAnimationFrame(animate);
     };
 
+    // Start from top
+    el.scrollTop = 0;
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
   }, [isPaused, digest]);
@@ -341,7 +342,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-full flex flex-col">
+    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-full w-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-semibold text-slate-800">Liquid Biopsy News</h3>
@@ -359,7 +360,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
       </div>
 
       {isLoading ? (
-        <div className="flex-1 flex items-center justify-center" style={{ minHeight: '360px' }}>
+        <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin w-8 h-8 border-2 border-slate-300 border-t-[#2A63A4] rounded-full mx-auto mb-3"></div>
             <p className="text-sm text-slate-500">Generating your personalized digest...</p>
@@ -368,17 +369,17 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
       ) : (
         <div 
           ref={scrollRef}
-          className="flex-1 overflow-hidden pr-2"
-          style={{ minHeight: '360px' }}
+          className="flex-1 overflow-y-auto pr-2 scrollbar-hide"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="pb-96">
+          <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
+          <div>
             {renderDigest(digest)}
-            {/* Repeat for seamless loop */}
-            <div className="pt-8 border-t border-slate-100 mt-8">
-              {renderDigest(digest)}
-            </div>
+            {/* Spacer and repeat for seamless loop */}
+            <div className="h-16"></div>
+            {renderDigest(digest)}
           </div>
         </div>
       )}
@@ -2547,7 +2548,7 @@ const TestShowcase = ({ onNavigate }) => {
         Tests We Track
       </h3>
       
-      <div className="flex-1 overflow-y-auto pr-1" style={{ maxHeight: '400px' }}>
+      <div className="flex-1">
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
           {allTests.map(test => {
             const params = getParams(test);
@@ -3088,11 +3089,11 @@ Say "not specified" for missing data.`;
         </div>
 
         {/* Test Showcase & News Feed Side by Side */}
-        <div className="mb-4 flex flex-col lg:flex-row gap-4">
+        <div className="mb-4 flex flex-col lg:flex-row lg:items-stretch gap-4">
           <div className="lg:w-3/5">
             <TestShowcase onNavigate={onNavigate} />
           </div>
-          <div className="lg:w-2/5">
+          <div className="lg:w-2/5 flex">
             <NewsFeed />
           </div>
         </div>
