@@ -138,155 +138,201 @@ const Markdown = ({ children, className = '' }) => {
   return <div className={className}>{renderMarkdown(children)}</div>;
 };
 
+// Helper to get persona from localStorage (used by NewsFeed and chat components)
+const getStoredPersona = () => {
+  try {
+    return localStorage.getItem('openonco-persona');
+  } catch {
+    return null;
+  }
+};
+
 // ============================================
-// NewsFeed Component - Vertical scrolling with 1-hour auto-refresh
+// NewsFeed Component - AI-powered personalized daily digest via Haiku
 // ============================================
 const NewsFeed = () => {
-  const [category, setCategory] = useState('science');
-  const [scienceArticles, setScienceArticles] = useState([]);
-  const [businessArticles, setBusinessArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState(null);
+  const [stories, setStories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastGenerated, setLastGenerated] = useState(null);
   const scrollRef = useRef(null);
+  
+  // Get current persona from localStorage
+  const persona = getStoredPersona() || 'Clinician';
 
-  // Fallback static articles in case RSS fetch fails
-  const fallbackScience = [
-    { date: '2025-12-05', title: 'SABCS 2025 sessions explore liquid biopsy for adaptive therapy in breast cancer', source: 'SABCS News', url: 'https://www.sabcsmeetingnews.org/' },
-    { date: '2025-12-05', title: 'Natera completes $450M acquisition of Foresight Diagnostics for ultrasensitive MRD', source: 'Business Wire', url: 'https://www.businesswire.com/' },
-    { date: '2025-12-02', title: 'AI-assisted exosome liquid biopsies show promise for early cancer detection', source: 'News Medical', url: 'https://www.news-medical.net/' },
-    { date: '2025-12-01', title: 'Liquid biopsy identifies taxane resistance and clonal selection in prostate cancer', source: 'Clinical Cancer Res', url: 'https://aacrjournals.org/' },
-    { date: '2025-11-28', title: 'Galleri MCED test detects 35 cancer types with 99.5% specificity in PATHFINDER 2', source: 'Nature Medicine', url: 'https://pubmed.ncbi.nlm.nih.gov/' },
-    { date: '2025-11-25', title: 'Guardant Reveal ctDNA methylation approach shows superior MRD detection', source: 'Cancer Discovery', url: 'https://pubmed.ncbi.nlm.nih.gov/' },
-    { date: '2025-11-22', title: 'FoundationOne Liquid CDx identifies actionable mutations in 78% of solid tumors', source: 'JCO Precision Oncol', url: 'https://pubmed.ncbi.nlm.nih.gov/' },
-    { date: '2025-11-20', title: 'Serial ctDNA monitoring predicts immunotherapy response 8 weeks before imaging', source: 'Annals of Oncology', url: 'https://pubmed.ncbi.nlm.nih.gov/' },
-    { date: '2025-11-18', title: 'Haystack MRD achieves 0.0006% LOD in multi-center CRC validation study', source: 'Clin Cancer Research', url: 'https://pubmed.ncbi.nlm.nih.gov/' },
-    { date: '2025-11-15', title: 'Shield blood test shows 83% sensitivity for CRC in average-risk screening', source: 'JAMA', url: 'https://pubmed.ncbi.nlm.nih.gov/' },
+  const categoryColors = {
+    'M&A': 'bg-purple-100 text-purple-700',
+    'IPO': 'bg-blue-100 text-blue-700',
+    'Conference': 'bg-amber-100 text-amber-700',
+    'Market': 'bg-emerald-100 text-emerald-700',
+    'Research': 'bg-rose-100 text-rose-700',
+    'Regulatory': 'bg-cyan-100 text-cyan-700',
+    'Clinical': 'bg-orange-100 text-orange-700',
+    'Reimbursement': 'bg-teal-100 text-teal-700',
+    'Technology': 'bg-indigo-100 text-indigo-700'
+  };
+
+  // Fallback stories if API fails
+  const fallbackStories = [
+    {
+      headline: 'Natera Closes $450M Acquisition of Foresight Diagnostics',
+      summary: 'Natera completed its acquisition of Foresight Diagnostics for $275M upfront plus $175M in earnouts, bringing ultrasensitive PhasED-Seq technology with LOD95 of 0.3 ppm.',
+      source: 'Business Wire',
+      category: 'M&A',
+      url: 'https://www.businesswire.com/'
+    },
+    {
+      headline: 'Freenome Goes Public via $330M SPAC Merger',
+      summary: 'Freenome announced a SPAC merger bringing $330M to support SimpleScreen CRC test commercialization, with FDA decision expected mid-2026.',
+      source: 'MedCity News', 
+      category: 'IPO',
+      url: 'https://medcitynews.com/'
+    },
+    {
+      headline: 'Global Liquid Biopsy Market Projected to Reach $10B by 2030',
+      summary: 'Market valued at $4.93B in 2024, projecting 12.5% CAGR driven by rising cancer incidence and demand for non-invasive diagnostics.',
+      source: 'Research & Markets',
+      category: 'Market',
+      url: 'https://www.globenewswire.com/'
+    }
   ];
 
-  const fallbackBusiness = [
-    { date: '2025-12-05', title: 'Freenome goes public via $330M SPAC merger ahead of SimpleScreen FDA decision', source: 'MedCity News', url: 'https://medcitynews.com/' },
-    { date: '2025-12-05', title: 'Natera acquires Foresight for $275M upfront plus $175M earnouts', source: 'Contract Pharma', url: 'https://www.contractpharma.com/' },
-    { date: '2025-12-02', title: 'Global liquid biopsy market projected to reach $10B by 2030 at 12.5% CAGR', source: 'Globe Newswire', url: 'https://www.globenewswire.com/' },
-    { date: '2025-12-02', title: 'EV-based liquid biopsy market to grow from $91M to $159M by 2030', source: 'Research & Markets', url: 'https://www.globenewswire.com/' },
-    { date: '2025-12-01', title: 'Minimally invasive biopsy market to grow by $10B over next five years', source: 'Globe Newswire', url: 'https://www.globenewswire.com/' },
-    { date: '2025-11-28', title: 'Natera Signatera revenue grows 45% YoY as MRD adoption accelerates', source: 'Reuters', url: 'https://www.genomeweb.com/' },
-    { date: '2025-11-25', title: 'Guardant Health expands Shield colorectal cancer test to commercial launch', source: 'FierceBiotech', url: 'https://www.genomeweb.com/' },
-    { date: '2025-11-22', title: 'Exact Sciences Oncodetect receives FDA Breakthrough Device designation', source: 'GenomeWeb', url: 'https://www.genomeweb.com/' },
-    { date: '2025-11-20', title: 'Palmetto GBA issues positive LCD for tumor-informed MRD testing in CRC', source: 'Dark Daily', url: 'https://www.genomeweb.com/' },
-    { date: '2025-11-18', title: 'Foundation Medicine partners with Pfizer on ctDNA-guided clinical trials', source: 'Endpoints News', url: 'https://www.genomeweb.com/' },
-  ];
-
-  // RSS feed URLs via rss2json proxy
-  const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
-  const SCIENCE_SEARCH = encodeURIComponent('https://news.google.com/rss/search?q=ctDNA+OR+"liquid+biopsy"+OR+"minimal+residual+disease"+cancer&hl=en-US&gl=US&ceid=US:en');
-  const BUSINESS_FEED = encodeURIComponent('https://news.google.com/rss/search?q=Guardant+OR+Natera+OR+GRAIL+OR+"liquid+biopsy"+OR+ctDNA+FDA+OR+Medicare&hl=en-US&gl=US&ceid=US:en');
-
-  const CACHE_KEY_SCIENCE = 'openonco_news_science_v3';
-  const CACHE_KEY_BUSINESS = 'openonco_news_business_v3';
-  const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
-  const REFRESH_INTERVAL = 60 * 60 * 1000; // 1 hour auto-refresh
-
-  const parseDate = (dateStr) => {
-    try {
-      const date = new Date(dateStr);
-      return date.toISOString().split('T')[0];
-    } catch {
-      return new Date().toISOString().split('T')[0];
+  const getPersonaPrompt = (p) => {
+    switch(p) {
+      case 'Patient':
+        return `You are writing for patients and caregivers. Focus on:
+- What new tests are becoming available and what they detect
+- Insurance coverage and cost news
+- Plain language explanations (avoid jargon)
+- Practical implications for patients
+- Hopeful but realistic tone`;
+      case 'Clinician':
+        return `You are writing for oncologists and healthcare providers. Focus on:
+- Clinical performance data (sensitivity, specificity, LOD)
+- FDA approvals and regulatory updates
+- Reimbursement and coverage decisions
+- Guideline changes (NCCN, ASCO)
+- Clinical trial results
+- Direct, professional tone with medical terminology`;
+      case 'Academic/Industry':
+        return `You are writing for researchers and industry professionals. Focus on:
+- M&A activity and market dynamics
+- Technology advances and platform comparisons
+- Publication highlights and conference data
+- Investment and partnership news
+- Competitive landscape analysis
+- Technical and business-focused tone`;
+      default:
+        return 'Write balanced summaries covering clinical, business, and research angles.';
     }
   };
 
-  const extractSource = (url) => {
+  const generateNewsSummary = async () => {
+    const cacheKey = `openonco_news_${persona}_v1`;
+    const today = new Date().toDateString();
+    
+    // Check cache first
     try {
-      const hostname = new URL(url).hostname.replace('www.', '');
-      const sourceMap = {
-        'reuters.com': 'Reuters', 'bloomberg.com': 'Bloomberg', 'fiercebiotech.com': 'FierceBiotech',
-        'statnews.com': 'STAT News', 'genomeweb.com': 'GenomeWeb', 'biopharmadive.com': 'BioPharma Dive',
-        'medcitynews.com': 'MedCity News', 'nature.com': 'Nature', 'nejm.org': 'NEJM', 'cell.com': 'Cell',
-        'thelancet.com': 'Lancet', 'businesswire.com': 'Business Wire', 'prnewswire.com': 'PR Newswire',
-        'seekingalpha.com': 'Seeking Alpha', 'fool.com': 'Motley Fool', 'pubmed.ncbi.nlm.nih.gov': 'PubMed',
-      };
-      return sourceMap[hostname] || hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
-    } catch {
-      return 'News';
-    }
-  };
-
-  const fetchFeed = async (feedUrl, cacheKey, fallback, forceRefresh = false) => {
-    if (!forceRefresh) {
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) {
-          const { data, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_DURATION && data.length > 0) {
-            return { articles: data, fromCache: true, timestamp };
-          }
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const { stories: cachedStories, date, generatedAt } = JSON.parse(cached);
+        if (date === today && cachedStories?.length > 0) {
+          setStories(cachedStories);
+          setLastGenerated(new Date(generatedAt));
+          setIsLoading(false);
+          return;
         }
-      } catch (e) {}
-    }
+      }
+    } catch (e) {}
+
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch(`${RSS2JSON_API}${feedUrl}`);
-      const json = await response.json();
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{
+            role: 'user',
+            content: `Search for the latest liquid biopsy, ctDNA, MRD (minimal residual disease), and early cancer detection news from the past week. Find 4-5 significant stories.
+
+${getPersonaPrompt(persona)}
+
+After searching, respond with ONLY a JSON array (no markdown, no explanation) in this exact format:
+[
+  {
+    "headline": "Short headline",
+    "summary": "2-3 sentence summary tailored to the audience",
+    "source": "Publication name",
+    "category": "One of: M&A, IPO, Conference, Market, Research, Regulatory, Clinical, Reimbursement, Technology",
+    "url": "source URL"
+  }
+]`
+          }]
+        })
+      });
+
+      const data = await response.json();
       
-      if (json.status === 'ok' && json.items && json.items.length > 0) {
-        const articles = json.items.slice(0, 15).map(item => ({
-          date: parseDate(item.pubDate),
-          title: item.title,
-          source: extractSource(item.link),
-          url: item.link
-        }));
-        
-        const timestamp = Date.now();
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify({ data: articles, timestamp }));
-        } catch (e) {}
-        
-        return { articles, fromCache: false, timestamp };
+      // Extract text from response
+      let text = '';
+      for (const block of data.content || []) {
+        if (block.type === 'text') {
+          text += block.text;
+        }
       }
+
+      // Parse JSON from response
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        const parsedStories = JSON.parse(jsonMatch[0]);
+        if (Array.isArray(parsedStories) && parsedStories.length > 0) {
+          const now = new Date();
+          setStories(parsedStories);
+          setLastGenerated(now);
+          
+          // Cache for today
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify({
+              stories: parsedStories,
+              date: today,
+              generatedAt: now.toISOString()
+            }));
+          } catch (e) {}
+          
+          setIsLoading(false);
+          return;
+        }
+      }
+      
+      throw new Error('Failed to parse news');
     } catch (e) {
-      console.log('News feed fetch failed, using fallback');
+      console.error('News generation failed:', e);
+      setError('Using cached stories');
+      setStories(fallbackStories);
     }
     
-    return { articles: fallback, fromCache: false, timestamp: Date.now() };
-  };
-
-  const loadFeeds = async (forceRefresh = false) => {
-    setIsLoading(true);
-    
-    const [scienceResult, businessResult] = await Promise.all([
-      fetchFeed(SCIENCE_SEARCH, CACHE_KEY_SCIENCE, fallbackScience, forceRefresh),
-      fetchFeed(BUSINESS_FEED, CACHE_KEY_BUSINESS, fallbackBusiness, forceRefresh)
-    ]);
-    
-    setScienceArticles(scienceResult.articles);
-    setBusinessArticles(businessResult.articles);
-    setLastUpdated(new Date());
     setIsLoading(false);
   };
 
-  // Initial load
+  // Generate on mount and when persona changes
   useEffect(() => {
-    loadFeeds();
-  }, []);
-
-  // Auto-refresh every hour
-  useEffect(() => {
-    const interval = setInterval(() => {
-      loadFeeds(true);
-    }, REFRESH_INTERVAL);
-    
-    return () => clearInterval(interval);
-  }, []);
+    generateNewsSummary();
+  }, [persona]);
 
   // Smooth vertical scroll animation
   useEffect(() => {
     const scrollContainer = scrollRef.current;
-    if (!scrollContainer || isPaused) return;
+    if (!scrollContainer || isPaused || stories.length === 0) return;
 
     let animationId;
-    let scrollPos = 0;
-    const scrollSpeed = 0.5; // pixels per frame
+    let scrollPos = scrollContainer.scrollTop;
+    const scrollSpeed = 0.3;
 
     const animate = () => {
       scrollPos += scrollSpeed;
@@ -303,81 +349,84 @@ const NewsFeed = () => {
     animationId = requestAnimationFrame(animate);
     
     return () => cancelAnimationFrame(animationId);
-  }, [isPaused, category, scienceArticles, businessArticles]);
+  }, [isPaused, stories]);
 
-  const articles = category === 'science' ? scienceArticles : businessArticles;
-  const fallback = category === 'science' ? fallbackScience : fallbackBusiness;
-  const displayArticles = articles.length > 0 ? articles : fallback;
-  
-  // Duplicate articles for seamless loop
-  const loopedArticles = [...displayArticles, ...displayArticles];
+  // Duplicate for seamless loop
+  const loopedStories = [...stories, ...stories];
+
+  const personaLabel = {
+    'Patient': '👤 Patient View',
+    'Clinician': '🩺 Clinician View', 
+    'Academic/Industry': '🔬 Industry View'
+  };
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-semibold text-slate-800">Liquid Biopsy News</h3>
-          {lastUpdated && (
-            <p className="text-xs text-slate-400 mt-0.5">
-              Updated {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </p>
-          )}
+          <p className="text-xs text-slate-400 mt-0.5">
+            {personaLabel[persona] || 'Daily Digest'}
+            {lastGenerated && ` • Updated ${lastGenerated.toLocaleDateString()}`}
+          </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setCategory('science')}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              category === 'science' ? 'text-white shadow-sm' : 'text-slate-600 hover:text-slate-800'
-            }`}
-            style={category === 'science' ? { backgroundColor: '#2A63A4' } : {}}
-          >
-            Research
-          </button>
-          <button
-            onClick={() => setCategory('business')}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              category === 'business' ? 'text-white shadow-sm' : 'text-slate-600 hover:text-slate-800'
-            }`}
-            style={category === 'business' ? { backgroundColor: '#2A63A4' } : {}}
-          >
-            Business
-          </button>
-        </div>
+        <span className={`text-xs px-2 py-1 rounded-full ${
+          isLoading ? 'bg-blue-100 text-blue-700' :
+          isPaused ? 'bg-amber-100 text-amber-700' : 
+          'bg-emerald-100 text-emerald-700'
+        }`}>
+          {isLoading ? '🔄 Loading...' : isPaused ? '⏸ Paused' : '▶ Scrolling'}
+        </span>
       </div>
 
-      <div 
-        ref={scrollRef}
-        className="h-64 overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        style={{ scrollBehavior: 'auto' }}
-      >
-        <div className="space-y-3">
-          {loopedArticles.map((article, idx) => (
-            <a
-              key={`${article.title}-${idx}`}
-              href={article.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200 group"
-            >
-              <p className="text-xs text-slate-400 mb-1">
-                {article.date} • {article.source}
-              </p>
-              <p className="text-sm text-slate-700 group-hover:text-[#2A63A4] transition-colors leading-snug line-clamp-2">
-                {article.title}
-              </p>
-            </a>
-          ))}
+      {isLoading ? (
+        <div className="h-72 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin w-8 h-8 border-2 border-slate-300 border-t-[#2A63A4] rounded-full mx-auto mb-3"></div>
+            <p className="text-sm text-slate-500">Generating personalized news digest...</p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div 
+          ref={scrollRef}
+          className="h-72 overflow-hidden"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          style={{ scrollBehavior: 'auto' }}
+        >
+          <div className="space-y-4">
+            {loopedStories.map((story, idx) => (
+              <a
+                key={`${story.headline}-${idx}`}
+                href={story.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block p-4 rounded-lg border border-slate-100 hover:border-slate-300 hover:bg-slate-50 transition-all group"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${categoryColors[story.category] || 'bg-slate-100 text-slate-600'}`}>
+                    {story.category}
+                  </span>
+                  <span className="text-xs text-slate-400">{story.source}</span>
+                </div>
+                <h4 className="font-semibold text-slate-800 group-hover:text-[#2A63A4] transition-colors mb-2 leading-snug">
+                  {story.headline}
+                </h4>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {story.summary}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
         <p className="text-xs text-slate-400">
-          {isPaused ? '⏸ Paused - hover to read' : '▶ Auto-scrolling'}
+          {isLoading ? 'Searching latest news...' : 'Hover to pause • Click to read'}
         </p>
         <p className="text-xs text-slate-400">
-          {displayArticles.length} stories • Refreshes hourly
+          {stories.length} stories • AI-curated daily
         </p>
       </div>
     </div>
@@ -1979,15 +2028,6 @@ STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on
 STYLE: Be technical and detailed. Include methodology details, analytical performance metrics, and validation data. Reference publications and trial data when relevant. Discuss technology differentiators and emerging approaches.`;
     default:
       return `STYLE: Be concise and helpful. Lead with key insights. Use prose not bullets.`;
-  }
-};
-
-// Helper to get persona from localStorage
-const getStoredPersona = () => {
-  try {
-    return localStorage.getItem('openonco-persona');
-  } catch {
-    return null;
   }
 };
 
