@@ -3853,7 +3853,7 @@ Say "not specified" for missing data.`;
         <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
           {/* Container Header */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests using {totalDataPoints.toLocaleString()} Data Points</h2>
+            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests using our Navigator Tools:</h2>
           </div>
           
           {/* Category Navigators */}
@@ -3990,7 +3990,7 @@ Say "not specified" for missing data.`;
           <div className="bg-white">
             {/* Chat Header */}
             <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
-              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude about the data...</h3>
+              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude questions about the tests:</h3>
             </div>
           
           {/* Messages Area */}
@@ -5443,7 +5443,7 @@ const InfoIcon = ({ citations, notes }) => {
 
 // ============================================
 // Expert Insight Component - Shows expert context on metrics
-// Attribution: Expert Advisors MR (Matt Ryder, PhD) and SW
+// Attribution: Expert Advisors MR and SW
 // ============================================
 const EXPERT_INSIGHTS = {
   sensitivity: {
@@ -5632,7 +5632,7 @@ const ExpertInsight = ({ topic }) => {
   const formatExperts = (experts) => {
     if (!experts) return "Expert Advisors";
     const names = experts.split(', ').map(e => {
-      if (e === 'MR') return 'MR (Matt Ryder, PhD)';
+      if (e === 'MR') return 'MR';
       if (e === 'SW') return 'SW';
       return e;
     });
@@ -5684,13 +5684,10 @@ const ExpertInsight = ({ topic }) => {
 // ============================================
 // Data Row Component for expanded view
 // ============================================
-const DataRow = ({ label, value, unit, citations, notes, expertTopic, lodUnit }) => {
+const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   if (value === null || value === undefined) return null;
   const displayValue = `${value}${unit || ''}`;
   const isLongValue = typeof displayValue === 'string' && displayValue.length > 60;
-  
-  // Get LOD unit badge if applicable
-  const unitBadge = lodUnit ? getLodUnitBadge(lodUnit) : null;
   
   if (isLongValue) {
     // Stack layout for long values
@@ -5701,14 +5698,7 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic, lodUnit })
           {expertTopic && <ExpertInsight topic={expertTopic} />}
           <InfoIcon citations={citations} notes={notes} />
         </span>
-        <span className="text-sm font-medium text-gray-900 flex items-center gap-2">
-          {displayValue}
-          {unitBadge && (
-            <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${unitBadge.bg} ${unitBadge.text}`}>
-              {unitBadge.label}
-            </span>
-          )}
-        </span>
+        <span className="text-sm font-medium text-gray-900">{displayValue}</span>
       </div>
     );
   }
@@ -5721,14 +5711,7 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic, lodUnit })
         {expertTopic && <ExpertInsight topic={expertTopic} />}
         <InfoIcon citations={citations} notes={notes} />
       </span>
-      <span className="text-sm font-medium text-gray-900 text-right flex items-center gap-2">
-        {displayValue}
-        {unitBadge && (
-          <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${unitBadge.bg} ${unitBadge.text}`}>
-            {unitBadge.label}
-          </span>
-        )}
-      </span>
+      <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
     </div>
   );
 };
@@ -5792,12 +5775,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               {test.lod != null && test.lod95 != null ? (
                 // Both values available - show stacked with monitoring indicator
                 <>
-                  <p className="text-sm font-bold text-violet-600 flex items-center gap-1">
-                    {test.lod}
-                    <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${getLodUnitBadge(detectLodUnit(test.lod)).bg} ${getLodUnitBadge(detectLodUnit(test.lod)).text}`}>
-                      {getLodUnitBadge(detectLodUnit(test.lod)).label}
-                    </span>
-                  </p>
+                  <p className="text-sm font-bold text-violet-600">{test.lod}</p>
                   <p className="text-xs text-violet-400">{test.lod95}</p>
                   <p className="text-xs text-gray-500">LOD / LOD95</p>
                   <span className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 font-medium mt-0.5" title="Gap between LOD and LOD95 means serial testing can catch lower-level disease">
@@ -5808,23 +5786,13 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               ) : test.lod != null ? (
                 // Only LOD
                 <>
-                  <p className="text-sm font-bold text-violet-600 flex items-center gap-1">
-                    {test.lod}
-                    <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${getLodUnitBadge(detectLodUnit(test.lod)).bg} ${getLodUnitBadge(detectLodUnit(test.lod)).text}`}>
-                      {getLodUnitBadge(detectLodUnit(test.lod)).label}
-                    </span>
-                  </p>
+                  <p className="text-lg font-bold text-violet-600">{test.lod}</p>
                   <p className="text-xs text-gray-500">LOD</p>
                 </>
               ) : (
                 // Only LOD95
                 <>
-                  <p className="text-sm font-bold text-violet-600 flex items-center gap-1">
-                    {test.lod95}
-                    <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${getLodUnitBadge(detectLodUnit(test.lod95)).bg} ${getLodUnitBadge(detectLodUnit(test.lod95)).text}`}>
-                      {getLodUnitBadge(detectLodUnit(test.lod95)).label}
-                    </span>
-                  </p>
+                  <p className="text-lg font-bold text-violet-600">{test.lod95}</p>
                   <p className="text-xs text-gray-500">LOD95</p>
                 </>
               )}
@@ -5873,8 +5841,8 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               )}
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-              <DataRow label="LOD (Detection Threshold)" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" lodUnit={detectLodUnit(test.lod)} />
-              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" lodUnit={detectLodUnit(test.lod95)} />
+              <DataRow label="LOD (Detection Threshold)" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
               
               {(test.landmarkSensitivity || test.landmarkSpecificity || test.longitudinalSensitivity || test.longitudinalSpecificity) && (
                 <>
@@ -6000,8 +5968,8 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
               <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" expertTopic="sensitivity" />
               <DataRow label="Reported Specificity" value={test.specificity} unit="%" expertTopic="specificity" />
-              <DataRow label="LOD (Detection Threshold)" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" lodUnit={detectLodUnit(test.lod)} />
-              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" lodUnit={detectLodUnit(test.lod95)} />
+              <DataRow label="LOD (Detection Threshold)" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
@@ -6186,7 +6154,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                 LOD values below use different units ({uniqueLodUnits.join(', ')}) — cannot be directly compared. Unit badges shown for clarity.
               </p>
             )}
-            <p className="text-amber-600 text-[10px] mt-1 italic">— Expert Advisor: Matt Ryder, PhD</p>
+            <p className="text-amber-600 text-[10px] mt-1 italic">— Expert Advisors: MR, SW</p>
           </div>
         </div>
         
