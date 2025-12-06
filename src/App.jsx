@@ -367,7 +367,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     if (!el || isPaused || !digest) return;
 
     let animationId;
-    const speed = 0.35;
+    const speed = 0.175;
 
     const animate = () => {
       // Content is duplicated, so reset when we reach halfway through total height
@@ -3118,7 +3118,7 @@ Say "not specified" for missing data.`;
           <div className="bg-white">
             {/* Chat Header */}
             <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
-              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or Browse the data with Claude:</h3>
+              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude about the data...</h3>
             </div>
           
           {/* Messages Area */}
@@ -3156,8 +3156,8 @@ Say "not specified" for missing data.`;
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Type your liquid biopsy test question here..."
-                className="flex-1 border-2 border-slate-200 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none"
-                style={{ '--tw-ring-color': '#2A63A4' }}
+                className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
                 disabled={isLoading}
               />
               <button
