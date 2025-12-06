@@ -155,9 +155,17 @@ const NewsFeed = () => {
   const [digest, setDigest] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [lastGenerated, setLastGenerated] = useState(null);
+  const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
   const scrollRef = useRef(null);
-  
-  const persona = getStoredPersona() || 'Clinician';
+
+  // Listen for persona changes from other components
+  useEffect(() => {
+    const handlePersonaChange = (e) => {
+      setPersona(e.detail);
+    };
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
 
   // Fallback digest if API fails
   const fallbackDigest = `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
@@ -333,7 +341,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-semibold text-slate-800">Liquid Biopsy News</h3>
@@ -351,7 +359,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
       </div>
 
       {isLoading ? (
-        <div className="h-72 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center" style={{ minHeight: '360px' }}>
           <div className="text-center">
             <div className="animate-spin w-8 h-8 border-2 border-slate-300 border-t-[#2A63A4] rounded-full mx-auto mb-3"></div>
             <p className="text-sm text-slate-500">Generating your personalized digest...</p>
@@ -360,11 +368,12 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
       ) : (
         <div 
           ref={scrollRef}
-          className="h-72 overflow-hidden pr-2"
+          className="flex-1 overflow-hidden pr-2"
+          style={{ minHeight: '360px' }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="pb-72">
+          <div className="pb-96">
             {renderDigest(digest)}
             {/* Repeat for seamless loop */}
             <div className="pt-8 border-t border-slate-100 mt-8">
@@ -2533,73 +2542,60 @@ const TestShowcase = ({ onNavigate }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <h3 className="text-xl font-bold text-slate-800 text-center mb-4">
-        Overview: Tests We Track (use the tools above to dig in)
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm h-full flex flex-col">
+      <h3 className="text-lg font-bold text-slate-800 text-center mb-3">
+        Tests We Track
       </h3>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-        {allTests.map(test => {
-          const params = getParams(test);
-          const currentIdx = paramIndices[test.id] || 0;
-          const currentParam = params[currentIdx];
-          const colors = colorClasses[test.color];
-          
-          return (
-            <div
-              key={test.id}
-              onClick={() => setSelectedTest(test)}
-              className={`${colors.bg} ${colors.border} border rounded-xl p-3 cursor-pointer hover:shadow-md transition-all`}
-            >
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
-                  <p className="text-xs text-slate-500 truncate">{test.vendor}</p>
+      <div className="flex-1 overflow-y-auto pr-1" style={{ maxHeight: '400px' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+          {allTests.map(test => {
+            const params = getParams(test);
+            const currentIdx = paramIndices[test.id] || 0;
+            const currentParam = params[currentIdx];
+            const colors = colorClasses[test.color];
+            
+            return (
+              <div
+                key={test.id}
+                onClick={() => setSelectedTest(test)}
+                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+              >
+                <div className="flex items-start justify-between mb-1">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
+                    <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
+                  </div>
+                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
+                    {test.category}
+                  </span>
                 </div>
-                <span className={`${colors.badge} text-white text-xs px-1.5 py-0.5 rounded font-medium ml-2 flex-shrink-0`}>
-                  {test.category}
-                </span>
+                
+                <div className="h-8 flex flex-col justify-center">
+                  <p className="text-[10px] text-slate-500 truncate">{currentParam.label}</p>
+                  <p className={`text-sm font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
+                    {currentParam.value}
+                  </p>
+                </div>
               </div>
-              
-              <div className="h-10 flex flex-col justify-center">
-                <p className="text-xs text-slate-500">{currentParam.label}</p>
-                <p className={`text-base font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
-                  {currentParam.value}
-                </p>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      {/* Legend at bottom */}
-      <div className="flex flex-wrap items-center justify-center gap-4 mt-4 pt-4 border-t border-slate-200 text-xs">
-        <span className="text-slate-500">Categories:</span>
+      {/* Compact Legend */}
+      <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
           <span className="text-slate-500">MRD</span>
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
           <span className="text-slate-500">ECD</span>
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-sky-500"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
           <span className="text-slate-500">TRM</span>
-        </span>
-        <span className="mx-2 text-slate-300">|</span>
-        <span className="text-slate-500">Data types:</span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span className="text-slate-500">Clinical</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-violet-500"></span>
-          <span className="text-slate-500">Analytical</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-          <span className="text-slate-500">Operational</span>
         </span>
       </div>
 
@@ -2766,10 +2762,12 @@ const HomePage = ({ onNavigate }) => {
     }
   }, []);
 
-  // Save persona to localStorage when changed
+  // Save persona to localStorage when changed and notify other components
   const handlePersonaSelect = (selectedPersona) => {
     setPersona(selectedPersona);
     localStorage.setItem('openonco-persona', selectedPersona);
+    // Dispatch custom event so NewsFeed can refresh
+    window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
   // Auto-scroll to bottom when messages or loading state changes
@@ -3089,19 +3087,19 @@ Say "not specified" for missing data.`;
           </div>
         </div>
 
-        {/* Test Showcase */}
-        <div className="mb-4">
-          <TestShowcase onNavigate={onNavigate} />
+        {/* Test Showcase & News Feed Side by Side */}
+        <div className="mb-4 flex flex-col lg:flex-row gap-4">
+          <div className="lg:w-3/5">
+            <TestShowcase onNavigate={onNavigate} />
+          </div>
+          <div className="lg:w-2/5">
+            <NewsFeed />
+          </div>
         </div>
 
         {/* Stat of the Day */}
         <div className="mb-4">
           <StatOfTheDay onNavigate={onNavigate} />
-        </div>
-
-        {/* News Feed */}
-        <div className="mb-4">
-          <NewsFeed />
         </div>
 
         {/* Database Summary */}
