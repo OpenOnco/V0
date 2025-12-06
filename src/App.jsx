@@ -1134,7 +1134,7 @@ const mrdTestData = [
     "specificityNotes": "Negative percent agreement 97.65% (95% CI 87.43-99.94%) in DLBCL validation. False positive rate 0.24%.",
     "lod": 0.00007,
     "lodCitations": "Boehm N et al. Oncotarget 2025;16:329-336.",
-    "lodNotes": "LOD 0.7 ppm (7 parts per 10 million) validated in regulatory study for lymphoma panel per Oncotarget analytical validation paper. Solid tumor version (in development) achieves 0.3 ppm. Foresight COO communication Dec 2025 confirmed these specifications.",
+    "lodNotes": "LOD 0.7 ppm (7 parts per 10 million) validated in regulatory study for lymphoma panel per Oncotarget analytical validation paper. Solid tumor version (in development) achieves 0.3 ppm. Foresight CBO communication Dec 2025 confirmed these specifications.",
     "leadTimeVsImaging": 200,
     "leadTimeVsImagingCitations": "Foresight CLARITY product page; Roschewski M et al. ASH 2023.",
     "leadTimeVsImagingNotes": "Detects relapse approximately 200 days earlier than PET/CT imaging in DLBCL. PhasED-Seq correctly identified 90% of patients who later relapsed vs 45% identified by PET/CT.",
@@ -1169,7 +1169,7 @@ const mrdTestData = [
     "regulatoryStatusNotes": "CLIA-registered laboratory (CAP: 9346637, CLIA: 06D2287941). First ctDNA-MRD test in NCCN B-Cell Lymphoma guidelines. Acquired by Natera Dec 5, 2025 for $275M upfront + $175M earnouts.",
     "nccnGuidelines": true,
     "nccnGuidelinesNotes": "NCCN B-Cell Lymphomas V.2.2025 (Dec 2024): ctDNA-MRD testing with assay LOD <1ppm recommended to adjudicate PET-positive results at end of frontline DLBCL therapy.",
-    "vendorDataSource": "Foresight COO communication Dec 2025",
+    "vendorDataSource": "Foresight CBO communication Dec 2025",
     "solidTumorVersionNotes": "Foresight CLARITY for solid tumors is in development (not clinically available). Uses WGS baseline with up to 5,000 phased+low-error variants and achieves 0.3 ppm LOD. Requires custom reagent design like other MRD products.",
     "acquisitionDetails": {
       "acquirer": "Natera",
@@ -1974,7 +1974,7 @@ STYLE: Use clear, accessible language. Avoid jargon - if you must use technical 
     case 'Clinician':
       return `AUDIENCE: Healthcare professional comparing tests for patients.
 STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on actionable metrics: sensitivity, specificity, LOD, TAT, reimbursement status, FDA clearance. Skip basic explanations. Highlight clinically meaningful differences between tests.`;
-    case 'Research and Development':
+    case 'Academic/Industry':
       return `AUDIENCE: Researcher or industry professional studying the landscape.
 STYLE: Be technical and detailed. Include methodology details, analytical performance metrics, and validation data. Reference publications and trial data when relevant. Discuss technology differentiators and emerging approaches.`;
     default:
@@ -2872,7 +2872,7 @@ Say "not specified" for missing data.`;
           {/* Persona Selector */}
           <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
-            {['Research and Development', 'Patient', 'Clinician'].map((p) => (
+            {['Patient', 'Clinician', 'Academic/Industry'].map((p) => (
               <button
                 key={p}
                 onClick={() => handlePersonaSelect(p)}
