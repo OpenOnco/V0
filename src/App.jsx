@@ -2428,15 +2428,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const chatContainerRef = useRef(null);
 
   const suggestedQuestions = [
-    "Best MRD test for stage II-III colorectal cancer?",
-    "Compare tumor-informed vs tumor-naïve MRD approaches",
-    "Which early detection tests have Medicare coverage?",
-    "Most sensitive blood test for lung cancer screening?",
-    "MRD tests that don't require tumor tissue?",
-    "Compare Signatera vs Guardant Reveal for breast cancer",
-    "I am a patient, keep answers basic",
-    "I am a physician, I like detailed answers",
-    "Vergleichen Sie Signatera mit Guardant Reveal"
+    "I have breast cancer, stage II, neo-adjuvant, US, age 72. What are the MRD tests that are suitable and reimbursable for me?"
   ];
 
   useEffect(() => { 
@@ -2951,9 +2943,7 @@ const HomePage = ({ onNavigate }) => {
   
   // All tests combined for chat header ticker
   const exampleQuestions = [
-    "MRD tests for colorectal cancer?",
-    "Compare Signatera vs Guardant Reveal",
-    "Which tests have Medicare coverage?"
+    "I have breast cancer, stage II, neo-adjuvant, US, age 72. What are the MRD tests that are suitable and reimbursable for me?"
   ];
 
   // Memoize system prompt - recompute when persona changes
@@ -5691,6 +5681,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
                   </div>
                   <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
+                    {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
+                  </div>
+                  <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
                     {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
                   </div>
@@ -5836,6 +5830,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Cancer Type</label>
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
+                    {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
