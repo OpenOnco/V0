@@ -2441,6 +2441,14 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const [persona, setPersona] = useState(null);
   useEffect(() => {
     setPersona(getStoredPersona());
+    // Listen for persona changes and reset chat
+    const handlePersonaChange = (e) => {
+      setPersona(e.detail);
+      setMessages([]);
+      setShowSuggestions(true);
+    };
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
   }, []);
 
   const handleSuggestionClick = (question) => {
@@ -2917,6 +2925,7 @@ const HomePage = ({ onNavigate }) => {
   // Save persona to localStorage when changed and notify other components
   const handlePersonaSelect = (selectedPersona) => {
     setPersona(selectedPersona);
+    setMessages([]); // Reset chat so user can start fresh with new persona
     localStorage.setItem('openonco-persona', selectedPersona);
     // Dispatch custom event so NewsFeed can refresh
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
@@ -4464,10 +4473,17 @@ const CategoryChat = ({ category }) => {
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
   
-  // Load persona from localStorage
+  // Load persona from localStorage and listen for changes
   useEffect(() => {
     setPersona(getStoredPersona());
-  }, []);
+    // Listen for persona changes and reset chat
+    const handlePersonaChange = (e) => {
+      setPersona(e.detail);
+      setMessages([{ role: 'assistant', content: `Hi! I can help you understand ${meta.title} tests. Ask me about specific tests, comparisons, or clinical applications.` }]);
+    };
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, [meta.title]);
 
   // Memoize system prompt - recomputed if category or persona changes
   const systemPrompt = useMemo(() => {
