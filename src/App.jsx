@@ -547,9 +547,9 @@ const mrdTestData = [
     "stageIIISensitivityNotes": "Stage III-specific data not yet published; NCT07125729 head-to-head vs Signatera includes Stage II–IV CRC.",
     "landmarkSensitivityCitations": "https://haystackmrd.com/faq/",
     "longitudinalSensitivityCitations": "https://haystackmrd.com/",
-    "lod": 0.0006,
+    "lod": "6 ppm",
     "lodCitations": "https://haystackmrd.com/",
-    "lodNotes": "LoD ~0.0006% tumor fraction (6 ppm) at ~95% detection in analytical studies; vendor materials describe low error suppression enabling detection below this in some contexts.",
+    "lodNotes": "LoD ~6 ppm (0.0006% tumor fraction) at ~95% detection in analytical studies.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "variantsTracked": "50",
@@ -601,9 +601,10 @@ const mrdTestData = [
     "longitudinalSpecificity": null,
     "longitudinalSpecificityCitations": "https://investors.personalis.com/static-files/ef5485c7-4866-449d-9dcb-bfaf081bf97d",
     "longitudinalSpecificityNotes": "Reported as 100% in validation cohort; value set to null pending larger studies.",
-    "lod": 1.67,
+    "lod": "1.67 ppm",
+    "lod95": "3.45 ppm",
     "lodCitations": "Northcott et al. Oncotarget 2024; Personalis NeXT Personal Dx analytical validation brochure.",
-    "lodNotes": "1.67 ppm is the detection threshold. LoD95 (limit of detection at 95% confidence) is 3.45 ppm. WGS-based tumor-informed tracking with up to 1,800 variants provides high sensitivity for low-burden disease. Value stored in ppm units.",
+    "lodNotes": "Detection threshold is 1.67 ppm; LOD95 (95% confidence) is 3.45 ppm. The gap between these values means serial testing can catch lower-level disease.",
     "leadTimeVsImaging": 450.0,
     "leadTimeVsImagingCitations": "Garcia-Murillas et al. Ann Oncol 2025; TRACERx NSCLC data.",
     "leadTimeVsImagingNotes": "450 days (15 months) is the median lead time from the Garcia-Murillas et al. Ann Oncol 2025 early-stage breast cancer cohort (range 0.9-61.5 months). This is the median from this specific study, not a universal NeXT median across all indications. NSCLC TRACERx data showed ~6 months.",
@@ -666,8 +667,9 @@ const mrdTestData = [
     "longitudinalSpecificity": 94.0,
     "longitudinalSpecificityCitations": "https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2025/New-Evidence-Validates-Oncodetects-Ability-to-Detect-Molecular-Residual-Disease-and-Predict-Recurrence-in-Colorectal-Cancer-Patients/default.aspx",
     "longitudinalSpecificityNotes": "CRC surveillance specificity.",
-    "lod": 0.0015,
-    "lodNotes": "LoD95 of 15 ppm (0.0015% tumor fraction) per Exact Sciences analytical validation whitepaper. Achieves ~95% detection at this level with high specificity via CHIP-aware filtering.",
+    "lod": null,
+    "lod95": "15 ppm",
+    "lodNotes": "LoD95 of 15 ppm per Exact Sciences analytical validation whitepaper. Detection threshold not separately disclosed.",
     "lodCitations": "Exact Sciences Oncodetect LoD whitepaper; ASCO data presentations.",
     "leadTimeVsImaging": 317.0,
     "leadTimeVsImagingNotes": "Median lead time ~10.4 months (~317 days) from first MRD-positive Oncodetect result to radiologic recurrence in the α-CORRECT stage III CRC cohort. This is the median from this specific study, not a universal value across all indications.",
@@ -724,8 +726,9 @@ const mrdTestData = [
     "longitudinalSpecificity": null,
     "longitudinalSpecificityCitations": "https://sagadiagnostics.com/saga-diagnostics-announces-u-s-commercial-launch/",
     "longitudinalSpecificityNotes": "Reported as 100% in small breast cohort (n=100); value set to null pending larger validation.",
-    "lod": 0.00052,
-    "lodNotes": "SAGA materials describe an LoD95 on the order of 5 ppm (~0.00052% VAF) in analytical studies of SV-based assays.",
+    "lod": null,
+    "lod95": "~5 ppm",
+    "lodNotes": "SAGA materials describe an LoD95 on the order of 5 ppm in analytical studies of SV-based assays. Detection threshold not separately disclosed.",
     "leadTimeVsImaging": 411.0,
     "leadTimeVsImagingCitations": "https://sagadiagnostics.com/saga-diagnostics-announces-u-s-commercial-launch/",
     "leadTimeVsImagingNotes": "Early-stage breast cancer cohort data highlight median lead time ≈13.7 months (~411 days) between MRD positivity and clinical/radiologic recurrence.",
@@ -762,9 +765,9 @@ const mrdTestData = [
     "sensitivityNotes": "RaDaR ST demonstrated 97% concordance and maintained equivalent sensitivity with RaDaR 1.0\n\nIn breast, 95.7% sens. And 91.0% spec. (https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/) | Sources: https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/)",
     "specificity": 91.0,
     "specificityNotes": "RaDaR ST demonstrated 97% concordance with RaDaR 1.0. In breast cancer validation, specificity was 91.0%. | Sources: https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/",
-    "lod": 0.001,
+    "lod": "~10 ppm",
     "lodCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/310/neogenomics-to-present-radar-st-bridging-study-at-islb-2025-demonstrating-reliable-mrd-detection-across-solid-tumors",
-    "lodNotes": "Analytical validation for the RaDaR assay supports reliable detection around 10 ppm (~0.001% VAF) with ≥70–90% sensitivity at that level in contrived samples.",
+    "lodNotes": "Analytical validation for the RaDaR assay supports reliable detection around 10 ppm with ≥70–90% sensitivity at that level in contrived samples.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "requiresMatchedNormalNotes": "Buffy coat matched normal used for germline filtering in studies.",
@@ -843,6 +846,7 @@ const mrdTestData = [
     "commercialPayersNotes": "Blue Cross Blue Shield of Louisiana became first commercial payer to cover Guardant Reveal in July 2023. Geisinger Health Plan added coverage later in 2023. Additional BCBS plans (including BCBS Massachusetts) appear to have medical policies; verify with specific plan.",
     "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025; historically billed under 81479/MolDX).",
     "cptCodesNotes": "Guardant Reveal PLA (2025).",
+    "availableRegions": ["US"],
     "clinicalAvailability": "Clinical LDT – shipping",
     "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf",
     "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000; Guardant Reveal ctDNA analysis)",
@@ -890,8 +894,8 @@ const mrdTestData = [
     "longitudinalSpecificity": 98.0,
     "longitudinalSpecificityCitations": "https://investor.natera.com/news/news-details/2025/SignateraTM-Genome-Clinical-Performance-Highlighted-at-ASCO-2025/default.aspx",
     "longitudinalSpecificityNotes": "Longitudinal specificity across cancer types ranges 96-99%; 98% represents typical performance.",
-    "lod": 0.01,
-    "lodNotes": "Natera reports analytical sensitivity to ~0.01% tumor fraction (100 ppm) with high specificity using integrated digital error suppression; practical LoD can be lower in some high-input settings.",
+    "lod": "~0.01% VAF",
+    "lodNotes": "Natera reports analytical sensitivity to ~0.01% tumor fraction with high specificity using integrated digital error suppression.",
     "leadTimeVsImaging": 300.0,
     "leadTimeVsImagingNotes": "Ovarian ~10 months; NSCLC >7 months earlier than imaging.",
     "requiresTumorTissue": "Yes",
@@ -916,6 +920,7 @@ const mrdTestData = [
     "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan.",
     "cptCodes": "0340U (ADLT)",
     "cptCodesNotes": "Signatera PLA (ADLT pricing).",
+    "availableRegions": ["US", "EU", "UK", "International"],
     "clinicalAvailability": "Clinical LDT – shipping",
     "independentValidation": "Yes",
     "independentValidationNotes": "Multiple peer-reviewed and prospective studies across tumors.",
@@ -978,9 +983,10 @@ const mrdTestData = [
     "specificity": 99.4,
     "specificityCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect",
     "specificityNotes": "Analytical specificity ~99.4% for ctDNA-negative reference specimens in internal validation; clinical specificity for recurrence is still being characterized (PROVENC3 and related studies).",
-    "lod": 0.005,
+    "lod": null,
+    "lod95": "0.005% ctDNA",
     "lodCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect; https://ismrc-symposium.eu/_Resources/Persistent/f0607069e3aaad66b7ef9a95afad4f655696b5d3/PS-01-012_Carmen%20Rubio-Alarcon_PLCRC-PROVENC3%20assessing%20the%20prognostic%20value%20of%20post-sur.pdf",
-    "lodNotes": "Analytical LoD around 0.005% ctDNA content (LoD95) in contrived reference samples, with analytical specificity ~99.4–99.6% across noncancer donor specimens (Plasma Detect assay specifications and PROVENC3 analytical validation poster).",
+    "lodNotes": "Analytical LoD95 around 0.005% ctDNA content in contrived reference samples. Detection threshold not separately disclosed.",
     "requiresTumorTissue": "Yes",
     "requiresTumorTissueNotes": "Requires FFPE tumor tissue at the landmark time point for WGS to define the tumor-informed MRD signature (Labcorp Plasma Detect workflow).",
     "requiresMatchedNormal": "Yes",
@@ -1072,9 +1078,9 @@ const mrdTestData = [
     "specificity": null,
     "specificityCitations": "Foundation Medicine Monitoring Portfolio technical specifications.",
     "specificityNotes": "Described as demonstrating high specificity in feasibility data; values are study- and tumor-specific.",
-    "lod": 0.001,
+    "lod": "10 ppm (0.001%)",
     "lodCitations": "https://www.foundationmedicine.com/monitoring-portfolio",
-    "lodNotes": "Reported to detect ctDNA tumor fraction down to 10^-5 (10 ppm, 0.001%) in both early- and late-stage cancer.",
+    "lodNotes": "Reported to detect ctDNA tumor fraction down to 10 ppm in both early- and late-stage cancer.",
     "requiresTumorTissue": "Yes",
     "requiresTumorTissueNotes": "Requires WGS of tumor tissue to build the patient-specific genomic signature; typically uses the same FFPE block as FoundationOne CDx.",
     "requiresMatchedNormal": "No",
@@ -1279,9 +1285,10 @@ const mrdTestData = [
     "specificity": 97.65,
     "specificityCitations": "Boehm N et al. Oncotarget 2025;16:329-336.",
     "specificityNotes": "Negative percent agreement 97.65% (95% CI 87.43-99.94%) in DLBCL validation. False positive rate 0.24%.",
-    "lod": 0.00007,
+    "lod": "0.7 ppm",
+    "lod95": null,
     "lodCitations": "Boehm N et al. Oncotarget 2025;16:329-336.",
-    "lodNotes": "LOD 0.7 ppm (7 parts per 10 million) validated in regulatory study for lymphoma panel per Oncotarget analytical validation paper. Solid tumor version (in development) achieves 0.3 ppm. Foresight CBO communication Dec 2025 confirmed these specifications.",
+    "lodNotes": "LOD 0.7 ppm validated in regulatory study for lymphoma panel. Solid tumor version (in development) achieves 0.3 ppm. LOD95 not separately reported.",
     "leadTimeVsImaging": 200,
     "leadTimeVsImagingCitations": "Foresight CLARITY product page; Roschewski M et al. ASH 2023.",
     "leadTimeVsImagingNotes": "Detects relapse approximately 200 days earlier than PET/CT imaging in DLBCL. PhasED-Seq correctly identified 90% of patients who later relapsed vs 45% identified by PET/CT.",
@@ -1361,6 +1368,7 @@ const ecdTestData = [
     "commercialPayers": [],
     "commercialPayersCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/Guardant-Healths-Shield-Blood-Test-Now-Covered-for-VA-Community-Care-Beneficiaries/default.aspx",
     "commercialPayersNotes": "No commercial payer coverage yet. Government programs: VA Community Care Network covers Shield with no copay for average-risk individuals 45+; TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
+    "availableRegions": ["US"],
     "clinicalAvailability": "Commercially available in US since August 2024",
     "tat": "~14 days",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes",
@@ -1408,6 +1416,7 @@ const ecdTestData = [
     "commercialPayers": ["Curative Insurance", "Fountain Health", "Alignment Health Plan"],
     "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
     "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational.",
+    "availableRegions": ["US", "UK"],
     "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
     "sampleType": "Whole blood in Streck cfDNA BCT tubes",
@@ -2169,11 +2178,11 @@ const comparisonParams = {
     { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)' },
     { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)' },
     { key: 'specificity', label: 'Reported Specificity (%)' },
-    { key: 'lod', label: 'LOD (ppm)' },
+    { key: 'lod', label: 'LOD (detection)' },
+    { key: 'lod95', label: 'LOD95 (95% conf)' },
     { key: 'variantsTracked', label: 'Variants Tracked' },
     { key: 'initialTat', label: 'Initial TAT (days)' },
     { key: 'followUpTat', label: 'Follow-up TAT (days)' },
-    { key: 'requiresTumorTissue', label: 'Requires Tumor' },
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
@@ -2629,7 +2638,7 @@ const TestShowcase = ({ onNavigate }) => {
     if (test.numPublications != null && test.numPublications > 0) params.push({ label: 'Publications', value: test.numPublicationsPlus ? `${test.numPublications}+` : test.numPublications, type: 'clinical' });
     
     // Analytical parameters (lab validation)
-    if (test.lod != null && typeof test.lod === 'number') params.push({ label: 'LOD', value: `${(test.lod * 10000).toFixed(1).replace(/\.0$/, '')} ppm`, type: 'analytical' });
+    if (test.lod != null) params.push({ label: 'LOD', value: test.lod, type: 'analytical' });
     if (test.variantsTracked != null && typeof test.variantsTracked === 'number') params.push({ label: 'Variants Tracked', value: test.variantsTracked, type: 'analytical' });
     
     // Cancer coverage
@@ -2795,12 +2804,12 @@ const StatOfTheDay = ({ onNavigate }) => {
   // Day-based stat rotation (0=Sunday through 6=Saturday)
   const dayStats = [
     { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
-    { key: 'lod', label: 'Limit of Detection', unit: '', description: 'Lowest detection limit (caution: not directly comparable)', higherIsBetter: false, format: (v) => { const ppm = v * 10000; return ppm >= 1 ? `${ppm.toFixed(1).replace(/\.0$/, '')} ppm` : `${ppm.toPrecision(2)} ppm`; }, filter: (v) => v != null && typeof v === 'number' && v > 0 },
     { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked (more ≠ better)', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
     { key: 'tat', label: 'Turnaround Time', unit: ' days', description: 'Fastest turnaround', higherIsBetter: false, format: (v) => v, filter: (v) => v != null && v > 0 },
     { key: 'sensitivity', label: 'Reported Sensitivity', unit: '%', description: 'Highest reported sensitivity (methodology varies)', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
     { key: 'specificity', label: 'Reported Specificity', unit: '%', description: 'Highest reported specificity (methodology varies)', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
     { key: 'numIndications', label: 'Cancer Indications', unit: '', description: 'Most cancer types covered', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0, getValue: (t) => t.cancerTypes?.length || 0 },
+    { key: 'numPublications', label: 'Publications', unit: '', description: 'Most peer-reviewed publications', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 },
   ];
   
   // Combine all tests
@@ -3690,9 +3699,9 @@ const HomePage = ({ onNavigate }) => {
   }, [messages, isLoading]);
   
   const colorClasses = {
-    orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-300 hover:shadow-md', btn: 'from-orange-500 to-orange-600' },
-    green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300 hover:shadow-md', btn: 'from-emerald-500 to-emerald-600' },
-    red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-400 hover:shadow-md', btn: 'from-sky-500 to-sky-600' },
+    orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-400 hover:shadow-lg hover:scale-[1.02] hover:bg-orange-100', btn: 'from-orange-500 to-orange-600' },
+    green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-400 hover:shadow-lg hover:scale-[1.02] hover:bg-emerald-100', btn: 'from-emerald-500 to-emerald-600' },
+    red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-500 hover:shadow-lg hover:scale-[1.02] hover:bg-sky-200', btn: 'from-sky-500 to-sky-600' },
   };
 
   // Calculate total data points dynamically
@@ -3840,7 +3849,7 @@ Say "not specified" for missing data.`;
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
               {/* MRD Navigator */}
               <div
-                className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.orange.card}`}
+                className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.orange.card}`}
                 onClick={() => onNavigate('MRD')}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -3852,10 +3861,12 @@ Say "not specified" for missing data.`;
                     </div>
                     <div>
                       <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
-                      <p className="text-sm lg:text-base font-bold text-slate-800">(MRD) Navigator</p>
+                      <p className="text-xs text-orange-600 font-medium">Click to explore {mrdTestData.length} tests →</p>
                     </div>
                   </div>
-                  <span className="text-lg font-medium text-[#2A63A4]">→</span>
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                    <span className="text-lg font-bold text-orange-500">→</span>
+                  </div>
                 </div>
                 <div className="overflow-hidden">
                   <div 
@@ -3874,7 +3885,7 @@ Say "not specified" for missing data.`;
               
               {/* ECD Navigator */}
               <div
-                className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.green.card}`}
+                className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
                 onClick={() => onNavigate('ECD')}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -3886,10 +3897,12 @@ Say "not specified" for missing data.`;
                     </div>
                     <div>
                       <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                      <p className="text-sm lg:text-base font-bold text-slate-800">(ECD) Navigator</p>
+                      <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
                     </div>
                   </div>
-                  <span className="text-lg font-medium text-[#2A63A4]">→</span>
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <span className="text-lg font-bold text-emerald-500">→</span>
+                  </div>
                 </div>
                 <div className="overflow-hidden">
                   <div 
@@ -3908,7 +3921,7 @@ Say "not specified" for missing data.`;
               
               {/* TRM Navigator */}
               <div
-                className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${colorClasses.red.card}`}
+                className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
                 onClick={() => onNavigate('TRM')}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -3920,10 +3933,12 @@ Say "not specified" for missing data.`;
                     </div>
                     <div>
                       <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
-                      <p className="text-sm lg:text-base font-bold text-slate-800">(TRM) Navigator</p>
+                      <p className="text-xs text-sky-600 font-medium">Click to explore {trmTestData.length} tests →</p>
                     </div>
                   </div>
-                  <span className="text-lg font-medium text-[#2A63A4]">→</span>
+                  <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
+                    <span className="text-lg font-bold text-sky-500">→</span>
+                  </div>
                 </div>
                 <div className="overflow-hidden">
                   <div 
@@ -4276,7 +4291,7 @@ const SubmissionsPage = () => {
     MRD: [
       { key: 'sensitivity', label: 'Sensitivity (%)' },
       { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'lod', label: 'Limit of Detection (ppm)' },
+      { key: 'lod', label: 'Limit of Detection (as reported)' },
       { key: 'variantsTracked', label: 'Variants Tracked' },
       { key: 'initialTat', label: 'Initial Turnaround Time (days)' },
       { key: 'followUpTat', label: 'Follow-up Turnaround Time (days)' },
@@ -5119,9 +5134,9 @@ const SourceDataPage = () => {
   };
 
   const downloadMrdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (ppm)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (as reported)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
     const rows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod != null ? (t.lod * 10000).toFixed(2) : null, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_MRD.csv', 'text/csv;charset=utf-8;');
   };
@@ -5135,9 +5150,9 @@ const SourceDataPage = () => {
   };
 
   const downloadTrmCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (ppm)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (as reported)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
     const rows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, typeof t.lod === 'number' ? (t.lod * 10000).toFixed(2) : t.lod, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_TRM.csv', 'text/csv;charset=utf-8;');
   };
@@ -5404,28 +5419,11 @@ Say "not specified" for missing data.`;
 // Info Icon Component (shows citations/notes on click)
 // ============================================
 // Helper function to format LOD as "ppm (% VAF)"
-const formatLOD = (lodPercent) => {
-  if (lodPercent == null || typeof lodPercent !== 'number') return null;
-  const ppm = lodPercent * 10000; // Convert % to ppm
-  // Format ppm nicely
-  let ppmStr;
-  if (ppm >= 100) {
-    ppmStr = Math.round(ppm).toString();
-  } else if (ppm >= 1) {
-    ppmStr = ppm.toFixed(1).replace(/\.0$/, '');
-  } else if (ppm >= 0.1) {
-    ppmStr = ppm.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
-  } else {
-    ppmStr = ppm.toPrecision(2);
-  }
-  // Format % nicely
-  let pctStr;
-  if (lodPercent >= 0.01) {
-    pctStr = lodPercent.toString();
-  } else {
-    pctStr = lodPercent.toExponential(1);
-  }
-  return `${ppmStr} ppm (${pctStr}%)`;
+const formatLOD = (lod) => {
+  // LOD values are now stored as strings in their original reported format
+  // No conversion needed - just return as-is
+  if (lod == null) return null;
+  return String(lod);
 };
 
 const InfoIcon = ({ citations, notes }) => {
@@ -5469,11 +5467,12 @@ const InfoIcon = ({ citations, notes }) => {
 
 // ============================================
 // Expert Insight Component - Shows expert context on metrics
-// Attribution: Dr. Matt Ryder, Expert Advisor
+// Attribution: Expert Advisors MR (Matt Ryder, PhD) and SW
 // ============================================
 const EXPERT_INSIGHTS = {
   sensitivity: {
     title: "Understanding Sensitivity Claims",
+    experts: "MR",
     content: `"Sensitivity" alone is ambiguous. Key distinctions:
 
 • Clinical sensitivity: % of patients who recurred that were correctly identified as MRD-positive. This is what clinicians assume, but often not what's reported.
@@ -5486,6 +5485,7 @@ Always ask: What type? At what timeframe? For which stages? Sample size?`
   },
   stageSpecific: {
     title: "Why Stage-Specific Sensitivity Matters",
+    experts: "MR",
     content: `Many companies combine stages II, III, and IV when reporting clinical sensitivity—this hides critical performance differences.
 
 • Stage II is hardest: Lower tumor burden = less ctDNA = harder to detect. But Stage II is where MRD-guided therapy decisions often matter most.
@@ -5502,6 +5502,7 @@ Stage-specific reporting would help clinicians and patients make more informed c
   },
   stageMissing: {
     title: "Stage-Specific Data Would Help",
+    experts: "MR",
     content: `This test reports combined-stage sensitivity but does not currently break out Stage II performance separately.
 
 For tests with substantial clinical validation data, stage-specific reporting would ideally be available to help inform treatment decisions.
@@ -5515,29 +5516,66 @@ For tests with substantial clinical validation data, stage-specific reporting wo
 We recognize that clinical trial design and sample sizes can make stage-specific reporting more challenging in some cases.`
   },
   specificity: {
-    title: "Why Specificity Matters More Than You Think",
+    title: "Understanding Specificity Claims",
+    experts: "MR, SW",
     content: `For MRD testing, specificity may be MORE important than sensitivity—especially for low-recurrence populations (e.g., stage II CRC where ~85% are already cured).
 
+ANALYTICAL vs CLINICAL SPECIFICITY:
+• Analytical specificity: How often does the test correctly call negative samples negative in the lab? Critical for repeat monitoring.
+• Clinical specificity: How often does MRD-negative mean no recurrence? Debatable value given study designs where MRD+ patients receive treatment.
+
+REPORTING ISSUES:
 • Per-timepoint vs per-patient: Reporting per-timepoint inflates the number. With serial testing, false positive probability compounds.
-
 • Overtreatment risk: Poor specificity means unnecessary chemo for patients already cured.
+• The asymmetry problem: Some report longitudinal sensitivity but per-timepoint specificity—statistically misleading.
 
-• The asymmetry problem: Some report longitudinal sensitivity but per-timepoint specificity—statistically misleading.`
+Analytical specificity is especially important with repeat testing—even small false positive rates compound over serial draws.`
   },
   lod: {
     title: "The LOD Comparison Problem",
-    content: `LOD claims cannot be meaningfully compared across different MRD test architectures:
+    experts: "MR, SW",
+    content: `LOD claims cannot be meaningfully compared across different MRD test architectures. We display values exactly as reported by each vendor—no conversions.
 
-• PPM favors high-input tests: "1 PPM" from 13M molecules sequenced = 13 ctDNA molecules detected. Another test might detect the same with fewer total molecules (more efficient).
+LOD vs LOD95 - CRITICAL DISTINCTION:
+• LOD (detection threshold): The level where you CAN detect signal, even if not reliably
+• LOD95: The level where you detect 95% of the time
 
-• Different units: PPM, VAF%, molecules/mL don't convert cleanly.
+WHY THIS MATTERS FOR MONITORING:
+• If LOD << LOD95: Test CAN detect lower levels, just not reliably. Serial testing helps catch what single tests miss!
+• If LOD ≈ LOD95: No chance of detecting below threshold, even with repeat tests
 
-• Pre-analytical losses: Most studies start with purified cfDNA, ignoring ~50% loss during extraction. Real-world LOD ≈ 2× published.
+OTHER COMPARISON ISSUES:
+• Different units: ppm, VAF%, molecules/mL don't convert cleanly
+• PPM favors high-input tests: "1 ppm" from 13M molecules ≠ same as 1 ppm from 1M molecules
+• Pre-analytical losses: Most studies start with purified cfDNA, ignoring ~50% extraction loss
 
-• LOD95 vs detection threshold: LOD95 = 95% detection rate. "Detection threshold" might only be 5% reproducible.`
+Bottom line: A lower number doesn't necessarily mean a better test. The gap between LOD and LOD95 matters for surveillance protocols.`
+  },
+  lodVsLod95: {
+    title: "LOD vs LOD95: Why Both Matter",
+    experts: "SW",
+    content: `This is where the NGS field can be misleading in how it displays numbers.
+
+THE KEY INSIGHT:
+• LOD (detection threshold): Can detect signal, but not reliably
+• LOD95: Detects 95% of the time at this level
+
+WHY THE GAP MATTERS:
+If a test has LOD of 0.5 ppm but LOD95 of 5 ppm, that's actually GOOD for monitoring:
+• You have a chance of detecting variants below 5 ppm with repeat testing
+• Serial samples give multiple opportunities to catch low-level disease
+
+If LOD ≈ LOD95 (very close together):
+• The specificity threshold forces the calling threshold up
+• Zero chance of detecting anything below LOD95, even with many samples
+• Repeat testing won't help catch lower levels
+
+BOTTOM LINE:
+Tests where LOD is much lower than LOD95 offer better surveillance potential—you get "free" sensitivity from serial testing. This information is rarely disclosed but critically important for monitoring protocols.`
   },
   bloodVolume: {
     title: "Blood Volume ≠ Test Quality",
+    experts: "MR",
     content: `Higher blood volume and more variants tracked does NOT mean better performance.
 
 • Noise matters more: 50 variants with excellent error suppression can outperform 1,800 variants with poor noise control.
@@ -5546,18 +5584,38 @@ We recognize that clinical trial design and sample sizes can make stage-specific
 
 Blood volume primarily matters for practical reasons (difficult draws), not as a quality proxy.`
   },
+  cfdnaInput: {
+    title: "cfDNA Input vs Blood Volume",
+    experts: "SW",
+    content: `Pharma researchers care about cfDNA INPUT (ng), not just blood volume (mL).
+
+WHY THIS MATTERS:
+• Different extraction methods yield different cfDNA amounts from the same blood volume
+• Input to assay (ng) determines analytical sensitivity ceiling
+• Genome equivalents analyzed is the true denominator
+
+WHAT TO LOOK FOR:
+• Blood volume (mL): How much blood is drawn
+• cfDNA yield: How much cfDNA is extracted
+• Input to assay (ng): How much cfDNA enters the test
+• Genome equivalents: ~3.3 pg per haploid genome
+
+A test using 20mL blood but only 10ng cfDNA input may perform worse than one using 10mL blood with 30ng input. The input amount is often not disclosed but significantly impacts sensitivity.`
+  },
   tumorInformed: {
     title: "Tumor-Informed vs Tumor-Naïve",
+    experts: "MR",
     content: `Both approaches have legitimate clinical applications:
 
 • Tumor-informed: Requires tumor tissue to identify patient-specific mutations, then tracks those in blood. Generally more sensitive but requires tissue.
 
-• Tumor-naïve: Works without tumor tissue via common cancer signals (mutations, methylation). More convenient but may miss patient-specific variants.
+• Tumor-naïve (tumor-agnostic): Works without tumor tissue via common cancer signals (mutations, methylation). More convenient but may miss patient-specific variants.
 
 Neither is universally "better"—depends on clinical context, tissue availability, cancer type, and intended use.`
   },
   clinicalTrials: {
     title: "Interpreting Clinical Trial Data",
+    experts: "MR",
     content: `Clinical sensitivity from interventional trials is often impossible to calculate accurately.
 
 • The treatment paradox: In trials like DYNAMIC, MRD+ patients received chemo—many cured by treatment. Can't know how many would have recurred untreated.
@@ -5571,6 +5629,17 @@ const ExpertInsight = ({ topic }) => {
   const insight = EXPERT_INSIGHTS[topic];
   
   if (!insight) return null;
+  
+  // Format expert names
+  const formatExperts = (experts) => {
+    if (!experts) return "Expert Advisors";
+    const names = experts.split(', ').map(e => {
+      if (e === 'MR') return 'MR (Matt Ryder, PhD)';
+      if (e === 'SW') return 'SW';
+      return e;
+    });
+    return `Expert${names.length > 1 ? 's' : ''}: ${names.join(', ')}`;
+  };
   
   return (
     <span 
@@ -5598,7 +5667,7 @@ const ExpertInsight = ({ topic }) => {
           </div>
           <div className="px-4 py-2 bg-slate-50 border-t border-slate-100">
             <p className="text-[10px] text-slate-500">
-              <span className="font-medium text-slate-600">Expert Advisor:</span> Matt Ryder, PhD — Liquid biopsy specialist
+              <span className="font-medium text-slate-600">{formatExperts(insight.experts)}</span>
             </p>
           </div>
         </div>
@@ -5695,7 +5764,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         <div className="grid grid-cols-4 gap-2 mb-3">
           {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Sensitivity</p></div>}
           {test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
-          {test.lod != null && typeof test.lod === 'number' && <div><p className="text-lg font-bold text-violet-600">{(test.lod * 10000) >= 1 ? (test.lod * 10000).toFixed(1).replace(/\.0$/, '') : (test.lod * 10000).toPrecision(2)} ppm</p><p className="text-xs text-gray-500">LOD</p></div>}
+          {test.lod != null && <div><p className="text-lg font-bold text-violet-600 text-sm">{test.lod}</p><p className="text-xs text-gray-500">LOD</p></div>}
           {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-slate-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
           {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
@@ -5733,7 +5802,8 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} expertTopic="specificity" />
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-              <DataRow label="Limit of Detection" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+              <DataRow label="LOD (Detection Threshold)" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
               
               {(test.landmarkSensitivity || test.landmarkSpecificity || test.longitudinalSensitivity || test.longitudinalSpecificity) && (
                 <>
@@ -5784,7 +5854,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Requirements</p>
-              <DataRow label="Requires Tumor Tissue" value={test.requiresTumorTissue} notes={test.requiresTumorTissueNotes} />
+              <DataRow label="Approach" value={test.approach} notes={test.requiresTumorTissueNotes} expertTopic="tumorInformed" />
               <DataRow label="Requires Matched Normal" value={test.requiresMatchedNormal} notes={test.requiresMatchedNormalNotes} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
@@ -5795,6 +5865,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               )}
               <DataRow label="CPT Codes" value={test.cptCodes} notes={test.cptCodesNotes} />
               <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
+              {test.availableRegions && test.availableRegions.length > 0 && (
+                <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
+              )}
               <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} />
               
               {(test.exampleTestReport || test.indicationsNotes) && (
@@ -6200,7 +6273,26 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       if (selectedReimbursement.length > 0) {
         const matchesReimbursement = selectedReimbursement.some(r => {
           if (r === 'Commercial') return test.commercialPayers && test.commercialPayers.length > 0;
-          return test.reimbursement === r || (r === 'Medicare' && test.reimbursement?.toLowerCase().includes('medicare'));
+          if (r === 'Medicare') {
+            const reimb = (test.reimbursement || '').toLowerCase();
+            // Check for positive Medicare coverage indicators
+            const hasPositive = reimb === 'medicare' || 
+              reimb.startsWith('medicare ') ||
+              reimb.includes('medicare covered') || 
+              reimb.includes('medicare lcd') ||
+              reimb.includes('broad medicare') ||
+              reimb.includes('medicare (moldx)') ||
+              reimb.includes('(moldx)') ||
+              reimb.includes('moldx');
+            // Exclude only if the PRIMARY status is no coverage (not just "additional coverage emerging")
+            const hasNegative = reimb.includes('not yet established') || 
+              reimb.includes('not routinely') || 
+              reimb.includes('no established') ||
+              reimb.includes('not applicable') ||
+              reimb.startsWith('coverage emerging');  // Only exclude if starts with "Coverage emerging" (meaning primary status is emerging)
+            return hasPositive && !hasNegative;
+          }
+          return test.reimbursement === r;
         });
         if (!matchesReimbursement) return false;
       }
