@@ -148,97 +148,61 @@ const getStoredPersona = () => {
 };
 
 // ============================================
-// NewsFeed Component - AI-powered personalized daily digest via Haiku
+// NewsFeed Component - AI-generated prose digest, vertical scroll
 // ============================================
 const NewsFeed = () => {
   const [isPaused, setIsPaused] = useState(false);
-  const [stories, setStories] = useState([]);
+  const [digest, setDigest] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [lastGenerated, setLastGenerated] = useState(null);
   const scrollRef = useRef(null);
   
-  // Get current persona from localStorage
   const persona = getStoredPersona() || 'Clinician';
 
-  const categoryColors = {
-    'M&A': 'bg-purple-100 text-purple-700',
-    'IPO': 'bg-blue-100 text-blue-700',
-    'Conference': 'bg-amber-100 text-amber-700',
-    'Market': 'bg-emerald-100 text-emerald-700',
-    'Research': 'bg-rose-100 text-rose-700',
-    'Regulatory': 'bg-cyan-100 text-cyan-700',
-    'Clinical': 'bg-orange-100 text-orange-700',
-    'Reimbursement': 'bg-teal-100 text-teal-700',
-    'Technology': 'bg-indigo-100 text-indigo-700'
-  };
+  // Fallback digest if API fails
+  const fallbackDigest = `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
 
-  // Fallback stories if API fails
-  const fallbackStories = [
-    {
-      headline: 'Natera Closes $450M Acquisition of Foresight Diagnostics',
-      summary: 'Natera completed its acquisition of Foresight Diagnostics for $275M upfront plus $175M in earnouts, bringing ultrasensitive PhasED-Seq technology with LOD95 of 0.3 ppm.',
-      source: 'Business Wire',
-      category: 'M&A',
-      url: 'https://www.businesswire.com/'
-    },
-    {
-      headline: 'Freenome Goes Public via $330M SPAC Merger',
-      summary: 'Freenome announced a SPAC merger bringing $330M to support SimpleScreen CRC test commercialization, with FDA decision expected mid-2026.',
-      source: 'MedCity News', 
-      category: 'IPO',
-      url: 'https://medcitynews.com/'
-    },
-    {
-      headline: 'Global Liquid Biopsy Market Projected to Reach $10B by 2030',
-      summary: 'Market valued at $4.93B in 2024, projecting 12.5% CAGR driven by rising cancer incidence and demand for non-invasive diagnostics.',
-      source: 'Research & Markets',
-      category: 'Market',
-      url: 'https://www.globenewswire.com/'
-    }
-  ];
+**1. Natera Closes $450M Acquisition of Foresight Diagnostics (Dec 5)**
+The biggest deal of the week: Natera completed its acquisition of Foresight Diagnostics for $275M upfront plus $175M in earnouts. Foresight brings its ultrasensitive PhasED-Seq technology (LOD95 of 0.3 ppm, detection below 0.1 ppm) and leadership in lymphoma MRD, where its CLARITY assay became the first ctDNA-MRD test included in NCCN Guidelines for DLBCL. Natera plans to integrate phased variant technology into Signatera, with clinical launch expected in 2026. The combined company will present 15 abstracts (7 oral) at ASH 2025 starting December 6.
+
+**2. Freenome Goes Public via $330M SPAC Merger (Dec 5)**
+Freenome announced a SPAC merger with Perceptive Capital Solutions that will bring $330M to support commercialization of its AI-powered liquid biopsy platform. The company's SimpleScreen colorectal cancer test is under FDA review with a decision expected mid-2026, where it will compete against Guardant's Shield. Freenome has already secured partnerships with Exact Sciences ($75M for U.S. CRC rights) and Roche (international multi-cancer detection rights). The company will trade on Nasdaq under "FRNM."
+
+**3. SABCS 2025 Spotlights Liquid Biopsy in Breast Cancer (Dec 9-12)**
+The San Antonio Breast Cancer Symposium will feature multiple sessions on liquid biopsy advances, including a translational workshop on cell-free RNA sequencing and novel ctDNA analyses, and a "State of the Art" session on MRD-guided adaptive therapy. The SERENA-6 trial results—showing benefit from modifying therapy based on early ESR1 mutation detection via serial ctDNA monitoring—have sparked intense debate about when and how to use liquid biopsy for treatment escalation/de-escalation decisions.
+
+**4. Global Liquid Biopsy Market Projected to Reach $10B by 2030 (Dec 2)**
+Multiple market research reports valued the global liquid biopsy market at $4.93B in 2024, projecting 12.5% CAGR to reach nearly $10B by 2030. Key growth drivers include rising cancer incidence (20M new cases globally in 2022), demand for non-invasive diagnostics, and multi-cancer early detection development. Challenges remain around test standardization—a 2024 IASLC survey found 26% of institutions were unaware of biomarker testing guidelines.
+
+**5. AI + Exosomes: Next Frontier for Non-Invasive Cancer Detection (Dec 2)**
+Researchers highlighted the emerging convergence of AI and exosome-based liquid biopsy for early cancer detection. Unlike ctDNA, exosomes carry molecular signatures including proteins, nucleic acids, and lipids that can be collected from blood or urine. AI analysis of these multi-omic datasets can identify cancer biomarkers invisible to human interpretation. The EV-based liquid biopsy market is projected to grow from $91M to $159M by 2030.
+
+*Key conferences to watch: ASH 2025 (Dec 6-10, San Diego) and SABCS 2025 (Dec 9-12, San Antonio) will feature significant new liquid biopsy data.*`;
 
   const getPersonaPrompt = (p) => {
     switch(p) {
       case 'Patient':
-        return `You are writing for patients and caregivers. Focus on:
-- What new tests are becoming available and what they detect
-- Insurance coverage and cost news
-- Plain language explanations (avoid jargon)
-- Practical implications for patients
-- Hopeful but realistic tone`;
+        return `Write for patients and caregivers. Use clear, accessible language. Avoid jargon or briefly explain technical terms. Focus on practical implications: what tests are becoming available, insurance/cost news, and what this means for patients. Be warm and informative.`;
       case 'Clinician':
-        return `You are writing for oncologists and healthcare providers. Focus on:
-- Clinical performance data (sensitivity, specificity, LOD)
-- FDA approvals and regulatory updates
-- Reimbursement and coverage decisions
-- Guideline changes (NCCN, ASCO)
-- Clinical trial results
-- Direct, professional tone with medical terminology`;
+        return `Write for oncologists and healthcare providers. Use medical terminology freely. Focus on clinical performance metrics, FDA/regulatory updates, reimbursement decisions, guideline changes (NCCN, ASCO), and clinical trial results. Be direct and professional.`;
       case 'Academic/Industry':
-        return `You are writing for researchers and industry professionals. Focus on:
-- M&A activity and market dynamics
-- Technology advances and platform comparisons
-- Publication highlights and conference data
-- Investment and partnership news
-- Competitive landscape analysis
-- Technical and business-focused tone`;
+        return `Write for researchers and industry professionals. Focus on M&A activity, technology platform comparisons, market dynamics, investment news, and competitive landscape. Include technical details about assay performance and methodology advances.`;
       default:
-        return 'Write balanced summaries covering clinical, business, and research angles.';
+        return 'Write balanced summaries covering clinical, business, and research perspectives.';
     }
   };
 
-  const generateNewsSummary = async () => {
-    const cacheKey = `openonco_news_${persona}_v1`;
+  const generateDigest = async () => {
+    const cacheKey = `openonco_digest_${persona}_v1`;
     const today = new Date().toDateString();
     
     // Check cache first
     try {
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
-        const { stories: cachedStories, date, generatedAt } = JSON.parse(cached);
-        if (date === today && cachedStories?.length > 0) {
-          setStories(cachedStories);
+        const { text, date, generatedAt } = JSON.parse(cached);
+        if (date === today && text) {
+          setDigest(text);
           setLastGenerated(new Date(generatedAt));
           setIsLoading(false);
           return;
@@ -247,7 +211,6 @@ const NewsFeed = () => {
     } catch (e) {}
 
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -259,27 +222,24 @@ const NewsFeed = () => {
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           messages: [{
             role: 'user',
-            content: `Search for the latest liquid biopsy, ctDNA, MRD (minimal residual disease), and early cancer detection news from the past week. Find 4-5 significant stories.
+            content: `Search for the latest liquid biopsy, ctDNA, MRD (minimal residual disease), and early cancer detection news from the past week.
 
 ${getPersonaPrompt(persona)}
 
-After searching, respond with ONLY a JSON array (no markdown, no explanation) in this exact format:
-[
-  {
-    "headline": "Short headline",
-    "summary": "2-3 sentence summary tailored to the audience",
-    "source": "Publication name",
-    "category": "One of: M&A, IPO, Conference, Market, Research, Regulatory, Clinical, Reimbursement, Technology",
-    "url": "source URL"
-  }
-]`
+Write a flowing prose digest titled "Top 5 Liquid Biopsy News" with the current week date. For each story:
+- Bold headline with date in parentheses
+- 3-4 sentence summary paragraph
+- No links or URLs needed
+
+End with a brief note about upcoming conferences or key things to watch.
+
+Write in a professional but engaging editorial style, like a weekly newsletter digest. Do not use bullet points or numbered lists within the summaries - write in flowing paragraphs.`
           }]
         })
       });
 
       const data = await response.json();
       
-      // Extract text from response
       let text = '';
       for (const block of data.content || []) {
         if (block.type === 'text') {
@@ -287,77 +247,89 @@ After searching, respond with ONLY a JSON array (no markdown, no explanation) in
         }
       }
 
-      // Parse JSON from response
-      const jsonMatch = text.match(/\[[\s\S]*\]/);
-      if (jsonMatch) {
-        const parsedStories = JSON.parse(jsonMatch[0]);
-        if (Array.isArray(parsedStories) && parsedStories.length > 0) {
-          const now = new Date();
-          setStories(parsedStories);
-          setLastGenerated(now);
-          
-          // Cache for today
-          try {
-            localStorage.setItem(cacheKey, JSON.stringify({
-              stories: parsedStories,
-              date: today,
-              generatedAt: now.toISOString()
-            }));
-          } catch (e) {}
-          
-          setIsLoading(false);
-          return;
-        }
+      if (text && text.length > 200) {
+        const now = new Date();
+        setDigest(text);
+        setLastGenerated(now);
+        
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            text,
+            date: today,
+            generatedAt: now.toISOString()
+          }));
+        } catch (e) {}
+        
+        setIsLoading(false);
+        return;
       }
       
-      throw new Error('Failed to parse news');
+      throw new Error('Empty response');
     } catch (e) {
-      console.error('News generation failed:', e);
-      setError('Using cached stories');
-      setStories(fallbackStories);
+      console.error('Digest generation failed:', e);
+      setDigest(fallbackDigest);
     }
     
     setIsLoading(false);
   };
 
-  // Generate on mount and when persona changes
   useEffect(() => {
-    generateNewsSummary();
+    generateDigest();
   }, [persona]);
 
-  // Smooth vertical scroll animation
+  // Smooth vertical scroll
   useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer || isPaused || stories.length === 0) return;
+    const el = scrollRef.current;
+    if (!el || isPaused || !digest) return;
 
     let animationId;
-    let scrollPos = scrollContainer.scrollTop;
-    const scrollSpeed = 0.3;
+    let scrollPos = el.scrollTop;
+    const speed = 0.4;
 
     const animate = () => {
-      scrollPos += scrollSpeed;
-      const maxScroll = scrollContainer.scrollHeight / 2;
+      scrollPos += speed;
+      const maxScroll = el.scrollHeight - el.clientHeight;
       
       if (scrollPos >= maxScroll) {
         scrollPos = 0;
       }
       
-      scrollContainer.scrollTop = scrollPos;
+      el.scrollTop = scrollPos;
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
-    
     return () => cancelAnimationFrame(animationId);
-  }, [isPaused, stories]);
-
-  // Duplicate for seamless loop
-  const loopedStories = [...stories, ...stories];
+  }, [isPaused, digest]);
 
   const personaLabel = {
-    'Patient': '👤 Patient View',
-    'Clinician': '🩺 Clinician View', 
-    'Academic/Industry': '🔬 Industry View'
+    'Patient': '👤 Patient Edition',
+    'Clinician': '🩺 Clinician Edition', 
+    'Academic/Industry': '🔬 Industry Edition'
+  };
+
+  // Simple markdown-like rendering for bold text
+  const renderDigest = (text) => {
+    return text.split('\n').map((line, i) => {
+      // Bold: **text**
+      const parts = line.split(/(\*\*[^*]+\*\*)/g);
+      const rendered = parts.map((part, j) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={j} className="font-semibold text-slate-800">{part.slice(2, -2)}</strong>;
+        }
+        // Italic: *text*
+        if (part.startsWith('*') && part.endsWith('*') && !part.startsWith('**')) {
+          return <em key={j} className="italic text-slate-500">{part.slice(1, -1)}</em>;
+        }
+        return part;
+      });
+      
+      return line.trim() ? (
+        <p key={i} className="mb-4 text-sm text-slate-600 leading-relaxed">
+          {rendered}
+        </p>
+      ) : <div key={i} className="h-2" />;
+    });
   };
 
   return (
@@ -366,8 +338,7 @@ After searching, respond with ONLY a JSON array (no markdown, no explanation) in
         <div>
           <h3 className="font-semibold text-slate-800">Liquid Biopsy News</h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            {personaLabel[persona] || 'Daily Digest'}
-            {lastGenerated && ` • Updated ${lastGenerated.toLocaleDateString()}`}
+            {personaLabel[persona] || 'Weekly Digest'}
           </p>
         </div>
         <span className={`text-xs px-2 py-1 rounded-full ${
@@ -383,50 +354,32 @@ After searching, respond with ONLY a JSON array (no markdown, no explanation) in
         <div className="h-72 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin w-8 h-8 border-2 border-slate-300 border-t-[#2A63A4] rounded-full mx-auto mb-3"></div>
-            <p className="text-sm text-slate-500">Generating personalized news digest...</p>
+            <p className="text-sm text-slate-500">Generating your personalized digest...</p>
           </div>
         </div>
       ) : (
         <div 
           ref={scrollRef}
-          className="h-72 overflow-hidden"
+          className="h-72 overflow-hidden pr-2"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          style={{ scrollBehavior: 'auto' }}
         >
-          <div className="space-y-4">
-            {loopedStories.map((story, idx) => (
-              <a
-                key={`${story.headline}-${idx}`}
-                href={story.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block p-4 rounded-lg border border-slate-100 hover:border-slate-300 hover:bg-slate-50 transition-all group"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${categoryColors[story.category] || 'bg-slate-100 text-slate-600'}`}>
-                    {story.category}
-                  </span>
-                  <span className="text-xs text-slate-400">{story.source}</span>
-                </div>
-                <h4 className="font-semibold text-slate-800 group-hover:text-[#2A63A4] transition-colors mb-2 leading-snug">
-                  {story.headline}
-                </h4>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {story.summary}
-                </p>
-              </a>
-            ))}
+          <div className="pb-72">
+            {renderDigest(digest)}
+            {/* Repeat for seamless loop */}
+            <div className="pt-8 border-t border-slate-100 mt-8">
+              {renderDigest(digest)}
+            </div>
           </div>
         </div>
       )}
 
       <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
         <p className="text-xs text-slate-400">
-          {isLoading ? 'Searching latest news...' : 'Hover to pause • Click to read'}
+          Hover to pause
         </p>
         <p className="text-xs text-slate-400">
-          {stories.length} stories • AI-curated daily
+          AI-curated daily • {lastGenerated?.toLocaleDateString() || 'Today'}
         </p>
       </div>
     </div>
