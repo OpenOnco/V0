@@ -367,7 +367,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     if (!el || isPaused || !digest) return;
 
     let animationId;
-    const speed = 0.175;
+    const speed = 0.3;
 
     const animate = () => {
       // Content is duplicated, so reset when we reach halfway through total height
@@ -475,8 +475,8 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
           `}</style>
           <div 
             ref={scrollRef}
-            className="news-scroll-container flex-1 overflow-y-scroll min-h-0"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="news-scroll-container overflow-y-scroll"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', maxHeight: '280px' }}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
