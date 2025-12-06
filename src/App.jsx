@@ -2078,7 +2078,7 @@ const compressTestForChat = (test) => {
   const keyMap = {
     id: 'id', name: 'nm', vendor: 'vn', approach: 'ap', method: 'mt', sampleCategory: 'samp',
     cancerTypes: 'ca', indicationsNotes: 'ind', sensitivity: 'sens', specificity: 'spec',
-    ppv: 'ppv', npv: 'npv', lod: 'lod', lodNotes: 'lodN', requiresTumorTissue: 'tumorReq',
+    ppv: 'ppv', npv: 'npv', lod: 'lod', lod95: 'lod95', lodNotes: 'lodN', requiresTumorTissue: 'tumorReq',
     requiresMatchedNormal: 'normReq', variantsTracked: 'vars', initialTat: 'tat1', followUpTat: 'tat2',
     leadTimeVsImaging: 'lead', bloodVolume: 'bvol', fdaStatus: 'fda', reimbursement: 'reimb',
     reimbursementNote: 'reimbN', commercialPayers: 'privIns', clinicalAvailability: 'avail',
@@ -2118,7 +2118,7 @@ const chatTestData = {
 };
 
 // Key legend for chatbot prompt
-const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=limit of detection, tumorReq=requires tumor, vars=variants tracked, tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, avail=availability, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
+const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, avail=availability, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
 
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
@@ -2228,7 +2228,8 @@ const comparisonParams = {
     { key: 'targetPopulation', label: 'Population' },
     { key: 'responseDefinition', label: 'Response Definition' },
     { key: 'leadTimeVsImaging', label: 'Lead Time (days)' },
-    { key: 'lod', label: 'LOD' },
+    { key: 'lod', label: 'LOD (detection)' },
+    { key: 'lod95', label: 'LOD95 (95% conf)' },
     { key: 'sensitivity', label: 'Reported Sensitivity (%)' },
     { key: 'specificity', label: 'Reported Specificity (%)' },
     { key: 'totalParticipants', label: 'Trial Participants' },
@@ -4291,7 +4292,8 @@ const SubmissionsPage = () => {
     MRD: [
       { key: 'sensitivity', label: 'Sensitivity (%)' },
       { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'lod', label: 'Limit of Detection (as reported)' },
+      { key: 'lod', label: 'LOD (Detection Threshold)' },
+      { key: 'lod95', label: 'LOD95 (95% Confidence)' },
       { key: 'variantsTracked', label: 'Variants Tracked' },
       { key: 'initialTat', label: 'Initial Turnaround Time (days)' },
       { key: 'followUpTat', label: 'Follow-up Turnaround Time (days)' },
@@ -4325,7 +4327,8 @@ const SubmissionsPage = () => {
     TRM: [
       { key: 'sensitivity', label: 'Sensitivity (%)' },
       { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'lod', label: 'Limit of Detection' },
+      { key: 'lod', label: 'LOD (Detection Threshold)' },
+      { key: 'lod95', label: 'LOD95 (95% Confidence)' },
       { key: 'leadTimeVsImaging', label: 'Lead Time vs Imaging (days)' },
       { key: 'fdaStatus', label: 'FDA Status' },
       { key: 'reimbursement', label: 'Reimbursement Status' },
@@ -5134,9 +5137,9 @@ const SourceDataPage = () => {
   };
 
   const downloadMrdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (as reported)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
     const rows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.lod95, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_MRD.csv', 'text/csv;charset=utf-8;');
   };
@@ -5150,9 +5153,9 @@ const SourceDataPage = () => {
   };
 
   const downloadTrmCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (as reported)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
     const rows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.lod95, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_TRM.csv', 'text/csv;charset=utf-8;');
   };
@@ -5764,7 +5767,35 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         <div className="grid grid-cols-4 gap-2 mb-3">
           {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Sensitivity</p></div>}
           {test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
-          {test.lod != null && <div><p className="text-lg font-bold text-violet-600 text-sm">{test.lod}</p><p className="text-xs text-gray-500">LOD</p></div>}
+          {/* LOD display - show both LOD and LOD95 when available */}
+          {(test.lod != null || test.lod95 != null) && (
+            <div>
+              {test.lod != null && test.lod95 != null ? (
+                // Both values available - show stacked with monitoring indicator
+                <>
+                  <p className="text-sm font-bold text-violet-600">{test.lod}</p>
+                  <p className="text-xs text-violet-400">{test.lod95}</p>
+                  <p className="text-xs text-gray-500">LOD / LOD95</p>
+                  <span className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 font-medium mt-0.5" title="Gap between LOD and LOD95 means serial testing can catch lower-level disease">
+                    <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Serial+
+                  </span>
+                </>
+              ) : test.lod != null ? (
+                // Only LOD
+                <>
+                  <p className="text-lg font-bold text-violet-600 text-sm">{test.lod}</p>
+                  <p className="text-xs text-gray-500">LOD</p>
+                </>
+              ) : (
+                // Only LOD95
+                <>
+                  <p className="text-lg font-bold text-violet-600 text-sm">{test.lod95}</p>
+                  <p className="text-xs text-gray-500">LOD95</p>
+                </>
+              )}
+            </div>
+          )}
           {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-slate-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
           {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
@@ -5941,7 +5972,8 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
               <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" expertTopic="sensitivity" />
               <DataRow label="Reported Specificity" value={test.specificity} unit="%" expertTopic="specificity" />
-              <DataRow label="LOD" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} expertTopic="lod" />
+              <DataRow label="LOD (Detection Threshold)" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
