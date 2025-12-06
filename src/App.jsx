@@ -2690,6 +2690,16 @@ Say "not specified" for missing data.`;
 const TestShowcase = ({ onNavigate }) => {
   const [paramIndices, setParamIndices] = useState({});
   const [selectedTest, setSelectedTest] = useState(null);
+  
+  // Track persona
+  const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
+  useEffect(() => {
+    const handlePersonaChange = (e) => setPersona(e.detail);
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+  
+  const isPatient = persona === 'Patient';
 
   // Combine all tests with their category and sort by vendor alphabetically
   const allTests = [
@@ -2698,7 +2708,76 @@ const TestShowcase = ({ onNavigate }) => {
     ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'red' }))
   ].sort((a, b) => a.vendor.localeCompare(b.vendor));
 
-  // Get numerical parameters for a test
+  // Get patient-friendly parameters
+  const getPatientParams = (test) => {
+    const params = [];
+    
+    // Reimbursement status - most important for patients
+    if (test.reimbursement) {
+      const reimb = test.reimbursement.toLowerCase();
+      if (reimb.includes('medicare') && !reimb.includes('not yet') && !reimb.includes('no established')) {
+        if (test.commercialPayers && test.commercialPayers.length > 0) {
+          params.push({ label: 'Insurance', value: '✓ Medicare + Private', type: 'good' });
+        } else {
+          params.push({ label: 'Insurance', value: '✓ Medicare', type: 'good' });
+        }
+      } else if (test.commercialPayers && test.commercialPayers.length > 0) {
+        params.push({ label: 'Insurance', value: '✓ Some Private', type: 'neutral' });
+      } else if (reimb.includes('emerging') || reimb.includes('varies')) {
+        params.push({ label: 'Insurance', value: 'Check coverage', type: 'neutral' });
+      } else {
+        params.push({ label: 'Insurance', value: 'Ask provider', type: 'neutral' });
+      }
+    }
+    
+    // Price if available (mainly ECD tests)
+    if (test.listPrice != null) {
+      params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'neutral' });
+    }
+    
+    // Blood-only vs requires tissue
+    if (test.approach === 'Tumor-naïve' || test.requiresTumorTissue === 'No') {
+      params.push({ label: 'Sample', value: 'Blood only', type: 'good' });
+    } else if (test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes') {
+      params.push({ label: 'Sample', value: 'Blood + tissue', type: 'neutral' });
+    }
+    
+    // Wait time
+    const tat = test.tat || test.initialTat || test.followUpTat;
+    if (tat != null) {
+      const days = typeof tat === 'number' ? tat : parseInt(tat);
+      if (!isNaN(days)) {
+        params.push({ label: 'Results in', value: `~${days} days`, type: 'neutral' });
+      }
+    }
+    
+    // Cancer types covered
+    if (test.cancerTypes && test.cancerTypes.length > 0) {
+      const count = test.cancerTypes.length;
+      if (test.testScope?.includes('Multi-cancer') || count > 5) {
+        params.push({ label: 'Screens for', value: 'Multiple cancers', type: 'good' });
+      } else if (count === 1) {
+        const cancer = test.cancerTypes[0].split(/[;,]/)[0].trim();
+        params.push({ label: 'For', value: cancer.length > 15 ? cancer.slice(0,15) + '...' : cancer, type: 'neutral' });
+      } else {
+        params.push({ label: 'Covers', value: `${count} cancer types`, type: 'neutral' });
+      }
+    }
+    
+    // FDA status in simple terms
+    if (test.fdaStatus) {
+      const fda = test.fdaStatus.toLowerCase();
+      if (fda.includes('fda approved') || fda.includes('fda-approved')) {
+        params.push({ label: 'FDA', value: '✓ Approved', type: 'good' });
+      } else if (fda.includes('breakthrough')) {
+        params.push({ label: 'FDA', value: 'Fast-tracked', type: 'neutral' });
+      }
+    }
+    
+    return params.length > 0 ? params : [{ label: 'Category', value: test.category, type: 'neutral' }];
+  };
+
+  // Get numerical parameters for a test (clinician/academic view)
   const getParams = (test) => {
     const params = [];
     
@@ -2752,7 +2831,9 @@ const TestShowcase = ({ onNavigate }) => {
   const paramTypeColors = {
     clinical: 'text-emerald-600',    // Green - validated in patient studies
     analytical: 'text-violet-600',   // Purple - lab/bench validation
-    operational: 'text-slate-600'    // Gray - logistics/specs
+    operational: 'text-slate-600',   // Gray - logistics/specs
+    good: 'text-emerald-600',        // Patient: positive indicator
+    neutral: 'text-slate-600'        // Patient: neutral indicator
   };
 
   // Rotate parameters every 1 second
@@ -2761,7 +2842,7 @@ const TestShowcase = ({ onNavigate }) => {
       setParamIndices(prev => {
         const next = { ...prev };
         allTests.forEach(test => {
-          const params = getParams(test);
+          const params = isPatient ? getPatientParams(test) : getParams(test);
           const currentIdx = prev[test.id] || 0;
           next[test.id] = (currentIdx + 1) % params.length;
         });
@@ -2770,7 +2851,12 @@ const TestShowcase = ({ onNavigate }) => {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isPatient]);
+  
+  // Reset indices when persona changes
+  useEffect(() => {
+    setParamIndices({});
+  }, [persona]);
 
   const colorClasses = {
     orange: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
@@ -2780,13 +2866,19 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-      <h3 className="text-lg font-bold text-slate-800 text-center mb-3">
+      <h3 className="text-lg font-bold text-slate-800 text-center mb-1">
         Tests We Track
       </h3>
+      {isPatient && (
+        <p className="text-xs text-slate-500 text-center mb-3">
+          Showing coverage, pricing & wait times
+        </p>
+      )}
+      {!isPatient && <div className="mb-3" />}
       
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
         {allTests.map(test => {
-          const params = getParams(test);
+          const params = isPatient ? getPatientParams(test) : getParams(test);
           const currentIdx = paramIndices[test.id] || 0;
           const currentParam = params[currentIdx];
           const colors = colorClasses[test.color];
@@ -2822,15 +2914,15 @@ const TestShowcase = ({ onNavigate }) => {
       <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
         <span className="flex items-center gap-1">
           <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-          <span className="text-slate-500">MRD</span>
+          <span className="text-slate-500">{isPatient ? 'After Treatment' : 'MRD'}</span>
         </span>
         <span className="flex items-center gap-1">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          <span className="text-slate-500">ECD</span>
+          <span className="text-slate-500">{isPatient ? 'Screening' : 'ECD'}</span>
         </span>
         <span className="flex items-center gap-1">
           <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-          <span className="text-slate-500">TRM</span>
+          <span className="text-slate-500">{isPatient ? 'During Treatment' : 'TRM'}</span>
         </span>
       </div>
 
@@ -2856,12 +2948,19 @@ const TestShowcase = ({ onNavigate }) => {
               </button>
             </div>
             <div className="p-4">
-              <TestCard 
-                test={selectedTest} 
-                category={selectedTest.category} 
-                isSelected={false} 
-                onSelect={() => {}} 
-              />
+              {isPatient ? (
+                <PatientTestCard 
+                  test={selectedTest} 
+                  category={selectedTest.category}
+                />
+              ) : (
+                <TestCard 
+                  test={selectedTest} 
+                  category={selectedTest.category} 
+                  isSelected={false} 
+                  onSelect={() => {}} 
+                />
+              )}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-200 px-4 py-3 flex justify-end gap-2 rounded-b-2xl">
               <button
@@ -2875,7 +2974,7 @@ const TestShowcase = ({ onNavigate }) => {
                 className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
                 style={{ backgroundColor: '#2A63A4' }}
               >
-                View in {selectedTest.category} Navigator
+                {isPatient ? 'See All Options' : `View in ${selectedTest.category} Navigator`}
               </button>
             </div>
           </div>
