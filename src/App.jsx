@@ -2514,9 +2514,8 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   }, [messages, isLoading]);
 
   // Track persona from localStorage
-  const [persona, setPersona] = useState(null);
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
   useEffect(() => {
-    setPersona(getStoredPersona());
     // Listen for persona changes and reset chat
     const handlePersonaChange = (e) => {
       setPersona(e.detail);
@@ -3086,16 +3085,8 @@ const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [persona, setPersona] = useState(null);
+  const [persona, setPersona] = useState(() => getStoredPersona() || null);
   const chatContainerRef = useRef(null);
-
-  // Load persona from localStorage on mount
-  useEffect(() => {
-    const savedPersona = localStorage.getItem('openonco-persona');
-    if (savedPersona) {
-      setPersona(savedPersona);
-    }
-  }, []);
 
   // Save persona to localStorage when changed and notify other components
   const handlePersonaSelect = (selectedPersona) => {
@@ -4643,15 +4634,13 @@ const CategoryChat = ({ category }) => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [persona, setPersona] = useState(null);
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
   const messagesEndRef = useRef(null);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
   
-  // Load persona from localStorage and listen for changes
+  // Listen for persona changes
   useEffect(() => {
-    setPersona(getStoredPersona());
-    // Listen for persona changes and reset chat
     const handlePersonaChange = (e) => {
       setPersona(e.detail);
       setMessages([{ role: 'assistant', content: `Hi! I can help you understand ${meta.title} tests. Ask me about specific tests, comparisons, or clinical applications.` }]);
@@ -5807,9 +5796,8 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const scrollLockRef = useRef(null);
   
   // Track persona for conditional rendering
-  const [persona, setPersona] = useState(null);
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
   useEffect(() => {
-    setPersona(getStoredPersona());
     const handlePersonaChange = (e) => setPersona(e.detail);
     window.addEventListener('personaChanged', handlePersonaChange);
     return () => window.removeEventListener('personaChanged', handlePersonaChange);
@@ -6346,6 +6334,14 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  
+  // Listen for persona changes to force re-render
+  useEffect(() => {
+    const handlePersonaChange = (e) => setPersona(e.detail);
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
 
   const handleNavigate = (page, testId = null) => {
     setCurrentPage(page);
@@ -6355,7 +6351,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': return <CategoryPage category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
+      case 'MRD': case 'ECD': case 'TRM': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage />;
@@ -6382,7 +6378,7 @@ export default function App() {
           </div>
         </div>
       )}
-      <main className="flex-1">{renderPage()}</main>
+      <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
       <Footer />
       <Analytics />
     </div>
