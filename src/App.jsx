@@ -548,8 +548,9 @@ const mrdTestData = [
     "landmarkSensitivityCitations": "https://haystackmrd.com/faq/",
     "longitudinalSensitivityCitations": "https://haystackmrd.com/",
     "lod": "6 ppm",
+    "lod95": "6 ppm (0.0006% tumor fraction)",
     "lodCitations": "https://haystackmrd.com/",
-    "lodNotes": "LoD ~6 ppm (0.0006% tumor fraction) at ~95% detection in analytical studies.",
+    "lodNotes": "LoD95 (95% limit of detection) is ~6 ppm (0.0006% tumor fraction). This represents the ctDNA level at which 95% of replicates are detected as positive in analytical validation studies.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "variantsTracked": "50",
@@ -563,8 +564,8 @@ const mrdTestData = [
     "tat": 30.0,
     "tatNotes": "Overall paradigm: ~4 weeks for initial panel build, ~1 week for subsequent MRD timepoints.",
     "fdaStatus": "CLIA LDT (Quest Diagnostics); FDA Breakthrough Device designation for stage II colorectal cancer (Aug 2025).",
-    "reimbursement": "Coverage emerging; case-by-case payer review; national Medicare coverage not yet established.",
-    "reimbursementNote": "Quest/Haystack describe active engagement with CMS and commercial payers plus patient access programs; no finalized broad LCD as of late 2025.",
+    "reimbursement": "Coverage emerging (~70% of tests reimbursed); Medicare pilot for CRC plus growing commercial coverage.",
+    "reimbursementNote": "As of mid-2025, Quest reports ~70% of Haystack MRD tests are reimbursed across payers. Medicare pilot coverage in place for CRC, with active engagement with CMS for broader LCD. Commercial payer coverage growing; patient access programs available.",
     "cptCodes": "0561U",
     "clinicalAvailability": "Clinical LDT – shipping",
     "clinicalTrials": "NCT07125729 (150; resectable stage II–IV CRC; Haystack vs Signatera head-to-head); NCT06979661 (25; MRD-PORT trial; post-op stage II–III NSCLC; Haystack MRD-guided RT); NCT05798663/AFT-57 (158; unresectable stage III NSCLC; atezolizumab ± tiragolumab CRT; Haystack MRD used for correlative MRD analyses)",
@@ -1726,10 +1727,15 @@ const ecdTestData = [
     "indicationGroup": "MCED",
     "tumorOriginAccuracy": null,
     "tumorOriginAccuracyNotes": "Cancer signal of origin prediction included; specific accuracy not yet publicly disclosed; performance data presented at AACR/ASCO 2025",
+    "sensitivity": 60.0,
+    "sensitivityNotes": "Overall episode-based sensitivity ~60% across all 10 cancer types; ~74% sensitivity for subset of deadliest/aggressive cancers. Data from interim MCED performance presented at AACR/ASCO 2025.",
+    "sensitivityType": "episode-based interim",
+    "specificity": 98.5,
+    "specificityNotes": "~98.5% specificity from interim Shield MCED data. High specificity critical for screening use to minimize false positives.",
     "ppvDefinition": "PPV for any of 10 target cancers among positive Shield MCD results (not yet reported)",
     "npvDefinition": "NPV for remaining cancer-free among negative Shield MCD results (not yet reported)",
-    "performanceCitations": "AACR 2025 oral presentation; ASCO 2025; NCI Vanguard Study (NCT pending; n=24000)",
-    "performanceNotes": "High specificity and clinically meaningful sensitivity across 10 tumor types with cancer signal of origin accuracy; specific performance metrics not yet publicly disclosed; data supported NCI selection for Vanguard Study",
+    "performanceCitations": "AACR 2025 oral presentation; ASCO 2025; NCI Vanguard Study (NCT pending; n=24000); Guardant Health Investor Relations 2025",
+    "performanceNotes": "Overall sensitivity ~60% across all cancers; ~74% sensitivity for subset of deadliest cancers; ~98.5% specificity. Performance data from interim MCED analysis supported NCI selection for Vanguard Study.",
     "leadTimeNotes": "Available as add-on to Shield CRC screening; physician must opt-in and patient must authorize release of medical records to Guardant in exchange for MCD results",
     "fdaStatus": "LDT; FDA Breakthrough Device Designation (June 2025); selected for NCI Vanguard Study (24000 participants); Shield MCD reviewed by FDA as part of NCI investigational device exemption (IDE)",
     "reimbursement": "Coverage Varies",
@@ -1879,6 +1885,10 @@ const trmTestData = [
     "name": "Signatera (IO Monitoring)",
     "vendor": "Natera",
     "approach": "Tumor-informed",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Tumor-informed; needs primary tumor tissue.",
+    "requiresMatchedNormal": "Yes",
+    "requiresMatchedNormalNotes": "Matched normal blood required.",
     "method": "Personalized amplicon-based NGS panels targeting 16+ patient-specific variants identified from tumor/normal sequencing",
     "cancerTypes": [
       "Any solid tumor on ICI therapy"
@@ -1905,6 +1915,10 @@ const trmTestData = [
     "name": "NeXT Personal",
     "vendor": "Personalis",
     "approach": "Tumor-informed",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires WGS of tumor tissue to design personalized panel.",
+    "requiresMatchedNormal": "Yes",
+    "requiresMatchedNormalNotes": "Matched normal blood required for germline filtering.",
     "method": "Whole-genome sequencing of tumor and matched normal with design of personalized panels targeting up to ~1,800 variants; deep sequencing of plasma cfDNA",
     "cancerTypes": [
       "Multiple solid tumors (breast, colorectal, NSCLC, melanoma, renal, others)"
@@ -1949,6 +1963,10 @@ const trmTestData = [
     "name": "RaDaR",
     "vendor": "NeoGenomics",
     "approach": "Tumor-informed",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Tumor-informed (WES of tumor); personalized panel designed from tumor variants.",
+    "requiresMatchedNormal": "Yes",
+    "requiresMatchedNormalNotes": "Buffy coat matched normal used for germline filtering.",
     "method": "Personalized amplicon-based NGS panels (up to ~48 variants) designed from WES of tumor and matched normal; deep ctDNA sequencing",
     "cancerTypes": [
       "Multiple solid tumors (breast, melanoma, colorectal, head & neck, lung, others)"
@@ -1975,6 +1993,10 @@ const trmTestData = [
     "name": "FoundationOne Tracker (TRM)",
     "vendor": "Foundation Medicine / Natera",
     "approach": "Tumor-informed",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires prior or concurrent tumor CGP by FoundationOne CDx to identify patient-specific somatic variants for personalized panel design.",
+    "requiresMatchedNormal": "No",
+    "requiresMatchedNormalNotes": "Germline and CHIP filtering performed computationally without mandatory matched-normal sequencing.",
     "method": "Personalized ctDNA assay derived from FoundationOne CDx tumor sequencing; multiplex PCR–based plasma assay quantifies mean tumor molecules per mL (MTM/mL) over time to track treatment response in patients with advanced solid tumors.",
     "cancerTypes": [
       "Advanced solid tumors (all solid tumors)"
@@ -4820,7 +4842,7 @@ These factors don't diminish the value of clinical trial data—they simply prov
 
 Landmark MRD: A single post-surgery timepoint to help decide on adjuvant therapy. This is often the most clinically actionable use case.
 
-Treatment response monitoring: Serial tests during therapy to assess whether treatment is working, based on ctDNA kinetics.
+Treatment Response Monitoring: Serial tests during therapy to assess whether treatment is working, based on ctDNA kinetics.
 
 Surveillance: Periodic testing off-therapy to detect recurrence earlier than imaging.
 
