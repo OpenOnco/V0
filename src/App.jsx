@@ -2452,12 +2452,12 @@ const TestShowcase = ({ onNavigate }) => {
   const [paramIndices, setParamIndices] = useState({});
   const [selectedTest, setSelectedTest] = useState(null);
 
-  // Combine all tests with their category
+  // Combine all tests with their category and sort by vendor alphabetically
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
     ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'red' }))
-  ];
+  ].sort((a, b) => a.vendor.localeCompare(b.vendor));
 
   // Get numerical parameters for a test
   const getParams = (test) => {
