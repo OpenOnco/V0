@@ -3209,6 +3209,426 @@ Always end with encouragement to discuss with their care team.`;
 };
 
 
+// ============================================
+// Clinician View - Professional, data-focused layout for healthcare providers
+// ============================================
+const ClinicianView = ({ onNavigate, onSwitchPersona }) => {
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+
+  // Calculate stats
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length;
+  const mrdWithMedicare = mrdTestData.filter(t => t.reimbursement?.toLowerCase().includes('medicare')).length;
+  const testsWithFDA = [...mrdTestData, ...ecdTestData, ...trmTestData].filter(t => t.fdaStatus?.toLowerCase().includes('approved') || t.fdaStatus?.toLowerCase().includes('cleared')).length;
+
+  const systemPrompt = `You are a clinical decision support assistant for OpenOnco, designed for oncologists and healthcare providers.
+
+GUIDELINES:
+- Use medical terminology freely - your audience understands clinical language
+- Focus on actionable clinical information: sensitivity, specificity, LOD, PPV/NPV
+- Reference guideline recommendations (NCCN, ASCO, ESMO) when relevant
+- Discuss FDA status, Medicare coverage, and reimbursement specifics
+- Compare test methodologies: tumor-informed vs tumor-naïve, SNV-based vs methylation-based
+- Address clinical scenarios: post-resection surveillance, treatment response assessment, therapy selection
+- Note important caveats: validation cohort sizes, real-world vs clinical trial performance
+- Never make specific treatment recommendations - provide information to support clinical judgment
+
+DATABASE:
+${JSON.stringify(chatTestData)}
+
+${chatKeyLegend}
+
+When comparing tests, include:
+1. Analytical performance (sensitivity, specificity, LOD)
+2. Clinical validation data (study sizes, patient populations)
+3. Practical considerations (TAT, sample requirements, coverage)
+4. Guideline recommendations if applicable`;
+
+  const handleSubmit = async (question) => {
+    const q = question || chatInput;
+    if (!q.trim()) return;
+    
+    const userMessage = { role: 'user', content: q };
+    setMessages(prev => [...prev, userMessage]);
+    setChatInput('');
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1500,
+          system: systemPrompt,
+          messages: [...messages.slice(-6), userMessage].map(m => ({
+            role: m.role, content: m.content
+          }))
+        })
+      });
+      
+      const data = await response.json();
+      const assistantMessage = { 
+        role: 'assistant', 
+        content: data.content?.[0]?.text || 'Error processing request. Please try again.'
+      };
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Connection error. Please try again.'
+      }]);
+    }
+    
+    setIsLoading(false);
+  };
+
+  const clinicianQuestions = [
+    "Compare MRD tests for CRC surveillance",
+    "Which tests have NCCN guideline inclusion?",
+    "Tumor-informed vs tumor-naïve sensitivity"
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="text-center">
+        <p className="text-sm text-slate-500 mb-2">
+          Viewing as: <span className="font-medium text-[#2A63A4]">Clinician</span>
+          <button 
+            onClick={onSwitchPersona}
+            className="ml-2 text-xs text-slate-400 hover:text-[#2A63A4] underline"
+          >
+            Switch view
+          </button>
+        </p>
+      </div>
+
+      {/* Clinical Summary Banner */}
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 lg:p-8 text-white">
+        <h1 className="text-2xl lg:text-3xl font-bold mb-3">
+          ctDNA Testing: Clinical Decision Support
+        </h1>
+        <p className="text-slate-300 text-lg leading-relaxed mb-4">
+          Compare {totalTests} commercially available liquid biopsy tests across MRD surveillance, early cancer detection, and treatment response monitoring. 
+          Data includes analytical performance, clinical validation, reimbursement status, and guideline recommendations.
+        </p>
+        <div className="flex flex-wrap gap-4 text-sm">
+          <div className="bg-white/10 rounded-lg px-4 py-2">
+            <span className="text-slate-400">Total Tests:</span> <span className="font-bold">{totalTests}</span>
+          </div>
+          <div className="bg-white/10 rounded-lg px-4 py-2">
+            <span className="text-slate-400">With Medicare Coverage:</span> <span className="font-bold">{mrdWithMedicare}+ MRD</span>
+          </div>
+          <div className="bg-white/10 rounded-lg px-4 py-2">
+            <span className="text-slate-400">FDA Cleared/Approved:</span> <span className="font-bold">{testsWithFDA}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Access Grid */}
+      <div className="grid gap-4 md:grid-cols-3">
+        {/* MRD Card */}
+        <div 
+          onClick={() => onNavigate('MRD')}
+          className="bg-white rounded-xl border-2 border-orange-200 p-5 shadow-sm cursor-pointer hover:border-orange-400 hover:shadow-md transition-all"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
+              <span className="text-2xl font-bold text-orange-600">{mrdTestData.length}</span>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800">MRD Testing</h3>
+              <p className="text-xs text-orange-600 font-medium">Post-Resection Surveillance</p>
+            </div>
+          </div>
+          <ul className="text-xs text-slate-600 space-y-1">
+            <li>• Tumor-informed & tumor-naïve options</li>
+            <li>• LOD range: 0.001% - 0.1% VAF</li>
+            <li>• Medicare: MolDX coverage for multiple</li>
+            <li>• NCCN: CRC, Breast (consider MRD)</li>
+          </ul>
+          <div className="mt-3 text-sm text-[#2A63A4] font-medium">
+            Compare MRD tests →
+          </div>
+        </div>
+
+        {/* ECD Card */}
+        <div 
+          onClick={() => onNavigate('ECD')}
+          className="bg-white rounded-xl border-2 border-emerald-200 p-5 shadow-sm cursor-pointer hover:border-emerald-400 hover:shadow-md transition-all"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-lg bg-emerald-100 flex items-center justify-center">
+              <span className="text-2xl font-bold text-emerald-600">{ecdTestData.length}</span>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800">Early Detection</h3>
+              <p className="text-xs text-emerald-600 font-medium">MCED & Single-Cancer Screening</p>
+            </div>
+          </div>
+          <ul className="text-xs text-slate-600 space-y-1">
+            <li>• Multi-cancer: 20-50+ cancer types</li>
+            <li>• Single-cancer: CRC, Lung, Liver</li>
+            <li>• FDA: Shield CRC (PMA approved)</li>
+            <li>• Stage I sensitivity: 17-75% (varies)</li>
+          </ul>
+          <div className="mt-3 text-sm text-[#2A63A4] font-medium">
+            Compare ECD tests →
+          </div>
+        </div>
+
+        {/* TRM Card */}
+        <div 
+          onClick={() => onNavigate('TRM')}
+          className="bg-white rounded-xl border-2 border-sky-200 p-5 shadow-sm cursor-pointer hover:border-sky-400 hover:shadow-md transition-all"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-lg bg-sky-100 flex items-center justify-center">
+              <span className="text-2xl font-bold text-sky-600">{trmTestData.length}</span>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800">Treatment Response</h3>
+              <p className="text-xs text-sky-600 font-medium">On-Therapy Monitoring</p>
+            </div>
+          </div>
+          <ul className="text-xs text-slate-600 space-y-1">
+            <li>• Serial quantitative ctDNA tracking</li>
+            <li>• Molecular response assessment</li>
+            <li>• Lead time vs imaging: 2-9 months</li>
+            <li>• ICI, chemo, targeted therapy</li>
+          </ul>
+          <div className="mt-3 text-sm text-[#2A63A4] font-medium">
+            Compare TRM tests →
+          </div>
+        </div>
+      </div>
+
+      {/* Clinical Context Panels */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Key Clinical Considerations */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+            <svg className="w-5 h-5 text-[#2A63A4]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Key Clinical Considerations
+          </h3>
+          <div className="space-y-3 text-sm text-slate-600">
+            <div className="border-l-2 border-orange-400 pl-3">
+              <p className="font-medium text-slate-700">MRD-Guided Therapy Escalation</p>
+              <p className="text-xs">GALAXY/VEGA data: ctDNA+ after surgery → consider adjuvant therapy. ctDNA- may identify candidates for de-escalation (ongoing trials).</p>
+            </div>
+            <div className="border-l-2 border-emerald-400 pl-3">
+              <p className="font-medium text-slate-700">MCED Test Interpretation</p>
+              <p className="text-xs">Low Stage I sensitivity (17-54%) means negative result ≠ cancer-free. Positive predictive value varies significantly by cancer type and prevalence.</p>
+            </div>
+            <div className="border-l-2 border-sky-400 pl-3">
+              <p className="font-medium text-slate-700">ctDNA Clearance as Endpoint</p>
+              <p className="text-xs">Serial monitoring may detect progression 2-9 months before imaging. Molecular response doesn't always correlate with radiographic response.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Guideline Highlights */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+            <svg className="w-5 h-5 text-[#2A63A4]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+            Guideline Recommendations (2024-2025)
+          </h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-start gap-2">
+              <span className="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-0.5 rounded">NCCN CRC</span>
+              <p className="text-slate-600 text-xs">ctDNA testing may be considered to assess recurrence risk (Category 2A). Not for treatment decisions alone.</p>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-0.5 rounded">NCCN Breast</span>
+              <p className="text-slate-600 text-xs">ctDNA MRD testing is emerging; clinical utility being evaluated in ongoing trials.</p>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-0.5 rounded">NCCN DLBCL</span>
+              <p className="text-slate-600 text-xs">Foresight CLARITY included for MRD assessment in diffuse large B-cell lymphoma.</p>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="bg-emerald-100 text-emerald-700 text-xs font-medium px-2 py-0.5 rounded">USPSTF</span>
+              <p className="text-slate-600 text-xs">No recommendation for MCED tests. Evidence review ongoing for blood-based CRC screening.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* AI Clinical Assistant */}
+      <div className="bg-white rounded-xl border-2 border-[#2A63A4] p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-bold text-slate-800 text-lg">Clinical Query Assistant</h3>
+            <p className="text-sm text-slate-500">Compare tests, check guidelines, explore clinical scenarios</p>
+          </div>
+        </div>
+
+        {/* Chat Interface */}
+        <div className="bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
+          {/* Messages */}
+          <div ref={chatContainerRef} className="h-48 overflow-y-auto p-4 space-y-3">
+            {messages.length === 0 && (
+              <div className="text-center py-2">
+                <p className="text-slate-500 text-sm mb-3">Clinical queries:</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {clinicianQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSubmit(q)}
+                      className="text-xs bg-white border border-slate-200 rounded-full px-3 py-1.5 text-slate-600 hover:bg-blue-50 hover:border-[#2A63A4] transition-colors"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div 
+                  className={`max-w-[85%] rounded-xl px-4 py-2 ${
+                    msg.role === 'user' 
+                      ? 'bg-[#2A63A4] text-white' 
+                      : 'bg-white border border-slate-200 text-slate-700'
+                  }`}
+                >
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-white border border-slate-200 rounded-xl px-4 py-2">
+                  <p className="text-sm text-slate-500">Analyzing...</p>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Input */}
+          <div className="p-3 border-t border-slate-200 bg-white">
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ask about test performance, guidelines, coverage..."
+                className="flex-1 border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !chatInput.trim()}
+                className="text-white px-4 py-2 rounded-lg font-medium text-sm disabled:opacity-50 transition-all"
+                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+              >
+                Query
+              </button>
+            </form>
+          </div>
+        </div>
+        <p className="mt-2 text-xs text-slate-400 text-center">
+          For clinical decision support only. Verify critical data against primary sources.
+        </p>
+      </div>
+
+      {/* Recently Added & News */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Recently Added Tests */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <h3 className="font-bold text-slate-800 mb-3">Recently Added to Database</h3>
+          <div className="space-y-2">
+            {RECENTLY_ADDED_TESTS.map((test) => (
+              <div
+                key={test.id}
+                onClick={() => onNavigate(test.category, test.id)}
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors"
+              >
+                <span className={`text-xs font-medium px-2 py-1 rounded ${
+                  test.category === 'MRD' ? 'bg-orange-100 text-orange-700' :
+                  test.category === 'ECD' ? 'bg-emerald-100 text-emerald-700' :
+                  'bg-sky-100 text-sky-700'
+                }`}>
+                  {test.category}
+                </span>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-slate-800">{test.name}</p>
+                  <p className="text-xs text-slate-500">{test.vendor}</p>
+                </div>
+                <span className="text-xs text-slate-400">{test.dateAdded}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <h3 className="font-bold text-slate-800 mb-3">Quick Reference</h3>
+          <div className="space-y-2">
+            <a 
+              href="https://www.nccn.org/guidelines/category_1" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 text-sm text-slate-600 hover:text-[#2A63A4]"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+              NCCN Guidelines Portal
+            </a>
+            <a 
+              href="https://www.cms.gov/medicare-coverage-database" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 text-sm text-slate-600 hover:text-[#2A63A4]"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+              CMS Coverage Database
+            </a>
+            <a 
+              href="https://clinicaltrials.gov" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 text-sm text-slate-600 hover:text-[#2A63A4]"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+              ClinicalTrials.gov
+            </a>
+            <button
+              onClick={() => onNavigate('submissions')}
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 text-sm text-slate-600 hover:text-[#2A63A4] w-full text-left"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Submit a Test for Review
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
@@ -3328,6 +3748,25 @@ Say "not specified" for missing data.`;
     );
   }
 
+  // Clinician persona gets clinical-focused view
+  if (persona === 'Clinician') {
+    return (
+      <div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative">
+          {/* Build timestamp */}
+          <div className="absolute top-2 right-6 text-xs text-gray-400">
+            Build: {BUILD_INFO.date}
+          </div>
+          <ClinicianView 
+            onNavigate={onNavigate} 
+            onSwitchPersona={() => handlePersonaSelect('Academic/Industry')} 
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Default: Academic/Industry view (original layout)
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative">
