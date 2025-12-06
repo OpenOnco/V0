@@ -2078,10 +2078,11 @@ const compressTestForChat = (test) => {
   const keyMap = {
     id: 'id', name: 'nm', vendor: 'vn', approach: 'ap', method: 'mt', sampleCategory: 'samp',
     cancerTypes: 'ca', indicationsNotes: 'ind', sensitivity: 'sens', specificity: 'spec',
+    analyticalSpecificity: 'aSpec', clinicalSpecificity: 'cSpec',
     ppv: 'ppv', npv: 'npv', lod: 'lod', lod95: 'lod95', lodNotes: 'lodN', requiresTumorTissue: 'tumorReq',
     requiresMatchedNormal: 'normReq', variantsTracked: 'vars', initialTat: 'tat1', followUpTat: 'tat2',
-    leadTimeVsImaging: 'lead', bloodVolume: 'bvol', fdaStatus: 'fda', reimbursement: 'reimb',
-    reimbursementNote: 'reimbN', commercialPayers: 'privIns', clinicalAvailability: 'avail',
+    leadTimeVsImaging: 'lead', bloodVolume: 'bvol', cfdnaInput: 'cfIn', fdaStatus: 'fda', reimbursement: 'reimb',
+    reimbursementNote: 'reimbN', commercialPayers: 'privIns', availableRegions: 'regions', clinicalAvailability: 'avail',
     cptCodes: 'cpt', cptCode: 'cpt', totalParticipants: 'trial', numPublications: 'pubs',
     numPublicationsPlus: 'pubsPlus', exampleTestReport: 'rpt', clinicalTrials: 'trials',
     testScope: 'scope', targetPopulation: 'pop', indicationGroup: 'indGrp',
@@ -2118,7 +2119,7 @@ const chatTestData = {
 };
 
 // Key legend for chatbot prompt
-const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, avail=availability, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
+const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
 
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
@@ -2146,6 +2147,7 @@ const filterConfigs = {
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
     reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
+    regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   },
   ECD: {
     // Oncologist priority: Single cancer or multi? Sample type? What's the target population? Covered?
@@ -2154,6 +2156,7 @@ const filterConfigs = {
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
     reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)'],
+    regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   },
   TRM: {
     // Oncologist priority: What cancer? Sample type? Approach? Covered?
@@ -2161,6 +2164,7 @@ const filterConfigs = {
     sampleCategories: ['Blood/Plasma'],
     approaches: ['Tumor-informed', 'Tumor-naïve', 'Tumor-agnostic'],
     reimbursements: ['Medicare', 'Commercial'],
+    regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   }
 };
 
@@ -2178,9 +2182,13 @@ const comparisonParams = {
     { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)' },
     { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)' },
     { key: 'specificity', label: 'Reported Specificity (%)' },
+    { key: 'analyticalSpecificity', label: 'Analytical Specificity (%)' },
+    { key: 'clinicalSpecificity', label: 'Clinical Specificity (%)' },
     { key: 'lod', label: 'LOD (detection)' },
     { key: 'lod95', label: 'LOD95 (95% conf)' },
     { key: 'variantsTracked', label: 'Variants Tracked' },
+    { key: 'bloodVolume', label: 'Blood Volume (mL)' },
+    { key: 'cfdnaInput', label: 'cfDNA Input (ng)' },
     { key: 'initialTat', label: 'Initial TAT (days)' },
     { key: 'followUpTat', label: 'Follow-up TAT (days)' },
     { key: 'totalParticipants', label: 'Trial Participants' },
@@ -2188,6 +2196,7 @@ const comparisonParams = {
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Government Insurance' },
     { key: 'commercialPayersStr', label: 'Private Insurance' },
+    { key: 'availableRegionsStr', label: 'Availability' },
   ],
   ECD: [
     { key: 'testScope', label: 'Scope' },
@@ -2211,6 +2220,7 @@ const comparisonParams = {
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Government Insurance' },
     { key: 'commercialPayersStr', label: 'Private Insurance' },
+    { key: 'availableRegionsStr', label: 'Availability' },
     { key: 'clinicalAvailability', label: 'Clinical Availability' },
     { key: 'tat', label: 'Turnaround Time' },
     { key: 'sampleType', label: 'Sample Details' },
@@ -2237,6 +2247,7 @@ const comparisonParams = {
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Government Insurance' },
     { key: 'commercialPayersStr', label: 'Private Insurance' },
+    { key: 'availableRegionsStr', label: 'Availability' },
   ],
 };
 
@@ -4292,12 +4303,15 @@ const SubmissionsPage = () => {
     MRD: [
       { key: 'sensitivity', label: 'Sensitivity (%)' },
       { key: 'specificity', label: 'Specificity (%)' },
+      { key: 'analyticalSpecificity', label: 'Analytical Specificity (%)' },
+      { key: 'clinicalSpecificity', label: 'Clinical Specificity (%)' },
       { key: 'lod', label: 'LOD (Detection Threshold)' },
       { key: 'lod95', label: 'LOD95 (95% Confidence)' },
       { key: 'variantsTracked', label: 'Variants Tracked' },
       { key: 'initialTat', label: 'Initial Turnaround Time (days)' },
       { key: 'followUpTat', label: 'Follow-up Turnaround Time (days)' },
       { key: 'bloodVolume', label: 'Blood Volume (mL)' },
+      { key: 'cfdnaInput', label: 'cfDNA Input (ng)' },
       { key: 'fdaStatus', label: 'FDA Status' },
       { key: 'reimbursement', label: 'Reimbursement Status' },
       { key: 'cptCodes', label: 'CPT Codes' },
@@ -5137,25 +5151,25 @@ const SourceDataPage = () => {
   };
 
   const downloadMrdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'Analytical Specificity (%)', 'Clinical Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'Blood Volume (mL)', 'cfDNA Input (ng)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Availability', 'Trial Participants', 'Publications'];
     const rows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.lod95, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.analyticalSpecificity, t.clinicalSpecificity, t.lod, t.lod95, t.bloodVolume, t.cfdnaInput, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.availableRegions?.join('; ') || 'US', t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_MRD.csv', 'text/csv;charset=utf-8;');
   };
 
   const downloadEcdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Test Scope', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'List Price', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Test Scope', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Availability', 'List Price', 'Trial Participants', 'Publications'];
     const rows = ecdTestData.map(t => [
-      t.name, t.vendor, t.testScope, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.tat, t.fdaStatus, t.reimbursement, t.listPrice, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.testScope, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.tat, t.fdaStatus, t.reimbursement, t.availableRegions?.join('; ') || 'US', t.listPrice, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_ECD.csv', 'text/csv;charset=utf-8;');
   };
 
   const downloadTrmCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'FDA Status', 'Reimbursement', 'Trial Participants', 'Publications'];
+    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'FDA Status', 'Reimbursement', 'Availability', 'Trial Participants', 'Publications'];
     const rows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.lod95, t.fdaStatus, t.reimbursement, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
+      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.lod95, t.fdaStatus, t.reimbursement, t.availableRegions?.join('; ') || 'US', t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
     ]);
     downloadFile(generateCsv(headers, rows), 'OpenOnco_TRM.csv', 'text/csv;charset=utf-8;');
   };
@@ -5534,6 +5548,28 @@ REPORTING ISSUES:
 
 Analytical specificity is especially important with repeat testing—even small false positive rates compound over serial draws.`
   },
+  analyticalVsClinicalSpecificity: {
+    title: "Analytical vs Clinical Specificity",
+    experts: "MR, SW",
+    content: `These are fundamentally different metrics that answer different questions:
+
+ANALYTICAL SPECIFICITY:
+• What it measures: How often does the test correctly call truly negative samples negative in the lab?
+• Why it matters: Critical for repeat monitoring—even 99% specificity means ~5% cumulative false positive risk over 5 annual tests
+• How it's measured: Contrived samples or healthy donor plasma
+
+CLINICAL SPECIFICITY:
+• What it measures: How often does MRD-negative mean no eventual recurrence?
+• The problem: In interventional trials, MRD+ patients often receive treatment—so we can't know if they would have recurred untreated
+• Real interpretation: Better thought of as NPV (negative predictive value) in context
+
+WHY ANALYTICAL MATTERS MORE:
+• It's the actionable number for clinical decision-making
+• Clinical specificity conflates test performance with treatment efficacy
+• A test with poor analytical specificity will generate false positives regardless of clinical context
+
+When vendors report only "specificity" without specifying type, ask which one—they're not interchangeable.`
+  },
   lod: {
     title: "The LOD Comparison Problem",
     experts: "MR, SW",
@@ -5556,7 +5592,7 @@ Bottom line: A lower number doesn't necessarily mean a better test. The gap betw
   },
   lodVsLod95: {
     title: "LOD vs LOD95: Why Both Matter",
-    experts: "SW",
+    experts: "MR, SW",
     content: `This is where the NGS field can be misleading in how it displays numbers.
 
 THE KEY INSIGHT:
@@ -5645,24 +5681,31 @@ const ExpertInsight = ({ topic }) => {
   };
   
   return (
-    <span 
-      className="relative inline-block ml-1"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
+    <span className="relative inline-block ml-1">
       <button 
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
         className="w-4 h-4 rounded-full bg-amber-100 border border-amber-300 text-amber-700 text-[10px] font-bold inline-flex items-center justify-center hover:bg-amber-200 hover:border-amber-400 transition-colors cursor-help"
-        title="Expert insight available"
+        title="Expert insight available - click to view"
       >
         E
       </button>
       {isOpen && (
         <div className="absolute z-50 left-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-2 border-b border-amber-100">
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-full bg-amber-400 text-white text-[10px] font-bold flex items-center justify-center">E</div>
-              <h4 className="font-semibold text-slate-800 text-sm">{insight.title}</h4>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full bg-amber-400 text-white text-[10px] font-bold flex items-center justify-center">E</div>
+                <h4 className="font-semibold text-slate-800 text-sm">{insight.title}</h4>
+              </div>
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+                className="w-6 h-6 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors"
+                title="Close"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           </div>
           <div className="px-4 py-3 text-xs text-slate-600 leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto">
@@ -5682,10 +5725,13 @@ const ExpertInsight = ({ topic }) => {
 // ============================================
 // Data Row Component for expanded view
 // ============================================
-const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
+const DataRow = ({ label, value, unit, citations, notes, expertTopic, lodUnit }) => {
   if (value === null || value === undefined) return null;
   const displayValue = `${value}${unit || ''}`;
   const isLongValue = typeof displayValue === 'string' && displayValue.length > 60;
+  
+  // Get LOD unit badge if applicable
+  const unitBadge = lodUnit ? getLodUnitBadge(lodUnit) : null;
   
   if (isLongValue) {
     // Stack layout for long values
@@ -5696,7 +5742,14 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
           {expertTopic && <ExpertInsight topic={expertTopic} />}
           <InfoIcon citations={citations} notes={notes} />
         </span>
-        <span className="text-sm font-medium text-gray-900 block">{displayValue}</span>
+        <span className="text-sm font-medium text-gray-900 flex items-center gap-2">
+          {displayValue}
+          {unitBadge && (
+            <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${unitBadge.bg} ${unitBadge.text}`}>
+              {unitBadge.label}
+            </span>
+          )}
+        </span>
       </div>
     );
   }
@@ -5709,7 +5762,14 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
         {expertTopic && <ExpertInsight topic={expertTopic} />}
         <InfoIcon citations={citations} notes={notes} />
       </span>
-      <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
+      <span className="text-sm font-medium text-gray-900 text-right flex items-center gap-2">
+        {displayValue}
+        {unitBadge && (
+          <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${unitBadge.bg} ${unitBadge.text}`}>
+            {unitBadge.label}
+          </span>
+        )}
+      </span>
     </div>
   );
 };
@@ -5773,7 +5833,12 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               {test.lod != null && test.lod95 != null ? (
                 // Both values available - show stacked with monitoring indicator
                 <>
-                  <p className="text-sm font-bold text-violet-600">{test.lod}</p>
+                  <p className="text-sm font-bold text-violet-600 flex items-center gap-1">
+                    {test.lod}
+                    <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${getLodUnitBadge(detectLodUnit(test.lod)).bg} ${getLodUnitBadge(detectLodUnit(test.lod)).text}`}>
+                      {getLodUnitBadge(detectLodUnit(test.lod)).label}
+                    </span>
+                  </p>
                   <p className="text-xs text-violet-400">{test.lod95}</p>
                   <p className="text-xs text-gray-500">LOD / LOD95</p>
                   <span className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 font-medium mt-0.5" title="Gap between LOD and LOD95 means serial testing can catch lower-level disease">
@@ -5784,13 +5849,23 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               ) : test.lod != null ? (
                 // Only LOD
                 <>
-                  <p className="text-lg font-bold text-violet-600 text-sm">{test.lod}</p>
+                  <p className="text-sm font-bold text-violet-600 flex items-center gap-1">
+                    {test.lod}
+                    <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${getLodUnitBadge(detectLodUnit(test.lod)).bg} ${getLodUnitBadge(detectLodUnit(test.lod)).text}`}>
+                      {getLodUnitBadge(detectLodUnit(test.lod)).label}
+                    </span>
+                  </p>
                   <p className="text-xs text-gray-500">LOD</p>
                 </>
               ) : (
                 // Only LOD95
                 <>
-                  <p className="text-lg font-bold text-violet-600 text-sm">{test.lod95}</p>
+                  <p className="text-sm font-bold text-violet-600 flex items-center gap-1">
+                    {test.lod95}
+                    <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${getLodUnitBadge(detectLodUnit(test.lod95)).bg} ${getLodUnitBadge(detectLodUnit(test.lod95)).text}`}>
+                      {getLodUnitBadge(detectLodUnit(test.lod95)).label}
+                    </span>
+                  </p>
                   <p className="text-xs text-gray-500">LOD95</p>
                 </>
               )}
@@ -5831,10 +5906,16 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
               <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} expertTopic="sensitivity" />
               <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} expertTopic="specificity" />
+              {(test.analyticalSpecificity || test.clinicalSpecificity) && (
+                <>
+                  <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} notes={test.analyticalSpecificityNotes} expertTopic="analyticalVsClinicalSpecificity" />
+                  <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" citations={test.clinicalSpecificityCitations} notes={test.clinicalSpecificityNotes} expertTopic="analyticalVsClinicalSpecificity" />
+                </>
+              )}
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-              <DataRow label="LOD (Detection Threshold)" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
-              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
+              <DataRow label="LOD (Detection Threshold)" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" lodUnit={detectLodUnit(test.lod)} />
+              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" lodUnit={detectLodUnit(test.lod95)} />
               
               {(test.landmarkSensitivity || test.landmarkSpecificity || test.longitudinalSensitivity || test.longitudinalSpecificity) && (
                 <>
@@ -5882,6 +5963,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />
               <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} />
+              <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} notes={test.cfdnaInputNotes} expertTopic="cfdnaInput" />
               <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Requirements</p>
@@ -5972,8 +6054,8 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
               <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" expertTopic="sensitivity" />
               <DataRow label="Reported Specificity" value={test.specificity} unit="%" expertTopic="specificity" />
-              <DataRow label="LOD (Detection Threshold)" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
-              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
+              <DataRow label="LOD (Detection Threshold)" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" lodUnit={detectLodUnit(test.lod)} />
+              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" lodUnit={detectLodUnit(test.lod95)} />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
@@ -6051,9 +6133,39 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
 // ============================================
 // Comparison Modal
 // ============================================
+// Helper to detect LOD unit type from string value
+const detectLodUnit = (lodValue) => {
+  if (!lodValue) return null;
+  const str = String(lodValue).toLowerCase();
+  if (str.includes('ppm')) return 'ppm';
+  if (str.includes('vaf') || str.includes('%')) return 'VAF';
+  if (str.includes('mtm') || str.includes('molecules')) return 'MTM';
+  if (str.includes('copies')) return 'copies';
+  return 'other';
+};
+
+// Get badge color for LOD unit
+const getLodUnitBadge = (unit) => {
+  const badges = {
+    'ppm': { bg: 'bg-violet-100', text: 'text-violet-700', label: 'ppm' },
+    'VAF': { bg: 'bg-blue-100', text: 'text-blue-700', label: 'VAF%' },
+    'MTM': { bg: 'bg-emerald-100', text: 'text-emerald-700', label: 'MTM' },
+    'copies': { bg: 'bg-amber-100', text: 'text-amber-700', label: 'copies' },
+    'other': { bg: 'bg-gray-100', text: 'text-gray-600', label: '—' },
+  };
+  return badges[unit] || badges.other;
+};
+
 const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   const params = comparisonParams[category] || comparisonParams.MRD;
   const meta = categoryMeta[category];
+  
+  // Detect LOD units across all tests being compared
+  const lodUnits = tests.map(t => detectLodUnit(t.lod)).filter(Boolean);
+  const lod95Units = tests.map(t => detectLodUnit(t.lod95)).filter(Boolean);
+  const uniqueLodUnits = [...new Set(lodUnits)];
+  const uniqueLod95Units = [...new Set(lod95Units)];
+  const hasLodUnitMismatch = uniqueLodUnits.length > 1 || uniqueLod95Units.length > 1;
   
   // Category-specific color schemes
   const colorSchemes = {
@@ -6118,8 +6230,16 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
             <p className="text-amber-700 text-xs mt-1">
               Performance metrics may not be directly comparable across tests due to differences in methodology 
               (analytical vs clinical, landmark vs longitudinal), patient populations, and reporting standards. 
-              LOD values use different units and architectures. See <span className="font-medium">[E]</span> icons for context.
+              See <span className="font-medium">[E]</span> icons for context.
             </p>
+            {hasLodUnitMismatch && (
+              <p className="text-red-700 text-xs mt-2 font-medium flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                LOD values below use different units ({uniqueLodUnits.join(', ')}) — cannot be directly compared. Unit badges shown for clarity.
+              </p>
+            )}
             <p className="text-amber-600 text-[10px] mt-1 italic">— Expert Advisor: Matt Ryder, PhD</p>
           </div>
         </div>
@@ -6161,17 +6281,34 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                       {param.label}
                       {(param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
                       {param.key === 'lod' && <ExpertInsight topic="lod" />}
+                      {param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
                       {(param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
                     </span>
                   </td>
                   {tests.map(test => {
                     let value = param.key === 'cancerTypesStr' ? test.cancerTypes?.join(', ') 
                       : param.key === 'commercialPayersStr' ? test.commercialPayers?.join(', ')
+                      : param.key === 'availableRegionsStr' ? (test.availableRegions?.join(', ') || 'US')
                       : test[param.key];
                     const hasValue = value != null && value !== '';
+                    
+                    // For LOD/LOD95, add unit badge
+                    const isLodField = param.key === 'lod' || param.key === 'lod95';
+                    const lodUnit = isLodField ? detectLodUnit(value) : null;
+                    const unitBadge = lodUnit ? getLodUnitBadge(lodUnit) : null;
+                    
                     return (
                       <td key={test.id} className={`p-4 text-sm ${colors.border} border-b ${hasValue ? 'text-gray-900' : 'text-gray-300'}`}>
-                        {hasValue ? String(value) : '—'}
+                        {hasValue ? (
+                          <span className="flex items-center gap-2">
+                            <span>{String(value)}</span>
+                            {unitBadge && (
+                              <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${unitBadge.bg} ${unitBadge.text}`}>
+                                {unitBadge.label}
+                              </span>
+                            )}
+                          </span>
+                        ) : '—'}
                       </td>
                     );
                   })}
@@ -6207,6 +6344,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [selectedTestScopes, setSelectedTestScopes] = useState([]);
   const [selectedSampleCategories, setSelectedSampleCategories] = useState([]);
   const [selectedFdaStatus, setSelectedFdaStatus] = useState([]);
+  const [selectedRegions, setSelectedRegions] = useState([]);
   const [minParticipants, setMinParticipants] = useState(0);
   const [minPublications, setMinPublications] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -6344,14 +6482,27 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
         });
         if (!matchesFda) return false;
       }
+      if (selectedRegions.length > 0) {
+        const testRegions = test.availableRegions || [];
+        // If test has no regions specified, assume US for clinical LDTs
+        const effectiveRegions = testRegions.length > 0 ? testRegions : 
+          (test.clinicalAvailability?.toLowerCase().includes('shipping') ? ['US'] : []);
+        const matchesRegion = selectedRegions.some(r => {
+          if (r === 'US') return effectiveRegions.includes('US') || effectiveRegions.includes('US-only');
+          if (r === 'International') return effectiveRegions.includes('International') || effectiveRegions.includes('Global') || effectiveRegions.length > 1;
+          if (r === 'RUO') return effectiveRegions.includes('RUO') || test.clinicalAvailability?.includes('RUO');
+          return effectiveRegions.includes(r);
+        });
+        if (!matchesRegion) return false;
+      }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, minParticipants, minPublications, maxPrice, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
 
@@ -6424,6 +6575,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Government Insurance' : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </div>
                   <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Availability</label>
+                    {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
+                  </div>
+                  <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
                       Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
                     </label>
@@ -6481,6 +6636,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Government Insurance' : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Availability</label>
+                    {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
@@ -6561,6 +6720,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Coverage</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Government Insurance' : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Availability</label>
+                    {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
                   </div>
                   <div className="mb-5">
                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
