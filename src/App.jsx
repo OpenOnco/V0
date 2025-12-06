@@ -532,7 +532,7 @@ const mrdTestData = [
     "name": "Haystack MRD",
     "vendor": "Quest Diagnostics",
     "approach": "Tumor-informed",
-    "method": "Whole-genome–derived personalized panel; ~50 variants tracked; ultra-low error suppression",
+    "method": "Whole-genome–derived personalized panel; ~50 variants tracked; low error suppression",
     "cancerTypes": [
       "Multi-solid"
     ],
@@ -543,7 +543,7 @@ const mrdTestData = [
     "longitudinalSensitivityCitations": "https://haystackmrd.com/",
     "lod": 0.0006,
     "lodCitations": "https://haystackmrd.com/",
-    "lodNotes": "LoD ~0.0006% tumor fraction (6 ppm) at ~95% detection in analytical studies; vendor materials describe ultra-low error suppression enabling detection below this in some contexts.",
+    "lodNotes": "LoD ~0.0006% tumor fraction (6 ppm) at ~95% detection in analytical studies; vendor materials describe low error suppression enabling detection below this in some contexts.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "variantsTracked": "50",
@@ -571,7 +571,7 @@ const mrdTestData = [
     "name": "NeXT Personal Dx",
     "vendor": "Personalis",
     "approach": "Tumor-informed",
-    "method": "Tumor-informed, whole-genome-based MRD assay: WGS of tumor and matched normal identifies up to ~1,800 patient-specific variants, which are tracked at ultra-high depth in plasma to detect ctDNA down to ~1–3 parts per million (ppm).",
+    "method": "Tumor-informed, whole-genome-based MRD assay: WGS of tumor and matched normal identifies up to ~1,800 patient-specific variants, which are tracked at high depth in plasma to detect ctDNA down to ~1–3 parts per million (ppm).",
     "cancerTypes": [
       "Breast",
       "Colorectal",
@@ -687,7 +687,7 @@ const mrdTestData = [
     "name": "Pathlight",
     "vendor": "SAGA Diagnostics",
     "approach": "Tumor-informed",
-    "method": "Tumor-informed MRD platform using whole-genome profiling to identify structural variants (SVs) and other truncal events, which are then tracked using ultra-sensitive digital PCR and/or NGS in serial plasma samples.",
+    "method": "Tumor-informed MRD platform using whole-genome profiling to identify structural variants (SVs) and other truncal events, which are then tracked using sensitive digital PCR and/or NGS in serial plasma samples.",
     "cancerTypes": [
       "Breast",
       "Multi-solid"
@@ -734,7 +734,7 @@ const mrdTestData = [
     "name": "RaDaR ST",
     "vendor": "NeoGenomics",
     "approach": "Tumor-informed",
-    "method": "Tumor-informed MRD assay on the InVision/ RaDaR platform: tumor and matched-normal sequencing identify up to 48 variants, which are tracked by ultra-deep NGS with error suppression.",
+    "method": "Tumor-informed MRD assay on the InVision/ RaDaR platform: tumor and matched-normal sequencing identify up to 48 variants, which are tracked by deep NGS with error suppression.",
     "cancerTypes": [
       "Breast",
       "Head & Neck",
@@ -1036,7 +1036,7 @@ const mrdTestData = [
     "cancerTypes": [
       "Multi-solid tumors"
     ],
-    "indicationsNotes": "Ultra-sensitive MRD assay offered for research use in early- and late-stage solid tumors. Available through Foundation's FlexOMx Lab for drug-development studies requiring deep ctDNA detection (e.g., early-stage or low-shedding cancers).",
+    "indicationsNotes": "Sensitive MRD assay offered for research use in early- and late-stage solid tumors. Available through Foundation's FlexOMx Lab for drug-development studies requiring deep ctDNA detection (e.g., early-stage or low-shedding cancers).",
     "sensitivity": null,
     "sensitivityCitations": "Foundation Medicine press release, September 23, 2025; https://www.foundationmedicine.com/monitoring-portfolio",
     "sensitivityNotes": "Feasibility data indicate high sensitivity at low tumor fractions; cross-indication sensitivity values are study-specific.",
@@ -1243,7 +1243,7 @@ const mrdTestData = [
       "Classic Hodgkin lymphoma",
       "Multiple myeloma"
     ],
-    "indicationsNotes": "Ultra-sensitive MRD assay for B-cell malignancies leveraging phased variant technology in somatic hypermutation regions. First ctDNA-MRD test included in NCCN Guidelines for B-Cell Lymphomas (Dec 2024). Acquired by Natera December 2025. Solid tumor version (up to 5,000 variants, 0.3 ppm LOD) in development but not yet clinically available.",
+    "indicationsNotes": "Sensitive MRD assay for B-cell malignancies leveraging phased variant technology in somatic hypermutation regions. First ctDNA-MRD test included in NCCN Guidelines for B-Cell Lymphomas (Dec 2024). Acquired by Natera December 2025. Solid tumor version (up to 5,000 variants, 0.3 ppm LOD) in development but not yet clinically available.",
     "sensitivity": 90.62,
     "sensitivityCitations": "Boehm N et al. Oncotarget 2025;16:329-336; JCO 2025 pooled analysis (n=137).",
     "sensitivityNotes": "Positive percent agreement 90.62% (95% CI 74.98-98.02%) in DLBCL analytical validation. End-of-treatment MRD detection identified 90% of patients who later relapsed vs 45% for PET/CT.",
@@ -1867,7 +1867,7 @@ const trmTestData = [
     "name": "NeXT Personal",
     "vendor": "Personalis",
     "approach": "Tumor-informed",
-    "method": "Whole-genome sequencing of tumor and matched normal with design of personalized panels targeting up to ~1,800 variants; ultra-deep sequencing of plasma cfDNA",
+    "method": "Whole-genome sequencing of tumor and matched normal with design of personalized panels targeting up to ~1,800 variants; deep sequencing of plasma cfDNA",
     "cancerTypes": [
       "Multiple solid tumors (breast, colorectal, NSCLC, melanoma, renal, others)"
     ],
@@ -1911,7 +1911,7 @@ const trmTestData = [
     "name": "RaDaR",
     "vendor": "NeoGenomics",
     "approach": "Tumor-informed",
-    "method": "Personalized amplicon-based NGS panels (up to ~48 variants) designed from WES of tumor and matched normal; ultra-deep ctDNA sequencing",
+    "method": "Personalized amplicon-based NGS panels (up to ~48 variants) designed from WES of tumor and matched normal; deep ctDNA sequencing",
     "cancerTypes": [
       "Multiple solid tumors (breast, melanoma, colorectal, head & neck, lung, others)"
     ],
@@ -2135,8 +2135,8 @@ const comparisonParams = {
     { key: 'method', label: 'Method' },
     { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Cancer Types' },
-    { key: 'sensitivity', label: 'Sensitivity (%)' },
-    { key: 'specificity', label: 'Specificity (%)' },
+    { key: 'sensitivity', label: 'Reported Sensitivity (%)' },
+    { key: 'specificity', label: 'Reported Specificity (%)' },
     { key: 'lod', label: 'LOD (ppm)' },
     { key: 'variantsTracked', label: 'Variants Tracked' },
     { key: 'initialTat', label: 'Initial TAT (days)' },
@@ -2155,12 +2155,12 @@ const comparisonParams = {
     { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Target Cancers' },
     { key: 'targetPopulation', label: 'Population' },
-    { key: 'sensitivity', label: 'Sensitivity (%)' },
+    { key: 'sensitivity', label: 'Reported Sensitivity (%)' },
     { key: 'stageISensitivity', label: 'Stage I Sens (%)' },
     { key: 'stageIISensitivity', label: 'Stage II Sens (%)' },
     { key: 'stageIIISensitivity', label: 'Stage III Sens (%)' },
     { key: 'stageIVSensitivity', label: 'Stage IV Sens (%)' },
-    { key: 'specificity', label: 'Specificity (%)' },
+    { key: 'specificity', label: 'Reported Specificity (%)' },
     { key: 'ppv', label: 'PPV (%)' },
     { key: 'npv', label: 'NPV (%)' },
     { key: 'tumorOriginAccuracy', label: 'Origin Prediction (%)' },
@@ -2188,6 +2188,8 @@ const comparisonParams = {
     { key: 'responseDefinition', label: 'Response Definition' },
     { key: 'leadTimeVsImaging', label: 'Lead Time (days)' },
     { key: 'lod', label: 'LOD' },
+    { key: 'sensitivity', label: 'Reported Sensitivity (%)' },
+    { key: 'specificity', label: 'Reported Specificity (%)' },
     { key: 'totalParticipants', label: 'Trial Participants' },
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
@@ -2761,11 +2763,11 @@ const StatOfTheDay = ({ onNavigate }) => {
   // Day-based stat rotation (0=Sunday through 6=Saturday)
   const dayStats = [
     { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
-    { key: 'lod', label: 'Limit of Detection', unit: '', description: 'Lowest detection limit', higherIsBetter: false, format: (v) => { const ppm = v * 10000; return ppm >= 1 ? `${ppm.toFixed(1).replace(/\.0$/, '')} ppm` : `${ppm.toPrecision(2)} ppm`; }, filter: (v) => v != null && typeof v === 'number' && v > 0 },
-    { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
+    { key: 'lod', label: 'Limit of Detection', unit: '', description: 'Lowest detection limit (caution: not directly comparable)', higherIsBetter: false, format: (v) => { const ppm = v * 10000; return ppm >= 1 ? `${ppm.toFixed(1).replace(/\.0$/, '')} ppm` : `${ppm.toPrecision(2)} ppm`; }, filter: (v) => v != null && typeof v === 'number' && v > 0 },
+    { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked (more ≠ better)', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
     { key: 'tat', label: 'Turnaround Time', unit: ' days', description: 'Fastest turnaround', higherIsBetter: false, format: (v) => v, filter: (v) => v != null && v > 0 },
-    { key: 'sensitivity', label: 'Sensitivity', unit: '%', description: 'Highest sensitivity', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
-    { key: 'specificity', label: 'Specificity', unit: '%', description: 'Highest specificity', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
+    { key: 'sensitivity', label: 'Reported Sensitivity', unit: '%', description: 'Highest reported sensitivity (methodology varies)', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
+    { key: 'specificity', label: 'Reported Specificity', unit: '%', description: 'Highest reported specificity (methodology varies)', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
     { key: 'numIndications', label: 'Cancer Indications', unit: '', description: 'Most cancer types covered', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0, getValue: (t) => t.cancerTypes?.length || 0 },
   ];
   
@@ -5434,9 +5436,117 @@ const InfoIcon = ({ citations, notes }) => {
 };
 
 // ============================================
+// Expert Insight Component - Shows expert context on metrics
+// Attribution: Dr. Matt Ryder, Expert Advisor
+// ============================================
+const EXPERT_INSIGHTS = {
+  sensitivity: {
+    title: "Understanding Sensitivity Claims",
+    content: `"Sensitivity" alone is ambiguous. Key distinctions:
+
+• Clinical sensitivity: % of patients who recurred that were correctly identified as MRD-positive. This is what clinicians assume, but often not what's reported.
+
+• Analytical sensitivity: Detection rate in lab validation—not real-world clinical performance.
+
+• Landmark vs Longitudinal: Landmark = detection at single post-surgery timepoint (more meaningful). Longitudinal = detected at ANY timepoint across multiple draws (inflated number, may miss early treatment window).
+
+Always ask: What type? At what timeframe? For which stages? Sample size?`
+  },
+  specificity: {
+    title: "Why Specificity Matters More Than You Think",
+    content: `For MRD testing, specificity may be MORE important than sensitivity—especially for low-recurrence populations (e.g., stage II CRC where ~85% are already cured).
+
+• Per-timepoint vs per-patient: Reporting per-timepoint inflates the number. With serial testing, false positive probability compounds.
+
+• Overtreatment risk: Poor specificity means unnecessary chemo for patients already cured.
+
+• The asymmetry problem: Some report longitudinal sensitivity but per-timepoint specificity—statistically misleading.`
+  },
+  lod: {
+    title: "The LOD Comparison Problem",
+    content: `LOD claims cannot be meaningfully compared across different MRD test architectures:
+
+• PPM favors high-input tests: "1 PPM" from 13M molecules sequenced = 13 ctDNA molecules detected. Another test might detect the same with fewer total molecules (more efficient).
+
+• Different units: PPM, VAF%, molecules/mL don't convert cleanly.
+
+• Pre-analytical losses: Most studies start with purified cfDNA, ignoring ~50% loss during extraction. Real-world LOD ≈ 2× published.
+
+• LOD95 vs detection threshold: LOD95 = 95% detection rate. "Detection threshold" might only be 5% reproducible.`
+  },
+  bloodVolume: {
+    title: "Blood Volume ≠ Test Quality",
+    content: `Higher blood volume and more variants tracked does NOT mean better performance.
+
+• Noise matters more: 50 variants with excellent error suppression can outperform 1,800 variants with poor noise control.
+
+• Different architectures: Some tests actively capture only tumor DNA, minimizing total molecules. Their "efficiency" is obscured by PPM comparisons.
+
+Blood volume primarily matters for practical reasons (difficult draws), not as a quality proxy.`
+  },
+  tumorInformed: {
+    title: "Tumor-Informed vs Tumor-Naïve",
+    content: `Both approaches have legitimate clinical applications:
+
+• Tumor-informed: Requires tumor tissue to identify patient-specific mutations, then tracks those in blood. Generally more sensitive but requires tissue.
+
+• Tumor-naïve: Works without tumor tissue via common cancer signals (mutations, methylation). More convenient but may miss patient-specific variants.
+
+Neither is universally "better"—depends on clinical context, tissue availability, cancer type, and intended use.`
+  },
+  clinicalTrials: {
+    title: "Interpreting Clinical Trial Data",
+    content: `Clinical sensitivity from interventional trials is often impossible to calculate accurately.
+
+• The treatment paradox: In trials like DYNAMIC, MRD+ patients received chemo—many cured by treatment. Can't know how many would have recurred untreated.
+
+• Stage mixing: Watch for claims combining stages II, III, IV. Stage II is hardest to detect but most clinically relevant. Combined reporting hides poor stage II performance.`
+  }
+};
+
+const ExpertInsight = ({ topic }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const insight = EXPERT_INSIGHTS[topic];
+  
+  if (!insight) return null;
+  
+  return (
+    <span className="relative inline-block ml-1">
+      <button 
+        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        className="w-4 h-4 rounded-full bg-amber-100 border border-amber-300 text-amber-700 text-[10px] font-bold inline-flex items-center justify-center hover:bg-amber-200 hover:border-amber-400 transition-colors cursor-help"
+        title="Expert insight available"
+      >
+        E
+      </button>
+      {isOpen && (
+        <div className="absolute z-50 left-0 bottom-full mb-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-2 border-b border-amber-100">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-amber-400 text-white text-[10px] font-bold flex items-center justify-center">E</div>
+              <h4 className="font-semibold text-slate-800 text-sm">{insight.title}</h4>
+            </div>
+          </div>
+          <div className="px-4 py-3 text-xs text-slate-600 leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto">
+            {insight.content}
+          </div>
+          <div className="px-4 py-2 bg-slate-50 border-t border-slate-100">
+            <p className="text-[10px] text-slate-500">
+              <span className="font-medium text-slate-600">Expert Advisor:</span> Matt Ryder, PhD — Liquid biopsy specialist
+            </p>
+          </div>
+        </div>
+      )}
+    </span>
+  );
+};
+
+// ============================================
 // Data Row Component for expanded view
 // ============================================
-const DataRow = ({ label, value, unit, citations, notes }) => {
+const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   if (value === null || value === undefined) return null;
   const displayValue = `${value}${unit || ''}`;
   const isLongValue = typeof displayValue === 'string' && displayValue.length > 60;
@@ -5447,6 +5557,7 @@ const DataRow = ({ label, value, unit, citations, notes }) => {
       <div className="py-2 border-b border-gray-100 last:border-0">
         <span className="text-sm text-gray-600 flex items-center mb-1">
           {label}
+          {expertTopic && <ExpertInsight topic={expertTopic} />}
           <InfoIcon citations={citations} notes={notes} />
         </span>
         <span className="text-sm font-medium text-gray-900 block">{displayValue}</span>
@@ -5459,6 +5570,7 @@ const DataRow = ({ label, value, unit, citations, notes }) => {
     <div className="flex items-start justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4">
       <span className="text-sm text-gray-600 flex items-center flex-shrink-0">
         {label}
+        {expertTopic && <ExpertInsight topic={expertTopic} />}
         <InfoIcon citations={citations} notes={notes} />
       </span>
       <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
@@ -5553,15 +5665,17 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           {category === 'MRD' && (
             <>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
-              <DataRow label="Headline Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} />
-              <DataRow label="Headline Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} />
+              <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} expertTopic="sensitivity" />
+              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} expertTopic="specificity" />
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-              <DataRow label="Limit of Detection" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} />
+              <DataRow label="Limit of Detection" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
               
               {(test.landmarkSensitivity || test.landmarkSpecificity || test.longitudinalSensitivity || test.longitudinalSpecificity) && (
                 <>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Landmark & Longitudinal</p>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 flex items-center gap-1">
+                    Landmark & Longitudinal <ExpertInsight topic="sensitivity" />
+                  </p>
                   <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" citations={test.landmarkSensitivityCitations} notes={test.landmarkSensitivityNotes} />
                   <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" citations={test.landmarkSpecificityCitations} notes={test.landmarkSpecificityNotes} />
                   <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" citations={test.longitudinalSensitivityCitations} notes={test.longitudinalSensitivityNotes} />
@@ -5610,13 +5724,15 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           {/* ECD-specific expanded view */}
           {category === 'ECD' && (
             <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
-              <DataRow label="Overall Sensitivity" value={test.sensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">
+                Performance Metrics <ExpertInsight topic="sensitivity" />
+              </p>
+              <DataRow label="Overall Sensitivity" value={test.sensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} expertTopic="sensitivity" />
               <DataRow label="Stage I Sensitivity" value={test.stageISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
               <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
               <DataRow label="Stage III Sensitivity" value={test.stageIIISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
               <DataRow label="Stage IV Sensitivity" value={test.stageIVSensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Specificity" value={test.specificity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
+              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} expertTopic="specificity" />
               <DataRow label="PPV" value={test.ppv} unit="%" citations={test.performanceCitations} notes={test.ppvDefinition} />
               <DataRow label="NPV" value={test.npv} unit="%" citations={test.performanceCitations} notes={test.npvDefinition} />
               {test.testScope?.includes('Multi-cancer') && (
@@ -5658,9 +5774,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           {category === 'TRM' && (
             <>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
-              <DataRow label="Sensitivity" value={test.sensitivity} unit="%" />
-              <DataRow label="Specificity" value={test.specificity} unit="%" />
-              <DataRow label="LOD" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} />
+              <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" expertTopic="sensitivity" />
+              <DataRow label="Reported Specificity" value={test.specificity} unit="%" expertTopic="specificity" />
+              <DataRow label="LOD" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} expertTopic="lod" />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
@@ -5668,7 +5784,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Method" value={test.method} />
               <DataRow label="Response Definition" value={test.responseDefinition} />
               <DataRow label="Target Population" value={test.targetPopulation} />
-              <DataRow label="Variants Tracked" value={test.variantsTracked} />
+              <DataRow label="Variants Tracked" value={test.variantsTracked} expertTopic="bloodVolume" />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
@@ -5797,6 +5913,20 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
           </button>
         </div>
         
+        {/* Expert Warning Banner */}
+        <div className="px-5 py-3 bg-amber-50 border-b border-amber-200 flex items-start gap-3" style={{ flexShrink: 0 }}>
+          <div className="w-6 h-6 rounded-full bg-amber-400 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">E</div>
+          <div className="text-sm">
+            <p className="font-medium text-amber-800">Comparison Limitations</p>
+            <p className="text-amber-700 text-xs mt-1">
+              Performance metrics may not be directly comparable across tests due to differences in methodology 
+              (analytical vs clinical, landmark vs longitudinal), patient populations, and reporting standards. 
+              LOD values use different units and architectures. See <span className="font-medium">[E]</span> icons for context.
+            </p>
+            <p className="text-amber-600 text-[10px] mt-1 italic">— Expert Advisor: Matt Ryder, PhD</p>
+          </div>
+        </div>
+        
         {/* Table Content */}
         <div style={{ overflow: 'auto', flex: '1 1 auto' }}>
           <table className="w-full border-collapse">
@@ -5830,7 +5960,11 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
               {params.map((param, idx) => (
                 <tr key={param.key} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/70'} hover:bg-gray-100/50 transition-colors`}>
                   <td className={`p-4 text-sm font-medium text-gray-600 ${colors.border} border-b`}>
-                    {param.label}
+                    <span className="flex items-center gap-1">
+                      {param.label}
+                      {(param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
+                      {param.key === 'lod' && <ExpertInsight topic="lod" />}
+                    </span>
                   </td>
                   {tests.map(test => {
                     let value = param.key === 'cancerTypesStr' ? test.cancerTypes?.join(', ') 
