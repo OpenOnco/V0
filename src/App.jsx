@@ -5146,34 +5146,6 @@ const SourceDataPage = () => {
     URL.revokeObjectURL(url);
   };
 
-  const generateCsv = (headers, rows) => {
-    return [headers, ...rows].map(row => row.map(cell => `"${String(cell ?? 'UNKNOWN').replace(/"/g, '""')}"`).join(',')).join('\n');
-  };
-
-  const downloadMrdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'Analytical Specificity (%)', 'Clinical Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'Blood Volume (mL)', 'cfDNA Input (ng)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Availability', 'Trial Participants', 'Publications'];
-    const rows = mrdTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.analyticalSpecificity, t.clinicalSpecificity, t.lod, t.lod95, t.bloodVolume, t.cfdnaInput, t.tat || t.initialTat, t.fdaStatus, t.reimbursement, t.availableRegions?.join('; ') || 'US', t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
-    ]);
-    downloadFile(generateCsv(headers, rows), 'OpenOnco_MRD.csv', 'text/csv;charset=utf-8;');
-  };
-
-  const downloadEcdCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Test Scope', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'TAT (days)', 'FDA Status', 'Reimbursement', 'Availability', 'List Price', 'Trial Participants', 'Publications'];
-    const rows = ecdTestData.map(t => [
-      t.name, t.vendor, t.testScope, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.tat, t.fdaStatus, t.reimbursement, t.availableRegions?.join('; ') || 'US', t.listPrice, t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
-    ]);
-    downloadFile(generateCsv(headers, rows), 'OpenOnco_ECD.csv', 'text/csv;charset=utf-8;');
-  };
-
-  const downloadTrmCsv = () => {
-    const headers = ['Test Name', 'Vendor', 'Approach', 'Cancer Types', 'Sensitivity (%)', 'Specificity (%)', 'LOD (detection)', 'LOD95 (95% conf)', 'FDA Status', 'Reimbursement', 'Availability', 'Trial Participants', 'Publications'];
-    const rows = trmTestData.map(t => [
-      t.name, t.vendor, t.approach, t.cancerTypes?.join('; '), t.sensitivity, t.specificity, t.lod, t.lod95, t.fdaStatus, t.reimbursement, t.availableRegions?.join('; ') || 'US', t.totalParticipants, t.numPublicationsPlus ? `${t.numPublications}+` : t.numPublications
-    ]);
-    downloadFile(generateCsv(headers, rows), 'OpenOnco_TRM.csv', 'text/csv;charset=utf-8;');
-  };
-
   const generateAllTestsJson = () => {
     const allData = {
       meta: {
@@ -5262,33 +5234,6 @@ const SourceDataPage = () => {
           </div>
         </div>
 
-        {/* CSV Downloads */}
-        <div className="rounded-xl border-2 border-gray-200 bg-gray-50 p-5 mt-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900">Individual Category Downloads</h3>
-                <p className="text-sm text-gray-500">Separate CSV files for each test category</p>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={downloadMrdCsv} className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">
-                MRD
-              </button>
-              <button onClick={downloadEcdCsv} className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors">
-                ECD
-              </button>
-              <button onClick={downloadTrmCsv} className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium rounded-lg transition-colors">
-                TRM
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Data Attribution */}
@@ -5445,13 +5390,27 @@ const formatLOD = (lod) => {
 
 const InfoIcon = ({ citations, notes }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
+  
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+  
   if (!citations && !notes) return null;
   
   return (
-    <span className="relative inline-block ml-1">
+    <span className="relative inline-block ml-1" ref={ref}>
       <button 
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        className="w-4 h-4 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-500 hover:text-gray-700 text-xs font-medium inline-flex items-center justify-center transition-colors"
+        className="w-4 h-4 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-500 hover:text-gray-700 text-xs font-medium inline-flex items-center justify-center transition-colors cursor-pointer"
       >
         i
       </button>
@@ -5490,182 +5449,182 @@ const EXPERT_INSIGHTS = {
   sensitivity: {
     title: "Understanding Sensitivity Claims",
     experts: "MR",
-    content: `"Sensitivity" alone is ambiguous. Key distinctions:
+    content: `"Sensitivity" alone can be ambiguous. Here are helpful distinctions:
 
-• Clinical sensitivity: % of patients who recurred that were correctly identified as MRD-positive. This is what clinicians assume, but often not what's reported.
+Clinical sensitivity refers to the percentage of patients who recurred that were correctly identified as MRD-positive. This is often what clinicians assume, but not always what's reported.
 
-• Analytical sensitivity: Detection rate in lab validation—not real-world clinical performance.
+Analytical sensitivity refers to detection rate in lab validation conditions, which may differ from real-world clinical performance.
 
-• Landmark vs Longitudinal: Landmark = detection at single post-surgery timepoint (more meaningful). Longitudinal = detected at ANY timepoint across multiple draws (inflated number, may miss early treatment window).
+Landmark vs Longitudinal: Landmark measures detection at a single post-surgery timepoint. Longitudinal measures detection at any timepoint across multiple draws, which typically yields higher numbers.
 
-Always ask: What type? At what timeframe? For which stages? Sample size?`
+Helpful questions to ask: What type of sensitivity? At what timeframe? For which stages? What was the sample size?`
   },
   stageSpecific: {
     title: "Why Stage-Specific Sensitivity Matters",
     experts: "MR",
-    content: `Many companies combine stages II, III, and IV when reporting clinical sensitivity—this hides critical performance differences.
+    content: `When sensitivity is reported for combined stages (II, III, IV together), it can be helpful to understand the breakdown.
 
-• Stage II is hardest: Lower tumor burden = less ctDNA = harder to detect. But Stage II is where MRD-guided therapy decisions often matter most.
+Stage II presents the greatest detection challenge due to lower tumor burden and less circulating tumor DNA. Yet Stage II is often where MRD-guided therapy decisions have the most impact.
 
-• Stage III/IV inflate numbers: Higher stages have more ctDNA and are easier to detect. Including them improves overall sensitivity figures.
+Stage III/IV cases typically have more ctDNA and higher detection rates, which can lift overall sensitivity figures when stages are combined.
 
-• The real question: If you're a Stage II patient considering adjuvant therapy, ideally you'd want Stage II-specific sensitivity—not a blended number weighted toward Stage III/IV patients.
+For a Stage II patient considering adjuvant therapy, stage-specific sensitivity data—when available—may be more directly relevant than blended numbers.
 
-• What to look for: Tests that report stage-specific data separately. If only combined stages are reported, Stage II performance may be lower than the headline number.
+What to look for: Tests that report stage-specific data separately provide more granular information for decision-making.
 
-When a test reports "95% sensitivity for Stage II-IV combined," the Stage II-only number is often lower—sometimes substantially so.
-
-Stage-specific reporting would help clinicians and patients make more informed comparisons, and we encourage vendors to provide this breakdown where feasible.`
+Stage-specific reporting helps clinicians and patients make more informed comparisons, and we encourage vendors to provide this breakdown where feasible.`
   },
   stageMissing: {
-    title: "Stage-Specific Data Would Help",
-    experts: "MR",
-    content: `This test reports combined-stage sensitivity but does not currently break out Stage II performance separately.
+    title: "Why Stage-Specific Data Matters",
+    experts: "MR, SW",
+    content: `Stage-specific sensitivity data helps clinicians and patients make more informed decisions.
 
-For tests with substantial clinical validation data, stage-specific reporting would ideally be available to help inform treatment decisions.
+Why it's important: Stage II patients considering adjuvant therapy benefit from understanding how the test performs specifically for their situation, as detection rates typically vary by stage.
 
-• Why it matters: Stage II patients considering adjuvant therapy benefit from understanding how the test performs specifically for their situation.
+What you can do: Consider asking the vendor about stage-specific performance data—they may have additional information available.
 
-• What you can do: Consider asking the vendor about stage-specific performance data—they may have additional information available.
-
-• Industry context: Some tests (particularly in early cancer detection) routinely report stage-specific sensitivity. Similar reporting for MRD tests would make comparison more straightforward.
-
-We recognize that clinical trial design and sample sizes can make stage-specific reporting more challenging in some cases.`
+We encourage vendors to provide stage-specific breakdowns where feasible, as this transparency helps the entire field.`
   },
   specificity: {
     title: "Understanding Specificity Claims",
     experts: "MR, SW",
-    content: `For MRD testing, specificity may be MORE important than sensitivity—especially for low-recurrence populations (e.g., stage II CRC where ~85% are already cured).
+    content: `For MRD testing, specificity may be particularly important—especially in low-recurrence populations where most patients are already cured.
 
-ANALYTICAL vs CLINICAL SPECIFICITY:
-• Analytical specificity: How often does the test correctly call negative samples negative in the lab? Critical for repeat monitoring.
-• Clinical specificity: How often does MRD-negative mean no recurrence? Debatable value given study designs where MRD+ patients receive treatment.
+Analytical vs Clinical Specificity:
+Analytical specificity measures how often the test correctly identifies negative samples as negative in the lab. This is important for repeat monitoring scenarios.
 
-REPORTING ISSUES:
-• Per-timepoint vs per-patient: Reporting per-timepoint inflates the number. With serial testing, false positive probability compounds.
-• Overtreatment risk: Poor specificity means unnecessary chemo for patients already cured.
-• The asymmetry problem: Some report longitudinal sensitivity but per-timepoint specificity—statistically misleading.
+Clinical specificity measures how often MRD-negative results correspond with no eventual recurrence. Interpretation can be complex in studies where MRD-positive patients receive treatment.
 
-Analytical specificity is especially important with repeat testing—even small false positive rates compound over serial draws.`
+Reporting considerations:
+Per-timepoint vs per-patient reporting can yield different numbers. With serial testing, it's worth understanding how false positive probability may compound.
+
+Analytical specificity becomes especially relevant with repeat testing, where even small false positive rates can accumulate over serial draws.`
   },
   analyticalVsClinicalSpecificity: {
     title: "Analytical vs Clinical Specificity",
     experts: "MR, SW",
-    content: `These are fundamentally different metrics that answer different questions:
+    content: `These metrics answer different questions and are worth understanding separately:
 
-ANALYTICAL SPECIFICITY:
-• What it measures: How often does the test correctly call truly negative samples negative in the lab?
-• Why it matters: Critical for repeat monitoring—even 99% specificity means ~5% cumulative false positive risk over 5 annual tests
-• How it's measured: Contrived samples or healthy donor plasma
+Analytical Specificity
+What it measures: How often does the test correctly identify truly negative samples as negative in laboratory conditions?
+Why it matters: Important for repeat monitoring—even 99% specificity means approximately 5% cumulative false positive probability over 5 annual tests.
+How it's measured: Typically using contrived samples or healthy donor plasma.
 
-CLINICAL SPECIFICITY:
-• What it measures: How often does MRD-negative mean no eventual recurrence?
-• The problem: In interventional trials, MRD+ patients often receive treatment—so we can't know if they would have recurred untreated
-• Real interpretation: Better thought of as NPV (negative predictive value) in context
+Clinical Specificity
+What it measures: How often does an MRD-negative result correspond with no eventual recurrence?
+Interpretation note: In interventional trials where MRD-positive patients receive treatment, the "true" recurrence rate without treatment isn't directly observable.
+Context: This metric is sometimes better understood as negative predictive value (NPV) in context.
 
-WHY ANALYTICAL MATTERS MORE:
-• It's the actionable number for clinical decision-making
-• Clinical specificity conflates test performance with treatment efficacy
-• A test with poor analytical specificity will generate false positives regardless of clinical context
+Why both matter:
+Analytical specificity reflects the test's inherent performance characteristics.
+Clinical specificity is influenced by both test performance and treatment effects.
 
-When vendors report only "specificity" without specifying type, ask which one—they're not interchangeable.`
+When vendors report "specificity" without specifying type, it's reasonable to ask which measurement is being referenced.`
   },
   lod: {
-    title: "The LOD Comparison Problem",
+    title: "Understanding LOD Comparisons",
     experts: "MR, SW",
-    content: `LOD claims cannot be meaningfully compared across different MRD test architectures. We display values exactly as reported by each vendor—no conversions.
+    content: `LOD (Limit of Detection) values can be difficult to compare directly across different MRD test architectures. We display values exactly as reported by each vendor without conversion.
 
-LOD vs LOD95 - CRITICAL DISTINCTION:
-• LOD (detection threshold): The level where you CAN detect signal, even if not reliably
-• LOD95: The level where you detect 95% of the time
+LOD vs LOD95 — an important distinction:
+LOD (detection threshold): The level where signal can be detected, though not necessarily reliably.
+LOD95: The level where detection occurs 95% of the time.
 
-WHY THIS MATTERS FOR MONITORING:
-• If LOD << LOD95: Test CAN detect lower levels, just not reliably. Serial testing helps catch what single tests miss!
-• If LOD ≈ LOD95: No chance of detecting below threshold, even with repeat tests
+Why this matters for monitoring:
+When LOD is significantly lower than LOD95, the test may detect lower levels occasionally. Serial testing provides additional opportunities for detection.
+When LOD and LOD95 are similar, detection below the threshold is unlikely even with repeat testing.
 
-OTHER COMPARISON ISSUES:
-• Different units: ppm, VAF%, molecules/mL don't convert cleanly
-• PPM favors high-input tests: "1 ppm" from 13M molecules ≠ same as 1 ppm from 1M molecules
-• Pre-analytical losses: Most studies start with purified cfDNA, ignoring ~50% extraction loss
+Other comparison considerations:
+Different units (ppm, VAF%, molecules/mL) don't convert directly.
+Pre-analytical factors like extraction efficiency can affect results.
 
-Bottom line: A lower number doesn't necessarily mean a better test. The gap between LOD and LOD95 matters for surveillance protocols.`
+The gap between LOD and LOD95 can be particularly relevant for surveillance protocols where serial testing is planned.`
   },
   lodVsLod95: {
     title: "LOD vs LOD95: Why Both Matter",
     experts: "MR, SW",
-    content: `This is where the NGS field can be misleading in how it displays numbers.
+    content: `Understanding both LOD and LOD95 provides helpful context for test performance:
 
-THE KEY INSIGHT:
-• LOD (detection threshold): Can detect signal, but not reliably
-• LOD95: Detects 95% of the time at this level
+The key distinction:
+LOD (detection threshold): Signal can be detected, but not reliably at this level.
+LOD95: Detection occurs 95% of the time at this level.
 
-WHY THE GAP MATTERS:
-If a test has LOD of 0.5 ppm but LOD95 of 5 ppm, that's actually GOOD for monitoring:
-• You have a chance of detecting variants below 5 ppm with repeat testing
-• Serial samples give multiple opportunities to catch low-level disease
+Why the gap between them matters:
+If a test has LOD of 0.5 ppm but LOD95 of 5 ppm, this can actually be favorable for monitoring—there's a chance of detecting variants below 5 ppm with repeat testing, and serial samples provide multiple detection opportunities.
 
-If LOD ≈ LOD95 (very close together):
-• The specificity threshold forces the calling threshold up
-• Zero chance of detecting anything below LOD95, even with many samples
-• Repeat testing won't help catch lower levels
+If LOD ≈ LOD95 (very close together), detection below LOD95 is unlikely even with multiple samples.
 
-BOTTOM LINE:
-Tests where LOD is much lower than LOD95 offer better surveillance potential—you get "free" sensitivity from serial testing. This information is rarely disclosed but critically important for monitoring protocols.`
+Practical implication:
+Tests where LOD is notably lower than LOD95 may offer additional surveillance potential through serial testing. This gap is one factor worth considering when evaluating tests for monitoring protocols.`
   },
   bloodVolume: {
-    title: "Blood Volume ≠ Test Quality",
+    title: "Blood Volume Context",
     experts: "MR",
-    content: `Higher blood volume and more variants tracked does NOT mean better performance.
+    content: `Higher blood volume and more variants tracked don't automatically indicate better performance.
 
-• Noise matters more: 50 variants with excellent error suppression can outperform 1,800 variants with poor noise control.
+Error suppression and assay design can matter significantly—a smaller panel with excellent noise control may perform comparably to or better than a larger panel.
 
-• Different architectures: Some tests actively capture only tumor DNA, minimizing total molecules. Their "efficiency" is obscured by PPM comparisons.
+Different test architectures work in different ways, so direct comparisons based on volume or variant count alone may not reflect overall test quality.
 
-Blood volume primarily matters for practical reasons (difficult draws), not as a quality proxy.`
+Blood volume is primarily relevant for practical considerations (ease of blood draw) rather than as a direct quality indicator.`
   },
   cfdnaInput: {
     title: "cfDNA Input vs Blood Volume",
     experts: "SW",
-    content: `Pharma researchers care about cfDNA INPUT (ng), not just blood volume (mL).
+    content: `For research applications, cfDNA input (measured in ng) can be as relevant as blood volume (mL).
 
-WHY THIS MATTERS:
-• Different extraction methods yield different cfDNA amounts from the same blood volume
-• Input to assay (ng) determines analytical sensitivity ceiling
-• Genome equivalents analyzed is the true denominator
+Why this distinction matters:
+Different extraction methods yield different cfDNA amounts from the same blood volume.
+The amount of cfDNA that enters the assay affects the analytical sensitivity ceiling.
+Genome equivalents analyzed (approximately 3.3 pg per haploid genome) represents the true denominator.
 
-WHAT TO LOOK FOR:
-• Blood volume (mL): How much blood is drawn
-• cfDNA yield: How much cfDNA is extracted
-• Input to assay (ng): How much cfDNA enters the test
-• Genome equivalents: ~3.3 pg per haploid genome
+What to consider:
+Blood volume (mL): How much blood is drawn
+cfDNA yield: How much cfDNA is extracted
+Input to assay (ng): How much cfDNA enters the test
 
-A test using 20mL blood but only 10ng cfDNA input may perform worse than one using 10mL blood with 30ng input. The input amount is often not disclosed but significantly impacts sensitivity.`
+A test using more blood but less cfDNA input may have different performance characteristics than one using less blood with more cfDNA input. Input amounts aren't always disclosed but can significantly impact sensitivity.`
   },
   tumorInformed: {
     title: "Tumor-Informed vs Tumor-Naïve",
     experts: "MR",
     content: `Both approaches have legitimate clinical applications:
 
-• Tumor-informed: Requires tumor tissue to identify patient-specific mutations, then tracks those in blood. Generally more sensitive but requires tissue.
+Tumor-informed testing requires tumor tissue to identify patient-specific mutations, then tracks those in blood. Generally offers higher sensitivity but requires tissue availability.
 
-• Tumor-naïve (tumor-agnostic): Works without tumor tissue via common cancer signals (mutations, methylation). More convenient but may miss patient-specific variants.
+Tumor-naïve (tumor-agnostic) testing works without tumor tissue, using common cancer signals such as mutations or methylation patterns. More convenient when tissue isn't available but may miss patient-specific variants.
 
-Neither is universally "better"—depends on clinical context, tissue availability, cancer type, and intended use.`
+Neither approach is universally superior—the best choice depends on clinical context, tissue availability, cancer type, and intended use.`
   },
   clinicalTrials: {
     title: "Interpreting Clinical Trial Data",
     experts: "MR",
-    content: `Clinical sensitivity from interventional trials is often impossible to calculate accurately.
+    content: `Clinical sensitivity from interventional trials requires careful interpretation.
 
-• The treatment paradox: In trials like DYNAMIC, MRD+ patients received chemo—many cured by treatment. Can't know how many would have recurred untreated.
+Treatment effects on outcomes: In trials where MRD-positive patients receive additional therapy, some may be cured by that treatment. This makes it difficult to determine how many would have recurred without intervention.
 
-• Stage mixing: Watch for claims combining stages II, III, IV. Stage II is hardest to detect but most clinically relevant. Combined reporting hides poor stage II performance.`
+Stage composition: When results combine multiple stages (II, III, IV), it's helpful to understand the breakdown when available, as detection rates typically vary by stage.
+
+These factors don't diminish the value of clinical trial data—they simply provide context for interpretation.`
   }
 };
 
 const ExpertInsight = ({ topic }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
   const insight = EXPERT_INSIGHTS[topic];
+  
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
   
   if (!insight) return null;
   
@@ -5681,10 +5640,10 @@ const ExpertInsight = ({ topic }) => {
   };
   
   return (
-    <span className="relative inline-block ml-1">
+    <span className="relative inline-block ml-1" ref={ref}>
       <button 
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        className="w-4 h-4 rounded-full bg-amber-100 border border-amber-300 text-amber-700 text-[10px] font-bold inline-flex items-center justify-center hover:bg-amber-200 hover:border-amber-400 transition-colors cursor-help"
+        className="w-4 h-4 rounded-full bg-amber-100 border border-amber-300 text-amber-700 text-[10px] font-bold inline-flex items-center justify-center hover:bg-amber-200 hover:border-amber-400 transition-colors cursor-pointer"
         title="Expert insight available - click to view"
       >
         E
@@ -5935,20 +5894,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 flex items-center gap-1">
                     Sensitivity by Stage <ExpertInsight topic="stageSpecific" />
                   </p>
-                  {test.sensitivityStagesReported && !test.stageIISensitivity && !test.stageIIISensitivity && (
-                    <div className="py-2 px-3 bg-orange-50 border-orange-200 border rounded-lg mb-2">
-                      <p className="text-xs text-orange-700 flex items-center gap-1">
-                        <span className="font-medium">ℹ️ Combined stages reported:</span> {test.sensitivityStagesReported}
-                        {test.stageDataExpected && <ExpertInsight topic="stageMissing" />}
-                      </p>
-                      <p className="text-[10px] text-orange-600 mt-1">
-                        {test.stageDataExpected 
-                          ? 'Stage II sensitivity may differ from the headline figure. Stage-specific data would help inform treatment decisions.'
-                          : 'Stage II sensitivity may differ from the headline figure. See expert note for context.'}
-                      </p>
-                    </div>
-                  )}
-                  <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity} unit="%" citations={test.stageIISensitivityCitations} notes={test.stageIISensitivityNotes} />
+                  <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity || 'Not yet available'} unit={test.stageIISensitivity ? '%' : ''} citations={test.stageIISensitivityCitations} notes={test.stageIISensitivityNotes} expertTopic={!test.stageIISensitivity ? "stageMissing" : undefined} />
                   <DataRow label="Stage III Sensitivity" value={test.stageIIISensitivity} unit="%" citations={test.stageIIISensitivityCitations} notes={test.stageIIISensitivityNotes} />
                   <DataRow label="Stage IV Sensitivity" value={test.stageIVSensitivity} unit="%" citations={test.stageIVSensitivityCitations} notes={test.stageIVSensitivityNotes} />
                   {test.sensitivityStagesReported && (test.stageIISensitivity || test.stageIIISensitivity) && (
