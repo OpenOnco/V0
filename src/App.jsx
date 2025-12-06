@@ -5606,6 +5606,21 @@ Treatment effects on outcomes: In trials where MRD-positive patients receive add
 Stage composition: When results combine multiple stages (II, III, IV), it's helpful to understand the breakdown when available, as detection rates typically vary by stage.
 
 These factors don't diminish the value of clinical trial data—they simply provide context for interpretation.`
+  },
+  mrdUseCases: {
+    title: "MRD vs Treatment Response vs Surveillance",
+    experts: "MR",
+    content: `MRD tests can support three distinct clinical decisions:
+
+Landmark MRD: A single post-surgery timepoint to help decide on adjuvant therapy. This is often the most clinically actionable use case.
+
+Treatment response monitoring: Serial tests during therapy to assess whether treatment is working, based on ctDNA kinetics.
+
+Surveillance: Periodic testing off-therapy to detect recurrence earlier than imaging.
+
+Many assays span more than one use-case, but trial design, endpoints, and performance claims often target just one. Sensitivity figures from a surveillance study may not apply to landmark detection, and vice versa.
+
+When comparing tests, consider which use-case the reported performance data reflects.`
   }
 };
 
@@ -5767,7 +5782,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
-          {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Sensitivity</p></div>}
+          {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
           {test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
           {/* LOD display - show both LOD and LOD95 when available */}
           {(test.lod != null || test.lod95 != null) && (
@@ -5778,9 +5793,9 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
                   <p className="text-sm font-bold text-violet-600">{test.lod}</p>
                   <p className="text-xs text-violet-400">{test.lod95}</p>
                   <p className="text-xs text-gray-500">LOD / LOD95</p>
-                  <span className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 font-medium mt-0.5" title="Gap between LOD and LOD95 means serial testing can catch lower-level disease">
-                    <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                    Serial+
+                  <span className="inline-flex items-center gap-0.5 text-[9px] text-violet-500 font-medium mt-0.5" title="Both LOD and LOD95 are reported; see expert notes on how to interpret the gap.">
+                    <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    LOD+95
                   </span>
                 </>
               ) : test.lod != null ? (
@@ -5830,7 +5845,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           {/* MRD-specific expanded view */}
           {category === 'MRD' && (
             <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">Performance Metrics <ExpertInsight topic="mrdUseCases" /></p>
               <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} expertTopic="sensitivity" />
               <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} expertTopic="specificity" />
               {(test.analyticalSpecificity || test.clinicalSpecificity) && (
@@ -5876,7 +5891,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Initial TAT" value={test.initialTat} unit=" days" citations={test.initialTatCitations} notes={test.initialTatNotes} />
               <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
               <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />
-              <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} />
+              <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} expertTopic="bloodVolume" />
               <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} notes={test.cfdnaInputNotes} expertTopic="cfdnaInput" />
               <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />
               
@@ -5977,7 +5992,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Method" value={test.method} />
               <DataRow label="Response Definition" value={test.responseDefinition} />
               <DataRow label="Target Population" value={test.targetPopulation} />
-              <DataRow label="Variants Tracked" value={test.variantsTracked} expertTopic="bloodVolume" />
+              <DataRow label="Variants Tracked" value={test.variantsTracked} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
               <DataRow label="FDA Status" value={test.fdaStatus} />
@@ -5992,7 +6007,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
           {/* Clinical Trials & Publications section - shown for all categories if data exists */}
           {(test.clinicalTrials || test.totalParticipants || test.numPublications) && (
             <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Clinical Evidence</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 flex items-center gap-1">Clinical Evidence <ExpertInsight topic="clinicalTrials" /></p>
               {test.totalParticipants && (
                 <div className="py-1.5 flex justify-between items-center">
                   <span className="text-xs text-gray-500">Total Trial Participants</span>
