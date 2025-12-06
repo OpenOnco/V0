@@ -2900,16 +2900,14 @@ Always end with encouragement to discuss with their care team.`;
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 1000,
           system: systemPrompt,
-          messages: [...messages.slice(-6), userMessage].map(m => ({
-            role: m.role, content: m.content
-          }))
+          messages: [...messages.slice(-6), userMessage]
         })
       });
       
@@ -3262,16 +3260,14 @@ When comparing tests, include:
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 1500,
           system: systemPrompt,
-          messages: [...messages.slice(-6), userMessage].map(m => ({
-            role: m.role, content: m.content
-          }))
+          messages: [...messages.slice(-6), userMessage]
         })
       });
       
