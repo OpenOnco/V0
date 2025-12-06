@@ -539,6 +539,12 @@ const mrdTestData = [
     "indicationsNotes": "Tumor-informed MRD assay for multiple common and rare solid tumors; Quest/Resolution MRD platform, FDA Breakthrough Device designation.",
     "sensitivity": 95.0,
     "sensitivityCitations": "https://haystackmrd.com/",
+    "sensitivityNotes": "Headline 95% sensitivity is analytical; clinical sensitivity by stage not yet published from large prospective cohorts.",
+    "sensitivityStagesReported": "Analytical validation (stages not specified)",
+    "stageIISensitivity": null,
+    "stageIISensitivityNotes": "FDA Breakthrough Device designation specifically for Stage II CRC (Aug 2025); stage-specific clinical sensitivity data expected from ongoing trials.",
+    "stageIIISensitivity": null,
+    "stageIIISensitivityNotes": "Stage III-specific data not yet published; NCT07125729 head-to-head vs Signatera includes Stage II–IV CRC.",
     "landmarkSensitivityCitations": "https://haystackmrd.com/faq/",
     "longitudinalSensitivityCitations": "https://haystackmrd.com/",
     "lod": 0.0006,
@@ -581,6 +587,11 @@ const mrdTestData = [
     "sensitivity": null,
     "sensitivityCitations": "https://investors.personalis.com/static-files/ef5485c7-4866-449d-9dcb-bfaf081bf97d",
     "sensitivityNotes": "Reported as 100% sensitivity in validation cohort (n=493); insufficient data for population-level estimates. Value set to null to avoid misleading comparisons.",
+    "sensitivityStagesReported": "Not separately reported (small validation cohort)",
+    "stageIISensitivity": null,
+    "stageIISensitivityNotes": "Stage-specific sensitivity not reported; validation cohort too small for stage breakdown.",
+    "stageIIISensitivity": null,
+    "stageIIISensitivityNotes": "Stage-specific sensitivity not reported.",
     "specificity": null,
     "specificityCitations": "https://investors.personalis.com/static-files/ef5485c7-4866-449d-9dcb-bfaf081bf97d",
     "specificityNotes": "Reported as 100% specificity in validation cohort (n=493); insufficient data for population-level estimates. Value set to null to avoid misleading comparisons.",
@@ -633,6 +644,12 @@ const mrdTestData = [
     "sensitivity": 91.0,
     "sensitivityCitations": "https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2025/New-Evidence-Validates-Oncodetects-Ability-to-Detect-Molecular-Residual-Disease-and-Predict-Recurrence-in-Colorectal-Cancer-Patients/default.aspx",
     "sensitivityNotes": "In CRC, results from Alpha-CORRECT, a study with one of the longest MRD surveillance monitoring periods to date, showed the Oncodetect test achieved 78% sensitivity at the post-surgical timepoint and 91% sensitivity during the surveillance monitoring period, with specificities of 80% and 94%, respectively (https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease) | Sources: https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease)",
+    "sensitivityStagesReported": "Stage II–III combined (CRC)",
+    "stageIISensitivity": null,
+    "stageIISensitivityNotes": "Stage II-specific CRC sensitivity not separately reported in Alpha-CORRECT publications; combined with Stage III. ⚠️ Alpha-CORRECT cohort includes Stage II patients—breakdown should be feasible but is not disclosed.",
+    "stageIIISensitivity": null,
+    "stageIIISensitivityNotes": "Alpha-CORRECT cohort primarily Stage III CRC; stage-specific breakdown not published.",
+    "stageDataExpected": true,
     "specificity": 94.0,
     "specificityCitations": "https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2025/New-Evidence-Validates-Oncodetects-Ability-to-Detect-Molecular-Residual-Disease-and-Predict-Recurrence-in-Colorectal-Cancer-Patients/default.aspx",
     "specificityNotes": "In CRC (Alpha-CORRECT study), Oncodetect demonstrated specificities of 80% at the post-surgical timepoint and 94% during surveillance monitoring. | Sources: https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease",
@@ -786,6 +803,12 @@ const mrdTestData = [
     "indicationsNotes": "Guardant Reveal tumor-naïve ctDNA MRD test with Medicare coverage for colorectal cancer (CRC) post-surgery and surveillance after curative-intent treatment.",
     "sensitivity": 81.0,
     "sensitivityNotes": "COSMOS 2024 longitudinal sensitivity for stage II+ CRC is ~81%. Earlier landmark/Reinert 2021 data showed 55-63% sensitivity. Headline value reflects current COSMOS longitudinal performance.",
+    "sensitivityStagesReported": "Stage II–IV combined",
+    "stageIISensitivity": null,
+    "stageIISensitivityNotes": "Stage II-specific sensitivity not separately reported; combined with stages III–IV in headline figures. ⚠️ COSMOS study and Medicare coverage suggest sufficient data exists for stage-specific reporting.",
+    "stageIIISensitivity": null,
+    "stageIIISensitivityNotes": "Stage III-specific sensitivity not separately reported.",
+    "stageDataExpected": true,
     "specificity": 98.0,
     "specificityNotes": "COSMOS 2024 longitudinal specificity is 98% for CRC. Earlier landmark data showed 100% specificity but with serial/longitudinal testing, 91-98% is more representative.",
     "landmarkSensitivity": 63.0,
@@ -846,6 +869,12 @@ const mrdTestData = [
     "sensitivity": 94.0,
     "sensitivityCitations": "https://investor.natera.com/news/news-details/2025/SignateraTM-Genome-Clinical-Performance-Highlighted-at-ASCO-2025/default.aspx",
     "sensitivityNotes": "Recurrence Surveillance:\nCRC: 88-93% sens., 98% spec.\nBreast: 88-89% sens., 95-99% spec.\nLung: 80-99% sens., 96-99% spec.\nBladder: 99% sens., 98% spec.\nOvarian: 99% sens.\n\nhttps://www.natera.com/oncology/signatera-advanced-cancer-detection/ | Sources: https://www.natera.com/oncology/signatera-advanced-cancer-detection/",
+    "sensitivityStagesReported": "Stage II–IV combined (varies by cancer type)",
+    "stageIISensitivity": null,
+    "stageIISensitivityNotes": "CRC Stage II landmark ~65-73% in CIRCULATE-Japan; longitudinal higher. Stage II not separately reported for other cancer types. ⚠️ With 100+ publications and 2,000+ trial participants, stage-specific data should be available but is not routinely disclosed.",
+    "stageIIISensitivity": null,
+    "stageIIISensitivityNotes": "Stage III typically shows higher sensitivity than Stage II due to higher tumor burden; specific values combined with other stages in most publications.",
+    "stageDataExpected": true,
     "specificity": 98.0,
     "specificityCitations": "https://investor.natera.com/news/news-details/2025/SignateraTM-Genome-Clinical-Performance-Highlighted-at-ASCO-2025/default.aspx",
     "specificityNotes": "Specificity ranges by cancer type: CRC 98%, Breast 95-99%, Lung 96-99%, Bladder 98%. Headline value of 98% reflects typical performance across indications.",
@@ -2136,6 +2165,9 @@ const comparisonParams = {
     { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Cancer Types' },
     { key: 'sensitivity', label: 'Reported Sensitivity (%)' },
+    { key: 'sensitivityStagesReported', label: 'Stages in Headline' },
+    { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)' },
+    { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)' },
     { key: 'specificity', label: 'Reported Specificity (%)' },
     { key: 'lod', label: 'LOD (ppm)' },
     { key: 'variantsTracked', label: 'Variants Tracked' },
@@ -5452,6 +5484,36 @@ const EXPERT_INSIGHTS = {
 
 Always ask: What type? At what timeframe? For which stages? Sample size?`
   },
+  stageSpecific: {
+    title: "Why Stage-Specific Sensitivity Matters",
+    content: `Many companies combine stages II, III, and IV when reporting clinical sensitivity—this hides critical performance differences.
+
+• Stage II is hardest: Lower tumor burden = less ctDNA = harder to detect. But Stage II is WHERE MRD DECISIONS MATTER MOST for adjuvant therapy.
+
+• Stage III/IV inflate numbers: Higher stages have more ctDNA and are easier to detect. Including them makes overall sensitivity look better.
+
+• The real question: If you're a Stage II patient deciding on chemo, you need Stage II sensitivity—not a blended number that's 70% Stage III/IV patients.
+
+• What to look for: Tests that report stage-specific data separately. If only combined stages are reported, assume Stage II performance is significantly lower than the headline number.
+
+When a test reports "95% sensitivity for Stage II-IV combined," the Stage II-only number might be 60-70%.
+
+⚠️ TRANSPARENCY GAP: Most major MRD tests have sufficient clinical trial data to report stage-specific sensitivity, but choose not to. This is a significant omission that makes informed comparison difficult.`
+  },
+  stageMissing: {
+    title: "Missing Stage-Specific Data",
+    content: `This test reports combined-stage sensitivity but does not break out Stage II performance separately.
+
+For a test with significant clinical trial data and/or Medicare coverage, stage-specific reporting should be expected and is technically feasible from their existing datasets.
+
+• Why it matters: Stage II patients have the most to gain (or lose) from MRD-guided therapy decisions, yet are shown headline numbers inflated by Stage III/IV patients.
+
+• What you can do: Ask the vendor directly for stage-specific performance data. If they have it, they should share it. If they don't, ask why not.
+
+• Industry standard: Some vendors (e.g., in the ECD space) routinely report stage-specific sensitivity. MRD vendors should be held to the same standard.
+
+The absence of stage-specific data from a major commercial test is a choice, not a limitation.`
+  },
   specificity: {
     title: "Why Specificity Matters More Than You Think",
     content: `For MRD testing, specificity may be MORE important than sensitivity—especially for low-recurrence populations (e.g., stage II CRC where ~85% are already cured).
@@ -5680,6 +5742,34 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
                   <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" citations={test.landmarkSpecificityCitations} notes={test.landmarkSpecificityNotes} />
                   <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" citations={test.longitudinalSensitivityCitations} notes={test.longitudinalSensitivityNotes} />
                   <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" citations={test.longitudinalSpecificityCitations} notes={test.longitudinalSpecificityNotes} />
+                </>
+              )}
+              
+              {/* Stage-Specific Sensitivity Section */}
+              {(test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity || test.sensitivityStagesReported) && (
+                <>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 flex items-center gap-1">
+                    Sensitivity by Stage <ExpertInsight topic="stageSpecific" />
+                  </p>
+                  {test.sensitivityStagesReported && !test.stageIISensitivity && !test.stageIIISensitivity && (
+                    <div className={`py-2 px-3 ${test.stageDataExpected ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'} border rounded-lg mb-2`}>
+                      <p className={`text-xs ${test.stageDataExpected ? 'text-red-700' : 'text-amber-700'} flex items-center gap-1`}>
+                        <span className="font-medium">⚠️ Combined stages reported:</span> {test.sensitivityStagesReported}
+                        {test.stageDataExpected && <ExpertInsight topic="stageMissing" />}
+                      </p>
+                      <p className={`text-[10px] ${test.stageDataExpected ? 'text-red-600' : 'text-amber-600'} mt-1`}>
+                        {test.stageDataExpected 
+                          ? 'Stage II sensitivity may be significantly lower than headline. This test has sufficient data to report stage-specific performance but does not disclose it.'
+                          : 'Stage II sensitivity may be significantly lower than headline. See expert note.'}
+                      </p>
+                    </div>
+                  )}
+                  <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity} unit="%" citations={test.stageIISensitivityCitations} notes={test.stageIISensitivityNotes} />
+                  <DataRow label="Stage III Sensitivity" value={test.stageIIISensitivity} unit="%" citations={test.stageIIISensitivityCitations} notes={test.stageIIISensitivityNotes} />
+                  <DataRow label="Stage IV Sensitivity" value={test.stageIVSensitivity} unit="%" citations={test.stageIVSensitivityCitations} notes={test.stageIVSensitivityNotes} />
+                  {test.sensitivityStagesReported && (test.stageIISensitivity || test.stageIIISensitivity) && (
+                    <DataRow label="Stages in Headline" value={test.sensitivityStagesReported} notes="The headline sensitivity figure combines these stages" />
+                  )}
                 </>
               )}
               
@@ -5964,6 +6054,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                       {param.label}
                       {(param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
                       {param.key === 'lod' && <ExpertInsight topic="lod" />}
+                      {(param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
                     </span>
                   </td>
                   {tests.map(test => {
