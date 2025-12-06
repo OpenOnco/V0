@@ -285,7 +285,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     generateDigest();
   }, [persona]);
 
-  // Smooth vertical scroll
+  // Smooth vertical scroll - scroll down, reset at halfway (where duplicate starts) for seamless loop
   useEffect(() => {
     const el = scrollRef.current;
     if (!el || isPaused || !digest) return;
@@ -294,10 +294,11 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     const speed = 0.5;
 
     const animate = () => {
-      const maxScroll = el.scrollHeight / 2; // Loop at halfway (where duplicate starts)
+      // Content is duplicated, so reset when we reach halfway through total height
+      const resetPoint = el.scrollHeight / 2;
       
-      if (el.scrollTop >= maxScroll) {
-        el.scrollTop = 0; // Jump back to start
+      if (el.scrollTop >= resetPoint) {
+        el.scrollTop = 0; // Jump back to start seamlessly
       } else {
         el.scrollTop += speed;
       }
@@ -305,8 +306,6 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
       animationId = requestAnimationFrame(animate);
     };
 
-    // Start from top
-    el.scrollTop = 0;
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
   }, [isPaused, digest]);
@@ -342,7 +341,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-full w-full flex flex-col">
+    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-semibold text-slate-800">Liquid Biopsy News</h3>
@@ -367,21 +366,25 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
           </div>
         </div>
       ) : (
-        <div 
-          ref={scrollRef}
-          className="flex-1 overflow-y-auto pr-2 scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
-          <div>
-            {renderDigest(digest)}
-            {/* Spacer and repeat for seamless loop */}
-            <div className="h-16"></div>
-            {renderDigest(digest)}
+        <>
+          <style>{`
+            .news-scroll-container::-webkit-scrollbar { display: none; }
+          `}</style>
+          <div 
+            ref={scrollRef}
+            className="news-scroll-container flex-1 overflow-y-scroll min-h-0"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div>
+              {renderDigest(digest)}
+              {/* Spacer then repeat for seamless loop */}
+              <div className="h-8 border-t border-slate-100 mt-4"></div>
+              {renderDigest(digest)}
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
@@ -2543,45 +2546,43 @@ const TestShowcase = ({ onNavigate }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm h-full flex flex-col">
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
       <h3 className="text-lg font-bold text-slate-800 text-center mb-3">
         Tests We Track
       </h3>
       
-      <div className="flex-1">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-          {allTests.map(test => {
-            const params = getParams(test);
-            const currentIdx = paramIndices[test.id] || 0;
-            const currentParam = params[currentIdx];
-            const colors = colorClasses[test.color];
-            
-            return (
-              <div
-                key={test.id}
-                onClick={() => setSelectedTest(test)}
-                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
-              >
-                <div className="flex items-start justify-between mb-1">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
-                    <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
-                  </div>
-                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                    {test.category}
-                  </span>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+        {allTests.map(test => {
+          const params = getParams(test);
+          const currentIdx = paramIndices[test.id] || 0;
+          const currentParam = params[currentIdx];
+          const colors = colorClasses[test.color];
+          
+          return (
+            <div
+              key={test.id}
+              onClick={() => setSelectedTest(test)}
+              className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+            >
+              <div className="flex items-start justify-between mb-1">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
+                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
                 </div>
-                
-                <div className="h-8 flex flex-col justify-center">
-                  <p className="text-[10px] text-slate-500 truncate">{currentParam.label}</p>
-                  <p className={`text-sm font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
-                    {currentParam.value}
-                  </p>
-                </div>
+                <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
+                  {test.category}
+                </span>
               </div>
-            );
-          })}
-        </div>
+              
+              <div className="h-8 flex flex-col justify-center">
+                <p className="text-[10px] text-slate-500 truncate">{currentParam.label}</p>
+                <p className={`text-sm font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
+                  {currentParam.value}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Compact Legend */}
@@ -3089,12 +3090,14 @@ Say "not specified" for missing data.`;
         </div>
 
         {/* Test Showcase & News Feed Side by Side */}
-        <div className="mb-4 flex flex-col lg:flex-row lg:items-stretch gap-4">
-          <div className="lg:w-3/5">
+        <div className="mb-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div className="lg:col-span-3">
             <TestShowcase onNavigate={onNavigate} />
           </div>
-          <div className="lg:w-2/5 flex">
-            <NewsFeed />
+          <div className="lg:col-span-2 relative min-h-[400px] lg:min-h-0">
+            <div className="absolute inset-0">
+              <NewsFeed />
+            </div>
           </div>
         </div>
 
