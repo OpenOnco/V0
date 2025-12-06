@@ -548,7 +548,7 @@ const mrdTestData = [
     "landmarkSensitivityCitations": "https://haystackmrd.com/faq/",
     "longitudinalSensitivityCitations": "https://haystackmrd.com/",
     "lod": "6 ppm",
-    "lod95": "6 ppm (0.0006% tumor fraction)",
+    "lod95": "6 ppm (≈0.0006% tumor fraction)",
     "lodCitations": "https://haystackmrd.com/",
     "lodNotes": "LoD95 (95% limit of detection) is ~6 ppm (0.0006% tumor fraction). This represents the ctDNA level at which 95% of replicates are detected as positive in analytical validation studies.",
     "requiresTumorTissue": "Yes",
@@ -1079,7 +1079,7 @@ const mrdTestData = [
     "specificity": null,
     "specificityCitations": "Foundation Medicine Monitoring Portfolio technical specifications.",
     "specificityNotes": "Described as demonstrating high specificity in feasibility data; values are study- and tumor-specific.",
-    "lod": "10 ppm (0.001%)",
+    "lod": "10 ppm (≈0.001%)",
     "lodCitations": "https://www.foundationmedicine.com/monitoring-portfolio",
     "lodNotes": "Reported to detect ctDNA tumor fraction down to 10 ppm in both early- and late-stage cancer.",
     "requiresTumorTissue": "Yes",
@@ -1925,7 +1925,7 @@ const trmTestData = [
     ],
     "targetPopulation": "Patients with solid tumors after curative-intent therapy (MRD) and those on systemic therapy",
     "responseDefinition": "Quantitative change in ctDNA signal (PPM) over time; molecular response often defined as deep decrease or clearance below limit of detection",
-    "lod": "~3.45 PPM (~0.000345% VAF)",
+    "lod": "~3.45 ppm (≈0.000345% VAF)",
     "lodNotes": "3.45 ppm is the LoD95 (limit of detection at 95% confidence). Detection threshold is ~1.67 ppm. WGS-based tumor-informed tracking with up to 1,800 variants provides high sensitivity for low-burden disease.",
     "lodCitations": "Northcott et al. Oncotarget 2024; Personalis NeXT Personal Dx analytical validation brochure.",
     "fdaStatus": "High-complexity LDT in CLIA/CAP lab; not FDA-approved",
@@ -4704,7 +4704,7 @@ Stage-specific reporting helps clinicians and patients make more informed compar
   },
   stageMissing: {
     title: "Why Stage-Specific Data Matters",
-    experts: "MR, SW",
+    experts: "MR",
     content: `Stage-specific sensitivity data helps clinicians and patients make more informed decisions.
 
 Why it's important: Stage II patients considering adjuvant therapy benefit from understanding how the test performs specifically for their situation, as detection rates typically vary by stage.
