@@ -367,7 +367,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
     if (!el || isPaused || !digest) return;
 
     let animationId;
-    const speed = 0.5;
+    const speed = 0.35;
 
     const animate = () => {
       // Content is duplicated, so reset when we reach halfway through total height
