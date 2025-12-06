@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/meet",
+      "destination": "https://calendar.app.google/LxKKniruCTwxWmGt8",
+      "permanent": false
+    }
+  ]
+}
