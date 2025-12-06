@@ -2851,6 +2851,364 @@ const StatOfTheDay = ({ onNavigate }) => {
 // ============================================
 // Home Page (intro, navs, chat, and news)
 // ============================================
+// ============================================
+// Patient Education View - Simplified, educational layout for patients
+// ============================================
+const PatientEducationView = ({ onNavigate, onSwitchPersona }) => {
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [expandedSection, setExpandedSection] = useState(null);
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+
+  const systemPrompt = `You are a compassionate, patient-focused assistant for OpenOnco. You help patients and caregivers understand liquid biopsy tests in simple, clear language.
+
+IMPORTANT GUIDELINES:
+- Use warm, supportive language
+- Avoid medical jargon - explain terms simply when needed
+- Focus on practical information: what the test does, why it might help, what to discuss with their doctor
+- Always remind patients to discuss decisions with their oncologist
+- Never provide specific medical advice or recommendations
+- Be encouraging and empathetic
+
+DATABASE (for reference only - explain in patient-friendly terms):
+${JSON.stringify(chatTestData)}
+
+${chatKeyLegend}
+
+When patients ask about specific tests, explain:
+1. What the test looks for (in simple terms)
+2. When it might be used in their care
+3. Questions they could ask their oncologist about it
+
+Always end with encouragement to discuss with their care team.`;
+
+  const handleSubmit = async (question) => {
+    const q = question || chatInput;
+    if (!q.trim()) return;
+    
+    const userMessage = { role: 'user', content: q };
+    setMessages(prev => [...prev, userMessage]);
+    setChatInput('');
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [...messages.slice(-6), userMessage].map(m => ({
+            role: m.role, content: m.content
+          }))
+        })
+      });
+      
+      const data = await response.json();
+      const assistantMessage = { 
+        role: 'assistant', 
+        content: data.content?.[0]?.text || 'I apologize, but I had trouble responding. Please try again.'
+      };
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'I apologize, but I had trouble connecting. Please try again in a moment.'
+      }]);
+    }
+    
+    setIsLoading(false);
+  };
+
+  const patientQuestions = [
+    "What is a liquid biopsy?",
+    "How can MRD testing help me?",
+    "What questions should I ask my doctor?"
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Welcome Header */}
+      <div className="text-center">
+        <p className="text-sm text-slate-500 mb-2">
+          Viewing as: <span className="font-medium text-[#2A63A4]">Patient</span>
+          <button 
+            onClick={onSwitchPersona}
+            className="ml-2 text-xs text-slate-400 hover:text-[#2A63A4] underline"
+          >
+            Switch view
+          </button>
+        </p>
+      </div>
+
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 lg:p-8 border border-blue-100">
+        <h1 className="text-2xl lg:text-3xl font-bold text-slate-800 mb-3">
+          Understanding Blood-Based Cancer Tests
+        </h1>
+        <p className="text-lg text-slate-600 leading-relaxed mb-4">
+          Modern blood tests can help your care team monitor your cancer treatment and watch for signs of recurrence. 
+          This guide will help you understand these tests and have informed conversations with your oncologist.
+        </p>
+        <p className="text-base text-slate-500 italic">
+          💙 Remember: You are not alone in this journey. These tools exist to help your care team provide you with the best possible care.
+        </p>
+      </div>
+
+      {/* Educational Cards */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* What is Liquid Biopsy */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800 text-lg">What is a Liquid Biopsy?</h3>
+            </div>
+          </div>
+          <p className="text-slate-600 leading-relaxed">
+            A liquid biopsy is a simple blood test that looks for tiny pieces of cancer DNA floating in your bloodstream. 
+            Unlike a traditional biopsy that requires surgery, this test only needs a blood draw—similar to routine blood work.
+          </p>
+          <button 
+            onClick={() => setExpandedSection(expandedSection === 'liquidbiopsy' ? null : 'liquidbiopsy')}
+            className="mt-3 text-sm text-[#2A63A4] font-medium hover:underline"
+          >
+            {expandedSection === 'liquidbiopsy' ? 'Show less ↑' : 'Learn more ↓'}
+          </button>
+          {expandedSection === 'liquidbiopsy' && (
+            <div className="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-600 space-y-2">
+              <p><strong>How it works:</strong> Cancer cells release small fragments of their DNA into the blood. These fragments are called "circulating tumor DNA" or ctDNA. The test detects and analyzes these fragments.</p>
+              <p><strong>Why it matters:</strong> This allows doctors to monitor your cancer without repeated surgical biopsies, catch changes earlier, and potentially adjust treatment sooner.</p>
+            </div>
+          )}
+        </div>
+
+        {/* MRD Testing */}
+        <div className="bg-white rounded-xl border-2 border-orange-200 p-5 shadow-sm">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800 text-lg">MRD Testing: After Treatment</h3>
+              <p className="text-xs text-orange-600 font-medium">Minimal Residual Disease</p>
+            </div>
+          </div>
+          <p className="text-slate-600 leading-relaxed">
+            After surgery or treatment, MRD tests can detect tiny amounts of cancer that might remain—often before it would show up on a scan. 
+            This helps your doctor decide if additional treatment might be helpful.
+          </p>
+          <button 
+            onClick={() => setExpandedSection(expandedSection === 'mrd' ? null : 'mrd')}
+            className="mt-3 text-sm text-[#2A63A4] font-medium hover:underline"
+          >
+            {expandedSection === 'mrd' ? 'Show less ↑' : 'Learn more ↓'}
+          </button>
+          {expandedSection === 'mrd' && (
+            <div className="mt-3 pt-3 border-t border-orange-100 text-sm text-slate-600 space-y-2">
+              <p><strong>When it's used:</strong> Usually after surgery or initial treatment to check if any cancer remains, and during follow-up to watch for recurrence.</p>
+              <p><strong>What a positive result means:</strong> Cancer DNA was detected. This doesn't necessarily mean cancer has returned visibly—it means your doctor may want to monitor more closely or consider additional treatment options.</p>
+              <p><strong>What a negative result means:</strong> No cancer DNA was detected. This is reassuring, but your doctor will likely continue regular monitoring.</p>
+              <p><strong>Questions for your doctor:</strong> "Would MRD testing be helpful for my type of cancer?" "How would the results change my treatment plan?"</p>
+            </div>
+          )}
+        </div>
+
+        {/* TRM Testing */}
+        <div className="bg-white rounded-xl border-2 border-sky-200 p-5 shadow-sm">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-sky-100 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800 text-lg">TRM Testing: During Treatment</h3>
+              <p className="text-xs text-sky-600 font-medium">Treatment Response Monitoring</p>
+            </div>
+          </div>
+          <p className="text-slate-600 leading-relaxed">
+            While you're receiving treatment like chemotherapy or immunotherapy, TRM tests can show whether the treatment is working 
+            by tracking changes in cancer DNA levels over time.
+          </p>
+          <button 
+            onClick={() => setExpandedSection(expandedSection === 'trm' ? null : 'trm')}
+            className="mt-3 text-sm text-[#2A63A4] font-medium hover:underline"
+          >
+            {expandedSection === 'trm' ? 'Show less ↑' : 'Learn more ↓'}
+          </button>
+          {expandedSection === 'trm' && (
+            <div className="mt-3 pt-3 border-t border-sky-100 text-sm text-slate-600 space-y-2">
+              <p><strong>When it's used:</strong> During active treatment to monitor how well the therapy is working, often checked every few weeks.</p>
+              <p><strong>What decreasing levels mean:</strong> The treatment may be working—cancer DNA levels are going down.</p>
+              <p><strong>What increasing levels mean:</strong> The treatment may not be working as well as hoped. Your doctor might consider adjusting your treatment plan.</p>
+              <p><strong>Advantage over scans:</strong> Blood tests can sometimes show changes weeks or months before they would appear on imaging scans.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Questions for Your Doctor */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800 text-lg">Questions for Your Oncologist</h3>
+            </div>
+          </div>
+          <ul className="text-slate-600 space-y-2 text-sm">
+            <li className="flex gap-2">
+              <span className="text-purple-500">•</span>
+              <span>"Is liquid biopsy testing available and appropriate for my type of cancer?"</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-purple-500">•</span>
+              <span>"Would MRD testing help guide my treatment decisions after surgery?"</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-purple-500">•</span>
+              <span>"Can we use blood tests to monitor how well my treatment is working?"</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-purple-500">•</span>
+              <span>"Will my insurance cover this test?"</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-purple-500">•</span>
+              <span>"How would the results change my care plan?"</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Chatbot Introduction */}
+      <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl border-2 border-[#2A63A4] p-6 lg:p-8">
+        <div className="text-center mb-4">
+          <h2 className="text-xl lg:text-2xl font-bold text-slate-800 mb-2">
+            Have Questions? Our AI Assistant Can Help
+          </h2>
+          <p className="text-slate-600">
+            Get personalized information about specific tests, understand what might be relevant for your situation, 
+            and prepare questions for your oncologist.
+          </p>
+        </div>
+
+        {!showChat ? (
+          <div className="text-center">
+            <button
+              onClick={() => setShowChat(true)}
+              className="px-6 py-3 text-white font-medium rounded-xl shadow-md hover:opacity-90 transition-all"
+              style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+            >
+              💬 Start a Conversation
+            </button>
+            <p className="mt-3 text-xs text-slate-400">
+              This assistant provides educational information only—always discuss medical decisions with your care team.
+            </p>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            {/* Chat Messages */}
+            <div ref={chatContainerRef} className="h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+              {messages.length === 0 && (
+                <div className="text-center py-4">
+                  <p className="text-slate-500 text-sm mb-3">How can I help you understand liquid biopsy testing?</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {patientQuestions.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSubmit(q)}
+                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1.5 text-slate-600 hover:bg-blue-50 hover:border-[#2A63A4] transition-colors"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div 
+                    className={`max-w-[85%] rounded-2xl px-4 py-2 ${
+                      msg.role === 'user' 
+                        ? 'bg-[#2A63A4] text-white rounded-br-md' 
+                        : 'bg-white border border-slate-200 text-slate-700 rounded-bl-md'
+                    }`}
+                  >
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                    <p className="text-sm text-slate-500">Thinking...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Chat Input */}
+            <div className="p-3 border-t border-slate-200 bg-white">
+              <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Type your question..."
+                  className="flex-1 border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                  style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !chatInput.trim()}
+                  className="text-white px-4 py-2 rounded-lg font-medium text-sm disabled:opacity-50 transition-all"
+                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                >
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Link to Full Database */}
+      <div className="text-center py-4">
+        <p className="text-slate-500 text-sm mb-3">
+          Want to explore all available tests in detail?
+        </p>
+        <button
+          onClick={() => onNavigate('MRD')}
+          className="text-[#2A63A4] font-medium hover:underline"
+        >
+          View the full test database →
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
 const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
@@ -2951,6 +3309,24 @@ Say "not specified" for missing data.`;
     }
     setIsLoading(false);
   };
+
+  // If patient persona, show educational view
+  if (persona === 'Patient') {
+    return (
+      <div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative">
+          {/* Build timestamp */}
+          <div className="absolute top-2 right-6 text-xs text-gray-400">
+            Build: {BUILD_INFO.date}
+          </div>
+          <PatientEducationView 
+            onNavigate={onNavigate} 
+            onSwitchPersona={() => handlePersonaSelect('Clinician')} 
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
