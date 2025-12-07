@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Analytics } from '@vercel/analytics/react';
 
 // Recently added tests - update this when adding new tests to the database
@@ -4978,13 +4979,40 @@ const formatLOD = (lod) => {
 
 const InfoIcon = ({ citations, notes }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef(null);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 288; // w-72 = 18rem = 288px
+      const popupHeight = 200; // approximate
+      
+      // Calculate left position
+      let left = rect.left;
+      if (left + popupWidth > window.innerWidth - 20) {
+        left = rect.right - popupWidth;
+      }
+      if (left < 20) left = 20;
+      
+      // Calculate top position
+      let top = rect.bottom + 8;
+      if (top + popupHeight > window.innerHeight - 20) {
+        top = rect.top - popupHeight - 8;
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
   
   // Close on click outside
   useEffect(() => {
     if (!isOpen) return;
     const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (buttonRef.current && !buttonRef.current.contains(e.target) &&
+          popupRef.current && !popupRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -4992,18 +5020,32 @@ const InfoIcon = ({ citations, notes }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
   
+  // Close on scroll
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = () => setIsOpen(false);
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [isOpen]);
+  
   if (!citations && !notes) return null;
   
   return (
-    <span className="relative inline-block ml-1" ref={ref}>
+    <span className="inline-block ml-1">
       <button 
+        ref={buttonRef}
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
         className="w-4 h-4 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-500 hover:text-gray-700 text-xs font-medium inline-flex items-center justify-center transition-colors cursor-pointer"
       >
         i
       </button>
-      {isOpen && (
-        <div className="absolute z-50 left-0 top-6 w-72 bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-left" onClick={(e) => e.stopPropagation()}>
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[9999] w-72 bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-left" 
+          style={popupStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
           <button onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} className="absolute top-1 right-1 text-gray-400 hover:text-gray-600 p-1">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
@@ -5023,7 +5065,8 @@ const InfoIcon = ({ citations, notes }) => {
               ))}</p>
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </span>
   );
@@ -5214,19 +5257,55 @@ When comparing tests, consider which use-case the reported performance data refl
 
 const ExpertInsight = ({ topic }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef(null);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
   const insight = EXPERT_INSIGHTS[topic];
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 320;
+      const popupHeight = 300; // approximate max height
+      
+      // Calculate left position - prefer left-aligned, but flip if too close to right edge
+      let left = rect.left;
+      if (left + popupWidth > window.innerWidth - 20) {
+        left = rect.right - popupWidth;
+      }
+      // Ensure not off left edge
+      if (left < 20) left = 20;
+      
+      // Calculate top position - prefer below, but flip if too close to bottom
+      let top = rect.bottom + 8;
+      if (top + popupHeight > window.innerHeight - 20) {
+        top = rect.top - popupHeight - 8;
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
   
   // Close on click outside
   useEffect(() => {
     if (!isOpen) return;
     const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (buttonRef.current && !buttonRef.current.contains(e.target) &&
+          popupRef.current && !popupRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+  
+  // Close on scroll (popup position would be stale)
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = () => setIsOpen(false);
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
   }, [isOpen]);
   
   if (!insight) return null;
@@ -5243,16 +5322,22 @@ const ExpertInsight = ({ topic }) => {
   };
   
   return (
-    <span className="relative inline-block ml-1" ref={ref}>
+    <span className="inline-block ml-1">
       <button 
+        ref={buttonRef}
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
         className="w-4 h-4 rounded-full bg-amber-100 border border-amber-300 text-amber-700 text-[10px] font-bold inline-flex items-center justify-center hover:bg-amber-200 hover:border-amber-400 transition-colors cursor-pointer"
         title="Expert insight available - click to view"
       >
         E
       </button>
-      {isOpen && (
-        <div className="absolute z-50 left-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[9999] w-80 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden"
+          style={popupStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-2 border-b border-amber-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -5278,7 +5363,8 @@ const ExpertInsight = ({ topic }) => {
               <span className="font-medium text-slate-600">{formatExperts(insight.experts)}</span>
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </span>
   );
