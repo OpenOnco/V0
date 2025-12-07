@@ -3912,7 +3912,7 @@ const HowItWorksPage = () => (
       </p>
 
       <p>
-        The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab.
+        The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab. Go to the <strong>Submissions</strong> tab to tell us about a new test, request changes to test data, and send us bug reports and feature suggestions.
       </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
