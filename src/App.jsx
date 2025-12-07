@@ -2433,7 +2433,7 @@ const Header = ({ currentPage, onNavigate }) => {
       </div>
       <span className="sm:hidden text-xl font-bold text-[#2A63A4] cursor-pointer" onClick={() => handleNavigate('home')}>OpenOnco</span>
       <nav className="hidden sm:flex items-center flex-1 justify-evenly overflow-x-auto">
-        {['home', 'how-it-works', 'data-sources', 'submissions', 'about'].map(page => (
+        {navItems.map(page => (
           <button
             key={page}
             onClick={() => handleNavigate(page)}
@@ -2441,7 +2441,7 @@ const Header = ({ currentPage, onNavigate }) => {
               currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
-            {page === 'home' ? 'Home' : page === 'data-sources' ? 'Data Download' : page === 'how-it-works' ? 'How it Works' : page === 'submissions' ? 'Submissions' : 'About'}
+            {getLabel(page)}
           </button>
         ))}
       </nav>
