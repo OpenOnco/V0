@@ -3229,10 +3229,6 @@ Say "not specified" for missing data.`;
             <>
               {/* Chat Section */}
               <div className="bg-white">
-                {/* Chat Header */}
-                <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
-                  <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Ask questions about liquid biopsy tests:</h3>
-                </div>
               
               {/* Messages Area */}
               {messages.length > 0 && (
