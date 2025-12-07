@@ -2190,18 +2190,24 @@ const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sam
 
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
+  const lengthRule = `LENGTH: Keep responses under 20 lines. Be concise - lead with the answer, then add essential context. Use short paragraphs. Avoid lengthy preambles.`;
+  
   switch(persona) {
     case 'Patient':
       return `AUDIENCE: Patient or caregiver seeking to understand options.
-STYLE: Use clear, accessible language. Avoid jargon - if you must use technical terms, briefly explain them. Be warm and reassuring. Always remind them to discuss options with their healthcare provider. Focus on practical aspects: What does this test do? Is it covered by insurance? What's involved in getting tested?`;
+STYLE: Use clear, accessible language. Avoid jargon - if you must use technical terms, briefly explain them. Be warm and reassuring. Always remind them to discuss options with their healthcare provider. Focus on practical aspects: What does this test do? Is it covered by insurance? What's involved in getting tested?
+${lengthRule}`;
     case 'Clinician':
       return `AUDIENCE: Healthcare professional comparing tests for patients.
-STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on actionable metrics: sensitivity, specificity, LOD, TAT, reimbursement status, FDA clearance. Skip basic explanations. Highlight clinically meaningful differences between tests.`;
+STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on actionable metrics: sensitivity, specificity, LOD, TAT, reimbursement status, FDA clearance. Skip basic explanations. Highlight clinically meaningful differences between tests.
+${lengthRule}`;
     case 'Academic/Industry':
       return `AUDIENCE: Researcher or industry professional studying the landscape.
-STYLE: Be technical and detailed. Include methodology details, analytical performance metrics, and validation data. Reference publications and trial data when relevant. Discuss technology differentiators and emerging approaches.`;
+STYLE: Be technical and detailed. Include methodology details, analytical performance metrics, and validation data. Reference publications and trial data when relevant. Discuss technology differentiators and emerging approaches.
+${lengthRule}`;
     default:
-      return `STYLE: Be concise and helpful. Lead with key insights. Use prose not bullets.`;
+      return `STYLE: Be concise and helpful. Lead with key insights. Use prose not bullets.
+${lengthRule}`;
   }
 };
 
@@ -2504,7 +2510,8 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const chatContainerRef = useRef(null);
 
   const suggestedQuestions = [
-    "I have breast cancer, stage II, neo-adjuvant, US, age 72. What are the MRD tests that are suitable and reimbursable for me?"
+    "Patient with breast cancer, stage II, neo-adjuvant, US, age 72. What MRD tests fit this profile and are reimbursable?",
+    "Compare Signatera and Reveal MRD"
   ];
 
   useEffect(() => { 
@@ -3118,7 +3125,8 @@ const HomePage = ({ onNavigate }) => {
   
   // All tests combined for chat header ticker
   const exampleQuestions = [
-    "I have breast cancer, stage II, neo-adjuvant, US, age 72. What are the MRD tests that are suitable and reimbursable for me?"
+    "Patient with breast cancer, stage II, neo-adjuvant, US, age 72. What MRD tests fit this profile and are reimbursable?",
+    "Compare Signatera and Reveal MRD"
   ];
 
   // Memoize system prompt - recompute when persona changes
