@@ -5060,7 +5060,7 @@ const PARAMETER_CHANGELOG = {
 // ============================================
 // Parameter Label Component (clickable with popup)
 // ============================================
-const ParameterLabel = ({ label, citations, notes, expertTopic }) => {
+const ParameterLabel = ({ label, citations, notes, expertTopic, useGroupHover = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [popupStyle, setPopupStyle] = useState({});
   const buttonRef = useRef(null);
@@ -5128,7 +5128,11 @@ const ParameterLabel = ({ label, citations, notes, expertTopic }) => {
       <button
         ref={buttonRef}
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        className="text-sm text-gray-600 hover:text-[#2A63A4] hover:underline decoration-dotted underline-offset-2 cursor-pointer text-left"
+        className={`text-sm text-gray-600 underline-offset-2 cursor-pointer text-left leading-normal decoration-dotted ${
+          useGroupHover 
+            ? 'group-hover:text-[#2A63A4] group-hover:underline' 
+            : 'hover:text-[#2A63A4] hover:underline'
+        }`}
       >
         {label}
       </button>
@@ -5590,7 +5594,7 @@ const ExpertInsight = ({ topic }) => {
   };
   
   return (
-    <span className="inline-block ml-1">
+    <span className="inline-flex items-center ml-1 align-middle">
       <button 
         ref={buttonRef}
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
@@ -5649,9 +5653,9 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   if (isLongValue) {
     // Stack layout for long values
     return (
-      <div className="py-2 border-b border-gray-100 last:border-0">
+      <div className="py-2 border-b border-gray-100 last:border-0 group cursor-pointer">
         <div className="mb-1 flex items-center gap-1">
-          <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} />
+          <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
           {expertTopic && <ExpertInsight topic={expertTopic} />}
         </div>
         <span className="text-sm font-medium text-gray-900">{displayValue}</span>
@@ -5661,9 +5665,9 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   
   // Side-by-side layout for short values
   return (
-    <div className="flex items-start justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4">
+    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4 group cursor-pointer">
       <span className="flex-shrink-0 flex items-center gap-1">
-        <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} />
+        <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
         {expertTopic && <ExpertInsight topic={expertTopic} />}
       </span>
       <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
@@ -5915,7 +5919,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   const Section = ({ title, children, expertTopic }) => (
     <div className={`rounded-xl border ${colors.sectionBorder} overflow-hidden`}>
       <div className={`${colors.sectionBg} px-4 py-2 border-b ${colors.sectionBorder} flex items-center gap-2`}>
-        <h3 className={`font-semibold text-sm uppercase tracking-wide ${colors.sectionTitle}`}>{title}</h3>
+        <h3 className={`font-semibold text-sm uppercase tracking-wide ${colors.sectionTitle} leading-none`}>{title}</h3>
         {expertTopic && <ExpertInsight topic={expertTopic} />}
       </div>
       <div className="bg-white p-4">
