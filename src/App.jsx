@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 // Recently added tests - update this when adding new tests to the database
 // Format: { id, name, vendor, category, dateAdded }
 const RECENTLY_ADDED_TESTS = [
+  { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'trm-9', name: 'MSK-ACCESS', vendor: 'SOPHiA GENETICS', category: 'TRM', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 4, 2025' },
@@ -1983,6 +1984,72 @@ const ecdTestData = [
     "numPublicationsPlus": false,
     "numPublicationsNotes": "Manuscript under preparation; data presented on company website",
     "technologyDifferentiator": "Proteomics-based (not ctDNA/methylation) - first protein-based liquid biopsy for lung cancer detection; measures protein biomarkers rather than genetic or epigenetic signals; simple blood draw with no specialized collection tubes"
+  },
+  {
+    "id": "ecd-13",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Signal-C",
+    "vendor": "Universal DX",
+    "testScope": "Single-cancer (Colorectal)",
+    "approach": "cfDNA methylation + fragmentation",
+    "method": "Next-generation sequencing (NGS) analyzing cell-free DNA methylation patterns and fragmentation characteristics; multi-omics approach combining methylomics, fragmentomics, and machine learning algorithms to detect colorectal cancer and advanced adenomas from a single blood draw",
+    "cancerTypes": [
+      "Colorectal cancer (CRC)",
+      "Advanced adenomas (pre-cancerous)"
+    ],
+    "targetPopulation": "Average-risk adults aged 45+ eligible for colorectal cancer screening per USPSTF guidelines",
+    "indicationGroup": "CRC",
+    "tumorOriginAccuracy": null,
+    "tumorOriginAccuracyNotes": "Single-cancer test; colorectal-specific",
+    "sensitivity": 93,
+    "sensitivityCitations": "https://www.businesswire.com/news/home/20230509005536/en|https://newsroom.questdiagnostics.com/2023-11-20-Universal-DX-Announces-Strategic-Collaboration-with-Quest-Diagnostics|https://www.universaldx.com/science",
+    "sensitivityNotes": "93% sensitivity for CRC detection in 1,000-patient multi-cohort study presented at DDW 2023. Company website reports 92% sensitivity with 94% specificity in some materials - slight variations across presentations.",
+    "stageISensitivity": 85,
+    "stageISensitivityNotes": "Estimated from early-stage (I-II) combined sensitivity of 91%; Stage I likely ~85% based on typical stage distribution patterns. Exact Stage I data not separately reported.",
+    "stageIISensitivity": 94,
+    "stageIISensitivityNotes": "Estimated; early-stage (I-II) combined reported as 91%",
+    "stageIIISensitivity": 97,
+    "stageIIISensitivityNotes": "Later stages typically show higher sensitivity; estimated based on overall 93% and early-stage 91%",
+    "stageIVSensitivity": 97,
+    "stageIVSensitivityNotes": "Later stages typically show higher sensitivity; estimated based on overall 93% and early-stage 91%",
+    "advancedAdenomaSensitivity": 54,
+    "advancedAdenomaSensitivityCitations": "https://www.businesswire.com/news/home/20230509005536/en|https://newsroom.questdiagnostics.com/2023-11-20-Universal-DX-Announces-Strategic-Collaboration-with-Quest-Diagnostics",
+    "advancedAdenomaSensitivityNotes": "54% sensitivity for advanced adenomas at 92% specificity. This pre-cancer detection capability is a key differentiator - may help prevent CRC, not just detect it.",
+    "specificity": 92,
+    "specificityCitations": "https://www.businesswire.com/news/home/20230509005536/en|https://www.universaldx.com/science",
+    "specificityNotes": "92% specificity in DDW 2023 study. Some company materials report 94% specificity - may reflect different cohorts or thresholds.",
+    "ppv": null,
+    "ppvNotes": "Not publicly reported from validation studies",
+    "npv": null,
+    "npvNotes": "Not publicly reported from validation studies",
+    "performanceCitations": "DDW 2023 presentation; ASCO GI 2023 presentation; https://www.universaldx.com/science",
+    "performanceNotes": "Large 1,000-patient international multi-cohort case-control study with prospectively collected samples from US and Europe. Performance validated across multiple presentations at ASCO GI 2023 and DDW 2023.",
+    "leadTimeNotes": "Blood-based alternative to colonoscopy and stool-based tests; aims to increase screening compliance among the ~40% of eligible adults not up-to-date on CRC screening",
+    "fdaStatus": "Investigational – FDA pivotal trial ongoing",
+    "fdaStatusCitations": "https://clinicaltrials.gov/study/NCT06059963|https://www.businesswire.com/news/home/20240807274324/en/Universal-DX-Initiates-Clinical-Trial-for-FDA-Approval-of-Signal-C-Colorectal-Cancer-Screening-Blood-Test",
+    "fdaStatusNotes": "FDA premarket approval (PMA) pivotal trial initiated January 2024. Targeting enrollment of 15,000+ patients across 100 investigator sites. Quest Diagnostics oncology center in Lewisville, TX serves as single testing site for trial.",
+    "reimbursement": "Not yet established",
+    "reimbursementNote": "Pending FDA approval; not currently available for clinical use in US",
+    "commercialPayers": [],
+    "clinicalAvailability": "Not yet commercially available – FDA pivotal trial in progress",
+    "clinicalAvailabilityNotes": "Quest Diagnostics has exclusive US commercialization rights pending FDA approval (collaboration announced November 2023). Commercial launch expected following PMA approval.",
+    "tat": "Not specified",
+    "tatNotes": "Turnaround time not publicly disclosed; will be determined for commercial launch",
+    "sampleType": "Blood (single draw)",
+    "sampleVolume": "Not specified",
+    "cptCode": "TBD",
+    "cptCodesNotes": "CPT code to be established upon FDA approval and commercial launch",
+    "listPrice": null,
+    "listPriceNotes": "Pricing not yet established; pending FDA approval",
+    "screeningInterval": "Not specified; likely aligned with standard CRC screening intervals (every 3 years typical for blood-based tests)",
+    "clinicalTrials": "FDA pivotal trial (NCT06059963) - 15,000+ patient enrollment target across 100 sites; prior 1,000-patient validation study",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06059963",
+    "totalParticipants": 1000,
+    "totalParticipantsNotes": "1,000 patients in published validation study (DDW 2023); 15,000+ targeted for ongoing FDA pivotal trial",
+    "numPublications": 3,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Multiple conference presentations at DDW 2023, ASCO GI 2023, AACR 2022; peer-reviewed publications in preparation",
+    "technologyDifferentiator": "Multi-omics approach combining methylation + fragmentation analysis with machine learning. Company claims to have identified specific cfDNA sequence regions that capture cancer's earliest signals. Spain-based biotech (Universal DX) with US office in Cambridge, MA. Platform technology (Signal-X) being extended to other GI cancers including pancreatic, liver, and gastric."
   }
 ];
 
@@ -6022,6 +6089,24 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   
   const meta = categoryMeta[category];
   
+  // Print styles for test detail
+  const printStyles = `
+    @media print {
+      body * { visibility: hidden; }
+      .test-detail-print-area, .test-detail-print-area * { visibility: visible; }
+      .test-detail-print-area { 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        width: 100%;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      .print\\:hidden { display: none !important; }
+      @page { margin: 0.5in; }
+    }
+  `;
+  
   // Category-specific color schemes
   const colorSchemes = {
     MRD: { 
@@ -6078,27 +6163,40 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   );
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
-        {/* Header */}
-        <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
-          <div className="flex-1 mr-4">
-            <div className="flex flex-wrap gap-2 mb-2">
-              {hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare+Private</span>}
-              {hasMedicare && !hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
-              {!hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
-              {test.fdaStatus && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.fdaStatus.split(' - ')[0]}</span>}
-              {test.approach && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.approach}</span>}
+    <>
+      <style>{printStyles}</style>
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" onClick={onClose}>
+        <div className="test-detail-print-area bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+          {/* Header */}
+          <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
+            <div className="flex-1 mr-4">
+              <div className="flex flex-wrap gap-2 mb-2">
+                {hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare+Private</span>}
+                {hasMedicare && !hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
+                {!hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
+                {test.fdaStatus && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.fdaStatus.split(' - ')[0]}</span>}
+                {test.approach && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.approach}</span>}
+              </div>
+              <h2 className="text-2xl font-bold text-white">{test.name}</h2>
+              <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
             </div>
-            <h2 className="text-2xl font-bold text-white">{test.name}</h2>
-            <p className="text-white/80">{test.vendor}</p>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button 
+                onClick={(e) => { e.stopPropagation(); window.print(); }} 
+                className="p-2 hover:bg-white/20 rounded-xl transition-colors print:hidden"
+                title="Print or save as PDF"
+              >
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+              </button>
+              <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-xl transition-colors print:hidden">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
-            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
         
         {/* Scrollable Content */}
         <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
@@ -6354,6 +6452,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
         </div>
       </div>
     </div>
+    </>
   );
 };
 
