@@ -5053,27 +5053,8 @@ const PARAMETER_DEFINITIONS = {
 };
 
 const PARAMETER_CHANGELOG = {
-  "LOD": [
-    { date: "2025-12-01", change: "Standardized LOD display to show original reported units (ppm, VAF%, MTM/mL) rather than converting" },
-    { date: "2025-11-15", change: "Added LOD95 as separate field for tests reporting both metrics" }
-  ],
-  "LOD (Detection Threshold)": [
-    { date: "2025-12-01", change: "Standardized LOD display to show original reported units" }
-  ],
-  "Reported Sensitivity": [
-    { date: "2025-12-05", change: "Added distinction between analytical and clinical sensitivity where reported" },
-    { date: "2025-11-20", change: "Added landmark vs longitudinal context to sensitivity notes" }
-  ],
-  "Medicare": [
-    { date: "2025-12-07", change: "Renamed from 'Government Insurance' to 'Medicare' for clarity" },
-    { date: "2025-11-01", change: "Added detailed coverage notes with LCD references where available" }
-  ],
-  "Stage II Sensitivity": [
-    { date: "2025-12-01", change: "Added stage-specific sensitivity fields to highlight early-stage detection rates" }
-  ],
-  "Variants Tracked": [
-    { date: "2025-11-15", change: "Added expert note clarifying that more variants isn't always better" }
-  ]
+  // Track value changes here as they occur
+  // Format: "Parameter Name": [{ date: "YYYY-MM-DD", change: "Description of value change" }]
 };
 
 // ============================================
@@ -5669,8 +5650,9 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
     // Stack layout for long values
     return (
       <div className="py-2 border-b border-gray-100 last:border-0">
-        <div className="mb-1">
+        <div className="mb-1 flex items-center gap-1">
           <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} />
+          {expertTopic && <ExpertInsight topic={expertTopic} />}
         </div>
         <span className="text-sm font-medium text-gray-900">{displayValue}</span>
       </div>
@@ -5680,8 +5662,9 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   // Side-by-side layout for short values
   return (
     <div className="flex items-start justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4">
-      <span className="flex-shrink-0">
+      <span className="flex-shrink-0 flex items-center gap-1">
         <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} />
+        {expertTopic && <ExpertInsight topic={expertTopic} />}
       </span>
       <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
     </div>
