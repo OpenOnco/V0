@@ -4977,6 +4977,285 @@ const formatLOD = (lod) => {
   return String(lod);
 };
 
+// ============================================
+// Parameter Definitions & Changelog
+// ============================================
+const PARAMETER_DEFINITIONS = {
+  // Performance Metrics
+  "Reported Sensitivity": "The proportion of true positive cases correctly identified by the test. May be analytical (lab conditions) or clinical (real-world), and may be landmark (single timepoint) or longitudinal (across multiple draws).",
+  "Overall Sensitivity": "The proportion of true positive cases correctly identified by the test across all stages combined.",
+  "Reported Specificity": "The proportion of true negative cases correctly identified by the test. High specificity means fewer false positives.",
+  "Analytical Specificity": "Specificity measured under controlled laboratory conditions, typically higher than clinical specificity.",
+  "Clinical Specificity": "Specificity measured in real-world clinical settings with actual patient samples.",
+  "PPV": "Positive Predictive Value. The probability that a positive test result indicates true disease presence. Depends heavily on disease prevalence.",
+  "NPV": "Negative Predictive Value. The probability that a negative test result indicates true absence of disease.",
+  "LOD": "Limit of Detection. The lowest concentration of target analyte that can be reliably detected. Reported in various units (ppm, VAF%, MTM/mL).",
+  "LOD (Detection Threshold)": "Limit of Detection. The lowest concentration of target analyte that can be reliably detected. Reported in various units (ppm, VAF%, MTM/mL).",
+  "LOD95": "The concentration at which the test achieves 95% detection probability. More conservative than LOD and often more clinically relevant.",
+  "LOD95 (95% Confidence)": "The concentration at which the test achieves 95% detection probability. More conservative than LOD and often more clinically relevant.",
+  
+  // Stage-specific
+  "Stage I Sensitivity": "Detection rate for Stage I cancers, typically the most challenging due to lower tumor burden.",
+  "Stage II Sensitivity": "Detection rate for Stage II cancers. Critical for adjuvant therapy decisions in MRD testing.",
+  "Stage III Sensitivity": "Detection rate for Stage III cancers. Generally higher than earlier stages due to greater tumor burden.",
+  "Stage IV Sensitivity": "Detection rate for Stage IV/metastatic cancers. Usually highest due to significant tumor burden.",
+  "Stage-specific Sensitivity": "Sensitivity broken down by cancer stage. Earlier stages typically have lower detection rates.",
+  
+  // Landmark & Longitudinal
+  "Landmark Sensitivity": "Detection rate at a single post-treatment timepoint (e.g., 4 weeks post-surgery).",
+  "Landmark Specificity": "Specificity measured at a single post-treatment timepoint.",
+  "Longitudinal Sensitivity": "Detection rate across multiple serial blood draws over time. Typically higher than landmark.",
+  "Longitudinal Specificity": "Specificity measured across multiple serial timepoints.",
+  
+  // Turnaround & Sample
+  "Sample Type": "The biological sample category required for testing (e.g., Blood, Tissue).",
+  "Sample Category": "The biological sample category required for testing (e.g., Blood, Tissue).",
+  "Initial TAT": "Turnaround time for the first test, which may include assay design for tumor-informed tests.",
+  "Follow-up TAT": "Turnaround time for subsequent monitoring tests, typically faster than initial.",
+  "TAT": "Turnaround Time. Days from sample receipt to result delivery.",
+  "Lead Time vs Imaging": "How many days/months earlier the test can detect recurrence compared to standard imaging (CT/PET).",
+  "Blood Volume": "Amount of blood required for the test, typically in milliliters (mL).",
+  "cfDNA Input": "Amount of cell-free DNA required for analysis, in nanograms (ng).",
+  "Variants Tracked": "Number of genetic variants monitored by the test. More variants may improve sensitivity but isn't always better.",
+  "Sample Volume": "Volume of sample required for the test.",
+  "Sample Stability": "How long the sample remains viable after collection.",
+  "Sample Details": "Additional specifications about sample requirements.",
+  
+  // Requirements & Method
+  "Approach": "Whether the test is tumor-informed (requires prior tissue) or tumor-naïve (blood only).",
+  "Requires Tumor Tissue": "Whether a tumor sample is needed to design a personalized assay.",
+  "Requires Matched Normal": "Whether a normal tissue sample is needed to filter germline variants.",
+  "Method": "The laboratory technique used (e.g., PCR, NGS, methylation analysis).",
+  "Target Population": "The intended patient population for the test.",
+  "Indication Group": "The clinical indication category (e.g., screening, monitoring).",
+  "Response Definition": "How the test defines treatment response.",
+  "Screening Interval": "Recommended time between screening tests.",
+  
+  // Regulatory & Coverage
+  "FDA Status": "Current FDA regulatory status (Approved, Breakthrough Designation, LDT, etc.).",
+  "Medicare": "Medicare coverage and reimbursement status.",
+  "Private Insurance": "Commercial insurance payers known to cover the test.",
+  "CPT Codes": "Current Procedural Terminology codes used for billing.",
+  "CPT Code": "Current Procedural Terminology code used for billing.",
+  "Clinical Availability": "Current commercial availability status.",
+  "Available Regions": "Geographic regions where the test is available.",
+  "Independent Validation": "Whether the test has been validated by independent third parties.",
+  "List Price": "Published list price before insurance, if available.",
+  
+  // Clinical Evidence
+  "Total Trial Participants": "Total number of patients enrolled across key clinical trials.",
+  "Peer-Reviewed Publications": "Number of peer-reviewed scientific publications about the test.",
+  "Key Trials": "Major clinical trials evaluating the test.",
+  
+  // ECD-specific
+  "Tumor Origin Prediction": "Accuracy of predicting the tissue of origin for detected cancers (multi-cancer tests).",
+  "Lead Time Notes": "Additional context about detection lead time compared to standard methods."
+};
+
+const PARAMETER_CHANGELOG = {
+  "LOD": [
+    { date: "2025-12-01", change: "Standardized LOD display to show original reported units (ppm, VAF%, MTM/mL) rather than converting" },
+    { date: "2025-11-15", change: "Added LOD95 as separate field for tests reporting both metrics" }
+  ],
+  "LOD (Detection Threshold)": [
+    { date: "2025-12-01", change: "Standardized LOD display to show original reported units" }
+  ],
+  "Reported Sensitivity": [
+    { date: "2025-12-05", change: "Added distinction between analytical and clinical sensitivity where reported" },
+    { date: "2025-11-20", change: "Added landmark vs longitudinal context to sensitivity notes" }
+  ],
+  "Medicare": [
+    { date: "2025-12-07", change: "Renamed from 'Government Insurance' to 'Medicare' for clarity" },
+    { date: "2025-11-01", change: "Added detailed coverage notes with LCD references where available" }
+  ],
+  "Stage II Sensitivity": [
+    { date: "2025-12-01", change: "Added stage-specific sensitivity fields to highlight early-stage detection rates" }
+  ],
+  "Variants Tracked": [
+    { date: "2025-11-15", change: "Added expert note clarifying that more variants isn't always better" }
+  ]
+};
+
+// ============================================
+// Parameter Label Component (clickable with popup)
+// ============================================
+const ParameterLabel = ({ label, citations, notes, expertTopic }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
+  
+  const definition = PARAMETER_DEFINITIONS[label];
+  const changelog = PARAMETER_CHANGELOG[label] || [];
+  const expertInsight = expertTopic ? EXPERT_INSIGHTS[expertTopic] : null;
+  
+  // Only show as clickable if there's any content to display
+  const hasContent = definition || notes || citations || changelog.length > 0 || expertInsight;
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 380;
+      const popupHeight = 400;
+      
+      let left = rect.left;
+      if (left + popupWidth > window.innerWidth - 20) {
+        left = Math.max(20, window.innerWidth - popupWidth - 20);
+      }
+      if (left < 20) left = 20;
+      
+      let top = rect.bottom + 8;
+      if (top + popupHeight > window.innerHeight - 20) {
+        top = Math.max(20, rect.top - popupHeight - 8);
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
+  
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      if (buttonRef.current && !buttonRef.current.contains(e.target) &&
+          popupRef.current && !popupRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+  
+  // Close on scroll outside popup
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = (e) => {
+      if (popupRef.current && popupRef.current.contains(e.target)) return;
+      setIsOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [isOpen]);
+  
+  if (!hasContent) {
+    return <span className="text-sm text-gray-600">{label}</span>;
+  }
+  
+  return (
+    <>
+      <button
+        ref={buttonRef}
+        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+        className="text-sm text-gray-600 hover:text-[#2A63A4] hover:underline decoration-dotted underline-offset-2 cursor-pointer text-left"
+      >
+        {label}
+      </button>
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[9999] w-96 bg-white border border-slate-200 rounded-xl shadow-2xl overflow-hidden"
+          style={popupStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-slate-700 to-slate-800 px-4 py-3 flex items-center justify-between">
+            <h4 className="font-semibold text-white text-sm">{label}</h4>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+              className="w-6 h-6 rounded-full hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          {/* Scrollable content */}
+          <div className="max-h-80 overflow-y-auto">
+            {/* Definition */}
+            {definition && (
+              <div className="px-4 py-3 border-b border-slate-100">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Definition</p>
+                <p className="text-sm text-slate-700">{definition}</p>
+              </div>
+            )}
+            
+            {/* Expert Insight */}
+            {expertInsight && (
+              <div className="px-4 py-3 border-b border-slate-100 bg-amber-50/50">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-4 h-4 rounded-full bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">E</div>
+                  <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide">Expert Insight</p>
+                </div>
+                <p className="text-xs text-slate-600 whitespace-pre-line">{expertInsight.content}</p>
+                <p className="text-[10px] text-slate-400 mt-2">Expert{expertInsight.experts?.includes(',') ? 's' : ''}: {expertInsight.experts || 'Advisory Panel'}</p>
+              </div>
+            )}
+            
+            {/* Notes (instance-specific) */}
+            {notes && (
+              <div className="px-4 py-3 border-b border-slate-100">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Notes for This Test</p>
+                <p className="text-sm text-slate-700">{notes}</p>
+              </div>
+            )}
+            
+            {/* Sources (instance-specific) */}
+            {citations && (
+              <div className="px-4 py-3 border-b border-slate-100">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Sources</p>
+                <div className="space-y-1">
+                  {citations.split('|').map((c, i) => {
+                    const url = c.trim();
+                    const isUrl = url.startsWith('http');
+                    return (
+                      <a 
+                        key={i} 
+                        href={isUrl ? url : '#'} 
+                        target={isUrl ? "_blank" : undefined}
+                        rel={isUrl ? "noopener noreferrer" : undefined}
+                        className={`block text-xs ${isUrl ? 'text-[#2A63A4] hover:underline' : 'text-slate-600'}`}
+                      >
+                        → {url.length > 70 ? url.slice(0, 70) + '...' : url}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            
+            {/* Changelog */}
+            {changelog.length > 0 && (
+              <div className="px-4 py-3 bg-slate-50">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Change Log</p>
+                <div className="space-y-2">
+                  {changelog.map((entry, i) => (
+                    <div key={i} className="text-xs">
+                      <span className="text-slate-400 font-mono">{entry.date}</span>
+                      <p className="text-slate-600">{entry.change}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* No changelog message */}
+            {changelog.length === 0 && (
+              <div className="px-4 py-3 bg-slate-50">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Change Log</p>
+                <p className="text-xs text-slate-400 italic">No changes recorded for this parameter.</p>
+              </div>
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
+  );
+};
+
+// Legacy InfoIcon - kept for backward compatibility but no longer used in DataRow
 const InfoIcon = ({ citations, notes }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [popupStyle, setPopupStyle] = useState({});
@@ -5390,11 +5669,9 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
     // Stack layout for long values
     return (
       <div className="py-2 border-b border-gray-100 last:border-0">
-        <span className="text-sm text-gray-600 flex items-center mb-1">
-          {label}
-          {expertTopic && <ExpertInsight topic={expertTopic} />}
-          <InfoIcon citations={citations} notes={notes} />
-        </span>
+        <div className="mb-1">
+          <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} />
+        </div>
         <span className="text-sm font-medium text-gray-900">{displayValue}</span>
       </div>
     );
@@ -5403,10 +5680,8 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   // Side-by-side layout for short values
   return (
     <div className="flex items-start justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4">
-      <span className="text-sm text-gray-600 flex items-center flex-shrink-0">
-        {label}
-        {expertTopic && <ExpertInsight topic={expertTopic} />}
-        <InfoIcon citations={citations} notes={notes} />
+      <span className="flex-shrink-0">
+        <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} />
       </span>
       <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
     </div>
