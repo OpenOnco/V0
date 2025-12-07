@@ -3476,29 +3476,6 @@ Say "not specified" for missing data.`;
                     </div>
                   </div>
                   
-                  {/* ECD Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
-                    onClick={() => onNavigate('ECD')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Screening</h3>
-                          <p className="text-xs text-emerald-600 font-medium">Explore {ecdTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-emerald-500">→</span>
-                      </div>
-                    </div>
-                  </div>
-                  
                   {/* TRM Navigator */}
                   <div
                     className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
@@ -3518,6 +3495,29 @@ Say "not specified" for missing data.`;
                       </div>
                       <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
                         <span className="text-lg font-bold text-sky-500">→</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* ECD Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
+                    onClick={() => onNavigate('ECD')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Screening</h3>
+                          <p className="text-xs text-emerald-600 font-medium">Explore {ecdTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-emerald-500">→</span>
                       </div>
                     </div>
                   </div>
@@ -3565,42 +3565,6 @@ Say "not specified" for missing data.`;
                     </div>
                   </div>
                   
-                  {/* ECD Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
-                    onClick={() => onNavigate('ECD')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                          <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-emerald-500">→</span>
-                      </div>
-                    </div>
-                    <div className="overflow-hidden">
-                      <div 
-                        className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
-                        style={{ animation: 'tickerECD 25s linear infinite' }}
-                      >
-                        <span className="inline-block">
-                          {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                        <span className="inline-block">
-                          {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
                   {/* TRM Navigator */}
                   <div
                     className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
@@ -3632,6 +3596,42 @@ Say "not specified" for missing data.`;
                         </span>
                         <span className="inline-block">
                           {trmTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* ECD Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
+                    onClick={() => onNavigate('ECD')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
+                          <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-emerald-500">→</span>
+                      </div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <div 
+                        className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
+                        style={{ animation: 'tickerECD 25s linear infinite' }}
+                      >
+                        <span className="inline-block">
+                          {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                        <span className="inline-block">
+                          {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
                         </span>
                       </div>
                     </div>
