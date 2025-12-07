@@ -3342,7 +3342,7 @@ Say "not specified" for missing data.`;
           {/* Persona Selector */}
           <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
-            {['Academic/Industry', 'Clinician', 'Patient'].map((p) => (
+            {['Academic/Industry', 'Patient', 'Clinician'].map((p) => (
               <button
                 key={p}
                 onClick={() => handlePersonaSelect(p)}
