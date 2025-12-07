@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 // Recently added tests - update this when adding new tests to the database
 // Format: { id, name, vendor, category, dateAdded }
 const RECENTLY_ADDED_TESTS = [
+  { id: 'trm-9', name: 'MSK-ACCESS', vendor: 'SOPHiA GENETICS', category: 'TRM', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 4, 2025' },
   { id: 'trm-8', name: 'Northstar Response', vendor: 'BillionToOne', category: 'TRM', dateAdded: 'Dec 3, 2025' },
@@ -2227,6 +2228,54 @@ const trmTestData = [
     "isClinicalLDT": true,
     "technologyDifferentiator": "Methylation-based (not mutation/VAF-based) - measures epigenetic signal across >500 loci rather than tracking somatic variants. Tissue-free with no tumor biopsy required. QCT technology enables single-molecule counting precision for absolute quantification.",
     "regulatoryStatusNotes": "CLIA-certified laboratory test. Methylation-based approach differentiates from SNV/VAF-based response monitoring assays. Measures 10x more informative loci (average 90 vs 9) compared to SNV-based ctDNA monitoring. Part of BillionToOne's Northstar oncology portfolio alongside Northstar Select (therapy selection)."
+  },
+  {
+    "id": "trm-9",
+    "sampleCategory": "Blood/Plasma",
+    "name": "MSK-ACCESS powered with SOPHiA DDM",
+    "vendor": "SOPHiA GENETICS",
+    "approach": "Tumor-informed",
+    "method": "Hybridization capture NGS targeting 147 genes (129 SNV/indel + 18 structural variants). Ultra-deep sequencing (~20,000x raw coverage). Matched tumor-normal design: sequences both tumor and germline (buffy coat) to filter CHIP variants and distinguish somatic from germline. Decentralized version of Memorial Sloan Kettering's NY State-approved MSK-ACCESS assay.",
+    "cancerTypes": [
+      "Pan-cancer: solid tumors (breast, colorectal, NSCLC, prostate, ovarian, pancreatic, and others)"
+    ],
+    "targetPopulation": "Patients with advanced solid tumors requiring treatment response monitoring, therapy selection guidance, or resistance mutation detection",
+    "responseDefinition": "VAF-based monitoring of known driver and resistance mutations across 147 cancer genes; serial testing tracks tumor burden changes and emergence of actionable alterations",
+    "sensitivity": null,
+    "sensitivityNotes": "Analytical validation demonstrated 92% sensitivity in de-novo mutation calling at 0.5% VAF; 99% sensitivity for a priori mutation profiling (tracking known variants). Clinical sensitivity data pending from real-world studies.",
+    "sensitivityCitations": "Klemm F et al. AMP 2024 poster; Brannon AR et al. Nat Commun 2021;12:3770.",
+    "specificity": null,
+    "specificityNotes": "Matched tumor-normal approach with buffy coat sequencing enables robust CHIP filtering. Decentralized version achieved 99.4% positive percent agreement (PPA) with centralized MSK-ACCESS.",
+    "specificityCitations": "Klemm F et al. AMP 2024 poster.",
+    "lod": "0.5% VAF",
+    "lodNotes": "Analytical validation demonstrated 92% sensitivity in de-novo mutation calling at 0.5% VAF; 99% sensitivity for a priori mutation profiling (tracking known variants). Decentralized version achieved 99.4% positive percent agreement with centralized MSK-ACCESS at ≥0.5% VAF.",
+    "lodCitations": "Klemm F et al. AMP 2024 poster; Brannon AR et al. Nat Commun 2021;12:3770.",
+    "leadTimeVsImaging": null,
+    "leadTimeVsImagingNotes": "Not yet reported for decentralized version. Original MSK-ACCESS studies showed ctDNA changes can precede radiographic progression.",
+    "fdaStatus": "RUO (Research Use Only) – NOT for clinical diagnostic use",
+    "fdaStatusNotes": "Currently available as Research Use Only. The centralized MSK-ACCESS assay is NY State approved; decentralized SOPHiA version is in process of regulatory pathway.",
+    "reimbursement": "Not yet established",
+    "reimbursementNote": "RUO status; clinical diagnostic reimbursement not applicable. May be used in research settings.",
+    "tat": "5-7 days",
+    "tatNotes": "Turnaround time from sample receipt. Decentralized model enables global laboratory access without shipping to single reference lab.",
+    "clinicalAvailability": "Research Use Only – available through Quest Diagnostics partnership and global SOPHiA GENETICS laboratory network",
+    "clinicalAvailabilityNotes": "Quest Diagnostics collaboration for US distribution; global access through SOPHiA DDM platform. Not yet available as clinical diagnostic.",
+    "clinicalTrials": "Original MSK-ACCESS validated in multiple MSK cohorts; decentralized version validation presented at AMP 2024",
+    "clinicalTrialsCitations": "Brannon AR et al. Nat Commun 2021;12:3770 (original MSK validation); Klemm F et al. AMP 2024 poster.",
+    "totalParticipants": 1200,
+    "totalParticipantsNotes": "Original MSK-ACCESS clinical validation included 617 patients; analytical validation included 654 samples. Decentralized validation ongoing.",
+    "numPublications": 10,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "Brannon AR et al. Nat Commun 2021;12:3770; Rose Brannon A et al. JCO Precis Oncol 2021; multiple MSK institutional publications.",
+    "bloodVolume": 20,
+    "bloodVolumeNotes": "Two 10mL Streck tubes required for plasma and buffy coat (germline) analysis.",
+    "variantsTracked": "147 genes",
+    "variantsTrackedNotes": "129 genes for SNV/indel detection plus 18 genes for structural variant/fusion detection. Includes key actionable targets: EGFR, KRAS, BRAF, PIK3CA, ERBB2, ALK, ROS1, RET, MET, and others.",
+    "isRUO": true,
+    "isInvestigational": false,
+    "isClinicalLDT": false,
+    "technologyDifferentiator": "Decentralized version of MSK's clinically-validated liquid biopsy assay. Matched tumor-normal design with buffy coat sequencing distinguishes somatic from germline variants and filters CHIP. Ultra-deep ~20,000x coverage enables 0.5% VAF detection. SOPHiA DDM platform enables global laboratory deployment without centralized reference lab requirement.",
+    "regulatoryStatusNotes": "RUO status. The original centralized MSK-ACCESS is NY State approved and CLIA-certified at MSK. Decentralized SOPHiA version enables the same validated workflow to be performed at partner laboratories globally. Quest Diagnostics partnership announced for US market."
   }
 ];
 
@@ -6508,6 +6557,67 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
 };
 
 // ============================================
+// Smart Comparison Suggestions
+// ============================================
+const getSuggestedTests = (selectedTestIds, allTests, maxSuggestions = 6) => {
+  if (selectedTestIds.length === 0) return [];
+  
+  const selectedTests = allTests.filter(t => selectedTestIds.includes(t.id));
+  const unselectedTests = allTests.filter(t => !selectedTestIds.includes(t.id));
+  
+  // Collect attributes from selected tests
+  const selectedIndicationGroups = new Set(selectedTests.map(t => t.indicationGroup).filter(Boolean));
+  const selectedCancerTypes = new Set(selectedTests.flatMap(t => t.cancerTypes || []));
+  const selectedApproaches = new Set(selectedTests.map(t => t.approach).filter(Boolean));
+  const selectedTestScopes = new Set(selectedTests.map(t => t.testScope).filter(Boolean));
+  
+  // Score each unselected test
+  const scored = unselectedTests.map(test => {
+    let score = 0;
+    let matchReason = '';
+    
+    // Highest priority: Same indication group (e.g., CRC → CRC)
+    if (test.indicationGroup && selectedIndicationGroups.has(test.indicationGroup)) {
+      score += 100;
+      matchReason = `${test.indicationGroup} tests`;
+    }
+    
+    // High priority: Overlapping cancer types
+    const testCancerTypes = test.cancerTypes || [];
+    const overlappingCancers = testCancerTypes.filter(ct => selectedCancerTypes.has(ct));
+    if (overlappingCancers.length > 0) {
+      score += 30 * overlappingCancers.length;
+      if (!matchReason) {
+        const shortName = overlappingCancers[0].length > 15 
+          ? overlappingCancers[0].slice(0, 15) + '...' 
+          : overlappingCancers[0];
+        matchReason = `${shortName}`;
+      }
+    }
+    
+    // Medium priority: Same test scope (single-cancer vs multi-cancer)
+    if (test.testScope && selectedTestScopes.has(test.testScope)) {
+      score += 20;
+      if (!matchReason) matchReason = test.testScope;
+    }
+    
+    // Lower priority: Same approach (tumor-informed vs tumor-naïve)
+    if (test.approach && selectedApproaches.has(test.approach)) {
+      score += 10;
+      if (!matchReason) matchReason = test.approach;
+    }
+    
+    return { test, score, matchReason };
+  });
+  
+  // Sort by score and return top suggestions
+  return scored
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, maxSuggestions);
+};
+
+// ============================================
 // Category Page
 // ============================================
 const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) => {
@@ -6689,6 +6799,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
+  const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
   const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
@@ -7040,6 +7151,34 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 </button>
               )}
             </div>
+            
+            {/* Smart Comparison Suggestions */}
+            {!isPatient && selectedTests.length >= 1 && suggestedTests.length > 0 && (
+              <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  <span className="text-sm font-semibold text-blue-800">Suggested Comparisons</span>
+                  <span className="text-xs text-blue-600">based on your selection</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {suggestedTests.map(({ test, matchReason }) => (
+                    <button
+                      key={test.id}
+                      onClick={() => setSelectedTests(prev => [...prev, test.id])}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-200 rounded-full text-sm hover:border-blue-400 hover:bg-blue-50 transition-colors group"
+                    >
+                      <span className="font-medium text-gray-700 group-hover:text-blue-700">{test.name}</span>
+                      {matchReason && <span className="text-xs text-blue-500">({matchReason})</span>}
+                      <svg className="w-3.5 h-3.5 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => 
                 isPatient ? (
