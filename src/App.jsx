@@ -6001,14 +6001,15 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">
                 Performance Metrics <ExpertInsight topic="sensitivity" />
               </p>
-              <DataRow label="Overall Sensitivity" value={test.sensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} expertTopic="sensitivity" />
-              <DataRow label="Stage I Sensitivity" value={test.stageISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Stage III Sensitivity" value={test.stageIIISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Stage IV Sensitivity" value={test.stageIVSensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} expertTopic="specificity" />
-              <DataRow label="PPV" value={test.ppv} unit="%" citations={test.performanceCitations} notes={test.ppvDefinition} />
-              <DataRow label="NPV" value={test.npv} unit="%" citations={test.performanceCitations} notes={test.npvDefinition} />
+              <DataRow label="Overall Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations || test.performanceCitations} notes={test.sensitivityNotes || test.performanceNotes} expertTopic="sensitivity" />
+              <DataRow label="Stage I Sensitivity" value={test.stageISensitivity} unit="%" citations={test.stageISensitivityCitations || test.performanceCitations} notes={test.stageISensitivityNotes} />
+              <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity} unit="%" citations={test.stageIISensitivityCitations || test.performanceCitations} notes={test.stageIISensitivityNotes} />
+              <DataRow label="Stage III Sensitivity" value={test.stageIIISensitivity} unit="%" citations={test.stageIIISensitivityCitations || test.performanceCitations} notes={test.stageIIISensitivityNotes} />
+              <DataRow label="Stage IV Sensitivity" value={test.stageIVSensitivity} unit="%" citations={test.stageIVSensitivityCitations || test.performanceCitations} notes={test.stageIVSensitivityNotes} />
+              <DataRow label="Advanced Adenoma" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />
+              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations || test.performanceCitations} notes={test.specificityNotes || test.performanceNotes} expertTopic="specificity" />
+              <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations || test.performanceCitations} notes={test.ppvNotes || test.ppvDefinition} />
+              <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations || test.performanceCitations} notes={test.npvNotes || test.npvDefinition} />
               {test.testScope?.includes('Multi-cancer') && (
                 <DataRow 
                   label="Tumor Origin Prediction" 
@@ -6024,49 +6025,59 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
               <DataRow label="Indication Group" value={test.indicationGroup} />
               <DataRow label="Screening Interval" value={test.screeningInterval} />
               {test.leadTimeNotes && <DataRow label="Lead Time Notes" value={test.leadTimeNotes} />}
+              {test.technologyDifferentiator && <DataRow label="Technology" value={test.technologyDifferentiator} />}
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Sample & Logistics</p>
               <DataRow label="Sample Category" value={test.sampleCategory} />
-              <DataRow label="TAT" value={test.tat} />
+              <DataRow label="TAT" value={test.tat} citations={test.tatCitations} notes={test.tatNotes} />
               <DataRow label="Sample Details" value={test.sampleType} />
               <DataRow label="Sample Volume" value={test.sampleVolume} />
               <DataRow label="Sample Stability" value={test.sampleStability} />
-              <DataRow label="List Price" value={test.listPrice ? `$${test.listPrice}` : null} />
+              <DataRow label="List Price" value={test.listPrice ? `$${test.listPrice}` : null} notes={test.listPriceNotes} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
-              <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Government Insurance" value={test.reimbursement} notes={test.reimbursementNote} />
+              <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} notes={test.fdaStatusNotes} />
+              <DataRow label="Government Insurance" value={test.reimbursement} citations={test.reimbursementCitations} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
                 <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
-              <DataRow label="CPT Code" value={test.cptCode} />
-              <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
+              <DataRow label="CPT Code" value={test.cptCode} notes={test.cptCodesNotes} />
+              <DataRow label="Clinical Availability" value={test.clinicalAvailability} citations={test.clinicalAvailabilityCitations} notes={test.clinicalAvailabilityNotes} />
             </>
           )}
           
           {/* TRM-specific expanded view */}
           {category === 'TRM' && (
             <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
-              <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" expertTopic="sensitivity" />
-              <DataRow label="Reported Specificity" value={test.specificity} unit="%" expertTopic="specificity" />
-              <DataRow label="LOD" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} expertTopic="lod" />
-              <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">
+                Performance Metrics <ExpertInsight topic="sensitivity" />
+              </p>
+              <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} expertTopic="sensitivity" />
+              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} expertTopic="specificity" />
+              <DataRow label="LOD" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+              <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
               <DataRow label="Sample Type" value={test.sampleCategory} />
               <DataRow label="Method" value={test.method} />
               <DataRow label="Response Definition" value={test.responseDefinition} />
               <DataRow label="Target Population" value={test.targetPopulation} />
-              <DataRow label="Variants Tracked" value={test.variantsTracked} expertTopic="bloodVolume" />
+              <DataRow label="Approach" value={test.approach} expertTopic="tumorInformed" />
+              <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />
+              {test.technologyDifferentiator && <DataRow label="Technology" value={test.technologyDifferentiator} />}
+              
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Sample & Turnaround</p>
+              <DataRow label="TAT" value={test.tat} citations={test.tatCitations} notes={test.tatNotes} />
+              <DataRow label="Blood Volume" value={test.bloodVolume} citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} />
               
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
-              <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Government Insurance" value={test.reimbursement} notes={test.reimbursementNote} />
+              <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} notes={test.fdaStatusNotes || test.regulatoryStatusNotes} />
+              <DataRow label="Government Insurance" value={test.reimbursement} citations={test.reimbursementCitations} notes={test.reimbursementNote} />
               {test.commercialPayers && test.commercialPayers.length > 0 && (
                 <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
               )}
-              <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
+              <DataRow label="CPT Codes" value={test.cptCodes} notes={test.cptCodesNotes} />
+              <DataRow label="Clinical Availability" value={test.clinicalAvailability} citations={test.clinicalAvailabilityCitations} notes={test.clinicalAvailabilityNotes} />
             </>
           )}
           
