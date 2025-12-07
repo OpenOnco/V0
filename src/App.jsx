@@ -2934,57 +2934,111 @@ const TestShowcase = ({ onNavigate }) => {
         </span>
       </div>
 
-      {/* Test Card Modal */}
+      {/* Test Detail Modal */}
       {selectedTest && (
-        <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedTest(null)}
-        >
-          <div 
-            className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between rounded-t-2xl">
-              <h3 className="font-semibold text-gray-900">{selectedTest.name}</h3>
-              <button 
-                onClick={() => setSelectedTest(null)}
-                className="text-gray-400 hover:text-gray-600 p-1"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="p-4">
-              {isPatient ? (
-                <PatientTestCard 
-                  test={selectedTest} 
-                  category={selectedTest.category}
-                />
-              ) : (
-                <TestCard 
-                  test={selectedTest} 
-                  category={selectedTest.category} 
-                  isSelected={false} 
-                  onSelect={() => {}} 
-                />
-              )}
-            </div>
-            <div className="sticky bottom-0 bg-white border-t border-gray-200 px-4 py-3 flex justify-end gap-2 rounded-b-2xl">
-              <button
-                onClick={() => setSelectedTest(null)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
-                className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
-                style={{ backgroundColor: '#2A63A4' }}
-              >
-                {isPatient ? 'See All Options' : `View in ${selectedTest.category} Navigator`}
-              </button>
-            </div>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedTest(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+            {/* Use TestDetailModal content structure */}
+            {(() => {
+              const category = selectedTest.category;
+              const colorSchemes = {
+                MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
+                ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
+                TRM: { headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500' }
+              };
+              const colors = colorSchemes[category] || colorSchemes.MRD;
+              const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && 
+                !selectedTest.reimbursement?.toLowerCase().includes('not yet');
+              const hasPrivate = selectedTest.commercialPayers && selectedTest.commercialPayers.length > 0;
+              
+              return (
+                <>
+                  {/* Header */}
+                  <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
+                    <div className="flex-1 mr-4">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {hasMedicare && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
+                        {hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
+                        {selectedTest.fdaStatus && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{selectedTest.fdaStatus.split(' - ')[0]}</span>}
+                      </div>
+                      <h2 className="text-2xl font-bold text-white">{selectedTest.name}</h2>
+                      <p className="text-white/80">{selectedTest.vendor}</p>
+                    </div>
+                    <button onClick={() => setSelectedTest(null)} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  {/* Preview Content */}
+                  <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
+                    {isPatient ? (
+                      <div className="space-y-4">
+                        <p className="text-gray-700">
+                          {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
+                          {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
+                          {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasMedicare ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                              {hasMedicare ? '✓' : '✗'}
+                            </span>
+                            <span className="text-sm">Medicare coverage</span>
+                          </div>
+                          <div className={`flex items-center gap-2 p-2 rounded-lg ${hasPrivate ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasPrivate ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                              {hasPrivate ? '✓' : '✗'}
+                            </span>
+                            <span className="text-sm">Private insurance</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {selectedTest.sensitivity != null && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-emerald-600">{selectedTest.sensitivity}%</p>
+                            <p className="text-xs text-gray-500">Sensitivity</p>
+                          </div>
+                        )}
+                        {selectedTest.specificity != null && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-emerald-600">{selectedTest.specificity}%</p>
+                            <p className="text-xs text-gray-500">Specificity</p>
+                          </div>
+                        )}
+                        {selectedTest.lod && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-xl font-bold text-violet-600">{selectedTest.lod}</p>
+                            <p className="text-xs text-gray-500">LOD</p>
+                          </div>
+                        )}
+                        {(selectedTest.initialTat || selectedTest.tat) && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-slate-600">{selectedTest.initialTat || selectedTest.tat}d</p>
+                            <p className="text-xs text-gray-500">TAT</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="border-t border-gray-200 px-5 py-4 flex justify-between items-center bg-gray-50" style={{ flexShrink: 0 }}>
+                    <p className="text-sm text-gray-500">View full details in the navigator</p>
+                    <button
+                      onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
+                      className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
+                      style={{ backgroundColor: '#2A63A4' }}
+                    >
+                      {isPatient ? 'See All Options' : `Open ${category} Navigator`}
+                    </button>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       )}
@@ -3199,7 +3253,7 @@ Say "not specified" for missing data.`;
           {/* Persona Selector */}
           <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
-            {['Patient', 'Clinician', 'Academic/Industry'].map((p) => (
+            {['Academic/Industry', 'Clinician', 'Patient'].map((p) => (
               <button
                 key={p}
                 onClick={() => handlePersonaSelect(p)}
@@ -5268,14 +5322,13 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 // ============================================
 // Test Card
 // ============================================
-const TestCard = ({ test, isSelected, onSelect, category }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   
   return (
     <div id={`test-card-${test.id}`} className={`bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
-      {/* Header - clickable for expand/collapse */}
-      <div className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+      {/* Header - clickable to show detail modal */}
+      <div className="cursor-pointer" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -5360,239 +5413,18 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
         </div>
       </div>
       
-      {/* Show all data indicator */}
+      {/* Show detail button */}
       <div className="border-t border-gray-100 pt-2 mt-2">
         <button 
-          onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+          onClick={() => onShowDetail && onShowDetail(test)}
           className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
         >
-          {isExpanded ? 'Hide details' : 'Show all data'}
-          <svg className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          Show detail
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
-      
-      {/* Expanded data section */}
-      {isExpanded && (
-        <div className="mt-3 pt-3 border-t border-gray-200 space-y-1" onClick={(e) => e.stopPropagation()}>
-          {/* MRD-specific expanded view */}
-          {category === 'MRD' && (
-            <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">Performance Metrics <ExpertInsight topic="mrdUseCases" /></p>
-              <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} expertTopic="sensitivity" />
-              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} expertTopic="specificity" />
-              {(test.analyticalSpecificity || test.clinicalSpecificity) && (
-                <>
-                  <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} notes={test.analyticalSpecificityNotes} expertTopic="analyticalVsClinicalSpecificity" />
-                  <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" citations={test.clinicalSpecificityCitations} notes={test.clinicalSpecificityNotes} expertTopic="analyticalVsClinicalSpecificity" />
-                </>
-              )}
-              <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
-              <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-              <DataRow label="LOD (Detection Threshold)" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
-              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
-              
-              {(test.landmarkSensitivity || test.landmarkSpecificity || test.longitudinalSensitivity || test.longitudinalSpecificity) && (
-                <>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 flex items-center gap-1">
-                    Landmark & Longitudinal <ExpertInsight topic="sensitivity" />
-                  </p>
-                  <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" citations={test.landmarkSensitivityCitations} notes={test.landmarkSensitivityNotes} />
-                  <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" citations={test.landmarkSpecificityCitations} notes={test.landmarkSpecificityNotes} />
-                  <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" citations={test.longitudinalSensitivityCitations} notes={test.longitudinalSensitivityNotes} />
-                  <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" citations={test.longitudinalSpecificityCitations} notes={test.longitudinalSpecificityNotes} />
-                </>
-              )}
-              
-              {/* Stage-Specific Sensitivity - single line */}
-              {(() => {
-                const hasStageData = test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity;
-                const stageValues = [];
-                if (test.stageIISensitivity) stageValues.push(`II: ${test.stageIISensitivity}%`);
-                if (test.stageIIISensitivity) stageValues.push(`III: ${test.stageIIISensitivity}%`);
-                if (test.stageIVSensitivity) stageValues.push(`IV: ${test.stageIVSensitivity}%`);
-                
-                return (
-                  <DataRow 
-                    label="Stage-specific Sensitivity" 
-                    value={hasStageData ? stageValues.join(', ') : 'Not yet available'} 
-                    citations={test.stageIISensitivityCitations || test.stageIIISensitivityCitations}
-                    notes={test.stageIISensitivityNotes || test.stageIIISensitivityNotes}
-                    expertTopic={hasStageData ? "stageSpecific" : "stageMissing"}
-                  />
-                );
-              })()}
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Turnaround & Sample</p>
-              <DataRow label="Sample Type" value={test.sampleCategory} />
-              <DataRow label="Initial TAT" value={test.initialTat} unit=" days" citations={test.initialTatCitations} notes={test.initialTatNotes} />
-              <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
-              <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />
-              <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} expertTopic="bloodVolume" />
-              <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} notes={test.cfdnaInputNotes} expertTopic="cfdnaInput" />
-              <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Requirements</p>
-              <DataRow label="Approach" value={test.approach} notes={test.requiresTumorTissueNotes} expertTopic="tumorInformed" />
-              <DataRow label="Requires Matched Normal" value={test.requiresMatchedNormal} notes={test.requiresMatchedNormalNotes} />
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
-              <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
-              {test.commercialPayers && test.commercialPayers.length > 0 && (
-                <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
-              )}
-              <DataRow label="CPT Codes" value={test.cptCodes} notes={test.cptCodesNotes} />
-              <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
-              {test.availableRegions && test.availableRegions.length > 0 && (
-                <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
-              )}
-              <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} />
-              
-              {(test.exampleTestReport || test.indicationsNotes) && (
-                <>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Additional Info</p>
-                  {test.indicationsNotes && <div className="py-1.5"><p className="text-xs text-gray-600">{test.indicationsNotes}</p></div>}
-                  {test.exampleTestReport && (
-                    <div className="py-1.5">
-                      <a href={test.exampleTestReport} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 hover:underline">
-                        View Example Test Report →
-                      </a>
-                    </div>
-                  )}
-                </>
-              )}
-            </>
-          )}
-          
-          {/* ECD-specific expanded view */}
-          {category === 'ECD' && (
-            <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">
-                Performance Metrics <ExpertInsight topic="sensitivity" />
-              </p>
-              <DataRow label="Overall Sensitivity" value={test.sensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} expertTopic="sensitivity" />
-              <DataRow label="Stage I Sensitivity" value={test.stageISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Stage II Sensitivity" value={test.stageIISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Stage III Sensitivity" value={test.stageIIISensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Stage IV Sensitivity" value={test.stageIVSensitivity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} />
-              <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.performanceCitations} notes={test.performanceNotes} expertTopic="specificity" />
-              <DataRow label="PPV" value={test.ppv} unit="%" citations={test.performanceCitations} notes={test.ppvDefinition} />
-              <DataRow label="NPV" value={test.npv} unit="%" citations={test.performanceCitations} notes={test.npvDefinition} />
-              {test.testScope?.includes('Multi-cancer') && (
-                <DataRow 
-                  label="Tumor Origin Prediction" 
-                  value={test.tumorOriginAccuracy != null ? test.tumorOriginAccuracy : (test.tumorOriginAccuracyNotes ? 'See notes' : null)} 
-                  unit={test.tumorOriginAccuracy != null ? '%' : ''} 
-                  notes={test.tumorOriginAccuracyNotes} 
-                />
-              )}
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
-              <DataRow label="Method" value={test.method} />
-              <DataRow label="Target Population" value={test.targetPopulation} />
-              <DataRow label="Indication Group" value={test.indicationGroup} />
-              <DataRow label="Screening Interval" value={test.screeningInterval} />
-              {test.leadTimeNotes && <DataRow label="Lead Time Notes" value={test.leadTimeNotes} />}
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Sample & Logistics</p>
-              <DataRow label="Sample Category" value={test.sampleCategory} />
-              <DataRow label="TAT" value={test.tat} />
-              <DataRow label="Sample Details" value={test.sampleType} />
-              <DataRow label="Sample Volume" value={test.sampleVolume} />
-              <DataRow label="Sample Stability" value={test.sampleStability} />
-              <DataRow label="List Price" value={test.listPrice ? `$${test.listPrice}` : null} />
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
-              <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
-              {test.commercialPayers && test.commercialPayers.length > 0 && (
-                <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
-              )}
-              <DataRow label="CPT Code" value={test.cptCode} />
-              <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
-            </>
-          )}
-          
-          {/* TRM-specific expanded view */}
-          {category === 'TRM' && (
-            <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Performance Metrics</p>
-              <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" expertTopic="sensitivity" />
-              <DataRow label="Reported Specificity" value={test.specificity} unit="%" expertTopic="specificity" />
-              <DataRow label="LOD (Detection Threshold)" value={typeof test.lod === 'number' ? formatLOD(test.lod) : test.lod} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
-              <DataRow label="LOD95 (95% Confidence)" value={test.lod95} expertTopic="lodVsLod95" />
-              <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Test Details</p>
-              <DataRow label="Sample Type" value={test.sampleCategory} />
-              <DataRow label="Method" value={test.method} />
-              <DataRow label="Response Definition" value={test.responseDefinition} />
-              <DataRow label="Target Population" value={test.targetPopulation} />
-              <DataRow label="Variants Tracked" value={test.variantsTracked} />
-              
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4">Regulatory & Coverage</p>
-              <DataRow label="FDA Status" value={test.fdaStatus} />
-              <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
-              {test.commercialPayers && test.commercialPayers.length > 0 && (
-                <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} citations={test.commercialPayersCitations} notes={test.commercialPayersNotes} />
-              )}
-              <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
-            </>
-          )}
-          
-          {/* Clinical Trials & Publications section - shown for all categories if data exists */}
-          {(test.clinicalTrials || test.totalParticipants || test.numPublications) && (
-            <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 flex items-center gap-1">Clinical Evidence <ExpertInsight topic="clinicalTrials" /></p>
-              {test.totalParticipants && (
-                <div className="py-1.5 flex justify-between items-center">
-                  <span className="text-xs text-gray-500">Total Trial Participants</span>
-                  <span className="text-sm font-semibold" style={{ color: '#2A63A4' }}>{test.totalParticipants.toLocaleString()}</span>
-                </div>
-              )}
-              {test.numPublications && (
-                <div className="py-1.5 flex justify-between items-center">
-                  <span className="text-xs text-gray-500">Peer-Reviewed Publications</span>
-                  <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
-                </div>
-              )}
-              {test.clinicalTrials && (
-                <div className="py-1.5">
-                  <p className="text-xs text-gray-500 mb-1">Key Trials</p>
-                  <div className="text-xs text-gray-700 space-y-1">
-                    {test.clinicalTrials.split(/[;|]/).map((trial, idx) => {
-                      const trimmed = trial.trim();
-                      if (!trimmed) return null;
-                      // Extract NCT number if present for linking
-                      const nctMatch = trimmed.match(/NCT\d+/);
-                      return (
-                        <div key={idx} className="flex items-start gap-1">
-                          <span className="text-gray-400">•</span>
-                          {nctMatch ? (
-                            <a 
-                              href={`https://clinicaltrials.gov/study/${nctMatch[0]}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="hover:underline"
-                              style={{ color: '#2A63A4' }}
-                            >
-                              {trimmed.replace(/https?:\/\/[^\s]+/g, '').trim()}
-                            </a>
-                          ) : (
-                            <span>{trimmed.replace(/https?:\/\/[^\s]+/g, '').trim()}</span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      )}
     </div>
   );
 };
@@ -5600,9 +5432,7 @@ const TestCard = ({ test, isSelected, onSelect, category }) => {
 // ============================================
 // Patient Test Card - Simplified view for patients
 // ============================================
-const PatientTestCard = ({ test, category }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  
+const PatientTestCard = ({ test, category, onShowDetail }) => {
   // Determine coverage status
   const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
     !test.reimbursement?.toLowerCase().includes('not yet') &&
@@ -5627,8 +5457,8 @@ const PatientTestCard = ({ test, category }) => {
   
   return (
     <div className="bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all">
-      {/* Header */}
-      <div className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+      {/* Header - clickable to show detail modal */}
+      <div className="cursor-pointer" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className="font-semibold text-gray-900 text-lg">{test.name}</h3>
@@ -5679,66 +5509,357 @@ const PatientTestCard = ({ test, category }) => {
           </div>
         )}
         
-        {/* Expand/collapse */}
+        {/* Show detail button */}
         <button className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1 mt-2">
-          {isExpanded ? 'Show less' : 'Learn more'}
-          <svg className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          Learn more
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
-      
-      {/* Expanded section - plain language details */}
-      {isExpanded && (
-        <div className="mt-4 pt-4 border-t border-gray-200 space-y-4">
-          {/* What this test does */}
-          <div>
-            <h4 className="font-medium text-gray-900 mb-2">What this test does</h4>
-            <p className="text-sm text-gray-600">
-              {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment. It can help your doctor know if treatment worked and watch for cancer coming back."}
-              {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms. Finding cancer early often means better treatment options."}
-              {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood over time."}
-            </p>
-          </div>
-          
-          {/* How it works */}
-          <div>
-            <h4 className="font-medium text-gray-900 mb-2">How it works</h4>
-            <p className="text-sm text-gray-600">
-              {requiresTissue 
-                ? "Your doctor will need a sample of your tumor (from surgery or biopsy) plus a blood draw. The test creates a personalized profile based on your specific cancer."
-                : "Just a simple blood draw - no tumor sample needed. The test looks for general cancer signals in your blood."}
-            </p>
-          </div>
-          
-          {/* Questions for your doctor */}
-          <div className="bg-blue-50 rounded-lg p-3">
-            <h4 className="font-medium text-blue-900 mb-2">💬 Questions to ask your doctor</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Is this test right for my type and stage of cancer?</li>
-              <li>• Will my insurance cover this test?</li>
-              <li>• How will the results change my treatment plan?</li>
-              {category === 'MRD' && <li>• How often should I be retested?</li>}
-            </ul>
-          </div>
-          
-          {/* FDA status in plain language */}
-          {test.fdaStatus && (
-            <div className="text-sm">
-              <span className="font-medium text-gray-700">Regulatory status: </span>
-              <span className="text-gray-600">
-                {test.fdaStatus.includes('FDA Approved') || test.fdaStatus.includes('FDA-approved')
-                  ? "FDA approved - this test has been reviewed and cleared by the FDA."
-                  : test.fdaStatus.includes('Breakthrough')
-                    ? "FDA Breakthrough designation - the FDA has prioritized review of this test."
-                    : test.fdaStatus.includes('LDT')
-                      ? "Lab-developed test - validated by the lab but not separately FDA-reviewed."
-                      : test.fdaStatus}
-              </span>
+    </div>
+  );
+};
+
+// ============================================
+// Test Detail Modal
+// ============================================
+const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => {
+  if (!test) return null;
+  
+  const meta = categoryMeta[category];
+  
+  // Category-specific color schemes
+  const colorSchemes = {
+    MRD: { 
+      headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500', 
+      sectionBg: 'bg-orange-50',
+      sectionBorder: 'border-orange-200',
+      sectionTitle: 'text-orange-800'
+    },
+    ECD: { 
+      headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500', 
+      sectionBg: 'bg-emerald-50',
+      sectionBorder: 'border-emerald-200',
+      sectionTitle: 'text-emerald-800'
+    },
+    TRM: { 
+      headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500', 
+      sectionBg: 'bg-rose-50',
+      sectionBorder: 'border-rose-200',
+      sectionTitle: 'text-rose-800'
+    }
+  };
+  const colors = colorSchemes[category] || colorSchemes.MRD;
+  
+  // Helper for coverage status
+  const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
+    !test.reimbursement?.toLowerCase().includes('not yet') &&
+    !test.reimbursement?.toLowerCase().includes('no established');
+  const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
+  const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes';
+  
+  // Section component for consistent styling
+  const Section = ({ title, children, expertTopic }) => (
+    <div className={`rounded-xl border ${colors.sectionBorder} overflow-hidden`}>
+      <div className={`${colors.sectionBg} px-4 py-2 border-b ${colors.sectionBorder} flex items-center gap-2`}>
+        <h3 className={`font-semibold text-sm uppercase tracking-wide ${colors.sectionTitle}`}>{title}</h3>
+        {expertTopic && <ExpertInsight topic={expertTopic} />}
+      </div>
+      <div className="bg-white p-4">
+        {children}
+      </div>
+    </div>
+  );
+  
+  // Patient-friendly yes/no indicator
+  const YesNo = ({ yes, label }) => (
+    <div className="flex items-center gap-2 py-1">
+      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+        yes ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'
+      }`}>
+        {yes ? '✓' : '✗'}
+      </span>
+      <span className="text-sm text-gray-700">{label}</span>
+    </div>
+  );
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Header */}
+        <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
+          <div className="flex-1 mr-4">
+            <div className="flex flex-wrap gap-2 mb-2">
+              {hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare+Private</span>}
+              {hasMedicare && !hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
+              {!hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
+              {test.fdaStatus && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.fdaStatus.split(' - ')[0]}</span>}
+              {test.approach && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.approach}</span>}
             </div>
+            <h2 className="text-2xl font-bold text-white">{test.name}</h2>
+            <p className="text-white/80">{test.vendor}</p>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
+          
+          {/* Patient View */}
+          {isPatientView ? (
+            <>
+              {/* Quick Facts for Patients */}
+              <Section title="Quick Facts">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <YesNo yes={hasMedicare} label="Medicare coverage (age 65+)" />
+                    <YesNo yes={hasPrivate} label="Private insurance options" />
+                    <YesNo yes={!requiresTissue} label="Blood draw only (no surgery needed)" />
+                  </div>
+                  <div>
+                    {(test.initialTat || test.tat) && (
+                      <div className="flex items-center gap-2 py-1">
+                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
+                          {test.initialTat || test.tat}
+                        </span>
+                        <span className="text-sm text-gray-700">days for results</span>
+                      </div>
+                    )}
+                    {test.cancerTypes && (
+                      <p className="text-sm text-gray-600 py-1">
+                        Tests for: {test.cancerTypes.slice(0, 3).join(', ')}{test.cancerTypes.length > 3 ? ` +${test.cancerTypes.length - 3} more` : ''}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </Section>
+              
+              {/* What This Test Does */}
+              <Section title="What This Test Does">
+                <p className="text-gray-700">
+                  {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment. It can help your doctor know if treatment worked and watch for cancer coming back earlier than traditional scans."}
+                  {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms. Finding cancer early often means better treatment options and outcomes."}
+                  {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood over time, potentially detecting changes before imaging can."}
+                </p>
+              </Section>
+              
+              {/* How It Works */}
+              <Section title="How It Works">
+                <p className="text-gray-700">
+                  {requiresTissue 
+                    ? "Your doctor will need a sample of your tumor (from surgery or biopsy) plus a blood draw. The test creates a personalized profile based on your specific cancer's DNA mutations."
+                    : "Just a simple blood draw at your doctor's office or lab - no tumor sample needed. The test looks for general cancer signals in your blood."}
+                </p>
+                {test.bloodVolume && <p className="text-sm text-gray-500 mt-2">Blood sample: {test.bloodVolume} mL (about {Math.round(test.bloodVolume / 5)} teaspoons)</p>}
+              </Section>
+              
+              {/* Insurance & Cost */}
+              <Section title="Insurance & Cost">
+                <div className="space-y-2">
+                  {test.reimbursement && <p className="text-sm"><span className="font-medium">Medicare:</span> {test.reimbursement}</p>}
+                  {hasPrivate && (
+                    <p className="text-sm"><span className="font-medium">Private insurers:</span> {test.commercialPayers.join(', ')}</p>
+                  )}
+                  {test.commercialPayersNotes && <p className="text-xs text-gray-500 mt-1">{test.commercialPayersNotes}</p>}
+                  {category === 'ECD' && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice}</p>}
+                </div>
+              </Section>
+              
+              {/* Questions for Your Doctor */}
+              <Section title="Questions to Ask Your Doctor">
+                <ul className="space-y-1 text-gray-700">
+                  <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Is this test right for my type and stage of cancer?</li>
+                  <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Will my insurance cover this test?</li>
+                  <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How will the results change my treatment plan?</li>
+                  {category === 'MRD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How often should I be retested?</li>}
+                  {category === 'ECD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> What happens if the test finds something?</li>}
+                </ul>
+              </Section>
+            </>
+          ) : (
+            /* Clinician/Academic View */
+            <>
+              {/* Two-column layout for key metrics */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Performance Metrics */}
+                <Section title="Test Performance" expertTopic="sensitivity">
+                  <div className="space-y-1">
+                    <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} />
+                    <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} />
+                    {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" />}
+                    {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" />}
+                    <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
+                    <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
+                    <DataRow label="LOD" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
+                    {test.lod95 && <DataRow label="LOD95" value={test.lod95} expertTopic="lodVsLod95" />}
+                  </div>
+                </Section>
+                
+                {/* Sample & TAT */}
+                <Section title="Sample & Turnaround">
+                  <div className="space-y-1">
+                    <DataRow label="Sample Type" value={test.sampleCategory} />
+                    <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" />
+                    {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" />}
+                    {category === 'MRD' && (
+                      <>
+                        <DataRow label="Initial TAT" value={test.initialTat} unit=" days" />
+                        <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" />
+                      </>
+                    )}
+                    {category !== 'MRD' && <DataRow label="TAT" value={test.tat} />}
+                    {test.leadTimeVsImaging && <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />}
+                    {test.variantsTracked && <DataRow label="Variants Tracked" value={test.variantsTracked} />}
+                  </div>
+                </Section>
+              </div>
+              
+              {/* Stage-Specific Performance (if available) */}
+              {(test.stageISensitivity || test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity || 
+                test.landmarkSensitivity || test.longitudinalSensitivity) && (
+                <Section title="Stage & Timepoint Performance" expertTopic="stageSpecific">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {test.stageISensitivity && (
+                      <div className="text-center p-3 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-emerald-600">{test.stageISensitivity}%</p>
+                        <p className="text-xs text-gray-500">Stage I</p>
+                      </div>
+                    )}
+                    {test.stageIISensitivity && (
+                      <div className="text-center p-3 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-emerald-600">{test.stageIISensitivity}%</p>
+                        <p className="text-xs text-gray-500">Stage II</p>
+                      </div>
+                    )}
+                    {test.stageIIISensitivity && (
+                      <div className="text-center p-3 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-emerald-600">{test.stageIIISensitivity}%</p>
+                        <p className="text-xs text-gray-500">Stage III</p>
+                      </div>
+                    )}
+                    {test.stageIVSensitivity && (
+                      <div className="text-center p-3 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-emerald-600">{test.stageIVSensitivity}%</p>
+                        <p className="text-xs text-gray-500">Stage IV</p>
+                      </div>
+                    )}
+                  </div>
+                  {(test.landmarkSensitivity || test.longitudinalSensitivity) && (
+                    <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-gray-100">
+                      {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" />}
+                      {test.landmarkSpecificity && <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" />}
+                      {test.longitudinalSensitivity && <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" />}
+                      {test.longitudinalSpecificity && <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" />}
+                    </div>
+                  )}
+                </Section>
+              )}
+              
+              {/* Two-column layout for regulatory/evidence */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Regulatory & Coverage */}
+                <Section title="Regulatory & Coverage">
+                  <div className="space-y-1">
+                    <DataRow label="FDA Status" value={test.fdaStatus} />
+                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
+                    {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} />}
+                    <DataRow label="CPT Codes" value={test.cptCodes || test.cptCode} />
+                    <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
+                    {test.availableRegions && test.availableRegions.length > 0 && (
+                      <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
+                    )}
+                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} />}
+                  </div>
+                </Section>
+                
+                {/* Clinical Evidence */}
+                <Section title="Clinical Evidence" expertTopic="clinicalTrials">
+                  <div className="space-y-1">
+                    {test.totalParticipants && (
+                      <div className="py-1.5 flex justify-between items-center">
+                        <span className="text-xs text-gray-500">Trial Participants</span>
+                        <span className="text-sm font-semibold" style={{ color: '#2A63A4' }}>{test.totalParticipants.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {test.numPublications && (
+                      <div className="py-1.5 flex justify-between items-center">
+                        <span className="text-xs text-gray-500">Publications</span>
+                        <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
+                      </div>
+                    )}
+                    <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} />
+                    {test.clinicalTrials && (
+                      <div className="pt-2 mt-2 border-t border-gray-100">
+                        <p className="text-xs text-gray-500 mb-1">Key Trials</p>
+                        <div className="text-xs text-gray-700 space-y-1">
+                          {test.clinicalTrials.split(/[;|]/).slice(0, 5).map((trial, idx) => {
+                            const trimmed = trial.trim();
+                            if (!trimmed) return null;
+                            const nctMatch = trimmed.match(/NCT\d+/);
+                            return (
+                              <div key={idx} className="flex items-start gap-1">
+                                <span className="text-gray-400">•</span>
+                                {nctMatch ? (
+                                  <a href={`https://clinicaltrials.gov/study/${nctMatch[0]}`} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#2A63A4' }}>
+                                    {trimmed.replace(/https?:\/\/[^\s]+/g, '').trim()}
+                                  </a>
+                                ) : (
+                                  <span>{trimmed}</span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Section>
+              </div>
+              
+              {/* Requirements & Method */}
+              <Section title="Test Requirements & Method">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <DataRow label="Approach" value={test.approach} expertTopic="tumorInformed" />
+                    <DataRow label="Requires Tumor Tissue" value={requiresTissue ? 'Yes' : 'No'} notes={test.requiresTumorTissueNotes} />
+                    <DataRow label="Requires Matched Normal" value={test.requiresMatchedNormal} />
+                  </div>
+                  <div className="space-y-1">
+                    {test.method && <DataRow label="Method" value={test.method} />}
+                    {test.targetPopulation && <DataRow label="Target Population" value={test.targetPopulation} />}
+                    {test.indicationGroup && <DataRow label="Indication Group" value={test.indicationGroup} />}
+                  </div>
+                </div>
+              </Section>
+              
+              {/* Cancer Types */}
+              {test.cancerTypes && test.cancerTypes.length > 0 && (
+                <Section title="Cancer Types">
+                  <div className="flex flex-wrap gap-1">
+                    {test.cancerTypes.map((type, i) => (
+                      <span key={i} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{type}</span>
+                    ))}
+                  </div>
+                </Section>
+              )}
+              
+              {/* Example Report Link */}
+              {test.exampleTestReport && (
+                <div className="text-center pt-2">
+                  <a href={test.exampleTestReport} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:underline" style={{ color: '#2A63A4' }}>
+                    View Example Test Report →
+                  </a>
+                </div>
+              )}
+            </>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -5963,6 +6084,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [maxPrice, setMaxPrice] = useState(1000);
   const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
+  const [detailTest, setDetailTest] = useState(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
   const filterScrollRef = useRef(null);
@@ -6477,9 +6599,9 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => 
                 isPatient ? (
-                  <PatientTestCard key={test.id} test={test} category={category} />
+                  <PatientTestCard key={test.id} test={test} category={category} onShowDetail={setDetailTest} />
                 ) : (
-                  <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} />
+                  <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} onShowDetail={setDetailTest} />
                 )
               )}
             </div>
@@ -6495,6 +6617,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
 
       {!isPatient && showComparison && testsToCompare.length >= 2 && (
         <ComparisonModal tests={testsToCompare} category={category} onClose={() => setShowComparison(false)} onRemoveTest={(id) => { setSelectedTests(prev => prev.filter(i => i !== id)); if (selectedTests.length <= 2) setShowComparison(false); }} />
+      )}
+      
+      {detailTest && (
+        <TestDetailModal test={detailTest} category={category} onClose={() => setDetailTest(null)} isPatientView={isPatient} />
       )}
     </div>
     </>
