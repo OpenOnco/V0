@@ -1471,7 +1471,7 @@ const ecdTestData = [
     "cptCode": "Proprietary",
     "listPrice": 949.0,
     "screeningInterval": "Annual recommended",
-    "clinicalTrials": "NCT05611632 NHS-Galleri randomized screening trial (~140000); NCT06450171 PATHFINDER 2 safety/performance study (~35500); NCT03934866 SUMMIT high-risk lung cohort (13035)",
+    "clinicalTrials": "NCT05611632 NHS-Galleri randomized screening trial (~140000); NCT05155605 PATHFINDER 2 safety/performance study (~35500); NCT03934866 SUMMIT high-risk lung cohort (13035)",
     "totalParticipants": 188535,
     "numPublications": 20,
     "numPublicationsPlus": true
