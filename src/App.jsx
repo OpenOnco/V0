@@ -6270,6 +6270,58 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
 };
 
 // ============================================
+// Smart Comparison Suggestions
+// ============================================
+const getSuggestedTests = (selectedTestIds, allTests, maxSuggestions = 6) => {
+  if (selectedTestIds.length === 0) return [];
+  
+  // Get the selected tests
+  const selectedTests = allTests.filter(t => selectedTestIds.includes(t.id));
+  if (selectedTests.length === 0) return [];
+  
+  // Get attributes from selected tests for matching
+  const selectedIndicationGroups = new Set(selectedTests.map(t => t.indicationGroup).filter(Boolean));
+  const selectedTestScopes = new Set(selectedTests.map(t => t.testScope).filter(Boolean));
+  const selectedApproaches = new Set(selectedTests.map(t => t.approach).filter(Boolean));
+  const selectedCancerTypes = new Set(selectedTests.flatMap(t => t.cancerTypes || []));
+  
+  // Score each unselected test
+  const candidates = allTests
+    .filter(t => !selectedTestIds.includes(t.id))
+    .map(test => {
+      let score = 0;
+      
+      // Highest priority: same indication group (e.g., CRC tests together)
+      if (test.indicationGroup && selectedIndicationGroups.has(test.indicationGroup)) {
+        score += 100;
+      }
+      
+      // High priority: overlapping cancer types
+      const testCancerTypes = test.cancerTypes || [];
+      const cancerTypeOverlap = testCancerTypes.filter(ct => selectedCancerTypes.has(ct)).length;
+      score += cancerTypeOverlap * 30;
+      
+      // Medium priority: same test scope (single-cancer vs multi-cancer)
+      if (test.testScope && selectedTestScopes.has(test.testScope)) {
+        score += 20;
+      }
+      
+      // Lower priority: same approach (tumor-informed vs tumor-naïve)
+      if (test.approach && selectedApproaches.has(test.approach)) {
+        score += 10;
+      }
+      
+      return { test, score };
+    })
+    .filter(({ score }) => score > 0) // Only suggest if there's some relevance
+    .sort((a, b) => b.score - a.score)
+    .slice(0, maxSuggestions)
+    .map(({ test }) => test);
+  
+  return candidates;
+};
+
+// ============================================
 // Category Page
 // ============================================
 const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) => {
@@ -6426,6 +6478,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, minParticipants, minPublications, maxPrice, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
+  const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
   const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
@@ -6708,6 +6761,39 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 </button>
               )}
             </div>
+            
+            {/* Smart Comparison Suggestions */}
+            {selectedTests.length >= 1 && suggestedTests.length > 0 && (
+              <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                <div className="flex items-center gap-2 mb-3">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  <span className="text-sm font-semibold text-blue-800">Suggested Comparisons</span>
+                  <span className="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                    {testsToCompare[0]?.indicationGroup || testsToCompare[0]?.testScope || 'Related'} tests
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {suggestedTests.map(test => (
+                    <button
+                      key={test.id}
+                      onClick={() => toggle(setSelectedTests)(test.id)}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg text-sm transition-all group"
+                    >
+                      <span className="font-medium text-gray-800">{test.name}</span>
+                      <span className="text-gray-400 text-xs">{test.vendor}</span>
+                      <svg className="w-4 h-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-blue-600 mt-2">
+                  Click to add to comparison • Based on indication, cancer type, and test approach
+                </p>
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} />)}
             </div>
