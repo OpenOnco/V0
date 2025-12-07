@@ -3467,7 +3467,7 @@ Say "not specified" for missing data.`;
                         </div>
                         <div>
                           <h3 className="text-sm lg:text-base font-bold text-slate-800">After Treatment</h3>
-                          <p className="text-xs text-orange-600 font-medium">Explore {mrdTestData.length} tests →</p>
+                          <p className="text-xs text-orange-600 font-medium">Explore {mrdTestData.length} tests</p>
                         </div>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
@@ -3490,7 +3490,7 @@ Say "not specified" for missing data.`;
                         </div>
                         <div>
                           <h3 className="text-sm lg:text-base font-bold text-slate-800">During Treatment</h3>
-                          <p className="text-xs text-sky-600 font-medium">Explore {trmTestData.length} tests →</p>
+                          <p className="text-xs text-sky-600 font-medium">Explore {trmTestData.length} tests</p>
                         </div>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
@@ -3513,7 +3513,7 @@ Say "not specified" for missing data.`;
                         </div>
                         <div>
                           <h3 className="text-sm lg:text-base font-bold text-slate-800">Screening</h3>
-                          <p className="text-xs text-emerald-600 font-medium">Explore {ecdTestData.length} tests →</p>
+                          <p className="text-xs text-emerald-600 font-medium">Explore {ecdTestData.length} tests</p>
                         </div>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -3543,7 +3543,7 @@ Say "not specified" for missing data.`;
                         </div>
                         <div>
                           <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
-                          <p className="text-xs text-orange-600 font-medium">Click to explore {mrdTestData.length} tests →</p>
+                          <p className="text-xs text-orange-600 font-medium">Click to explore {mrdTestData.length} tests</p>
                         </div>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
@@ -3579,7 +3579,7 @@ Say "not specified" for missing data.`;
                         </div>
                         <div>
                           <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
-                          <p className="text-xs text-sky-600 font-medium">Click to explore {trmTestData.length} tests →</p>
+                          <p className="text-xs text-sky-600 font-medium">Click to explore {trmTestData.length} tests</p>
                         </div>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
@@ -3615,7 +3615,7 @@ Say "not specified" for missing data.`;
                         </div>
                         <div>
                           <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                          <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
+                          <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests</p>
                         </div>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
