@@ -5020,10 +5020,14 @@ const InfoIcon = ({ citations, notes }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
   
-  // Close on scroll
+  // Close on scroll outside popup
   useEffect(() => {
     if (!isOpen) return;
-    const handleScroll = () => setIsOpen(false);
+    const handleScroll = (e) => {
+      // Don't close if scrolling inside the popup
+      if (popupRef.current && popupRef.current.contains(e.target)) return;
+      setIsOpen(false);
+    };
     window.addEventListener('scroll', handleScroll, true);
     return () => window.removeEventListener('scroll', handleScroll, true);
   }, [isOpen]);
@@ -5300,10 +5304,14 @@ const ExpertInsight = ({ topic }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
   
-  // Close on scroll (popup position would be stale)
+  // Close on scroll outside popup
   useEffect(() => {
     if (!isOpen) return;
-    const handleScroll = () => setIsOpen(false);
+    const handleScroll = (e) => {
+      // Don't close if scrolling inside the popup
+      if (popupRef.current && popupRef.current.contains(e.target)) return;
+      setIsOpen(false);
+    };
     window.addEventListener('scroll', handleScroll, true);
     return () => window.removeEventListener('scroll', handleScroll, true);
   }, [isOpen]);
