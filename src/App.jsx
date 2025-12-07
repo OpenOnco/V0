@@ -6387,6 +6387,26 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   const params = comparisonParams[category] || comparisonParams.MRD;
   const meta = categoryMeta[category];
   
+  // Print styles
+  const printStyles = `
+    @media print {
+      body * { visibility: hidden; }
+      .comparison-print-area, .comparison-print-area * { visibility: visible; }
+      .comparison-print-area { 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        width: 100%;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      .print\\:hidden { display: none !important; }
+      .comparison-print-area table { font-size: 10px; }
+      .comparison-print-area th, .comparison-print-area td { padding: 4px 6px; }
+      @page { margin: 0.5in; size: landscape; }
+    }
+  `;
+  
   // Detect LOD units across all tests being compared
   const lodUnits = tests.map(t => detectLodUnit(t.lod)).filter(Boolean);
   const lod95Units = tests.map(t => detectLodUnit(t.lod95)).filter(Boolean);
@@ -6427,26 +6447,39 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   const colors = colorSchemes[category] || colorSchemes.MRD;
   
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
-        {/* Colored Header */}
-        <div className={`flex justify-between items-center p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    <>
+      <style>{printStyles}</style>
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:backdrop-blur-none" onClick={onClose}>
+        <div className="comparison-print-area bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+          {/* Colored Header */}
+          <div className={`flex justify-between items-center p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center print:hidden">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className={`text-xl font-bold ${colors.headerText} print:text-black`}>Comparing {tests.length} Tests</h2>
+                <p className="text-white/80 text-sm print:text-gray-600">{meta?.title || category} Category • OpenOnco.org</p>
+              </div>
+            </div>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => window.print()} 
+              className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors print:hidden`}
+              title="Print or save as PDF"
+            >
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-            </div>
-            <div>
-              <h2 className={`text-xl font-bold ${colors.headerText}`}>Comparing {tests.length} Tests</h2>
-              <p className="text-white/80 text-sm">{meta?.title || category} Category</p>
-            </div>
+            </button>
+            <button onClick={onClose} className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors print:hidden`}>
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <button onClick={onClose} className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors`}>
-            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
         </div>
         
         {/* Expert Warning Banner */}
@@ -6488,7 +6521,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                       </div>
                       <button 
                         onClick={() => onRemoveTest(test.id)} 
-                        className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0"
+                        className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0 print:hidden"
                         title="Remove from comparison"
                       >
                         <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -6546,13 +6579,14 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
         </div>
         
         {/* Footer */}
-        <div className={`p-4 ${colors.lightBg} border-t ${colors.border} flex-shrink-0`}>
+        <div className={`p-4 ${colors.lightBg} border-t ${colors.border} flex-shrink-0 print:hidden`}>
           <p className="text-xs text-gray-500 text-center">
-            Click the × next to a test name to remove it from comparison
+            Click the × next to a test name to remove it from comparison • Use print button to save as PDF
           </p>
         </div>
       </div>
     </div>
+    </>
   );
 };
 
