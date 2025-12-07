@@ -690,7 +690,7 @@ const mrdTestData = [
     "indicationsNotes": "Exact Sciences Oncodetect tumor-informed circulating tumor DNA (ctDNA) MRD test, marketed for use across solid tumors; designed for post-surgical and surveillance use cases.",
     "sensitivity": 91.0,
     "sensitivityCitations": "https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2025/New-Evidence-Validates-Oncodetects-Ability-to-Detect-Molecular-Residual-Disease-and-Predict-Recurrence-in-Colorectal-Cancer-Patients/default.aspx",
-    "sensitivityNotes": "In CRC, results from Alpha-CORRECT, a study with one of the longest MRD surveillance monitoring periods to date, showed the Oncodetect test achieved 78% sensitivity at the post-surgical timepoint and 91% sensitivity during the surveillance monitoring period, with specificities of 80% and 94%, respectively (https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease) | Sources: https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease)",
+    "sensitivityNotes": "In CRC, results from Alpha-CORRECT, a study with one of the longest MRD surveillance monitoring periods to date, showed the Oncodetect test achieved 78% sensitivity at the post-surgical timepoint and 91% sensitivity during the surveillance monitoring period, with specificities of 80% and 94%, respectively.",
     "sensitivityStagesReported": "Stage II–III combined (CRC)",
     "stageIISensitivity": null,
     "stageIISensitivityNotes": "Stage II-specific CRC sensitivity not separately reported in Alpha-CORRECT publications; combined with Stage III. Stage-specific breakdowns would be informative for treatment decisions.",
@@ -699,7 +699,7 @@ const mrdTestData = [
     "stageDataExpected": true,
     "specificity": 94.0,
     "specificityCitations": "https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2025/New-Evidence-Validates-Oncodetects-Ability-to-Detect-Molecular-Residual-Disease-and-Predict-Recurrence-in-Colorectal-Cancer-Patients/default.aspx",
-    "specificityNotes": "In CRC (Alpha-CORRECT study), Oncodetect demonstrated specificities of 80% at the post-surgical timepoint and 94% during surveillance monitoring. | Sources: https://www.exactsciences.com/newsroom/press-releases/new-evidence-validates-oncodetect-s-ability-to-detect-molecular-residual-disease",
+    "specificityNotes": "In CRC (Alpha-CORRECT study), Oncodetect demonstrated specificities of 80% at the post-surgical timepoint and 94% during surveillance monitoring.",
     "ppv": 50.0,
     "ppvNotes": "CRC postsurgical 3y PPV 50% (Alpha-/Beta-CORRECT).",
     "npv": 96.0,
@@ -808,9 +808,11 @@ const mrdTestData = [
     ],
     "indicationsNotes": "NeoGenomics RaDaR ST tumor-informed MRD assay with Medicare coverage for HR+/HER2- breast cancer (including late recurrence >5 years) and HPV-negative head and neck cancer; supportive data across multiple solid tumors.",
     "sensitivity": 95.7,
-    "sensitivityNotes": "RaDaR ST demonstrated 97% concordance and maintained equivalent sensitivity with RaDaR 1.0\n\nIn breast, 95.7% sens. And 91.0% spec. (https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/) | Sources: https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/)",
+    "sensitivityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/",
+    "sensitivityNotes": "RaDaR ST demonstrated 97% concordance and maintained equivalent sensitivity with RaDaR 1.0. In breast, 95.7% sensitivity and 91.0% specificity.",
     "specificity": 91.0,
-    "specificityNotes": "RaDaR ST demonstrated 97% concordance with RaDaR 1.0. In breast cancer validation, specificity was 91.0%. | Sources: https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/",
+    "specificityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10870111/",
+    "specificityNotes": "RaDaR ST demonstrated 97% concordance with RaDaR 1.0. In breast cancer validation, specificity was 91.0%.",
     "lod": "~10 ppm",
     "lodCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/310/neogenomics-to-present-radar-st-bridging-study-at-islb-2025-demonstrating-reliable-mrd-detection-across-solid-tumors",
     "lodNotes": "Analytical validation for the RaDaR assay supports reliable detection around 10 ppm with ≥70–90% sensitivity at that level in contrived samples.",
@@ -918,7 +920,7 @@ const mrdTestData = [
     "indicationsNotes": "Natera Signatera tumor-informed MRD assay with Medicare coverage for multiple solid-tumor indications: CRC (stage II–IV & oligometastatic, adjuvant & recurrence), breast cancer (neoadjuvant and stage IIb+ adjuvant & recurrence), bladder cancer (MIBC), NSCLC (stage I–III surveillance), and ovarian/fallopian/primary peritoneal cancer (adjuvant & recurrence), plus pan-solid tumor immune-checkpoint inhibitor (ICI) response monitoring.",
     "sensitivity": 94.0,
     "sensitivityCitations": "https://investor.natera.com/news/news-details/2025/SignateraTM-Genome-Clinical-Performance-Highlighted-at-ASCO-2025/default.aspx",
-    "sensitivityNotes": "Recurrence Surveillance:\nCRC: 88-93% sens., 98% spec.\nBreast: 88-89% sens., 95-99% spec.\nLung: 80-99% sens., 96-99% spec.\nBladder: 99% sens., 98% spec.\nOvarian: 99% sens.\n\nhttps://www.natera.com/oncology/signatera-advanced-cancer-detection/ | Sources: https://www.natera.com/oncology/signatera-advanced-cancer-detection/",
+    "sensitivityNotes": "Recurrence Surveillance: CRC: 88-93% sens., 98% spec. Breast: 88-89% sens., 95-99% spec. Lung: 80-99% sens., 96-99% spec. Bladder: 99% sens., 98% spec. Ovarian: 99% sens.",
     "sensitivityStagesReported": "Stage II–IV combined (varies by cancer type)",
     "stageIISensitivity": null,
     "stageIISensitivityNotes": "CRC Stage II landmark ~65-73% in CIRCULATE-Japan; longitudinal higher. Stage II not separately reported for other cancer types. Stage-specific breakdowns would help inform treatment decisions.",
@@ -2414,7 +2416,7 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const navItems = ['home', 'how-it-works', 'submissions', 'data-sources', 'about'];
+  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
     'data-sources': 'Data Download',
@@ -3215,216 +3217,383 @@ Say "not specified" for missing data.`;
 
         {/* Unified Database Access Container */}
         <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
-          {/* Container Header */}
+          {/* Container Header - different for patients */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Browse Liquid Biopsy Tests using our Navigator Tools:</h2>
+            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
+              {persona === 'Patient' ? 'Ask questions or browse tests:' : 'Browse Liquid Biopsy Tests using our Navigator Tools:'}
+            </h2>
           </div>
           
-          {/* Category Navigators */}
-          <div className="p-4 lg:p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
-              {/* MRD Navigator */}
-              <div
-                className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.orange.card}`}
-                onClick={() => onNavigate('MRD')}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
-                      <p className="text-xs text-orange-600 font-medium">Click to explore {mrdTestData.length} tests →</p>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
-                    <span className="text-lg font-bold text-orange-500">→</span>
-                  </div>
+          {/* For Patients: Chat first, then Navigators */}
+          {persona === 'Patient' ? (
+            <>
+              {/* Chat Section */}
+              <div className="bg-white">
+                {/* Chat Header */}
+                <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
+                  <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Ask questions about liquid biopsy tests:</h3>
                 </div>
-                <div className="overflow-hidden">
-                  <div 
-                    className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
-                    style={{ animation: 'tickerMRD 20s linear infinite' }}
+              
+              {/* Messages Area */}
+              {messages.length > 0 && (
+                <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div 
+                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                        style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                      >
+                        {msg.role === 'user' ? (
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        ) : (
+                          <Markdown className="text-sm">{msg.content}</Markdown>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                        <p className="text-sm text-slate-500">Thinking...</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Input Area */}
+              <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Type your liquid biopsy test question here..."
+                    className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                    style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !chatInput.trim()}
+                    className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                    style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
                   >
-                    <span className="inline-block">
-                      {mrdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                    </span>
-                    <span className="inline-block">
-                      {mrdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                    </span>
-                  </div>
-                </div>
+                    Ask
+                  </button>
+                </form>
               </div>
               
-              {/* ECD Navigator */}
-              <div
-                className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
-                onClick={() => onNavigate('ECD')}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                      <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                    <span className="text-lg font-bold text-emerald-500">→</span>
-                  </div>
-                </div>
-                <div className="overflow-hidden">
-                  <div 
-                    className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
-                    style={{ animation: 'tickerECD 25s linear infinite' }}
-                  >
-                    <span className="inline-block">
-                      {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                    </span>
-                    <span className="inline-block">
-                      {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* TRM Navigator */}
-              <div
-                className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
-                onClick={() => onNavigate('TRM')}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
-                      <p className="text-xs text-sky-600 font-medium">Click to explore {trmTestData.length} tests →</p>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
-                    <span className="text-lg font-bold text-sky-500">→</span>
-                  </div>
-                </div>
-                <div className="overflow-hidden">
-                  <div 
-                    className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
-                    style={{ animation: 'tickerTRM 15s linear infinite' }}
-                  >
-                    <span className="inline-block">
-                      {trmTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                    </span>
-                    <span className="inline-block">
-                      {trmTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <style>{`
-              @keyframes tickerMRD {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              @keyframes tickerECD {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              @keyframes tickerTRM {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-            `}</style>
-          </div>
-          
-          {/* Divider */}
-          <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
-          
-          {/* Chat Section */}
-          <div className="bg-white">
-            {/* Chat Header */}
-            <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
-              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude questions about the tests:</h3>
-            </div>
-          
-          {/* Messages Area */}
-          {messages.length > 0 && (
-            <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div 
-                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                    style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                  >
-                    {msg.role === 'user' ? (
-                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                    ) : (
-                      <Markdown className="text-sm">{msg.content}</Markdown>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                    <p className="text-sm text-slate-500">Thinking...</p>
+              {/* Example Questions (show below input when no messages) */}
+              {messages.length === 0 && (
+                <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+                  <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                    <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                    {exampleQuestions.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSubmit(q)}
+                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                      >
+                        {q}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
-            </div>
-          )}
-          
-          {/* Input Area */}
-          <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
-            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Type your liquid biopsy test question here..."
-                className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
-                style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
-                disabled={isLoading}
-              />
-              <button
-                type="submit"
-                disabled={isLoading || !chatInput.trim()}
-                className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-              >
-                Ask
-              </button>
-            </form>
-          </div>
-          
-          {/* Example Questions (show below input when no messages) */}
-          {messages.length === 0 && (
-            <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
-              <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
-                <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
-                {exampleQuestions.map((q, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSubmit(q)}
-                    className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
-                  >
-                    {q}
-                  </button>
-                ))}
               </div>
-            </div>
+              
+              {/* Divider */}
+              <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
+              
+              {/* Category Navigators Header */}
+              <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+                <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
+              </div>
+              
+              {/* Category Navigators */}
+              <div className="p-4 lg:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
+                  {/* MRD Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.orange.card}`}
+                    onClick={() => onNavigate('MRD')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">After Treatment</h3>
+                          <p className="text-xs text-orange-600 font-medium">Explore {mrdTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-orange-500">→</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* ECD Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
+                    onClick={() => onNavigate('ECD')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Screening</h3>
+                          <p className="text-xs text-emerald-600 font-medium">Explore {ecdTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-emerald-500">→</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* TRM Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
+                    onClick={() => onNavigate('TRM')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">During Treatment</h3>
+                          <p className="text-xs text-sky-600 font-medium">Explore {trmTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-sky-500">→</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Category Navigators */}
+              <div className="p-4 lg:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
+                  {/* MRD Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.orange.card}`}
+                    onClick={() => onNavigate('MRD')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
+                          <p className="text-xs text-orange-600 font-medium">Click to explore {mrdTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                        <span className="text-lg font-bold text-orange-500">→</span>
+                      </div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <div 
+                        className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
+                        style={{ animation: 'tickerMRD 20s linear infinite' }}
+                      >
+                        <span className="inline-block">
+                          {mrdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                        <span className="inline-block">
+                          {mrdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* ECD Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
+                    onClick={() => onNavigate('ECD')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
+                          <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-emerald-500">→</span>
+                      </div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <div 
+                        className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
+                        style={{ animation: 'tickerECD 25s linear infinite' }}
+                      >
+                        <span className="inline-block">
+                          {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                        <span className="inline-block">
+                          {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* TRM Navigator */}
+                  <div
+                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
+                    onClick={() => onNavigate('TRM')}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
+                          <p className="text-xs text-sky-600 font-medium">Click to explore {trmTestData.length} tests →</p>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
+                        <span className="text-lg font-bold text-sky-500">→</span>
+                      </div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <div 
+                        className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
+                        style={{ animation: 'tickerTRM 15s linear infinite' }}
+                      >
+                        <span className="inline-block">
+                          {trmTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                        <span className="inline-block">
+                          {trmTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <style>{`
+                  @keyframes tickerMRD {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                  }
+                  @keyframes tickerECD {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                  }
+                  @keyframes tickerTRM {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                  }
+                `}</style>
+              </div>
+              
+              {/* Divider */}
+              <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
+              
+              {/* Chat Section */}
+              <div className="bg-white">
+                {/* Chat Header */}
+                <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
+                  <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude questions about the tests:</h3>
+                </div>
+              
+              {/* Messages Area */}
+              {messages.length > 0 && (
+                <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div 
+                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                        style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                      >
+                        {msg.role === 'user' ? (
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        ) : (
+                          <Markdown className="text-sm">{msg.content}</Markdown>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                        <p className="text-sm text-slate-500">Thinking...</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Input Area */}
+              <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Type your liquid biopsy test question here..."
+                    className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                    style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !chatInput.trim()}
+                    className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                    style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                  >
+                    Ask
+                  </button>
+                </form>
+              </div>
+              
+              {/* Example Questions (show below input when no messages) */}
+              {messages.length === 0 && (
+                <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+                  <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                    <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                    {exampleQuestions.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSubmit(q)}
+                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              </div>
+            </>
           )}
-          </div>
         </div>
 
         {/* Test Showcase & News Feed Side by Side */}
@@ -4788,20 +4957,20 @@ const InfoIcon = ({ citations, notes }) => {
           <button onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} className="absolute top-1 right-1 text-gray-400 hover:text-gray-600 p-1">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
+          {notes && (
+            <div className={citations ? "mb-2" : ""}>
+              <p className="text-xs font-medium text-gray-700 mb-1">Notes:</p>
+              <p className="text-xs text-gray-600">{notes}</p>
+            </div>
+          )}
           {citations && (
-            <div className="mb-2">
-              <p className="text-xs font-medium text-gray-700 mb-1">Citations:</p>
+            <div>
+              <p className="text-xs font-medium text-gray-700 mb-1">Sources:</p>
               <p className="text-xs text-[#2A63A4] break-all">{citations.split('|').map((c, i) => (
                 <a key={i} href={c.trim().startsWith('http') ? c.trim() : '#'} target="_blank" rel="noopener noreferrer" className="block hover:underline mb-1">
                   {c.trim().length > 60 ? c.trim().slice(0, 60) + '...' : c.trim()}
                 </a>
               ))}</p>
-            </div>
-          )}
-          {notes && (
-            <div>
-              <p className="text-xs font-medium text-gray-700 mb-1">Notes:</p>
-              <p className="text-xs text-gray-600">{notes}</p>
             </div>
           )}
         </div>
