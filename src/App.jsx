@@ -4324,7 +4324,7 @@ const SubmissionsPage = () => {
               onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className="font-semibold text-gray-800">Suggest New Test</div>
+              <div className="font-semibold text-gray-800">Suggest a New Test</div>
               <div className="text-sm text-gray-500">Notify us of a test not in our database</div>
             </button>
             <button
