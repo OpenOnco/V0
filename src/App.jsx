@@ -3340,7 +3340,7 @@ Say "not specified" for missing data.`;
           <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Liquid biopsy tests are reshaping cancer treatment by profiling cancers from a simple blood draw. The tests are advancing rapidly - resulting in complex choices for doctors and patients. <strong>OpenOnco</strong> is a non-profit effort to consolidate test information and provide navigation tools to help match the right test to the right patient.</p>
           
           {/* Persona Selector */}
-          <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
             {['Academic/Industry', 'Clinician', 'Patient'].map((p) => (
               <button
