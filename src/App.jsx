@@ -5829,6 +5829,30 @@ const FAQPage = () => {
       )
     },
     {
+      question: "How does the AI chat feature work, and can I trust its answers?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            Our chat feature is powered by Anthropic's Claude AI. We've designed it to <strong>only reference information from our test database</strong>—it cannot browse the internet or access external sources during your conversation. This means Claude's answers are grounded in the same curated, cited data you see throughout OpenOnco.
+          </p>
+          <p>
+            However, <strong>AI language models can still make mistakes</strong>. They may occasionally misinterpret questions, make errors in reasoning, or present information in misleading ways. This is a limitation of current AI technology, not specific to our implementation.
+          </p>
+          <p>
+            <strong>We strongly recommend:</strong>
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li>Cross-checking any important information with vendor websites and official product documentation</li>
+            <li>Verifying clinical claims with peer-reviewed publications (we provide citations throughout the database)</li>
+            <li>If you're a patient, discussing test options with your doctor or healthcare provider before making decisions</li>
+          </ul>
+          <p>
+            The chat is best used as a starting point for exploration—not as a definitive source for clinical decision-making.
+          </p>
+        </div>
+      )
+    },
+    {
       question: "Can I download the data?",
       answer: (
         <p>
