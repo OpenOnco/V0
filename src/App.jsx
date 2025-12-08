@@ -4726,7 +4726,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
   <div className="border-b border-gray-200 last:border-b-0">
     <button
       onClick={onClick}
-      className="w-full py-5 flex justify-between items-center text-left hover:bg-gray-50 transition-colors"
+      className="w-full py-5 px-6 flex justify-between items-center text-left hover:bg-gray-50 transition-colors"
     >
       <span className="text-lg font-medium text-gray-900 pr-4">{question}</span>
       <svg 
@@ -4739,7 +4739,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
       </svg>
     </button>
     {isOpen && (
-      <div className="pb-5 pr-8">
+      <div className="pb-5 px-6 pr-12">
         <div className="prose prose-lg text-gray-600">{answer}</div>
       </div>
     )}
@@ -4788,7 +4788,7 @@ const FAQPage = () => {
       question: "How often is the database updated?",
       answer: (
         <p>
-          We update the database regularly as new tests launch, FDA approvals occur, or performance data is published. The build date shown in the footer indicates when the current version was deployed. You can also check the "Recently Added" section on the home page to see the latest additions.
+          We update the database regularly as new tests launch, FDA approvals occur, or performance data is published. The build date shown on the Data Download page indicates when the current version was deployed. You can also check the "Recently Added" section on the home page to see the latest additions.
         </p>
       )
     },
@@ -4841,7 +4841,7 @@ const FAQPage = () => {
       question: "Can I download the data?",
       answer: (
         <p>
-          Yes! Visit the Data Download tab to download the complete database in CSV or JSON format. The data is freely available for research, clinical decision support, or other non-commercial purposes.
+          Yes! Visit the Data Download tab to download the complete database in JSON format. The data is freely available for research, clinical decision support, or other non-commercial purposes.
         </p>
       )
     },
@@ -4865,7 +4865,7 @@ const FAQPage = () => {
       question: "How do I contact OpenOnco?",
       answer: (
         <p>
-          The best way to reach us is via <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">LinkedIn</a>. Please include #openonco in your message so we can easily identify it.
+          The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry—whether it's suggesting a new test, requesting data corrections, or providing general feedback. We review all submissions and will respond if needed.
         </p>
       )
     }
