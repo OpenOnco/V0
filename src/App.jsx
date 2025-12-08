@@ -4550,6 +4550,34 @@ const TestShowcase = ({ onNavigate }) => {
         )}
       </div>
       
+      {/* AI Disclaimer */}
+      <p className="text-[10px] text-slate-400 mb-3 text-center">
+        Chat powered by Anthropic's Claude. AI responses may contain errors — always verify with official sources before making clinical decisions.
+      </p>
+      
+      {/* Recently Added Tests */}
+      <div className="bg-gradient-to-r from-blue-50 to-slate-50 border border-slate-200 rounded-lg p-2 mb-3">
+        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Recently Added</p>
+        <div className="flex flex-wrap gap-1.5">
+          {RECENTLY_ADDED_TESTS.slice(0, 5).map((test, i) => {
+            const categoryColors = {
+              MRD: 'bg-orange-100 text-orange-700 border-orange-200',
+              ECD: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+              TRM: 'bg-sky-100 text-sky-700 border-sky-200',
+              CGP: 'bg-violet-100 text-violet-700 border-violet-200'
+            };
+            return (
+              <span 
+                key={i}
+                className={`text-[10px] px-2 py-0.5 rounded-full border ${categoryColors[test.category] || 'bg-slate-100 text-slate-600 border-slate-200'}`}
+              >
+                {test.name} <span className="opacity-60">({test.category})</span>
+              </span>
+            );
+          })}
+        </div>
+      </div>
+      
       {/* Search results count */}
       {searchQuery && (
         <p className="text-xs text-slate-500 mb-2">
