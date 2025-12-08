@@ -5221,9 +5221,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           )}
         </div>
 
-        {/* Recently Added Tests Banner */}
-        <RecentlyAddedBanner onNavigate={onNavigate} />
-
         {/* Test Showcase */}
         <div className="mb-4">
           <TestShowcase onNavigate={onNavigate} />
