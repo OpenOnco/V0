@@ -4648,6 +4648,82 @@ Say "not specified" for missing data.`;
 // ============================================
 // Database Summary Component (Reusable)
 // ============================================
+// Simple database stats for Data Download page
+const DatabaseStatsSimple = () => {
+  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
+  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
+  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
+  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
+  
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (cgpTestData.length * cgpParams);
+  
+  const allVendors = new Set([
+    ...mrdTestData.map(t => t.vendor),
+    ...ecdTestData.map(t => t.vendor),
+    ...trmTestData.map(t => t.vendor),
+    ...cgpTestData.map(t => t.vendor)
+  ]);
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Database Overview</h3>
+      
+      {/* Main stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">{totalTests}</p>
+          <p className="text-xs text-gray-500">Total Tests</p>
+        </div>
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">{allVendors.size}</p>
+          <p className="text-xs text-gray-500">Vendors</p>
+        </div>
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">{totalDataPoints.toLocaleString()}</p>
+          <p className="text-xs text-gray-500">Data Points</p>
+        </div>
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">4</p>
+          <p className="text-xs text-gray-500">Categories</p>
+        </div>
+      </div>
+      
+      {/* Category breakdown */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
+          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
+          <div>
+            <p className="text-xs font-medium text-gray-800">MRD</p>
+            <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
+          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{ecdTestData.length}</div>
+          <div>
+            <p className="text-xs font-medium text-gray-800">ECD</p>
+            <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-sky-50 rounded-lg border border-sky-100">
+          <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white text-xs font-bold">{trmTestData.length}</div>
+          <div>
+            <p className="text-xs font-medium text-gray-800">TRM</p>
+            <p className="text-[10px] text-gray-500">{trmParams} fields</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
+          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{cgpTestData.length}</div>
+          <div>
+            <p className="text-xs font-medium text-gray-800">CGP</p>
+            <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const DatabaseSummary = () => {
   const [showFAQ, setShowFAQ] = useState(false);
   
@@ -6298,7 +6374,7 @@ const SourceDataPage = () => {
 
       {/* Summary Statistics */}
       <div className="mb-8">
-        <DatabaseSummary />
+        <DatabaseStatsSimple />
       </div>
 
       {/* Download Section */}
