@@ -13,6 +13,58 @@ const RECENTLY_ADDED_TESTS = [
 ];
 
 // ============================================
+// Vendor Badges - Awards and recognition
+// ============================================
+const VENDOR_BADGES = {
+  'Guardant Health': [
+    { id: 'transparency-2025', icon: '🏆', label: 'Transparency Award 2025', tooltip: 'OpenOnco Transparency Award 2025 — Highest data disclosure among vendors with 2+ reimbursed tests' }
+  ],
+  // Normalize variations
+  'Guardant': [
+    { id: 'transparency-2025', icon: '🏆', label: 'Transparency Award 2025', tooltip: 'OpenOnco Transparency Award 2025 — Highest data disclosure among vendors with 2+ reimbursed tests' }
+  ],
+};
+
+// Helper to check if vendor has badges
+const getVendorBadges = (vendor) => {
+  if (!vendor) return [];
+  // Check exact match first
+  if (VENDOR_BADGES[vendor]) return VENDOR_BADGES[vendor];
+  // Check if vendor name contains a badge key
+  for (const [key, badges] of Object.entries(VENDOR_BADGES)) {
+    if (vendor.includes(key) || key.includes(vendor)) return badges;
+  }
+  return [];
+};
+
+// VendorBadge component - displays badges next to vendor name
+const VendorBadge = ({ vendor, size = 'sm' }) => {
+  const badges = getVendorBadges(vendor);
+  if (badges.length === 0) return null;
+  
+  const sizeClasses = {
+    xs: 'text-xs',
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg'
+  };
+  
+  return (
+    <>
+      {badges.map(badge => (
+        <span 
+          key={badge.id}
+          className={`${sizeClasses[size]} cursor-help ml-1 inline-flex items-center`}
+          title={badge.tooltip}
+        >
+          <span className="hover:scale-110 transition-transform">{badge.icon}</span>
+        </span>
+      ))}
+    </>
+  );
+};
+
+// ============================================
 // Lifecycle Navigator Constants
 // ============================================
 const LIFECYCLE_STAGES = [
@@ -804,7 +856,7 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
                 {test.name}
               </span>
               <span className="text-[10px] text-slate-400">
-                {test.vendor}
+                {test.vendor}<VendorBadge vendor={test.vendor} size="xs" />
               </span>
               <span className="text-[10px] text-slate-300 ml-auto">
                 {test.dateAdded}
@@ -4001,7 +4053,7 @@ const TestShowcase = ({ onNavigate }) => {
               <div className="flex items-start justify-between mb-1">
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
-                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
+                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
                 </div>
                 <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
                   {test.category}
@@ -4236,7 +4288,7 @@ const StatOfTheDay = ({ onNavigate }) => {
                 </p>
               </div>
               <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
-              <p className="text-xs text-slate-500 truncate">{test.vendor}</p>
+              <p className="text-xs text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
             </div>
           );
         })}
@@ -6971,7 +7023,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
             <h3 className="font-semibold text-gray-900">{test.name}</h3>
-            <p className="text-sm text-gray-500">{test.vendor}</p>
+            <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           {/* Prominent comparison checkbox - click selects for comparison */}
           <button
@@ -7119,7 +7171,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className="font-semibold text-gray-900 text-lg">{test.name}</h3>
-            <p className="text-sm text-gray-500">by {test.vendor}</p>
+            <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
             hasMedicare && hasPrivate ? 'bg-emerald-100 text-emerald-700' :
@@ -7832,7 +7884,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                     <div className="flex justify-between items-start gap-2">
                       <div className={`flex-1 p-3 rounded-xl ${colors.accent} border`}>
                         <p className={`font-bold ${colors.accentText}`}>{test.name}</p>
-                        <p className="text-xs text-gray-500 mt-0.5">{test.vendor}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
                       </div>
                       <button 
                         onClick={() => onRemoveTest(test.id)} 
