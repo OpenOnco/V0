@@ -6121,13 +6121,42 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
   const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
   const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes';
   
-  // Get wait time
-  const waitTime = test.initialTat || test.tat || null;
+  // Get wait time and simplify for display
+  const rawTat = test.initialTat || test.tat || null;
+  
+  // Parse TAT into a simple display format
+  const getTatDisplay = () => {
+    if (!rawTat) return null;
+    
+    // If it's a number, use it directly
+    if (typeof rawTat === 'number') {
+      return { value: `~${rawTat}`, suffix: 'days' };
+    }
+    
+    // If it's a string, try to extract the key info
+    const tatStr = String(rawTat).toLowerCase();
+    
+    // Check for "not" patterns (not available, not specified, etc.)
+    if (tatStr.includes('not ')) {
+      return { value: 'TBD', suffix: 'days', note: 'Not specified' };
+    }
+    
+    // Try to extract a number or range from the string
+    const numMatch = String(rawTat).match(/(\d+(?:-\d+)?)/);
+    if (numMatch) {
+      return { value: `~${numMatch[1]}`, suffix: 'days' };
+    }
+    
+    // Fallback - just show a generic indicator
+    return { value: '?', suffix: 'days', note: 'See details' };
+  };
+  
+  const tatDisplay = getTatDisplay();
   
   // Yes/No badge component
   const YesNoBadge = ({ yes, label }) => (
     <div className="flex items-center gap-2 py-1.5">
-      <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+      <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
         yes ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'
       }`}>
         {yes ? '✓' : '✗'}
@@ -6145,7 +6174,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
             <h3 className="font-semibold text-gray-900 text-lg">{test.name}</h3>
             <p className="text-sm text-gray-500">by {test.vendor}</p>
           </div>
-          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+          <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
             hasMedicare && hasPrivate ? 'bg-emerald-100 text-emerald-700' :
             hasMedicare || hasPrivate ? 'bg-blue-100 text-blue-700' :
             'bg-gray-100 text-gray-500'
@@ -6161,12 +6190,14 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
           <YesNoBadge yes={hasMedicare} label="Medicare coverage" />
           <YesNoBadge yes={hasPrivate} label="Private insurance" />
           <YesNoBadge yes={!requiresTissue} label="Blood-only (no tissue)" />
-          {waitTime && (
+          {tatDisplay && (
             <div className="flex items-center gap-2 py-1.5">
-              <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
-                {waitTime}
+              <span className={`min-w-6 h-6 px-1.5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                tatDisplay.note ? 'bg-gray-100 text-gray-500' : 'bg-blue-100 text-blue-700'
+              }`}>
+                {tatDisplay.value}
               </span>
-              <span className="text-sm text-gray-700">days for results</span>
+              <span className="text-sm text-gray-700">{tatDisplay.suffix}</span>
             </div>
           )}
         </div>
