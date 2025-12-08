@@ -4512,18 +4512,21 @@ const TestShowcase = ({ onNavigate }) => {
         <h3 className="text-lg font-bold text-slate-800">
           The {allTests.length} Tests We Track
         </h3>
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
-        >
-          <option value="vendor">Alphabetical</option>
-          <option value="category">By Category</option>
-          <option value="tat">By TAT (fastest)</option>
-          <option value="reimbursement">By Coverage</option>
-          <option value="vendorTests">By # Tests</option>
-          <option value="openness">By Openness</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-500">Sort Order</span>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
+          >
+            <option value="vendor">Alphabetical</option>
+            <option value="category">By Category</option>
+            <option value="tat">By TAT (fastest)</option>
+            <option value="reimbursement">By Coverage</option>
+            <option value="vendorTests">By # Tests</option>
+            <option value="openness">By Openness</option>
+          </select>
+        </div>
       </div>
       
       {/* Search Bar */}
@@ -5218,16 +5221,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         {/* Recently Added Tests Banner */}
         <RecentlyAddedBanner onNavigate={onNavigate} />
 
-        {/* Test Showcase & News Feed Side by Side */}
-        <div className="mb-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-3">
-            <TestShowcase onNavigate={onNavigate} />
-          </div>
-          <div className="lg:col-span-2 relative min-h-[400px] lg:min-h-0">
-            <div className="absolute inset-0">
-              <NewsFeed onNavigate={onNavigate} />
-            </div>
-          </div>
+        {/* Test Showcase */}
+        <div className="mb-4">
+          <TestShowcase onNavigate={onNavigate} />
         </div>
 
         {/* Stat of the Day */}
