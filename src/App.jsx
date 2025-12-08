@@ -4610,6 +4610,8 @@ const DatabaseSummary = () => {
   const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
   const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (cgpTestData.length * cgpParams);
   
+  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...cgpTestData];
+  
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
     ...ecdTestData.map(t => t.vendor),
@@ -4637,6 +4639,61 @@ const DatabaseSummary = () => {
     ...trmTestData.flatMap(t => t.commercialPayers || []),
     ...cgpTestData.flatMap(t => t.commercialPayers || [])
   ]);
+
+  // Data quality metrics - calculate fill rates for key fields
+  const calcFillRate = (tests, checkFn) => {
+    const filled = tests.filter(checkFn).length;
+    return Math.round((filled / tests.length) * 100);
+  };
+
+  const dataQualityMetrics = [
+    {
+      label: 'Price',
+      rate: calcFillRate(allTests, t => t.listPrice && t.listPrice.trim() !== ''),
+      color: 'rose'
+    },
+    {
+      label: 'Turnaround Time',
+      rate: calcFillRate(allTests, t => t.tat && t.tat.trim() !== ''),
+      color: 'amber'
+    },
+    {
+      label: 'Publications',
+      rate: calcFillRate(allTests, t => t.numPublications != null),
+      color: 'emerald'
+    },
+    {
+      label: 'Reimbursement',
+      rate: calcFillRate(allTests, t => t.reimbursement && t.reimbursement.trim() !== ''),
+      color: 'sky'
+    },
+    {
+      label: 'Sample Requirements',
+      rate: calcFillRate(allTests, t => 
+        (t.sampleRequirements && t.sampleRequirements.trim() !== '') ||
+        (t.sampleVolume && t.sampleVolume.trim() !== '') ||
+        (t.bloodVolume && t.bloodVolume.trim() !== '') ||
+        (t.sampleType && t.sampleType.trim() !== '')
+      ),
+      color: 'violet'
+    }
+  ];
+
+  const getBarColor = (color) => ({
+    rose: 'bg-rose-500',
+    amber: 'bg-amber-500',
+    emerald: 'bg-emerald-500',
+    sky: 'bg-sky-500',
+    violet: 'bg-violet-500'
+  }[color] || 'bg-slate-500');
+
+  const getTextColor = (color) => ({
+    rose: 'text-rose-600',
+    amber: 'text-amber-600',
+    emerald: 'text-emerald-600',
+    sky: 'text-sky-600',
+    violet: 'text-violet-600'
+  }[color] || 'text-slate-600');
 
   return (
     <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-2xl p-6">
@@ -4669,6 +4726,27 @@ const DatabaseSummary = () => {
         <div className="bg-white/40 rounded-xl p-4 text-center">
           <p className="text-lg font-bold text-slate-800">{BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</p>
           <p className="text-sm text-slate-600">Data Last Updated</p>
+        </div>
+      </div>
+      
+      {/* Data Quality Section */}
+      <div className="mt-6 pt-4 border-t border-slate-400/40">
+        <h3 className="text-sm font-medium text-slate-600 mb-3">Data Completeness</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {dataQualityMetrics.map(({ label, rate, color }) => (
+            <div key={label} className="bg-white/30 rounded-lg p-3">
+              <div className="flex justify-between items-center mb-1.5">
+                <span className="text-xs font-medium text-slate-700">{label}</span>
+                <span className={`text-xs font-bold ${getTextColor(color)}`}>{rate}%</span>
+              </div>
+              <div className="h-2 bg-white/50 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full ${getBarColor(color)} rounded-full transition-all duration-500`}
+                  style={{ width: `${rate}%` }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       
