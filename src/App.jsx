@@ -4746,54 +4746,52 @@ const DatabaseSummary = () => {
     return Math.round((filled / tests.length) * 100);
   };
 
-  // Get winner's tests for comparison
-  const winnerTests = topVendor ? allTests.filter(t => normalizeVendor(t.vendor) === topVendor) : [];
-
   const dataQualityMetrics = [
     {
       label: 'Price',
-      fieldRate: calcFillRate(allTests, t => hasValue(t.listPrice)),
-      winnerRate: calcFillRate(winnerTests, t => hasValue(t.listPrice)),
+      rate: calcFillRate(allTests, t => hasValue(t.listPrice)),
       color: 'rose',
       description: 'List price disclosed'
     },
     {
       label: 'Performance',
-      fieldRate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
-      winnerRate: calcFillRate(winnerTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
+      rate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
       color: 'amber',
       description: 'Sensitivity or specificity'
     },
     {
       label: 'Evidence',
-      fieldRate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
-      winnerRate: calcFillRate(winnerTests, t => t.numPublications != null && t.numPublications > 0),
+      rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
       color: 'emerald',
       description: 'Peer-reviewed publications'
     },
     {
       label: 'Coverage',
-      fieldRate: calcFillRate(allTests, t => hasReimbursement(t)),
-      winnerRate: calcFillRate(winnerTests, t => hasReimbursement(t)),
+      rate: calcFillRate(allTests, t => hasReimbursement(t)),
       color: 'sky',
       description: 'Insurance reimbursement'
     },
     {
       label: 'Turnaround',
-      fieldRate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
-      winnerRate: calcFillRate(winnerTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
+      rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
       color: 'violet',
       description: 'TAT disclosed'
     }
   ];
 
+  // Calculate field average score (all qualifying vendors with 2+ tests)
+  const qualifyingVendors = Object.entries(vendorScores).filter(([_, data]) => data.count >= 2);
+  const fieldAvgScore = qualifyingVendors.length > 0 
+    ? Math.round(qualifyingVendors.reduce((sum, [_, data]) => sum + (data.total / data.count), 0) / qualifyingVendors.length)
+    : 0;
+
   const getBarColor = (color) => ({
-    rose: 'bg-rose-400',
-    amber: 'bg-amber-400',
-    emerald: 'bg-emerald-400',
-    sky: 'bg-sky-400',
-    violet: 'bg-violet-400'
-  }[color] || 'bg-slate-400');
+    rose: 'bg-rose-500',
+    amber: 'bg-amber-500',
+    emerald: 'bg-emerald-500',
+    sky: 'bg-sky-500',
+    violet: 'bg-violet-500'
+  }[color] || 'bg-slate-500');
 
   const getTextColor = (color) => ({
     rose: 'text-rose-600',
@@ -4819,16 +4817,24 @@ const DatabaseSummary = () => {
               </div>
               <p className="text-xl font-bold text-slate-800">{topVendor}</p>
               <p className="text-xs text-amber-700 mt-0.5">
-                Score: {Math.round(topScore)}/100 across {topTestCount} reimbursed tests
+                {topTestCount} reimbursed tests evaluated
               </p>
             </div>
-            <div className="hidden sm:block text-right">
-              <div className="text-3xl font-bold text-amber-600">{Math.round(topScore)}</div>
-              <div className="text-[10px] text-amber-600 font-medium">out of 100</div>
+            {/* Score comparison */}
+            <div className="hidden sm:flex items-center gap-3">
+              <div className="text-center px-3 py-2 bg-white/50 rounded-lg">
+                <div className="text-2xl font-bold text-amber-600">{Math.round(topScore)}</div>
+                <div className="text-[10px] text-amber-600 font-medium">Winner</div>
+              </div>
+              <div className="text-slate-400 text-lg">vs</div>
+              <div className="text-center px-3 py-2 bg-white/50 rounded-lg">
+                <div className="text-2xl font-bold text-slate-500">{fieldAvgScore}</div>
+                <div className="text-[10px] text-slate-500 font-medium">Field Avg</div>
+              </div>
             </div>
           </div>
           <p className="mt-3 pt-3 border-t border-amber-200 text-[11px] text-amber-600">
-            Based on disclosure of pricing, performance metrics, clinical evidence & sample requirements across tests with insurance coverage.
+            Score based on disclosure of pricing, performance, evidence & sample info. Field average across {qualifyingVendors.length} vendors with 2+ reimbursed tests.
           </p>
         </div>
       )}
@@ -4861,43 +4867,28 @@ const DatabaseSummary = () => {
       
       {/* Data Completeness Section */}
       <div className="bg-white/40 rounded-xl p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-slate-700">Data Completeness by Field</h3>
-          <div className="flex items-center gap-3 text-[10px]">
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-300"></span> Field Avg</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500"></span> {topVendor || 'Winner'}</span>
-          </div>
-        </div>
+        <h3 className="text-sm font-semibold text-slate-700 mb-4">Data Completeness by Field</h3>
         <div className="space-y-3">
-          {dataQualityMetrics.map(({ label, fieldRate, winnerRate, color, description }) => (
+          {dataQualityMetrics.map(({ label, rate, color, description }) => (
             <div key={label}>
               <div className="flex justify-between items-center mb-1">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-slate-700">{label}</span>
                   <span className="text-[10px] text-slate-400">{description}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-slate-400">{fieldRate}%</span>
-                  <span className="text-xs font-bold text-amber-600">{winnerRate}%</span>
-                </div>
+                <span className={`text-sm font-bold ${getTextColor(color)}`}>{rate}%</span>
               </div>
-              <div className="h-3 bg-slate-200 rounded-full overflow-hidden relative">
-                {/* Field average bar */}
+              <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
                 <div 
-                  className={`absolute h-full ${getBarColor(color)} rounded-full transition-all duration-500 opacity-50`}
-                  style={{ width: `${fieldRate}%` }}
-                />
-                {/* Winner bar (gold overlay) */}
-                <div 
-                  className="absolute h-full bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full transition-all duration-500"
-                  style={{ width: `${winnerRate}%` }}
+                  className={`h-full ${getBarColor(color)} rounded-full transition-all duration-500`}
+                  style={{ width: `${rate}%` }}
                 />
               </div>
             </div>
           ))}
         </div>
         <p className="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
-          Field average across {totalTests} tests vs. {topVendor}'s {winnerTests.length} tests
+          Completeness rates reflect publicly available data across {totalTests} tests from {allVendors.size} vendors.
         </p>
       </div>
       
