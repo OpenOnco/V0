@@ -4172,7 +4172,7 @@ const TestShowcase = ({ onNavigate }) => {
         });
       case 'vendor':
       default:
-        return sorted.sort((a, b) => a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorTransparencyScores]);
 
@@ -4345,7 +4345,7 @@ const TestShowcase = ({ onNavigate }) => {
           onChange={(e) => setSortBy(e.target.value)}
           className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
         >
-          <option value="vendor">By Vendor</option>
+          <option value="vendor">Alphabetical</option>
           <option value="category">By Category</option>
           <option value="tat">By TAT (fastest)</option>
           <option value="reimbursement">By Coverage</option>
