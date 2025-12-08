@@ -4458,9 +4458,20 @@ Say "not specified" for missing data.`;
         <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
           {/* Container Header - different for patients */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
-              {persona === 'Patient' ? 'Ask about liquid biopsy tests for cancer treatment:' : 'The Precision Oncology Diagnostics Cycle — Click on the test category you want to explore:'}
-            </h2>
+            {persona === 'Patient' ? (
+              <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
+                Ask about liquid biopsy tests for cancer treatment
+              </h2>
+            ) : (
+              <div className="flex justify-between items-center">
+                <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
+                  The Precision Oncology Diagnostics Cycle
+                </h2>
+                <span className="text-sm text-slate-500">
+                  Click on the test category you want to explore
+                </span>
+              </div>
+            )}
           </div>
           
           {/* For Patients: Chat first, then Lifecycle Navigator */}
