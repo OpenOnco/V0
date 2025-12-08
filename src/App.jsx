@@ -6209,16 +6209,6 @@ const SubmissionsPage = () => {
         )}
       </form>
 
-      {/* Alternative Contact */}
-      <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>Questions? Contact via{' '}
-          <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-[#2A63A4] hover:underline">
-            LinkedIn
-          </a>
-          {' '}(include #openonco in your message)
-        </p>
-      </div>
-
       {/* Transparency Encouragement Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <div className="text-center mb-6">
