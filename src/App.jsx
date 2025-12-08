@@ -16,12 +16,8 @@ const RECENTLY_ADDED_TESTS = [
 // Vendor Badges - Awards and recognition
 // ============================================
 const VENDOR_BADGES = {
-  'Guardant Health': [
-    { id: 'transparency-2025', icon: '🏆', label: 'Transparency Award 2025', tooltip: 'OpenOnco Transparency Award 2025 — Highest data disclosure among vendors with 2+ reimbursed tests' }
-  ],
-  // Normalize variations
-  'Guardant': [
-    { id: 'transparency-2025', icon: '🏆', label: 'Transparency Award 2025', tooltip: 'OpenOnco Transparency Award 2025 — Highest data disclosure among vendors with 2+ reimbursed tests' }
+  'Exact Sciences': [
+    { id: 'transparency-2025', icon: '🏆', label: 'Transparency Award 2025', tooltip: 'OpenOnco Transparency Award 2025 — Highest data disclosure among vendors with 2+ tests' }
   ],
 };
 
@@ -4709,10 +4705,12 @@ const DatabaseSummary = () => {
     return v;
   };
 
-  // Filter to reimbursed tests and group by vendor
+  // Count reimbursed tests for stats display
   const reimbursedTests = allTests.filter(hasReimbursement);
+  
+  // Group ALL tests by vendor for transparency scoring
   const vendorScores = {};
-  reimbursedTests.forEach(test => {
+  allTests.forEach(test => {
     const vendor = normalizeVendor(test.vendor);
     if (!vendorScores[vendor]) {
       vendorScores[vendor] = { scores: [], total: 0, count: 0, tests: [] };
@@ -4724,7 +4722,7 @@ const DatabaseSummary = () => {
     vendorScores[vendor].tests.push({ name: test.name, score });
   });
 
-  // Find most transparent vendor (min 2 reimbursed tests to qualify)
+  // Find most transparent vendor (min 2 tests to qualify)
   let topVendor = null;
   let topScore = 0;
   let topTestCount = 0;
@@ -4817,7 +4815,7 @@ const DatabaseSummary = () => {
               </div>
               <p className="text-xl font-bold text-slate-800">{topVendor}</p>
               <p className="text-xs text-amber-700 mt-0.5">
-                {topTestCount} reimbursed tests evaluated
+                {topTestCount} tests evaluated
               </p>
             </div>
             {/* Score comparison */}
@@ -4834,7 +4832,7 @@ const DatabaseSummary = () => {
             </div>
           </div>
           <p className="mt-3 pt-3 border-t border-amber-200 text-[11px] text-amber-600">
-            Score based on disclosure of pricing, performance, evidence & sample info. Field average across {qualifyingVendors.length} vendors with 2+ reimbursed tests.
+            Score based on disclosure of pricing, performance, evidence & sample info. Field average across {qualifyingVendors.length} vendors with 2+ tests.
           </p>
         </div>
       )}
