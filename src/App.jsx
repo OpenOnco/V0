@@ -4746,46 +4746,54 @@ const DatabaseSummary = () => {
     return Math.round((filled / tests.length) * 100);
   };
 
+  // Get winner's tests for comparison
+  const winnerTests = topVendor ? allTests.filter(t => normalizeVendor(t.vendor) === topVendor) : [];
+
   const dataQualityMetrics = [
     {
       label: 'Price',
-      rate: calcFillRate(allTests, t => hasValue(t.listPrice)),
+      fieldRate: calcFillRate(allTests, t => hasValue(t.listPrice)),
+      winnerRate: calcFillRate(winnerTests, t => hasValue(t.listPrice)),
       color: 'rose',
       description: 'List price disclosed'
     },
     {
       label: 'Performance',
-      rate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
+      fieldRate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
+      winnerRate: calcFillRate(winnerTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
       color: 'amber',
       description: 'Sensitivity or specificity'
     },
     {
       label: 'Evidence',
-      rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
+      fieldRate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
+      winnerRate: calcFillRate(winnerTests, t => t.numPublications != null && t.numPublications > 0),
       color: 'emerald',
       description: 'Peer-reviewed publications'
     },
     {
       label: 'Coverage',
-      rate: calcFillRate(allTests, t => hasReimbursement(t)),
+      fieldRate: calcFillRate(allTests, t => hasReimbursement(t)),
+      winnerRate: calcFillRate(winnerTests, t => hasReimbursement(t)),
       color: 'sky',
       description: 'Insurance reimbursement'
     },
     {
       label: 'Turnaround',
-      rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
+      fieldRate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
+      winnerRate: calcFillRate(winnerTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
       color: 'violet',
       description: 'TAT disclosed'
     }
   ];
 
   const getBarColor = (color) => ({
-    rose: 'bg-rose-500',
-    amber: 'bg-amber-500',
-    emerald: 'bg-emerald-500',
-    sky: 'bg-sky-500',
-    violet: 'bg-violet-500'
-  }[color] || 'bg-slate-500');
+    rose: 'bg-rose-400',
+    amber: 'bg-amber-400',
+    emerald: 'bg-emerald-400',
+    sky: 'bg-sky-400',
+    violet: 'bg-violet-400'
+  }[color] || 'bg-slate-400');
 
   const getTextColor = (color) => ({
     rose: 'text-rose-600',
@@ -4853,28 +4861,43 @@ const DatabaseSummary = () => {
       
       {/* Data Completeness Section */}
       <div className="bg-white/40 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-700 mb-4">Data Completeness by Field</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-slate-700">Data Completeness by Field</h3>
+          <div className="flex items-center gap-3 text-[10px]">
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-300"></span> Field Avg</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500"></span> {topVendor || 'Winner'}</span>
+          </div>
+        </div>
         <div className="space-y-3">
-          {dataQualityMetrics.map(({ label, rate, color, description }) => (
+          {dataQualityMetrics.map(({ label, fieldRate, winnerRate, color, description }) => (
             <div key={label}>
               <div className="flex justify-between items-center mb-1">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-slate-700">{label}</span>
                   <span className="text-[10px] text-slate-400">{description}</span>
                 </div>
-                <span className={`text-sm font-bold ${getTextColor(color)}`}>{rate}%</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-slate-400">{fieldRate}%</span>
+                  <span className="text-xs font-bold text-amber-600">{winnerRate}%</span>
+                </div>
               </div>
-              <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
+              <div className="h-3 bg-slate-200 rounded-full overflow-hidden relative">
+                {/* Field average bar */}
                 <div 
-                  className={`h-full ${getBarColor(color)} rounded-full transition-all duration-500`}
-                  style={{ width: `${rate}%` }}
+                  className={`absolute h-full ${getBarColor(color)} rounded-full transition-all duration-500 opacity-50`}
+                  style={{ width: `${fieldRate}%` }}
+                />
+                {/* Winner bar (gold overlay) */}
+                <div 
+                  className="absolute h-full bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full transition-all duration-500"
+                  style={{ width: `${winnerRate}%` }}
                 />
               </div>
             </div>
           ))}
         </div>
         <p className="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
-          OpenOnco is committed to transparency. Completeness rates reflect publicly available data across {totalTests} tests.
+          Field average across {totalTests} tests vs. {topVendor}'s {winnerTests.length} tests
         </p>
       </div>
       
