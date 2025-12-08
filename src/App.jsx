@@ -4153,6 +4153,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             Ask
           </button>
         </div>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
       </div>
     </div>
   );
@@ -4561,8 +4562,8 @@ const TestShowcase = ({ onNavigate }) => {
       {/* Recently Added Tests */}
       <div className="bg-gradient-to-r from-blue-50 to-slate-50 border border-slate-200 rounded-lg p-2 mb-3">
         <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Recently Added</p>
-        <div className="flex flex-wrap gap-1.5">
-          {RECENTLY_ADDED_TESTS.slice(0, 5).map((test, i) => {
+        <div className="flex flex-nowrap gap-1.5 overflow-hidden">
+          {RECENTLY_ADDED_TESTS.map((test, i) => {
             const categoryColors = {
               MRD: 'bg-orange-100 text-orange-700 border-orange-200',
               ECD: 'bg-emerald-100 text-emerald-700 border-emerald-200',
@@ -4572,7 +4573,7 @@ const TestShowcase = ({ onNavigate }) => {
             return (
               <span 
                 key={i}
-                className={`text-[10px] px-2 py-0.5 rounded-full border ${categoryColors[test.category] || 'bg-slate-100 text-slate-600 border-slate-200'}`}
+                className={`text-[10px] px-2 py-0.5 rounded-full border whitespace-nowrap flex-shrink-0 ${categoryColors[test.category] || 'bg-slate-100 text-slate-600 border-slate-200'}`}
               >
                 {test.name} <span className="opacity-60">({test.category})</span>
               </span>
@@ -5085,6 +5086,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Ask
                   </button>
                 </form>
+                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
               </div>
               
               {/* Example Questions (show below input when no messages) */}
@@ -5194,6 +5196,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Ask
                   </button>
                 </form>
+                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
               </div>
               
               {/* Example Questions (show below input when no messages) */}
@@ -7158,19 +7161,22 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="border-t border-gray-200 p-3 flex gap-2 items-center">
-        <select
-          value={selectedModel}
-          onChange={(e) => setSelectedModel(e.target.value)}
-          className="px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
-          title="Select AI model"
-        >
-          {CHAT_MODELS.map(m => (
-            <option key={m.id} value={m.id}>{m.name}</option>
-          ))}
-        </select>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-        <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
+      <div className="border-t border-gray-200 p-3">
+        <div className="flex gap-2 items-center">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+            title="Select AI model"
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
+        </div>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
       </div>
     </div>
   );
