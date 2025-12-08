@@ -4115,6 +4115,30 @@ const TestShowcase = ({ onNavigate }) => {
     return counts;
   }, []);
 
+  // Calculate vendor-level transparency scores (for ranking sort)
+  // Matches the logic in DatabaseSummary - vendors with 2+ tests get ranked, single-test vendors go to bottom
+  const vendorTransparencyScores = useMemo(() => {
+    const scores = {};
+    const vendorData = {};
+    // Aggregate scores by vendor
+    baseTests.forEach(t => {
+      if (!vendorData[t.vendor]) {
+        vendorData[t.vendor] = { total: 0, count: 0 };
+      }
+      vendorData[t.vendor].total += calcTransparency(t);
+      vendorData[t.vendor].count += 1;
+    });
+    // Calculate average score - only vendors with 2+ tests qualify
+    Object.entries(vendorData).forEach(([vendor, data]) => {
+      if (data.count >= 2) {
+        scores[vendor] = data.total / data.count;
+      } else {
+        scores[vendor] = -1; // Single-test vendors go to bottom
+      }
+    });
+    return scores;
+  }, []);
+
   // Get TAT value for sorting
   const getTat = (test) => {
     const tat = test.tat || test.initialTat || test.followUpTat;
@@ -4137,12 +4161,20 @@ const TestShowcase = ({ onNavigate }) => {
       case 'vendorTests':
         return sorted.sort((a, b) => vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
       case 'transparency':
-        return sorted.sort((a, b) => calcTransparency(b) - calcTransparency(a) || a.vendor.localeCompare(b.vendor));
+        // Sort by vendor transparency ranking (same as transparency award logic)
+        // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
+        return sorted.sort((a, b) => {
+          const scoreA = vendorTransparencyScores[a.vendor] ?? -1;
+          const scoreB = vendorTransparencyScores[b.vendor] ?? -1;
+          if (scoreA !== scoreB) return scoreB - scoreA;
+          // Within same vendor score, sort by individual test score
+          return calcTransparency(b) - calcTransparency(a) || a.vendor.localeCompare(b.vendor);
+        });
       case 'vendor':
       default:
         return sorted.sort((a, b) => a.vendor.localeCompare(b.vendor));
     }
-  }, [sortBy, vendorTestCounts]);
+  }, [sortBy, vendorTestCounts, vendorTransparencyScores]);
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
