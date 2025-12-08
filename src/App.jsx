@@ -4459,7 +4459,7 @@ Say "not specified" for missing data.`;
           {/* Container Header - different for patients */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
             <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
-              {persona === 'Patient' ? 'Ask about liquid biopsy tests for cancer treatment:' : 'The Precision Oncology Dx (POD) Cycle — Click on the test category you want to explore:'}
+              {persona === 'Patient' ? 'Ask about liquid biopsy tests for cancer treatment:' : 'The Precision Oncology Diagnostics Cycle — Click on the test category you want to explore:'}
             </h2>
           </div>
           
