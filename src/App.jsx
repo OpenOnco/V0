@@ -2125,6 +2125,7 @@ const ecdTestData = [
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not covered by Medicare or commercial payers; not billed to insurance; FSA/HSA eligible",
     "clinicalAvailability": "Launched September 2025 via Quest Diagnostics (7000+ sites)",
+    "availableRegions": ["US"],
     "tat": "Not publicly specified",
     "sampleType": "Whole blood in LBgard tubes",
     "sampleVolume": "4 tubes × 8.5 mL = 34 mL total",
@@ -2344,6 +2345,7 @@ const ecdTestData = [
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not covered by Medicare or commercial payers; no additional cost when ordered with Shield CRC (data exchange model)",
     "clinicalAvailability": "Launched nationally October 2025; available when ordering Shield CRC test with physician opt-in",
+    "availableRegions": ["US"],
     "tat": "~14 days (same blood draw as Shield CRC)",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes (same sample as Shield CRC)",
     "sampleVolume": "4 tubes (no additional blood draw required)",
@@ -2395,6 +2397,7 @@ const ecdTestData = [
     "reimbursementNote": "No Medicare or commercial insurance coverage. Positioned as affordable/accessible alternative to NGS-based MCED tests.",
     "commercialPayers": [],
     "clinicalAvailability": "Commercially available in US via CLIA-certified lab in Tucson, AZ. Physician-ordered (not direct-to-consumer).",
+    "availableRegions": ["US"],
     "tat": "5 days",
     "tatNotes": "Collection to report turnaround time (includes shipping and processing). Lab processing time is 2-3 days.",
     "sampleType": "Two 10-mL Streck cfDNA BCT tubes",
@@ -4474,28 +4477,30 @@ const TestShowcase = ({ onNavigate }) => {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="grid grid-cols-3 gap-4">
                         {selectedTest.sensitivity != null && (
                           <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className="text-2xl font-bold text-emerald-600">{selectedTest.sensitivity}%</p>
+                            <p className={`font-bold text-emerald-600 ${String(selectedTest.sensitivity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
+                              {String(selectedTest.sensitivity).length > 20 
+                                ? (String(selectedTest.sensitivity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.sensitivity])[0] + (String(selectedTest.sensitivity).includes('%') ? '' : '%')
+                                : selectedTest.sensitivity + (String(selectedTest.sensitivity).includes('%') ? '' : '%')}
+                            </p>
                             <p className="text-xs text-gray-500">Sensitivity</p>
                           </div>
                         )}
                         {selectedTest.specificity != null && (
                           <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className="text-2xl font-bold text-emerald-600">{selectedTest.specificity}%</p>
+                            <p className={`font-bold text-emerald-600 ${String(selectedTest.specificity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
+                              {String(selectedTest.specificity).length > 20 
+                                ? (String(selectedTest.specificity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.specificity])[0] + (String(selectedTest.specificity).includes('%') ? '' : '%')
+                                : selectedTest.specificity + (String(selectedTest.specificity).includes('%') ? '' : '%')}
+                            </p>
                             <p className="text-xs text-gray-500">Specificity</p>
-                          </div>
-                        )}
-                        {selectedTest.lod && (
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className="text-xl font-bold text-violet-600">{selectedTest.lod}</p>
-                            <p className="text-xs text-gray-500">LOD</p>
                           </div>
                         )}
                         {(selectedTest.initialTat || selectedTest.tat) && (
                           <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className="text-2xl font-bold text-slate-600">{selectedTest.initialTat || selectedTest.tat}d</p>
+                            <p className="text-2xl font-bold text-slate-600">{selectedTest.initialTat || selectedTest.tat}</p>
                             <p className="text-xs text-gray-500">TAT</p>
                           </div>
                         )}
@@ -8780,9 +8785,12 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
       if (selectedRegions.length > 0) {
         const testRegions = test.availableRegions || [];
-        // If test has no regions specified, assume US for clinical LDTs
+        // If test has no regions specified, infer from clinicalAvailability text
+        const avail = test.clinicalAvailability?.toLowerCase() || '';
         const effectiveRegions = testRegions.length > 0 ? testRegions : 
-          (test.clinicalAvailability?.toLowerCase().includes('shipping') ? ['US'] : []);
+          (avail.includes('shipping') || avail.includes('commercially available') || 
+           avail.includes('launched') || avail.includes('us ') || avail.includes('in us') ||
+           avail.includes('quest') || avail.includes('labcorp') ? ['US'] : []);
         const matchesRegion = selectedRegions.some(r => {
           if (r === 'US') return effectiveRegions.includes('US') || effectiveRegions.includes('US-only');
           if (r === 'International') return effectiveRegions.includes('International') || effectiveRegions.includes('Global') || effectiveRegions.length > 1;
