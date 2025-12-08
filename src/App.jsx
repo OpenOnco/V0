@@ -4642,19 +4642,22 @@ const DatabaseSummary = () => {
 
   // Data quality metrics - calculate fill rates for key fields
   const calcFillRate = (tests, checkFn) => {
+    if (!tests || tests.length === 0) return 0;
     const filled = tests.filter(checkFn).length;
     return Math.round((filled / tests.length) * 100);
   };
 
+  const hasValue = (val) => val != null && String(val).trim() !== '';
+
   const dataQualityMetrics = [
     {
       label: 'Price',
-      rate: calcFillRate(allTests, t => t.listPrice && t.listPrice.trim() !== ''),
+      rate: calcFillRate(allTests, t => hasValue(t.listPrice)),
       color: 'rose'
     },
     {
       label: 'Turnaround Time',
-      rate: calcFillRate(allTests, t => t.tat && t.tat.trim() !== ''),
+      rate: calcFillRate(allTests, t => hasValue(t.tat)),
       color: 'amber'
     },
     {
@@ -4664,16 +4667,16 @@ const DatabaseSummary = () => {
     },
     {
       label: 'Reimbursement',
-      rate: calcFillRate(allTests, t => t.reimbursement && t.reimbursement.trim() !== ''),
+      rate: calcFillRate(allTests, t => hasValue(t.reimbursement)),
       color: 'sky'
     },
     {
       label: 'Sample Requirements',
       rate: calcFillRate(allTests, t => 
-        (t.sampleRequirements && t.sampleRequirements.trim() !== '') ||
-        (t.sampleVolume && t.sampleVolume.trim() !== '') ||
-        (t.bloodVolume && t.bloodVolume.trim() !== '') ||
-        (t.sampleType && t.sampleType.trim() !== '')
+        hasValue(t.sampleRequirements) ||
+        hasValue(t.sampleVolume) ||
+        hasValue(t.bloodVolume) ||
+        hasValue(t.sampleType)
       ),
       color: 'violet'
     }
