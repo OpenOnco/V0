@@ -4554,11 +4554,6 @@ const TestShowcase = ({ onNavigate }) => {
         )}
       </div>
       
-      {/* AI Disclaimer */}
-      <p className="text-[10px] text-slate-400 mb-3 text-center">
-        Chat powered by Anthropic's Claude. AI responses may contain errors — always verify with official sources before making clinical decisions.
-      </p>
-      
       {/* Recently Added Tests */}
       <div className="bg-gradient-to-r from-blue-50 to-slate-50 border border-slate-200 rounded-lg p-2 mb-3">
         <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Recently Added</p>
