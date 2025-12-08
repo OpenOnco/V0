@@ -30,6 +30,14 @@ const VENDOR_BADGES = {
   ],
 };
 
+// ============================================
+// Chat Model Options
+// ============================================
+const CHAT_MODELS = [
+  { id: 'claude-haiku-4-5-20251001', name: 'More speed', description: 'Fast responses' },
+  { id: 'claude-sonnet-4-5-20250929', name: 'More thinking', description: 'Deeper analysis' },
+];
+
 // Helper to check if vendor has badges
 const getVendorBadges = (vendor) => {
   if (!vendor) return [];
@@ -3939,6 +3947,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
@@ -4016,7 +4025,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
+          model: selectedModel,
           max_tokens: 1000,
           system: systemPrompt,
           messages: recentMessages
@@ -4114,24 +4123,36 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="border-t border-gray-200 p-4 bg-white flex gap-3 flex-shrink-0">
-        <input 
-          type="text" 
-          value={input} 
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your liquid biopsy test question here..." 
-          className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
-          style={{ borderColor: '#6AA1C8' }}
-        />
-        <button 
-          onClick={handleSubmit}
-          disabled={isLoading} 
-          className="text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
-          style={{ backgroundColor: '#2A63A4' }}
-        >
-          Ask
-        </button>
+      <div className="border-t border-gray-200 p-4 bg-white flex-shrink-0">
+        <div className="flex gap-3 items-center">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
+            title="Select AI model"
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+          <input 
+            type="text" 
+            value={input} 
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type your liquid biopsy test question here..." 
+            className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
+            style={{ borderColor: '#6AA1C8' }}
+          />
+          <button 
+            onClick={handleSubmit}
+            disabled={isLoading} 
+            className="text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+            style={{ backgroundColor: '#2A63A4' }}
+          >
+            Ask
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -4770,6 +4791,7 @@ const HomePage = ({ onNavigate }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [persona, setPersona] = useState(() => getStoredPersona() || null);
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const chatContainerRef = useRef(null);
 
   // Save persona to localStorage when changed and notify other components
@@ -4853,7 +4875,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
+          model: selectedModel,
           max_tokens: 1000,
           system: systemPrompt,
           messages: recentMessages
@@ -4960,7 +4982,17 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               
               {/* Input Area */}
               <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
-                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
+                  <select
+                    value={selectedModel}
+                    onChange={(e) => setSelectedModel(e.target.value)}
+                    className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
+                    title="Select AI model"
+                  >
+                    {CHAT_MODELS.map(m => (
+                      <option key={m.id} value={m.id}>{m.name}</option>
+                    ))}
+                  </select>
                   <input
                     type="text"
                     value={chatInput}
@@ -5059,7 +5091,17 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               
               {/* Input Area */}
               <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
-                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
+                  <select
+                    value={selectedModel}
+                    onChange={(e) => setSelectedModel(e.target.value)}
+                    className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
+                    title="Select AI model"
+                  >
+                    {CHAT_MODELS.map(m => (
+                      <option key={m.id} value={m.id}>{m.name}</option>
+                    ))}
+                  </select>
                   <input
                     type="text"
                     value={chatInput}
@@ -6938,6 +6980,7 @@ const CategoryChat = ({ category }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const messagesEndRef = useRef(null);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
@@ -7005,7 +7048,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
+          model: selectedModel,
           max_tokens: 800,
           system: systemPrompt,
           messages: conversationHistory
@@ -7048,7 +7091,17 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="border-t border-gray-200 p-3 flex gap-2">
+      <div className="border-t border-gray-200 p-3 flex gap-2 items-center">
+        <select
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+          className="px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+          title="Select AI model"
+        >
+          {CHAT_MODELS.map(m => (
+            <option key={m.id} value={m.id}>{m.name}</option>
+          ))}
+        </select>
         <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
         <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
       </div>
