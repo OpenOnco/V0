@@ -4467,7 +4467,7 @@ Say "not specified" for missing data.`;
                 <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
                   The Precision Oncology Diagnostics Cycle
                 </h2>
-                <span className="text-sm text-slate-500">
+                <span className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
                   Click on the test category you want to explore
                 </span>
               </div>
