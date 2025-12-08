@@ -4618,27 +4618,74 @@ const DatabaseSummary = () => {
     ...trmTestData.map(t => t.vendor),
     ...cgpTestData.map(t => t.vendor)
   ]);
-  
-  const fdaApprovedCount = [
-    ...mrdTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
-    ...ecdTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
-    ...trmTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
-    ...cgpTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved'))
-  ].length;
 
-  const medicareIndicationsCount = [
-    ...mrdTestData,
-    ...ecdTestData,
-    ...trmTestData,
-    ...cgpTestData
-  ].filter(t => t.reimbursement?.toLowerCase().includes('medicare')).length;
+  // Helper functions
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
 
-  const allPrivateInsurers = new Set([
-    ...mrdTestData.flatMap(t => t.commercialPayers || []),
-    ...ecdTestData.flatMap(t => t.commercialPayers || []),
-    ...trmTestData.flatMap(t => t.commercialPayers || []),
-    ...cgpTestData.flatMap(t => t.commercialPayers || [])
-  ]);
+  // Check if test has meaningful reimbursement (inclusion criteria for award)
+  const hasReimbursement = (test) => {
+    const reimb = (test.reimbursement || '').toLowerCase();
+    if (!reimb) return false;
+    if (reimb.includes('not applicable')) return false;
+    if (reimb.includes('not established')) return false;
+    if (reimb.includes('no established')) return false;
+    if (reimb.includes('no specific')) return false;
+    if (reimb === 'self-pay') return false;
+    if (reimb === 'coverage varies') return false;
+    if (reimb.startsWith('coverage emerging')) return false;
+    return reimb.includes('medicare') || reimb.includes('covered') || (test.commercialPayers && test.commercialPayers.length > 0);
+  };
+
+  // Calculate transparency score per test (0-100)
+  const calcTestScore = (test) => {
+    let score = 0;
+    if (hasValue(test.listPrice)) score += 30;
+    if (hasValue(test.sensitivity)) score += 15;
+    if (hasValue(test.specificity)) score += 15;
+    if (test.numPublications != null && test.numPublications > 0) score += 15;
+    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
+    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
+    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
+    return score;
+  };
+
+  // Normalize vendor names
+  const normalizeVendor = (v) => {
+    if (!v) return 'Unknown';
+    if (v.includes('Guardant')) return 'Guardant Health';
+    if (v.includes('Foundation Medicine')) return 'Foundation Medicine';
+    return v;
+  };
+
+  // Filter to reimbursed tests and group by vendor
+  const reimbursedTests = allTests.filter(hasReimbursement);
+  const vendorScores = {};
+  reimbursedTests.forEach(test => {
+    const vendor = normalizeVendor(test.vendor);
+    if (!vendorScores[vendor]) {
+      vendorScores[vendor] = { scores: [], total: 0, count: 0, tests: [] };
+    }
+    const score = calcTestScore(test);
+    vendorScores[vendor].scores.push(score);
+    vendorScores[vendor].total += score;
+    vendorScores[vendor].count += 1;
+    vendorScores[vendor].tests.push({ name: test.name, score });
+  });
+
+  // Find most transparent vendor (min 2 reimbursed tests to qualify)
+  let topVendor = null;
+  let topScore = 0;
+  let topTestCount = 0;
+  Object.entries(vendorScores).forEach(([vendor, data]) => {
+    if (data.count >= 2) {
+      const avgScore = data.total / data.count;
+      if (avgScore > topScore) {
+        topScore = avgScore;
+        topVendor = vendor;
+        topTestCount = data.count;
+      }
+    }
+  });
 
   // Data quality metrics - calculate fill rates for key fields
   const calcFillRate = (tests, checkFn) => {
@@ -4647,38 +4694,36 @@ const DatabaseSummary = () => {
     return Math.round((filled / tests.length) * 100);
   };
 
-  const hasValue = (val) => val != null && String(val).trim() !== '';
-
   const dataQualityMetrics = [
     {
       label: 'Price',
       rate: calcFillRate(allTests, t => hasValue(t.listPrice)),
-      color: 'rose'
+      color: 'rose',
+      description: 'List price disclosed'
     },
     {
-      label: 'Turnaround Time',
-      rate: calcFillRate(allTests, t => hasValue(t.tat)),
-      color: 'amber'
+      label: 'Performance',
+      rate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
+      color: 'amber',
+      description: 'Sensitivity or specificity'
     },
     {
-      label: 'Publications',
-      rate: calcFillRate(allTests, t => t.numPublications != null),
-      color: 'emerald'
+      label: 'Evidence',
+      rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
+      color: 'emerald',
+      description: 'Peer-reviewed publications'
     },
     {
-      label: 'Reimbursement',
-      rate: calcFillRate(allTests, t => hasValue(t.reimbursement)),
-      color: 'sky'
+      label: 'Coverage',
+      rate: calcFillRate(allTests, t => hasReimbursement(t)),
+      color: 'sky',
+      description: 'Insurance reimbursement'
     },
     {
-      label: 'Sample Requirements',
-      rate: calcFillRate(allTests, t => 
-        hasValue(t.sampleRequirements) ||
-        hasValue(t.sampleVolume) ||
-        hasValue(t.bloodVolume) ||
-        hasValue(t.sampleType)
-      ),
-      color: 'violet'
+      label: 'Turnaround',
+      rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
+      color: 'violet',
+      description: 'TAT disclosed'
     }
   ];
 
@@ -4699,50 +4744,75 @@ const DatabaseSummary = () => {
   }[color] || 'text-slate-600');
 
   return (
-    <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-2xl p-6">
-      <h2 className="text-lg font-semibold mb-4 text-slate-700">Database Summary</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-slate-800">{totalTests}</p>
-          <p className="text-sm text-slate-600">Total Tests</p>
+    <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">
+      {/* Transparency Award Banner */}
+      {topVendor && (
+        <div className="mb-6 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-2 border-amber-300 rounded-xl p-4 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center text-3xl flex-shrink-0 shadow-lg">
+              🏆
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-sm font-semibold text-amber-700">OpenOnco Transparency Award</p>
+                <span className="px-2 py-0.5 bg-amber-200 text-amber-800 text-[10px] font-medium rounded-full">2025</span>
+              </div>
+              <p className="text-xl font-bold text-slate-800">{topVendor}</p>
+              <p className="text-xs text-amber-700 mt-0.5">
+                Score: {Math.round(topScore)}/100 across {topTestCount} reimbursed tests
+              </p>
+            </div>
+            <div className="hidden sm:block text-right">
+              <div className="text-3xl font-bold text-amber-600">{Math.round(topScore)}</div>
+              <div className="text-[10px] text-amber-600 font-medium">out of 100</div>
+            </div>
+          </div>
+          <p className="mt-3 pt-3 border-t border-amber-200 text-[11px] text-amber-600">
+            Based on disclosure of pricing, performance metrics, clinical evidence & sample requirements across tests with insurance coverage.
+          </p>
         </div>
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
-          <p className="text-sm text-slate-600">Data Points</p>
+      )}
+
+      {/* Header with key stats */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-slate-700">Data Transparency Overview</h2>
+        <div className="text-xs text-slate-500">Updated {BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</div>
+      </div>
+      
+      {/* Quick Stats Row */}
+      <div className="grid grid-cols-4 gap-3 mb-6">
+        <div className="bg-white/50 rounded-xl p-3 text-center">
+          <p className="text-2xl font-bold text-slate-800">{totalTests}</p>
+          <p className="text-xs text-slate-600">Tests</p>
         </div>
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-slate-800">{allVendors.size}</p>
-          <p className="text-sm text-slate-600">Vendors</p>
+        <div className="bg-white/50 rounded-xl p-3 text-center">
+          <p className="text-2xl font-bold text-slate-800">{allVendors.size}</p>
+          <p className="text-xs text-slate-600">Vendors</p>
         </div>
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-slate-800">{fdaApprovedCount}</p>
-          <p className="text-sm text-slate-600">FDA Approved</p>
+        <div className="bg-white/50 rounded-xl p-3 text-center">
+          <p className="text-2xl font-bold text-slate-800">{reimbursedTests.length}</p>
+          <p className="text-xs text-slate-600">Reimbursed</p>
         </div>
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-slate-800">{medicareIndicationsCount}</p>
-          <p className="text-sm text-slate-600">Medicare</p>
-        </div>
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-slate-800">{allPrivateInsurers.size}</p>
-          <p className="text-sm text-slate-600">Private Insurers</p>
-        </div>
-        <div className="bg-white/40 rounded-xl p-4 text-center">
-          <p className="text-lg font-bold text-slate-800">{BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</p>
-          <p className="text-sm text-slate-600">Data Last Updated</p>
+        <div className="bg-white/50 rounded-xl p-3 text-center">
+          <p className="text-2xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
+          <p className="text-xs text-slate-600">Data Points</p>
         </div>
       </div>
       
-      {/* Data Quality Section */}
-      <div className="mt-6 pt-4 border-t border-slate-400/40">
-        <h3 className="text-sm font-medium text-slate-600 mb-3">Data Completeness</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {dataQualityMetrics.map(({ label, rate, color }) => (
-            <div key={label} className="bg-white/30 rounded-lg p-3">
-              <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs font-medium text-slate-700">{label}</span>
-                <span className={`text-xs font-bold ${getTextColor(color)}`}>{rate}%</span>
+      {/* Data Completeness Section */}
+      <div className="bg-white/40 rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-slate-700 mb-4">Data Completeness by Field</h3>
+        <div className="space-y-3">
+          {dataQualityMetrics.map(({ label, rate, color, description }) => (
+            <div key={label}>
+              <div className="flex justify-between items-center mb-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-slate-700">{label}</span>
+                  <span className="text-[10px] text-slate-400">{description}</span>
+                </div>
+                <span className={`text-sm font-bold ${getTextColor(color)}`}>{rate}%</span>
               </div>
-              <div className="h-2 bg-white/50 rounded-full overflow-hidden">
+              <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
                 <div 
                   className={`h-full ${getBarColor(color)} rounded-full transition-all duration-500`}
                   style={{ width: `${rate}%` }}
@@ -4751,39 +4821,28 @@ const DatabaseSummary = () => {
             </div>
           ))}
         </div>
+        <p className="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
+          OpenOnco is committed to transparency. Completeness rates reflect publicly available data across {totalTests} tests.
+        </p>
       </div>
       
-      <div className="mt-6 pt-4 border-t border-slate-400/40">
-        <h3 className="text-sm font-medium text-slate-600 mb-3">Coverage by Category</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-            <div>
-              <p className="text-sm font-medium text-slate-800">MRD</p>
-              <p className="text-xs text-slate-600">{mrdTestData.length} tests • {mrdParams} params</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-            <div>
-              <p className="text-sm font-medium text-slate-800">ECD</p>
-              <p className="text-xs text-slate-600">{ecdTestData.length} tests • {ecdParams} params</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-sky-500"></div>
-            <div>
-              <p className="text-sm font-medium text-slate-800">TRM</p>
-              <p className="text-xs text-slate-600">{trmTestData.length} tests • {trmParams} params</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-violet-500"></div>
-            <div>
-              <p className="text-sm font-medium text-slate-800">CGP</p>
-              <p className="text-xs text-slate-600">{cgpTestData.length} tests • {cgpParams} params</p>
-            </div>
-          </div>
+      {/* Category breakdown */}
+      <div className="mt-4 grid grid-cols-4 gap-2">
+        <div className="bg-orange-100 rounded-lg p-2 text-center">
+          <p className="text-lg font-bold text-orange-700">{mrdTestData.length}</p>
+          <p className="text-[10px] text-orange-600 font-medium">MRD</p>
+        </div>
+        <div className="bg-emerald-100 rounded-lg p-2 text-center">
+          <p className="text-lg font-bold text-emerald-700">{ecdTestData.length}</p>
+          <p className="text-[10px] text-emerald-600 font-medium">ECD</p>
+        </div>
+        <div className="bg-sky-100 rounded-lg p-2 text-center">
+          <p className="text-lg font-bold text-sky-700">{trmTestData.length}</p>
+          <p className="text-[10px] text-sky-600 font-medium">TRM</p>
+        </div>
+        <div className="bg-violet-100 rounded-lg p-2 text-center">
+          <p className="text-lg font-bold text-violet-700">{cgpTestData.length}</p>
+          <p className="text-[10px] text-violet-600 font-medium">CGP</p>
         </div>
       </div>
     </div>
