@@ -3765,7 +3765,8 @@ Say "not specified" for missing data.`;
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
-          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and monitor response - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit navigator helping patients and clinicians find the right test.</p>
+          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and monitor response - but the options are overwhelming.</p>
+          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed mt-3"><strong>OpenOnco</strong> is a non-profit navigator helping patients and clinicians find the right test.</p>
           
           {/* Persona Selector */}
           <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
