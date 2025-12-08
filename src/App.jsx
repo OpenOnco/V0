@@ -346,6 +346,7 @@ const LifecycleScrollingTests = ({ tests, isHighlighted, color }) => {
 const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testCount }) => {
   const colors = lifecycleColorClasses[stage.color];
   const sampleTests = getSampleTests(stage.id);
+  const isUnderConstruction = stage.id === 'CGP';
   
   return (
     <button
@@ -353,6 +354,7 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
       onMouseEnter={onMouseEnter}
       className={`
         relative p-5 rounded-xl text-left transition-all duration-500 h-full
+        ${isUnderConstruction ? 'cursor-default' : ''}
         ${isHighlighted 
           ? `${colors.bgMedium} border-2 ${colors.borderActive} shadow-lg` 
           : `${colors.bgLight} border ${colors.border}`
@@ -381,9 +383,11 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
             {stage.name}
           </p>
           <p className={`text-sm font-semibold mt-1 transition-colors duration-500 ${
-            isHighlighted ? colors.text : colors.textLight
+            isUnderConstruction 
+              ? 'text-gray-400 italic' 
+              : isHighlighted ? colors.text : colors.textLight
           }`}>
-            Click to explore {testCount} tests →
+            {isUnderConstruction ? '🚧 Under Construction' : `Click to explore ${testCount} tests →`}
           </p>
         </div>
       </div>
@@ -3791,7 +3795,7 @@ Say "not specified" for missing data.`;
             </h2>
           </div>
           
-          {/* For Patients: Chat first, then Navigators */}
+          {/* For Patients: Chat first, then Lifecycle Navigator */}
           {persona === 'Patient' ? (
             <>
               {/* Chat Section */}
@@ -3869,83 +3873,14 @@ Say "not specified" for missing data.`;
               {/* Divider */}
               <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
               
-              {/* Category Navigators Header */}
+              {/* Lifecycle Navigator Header */}
               <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
                 <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
               </div>
               
-              {/* Category Navigators */}
+              {/* Lifecycle Navigator */}
               <div className="p-4 lg:p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
-                  {/* MRD Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.orange.card}`}
-                    onClick={() => onNavigate('MRD')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">After Treatment</h3>
-                          <p className="text-xs text-orange-600 font-medium">Explore {mrdTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-orange-500">→</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* TRM Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
-                    onClick={() => onNavigate('TRM')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">During Treatment</h3>
-                          <p className="text-xs text-sky-600 font-medium">Explore {trmTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-sky-500">→</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* ECD Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
-                    onClick={() => onNavigate('ECD')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Screening</h3>
-                          <p className="text-xs text-emerald-600 font-medium">Explore {ecdTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-emerald-500">→</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <LifecycleNavigator onNavigate={onNavigate} />
               </div>
             </>
           ) : (
