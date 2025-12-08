@@ -844,33 +844,6 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
         </span>
       </div>
 
-      {/* Recently Added Tests - 3 line compact display */}
-      <div className="mb-3 pb-3 border-b border-slate-100">
-        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">Recently Added OpenOnco Tests</p>
-        <div className="space-y-1">
-          {RECENTLY_ADDED_TESTS.map((test) => (
-            <div
-              key={test.id}
-              onClick={() => handleTestClick(test)}
-              className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 rounded px-1 py-0.5 -mx-1 transition-colors group"
-            >
-              <span className={`${categoryColors[test.category]} text-white text-[9px] px-1.5 py-0.5 rounded font-medium`}>
-                {test.category}
-              </span>
-              <span className="text-xs font-medium text-slate-700 group-hover:text-[#2A63A4] transition-colors">
-                {test.name}
-              </span>
-              <span className="text-[10px] text-slate-400">
-                {test.vendor}<VendorBadge vendor={test.vendor} size="xs" />
-              </span>
-              <span className="text-[10px] text-slate-300 ml-auto">
-                {test.dateAdded}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -4144,6 +4117,58 @@ Say "not specified" for missing data.`;
 
 
 // ============================================
+// Recently Added Tests Banner - Full width at top of showcase
+// ============================================
+const RecentlyAddedBanner = ({ onNavigate }) => {
+  const categoryColors = {
+    MRD: 'bg-orange-500',
+    ECD: 'bg-emerald-500',
+    TRM: 'bg-sky-500',
+    CGP: 'bg-violet-500'
+  };
+
+  const handleTestClick = (test) => {
+    onNavigate(test.category, test.id);
+  };
+
+  // Take only the 5 most recent tests
+  const recentTests = RECENTLY_ADDED_TESTS.slice(0, 5);
+
+  return (
+    <div className="bg-gradient-to-r from-slate-50 to-white border border-slate-200 rounded-xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+        <h3 className="text-sm font-semibold text-slate-700">Recently Added Tests</h3>
+        <span className="text-xs text-slate-400">Updated weekly</span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {recentTests.map((test) => (
+          <div
+            key={test.id}
+            onClick={() => handleTestClick(test)}
+            className="flex flex-col p-3 bg-white border border-slate-100 rounded-lg cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
+          >
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`${categoryColors[test.category]} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
+                {test.category}
+              </span>
+              <span className="text-[10px] text-slate-400">{test.dateAdded}</span>
+            </div>
+            <span className="text-sm font-medium text-slate-800 group-hover:text-[#2A63A4] transition-colors truncate">
+              {test.name}
+            </span>
+            <span className="text-xs text-slate-500 truncate">
+              {test.vendor}<VendorBadge vendor={test.vendor} size="xs" />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+// ============================================
 // Test Showcase Component - Rotating parameters for each test
 // ============================================
 const TestShowcase = ({ onNavigate }) => {
@@ -5039,6 +5064,9 @@ Say "not specified" for missing data.`;
             </>
           )}
         </div>
+
+        {/* Recently Added Tests Banner */}
+        <RecentlyAddedBanner onNavigate={onNavigate} />
 
         {/* Test Showcase & News Feed Side by Side */}
         <div className="mb-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
