@@ -26,7 +26,7 @@ const RECENTLY_ADDED_TESTS = [
 // ============================================
 const VENDOR_BADGES = {
   'Exact Sciences': [
-    { id: 'transparency-2025', icon: '🏆', label: 'Transparency Award 2025', tooltip: 'OpenOnco Transparency Award 2025 — Highest data disclosure among vendors with 2+ tests' }
+    { id: 'openness-2025', icon: '🏆', label: 'Openness Award 2025', tooltip: 'OpenOnco Openness Award 2025 — Highest data disclosure among vendors with 2+ tests' }
   ],
 };
 
@@ -4095,8 +4095,8 @@ const TestShowcase = ({ onNavigate }) => {
     return count;
   };
 
-  // Helper to calculate transparency score (same as DatabaseSummary)
-  const calcTransparency = (test) => {
+  // Helper to calculate openness score (same as DatabaseSummary)
+  const calcOpenness = (test) => {
     const hasValue = (val) => val != null && val !== '' && val !== 'N/A';
     let score = 0;
     if (hasValue(test.listPrice)) score += 30;
@@ -4118,9 +4118,9 @@ const TestShowcase = ({ onNavigate }) => {
     return counts;
   }, []);
 
-  // Calculate vendor-level transparency scores (for ranking sort)
+  // Calculate vendor-level openness scores (for ranking sort)
   // Matches the logic in DatabaseSummary - vendors with 2+ tests get ranked, single-test vendors go to bottom
-  const vendorTransparencyScores = useMemo(() => {
+  const vendorOpennessScores = useMemo(() => {
     const scores = {};
     const vendorData = {};
     // Aggregate scores by vendor
@@ -4128,7 +4128,7 @@ const TestShowcase = ({ onNavigate }) => {
       if (!vendorData[t.vendor]) {
         vendorData[t.vendor] = { total: 0, count: 0 };
       }
-      vendorData[t.vendor].total += calcTransparency(t);
+      vendorData[t.vendor].total += calcOpenness(t);
       vendorData[t.vendor].count += 1;
     });
     // Calculate average score - only vendors with 2+ tests qualify
@@ -4163,21 +4163,21 @@ const TestShowcase = ({ onNavigate }) => {
         return sorted.sort((a, b) => countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
       case 'vendorTests':
         return sorted.sort((a, b) => vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
-      case 'transparency':
-        // Sort by vendor transparency ranking (same as transparency award logic)
+      case 'openness':
+        // Sort by vendor openness ranking (same as openness award logic)
         // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
         return sorted.sort((a, b) => {
-          const scoreA = vendorTransparencyScores[a.vendor] ?? -1;
-          const scoreB = vendorTransparencyScores[b.vendor] ?? -1;
+          const scoreA = vendorOpennessScores[a.vendor] ?? -1;
+          const scoreB = vendorOpennessScores[b.vendor] ?? -1;
           if (scoreA !== scoreB) return scoreB - scoreA;
           // Within same vendor score, sort by individual test score
-          return calcTransparency(b) - calcTransparency(a) || a.vendor.localeCompare(b.vendor);
+          return calcOpenness(b) - calcOpenness(a) || a.vendor.localeCompare(b.vendor);
         });
       case 'vendor':
       default:
         return sorted.sort((a, b) => a.name.localeCompare(b.name));
     }
-  }, [sortBy, vendorTestCounts, vendorTransparencyScores]);
+  }, [sortBy, vendorTestCounts, vendorOpennessScores]);
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
@@ -4353,7 +4353,7 @@ const TestShowcase = ({ onNavigate }) => {
           <option value="tat">By TAT (fastest)</option>
           <option value="reimbursement">By Coverage</option>
           <option value="vendorTests">By # Tests</option>
-          <option value="transparency">By Transparency</option>
+          <option value="openness">By Openness</option>
         </select>
       </div>
       {isPatient && (
@@ -5094,7 +5094,7 @@ const DatabaseSummary = () => {
     return reimb.includes('medicare') || reimb.includes('covered') || (test.commercialPayers && test.commercialPayers.length > 0);
   };
 
-  // Calculate transparency score per test (0-100)
+  // Calculate openness score per test (0-100)
   const calcTestScore = (test) => {
     let score = 0;
     if (hasValue(test.listPrice)) score += 30;
@@ -5118,7 +5118,7 @@ const DatabaseSummary = () => {
   // Count reimbursed tests for stats display
   const reimbursedTests = allTests.filter(hasReimbursement);
   
-  // Group ALL tests by vendor for transparency scoring
+  // Group ALL tests by vendor for openness scoring
   const vendorScores = {};
   allTests.forEach(test => {
     const vendor = normalizeVendor(test.vendor);
@@ -5211,7 +5211,7 @@ const DatabaseSummary = () => {
 
   return (
     <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">
-      {/* Transparency Award Banner */}
+      {/* Openness Award Banner */}
       {topVendor && (
         <div className="mb-6 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-2 border-amber-300 rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-4">
@@ -5220,7 +5220,7 @@ const DatabaseSummary = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-sm font-semibold text-amber-700">OpenOnco Transparency Award</p>
+                <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award</p>
                 <span className="px-2 py-0.5 bg-amber-200 text-amber-800 text-[10px] font-medium rounded-full">2025</span>
               </div>
               <p className="text-xl font-bold text-slate-800">{topVendor}</p>
@@ -5260,9 +5260,9 @@ const DatabaseSummary = () => {
           {showFAQ && (
             <div className="mt-4 pt-4 border-t border-amber-200 text-sm text-slate-700 space-y-4">
               <div>
-                <h4 className="font-semibold text-amber-800 mb-2">What is the Transparency Score?</h4>
+                <h4 className="font-semibold text-amber-800 mb-2">What is the Openness Score?</h4>
                 <p className="text-xs text-slate-600">
-                  The OpenOnco Transparency Score measures how completely vendors disclose key information about their tests. 
+                  The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
                   It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
                   patients and clinicians make informed decisions.
                 </p>
@@ -5284,7 +5284,7 @@ const DatabaseSummary = () => {
                       <tr className="border-b border-amber-100">
                         <td className="py-1.5 pr-4 font-medium">Price</td>
                         <td className="text-center py-1.5 px-2 font-bold text-amber-600">30%</td>
-                        <td className="py-1.5 pl-4">Hardest to find, gold standard of transparency</td>
+                        <td className="py-1.5 pl-4">Hardest to find, gold standard of openness</td>
                       </tr>
                       <tr className="border-b border-amber-100">
                         <td className="py-1.5 pr-4 font-medium">Sensitivity</td>
@@ -5363,7 +5363,7 @@ const DatabaseSummary = () => {
 
       {/* Header with key stats */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-slate-700">Data Transparency Overview</h2>
+        <h2 className="text-lg font-semibold text-slate-700">Data Openness Overview</h2>
         <div className="text-xs text-slate-500">Updated {BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</div>
       </div>
       
@@ -5598,11 +5598,11 @@ const FAQPage = () => {
       )
     },
     {
-      question: "What is the OpenOnco Transparency Award?",
+      question: "What is the OpenOnco Openness Award?",
       answer: (
         <div className="space-y-4">
           <p>
-            The OpenOnco Transparency Score measures how completely vendors disclose key information about their tests. 
+            The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
             It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
             patients and clinicians make informed decisions.
           </p>
@@ -5620,7 +5620,7 @@ const FAQPage = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600">
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Price</td><td className="text-center py-2 px-3 font-bold text-amber-600">30%</td><td className="py-2 px-3">Hardest to find, gold standard of transparency</td></tr>
+                <tr className="border-b"><td className="py-2 px-3 font-medium">Price</td><td className="text-center py-2 px-3 font-bold text-amber-600">30%</td><td className="py-2 px-3">Hardest to find, gold standard of openness</td></tr>
                 <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sensitivity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
                 <tr className="border-b"><td className="py-2 px-3 font-medium">Specificity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
                 <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Publications</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Peer-reviewed evidence base</td></tr>
@@ -6617,10 +6617,10 @@ const SubmissionsPage = () => {
         )}
       </form>
 
-      {/* Transparency Encouragement Section */}
+      {/* Openness Encouragement Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">We Value Transparency</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">We Value Openness</h2>
           <p className="text-gray-600 max-w-xl mx-auto">
             The more complete your submission, the better we can serve patients and clinicians. 
             We encourage vendors to share pricing, performance data, and clinical evidence openly.
@@ -6694,7 +6694,7 @@ const SourceDataPage = () => {
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
         <p className="text-gray-600 mb-4">
-          OpenOnco is committed to transparency. All data is open and downloadable.
+          OpenOnco is committed to openness. All data is open and downloadable.
         </p>
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full">
           <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -7303,7 +7303,7 @@ Why it's important: Stage II patients considering adjuvant therapy benefit from 
 
 What you can do: Consider asking the vendor about stage-specific performance data—they may have additional information available.
 
-We encourage vendors to provide stage-specific breakdowns where feasible, as this transparency helps the entire field.`
+We encourage vendors to provide stage-specific breakdowns where feasible, as this openness helps the entire field.`
   },
   specificity: {
     title: "Understanding Specificity Claims",
