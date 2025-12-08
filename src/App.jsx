@@ -6996,7 +6996,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
     !test.reimbursement?.toLowerCase().includes('not yet') &&
     !test.reimbursement?.toLowerCase().includes('no established');
   const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
-  const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes';
+  const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes' || test.sampleCategory === 'Tissue';
   
   // Section component for consistent styling
   const Section = ({ title, children, expertTopic }) => (
@@ -7072,14 +7072,32 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <YesNo yes={hasMedicare} label="Medicare coverage (age 65+)" />
                     <YesNo yes={hasPrivate} label="Private insurance options" />
                     <YesNo yes={!requiresTissue} label="Blood draw only (no surgery needed)" />
+                    {category === 'CGP' && test.fdaCompanionDxCount && (
+                      <div className="flex items-center gap-2 py-1">
+                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">✓</span>
+                        <span className="text-sm text-gray-700">FDA-approved for {test.fdaCompanionDxCount} drug matches</span>
+                      </div>
+                    )}
                   </div>
                   <div>
-                    {(test.initialTat || test.tat) && (
+                    {category !== 'CGP' && (test.initialTat || test.tat) && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
                           {test.initialTat || test.tat}
                         </span>
                         <span className="text-sm text-gray-700">days for results</span>
+                      </div>
+                    )}
+                    {category === 'CGP' && test.tat && (
+                      <div className="flex items-center gap-2 py-1">
+                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">⏱</span>
+                        <span className="text-sm text-gray-700">Results in {test.tat}</span>
+                      </div>
+                    )}
+                    {category === 'CGP' && test.genesAnalyzed && (
+                      <div className="flex items-center gap-2 py-1">
+                        <span className="w-5 h-5 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center text-xs font-bold">🧬</span>
+                        <span className="text-sm text-gray-700">Tests {test.genesAnalyzed} genes</span>
                       </div>
                     )}
                     {test.cancerTypes && (
@@ -7104,11 +7122,16 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               {/* How It Works */}
               <Section title="How It Works">
                 <p className="text-gray-700">
-                  {requiresTissue 
-                    ? "Your doctor will need a sample of your tumor (from surgery or biopsy) plus a blood draw. The test creates a personalized profile based on your specific cancer's DNA mutations."
-                    : "Just a simple blood draw at your doctor's office or lab - no tumor sample needed. The test looks for general cancer signals in your blood."}
+                  {category === 'CGP' 
+                    ? (test.sampleCategory === 'Tissue' 
+                        ? "Your doctor will send a sample of your tumor (from surgery or biopsy) to the lab. The test analyzes hundreds of genes to find specific mutations that can be matched to targeted treatments."
+                        : "A simple blood draw is used to capture tumor DNA circulating in your bloodstream. The test analyzes this DNA to identify mutations that can guide treatment decisions.")
+                    : (requiresTissue 
+                        ? "Your doctor will need a sample of your tumor (from surgery or biopsy) plus a blood draw. The test creates a personalized profile based on your specific cancer's DNA mutations."
+                        : "Just a simple blood draw at your doctor's office or lab - no tumor sample needed. The test looks for general cancer signals in your blood.")}
                 </p>
                 {test.bloodVolume && <p className="text-sm text-gray-500 mt-2">Blood sample: {test.bloodVolume} mL (about {Math.round(test.bloodVolume / 5)} teaspoons)</p>}
+                {category === 'CGP' && test.tat && <p className="text-sm text-gray-500 mt-2">Results typically available in: {test.tat}</p>}
               </Section>
               
               {/* Insurance & Cost */}
@@ -7119,7 +7142,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <p className="text-sm"><span className="font-medium">Private insurers:</span> {test.commercialPayers.join(', ')}</p>
                   )}
                   {test.commercialPayersNotes && <p className="text-xs text-gray-500 mt-1">{test.commercialPayersNotes}</p>}
-                  {category === 'ECD' && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice}</p>}
+                  {(category === 'ECD' || category === 'CGP') && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>}
                 </div>
               </Section>
               
@@ -7131,12 +7154,88 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How will the results change my treatment plan?</li>
                   {category === 'MRD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How often should I be retested?</li>}
                   {category === 'ECD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> What happens if the test finds something?</li>}
+                  {category === 'CGP' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Are there targeted therapies or clinical trials that match my results?</li>}
                 </ul>
               </Section>
             </>
           ) : (
             /* Clinician/Academic View */
             <>
+              {/* CGP-specific content */}
+              {category === 'CGP' && (
+                <>
+                  {/* Genomic Coverage */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Section title="Genomic Coverage">
+                      <div className="space-y-1">
+                        <DataRow label="Genes Analyzed" value={test.genesAnalyzed} citations={test.genesAnalyzedCitations} notes={test.genesAnalyzedNotes} />
+                        {test.geneListUrl && (
+                          <div className="py-1.5 flex justify-between items-center">
+                            <span className="text-xs text-gray-500">Gene List</span>
+                            <a href={test.geneListUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:underline" style={{ color: '#2A63A4' }}>View Full List →</a>
+                          </div>
+                        )}
+                        <DataRow label="Biomarkers" value={test.biomarkersReported?.join(', ')} citations={test.biomarkersReportedCitations} />
+                        <DataRow label="Method" value={test.method} citations={test.methodCitations} />
+                      </div>
+                    </Section>
+                    
+                    <Section title="Sample & Turnaround">
+                      <div className="space-y-1">
+                        <DataRow label="Sample Type" value={test.sampleCategory} />
+                        <DataRow label="Sample Requirements" value={test.sampleRequirements} citations={test.sampleRequirementsCitations} notes={test.sampleRequirementsNotes} />
+                        <DataRow label="Turnaround Time" value={test.tat} citations={test.tatCitations} notes={test.tatNotes} />
+                      </div>
+                    </Section>
+                  </div>
+
+                  {/* FDA CDx & Guidelines */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Section title="FDA Companion Diagnostics">
+                      <div className="space-y-1">
+                        {test.fdaCompanionDxCount && (
+                          <div className="py-1.5 flex justify-between items-center">
+                            <span className="text-xs text-gray-500">FDA CDx Indications</span>
+                            <span className="text-lg font-bold text-emerald-600">{test.fdaCompanionDxCount}</span>
+                          </div>
+                        )}
+                        {test.fdaCompanionDxCountNotes && <p className="text-xs text-gray-500 mt-1">{test.fdaCompanionDxCountNotes}</p>}
+                        <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} />
+                        {test.fdaApprovalDate && <DataRow label="FDA Approval Date" value={test.fdaApprovalDate} citations={test.fdaApprovalDateCitations} />}
+                      </div>
+                    </Section>
+                    
+                    <Section title="Guidelines & Coverage">
+                      <div className="space-y-1">
+                        <DataRow label="NCCN Recommended" value={test.nccnRecommended ? 'Yes' : 'No'} />
+                        {test.nccnGuidelinesAligned && <DataRow label="NCCN Guidelines" value={test.nccnGuidelinesAligned.join(', ')} notes={test.nccnGuidelinesNotes} citations={test.nccnGuidelinesCitations} />}
+                        <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
+                        {test.listPrice && <DataRow label="List Price" value={`$${test.listPrice.toLocaleString()}`} citations={test.listPriceCitations} />}
+                        <DataRow label="CPT Codes" value={test.cptCodes} citations={test.cptCodesCitations} />
+                      </div>
+                    </Section>
+                  </div>
+
+                  {/* Clinical Evidence */}
+                  <Section title="Clinical Evidence">
+                    <div className="space-y-1">
+                      <DataRow label="Target Population" value={test.targetPopulation} citations={test.targetPopulationCitations} />
+                      <DataRow label="Cancer Types" value={test.cancerTypes?.join(', ')} citations={test.cancerTypesCitations} />
+                      <DataRow label="Clinical Availability" value={test.clinicalAvailability} citations={test.clinicalAvailabilityCitations} notes={test.clinicalAvailabilityNotes} />
+                      {test.numPublications && (
+                        <div className="py-1.5 flex justify-between items-center">
+                          <span className="text-xs text-gray-500">Publications</span>
+                          <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
+                        </div>
+                      )}
+                    </div>
+                  </Section>
+                </>
+              )}
+
+              {/* Non-CGP content (MRD, ECD, TRM) */}
+              {category !== 'CGP' && (
+                <>
               {/* Two-column layout for key metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Performance Metrics */}
@@ -7299,6 +7398,8 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     ))}
                   </div>
                 </Section>
+              )}
+                </>
               )}
               
               {/* Example Report Link */}
@@ -7509,10 +7610,10 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                   <td className={`p-4 text-sm font-medium text-gray-600 ${colors.border} border-b`}>
                     <span className="flex items-center gap-1">
                       {param.label}
-                      {(param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
-                      {param.key === 'lod' && <ExpertInsight topic="lod" />}
-                      {param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
-                      {(param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
+                      {category !== 'CGP' && (param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
+                      {category !== 'CGP' && param.key === 'lod' && <ExpertInsight topic="lod" />}
+                      {category !== 'CGP' && param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
+                      {category !== 'CGP' && (param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
                     </span>
                   </td>
                   {tests.map(test => {
