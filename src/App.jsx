@@ -332,7 +332,7 @@ const LifecycleScrollingTests = ({ tests, isHighlighted, color }) => {
             isHighlighted ? 'text-gray-600' : 'text-gray-400'
           }`}
           style={{
-            animation: 'lifecycleScroll 20s linear infinite',
+            animation: 'lifecycleScroll 15s linear infinite',
           }}
         >
           <span className="pr-4">{scrollContent}</span>
@@ -425,7 +425,7 @@ const LifecycleNavigator = ({ onNavigate }) => {
     
     const interval = setInterval(() => {
       setPulseIndex(prev => (prev + 1) % 4);
-    }, 3000);
+    }, 2250);
     
     return () => clearInterval(interval);
   }, [isHovering]);
@@ -4056,7 +4056,7 @@ const TestShowcase = ({ onNavigate }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
       <h3 className="text-lg font-bold text-slate-800 text-center mb-1">
-        Tests We Track
+        The {allTests.length} Tests We Track
       </h3>
       {isPatient && (
         <p className="text-xs text-slate-500 text-center mb-3">
