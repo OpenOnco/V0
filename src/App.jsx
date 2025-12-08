@@ -268,7 +268,7 @@ const getTestCount = (stageId) => {
 const getSampleTests = (stageId) => {
   switch(stageId) {
     case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
-    case 'CGP': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'TruSight Oncology Comprehensive'];
+    case 'CGP': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
     case 'TRM': return ['Guardant360 Response', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
     case 'MRD': return ['Signatera', 'Guardant Reveal', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
     default: return [];
@@ -3055,48 +3055,6 @@ const cgpTestData = [
     "analyticalValidationCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html"
   },
   {
-    "id": "cgp-10",
-    "name": "Oncomine Dx Target Test",
-    "vendor": "Thermo Fisher Scientific",
-    "sampleCategory": "Tissue",
-    "approach": "Tissue CGP (Targeted)",
-    "method": "Targeted NGS panel for FFPE NSCLC tissue; detects SNVs in 23 genes and fusions in ROS1; designed for rapid, focused therapy selection.",
-    "methodCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "genesAnalyzed": 23,
-    "genesAnalyzedCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "fusionGenes": ["ROS1"],
-    "fusionGenesCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "geneListUrl": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "biomarkersReported": ["SNVs", "Indels", "ROS1 fusions"],
-    "biomarkersReportedCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "cancerTypes": ["NSCLC"],
-    "cancerTypesCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "targetPopulation": "Patients with NSCLC requiring biomarker testing for targeted therapy selection",
-    "targetPopulationCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "fdaStatus": "FDA-approved IVD (P160045) June 2017",
-    "fdaStatusCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "fdaApprovalDate": "2017-06-22",
-    "fdaApprovalDateCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "fdaCompanionDxCount": 3,
-    "fdaCompanionDxCountNotes": "CDx for crizotinib (ROS1), gefitinib (EGFR), and dabrafenib+trametinib (BRAF V600E) in NSCLC.",
-    "fdaCompanionDxCountCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "nccnRecommended": true,
-    "nccnAlignmentType": "biomarker-coverage",
-    "nccnGuidelinesAligned": ["NSCLC"],
-    "nccnGuidelinesNotes": "Covers key NSCLC biomarkers recommended by NCCN guidelines including EGFR, BRAF, ROS1. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
-    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "tat": "4 days",
-    "tatNotes": "Rapid turnaround designed for actionable NSCLC biomarkers.",
-    "tatCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "sampleRequirements": "FFPE tissue from NSCLC tumors",
-    "sampleRequirementsCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "reimbursement": "Medicare",
-    "reimbursementNote": "Medicare and commercial coverage for NSCLC biomarker testing.",
-    "reimbursementCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
-    "clinicalAvailability": "Commercially available; can be run in local CAP/CLIA labs with Ion Torrent instruments",
-    "clinicalAvailabilityCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html"
-  },
-  {
     "id": "cgp-11",
     "name": "OncoExTra",
     "vendor": "Exact Sciences",
@@ -3240,45 +3198,6 @@ const cgpTestData = [
     "reimbursementCitations": "https://www.carislifesciences.com/physicians/profiling/",
     "clinicalAvailability": "Commercially available in US",
     "clinicalAvailabilityCitations": "https://www.carislifesciences.com/physicians/profiling/"
-  },
-  {
-    "id": "cgp-15",
-    "name": "TruSight Oncology Comprehensive",
-    "vendor": "Illumina",
-    "sampleCategory": "Tissue",
-    "approach": "Tissue CGP (IVD Kit)",
-    "method": "Hybrid-capture NGS IVD kit for use in local labs; targets 517 genes with DNA and RNA analysis; detects SNVs, indels, CNAs, fusions, splice variants, TMB, and MSI.",
-    "methodCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "genesAnalyzed": 517,
-    "genesAnalyzedCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "geneListUrl": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "Splice Variants", "TMB", "MSI"],
-    "biomarkersReportedCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "cancerTypes": ["All solid tumors"],
-    "cancerTypesCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "targetPopulation": "Patients with solid tumors; designed for health-system labs to run CGP locally",
-    "targetPopulationCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "fdaStatus": "FDA-approved IVD - Pan-tumor CDx approval 2024",
-    "fdaStatusNotes": "Recent FDA pan-tumor CDx approval enables local health-system labs to offer CGP without sending samples to reference labs.",
-    "fdaStatusCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html | https://www.onclive.com/view/fda-approves-illuminas-trusight-oncology-comprehensive-us-ivd-assay",
-    "fdaApprovalDate": "2024-05-01",
-    "fdaApprovalDateCitations": "https://www.onclive.com/view/fda-approves-illuminas-trusight-oncology-comprehensive-us-ivd-assay",
-    "nccnRecommended": true,
-    "nccnAlignmentType": "biomarker-coverage",
-    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Prostate Cancer", "Ovarian Cancer"],
-    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
-    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "tat": "Variable",
-    "tatNotes": "TAT depends on local lab workflow; typically faster than send-out to reference labs.",
-    "tatCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "sampleRequirements": "FFPE tissue",
-    "sampleRequirementsCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Coverage expected to expand with pan-tumor CDx approval; varies by payer.",
-    "reimbursementCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
-    "clinicalAvailability": "Commercially available as IVD kit for local CAP/CLIA labs",
-    "clinicalAvailabilityNotes": "IVD kit model allows health systems to run CGP in-house on Illumina sequencers.",
-    "clinicalAvailabilityCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html"
   }
 ];
 
@@ -3594,12 +3513,13 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'about'];
+  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
     'submissions': 'Submissions',
+    'faq': 'FAQ',
     'about': 'About'
   }[page] || page);
   
@@ -4798,6 +4718,179 @@ const PlaceholderPage = ({ title, description }) => (
     <p className="text-gray-600">{description}</p>
   </div>
 );
+
+// ============================================
+// FAQ Page
+// ============================================
+const FAQItem = ({ question, answer, isOpen, onClick }) => (
+  <div className="border-b border-gray-200 last:border-b-0">
+    <button
+      onClick={onClick}
+      className="w-full py-5 flex justify-between items-center text-left hover:bg-gray-50 transition-colors"
+    >
+      <span className="text-lg font-medium text-gray-900 pr-4">{question}</span>
+      <svg 
+        className={`w-5 h-5 text-gray-500 transform transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+    {isOpen && (
+      <div className="pb-5 pr-8">
+        <div className="prose prose-lg text-gray-600">{answer}</div>
+      </div>
+    )}
+  </div>
+);
+
+const FAQPage = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const faqs = [
+    {
+      question: "What types of tests does OpenOnco cover?",
+      answer: (
+        <p>
+          OpenOnco focuses on laboratory-developed tests (LDTs) and services that patients and clinicians can access directly. We cover four categories of cancer testing: <strong>Early Cancer Detection (ECD)</strong> for screening, <strong>Comprehensive Genomic Profiling (CGP)</strong> for newly diagnosed patients, <strong>Treatment Response Monitoring (TRM)</strong> for patients on active treatment, and <strong>Minimal Residual Disease (MRD)</strong> for surveillance after treatment. We do not include reagent kits or assay systems that laboratories must purchase and validate themselves—our focus is on orderable services.
+        </p>
+      )
+    },
+    {
+      question: "Why aren't certain tests included in your database?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            We focus on tests that clinicians can order or patients can request directly. This means we exclude:
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><strong>IVD kits sold to laboratories</strong> (e.g., Oncomine Dx Target Test, TruSight Oncology Comprehensive)—these require labs to purchase, validate, and run themselves</li>
+            <li><strong>Research-use-only (RUO) assays</strong> not available for clinical ordering</li>
+            <li><strong>Tests no longer commercially available</strong></li>
+          </ul>
+          <p>
+            If you believe we're missing a test that should be included, please use the Submissions tab to let us know.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "How do you decide what information to include for each test?",
+      answer: (
+        <p>
+          We prioritize publicly available, verifiable information from peer-reviewed publications, FDA submissions, company websites, and clinical guidelines (like NCCN). Every data point includes citations so you can verify the source. We focus on information most relevant to test selection: performance metrics (sensitivity, specificity, LOD), regulatory status, turnaround time, sample requirements, cancer types covered, and reimbursement status.
+        </p>
+      )
+    },
+    {
+      question: "How often is the database updated?",
+      answer: (
+        <p>
+          We update the database regularly as new tests launch, FDA approvals occur, or performance data is published. The build date shown in the footer indicates when the current version was deployed. You can also check the "Recently Added" section on the home page to see the latest additions.
+        </p>
+      )
+    },
+    {
+      question: "What does it mean when a test is 'NCCN Recommended'?",
+      answer: (
+        <p>
+          This indicates that the test covers biomarkers recommended in NCCN (National Comprehensive Cancer Network) clinical guidelines for the relevant cancer type(s). It's important to note that NCCN recommends testing for specific biomarkers but does not endorse specific commercial assays by name. A test marked as "NCCN Recommended" means it can detect the biomarkers that NCCN guidelines say should be tested—not that NCCN has specifically endorsed that particular test.
+        </p>
+      )
+    },
+    {
+      question: "What's the difference between FDA-approved and LDT tests?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            <strong>FDA-approved/cleared tests</strong> have been reviewed by the FDA and meet specific analytical and clinical validation requirements. They often have companion diagnostic (CDx) claims linking test results to specific therapies.
+          </p>
+          <p>
+            <strong>Laboratory-developed tests (LDTs)</strong> are developed and validated by individual CLIA-certified laboratories. While they must meet CLIA quality standards, they haven't undergone FDA premarket review. Many high-quality tests are LDTs—FDA approval status alone doesn't determine clinical utility.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "How should I interpret sensitivity and specificity numbers?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            <strong>Sensitivity</strong> measures how well a test detects disease when it's present (true positive rate). A 90% sensitivity means the test correctly identifies 90% of people who have the condition.
+          </p>
+          <p>
+            <strong>Specificity</strong> measures how well a test correctly identifies people without disease (true negative rate). A 99% specificity means only 1% of healthy people will get a false positive.
+          </p>
+          <p>
+            Important: These numbers can vary significantly based on the patient population, cancer stage, and how the study was conducted. Always look at the context and study population when comparing tests.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "Is OpenOnco affiliated with any test vendors?",
+      answer: (
+        <p>
+          No. OpenOnco is an independent resource with no financial relationships with test vendors. We don't accept advertising or sponsorship. Our goal is to provide unbiased, transparent information to help patients and clinicians make informed decisions.
+        </p>
+      )
+    },
+    {
+      question: "Can I download the data?",
+      answer: (
+        <p>
+          Yes! Visit the Data Download tab to download the complete database in CSV or JSON format. The data is freely available for research, clinical decision support, or other non-commercial purposes.
+        </p>
+      )
+    },
+    {
+      question: "How can I report an error or suggest a correction?",
+      answer: (
+        <p>
+          Please use the Submissions tab and select "Request Changes to Test Data." Include the specific test name, the field that needs correction, and ideally a citation for the correct information. We take data accuracy seriously and will review all submissions.
+        </p>
+      )
+    },
+    {
+      question: "What's the difference between the Patient and Clinician views?",
+      answer: (
+        <p>
+          The Patient view simplifies information and focuses on practical questions: What does this test do? Is it covered by insurance? What's involved in getting tested? The Clinician and Academic/Industry views show more detailed technical information including performance metrics, FDA status, methodology details, and clinical validation data.
+        </p>
+      )
+    },
+    {
+      question: "How do I contact OpenOnco?",
+      answer: (
+        <p>
+          The best way to reach us is via <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">LinkedIn</a>. Please include #openonco in your message so we can easily identify it.
+        </p>
+      )
+    }
+  ];
+
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
+      <p className="text-gray-600 mb-8">
+        Common questions about OpenOnco, our data, and how to use the platform.
+      </p>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-200">
+        {faqs.map((faq, index) => (
+          <FAQItem
+            key={index}
+            question={faq.question}
+            answer={faq.answer}
+            isOpen={openIndex === index}
+            onClick={() => setOpenIndex(openIndex === index ? null : index)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // ============================================
 // About Page
@@ -8408,6 +8501,7 @@ export default function App() {
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage />;
+      case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
       default: return <HomePage onNavigate={handleNavigate} />;
     }
