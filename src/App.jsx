@@ -416,7 +416,7 @@ const LifecycleNavigator = ({ onNavigate }) => {
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: 8,
+    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10,
     TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 9,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
   };
@@ -435,10 +435,6 @@ const LifecycleNavigator = ({ onNavigate }) => {
   }, [isHovering]);
   
   const handleSelect = (stageId) => {
-    if (stageId === 'CGP') {
-      // CGP not yet implemented - could show a message or do nothing
-      return;
-    }
     onNavigate(stageId);
   };
   
@@ -2658,6 +2654,632 @@ const trmTestData = [
   }
 ];
 
+const cgpTestData = [
+  {
+    "id": "cgp-1",
+    "name": "FoundationOne CDx",
+    "vendor": "Foundation Medicine",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS of FFPE tumor tissue; detects SNVs, indels, CNAs, and select rearrangements in 324 genes; reports MSI, TMB, and HRD signature.",
+    "methodCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "genesAnalyzed": 324,
+    "genesAnalyzedCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "geneListUrl": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Rearrangements", "TMB", "MSI", "HRD"],
+    "biomarkersReportedCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "targetPopulation": "Patients with advanced solid malignant neoplasms requiring genomic profiling to guide treatment decisions",
+    "targetPopulationCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf17/P170019B.pdf",
+    "fdaStatus": "FDA-approved PMA (P170019) - First FDA-approved broad companion diagnostic for solid tumors",
+    "fdaStatusCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/foundationone-cdx-f1cdx-p170019s048",
+    "fdaApprovalDate": "2017-11-30",
+    "fdaApprovalDateCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf17/P170019B.pdf",
+    "fdaCompanionDxCount": 57,
+    "fdaCompanionDxCountNotes": "57 FDA-approved CDx indications in US as of Dec 2025 (100 total CDx indications including Japan). Includes pan-tumor indications for TMB-H, MSI-H, NTRK fusions, RET fusions, and tumor-specific indications across NSCLC, melanoma, breast, colorectal, ovarian, prostate, cholangiocarcinoma, and pediatric brain tumors.",
+    "fdaCompanionDxCountCitations": "https://www.businesswire.com/news/home/20251204680697/en/Foundation-Medicine-Achieves-Historic-Milestone-of-100-Approved-and-Active-Companion-Diagnostic-Indications-Solidifying-Leadership-in-Precision-Medicine",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer", "Melanoma", "Gastric Cancer", "Cholangiocarcinoma"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers and 'broad molecular profiling' but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.foundationmedicine.com/test/foundationone-cdx",
+    "tat": "8 days",
+    "tatNotes": "Typically 8 days or less from receipt of specimen.",
+    "tatCitations": "https://www.foundationmedicine.com/info/detail/order-a-test",
+    "sampleRequirements": "FFPE tissue; minimum 25% tumor content; 10 unstained slides or tissue block",
+    "sampleRequirementsNotes": "Foundation Medicine contacts pathology lab for specimen procurement. Can reflex to FoundationOne Liquid CDx if tissue insufficient.",
+    "sampleRequirementsCitations": "https://www.foundationmedicine.com/info/detail/order-a-test",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "National Medicare coverage for advanced cancer (CAG-00450R). 87% of patients pay $0 out-of-pocket. 80+ commercial health plans cover Foundation Medicine tests.",
+    "reimbursementCitations": "https://www.foundationmedicine.com/resource/billing-and-financial-assistance | https://www.foundationmedicine.com/test/foundationone-cdx",
+    "listPrice": 3500,
+    "listPriceCitations": "https://www.foundationmedicine.com/faq/patient-faqs",
+    "cptCodes": "0037U",
+    "cptCodesCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "clinicalAvailability": "Commercially available in US since 2017",
+    "clinicalAvailabilityCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "numPublications": 1000,
+    "numPublicationsPlus": true,
+    "numPublicationsSource": "vendor-estimate",
+    "numPublicationsNotes": "Foundation Medicine tests cited in >1,000 peer-reviewed publications (vendor estimate).",
+    "numPublicationsCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1200/JCO.2017.75.3780"]
+  },
+  {
+    "id": "cgp-2",
+    "name": "FoundationOne Liquid CDx",
+    "vendor": "Foundation Medicine",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Hybrid-capture NGS of cfDNA from plasma; analyzes 324 genes; reports short variants in 311 genes, rearrangements in 8 genes, CNAs in 3 genes, plus bTMB and MSI.",
+    "methodCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200006B.pdf",
+    "genesAnalyzed": 324,
+    "genesAnalyzedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200006B.pdf | https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
+    "genesReported": 311,
+    "genesReportedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200006B.pdf",
+    "geneListUrl": "https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
+    "biomarkersReported": ["SNVs", "Indels", "Select CNAs", "Select Rearrangements", "bTMB", "MSI"],
+    "biomarkersReportedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200006B.pdf | https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
+    "cancerTypes": ["Advanced solid tumors"],
+    "cancerTypesCitations": "https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
+    "targetPopulation": "Patients with advanced solid tumors when tissue biopsy is not feasible or as complement to tissue testing",
+    "targetPopulationCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200006B.pdf",
+    "fdaStatus": "FDA-approved PMA (P200006) August 2020",
+    "fdaStatusCitations": "https://www.cancernetwork.com/view/fda-approves-foundationone-liquid-cdx-as-companion-diagnostic",
+    "fdaApprovalDate": "2020-08-26",
+    "fdaApprovalDateCitations": "https://www.cancernetwork.com/view/fda-approves-foundationone-liquid-cdx-as-companion-diagnostic",
+    "fdaCompanionDxCount": 10,
+    "fdaCompanionDxCountNotes": "Multiple CDx indications in NSCLC (osimertinib, sotorasib, capmatinib), breast cancer (PIK3CA), prostate cancer (BRCA1/2, ATM), cholangiocarcinoma (FGFR2), pan-tumor (NTRK).",
+    "fdaCompanionDxCountCitations": "https://www.foundationmedicine.com/press-release/fda-approves-foundationonercdx-and-foundationonerliquid-cdx-companion-diagnostics",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Prostate Cancer", "Cholangiocarcinoma"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
+    "tat": "7-10 days",
+    "tatNotes": "Results typically available within 7-10 business days.",
+    "tatCitations": "https://www.foundationmedicine.com/info/detail/order-a-test",
+    "sampleRequirements": "2 tubes of whole blood in Streck cfDNA BCT tubes; minimum 5 mL per tube",
+    "sampleRequirementsNotes": "7-day sample stability at ambient temperature. Can reflex to tissue testing if liquid negative for CDx mutations.",
+    "sampleRequirementsCitations": "https://www.foundationmedicine.com/info/detail/order-a-test",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "National Medicare coverage for advanced cancer. Broad commercial payer coverage.",
+    "reimbursementCitations": "https://www.foundationmedicine.com/resource/billing-and-financial-assistance",
+    "listPrice": 3500,
+    "listPriceCitations": "https://www.foundationmedicine.com/faq/patient-faqs",
+    "cptCodes": "0239U",
+    "cptCodesCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "clinicalAvailability": "Commercially available in US since 2020",
+    "clinicalAvailabilityCitations": "https://www.cancernetwork.com/view/fda-approves-foundationone-liquid-cdx-as-companion-diagnostic"
+  },
+  {
+    "id": "cgp-3",
+    "name": "FoundationOne Heme",
+    "vendor": "Foundation Medicine",
+    "sampleCategory": "Tissue/Blood/Bone Marrow",
+    "approach": "Tissue + Liquid CGP",
+    "method": "Hybrid-capture DNA sequencing of 406 genes plus RNA sequencing of 265 genes for fusion detection; covers hematologic malignancies and sarcomas.",
+    "methodCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "genesAnalyzed": 406,
+    "genesAnalyzedCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "rnaGenesAnalyzed": 265,
+    "rnaGenesAnalyzedCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "geneListUrl": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Rearrangements/Fusions", "TMB", "MSI"],
+    "biomarkersReportedCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "cancerTypes": ["Hematologic malignancies", "Sarcomas"],
+    "cancerTypesNotes": "Leukemias, lymphomas, myeloma, myelodysplastic syndromes, myeloproliferative neoplasms, and sarcomas.",
+    "cancerTypesCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "targetPopulation": "Patients with hematologic malignancies or sarcomas requiring comprehensive genomic profiling",
+    "targetPopulationCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "fdaStatus": "CLIA LDT - not FDA approved",
+    "fdaStatusCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["Acute Myeloid Leukemia", "Chronic Myeloid Leukemia", "B-Cell Lymphomas", "Myelodysplastic Syndromes", "Soft Tissue Sarcoma"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines for hematologic malignancies and sarcomas. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.foundationmedicine.com/test/foundationone-heme",
+    "tat": "10-14 days",
+    "tatCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "sampleRequirements": "FFPE tissue, bone marrow aspirate, or peripheral blood depending on disease type",
+    "sampleRequirementsCitations": "https://www.foundationmedicine.com/test/foundationone-heme",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage for qualifying patients. Commercial coverage varies.",
+    "reimbursementCitations": "https://www.foundationmedicine.com/resource/billing-and-financial-assistance",
+    "listPrice": 3500,
+    "listPriceCitations": "https://www.foundationmedicine.com/faq/patient-faqs",
+    "clinicalAvailability": "Commercially available in US",
+    "clinicalAvailabilityCitations": "https://www.foundationmedicine.com/test/foundationone-heme"
+  },
+  {
+    "id": "cgp-4",
+    "name": "Guardant360 CDx",
+    "vendor": "Guardant Health",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Digital sequencing of cfDNA; targets 74 genes; reports SNVs, indels, CNAs (6 genes), and fusions (4 genes) with high sensitivity at low allele frequencies.",
+    "methodCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200010B.pdf",
+    "genesAnalyzed": 74,
+    "genesAnalyzedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200010B.pdf",
+    "genesReported": 55,
+    "genesReportedNotes": "74 genes targeted, 55 genes with reportable short variants.",
+    "genesReportedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200010B.pdf",
+    "geneListUrl": "https://www.guardantcomplete.com/hcp/solutions/guardant360-cdx",
+    "biomarkersReported": ["SNVs", "Indels", "Select CNAs", "Select Fusions"],
+    "biomarkersReportedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200010B.pdf",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
+    "targetPopulation": "Patients with advanced solid tumors; first liquid biopsy with FDA-approved CGP indication for all solid tumors",
+    "targetPopulationCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
+    "fdaStatus": "FDA-approved PMA (P200010) August 2020 - First FDA-approved liquid biopsy NGS CDx",
+    "fdaStatusCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/guardant360-cdx-p200010s008 | https://www.targetedonc.com/view/fda-approves-guardant360-cdx-for-tumor-mutation-profiling-of-all-solid-cancers",
+    "fdaApprovalDate": "2020-08-07",
+    "fdaApprovalDateCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/guardant360-cdx-p200010s008",
+    "fdaCompanionDxCount": 6,
+    "fdaCompanionDxCountNotes": "6 CDx indications: NSCLC (osimertinib/EGFR, amivantamab/EGFR exon 20, trastuzumab deruxtecan/ERBB2, sotorasib/KRAS G12C); Breast cancer (elacestrant/ESR1, imlunestrant/ESR1).",
+    "fdaCompanionDxCountCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/FDA-Approves-Guardant360-CDx-as-Companion-Diagnostic-for-Eli-Lilly-and-Companys-Inluriyo-imlunestrant-for-Treatment-of-ESR1-mutated-Advanced-Breast-Cancer/default.aspx | https://www.onclive.com/view/fda-clears-guardant360-cdx-as-companion-diagnostic-for-imlunestrant-in-esr1-mutated-breast-cancer",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer"],
+    "nccnGuidelinesNotes": "Covers all genes recommended by NCCN for NSCLC and relevant biomarkers for breast cancer treatment. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.guardanthealth.com/",
+    "tat": "5-7 days",
+    "tatNotes": "Actionable results typically within 7 days; as fast as 5 days.",
+    "tatCitations": "https://www.onclive.com/view/fda-clears-guardant360-cdx-as-companion-diagnostic-for-imlunestrant-in-esr1-mutated-breast-cancer",
+    "sampleRequirements": "2 tubes of whole blood in Streck cfDNA BCT tubes; minimum 5 mL",
+    "sampleRequirementsCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/P200010S008C.pdf",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Broadly covered by Medicare and commercial insurers representing >300 million lives.",
+    "reimbursementCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/FDA-Approves-Guardant360-CDx-as-Companion-Diagnostic-for-Eli-Lilly-and-Companys-Inluriyo-imlunestrant-for-Treatment-of-ESR1-mutated-Advanced-Breast-Cancer/default.aspx",
+    "clinicalAvailability": "Commercially available in US since 2020",
+    "clinicalAvailabilityCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
+    "numPublications": 150,
+    "numPublicationsPlus": true,
+    "numPublicationsSource": "vendor-estimate",
+    "numPublicationsNotes": "Guardant360 cited in >150 peer-reviewed publications (vendor estimate).",
+    "numPublicationsCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
+    "publicationsExampleCitations": ["https://pubmed.ncbi.nlm.nih.gov/33619370/", "https://pubmed.ncbi.nlm.nih.gov/37256839/"]
+  },
+  {
+    "id": "cgp-5",
+    "name": "Tempus xT CDx",
+    "vendor": "Tempus AI",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Tumor-normal matched NGS of FFPE tissue and matched normal blood/saliva; detects SNVs, MNVs, indels in 648 genes plus MSI status; tumor-normal matching improves somatic variant accuracy.",
+    "methodCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210011C.pdf | https://www.tempus.com/oncology/genomic-profiling/xt-xr/",
+    "genesAnalyzed": 648,
+    "genesAnalyzedCitations": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/ | https://www.biospace.com/press-releases/tempus-announces-the-national-launch-of-fda-approved-xt-cdx-test",
+    "geneListUrl": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/",
+    "biomarkersReported": ["SNVs", "MNVs", "Indels", "CNVs", "Rearrangements", "TMB", "MSI"],
+    "biomarkersReportedNotes": "HRD and HLA genotyping available as add-ons via professional services report.",
+    "biomarkersReportedCitations": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210011C.pdf",
+    "targetPopulation": "Patients with previously diagnosed solid malignant neoplasms",
+    "targetPopulationCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210011C.pdf",
+    "fdaStatus": "FDA-approved IVD (P210011) - National launch January 2025",
+    "fdaStatusCitations": "https://www.biospace.com/press-releases/tempus-announces-the-national-launch-of-fda-approved-xt-cdx-test | https://investors.tempus.com/news-releases/news-release-details/tempus-announces-national-launch-fda-approved-xt-cdx-test",
+    "fdaApprovalDate": "2024-06-01",
+    "fdaApprovalDateCitations": "https://www.360dx.com/business-news/tempus-nabs-cms-advanced-diagnostic-laboratory-test-status-tumor-mutation-profiling",
+    "fdaCompanionDxCount": 2,
+    "fdaCompanionDxCountNotes": "CDx claims for colorectal cancer (KRAS, NRAS, BRAF); positioned as one of the largest FDA-approved gene panels.",
+    "fdaCompanionDxCountCitations": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Colorectal Cancer", "Breast Cancer", "Melanoma", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines for major solid tumors. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.tempus.com/oncology/genomic-profiling/xt-xr/",
+    "tat": "14 days",
+    "tatNotes": "Results typically within 14 days.",
+    "tatCitations": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/",
+    "sampleRequirements": "FFPE tissue plus matched normal (blood or saliva)",
+    "sampleRequirementsNotes": "Tumor-normal matched approach differentiates somatic from germline variants.",
+    "sampleRequirementsCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210011C.pdf",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "CMS Advanced Diagnostic Laboratory Test (ADLT) designation; Medicare rate $4,500.",
+    "reimbursementCitations": "https://www.360dx.com/business-news/tempus-nabs-cms-advanced-diagnostic-laboratory-test-status-tumor-mutation-profiling",
+    "listPrice": 4500,
+    "listPriceCitations": "https://www.360dx.com/business-news/tempus-nabs-cms-advanced-diagnostic-laboratory-test-status-tumor-mutation-profiling",
+    "cptCodes": "0473U",
+    "cptCodesCitations": "https://www.discoveriesinhealthpolicy.com/2024/09/cms-releases-preliminary-crosswalk-for.html",
+    "clinicalAvailability": "Commercially available nationwide since January 2025",
+    "clinicalAvailabilityCitations": "https://www.biospace.com/press-releases/tempus-announces-the-national-launch-of-fda-approved-xt-cdx-test",
+    "complementaryTests": "Can add xR RNA sequencing, xF/xF+ liquid biopsy, HER2 IHC, PD-L1 IHC, HRD, Immune Profile Score",
+    "complementaryTestsCitations": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/"
+  },
+  {
+    "id": "cgp-6",
+    "name": "Tempus xF",
+    "vendor": "Tempus AI",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "ctDNA NGS panel targeting 105 genes; detects SNVs, indels, CNGs (6 genes), CNLs (BRCA1/2), and rearrangements (6 genes) plus MSI-H.",
+    "methodCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/ | https://www.ncbi.nlm.nih.gov/gtr/tests/569040/",
+    "analyticalValidation": "Validated performance metrics from Finkle et al. 2021 analytical validation study.",
+    "analyticalValidationCitations": "https://www.tempus.com/wp-content/uploads/2021/09/xF-Validation-Summary.pdf",
+    "genesAnalyzed": 105,
+    "genesAnalyzedCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "geneListUrl": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "biomarkersReported": ["SNVs", "Indels", "Select CNAs", "Select Rearrangements", "MSI"],
+    "biomarkersReportedCitations": "https://www.ncbi.nlm.nih.gov/gtr/tests/569040/",
+    "cancerTypes": ["Advanced solid tumors"],
+    "cancerTypesCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "targetPopulation": "Patients with advanced solid tumors; not intended for hematologic malignancies, early-stage cancers, or primary CNS malignancies",
+    "targetPopulationCitations": "https://www.ncbi.nlm.nih.gov/gtr/tests/569040/",
+    "fdaStatus": "CLIA LDT - not FDA approved",
+    "fdaStatusCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer"],
+    "nccnGuidelinesNotes": "Covers key biomarkers recommended by NCCN guidelines for major solid tumors. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "tat": "5-7 days",
+    "tatCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "sampleRequirements": "Blood in Streck cfDNA BCT tubes",
+    "sampleRequirementsCitations": "https://www.ncbi.nlm.nih.gov/gtr/tests/569040/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Commercial and Medicare coverage varies by indication.",
+    "reimbursementCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "clinicalAvailability": "Commercially available in US",
+    "clinicalAvailabilityCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "sensitivity": ">99% for SNVs/CNGs at ≥0.5% VAF; >98% for indels; >97% for rearrangements",
+    "sensitivityCitations": "https://www.ncbi.nlm.nih.gov/gtr/tests/569040/",
+    "specificity": ">99.9% for SNVs, indels, rearrangements; >96% for CNGs",
+    "specificityCitations": "https://www.ncbi.nlm.nih.gov/gtr/tests/569040/"
+  },
+  {
+    "id": "cgp-7",
+    "name": "Tempus xF+",
+    "vendor": "Tempus AI",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Expanded ctDNA NGS panel targeting 523 genes; detects SNVs, indels, CNGs, and rearrangements; includes clonal hematopoiesis (CH) variant identification.",
+    "methodCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "analyticalValidation": "Validated per Boulos et al. 2025 analytical validation study.",
+    "analyticalValidationCitations": "https://pubmed.ncbi.nlm.nih.gov/39820598/",
+    "genesAnalyzed": 523,
+    "genesAnalyzedCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "geneListUrl": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Rearrangements", "CH variants"],
+    "biomarkersReportedCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "cancerTypes": ["Advanced solid tumors"],
+    "cancerTypesCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "targetPopulation": "Patients requiring expanded liquid biopsy coverage",
+    "targetPopulationCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "fdaStatus": "CLIA LDT - not FDA approved",
+    "fdaStatusCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "tat": "7-10 days",
+    "tatCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "sampleRequirements": "Blood in Streck cfDNA BCT tubes",
+    "sampleRequirementsCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "clinicalAvailability": "Commercially available in US",
+    "clinicalAvailabilityCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/"
+  },
+  {
+    "id": "cgp-8",
+    "name": "MSK-IMPACT",
+    "vendor": "Memorial Sloan Kettering",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS of matched tumor/normal FFPE tissue; targets 468 cancer-associated genes covering ~1.5Mb of the genome; detects SNVs, indels, CNAs, select rearrangements, and MSI.",
+    "methodCitations": "https://www.accessdata.fda.gov/cdrh_docs/reviews/den170058.pdf | https://www.mskcc.org/msk-impact",
+    "genesAnalyzed": 468,
+    "genesAnalyzedNotes": "468 genes in original FDA-authorized configuration (2017); panel has since expanded to ~505 genes per current MSK documentation.",
+    "genesAnalyzedCitations": "https://www.accessdata.fda.gov/cdrh_docs/reviews/den170058.pdf | https://ascopost.com/News/58263 | https://www.mskcc.org/msk-impact",
+    "geneListUrl": "https://www.mskcc.org/msk-impact",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Select Rearrangements", "MSI"],
+    "biomarkersReportedCitations": "https://www.accessdata.fda.gov/cdrh_docs/reviews/den170058.pdf",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.mskcc.org/msk-impact",
+    "targetPopulation": "Patients with advanced cancer treated at Memorial Sloan Kettering Cancer Center",
+    "targetPopulationCitations": "https://www.mskcc.org/msk-impact",
+    "fdaStatus": "FDA authorized (de novo, DEN170058) November 2017 - First tumor-profiling LDT to receive FDA authorization",
+    "fdaStatusCitations": "https://ascopost.com/News/58263 | https://www.mskcc.org/news/fda-authorizes-msk-impact-test-analyzing-patient-tumors",
+    "fdaAuthorizationDate": "2017-11-15",
+    "fdaAuthorizationDateCitations": "https://ascopost.com/News/58263",
+    "fdaStatusNotes": "Not FDA-approved as CDx; authorized for tumor mutation profiling. Also approved by NYSDOH.",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Melanoma", "Ovarian Cancer", "Gastric Cancer"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines for major solid tumors. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.mskcc.org/msk-impact",
+    "tat": "2-3 weeks",
+    "tatCitations": "https://www.mskcc.org/msk-impact",
+    "sampleRequirements": "FFPE tumor tissue plus matched normal sample",
+    "sampleRequirementsNotes": "Tumor-normal matching allows accurate distinction of somatic vs germline variants.",
+    "sampleRequirementsCitations": "https://www.accessdata.fda.gov/cdrh_docs/reviews/den170058.pdf",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Coverage depends on payer; available primarily to MSK patients.",
+    "reimbursementCitations": "https://www.mskcc.org/msk-impact",
+    "clinicalAvailability": "Available only at Memorial Sloan Kettering Cancer Center",
+    "clinicalAvailabilityNotes": "Single-site assay; >20,000 patients sequenced since 2014. Results accessible via cBioPortal and annotated using OncoKB.",
+    "clinicalAvailabilityCitations": "https://www.mskcc.org/msk-impact | https://www.mskcc.org/news-releases/msk-impact-first-tumor-profiling-multiplex-panel-authorized-fda-setting-new-pathway-market-future-oncopanels",
+    "numPublications": 1000,
+    "numPublicationsPlus": true,
+    "numPublicationsSource": "vendor-estimate",
+    "numPublicationsNotes": ">1,000 peer-reviewed publications featuring MSK-IMPACT data as of end of 2024 (vendor estimate).",
+    "numPublicationsCitations": "https://www.mskcc.org/msk-impact",
+    "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1056/NEJMoa1610624"],
+    "keyFindings": "37% of profiled patients have at least one actionable mutation; 11% enrolled in matched clinical trials.",
+    "keyFindingsCitations": "https://www.mskcc.org/news/fda-authorizes-msk-impact-test-analyzing-patient-tumors | https://www.cancer.gov/news-events/cancer-currents-blog/2017/genomic-profiling-tests-cancer"
+  },
+  {
+    "id": "cgp-9",
+    "name": "MI Cancer Seek",
+    "vendor": "Caris Life Sciences",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP (WES + WTS)",
+    "method": "Combined whole exome sequencing (WES) and whole transcriptome sequencing (WTS) from single FFPE tissue extraction; detects SNVs, indels in 228 genes, MSI, TMB, and ERBB2 amplification.",
+    "methodCitations": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/ | https://pmc.ncbi.nlm.nih.gov/articles/PMC12581394/",
+    "genesAnalyzed": 228,
+    "genesAnalyzedNotes": "228 genes with reportable SNVs/indels in CDx subset; WES/WTS technically interrogates ~20,000 genes for research findings and signatures. This prevents confusion between '228 genes' and 'whole-exome' claims.",
+    "genesAnalyzedCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html",
+    "geneListUrl": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/",
+    "biomarkersReported": ["SNVs", "Indels", "MSI", "TMB", "ERBB2 CNA"],
+    "biomarkersReportedCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/",
+    "targetPopulation": "Adults and pediatric patients (ages 1-22) with previously diagnosed solid malignant neoplasms",
+    "targetPopulationNotes": "First and only FDA-approved CGP with CDx indications for both adult and pediatric patients.",
+    "targetPopulationCitations": "https://www.biospace.com/press-releases/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek-as-a-companion-diagnostic-cdx-test",
+    "fdaStatus": "FDA-approved IVD (P240010) November 2024 - First WES+WTS combined assay with CDx indications",
+    "fdaStatusCitations": "https://www.carislifesciences.com/about/news-and-media/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek/ | https://www.biospace.com/press-releases/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek-as-a-companion-diagnostic-cdx-test",
+    "fdaApprovalDate": "2024-11-06",
+    "fdaApprovalDateCitations": "https://www.biospace.com/press-releases/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek-as-a-companion-diagnostic-cdx-test",
+    "fdaCompanionDxCount": 8,
+    "fdaCompanionDxCountNotes": "8 CDx claims: 1 pan-cancer indication plus 5 tumor-specific indications (breast, colorectal, melanoma, NSCLC, endometrial). Includes PIK3CA, KRAS, NRAS, BRAF, MSI-H/TMB-H.",
+    "fdaCompanionDxCountCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html | https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/cdx-indications/",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Endometrial Cancer"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines including PIK3CA, KRAS, NRAS, BRAF, MSI-H/TMB-H. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/cdx-indications/",
+    "tat": "14 days",
+    "tatNotes": "Results within 14 days.",
+    "tatCitations": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/cdx-indications/",
+    "sampleRequirements": "FFPE tissue; minimum 20% tumor content",
+    "sampleRequirementsNotes": "Simultaneous DNA and RNA extraction from single sample minimizes tissue requirements compared to separate assays.",
+    "sampleRequirementsCitations": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/ | https://www.mlo-online.com/diagnostics/assays/news/55241478/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek-as-a-companion-diagnostic-cdx-test",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Coverage expanding; contact Caris for current payer coverage.",
+    "reimbursementCitations": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/",
+    "clinicalAvailability": "Commercially available in US since November 2024",
+    "clinicalAvailabilityCitations": "https://www.biospace.com/press-releases/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek-as-a-companion-diagnostic-cdx-test",
+    "analyticalValidation": "97-100% positive and negative percent agreement compared to other FDA-approved assays",
+    "analyticalValidationCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html"
+  },
+  {
+    "id": "cgp-10",
+    "name": "Oncomine Dx Target Test",
+    "vendor": "Thermo Fisher Scientific",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP (Targeted)",
+    "method": "Targeted NGS panel for FFPE NSCLC tissue; detects SNVs in 23 genes and fusions in ROS1; designed for rapid, focused therapy selection.",
+    "methodCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "genesAnalyzed": 23,
+    "genesAnalyzedCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "fusionGenes": ["ROS1"],
+    "fusionGenesCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "geneListUrl": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "biomarkersReported": ["SNVs", "Indels", "ROS1 fusions"],
+    "biomarkersReportedCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "cancerTypes": ["NSCLC"],
+    "cancerTypesCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "targetPopulation": "Patients with NSCLC requiring biomarker testing for targeted therapy selection",
+    "targetPopulationCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "fdaStatus": "FDA-approved IVD (P160045) June 2017",
+    "fdaStatusCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "fdaApprovalDate": "2017-06-22",
+    "fdaApprovalDateCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "fdaCompanionDxCount": 3,
+    "fdaCompanionDxCountNotes": "CDx for crizotinib (ROS1), gefitinib (EGFR), and dabrafenib+trametinib (BRAF V600E) in NSCLC.",
+    "fdaCompanionDxCountCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC"],
+    "nccnGuidelinesNotes": "Covers key NSCLC biomarkers recommended by NCCN guidelines including EGFR, BRAF, ROS1. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "tat": "4 days",
+    "tatNotes": "Rapid turnaround designed for actionable NSCLC biomarkers.",
+    "tatCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "sampleRequirements": "FFPE tissue from NSCLC tumors",
+    "sampleRequirementsCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare and commercial coverage for NSCLC biomarker testing.",
+    "reimbursementCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html",
+    "clinicalAvailability": "Commercially available; can be run in local CAP/CLIA labs with Ion Torrent instruments",
+    "clinicalAvailabilityCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-background/oncomine-dx-target-test.html"
+  },
+  {
+    "id": "cgp-11",
+    "name": "OncoExTra",
+    "vendor": "Exact Sciences",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP (WES + WTS)",
+    "method": "Whole exome sequencing (WES) of ~20,000 genes combined with whole transcriptome sequencing (WTS) from FFPE tissue; reports SNVs, indels, CNAs, fusions, MSI, TMB, and HRD status.",
+    "methodCitations": "https://www.exactsciences.com/test/oncoextra | https://www.oncotarget.com/article/28285/text/",
+    "genesAnalyzed": 20000,
+    "genesAnalyzedNotes": "WES/WTS comprehensively interrogates ~20,000 genes; reportable subset varies by biomarker type.",
+    "genesAnalyzedCitations": "https://www.exactsciences.com/test/oncoextra",
+    "geneListUrl": "https://www.exactsciences.com/test/oncoextra",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI", "HRD"],
+    "biomarkersReportedCitations": "https://www.exactsciences.com/test/oncoextra",
+    "cancerTypes": ["Advanced solid tumors"],
+    "cancerTypesCitations": "https://www.exactsciences.com/test/oncoextra",
+    "targetPopulation": "Patients with advanced solid tumors requiring comprehensive genomic and transcriptomic profiling",
+    "targetPopulationCitations": "https://www.exactsciences.com/test/oncoextra",
+    "fdaStatus": "CLIA LDT - not FDA approved",
+    "fdaStatusCitations": "https://www.exactsciences.com/test/oncoextra",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer", "Melanoma"],
+    "nccnGuidelinesNotes": "WES/WTS approach covers all biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.exactsciences.com/test/oncoextra",
+    "tat": "10-14 days",
+    "tatCitations": "https://www.exactsciences.com/test/oncoextra",
+    "sampleRequirements": "FFPE tissue; 10 unstained slides or tissue block",
+    "sampleRequirementsCitations": "https://www.exactsciences.com/test/oncoextra",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage; commercial coverage varies by payer.",
+    "reimbursementCitations": "https://www.exactsciences.com/test/oncoextra",
+    "clinicalAvailability": "Commercially available in US",
+    "clinicalAvailabilityCitations": "https://www.exactsciences.com/test/oncoextra",
+    "clinicalUtility": "Studies demonstrate increased matched therapy rates compared to single-gene testing.",
+    "clinicalUtilityCitations": "https://www.oncotarget.com/article/28285/text/ | https://pubmed.ncbi.nlm.nih.gov/37256839/"
+  },
+  {
+    "id": "cgp-12",
+    "name": "OmniSeq INSIGHT",
+    "vendor": "Labcorp Oncology (OmniSeq)",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP + Immune Profiling",
+    "method": "NGS panel covering full coding regions of 523 genes plus immune profiling including PD-L1 expression and immune signatures; detects SNVs, indels, CNAs, fusions, TMB, and MSI.",
+    "methodCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight | https://pmc.ncbi.nlm.nih.gov/articles/PMC8796288/",
+    "genesAnalyzed": 523,
+    "genesAnalyzedCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "geneListUrl": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI", "PD-L1", "Immune Signatures"],
+    "biomarkersReportedNotes": "Combined genomic and immune profiling in single test.",
+    "biomarkersReportedCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "targetPopulation": "Patients with solid tumors requiring comprehensive genomic and immune profiling",
+    "targetPopulationCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "fdaStatus": "CLIA LDT - not FDA approved",
+    "fdaStatusCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Prostate Cancer"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines plus immune profiling. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "tat": "10-14 days",
+    "tatCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "sampleRequirements": "FFPE tissue",
+    "sampleRequirementsCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare and commercial coverage; widely available via Labcorp network.",
+    "reimbursementCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight",
+    "clinicalAvailability": "Commercially available in US via Labcorp network",
+    "clinicalAvailabilityCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight"
+  },
+  {
+    "id": "cgp-13",
+    "name": "StrataNGS",
+    "vendor": "Strata Oncology",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Multiplex PCR/semiconductor sequencing panel targeting 429 genes; detects SNVs, indels, CNAs, select fusions, TMB, and MSI.",
+    "methodCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088 | https://pubmed.ncbi.nlm.nih.gov/34723565/",
+    "genesAnalyzed": 429,
+    "genesAnalyzedCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088",
+    "geneListUrl": "https://www.strataoncology.com/stratangs",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Select Fusions", "TMB", "MSI"],
+    "biomarkersReportedCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.strataoncology.com/stratangs",
+    "targetPopulation": "Patients with advanced solid tumors requiring genomic profiling",
+    "targetPopulationCitations": "https://www.strataoncology.com/stratangs",
+    "fdaStatus": "CLIA LDT - not FDA approved",
+    "fdaStatusCitations": "https://www.strataoncology.com/stratangs",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.strataoncology.com/stratangs",
+    "tat": "7-10 days",
+    "tatCitations": "https://www.strataoncology.com/stratangs",
+    "sampleRequirements": "FFPE tissue",
+    "sampleRequirementsCitations": "https://www.strataoncology.com/stratangs",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare-covered CGP; specific footprint in health-system networks.",
+    "reimbursementCitations": "https://www.strataoncology.com/stratangs",
+    "clinicalAvailability": "Commercially available in US",
+    "clinicalAvailabilityCitations": "https://www.strataoncology.com/stratangs",
+    "clinicalUtility": "Published data on access and outcomes in real-world settings.",
+    "clinicalUtilityCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088 | https://pubmed.ncbi.nlm.nih.gov/34723565/"
+  },
+  {
+    "id": "cgp-14",
+    "name": "MI Profile",
+    "vendor": "Caris Life Sciences",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue Multi-omic Profiling",
+    "method": "Comprehensive multi-omic profiling combining WES, WTS, and protein analysis (IHC/FISH) from FFPE tissue; reports DNA variants, RNA fusions, and protein expression.",
+    "methodCitations": "https://www.carislifesciences.com/physicians/profiling/ | https://www.carislifesciences.com/molecular-intelligence-platform/",
+    "genesAnalyzed": 22000,
+    "genesAnalyzedNotes": "WES/WTS interrogates ~22,000 genes; protein analysis adds expression-level biomarkers.",
+    "genesAnalyzedCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "geneListUrl": "https://www.carislifesciences.com/physicians/profiling/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI", "Protein Expression"],
+    "biomarkersReportedNotes": "Multi-omic approach combines genomic, transcriptomic, and proteomic data.",
+    "biomarkersReportedCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "targetPopulation": "Patients requiring comprehensive multi-omic tumor profiling",
+    "targetPopulationCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "fdaStatus": "CLIA LDT - MI Cancer Seek component FDA approved; full MI Profile is LDT",
+    "fdaStatusNotes": "MI Cancer Seek (WES+WTS component) received FDA approval Nov 2024; MI Profile as comprehensive service remains CLIA LDT.",
+    "fdaStatusCitations": "https://www.carislifesciences.com/physicians/profiling/ | https://www.carislifesciences.com/about/news-and-media/caris-life-sciences-receives-fda-approval-for-mi-cancer-seek/",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Prostate Cancer", "Ovarian Cancer", "Gastric Cancer"],
+    "nccnGuidelinesNotes": "Multi-omic approach covers biomarkers recommended by NCCN guidelines at DNA, RNA, and protein levels. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.carislifesciences.com/physicians/profiling/",
+    "tat": "10-14 days",
+    "tatCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "sampleRequirements": "FFPE tissue",
+    "sampleRequirementsCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Coverage varies by payer and specific tests ordered.",
+    "reimbursementCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "clinicalAvailability": "Commercially available in US",
+    "clinicalAvailabilityCitations": "https://www.carislifesciences.com/physicians/profiling/"
+  },
+  {
+    "id": "cgp-15",
+    "name": "TruSight Oncology Comprehensive",
+    "vendor": "Illumina",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP (IVD Kit)",
+    "method": "Hybrid-capture NGS IVD kit for use in local labs; targets 517 genes with DNA and RNA analysis; detects SNVs, indels, CNAs, fusions, splice variants, TMB, and MSI.",
+    "methodCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "genesAnalyzed": 517,
+    "genesAnalyzedCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "geneListUrl": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "Splice Variants", "TMB", "MSI"],
+    "biomarkersReportedCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "targetPopulation": "Patients with solid tumors; designed for health-system labs to run CGP locally",
+    "targetPopulationCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "fdaStatus": "FDA-approved IVD - Pan-tumor CDx approval 2024",
+    "fdaStatusNotes": "Recent FDA pan-tumor CDx approval enables local health-system labs to offer CGP without sending samples to reference labs.",
+    "fdaStatusCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html | https://www.onclive.com/view/fda-approves-illuminas-trusight-oncology-comprehensive-us-ivd-assay",
+    "fdaApprovalDate": "2024-05-01",
+    "fdaApprovalDateCitations": "https://www.onclive.com/view/fda-approves-illuminas-trusight-oncology-comprehensive-us-ivd-assay",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Covers biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "tat": "Variable",
+    "tatNotes": "TAT depends on local lab workflow; typically faster than send-out to reference labs.",
+    "tatCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "sampleRequirements": "FFPE tissue",
+    "sampleRequirementsCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Coverage expected to expand with pan-tumor CDx approval; varies by payer.",
+    "reimbursementCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html",
+    "clinicalAvailability": "Commercially available as IVD kit for local CAP/CLIA labs",
+    "clinicalAvailabilityNotes": "IVD kit model allows health systems to run CGP in-house on Illumina sequencers.",
+    "clinicalAvailabilityCitations": "https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html"
+  }
+];
+
 // Compressed test data for chatbot - keeps all fields but shortens keys and removes nulls/citations
 const compressTestForChat = (test) => {
   // Key mapping: long names → short names
@@ -2702,6 +3324,7 @@ const chatTestData = {
   MRD: mrdTestData.map(compressTestForChat),
   ECD: ecdTestData.map(compressTestForChat),
   TRM: trmTestData.map(compressTestForChat),
+  CGP: cgpTestData.map(compressTestForChat),
 };
 
 // Key legend for chatbot prompt
@@ -2757,6 +3380,14 @@ const filterConfigs = {
     approaches: ['Tumor-informed', 'Tumor-naïve', 'Tumor-agnostic'],
     reimbursements: ['Medicare', 'Commercial'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
+  },
+  CGP: {
+    // CGP priority: Sample type (tissue vs liquid), cancer types, FDA status, coverage
+    cancerTypes: [...new Set(cgpTestData.flatMap(t => t.cancerTypes || []))].sort(),
+    sampleCategories: [...new Set(cgpTestData.map(t => t.sampleCategory || 'Unknown'))].sort(),
+    approaches: [...new Set(cgpTestData.map(t => t.approach || 'Unknown'))].sort(),
+    fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
+    reimbursements: ['Medicare', 'Commercial'],
   }
 };
 
@@ -2841,6 +3472,23 @@ const comparisonParams = {
     { key: 'commercialPayersStr', label: 'Private Insurance' },
     { key: 'availableRegionsStr', label: 'Availability' },
   ],
+  CGP: [
+    { key: 'approach', label: 'Approach' },
+    { key: 'method', label: 'Method' },
+    { key: 'sampleCategory', label: 'Sample Type' },
+    { key: 'genesAnalyzed', label: 'Genes Analyzed' },
+    { key: 'biomarkersReportedStr', label: 'Biomarkers Reported' },
+    { key: 'cancerTypesStr', label: 'Target Cancers' },
+    { key: 'targetPopulation', label: 'Population' },
+    { key: 'fdaCompanionDxCount', label: 'FDA CDx Indications' },
+    { key: 'nccnRecommended', label: 'NCCN Recommended' },
+    { key: 'tat', label: 'Turnaround Time' },
+    { key: 'sampleRequirements', label: 'Sample Requirements' },
+    { key: 'numPublications', label: 'Publications' },
+    { key: 'fdaStatus', label: 'Regulatory' },
+    { key: 'reimbursement', label: 'Medicare' },
+    { key: 'listPrice', label: 'List Price (USD)' },
+  ],
 };
 
 // ============================================
@@ -2879,6 +3527,17 @@ const categoryMeta = {
     color: 'red',
     tests: trmTestData,
     sourceUrl: BUILD_INFO.sources.TRM,
+  },
+  CGP: {
+    title: 'Comprehensive Genomic Profiling',
+    shortTitle: 'Genomic Profiling',
+    description: 'Comprehensive Genomic Profiling (CGP) tests analyze hundreds of genes simultaneously to identify actionable genomic alterations that can guide targeted therapy selection. Using next-generation sequencing (NGS) on tumor tissue or blood samples (liquid biopsy), these tests detect mutations, copy number alterations, gene fusions, and biomarkers like TMB and MSI. Results help oncologists match patients to FDA-approved targeted therapies, immunotherapies, and clinical trials based on the molecular profile of their cancer.',
+    // Patient-friendly versions
+    patientTitle: 'Find My Best Treatment',
+    patientDescription: 'These tests analyze your tumor\'s genes to find specific treatments that may work best for your cancer. They can identify targeted therapies and clinical trials matched to your tumor.',
+    color: 'violet',
+    tests: cgpTestData,
+    sourceUrl: BUILD_INFO.sources.CGP || '',
   },
 };
 
@@ -3496,6 +4155,7 @@ const TestShowcase = ({ onNavigate }) => {
                           {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
                           {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
                           {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
+                          {category === 'CGP' && "This test analyzes your tumor's genes to find the best targeted treatments for your specific cancer."}
                         </p>
                         <div className="grid grid-cols-2 gap-2">
                           <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
@@ -4006,32 +4666,37 @@ const DatabaseSummary = () => {
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
   const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
   const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
+  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
   
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams);
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (cgpTestData.length * cgpParams);
   
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
     ...ecdTestData.map(t => t.vendor),
-    ...trmTestData.map(t => t.vendor)
+    ...trmTestData.map(t => t.vendor),
+    ...cgpTestData.map(t => t.vendor)
   ]);
   
   const fdaApprovedCount = [
     ...mrdTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
     ...ecdTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
-    ...trmTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved'))
+    ...trmTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
+    ...cgpTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved'))
   ].length;
 
   const medicareIndicationsCount = [
     ...mrdTestData,
     ...ecdTestData,
-    ...trmTestData
+    ...trmTestData,
+    ...cgpTestData
   ].filter(t => t.reimbursement?.toLowerCase().includes('medicare')).length;
 
   const allPrivateInsurers = new Set([
     ...mrdTestData.flatMap(t => t.commercialPayers || []),
     ...ecdTestData.flatMap(t => t.commercialPayers || []),
-    ...trmTestData.flatMap(t => t.commercialPayers || [])
+    ...trmTestData.flatMap(t => t.commercialPayers || []),
+    ...cgpTestData.flatMap(t => t.commercialPayers || [])
   ]);
 
   return (
@@ -4070,7 +4735,7 @@ const DatabaseSummary = () => {
       
       <div className="mt-6 pt-4 border-t border-slate-400/40">
         <h3 className="text-sm font-medium text-slate-600 mb-3">Coverage by Category</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-orange-500"></div>
             <div>
@@ -4090,6 +4755,13 @@ const DatabaseSummary = () => {
             <div>
               <p className="text-sm font-medium text-slate-800">TRM</p>
               <p className="text-xs text-slate-600">{trmTestData.length} tests • {trmParams} params</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-violet-500"></div>
+            <div>
+              <p className="text-sm font-medium text-slate-800">CGP</p>
+              <p className="text-xs text-slate-600">{cgpTestData.length} tests • {cgpParams} params</p>
             </div>
           </div>
         </div>
@@ -6085,6 +6757,9 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
           {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-emerald-600">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
+          {category === 'CGP' && test.genesAnalyzed && <div><p className="text-lg font-bold text-violet-600">{test.genesAnalyzed}</p><p className="text-xs text-gray-500">Genes</p></div>}
+          {category === 'CGP' && test.fdaCompanionDxCount && <div><p className="text-lg font-bold text-emerald-600">{test.fdaCompanionDxCount}</p><p className="text-xs text-gray-500">CDx</p></div>}
+          {category === 'CGP' && test.tat && <div><p className="text-lg font-bold text-slate-600">{test.tat}</p><p className="text-xs text-gray-500">TAT</p></div>}
         </div>
         
         {/* Cancer types */}
@@ -6388,6 +7063,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment. It can help your doctor know if treatment worked and watch for cancer coming back earlier than traditional scans."}
                   {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms. Finding cancer early often means better treatment options and outcomes."}
                   {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood over time, potentially detecting changes before imaging can."}
+                  {category === 'CGP' && "This test analyzes hundreds of genes in your tumor to find specific mutations that can be targeted with specialized treatments. It helps your doctor match you with the most effective therapies and clinical trials for your cancer."}
                 </p>
               </Section>
               
@@ -7089,7 +7765,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
   const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
 
-  const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600' };
+  const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600' };
 
   return (
     <>
@@ -7411,6 +8087,60 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                   )}
                 </>
               )}
+
+              {category === 'CGP' && (
+                <>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      {isPatient ? 'Sample Type' : 'Sample Category'}
+                    </label>
+                    {config.sampleCategories.map(s => <Checkbox key={s} label={s} checked={selectedSampleCategories.includes(s)} onChange={() => toggle(setSelectedSampleCategories)(s)} />)}
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      {isPatient ? 'My Cancer Type' : 'Cancer Type'}
+                    </label>
+                    <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </div>
+                  <div className="mb-5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      {isPatient ? 'My Insurance' : 'Coverage'}
+                    </label>
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                  </div>
+                  {!isPatient && (
+                    <>
+                      <div className="mb-5">
+                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
+                        {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
+                      </div>
+                      <div className="mb-5">
+                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">FDA Status</label>
+                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
+                      </div>
+                      <div className="mb-5">
+                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                          Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 1000 ? '1,000+' : minPublications}
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="1000"
+                          step="50"
+                          value={minPublications}
+                          onChange={updateSlider(setMinPublications)}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                          <span>0</span>
+                          <span>500</span>
+                          <span>1,000+</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
               </div>
               {canScrollMore && (
                 <div className="h-8 bg-gradient-to-t from-white via-white to-transparent flex-shrink-0 -mt-8 relative z-10 pointer-events-none flex items-end justify-center pb-1">
@@ -7518,7 +8248,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
+      case 'MRD': case 'ECD': case 'TRM': case 'CGP': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage />;
