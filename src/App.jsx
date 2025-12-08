@@ -13,6 +13,97 @@ const RECENTLY_ADDED_TESTS = [
 ];
 
 // ============================================
+// Lifecycle Navigator Constants
+// ============================================
+const LIFECYCLE_STAGES = [
+  { 
+    id: 'ECD', 
+    name: 'Early Cancer Detection',
+    acronym: 'ECD',
+    phase: 'Healthy / Screening',
+    color: 'emerald',
+    icon: '🔬',
+    gridPosition: 0,
+    arrowDirection: 'right',
+  },
+  { 
+    id: 'CGP', 
+    name: 'Comprehensive Genomic Profiling',
+    acronym: 'CGP',
+    phase: 'Newly Diagnosed',
+    color: 'violet',
+    icon: '🧬',
+    gridPosition: 1,
+    arrowDirection: 'down',
+  },
+  { 
+    id: 'TRM', 
+    name: 'Treatment Response Monitoring',
+    acronym: 'TRM',
+    phase: 'Active Treatment',
+    color: 'sky',
+    icon: '📊',
+    gridPosition: 3,
+    arrowDirection: 'left',
+  },
+  { 
+    id: 'MRD', 
+    name: 'Minimal Residual Disease',
+    acronym: 'MRD',
+    phase: 'Surveillance',
+    color: 'orange',
+    icon: '🎯',
+    gridPosition: 2,
+    arrowDirection: 'up',
+  },
+];
+
+const LIFECYCLE_STAGES_BY_GRID = [...LIFECYCLE_STAGES].sort((a, b) => a.gridPosition - b.gridPosition);
+
+const lifecycleColorClasses = {
+  emerald: {
+    bg: 'bg-emerald-500',
+    bgLight: 'bg-emerald-50',
+    bgMedium: 'bg-emerald-100',
+    border: 'border-emerald-200',
+    borderActive: 'border-emerald-500',
+    text: 'text-emerald-600',
+    textLight: 'text-emerald-400',
+    textDark: 'text-emerald-700',
+  },
+  violet: {
+    bg: 'bg-violet-500',
+    bgLight: 'bg-violet-50',
+    bgMedium: 'bg-violet-100',
+    border: 'border-violet-200',
+    borderActive: 'border-violet-500',
+    text: 'text-violet-600',
+    textLight: 'text-violet-400',
+    textDark: 'text-violet-700',
+  },
+  sky: {
+    bg: 'bg-sky-500',
+    bgLight: 'bg-sky-50',
+    bgMedium: 'bg-sky-100',
+    border: 'border-sky-200',
+    borderActive: 'border-sky-500',
+    text: 'text-sky-600',
+    textLight: 'text-sky-400',
+    textDark: 'text-sky-700',
+  },
+  orange: {
+    bg: 'bg-orange-500',
+    bgLight: 'bg-orange-50',
+    bgMedium: 'bg-orange-100',
+    border: 'border-orange-200',
+    borderActive: 'border-orange-500',
+    text: 'text-orange-600',
+    textLight: 'text-orange-400',
+    textDark: 'text-orange-700',
+  },
+};
+
+// ============================================
 // Markdown Renderer Component
 // ============================================
 const Markdown = ({ children, className = '' }) => {
@@ -156,6 +247,223 @@ const getStoredPersona = () => {
   } catch {
     return null;
   }
+};
+
+// ============================================
+// Lifecycle Navigator Components
+// ============================================
+
+// Get test counts dynamically - will be populated after test data is defined
+const getTestCount = (stageId) => {
+  switch(stageId) {
+    case 'ECD': return typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13;
+    case 'CGP': return 8; // Placeholder until CGP data exists
+    case 'TRM': return typeof trmTestData !== 'undefined' ? trmTestData.length : 9;
+    case 'MRD': return typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15;
+    default: return 0;
+  }
+};
+
+// Get sample tests for each stage
+const getSampleTests = (stageId) => {
+  switch(stageId) {
+    case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
+    case 'CGP': return ['FoundationOne Liquid CDx', 'Guardant360 CDx', 'Tempus xF', 'Caris Assure', 'Oncomine Dx'];
+    case 'TRM': return ['Guardant360 Response', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
+    case 'MRD': return ['Signatera', 'Guardant Reveal', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
+    default: return [];
+  }
+};
+
+// Arrow button component for lifecycle flow
+const LifecycleFlowArrow = ({ direction, isPulsing, color }) => {
+  const colors = lifecycleColorClasses[color];
+  
+  const positions = {
+    right: 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2',
+    down: 'bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2',
+    left: 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2',
+    up: 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2',
+  };
+  
+  const rotations = {
+    right: 'rotate-0',
+    down: 'rotate-90',
+    left: 'rotate-180',
+    up: '-rotate-90',
+  };
+  
+  return (
+    <div className={`absolute z-20 ${positions[direction]}`}>
+      <div className={`
+        w-7 h-7 rounded-full flex items-center justify-center transition-all duration-500
+        ${isPulsing 
+          ? `${colors.bg} shadow-lg scale-110` 
+          : `bg-white shadow-md border ${colors.border}`
+        }
+        ${rotations[direction]}
+      `}>
+        <svg 
+          className={`w-3.5 h-3.5 transition-colors duration-500 ${isPulsing ? 'text-white' : colors.textLight}`} 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+// Scrolling test names marquee
+const LifecycleScrollingTests = ({ tests, isHighlighted, color }) => {
+  const colors = lifecycleColorClasses[color];
+  const testString = tests.join('  •  ');
+  const scrollContent = `${testString}  •  ${testString}  •  `;
+  
+  return (
+    <div className={`mt-3 pt-2 border-t transition-colors duration-500 overflow-hidden ${
+      isHighlighted ? colors.borderActive : colors.border
+    }`}>
+      <div className="relative">
+        <div 
+          className={`flex whitespace-nowrap text-xs transition-colors duration-500 ${
+            isHighlighted ? 'text-gray-600' : 'text-gray-400'
+          }`}
+          style={{
+            animation: 'lifecycleScroll 20s linear infinite',
+          }}
+        >
+          <span className="pr-4">{scrollContent}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Individual lifecycle stage card
+const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testCount }) => {
+  const colors = lifecycleColorClasses[stage.color];
+  const sampleTests = getSampleTests(stage.id);
+  
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      className={`
+        relative p-5 rounded-xl text-left transition-all duration-500 h-full
+        ${isHighlighted 
+          ? `${colors.bgMedium} border-2 ${colors.borderActive} shadow-lg` 
+          : `${colors.bgLight} border ${colors.border}`
+        }
+      `}
+    >
+      <div className="flex items-center gap-4">
+        <div className={`
+          w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-500
+          ${isHighlighted 
+            ? `${colors.bg} text-white shadow-md` 
+            : `${colors.bgMedium} ${colors.text}`
+          }
+        `}>
+          <span className="text-2xl">{stage.icon}</span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className={`text-base font-bold leading-tight transition-colors duration-500 ${
+            isHighlighted ? colors.textDark : colors.text
+          }`}>
+            {stage.phase}: {stage.acronym}
+          </h3>
+          <p className={`text-sm font-semibold mt-1 transition-colors duration-500 ${
+            isHighlighted ? colors.textDark : colors.text
+          }`}>
+            {stage.name}
+          </p>
+          <p className={`text-sm font-semibold mt-1 transition-colors duration-500 ${
+            isHighlighted ? colors.text : colors.textLight
+          }`}>
+            Click to explore {testCount} tests →
+          </p>
+        </div>
+      </div>
+      
+      <LifecycleScrollingTests 
+        tests={sampleTests} 
+        isHighlighted={isHighlighted}
+        color={stage.color}
+      />
+      
+      <LifecycleFlowArrow 
+        direction={stage.arrowDirection} 
+        isPulsing={isHighlighted} 
+        color={stage.color}
+      />
+    </button>
+  );
+};
+
+// Main lifecycle navigator component
+const LifecycleNavigator = ({ onNavigate }) => {
+  const [pulseIndex, setPulseIndex] = useState(0);
+  const [hoveredStageId, setHoveredStageId] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
+  
+  // Get dynamic test counts
+  const testCounts = {
+    ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
+    CGP: 8,
+    TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 9,
+    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
+  };
+  
+  const highlightedStageId = isHovering && hoveredStageId ? hoveredStageId : LIFECYCLE_STAGES[pulseIndex].id;
+  
+  // Pulse animation - 3 seconds per stage
+  useEffect(() => {
+    if (isHovering) return;
+    
+    const interval = setInterval(() => {
+      setPulseIndex(prev => (prev + 1) % 4);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [isHovering]);
+  
+  const handleSelect = (stageId) => {
+    if (stageId === 'CGP') {
+      // CGP not yet implemented - could show a message or do nothing
+      return;
+    }
+    onNavigate(stageId);
+  };
+  
+  return (
+    <div 
+      className="relative"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => { setIsHovering(false); setHoveredStageId(null); }}
+    >
+      <style>{`
+        @keyframes lifecycleScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+      <div className="grid grid-cols-2 gap-6">
+        {LIFECYCLE_STAGES_BY_GRID.map((stage) => (
+          <LifecycleStageCard
+            key={stage.id}
+            stage={stage}
+            isHighlighted={highlightedStageId === stage.id}
+            onClick={() => handleSelect(stage.id)}
+            onMouseEnter={() => setHoveredStageId(stage.id)}
+            testCount={testCounts[stage.id]}
+          />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 // ============================================
@@ -3479,7 +3787,7 @@ Say "not specified" for missing data.`;
           {/* Container Header - different for patients */}
           <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
             <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
-              {persona === 'Patient' ? 'Ask about liquid biopsy tests for cancer treatment:' : 'Browse Liquid Biopsy Tests using our Navigator Tools:'}
+              {persona === 'Patient' ? 'Ask about liquid biopsy tests for cancer treatment:' : 'The Precision Oncology Cycle — Click on the test category you want to explore:'}
             </h2>
           </div>
           
@@ -3642,131 +3950,9 @@ Say "not specified" for missing data.`;
             </>
           ) : (
             <>
-              {/* Category Navigators */}
+              {/* Lifecycle Navigator */}
               <div className="p-4 lg:p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
-                  {/* MRD Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.orange.card}`}
-                    onClick={() => onNavigate('MRD')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.orange.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Minimal Residual Disease</h3>
-                          <p className="text-xs text-orange-600 font-medium">Click to explore {mrdTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
-                        <span className="text-lg font-bold text-orange-500">→</span>
-                      </div>
-                    </div>
-                    <div className="overflow-hidden">
-                      <div 
-                        className="flex whitespace-nowrap text-xs text-orange-600 font-medium"
-                        style={{ animation: 'tickerMRD 20s linear infinite' }}
-                      >
-                        <span className="inline-block">
-                          {mrdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                        <span className="inline-block">
-                          {mrdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* TRM Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.red.card}`}
-                    onClick={() => onNavigate('TRM')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.red.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Treatment Response Monitoring</h3>
-                          <p className="text-xs text-sky-600 font-medium">Click to explore {trmTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-sky-500">→</span>
-                      </div>
-                    </div>
-                    <div className="overflow-hidden">
-                      <div 
-                        className="flex whitespace-nowrap text-xs text-sky-600 font-medium"
-                        style={{ animation: 'tickerTRM 15s linear infinite' }}
-                      >
-                        <span className="inline-block">
-                          {trmTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                        <span className="inline-block">
-                          {trmTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* ECD Navigator */}
-                  <div
-                    className={`rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${colorClasses.green.card}`}
-                    onClick={() => onNavigate('ECD')}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClasses.green.btn} flex items-center justify-center text-white flex-shrink-0`}>
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm lg:text-base font-bold text-slate-800">Early Cancer Detection</h3>
-                          <p className="text-xs text-emerald-600 font-medium">Click to explore {ecdTestData.length} tests →</p>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-emerald-500">→</span>
-                      </div>
-                    </div>
-                    <div className="overflow-hidden">
-                      <div 
-                        className="flex whitespace-nowrap text-xs text-emerald-600 font-medium"
-                        style={{ animation: 'tickerECD 25s linear infinite' }}
-                      >
-                        <span className="inline-block">
-                          {ecdTestData.map((t, i) => <span key={i}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                        <span className="inline-block">
-                          {ecdTestData.map((t, i) => <span key={`dup-${i}`}>{t.name} &nbsp;•&nbsp; </span>)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <style>{`
-                  @keyframes tickerMRD {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                  }
-                  @keyframes tickerECD {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                  }
-                  @keyframes tickerTRM {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                  }
-                `}</style>
+                <LifecycleNavigator onNavigate={onNavigate} />
               </div>
               
               {/* Divider */}
