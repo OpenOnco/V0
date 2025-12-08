@@ -4153,7 +4153,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             Ask
           </button>
         </div>
-        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
       </div>
     </div>
   );
@@ -5086,7 +5086,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Ask
                   </button>
                 </form>
-                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
+                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
               </div>
               
               {/* Example Questions (show below input when no messages) */}
@@ -5196,7 +5196,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Ask
                   </button>
                 </form>
-                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
+                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
               </div>
               
               {/* Example Questions (show below input when no messages) */}
@@ -7197,7 +7197,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
           <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
         </div>
-        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate — verify with official sources.</p>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
       </div>
     </div>
   );
