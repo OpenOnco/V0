@@ -2,9 +2,18 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Analytics } from '@vercel/analytics/react';
 
-// Recently added tests - update this when adding new tests to the database
+// ============================================
+// RECENTLY ADDED TESTS - UPDATE ON EACH DEPLOY
+// ============================================
+// ⚠️ IMPORTANT: When adding new tests, add them here FIRST with current date
+// This powers the "Recently Added" section on the homepage
 // Format: { id, name, vendor, category, dateAdded }
+// Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
+  { id: 'mrd-17', name: 'Labcorp Plasma Detect', vendor: 'Labcorp', category: 'MRD', dateAdded: 'Dec 8, 2025' },
+  { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
+  { id: 'cgp-15', name: 'Neo Comprehensive', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'trm-9', name: 'MSK-ACCESS', vendor: 'SOPHiA GENETICS', category: 'TRM', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
@@ -1757,6 +1766,120 @@ const mrdTestData = [
       "upfrontValueUSD": 275000000,
       "earnoutPotentialUSD": 175000000
     }
+  },
+  {
+    "id": "mrd-16",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Invitae PCM",
+    "vendor": "Labcorp (Invitae)",
+    "approach": "Tumor-informed",
+    "method": "Tumor-informed, whole-exome sequencing-based MRD assay: WES of tumor and matched normal identifies 18-50 patient-specific variants, which are tracked at high depth in plasma using Anchored Multiplex PCR (AMP) chemistry with error correction.",
+    "cancerTypes": [
+      "NSCLC",
+      "Breast",
+      "Colorectal",
+      "Pancreatic",
+      "Head and neck",
+      "Multi-solid"
+    ],
+    "indicationsNotes": "Invitae Personalized Cancer Monitoring (PCM) pan-cancer tumor-informed MRD assay, now part of Labcorp following Aug 2024 acquisition. Co-developed with TRACERx consortium. FDA Breakthrough Device designation. Not indicated for hematological malignancies, CNS malignancies, or sarcomas.",
+    "sensitivity": 76.9,
+    "sensitivityCitations": "Garcia-Murillas I et al. Breast Cancer Res 2025; TRACERx lung cancer studies.",
+    "sensitivityNotes": "76.9% clinical sensitivity in breast cancer monitoring phase for patients who relapsed. TRACERx NSCLC showed 93% (13/14) prediction of relapse post-resection.",
+    "specificity": 100,
+    "specificityCitations": "Garcia-Murillas I et al. Breast Cancer Res 2025.",
+    "specificityNotes": "100% specificity in breast cancer monitoring cohort (n=61). No false positives reported.",
+    "lod": "80 ppm",
+    "lod95": null,
+    "lodCitations": "Invitae PCM analytical validation; GenomeWeb Sept 2023.",
+    "lodNotes": "LOD of 0.008% VAF (80 ppm) with 60ng cfDNA input and 18-50 variants at baseline threshold. LOD of 0.05% VAF (500 ppm) with 10ng cfDNA and 18 variants at monitoring threshold.",
+    "leadTimeVsImaging": 351,
+    "leadTimeVsImagingCitations": "Garcia-Murillas I et al. Breast Cancer Res 2025.",
+    "leadTimeVsImagingNotes": "Median lead time 11.7 months (351 days) before clinical relapse in breast cancer. TRACERx NSCLC showed median 70 days, up to 136 days in follow-up cohort.",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires FFPE tumor tissue plus matched-normal blood for baseline WES panel design.",
+    "requiresMatchedNormal": "Yes",
+    "variantsTracked": "18-50",
+    "variantsTrackedNotes": "Invitae algorithm selects 18-50 tumor-specific variants from WES results. Range allows balance of sensitivity in low vs high mutational burden cancers.",
+    "initialTat": 21,
+    "initialTatNotes": "Approximately 3 weeks for baseline panel design from tumor/normal WES.",
+    "followUpTat": 10,
+    "followUpTatNotes": "Monitoring timepoints typically reported within 10 days.",
+    "bloodVolume": 20,
+    "bloodVolumeNotes": "Standard collection: two 10mL Streck cfDNA tubes (20mL total).",
+    "fdaStatus": "CLIA LDT; FDA Breakthrough Device designation",
+    "fdaStatusCitations": "Invitae/Labcorp website; FDA BDD program.",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "Under Novitas MAC jurisdiction (not MolDX/Palmetto). Labcorp pursuing coverage pathways post-acquisition.",
+    "cptCodes": null,
+    "clinicalAvailability": "Clinical LDT – shipping (Metro Park, NJ laboratory)",
+    "clinicalTrials": "TRACERx (NSCLC, ~850 pts); MARIA (pan-tumor); ARTEMIS (pancreatic); multiple breast and GI studies",
+    "clinicalTrialsCitations": "Invitae/Labcorp press releases; ClinicalTrials.gov",
+    "totalParticipants": 1000,
+    "totalParticipantsNotes": "TRACERx alone enrolled ~850 pts; additional studies in breast, pancreatic, colorectal.",
+    "numPublications": 15,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "TRACERx consortium publications; Garcia-Murillas et al.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "CAP-accredited, CLIA-certified laboratory (Metro Park, NJ). Acquired by Labcorp Aug 2024 via Invitae bankruptcy sale ($239M)."
+  },
+  {
+    "id": "mrd-17",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Labcorp Plasma Detect",
+    "vendor": "Labcorp",
+    "approach": "Tumor-informed",
+    "method": "Tumor-informed, whole-genome sequencing-based MRD assay: WGS of tumor and matched-normal (buffy coat) identifies thousands of patient-specific somatic variants. Proprietary machine learning algorithm tracks these variants in plasma cfDNA without need for bespoke panel manufacturing.",
+    "cancerTypes": [
+      "Colon cancer (Stage III)",
+      "Lung cancer (in validation)",
+      "Bladder cancer (in validation)",
+      "Multi-solid (expanding)"
+    ],
+    "indicationsNotes": "Labcorp Plasma Detect WGS-based MRD assay. First tumor-informed MRD solution from Labcorp (distinct from Invitae PCM). Clinically validated for stage III colon cancer; clinical use launched April 2025 via Early Experience Program. Expanding to additional solid tumors.",
+    "sensitivity": null,
+    "sensitivityCitations": "Labcorp press releases; Nature Medicine 2025; Clinical Cancer Research 2025.",
+    "sensitivityNotes": "High sensitivity demonstrated in validation studies; specific values pending publication from PROVENC3 and MEDOCC-CrEATE trials.",
+    "specificity": null,
+    "specificityCitations": "Labcorp press releases.",
+    "specificityNotes": "High specificity with WGS-based approach tracking thousands of variants. Specific values pending publication.",
+    "lod": "10 ppm",
+    "lod95": "10 ppm",
+    "lodCitations": "Labcorp Plasma Detect product page.",
+    "lodNotes": "LOD95 of 0.001% (10 ppm). WGS approach tracks thousands of tumor-specific variants (vs 18-50 for WES-based approaches), enabling improved sensitivity at low ctDNA levels.",
+    "leadTimeVsImaging": null,
+    "leadTimeVsImagingCitations": "Labcorp press releases Nov 2025.",
+    "leadTimeVsImagingNotes": "Detects disease progression up to 18 months earlier than standard clinical measures (median 2.3 months lead time in chemotherapy monitoring study).",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires tumor tissue for WGS plus buffy coat for germline/CHIP filtering.",
+    "requiresMatchedNormal": "Yes",
+    "requiresMatchedNormalNotes": "Buffy coat sequencing enables robust CHIP variant filtering.",
+    "variantsTracked": "Thousands",
+    "variantsTrackedNotes": "WGS identifies thousands of high-confidence, patient-specific somatic variants. No bespoke panel manufacturing required.",
+    "initialTat": 14,
+    "initialTatNotes": "Landmark timepoint results in as few as 14 days. Standardized WGS workflow eliminates custom reagent delays.",
+    "followUpTat": 7,
+    "followUpTatNotes": "Longitudinal monitoring timepoints in as few as 7 days.",
+    "bloodVolume": null,
+    "bloodVolumeNotes": "Standard blood collection; specific volume not publicly disclosed.",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusCitations": "Labcorp press release April 2025.",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "Clinical use launched April 2025 for stage III colon cancer via Early Experience Program. Reimbursement pathways in development.",
+    "cptCodes": null,
+    "clinicalAvailability": "Clinical LDT – Early Experience Program (stage III colon cancer); Research Use for other indications",
+    "clinicalTrials": "PROVENC3 (colon cancer validation with NKI); MEDOCC-CrEATE (stage II colon ACT); 10+ additional clinical studies in US and internationally",
+    "clinicalTrialsCitations": "Labcorp press releases; Nature Medicine 2025; Clinical Cancer Research 2025.",
+    "totalParticipants": null,
+    "totalParticipantsNotes": "Currently evaluated in 10+ clinical studies across multiple cancer types.",
+    "numPublications": 2,
+    "numPublicationsCitations": "Nature Medicine 2025 (mesothelioma); Clinical Cancer Research 2025 (head and neck).",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "Developed under PGDx quality management system and design control. Clinical use for stage III colon cancer; research use for other solid tumors. Expanding indications expected."
   }
 ];
 
@@ -2696,6 +2819,55 @@ const trmTestData = [
     "isClinicalLDT": false,
     "technologyDifferentiator": "Decentralized version of MSK's clinically-validated liquid biopsy assay. Matched tumor-normal design with buffy coat sequencing distinguishes somatic from germline variants and filters CHIP. Ultra-deep ~20,000x coverage enables 0.5% VAF detection. SOPHiA DDM platform enables global laboratory deployment without centralized reference lab requirement.",
     "regulatoryStatusNotes": "RUO status. The original centralized MSK-ACCESS is NY State approved and CLIA-certified at MSK. Decentralized SOPHiA version enables the same validated workflow to be performed at partner laboratories globally. Quest Diagnostics partnership announced for US market."
+  },
+  {
+    "id": "trm-10",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Guardant360 Response",
+    "vendor": "Guardant Health",
+    "approach": "Tumor-agnostic",
+    "method": "Tissue-free liquid biopsy tracking changes in ctDNA levels over time to assess treatment response. Uses the same 74-gene Guardant360 platform to measure molecular response by quantifying ctDNA changes from baseline. Molecular response defined as ≥50% decrease in ctDNA levels.",
+    "cancerTypes": [
+      "Pan-cancer: advanced solid tumors (NSCLC, breast, colorectal, gastric, bladder, and others)"
+    ],
+    "targetPopulation": "Patients with advanced solid tumors receiving immunotherapy or targeted therapy who need early assessment of treatment response",
+    "responseDefinition": "Molecular response = ≥50% decrease in ctDNA levels from baseline. Molecular non-response = <50% decrease or increase in ctDNA. ctDNA changes measured via somatic mutation tracking across 74 genes.",
+    "sensitivity": null,
+    "sensitivityNotes": "Not applicable - response monitoring test measures relative ctDNA changes, not absolute detection.",
+    "specificity": null,
+    "specificityNotes": "Not applicable for response monitoring application.",
+    "lod": null,
+    "lodNotes": "Uses Guardant360 platform with established analytical performance. Response assessment based on relative ctDNA changes rather than absolute detection limits.",
+    "leadTimeVsImaging": 56,
+    "leadTimeVsImagingCitations": "Raja R et al. Clin Cancer Res 2018; Aggarwal C et al. JCO 2019; multiple immunotherapy and targeted therapy studies.",
+    "leadTimeVsImagingNotes": "Predicts treatment response approximately 8 weeks (56 days) earlier than standard RECIST imaging across cancers and therapies. Molecular responders show significantly longer PFS than non-responders.",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusCitations": "Guardant Health website; Guardant360 Response product page.",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "Guardant360 (for initial profiling) has broad Medicare and commercial coverage. Response monitoring reimbursement pathways developing; local coverage determination expected.",
+    "listPrice": 5000,
+    "listPriceNotes": "Cash pay rate for Guardant360 Response is $5,000. Financial assistance available based on medical and financial need.",
+    "listPriceCitations": "Guardant Health website.",
+    "tat": "14 days",
+    "tatNotes": "Results typically within 2 weeks. Used in conjunction with Guardant360 CDx for baseline profiling.",
+    "clinicalAvailability": "Clinical LDT – commercially available",
+    "clinicalAvailabilityNotes": "Launched June 2021. Part of Guardant Complete portfolio alongside Guardant360 CDx, Guardant360 Tissue, and Guardant Reveal.",
+    "clinicalTrials": "50+ studies demonstrating molecular response predicts PFS across immunotherapy and targeted therapy",
+    "clinicalTrialsCitations": "Raja R et al. Clin Cancer Res 2018; Aggarwal C et al. JCO 2019; Kim ST et al. Nat Med 2018; Shaw AT et al. J Thorac Oncol 2021.",
+    "totalParticipants": 5000,
+    "totalParticipantsNotes": "Combined enrollment across 50+ clinical studies validating ctDNA response monitoring.",
+    "numPublications": 50,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "Guardant Health website; multiple peer-reviewed publications.",
+    "bloodVolume": 20,
+    "bloodVolumeNotes": "Two 10mL Streck cfDNA tubes (same collection as Guardant360).",
+    "variantsTracked": "74 genes",
+    "variantsTrackedNotes": "Same 74-gene panel as Guardant360. Tracks all detected variants to quantify overall ctDNA burden changes.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "technologyDifferentiator": "First tissue-free liquid biopsy specifically for treatment response monitoring. Complements Guardant360 CDx for treatment selection by providing ongoing response assessment. Serial testing enables early detection of molecular progression before radiographic changes.",
+    "regulatoryStatusNotes": "CLIA-certified LDT performed at Guardant Health Clinical Laboratory (Redwood City, CA). Not FDA cleared/approved. Part of Guardant's oncology portfolio alongside FDA-approved Guardant360 CDx."
   }
 ];
 
@@ -3246,6 +3418,47 @@ const cgpTestData = [
     "reimbursementCitations": "https://www.carislifesciences.com/physicians/profiling/",
     "clinicalAvailability": "Commercially available in US",
     "clinicalAvailabilityCitations": "https://www.carislifesciences.com/physicians/profiling/"
+  },
+  {
+    "id": "cgp-15",
+    "name": "Neo Comprehensive",
+    "vendor": "NeoGenomics",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Comprehensive genomic profiling using DNA and RNA NGS; detects SNVs, indels, CNVs, fusions, splice variants, MSI, and TMB across 517 genes from FFPE tissue samples.",
+    "methodCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/235/neogenomics-expands-ngs-portfolio-with-launch-of-neo | https://www.neogenomics.com/test-menu",
+    "genesAnalyzed": 517,
+    "genesAnalyzedNotes": "517 genes analyzed via both DNA and RNA NGS methods.",
+    "genesAnalyzedCitations": "NeoGenomics press release March 2023; NeoGenomics test menu.",
+    "geneListUrl": "https://www.neogenomics.com/test-menu",
+    "biomarkersReported": ["SNVs", "Indels", "CNVs", "Fusions", "Splice variants", "TMB", "MSI"],
+    "biomarkersReportedNotes": "Comprehensive biomarker detection including both DNA alterations and RNA fusions/splice variants.",
+    "biomarkersReportedCitations": "NeoGenomics press release March 2023.",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.neogenomics.com/test-menu",
+    "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling for diagnosis, therapy selection, prognosis, and clinical trial eligibility",
+    "targetPopulationCitations": "NeoGenomics test menu; press releases.",
+    "fdaStatus": "CLIA LDT - NOT FDA approved",
+    "fdaStatusNotes": "CLIA-certified and CAP-accredited laboratory-developed test. New York State approved (Jan 2024).",
+    "fdaStatusCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/276/neogenomics-receives-new-york-state-approval-for-neo",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Pan-cancer CGP aligns with NCCN guidelines for solid tumor biomarker testing. NCCN recommends testing specific genes/biomarkers but does not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1",
+    "tat": "7-10 days",
+    "tatNotes": "Improved turnaround time compared to previous NeoGenomics panels. Streamlined workflow.",
+    "tatCitations": "NeoGenomics press release March 2023.",
+    "sampleRequirements": "FFPE tissue (decreased specimen requirements vs previous panels)",
+    "sampleRequirementsCitations": "NeoGenomics press release March 2023.",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Coverage varies by payer. Medicare coverage for CGP in advanced solid tumors. Commercial coverage varies.",
+    "reimbursementCitations": "NeoGenomics website.",
+    "clinicalAvailability": "Commercially available in US (including NY State)",
+    "clinicalAvailabilityCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/276/neogenomics-receives-new-york-state-approval-for-neo",
+    "numPublications": null,
+    "numPublicationsNotes": "Platform launched March 2023; publication record building.",
+    "regulatoryStatusNotes": "CAP-accredited and CLIA-certified laboratories in Fort Myers and Tampa, FL; Aliso Viejo and San Diego, CA; Research Triangle Park, NC; and Houston, TX. New York State approved January 2024."
   }
 ];
 
@@ -3844,6 +4057,7 @@ Say "not specified" for missing data.`;
 const TestShowcase = ({ onNavigate }) => {
   const [paramIndices, setParamIndices] = useState({});
   const [selectedTest, setSelectedTest] = useState(null);
+  const [sortBy, setSortBy] = useState('vendor');
   
   // Track persona
   const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
@@ -3855,13 +4069,80 @@ const TestShowcase = ({ onNavigate }) => {
   
   const isPatient = persona === 'Patient';
 
-  // Combine all tests with their category and sort by vendor alphabetically
-  const allTests = [
+  // Combine all tests with their category
+  const baseTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
     ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
     ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' }))
-  ].sort((a, b) => a.vendor.localeCompare(b.vendor));
+  ];
+
+  // Helper to count reimbursement entities
+  const countReimbursement = (test) => {
+    let count = 0;
+    if (test.reimbursement) {
+      const reimb = test.reimbursement.toLowerCase();
+      if (reimb.includes('medicare') && !reimb.includes('not yet') && !reimb.includes('no established')) {
+        count += 1;
+      }
+    }
+    if (test.commercialPayers && test.commercialPayers.length > 0) {
+      count += test.commercialPayers.length;
+    }
+    return count;
+  };
+
+  // Helper to calculate transparency score (same as DatabaseSummary)
+  const calcTransparency = (test) => {
+    const hasValue = (val) => val != null && val !== '' && val !== 'N/A';
+    let score = 0;
+    if (hasValue(test.listPrice)) score += 30;
+    if (hasValue(test.sensitivity)) score += 15;
+    if (hasValue(test.specificity)) score += 15;
+    if (test.numPublications != null && test.numPublications > 0) score += 15;
+    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
+    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
+    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
+    return score;
+  };
+
+  // Count tests per vendor
+  const vendorTestCounts = useMemo(() => {
+    const counts = {};
+    baseTests.forEach(t => {
+      counts[t.vendor] = (counts[t.vendor] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
+  // Get TAT value for sorting
+  const getTat = (test) => {
+    const tat = test.tat || test.initialTat || test.followUpTat;
+    if (tat == null) return 999; // No TAT = sort to end
+    const days = typeof tat === 'number' ? tat : parseInt(tat);
+    return isNaN(days) ? 999 : days;
+  };
+
+  // Sort tests based on selected option
+  const allTests = useMemo(() => {
+    const sorted = [...baseTests];
+    switch (sortBy) {
+      case 'category':
+        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'CGP': 3 };
+        return sorted.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category] || a.vendor.localeCompare(b.vendor));
+      case 'tat':
+        return sorted.sort((a, b) => getTat(a) - getTat(b));
+      case 'reimbursement':
+        return sorted.sort((a, b) => countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
+      case 'vendorTests':
+        return sorted.sort((a, b) => vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
+      case 'transparency':
+        return sorted.sort((a, b) => calcTransparency(b) - calcTransparency(a) || a.vendor.localeCompare(b.vendor));
+      case 'vendor':
+      default:
+        return sorted.sort((a, b) => a.vendor.localeCompare(b.vendor));
+    }
+  }, [sortBy, vendorTestCounts]);
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
@@ -4023,9 +4304,23 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-      <h3 className="text-lg font-bold text-slate-800 text-center mb-1">
-        The {allTests.length} Tests We Track
-      </h3>
+      <div className="flex items-center justify-between mb-1">
+        <h3 className="text-lg font-bold text-slate-800">
+          The {allTests.length} Tests We Track
+        </h3>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
+        >
+          <option value="vendor">By Vendor</option>
+          <option value="category">By Category</option>
+          <option value="tat">By TAT (fastest)</option>
+          <option value="reimbursement">By Coverage</option>
+          <option value="vendorTests">By # Tests</option>
+          <option value="transparency">By Transparency</option>
+        </select>
+      </div>
       {isPatient && (
         <p className="text-xs text-slate-500 text-center mb-3">
           Showing coverage, pricing & wait times
