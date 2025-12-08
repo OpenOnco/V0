@@ -4833,16 +4833,16 @@ const DatabaseSummary = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3 pt-3 border-t border-amber-200 flex items-center justify-between">
-            <p className="text-[11px] text-amber-600">
+          <div className="mt-3 pt-3 border-t border-amber-200 flex items-center justify-between gap-4">
+            <p className="text-[11px] text-amber-600 flex-1">
               Score based on disclosure of pricing, performance, evidence & sample info. Field average across {qualifyingVendors.length} vendors with 2+ tests.
             </p>
             <button 
               onClick={() => setShowFAQ(!showFAQ)}
-              className="text-[11px] text-amber-700 hover:text-amber-900 font-medium flex items-center gap-1 flex-shrink-0 ml-2"
+              className="text-xs text-amber-700 hover:text-amber-900 font-semibold flex items-center gap-1.5 flex-shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors"
             >
-              How is this calculated?
-              <svg className={`w-3 h-3 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {showFAQ ? 'Hide details' : 'How is this calculated?'}
+              <svg className={`w-4 h-4 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
@@ -5187,6 +5187,68 @@ const FAQPage = () => {
         <p>
           The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry—whether it's suggesting a new test, requesting data corrections, or providing general feedback. We review all submissions and will respond if needed.
         </p>
+      )
+    },
+    {
+      question: "What is the OpenOnco Transparency Award?",
+      answer: (
+        <div className="space-y-4">
+          <p>
+            The OpenOnco Transparency Score measures how completely vendors disclose key information about their tests. 
+            It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
+            patients and clinicians make informed decisions.
+          </p>
+          
+          <p className="font-medium text-gray-800">How is it calculated?</p>
+          <p>Each test is scored based on disclosure of key fields (weights sum to 100):</p>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700 border-b">Field</th>
+                  <th className="text-center py-2 px-3 font-semibold text-gray-700 border-b">Weight</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700 border-b">Rationale</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600">
+                <tr className="border-b"><td className="py-2 px-3 font-medium">Price</td><td className="text-center py-2 px-3 font-bold text-amber-600">30%</td><td className="py-2 px-3">Hardest to find, gold standard of transparency</td></tr>
+                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sensitivity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
+                <tr className="border-b"><td className="py-2 px-3 font-medium">Specificity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
+                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Publications</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Peer-reviewed evidence base</td></tr>
+                <tr className="border-b"><td className="py-2 px-3 font-medium">Turnaround Time</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Practical info for clinicians</td></tr>
+                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sample Info</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Blood volume, sample type, or category</td></tr>
+                <tr><td className="py-2 px-3 font-medium">Trial Participants</td><td className="text-center py-2 px-3 font-bold text-amber-600">5%</td><td className="py-2 px-3">Clinical evidence depth</td></tr>
+              </tbody>
+              <tfoot>
+                <tr className="bg-amber-50 border-t-2 border-amber-200"><td className="py-2 px-3 font-bold">Total</td><td className="text-center py-2 px-3 font-bold text-amber-700">100%</td><td className="py-2 px-3"></td></tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          <p className="font-medium text-gray-800 mt-4">Who is eligible?</p>
+          <p>
+            Vendors must have <strong>2 or more tests</strong> in the OpenOnco database to qualify. The vendor's 
+            score is the <strong>average</strong> across all their tests. This prevents a single well-documented 
+            test from winning while encouraging comprehensive disclosure across product portfolios.
+          </p>
+          
+          <p className="font-medium text-gray-800 mt-4">Why these weights?</p>
+          <p>
+            <strong>Price (30%)</strong> is weighted highest because it's the most commonly withheld information 
+            and critically important for patients and healthcare systems. <strong>Performance metrics (30% combined)</strong> are 
+            essential for clinical decision-making. <strong>Publications (15%)</strong> demonstrate commitment to 
+            independent validation. Practical details like <strong>TAT and sample requirements (20% combined)</strong> help 
+            with care coordination.
+          </p>
+          
+          <p className="font-medium text-gray-800 mt-4">How can vendors improve their score?</p>
+          <p>
+            Publish your list price, disclose sensitivity and specificity from validation studies, maintain an 
+            active publication record, and provide clear sample requirements. Vendors can submit updated information 
+            through our Submissions page.
+          </p>
+        </div>
       )
     }
   ];
