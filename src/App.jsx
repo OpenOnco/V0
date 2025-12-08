@@ -6750,10 +6750,10 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
-          {test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
-          {test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
+          {category !== 'CGP' && test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
+          {category !== 'CGP' && test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
           {/* LOD display - show both LOD and LOD95 when available */}
-          {(test.lod != null || test.lod95 != null) && (
+          {category !== 'CGP' && (test.lod != null || test.lod95 != null) && (
             <div>
               {test.lod != null && test.lod95 != null ? (
                 // Both values available - show stacked with monitoring indicator
