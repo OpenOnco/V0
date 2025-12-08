@@ -4218,6 +4218,7 @@ const TestShowcase = ({ onNavigate }) => {
   const [paramIndices, setParamIndices] = useState({});
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Track persona
   const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
@@ -4335,6 +4336,17 @@ const TestShowcase = ({ onNavigate }) => {
         return sorted.sort((a, b) => a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores]);
+
+  // Filter tests based on search query
+  const filteredTests = useMemo(() => {
+    if (!searchQuery.trim()) return allTests;
+    const query = searchQuery.toLowerCase().trim();
+    return allTests.filter(test => 
+      test.name.toLowerCase().includes(query) ||
+      test.vendor.toLowerCase().includes(query) ||
+      test.category.toLowerCase().includes(query)
+    );
+  }, [allTests, searchQuery]);
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
@@ -4469,7 +4481,7 @@ const TestShowcase = ({ onNavigate }) => {
     const interval = setInterval(() => {
       setParamIndices(prev => {
         const next = { ...prev };
-        allTests.forEach(test => {
+        filteredTests.forEach(test => {
           const params = isPatient ? getPatientParams(test) : getParams(test);
           const currentIdx = prev[test.id] || 0;
           next[test.id] = (currentIdx + 1) % params.length;
@@ -4479,7 +4491,7 @@ const TestShowcase = ({ onNavigate }) => {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isPatient]);
+  }, [isPatient, filteredTests]);
   
   // Reset indices when persona changes
   useEffect(() => {
@@ -4496,7 +4508,7 @@ const TestShowcase = ({ onNavigate }) => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-      <div className="flex items-center justify-between mb-1">
+      <div className="flex items-center justify-between mb-2">
         <h3 className="text-lg font-bold text-slate-800">
           The {allTests.length} Tests We Track
         </h3>
@@ -4513,15 +4525,46 @@ const TestShowcase = ({ onNavigate }) => {
           <option value="openness">By Openness</option>
         </select>
       </div>
+      
+      {/* Search Bar */}
+      <div className="relative mb-3">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search tests or vendors..."
+          className="w-full px-3 py-2 pl-8 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+        />
+        <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+      
+      {/* Search results count */}
+      {searchQuery && (
+        <p className="text-xs text-slate-500 mb-2">
+          {filteredTests.length === 0 ? 'No tests found' : `Showing ${filteredTests.length} of ${allTests.length} tests`}
+        </p>
+      )}
       {isPatient && (
         <p className="text-xs text-slate-500 text-center mb-3">
           Showing coverage, pricing & wait times
         </p>
       )}
-      {!isPatient && <div className="mb-3" />}
+      {!isPatient && !searchQuery && <div className="mb-3" />}
       
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-        {allTests.map(test => {
+        {filteredTests.map(test => {
           const params = isPatient ? getPatientParams(test) : getParams(test);
           const currentIdx = paramIndices[test.id] || 0;
           const currentParam = params[currentIdx];
