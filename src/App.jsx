@@ -268,7 +268,7 @@ const getTestCount = (stageId) => {
 const getSampleTests = (stageId) => {
   switch(stageId) {
     case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
-    case 'CGP': return ['FoundationOne Liquid CDx', 'Guardant360 CDx', 'Tempus xF', 'Caris Assure', 'Oncomine Dx'];
+    case 'CGP': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'TruSight Oncology Comprehensive'];
     case 'TRM': return ['Guardant360 Response', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
     case 'MRD': return ['Signatera', 'Guardant Reveal', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
     default: return [];
@@ -346,7 +346,6 @@ const LifecycleScrollingTests = ({ tests, isHighlighted, color }) => {
 const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testCount }) => {
   const colors = lifecycleColorClasses[stage.color];
   const sampleTests = getSampleTests(stage.id);
-  const isUnderConstruction = stage.id === 'CGP';
   
   return (
     <button
@@ -354,7 +353,6 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
       onMouseEnter={onMouseEnter}
       className={`
         relative p-5 rounded-xl text-left transition-all duration-500 h-full
-        ${isUnderConstruction ? 'cursor-default' : ''}
         ${isHighlighted 
           ? `${colors.bgMedium} border-2 ${colors.borderActive} shadow-lg` 
           : `${colors.bgLight} border ${colors.border}`
@@ -383,11 +381,9 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
             {stage.name}
           </p>
           <p className={`text-sm font-semibold mt-1 transition-colors duration-500 ${
-            isUnderConstruction 
-              ? 'text-gray-400 italic' 
-              : isHighlighted ? colors.text : colors.textLight
+            isHighlighted ? colors.text : colors.textLight
           }`}>
-            {isUnderConstruction ? '🚧 Under Construction' : `Click to explore ${testCount} tests →`}
+            {`Click to explore ${testCount} tests →`}
           </p>
         </div>
       </div>
@@ -481,7 +477,8 @@ const NewsFeed = ({ onNavigate }) => {
   const categoryColors = {
     MRD: 'bg-orange-500',
     ECD: 'bg-emerald-500',
-    TRM: 'bg-sky-500'
+    TRM: 'bg-sky-500',
+    CGP: 'bg-violet-500'
   };
 
   // Handle click on recently added test
@@ -2950,6 +2947,11 @@ const cgpTestData = [
     "targetPopulationCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
     "fdaStatus": "CLIA LDT - not FDA approved",
     "fdaStatusCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Expanded 523-gene panel covers all biomarkers recommended by NCCN guidelines for major solid tumors. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://www.tempus.com/oncology/genomic-profiling/xf/",
     "tat": "7-10 days",
     "tatCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/",
     "sampleRequirements": "Blood in Streck cfDNA BCT tubes",
@@ -3679,7 +3681,7 @@ const Footer = () => (
 // Unified Chat Component (All Categories)
 // ============================================
 const UnifiedChat = ({ isFloating = false, onClose = null }) => {
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length;
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -3889,7 +3891,8 @@ const TestShowcase = ({ onNavigate }) => {
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'red' }))
+    ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' }))
   ].sort((a, b) => a.vendor.localeCompare(b.vendor));
 
   // Get patient-friendly parameters
@@ -4242,7 +4245,8 @@ const StatOfTheDay = ({ onNavigate }) => {
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', numIndications: t.cancerTypes?.length || 0 })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', numIndications: t.cancerTypes?.length || 0 })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM', numIndications: t.cancerTypes?.length || 0 }))
+    ...trmTestData.map(t => ({ ...t, category: 'TRM', numIndications: t.cancerTypes?.length || 0 })),
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP', numIndications: t.cancerTypes?.length || 0 }))
   ];
   
   // Get today's stat based on day of week
@@ -4271,7 +4275,8 @@ const StatOfTheDay = ({ onNavigate }) => {
   const categoryColors = {
     MRD: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
     ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
-    TRM: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' }
+    TRM: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' },
+    CGP: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
   };
 
   if (!todayStat || testsWithStat.length === 0) return null;
@@ -4425,7 +4430,7 @@ Say "not specified" for missing data.`;
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
-          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and monitor response - but the options are overwhelming.<span className="block mt-2"><strong>OpenOnco</strong> is a non-profit navigator helping patients and clinicians find the right test.</span></p>
+          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and monitor response - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit navigator helping patients and clinicians find the right test.</p>
           
           {/* Persona Selector */}
           <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -4877,6 +4882,7 @@ const SubmissionsPage = () => {
     MRD: mrdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     ECD: ecdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     TRM: trmTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    CGP: cgpTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
   };
 
   // Parameters available for correction by category
@@ -4932,12 +4938,24 @@ const SubmissionsPage = () => {
       { key: 'numPublications', label: 'Number of Publications' },
       { key: 'other', label: 'Other (specify in notes)' },
     ],
+    CGP: [
+      { key: 'genesAnalyzed', label: 'Genes Analyzed' },
+      { key: 'biomarkersReported', label: 'Biomarkers Reported' },
+      { key: 'fdaCompanionDxCount', label: 'FDA CDx Indications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'sampleRequirements', label: 'Sample Requirements' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Reimbursement Status' },
+      { key: 'listPrice', label: 'List Price ($)' },
+      { key: 'numPublications', label: 'Number of Publications' },
+      { key: 'other', label: 'Other (specify in notes)' },
+    ],
   };
 
   // Get current value of selected parameter for the selected test
   const getCurrentValue = () => {
     if (!existingTest || !selectedParameter || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : trmTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : cgpTestData;
     const test = testList.find(t => t.id === existingTest);
     if (!test || selectedParameter === 'other') return '';
     const value = test[selectedParameter];
@@ -4947,7 +4965,7 @@ const SubmissionsPage = () => {
   // Get vendor name for selected test (for email validation)
   const getSelectedTestVendor = () => {
     if (!existingTest || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : trmTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : cgpTestData;
     const test = testList.find(t => t.id === existingTest);
     return test?.vendor || '';
   };
@@ -5293,11 +5311,12 @@ const SubmissionsPage = () => {
         {submitterType && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
                 { key: 'TRM', label: 'TRM', desc: 'Treatment Response', color: 'sky' },
+                { key: 'CGP', label: 'CGP', desc: 'Genomic Profiling', color: 'violet' },
               ].map(cat => (
                 <button
                   key={cat.key}
@@ -5753,9 +5772,15 @@ const SourceDataPage = () => {
           description: 'Tests for monitoring treatment response during therapy',
           testCount: trmTestData.length,
           tests: trmTestData
+        },
+        CGP: {
+          name: 'Comprehensive Genomic Profiling',
+          description: 'Tests for identifying actionable genomic alterations to guide targeted therapy selection',
+          testCount: cgpTestData.length,
+          tests: cgpTestData
         }
       },
-      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length
+      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length
     };
     return JSON.stringify(allData, null, 2);
   };
@@ -5800,7 +5825,7 @@ const SourceDataPage = () => {
               </div>
               <div>
                 <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
-                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length} tests • MRD + ECD + TRM combined • JSON format</p>
+                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length} tests • MRD + ECD + TRM + CGP combined • JSON format</p>
               </div>
             </div>
             <button
