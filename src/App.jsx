@@ -4904,7 +4904,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         {/* Right: Search Tools */}
         <div className="lg:w-[45%] flex flex-col gap-3">
           {/* Claude Chat Input */}
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-[3] flex flex-col">
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Or: AI-Powered Search</p>
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2">
               <div className="relative flex-1">
@@ -4939,10 +4939,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 Ask
               </button>
             </form>
+            <p className="text-[9px] text-slate-400 mt-1.5">Powered by Claude AI. Responses may contain errors and should be independently verified.</p>
             
             {/* Example Questions */}
             {messages.length === 0 && (
-              <div className="flex-1 flex flex-col justify-between mt-3">
+              <div className="flex-1 flex flex-col mt-3">
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
                   <button
@@ -4952,19 +4953,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Compare Signatera and Guardant Reveal for MRD monitoring
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                  >
-                    What ECD tests have Medicare coverage?
-                  </button>
-                  <button
                     onClick={() => handleChatSubmit("Which CGP tests have the fastest turnaround time?")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
                     Which CGP tests have the fastest turnaround time?
                   </button>
                 </div>
-                <p className="text-[9px] text-slate-400 mt-2">Powered by Claude AI. Responses may contain errors and should be independently verified.</p>
               </div>
             )}
 
@@ -4997,7 +4991,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
 
           {/* Text Search Bar */}
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-none flex flex-col">
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Or: Quick Search</p>
             <div className="relative">
               <input
