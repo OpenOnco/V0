@@ -4865,13 +4865,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       {/* Header */}
       <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
         <h3 className="text-lg font-bold text-slate-800">
-          Explore our database of {allTests.length} molecular tests
+          Explore our database of cancer detection and monitoring tests
         </h3>
       </div>
 
       {/* Category Navigation Buttons - First */}
       <div className="p-4 pb-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Click on a test category for detailed data views and comparisons</p>
+        <p className="text-xs font-semibold text-black uppercase tracking-wide mb-2">Click on a test category for detailed data views and comparisons</p>
         <div className="flex items-center gap-1">
           {categoryButtons.map((cat, index) => {
             const clrs = categoryColorClasses[cat.color];
