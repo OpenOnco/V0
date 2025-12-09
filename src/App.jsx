@@ -21,6 +21,7 @@ import { Analytics } from '@vercel/analytics/react';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'cgp-16', name: 'Northstar Select', vendor: 'BillionToOne', category: 'CGP', dateAdded: 'Dec 9, 2025' },
   { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
   { id: 'mrd-17', name: 'Labcorp Plasma Detect', vendor: 'Labcorp', category: 'MRD', dateAdded: 'Dec 8, 2025' },
   { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
@@ -44,6 +45,18 @@ const RECENTLY_ADDED_TESTS = [
 //   - "Update from OpenOnco research" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 9, 2025',
+    type: 'added',
+    testId: 'cgp-16',
+    testName: 'Northstar Select',
+    vendor: 'BillionToOne',
+    category: 'CGP',
+    description: 'Initial database entry - liquid biopsy CGP with 0.15% VAF LOD',
+    contributor: 'Rob Manor',
+    affiliation: 'BillionToOne',
+    citation: 'https://www.journalofliquidbiopsy.com/article/S2950-1954(25)00038-4/fulltext'
+  },
   {
     date: 'Dec 9, 2025',
     type: 'updated',
@@ -3680,6 +3693,60 @@ const cgpTestData = [
     "numPublications": null,
     "numPublicationsNotes": "Platform launched March 2023; publication record building.",
     "regulatoryStatusNotes": "CAP-accredited and CLIA-certified laboratories in Fort Myers and Tampa, FL; Aliso Viejo and San Diego, CA; Research Triangle Park, NC; and Houston, TX. New York State approved January 2024."
+  },
+  {
+    "id": "cgp-16",
+    "name": "Northstar Select",
+    "vendor": "BillionToOne",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Single-molecule NGS (smNGS) with QCT™ (Quantitative Counting Templates) for cfDNA analysis. 84-gene panel optimized for sensitivity over breadth. Detects SNVs, indels, CNAs (amplifications and losses), fusions, and MSI-H. Unique ability to differentiate focal copy number changes from aneuploidies using insights from >1 million cfDNA tests for fetal aneuploidy.",
+    "methodCitations": "https://www.northstaronc.com/insights/introducing-northstar-select-a-liquid-biopsy-built-for-clinical-action | Bower X et al. J Liq Biopsy 2025;9:1003222",
+    "genesAnalyzed": 84,
+    "genesAnalyzedNotes": "84-gene panel: 82 genes for SNV/indels, 19 genes for CNA amplification, 5 genes for CNA loss, 9 genes for fusions. Panel designed for actionability over breadth.",
+    "genesAnalyzedCitations": "https://www.northstaronc.com/",
+    "geneListUrl": "https://cdn.prod.website-files.com/676903c0e34284138d6e0066/68e3c65e20bf5b7173202a4f_NS-SEL-FL-001-2509%20-%20Spec%20Sheet%20-%20DIGITAL.pdf",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs (amplification)", "CNAs (loss)", "Fusions", "MSI-H"],
+    "biomarkersReportedNotes": "Reports guideline-recommended alterations with focus on actionability. Unique capability to detect CNA losses and differentiate focal driver amplifications from broad chromosomal aneuploidies.",
+    "biomarkersReportedCitations": "https://www.northstaronc.com/ | Bower X et al. J Liq Biopsy 2025",
+    "cancerTypes": ["Advanced solid tumors (17+ types)", "CNS cancers", "Low-shedding tumors"],
+    "cancerTypesCitations": "https://www.prnewswire.com/news-releases/billiontoones-northstar-select-demonstrates-superior-sensitivity-in-prospective-head-to-head-validation-study-publication-302539192.html",
+    "targetPopulation": "Patients with stage III or IV solid tumors requiring comprehensive genomic profiling, particularly when tissue is not feasible or for low-shedding tumors",
+    "targetPopulationCitations": "https://ascopubs.org/doi/10.1200/JCO.2024.42.16_suppl.3072",
+    "sensitivity": null,
+    "sensitivityNotes": "In prospective head-to-head validation (n=182), detected 51% more pathogenic SNV/Indels and 109% more CNVs than comparator assays. 87% detection rate in CNS cancers vs 27-55% reported for other liquid biopsies. 91% of additional clinically actionable variants found below 0.5% VAF.",
+    "sensitivityCitations": "Bower X et al. J Liq Biopsy 2025;9:1003222 | https://ascopubs.org/doi/10.1200/JCO.2024.42.16_suppl.3072",
+    "specificity": 99.9,
+    "specificityNotes": ">99.9% analytical specificity across all variant classes. 98% concordance with ddPCR orthogonal validation. CHIP rate equivalent to comparators (19.0% vs 17.2%), confirming additional detections are true positives.",
+    "specificityCitations": "Bower X et al. J Liq Biopsy 2025;9:1003222",
+    "lod": "0.15% VAF",
+    "lodNotes": "LOD95 of 0.15% VAF for SNVs - among the lowest in commercially available liquid biopsy CGP. 2-5x lower LOD than comparator assays.",
+    "lodCitations": "https://www.northstaronc.com/ | Bower X et al. J Liq Biopsy 2025",
+    "fdaStatus": "CLIA LDT - NOT FDA approved",
+    "fdaStatusNotes": "CLIA-certified laboratory-developed test. CAP-accredited.",
+    "fdaStatusCitations": "https://www.northstaronc.com/",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer"],
+    "nccnGuidelinesNotes": "84-gene panel covers guideline-recommended biomarkers. NCCN recommends testing specific genes/biomarkers but does not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1",
+    "tat": "5-8 days",
+    "tatNotes": "Typical turnaround time 5-8 days from specimen receipt.",
+    "tatCitations": "https://www.northstaronc.com/insights/introducing-northstar-select-a-liquid-biopsy-built-for-clinical-action",
+    "sampleRequirements": "Blood draw (plasma cfDNA)",
+    "sampleRequirementsCitations": "https://www.northstaronc.com/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Coverage varies by payer.",
+    "clinicalAvailability": "Commercially available in US since January 2023",
+    "clinicalAvailabilityCitations": "https://www.delveinsight.com/asco-conference/article/billiontoone-northstar-select",
+    "numPublications": 2,
+    "numPublicationsNotes": "Peer-reviewed validation study published September 2025 in Journal of Liquid Biopsy. ASCO 2024 abstract.",
+    "numPublicationsCitations": "Bower X et al. J Liq Biopsy 2025;9:1003222 | JCO 2024;42:16_suppl,3072",
+    "publicationsExampleCitations": ["https://www.journalofliquidbiopsy.com/article/S2950-1954(25)00038-4/fulltext", "https://ascopubs.org/doi/10.1200/JCO.2024.42.16_suppl.3072"],
+    "technologyDifferentiator": "Only liquid biopsy with prospective head-to-head peer-reviewed publication showing superior sensitivity vs multiple commercially available comparators. smNGS with QCT technology enables single-molecule precision. Unique ability to detect CNA losses and differentiate focal amplifications from aneuploidies.",
+    "independentValidation": "Prospective head-to-head validation against 6 commercially available assays from 4 CLIA/CAP labs (n=182 patients, 17+ tumor types, 6 community clinics + 1 hospital). Orthogonal ddPCR validation showed 98% concordance.",
+    "independentValidationCitations": "Bower X et al. J Liq Biopsy 2025;9:1003222",
+    "vendorDataSource": "Rob Manor (BillionToOne) submission Dec 2025"
   }
 ];
 
