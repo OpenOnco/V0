@@ -4870,13 +4870,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       </div>
 
       {/* Search Bar */}
-      <div className="p-4 border-b border-slate-100">
+      <div className="p-4 pb-2">
         <div className="relative">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search tests, vendors, or categories..."
+            placeholder="Simple text search of tests and vendors..."
             className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
           />
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4930,117 +4930,112 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         )}
       </div>
 
-      {/* Category Navigation Buttons */}
-      <div className="p-4 border-b border-slate-100">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Browse by Category</p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* Chat Input - matching style */}
+      <div className="px-4 pb-2">
+        <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="relative flex gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              placeholder="Claude-based conversational search..."
+              className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+              disabled={isLoading}
+            />
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+          </div>
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 cursor-pointer"
+            title="Select AI model"
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            disabled={isLoading || !chatInput.trim()}
+            className="text-white px-5 py-2 rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+          >
+            Ask
+          </button>
+        </form>
+        <p className="text-[10px] text-slate-400 mt-1 ml-1">Powered by Claude AI. Responses may be inaccurate.</p>
+      </div>
+
+      {/* Messages Area */}
+      {messages.length > 0 && (
+        <div ref={chatContainerRef} className="max-h-64 overflow-y-auto mx-4 mb-2 p-3 space-y-3 bg-slate-50 rounded-xl border border-slate-200">
+          {messages.map((msg, i) => (
+            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div 
+                className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+              >
+                {msg.role === 'user' ? (
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                ) : (
+                  <Markdown className="text-sm">{msg.content}</Markdown>
+                )}
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                <p className="text-sm text-slate-500">Thinking...</p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Category Navigation Buttons - Compact horizontal */}
+      <div className="px-4 pb-2">
+        <div className="flex gap-2">
           {categoryButtons.map(cat => {
             const clrs = categoryColorClasses[cat.color];
             return (
               <button
                 key={cat.id}
                 onClick={() => onNavigate(cat.id)}
-                className={`${clrs.bg} ${clrs.bgHover} ${clrs.border} ${clrs.borderHover} border-2 rounded-xl p-3 text-left transition-all hover:shadow-md group`}
+                className={`flex-1 ${clrs.bg} ${clrs.bgHover} ${clrs.border} ${clrs.borderHover} border rounded-lg px-2 py-2 text-center transition-all hover:shadow-sm`}
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`w-8 h-8 rounded-lg ${clrs.iconBg} flex items-center justify-center text-white text-lg`}>
+                <div className="flex items-center justify-center gap-1.5">
+                  <span className={`w-6 h-6 rounded ${clrs.iconBg} flex items-center justify-center text-white text-sm`}>
                     {cat.icon}
                   </span>
-                  <span className={`text-lg font-bold ${clrs.text}`}>{cat.id}</span>
+                  <span className={`text-sm font-bold ${clrs.text}`}>{cat.id}</span>
+                  <span className="text-xs text-slate-400">({testCounts[cat.id]})</span>
                 </div>
-                <p className="text-xs text-slate-600 font-medium truncate">{cat.name}</p>
-                <p className="text-xs text-slate-400 mt-1">{testCounts[cat.id]} tests →</p>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Chat Section */}
-      <div className="bg-white">
-        <div className="px-4 py-3 border-b border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Or Ask Claude About the Tests</p>
-        </div>
-        
-        {/* Messages Area */}
-        {messages.length > 0 && (
-          <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div 
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                  style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                >
-                  {msg.role === 'user' ? (
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                  ) : (
-                    <Markdown className="text-sm">{msg.content}</Markdown>
-                  )}
-                </div>
-              </div>
+      {/* Example Questions */}
+      {messages.length === 0 && (
+        <div className="px-4 pb-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs text-slate-500">Try:</span>
+            {exampleQuestions.map((q, i) => (
+              <button
+                key={i}
+                onClick={() => handleChatSubmit(q)}
+                className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+              >
+                {q}
+              </button>
             ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                  <p className="text-sm text-slate-500">Thinking...</p>
-                </div>
-              </div>
-            )}
           </div>
-        )}
-        
-        {/* Input Area */}
-        <div className="p-4 border-t border-slate-100">
-          <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2 items-center">
-            <select
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              className="px-2 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
-              title="Select AI model"
-            >
-              {CHAT_MODELS.map(m => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </select>
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Type your liquid biopsy test question here..."
-              className="flex-1 border-2 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2"
-              style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !chatInput.trim()}
-              className="text-white px-6 py-2.5 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-            >
-              Ask
-            </button>
-          </form>
-          <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
         </div>
-        
-        {/* Example Questions */}
-        {messages.length === 0 && (
-          <div className="px-4 pb-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-slate-500">Try:</span>
-              {exampleQuestions.map((q, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleChatSubmit(q)}
-                  className="text-sm bg-slate-50 border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Test Cards Grid */}
       <div className="p-4 border-t border-slate-100">
@@ -5557,10 +5552,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Test Showcase */}
-        <div className="mb-4">
-          <TestShowcase onNavigate={onNavigate} />
-        </div>
+        {/* Test Showcase - Only for Clinician/Academic views */}
+        {persona !== 'Patient' && (
+          <div className="mb-4">
+            <TestShowcase onNavigate={onNavigate} />
+          </div>
+        )}
 
         {/* Stat of the Day */}
         <div className="mb-4">
