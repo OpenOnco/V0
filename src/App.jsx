@@ -5401,6 +5401,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
+          {/* Patient intro paragraph */}
+          {persona === 'Patient' && (
+            <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed mb-4 pb-4 border-b border-slate-200">
+              Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and detect recurrence - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit service helping match patients to the right test.
+            </p>
+          )}
           {/* Persona Selector */}
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
@@ -5535,10 +5541,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Database Summary */}
-        <div className="mb-4">
-          <DatabaseSummary />
-        </div>
+        {/* Database Summary - Only for Clinician/Academic views */}
+        {persona !== 'Patient' && (
+          <div className="mb-4">
+            <DatabaseSummary />
+          </div>
+        )}
       </div>
     </div>
   );
