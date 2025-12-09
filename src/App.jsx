@@ -4902,17 +4902,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </div>
 
         {/* Right: Search Tools */}
-        <div className="lg:w-[45%] flex flex-col">
-          {/* OR Divider */}
-          <div className="flex items-center gap-2 mb-2">
-            <div className="flex-1 h-px bg-slate-300"></div>
-            <span className="text-xs font-bold text-slate-500 uppercase">Or</span>
-            <div className="flex-1 h-px bg-slate-300"></div>
-          </div>
-
+        <div className="lg:w-[45%] flex flex-col gap-3">
           {/* Claude Chat Input */}
           <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col min-h-[180px]">
-            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">AI-Powered Search</p>
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2"><span className="text-slate-400">Or</span> AI-Powered Search</p>
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2">
               <div className="relative flex-1">
                 <input
@@ -5003,16 +4996,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             )}
           </div>
 
-          {/* OR Divider */}
-          <div className="flex items-center gap-2 my-2">
-            <div className="flex-1 h-px bg-slate-300"></div>
-            <span className="text-xs font-bold text-slate-500 uppercase">Or</span>
-            <div className="flex-1 h-px bg-slate-300"></div>
-          </div>
-
           {/* Text Search Bar */}
           <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col min-h-[100px]">
-            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Quick Search</p>
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2"><span className="text-slate-400">Or</span> Quick Search</p>
             <div className="relative">
               <input
                 type="text"
@@ -6388,6 +6374,16 @@ const FAQPage = () => {
           />
         ))}
       </div>
+
+      {/* Openness Award */}
+      <div className="mt-8">
+        <OpennessAward />
+      </div>
+
+      {/* Database Summary */}
+      <div className="mt-6">
+        <DatabaseSummary />
+      </div>
     </div>
   );
 };
@@ -7474,6 +7470,16 @@ const SourceDataPage = () => {
         <p className="text-xs text-gray-500">
           This data is provided for informational purposes only. Always verify with official sources for clinical decision-making.
         </p>
+      </div>
+
+      {/* Openness Award */}
+      <div className="mt-8">
+        <OpennessAward />
+      </div>
+
+      {/* Database Summary */}
+      <div className="mt-6">
+        <DatabaseSummary />
       </div>
     </div>
   );
