@@ -4904,8 +4904,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         {/* Right: Search Tools */}
         <div className="lg:w-[45%] flex flex-col gap-3">
           {/* Claude Chat Input */}
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col min-h-[180px]">
-            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2"><span className="text-slate-400">Or</span> AI-Powered Search</p>
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-[3] flex flex-col">
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Or: AI-Powered Search</p>
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2">
               <div className="relative flex-1">
                 <input
@@ -4997,8 +4997,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
 
           {/* Text Search Bar */}
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col min-h-[100px]">
-            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2"><span className="text-slate-400">Or</span> Quick Search</p>
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-none flex flex-col">
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Or: Quick Search</p>
             <div className="relative">
               <input
                 type="text"
