@@ -7302,13 +7302,6 @@ const SubmissionsPage = () => {
 
       {/* Openness Encouragement Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">We Value Openness</h2>
-          <p className="text-gray-600 max-w-xl mx-auto">
-            The more complete your submission, the better we can serve patients and clinicians. 
-            We encourage vendors to share pricing, performance data, and clinical evidence openly.
-          </p>
-        </div>
         <div className="mb-6">
           <OpennessAward />
         </div>
