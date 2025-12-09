@@ -4944,7 +4944,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             
             {/* Example Questions */}
             {messages.length === 0 && (
-              <div className="flex-1 flex flex-col mt-3">
+              <div className="flex-1 flex flex-col mt-1.5">
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
                   <button
