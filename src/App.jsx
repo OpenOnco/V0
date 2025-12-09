@@ -4966,6 +4966,25 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </button>
         </form>
         <p className="text-[10px] text-slate-400 mt-1 ml-1">Powered by Claude AI. Responses may be inaccurate.</p>
+        
+        {/* Example Questions - under Claude input */}
+        {messages.length === 0 && (
+          <div className="flex items-center gap-2 flex-wrap mt-2">
+            <span className="text-xs text-slate-500">Try:</span>
+            <button
+              onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring")}
+              className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+            >
+              Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring
+            </button>
+            <button
+              onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
+              className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+            >
+              What ECD tests have Medicare coverage?
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Messages Area */}
@@ -4995,8 +5014,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </div>
       )}
 
-      {/* Category Navigation Buttons - Compact horizontal */}
-      <div className="px-4 pb-2">
+      {/* Category Navigation Buttons - Horizontal with full names */}
+      <div className="px-4 pb-3">
         <div className="flex gap-2">
           {categoryButtons.map(cat => {
             const clrs = categoryColorClasses[cat.color];
@@ -5004,38 +5023,15 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               <button
                 key={cat.id}
                 onClick={() => onNavigate(cat.id)}
-                className={`flex-1 ${clrs.bg} ${clrs.bgHover} ${clrs.border} ${clrs.borderHover} border rounded-lg px-2 py-2 text-center transition-all hover:shadow-sm`}
+                className={`flex-1 ${clrs.bg} ${clrs.bgHover} ${clrs.border} ${clrs.borderHover} border rounded-lg px-2 py-2.5 text-center transition-all hover:shadow-sm`}
               >
-                <div className="flex items-center justify-center gap-1.5">
-                  <span className={`w-6 h-6 rounded ${clrs.iconBg} flex items-center justify-center text-white text-sm`}>
-                    {cat.icon}
-                  </span>
-                  <span className={`text-sm font-bold ${clrs.text}`}>{cat.id}</span>
-                  <span className="text-xs text-slate-400">({testCounts[cat.id]})</span>
-                </div>
+                <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
+                <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
               </button>
             );
           })}
         </div>
       </div>
-
-      {/* Example Questions */}
-      {messages.length === 0 && (
-        <div className="px-4 pb-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-slate-500">Try:</span>
-            {exampleQuestions.map((q, i) => (
-              <button
-                key={i}
-                onClick={() => handleChatSubmit(q)}
-                className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Test Cards Grid */}
       <div className="p-4 border-t border-slate-100">
