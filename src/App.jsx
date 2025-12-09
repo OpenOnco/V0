@@ -3963,7 +3963,8 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
         const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
         const lastAssistantEl = messageElements[messageElements.length - 1];
         if (lastAssistantEl) {
-          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Use offsetTop to scroll within container only (not page)
+          container.scrollTop = lastAssistantEl.offsetTop - 8;
         }
       }
     }
@@ -4252,7 +4253,8 @@ const TestShowcase = ({ onNavigate }) => {
         const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
         const lastAssistantEl = messageElements[messageElements.length - 1];
         if (lastAssistantEl) {
-          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Use offsetTop to scroll within container only (not page)
+          container.scrollTop = lastAssistantEl.offsetTop - 8;
         }
       }
     }
@@ -4689,6 +4691,15 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   if (isPatient) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+        {/* Under Construction Banner */}
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg flex items-center gap-3">
+          <span className="text-2xl">🚧</span>
+          <div>
+            <p className="font-semibold text-amber-800">Patient View Under Construction</p>
+            <p className="text-sm text-amber-700">We're actively improving this experience. Some features may be incomplete.</p>
+          </div>
+        </div>
+        
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-bold text-slate-800">
             The {allTests.length} Tests We Track
@@ -5317,12 +5328,13 @@ const HomePage = ({ onNavigate }) => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
       const lastMessage = messages[messages.length - 1];
-      // When assistant responds, scroll to show start of response
+      // When assistant responds, scroll container to show start of response
       if (lastMessage.role === 'assistant') {
         const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
         const lastAssistantEl = messageElements[messageElements.length - 1];
         if (lastAssistantEl) {
-          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Use offsetTop to scroll within container only (not page)
+          container.scrollTop = lastAssistantEl.offsetTop - 8;
         }
       }
     }
@@ -5452,8 +5464,17 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         {/* Unified Database Access Container - Only for Patients */}
         {persona === 'Patient' && (
           <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
+            {/* Under Construction Banner */}
+            <div className="mx-4 mt-4 p-3 bg-amber-50 border border-amber-300 rounded-lg flex items-center gap-3">
+              <span className="text-2xl">🚧</span>
+              <div>
+                <p className="font-semibold text-amber-800">Patient View Under Construction</p>
+                <p className="text-sm text-amber-700">We're actively improving this experience. Some features may be incomplete.</p>
+              </div>
+            </div>
+            
             {/* Container Header */}
-            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200 mt-4">
               <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
                 Ask about liquid biopsy tests for cancer treatment
               </h2>
@@ -7483,7 +7504,8 @@ const CategoryChat = ({ category }) => {
         const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
         const lastAssistantEl = messageElements[messageElements.length - 1];
         if (lastAssistantEl) {
-          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Use offsetTop to scroll within container only (not page)
+          container.scrollTop = lastAssistantEl.offsetTop - 8;
         }
       }
     }
