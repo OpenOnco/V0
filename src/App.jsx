@@ -5040,25 +5040,19 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-      {/* Header */}
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
-        <h3 className="text-lg font-bold text-slate-800">
-          Click on a test category to Explore the OpenOnco Database:
-        </h3>
-      </div>
-
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator */}
         <div className="lg:w-[55%] flex-shrink-0">
+          <h3 className="text-lg font-bold text-slate-800 mb-3">Explore Tests by Category</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
         {/* Right: Search Tools */}
         <div className="lg:w-[45%] flex flex-col gap-3">
+          <h3 className="text-lg font-bold text-slate-800">Explore Tests by AI</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-1 flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
-            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wide mb-2">Or: AI-Powered Conversation about the data</p>
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex flex-col gap-2">
               <div className="relative">
                 <input
@@ -5721,12 +5715,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Openness Award - Only for Clinician/Academic views */}
-        {persona !== 'Patient' && (
-          <div className="mb-4">
-            <OpennessAward />
-          </div>
-        )}
+        {/* Openness Award */}
+        <div className="mb-4">
+          <OpennessAward />
+        </div>
 
         {/* Data Openness Overview - Only for Clinician/Academic views */}
         {persona !== 'Patient' && (
