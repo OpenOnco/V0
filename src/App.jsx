@@ -4873,8 +4873,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
-        <h3 className="text-lg font-bold text-slate-800">
-          Explore our database of cancer detection and monitoring tests
+        <h3 className="text-lg font-bold text-slate-800 text-center">
+          Explore the OpenOnco Molecular Test Database
         </h3>
       </div>
 
