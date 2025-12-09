@@ -26,9 +26,9 @@ const RECENTLY_ADDED_TESTS = [
   { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
   { id: 'cgp-15', name: 'Neo Comprehensive', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
-  { id: 'trm-9', name: 'MSK-ACCESS', vendor: 'SOPHiA GENETICS', category: 'TRM', dateAdded: 'Dec 7, 2025' },
+  { id: 'trm-9', name: 'MSK-ACCESS', vendor: 'SOPHiA GENETICS', category: 'TRM', dateAdded: 'Dec 4, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
-  { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 4, 2025' },
+  { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 7, 2025' },
   { id: 'trm-8', name: 'Northstar Response', vendor: 'BillionToOne', category: 'TRM', dateAdded: 'Dec 3, 2025' },
 ];
 
@@ -37,7 +37,11 @@ const RECENTLY_ADDED_TESTS = [
 // ============================================
 // ⚠️  CLAUDE: WHEN YOU EDIT ANY TEST DATA BELOW, ADD AN ENTRY HERE FIRST!
 // ⚠️  This is your memory across conversations. Users see this in the UI.
-// Format: { date, type: 'added'|'updated'|'removed', testId, testName, vendor, category, description, source, citation }
+// Format: { date, type, testId, testName, vendor, category, description, contributor, affiliation, citation }
+// Note: contributor names are stored in DB/JSON but UI shows only organization:
+//   - "Vendor update from X" if affiliation matches test vendor
+//   - "Update from X" if different organization
+//   - "Update from OpenOnco research" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
   {
@@ -48,7 +52,8 @@ const DATABASE_CHANGELOG = [
     vendor: 'BillionToOne',
     category: 'TRM',
     description: 'Updated methylated loci count from >500 to >2200 (v2 panel expansion)',
-    source: 'Vendor correction from Rob Manor',
+    contributor: 'Rob Manor',
+    affiliation: 'BillionToOne',
     citation: 'https://www.northstaronc.com/northstar-response'
   },
   {
@@ -59,7 +64,8 @@ const DATABASE_CHANGELOG = [
     vendor: 'Labcorp (Invitae)',
     category: 'MRD',
     description: 'Initial database entry',
-    source: 'OpenOnco research',
+    contributor: 'Alex Dickinson',
+    affiliation: 'OpenOnco',
     citation: null
   },
   {
@@ -70,7 +76,8 @@ const DATABASE_CHANGELOG = [
     vendor: 'Labcorp',
     category: 'MRD',
     description: 'Initial database entry',
-    source: 'OpenOnco research',
+    contributor: 'Alex Dickinson',
+    affiliation: 'OpenOnco',
     citation: null
   },
   {
@@ -81,7 +88,8 @@ const DATABASE_CHANGELOG = [
     vendor: 'Guardant Health',
     category: 'TRM',
     description: 'Initial database entry',
-    source: 'OpenOnco research',
+    contributor: 'Alex Dickinson',
+    affiliation: 'OpenOnco',
     citation: null
   },
   {
@@ -92,7 +100,8 @@ const DATABASE_CHANGELOG = [
     vendor: 'NeoGenomics',
     category: 'CGP',
     description: 'Initial database entry',
-    source: 'OpenOnco research',
+    contributor: 'Alex Dickinson',
+    affiliation: 'OpenOnco',
     citation: null
   },
   {
@@ -103,18 +112,44 @@ const DATABASE_CHANGELOG = [
     vendor: 'Universal DX',
     category: 'ECD',
     description: 'Initial database entry',
-    source: 'OpenOnco research',
+    contributor: 'Alex Dickinson',
+    affiliation: 'OpenOnco',
     citation: null
   },
   {
     date: 'Dec 7, 2025',
+    type: 'added',
+    testId: 'mrd-15',
+    testName: 'Foresight CLARITY Lymphoma',
+    vendor: 'Natera',
+    category: 'MRD',
+    description: 'Initial database entry',
+    contributor: 'John Truesdell',
+    affiliation: 'BillionToOne',
+    citation: null
+  },
+  {
+    date: 'Dec 5, 2025',
+    type: 'added',
+    testId: 'ecd-11',
+    testName: 'EPISEEK',
+    vendor: 'Precision Epigenomics',
+    category: 'ECD',
+    description: 'Initial database entry',
+    contributor: 'Richard Bernert',
+    affiliation: 'Precision Epigenomics',
+    citation: null
+  },
+  {
+    date: 'Dec 4, 2025',
     type: 'added',
     testId: 'trm-9',
     testName: 'MSK-ACCESS',
     vendor: 'SOPHiA GENETICS',
     category: 'TRM',
     description: 'Initial database entry',
-    source: 'OpenOnco research',
+    contributor: 'Julien Pontis',
+    affiliation: 'SOPHiA GENETICS',
     citation: null
   },
 ];
@@ -7486,7 +7521,13 @@ const SubmissionsPage = () => {
                   <p className="text-sm text-gray-600 mt-1">{entry.description}</p>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
                     <span>{entry.date}</span>
-                    {entry.source && <span>• {entry.source}</span>}
+                    <span>• {
+                      !entry.affiliation || entry.affiliation === 'OpenOnco' ? 'Update from OpenOnco research' :
+                      entry.vendor.toLowerCase().includes(entry.affiliation.toLowerCase()) || 
+                      entry.affiliation.toLowerCase().includes(entry.vendor.split(' ')[0].toLowerCase()) ?
+                        `Vendor update from ${entry.affiliation}` :
+                        `Update from ${entry.affiliation}`
+                    }</span>
                     {entry.citation && (
                       <a 
                         href={entry.citation} 
@@ -7529,6 +7570,7 @@ const SourceDataPage = () => {
         source: 'OpenOnco',
         website: 'https://openonco.org'
       },
+      changelog: DATABASE_CHANGELOG,
       categories: {
         MRD: {
           name: 'Molecular Residual Disease',
