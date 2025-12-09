@@ -8601,9 +8601,21 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
 // Test Detail Modal
 // ============================================
 const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => {
+  const [linkCopied, setLinkCopied] = useState(false);
+  
   if (!test) return null;
   
   const meta = categoryMeta[category];
+  
+  // Copy shareable link to clipboard
+  const copyLink = (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}?category=${category}&test=${test.id}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    });
+  };
   
   // Print styles for test detail
   const printStyles = `
@@ -8703,6 +8715,21 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
+              <button 
+                onClick={copyLink} 
+                className="p-2 hover:bg-white/20 rounded-xl transition-colors print:hidden relative"
+                title="Copy link to this test"
+              >
+                {linkCopied ? (
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                )}
+              </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); window.print(); }} 
                 className="p-2 hover:bg-white/20 rounded-xl transition-colors print:hidden"
@@ -9445,20 +9472,17 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
     }, 10);
   };
 
-  // Handle initial selected test
+  // Handle initial selected test - open detail modal if coming from direct link
   useEffect(() => {
     if (initialSelectedTestId) {
-      setSelectedTests([initialSelectedTestId]);
+      // Find the test and open its detail modal
+      const test = tests.find(t => t.id === initialSelectedTestId);
+      if (test) {
+        setDetailTest(test);
+      }
       onClearInitialTest?.();
-      // Scroll to the test card after a short delay to allow rendering
-      setTimeout(() => {
-        const element = document.getElementById(`test-card-${initialSelectedTestId}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 100);
     }
-  }, [initialSelectedTestId]);
+  }, [initialSelectedTestId, tests]);
 
   useEffect(() => {
     // Only scroll to top if not navigating to a specific test
@@ -10042,6 +10066,22 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  
+  // Check URL parameters on mount for direct test links
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+    const testId = params.get('test');
+    
+    if (category && ['MRD', 'ECD', 'TRM', 'CGP'].includes(category)) {
+      setCurrentPage(category);
+      if (testId) {
+        setInitialSelectedTestId(testId);
+      }
+      // Clear URL parameters after reading
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
   
   // Listen for persona changes to force re-render
   useEffect(() => {
