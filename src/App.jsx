@@ -4865,13 +4865,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       {/* Header */}
       <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
         <h3 className="text-lg font-bold text-slate-800">
-          Explore {allTests.length} Liquid Biopsy Tests
+          Explore our database of {allTests.length} molecular tests
         </h3>
       </div>
 
       {/* Category Navigation Buttons - First */}
       <div className="p-4 pb-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Click on a test category for detailed data views and comparisons</p>
         <div className="flex gap-2">
           {categoryButtons.map(cat => {
             const clrs = categoryColorClasses[cat.color];
@@ -4887,6 +4886,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             );
           })}
         </div>
+      </div>
+
+      {/* OR Divider */}
+      <div className="flex items-center gap-3 px-4 pb-2">
+        <div className="flex-1 h-px bg-slate-200"></div>
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">OR</span>
+        <div className="flex-1 h-px bg-slate-200"></div>
       </div>
 
       {/* Claude Chat Input */}
@@ -4971,6 +4977,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           )}
         </div>
       )}
+
+      {/* OR Divider */}
+      <div className="flex items-center gap-3 px-4 pb-2">
+        <div className="flex-1 h-px bg-slate-200"></div>
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">OR</span>
+        <div className="flex-1 h-px bg-slate-200"></div>
+      </div>
 
       {/* Text Search Bar - Last */}
       <div className="px-4 pb-3">
