@@ -4859,7 +4859,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     );
   }
 
-  // ========== CLINICIAN/ACADEMIC VIEW: Search + Category Buttons + Chat ==========
+  // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       {/* Header */}
@@ -4869,68 +4869,27 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </h3>
       </div>
 
-      {/* Search Bar */}
-      <div className="p-4 pb-2">
-        <div className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Simple text search of tests and vendors..."
-            className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-          />
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
+      {/* Category Navigation Buttons - First */}
+      <div className="p-4 pb-3">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Click on a test category for detailed data views and comparisons</p>
+        <div className="flex gap-2">
+          {categoryButtons.map(cat => {
+            const clrs = categoryColorClasses[cat.color];
+            return (
+              <button
+                key={cat.id}
+                onClick={() => onNavigate(cat.id)}
+                className={`flex-1 ${clrs.bg} ${clrs.border} border-2 rounded-lg px-2 py-2.5 text-center transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-slate-400 active:scale-[0.98]`}
+              >
+                <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
+                <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
+              </button>
+            );
+          })}
         </div>
-        
-        {/* Search Results Dropdown */}
-        {searchQuery && (
-          <div className="mt-2">
-            {filteredTests.length === 0 ? (
-              <p className="text-sm text-slate-500 py-2">No tests found for "{searchQuery}"</p>
-            ) : (
-              <div className="bg-white border border-slate-200 rounded-lg max-h-64 overflow-y-auto">
-                <p className="text-xs text-slate-500 px-3 py-2 border-b border-slate-100">
-                  {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''} found
-                </p>
-                {filteredTests.slice(0, 10).map(test => {
-                  const colors = colorClasses[test.color];
-                  return (
-                    <button
-                      key={test.id}
-                      onClick={() => { setSearchQuery(''); onNavigate(test.category, test.id); }}
-                      className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center justify-between border-b border-slate-50 last:border-0"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-slate-800">{test.name}</p>
-                        <p className="text-xs text-slate-500">{test.vendor}</p>
-                      </div>
-                      <span className={`${colors.badge} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
-                        {test.category}
-                      </span>
-                    </button>
-                  );
-                })}
-                {filteredTests.length > 10 && (
-                  <p className="text-xs text-slate-400 px-3 py-2 text-center">
-                    + {filteredTests.length - 10} more results
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* Chat Input - matching style */}
+      {/* Claude Chat Input */}
       <div className="px-4 pb-2">
         <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="relative flex gap-2">
           <div className="relative flex-1">
@@ -5013,23 +4972,26 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </div>
       )}
 
-      {/* Category Navigation Buttons - Horizontal with full names */}
+      {/* Text Search Bar - Last */}
       <div className="px-4 pb-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Or click on a test category for detailed data and comparisons</p>
-        <div className="flex gap-2">
-          {categoryButtons.map(cat => {
-            const clrs = categoryColorClasses[cat.color];
-            return (
-              <button
-                key={cat.id}
-                onClick={() => onNavigate(cat.id)}
-                className={`flex-1 ${clrs.bg} ${clrs.bgHover} ${clrs.border} ${clrs.borderHover} border rounded-lg px-2 py-2.5 text-center transition-all hover:shadow-sm`}
-              >
-                <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
-                <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
-              </button>
-            );
-          })}
+        <div className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Simple text search of tests and vendors..."
+            className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+          />
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
