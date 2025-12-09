@@ -3958,11 +3958,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   useEffect(() => { 
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages, isLoading]);
 
@@ -4240,16 +4236,11 @@ const TestShowcase = ({ onNavigate }) => {
   
   const isPatient = persona === 'Patient';
   
-  // Auto-scroll chat to show latest user message at top
+  // Auto-scroll chat container to bottom when new messages arrive
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
-      // Find the last user message element and scroll to it
       const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages, isLoading]);
   
@@ -5307,15 +5298,11 @@ const HomePage = ({ onNavigate }) => {
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
-  // Auto-scroll to show user question when messages or loading state changes
+  // Auto-scroll chat container to bottom when new messages arrive
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages, isLoading]);
   
@@ -7469,11 +7456,7 @@ const CategoryChat = ({ category }) => {
   useEffect(() => { 
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages, isLoading]);
   
