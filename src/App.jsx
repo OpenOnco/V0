@@ -7588,16 +7588,6 @@ const SubmissionsPage = () => {
                         ? `Vendor update: ${entry.contributor} (${entry.affiliation})`
                         : `${entry.contributor} (${entry.affiliation})`
                     }</span>
-                    {entry.citation && (
-                      <a 
-                        href={entry.citation} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-700 hover:underline"
-                      >
-                        Source →
-                      </a>
-                    )}
                   </div>
                 </div>
               </div>
