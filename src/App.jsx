@@ -2,6 +2,17 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Analytics } from '@vercel/analytics/react';
 
+// ╔════════════════════════════════════════════════════════════════════════════╗
+// ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
+// ║                                                                            ║
+// ║  When adding, updating, or removing ANY test:                              ║
+// ║  1. Update DATABASE_CHANGELOG (line ~35) - this is your memory!            ║
+// ║  2. Update RECENTLY_ADDED_TESTS if adding a new test                       ║
+// ║  3. Then edit the actual test data array                                   ║
+// ║                                                                            ║
+// ║  The changelog is visible to users in the Submissions page UI.             ║
+// ╚════════════════════════════════════════════════════════════════════════════╝
+
 // ============================================
 // RECENTLY ADDED TESTS - UPDATE ON EACH DEPLOY
 // ============================================
@@ -19,6 +30,93 @@ const RECENTLY_ADDED_TESTS = [
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 4, 2025' },
   { id: 'trm-8', name: 'Northstar Response', vendor: 'BillionToOne', category: 'TRM', dateAdded: 'Dec 3, 2025' },
+];
+
+// ============================================
+// DATABASE CHANGELOG - Track all test data updates
+// ============================================
+// ⚠️  CLAUDE: WHEN YOU EDIT ANY TEST DATA BELOW, ADD AN ENTRY HERE FIRST!
+// ⚠️  This is your memory across conversations. Users see this in the UI.
+// Format: { date, type: 'added'|'updated'|'removed', testId, testName, vendor, category, description, source, citation }
+// Keep newest entries at top
+const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 9, 2025',
+    type: 'updated',
+    testId: 'trm-8',
+    testName: 'Northstar Response',
+    vendor: 'BillionToOne',
+    category: 'TRM',
+    description: 'Updated methylated loci count from >500 to >2200 (v2 panel expansion)',
+    source: 'Vendor correction from Rob Manor',
+    citation: 'https://www.northstaronc.com/northstar-response'
+  },
+  {
+    date: 'Dec 8, 2025',
+    type: 'added',
+    testId: 'mrd-16',
+    testName: 'Invitae PCM',
+    vendor: 'Labcorp (Invitae)',
+    category: 'MRD',
+    description: 'Initial database entry',
+    source: 'OpenOnco research',
+    citation: null
+  },
+  {
+    date: 'Dec 8, 2025',
+    type: 'added',
+    testId: 'mrd-17',
+    testName: 'Labcorp Plasma Detect',
+    vendor: 'Labcorp',
+    category: 'MRD',
+    description: 'Initial database entry',
+    source: 'OpenOnco research',
+    citation: null
+  },
+  {
+    date: 'Dec 8, 2025',
+    type: 'added',
+    testId: 'trm-10',
+    testName: 'Guardant360 Response',
+    vendor: 'Guardant Health',
+    category: 'TRM',
+    description: 'Initial database entry',
+    source: 'OpenOnco research',
+    citation: null
+  },
+  {
+    date: 'Dec 8, 2025',
+    type: 'added',
+    testId: 'cgp-15',
+    testName: 'Neo Comprehensive',
+    vendor: 'NeoGenomics',
+    category: 'CGP',
+    description: 'Initial database entry',
+    source: 'OpenOnco research',
+    citation: null
+  },
+  {
+    date: 'Dec 7, 2025',
+    type: 'added',
+    testId: 'ecd-13',
+    testName: 'Signal-C',
+    vendor: 'Universal DX',
+    category: 'ECD',
+    description: 'Initial database entry',
+    source: 'OpenOnco research',
+    citation: null
+  },
+  {
+    date: 'Dec 7, 2025',
+    type: 'added',
+    testId: 'trm-9',
+    testName: 'MSK-ACCESS',
+    vendor: 'SOPHiA GENETICS',
+    category: 'TRM',
+    description: 'Initial database entry',
+    source: 'OpenOnco research',
+    citation: null
+  },
 ];
 
 // ============================================
@@ -915,6 +1013,7 @@ const BUILD_INFO = {
 // ============================================
 // DATA: MRD Tests (from OpenOncoCurrentRelease sheet)
 // ============================================
+// ⛔ STOP! Adding or editing a test? Update DATABASE_CHANGELOG first! (line ~29)
 
 const mrdTestData = [
   {
@@ -1904,6 +2003,11 @@ const mrdTestData = [
   }
 ];
 
+// ============================================
+// DATA: ECD Tests
+// ============================================
+// ⛔ STOP! Adding or editing a test? Update DATABASE_CHANGELOG first! (line ~29)
+
 const ecdTestData = [
   {
     "id": "ecd-1",
@@ -2558,6 +2662,10 @@ const ecdTestData = [
   }
 ];
 
+// ============================================
+// DATA: TRM Tests
+// ============================================
+// ⛔ STOP! Adding or editing a test? Update DATABASE_CHANGELOG first! (line ~29)
 
 const trmTestData = [
   {
@@ -2771,7 +2879,7 @@ const trmTestData = [
     "name": "Northstar Response",
     "vendor": "BillionToOne",
     "approach": "Tumor-naïve",
-    "method": "Single-molecule NGS (smNGS) with patented Quantitative Counting Templates (QCT) technology; measures >500 cancer-specific methylated genomic loci; provides absolute quantification of methylated ctDNA molecules with WBC noise filtering via buffy coat sequencing.",
+    "method": "Single-molecule NGS (smNGS) with patented Quantitative Counting Templates (QCT) technology; measures >2200 cancer-specific methylated genomic loci (v2, expanded from >500 in v1); provides absolute quantification of methylated ctDNA molecules with WBC noise filtering via buffy coat sequencing.",
     "cancerTypes": [
       "Pan-cancer: all advanced solid tumors (validated in lung, colorectal, pancreatic, GI cancers, and others)"
     ],
@@ -2798,7 +2906,7 @@ const trmTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "technologyDifferentiator": "Methylation-based (not mutation/VAF-based) - measures epigenetic signal across >500 loci rather than tracking somatic variants. Tissue-free with no tumor biopsy required. QCT technology enables single-molecule counting precision for absolute quantification.",
+    "technologyDifferentiator": "Methylation-based (not mutation/VAF-based) - measures epigenetic signal across >2200 loci rather than tracking somatic variants. Tissue-free with no tumor biopsy required. QCT technology enables single-molecule counting precision for absolute quantification. Version 2 (2025) expanded panel from >500 to >2200 loci for increased sensitivity.",
     "regulatoryStatusNotes": "CLIA-certified laboratory test. Methylation-based approach differentiates from SNV/VAF-based response monitoring assays. Measures 10x more informative loci (average 90 vs 9) compared to SNV-based ctDNA monitoring. Part of BillionToOne's Northstar oncology portfolio alongside Northstar Select (therapy selection)."
   },
   {
@@ -2943,6 +3051,11 @@ const trmTestData = [
     "technologyDifferentiator": "Only commercially available liquid biopsy that sequences both plasma and buffy coat (WBC) to distinguish somatic tumor variants from clonal hematopoiesis (CH) and germline variants. CHIP subtraction prevents ~40% of samples from receiving potentially incorrect therapy recommendations based on non-tumor mutations."
   }
 ];
+
+// ============================================
+// DATA: CGP Tests
+// ============================================
+// ⛔ STOP! Adding or editing a test? Update DATABASE_CHANGELOG first! (line ~29)
 
 const cgpTestData = [
   {
@@ -4762,7 +4875,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             return (
               <div
                 key={test.id}
-                onClick={() => onNavigate(test.category, test.id)}
+                onClick={() => setSelectedTest(test)}
                 className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 <div className="flex items-start justify-between mb-1">
@@ -5057,7 +5170,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             return (
               <div
                 key={test.id}
-                onClick={() => onNavigate(test.category, test.id)}
+                onClick={() => setSelectedTest(test)}
                 className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 <div className="flex items-start justify-between mb-1">
@@ -7335,12 +7448,61 @@ const SubmissionsPage = () => {
         )}
       </form>
 
-      {/* Openness Encouragement Section */}
+      {/* Database Changelog Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
-        <div className="mb-6">
-          <OpennessAward />
+        <h2 className="text-xl font-bold text-gray-900 mb-2">Database Changelog</h2>
+        <p className="text-gray-600 mb-6">Recent updates to the OpenOnco test database, including community contributions.</p>
+        
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="max-h-96 overflow-y-auto">
+            {DATABASE_CHANGELOG.map((entry, idx) => (
+              <div 
+                key={`${entry.testId}-${idx}`} 
+                className={`p-4 flex items-start gap-4 ${idx !== DATABASE_CHANGELOG.length - 1 ? 'border-b border-gray-100' : ''}`}
+              >
+                {/* Type indicator */}
+                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                  entry.type === 'added' ? 'bg-emerald-100 text-emerald-700' :
+                  entry.type === 'updated' ? 'bg-blue-100 text-blue-700' :
+                  'bg-red-100 text-red-700'
+                }`}>
+                  {entry.type === 'added' ? '+' : entry.type === 'updated' ? '↑' : '−'}
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-gray-900">{entry.testName}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                      entry.category === 'MRD' ? 'bg-orange-100 text-orange-700' :
+                      entry.category === 'ECD' ? 'bg-emerald-100 text-emerald-700' :
+                      entry.category === 'TRM' ? 'bg-sky-100 text-sky-700' :
+                      'bg-violet-100 text-violet-700'
+                    }`}>
+                      {entry.category}
+                    </span>
+                    <span className="text-xs text-gray-400">{entry.vendor}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1">{entry.description}</p>
+                  <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                    <span>{entry.date}</span>
+                    {entry.source && <span>• {entry.source}</span>}
+                    {entry.citation && (
+                      <a 
+                        href={entry.citation} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:text-blue-700 hover:underline"
+                      >
+                        Source →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <DatabaseSummary />
       </div>
     </div>
   );
