@@ -4902,9 +4902,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </div>
 
         {/* Right: Search Tools */}
-        <div className="lg:w-[45%] flex flex-col gap-3">
+        <div className="lg:w-[45%] flex flex-col">
+          {/* OR Divider */}
+          <div className="flex items-center gap-2 mb-2">
+            <div className="flex-1 h-px bg-slate-300"></div>
+            <span className="text-xs font-bold text-slate-500 uppercase">Or</span>
+            <div className="flex-1 h-px bg-slate-300"></div>
+          </div>
+
           {/* Claude Chat Input */}
-          <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col min-h-[180px]">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">AI-Powered Search</p>
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2">
               <div className="relative flex-1">
@@ -4942,26 +4949,35 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             
             {/* Example Questions */}
             {messages.length === 0 && (
-              <div className="flex items-center gap-1.5 flex-wrap mt-2">
-                <span className="text-[10px] text-slate-500">Try:</span>
-                <button
-                  onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal")}
-                  className="text-[10px] bg-white border border-slate-200 rounded-full px-2 py-0.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                >
-                  Compare Signatera and Guardant Reveal
-                </button>
-                <button
-                  onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
-                  className="text-[10px] bg-white border border-slate-200 rounded-full px-2 py-0.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                >
-                  ECD tests with Medicare
-                </button>
+              <div className="flex-1 flex flex-col justify-between mt-3">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
+                  <button
+                    onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal for MRD monitoring")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Compare Signatera and Guardant Reveal for MRD monitoring
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    What ECD tests have Medicare coverage?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("Which CGP tests have the fastest turnaround time?")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Which CGP tests have the fastest turnaround time?
+                  </button>
+                </div>
+                <p className="text-[9px] text-slate-400 mt-2">Powered by Claude AI. Responses may contain errors and should be independently verified.</p>
               </div>
             )}
 
             {/* Messages Area */}
             {messages.length > 0 && (
-              <div ref={chatContainerRef} className="max-h-48 overflow-y-auto mt-2 p-2 space-y-2 bg-white rounded-lg border border-slate-200">
+              <div ref={chatContainerRef} className="flex-1 overflow-y-auto mt-2 p-2 space-y-2 bg-white rounded-lg border border-slate-200">
                 {messages.map((msg, i) => (
                   <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div 
@@ -4987,8 +5003,15 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             )}
           </div>
 
+          {/* OR Divider */}
+          <div className="flex items-center gap-2 my-2">
+            <div className="flex-1 h-px bg-slate-300"></div>
+            <span className="text-xs font-bold text-slate-500 uppercase">Or</span>
+            <div className="flex-1 h-px bg-slate-300"></div>
+          </div>
+
           {/* Text Search Bar */}
-          <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col min-h-[100px]">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Quick Search</p>
             <div className="relative">
               <input
@@ -5009,6 +5032,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 </button>
               )}
             </div>
+            <p className="text-[10px] text-slate-400 mt-2">Filter the test list below by name, vendor, or cancer type</p>
           </div>
         </div>
       </div>
