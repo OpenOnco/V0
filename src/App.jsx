@@ -5979,7 +5979,7 @@ const OpennessAward = () => {
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award</p>
+            <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award for most comprehensive sharing of test data</p>
             <span className="px-2 py-0.5 bg-amber-200 text-amber-800 text-[10px] font-medium rounded-full">2025</span>
           </div>
           <p className="text-xl font-bold text-slate-800">{topVendor}</p>
