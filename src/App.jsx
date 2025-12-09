@@ -2,80 +2,15 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Analytics } from '@vercel/analytics/react';
 
-// ============================================
-// RECENTLY ADDED TESTS - UPDATE ON EACH DEPLOY
-// ============================================
-// ⚠️ IMPORTANT: When adding new tests, add them here FIRST with current date
-// This powers the "Recently Added" section on the homepage
+// Recently added tests - update this when adding new tests to the database
 // Format: { id, name, vendor, category, dateAdded }
-// Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
-  { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
-  { id: 'mrd-17', name: 'Labcorp Plasma Detect', vendor: 'Labcorp', category: 'MRD', dateAdded: 'Dec 8, 2025' },
-  { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
-  { id: 'cgp-15', name: 'Neo Comprehensive', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'trm-9', name: 'MSK-ACCESS', vendor: 'SOPHiA GENETICS', category: 'TRM', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 4, 2025' },
   { id: 'trm-8', name: 'Northstar Response', vendor: 'BillionToOne', category: 'TRM', dateAdded: 'Dec 3, 2025' },
 ];
-
-// ============================================
-// Vendor Badges - Awards and recognition
-// ============================================
-const VENDOR_BADGES = {
-  'Exact Sciences': [
-    { id: 'openness-2025', icon: '🏆', label: 'Openness Award 2025', tooltip: 'OpenOnco Openness Award 2025 — Highest data disclosure among vendors with 2+ tests' }
-  ],
-};
-
-// ============================================
-// Chat Model Options
-// ============================================
-const CHAT_MODELS = [
-  { id: 'claude-haiku-4-5-20251001', name: 'More speed', description: 'Fast responses' },
-  { id: 'claude-sonnet-4-5-20250929', name: 'More thinking', description: 'Deeper analysis' },
-];
-
-// Helper to check if vendor has badges
-const getVendorBadges = (vendor) => {
-  if (!vendor) return [];
-  // Check exact match first
-  if (VENDOR_BADGES[vendor]) return VENDOR_BADGES[vendor];
-  // Check if vendor name contains a badge key
-  for (const [key, badges] of Object.entries(VENDOR_BADGES)) {
-    if (vendor.includes(key) || key.includes(vendor)) return badges;
-  }
-  return [];
-};
-
-// VendorBadge component - displays badges next to vendor name
-const VendorBadge = ({ vendor, size = 'sm' }) => {
-  const badges = getVendorBadges(vendor);
-  if (badges.length === 0) return null;
-  
-  const sizeClasses = {
-    xs: 'text-xs',
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg'
-  };
-  
-  return (
-    <>
-      {badges.map(badge => (
-        <span 
-          key={badge.id}
-          className={`${sizeClasses[size]} cursor-help ml-1 inline-flex items-center`}
-          title={badge.tooltip}
-        >
-          <span className="hover:scale-110 transition-transform">{badge.icon}</span>
-        </span>
-      ))}
-    </>
-  );
-};
 
 // ============================================
 // Lifecycle Navigator Constants
@@ -852,6 +787,33 @@ Write in a professional but engaging editorial style, like a weekly newsletter d
         </span>
       </div>
 
+      {/* Recently Added Tests - 3 line compact display */}
+      <div className="mb-3 pb-3 border-b border-slate-100">
+        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">Recently Added OpenOnco Tests</p>
+        <div className="space-y-1">
+          {RECENTLY_ADDED_TESTS.map((test) => (
+            <div
+              key={test.id}
+              onClick={() => handleTestClick(test)}
+              className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 rounded px-1 py-0.5 -mx-1 transition-colors group"
+            >
+              <span className={`${categoryColors[test.category]} text-white text-[9px] px-1.5 py-0.5 rounded font-medium`}>
+                {test.category}
+              </span>
+              <span className="text-xs font-medium text-slate-700 group-hover:text-[#2A63A4] transition-colors">
+                {test.name}
+              </span>
+              <span className="text-[10px] text-slate-400">
+                {test.vendor}
+              </span>
+              <span className="text-[10px] text-slate-300 ml-auto">
+                {test.dateAdded}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -1015,8 +977,8 @@ const mrdTestData = [
     "tat": 35.0,
     "tatNotes": "Overall paradigm: ~4–5 weeks for initial panel creation, ~2 weeks for follow-up MRD timepoints.",
     "fdaStatus": "CLIA LDT (early access / clinical offering)",
-    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance; additional solid tumor coverage via Tempus xM collaboration expanding.",
-    "cptCodes": "MolDX with DEX Z-code",
+    "reimbursement": "Medicare covered for stage II-III breast cancer MRD surveillance; additional solid tumor coverage via Tempus xM collaboration expanding.",
+    "cptCodes": "81479 (MolDX with DEX Z-code)",
     "clinicalAvailability": "Clinical LDT – shipping (initial market availability)",
     "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf",
     "clinicalTrials": "NCT06230185 (422); VICTORI study interim cohort (~71)",
@@ -1081,10 +1043,10 @@ const mrdTestData = [
     "tat": 28.0,
     "tatNotes": "Approximate baseline TAT ~4 weeks; subsequent MRD timepoints ~10 days.",
     "fdaStatus": "CLIA LDT",
-    "reimbursement": "Medicare (CRC only)",
-    "reimbursementNote": "Medicare MolDX coverage for colorectal cancer MRD only (announced July 2025). Not covered for other cancer types. Broader payer adoption evolving.",
-    "cptCodes": "PLA pending",
-    "cptCodesNotes": "Payer policies vary.",
+    "reimbursement": "Medicare covered for CRC MRD (including surveillance)",
+    "reimbursementNote": "Coverage announced July 2025; broader payer adoption evolving",
+    "cptCodes": "81479 (MolDX with DEX Z-code); PLA pending",
+    "cptCodesNotes": "MolDX unlisted code; payer policies vary.",
     "clinicalAvailability": "Clinical LDT – shipping",
     "independentValidation": "Yes",
     "independentValidationNotes": "Prospective Alpha-/Beta-CORRECT CRC cohorts.",
@@ -1133,10 +1095,10 @@ const mrdTestData = [
     "tat": 28.0,
     "tatNotes": "Initial tumor profiling and personalized assay build typically reported in ~3–4 weeks; subsequent blood tests often return in ~3–5 days in published experience.",
     "fdaStatus": "CLIA LDT (US) with international laboratory service offerings.",
-    "reimbursement": "Medicare coverage for early-stage breast cancer; additional coverage emerging.",
+    "reimbursement": "Medicare covered for early-stage breast cancer; additional coverage emerging.",
     "reimbursementNote": "CMS coverage established for Pathlight MRD in early-stage breast cancer across all subtypes (2025); other indications and payers evolving.",
-    "cptCodes": "No dedicated PLA as of 2025; payer-specific coding applies.",
-    "cptCodesNotes": "Contact vendor for current billing guidance.",
+    "cptCodes": "81479 (MolDX/other payer-specific coding; no dedicated PLA as of 2025).",
+    "cptCodesNotes": "MolDX unlisted molecular pathology code with DEX Z-code.",
     "clinicalAvailability": "Clinical LDT – shipping (select geographies)",
     "clinicalTrials": "TRACER study (cTdna evaluation in eaRly breAst canCER); 100 patients with stage I–III breast cancer of all subtypes; Clinical Cancer Research, Jan 2025",
     "totalParticipants": 100,
@@ -1177,13 +1139,13 @@ const mrdTestData = [
     "tat": 35.0,
     "tatNotes": "Approximate TAT ~5 weeks baseline, ~1 week longitudinally.",
     "fdaStatus": "CLIA LDT",
-    "reimbursement": "Medicare coverage for selected indications; MolDX framework applied.",
+    "reimbursement": "Medicare covered for selected indications; MolDX framework applied.",
     "reimbursementNote": "LCDs describe coverage in specific solid tumors (e.g., breast and HPV-negative head & neck cancer) with broader multi-tumor positioning in trials.",
     "commercialPayers": ["Blue Shield of California"],
     "commercialPayersCitations": "https://www.decibio.com/",
     "commercialPayersNotes": "Blue Shield of California covers RaDaR for MRD testing. Coverage continues to expand as clinical evidence builds.",
-    "cptCodes": "PLA under consideration.",
-    "cptCodesNotes": "Contact vendor for current billing guidance.",
+    "cptCodes": "81479 (MolDX with DEX Z-code); PLA under consideration.",
+    "cptCodesNotes": "MolDX unlisted molecular pathology code with DEX Z-code.",
     "clinicalAvailability": "Clinical LDT – shipping",
     "clinicalTrials": "ISLB 2025 bridging study, 'Performance Comparison of RaDaR 1.0 and RaDaR ST Assays for Circulating Tumor DNA Detection Across Solid Tumor Types'; 166 patients across 15 solid tumor types; 97% concordance with RaDaR 1.0",
     "totalParticipants": 166,
@@ -1244,12 +1206,12 @@ const mrdTestData = [
     "tatCitations": "https://www.guardanthealth.com/solutions/guardant-reveal/",
     "tatNotes": "Guardant reports a typical ~7-day turnaround from sample receipt for Reveal.",
     "fdaStatus": "CLIA LDT; not FDA cleared/approved as of 2025.",
-    "reimbursement": "Medicare (CRC only)",
-    "reimbursementNote": "Medicare MolDX coverage for colorectal cancer MRD only - post-surgical and surveillance settings after curative-intent treatment. Not covered for other cancer types. Commercial coverage expanding via select BCBS plans.",
+    "reimbursement": "Medicare covered for colorectal cancer MRD including post-surgical and surveillance settings; commercial coverage expanding.",
+    "reimbursementNote": "Initial Medicare LCD for CRC MRD after curative-intent treatment; subsequent updates extended coverage to surveillance and broader CRC use; additional payer adoption ongoing.",
     "commercialPayers": ["BCBS Louisiana", "Geisinger Health Plan"],
     "commercialPayersCitations": "https://www.businesswire.com/news/home/20230720806084/en/Guardant-Health-receives-first-commercial-payor-coverage-for-Guardant-Reveal%E2%84%A2-test-from-Blue-Cross-and-Blue-Shield-of-Louisiana/",
     "commercialPayersNotes": "Blue Cross Blue Shield of Louisiana became first commercial payer to cover Guardant Reveal in July 2023. Geisinger Health Plan added coverage later in 2023. Additional BCBS plans (including BCBS Massachusetts) appear to have medical policies; verify with specific plan.",
-    "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025).",
+    "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025; historically billed under 81479/MolDX).",
     "cptCodesNotes": "Guardant Reveal PLA (2025).",
     "availableRegions": ["US"],
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -1327,8 +1289,8 @@ const mrdTestData = [
     "tat": 28.0,
     "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1–1.5 weeks for follow-up tests.",
     "fdaStatus": "CLIA LDT; not FDA-cleared/approved as of late 2025 (clinical validation via numerous peer-reviewed studies).",
-    "reimbursement": "Medicare (CRC, Breast, Bladder, NSCLC, Ovarian, ICI)",
-    "reimbursementNote": "Medicare MolDX coverage for: CRC (stage II-IV, oligometastatic), breast cancer (neoadjuvant, stage IIb+ adjuvant/recurrence), bladder (MIBC), NSCLC (stage I-III surveillance), ovarian/fallopian/peritoneal, and pan-solid ICI response monitoring. ADLT pricing. Coverage varies by indication - verify specific cancer type with payer.",
+    "reimbursement": "Broad Medicare (MolDX) coverage across multiple solid tumors; ADLT pricing in place.",
+    "reimbursementNote": "Signatera is covered by Medicare for several indications (CRC, breast, others) and uses ADLT/PLA coding with widespread commercial payer recognition.",
     "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California"],
     "commercialPayersCitations": "https://www.natera.com/oncology/billing/",
     "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan.",
@@ -1378,7 +1340,7 @@ const mrdTestData = [
     "fdaStatus": "CLIA LDT (for clinical xM portfolio) with RUO offering for biopharma; not FDA cleared/approved as of 2025.",
     "reimbursement": "Coverage emerging; verify payer-specific policies.",
     "reimbursementNote": "xM MRD is newer than some competitors; commercial and Medicare coverage are evolving and may currently be more limited than for Signatera or Guardant Reveal.",
-    "cptCodes": "Contact vendor for current billing guidance.",
+    "cptCodes": "81479 (MolDX with DEX Z-code)",
     "clinicalAvailability": "Clinical LDT – shipping for colorectal cancer; RUO version also available via Tempus Life Sciences.",
     "clinicalTrials": "GALAXY (CIRCULATE-Japan) subset analysis; 80 resected stage II–III colorectal cancer patients randomly selected and enriched for recurrence; Tempus xM tumor-naïve MRD assay with methylation + variant classifiers",
     "totalParticipants": 80,
@@ -1424,7 +1386,7 @@ const mrdTestData = [
     "fdaStatus": "CLIA / CAP laboratory-developed test offered via Early Experience Program for stage III colon cancer; also available as a Research Use Only (RUO) service for biopharma trials; not FDA-cleared/approved.",
     "reimbursement": "No established routine coverage; early-access / research-focused offering",
     "reimbursementNote": "Positioned primarily for research, clinical trials, and an Early Experience Program in stage III colon cancer. No public Medicare LCD or dedicated PLA code as of 2025; confirm billing and coverage with Labcorp / payers.",
-    "cptCodesNotes": "No public PLA/CPT code specific to Labcorp Plasma Detect as of 2025; contact Labcorp for current billing guidance.",
+    "cptCodesNotes": "No public PLA/CPT code specific to Labcorp Plasma Detect as of 2025; billing typically requires payer-specific guidance and may rely on unlisted molecular pathology codes (e.g., 81479).",
     "clinicalAvailability": "Early Experience Program for stage III colon cancer in clinical practice; broader use as RUO test for translational research and clinical trials across solid tumors.",
     "independentValidation": "Yes",
     "independentValidationNotes": "Clinically validated in the PROVENC3 stage III colon cancer cohort (AACR 2024) and related ASCO/ESMO presentations assessing post-surgery and post-adjuvant ctDNA status and recurrence risk.",
@@ -1661,7 +1623,7 @@ const mrdTestData = [
     "fdaStatus": "Clinical LDT – CLIA high-complexity test; CAP and NYSDOH accredited; NOT FDA cleared",
     "fdaStatusCitations": "Naveris website; Diagnostics 2023;13:725.",
     "reimbursement": "Medicare",
-    "reimbursementNote": "Medicare coverage via Palmetto GBA MolDX: HPV+ oropharyngeal cancer (Nov 2023), anal squamous cell carcinoma (Nov 2025). CMS ADLT designation effective April 2024.",
+    "reimbursementNote": "Medicare covered via Palmetto GBA MolDX: HPV+ oropharyngeal cancer (Nov 2023), anal squamous cell carcinoma (Nov 2025). CMS ADLT designation effective April 2024.",
     "commercialPayers": ["Highmark", "Blue Shield of California"],
     "commercialPayersCitations": "Naveris press releases Feb 2024, July 2024.",
     "commercialPayersNotes": "Highmark coverage announced Feb 2024; Blue Shield of California coverage effective July 1, 2024.",
@@ -1747,162 +1709,9 @@ const mrdTestData = [
       "upfrontValueUSD": 275000000,
       "earnoutPotentialUSD": 175000000
     }
-  },
-  {
-    "id": "mrd-16",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Invitae PCM",
-    "vendor": "Labcorp (Invitae)",
-    "approach": "Tumor-informed",
-    "method": "Tumor-informed, whole-exome sequencing-based MRD assay: WES of tumor and matched normal identifies 18-50 patient-specific variants, which are tracked at high depth in plasma using Anchored Multiplex PCR (AMP) chemistry with error correction.",
-    "cancerTypes": [
-      "NSCLC",
-      "Breast",
-      "Colorectal",
-      "Pancreatic",
-      "Head and neck",
-      "Multi-solid"
-    ],
-    "indicationsNotes": "Invitae Personalized Cancer Monitoring (PCM) pan-cancer tumor-informed MRD assay, now part of Labcorp following Aug 2024 acquisition. Co-developed with TRACERx consortium. FDA Breakthrough Device designation. Not indicated for hematological malignancies, CNS malignancies, or sarcomas.",
-    "sensitivity": 76.9,
-    "sensitivityCitations": "Garcia-Murillas I et al. Breast Cancer Res 2025; TRACERx lung cancer studies.",
-    "sensitivityNotes": "76.9% clinical sensitivity in breast cancer monitoring phase for patients who relapsed. TRACERx NSCLC showed 93% (13/14) prediction of relapse post-resection.",
-    "specificity": 100,
-    "specificityCitations": "Garcia-Murillas I et al. Breast Cancer Res 2025.",
-    "specificityNotes": "100% specificity in breast cancer monitoring cohort (n=61). No false positives reported.",
-    "lod": "80 ppm",
-    "lod95": null,
-    "lodCitations": "Invitae PCM analytical validation; GenomeWeb Sept 2023.",
-    "lodNotes": "LOD of 0.008% VAF (80 ppm) with 60ng cfDNA input and 18-50 variants at baseline threshold. LOD of 0.05% VAF (500 ppm) with 10ng cfDNA and 18 variants at monitoring threshold.",
-    "leadTimeVsImaging": 351,
-    "leadTimeVsImagingCitations": "Garcia-Murillas I et al. Breast Cancer Res 2025.",
-    "leadTimeVsImagingNotes": "Median lead time 11.7 months (351 days) before clinical relapse in breast cancer. TRACERx NSCLC showed median 70 days, up to 136 days in follow-up cohort.",
-    "requiresTumorTissue": "Yes",
-    "requiresTumorTissueNotes": "Requires FFPE tumor tissue plus matched-normal blood for baseline WES panel design.",
-    "requiresMatchedNormal": "Yes",
-    "variantsTracked": "18-50",
-    "variantsTrackedNotes": "Invitae algorithm selects 18-50 tumor-specific variants from WES results. Range allows balance of sensitivity in low vs high mutational burden cancers.",
-    "initialTat": 21,
-    "initialTatNotes": "Approximately 3 weeks for baseline panel design from tumor/normal WES.",
-    "followUpTat": 10,
-    "followUpTatNotes": "Monitoring timepoints typically reported within 10 days.",
-    "bloodVolume": 20,
-    "bloodVolumeNotes": "Standard collection: two 10mL Streck cfDNA tubes (20mL total).",
-    "fdaStatus": "CLIA LDT; FDA Breakthrough Device designation",
-    "fdaStatusCitations": "Invitae/Labcorp website; FDA BDD program.",
-    "reimbursement": "Coverage emerging",
-    "reimbursementNote": "Under Novitas MAC jurisdiction (not MolDX/Palmetto). Labcorp pursuing coverage pathways post-acquisition.",
-    "cptCodes": null,
-    "clinicalAvailability": "Clinical LDT – shipping (Metro Park, NJ laboratory)",
-    "clinicalTrials": "TRACERx (NSCLC, ~850 pts); MARIA (pan-tumor); ARTEMIS (pancreatic); multiple breast and GI studies",
-    "clinicalTrialsCitations": "Invitae/Labcorp press releases; ClinicalTrials.gov",
-    "totalParticipants": 1000,
-    "totalParticipantsNotes": "TRACERx alone enrolled ~850 pts; additional studies in breast, pancreatic, colorectal.",
-    "numPublications": 15,
-    "numPublicationsPlus": true,
-    "numPublicationsCitations": "TRACERx consortium publications; Garcia-Murillas et al.",
-    "isRUO": false,
-    "isInvestigational": false,
-    "isClinicalLDT": true,
-    "regulatoryStatusNotes": "CAP-accredited, CLIA-certified laboratory (Metro Park, NJ). Acquired by Labcorp Aug 2024 via Invitae bankruptcy sale ($239M)."
-  },
-  {
-    "id": "mrd-17",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Labcorp Plasma Detect",
-    "vendor": "Labcorp",
-    "approach": "Tumor-informed",
-    "method": "Tumor-informed, whole-genome sequencing-based MRD assay: WGS of tumor and matched-normal (buffy coat) identifies thousands of patient-specific somatic variants. Proprietary machine learning algorithm tracks these variants in plasma cfDNA without need for bespoke panel manufacturing.",
-    "cancerTypes": [
-      "Colon cancer (Stage III)",
-      "Lung cancer (in validation)",
-      "Bladder cancer (in validation)",
-      "Multi-solid (expanding)"
-    ],
-    "indicationsNotes": "Labcorp Plasma Detect WGS-based MRD assay. First tumor-informed MRD solution from Labcorp (distinct from Invitae PCM). Clinically validated for stage III colon cancer; clinical use launched April 2025 via Early Experience Program. Expanding to additional solid tumors.",
-    "sensitivity": null,
-    "sensitivityCitations": "Labcorp press releases; Nature Medicine 2025; Clinical Cancer Research 2025.",
-    "sensitivityNotes": "High sensitivity demonstrated in validation studies; specific values pending publication from PROVENC3 and MEDOCC-CrEATE trials.",
-    "specificity": null,
-    "specificityCitations": "Labcorp press releases.",
-    "specificityNotes": "High specificity with WGS-based approach tracking thousands of variants. Specific values pending publication.",
-    "lod": "10 ppm",
-    "lod95": "10 ppm",
-    "lodCitations": "Labcorp Plasma Detect product page.",
-    "lodNotes": "LOD95 of 0.001% (10 ppm). WGS approach tracks thousands of tumor-specific variants (vs 18-50 for WES-based approaches), enabling improved sensitivity at low ctDNA levels.",
-    "leadTimeVsImaging": null,
-    "leadTimeVsImagingCitations": "Labcorp press releases Nov 2025.",
-    "leadTimeVsImagingNotes": "Detects disease progression up to 18 months earlier than standard clinical measures (median 2.3 months lead time in chemotherapy monitoring study).",
-    "requiresTumorTissue": "Yes",
-    "requiresTumorTissueNotes": "Requires tumor tissue for WGS plus buffy coat for germline/CHIP filtering.",
-    "requiresMatchedNormal": "Yes",
-    "requiresMatchedNormalNotes": "Buffy coat sequencing enables robust CHIP variant filtering.",
-    "variantsTracked": "Thousands",
-    "variantsTrackedNotes": "WGS identifies thousands of high-confidence, patient-specific somatic variants. No bespoke panel manufacturing required.",
-    "initialTat": 14,
-    "initialTatNotes": "Landmark timepoint results in as few as 14 days. Standardized WGS workflow eliminates custom reagent delays.",
-    "followUpTat": 7,
-    "followUpTatNotes": "Longitudinal monitoring timepoints in as few as 7 days.",
-    "bloodVolume": null,
-    "bloodVolumeNotes": "Standard blood collection; specific volume not publicly disclosed.",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusCitations": "Labcorp press release April 2025.",
-    "reimbursement": "Coverage emerging",
-    "reimbursementNote": "Clinical use launched April 2025 for stage III colon cancer via Early Experience Program. Reimbursement pathways in development.",
-    "cptCodes": null,
-    "clinicalAvailability": "Clinical LDT – Early Experience Program (stage III colon cancer); Research Use for other indications",
-    "clinicalTrials": "PROVENC3 (colon cancer validation with NKI); MEDOCC-CrEATE (stage II colon ACT); 10+ additional clinical studies in US and internationally",
-    "clinicalTrialsCitations": "Labcorp press releases; Nature Medicine 2025; Clinical Cancer Research 2025.",
-    "totalParticipants": null,
-    "totalParticipantsNotes": "Currently evaluated in 10+ clinical studies across multiple cancer types.",
-    "numPublications": 2,
-    "numPublicationsCitations": "Nature Medicine 2025 (mesothelioma); Clinical Cancer Research 2025 (head and neck).",
-    "isRUO": false,
-    "isInvestigational": false,
-    "isClinicalLDT": true,
-    "regulatoryStatusNotes": "Developed under PGDx quality management system and design control. Clinical use for stage III colon cancer; research use for other solid tumors. Expanding indications expected."
-  },
-  {
-    "id": "mrd-18",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Caris Assure",
-    "vendor": "Caris Life Sciences",
-    "approach": "Tumor-naïve MRD (WES/WTS cfDNA + cfRNA)",
-    "method": "AI-enabled whole exome and whole transcriptome sequencing (WES/WTS) from plasma cfDNA/cfRNA and buffy coat WBC DNA/RNA with machine learning MRD model; CHIP subtraction for accuracy",
-    "methodCitations": "https://www.nature.com/articles/s41598-025-08986-0 | https://www.carislifesciences.com/physicians/physician-tests/caris-assure/",
-    "cancerTypes": ["All solid tumors"],
-    "targetPopulation": "Cancer patients requiring MRD detection and disease monitoring; tumor-naïve approach does not require prior tissue profiling",
-    "indicationsNotes": "Multi-functional platform validated for MRD detection across solid tumors. Disease-free survival stratification: HR=33.4 (p<0.005) for MRD-positive vs MRD-negative patients. Also supports therapy selection and treatment response monitoring on same platform.",
-    "sensitivity": null,
-    "sensitivityNotes": "MRD model trained on 3,439 patients and validated on independent set of 86 MRD patients. Tumor-naïve approach using AI-derived features from plasma.",
-    "sensitivityCitations": "https://www.nature.com/articles/s41598-025-08986-0",
-    "specificity": 99.6,
-    "specificityNotes": "99.6% specificity in MRD/monitoring validation cohorts.",
-    "specificityCitations": "https://www.nature.com/articles/s41598-025-08986-0",
-    "performanceNotes": "For MRD detection, disease-free survival of patients predicted to have an event (MRD-positive) was significantly shorter than those predicted MRD-negative (HR=33.4, p<0.005). For monitoring, HR=4.39, p=0.008. Uses tumor-naïve approach - no prior tissue profiling required.",
-    "performanceCitations": "https://www.nature.com/articles/s41598-025-08986-0",
-    "fdaStatus": "CLIA LDT",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Coverage expanding; contact Caris for current payer coverage.",
-    "clinicalAvailability": "Commercially available in US since late 2022",
-    "availableRegions": ["US"],
-    "initialTat": 14,
-    "initialTatNotes": "Initial MRD assessment typically 10-14 business days.",
-    "followUpTat": 14,
-    "sampleType": "Whole blood",
-    "bloodVolume": 20,
-    "bloodVolumeNotes": "Approximately 20mL whole blood; plasma and buffy coat analyzed separately.",
-    "clinicalTrials": "MRD model validated on 86 patients; monitoring validated on 101 patients; 3,439 training samples",
-    "totalParticipants": 3626,
-    "numPublications": 5,
-    "numPublicationsPlus": true,
-    "numPublicationsCitations": "https://www.nature.com/articles/s41598-025-08986-0",
-    "isRUO": false,
-    "isInvestigational": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "Tumor-naïve MRD approach using AI/ML on WES/WTS data - no prior tissue profiling required. Only liquid biopsy sequencing both plasma and buffy coat for CHIP subtraction, improving accuracy over plasma-only assays."
   }
 ];
+
 
 const ecdTestData = [
   {
@@ -1920,9 +1729,6 @@ const ecdTestData = [
     "indicationGroup": "CRC",
     "sensitivity": 83.1,
     "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477985/ | https://www.accessdata.fda.gov/cdrh_docs/pdf23/P230009B.pdf",
-    "advancedAdenomaSensitivity": 13.2,
-    "advancedAdenomaSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477985/",
-    "advancedAdenomaSensitivityNotes": "Limited sensitivity for precancerous advanced adenomas (13.2%); blood-based tests generally less effective at detecting polyps than stool-based tests.",
     "stageISensitivity": 54.5,
     "stageIISensitivity": 100.0,
     "stageIIISensitivity": 96.0,
@@ -1940,7 +1746,7 @@ const ecdTestData = [
     "leadTimeNotes": "No formal lead-time vs colonoscopy; positioned as guideline-accepted primary screening option every 3 years in average-risk adults",
     "fdaStatus": "FDA-approved PMA (P230009) July 26 2024 - First blood test for primary CRC screening; NCCN-recommended",
     "reimbursement": "Medicare",
-    "reimbursementNote": "Medicare coverage per NCD 210.3; commercial coverage expanding",
+    "reimbursementNote": "Medicare covered per NCD 210.3; commercial coverage expanding",
     "commercialPayers": [],
     "commercialPayersCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/Guardant-Healths-Shield-Blood-Test-Now-Covered-for-VA-Community-Care-Beneficiaries/default.aspx",
     "commercialPayersNotes": "No commercial payer coverage yet. Government programs: VA Community Care Network covers Shield with no copay for average-risk individuals 45+; TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
@@ -2026,10 +1832,7 @@ const ecdTestData = [
     "targetPopulation": "Average-risk adults 45-75 years for CRC screening at home",
     "indicationGroup": "CRC",
     "sensitivity": 93.9,
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992 | https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2024/FDA-Approves-Exact-Sciences-Cologuard-Plus-Test-Setting-a-New-Benchmark-in-Non-Invasive-Colorectal-Cancer-Screening/default.aspx",
-    "advancedAdenomaSensitivity": 43.4,
-    "advancedAdenomaSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
-    "advancedAdenomaSensitivityNotes": "43% sensitivity for advanced precancerous lesions (APL) including advanced adenomas and sessile serrated lesions ≥1cm; significantly outperforms FIT (23% for APL).",
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/|https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2024/FDA-Approves-Exact-Sciences-Cologuard-Plus-Test-Setting-a-New-Benchmark-in-Non-Invasive-Colorectal-Cancer-Screening/default.aspx",
     "stageISensitivity": 87.0,
     "stageISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
     "stageIISensitivity": 94.0,
@@ -2039,7 +1842,7 @@ const ecdTestData = [
     "stageIVSensitivity": 100.0,
     "stageIVSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
     "specificity": 91.0,
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992 | https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2024/FDA-Approves-Exact-Sciences-Cologuard-Plus-Test-Setting-a-New-Benchmark-in-Non-Invasive-Colorectal-Cancer-Screening/default.aspx",
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/|https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2024/FDA-Approves-Exact-Sciences-Cologuard-Plus-Test-Setting-a-New-Benchmark-in-Non-Invasive-Colorectal-Cancer-Screening/default.aspx",
     "ppv": 3.2,
     "ppvCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
     "ppvDefinition": "PPV for colorectal cancer (CRC) in BLUE-C average-risk screening population",
@@ -2051,7 +1854,7 @@ const ecdTestData = [
     "leadTimeNotes": "Non-invasive alternative to colonoscopy; 30% lower false positive rate vs original Cologuard; significantly improved adherence vs colonoscopy",
     "fdaStatus": "FDA-approved PMA October 4 2024",
     "reimbursement": "Medicare",
-    "reimbursementNote": "Medicare coverage; $0 out-of-pocket for eligible; broad commercial payer coverage",
+    "reimbursementNote": "Medicare covered; $0 out-of-pocket for eligible; broad commercial payer coverage",
     "commercialPayers": ["Humana"],
     "commercialPayersCitations": "https://www.cologuard.com/insurance",
     "commercialPayersNotes": "Cologuard Plus confirmed coverage: Medicare Part B and Humana Medicare Advantage. Government programs: TRICARE expected based on legacy Cologuard coverage. Other major commercial payers (UnitedHealthcare, Aetna, Cigna, Anthem BCBS) anticipated to extend legacy Cologuard coverage to Plus but should be validated per plan.",
@@ -2083,7 +1886,7 @@ const ecdTestData = [
     "targetPopulation": "Average-risk adults 45+ years for CRC screening",
     "indicationGroup": "CRC",
     "sensitivity": 93.0,
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717 | https://www.accessdata.fda.gov/cdrh_docs/pdf23/P230001B.pdf",
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717/|https://www.accessdata.fda.gov/cdrh_docs/pdf23/P230001B.pdf",
     "stageISensitivity": 100.0,
     "stageISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717/",
     "stageIISensitivity": 71.4,
@@ -2091,7 +1894,7 @@ const ecdTestData = [
     "stageIIISensitivity": 100.0,
     "stageIIISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717/",
     "specificity": 88.0,
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717 | https://www.accessdata.fda.gov/cdrh_docs/pdf23/P230001B.pdf",
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717/|https://www.accessdata.fda.gov/cdrh_docs/pdf23/P230001B.pdf",
     "ppv": 1.9,
     "ppvCitations": "https://pubmed.ncbi.nlm.nih.gov/37930717/",
     "ppvDefinition": "PPV for colorectal cancer (CRC) in PMA primary effectiveness cohort",
@@ -2151,7 +1954,6 @@ const ecdTestData = [
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not covered by Medicare or commercial payers; not billed to insurance; FSA/HSA eligible",
     "clinicalAvailability": "Launched September 2025 via Quest Diagnostics (7000+ sites)",
-    "availableRegions": ["US"],
     "tat": "Not publicly specified",
     "sampleType": "Whole blood in LBgard tubes",
     "sampleVolume": "4 tubes × 8.5 mL = 34 mL total",
@@ -2179,7 +1981,7 @@ const ecdTestData = [
     "targetPopulation": "Average-risk adults for CRC screening",
     "indicationGroup": "CRC",
     "sensitivity": 79.2,
-    "sensitivityCitations": "https://www.freenome.com/newsroom/freenome-announces-topline-results-for-preempt-crc-to-validate-the-first-version-of-its-blood-based-test-for-the-early-detection-of-colorectal-cancer | https://ascopubs.org/doi/10.1200/JCO.2025.43.4_suppl.18",
+    "sensitivityCitations": "https://www.freenome.com/newsroom/freenome-announces-topline-results-for-preempt-crc-to-validate-the-first-version-of-its-blood-based-test-for-the-early-detection-of-colorectal-cancer/|https://ascopubs.org/doi/10.1200/JCO.2025.43.4_suppl.18",
     "stageISensitivity": 57.1,
     "stageISensitivityCitations": "https://www.freenome.com/newsroom/freenome-announces-topline-results-for-preempt-crc-to-validate-the-first-version-of-its-blood-based-test-for-the-early-detection-of-colorectal-cancer/",
     "stageIISensitivity": 100.0,
@@ -2189,7 +1991,7 @@ const ecdTestData = [
     "stageIVSensitivity": 100.0,
     "stageIVSensitivityCitations": "https://www.freenome.com/newsroom/freenome-announces-topline-results-for-preempt-crc-to-validate-the-first-version-of-its-blood-based-test-for-the-early-detection-of-colorectal-cancer/",
     "specificity": 91.5,
-    "specificityCitations": "https://www.freenome.com/newsroom/freenome-announces-topline-results-for-preempt-crc-to-validate-the-first-version-of-its-blood-based-test-for-the-early-detection-of-colorectal-cancer | https://ascopubs.org/doi/10.1200/JCO.2025.43.4_suppl.18",
+    "specificityCitations": "https://www.freenome.com/newsroom/freenome-announces-topline-results-for-preempt-crc-to-validate-the-first-version-of-its-blood-based-test-for-the-early-detection-of-colorectal-cancer/|https://ascopubs.org/doi/10.1200/JCO.2025.43.4_suppl.18",
     "ppvDefinition": "PPV for advanced colorectal neoplasia in PREEMPT CRC (not yet populated)",
     "npvDefinition": "NPV for advanced colorectal neoplasia in PREEMPT CRC (not yet populated)",
     "performanceCitations": "PREEMPT CRC JAMA June 2025 (n=48995 enrolled; 27010 analyzed)",
@@ -2371,7 +2173,6 @@ const ecdTestData = [
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not covered by Medicare or commercial payers; no additional cost when ordered with Shield CRC (data exchange model)",
     "clinicalAvailability": "Launched nationally October 2025; available when ordering Shield CRC test with physician opt-in",
-    "availableRegions": ["US"],
     "tat": "~14 days (same blood draw as Shield CRC)",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes (same sample as Shield CRC)",
     "sampleVolume": "4 tubes (no additional blood draw required)",
@@ -2398,7 +2199,7 @@ const ecdTestData = [
     "tumorOriginAccuracy": null,
     "tumorOriginAccuracyNotes": "Does not predict tissue of origin (no CSO/TOO); requires standard diagnostic workup to localize cancer source",
     "sensitivity": 54.0,
-    "sensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
+    "sensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144|https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "sensitivityNotes": "Overall incidence-adjusted sensitivity (IAS) across all stages. IAS is more conservative than observed sensitivity as it weights by cancer incidence.",
     "stageISensitivity": 45.0,
     "stageISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
@@ -2410,7 +2211,7 @@ const ecdTestData = [
     "stageIVSensitivity": 74.0,
     "stageIVSensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "specificity": 99.5,
-    "specificityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
+    "specificityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144|https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "ppv": 64.9,
     "ppvDefinition": "PPV in validation cohort (n=482). Modeled PPV of 40% in screening population age 50+.",
     "npv": 99.5,
@@ -2423,7 +2224,6 @@ const ecdTestData = [
     "reimbursementNote": "No Medicare or commercial insurance coverage. Positioned as affordable/accessible alternative to NGS-based MCED tests.",
     "commercialPayers": [],
     "clinicalAvailability": "Commercially available in US via CLIA-certified lab in Tucson, AZ. Physician-ordered (not direct-to-consumer).",
-    "availableRegions": ["US"],
     "tat": "5 days",
     "tatNotes": "Collection to report turnaround time (includes shipping and processing). Lab processing time is 2-3 days.",
     "sampleType": "Two 10-mL Streck cfDNA BCT tubes",
@@ -2453,13 +2253,13 @@ const ecdTestData = [
     "tumorOriginAccuracy": null,
     "tumorOriginAccuracyNotes": "Single-cancer test; lung-specific",
     "sensitivity": 85.0,
-    "sensitivityCitations": "https://www.globenewswire.com/news-release/2025/11/18/3190424/0/en/UPDATE-PrognomiQ-Launches-ProVue-Lung-a-Proteomics-Based-Laboratory-Developed-Test-to-Aid-in-the-Early-Detection-of-Lung-Cancer.html | https://prognomiq.com/provue/",
+    "sensitivityCitations": "https://www.globenewswire.com/news-release/2025/11/18/3190424/0/en/UPDATE-PrognomiQ-Launches-ProVue-Lung-a-Proteomics-Based-Laboratory-Developed-Test-to-Aid-in-the-Early-Detection-of-Lung-Cancer.html|https://prognomiq.com/provue/",
     "sensitivityNotes": "Overall sensitivity for all stages of lung cancer",
     "stageISensitivity": 81.0,
     "stageISensitivityCitations": "https://www.globenewswire.com/news-release/2025/11/18/3190424/0/en/UPDATE-PrognomiQ-Launches-ProVue-Lung-a-Proteomics-Based-Laboratory-Developed-Test-to-Aid-in-the-Early-Detection-of-Lung-Cancer.html",
     "stageISensitivityNotes": "Stage I sensitivity when treatment is most effective",
     "specificity": 55.0,
-    "specificityCitations": "https://www.globenewswire.com/news-release/2025/11/18/3190424/0/en/UPDATE-PrognomiQ-Launches-ProVue-Lung-a-Proteomics-Based-Laboratory-Developed-Test-to-Aid-in-the-Early-Detection-of-Lung-Cancer.html | https://prognomiq.com/provue/",
+    "specificityCitations": "https://www.globenewswire.com/news-release/2025/11/18/3190424/0/en/UPDATE-PrognomiQ-Launches-ProVue-Lung-a-Proteomics-Based-Laboratory-Developed-Test-to-Aid-in-the-Early-Detection-of-Lung-Cancer.html|https://prognomiq.com/provue/",
     "specificityNotes": "Lower specificity results in higher false positive rate; designed as adjunct to LDCT screening",
     "npv": 99.8,
     "npvNotes": "NPV >99.8% indicates strong rule-out capability",
@@ -2507,7 +2307,7 @@ const ecdTestData = [
     "tumorOriginAccuracy": null,
     "tumorOriginAccuracyNotes": "Single-cancer test; colorectal-specific",
     "sensitivity": 93,
-    "sensitivityCitations": "https://www.businesswire.com/news/home/20230509005536/en | https://newsroom.questdiagnostics.com/2023-11-20-Universal-DX-Announces-Strategic-Collaboration-with-Quest-Diagnostics|https://www.universaldx.com/science",
+    "sensitivityCitations": "https://www.businesswire.com/news/home/20230509005536/en|https://newsroom.questdiagnostics.com/2023-11-20-Universal-DX-Announces-Strategic-Collaboration-with-Quest-Diagnostics|https://www.universaldx.com/science",
     "sensitivityNotes": "93% sensitivity for CRC detection in 1,000-patient multi-cohort study presented at DDW 2023. Company website reports 92% sensitivity with 94% specificity in some materials - slight variations across presentations.",
     "stageISensitivity": 85,
     "stageISensitivityNotes": "Estimated from early-stage (I-II) combined sensitivity of 91%; Stage I likely ~85% based on typical stage distribution patterns. Exact Stage I data not separately reported.",
@@ -2518,10 +2318,10 @@ const ecdTestData = [
     "stageIVSensitivity": 97,
     "stageIVSensitivityNotes": "Later stages typically show higher sensitivity; estimated based on overall 93% and early-stage 91%",
     "advancedAdenomaSensitivity": 54,
-    "advancedAdenomaSensitivityCitations": "https://www.businesswire.com/news/home/20230509005536/en | https://newsroom.questdiagnostics.com/2023-11-20-Universal-DX-Announces-Strategic-Collaboration-with-Quest-Diagnostics",
+    "advancedAdenomaSensitivityCitations": "https://www.businesswire.com/news/home/20230509005536/en|https://newsroom.questdiagnostics.com/2023-11-20-Universal-DX-Announces-Strategic-Collaboration-with-Quest-Diagnostics",
     "advancedAdenomaSensitivityNotes": "54% sensitivity for advanced adenomas at 92% specificity. This pre-cancer detection capability is a key differentiator - may help prevent CRC, not just detect it.",
     "specificity": 92,
-    "specificityCitations": "https://www.businesswire.com/news/home/20230509005536/en | https://www.universaldx.com/science",
+    "specificityCitations": "https://www.businesswire.com/news/home/20230509005536/en|https://www.universaldx.com/science",
     "specificityNotes": "92% specificity in DDW 2023 study. Some company materials report 94% specificity - may reflect different cohorts or thresholds.",
     "ppv": null,
     "ppvNotes": "Not publicly reported from validation studies",
@@ -2531,7 +2331,7 @@ const ecdTestData = [
     "performanceNotes": "Large 1,000-patient international multi-cohort case-control study with prospectively collected samples from US and Europe. Performance validated across multiple presentations at ASCO GI 2023 and DDW 2023.",
     "leadTimeNotes": "Blood-based alternative to colonoscopy and stool-based tests; aims to increase screening compliance among the ~40% of eligible adults not up-to-date on CRC screening",
     "fdaStatus": "Investigational – FDA pivotal trial ongoing",
-    "fdaStatusCitations": "https://clinicaltrials.gov/study/NCT06059963 | https://www.businesswire.com/news/home/20240807274324/en/Universal-DX-Initiates-Clinical-Trial-for-FDA-Approval-of-Signal-C-Colorectal-Cancer-Screening-Blood-Test",
+    "fdaStatusCitations": "https://clinicaltrials.gov/study/NCT06059963|https://www.businesswire.com/news/home/20240807274324/en/Universal-DX-Initiates-Clinical-Trial-for-FDA-Approval-of-Signal-C-Colorectal-Cancer-Screening-Blood-Test",
     "fdaStatusNotes": "FDA premarket approval (PMA) pivotal trial initiated January 2024. Targeting enrollment of 15,000+ patients across 100 investigator sites. Quest Diagnostics oncology center in Lewisville, TX serves as single testing site for trial.",
     "reimbursement": "Not yet established",
     "reimbursementNote": "Pending FDA approval; not currently available for clinical use in US",
@@ -2637,7 +2437,7 @@ const trmTestData = [
     "lodNotes": "3.45 ppm is the LoD95 (limit of detection at 95% confidence). Detection threshold is ~1.67 ppm. WGS-based tumor-informed tracking with up to 1,800 variants provides high sensitivity for low-burden disease.",
     "lodCitations": "Northcott et al. Oncotarget 2024; Personalis NeXT Personal Dx analytical validation brochure.",
     "fdaStatus": "High-complexity LDT in CLIA/CAP lab; not FDA-approved",
-    "reimbursement": "Medicare coverage for select solid tumor indications including stage II-III breast cancer surveillance",
+    "reimbursement": "Medicare covered for select solid tumor indications including stage II-III breast cancer surveillance",
     "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus’ MRD portfolio and covered by Medicare for select solid tumor indications (for example, stage II–III breast cancer surveillance).",
     "clinicalTrials": "NCT06230185 B-STRONGER I TNBC MRD/monitoring study (422); VICTORI resectable colorectal cancer MRD study (~71, interim cohort)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06230185",
@@ -2848,99 +2648,6 @@ const trmTestData = [
     "isClinicalLDT": false,
     "technologyDifferentiator": "Decentralized version of MSK's clinically-validated liquid biopsy assay. Matched tumor-normal design with buffy coat sequencing distinguishes somatic from germline variants and filters CHIP. Ultra-deep ~20,000x coverage enables 0.5% VAF detection. SOPHiA DDM platform enables global laboratory deployment without centralized reference lab requirement.",
     "regulatoryStatusNotes": "RUO status. The original centralized MSK-ACCESS is NY State approved and CLIA-certified at MSK. Decentralized SOPHiA version enables the same validated workflow to be performed at partner laboratories globally. Quest Diagnostics partnership announced for US market."
-  },
-  {
-    "id": "trm-10",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Guardant360 Response",
-    "vendor": "Guardant Health",
-    "approach": "Tumor-agnostic",
-    "method": "Tissue-free liquid biopsy tracking changes in ctDNA levels over time to assess treatment response. Uses the same 74-gene Guardant360 platform to measure molecular response by quantifying ctDNA changes from baseline. Molecular response defined as ≥50% decrease in ctDNA levels.",
-    "cancerTypes": [
-      "Pan-cancer: advanced solid tumors (NSCLC, breast, colorectal, gastric, bladder, and others)"
-    ],
-    "targetPopulation": "Patients with advanced solid tumors receiving immunotherapy or targeted therapy who need early assessment of treatment response",
-    "responseDefinition": "Molecular response = ≥50% decrease in ctDNA levels from baseline. Molecular non-response = <50% decrease or increase in ctDNA. ctDNA changes measured via somatic mutation tracking across 74 genes.",
-    "sensitivity": null,
-    "sensitivityNotes": "Not applicable - response monitoring test measures relative ctDNA changes, not absolute detection.",
-    "specificity": null,
-    "specificityNotes": "Not applicable for response monitoring application.",
-    "lod": null,
-    "lodNotes": "Uses Guardant360 platform with established analytical performance. Response assessment based on relative ctDNA changes rather than absolute detection limits.",
-    "leadTimeVsImaging": 56,
-    "leadTimeVsImagingCitations": "Raja R et al. Clin Cancer Res 2018; Aggarwal C et al. JCO 2019; multiple immunotherapy and targeted therapy studies.",
-    "leadTimeVsImagingNotes": "Predicts treatment response approximately 8 weeks (56 days) earlier than standard RECIST imaging across cancers and therapies. Molecular responders show significantly longer PFS than non-responders.",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusCitations": "Guardant Health website; Guardant360 Response product page.",
-    "reimbursement": "Coverage emerging",
-    "reimbursementNote": "Guardant360 (for initial profiling) has broad Medicare and commercial coverage. Response monitoring reimbursement pathways developing; local coverage determination expected.",
-    "listPrice": 5000,
-    "listPriceNotes": "Cash pay rate for Guardant360 Response is $5,000. Financial assistance available based on medical and financial need.",
-    "listPriceCitations": "Guardant Health website.",
-    "tat": "14 days",
-    "tatNotes": "Results typically within 2 weeks. Used in conjunction with Guardant360 CDx for baseline profiling.",
-    "clinicalAvailability": "Clinical LDT – commercially available",
-    "clinicalAvailabilityNotes": "Launched June 2021. Part of Guardant Complete portfolio alongside Guardant360 CDx, Guardant360 Tissue, and Guardant Reveal.",
-    "clinicalTrials": "50+ studies demonstrating molecular response predicts PFS across immunotherapy and targeted therapy",
-    "clinicalTrialsCitations": "Raja R et al. Clin Cancer Res 2018; Aggarwal C et al. JCO 2019; Kim ST et al. Nat Med 2018; Shaw AT et al. J Thorac Oncol 2021.",
-    "totalParticipants": 5000,
-    "totalParticipantsNotes": "Combined enrollment across 50+ clinical studies validating ctDNA response monitoring.",
-    "numPublications": 50,
-    "numPublicationsPlus": true,
-    "numPublicationsCitations": "Guardant Health website; multiple peer-reviewed publications.",
-    "bloodVolume": 20,
-    "bloodVolumeNotes": "Two 10mL Streck cfDNA tubes (same collection as Guardant360).",
-    "variantsTracked": "74 genes",
-    "variantsTrackedNotes": "Same 74-gene panel as Guardant360. Tracks all detected variants to quantify overall ctDNA burden changes.",
-    "isRUO": false,
-    "isInvestigational": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "First tissue-free liquid biopsy specifically for treatment response monitoring. Complements Guardant360 CDx for treatment selection by providing ongoing response assessment. Serial testing enables early detection of molecular progression before radiographic changes.",
-    "regulatoryStatusNotes": "CLIA-certified LDT performed at Guardant Health Clinical Laboratory (Redwood City, CA). Not FDA cleared/approved. Part of Guardant's oncology portfolio alongside FDA-approved Guardant360 CDx."
-  },
-  {
-    "id": "trm-11",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Caris Assure",
-    "vendor": "Caris Life Sciences",
-    "approach": "Blood-based TRM (cfDNA + cfRNA + WBC)",
-    "method": "AI-enabled whole exome and whole transcriptome sequencing (WES/WTS) from plasma cfDNA/cfRNA and buffy coat WBC DNA/RNA; 22,000 genes; circulating Nucleic Acid Sequencing (cNAS) with CHIP subtraction",
-    "methodCitations": "https://www.carislifesciences.com/physicians/physician-tests/caris-assure/ | https://www.nature.com/articles/s41598-025-08986-0",
-    "indicationsNotes": "Multi-functional liquid biopsy for therapy selection, treatment response monitoring, and MRD detection. Distinguishes somatic tumor variants from clonal hematopoiesis (CH) and germline variants by sequencing both plasma and buffy coat.",
-    "sensitivity": 93.8,
-    "sensitivityNotes": "93.8% positive percent agreement (PPA) with matched tissue collected within 30 days using ≥5ng input material and CHIP subtraction.",
-    "sensitivityCitations": "https://www.nature.com/articles/s41598-025-08986-0 | https://www.carislifesciences.com/physicians/physician-tests/caris-assure/",
-    "specificity": 99.99,
-    "specificityNotes": ">99.99% specificity for variant detection; 96.8% positive predictive value (PPV) for therapy selection.",
-    "specificityCitations": "https://www.nature.com/articles/s41598-025-08986-0",
-    "lod": "0.5% VAF",
-    "lodNotes": ">95% sensitivity for variant allele frequencies ≥0.5%.",
-    "lodCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-introduces-the-caris-assure-liquid-biopsy-assay-at-asco-2022-301560767.html",
-    "performanceNotes": "AI-enabled platform (ABCDai) couples WES/WTS with machine learning. For monitoring, disease-free survival of patients predicted to have an event was significantly shorter (HR=4.39, p=0.008). Detects CH mutations in ~40% of samples, critical for avoiding false positives in therapy selection.",
-    "performanceCitations": "https://www.nature.com/articles/s41598-025-08986-0 | https://www.carislifesciences.com/about/news-and-media/caris-life-sciences-showcases-data-demonstrating-the-clinical-value-of-clonal-hematopoiesis-identification-and-subtraction-in-liquid-biopsy-to-improve-the-accuracy-of-treatment-recommendations/",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "CLIA-certified laboratory developed test. Not FDA cleared/approved.",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Coverage expanding; contact Caris for current payer coverage.",
-    "clinicalAvailability": "Commercially available in US since late 2022",
-    "availableRegions": ["US"],
-    "tat": "10-14 days",
-    "tatNotes": "Turnaround time typically 10-14 business days.",
-    "sampleType": "Whole blood",
-    "sampleTypeNotes": "Blood collection in approved tubes; plasma and buffy coat analyzed separately.",
-    "bloodVolume": 20,
-    "bloodVolumeNotes": "Approximately 20mL whole blood required for plasma and buffy coat extraction.",
-    "numPublications": 5,
-    "numPublicationsPlus": true,
-    "numPublicationsCitations": "https://www.nature.com/articles/s41598-025-08986-0 | https://www.carislifesciences.com/research/publications/",
-    "clinicalTrials": "Validation studies with 1,910 therapy selection samples; 3,439 MRD/monitoring training samples; 86 MRD validation; 101 monitoring validation",
-    "totalParticipants": 5536,
-    "variantsTracked": "22,000 genes (WES/WTS)",
-    "variantsTrackedNotes": "Whole exome (DNA) and whole transcriptome (RNA) sequencing across 22,000 genes. Reports SNVs, indels, CNAs, fusions, MSI, bTMB, and HLA genotype.",
-    "isRUO": false,
-    "isInvestigational": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "Only commercially available liquid biopsy that sequences both plasma and buffy coat (WBC) to distinguish somatic tumor variants from clonal hematopoiesis (CH) and germline variants. CHIP subtraction prevents ~40% of samples from receiving potentially incorrect therapy recommendations based on non-tumor mutations."
   }
 ];
 
@@ -3491,47 +3198,6 @@ const cgpTestData = [
     "reimbursementCitations": "https://www.carislifesciences.com/physicians/profiling/",
     "clinicalAvailability": "Commercially available in US",
     "clinicalAvailabilityCitations": "https://www.carislifesciences.com/physicians/profiling/"
-  },
-  {
-    "id": "cgp-15",
-    "name": "Neo Comprehensive",
-    "vendor": "NeoGenomics",
-    "sampleCategory": "Tissue",
-    "approach": "Tissue CGP",
-    "method": "Comprehensive genomic profiling using DNA and RNA NGS; detects SNVs, indels, CNVs, fusions, splice variants, MSI, and TMB across 517 genes from FFPE tissue samples.",
-    "methodCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/235/neogenomics-expands-ngs-portfolio-with-launch-of-neo | https://www.neogenomics.com/test-menu",
-    "genesAnalyzed": 517,
-    "genesAnalyzedNotes": "517 genes analyzed via both DNA and RNA NGS methods.",
-    "genesAnalyzedCitations": "NeoGenomics press release March 2023; NeoGenomics test menu.",
-    "geneListUrl": "https://www.neogenomics.com/test-menu",
-    "biomarkersReported": ["SNVs", "Indels", "CNVs", "Fusions", "Splice variants", "TMB", "MSI"],
-    "biomarkersReportedNotes": "Comprehensive biomarker detection including both DNA alterations and RNA fusions/splice variants.",
-    "biomarkersReportedCitations": "NeoGenomics press release March 2023.",
-    "cancerTypes": ["All solid tumors"],
-    "cancerTypesCitations": "https://www.neogenomics.com/test-menu",
-    "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling for diagnosis, therapy selection, prognosis, and clinical trial eligibility",
-    "targetPopulationCitations": "NeoGenomics test menu; press releases.",
-    "fdaStatus": "CLIA LDT - NOT FDA approved",
-    "fdaStatusNotes": "CLIA-certified and CAP-accredited laboratory-developed test. New York State approved (Jan 2024).",
-    "fdaStatusCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/276/neogenomics-receives-new-york-state-approval-for-neo",
-    "nccnRecommended": true,
-    "nccnAlignmentType": "biomarker-coverage",
-    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Melanoma", "Prostate Cancer", "Ovarian Cancer"],
-    "nccnGuidelinesNotes": "Pan-cancer CGP aligns with NCCN guidelines for solid tumor biomarker testing. NCCN recommends testing specific genes/biomarkers but does not endorse specific commercial assays by name.",
-    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1",
-    "tat": "7-10 days",
-    "tatNotes": "Improved turnaround time compared to previous NeoGenomics panels. Streamlined workflow.",
-    "tatCitations": "NeoGenomics press release March 2023.",
-    "sampleRequirements": "FFPE tissue (decreased specimen requirements vs previous panels)",
-    "sampleRequirementsCitations": "NeoGenomics press release March 2023.",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Coverage varies by payer. Medicare coverage for CGP in advanced solid tumors. Commercial coverage varies.",
-    "reimbursementCitations": "NeoGenomics website.",
-    "clinicalAvailability": "Commercially available in US (including NY State)",
-    "clinicalAvailabilityCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/276/neogenomics-receives-new-york-state-approval-for-neo",
-    "numPublications": null,
-    "numPublicationsNotes": "Platform launched March 2023; publication record building.",
-    "regulatoryStatusNotes": "CAP-accredited and CLIA-certified laboratories in Fort Myers and Tampa, FL; Aliso Viejo and San Diego, CA; Research Triangle Park, NC; and Houston, TX. New York State approved January 2024."
   }
 ];
 
@@ -3588,30 +3254,23 @@ const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sam
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
   const lengthRule = `LENGTH: Keep responses under 20 lines. Be concise - lead with the answer, then add essential context. Use short paragraphs. Avoid lengthy preambles.`;
-  const scopeReminder = `REMEMBER: Only discuss tests in the database. For medical questions about diseases, genetics, screening decisions, or result interpretation, say "Please discuss with your healthcare provider."`;
   
   switch(persona) {
     case 'Patient':
       return `AUDIENCE: Patient or caregiver seeking to understand options.
-STYLE: Use clear, accessible language. Avoid jargon - if you must use technical terms, briefly explain them. Be warm but careful not to give medical advice. Focus ONLY on explaining what tests exist and their basic attributes. Do NOT suggest whether someone should get tested or interpret what results might mean.
-IMPORTANT: If asked about disease inheritance, genetics, or whether they should be screened, say "That's an important question for your healthcare provider - they can assess your individual situation."
-${lengthRule}
-${scopeReminder}`;
+STYLE: Use clear, accessible language. Avoid jargon - if you must use technical terms, briefly explain them. Be warm and reassuring. Always remind them to discuss options with their healthcare provider. Focus on practical aspects: What does this test do? Is it covered by insurance? What's involved in getting tested?
+${lengthRule}`;
     case 'Clinician':
       return `AUDIENCE: Healthcare professional comparing tests for patients.
-STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on actionable metrics: sensitivity, specificity, LOD, TAT, reimbursement status, FDA clearance. When describing a test, always note its "targetPopulation" field so the clinician can assess fit.
-IMPORTANT: If the described patient doesn't match a test's target population, explicitly note this discrepancy rather than recommending the test.
-${lengthRule}
-${scopeReminder}`;
+STYLE: Be direct and clinical. Use standard medical terminology freely. Focus on actionable metrics: sensitivity, specificity, LOD, TAT, reimbursement status, FDA clearance. Skip basic explanations. Highlight clinically meaningful differences between tests.
+${lengthRule}`;
     case 'Academic/Industry':
       return `AUDIENCE: Researcher or industry professional studying the landscape.
 STYLE: Be technical and detailed. Include methodology details, analytical performance metrics, and validation data. Reference publications and trial data when relevant. Discuss technology differentiators and emerging approaches.
-${lengthRule}
-${scopeReminder}`;
+${lengthRule}`;
     default:
       return `STYLE: Be concise and helpful. Lead with key insights. Use prose not bullets.
-${lengthRule}
-${scopeReminder}`;
+${lengthRule}`;
   }
 };
 
@@ -3782,7 +3441,7 @@ const categoryMeta = {
   TRM: {
     title: 'Treatment Response Monitoring',
     shortTitle: 'Response Monitoring',
-    description: 'Treatment Response Monitoring (TRM) tests track how well a cancer treatment is working by measuring changes in circulating tumor DNA (ctDNA) levels over time. A decrease in ctDNA often indicates the treatment is effective, while stable or rising levels may signal resistance or progression—sometimes weeks before changes appear on imaging scans. This sensitive molecular monitoring helps oncologists optimize therapy for most favorable outcomes, potentially switching ineffective treatments earlier and sparing patients unnecessary toxicity.',
+    description: 'Treatment Response Monitoring (TRM) tests track how well a cancer treatment is working by measuring changes in circulating tumor DNA (ctDNA) levels over time. A decrease in ctDNA often indicates the treatment is effective, while stable or rising levels may signal resistance or progression—sometimes weeks before changes appear on imaging scans. This real-time molecular feedback helps oncologists optimize therapy, potentially switching ineffective treatments earlier and sparing patients unnecessary toxicity.',
     // Patient-friendly versions
     patientTitle: 'Is My Treatment Working?',
     patientDescription: 'These blood tests track whether your cancer treatment is working. They can show results weeks before a scan, helping your doctor adjust treatment if needed.',
@@ -3929,7 +3588,7 @@ const Footer = () => (
   <footer className="border-t border-gray-200 py-8 mt-12 bg-white">
     <div className="max-w-4xl mx-auto px-6 text-center">
       <p className="text-sm text-gray-500 leading-relaxed">
-        <strong>Disclaimer:</strong> OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. <strong>Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices.</strong> Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.
+        <strong>Disclaimer:</strong> OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.
       </p>
       <p className="text-xs text-gray-400 mt-4">
         Built: {BUILD_INFO.date}
@@ -3947,7 +3606,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
+  const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
   const suggestedQuestions = [
@@ -3956,13 +3615,8 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   ];
 
   useEffect(() => { 
-    if (chatContainerRef.current && messages.length > 0) {
-      const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
 
@@ -3987,22 +3641,7 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
 
   // Memoize system prompt - recompute when persona changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test information assistant for OpenOnco. Your ONLY role is to help users explore and compare the specific tests in the database below.
-
-STRICT SCOPE LIMITATIONS:
-- ONLY discuss tests that exist in the database below
-- NEVER speculate about disease genetics, heredity, inheritance patterns, or etiology - these are complex medical topics outside your scope
-- NEVER suggest screening strategies or make recommendations about who should be tested
-- NEVER interpret what positive or negative test results mean clinically
-- NEVER make claims about diseases, conditions, or cancer types beyond what is explicitly stated in the test data
-- If a user describes a patient/situation, check the "targetPopulation" field - if they don't clearly fit, say "This test is designed for [target population]. Please discuss with a healthcare provider whether it's appropriate for this situation."
-- For ANY question outside the specific test data (disease inheritance, screening recommendations, result interpretation, treatment decisions): respond with "That's outside my scope. Please discuss with your healthcare provider."
-
-WHAT YOU CAN DO:
-- Compare tests in the database on their documented attributes (sensitivity, specificity, TAT, cost, coverage, etc.)
-- Explain what data is available or not available for specific tests
-- Help users understand the differences between test approaches (tumor-informed vs tumor-naïve, etc.)
-- Direct users to the appropriate test category
+    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor and cannot provide medical advice.
 
 DATABASE:
 ${JSON.stringify(chatTestData)}
@@ -4011,7 +3650,7 @@ ${chatKeyLegend}
 
 ${getPersonaStyle(persona)}
 
-Say "not specified" for missing data. When uncertain, err on the side of saying "please consult your healthcare provider."`;
+Say "not specified" for missing data.`;
   }, [persona]);
 
   const submitQuestion = async (question) => {
@@ -4029,7 +3668,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: selectedModel,
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
           system: systemPrompt,
           messages: recentMessages
@@ -4098,7 +3737,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         )}
         
         {messages.map((msg, i) => (
-          <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div 
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                 msg.role === 'user' 
@@ -4124,39 +3763,27 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             </div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
       
-      <div className="border-t border-gray-200 p-4 bg-white flex-shrink-0">
-        <div className="flex gap-3 items-center">
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
-            title="Select AI model"
-          >
-            {CHAT_MODELS.map(m => (
-              <option key={m.id} value={m.id}>{m.name}</option>
-            ))}
-          </select>
-          <input 
-            type="text" 
-            value={input} 
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your liquid biopsy test question here..." 
-            className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
-            style={{ borderColor: '#6AA1C8' }}
-          />
-          <button 
-            onClick={handleSubmit}
-            disabled={isLoading} 
-            className="text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
-            style={{ backgroundColor: '#2A63A4' }}
-          >
-            Ask
-          </button>
-        </div>
-        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+      <div className="border-t border-gray-200 p-4 bg-white flex gap-3 flex-shrink-0">
+        <input 
+          type="text" 
+          value={input} 
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your liquid biopsy test question here..." 
+          className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
+          style={{ borderColor: '#6AA1C8' }}
+        />
+        <button 
+          onClick={handleSubmit}
+          disabled={isLoading} 
+          className="text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+          style={{ backgroundColor: '#2A63A4' }}
+        >
+          Ask
+        </button>
       </div>
     </div>
   );
@@ -4164,71 +3791,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
 
 // ============================================
-// Recently Added Tests Banner - Full width at top of showcase
-// ============================================
-const RecentlyAddedBanner = ({ onNavigate }) => {
-  const categoryColors = {
-    MRD: 'bg-orange-500',
-    ECD: 'bg-emerald-500',
-    TRM: 'bg-sky-500',
-    CGP: 'bg-violet-500'
-  };
-
-  const handleTestClick = (test) => {
-    onNavigate(test.category, test.id);
-  };
-
-  // Take only the 5 most recent tests
-  const recentTests = RECENTLY_ADDED_TESTS.slice(0, 5);
-
-  return (
-    <div className="bg-gradient-to-r from-slate-50 to-white border border-slate-200 rounded-xl p-4 mb-4">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-        <h3 className="text-sm font-semibold text-slate-700">Recently Added Tests</h3>
-        <span className="text-xs text-slate-400">Updated weekly</span>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        {recentTests.map((test) => (
-          <div
-            key={test.id}
-            onClick={() => handleTestClick(test)}
-            className="flex flex-col p-3 bg-white border border-slate-100 rounded-lg cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <span className={`${categoryColors[test.category]} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
-                {test.category}
-              </span>
-              <span className="text-[10px] text-slate-400">{test.dateAdded}</span>
-            </div>
-            <span className="text-sm font-medium text-slate-800 group-hover:text-[#2A63A4] transition-colors truncate">
-              {test.name}
-            </span>
-            <span className="text-xs text-slate-500 truncate">
-              {test.vendor}<VendorBadge vendor={test.vendor} size="xs" />
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-
-// ============================================
-// Test Showcase Component - Static badge parameters for each test
+// Test Showcase Component - Rotating parameters for each test
 // ============================================
 const TestShowcase = ({ onNavigate }) => {
+  const [paramIndices, setParamIndices] = useState({});
   const [selectedTest, setSelectedTest] = useState(null);
-  const [sortBy, setSortBy] = useState('vendor');
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  // Chat state for non-patient views
-  const [chatInput, setChatInput] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const chatContainerRef = useRef(null);
   
   // Track persona
   const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
@@ -4239,152 +3806,14 @@ const TestShowcase = ({ onNavigate }) => {
   }, []);
   
   const isPatient = persona === 'Patient';
-  
-  // Auto-scroll chat to show latest user message at top
-  useEffect(() => {
-    if (chatContainerRef.current && messages.length > 0) {
-      // Find the last user message element and scroll to it
-      const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  }, [messages, isLoading]);
-  
-  // Example questions for chat
-  const exampleQuestions = [
-    "Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring",
-    "What ECD tests have Medicare coverage?",
-    "Which CGP tests have the fastest turnaround time?"
-  ];
-  
-  // Get dynamic test counts
-  const testCounts = {
-    ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 14,
-    TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 11,
-    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
-  };
 
-  // Combine all tests with their category
-  const baseTests = [
+  // Combine all tests with their category and sort by vendor alphabetically
+  const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
     ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
     ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' }))
-  ];
-
-  // Helper to count reimbursement entities
-  const countReimbursement = (test) => {
-    let count = 0;
-    if (test.reimbursement) {
-      const reimb = test.reimbursement.toLowerCase();
-      if (reimb.includes('medicare') && !reimb.includes('not yet') && !reimb.includes('no established')) {
-        count += 1;
-      }
-    }
-    if (test.commercialPayers && test.commercialPayers.length > 0) {
-      count += test.commercialPayers.length;
-    }
-    return count;
-  };
-
-  // Helper to calculate openness score (same as DatabaseSummary)
-  const calcOpenness = (test) => {
-    const hasValue = (val) => val != null && val !== '' && val !== 'N/A';
-    let score = 0;
-    if (hasValue(test.listPrice)) score += 30;
-    if (hasValue(test.sensitivity)) score += 15;
-    if (hasValue(test.specificity)) score += 15;
-    if (test.numPublications != null && test.numPublications > 0) score += 15;
-    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
-    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
-    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
-    return score;
-  };
-
-  // Count tests per vendor
-  const vendorTestCounts = useMemo(() => {
-    const counts = {};
-    baseTests.forEach(t => {
-      counts[t.vendor] = (counts[t.vendor] || 0) + 1;
-    });
-    return counts;
-  }, []);
-
-  // Calculate vendor-level openness scores (for ranking sort)
-  // Matches the logic in DatabaseSummary - vendors with 2+ tests get ranked, single-test vendors go to bottom
-  const vendorOpennessScores = useMemo(() => {
-    const scores = {};
-    const vendorData = {};
-    // Aggregate scores by vendor
-    baseTests.forEach(t => {
-      if (!vendorData[t.vendor]) {
-        vendorData[t.vendor] = { total: 0, count: 0 };
-      }
-      vendorData[t.vendor].total += calcOpenness(t);
-      vendorData[t.vendor].count += 1;
-    });
-    // Calculate average score - only vendors with 2+ tests qualify
-    Object.entries(vendorData).forEach(([vendor, data]) => {
-      if (data.count >= 2) {
-        scores[vendor] = data.total / data.count;
-      } else {
-        scores[vendor] = -1; // Single-test vendors go to bottom
-      }
-    });
-    return scores;
-  }, []);
-
-  // Get TAT value for sorting
-  const getTat = (test) => {
-    const tat = test.tat || test.initialTat || test.followUpTat;
-    if (tat == null) return 999; // No TAT = sort to end
-    const days = typeof tat === 'number' ? tat : parseInt(tat);
-    return isNaN(days) ? 999 : days;
-  };
-
-  // Sort tests based on selected option
-  const allTests = useMemo(() => {
-    const sorted = [...baseTests];
-    switch (sortBy) {
-      case 'category':
-        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'CGP': 3 };
-        return sorted.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category] || a.vendor.localeCompare(b.vendor));
-      case 'tat':
-        return sorted.sort((a, b) => getTat(a) - getTat(b));
-      case 'reimbursement':
-        return sorted.sort((a, b) => countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
-      case 'vendorTests':
-        return sorted.sort((a, b) => vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
-      case 'openness':
-        // Sort by vendor openness ranking (same as openness award logic)
-        // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
-        return sorted.sort((a, b) => {
-          const scoreA = vendorOpennessScores[a.vendor] ?? -1;
-          const scoreB = vendorOpennessScores[b.vendor] ?? -1;
-          if (scoreA !== scoreB) return scoreB - scoreA;
-          // Within same vendor score, sort by individual test score
-          return calcOpenness(b) - calcOpenness(a) || a.vendor.localeCompare(b.vendor);
-        });
-      case 'vendor':
-      default:
-        return sorted.sort((a, b) => a.name.localeCompare(b.name));
-    }
-  }, [sortBy, vendorTestCounts, vendorOpennessScores]);
-
-  // Filter tests based on search query
-  const filteredTests = useMemo(() => {
-    if (!searchQuery.trim()) return allTests;
-    const query = searchQuery.toLowerCase().trim();
-    return allTests.filter(test => 
-      test.name.toLowerCase().includes(query) ||
-      test.vendor.toLowerCase().includes(query) ||
-      test.category.toLowerCase().includes(query)
-    );
-  }, [allTests, searchQuery]);
+  ].sort((a, b) => a.vendor.localeCompare(b.vendor));
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
@@ -4514,148 +3943,27 @@ const TestShowcase = ({ onNavigate }) => {
     neutral: 'text-slate-600'        // Patient: neutral indicator
   };
 
-  // Chat system prompt for non-patient views
-  const chatTestData = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP' }))
-  ];
-
-  const getPersonaStyle = (p) => {
-    if (p === 'Clinician') return 'Respond in a clinical, professional tone suitable for oncologists and healthcare providers. Use medical terminology freely.';
-    if (p === 'Academic/Industry') return 'Respond with technical depth suitable for researchers and industry professionals. Include analytical details and methodology notes where relevant.';
-    return '';
-  };
-
-  const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test information assistant for OpenOnco. Your ONLY role is to help users explore and compare the specific tests in the database below.
-
-STRICT SCOPE LIMITATIONS:
-- ONLY discuss tests that exist in the database below
-- NEVER speculate about disease genetics, heredity, inheritance patterns, or etiology
-- NEVER suggest screening strategies or make recommendations about who should be tested
-- NEVER interpret what positive or negative test results mean clinically
-- For ANY question outside the specific test data: respond with "That's outside my scope. Please discuss with your healthcare provider."
-
-WHAT YOU CAN DO:
-- Compare tests in the database on their documented attributes (sensitivity, specificity, TAT, cost, coverage, etc.)
-- Explain what data is available or not available for specific tests
-- Help users understand the differences between test approaches (tumor-informed vs tumor-naïve, etc.)
-- Direct users to the appropriate test category
-
-DATABASE:
-${JSON.stringify(chatTestData)}
-
-${getPersonaStyle(persona)}
-
-Say "not specified" for missing data. When uncertain, err on the side of saying "please consult your healthcare provider."`;
-  }, [persona]);
-
-  // Chat submit handler
-  const handleChatSubmit = async (question) => {
-    const q = question || chatInput;
-    if (!q.trim()) return;
-    
-    setChatInput('');
-    const newUserMessage = { role: 'user', content: q };
-    const updatedMessages = [...messages, newUserMessage];
-    setMessages(updatedMessages);
-    setIsLoading(true);
-
-    try {
-      const recentMessages = updatedMessages.slice(-6);
-      
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: selectedModel,
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: recentMessages
-        })
+  // Rotate parameters every 1 second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setParamIndices(prev => {
+        const next = { ...prev };
+        allTests.forEach(test => {
+          const params = isPatient ? getPatientParams(test) : getParams(test);
+          const currentIdx = prev[test.id] || 0;
+          next[test.id] = (currentIdx + 1) % params.length;
+        });
+        return next;
       });
-      
-      const data = await response.json();
-      
-      if (data?.content?.[0]?.text) {
-        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
-      } else {
-        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
-      }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
-    }
-    setIsLoading(false);
-  };
+    }, 2000);
 
-  // Static badge params - get top 2-3 key metrics for each test
-  const getBadgeParams = (test) => {
-    const badges = [];
-    
-    // Sensitivity (most important clinical metric)
-    if (test.sensitivity != null) {
-      badges.push({ label: 'Sens', value: `${test.sensitivity}%`, type: 'clinical' });
-    }
-    
-    // Specificity
-    if (test.specificity != null) {
-      badges.push({ label: 'Spec', value: `${test.specificity}%`, type: 'clinical' });
-    }
-    
-    // TAT
-    const tat = test.tat || test.initialTat;
-    if (tat != null) {
-      const days = typeof tat === 'number' ? tat : parseInt(tat);
-      if (!isNaN(days)) badges.push({ label: 'TAT', value: `${days}d`, type: 'operational' });
-    }
-    
-    // Publications
-    if (test.numPublications != null && test.numPublications > 0) {
-      badges.push({ label: 'Pubs', value: test.numPublications, type: 'clinical' });
-    }
-    
-    // Price
-    if (test.listPrice != null) {
-      badges.push({ label: '$', value: `${(test.listPrice/1000).toFixed(1)}k`, type: 'operational' });
-    }
-    
-    // Return top 3 badges max
-    return badges.slice(0, 3);
-  };
-
-  // Patient-friendly static badges
-  const getPatientBadges = (test) => {
-    const badges = [];
-    
-    // Insurance coverage (most important for patients)
-    const reimb = test.reimbursement?.toLowerCase() || '';
-    const hasMedicare = reimb.includes('medicare') && !reimb.includes('not yet');
-    const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
-    
-    if (hasMedicare && hasPrivate) {
-      badges.push({ label: '✓', value: 'Medicare + Private', type: 'good' });
-    } else if (hasMedicare) {
-      badges.push({ label: '✓', value: 'Medicare', type: 'good' });
-    } else if (hasPrivate) {
-      badges.push({ label: '~', value: 'Some Insurance', type: 'neutral' });
-    }
-    
-    // TAT
-    const tat = test.tat || test.initialTat;
-    if (tat != null) {
-      const days = typeof tat === 'number' ? tat : parseInt(tat);
-      if (!isNaN(days)) badges.push({ label: '⏱', value: `${days} days`, type: 'neutral' });
-    }
-    
-    // Sample type
-    if (test.approach === 'Tumor-naïve' || test.requiresTumorTissue === 'No') {
-      badges.push({ label: '💉', value: 'Blood only', type: 'good' });
-    }
-    
-    return badges.slice(0, 3);
-  };
+    return () => clearInterval(interval);
+  }, [isPatient]);
+  
+  // Reset indices when persona changes
+  useEffect(() => {
+    setParamIndices({});
+  }, [persona]);
 
   const colorClasses = {
     orange: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
@@ -4665,466 +3973,90 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     violet: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
   };
 
-  // Category button config for non-patient view
-  const categoryButtons = [
-    { id: 'ECD', name: 'Early Cancer Detection', phase: 'Healthy / Screening', icon: '🔬', color: 'emerald' },
-    { id: 'CGP', name: 'Comprehensive Genomic Profiling', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
-    { id: 'TRM', name: 'Treatment Response Monitoring', phase: 'Active Treatment', icon: '📊', color: 'sky' },
-    { id: 'MRD', name: 'Minimal Residual Disease', phase: 'Surveillance', icon: '🎯', color: 'orange' },
-  ];
-
-  const categoryColorClasses = {
-    emerald: { bg: 'bg-emerald-50', bgHover: 'hover:bg-emerald-100', border: 'border-emerald-200', borderHover: 'hover:border-emerald-400', text: 'text-emerald-700', iconBg: 'bg-emerald-500' },
-    violet: { bg: 'bg-violet-50', bgHover: 'hover:bg-violet-100', border: 'border-violet-200', borderHover: 'hover:border-violet-400', text: 'text-violet-700', iconBg: 'bg-violet-500' },
-    sky: { bg: 'bg-sky-50', bgHover: 'hover:bg-sky-100', border: 'border-sky-200', borderHover: 'hover:border-sky-400', text: 'text-sky-700', iconBg: 'bg-sky-500' },
-    orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
-  };
-
-  // ========== PATIENT VIEW: Test cards grid ==========
-  if (isPatient) {
-    return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-bold text-slate-800">
-            The {allTests.length} Tests We Track
-          </h3>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">Sort Order</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
-            >
-              <option value="vendor">Alphabetical</option>
-              <option value="category">By Category</option>
-              <option value="tat">By TAT (fastest)</option>
-              <option value="reimbursement">By Coverage</option>
-            </select>
-          </div>
-        </div>
-        
-        {/* Search Bar */}
-        <div className="relative mb-3">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search tests or vendors..."
-            className="w-full px-3 py-2 pl-8 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-          />
-          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
-        
-        {searchQuery && (
-          <p className="text-xs text-slate-500 mb-2">
-            {filteredTests.length === 0 ? 'No tests found' : `Showing ${filteredTests.length} of ${allTests.length} tests`}
-          </p>
-        )}
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+      <h3 className="text-lg font-bold text-slate-800 text-center mb-1">
+        The {allTests.length} Tests We Track
+      </h3>
+      {isPatient && (
         <p className="text-xs text-slate-500 text-center mb-3">
           Showing coverage, pricing & wait times
         </p>
-        
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-          {filteredTests.map(test => {
-            const badges = getPatientBadges(test);
-            const colors = colorClasses[test.color];
-            
-            return (
-              <div
-                key={test.id}
-                onClick={() => setSelectedTest(test)}
-                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
-              >
-                <div className="flex items-start justify-between mb-1">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
-                    <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
-                  </div>
-                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                    {test.category}
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {badges.map((badge, idx) => (
-                    <span 
-                      key={idx}
-                      className={`text-[10px] px-1.5 py-0.5 rounded ${
-                        badge.type === 'good' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {badge.label} {badge.value}
-                    </span>
-                  ))}
-                  {badges.length === 0 && (
-                    <span className="text-[10px] text-slate-400">No data</span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Compact Legend */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-            <span className="text-slate-500">After Treatment</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            <span className="text-slate-500">Screening</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-            <span className="text-slate-500">During Treatment</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
-            <span className="text-slate-500">Diagnosis</span>
-          </span>
-        </div>
-
-        {/* Test Detail Modal - Patient View */}
-        {selectedTest && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedTest(null)}>
-            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
-              {(() => {
-                const category = selectedTest.category;
-                const colorSchemes = {
-                  MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
-                  ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
-                  TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
-                  CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
-                };
-                const clrs = colorSchemes[category] || colorSchemes.MRD;
-                const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');
-                const hasPrivate = selectedTest.commercialPayers && selectedTest.commercialPayers.length > 0;
-                
-                return (
-                  <>
-                    <div className={`flex justify-between items-start p-5 ${clrs.headerBg}`} style={{ flexShrink: 0 }}>
-                      <div className="flex-1 mr-4">
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {hasMedicare && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
-                          {hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
-                        </div>
-                        <h2 className="text-2xl font-bold text-white">{selectedTest.name}</h2>
-                        <p className="text-white/80">{selectedTest.vendor}</p>
-                      </div>
-                      <button onClick={() => setSelectedTest(null)} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
-                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
-                      <p className="text-gray-700 mb-4">
-                        {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
-                        {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
-                        {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
-                        {category === 'CGP' && "This test analyzes your tumor's genes to find the best targeted treatments for your specific cancer."}
-                      </p>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasMedicare ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
-                            {hasMedicare ? '✓' : '✗'}
-                          </span>
-                          <span className="text-sm">Medicare coverage</span>
-                        </div>
-                        <div className={`flex items-center gap-2 p-2 rounded-lg ${hasPrivate ? 'bg-emerald-50' : 'bg-gray-50'}`}>
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasPrivate ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
-                            {hasPrivate ? '✓' : '✗'}
-                          </span>
-                          <span className="text-sm">Private insurance</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="border-t border-gray-200 px-5 py-4 flex justify-between items-center bg-gray-50" style={{ flexShrink: 0 }}>
-                      <p className="text-sm text-gray-500">View full details in the navigator</p>
-                      <button
-                        onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
-                        className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
-                        style={{ backgroundColor: '#2A63A4' }}
-                      >
-                        See All Options
-                      </button>
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
-  return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-      {/* Header */}
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
-        <h3 className="text-lg font-bold text-slate-800">
-          Explore our database of cancer detection and monitoring tests
-        </h3>
-      </div>
-
-      {/* Category Navigation Buttons - First */}
-      <div className="p-4 pb-3">
-        <p className="text-xs font-semibold text-black uppercase tracking-wide mb-2">Click on a test category for detailed data views and comparisons</p>
-        <div className="flex items-center gap-1">
-          {categoryButtons.map((cat, index) => {
-            const clrs = categoryColorClasses[cat.color];
-            return (
-              <React.Fragment key={cat.id}>
-                <button
-                  onClick={() => onNavigate(cat.id)}
-                  className={`flex-1 ${clrs.bg} ${clrs.border} border-2 rounded-lg px-2 py-2.5 text-center transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-slate-400 active:scale-[0.98]`}
-                >
-                  <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
-                </button>
-                {index < categoryButtons.length - 1 && (
-                  <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* OR Divider */}
-      <div className="flex items-center gap-3 px-4 pb-2">
-        <div className="flex-1 h-px bg-black"></div>
-        <span className="text-xs font-semibold text-black uppercase tracking-wider">OR</span>
-        <div className="flex-1 h-px bg-black"></div>
-      </div>
-
-      {/* Claude Chat Input */}
-      <div className="px-4 pb-2">
-        <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="relative flex gap-2">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Claude-AI search of our database..."
-              className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-              disabled={isLoading}
-            />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-          </div>
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 cursor-pointer"
-            title="Select AI model"
-          >
-            {CHAT_MODELS.map(m => (
-              <option key={m.id} value={m.id}>{m.name}</option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            disabled={isLoading || !chatInput.trim()}
-            className="text-white px-5 py-2 rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-          >
-            Ask
-          </button>
-        </form>
-        
-        {/* Example Questions - under Claude input */}
-        {messages.length === 0 && (
-          <div className="flex items-center gap-2 flex-wrap mt-2">
-            <span className="text-xs text-slate-500">Try:</span>
-            <button
-              onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring")}
-              className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-            >
-              Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring
-            </button>
-            <button
-              onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
-              className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-            >
-              What ECD tests have Medicare coverage?
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Messages Area */}
-      {messages.length > 0 && (
-        <div ref={chatContainerRef} className="max-h-64 overflow-y-auto mx-4 mb-2 p-3 space-y-3 bg-slate-50 rounded-xl border border-slate-200">
-          {messages.map((msg, i) => (
-            <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div 
-                className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-              >
-                {msg.role === 'user' ? (
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                ) : (
-                  <Markdown className="text-sm">{msg.content}</Markdown>
-                )}
-              </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                <p className="text-sm text-slate-500">Thinking...</p>
-              </div>
-            </div>
-          )}
-        </div>
       )}
-
-      {/* OR Divider */}
-      <div className="flex items-center gap-3 px-4 pb-2">
-        <div className="flex-1 h-px bg-black"></div>
-        <span className="text-xs font-semibold text-black uppercase tracking-wider">OR</span>
-        <div className="flex-1 h-px bg-black"></div>
-      </div>
-
-      {/* Text Search Bar - Last */}
-      <div className="px-4 pb-3">
-        <div className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Simple text search of tests and vendors..."
-            className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-          />
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Test Cards Grid */}
-      <div className="p-4 border-t border-slate-100">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">All Tests</p>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">Sort:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
+      {!isPatient && <div className="mb-3" />}
+      
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+        {allTests.map(test => {
+          const params = isPatient ? getPatientParams(test) : getParams(test);
+          const currentIdx = paramIndices[test.id] || 0;
+          const currentParam = params[currentIdx];
+          const colors = colorClasses[test.color];
+          
+          return (
+            <div
+              key={test.id}
+              onClick={() => setSelectedTest(test)}
+              className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
             >
-              <option value="vendor">Alphabetical</option>
-              <option value="category">By Category</option>
-              <option value="tat">By TAT (fastest)</option>
-              <option value="reimbursement">By Coverage</option>
-              <option value="vendorTests">By # Tests</option>
-              <option value="openness">By Openness</option>
-            </select>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-          {filteredTests.map(test => {
-            const badges = getBadgeParams(test);
-            const colors = colorClasses[test.color];
-            
-            return (
-              <div
-                key={test.id}
-                onClick={() => setSelectedTest(test)}
-                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
-              >
-                <div className="flex items-start justify-between mb-1">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
-                    <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
-                  </div>
-                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                    {test.category}
-                  </span>
+              <div className="flex items-start justify-between mb-1">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
+                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
                 </div>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {badges.map((badge, idx) => (
-                    <span 
-                      key={idx}
-                      className={`text-[10px] px-1.5 py-0.5 rounded ${
-                        badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {badge.label}: {badge.value}
-                    </span>
-                  ))}
-                  {badges.length === 0 && (
-                    <span className="text-[10px] text-slate-400">No data</span>
-                  )}
-                </div>
+                <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
+                  {test.category}
+                </span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Compact Legend */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            <span className="text-slate-500">ECD</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
-            <span className="text-slate-500">CGP</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-            <span className="text-slate-500">TRM</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-            <span className="text-slate-500">MRD</span>
-          </span>
-        </div>
+              
+              <div className="h-8 flex flex-col justify-center">
+                <p className="text-[10px] text-slate-500 truncate">{currentParam.label}</p>
+                <p className={`text-sm font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
+                  {currentParam.value}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Test Detail Modal - Clinician/Academic View */}
+      {/* Compact Legend */}
+      <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
+        <span className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+          <span className="text-slate-500">{isPatient ? 'After Treatment' : 'MRD'}</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span className="text-slate-500">{isPatient ? 'Screening' : 'ECD'}</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+          <span className="text-slate-500">{isPatient ? 'During Treatment' : 'TRM'}</span>
+        </span>
+      </div>
+
+      {/* Test Detail Modal */}
       {selectedTest && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedTest(null)}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+            {/* Use TestDetailModal content structure */}
             {(() => {
               const category = selectedTest.category;
               const colorSchemes = {
                 MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
                 ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
-                TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
+                TRM: { headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500' },
                 CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
               };
-              const clrs = colorSchemes[category] || colorSchemes.MRD;
-              const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');
+              const colors = colorSchemes[category] || colorSchemes.MRD;
+              const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && 
+                !selectedTest.reimbursement?.toLowerCase().includes('not yet');
               const hasPrivate = selectedTest.commercialPayers && selectedTest.commercialPayers.length > 0;
               
               return (
                 <>
-                  <div className={`flex justify-between items-start p-5 ${clrs.headerBg}`} style={{ flexShrink: 0 }}>
+                  {/* Header */}
+                  <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
                     <div className="flex-1 mr-4">
                       <div className="flex flex-wrap gap-2 mb-2">
                         {hasMedicare && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
@@ -5140,36 +4072,63 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       </svg>
                     </button>
                   </div>
+                  
+                  {/* Preview Content */}
                   <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
-                    <div className="grid grid-cols-3 gap-4">
-                      {selectedTest.sensitivity != null && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className={`font-bold text-emerald-600 ${String(selectedTest.sensitivity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                            {String(selectedTest.sensitivity).length > 20 
-                              ? (String(selectedTest.sensitivity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.sensitivity])[0] + (String(selectedTest.sensitivity).includes('%') ? '' : '%')
-                              : selectedTest.sensitivity + (String(selectedTest.sensitivity).includes('%') ? '' : '%')}
-                          </p>
-                          <p className="text-xs text-gray-500">Sensitivity</p>
+                    {isPatient ? (
+                      <div className="space-y-4">
+                        <p className="text-gray-700">
+                          {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
+                          {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
+                          {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
+                          {category === 'CGP' && "This test analyzes your tumor's genes to find the best targeted treatments for your specific cancer."}
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasMedicare ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                              {hasMedicare ? '✓' : '✗'}
+                            </span>
+                            <span className="text-sm">Medicare coverage</span>
+                          </div>
+                          <div className={`flex items-center gap-2 p-2 rounded-lg ${hasPrivate ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasPrivate ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                              {hasPrivate ? '✓' : '✗'}
+                            </span>
+                            <span className="text-sm">Private insurance</span>
+                          </div>
                         </div>
-                      )}
-                      {selectedTest.specificity != null && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className={`font-bold text-emerald-600 ${String(selectedTest.specificity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                            {String(selectedTest.specificity).length > 20 
-                              ? (String(selectedTest.specificity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.specificity])[0] + (String(selectedTest.specificity).includes('%') ? '' : '%')
-                              : selectedTest.specificity + (String(selectedTest.specificity).includes('%') ? '' : '%')}
-                          </p>
-                          <p className="text-xs text-gray-500">Specificity</p>
-                        </div>
-                      )}
-                      {(selectedTest.initialTat || selectedTest.tat) && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className="text-2xl font-bold text-slate-600">{selectedTest.initialTat || selectedTest.tat}</p>
-                          <p className="text-xs text-gray-500">TAT</p>
-                        </div>
-                      )}
-                    </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {selectedTest.sensitivity != null && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-emerald-600">{selectedTest.sensitivity}%</p>
+                            <p className="text-xs text-gray-500">Sensitivity</p>
+                          </div>
+                        )}
+                        {selectedTest.specificity != null && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-emerald-600">{selectedTest.specificity}%</p>
+                            <p className="text-xs text-gray-500">Specificity</p>
+                          </div>
+                        )}
+                        {selectedTest.lod && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-xl font-bold text-violet-600">{selectedTest.lod}</p>
+                            <p className="text-xs text-gray-500">LOD</p>
+                          </div>
+                        )}
+                        {(selectedTest.initialTat || selectedTest.tat) && (
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-slate-600">{selectedTest.initialTat || selectedTest.tat}d</p>
+                            <p className="text-xs text-gray-500">TAT</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
+                  
+                  {/* Footer */}
                   <div className="border-t border-gray-200 px-5 py-4 flex justify-between items-center bg-gray-50" style={{ flexShrink: 0 }}>
                     <p className="text-sm text-gray-500">View full details in the navigator</p>
                     <button
@@ -5177,7 +4136,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
                       style={{ backgroundColor: '#2A63A4' }}
                     >
-                      Open {category} Navigator
+                      {isPatient ? 'See All Options' : `Open ${category} Navigator`}
                     </button>
                   </div>
                 </>
@@ -5277,7 +4236,7 @@ const StatOfTheDay = ({ onNavigate }) => {
                 </p>
               </div>
               <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
-              <p className="text-xs text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
+              <p className="text-xs text-slate-500 truncate">{test.vendor}</p>
             </div>
           );
         })}
@@ -5295,7 +4254,6 @@ const HomePage = ({ onNavigate }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [persona, setPersona] = useState(() => getStoredPersona() || null);
-  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const chatContainerRef = useRef(null);
 
   // Save persona to localStorage when changed and notify other components
@@ -5307,15 +4265,10 @@ const HomePage = ({ onNavigate }) => {
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
-  // Auto-scroll to show user question when messages or loading state changes
+  // Auto-scroll to bottom when messages or loading state changes
   useEffect(() => {
-    if (chatContainerRef.current && messages.length > 0) {
-      const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
   
@@ -5333,28 +4286,13 @@ const HomePage = ({ onNavigate }) => {
   
   // All tests combined for chat header ticker
   const exampleQuestions = [
-    "Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring",
-    "What ECD tests have Medicare coverage?"
+    "Patient with breast cancer, stage II, neo-adjuvant, US, age 72. What MRD tests fit this profile and are reimbursable?",
+    "Compare Signatera and Reveal MRD"
   ];
 
   // Memoize system prompt - recompute when persona changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test information assistant for OpenOnco. Your ONLY role is to help users explore and compare the specific tests in the database below.
-
-STRICT SCOPE LIMITATIONS:
-- ONLY discuss tests that exist in the database below
-- NEVER speculate about disease genetics, heredity, inheritance patterns, or etiology - these are complex medical topics outside your scope
-- NEVER suggest screening strategies or make recommendations about who should be tested
-- NEVER interpret what positive or negative test results mean clinically
-- NEVER make claims about diseases, conditions, or cancer types beyond what is explicitly stated in the test data
-- If a user describes a patient/situation, check the "targetPopulation" field - if they don't clearly fit, say "This test is designed for [target population]. Please discuss with a healthcare provider whether it's appropriate for this situation."
-- For ANY question outside the specific test data (disease inheritance, screening recommendations, result interpretation, treatment decisions): respond with "That's outside my scope. Please discuss with your healthcare provider."
-
-WHAT YOU CAN DO:
-- Compare tests in the database on their documented attributes (sensitivity, specificity, TAT, cost, coverage, etc.)
-- Explain what data is available or not available for specific tests
-- Help users understand the differences between test approaches (tumor-informed vs tumor-naïve, etc.)
-- Direct users to the appropriate test category
+    return `You are a liquid biopsy test assistant for OpenOnco. Help users explore and compare tests. You are not a clinical advisor and cannot provide medical advice.
 
 DATABASE:
 ${JSON.stringify(chatTestData)}
@@ -5363,7 +4301,7 @@ ${chatKeyLegend}
 
 ${getPersonaStyle(persona)}
 
-Say "not specified" for missing data. When uncertain, err on the side of saying "please consult your healthcare provider."`;
+Say "not specified" for missing data.`;
   }, [persona]);
 
   const handleSubmit = async (question) => {
@@ -5384,7 +4322,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: selectedModel,
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
           system: systemPrompt,
           messages: recentMessages
@@ -5415,14 +4353,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
-          {/* Patient intro paragraph */}
-          {persona === 'Patient' && (
-            <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed mb-4 pb-4 border-b border-slate-200">
-              Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and detect recurrence - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit service helping match patients to the right test.
-            </p>
-          )}
+          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and detect recurrence - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit service helping match patients to the right test.</p>
+          
           {/* Persona Selector */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
             {['Academic/Industry', 'Patient', 'Clinician'].map((p) => (
               <button
@@ -5440,127 +4374,224 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         </div>
 
-        {/* Unified Database Access Container - Only for Patients */}
-        {persona === 'Patient' && (
-          <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
-            {/* Container Header */}
-            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+        {/* Unified Database Access Container */}
+        <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
+          {/* Container Header - different for patients */}
+          <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+            {persona === 'Patient' ? (
               <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
                 Ask about liquid biopsy tests for cancer treatment
               </h2>
-            </div>
-            
-            {/* Chat Section */}
-            <div className="bg-white">
-            
-            {/* Messages Area */}
-            {messages.length > 0 && (
-              <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-                {messages.map((msg, i) => (
-                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div 
-                      className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                    >
-                      {msg.role === 'user' ? (
-                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                      ) : (
-                        <Markdown className="text-sm">{msg.content}</Markdown>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                      <p className="text-sm text-slate-500">Thinking...</p>
-                    </div>
-                  </div>
-                )}
+            ) : (
+              <div className="flex justify-between items-center">
+                <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
+                  The Precision Oncology Diagnostics Cycle
+                </h2>
+                <span className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
+                  Click on the test category you want to explore
+                </span>
               </div>
             )}
-            
-            {/* Input Area */}
-            <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
-              <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
-                <select
-                  value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
-                  className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
-                  title="Select AI model"
-                >
-                  {CHAT_MODELS.map(m => (
-                    <option key={m.id} value={m.id}>{m.name}</option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Type your liquid biopsy test question here..."
-                  className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
-                  style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
-                  disabled={isLoading}
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading || !chatInput.trim()}
-                  className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-                >
-                  Ask
-                </button>
-              </form>
-              <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
-            </div>
-            
-            {/* Example Questions (show below input when no messages) */}
-            {messages.length === 0 && (
-              <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
-                <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
-                  <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
-                  {exampleQuestions.map((q, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleSubmit(q)}
-                      className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            </div>
-            
-            {/* Divider */}
-            <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
-            
-            {/* Lifecycle Navigator Header */}
-            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
-            </div>
-            
-            {/* Lifecycle Navigator */}
-            <div className="p-4 lg:p-6">
-              <LifecycleNavigator onNavigate={onNavigate} />
-            </div>
           </div>
-        )}
+          
+          {/* For Patients: Chat first, then Lifecycle Navigator */}
+          {persona === 'Patient' ? (
+            <>
+              {/* Chat Section */}
+              <div className="bg-white">
+              
+              {/* Messages Area */}
+              {messages.length > 0 && (
+                <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div 
+                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                        style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                      >
+                        {msg.role === 'user' ? (
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        ) : (
+                          <Markdown className="text-sm">{msg.content}</Markdown>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                        <p className="text-sm text-slate-500">Thinking...</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Input Area */}
+              <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Type your liquid biopsy test question here..."
+                    className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                    style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !chatInput.trim()}
+                    className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                    style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                  >
+                    Ask
+                  </button>
+                </form>
+              </div>
+              
+              {/* Example Questions (show below input when no messages) */}
+              {messages.length === 0 && (
+                <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+                  <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                    <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                    {exampleQuestions.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSubmit(q)}
+                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              </div>
+              
+              {/* Divider */}
+              <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
+              
+              {/* Lifecycle Navigator Header */}
+              <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+                <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
+              </div>
+              
+              {/* Lifecycle Navigator */}
+              <div className="p-4 lg:p-6">
+                <LifecycleNavigator onNavigate={onNavigate} />
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Lifecycle Navigator */}
+              <div className="p-4 lg:p-6">
+                <LifecycleNavigator onNavigate={onNavigate} />
+              </div>
+              
+              {/* Divider */}
+              <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
+              
+              {/* Chat Section */}
+              <div className="bg-white">
+                {/* Chat Header */}
+                <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
+                  <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude questions about the tests:</h3>
+                </div>
+              
+              {/* Messages Area */}
+              {messages.length > 0 && (
+                <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div 
+                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                        style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                      >
+                        {msg.role === 'user' ? (
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        ) : (
+                          <Markdown className="text-sm">{msg.content}</Markdown>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                        <p className="text-sm text-slate-500">Thinking...</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Input Area */}
+              <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Type your liquid biopsy test question here..."
+                    className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                    style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !chatInput.trim()}
+                    className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                    style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                  >
+                    Ask
+                  </button>
+                </form>
+              </div>
+              
+              {/* Example Questions (show below input when no messages) */}
+              {messages.length === 0 && (
+                <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+                  <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                    <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                    {exampleQuestions.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSubmit(q)}
+                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              </div>
+            </>
+          )}
+        </div>
 
-        {/* Test Showcase - Only for Clinician/Academic views */}
-        {persona !== 'Patient' && (
-          <div className="mb-4">
+        {/* Test Showcase & News Feed Side by Side */}
+        <div className="mb-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div className="lg:col-span-3">
             <TestShowcase onNavigate={onNavigate} />
           </div>
-        )}
-
-        {/* Openness Award - Only for Clinician/Academic views */}
-        {persona !== 'Patient' && (
-          <div className="mb-4">
-            <OpennessAward />
+          <div className="lg:col-span-2 relative min-h-[400px] lg:min-h-0">
+            <div className="absolute inset-0">
+              <NewsFeed onNavigate={onNavigate} />
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* Stat of the Day */}
+        <div className="mb-4">
+          <StatOfTheDay onNavigate={onNavigate} />
+        </div>
+
+        {/* Database Summary */}
+        <div className="mb-4">
+          <DatabaseSummary />
+        </div>
       </div>
     </div>
   );
@@ -5569,85 +4600,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 // ============================================
 // Database Summary Component (Reusable)
 // ============================================
-// Simple database stats for Data Download page
-const DatabaseStatsSimple = () => {
-  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
-  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
-  
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (cgpTestData.length * cgpParams);
-  
-  const allVendors = new Set([
-    ...mrdTestData.map(t => t.vendor),
-    ...ecdTestData.map(t => t.vendor),
-    ...trmTestData.map(t => t.vendor),
-    ...cgpTestData.map(t => t.vendor)
-  ]);
-
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Database Overview</h3>
-      
-      {/* Main stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <div className="text-center p-3 bg-gray-50 rounded-lg">
-          <p className="text-2xl font-bold text-gray-800">{totalTests}</p>
-          <p className="text-xs text-gray-500">Total Tests</p>
-        </div>
-        <div className="text-center p-3 bg-gray-50 rounded-lg">
-          <p className="text-2xl font-bold text-gray-800">{allVendors.size}</p>
-          <p className="text-xs text-gray-500">Vendors</p>
-        </div>
-        <div className="text-center p-3 bg-gray-50 rounded-lg">
-          <p className="text-2xl font-bold text-gray-800">{totalDataPoints.toLocaleString()}</p>
-          <p className="text-xs text-gray-500">Data Points</p>
-        </div>
-        <div className="text-center p-3 bg-gray-50 rounded-lg">
-          <p className="text-2xl font-bold text-gray-800">4</p>
-          <p className="text-xs text-gray-500">Categories</p>
-        </div>
-      </div>
-      
-      {/* Category breakdown */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
-          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
-          <div>
-            <p className="text-xs font-medium text-gray-800">MRD</p>
-            <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
-          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{ecdTestData.length}</div>
-          <div>
-            <p className="text-xs font-medium text-gray-800">ECD</p>
-            <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 p-2 bg-sky-50 rounded-lg border border-sky-100">
-          <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white text-xs font-bold">{trmTestData.length}</div>
-          <div>
-            <p className="text-xs font-medium text-gray-800">TRM</p>
-            <p className="text-[10px] text-gray-500">{trmParams} fields</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
-          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{cgpTestData.length}</div>
-          <div>
-            <p className="text-xs font-medium text-gray-800">CGP</p>
-            <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const DatabaseSummary = () => {
-  const [showFAQ, setShowFAQ] = useState(false);
-  
   // Dynamically count actual fields per test
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
   const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
@@ -5665,76 +4618,27 @@ const DatabaseSummary = () => {
     ...trmTestData.map(t => t.vendor),
     ...cgpTestData.map(t => t.vendor)
   ]);
-
-  // Helper functions
-  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
-
-  // Check if test has meaningful reimbursement (inclusion criteria for award)
-  const hasReimbursement = (test) => {
-    const reimb = (test.reimbursement || '').toLowerCase();
-    if (!reimb) return false;
-    if (reimb.includes('not applicable')) return false;
-    if (reimb.includes('not established')) return false;
-    if (reimb.includes('no established')) return false;
-    if (reimb.includes('no specific')) return false;
-    if (reimb === 'self-pay') return false;
-    if (reimb === 'coverage varies') return false;
-    if (reimb.startsWith('coverage emerging')) return false;
-    return reimb.includes('medicare') || reimb.includes('covered') || (test.commercialPayers && test.commercialPayers.length > 0);
-  };
-
-  // Calculate openness score per test (0-100)
-  const calcTestScore = (test) => {
-    let score = 0;
-    if (hasValue(test.listPrice)) score += 30;
-    if (hasValue(test.sensitivity)) score += 15;
-    if (hasValue(test.specificity)) score += 15;
-    if (test.numPublications != null && test.numPublications > 0) score += 15;
-    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
-    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
-    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
-    return score;
-  };
-
-  // Normalize vendor names
-  const normalizeVendor = (v) => {
-    if (!v) return 'Unknown';
-    if (v.includes('Guardant')) return 'Guardant Health';
-    if (v.includes('Foundation Medicine')) return 'Foundation Medicine';
-    return v;
-  };
-
-  // Count reimbursed tests for stats display
-  const reimbursedTests = allTests.filter(hasReimbursement);
   
-  // Group ALL tests by vendor for openness scoring
-  const vendorScores = {};
-  allTests.forEach(test => {
-    const vendor = normalizeVendor(test.vendor);
-    if (!vendorScores[vendor]) {
-      vendorScores[vendor] = { scores: [], total: 0, count: 0, tests: [] };
-    }
-    const score = calcTestScore(test);
-    vendorScores[vendor].scores.push(score);
-    vendorScores[vendor].total += score;
-    vendorScores[vendor].count += 1;
-    vendorScores[vendor].tests.push({ name: test.name, score });
-  });
+  const fdaApprovedCount = [
+    ...mrdTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
+    ...ecdTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
+    ...trmTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved')),
+    ...cgpTestData.filter(t => t.fdaStatus?.toLowerCase().includes('fda-approved') || t.fdaStatus?.toLowerCase().includes('fda approved'))
+  ].length;
 
-  // Find most transparent vendor (min 2 tests to qualify)
-  let topVendor = null;
-  let topScore = 0;
-  let topTestCount = 0;
-  Object.entries(vendorScores).forEach(([vendor, data]) => {
-    if (data.count >= 2) {
-      const avgScore = data.total / data.count;
-      if (avgScore > topScore) {
-        topScore = avgScore;
-        topVendor = vendor;
-        topTestCount = data.count;
-      }
-    }
-  });
+  const medicareIndicationsCount = [
+    ...mrdTestData,
+    ...ecdTestData,
+    ...trmTestData,
+    ...cgpTestData
+  ].filter(t => t.reimbursement?.toLowerCase().includes('medicare')).length;
+
+  const allPrivateInsurers = new Set([
+    ...mrdTestData.flatMap(t => t.commercialPayers || []),
+    ...ecdTestData.flatMap(t => t.commercialPayers || []),
+    ...trmTestData.flatMap(t => t.commercialPayers || []),
+    ...cgpTestData.flatMap(t => t.commercialPayers || [])
+  ]);
 
   // Data quality metrics - calculate fill rates for key fields
   const calcFillRate = (tests, checkFn) => {
@@ -5743,44 +4647,40 @@ const DatabaseSummary = () => {
     return Math.round((filled / tests.length) * 100);
   };
 
+  const hasValue = (val) => val != null && String(val).trim() !== '';
+
   const dataQualityMetrics = [
     {
       label: 'Price',
       rate: calcFillRate(allTests, t => hasValue(t.listPrice)),
-      color: 'rose',
-      description: 'List price disclosed'
+      color: 'rose'
     },
     {
-      label: 'Performance',
-      rate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
-      color: 'amber',
-      description: 'Sensitivity or specificity'
+      label: 'Turnaround Time',
+      rate: calcFillRate(allTests, t => hasValue(t.tat)),
+      color: 'amber'
     },
     {
-      label: 'Evidence',
-      rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
-      color: 'emerald',
-      description: 'Peer-reviewed publications'
+      label: 'Publications',
+      rate: calcFillRate(allTests, t => t.numPublications != null),
+      color: 'emerald'
     },
     {
-      label: 'Coverage',
-      rate: calcFillRate(allTests, t => hasReimbursement(t)),
-      color: 'sky',
-      description: 'Insurance reimbursement'
+      label: 'Reimbursement',
+      rate: calcFillRate(allTests, t => hasValue(t.reimbursement)),
+      color: 'sky'
     },
     {
-      label: 'Turnaround',
-      rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
-      color: 'violet',
-      description: 'TAT disclosed'
+      label: 'Sample Requirements',
+      rate: calcFillRate(allTests, t => 
+        hasValue(t.sampleRequirements) ||
+        hasValue(t.sampleVolume) ||
+        hasValue(t.bloodVolume) ||
+        hasValue(t.sampleType)
+      ),
+      color: 'violet'
     }
   ];
-
-  // Calculate field average score (all qualifying vendors with 2+ tests)
-  const qualifyingVendors = Object.entries(vendorScores).filter(([_, data]) => data.count >= 2);
-  const fieldAvgScore = qualifyingVendors.length > 0 
-    ? Math.round(qualifyingVendors.reduce((sum, [_, data]) => sum + (data.total / data.count), 0) / qualifyingVendors.length)
-    : 0;
 
   const getBarColor = (color) => ({
     rose: 'bg-rose-500',
@@ -5799,48 +4699,50 @@ const DatabaseSummary = () => {
   }[color] || 'text-slate-600');
 
   return (
-    <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">
-
-      {/* Header with key stats */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-slate-700">Data Openness Overview</h2>
-        <div className="text-xs text-slate-500">Updated {BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</div>
+    <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-2xl p-6">
+      <h2 className="text-lg font-semibold mb-4 text-slate-700">Database Summary</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-3xl font-bold text-slate-800">{totalTests}</p>
+          <p className="text-sm text-slate-600">Total Tests</p>
+        </div>
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-3xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
+          <p className="text-sm text-slate-600">Data Points</p>
+        </div>
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-3xl font-bold text-slate-800">{allVendors.size}</p>
+          <p className="text-sm text-slate-600">Vendors</p>
+        </div>
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-3xl font-bold text-slate-800">{fdaApprovedCount}</p>
+          <p className="text-sm text-slate-600">FDA Approved</p>
+        </div>
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-3xl font-bold text-slate-800">{medicareIndicationsCount}</p>
+          <p className="text-sm text-slate-600">Medicare</p>
+        </div>
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-3xl font-bold text-slate-800">{allPrivateInsurers.size}</p>
+          <p className="text-sm text-slate-600">Private Insurers</p>
+        </div>
+        <div className="bg-white/40 rounded-xl p-4 text-center">
+          <p className="text-lg font-bold text-slate-800">{BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</p>
+          <p className="text-sm text-slate-600">Data Last Updated</p>
+        </div>
       </div>
       
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{totalTests}</p>
-          <p className="text-xs text-slate-600">Tests</p>
-        </div>
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{allVendors.size}</p>
-          <p className="text-xs text-slate-600">Vendors</p>
-        </div>
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{reimbursedTests.length}</p>
-          <p className="text-xs text-slate-600">Reimbursed</p>
-        </div>
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
-          <p className="text-xs text-slate-600">Data Points</p>
-        </div>
-      </div>
-      
-      {/* Data Completeness Section */}
-      <div className="bg-white/40 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-700 mb-4">Data Completeness by Field</h3>
-        <div className="space-y-3">
-          {dataQualityMetrics.map(({ label, rate, color, description }) => (
-            <div key={label}>
-              <div className="flex justify-between items-center mb-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-slate-700">{label}</span>
-                  <span className="text-[10px] text-slate-400">{description}</span>
-                </div>
-                <span className={`text-sm font-bold ${getTextColor(color)}`}>{rate}%</span>
+      {/* Data Quality Section */}
+      <div className="mt-6 pt-4 border-t border-slate-400/40">
+        <h3 className="text-sm font-medium text-slate-600 mb-3">Data Completeness</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {dataQualityMetrics.map(({ label, rate, color }) => (
+            <div key={label} className="bg-white/30 rounded-lg p-3">
+              <div className="flex justify-between items-center mb-1.5">
+                <span className="text-xs font-medium text-slate-700">{label}</span>
+                <span className={`text-xs font-bold ${getTextColor(color)}`}>{rate}%</span>
               </div>
-              <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
+              <div className="h-2 bg-white/50 rounded-full overflow-hidden">
                 <div 
                   className={`h-full ${getBarColor(color)} rounded-full transition-all duration-500`}
                   style={{ width: `${rate}%` }}
@@ -5849,249 +4751,41 @@ const DatabaseSummary = () => {
             </div>
           ))}
         </div>
-        <p className="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
-          Completeness rates reflect publicly available data across {totalTests} tests from {allVendors.size} vendors.
-        </p>
       </div>
       
-      {/* Category breakdown */}
-      <div className="mt-4 grid grid-cols-4 gap-2">
-        <div className="bg-orange-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-orange-700">{mrdTestData.length}</p>
-          <p className="text-[10px] text-orange-600 font-medium">MRD</p>
-        </div>
-        <div className="bg-emerald-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-emerald-700">{ecdTestData.length}</p>
-          <p className="text-[10px] text-emerald-600 font-medium">ECD</p>
-        </div>
-        <div className="bg-sky-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-sky-700">{trmTestData.length}</p>
-          <p className="text-[10px] text-sky-600 font-medium">TRM</p>
-        </div>
-        <div className="bg-violet-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-violet-700">{cgpTestData.length}</p>
-          <p className="text-[10px] text-violet-600 font-medium">CGP</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// Openness Award Component (Reusable)
-// ============================================
-const OpennessAward = () => {
-  const [showFAQ, setShowFAQ] = useState(false);
-  
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...cgpTestData];
-  
-  // Helper functions
-  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
-
-  // Calculate openness score per test (0-100)
-  const calcTestScore = (test) => {
-    let score = 0;
-    if (hasValue(test.listPrice)) score += 30;
-    if (hasValue(test.sensitivity)) score += 15;
-    if (hasValue(test.specificity)) score += 15;
-    if (test.numPublications != null && test.numPublications > 0) score += 15;
-    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
-    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
-    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
-    return score;
-  };
-
-  // Normalize vendor names
-  const normalizeVendor = (v) => {
-    if (!v) return 'Unknown';
-    if (v.includes('Guardant')) return 'Guardant Health';
-    if (v.includes('Foundation Medicine')) return 'Foundation Medicine';
-    return v;
-  };
-
-  // Group ALL tests by vendor for openness scoring
-  const vendorScores = {};
-  allTests.forEach(test => {
-    const vendor = normalizeVendor(test.vendor);
-    if (!vendorScores[vendor]) {
-      vendorScores[vendor] = { scores: [], total: 0, count: 0, tests: [] };
-    }
-    const score = calcTestScore(test);
-    vendorScores[vendor].scores.push(score);
-    vendorScores[vendor].total += score;
-    vendorScores[vendor].count += 1;
-    vendorScores[vendor].tests.push({ name: test.name, score });
-  });
-
-  // Find most transparent vendor (min 2 tests to qualify)
-  let topVendor = null;
-  let topScore = 0;
-  let topTestCount = 0;
-  Object.entries(vendorScores).forEach(([vendor, data]) => {
-    if (data.count >= 2) {
-      const avgScore = data.total / data.count;
-      if (avgScore > topScore) {
-        topScore = avgScore;
-        topVendor = vendor;
-        topTestCount = data.count;
-      }
-    }
-  });
-
-  // Calculate field average score (all qualifying vendors with 2+ tests)
-  const qualifyingVendors = Object.entries(vendorScores).filter(([_, data]) => data.count >= 2);
-  const fieldAvgScore = qualifyingVendors.length > 0 
-    ? Math.round(qualifyingVendors.reduce((sum, [_, data]) => sum + (data.total / data.count), 0) / qualifyingVendors.length)
-    : 0;
-
-  if (!topVendor) return null;
-
-  return (
-    <div className="bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-2 border-amber-300 rounded-xl p-4 shadow-sm">
-      <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center text-3xl flex-shrink-0 shadow-lg">
-          🏆
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award</p>
-            <span className="px-2 py-0.5 bg-amber-200 text-amber-800 text-[10px] font-medium rounded-full">2025</span>
-          </div>
-          <p className="text-xl font-bold text-slate-800">{topVendor}</p>
-          <p className="text-xs text-amber-700 mt-0.5">
-            {topTestCount} tests evaluated
-          </p>
-        </div>
-        {/* Score comparison */}
-        <div className="hidden sm:flex items-center gap-3">
-          <div className="text-center px-3 py-2 bg-white/50 rounded-lg">
-            <div className="text-2xl font-bold text-amber-600">{Math.round(topScore)}</div>
-            <div className="text-[10px] text-amber-600 font-medium">Winner</div>
-          </div>
-          <div className="text-slate-400 text-lg">vs</div>
-          <div className="text-center px-3 py-2 bg-white/50 rounded-lg">
-            <div className="text-2xl font-bold text-slate-500">{fieldAvgScore}</div>
-            <div className="text-[10px] text-slate-500 font-medium">Field Avg</div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-3 pt-3 border-t border-amber-200 flex items-center justify-between gap-4">
-        <p className="text-[11px] text-amber-600 flex-1">
-          Score based on disclosure of pricing, performance, evidence & sample info. Field average across {qualifyingVendors.length} vendors with 2+ tests.
-        </p>
-        <button 
-          onClick={() => setShowFAQ(!showFAQ)}
-          className="text-xs text-amber-700 hover:text-amber-900 font-semibold flex items-center gap-1.5 flex-shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors"
-        >
-          {showFAQ ? 'Hide details' : 'How is this calculated?'}
-          <svg className={`w-4 h-4 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-      </div>
-      
-      {/* FAQ Section */}
-      {showFAQ && (
-        <div className="mt-4 pt-4 border-t border-amber-200 text-sm text-slate-700 space-y-4">
-          <div>
-            <h4 className="font-semibold text-amber-800 mb-2">What is the Openness Score?</h4>
-            <p className="text-xs text-slate-600">
-              The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
-              It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
-              patients and clinicians make informed decisions.
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-amber-800 mb-2">How is it calculated?</h4>
-            <p className="text-xs text-slate-600 mb-2">Each test is scored based on disclosure of key fields (weights sum to 100):</p>
-            <div className="bg-white/60 rounded-lg p-3 overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-amber-200">
-                    <th className="text-left py-1.5 pr-4 font-semibold text-amber-800">Field</th>
-                    <th className="text-center py-1.5 px-2 font-semibold text-amber-800">Weight</th>
-                    <th className="text-left py-1.5 pl-4 font-semibold text-amber-800">Why it matters</th>
-                  </tr>
-                </thead>
-                <tbody className="text-slate-600">
-                  <tr className="border-b border-amber-100">
-                    <td className="py-1.5 pr-4 font-medium">List Price</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">30%</td>
-                    <td className="py-1.5 pl-4">Most critical for access decisions</td>
-                  </tr>
-                  <tr className="border-b border-amber-100">
-                    <td className="py-1.5 pr-4 font-medium">Sensitivity</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                    <td className="py-1.5 pl-4">Detection rate / true positive rate</td>
-                  </tr>
-                  <tr className="border-b border-amber-100">
-                    <td className="py-1.5 pr-4 font-medium">Specificity</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                    <td className="py-1.5 pl-4">Reduces unnecessary follow-ups</td>
-                  </tr>
-                  <tr className="border-b border-amber-100">
-                    <td className="py-1.5 pr-4 font-medium">Publications</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                    <td className="py-1.5 pl-4">Evidence of independent validation</td>
-                  </tr>
-                  <tr className="border-b border-amber-100">
-                    <td className="py-1.5 pr-4 font-medium">Turnaround Time</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">10%</td>
-                    <td className="py-1.5 pl-4">Practical info for clinicians</td>
-                  </tr>
-                  <tr className="border-b border-amber-100">
-                    <td className="py-1.5 pr-4 font-medium">Sample Info</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">10%</td>
-                    <td className="py-1.5 pl-4">Blood volume, sample type, or category</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1.5 pr-4 font-medium">Trial Participants</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">5%</td>
-                    <td className="py-1.5 pl-4">Clinical evidence depth</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr className="border-t border-amber-200">
-                    <td className="py-1.5 pr-4 font-bold text-amber-800">Total</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-800">100%</td>
-                    <td className="py-1.5 pl-4"></td>
-                  </tr>
-                </tfoot>
-              </table>
+      <div className="mt-6 pt-4 border-t border-slate-400/40">
+        <h3 className="text-sm font-medium text-slate-600 mb-3">Coverage by Category</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+            <div>
+              <p className="text-sm font-medium text-slate-800">MRD</p>
+              <p className="text-xs text-slate-600">{mrdTestData.length} tests • {mrdParams} params</p>
             </div>
           </div>
-          
-          <div>
-            <h4 className="font-semibold text-amber-800 mb-2">Who is eligible?</h4>
-            <p className="text-xs text-slate-600">
-              Vendors must have <strong>2 or more tests</strong> in the OpenOnco database to qualify for the award. 
-              The vendor's score is the <strong>average</strong> across all their tests. This prevents a single 
-              well-documented test from winning while encouraging comprehensive disclosure across product portfolios.
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+            <div>
+              <p className="text-sm font-medium text-slate-800">ECD</p>
+              <p className="text-xs text-slate-600">{ecdTestData.length} tests • {ecdParams} params</p>
+            </div>
           </div>
-          
-          <div>
-            <h4 className="font-semibold text-amber-800 mb-2">Why these weights?</h4>
-            <p className="text-xs text-slate-600">
-              <strong>Price (30%)</strong> is weighted highest because it's the most commonly withheld information 
-              and critically important for patients and healthcare systems. <strong>Performance metrics (30% combined)</strong> are 
-              essential for clinical decision-making. <strong>Publications (15%)</strong> demonstrate commitment to 
-              independent validation. Practical details like <strong>TAT and sample requirements (20% combined)</strong> help 
-              with care coordination.
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-sky-500"></div>
+            <div>
+              <p className="text-sm font-medium text-slate-800">TRM</p>
+              <p className="text-xs text-slate-600">{trmTestData.length} tests • {trmParams} params</p>
+            </div>
           </div>
-          
-          <div>
-            <h4 className="font-semibold text-amber-800 mb-2">How can vendors improve their score?</h4>
-            <p className="text-xs text-slate-600">
-              Publish your list price, disclose sensitivity and specificity from validation studies, maintain an 
-              active publication record, and provide clear sample requirements. Vendors can submit updated information 
-              through our Submissions page.
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-violet-500"></div>
+            <div>
+              <p className="text-sm font-medium text-slate-800">CGP</p>
+              <p className="text-xs text-slate-600">{cgpTestData.length} tests • {cgpParams} params</p>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -6225,30 +4919,6 @@ const FAQPage = () => {
       )
     },
     {
-      question: "How does the AI chat feature work, and can I trust its answers?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Our chat feature is powered by Anthropic's Claude AI. We've designed it to <strong>only reference information from our test database</strong>—it cannot browse the internet or access external sources during your conversation. This means Claude's answers are grounded in the same curated, cited data you see throughout OpenOnco.
-          </p>
-          <p>
-            However, <strong>AI language models can still make mistakes</strong>. They may occasionally misinterpret questions, make errors in reasoning, or present information in misleading ways. This is a limitation of current AI technology, not specific to our implementation.
-          </p>
-          <p>
-            <strong>We strongly recommend:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li>Cross-checking any important information with vendor websites and official product documentation</li>
-            <li>Verifying clinical claims with peer-reviewed publications (we provide citations throughout the database)</li>
-            <li>If you're a patient, discussing test options with your doctor or healthcare provider before making decisions</li>
-          </ul>
-          <p>
-            The chat is best used as a starting point for exploration—not as a definitive source for clinical decision-making.
-          </p>
-        </div>
-      )
-    },
-    {
       question: "Can I download the data?",
       answer: (
         <p>
@@ -6278,68 +4948,6 @@ const FAQPage = () => {
         <p>
           The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry—whether it's suggesting a new test, requesting data corrections, or providing general feedback. We review all submissions and will respond if needed.
         </p>
-      )
-    },
-    {
-      question: "What is the OpenOnco Openness Award?",
-      answer: (
-        <div className="space-y-4">
-          <p>
-            The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
-            It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
-            patients and clinicians make informed decisions.
-          </p>
-          
-          <p className="font-medium text-gray-800">How is it calculated?</p>
-          <p>Each test is scored based on disclosure of key fields (weights sum to 100):</p>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700 border-b">Field</th>
-                  <th className="text-center py-2 px-3 font-semibold text-gray-700 border-b">Weight</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700 border-b">Rationale</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600">
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Price</td><td className="text-center py-2 px-3 font-bold text-amber-600">30%</td><td className="py-2 px-3">Hardest to find, gold standard of openness</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sensitivity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Specificity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Publications</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Peer-reviewed evidence base</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Turnaround Time</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Practical info for clinicians</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sample Info</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Blood volume, sample type, or category</td></tr>
-                <tr><td className="py-2 px-3 font-medium">Trial Participants</td><td className="text-center py-2 px-3 font-bold text-amber-600">5%</td><td className="py-2 px-3">Clinical evidence depth</td></tr>
-              </tbody>
-              <tfoot>
-                <tr className="bg-amber-50 border-t-2 border-amber-200"><td className="py-2 px-3 font-bold">Total</td><td className="text-center py-2 px-3 font-bold text-amber-700">100%</td><td className="py-2 px-3"></td></tr>
-              </tfoot>
-            </table>
-          </div>
-          
-          <p className="font-medium text-gray-800 mt-4">Who is eligible?</p>
-          <p>
-            Vendors must have <strong>2 or more tests</strong> in the OpenOnco database to qualify. The vendor's 
-            score is the <strong>average</strong> across all their tests. This prevents a single well-documented 
-            test from winning while encouraging comprehensive disclosure across product portfolios.
-          </p>
-          
-          <p className="font-medium text-gray-800 mt-4">Why these weights?</p>
-          <p>
-            <strong>Price (30%)</strong> is weighted highest because it's the most commonly withheld information 
-            and critically important for patients and healthcare systems. <strong>Performance metrics (30% combined)</strong> are 
-            essential for clinical decision-making. <strong>Publications (15%)</strong> demonstrate commitment to 
-            independent validation. Practical details like <strong>TAT and sample requirements (20% combined)</strong> help 
-            with care coordination.
-          </p>
-          
-          <p className="font-medium text-gray-800 mt-4">How can vendors improve their score?</p>
-          <p>
-            Publish your list price, disclose sensitivity and specificity from validation studies, maintain an 
-            active publication record, and provide clear sample requirements. Vendors can submit updated information 
-            through our Submissions page.
-          </p>
-        </div>
       )
     }
   ];
@@ -7300,19 +5908,14 @@ const SubmissionsPage = () => {
         )}
       </form>
 
-      {/* Openness Encouragement Section */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">We Value Openness</h2>
-          <p className="text-gray-600 max-w-xl mx-auto">
-            The more complete your submission, the better we can serve patients and clinicians. 
-            We encourage vendors to share pricing, performance data, and clinical evidence openly.
-          </p>
-        </div>
-        <div className="mb-6">
-          <OpennessAward />
-        </div>
-        <DatabaseSummary />
+      {/* Alternative Contact */}
+      <div className="mt-8 text-center text-gray-500 text-sm">
+        <p>Questions? Contact via{' '}
+          <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-[#2A63A4] hover:underline">
+            LinkedIn
+          </a>
+          {' '}(include #openonco in your message)
+        </p>
       </div>
     </div>
   );
@@ -7380,7 +5983,7 @@ const SourceDataPage = () => {
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
         <p className="text-gray-600 mb-4">
-          OpenOnco is committed to openness. All data is open and downloadable.
+          OpenOnco is committed to transparency. All data is open and downloadable.
         </p>
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full">
           <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -7392,7 +5995,7 @@ const SourceDataPage = () => {
 
       {/* Summary Statistics */}
       <div className="mb-8">
-        <DatabaseStatsSimple />
+        <DatabaseSummary />
       </div>
 
       {/* Download Section */}
@@ -7470,19 +6073,9 @@ const CategoryChat = ({ category }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
-  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const chatContainerRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
-  useEffect(() => { 
-    if (chatContainerRef.current && messages.length > 0) {
-      const container = chatContainerRef.current;
-      const messageElements = container.querySelectorAll('[data-message-role]');
-      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
-      if (lastUserMessage) {
-        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  }, [messages, isLoading]);
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
   
   // Listen for persona changes
   useEffect(() => {
@@ -7496,22 +6089,7 @@ const CategoryChat = ({ category }) => {
 
   // Memoize system prompt - recomputed if category or persona changes
   const systemPrompt = useMemo(() => {
-    return `You are a liquid biopsy test information assistant for OpenOnco, focused on ${meta.title} testing. Your ONLY role is to help users explore and compare the specific tests in the database below.
-
-STRICT SCOPE LIMITATIONS:
-- ONLY discuss ${category} tests that exist in the database below
-- NEVER speculate about disease genetics, heredity, inheritance patterns, or etiology - these are complex medical topics outside your scope
-- NEVER suggest screening strategies or make recommendations about who should be tested
-- NEVER interpret what positive or negative test results mean clinically
-- NEVER make claims about diseases, conditions, or cancer types beyond what is explicitly stated in the test data
-- If a user describes a patient/situation, check the "targetPopulation" field - if they don't clearly fit, say "This test is designed for [target population]. Please discuss with a healthcare provider whether it's appropriate for this situation."
-- For ANY question outside the specific test data (disease inheritance, screening recommendations, result interpretation, treatment decisions): respond with "That's outside my scope. Please discuss with your healthcare provider."
-
-WHAT YOU CAN DO:
-- Compare ${category} tests on their documented attributes (sensitivity, specificity, TAT, cost, coverage, etc.)
-- Explain what data is available or not available for specific tests
-- Help users understand the differences between test approaches
-- Note when a test's target population may not match the user's described situation
+    return `You are a liquid biopsy test assistant for OpenOnco, focused on ${meta.title} testing. Help users explore and compare tests. You are not a clinical advisor and cannot provide medical advice.
 
 ${category} DATABASE:
 ${JSON.stringify(chatTestData[category])}
@@ -7520,7 +6098,7 @@ ${chatKeyLegend}
 
 ${getPersonaStyle(persona)}
 
-Say "not specified" for missing data. When uncertain, err on the side of saying "please consult your healthcare provider."`;
+Say "not specified" for missing data.`;
   }, [category, meta, persona]);
 
   const handleKeyDown = (e) => {
@@ -7547,7 +6125,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: selectedModel,
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 800,
           system: systemPrompt,
           messages: conversationHistory
@@ -7567,9 +6145,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div ref={chatContainerRef} className="h-56 overflow-y-auto p-4 space-y-3">
+      <div className="h-56 overflow-y-auto p-4 space-y-3">
         {messages.map((msg, i) => (
-          <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-emerald-500 text-white rounded-br-md' : 'bg-gray-100 text-gray-800 rounded-bl-md'}`}>
               {msg.role === 'user' ? (
                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -7588,23 +6166,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             </div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
-      <div className="border-t border-gray-200 p-3">
-        <div className="flex gap-2 items-center">
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
-            title="Select AI model"
-          >
-            {CHAT_MODELS.map(m => (
-              <option key={m.id} value={m.id}>{m.name}</option>
-            ))}
-          </select>
-          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-          <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
-        </div>
-        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+      <div className="border-t border-gray-200 p-3 flex gap-2">
+        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+        <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
       </div>
     </div>
   );
@@ -8026,7 +6592,7 @@ Why it's important: Stage II patients considering adjuvant therapy benefit from 
 
 What you can do: Consider asking the vendor about stage-specific performance data—they may have additional information available.
 
-We encourage vendors to provide stage-specific breakdowns where feasible, as this openness helps the entire field.`
+We encourage vendors to provide stage-specific breakdowns where feasible, as this transparency helps the entire field.`
   },
   specificity: {
     title: "Understanding Specificity Claims",
@@ -8346,7 +6912,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
             <h3 className="font-semibold text-gray-900">{test.name}</h3>
-            <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+            <p className="text-sm text-gray-500">{test.vendor}</p>
           </div>
           {/* Prominent comparison checkbox - click selects for comparison */}
           <button
@@ -8494,7 +7060,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className="font-semibold text-gray-900 text-lg">{test.name}</h3>
-            <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+            <p className="text-sm text-gray-500">by {test.vendor}</p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
             hasMedicare && hasPrivate ? 'bg-emerald-100 text-emerald-700' :
@@ -8861,7 +7427,6 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 <Section title="Test Performance" expertTopic="sensitivity">
                   <div className="space-y-1">
                     <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} />
-                    {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
                     <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} />
                     {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" />}
                     {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" />}
@@ -9208,7 +7773,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                     <div className="flex justify-between items-start gap-2">
                       <div className={`flex-1 p-3 rounded-xl ${colors.accent} border`}>
                         <p className={`font-bold ${colors.accentText}`}>{test.name}</p>
-                        <p className="text-xs text-gray-500 mt-0.5">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
+                        <p className="text-xs text-gray-500 mt-0.5">{test.vendor}</p>
                       </div>
                       <button 
                         onClick={() => onRemoveTest(test.id)} 
@@ -9509,12 +8074,9 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       }
       if (selectedRegions.length > 0) {
         const testRegions = test.availableRegions || [];
-        // If test has no regions specified, infer from clinicalAvailability text
-        const avail = test.clinicalAvailability?.toLowerCase() || '';
+        // If test has no regions specified, assume US for clinical LDTs
         const effectiveRegions = testRegions.length > 0 ? testRegions : 
-          (avail.includes('shipping') || avail.includes('commercially available') || 
-           avail.includes('launched') || avail.includes('us ') || avail.includes('in us') ||
-           avail.includes('quest') || avail.includes('labcorp') ? ['US'] : []);
+          (test.clinicalAvailability?.toLowerCase().includes('shipping') ? ['US'] : []);
         const matchesRegion = selectedRegions.some(r => {
           if (r === 'US') return effectiveRegions.includes('US') || effectiveRegions.includes('US-only');
           if (r === 'International') return effectiveRegions.includes('International') || effectiveRegions.includes('Global') || effectiveRegions.length > 1;
