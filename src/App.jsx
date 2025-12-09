@@ -4221,6 +4221,13 @@ const TestShowcase = ({ onNavigate }) => {
   const [sortBy, setSortBy] = useState('vendor');
   const [searchQuery, setSearchQuery] = useState('');
   
+  // Chat state for non-patient views
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
+  const chatContainerRef = useRef(null);
+  
   // Track persona
   const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
   useEffect(() => {
@@ -4230,6 +4237,28 @@ const TestShowcase = ({ onNavigate }) => {
   }, []);
   
   const isPatient = persona === 'Patient';
+  
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+  
+  // Example questions for chat
+  const exampleQuestions = [
+    "Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring",
+    "What ECD tests have Medicare coverage?",
+    "Which CGP tests have the fastest turnaround time?"
+  ];
+  
+  // Get dynamic test counts
+  const testCounts = {
+    ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
+    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 14,
+    TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 11,
+    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
+  };
 
   // Combine all tests with their category
   const baseTests = [
@@ -4477,6 +4506,82 @@ const TestShowcase = ({ onNavigate }) => {
     neutral: 'text-slate-600'        // Patient: neutral indicator
   };
 
+  // Chat system prompt for non-patient views
+  const chatTestData = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP' }))
+  ];
+
+  const getPersonaStyle = (p) => {
+    if (p === 'Clinician') return 'Respond in a clinical, professional tone suitable for oncologists and healthcare providers. Use medical terminology freely.';
+    if (p === 'Academic/Industry') return 'Respond with technical depth suitable for researchers and industry professionals. Include analytical details and methodology notes where relevant.';
+    return '';
+  };
+
+  const systemPrompt = useMemo(() => {
+    return `You are a liquid biopsy test information assistant for OpenOnco. Your ONLY role is to help users explore and compare the specific tests in the database below.
+
+STRICT SCOPE LIMITATIONS:
+- ONLY discuss tests that exist in the database below
+- NEVER speculate about disease genetics, heredity, inheritance patterns, or etiology
+- NEVER suggest screening strategies or make recommendations about who should be tested
+- NEVER interpret what positive or negative test results mean clinically
+- For ANY question outside the specific test data: respond with "That's outside my scope. Please discuss with your healthcare provider."
+
+WHAT YOU CAN DO:
+- Compare tests in the database on their documented attributes (sensitivity, specificity, TAT, cost, coverage, etc.)
+- Explain what data is available or not available for specific tests
+- Help users understand the differences between test approaches (tumor-informed vs tumor-naïve, etc.)
+- Direct users to the appropriate test category
+
+DATABASE:
+${JSON.stringify(chatTestData)}
+
+${getPersonaStyle(persona)}
+
+Say "not specified" for missing data. When uncertain, err on the side of saying "please consult your healthcare provider."`;
+  }, [persona]);
+
+  // Chat submit handler
+  const handleChatSubmit = async (question) => {
+    const q = question || chatInput;
+    if (!q.trim()) return;
+    
+    setChatInput('');
+    const newUserMessage = { role: 'user', content: q };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
+    setIsLoading(true);
+
+    try {
+      const recentMessages = updatedMessages.slice(-6);
+      
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: selectedModel,
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: recentMessages
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data?.content?.[0]?.text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
+    }
+    setIsLoading(false);
+  };
+
   // Rotate parameters every 1 second
   useEffect(() => {
     const interval = setInterval(() => {
@@ -4507,251 +4612,384 @@ const TestShowcase = ({ onNavigate }) => {
     violet: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
   };
 
-  return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-lg font-bold text-slate-800">
-          The {allTests.length} Tests We Track
-        </h3>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500">Sort Order</span>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
-          >
-            <option value="vendor">Alphabetical</option>
-            <option value="category">By Category</option>
-            <option value="tat">By TAT (fastest)</option>
-            <option value="reimbursement">By Coverage</option>
-            <option value="vendorTests">By # Tests</option>
-            <option value="openness">By Openness</option>
-          </select>
+  // Category button config for non-patient view
+  const categoryButtons = [
+    { id: 'ECD', name: 'Early Cancer Detection', phase: 'Healthy / Screening', icon: '🔬', color: 'emerald' },
+    { id: 'CGP', name: 'Comprehensive Genomic Profiling', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
+    { id: 'TRM', name: 'Treatment Response Monitoring', phase: 'Active Treatment', icon: '📊', color: 'sky' },
+    { id: 'MRD', name: 'Minimal Residual Disease', phase: 'Surveillance', icon: '🎯', color: 'orange' },
+  ];
+
+  const categoryColorClasses = {
+    emerald: { bg: 'bg-emerald-50', bgHover: 'hover:bg-emerald-100', border: 'border-emerald-200', borderHover: 'hover:border-emerald-400', text: 'text-emerald-700', iconBg: 'bg-emerald-500' },
+    violet: { bg: 'bg-violet-50', bgHover: 'hover:bg-violet-100', border: 'border-violet-200', borderHover: 'hover:border-violet-400', text: 'text-violet-700', iconBg: 'bg-violet-500' },
+    sky: { bg: 'bg-sky-50', bgHover: 'hover:bg-sky-100', border: 'border-sky-200', borderHover: 'hover:border-sky-400', text: 'text-sky-700', iconBg: 'bg-sky-500' },
+    orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
+  };
+
+  // ========== PATIENT VIEW: Test cards grid ==========
+  if (isPatient) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-bold text-slate-800">
+            The {allTests.length} Tests We Track
+          </h3>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-500">Sort Order</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
+            >
+              <option value="vendor">Alphabetical</option>
+              <option value="category">By Category</option>
+              <option value="tat">By TAT (fastest)</option>
+              <option value="reimbursement">By Coverage</option>
+            </select>
+          </div>
         </div>
-      </div>
-      
-      {/* Search Bar */}
-      <div className="relative mb-3">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search tests or vendors..."
-          className="w-full px-3 py-2 pl-8 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-        />
-        <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
+        
+        {/* Search Bar */}
+        <div className="relative mb-3">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search tests or vendors..."
+            className="w-full px-3 py-2 pl-8 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+          />
+          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        
         {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <p className="text-xs text-slate-500 mb-2">
+            {filteredTests.length === 0 ? 'No tests found' : `Showing ${filteredTests.length} of ${allTests.length} tests`}
+          </p>
+        )}
+        <p className="text-xs text-slate-500 text-center mb-3">
+          Showing coverage, pricing & wait times
+        </p>
+        
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+          {filteredTests.map(test => {
+            const params = getPatientParams(test);
+            const currentIdx = paramIndices[test.id] || 0;
+            const currentParam = params[currentIdx];
+            const colors = colorClasses[test.color];
+            
+            return (
+              <div
+                key={test.id}
+                onClick={() => setSelectedTest(test)}
+                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+              >
+                <div className="flex items-start justify-between mb-1">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
+                    <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
+                  </div>
+                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
+                    {test.category}
+                  </span>
+                </div>
+                <div className="h-8 flex flex-col justify-center">
+                  <p className="text-[10px] text-slate-500 truncate">{currentParam.label}</p>
+                  <p className={`text-sm font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
+                    {currentParam.value}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Compact Legend */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+            <span className="text-slate-500">After Treatment</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span className="text-slate-500">Screening</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+            <span className="text-slate-500">During Treatment</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+            <span className="text-slate-500">Diagnosis</span>
+          </span>
+        </div>
+
+        {/* Test Detail Modal - Patient View */}
+        {selectedTest && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedTest(null)}>
+            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+              {(() => {
+                const category = selectedTest.category;
+                const colorSchemes = {
+                  MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
+                  ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
+                  TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
+                  CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
+                };
+                const clrs = colorSchemes[category] || colorSchemes.MRD;
+                const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');
+                const hasPrivate = selectedTest.commercialPayers && selectedTest.commercialPayers.length > 0;
+                
+                return (
+                  <>
+                    <div className={`flex justify-between items-start p-5 ${clrs.headerBg}`} style={{ flexShrink: 0 }}>
+                      <div className="flex-1 mr-4">
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {hasMedicare && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
+                          {hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
+                        </div>
+                        <h2 className="text-2xl font-bold text-white">{selectedTest.name}</h2>
+                        <p className="text-white/80">{selectedTest.vendor}</p>
+                      </div>
+                      <button onClick={() => setSelectedTest(null)} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
+                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
+                      <p className="text-gray-700 mb-4">
+                        {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
+                        {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
+                        {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
+                        {category === 'CGP' && "This test analyzes your tumor's genes to find the best targeted treatments for your specific cancer."}
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasMedicare ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                            {hasMedicare ? '✓' : '✗'}
+                          </span>
+                          <span className="text-sm">Medicare coverage</span>
+                        </div>
+                        <div className={`flex items-center gap-2 p-2 rounded-lg ${hasPrivate ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasPrivate ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                            {hasPrivate ? '✓' : '✗'}
+                          </span>
+                          <span className="text-sm">Private insurance</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-gray-200 px-5 py-4 flex justify-between items-center bg-gray-50" style={{ flexShrink: 0 }}>
+                      <p className="text-sm text-gray-500">View full details in the navigator</p>
+                      <button
+                        onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
+                        className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
+                        style={{ backgroundColor: '#2A63A4' }}
+                      >
+                        See All Options
+                      </button>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </div>
         )}
       </div>
-      
-      {/* Recently Added Tests */}
-      <div className="bg-gradient-to-r from-blue-50 to-slate-50 border border-slate-200 rounded-lg p-2 mb-3">
-        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Recently Added</p>
-        <div className="flex flex-nowrap gap-1.5 overflow-hidden">
-          {RECENTLY_ADDED_TESTS.map((test, i) => {
-            const categoryColors = {
-              MRD: 'bg-orange-100 text-orange-700 border-orange-200',
-              ECD: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-              TRM: 'bg-sky-100 text-sky-700 border-sky-200',
-              CGP: 'bg-violet-100 text-violet-700 border-violet-200'
-            };
+    );
+  }
+
+  // ========== CLINICIAN/ACADEMIC VIEW: Search + Category Buttons + Chat ==========
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
+        <h3 className="text-lg font-bold text-slate-800">
+          Explore {allTests.length} Liquid Biopsy Tests
+        </h3>
+      </div>
+
+      {/* Search Bar */}
+      <div className="p-4 border-b border-slate-100">
+        <div className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search tests, vendors, or categories..."
+            className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+          />
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        
+        {/* Search Results Dropdown */}
+        {searchQuery && (
+          <div className="mt-2">
+            {filteredTests.length === 0 ? (
+              <p className="text-sm text-slate-500 py-2">No tests found for "{searchQuery}"</p>
+            ) : (
+              <div className="bg-white border border-slate-200 rounded-lg max-h-64 overflow-y-auto">
+                <p className="text-xs text-slate-500 px-3 py-2 border-b border-slate-100">
+                  {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''} found
+                </p>
+                {filteredTests.slice(0, 10).map(test => {
+                  const colors = colorClasses[test.color];
+                  return (
+                    <button
+                      key={test.id}
+                      onClick={() => { setSearchQuery(''); onNavigate(test.category, test.id); }}
+                      className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center justify-between border-b border-slate-50 last:border-0"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-slate-800">{test.name}</p>
+                        <p className="text-xs text-slate-500">{test.vendor}</p>
+                      </div>
+                      <span className={`${colors.badge} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
+                        {test.category}
+                      </span>
+                    </button>
+                  );
+                })}
+                {filteredTests.length > 10 && (
+                  <p className="text-xs text-slate-400 px-3 py-2 text-center">
+                    + {filteredTests.length - 10} more results
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Category Navigation Buttons */}
+      <div className="p-4 border-b border-slate-100">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Browse by Category</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {categoryButtons.map(cat => {
+            const clrs = categoryColorClasses[cat.color];
             return (
-              <span 
-                key={i}
-                className={`text-[10px] px-2 py-0.5 rounded-full border whitespace-nowrap flex-shrink-0 ${categoryColors[test.category] || 'bg-slate-100 text-slate-600 border-slate-200'}`}
+              <button
+                key={cat.id}
+                onClick={() => onNavigate(cat.id)}
+                className={`${clrs.bg} ${clrs.bgHover} ${clrs.border} ${clrs.borderHover} border-2 rounded-xl p-3 text-left transition-all hover:shadow-md group`}
               >
-                {test.name} <span className="opacity-60">({test.category})</span>
-              </span>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className={`w-8 h-8 rounded-lg ${clrs.iconBg} flex items-center justify-center text-white text-lg`}>
+                    {cat.icon}
+                  </span>
+                  <span className={`text-lg font-bold ${clrs.text}`}>{cat.id}</span>
+                </div>
+                <p className="text-xs text-slate-600 font-medium truncate">{cat.name}</p>
+                <p className="text-xs text-slate-400 mt-1">{testCounts[cat.id]} tests →</p>
+              </button>
             );
           })}
         </div>
       </div>
-      
-      {/* Search results count */}
-      {searchQuery && (
-        <p className="text-xs text-slate-500 mb-2">
-          {filteredTests.length === 0 ? 'No tests found' : `Showing ${filteredTests.length} of ${allTests.length} tests`}
-        </p>
-      )}
-      {isPatient && (
-        <p className="text-xs text-slate-500 text-center mb-3">
-          Showing coverage, pricing & wait times
-        </p>
-      )}
-      {!isPatient && !searchQuery && <div className="mb-3" />}
-      
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-        {filteredTests.map(test => {
-          const params = isPatient ? getPatientParams(test) : getParams(test);
-          const currentIdx = paramIndices[test.id] || 0;
-          const currentParam = params[currentIdx];
-          const colors = colorClasses[test.color];
-          
-          return (
-            <div
-              key={test.id}
-              onClick={() => setSelectedTest(test)}
-              className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
-            >
-              <div className="flex items-start justify-between mb-1">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
-                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
-                </div>
-                <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                  {test.category}
-                </span>
-              </div>
-              
-              <div className="h-8 flex flex-col justify-center">
-                <p className="text-[10px] text-slate-500 truncate">{currentParam.label}</p>
-                <p className={`text-sm font-bold ${paramTypeColors[currentParam.type] || 'text-slate-600'} transition-all truncate`}>
-                  {currentParam.value}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
 
-      {/* Compact Legend */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
-        <span className="flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-          <span className="text-slate-500">{isPatient ? 'After Treatment' : 'MRD'}</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          <span className="text-slate-500">{isPatient ? 'Screening' : 'ECD'}</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-          <span className="text-slate-500">{isPatient ? 'During Treatment' : 'TRM'}</span>
-        </span>
-      </div>
-
-      {/* Test Detail Modal */}
-      {selectedTest && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedTest(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
-            {/* Use TestDetailModal content structure */}
-            {(() => {
-              const category = selectedTest.category;
-              const colorSchemes = {
-                MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
-                ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
-                TRM: { headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500' },
-                CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
-              };
-              const colors = colorSchemes[category] || colorSchemes.MRD;
-              const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && 
-                !selectedTest.reimbursement?.toLowerCase().includes('not yet');
-              const hasPrivate = selectedTest.commercialPayers && selectedTest.commercialPayers.length > 0;
-              
-              return (
-                <>
-                  {/* Header */}
-                  <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
-                    <div className="flex-1 mr-4">
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        {hasMedicare && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
-                        {hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
-                        {selectedTest.fdaStatus && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{selectedTest.fdaStatus.split(' - ')[0]}</span>}
-                      </div>
-                      <h2 className="text-2xl font-bold text-white">{selectedTest.name}</h2>
-                      <p className="text-white/80">{selectedTest.vendor}</p>
-                    </div>
-                    <button onClick={() => setSelectedTest(null)} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
-                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                  
-                  {/* Preview Content */}
-                  <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
-                    {isPatient ? (
-                      <div className="space-y-4">
-                        <p className="text-gray-700">
-                          {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
-                          {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
-                          {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
-                          {category === 'CGP' && "This test analyzes your tumor's genes to find the best targeted treatments for your specific cancer."}
-                        </p>
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
-                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasMedicare ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
-                              {hasMedicare ? '✓' : '✗'}
-                            </span>
-                            <span className="text-sm">Medicare coverage</span>
-                          </div>
-                          <div className={`flex items-center gap-2 p-2 rounded-lg ${hasPrivate ? 'bg-emerald-50' : 'bg-gray-50'}`}>
-                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasPrivate ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
-                              {hasPrivate ? '✓' : '✗'}
-                            </span>
-                            <span className="text-sm">Private insurance</span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-3 gap-4">
-                        {selectedTest.sensitivity != null && (
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className={`font-bold text-emerald-600 ${String(selectedTest.sensitivity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                              {String(selectedTest.sensitivity).length > 20 
-                                ? (String(selectedTest.sensitivity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.sensitivity])[0] + (String(selectedTest.sensitivity).includes('%') ? '' : '%')
-                                : selectedTest.sensitivity + (String(selectedTest.sensitivity).includes('%') ? '' : '%')}
-                            </p>
-                            <p className="text-xs text-gray-500">Sensitivity</p>
-                          </div>
-                        )}
-                        {selectedTest.specificity != null && (
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className={`font-bold text-emerald-600 ${String(selectedTest.specificity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                              {String(selectedTest.specificity).length > 20 
-                                ? (String(selectedTest.specificity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.specificity])[0] + (String(selectedTest.specificity).includes('%') ? '' : '%')
-                                : selectedTest.specificity + (String(selectedTest.specificity).includes('%') ? '' : '%')}
-                            </p>
-                            <p className="text-xs text-gray-500">Specificity</p>
-                          </div>
-                        )}
-                        {(selectedTest.initialTat || selectedTest.tat) && (
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <p className="text-2xl font-bold text-slate-600">{selectedTest.initialTat || selectedTest.tat}</p>
-                            <p className="text-xs text-gray-500">TAT</p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Footer */}
-                  <div className="border-t border-gray-200 px-5 py-4 flex justify-between items-center bg-gray-50" style={{ flexShrink: 0 }}>
-                    <p className="text-sm text-gray-500">View full details in the navigator</p>
-                    <button
-                      onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
-                      className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
-                      style={{ backgroundColor: '#2A63A4' }}
-                    >
-                      {isPatient ? 'See All Options' : `Open ${category} Navigator`}
-                    </button>
-                  </div>
-                </>
-              );
-            })()}
-          </div>
+      {/* Chat Section */}
+      <div className="bg-white">
+        <div className="px-4 py-3 border-b border-slate-100">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Or Ask Claude About the Tests</p>
         </div>
-      )}
+        
+        {/* Messages Area */}
+        {messages.length > 0 && (
+          <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div 
+                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                  style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                >
+                  {msg.role === 'user' ? (
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  ) : (
+                    <Markdown className="text-sm">{msg.content}</Markdown>
+                  )}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                  <p className="text-sm text-slate-500">Thinking...</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Input Area */}
+        <div className="p-4 border-t border-slate-100">
+          <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2 items-center">
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className="px-2 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
+              title="Select AI model"
+            >
+              {CHAT_MODELS.map(m => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              placeholder="Type your liquid biopsy test question here..."
+              className="flex-1 border-2 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2"
+              style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+              disabled={isLoading}
+            />
+            <button
+              type="submit"
+              disabled={isLoading || !chatInput.trim()}
+              className="text-white px-6 py-2.5 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+              style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+            >
+              Ask
+            </button>
+          </form>
+          <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+        </div>
+        
+        {/* Example Questions */}
+        {messages.length === 0 && (
+          <div className="px-4 pb-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs text-slate-500">Try:</span>
+              {exampleQuestions.map((q, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleChatSubmit(q)}
+                  className="text-sm bg-slate-50 border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -4997,224 +5235,113 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         </div>
 
-        {/* Unified Database Access Container */}
-        <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
-          {/* Container Header - different for patients */}
-          <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-            {persona === 'Patient' ? (
+        {/* Unified Database Access Container - Only for Patients */}
+        {persona === 'Patient' && (
+          <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
+            {/* Container Header */}
+            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
               <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
                 Ask about liquid biopsy tests for cancer treatment
               </h2>
-            ) : (
-              <div className="flex justify-between items-center">
-                <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
-                  The Precision Oncology Diagnostics Cycle
-                </h2>
-                <span className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
-                  Click on the test category you want to explore
-                </span>
+            </div>
+            
+            {/* Chat Section */}
+            <div className="bg-white">
+            
+            {/* Messages Area */}
+            {messages.length > 0 && (
+              <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                {messages.map((msg, i) => (
+                  <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div 
+                      className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                    >
+                      {msg.role === 'user' ? (
+                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      ) : (
+                        <Markdown className="text-sm">{msg.content}</Markdown>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                      <p className="text-sm text-slate-500">Thinking...</p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
+            
+            {/* Input Area */}
+            <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+              <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
+                  title="Select AI model"
+                >
+                  {CHAT_MODELS.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Type your liquid biopsy test question here..."
+                  className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                  style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !chatInput.trim()}
+                  className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                >
+                  Ask
+                </button>
+              </form>
+              <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+            </div>
+            
+            {/* Example Questions (show below input when no messages) */}
+            {messages.length === 0 && (
+              <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+                <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                  <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                  {exampleQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSubmit(q)}
+                      className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            </div>
+            
+            {/* Divider */}
+            <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
+            
+            {/* Lifecycle Navigator Header */}
+            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
+            </div>
+            
+            {/* Lifecycle Navigator */}
+            <div className="p-4 lg:p-6">
+              <LifecycleNavigator onNavigate={onNavigate} />
+            </div>
           </div>
-          
-          {/* For Patients: Chat first, then Lifecycle Navigator */}
-          {persona === 'Patient' ? (
-            <>
-              {/* Chat Section */}
-              <div className="bg-white">
-              
-              {/* Messages Area */}
-              {messages.length > 0 && (
-                <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-                  {messages.map((msg, i) => (
-                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div 
-                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                        style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                      >
-                        {msg.role === 'user' ? (
-                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                        ) : (
-                          <Markdown className="text-sm">{msg.content}</Markdown>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  {isLoading && (
-                    <div className="flex justify-start">
-                      <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                        <p className="text-sm text-slate-500">Thinking...</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Input Area */}
-              <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
-                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
-                  <select
-                    value={selectedModel}
-                    onChange={(e) => setSelectedModel(e.target.value)}
-                    className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
-                    title="Select AI model"
-                  >
-                    {CHAT_MODELS.map(m => (
-                      <option key={m.id} value={m.id}>{m.name}</option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    placeholder="Type your liquid biopsy test question here..."
-                    className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
-                    style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading || !chatInput.trim()}
-                    className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                    style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-                  >
-                    Ask
-                  </button>
-                </form>
-                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
-              </div>
-              
-              {/* Example Questions (show below input when no messages) */}
-              {messages.length === 0 && (
-                <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
-                  <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
-                    <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
-                    {exampleQuestions.map((q, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSubmit(q)}
-                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              </div>
-              
-              {/* Divider */}
-              <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
-              
-              {/* Lifecycle Navigator Header */}
-              <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
-                <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
-              </div>
-              
-              {/* Lifecycle Navigator */}
-              <div className="p-4 lg:p-6">
-                <LifecycleNavigator onNavigate={onNavigate} />
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Lifecycle Navigator */}
-              <div className="p-4 lg:p-6">
-                <LifecycleNavigator onNavigate={onNavigate} />
-              </div>
-              
-              {/* Divider */}
-              <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
-              
-              {/* Chat Section */}
-              <div className="bg-white">
-                {/* Chat Header */}
-                <div className="px-4 lg:px-6 py-3 border-b border-slate-100">
-                  <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or ask Claude questions about the tests:</h3>
-                </div>
-              
-              {/* Messages Area */}
-              {messages.length > 0 && (
-                <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-                  {messages.map((msg, i) => (
-                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div 
-                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                        style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                      >
-                        {msg.role === 'user' ? (
-                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                        ) : (
-                          <Markdown className="text-sm">{msg.content}</Markdown>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  {isLoading && (
-                    <div className="flex justify-start">
-                      <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                        <p className="text-sm text-slate-500">Thinking...</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Input Area */}
-              <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
-                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
-                  <select
-                    value={selectedModel}
-                    onChange={(e) => setSelectedModel(e.target.value)}
-                    className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
-                    title="Select AI model"
-                  >
-                    {CHAT_MODELS.map(m => (
-                      <option key={m.id} value={m.id}>{m.name}</option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    placeholder="Type your liquid biopsy test question here..."
-                    className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
-                    style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading || !chatInput.trim()}
-                    className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                    style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-                  >
-                    Ask
-                  </button>
-                </form>
-                <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
-              </div>
-              
-              {/* Example Questions (show below input when no messages) */}
-              {messages.length === 0 && (
-                <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
-                  <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
-                    <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
-                    {exampleQuestions.map((q, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSubmit(q)}
-                        className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              </div>
-            </>
-          )}
-        </div>
+        )}
 
         {/* Test Showcase */}
         <div className="mb-4">
