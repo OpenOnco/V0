@@ -10076,12 +10076,12 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 py-4">
             <button
               onClick={() => handleNavigate('home')}
-              className="flex items-center gap-3 text-slate-600 hover:text-slate-900 transition-colors group"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-full text-slate-700 font-medium transition-all hover:shadow-sm"
             >
-              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              <span className="text-xl font-medium">Back to Home</span>
+              <span className="text-sm">Back to Home</span>
             </button>
           </div>
         </div>
