@@ -4894,128 +4894,122 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </h3>
       </div>
 
-      {/* Lifecycle Navigator */}
-      <div className="p-4 pb-3">
-        <LifecycleNavigator onNavigate={onNavigate} />
-      </div>
+      {/* Main Content: Side-by-side on desktop */}
+      <div className="p-4 flex flex-col lg:flex-row gap-4">
+        {/* Left: Lifecycle Navigator */}
+        <div className="lg:w-[55%] flex-shrink-0">
+          <LifecycleNavigator onNavigate={onNavigate} />
+        </div>
 
-      {/* OR Divider */}
-      <div className="flex items-center gap-3 px-4 pb-2">
-        <div className="flex-1 h-px bg-black"></div>
-        <span className="text-xs font-semibold text-black uppercase tracking-wider">OR</span>
-        <div className="flex-1 h-px bg-black"></div>
-      </div>
-
-      {/* Claude Chat Input */}
-      <div className="px-4 pb-2">
-        <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="relative flex gap-2">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Claude-AI search of our database..."
-              className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-              disabled={isLoading}
-            />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-          </div>
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 cursor-pointer"
-            title="Select AI model"
-          >
-            {CHAT_MODELS.map(m => (
-              <option key={m.id} value={m.id}>{m.name}</option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            disabled={isLoading || !chatInput.trim()}
-            className="text-white px-5 py-2 rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-            style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-          >
-            Ask
-          </button>
-        </form>
-        
-        {/* Example Questions - under Claude input */}
-        {messages.length === 0 && (
-          <div className="flex items-center gap-2 flex-wrap mt-2">
-            <span className="text-xs text-slate-500">Try:</span>
-            <button
-              onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring")}
-              className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-            >
-              Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring
-            </button>
-            <button
-              onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
-              className="text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-            >
-              What ECD tests have Medicare coverage?
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Messages Area */}
-      {messages.length > 0 && (
-        <div ref={chatContainerRef} className="max-h-64 overflow-y-auto mx-4 mb-2 p-3 space-y-3 bg-slate-50 rounded-xl border border-slate-200">
-          {messages.map((msg, i) => (
-            <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div 
-                className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
-                style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+        {/* Right: Search Tools */}
+        <div className="lg:w-[45%] flex flex-col gap-3">
+          {/* Claude Chat Input */}
+          <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">AI-Powered Search</p>
+            <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Ask Claude about tests..."
+                  className="w-full px-3 py-2 pl-9 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+                  disabled={isLoading}
+                />
+                <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <select
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                className="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none cursor-pointer"
+                title="Select AI model"
               >
-                {msg.role === 'user' ? (
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                ) : (
-                  <Markdown className="text-sm">{msg.content}</Markdown>
+                {CHAT_MODELS.map(m => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
+                ))}
+              </select>
+              <button
+                type="submit"
+                disabled={isLoading || !chatInput.trim()}
+                className="text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+              >
+                Ask
+              </button>
+            </form>
+            
+            {/* Example Questions */}
+            {messages.length === 0 && (
+              <div className="flex items-center gap-1.5 flex-wrap mt-2">
+                <span className="text-[10px] text-slate-500">Try:</span>
+                <button
+                  onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal")}
+                  className="text-[10px] bg-white border border-slate-200 rounded-full px-2 py-0.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                >
+                  Compare Signatera and Guardant Reveal
+                </button>
+                <button
+                  onClick={() => handleChatSubmit("What ECD tests have Medicare coverage?")}
+                  className="text-[10px] bg-white border border-slate-200 rounded-full px-2 py-0.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                >
+                  ECD tests with Medicare
+                </button>
+              </div>
+            )}
+
+            {/* Messages Area */}
+            {messages.length > 0 && (
+              <div ref={chatContainerRef} className="max-h-48 overflow-y-auto mt-2 p-2 space-y-2 bg-white rounded-lg border border-slate-200">
+                {messages.map((msg, i) => (
+                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div 
+                      className={`max-w-[85%] rounded-xl px-3 py-1.5 ${msg.role === 'user' ? 'text-white rounded-br-sm' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-bl-sm'}`}
+                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                    >
+                      {msg.role === 'user' ? (
+                        <p className="text-xs whitespace-pre-wrap">{msg.content}</p>
+                      ) : (
+                        <Markdown className="text-xs">{msg.content}</Markdown>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl rounded-bl-sm px-3 py-1.5">
+                      <p className="text-xs text-slate-500">Thinking...</p>
+                    </div>
+                  </div>
                 )}
               </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
-                <p className="text-sm text-slate-500">Thinking...</p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
 
-      {/* OR Divider */}
-      <div className="flex items-center gap-3 px-4 pb-2">
-        <div className="flex-1 h-px bg-black"></div>
-        <span className="text-xs font-semibold text-black uppercase tracking-wider">OR</span>
-        <div className="flex-1 h-px bg-black"></div>
-      </div>
-
-      {/* Text Search Bar - Last */}
-      <div className="px-4 pb-3">
-        <div className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Simple text search of tests and vendors..."
-            className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
-          />
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          {/* Text Search Bar */}
+          <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Quick Search</p>
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search tests and vendors..."
+                className="w-full px-3 py-2 pl-9 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+              />
+              <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-            </button>
-          )}
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
