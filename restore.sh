@@ -9,16 +9,11 @@ if ! [[ "$hours" =~ ^[0-9]+$ ]] || [ "$hours" -eq 0 ]; then
     exit 1
 fi
 
-# Find the latest commit that's at least X hours old for the specific file
+# Find the oldest commit within the last X hours for the specific file
 commit=$(git log --since="${hours} hours ago" --until="now" --format="%H" -- ./src/App.jsx | tail -1)
 
-# If no commit found in that range, get the latest commit before X hours ago
 if [ -z "$commit" ]; then
-    commit=$(git log --until="${hours} hours ago" -1 --format="%H" -- ./src/App.jsx)
-fi
-
-if [ -z "$commit" ]; then
-    echo "Error: No commit found for ./src/App.jsx that's at least $hours hours old."
+    echo "Error: No commit found for ./src/App.jsx within the last $hours hours."
     exit 1
 fi
 
@@ -27,6 +22,14 @@ commit_date=$(git log -1 --format="%ci" "$commit")
 
 echo "Found commit: $commit"
 echo "Commit date: $commit_date"
+
+# Ask for confirmation
+read -p "Restore this version? (y/n): " confirm
+
+if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    echo "Restore cancelled."
+    exit 0
+fi
 
 # Extract the file and save to ~/Downloads
 git show "$commit:./src/App.jsx" > ~/Downloads/App.jsx
