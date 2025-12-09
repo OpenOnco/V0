@@ -125,7 +125,7 @@ const DATABASE_CHANGELOG = [
     category: 'MRD',
     description: 'Initial database entry',
     contributor: 'John Truesdell',
-    affiliation: 'BillionToOne',
+    affiliation: 'Foresight Diagnostics',
     citation: null
   },
   {
@@ -7522,11 +7522,12 @@ const SubmissionsPage = () => {
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
                     <span>{entry.date}</span>
                     <span>• {
-                      !entry.affiliation || entry.affiliation === 'OpenOnco' ? 'Update from OpenOnco research' :
+                      !entry.affiliation || entry.affiliation === 'OpenOnco' 
+                        ? `${entry.contributor || 'OpenOnco research'}${entry.contributor ? ' (OpenOnco)' : ''}` :
                       entry.vendor.toLowerCase().includes(entry.affiliation.toLowerCase()) || 
-                      entry.affiliation.toLowerCase().includes(entry.vendor.split(' ')[0].toLowerCase()) ?
-                        `Vendor update from ${entry.affiliation}` :
-                        `Update from ${entry.affiliation}`
+                      entry.affiliation.toLowerCase().includes(entry.vendor.split(' ')[0].toLowerCase())
+                        ? `Vendor update: ${entry.contributor} (${entry.affiliation})`
+                        : `${entry.contributor} (${entry.affiliation})`
                     }</span>
                     {entry.citation && (
                       <a 
