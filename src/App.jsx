@@ -3958,9 +3958,16 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   useEffect(() => { 
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      container.scrollTop = container.scrollHeight;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+        const lastAssistantEl = messageElements[messageElements.length - 1];
+        if (lastAssistantEl) {
+          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
-  }, [messages, isLoading]);
+  }, [messages]);
 
   // Track persona from localStorage
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
@@ -4236,13 +4243,20 @@ const TestShowcase = ({ onNavigate }) => {
   
   const isPatient = persona === 'Patient';
   
-  // Auto-scroll chat container to bottom when new messages arrive
+  // Auto-scroll to show assistant response when it arrives
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      container.scrollTop = container.scrollHeight;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+        const lastAssistantEl = messageElements[messageElements.length - 1];
+        if (lastAssistantEl) {
+          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
-  }, [messages, isLoading]);
+  }, [messages]);
   
   // Example questions for chat
   const exampleQuestions = [
@@ -5298,13 +5312,21 @@ const HomePage = ({ onNavigate }) => {
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
-  // Auto-scroll chat container to bottom when new messages arrive
+  // Auto-scroll to show assistant response when it arrives
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      container.scrollTop = container.scrollHeight;
+      const lastMessage = messages[messages.length - 1];
+      // When assistant responds, scroll to show start of response
+      if (lastMessage.role === 'assistant') {
+        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+        const lastAssistantEl = messageElements[messageElements.length - 1];
+        if (lastAssistantEl) {
+          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
-  }, [messages, isLoading]);
+  }, [messages]);
   
   const colorClasses = {
     orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-400 hover:shadow-lg hover:scale-[1.02] hover:bg-orange-100', btn: 'from-orange-500 to-orange-600' },
@@ -7456,9 +7478,16 @@ const CategoryChat = ({ category }) => {
   useEffect(() => { 
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      container.scrollTop = container.scrollHeight;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+        const lastAssistantEl = messageElements[messageElements.length - 1];
+        if (lastAssistantEl) {
+          lastAssistantEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
-  }, [messages, isLoading]);
+  }, [messages]);
   
   // Listen for persona changes
   useEffect(() => {
