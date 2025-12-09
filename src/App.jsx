@@ -4906,8 +4906,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           {/* Claude Chat Input */}
           <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex-1 flex flex-col">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Or: AI-Powered Search</p>
-            <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex gap-2">
-              <div className="relative flex-1">
+            <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex flex-col gap-2">
+              <div className="relative">
                 <input
                   type="text"
                   value={chatInput}
@@ -4920,26 +4920,27 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </div>
-              <select
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                className="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none cursor-pointer"
-                title="Select AI model"
-              >
-                {CHAT_MODELS.map(m => (
-                  <option key={m.id} value={m.id}>{m.name}</option>
-                ))}
-              </select>
-              <button
-                type="submit"
-                disabled={isLoading || !chatInput.trim()}
-                className="text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-              >
-                Ask
-              </button>
+              <div className="flex gap-2 justify-end">
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none cursor-pointer"
+                  title="Select AI model"
+                >
+                  {CHAT_MODELS.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  disabled={isLoading || !chatInput.trim()}
+                  className="text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                >
+                  Ask
+                </button>
+              </div>
             </form>
-            <p className="text-[9px] text-slate-400 mt-1.5">Powered by Claude AI. Responses may contain errors and should be independently verified.</p>
             
             {/* Example Questions */}
             {messages.length === 0 && (
