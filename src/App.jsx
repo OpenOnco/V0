@@ -4871,18 +4871,25 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
       {/* Category Navigation Buttons - First */}
       <div className="p-4 pb-3">
-        <div className="flex gap-2">
-          {categoryButtons.map(cat => {
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Click on a test category for detailed data views and comparisons</p>
+        <div className="flex items-center gap-1">
+          {categoryButtons.map((cat, index) => {
             const clrs = categoryColorClasses[cat.color];
             return (
-              <button
-                key={cat.id}
-                onClick={() => onNavigate(cat.id)}
-                className={`flex-1 ${clrs.bg} ${clrs.border} border-2 rounded-lg px-2 py-2.5 text-center transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-slate-400 active:scale-[0.98]`}
-              >
-                <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
-                <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
-              </button>
+              <React.Fragment key={cat.id}>
+                <button
+                  onClick={() => onNavigate(cat.id)}
+                  className={`flex-1 ${clrs.bg} ${clrs.border} border-2 rounded-lg px-2 py-2.5 text-center transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-slate-400 active:scale-[0.98]`}
+                >
+                  <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
+                </button>
+                {index < categoryButtons.length - 1 && (
+                  <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                )}
+              </React.Fragment>
             );
           })}
         </div>
@@ -5394,10 +5401,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Intro Text */}
         <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
-          <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed">Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and detect recurrence - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit service helping match patients to the right test.</p>
-          
           {/* Persona Selector */}
-          <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             <span className="text-sm sm:text-base text-slate-600">My interest is</span>
             {['Academic/Industry', 'Patient', 'Clinician'].map((p) => (
               <button
