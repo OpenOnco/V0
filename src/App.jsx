@@ -4750,6 +4750,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </p>
         
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+          {filteredTests.length === 0 && searchQuery && (
+            <div className="col-span-full text-center py-8 text-slate-500">
+              No test or vendor match found.
+            </div>
+          )}
           {filteredTests.map(test => {
             const badges = getPatientBadges(test);
             const colors = colorClasses[test.color];
@@ -5040,6 +5045,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </div>
         
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+          {filteredTests.length === 0 && searchQuery && (
+            <div className="col-span-full text-center py-8 text-slate-500">
+              No test or vendor match found.
+            </div>
+          )}
           {filteredTests.map(test => {
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
