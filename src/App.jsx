@@ -4938,7 +4938,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               type="text"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Claude-based conversational search..."
+              placeholder="Claude-AI search of our database..."
               className="w-full px-4 py-3 pl-10 text-base bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               disabled={isLoading}
             />
@@ -5016,6 +5016,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
       {/* Category Navigation Buttons - Horizontal with full names */}
       <div className="px-4 pb-3">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Or click on a test category for detailed data and comparisons</p>
         <div className="flex gap-2">
           {categoryButtons.map(cat => {
             const clrs = categoryColorClasses[cat.color];
