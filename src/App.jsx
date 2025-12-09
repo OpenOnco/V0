@@ -3948,7 +3948,6 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
   const suggestedQuestions = [
@@ -3957,8 +3956,13 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
   ];
 
   useEffect(() => { 
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      const messageElements = container.querySelectorAll('[data-message-role]');
+      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
+      if (lastUserMessage) {
+        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   }, [messages, isLoading]);
 
@@ -4094,7 +4098,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         )}
         
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div 
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                 msg.role === 'user' 
@@ -4120,7 +4124,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
       </div>
       
       <div className="border-t border-gray-200 p-4 bg-white flex-shrink-0">
@@ -4237,10 +4240,16 @@ const TestShowcase = ({ onNavigate }) => {
   
   const isPatient = persona === 'Patient';
   
-  // Auto-scroll chat to bottom
+  // Auto-scroll chat to show latest user message at top
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (chatContainerRef.current && messages.length > 0) {
+      // Find the last user message element and scroll to it
+      const container = chatContainerRef.current;
+      const messageElements = container.querySelectorAll('[data-message-role]');
+      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
+      if (lastUserMessage) {
+        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   }, [messages, isLoading]);
   
@@ -4962,7 +4971,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       {messages.length > 0 && (
         <div ref={chatContainerRef} className="max-h-64 overflow-y-auto mx-4 mb-2 p-3 space-y-3 bg-slate-50 rounded-xl border border-slate-200">
           {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div 
                 className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
                 style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
@@ -5298,10 +5307,15 @@ const HomePage = ({ onNavigate }) => {
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
-  // Auto-scroll to bottom when messages or loading state changes
+  // Auto-scroll to show user question when messages or loading state changes
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      const messageElements = container.querySelectorAll('[data-message-role]');
+      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
+      if (lastUserMessage) {
+        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   }, [messages, isLoading]);
   
@@ -5443,7 +5457,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             {messages.length > 0 && (
               <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
                 {messages.map((msg, i) => (
-                  <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div 
                       className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
                       style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
@@ -7235,9 +7249,18 @@ const CategoryChat = ({ category }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
-  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
+  useEffect(() => { 
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      const messageElements = container.querySelectorAll('[data-message-role]');
+      const lastUserMessage = Array.from(messageElements).reverse().find(el => el.dataset.messageRole === 'user');
+      if (lastUserMessage) {
+        lastUserMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [messages, isLoading]);
   
   // Listen for persona changes
   useEffect(() => {
@@ -7322,9 +7345,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div className="h-56 overflow-y-auto p-4 space-y-3">
+      <div ref={chatContainerRef} className="h-56 overflow-y-auto p-4 space-y-3">
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-emerald-500 text-white rounded-br-md' : 'bg-gray-100 text-gray-800 rounded-bl-md'}`}>
               {msg.role === 'user' ? (
                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -7343,7 +7366,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
       </div>
       <div className="border-t border-gray-200 p-3">
         <div className="flex gap-2 items-center">
