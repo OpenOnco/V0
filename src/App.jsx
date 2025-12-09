@@ -4897,9 +4897,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
       {/* OR Divider */}
       <div className="flex items-center gap-3 px-4 pb-2">
-        <div className="flex-1 h-px bg-slate-200"></div>
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">OR</span>
-        <div className="flex-1 h-px bg-slate-200"></div>
+        <div className="flex-1 h-px bg-black"></div>
+        <span className="text-xs font-semibold text-black uppercase tracking-wider">OR</span>
+        <div className="flex-1 h-px bg-black"></div>
       </div>
 
       {/* Claude Chat Input */}
@@ -4987,9 +4987,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
       {/* OR Divider */}
       <div className="flex items-center gap-3 px-4 pb-2">
-        <div className="flex-1 h-px bg-slate-200"></div>
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">OR</span>
-        <div className="flex-1 h-px bg-slate-200"></div>
+        <div className="flex-1 h-px bg-black"></div>
+        <span className="text-xs font-semibold text-black uppercase tracking-wider">OR</span>
+        <div className="flex-1 h-px bg-black"></div>
       </div>
 
       {/* Text Search Bar - Last */}
@@ -5535,11 +5535,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Stat of the Day */}
-        <div className="mb-4">
-          <StatOfTheDay onNavigate={onNavigate} />
-        </div>
-
         {/* Database Summary */}
         <div className="mb-4">
           <DatabaseSummary />
@@ -5783,155 +5778,6 @@ const DatabaseSummary = () => {
 
   return (
     <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">
-      {/* Openness Award Banner */}
-      {topVendor && (
-        <div className="mb-6 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-2 border-amber-300 rounded-xl p-4 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center text-3xl flex-shrink-0 shadow-lg">
-              🏆
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award</p>
-                <span className="px-2 py-0.5 bg-amber-200 text-amber-800 text-[10px] font-medium rounded-full">2025</span>
-              </div>
-              <p className="text-xl font-bold text-slate-800">{topVendor}</p>
-              <p className="text-xs text-amber-700 mt-0.5">
-                {topTestCount} tests evaluated
-              </p>
-            </div>
-            {/* Score comparison */}
-            <div className="hidden sm:flex items-center gap-3">
-              <div className="text-center px-3 py-2 bg-white/50 rounded-lg">
-                <div className="text-2xl font-bold text-amber-600">{Math.round(topScore)}</div>
-                <div className="text-[10px] text-amber-600 font-medium">Winner</div>
-              </div>
-              <div className="text-slate-400 text-lg">vs</div>
-              <div className="text-center px-3 py-2 bg-white/50 rounded-lg">
-                <div className="text-2xl font-bold text-slate-500">{fieldAvgScore}</div>
-                <div className="text-[10px] text-slate-500 font-medium">Field Avg</div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-3 pt-3 border-t border-amber-200 flex items-center justify-between gap-4">
-            <p className="text-[11px] text-amber-600 flex-1">
-              Score based on disclosure of pricing, performance, evidence & sample info. Field average across {qualifyingVendors.length} vendors with 2+ tests.
-            </p>
-            <button 
-              onClick={() => setShowFAQ(!showFAQ)}
-              className="text-xs text-amber-700 hover:text-amber-900 font-semibold flex items-center gap-1.5 flex-shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors"
-            >
-              {showFAQ ? 'Hide details' : 'How is this calculated?'}
-              <svg className={`w-4 h-4 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
-          
-          {/* FAQ Section */}
-          {showFAQ && (
-            <div className="mt-4 pt-4 border-t border-amber-200 text-sm text-slate-700 space-y-4">
-              <div>
-                <h4 className="font-semibold text-amber-800 mb-2">What is the Openness Score?</h4>
-                <p className="text-xs text-slate-600">
-                  The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
-                  It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
-                  patients and clinicians make informed decisions.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold text-amber-800 mb-2">How is it calculated?</h4>
-                <p className="text-xs text-slate-600 mb-2">Each test is scored based on disclosure of key fields (weights sum to 100):</p>
-                <div className="bg-white/60 rounded-lg p-3 overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="border-b border-amber-200">
-                        <th className="text-left py-1.5 pr-4 font-semibold text-amber-800">Field</th>
-                        <th className="text-center py-1.5 px-2 font-semibold text-amber-800">Weight</th>
-                        <th className="text-left py-1.5 pl-4 font-semibold text-amber-800">Rationale</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-slate-600">
-                      <tr className="border-b border-amber-100">
-                        <td className="py-1.5 pr-4 font-medium">Price</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">30%</td>
-                        <td className="py-1.5 pl-4">Hardest to find, gold standard of openness</td>
-                      </tr>
-                      <tr className="border-b border-amber-100">
-                        <td className="py-1.5 pr-4 font-medium">Sensitivity</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                        <td className="py-1.5 pl-4">Core performance metric</td>
-                      </tr>
-                      <tr className="border-b border-amber-100">
-                        <td className="py-1.5 pr-4 font-medium">Specificity</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                        <td className="py-1.5 pl-4">Core performance metric</td>
-                      </tr>
-                      <tr className="border-b border-amber-100">
-                        <td className="py-1.5 pr-4 font-medium">Publications</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                        <td className="py-1.5 pl-4">Peer-reviewed evidence base</td>
-                      </tr>
-                      <tr className="border-b border-amber-100">
-                        <td className="py-1.5 pr-4 font-medium">Turnaround Time</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">10%</td>
-                        <td className="py-1.5 pl-4">Practical info for clinicians</td>
-                      </tr>
-                      <tr className="border-b border-amber-100">
-                        <td className="py-1.5 pr-4 font-medium">Sample Info</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">10%</td>
-                        <td className="py-1.5 pl-4">Blood volume, sample type, or category</td>
-                      </tr>
-                      <tr>
-                        <td className="py-1.5 pr-4 font-medium">Trial Participants</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-600">5%</td>
-                        <td className="py-1.5 pl-4">Clinical evidence depth</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr className="border-t border-amber-200">
-                        <td className="py-1.5 pr-4 font-bold text-amber-800">Total</td>
-                        <td className="text-center py-1.5 px-2 font-bold text-amber-800">100%</td>
-                        <td className="py-1.5 pl-4"></td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold text-amber-800 mb-2">Who is eligible?</h4>
-                <p className="text-xs text-slate-600">
-                  Vendors must have <strong>2 or more tests</strong> in the OpenOnco database to qualify for the award. 
-                  The vendor's score is the <strong>average</strong> across all their tests. This prevents a single 
-                  well-documented test from winning while encouraging comprehensive disclosure across product portfolios.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold text-amber-800 mb-2">Why these weights?</h4>
-                <p className="text-xs text-slate-600">
-                  <strong>Price (30%)</strong> is weighted highest because it's the most commonly withheld information 
-                  and critically important for patients and healthcare systems. <strong>Performance metrics (30% combined)</strong> are 
-                  essential for clinical decision-making. <strong>Publications (15%)</strong> demonstrate commitment to 
-                  independent validation. Practical details like <strong>TAT and sample requirements (20% combined)</strong> help 
-                  with care coordination.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold text-amber-800 mb-2">How can vendors improve their score?</h4>
-                <p className="text-xs text-slate-600">
-                  Publish your list price, disclose sensitivity and specificity from validation studies, maintain an 
-                  active publication record, and provide clear sample requirements. Vendors can submit updated information 
-                  through our Submissions page.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Header with key stats */}
       <div className="flex items-center justify-between mb-4">
