@@ -4965,7 +4965,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             Ask
           </button>
         </form>
-        <p className="text-[10px] text-slate-400 mt-1 ml-1">Powered by Claude AI. Responses may be inaccurate.</p>
         
         {/* Example Questions - under Claude input */}
         {messages.length === 0 && (
