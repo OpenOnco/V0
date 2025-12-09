@@ -5206,14 +5206,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
 
           {/* Text Search Bar */}
-          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-4 border-2 border-red-300 flex-1 flex flex-col shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
-            <p className="text-xs font-semibold text-red-700 uppercase tracking-wide mb-2">Or: Quick Search for a test or vendor</p>
+          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-4 border-2 border-red-300 flex-1 flex flex-col justify-center shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
+            <p className="text-xs font-semibold text-red-700 uppercase tracking-wide mb-2 text-center">Or: Quick Search</p>
             <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search tests and vendors..."
+                placeholder="Filter the test list below by name, vendor, cancer or test type..."
                 className="w-full px-3 py-2 pl-9 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
               />
               <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5227,7 +5227,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 </button>
               )}
             </div>
-            <p className="text-[10px] text-red-400 mt-2">Filter the test list below by name, vendor, or cancer type</p>
           </div>
         </div>
       </div>
