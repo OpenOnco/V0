@@ -4894,30 +4894,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         </h3>
       </div>
 
-      {/* Category Navigation Buttons - First */}
+      {/* Lifecycle Navigator */}
       <div className="p-4 pb-3">
-        <p className="text-xs font-semibold text-black uppercase tracking-wide mb-2 text-center">Click on a test category for detailed data views and comparisons</p>
-        <div className="flex items-center gap-1">
-          {categoryButtons.map((cat, index) => {
-            const clrs = categoryColorClasses[cat.color];
-            return (
-              <React.Fragment key={cat.id}>
-                <button
-                  onClick={() => onNavigate(cat.id)}
-                  className={`flex-1 ${clrs.bg} ${clrs.border} border-2 rounded-lg px-2 py-2.5 text-center transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-slate-400 active:scale-[0.98]`}
-                >
-                  <p className={`text-sm font-bold ${clrs.text}`}>{cat.id} <span className="text-slate-400 font-normal">({testCounts[cat.id]})</span></p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">{cat.name}</p>
-                </button>
-                {index < categoryButtons.length - 1 && (
-                  <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </div>
+        <LifecycleNavigator onNavigate={onNavigate} />
       </div>
 
       {/* OR Divider */}
