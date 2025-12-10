@@ -4550,15 +4550,14 @@ const TestShowcase = ({ onNavigate }) => {
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores]);
 
-  // Filter tests based on search query
+  // Filter tests based on search query (supports multi-word: "exact ecd" matches Exact Sciences ECD tests)
   const filteredTests = useMemo(() => {
     if (!searchQuery.trim()) return allTests;
-    const query = searchQuery.toLowerCase().trim();
-    return allTests.filter(test => 
-      test.name.toLowerCase().includes(query) ||
-      test.vendor.toLowerCase().includes(query) ||
-      test.category.toLowerCase().includes(query)
-    );
+    const terms = searchQuery.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+    return allTests.filter(test => {
+      const searchableText = `${test.name} ${test.vendor} ${test.category}`.toLowerCase();
+      return terms.every(term => searchableText.includes(term));
+    });
   }, [allTests, searchQuery]);
 
   // Get patient-friendly parameters
