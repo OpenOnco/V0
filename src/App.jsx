@@ -5633,7 +5633,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         {/* Banner */}
         <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-4">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 text-center">
-            OpenOnco: Cancer Test Data—Collected, Curated, Explained
+            OpenOnco: Cancer Tests—Collected, Curated, Explained
           </h1>
         </div>
 
