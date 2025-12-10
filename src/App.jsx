@@ -49,6 +49,18 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 10, 2025',
+    type: 'updated',
+    testId: 'multiple',
+    testName: 'Medicare ADLT Data',
+    vendor: 'Multiple',
+    category: 'All',
+    description: 'Added Medicare CLFS reimbursement rates and ADLT status to 8 tests: Signatera ($3,500), Guardant360 CDx ($5,000), FoundationOne CDx ($3,500), FoundationOne Liquid CDx ($3,500), Shield ($1,495), NavDx ($1,800), Tempus xT CDx ($4,500), clonoSEQ ($2,007). Added PLA vs CPT code type distinction.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'https://www.cms.gov/medicare/payment/fee-schedules/clinical-laboratory-fee-schedule-clfs/files'
+  },
+  {
+    date: 'Dec 10, 2025',
     type: 'added',
     testId: 'mrd-19',
     testName: 'clonoSEQ',
@@ -1579,6 +1591,11 @@ const mrdTestData = [
     "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan.",
     "cptCodes": "0340U (ADLT)",
     "cptCodesNotes": "Signatera PLA (ADLT pricing).",
+    "codeType": "PLA",
+    "medicareRate": 3500,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "availableRegions": ["US", "EU", "UK", "International"],
     "clinicalAvailability": "Clinical LDT – shipping",
     "independentValidation": "Yes",
@@ -1916,6 +1933,11 @@ const mrdTestData = [
     "commercialPayersNotes": "Highmark coverage announced Feb 2024; Blue Shield of California coverage effective July 1, 2024.",
     "cptCodes": "0356U",
     "cptCodesNotes": "CPT 0356U for TTMV-HPV DNA testing; ADLT status effective April 1, 2024.",
+    "codeType": "PLA",
+    "medicareRate": 1800,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "clinicalAvailability": "Commercially available in US. Integrated into clinical practice by >1,000 healthcare providers at >400 medical sites. ~100,000 patient-physician encounters.",
     "clinicalTrials": "Phase II MRD+ study at Memorial Sloan Kettering (HB-200 intervention for HPV16+ HNSCC with molecular relapse); multiple validation cohorts.",
     "clinicalTrialsCitations": "Naveris press release April 2024; Chera BS et al. J Clin Oncol 2020;38:1050-1058; Berger BM et al. Clin Cancer Res 2022;28:4292-4301.",
@@ -2203,6 +2225,11 @@ const mrdTestData = [
     "reimbursementNote": "National Medicare coverage for MM, B-ALL, CLL, DLBCL, and MCL via MolDX program. Medicare CLFS rate: $2,007 per test (PLA 0364U); episode pricing $8,029 across all covered indications. Positive coverage from major commercial insurers for MM and ALL. 90% of patients pay $0 for testing.",
     "reimbursementCitations": "https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-announces-clinical-lab-fee-schedule",
     "cptCodes": "0364U",
+    "codeType": "PLA",
+    "medicareRate": 2007,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "listPrice": 2007,
     "listPriceNotes": "Medicare CLFS rate $2,007 per test as of January 2025. Episode pricing (full testing series) $8,029.",
     "listPriceCitations": "https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-announces-clinical-lab-fee-schedule",
@@ -2277,6 +2304,11 @@ const ecdTestData = [
     "sampleVolume": "4 tubes (minimum 2 mL plasma)",
     "sampleStability": "7 days at ambient temperature",
     "cptCode": "0537U",
+    "codeType": "PLA",
+    "medicareRate": 1495,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "listPrice": 895.0,
     "screeningInterval": "Every 3 years",
     "clinicalTrials": "NCT04136002 ECLIPSE CRC screening study (22877); NCT05716477 OSU Guardant Shield CRC Screening Project (300)",
@@ -3278,6 +3310,11 @@ const cgpTestData = [
     "listPriceCitations": "https://www.foundationmedicine.com/faq/patient-faqs",
     "cptCodes": "0037U",
     "cptCodesCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "codeType": "PLA",
+    "medicareRate": 3500,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "availableRegions": ["US", "EU", "UK", "Japan", "Canada", "Australia", "International"],
     "availableRegionsNotes": "Available in 100+ countries via Roche global network. US lab (Cambridge, MA) and EU lab (Penzberg, Germany). Regulatory: FDA approved (US), MHLW approved (Japan, Dec 2018), CE marked (EU).",
     "availableRegionsCitations": "https://www.roche.com/media/releases/med-cor-2021-10-25 | https://www.foundationmedicine.com/press-releases/aa55275f-b849-4e31-a770-152c8e7cad8f",
@@ -3334,6 +3371,11 @@ const cgpTestData = [
     "listPriceCitations": "https://www.foundationmedicine.com/faq/patient-faqs",
     "cptCodes": "0239U",
     "cptCodesCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
+    "codeType": "PLA",
+    "medicareRate": 3500,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "availableRegions": ["US", "EU", "UK", "Japan", "Canada", "Australia", "International"],
     "availableRegionsNotes": "Available in 100+ countries via Roche global network. US lab (Cambridge, MA) and EU lab (Penzberg, Germany).",
     "availableRegionsCitations": "https://www.roche.com/media/releases/med-cor-2021-10-25",
@@ -3422,6 +3464,12 @@ const cgpTestData = [
     "reimbursement": "Medicare",
     "reimbursementNote": "Broadly covered by Medicare and commercial insurers representing >300 million lives.",
     "reimbursementCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/FDA-Approves-Guardant360-CDx-as-Companion-Diagnostic-for-Eli-Lilly-and-Companys-Inluriyo-imlunestrant-for-Treatment-of-ESR1-mutated-Advanced-Breast-Cancer/default.aspx",
+    "cptCodes": "0242U",
+    "codeType": "PLA",
+    "medicareRate": 5000,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "clinicalAvailability": "Commercially available in US since 2020",
     "clinicalAvailabilityCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
     "numPublications": 150,
@@ -3474,6 +3522,11 @@ const cgpTestData = [
     "listPriceCitations": "https://www.360dx.com/business-news/tempus-nabs-cms-advanced-diagnostic-laboratory-test-status-tumor-mutation-profiling",
     "cptCodes": "0473U",
     "cptCodesCitations": "https://www.discoveriesinhealthpolicy.com/2024/09/cms-releases-preliminary-crosswalk-for.html",
+    "codeType": "PLA",
+    "medicareRate": 4500,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
     "clinicalAvailability": "Commercially available nationwide since January 2025",
     "clinicalAvailabilityCitations": "https://www.biospace.com/press-releases/tempus-announces-the-national-launch-of-fda-approved-xt-cdx-test",
     "complementaryTests": "Can add xR RNA sequencing, xF/xF+ liquid biopsy, HER2 IHC, PD-L1 IHC, HRD, Immune Profile Score",
@@ -4178,7 +4231,7 @@ const Checkbox = ({ checked, onChange, label }) => (
   </label>
 );
 
-const Badge = ({ children, variant = 'default' }) => {
+const Badge = ({ children, variant = 'default', title }) => {
   const styles = {
     default: 'bg-gray-100 text-gray-700 border-gray-200',
     success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -4188,9 +4241,10 @@ const Badge = ({ children, variant = 'default' }) => {
     blue: 'bg-blue-50 text-blue-700 border-blue-200',
     purple: 'bg-purple-50 text-purple-700 border-purple-200',
     amber: 'bg-amber-50 text-amber-700 border-amber-200',
+    slate: 'bg-slate-100 text-slate-700 border-slate-300',
   };
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`} title={title}>
       {children}
     </span>
   );
@@ -9192,6 +9246,8 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                   : test.commercialPayers && test.commercialPayers.length > 0 
                     ? <Badge variant="blue">Private</Badge>
                     : null}
+              {test.adltStatus && <Badge variant="amber" title="CMS Advanced Diagnostic Laboratory Test - annual rate updates based on private payer data">ADLT</Badge>}
+              {test.codeType === 'PLA' && <Badge variant="slate" title="Proprietary Laboratory Analyses code - specific to this laboratory's test">PLA</Badge>}
               {category === 'ECD' && test.listPrice && <Badge variant="amber">${test.listPrice}</Badge>}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
@@ -9709,8 +9765,17 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <DataRow label="NCCN Recommended" value={test.nccnRecommended ? 'Yes' : 'No'} />
                         {test.nccnGuidelinesAligned && <DataRow label="NCCN Guidelines" value={test.nccnGuidelinesAligned.join(', ')} notes={test.nccnGuidelinesNotes} citations={test.nccnGuidelinesCitations} />}
                         <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
+                        {test.medicareRate && (
+                          <div className="py-1.5 flex justify-between items-center">
+                            <span className="text-xs text-gray-500 flex items-center gap-1">
+                              Medicare CLFS Rate
+                              {test.adltStatus && <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-medium" title="Advanced Diagnostic Laboratory Test - receives annual rate updates based on weighted median of private payer rates">ADLT</span>}
+                            </span>
+                            <span className="text-sm font-semibold text-emerald-600">${test.medicareRate.toLocaleString()}</span>
+                          </div>
+                        )}
                         {test.listPrice && <DataRow label="List Price" value={`$${test.listPrice.toLocaleString()}`} citations={test.listPriceCitations} />}
-                        <DataRow label="CPT Codes" value={test.cptCodes} citations={test.cptCodesCitations} />
+                        <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Codes'} value={test.cptCodes} citations={test.cptCodesCitations} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} />
                       </div>
                     </Section>
                   </div>
@@ -9819,8 +9884,17 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   <div className="space-y-1">
                     <DataRow label="FDA Status" value={test.fdaStatus} />
                     <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
+                    {test.medicareRate && (
+                      <div className="py-1.5 flex justify-between items-center">
+                        <span className="text-xs text-gray-500 flex items-center gap-1">
+                          Medicare CLFS Rate
+                          {test.adltStatus && <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-medium" title="Advanced Diagnostic Laboratory Test - receives annual rate updates based on weighted median of private payer rates">ADLT</span>}
+                        </span>
+                        <span className="text-sm font-semibold text-emerald-600">${test.medicareRate.toLocaleString()}</span>
+                      </div>
+                    )}
                     {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} />}
-                    <DataRow label="CPT Codes" value={test.cptCodes || test.cptCode} />
+                    <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Code'} value={test.cptCodes || test.cptCode} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} />
                     <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
                     {test.availableRegions && test.availableRegions.length > 0 && (
                       <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
