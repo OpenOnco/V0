@@ -6240,28 +6240,8 @@ const DatabaseSummary = () => {
         <h2 className="text-lg font-semibold text-slate-700">Data Openness Overview</h2>
         <div className="text-xs text-slate-500">Updated {BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</div>
       </div>
-      
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-4 gap-3 mb-5">
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{totalTests}</p>
-          <p className="text-xs text-slate-600">Tests</p>
-        </div>
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{allVendors.size}</p>
-          <p className="text-xs text-slate-600">Vendors</p>
-        </div>
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{reimbursedTests.length}</p>
-          <p className="text-xs text-slate-600">Reimbursed</p>
-        </div>
-        <div className="bg-white/50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-slate-800">{totalDataPoints.toLocaleString()}</p>
-          <p className="text-xs text-slate-600">Data Points</p>
-        </div>
-      </div>
 
-      {/* Top 3 Vendors Ranking */}
+      {/* Top 3 Vendors Ranking - Horizontal */}
       {top3.length > 0 && (
         <div className="bg-white/40 rounded-xl p-4 mb-4">
           <div className="flex items-center justify-between mb-3">
@@ -6269,18 +6249,16 @@ const DatabaseSummary = () => {
             <span className="text-[10px] text-slate-500">Min. 2 tests to qualify</span>
           </div>
           
-          <div className="space-y-2">
+          <div className="grid grid-cols-3 gap-3">
             {top3.map((vendor, index) => (
               <div 
                 key={vendor.vendor} 
-                className={`flex items-center gap-3 p-2.5 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
+                className={`flex flex-col items-center text-center p-3 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
               >
-                <span className="text-xl">{rankStyles[index].icon}</span>
-                <div className="flex-1 min-w-0">
-                  <p className={`font-semibold text-sm ${rankStyles[index].text} truncate`}>{vendor.vendor}</p>
-                  <p className="text-[10px] text-slate-500">{vendor.testCount} tests</p>
-                </div>
-                <div className={`px-2.5 py-1 rounded-lg text-white text-sm font-bold shadow-sm ${rankStyles[index].badge}`}>
+                <span className="text-2xl mb-1">{rankStyles[index].icon}</span>
+                <p className={`font-semibold text-sm ${rankStyles[index].text} truncate w-full`}>{vendor.vendor}</p>
+                <p className="text-[10px] text-slate-500 mb-2">{vendor.testCount} tests</p>
+                <div className={`px-3 py-1 rounded-lg text-white text-sm font-bold shadow-sm ${rankStyles[index].badge}`}>
                   {Math.round(vendor.avgScore)}
                 </div>
               </div>
