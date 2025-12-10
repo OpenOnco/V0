@@ -2218,10 +2218,10 @@ const mrdTestData = [
     "requiresTumorTissueNotes": "Does not require solid tumor tissue. Requires high-disease-burden baseline sample (bone marrow aspirate or peripheral blood with high tumor burden) at diagnosis for initial Clonality (ID) test to identify trackable sequences. Subsequent MRD tracking uses standard bone marrow or blood samples.",
     "requiresMatchedNormal": "No",
     "requiresMatchedNormalNotes": "Does not require separate matched normal sequencing. Clonality criteria (≥3% of like sequences, ≥0.2% of total cells, etc.) distinguish malignant from normal B/T-cell populations.",
-    "initialTat": 7,
-    "initialTatNotes": "Serial MRD monitoring: ~7 days from sample receipt. Initial Clonality (ID) test: ~14 days for baseline sample to identify trackable sequences.",
+    "initialTat": 14,
+    "initialTatNotes": "Initial Clonality (ID) test to identify trackable sequences: ~14 days from sample receipt.",
     "followUpTat": 7,
-    "followUpTatNotes": "Tracking (MRD) tests: ~7 days for fresh specimens. Requires prior valid Clonality result.",
+    "followUpTatNotes": "Serial MRD monitoring (Tracking tests): ~7 days from sample receipt. Requires prior valid Clonality result.",
     "bloodVolume": null,
     "bloodVolumeNotes": "Bone marrow: 1 mL aspirate recommended. Blood (CLL): 2 mL whole blood. Sample requirements vary by specimen type.",
     "sampleRequirements": "Bone marrow aspirate (1 mL EDTA), peripheral blood (2 mL EDTA for CLL), or archived FFPE/slides. Fresh specimens preferred; stored specimens accepted with longer TAT.",
@@ -9321,7 +9321,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               )}
             </div>
           )}
-          {category === 'MRD' && test.initialTat && <div><p className="text-lg font-bold text-slate-600">{test.initialTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
+          {category === 'MRD' && test.followUpTat && <div><p className="text-lg font-bold text-slate-600">{test.followUpTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
           {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
           {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-emerald-600">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
