@@ -10165,8 +10165,9 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const filteredTests = useMemo(() => {
     return tests.filter(test => {
       if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        if (!test.name.toLowerCase().includes(q) && !test.vendor.toLowerCase().includes(q)) return false;
+        const terms = searchQuery.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+        const searchableText = `${test.name} ${test.vendor} ${category}`.toLowerCase();
+        if (!terms.every(term => searchableText.includes(term))) return false;
       }
       if (selectedApproaches.length > 0 && !selectedApproaches.includes(test.approach)) return false;
       if (selectedCancerTypes.length > 0 && !test.cancerTypes?.some(ct => selectedCancerTypes.includes(ct))) return false;
