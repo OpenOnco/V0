@@ -4069,9 +4069,10 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'about'];
+  const navItems = ['home', 'learn', 'submissions', 'how-it-works', 'data-sources', 'faq', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
+    'learn': 'Learn',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
     'submissions': 'Submissions',
@@ -6318,6 +6319,364 @@ const PlaceholderPage = ({ title, description }) => (
 
 // ============================================
 // FAQ Page
+// ============================================
+// ============================================
+// Learn Page
+// ============================================
+const LearnPage = ({ onNavigate }) => {
+  const categories = [
+    {
+      id: 'ECD',
+      phase: 'Healthy / Screening',
+      name: 'Early Cancer Detection',
+      acronym: 'ECD',
+      color: 'emerald',
+      icon: '🔬',
+      question: 'Do I have cancer I don\'t know about yet?',
+      description: 'Multi-cancer early detection (MCED) tests screen apparently healthy individuals for signs of cancer. These tests look for tumor-derived signals in blood, including ctDNA methylation patterns, fragmentomic features, and protein biomarkers.',
+      benefit: 'Cancer caught at stage I has dramatically better outcomes than cancer caught at stage IV. But most cancers have no screening test—there\'s no mammogram for pancreatic cancer, no colonoscopy for ovarian cancer. MCED tests change that equation.',
+      whoShouldConsider: [
+        'Adults over 50 seeking comprehensive screening beyond standard tests',
+        'People with elevated cancer risk (family history, genetic predisposition)',
+        'Anyone concerned about cancers that lack traditional screening methods'
+      ],
+      whatToKnow: [
+        'Most ECD tests are not yet covered by insurance',
+        'A positive result requires diagnostic follow-up to confirm and locate the cancer',
+        'Sensitivity varies by cancer type and stage—no test catches everything'
+      ],
+      testCount: ecdTestData.length
+    },
+    {
+      id: 'CGP',
+      phase: 'Newly Diagnosed',
+      name: 'Comprehensive Genomic Profiling',
+      acronym: 'CGP',
+      color: 'violet',
+      icon: '🧬',
+      question: 'What\'s driving my cancer, and what treatment will work best?',
+      description: 'CGP tests examine a broad panel of cancer-related genes to identify the specific genetic alterations present in a patient\'s tumor. These findings guide treatment selection, helping oncologists choose therapies most likely to be effective.',
+      benefit: 'Two patients with "lung cancer" may have completely different diseases at the molecular level—different mutations, different drivers, different vulnerabilities. A drug that works brilliantly for one may do nothing for the other. CGP reveals these differences.',
+      whoShouldConsider: [
+        'Patients with advanced or metastatic cancer',
+        'Those whose cancer has progressed on standard therapy',
+        'Anyone exploring targeted therapy or immunotherapy options',
+        'Patients seeking clinical trial opportunities'
+      ],
+      whatToKnow: [
+        'Available from tumor tissue (biopsy) or blood (liquid biopsy)',
+        'Many CGP tests are covered by insurance for advanced cancer',
+        'Results typically include therapy recommendations and trial matches'
+      ],
+      testCount: cgpTestData.length
+    },
+    {
+      id: 'TRM',
+      phase: 'Active Treatment',
+      name: 'Treatment Response Monitoring',
+      acronym: 'TRM',
+      color: 'sky',
+      icon: '📊',
+      question: 'Is my treatment working?',
+      description: 'TRM uses repeated liquid biopsies to track ctDNA levels over time during active cancer therapy. Rising or falling ctDNA can indicate whether treatment is effective—often weeks before changes appear on imaging.',
+      benefit: 'Traditionally, you\'d wait 2-3 months for a scan to learn if chemotherapy or targeted therapy was working. If it wasn\'t, that\'s months of side effects from an ineffective treatment—and months of tumor growth. TRM provides earlier answers.',
+      whoShouldConsider: [
+        'Patients undergoing treatment for metastatic cancer',
+        'Those on targeted therapies where resistance can emerge',
+        'Anyone wanting more real-time feedback on treatment efficacy'
+      ],
+      whatToKnow: [
+        'Requires serial testing (multiple draws over time)',
+        'Results complement—don\'t replace—imaging',
+        'Can sometimes detect resistance mutations, guiding next-line therapy'
+      ],
+      testCount: trmTestData.length
+    },
+    {
+      id: 'MRD',
+      phase: 'Surveillance',
+      name: 'Minimal Residual Disease',
+      acronym: 'MRD',
+      color: 'orange',
+      icon: '🎯',
+      question: 'Is the cancer really gone?',
+      description: 'MRD testing detects tiny amounts of cancer remaining after treatment that are invisible to standard imaging. A patient might be declared "cancer-free" based on scans, but MRD-positive—meaning molecular traces persist.',
+      benefit: 'MRD tests detect cancer at levels 100 to 1,000 times lower than a CT scan can visualize. An MRD-negative result offers molecular reassurance. An MRD-positive result—even with clear scans—can identify patients who may benefit from additional treatment.',
+      whoShouldConsider: [
+        'Patients who\'ve completed surgery for solid tumors (colorectal, lung, breast, etc.)',
+        'Those finishing definitive treatment who want to assess remission depth',
+        'Anyone in surveillance who wants earlier recurrence detection than imaging provides'
+      ],
+      whatToKnow: [
+        'Ultra-sensitive tests typically require prior tumor tissue sequencing',
+        'Used both at treatment completion and during ongoing surveillance',
+        'Can detect recurrence months before it appears on scans'
+      ],
+      testCount: mrdTestData.length
+    }
+  ];
+
+  const colorClasses = {
+    emerald: {
+      bg: 'bg-emerald-50',
+      bgMedium: 'bg-emerald-100',
+      border: 'border-emerald-200',
+      borderActive: 'border-emerald-500',
+      text: 'text-emerald-600',
+      textDark: 'text-emerald-700',
+      button: 'bg-emerald-500 hover:bg-emerald-600',
+      iconBg: 'bg-emerald-100',
+    },
+    violet: {
+      bg: 'bg-violet-50',
+      bgMedium: 'bg-violet-100',
+      border: 'border-violet-200',
+      borderActive: 'border-violet-500',
+      text: 'text-violet-600',
+      textDark: 'text-violet-700',
+      button: 'bg-violet-500 hover:bg-violet-600',
+      iconBg: 'bg-violet-100',
+    },
+    sky: {
+      bg: 'bg-sky-50',
+      bgMedium: 'bg-sky-100',
+      border: 'border-sky-200',
+      borderActive: 'border-sky-500',
+      text: 'text-sky-600',
+      textDark: 'text-sky-700',
+      button: 'bg-sky-500 hover:bg-sky-600',
+      iconBg: 'bg-sky-100',
+    },
+    orange: {
+      bg: 'bg-orange-50',
+      bgMedium: 'bg-orange-100',
+      border: 'border-orange-200',
+      borderActive: 'border-orange-500',
+      text: 'text-orange-600',
+      textDark: 'text-orange-700',
+      button: 'bg-orange-500 hover:bg-orange-600',
+      iconBg: 'bg-orange-100',
+    }
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      {/* Hero Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          A Test for Every Stage of Your Cancer Journey
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          Advances in molecular testing mean there's now a blood-based test to help at every point—from catching cancer early, to finding the right treatment, to knowing if it's truly gone.
+        </p>
+      </div>
+
+      {/* Vision Section */}
+      <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-12 border border-slate-200">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Vision</h2>
+        <p className="text-gray-700 mb-4">
+          For decades, cancer testing was limited. You got a diagnosis, maybe some basic tumor typing, and then you waited—for scans, for symptoms, for news good or bad.
+        </p>
+        <p className="text-gray-700 mb-6">
+          That's changed. Today, a simple blood draw can answer questions that were previously unanswerable:
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+            <span className="text-2xl">🔬</span>
+            <p className="text-gray-700"><strong>Can we find cancer before you feel sick?</strong></p>
+          </div>
+          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+            <span className="text-2xl">🧬</span>
+            <p className="text-gray-700"><strong>What's driving your specific cancer—and which drugs will work against it?</strong></p>
+          </div>
+          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+            <span className="text-2xl">📊</span>
+            <p className="text-gray-700"><strong>Is your treatment actually working, right now?</strong></p>
+          </div>
+          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+            <span className="text-2xl">🎯</span>
+            <p className="text-gray-700"><strong>After treatment, is the cancer truly gone—or silently lurking?</strong></p>
+          </div>
+        </div>
+        <p className="text-gray-700 mt-6">
+          These aren't future promises. These tests exist today. The challenge is knowing which ones, when, and why. <strong>That's what OpenOnco is here to help you navigate.</strong>
+        </p>
+      </div>
+
+      {/* Lifecycle Diagram Section */}
+      <div className="mb-12">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center">The Cancer Testing Lifecycle</h2>
+        <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
+          Click any category to explore the available tests
+        </p>
+        
+        {/* 2x2 Grid Diagram */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto mb-8">
+          {categories.map((cat) => {
+            const colors = colorClasses[cat.color];
+            return (
+              <div
+                key={cat.id}
+                onClick={() => onNavigate(cat.id)}
+                className={`${colors.bg} ${colors.border} border-2 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] hover:${colors.borderActive}`}
+              >
+                <div className="flex items-start gap-3">
+                  <div className={`${colors.iconBg} w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
+                    {cat.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>{cat.phase}</p>
+                    <h3 className="text-lg font-bold text-gray-900">{cat.name}</h3>
+                    <p className={`text-sm ${colors.textDark} mt-1`}>
+                      {cat.testCount} tests →
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Flow description */}
+        <div className="text-center text-sm text-gray-500 max-w-2xl mx-auto">
+          <p>
+            <strong>The patient journey flows through these stages:</strong> Healthy → Screening (ECD) → Cancer detected → Diagnosis & Profiling (CGP) → Treatment selected → Monitoring Response (TRM) → Treatment complete → Surveillance (MRD)
+          </p>
+        </div>
+      </div>
+
+      {/* Detailed Category Sections */}
+      <div className="space-y-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-8">The Four Categories Explained</h2>
+        
+        {categories.map((cat) => {
+          const colors = colorClasses[cat.color];
+          return (
+            <div key={cat.id} className={`${colors.bg} ${colors.border} border-2 rounded-2xl overflow-hidden`}>
+              {/* Category Header */}
+              <div className={`${colors.bgMedium} px-6 py-4 border-b ${colors.border}`}>
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{cat.icon}</span>
+                  <div>
+                    <p className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>{cat.phase}</p>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{cat.name} ({cat.acronym})</h3>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Category Content */}
+              <div className="p-6 space-y-6">
+                {/* The Question */}
+                <div className="bg-white rounded-xl p-4 border border-gray-200">
+                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">The question it answers</p>
+                  <p className="text-lg font-medium text-gray-900 italic">"{cat.question}"</p>
+                </div>
+
+                {/* Description */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">What is {cat.acronym}?</h4>
+                  <p className="text-gray-700">{cat.description}</p>
+                </div>
+
+                {/* Why it matters */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Why it matters</h4>
+                  <p className="text-gray-700">{cat.benefit}</p>
+                </div>
+
+                {/* Two columns for who should consider and what to know */}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Who should consider it</h4>
+                    <ul className="space-y-2">
+                      {cat.whoShouldConsider.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
+                          <span className={`${colors.text} mt-1`}>•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">What to know</h4>
+                    <ul className="space-y-2">
+                      {cat.whatToKnow.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
+                          <span className={`${colors.text} mt-1`}>•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="pt-2">
+                  <button
+                    onClick={() => onNavigate(cat.id)}
+                    className={`${colors.button} text-white px-6 py-3 rounded-xl font-semibold transition-colors flex items-center gap-2`}
+                  >
+                    Explore {cat.testCount} {cat.acronym} Tests
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Quick Routing Table */}
+      <div className="mt-12 bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Not sure where you fit?</h2>
+        <p className="text-gray-600 text-center mb-6">The right test category depends on where you are in your cancer journey:</p>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left py-3 px-4 font-semibold text-gray-900">Your Situation</th>
+                <th className="text-left py-3 px-4 font-semibold text-gray-900">Start Here</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('ECD')}>
+                <td className="py-3 px-4 text-gray-700">No cancer diagnosis, want to screen</td>
+                <td className="py-3 px-4"><span className="text-emerald-600 font-medium">Early Cancer Detection (ECD) →</span></td>
+              </tr>
+              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('CGP')}>
+                <td className="py-3 px-4 text-gray-700">Recently diagnosed, exploring treatment options</td>
+                <td className="py-3 px-4"><span className="text-violet-600 font-medium">Comprehensive Genomic Profiling (CGP) →</span></td>
+              </tr>
+              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TRM')}>
+                <td className="py-3 px-4 text-gray-700">Currently on treatment, want to track response</td>
+                <td className="py-3 px-4"><span className="text-sky-600 font-medium">Treatment Response Monitoring (TRM) →</span></td>
+              </tr>
+              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('MRD')}>
+                <td className="py-3 px-4 text-gray-700">Finished treatment, monitoring for recurrence</td>
+                <td className="py-3 px-4"><span className="text-orange-600 font-medium">Minimal Residual Disease (MRD) →</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => onNavigate('home')}
+            className="bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// FAQ Components
 // ============================================
 const FAQItem = ({ question, answer, isOpen, onClick }) => (
   <div className="border-b border-gray-200 last:border-b-0">
@@ -10337,6 +10696,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
+      case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': case 'CGP': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
