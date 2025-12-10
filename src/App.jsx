@@ -6225,11 +6225,11 @@ const DatabaseSummary = () => {
     violet: 'text-violet-600'
   }[color] || 'text-slate-600');
 
-  // Gold, Silver, Bronze styles for Top 3
+  // Green gradient styles for Top 3 (dark to light)
   const rankStyles = [
-    { bg: 'bg-gradient-to-r from-yellow-100 to-amber-100', border: 'border-yellow-400', text: 'text-yellow-800', badge: 'bg-gradient-to-r from-yellow-500 to-amber-500', icon: '🥇' },
-    { bg: 'bg-gradient-to-r from-slate-100 to-gray-200', border: 'border-slate-400', text: 'text-slate-700', badge: 'bg-gradient-to-r from-slate-400 to-gray-500', icon: '🥈' },
-    { bg: 'bg-gradient-to-r from-orange-100 to-amber-200', border: 'border-orange-400', text: 'text-orange-800', badge: 'bg-gradient-to-r from-orange-500 to-amber-600', icon: '🥉' }
+    { bg: 'bg-gradient-to-r from-emerald-100 to-emerald-50', border: 'border-emerald-500', text: 'text-emerald-800', badge: 'bg-emerald-600', icon: '🥇' },
+    { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700', badge: 'bg-emerald-500', icon: '🥈' },
+    { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600', badge: 'bg-emerald-400', icon: '🥉' }
   ];
 
   return (
