@@ -6692,47 +6692,6 @@ const LearnPage = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Lifecycle Diagram Section - Navigation to Tests */}
-      <div className="mt-12">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center">The Cancer Testing Lifecycle</h2>
-        <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
-          Click any category to explore the available commercial tests
-        </p>
-        
-        {/* 2x2 Grid Diagram */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto mb-8">
-          {categories.map((cat) => {
-            const colors = colorClasses[cat.color];
-            return (
-              <div
-                key={cat.id}
-                onClick={() => onNavigate(cat.id)}
-                className={`${colors.bg} ${colors.border} border-2 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] hover:${colors.borderActive}`}
-              >
-                <div className="flex items-start gap-3">
-                  <div className={`${colors.iconBg} w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
-                    {cat.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>{cat.phase}</p>
-                    <h3 className="text-lg font-bold text-gray-900">{cat.name}</h3>
-                    <p className={`text-sm ${colors.textDark} mt-1`}>
-                      {cat.testCount} tests →
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Flow description */}
-        <div className="text-center text-sm text-gray-500 max-w-2xl mx-auto">
-          <p>
-            <strong>Clinical workflow:</strong> Screening (ECD) → Diagnosis & Profiling (CGP) → Treatment Monitoring (TRM) → Post-Treatment Surveillance (MRD)
-          </p>
-        </div>
-      </div>
     </div>
   );
 };
