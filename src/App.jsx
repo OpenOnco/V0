@@ -6227,9 +6227,9 @@ const DatabaseSummary = () => {
 
   // Green gradient styles for Top 3 (dark to light)
   const rankStyles = [
-    { bg: 'bg-gradient-to-r from-emerald-100 to-emerald-50', border: 'border-emerald-500', text: 'text-emerald-800', badge: 'bg-emerald-600', icon: '🥇' },
-    { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700', badge: 'bg-emerald-500', icon: '🥈' },
-    { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600', badge: 'bg-emerald-400', icon: '🥉' }
+    { bg: 'bg-gradient-to-r from-emerald-100 to-emerald-50', border: 'border-emerald-500', text: 'text-emerald-800', badge: 'bg-emerald-600' },
+    { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700', badge: 'bg-emerald-500' },
+    { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600', badge: 'bg-emerald-400' }
   ];
 
   return (
@@ -6255,11 +6255,13 @@ const DatabaseSummary = () => {
                 key={vendor.vendor} 
                 className={`flex flex-col items-center text-center p-3 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
               >
-                <span className="text-2xl mb-1">{rankStyles[index].icon}</span>
                 <p className={`font-semibold text-sm ${rankStyles[index].text} truncate w-full`}>{vendor.vendor}</p>
                 <p className="text-[10px] text-slate-500 mb-2">{vendor.testCount} tests</p>
-                <div className={`px-3 py-1 rounded-lg text-white text-sm font-bold shadow-sm ${rankStyles[index].badge}`}>
-                  {Math.round(vendor.avgScore)}
+                <div className="flex items-center gap-2">
+                  <div className={`px-3 py-1 rounded-lg text-white text-sm font-bold shadow-sm ${rankStyles[index].badge}`}>
+                    {Math.round(vendor.avgScore)}
+                  </div>
+                  <span className={`text-3xl font-bold ${rankStyles[index].text} opacity-60`}>{index + 1}</span>
                 </div>
               </div>
             ))}
@@ -6319,26 +6321,6 @@ const DatabaseSummary = () => {
         <p className="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
           Completeness rates reflect publicly available data across {totalTests} tests from {allVendors.size} vendors.
         </p>
-      </div>
-      
-      {/* Category breakdown */}
-      <div className="mt-4 grid grid-cols-4 gap-2">
-        <div className="bg-orange-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-orange-700">{mrdTestData.length}</p>
-          <p className="text-[10px] text-orange-600 font-medium">MRD</p>
-        </div>
-        <div className="bg-emerald-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-emerald-700">{ecdTestData.length}</p>
-          <p className="text-[10px] text-emerald-600 font-medium">ECD</p>
-        </div>
-        <div className="bg-sky-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-sky-700">{trmTestData.length}</p>
-          <p className="text-[10px] text-sky-600 font-medium">TRM</p>
-        </div>
-        <div className="bg-violet-100 rounded-lg p-2 text-center">
-          <p className="text-lg font-bold text-violet-700">{cgpTestData.length}</p>
-          <p className="text-[10px] text-violet-600 font-medium">CGP</p>
-        </div>
       </div>
     </div>
   );
