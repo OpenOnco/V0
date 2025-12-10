@@ -6253,16 +6253,19 @@ const DatabaseSummary = () => {
             {top3.map((vendor, index) => (
               <div 
                 key={vendor.vendor} 
-                className={`flex items-center gap-3 px-3 py-4 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
+                className={`flex items-center px-3 py-4 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
               >
-                <span className={`text-5xl font-bold ${rankStyles[index].text} opacity-40 flex-shrink-0 self-center`}>{index + 1}</span>
+                <div className="w-12 flex-shrink-0 flex items-center justify-center">
+                  <span className={`text-5xl font-bold ${rankStyles[index].text} opacity-40`}>{index + 1}</span>
+                </div>
                 <div className="flex flex-col items-center text-center flex-1 min-w-0">
                   <p className={`font-semibold text-sm ${rankStyles[index].text} truncate w-full`}>{vendor.vendor}</p>
                   <p className="text-[10px] text-slate-500 mb-1">{vendor.testCount} tests</p>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <span className={`text-2xl font-bold ${rankStyles[index].text}`}>{Math.round(vendor.avgScore)}</span>
                     <span className="text-sm text-slate-400">vs</span>
                     <span className="text-xl font-bold text-slate-400">{fieldAvgScore}</span>
+                    <span className="text-[10px] text-slate-400">(Avg)</span>
                   </div>
                 </div>
               </div>
