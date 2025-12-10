@@ -5141,7 +5141,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             return (
               <div
                 key={test.id}
-                onClick={() => setSelectedTest(test)}
+                onClick={() => onNavigate(test.category, test.id)}
                 className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 <div className="flex items-start justify-between mb-1">
@@ -5429,7 +5429,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             return (
               <div
                 key={test.id}
-                onClick={() => setSelectedTest(test)}
+                onClick={() => onNavigate(test.category, test.id)}
                 className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 <div className="flex items-start justify-between mb-1">
