@@ -172,7 +172,7 @@ const DATABASE_CHANGELOG = [
 // ============================================
 const VENDOR_BADGES = {
   'Exact Sciences': [
-    { id: 'openness-2025', icon: '🏆', label: 'Openness Award 2025', tooltip: 'OpenOnco Openness Award 2025 — Highest data disclosure among vendors with 2+ tests' }
+    { id: 'openness-award', icon: '🏆', label: 'Openness Award', tooltip: 'OpenOnco Openness Award — Excellence in Data Transparency' }
   ],
 };
 
@@ -6165,8 +6165,7 @@ const OpennessAward = () => {
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award for most comprehensive sharing of test data</p>
-            <span className="px-2 py-0.5 bg-amber-200 text-amber-800 text-[10px] font-medium rounded-full">2025</span>
+            <p className="text-sm font-semibold text-amber-700">OpenOnco Openness Award — Excellence in Data Transparency</p>
           </div>
           <p className="text-xl font-bold text-slate-800">{topVendor}</p>
           <p className="text-xs text-amber-700 mt-0.5">
