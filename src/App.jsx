@@ -4143,7 +4143,10 @@ const Header = ({ currentPage, onNavigate }) => {
 const Footer = () => (
   <footer className="border-t border-gray-200 py-8 mt-12 bg-white">
     <div className="max-w-4xl mx-auto px-6 text-center">
-      <p className="text-xs text-gray-400">
+      <p className="text-sm text-gray-500 leading-relaxed">
+        <strong>Disclaimer:</strong> OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. <strong>Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices.</strong> Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.
+      </p>
+      <p className="text-xs text-gray-400 mt-4">
         Built: {BUILD_INFO.date}
       </p>
     </div>
@@ -6611,16 +6614,13 @@ const AboutPage = () => (
     <h1 className="text-3xl font-bold text-gray-900 mb-8">About</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
       <p>
-        Hi, my name is Alex Dickinson. Like you, my friends and family have been impacted by cancer throughout my life.
+        Hi, my name is Alex Dickinson. Like many of you, my friends and family have been impacted by cancer throughout my life. Most notably for me, my sister Ingrid died from a brain tumor when she was eleven and I was seven—you can see us together in the photo below.
       </p>
       <p>
-        Professionally I've had the good fortune to stumble into the amazing world of cancer diagnostics people, companies and technologies. Along the way I've become convinced that liquid biopsy tests of various types (LBx) can have an extraordinary positive impact on cancer detection and treatment. A simple blood draw, followed by an extraordinary combination of DNA sequencing and information processing, can give deep insight into either the presence, absence or treatment of a cancer at the molecular level.
+        Professionally I've had the good fortune to stumble into the amazing world of cancer diagnostics—the people, companies, and technologies. Along the way I've become convinced that the emerging new generation of molecular cancer tests (largely enabled by next-generation sequencing) will have an extraordinary impact on cancer detection and treatment. Because these tests detect biomolecular events at tiny concentrations—now approaching one in a billion—this is a very complex field, and test data and options can overwhelm doctors and patients alike. This confusion will only increase as the number of tests rapidly expands due to both advances in the technology and the decision to maintain a low level of test regulation in the US. OpenOnco is an effort to collect, curate, and explain to both patients and their doctors all the data on all these tests.
       </p>
       <p>
-        Unsurprisingly, this is a very complex field and the technology and options can be overwhelming to doctors and patients. This confusion will only increase as LBx options are rapidly expanding due to advances in the technology and increasing regulatory freedom for test vendors.
-      </p>
-      <p>
-        OpenOnco is a group effort to make it easier to navigate the complex world of LBx tests - many thanks to all those who have provided, and continue to provide advice for this project.
+        OpenOnco is a non-profit that I am self-funding in memory of my sister Ingrid.
       </p>
       <p>
         For any comments or questions about OpenOnco feel free to contact me directly via <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">LinkedIn</a> (please include #openonco in your message).
