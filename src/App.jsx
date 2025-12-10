@@ -4642,9 +4642,21 @@ const TestShowcase = ({ onNavigate }) => {
       return match ? match[0] : null;
     };
     
+    // Helper to format percent values - truncate long strings
+    const formatPercent = (val) => {
+      if (val == null) return null;
+      if (typeof val === 'number') return `${val}%`;
+      const str = String(val);
+      if (str.length <= 10) return str.includes('%') ? str : `${str}%`;
+      const match = str.match(/^[>≥~]?\d+(?:\.\d+)?%?/);
+      return match ? (match[0].includes('%') ? match[0] : `${match[0]}%`) : null;
+    };
+    
     // Clinical parameters (from patient studies)
-    if (test.sensitivity != null) params.push({ label: 'Sensitivity', value: `${test.sensitivity}%`, type: 'clinical' });
-    if (test.specificity != null) params.push({ label: 'Specificity', value: `${test.specificity}%`, type: 'clinical' });
+    const sensDisplay = formatPercent(test.sensitivity);
+    if (sensDisplay) params.push({ label: 'Sensitivity', value: sensDisplay, type: 'clinical' });
+    const specDisplay = formatPercent(test.specificity);
+    if (specDisplay) params.push({ label: 'Specificity', value: specDisplay, type: 'clinical' });
     if (test.ppv != null) params.push({ label: 'PPV', value: `${test.ppv}%`, type: 'clinical' });
     if (test.npv != null) params.push({ label: 'NPV', value: `${test.npv}%`, type: 'clinical' });
     if (test.stageISensitivity != null) params.push({ label: 'Stage I Sens.', value: `${test.stageISensitivity}%`, type: 'clinical' });
@@ -4769,14 +4781,29 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   const getBadgeParams = (test) => {
     const badges = [];
     
+    // Helper to format sensitivity/specificity - truncate long strings
+    const formatPercent = (val) => {
+      if (val == null) return null;
+      if (typeof val === 'number') return `${val}%`;
+      // If it's a string, check if it starts with a number or >/>= symbol
+      const str = String(val);
+      // If it's a short value (like "95" or ">99%"), use it directly
+      if (str.length <= 10) return str.includes('%') ? str : `${str}%`;
+      // For long strings, extract first number/percentage
+      const match = str.match(/^[>≥~]?\d+(?:\.\d+)?%?/);
+      return match ? (match[0].includes('%') ? match[0] : `${match[0]}%`) : null;
+    };
+    
     // Sensitivity (most important clinical metric)
-    if (test.sensitivity != null) {
-      badges.push({ label: 'Sens', value: `${test.sensitivity}%`, type: 'clinical' });
+    const sensDisplay = formatPercent(test.sensitivity);
+    if (sensDisplay) {
+      badges.push({ label: 'Sens', value: sensDisplay, type: 'clinical' });
     }
     
     // Specificity
-    if (test.specificity != null) {
-      badges.push({ label: 'Spec', value: `${test.specificity}%`, type: 'clinical' });
+    const specDisplay = formatPercent(test.specificity);
+    if (specDisplay) {
+      badges.push({ label: 'Spec', value: specDisplay, type: 'clinical' });
     }
     
     // TAT
@@ -8966,9 +8993,9 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   
   return (
-    <div id={`test-card-${test.id}`} className={`bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div id={`test-card-${test.id}`} className={`h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* Header - clickable to show detail modal */}
-      <div className="cursor-pointer" onClick={() => onShowDetail && onShowDetail(test)}>
+      <div className="cursor-pointer flex-1" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -9056,8 +9083,8 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         </div>
       </div>
       
-      {/* Show detail button */}
-      <div className="border-t border-gray-100 pt-2 mt-2">
+      {/* Show detail button - pushed to bottom */}
+      <div className="border-t border-gray-100 pt-2 mt-auto">
         <button 
           onClick={() => onShowDetail && onShowDetail(test)}
           className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
@@ -9128,9 +9155,9 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
   );
   
   return (
-    <div className="bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all">
+    <div className="h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all">
       {/* Header - clickable to show detail modal */}
-      <div className="cursor-pointer" onClick={() => onShowDetail && onShowDetail(test)}>
+      <div className="cursor-pointer flex-1 flex flex-col" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className="font-semibold text-gray-900 text-lg">{test.name}</h3>
@@ -9183,8 +9210,8 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
           </div>
         )}
         
-        {/* Show detail button */}
-        <button className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1 mt-2">
+        {/* Show detail button - pushed to bottom */}
+        <button className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1 mt-auto pt-2">
           Learn more
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
