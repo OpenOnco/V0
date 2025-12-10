@@ -6227,9 +6227,9 @@ const DatabaseSummary = () => {
 
   // Green gradient styles for Top 3 (dark to light)
   const rankStyles = [
-    { bg: 'bg-gradient-to-r from-emerald-100 to-emerald-50', border: 'border-emerald-500', text: 'text-emerald-800', badge: 'bg-emerald-600' },
-    { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700', badge: 'bg-emerald-500' },
-    { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600', badge: 'bg-emerald-400' }
+    { bg: 'bg-gradient-to-r from-emerald-100 to-emerald-50', border: 'border-emerald-500', text: 'text-emerald-800' },
+    { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700' },
+    { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600' }
   ];
 
   return (
@@ -6253,15 +6253,17 @@ const DatabaseSummary = () => {
             {top3.map((vendor, index) => (
               <div 
                 key={vendor.vendor} 
-                className={`flex flex-col items-center text-center p-3 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
+                className={`flex items-center gap-3 p-3 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
               >
-                <p className={`font-semibold text-sm ${rankStyles[index].text} truncate w-full`}>{vendor.vendor}</p>
-                <p className="text-[10px] text-slate-500 mb-2">{vendor.testCount} tests</p>
-                <div className="flex items-center gap-2">
-                  <div className={`px-3 py-1 rounded-lg text-white text-sm font-bold shadow-sm ${rankStyles[index].badge}`}>
-                    {Math.round(vendor.avgScore)}
+                <span className={`text-5xl font-bold ${rankStyles[index].text} opacity-40`}>{index + 1}</span>
+                <div className="flex flex-col items-center text-center flex-1">
+                  <p className={`font-semibold text-sm ${rankStyles[index].text} truncate w-full`}>{vendor.vendor}</p>
+                  <p className="text-[10px] text-slate-500 mb-1">{vendor.testCount} tests</p>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-2xl font-bold ${rankStyles[index].text}`}>{Math.round(vendor.avgScore)}</span>
+                    <span className="text-sm text-slate-400">vs</span>
+                    <span className="text-xl font-bold text-slate-400">{fieldAvgScore}</span>
                   </div>
-                  <span className={`text-3xl font-bold ${rankStyles[index].text} opacity-60`}>{index + 1}</span>
                 </div>
               </div>
             ))}
@@ -6269,7 +6271,7 @@ const DatabaseSummary = () => {
           
           <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
             <div className="text-xs text-slate-500">
-              Field average: <span className="font-semibold text-slate-700">{fieldAvgScore}</span> across {qualifyingVendors.length} qualifying vendors
+              {qualifyingVendors.length} vendors with 2+ tests
             </div>
             <button 
               onClick={() => setShowFAQ(!showFAQ)}
