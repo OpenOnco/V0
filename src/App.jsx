@@ -53,7 +53,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Adaptive Biotechnologies',
     category: 'MRD',
     description: 'Added clonoSEQ - first and only FDA-cleared MRD test for hematologic malignancies (MM, B-ALL, CLL). Uses NGS immunosequencing of B/T-cell receptor genes with 10⁻⁶ sensitivity. Medicare coverage for MM, ALL, CLL, DLBCL, MCL.',
-    contributor: 'Christine Hanley',
+    contributor: null,
     affiliation: 'Adaptive Biotechnologies',
     citation: 'https://www.clonoseq.com/'
   },
