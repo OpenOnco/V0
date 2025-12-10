@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Analytics } from '@vercel/analytics/react';
+import { track } from '@vercel/analytics';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
@@ -5516,6 +5517,12 @@ const HomePage = ({ onNavigate }) => {
     setPersona(selectedPersona);
     setMessages([]); // Reset chat so user can start fresh with new persona
     localStorage.setItem('openonco-persona', selectedPersona);
+    // Track persona change with feature flags
+    track('persona_changed', { 
+      new_persona: selectedPersona 
+    }, { 
+      flags: [`persona-${selectedPersona.toLowerCase().replace(/[^a-z]/g, '-')}`] 
+    });
     // Dispatch custom event so NewsFeed can refresh
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
@@ -5587,6 +5594,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   const handleSubmit = async (question) => {
     const q = question || chatInput;
     if (!q.trim()) return;
+    
+    // Track homepage chat submission with feature flags
+    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+    track('home_chat_message_sent', { 
+      model: selectedModel,
+      message_length: q.trim().length,
+      is_suggested: question !== undefined
+    }, { 
+      flags: [personaFlag] 
+    });
     
     setChatInput('');
     const newUserMessage = { role: 'user', content: q };
@@ -8194,6 +8211,17 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   const handleSubmit = async () => {
     if (!input.trim() || isLoading) return;
     const userMessage = input.trim();
+    
+    // Track chat submission with feature flags
+    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+    track('chat_message_sent', { 
+      category: category,
+      model: selectedModel,
+      message_length: userMessage.length
+    }, { 
+      flags: [personaFlag, `category-${category.toLowerCase()}`] 
+    });
+    
     setInput('');
     const newUserMessage = { role: 'user', content: userMessage };
     const updatedMessages = [...messages, newUserMessage];
@@ -10068,6 +10096,20 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   
   const isPatient = persona === 'Patient';
   
+  // Handler to show test detail with tracking
+  const handleShowDetail = (test) => {
+    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+    track('test_detail_viewed', { 
+      category: category,
+      test_id: test.id,
+      test_name: test.name,
+      vendor: test.vendor
+    }, { 
+      flags: [personaFlag, `category-${category.toLowerCase()}`] 
+    });
+    setDetailTest(test);
+  };
+  
   // Helper to update slider values with scroll position preservation
   const updateSlider = (setter) => (e) => {
     // Capture scroll position
@@ -10613,7 +10655,18 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 <p className="text-sm text-orange-600">Select at least one more test to compare</p>
               )}
               {!isPatient && selectedTests.length >= 2 && (
-                <button onClick={() => setShowComparison(true)} className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                <button onClick={() => {
+                  // Track comparison with feature flags
+                  const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+                  track('tests_compared', { 
+                    category: category,
+                    test_count: selectedTests.length,
+                    test_ids: selectedTests.join(',')
+                  }, { 
+                    flags: [personaFlag, `category-${category.toLowerCase()}`] 
+                  });
+                  setShowComparison(true);
+                }} className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                   Compare ({selectedTests.length})
                 </button>
@@ -10650,9 +10703,9 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => 
                 isPatient ? (
-                  <PatientTestCard key={test.id} test={test} category={category} onShowDetail={setDetailTest} />
+                  <PatientTestCard key={test.id} test={test} category={category} onShowDetail={handleShowDetail} />
                 ) : (
-                  <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} onShowDetail={setDetailTest} />
+                  <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} onShowDetail={handleShowDetail} />
                 )
               )}
             </div>
@@ -10709,7 +10762,32 @@ export default function App() {
     return () => window.removeEventListener('personaChanged', handlePersonaChange);
   }, []);
 
+  // Emit feature flags to DOM for Vercel Analytics tracking
+  useEffect(() => {
+    const flags = {
+      persona: persona.toLowerCase().replace(/[^a-z]/g, '-'),
+      page: currentPage,
+    };
+    document.documentElement.dataset.flags = JSON.stringify(flags);
+  }, [persona, currentPage]);
+
   const handleNavigate = (page, testId = null) => {
+    // Track navigation with feature flags
+    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+    if (['MRD', 'ECD', 'TRM', 'CGP'].includes(page)) {
+      track('category_viewed', { 
+        category: page,
+        from_test_link: testId !== null 
+      }, { 
+        flags: [personaFlag, `category-${page.toLowerCase()}`] 
+      });
+    } else if (page !== currentPage) {
+      track('page_viewed', { 
+        page: page 
+      }, { 
+        flags: [personaFlag] 
+      });
+    }
     setCurrentPage(page);
     setInitialSelectedTestId(testId);
   };
