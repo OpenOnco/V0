@@ -6327,68 +6327,73 @@ const LearnPage = ({ onNavigate }) => {
   const categories = [
     {
       id: 'ECD',
-      phase: 'Healthy / Screening',
+      phase: 'Screening',
       name: 'Early Cancer Detection',
       acronym: 'ECD',
       color: 'emerald',
       icon: '🔬',
-      question: 'Do I have cancer I don\'t know about yet?',
-      description: 'Multi-cancer early detection (MCED) tests screen apparently healthy individuals for signs of cancer. These tests look for tumor-derived signals in blood, including ctDNA methylation patterns, fragmentomic features, and protein biomarkers.',
-      benefit: 'Cancer caught at stage I has dramatically better outcomes than cancer caught at stage IV. But most cancers have no screening test—there\'s no mammogram for pancreatic cancer, no colonoscopy for ovarian cancer. MCED tests change that equation.',
-      whoShouldConsider: [
-        'Adults over 50 seeking comprehensive screening beyond standard tests',
-        'People with elevated cancer risk (family history, genetic predisposition)',
-        'Anyone concerned about cancers that lack traditional screening methods'
+      clinicalQuestion: 'Can cancer be detected before clinical presentation?',
+      description: 'Multi-cancer early detection (MCED) tests screen asymptomatic individuals for cancer signals in blood. These assays analyze tumor-derived molecules including ctDNA methylation patterns, fragmentomic features (cfDNA fragment size distributions and end motifs), and protein biomarkers.',
+      technology: 'Most ECD tests rely on methylation profiling, as cancer-specific methylation patterns are more abundant and consistent than somatic mutations in early-stage disease. Machine learning classifiers trained on methylation arrays can detect cancer signals and predict tissue of origin. Some platforms combine methylation with fragmentomics or proteomics for improved sensitivity.',
+      keyMetrics: [
+        'Sensitivity by cancer type and stage (typically 20-40% for stage I, 70-90% for stage IV)',
+        'Specificity (target >99% to minimize false positives in screening populations)',
+        'Positive predictive value (PPV) depends heavily on cancer prevalence',
+        'Cancer signal origin (CSO) accuracy for localization'
       ],
-      whatToKnow: [
-        'Most ECD tests are not yet covered by insurance',
-        'A positive result requires diagnostic follow-up to confirm and locate the cancer',
-        'Sensitivity varies by cancer type and stage—no test catches everything'
+      challenges: [
+        'Low ctDNA fraction in early-stage disease (<0.1% VAF)',
+        'Clonal hematopoiesis of indeterminate potential (CHIP) confounds mutation-based approaches',
+        'Requires large validation cohorts across diverse cancer types',
+        'Clinical utility studies (mortality reduction) still in progress'
       ],
       testCount: ecdTestData.length
     },
     {
       id: 'CGP',
-      phase: 'Newly Diagnosed',
+      phase: 'Diagnosis',
       name: 'Comprehensive Genomic Profiling',
       acronym: 'CGP',
       color: 'violet',
       icon: '🧬',
-      question: 'What\'s driving my cancer, and what treatment will work best?',
-      description: 'CGP tests examine a broad panel of cancer-related genes to identify the specific genetic alterations present in a patient\'s tumor. These findings guide treatment selection, helping oncologists choose therapies most likely to be effective.',
-      benefit: 'Two patients with "lung cancer" may have completely different diseases at the molecular level—different mutations, different drivers, different vulnerabilities. A drug that works brilliantly for one may do nothing for the other. CGP reveals these differences.',
-      whoShouldConsider: [
-        'Patients with advanced or metastatic cancer',
-        'Those whose cancer has progressed on standard therapy',
-        'Anyone exploring targeted therapy or immunotherapy options',
-        'Patients seeking clinical trial opportunities'
+      clinicalQuestion: 'What actionable genomic alterations are present in the tumor?',
+      description: 'CGP tests sequence hundreds of cancer-related genes to identify somatic alterations that may guide therapy selection. These panels detect SNVs, indels, copy number alterations, gene fusions, and biomarkers like MSI status and tumor mutational burden (TMB).',
+      technology: 'Hybrid capture-based NGS enriches target regions (typically 300-500 genes) from either tumor tissue (FFPE) or plasma cfDNA. Tissue-based CGP offers higher sensitivity for low-frequency variants; liquid biopsy CGP provides faster turnaround and captures tumor heterogeneity. Many tests are FDA-approved as companion diagnostics for specific targeted therapies.',
+      keyMetrics: [
+        'Limit of detection (LOD) for variant allele frequency (typically 5% for tissue, 0.1-0.5% for liquid)',
+        'Panel coverage breadth and depth',
+        'FDA approval status as companion diagnostic',
+        'Turnaround time (7-14 days typical)'
       ],
-      whatToKnow: [
-        'Available from tumor tissue (biopsy) or blood (liquid biopsy)',
-        'Many CGP tests are covered by insurance for advanced cancer',
-        'Results typically include therapy recommendations and trial matches'
+      challenges: [
+        'Tissue availability and quality (especially for liquid biopsy conversion)',
+        'Tumor heterogeneity may not be captured by single-site biopsy',
+        'Variants of uncertain significance (VUS) interpretation',
+        'Germline vs. somatic variant distinction'
       ],
       testCount: cgpTestData.length
     },
     {
       id: 'TRM',
-      phase: 'Active Treatment',
+      phase: 'Treatment',
       name: 'Treatment Response Monitoring',
       acronym: 'TRM',
       color: 'sky',
       icon: '📊',
-      question: 'Is my treatment working?',
-      description: 'TRM uses repeated liquid biopsies to track ctDNA levels over time during active cancer therapy. Rising or falling ctDNA can indicate whether treatment is effective—often weeks before changes appear on imaging.',
-      benefit: 'Traditionally, you\'d wait 2-3 months for a scan to learn if chemotherapy or targeted therapy was working. If it wasn\'t, that\'s months of side effects from an ineffective treatment—and months of tumor growth. TRM provides earlier answers.',
-      whoShouldConsider: [
-        'Patients undergoing treatment for metastatic cancer',
-        'Those on targeted therapies where resistance can emerge',
-        'Anyone wanting more real-time feedback on treatment efficacy'
+      clinicalQuestion: 'Is the current therapy effective, and is resistance emerging?',
+      description: 'TRM uses serial liquid biopsies to quantify ctDNA dynamics during active therapy. Decreasing ctDNA levels correlate with treatment response; rising levels may indicate progression or resistance—often weeks before radiographic changes are detectable.',
+      technology: 'TRM approaches vary: some track specific mutations identified at baseline (tumor-informed), while others monitor a fixed panel of common cancer mutations (tumor-naïve). Quantification methods include variant allele frequency (VAF), absolute ctDNA concentration (copies/mL), or composite molecular response scores. Some platforms can detect emerging resistance mutations to guide therapy switching.',
+      keyMetrics: [
+        'Analytical sensitivity for quantification at low VAF',
+        'Coefficient of variation (CV) for serial measurements',
+        'Molecular response thresholds (fold-change or absolute cutoffs)',
+        'Correlation with clinical outcomes (PFS, OS)'
       ],
-      whatToKnow: [
-        'Requires serial testing (multiple draws over time)',
-        'Results complement—don\'t replace—imaging',
-        'Can sometimes detect resistance mutations, guiding next-line therapy'
+      challenges: [
+        'Standardization of "molecular response" definitions across platforms',
+        'Optimal sampling intervals during therapy',
+        'Integration with imaging-based response assessment',
+        'Cost of serial testing'
       ],
       testCount: trmTestData.length
     },
@@ -6399,18 +6404,20 @@ const LearnPage = ({ onNavigate }) => {
       acronym: 'MRD',
       color: 'orange',
       icon: '🎯',
-      question: 'Is the cancer really gone?',
-      description: 'MRD testing detects tiny amounts of cancer remaining after treatment that are invisible to standard imaging. A patient might be declared "cancer-free" based on scans, but MRD-positive—meaning molecular traces persist.',
-      benefit: 'MRD tests detect cancer at levels 100 to 1,000 times lower than a CT scan can visualize. An MRD-negative result offers molecular reassurance. An MRD-positive result—even with clear scans—can identify patients who may benefit from additional treatment.',
-      whoShouldConsider: [
-        'Patients who\'ve completed surgery for solid tumors (colorectal, lung, breast, etc.)',
-        'Those finishing definitive treatment who want to assess remission depth',
-        'Anyone in surveillance who wants earlier recurrence detection than imaging provides'
+      clinicalQuestion: 'Does molecular evidence of disease persist after curative-intent treatment?',
+      description: 'MRD testing detects residual cancer at levels far below imaging resolution (typically 0.01-0.001% VAF). MRD-positive status after surgery correlates with higher recurrence risk; MRD-negative results support molecular complete response. Serial MRD testing during surveillance can detect recurrence months before clinical presentation.',
+      technology: 'Tumor-informed MRD assays sequence the primary tumor to identify patient-specific mutations, then design custom PCR or hybrid capture panels to track those variants in plasma with maximum sensitivity. Tumor-naïve approaches use fixed panels or methylation signatures. Tumor-informed methods achieve lower LOD but require tissue and longer setup time.',
+      keyMetrics: [
+        'Limit of detection (LOD)—tumor-informed typically 0.001-0.01% VAF',
+        'Sensitivity (% of relapsing patients detected MRD+)',
+        'Specificity (% of non-relapsing patients correctly MRD-)',
+        'Lead time before clinical/radiographic recurrence'
       ],
-      whatToKnow: [
-        'Ultra-sensitive tests typically require prior tumor tissue sequencing',
-        'Used both at treatment completion and during ongoing surveillance',
-        'Can detect recurrence months before it appears on scans'
+      challenges: [
+        'Requires adequate tumor tissue for tumor-informed approaches',
+        'Turnaround time for custom assay design (2-4 weeks)',
+        'Optimal surveillance testing intervals not established for all cancers',
+        'Clinical utility data (does MRD-guided therapy improve outcomes?) still maturing'
       ],
       testCount: mrdTestData.length
     }
@@ -6464,50 +6471,100 @@ const LearnPage = ({ onNavigate }) => {
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-          A Test for Every Stage of Your Cancer Journey
+          NGS-Based Cancer Testing: A Technical Overview
         </h1>
         <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-          Advances in molecular testing mean there's now a blood-based test to help at every point—from catching cancer early, to finding the right treatment, to knowing if it's truly gone.
+          Next-generation sequencing has enabled blood-based tests across the full cancer care continuum—from early detection to post-treatment surveillance.
         </p>
       </div>
 
-      {/* Vision Section */}
+      {/* The Technology Section */}
       <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-12 border border-slate-200">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Vision</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Underlying Technology</h2>
         <p className="text-gray-700 mb-4">
-          For decades, cancer testing was limited. You got a diagnosis, maybe some basic tumor typing, and then you waited—for scans, for symptoms, for news good or bad.
+          When cells undergo apoptosis or necrosis, they release DNA fragments into the bloodstream. This <strong>cell-free DNA (cfDNA)</strong> can be isolated from plasma and analyzed. In cancer patients, a fraction of cfDNA derives from tumor cells—this is <strong>circulating tumor DNA (ctDNA)</strong>, which carries the same somatic alterations present in the tumor.
         </p>
         <p className="text-gray-700 mb-6">
-          That's changed. Today, a simple blood draw can answer questions that were previously unanswerable:
+          NGS-based liquid biopsy tests exploit this biology to answer different clinical questions depending on the patient's disease state:
         </p>
         <div className="grid sm:grid-cols-2 gap-4">
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
             <span className="text-2xl">🔬</span>
-            <p className="text-gray-700"><strong>Can we find cancer before you feel sick?</strong></p>
+            <div>
+              <p className="font-semibold text-gray-900">Early Detection</p>
+              <p className="text-sm text-gray-600">Detect cancer signals in asymptomatic individuals</p>
+            </div>
           </div>
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
             <span className="text-2xl">🧬</span>
-            <p className="text-gray-700"><strong>What's driving your specific cancer—and which drugs will work against it?</strong></p>
+            <div>
+              <p className="font-semibold text-gray-900">Genomic Profiling</p>
+              <p className="text-sm text-gray-600">Identify actionable mutations for therapy selection</p>
+            </div>
           </div>
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
             <span className="text-2xl">📊</span>
-            <p className="text-gray-700"><strong>Is your treatment actually working, right now?</strong></p>
+            <div>
+              <p className="font-semibold text-gray-900">Response Monitoring</p>
+              <p className="text-sm text-gray-600">Track ctDNA dynamics during active treatment</p>
+            </div>
           </div>
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
             <span className="text-2xl">🎯</span>
-            <p className="text-gray-700"><strong>After treatment, is the cancer truly gone—or silently lurking?</strong></p>
+            <div>
+              <p className="font-semibold text-gray-900">MRD Detection</p>
+              <p className="text-sm text-gray-600">Identify residual disease after curative treatment</p>
+            </div>
           </div>
         </div>
-        <p className="text-gray-700 mt-6">
-          These aren't future promises. These tests exist today. The challenge is knowing which ones, when, and why. <strong>That's what OpenOnco is here to help you navigate.</strong>
-        </p>
+        
+        {/* ctDNA Signal Challenge */}
+        <div className="mt-6 p-4 bg-white rounded-xl border border-gray-200">
+          <h3 className="font-semibold text-gray-900 mb-3">The ctDNA Signal Challenge</h3>
+          <p className="text-sm text-gray-700 mb-3">
+            The fraction of cfDNA that derives from tumor (ctDNA fraction) varies dramatically by clinical context, which drives the sensitivity requirements for each test category:
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Clinical Context</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Typical ctDNA Fraction</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Required LOD</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                <tr>
+                  <td className="py-2 px-3 text-gray-700">Advanced cancer (CGP)</td>
+                  <td className="py-2 px-3 text-gray-600">1–10%+</td>
+                  <td className="py-2 px-3 text-gray-600">0.5–5% VAF</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 text-gray-700">Early-stage screening (ECD)</td>
+                  <td className="py-2 px-3 text-gray-600">0.01–0.1%</td>
+                  <td className="py-2 px-3 text-gray-600">&lt;0.1% VAF</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 text-gray-700">Post-surgery surveillance (MRD)</td>
+                  <td className="py-2 px-3 text-gray-600">0.001–0.01%</td>
+                  <td className="py-2 px-3 text-gray-600">&lt;0.01% VAF</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 text-gray-700">Treatment monitoring (TRM)</td>
+                  <td className="py-2 px-3 text-gray-600">Variable (dynamic)</td>
+                  <td className="py-2 px-3 text-gray-600">Quantitative accuracy</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       {/* Lifecycle Diagram Section */}
       <div className="mb-12">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center">The Cancer Testing Lifecycle</h2>
         <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
-          Click any category to explore the available tests
+          Click any category to explore the available commercial tests
         </p>
         
         {/* 2x2 Grid Diagram */}
@@ -6540,14 +6597,14 @@ const LearnPage = ({ onNavigate }) => {
         {/* Flow description */}
         <div className="text-center text-sm text-gray-500 max-w-2xl mx-auto">
           <p>
-            <strong>The patient journey flows through these stages:</strong> Healthy → Screening (ECD) → Cancer detected → Diagnosis & Profiling (CGP) → Treatment selected → Monitoring Response (TRM) → Treatment complete → Surveillance (MRD)
+            <strong>Clinical workflow:</strong> Screening (ECD) → Diagnosis & Profiling (CGP) → Treatment Monitoring (TRM) → Post-Treatment Surveillance (MRD)
           </p>
         </div>
       </div>
 
       {/* Detailed Category Sections */}
       <div className="space-y-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-8">The Four Categories Explained</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-8">Test Categories: Technical Deep Dive</h2>
         
         {categories.map((cat) => {
           const colors = colorClasses[cat.color];
@@ -6566,30 +6623,30 @@ const LearnPage = ({ onNavigate }) => {
               
               {/* Category Content */}
               <div className="p-6 space-y-6">
-                {/* The Question */}
+                {/* Clinical Question */}
                 <div className="bg-white rounded-xl p-4 border border-gray-200">
-                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">The question it answers</p>
-                  <p className="text-lg font-medium text-gray-900 italic">"{cat.question}"</p>
+                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Clinical Question</p>
+                  <p className="text-lg font-medium text-gray-900 italic">"{cat.clinicalQuestion}"</p>
                 </div>
 
                 {/* Description */}
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">What is {cat.acronym}?</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Overview</h4>
                   <p className="text-gray-700">{cat.description}</p>
                 </div>
 
-                {/* Why it matters */}
+                {/* Technology */}
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Why it matters</h4>
-                  <p className="text-gray-700">{cat.benefit}</p>
+                  <h4 className="font-semibold text-gray-900 mb-2">Technology & Methodology</h4>
+                  <p className="text-gray-700">{cat.technology}</p>
                 </div>
 
-                {/* Two columns for who should consider and what to know */}
+                {/* Two columns for metrics and challenges */}
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Who should consider it</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">Key Performance Metrics</h4>
                     <ul className="space-y-2">
-                      {cat.whoShouldConsider.map((item, i) => (
+                      {cat.keyMetrics.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
                           <span className={`${colors.text} mt-1`}>•</span>
                           <span>{item}</span>
@@ -6598,9 +6655,9 @@ const LearnPage = ({ onNavigate }) => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">What to know</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">Technical Challenges</h4>
                     <ul className="space-y-2">
-                      {cat.whatToKnow.map((item, i) => (
+                      {cat.challenges.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
                           <span className={`${colors.text} mt-1`}>•</span>
                           <span>{item}</span>
@@ -6628,35 +6685,40 @@ const LearnPage = ({ onNavigate }) => {
         })}
       </div>
 
-      {/* Quick Routing Table */}
+      {/* Quick Reference Table */}
       <div className="mt-12 bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Not sure where you fit?</h2>
-        <p className="text-gray-600 text-center mb-6">The right test category depends on where you are in your cancer journey:</p>
+        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Quick Reference: Test Category Selection</h2>
+        <p className="text-gray-600 text-center mb-6">Match clinical context to the appropriate test category:</p>
         
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-900">Your Situation</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900">Start Here</th>
+                <th className="text-left py-3 px-4 font-semibold text-gray-900">Clinical Context</th>
+                <th className="text-left py-3 px-4 font-semibold text-gray-900">Test Category</th>
+                <th className="text-left py-3 px-4 font-semibold text-gray-900">Primary Output</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('ECD')}>
-                <td className="py-3 px-4 text-gray-700">No cancer diagnosis, want to screen</td>
-                <td className="py-3 px-4"><span className="text-emerald-600 font-medium">Early Cancer Detection (ECD) →</span></td>
+                <td className="py-3 px-4 text-gray-700">Asymptomatic screening</td>
+                <td className="py-3 px-4"><span className="text-emerald-600 font-medium">ECD →</span></td>
+                <td className="py-3 px-4 text-gray-600 text-sm">Cancer signal detected (Y/N), tissue of origin</td>
               </tr>
               <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('CGP')}>
-                <td className="py-3 px-4 text-gray-700">Recently diagnosed, exploring treatment options</td>
-                <td className="py-3 px-4"><span className="text-violet-600 font-medium">Comprehensive Genomic Profiling (CGP) →</span></td>
+                <td className="py-3 px-4 text-gray-700">Newly diagnosed / therapy selection</td>
+                <td className="py-3 px-4"><span className="text-violet-600 font-medium">CGP →</span></td>
+                <td className="py-3 px-4 text-gray-600 text-sm">Actionable mutations, MSI, TMB, fusions</td>
               </tr>
               <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TRM')}>
-                <td className="py-3 px-4 text-gray-700">Currently on treatment, want to track response</td>
-                <td className="py-3 px-4"><span className="text-sky-600 font-medium">Treatment Response Monitoring (TRM) →</span></td>
+                <td className="py-3 px-4 text-gray-700">On active systemic therapy</td>
+                <td className="py-3 px-4"><span className="text-sky-600 font-medium">TRM →</span></td>
+                <td className="py-3 px-4 text-gray-600 text-sm">ctDNA quantification, molecular response</td>
               </tr>
               <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('MRD')}>
-                <td className="py-3 px-4 text-gray-700">Finished treatment, monitoring for recurrence</td>
-                <td className="py-3 px-4"><span className="text-orange-600 font-medium">Minimal Residual Disease (MRD) →</span></td>
+                <td className="py-3 px-4 text-gray-700">Post-curative treatment surveillance</td>
+                <td className="py-3 px-4"><span className="text-orange-600 font-medium">MRD →</span></td>
+                <td className="py-3 px-4 text-gray-600 text-sm">MRD status (positive/negative), recurrence risk</td>
               </tr>
             </tbody>
           </table>
