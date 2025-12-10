@@ -6009,12 +6009,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Openness Ranking */}
-        <div className="mb-4">
-          <OpennessAward />
-        </div>
-
-        {/* Data Openness Overview - Only for Clinician/Academic views */}
+        {/* Data Openness Overview (includes Top 3 ranking) - Only for Clinician/Academic views */}
         {persona !== 'Patient' && (
           <div className="mb-4">
             <DatabaseSummary />
@@ -6180,20 +6175,18 @@ const DatabaseSummary = () => {
     vendorScores[vendor].tests.push({ name: test.name, score });
   });
 
-  // Find most transparent vendor (min 2 tests to qualify)
-  let topVendor = null;
-  let topScore = 0;
-  let topTestCount = 0;
-  Object.entries(vendorScores).forEach(([vendor, data]) => {
-    if (data.count >= 2) {
-      const avgScore = data.total / data.count;
-      if (avgScore > topScore) {
-        topScore = avgScore;
-        topVendor = vendor;
-        topTestCount = data.count;
-      }
-    }
-  });
+  // Get qualifying vendors (2+ tests) sorted by score for Top 3
+  const qualifyingVendorsList = Object.entries(vendorScores)
+    .filter(([_, data]) => data.count >= 2)
+    .map(([vendor, data]) => ({
+      vendor,
+      avgScore: data.total / data.count,
+      testCount: data.count,
+      tests: data.tests
+    }))
+    .sort((a, b) => b.avgScore - a.avgScore);
+
+  const top3 = qualifyingVendorsList.slice(0, 3);
 
   // Data quality metrics - calculate fill rates for key fields
   const calcFillRate = (tests, checkFn) => {
@@ -6203,36 +6196,11 @@ const DatabaseSummary = () => {
   };
 
   const dataQualityMetrics = [
-    {
-      label: 'Price',
-      rate: calcFillRate(allTests, t => hasValue(t.listPrice)),
-      color: 'rose',
-      description: 'List price disclosed'
-    },
-    {
-      label: 'Performance',
-      rate: calcFillRate(allTests, t => hasValue(t.sensitivity) || hasValue(t.specificity)),
-      color: 'amber',
-      description: 'Sensitivity or specificity'
-    },
-    {
-      label: 'Evidence',
-      rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0),
-      color: 'emerald',
-      description: 'Peer-reviewed publications'
-    },
-    {
-      label: 'Coverage',
-      rate: calcFillRate(allTests, t => hasReimbursement(t)),
-      color: 'sky',
-      description: 'Insurance reimbursement'
-    },
-    {
-      label: 'Turnaround',
-      rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)),
-      color: 'violet',
-      description: 'TAT disclosed'
-    }
+    { label: 'List Price', rate: calcFillRate(allTests, t => hasValue(t.listPrice)), color: 'amber', description: 'published pricing' },
+    { label: 'Sensitivity', rate: calcFillRate(allTests, t => hasValue(t.sensitivity)), color: 'emerald', description: 'detection rate' },
+    { label: 'Specificity', rate: calcFillRate(allTests, t => hasValue(t.specificity)), color: 'emerald', description: 'true negative rate' },
+    { label: 'TAT', rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)), color: 'sky', description: 'turnaround time' },
+    { label: 'Publications', rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0), color: 'violet', description: 'peer-reviewed' }
   ];
 
   // Calculate field average score (all qualifying vendors with 2+ tests)
@@ -6257,6 +6225,13 @@ const DatabaseSummary = () => {
     violet: 'text-violet-600'
   }[color] || 'text-slate-600');
 
+  // Gold, Silver, Bronze styles for Top 3
+  const rankStyles = [
+    { bg: 'bg-gradient-to-r from-yellow-100 to-amber-100', border: 'border-yellow-400', text: 'text-yellow-800', badge: 'bg-gradient-to-r from-yellow-500 to-amber-500', icon: '🥇' },
+    { bg: 'bg-gradient-to-r from-slate-100 to-gray-200', border: 'border-slate-400', text: 'text-slate-700', badge: 'bg-gradient-to-r from-slate-400 to-gray-500', icon: '🥈' },
+    { bg: 'bg-gradient-to-r from-orange-100 to-amber-200', border: 'border-orange-400', text: 'text-orange-800', badge: 'bg-gradient-to-r from-orange-500 to-amber-600', icon: '🥉' }
+  ];
+
   return (
     <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">
 
@@ -6267,7 +6242,7 @@ const DatabaseSummary = () => {
       </div>
       
       {/* Quick Stats Row */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-4 gap-3 mb-5">
         <div className="bg-white/50 rounded-xl p-3 text-center">
           <p className="text-2xl font-bold text-slate-800">{totalTests}</p>
           <p className="text-xs text-slate-600">Tests</p>
@@ -6285,6 +6260,61 @@ const DatabaseSummary = () => {
           <p className="text-xs text-slate-600">Data Points</p>
         </div>
       </div>
+
+      {/* Top 3 Vendors Ranking */}
+      {top3.length > 0 && (
+        <div className="bg-white/40 rounded-xl p-4 mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-slate-700">Top 3 Vendors by Data Openness</h3>
+            <span className="text-[10px] text-slate-500">Min. 2 tests to qualify</span>
+          </div>
+          
+          <div className="space-y-2">
+            {top3.map((vendor, index) => (
+              <div 
+                key={vendor.vendor} 
+                className={`flex items-center gap-3 p-2.5 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
+              >
+                <span className="text-xl">{rankStyles[index].icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p className={`font-semibold text-sm ${rankStyles[index].text} truncate`}>{vendor.vendor}</p>
+                  <p className="text-[10px] text-slate-500">{vendor.testCount} tests</p>
+                </div>
+                <div className={`px-2.5 py-1 rounded-lg text-white text-sm font-bold shadow-sm ${rankStyles[index].badge}`}>
+                  {Math.round(vendor.avgScore)}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
+            <div className="text-xs text-slate-500">
+              Field average: <span className="font-semibold text-slate-700">{fieldAvgScore}</span> across {qualifyingVendors.length} qualifying vendors
+            </div>
+            <button 
+              onClick={() => setShowFAQ(!showFAQ)}
+              className="text-xs text-slate-600 hover:text-slate-800 font-medium flex items-center gap-1"
+            >
+              {showFAQ ? 'Hide' : 'Methodology'}
+              <svg className={`w-3 h-3 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+          
+          {/* Methodology FAQ */}
+          {showFAQ && (
+            <div className="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-3">
+              <p className="text-xs text-slate-600">
+                The Openness Score measures vendor data disclosure. Each test is scored on: 
+                <strong> Price (30%)</strong>, <strong>Sensitivity (15%)</strong>, <strong>Specificity (15%)</strong>, 
+                <strong> Publications (15%)</strong>, <strong>TAT (10%)</strong>, <strong>Sample Info (10%)</strong>, 
+                <strong> Trial Participants (5%)</strong>. Vendor scores are averaged across all their tests.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
       
       {/* Data Completeness Section */}
       <div className="bg-white/40 rounded-xl p-4">
