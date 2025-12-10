@@ -22,15 +22,15 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'mrd-19', name: 'clonoSEQ', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 10, 2025' },
   { id: 'cgp-16', name: 'Northstar Select', vendor: 'BillionToOne', category: 'CGP', dateAdded: 'Dec 9, 2025' },
   { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
   { id: 'mrd-17', name: 'Labcorp Plasma Detect', vendor: 'Labcorp', category: 'MRD', dateAdded: 'Dec 8, 2025' },
   { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
   { id: 'cgp-15', name: 'Neo Comprehensive', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
-  { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 5, 2025' },
+  { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 7, 2025' },
-  { id: 'trm-8', name: 'Northstar Response', vendor: 'BillionToOne', category: 'TRM', dateAdded: 'Dec 3, 2025' },
 ];
 
 // ============================================
@@ -45,6 +45,18 @@ const RECENTLY_ADDED_TESTS = [
 //   - "Update from OpenOnco research" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 10, 2025',
+    type: 'added',
+    testId: 'mrd-19',
+    testName: 'clonoSEQ',
+    vendor: 'Adaptive Biotechnologies',
+    category: 'MRD',
+    description: 'Added clonoSEQ - first and only FDA-cleared MRD test for hematologic malignancies (MM, B-ALL, CLL). Uses NGS immunosequencing of B/T-cell receptor genes with 10⁻⁶ sensitivity. Medicare coverage for MM, ALL, CLL, DLBCL, MCL.',
+    contributor: 'Christine Hanley',
+    affiliation: 'Adaptive Biotechnologies',
+    citation: 'https://www.clonoseq.com/'
+  },
   {
     date: 'Dec 10, 2025',
     type: 'updated',
@@ -2136,6 +2148,78 @@ const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Tumor-naïve MRD approach using AI/ML on WES/WTS data - no prior tissue profiling required. Only liquid biopsy sequencing both plasma and buffy coat for CHIP subtraction, improving accuracy over plasma-only assays."
+  },
+  {
+    "id": "mrd-19",
+    "sampleCategory": "Bone Marrow/Blood",
+    "name": "clonoSEQ",
+    "vendor": "Adaptive Biotechnologies",
+    "approach": "Tumor-informed (Immunosequencing)",
+    "method": "NGS-based immunosequencing of B-cell (IGH, IGK, IGL) and T-cell receptor gene rearrangements. Identifies patient-specific clonal DNA sequences ('barcodes') at diagnosis, then tracks these sequences in subsequent samples to quantify MRD with sensitivity to 10⁻⁶ (1 cancer cell per million).",
+    "methodCitations": "https://www.clonoseq.com/about-clonoseq/ | https://www.fda.gov/news-events/press-announcements/fda-authorizes-first-next-generation-sequencing-based-test-detect-very-low-levels-remaining-cancer",
+    "cancerTypes": [
+      "Multiple myeloma",
+      "B-cell ALL",
+      "CLL",
+      "DLBCL",
+      "Mantle cell lymphoma",
+      "Other lymphoid malignancies"
+    ],
+    "cancerTypesNotes": "FDA-cleared for MM (bone marrow), B-ALL (bone marrow), and CLL (blood or bone marrow). Available as CLIA-validated LDT for DLBCL, MCL, and other lymphoid cancers.",
+    "cancerTypesCitations": "https://www.clonoseq.com/technical-summary/",
+    "targetPopulation": "Patients with lymphoid malignancies (hematologic cancers) requiring MRD assessment during and after treatment to evaluate prognosis, monitor remission, and detect potential relapse.",
+    "indicationsNotes": "First and only FDA-cleared MRD test for hematologic malignancies. Uses NGS immunosequencing to detect residual cancer cells at 100x greater sensitivity than standard flow cytometry. Two-step testing: Clonality (ID) test identifies trackable sequences at diagnosis; Tracking (MRD) tests monitor those sequences in subsequent samples.",
+    "sensitivity": null,
+    "sensitivityNotes": "Detects MRD at 10⁻⁶ sensitivity (1 cancer cell per 1 million healthy cells) given sufficient sample input (20 μg DNA). This is 100x more sensitive than standard flow cytometry (10⁻⁴). Sensitivity is sample-dependent based on DNA input quantity.",
+    "sensitivityCitations": "https://www.clonoseq.com/about-clonoseq/ | https://pmc.ncbi.nlm.nih.gov/articles/PMC7325652/",
+    "specificity": null,
+    "specificityNotes": "Analytical validation demonstrated high specificity with well-characterized limit of blank (LoB) to minimize false positives from non-malignant clones.",
+    "specificityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7325652/",
+    "lod": "10⁻⁶ (1 in 1 million cells)",
+    "lodNotes": "LoD of 1.9 malignant cells at 20 μg DNA input. Sensitivity scales with DNA input - higher DNA input enables deeper detection. Maximum sensitivity of 10⁻⁶ achievable with sufficient sample material.",
+    "lodCitations": "https://www.clonoseq.com/wp-content/uploads/2021/08/PNL-10027-03_clonoSEQ-Technical-Information.pdf",
+    "requiresTumorTissue": "Yes (diagnostic sample)",
+    "requiresTumorTissueNotes": "Requires high-disease-burden sample (typically bone marrow at diagnosis or relapse) for initial Clonality (ID) test to identify trackable sequences. Subsequent MRD tracking can use fresh samples.",
+    "requiresMatchedNormal": "No",
+    "requiresMatchedNormalNotes": "Does not require separate matched normal sequencing. Clonality criteria (≥3% of like sequences, ≥0.2% of total cells, etc.) distinguish malignant from normal B/T-cell populations.",
+    "initialTat": 14,
+    "initialTatNotes": "Initial Clonality (ID) test: ~7 days for fresh specimens, ~14 days for stored/archived specimens from sample receipt and reconciliation.",
+    "followUpTat": 7,
+    "followUpTatNotes": "Tracking (MRD) tests: ~7 days for fresh specimens. Requires prior valid Clonality result.",
+    "bloodVolume": null,
+    "bloodVolumeNotes": "Bone marrow: 1 mL aspirate recommended. Blood (CLL): 2 mL whole blood. Sample requirements vary by specimen type.",
+    "sampleRequirements": "Bone marrow aspirate (1 mL EDTA), peripheral blood (2 mL EDTA for CLL), or archived FFPE/slides. Fresh specimens preferred; stored specimens accepted with longer TAT.",
+    "sampleRequirementsCitations": "https://www.clonoseq.com/ordering-clonoseq/",
+    "fdaStatus": "FDA De Novo cleared (Sept 2018 for MM and B-ALL; Aug 2020 expanded for CLL in blood and bone marrow). First FDA-cleared NGS-based MRD test.",
+    "fdaApprovalDate": "2018-09-28",
+    "fdaStatusCitations": "https://www.fda.gov/news-events/press-announcements/fda-authorizes-first-next-generation-sequencing-based-test-detect-very-low-levels-remaining-cancer | https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-receives-expanded-fda-clearance",
+    "nccnRecommended": true,
+    "nccnGuidelinesAligned": ["Multiple Myeloma", "ALL", "CLL"],
+    "nccnGuidelinesNotes": "NCCN Category 2A recommendation for MRD assessment in MM (at each treatment stage), ALL, and CLL. NGS specifically included as recommended MRD assessment method.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "National Medicare coverage for MM, B-ALL, CLL, DLBCL, and MCL via MolDX program. Medicare CLFS rate: $2,007 per test (PLA 0364U); episode pricing $8,029 across all covered indications. Positive coverage from major commercial insurers for MM and ALL. 90% of patients pay $0 for testing.",
+    "reimbursementCitations": "https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-announces-clinical-lab-fee-schedule",
+    "cptCodes": "0364U",
+    "listPrice": 2007,
+    "listPriceNotes": "Medicare CLFS rate $2,007 per test as of January 2025. Episode pricing (full testing series) $8,029.",
+    "listPriceCitations": "https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-announces-clinical-lab-fee-schedule",
+    "clinicalAvailability": "Commercially available in US since 2018. Single-site assay performed at Adaptive Biotechnologies laboratory in Seattle, WA.",
+    "clinicalAvailabilityCitations": "https://www.clonoseq.com/ordering-clonoseq/",
+    "availableRegions": ["US", "EU", "International"],
+    "availableRegionsNotes": "US: FDA-cleared IVD via Seattle lab. EU: CE-marked, available via Roche and regional partners. International availability via MedGenome (India) and other distributors.",
+    "clinicalTrials": "Validated in major phase III trials including ALCYONE (706 pts, transplant-ineligible NDMM), POLLUX (569 pts, R/R MM), MASTER (daratumumab-KRd MRD-guided discontinuation), DETERMINATION (RVd ± ASCT), multiple ALL and CLL studies. Used in 25 of 28 NCCN cancer centers.",
+    "clinicalTrialsCitations": "https://ous.clonoseq.com/for-clinicians/clinical-data/ | https://www.clonoseq.com/multiple-myeloma/",
+    "totalParticipants": 5000,
+    "totalParticipantsNotes": "Estimated >5,000 patients across published clinical validation studies. ALCYONE alone included 706 patients.",
+    "numPublications": 100,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Extensive peer-reviewed evidence including validation studies in MM, ALL, CLL, lymphomas. Clinical data incorporated into FDA drug approvals and NCCN guidelines.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": false,
+    "regulatoryStatusNotes": "FDA-cleared IVD for MM, B-ALL, CLL. Additionally available as CLIA-validated LDT for DLBCL, MCL, and other lymphoid malignancies. Only FDA-cleared MRD test for hematologic malignancies.",
+    "technologyDifferentiator": "Hematologic MRD test using immunosequencing of B/T-cell receptor genes - fundamentally different from solid tumor ctDNA assays. First and only FDA-cleared MRD test. 10⁻⁶ sensitivity (100x more sensitive than flow cytometry). Quantitative results track disease burden over time, not just positive/negative. Blood-based testing available for CLL reduces need for bone marrow biopsies."
   }
 ];
 
