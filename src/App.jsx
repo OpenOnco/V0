@@ -7068,7 +7068,7 @@ const AboutPage = () => (
     <h1 className="text-3xl font-bold text-gray-900 mb-8">About</h1>
     <div className="prose prose-lg text-gray-700 space-y-6">
       <p>
-        Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">Alex Dickinson</a>. Like many of you, my friends and family have been impacted by cancer throughout my life. Most notably for me, my sister Ingrid died from a brain tumor when she was eleven and I was seven—you can see us together in the photo below.
+        Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">Alex Dickinson</a>. Like many of you, my friends and family have been impacted by cancer throughout my life. Most significantly for me, my sister Ingrid died from a brain tumor when she was eleven and I was seven—you can see us together in the photo below.
       </p>
       <p>
         Professionally I've had the good fortune to stumble into the amazing world of cancer diagnostics—the people, companies, and technologies. Along the way I've become convinced that the emerging new generation of molecular cancer tests (largely enabled by next-generation sequencing) will have an extraordinary impact on cancer detection and treatment.
