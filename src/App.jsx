@@ -5506,7 +5506,7 @@ const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [persona, setPersona] = useState(() => getStoredPersona() || null);
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Academic/Industry');
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const chatContainerRef = useRef(null);
 
@@ -5630,31 +5630,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           Build: {BUILD_INFO.date}
         </div>
 
-        {/* Intro Text */}
-        <div className="bg-slate-50 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 border border-slate-200 mb-4">
-          {/* Patient intro paragraph */}
-          {persona === 'Patient' && (
-            <p className="text-base sm:text-xl lg:text-2xl text-slate-700 leading-relaxed mb-4 pb-4 border-b border-slate-200">
-              Cancer care is going molecular. Blood-based tests can now detect cancer early, guide treatment, and detect recurrence - but the options are overwhelming. <strong>OpenOnco</strong> is a non-profit service helping match patients to the right test.
-            </p>
-          )}
-          {/* Persona Selector */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            <span className="text-sm sm:text-base text-slate-600">My interest is</span>
-            {['Academic/Industry', 'Patient', 'Clinician'].map((p) => (
-              <button
-                key={p}
-                onClick={() => handlePersonaSelect(p)}
-                className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium transition-all ${
-                  persona === p
-                    ? 'bg-[#2A63A4] text-white shadow-md'
-                    : 'bg-white border border-slate-300 text-slate-600 hover:border-[#2A63A4] hover:text-[#2A63A4]'
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
+        {/* Banner */}
+        <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-4">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 text-center">
+            OpenOnco: Cancer Test Data—Collected, Curated, Explained
+          </h1>
         </div>
 
         {/* Unified Database Access Container - Only for Patients */}
