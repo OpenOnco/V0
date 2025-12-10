@@ -39,10 +39,12 @@ const RECENTLY_ADDED_TESTS = [
 // ⚠️  CLAUDE: WHEN YOU EDIT ANY TEST DATA BELOW, ADD AN ENTRY HERE FIRST!
 // ⚠️  This is your memory across conversations. Users see this in the UI.
 // Format: { date, type, testId, testName, vendor, category, description, contributor, affiliation, citation }
-// Note: contributor names are stored in DB/JSON but UI shows only organization:
-//   - "Vendor update from X" if affiliation matches test vendor
-//   - "Update from X" if different organization
-//   - "Update from OpenOnco research" if affiliation is null or 'OpenOnco'
+// Display logic:
+//   - "Vendor update: Name (Company)" if affiliation matches test vendor and contributor exists
+//   - "Vendor update: Company" if affiliation matches test vendor but no contributor
+//   - "Name (Company)" if different organization with contributor
+//   - "Company" if different organization without contributor
+//   - "OpenOnco" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
   {
@@ -53,7 +55,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Adaptive Biotechnologies',
     category: 'MRD',
     description: 'Added clonoSEQ - first and only FDA-cleared MRD test for hematologic malignancies (MM, B-ALL, CLL). Uses NGS immunosequencing of B/T-cell receptor genes with 10⁻⁶ sensitivity. Medicare coverage for MM, ALL, CLL, DLBCL, MCL.',
-    contributor: null,
+    contributor: 'Christine Hanley',
     affiliation: 'Adaptive Biotechnologies',
     citation: 'https://www.clonoseq.com/'
   },
@@ -65,7 +67,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'CGP',
     description: 'Added international availability info - available in 100+ countries via Roche global network (EU lab in Penzberg, Germany; MHLW approved in Japan)',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: 'https://www.roche.com/media/releases/med-cor-2021-10-25'
   },
@@ -77,7 +79,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'CGP',
     description: 'Added international availability info - available in 100+ countries via Roche global network',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: 'https://www.roche.com/media/releases/med-cor-2021-10-25'
   },
@@ -89,7 +91,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'CGP',
     description: 'Added international availability info - available via Roche global network',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: 'https://www.roche.com/media/releases/med-cor-2021-10-25'
   },
@@ -101,7 +103,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'MRD',
     description: 'Added international availability info for investigational/early access program',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -113,7 +115,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'MRD',
     description: 'Added international availability info for RUO via FlexOMx Lab',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -125,7 +127,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'TRM',
     description: 'Added international availability info - available via Roche affiliates',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -137,7 +139,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Foundation Medicine',
     category: 'TRM',
     description: 'Added international availability info - available via Roche affiliates',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -185,7 +187,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Labcorp (Invitae)',
     category: 'MRD',
     description: 'Initial database entry',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -197,7 +199,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Labcorp',
     category: 'MRD',
     description: 'Initial database entry',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -209,7 +211,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Guardant Health',
     category: 'TRM',
     description: 'Initial database entry',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -221,7 +223,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'NeoGenomics',
     category: 'CGP',
     description: 'Initial database entry',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -233,7 +235,7 @@ const DATABASE_CHANGELOG = [
     vendor: 'Universal DX',
     category: 'ECD',
     description: 'Initial database entry',
-    contributor: 'Alex Dickinson',
+    contributor: null,
     affiliation: 'OpenOnco',
     citation: null
   },
@@ -8126,11 +8128,11 @@ const SubmissionsPage = () => {
                     <span>{entry.date}</span>
                     <span>• {
                       !entry.affiliation || entry.affiliation === 'OpenOnco' 
-                        ? `${entry.contributor || 'OpenOnco research'}${entry.contributor ? ' (OpenOnco)' : ''}` :
+                        ? 'OpenOnco' :
                       entry.vendor.toLowerCase().includes(entry.affiliation.toLowerCase()) || 
                       entry.affiliation.toLowerCase().includes(entry.vendor.split(' ')[0].toLowerCase())
-                        ? `Vendor update: ${entry.contributor} (${entry.affiliation})`
-                        : `${entry.contributor} (${entry.affiliation})`
+                        ? `Vendor update: ${entry.contributor ? entry.contributor + ' (' + entry.affiliation + ')' : entry.affiliation}`
+                        : entry.contributor ? `${entry.contributor} (${entry.affiliation})` : entry.affiliation
                     }</span>
                   </div>
                 </div>
