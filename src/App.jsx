@@ -11564,7 +11564,42 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
 // Main App
 // ============================================
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  // Map URL paths to page names
+  const pathToPage = {
+    '/': 'home',
+    '/submissions': 'submissions',
+    '/how-it-works': 'how-it-works',
+    '/data-sources': 'data-sources',
+    '/faq': 'faq',
+    '/learn': 'learn',
+    '/about': 'about',
+    '/mrd': 'MRD',
+    '/ecd': 'ECD',
+    '/trm': 'TRM',
+    '/cgp': 'CGP'
+  };
+  
+  const pageToPath = {
+    'home': '/',
+    'submissions': '/submissions',
+    'how-it-works': '/how-it-works',
+    'data-sources': '/data-sources',
+    'faq': '/faq',
+    'learn': '/learn',
+    'about': '/about',
+    'MRD': '/mrd',
+    'ECD': '/ecd',
+    'TRM': '/trm',
+    'CGP': '/cgp'
+  };
+  
+  // Initialize currentPage from URL path
+  const getInitialPage = () => {
+    const path = window.location.pathname.toLowerCase();
+    return pathToPage[path] || 'home';
+  };
+  
+  const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
   
@@ -11589,6 +11624,18 @@ export default function App() {
     const handlePersonaChange = (e) => setPersona(e.detail);
     window.addEventListener('personaChanged', handlePersonaChange);
     return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.toLowerCase();
+      const page = pathToPage[path] || 'home';
+      setCurrentPage(page);
+      setInitialSelectedTestId(null);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // Emit feature flags to DOM for Vercel Analytics tracking
@@ -11619,6 +11666,9 @@ export default function App() {
     }
     setCurrentPage(page);
     setInitialSelectedTestId(testId);
+    // Update URL without page reload
+    const newPath = pageToPath[page] || '/';
+    window.history.pushState({page}, '', newPath);
   };
 
   const renderPage = () => {
