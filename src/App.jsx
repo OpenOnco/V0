@@ -8541,11 +8541,6 @@ const SourceDataPage = () => {
         </p>
       </div>
 
-      {/* Openness Ranking - Hidden on mobile */}
-      <div className="hidden md:block mt-8">
-        <OpennessAward />
-      </div>
-
       {/* Database Summary - Hidden on mobile */}
       <div className="hidden md:block mt-6">
         <DatabaseSummary />
