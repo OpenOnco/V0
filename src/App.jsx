@@ -10919,66 +10919,96 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
               </div>
               <div ref={filterScrollRef} className="flex-1 overflow-y-auto px-5 pb-5 overscroll-contain">
 
-              {category === 'MRD' && (
-                <>
-                  {/* Clinical */}
-                  <FilterSection 
-                    title={isPatient ? 'My Cancer' : 'Clinical'} 
-                    defaultOpen={false}
-                    activeCount={selectedCancerTypes.length}
-                  >
-                    <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
-                    <div className="max-h-40 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </FilterSection>
 
-                  {/* Methodology */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Methodology" 
-                      defaultOpen={false}
-                      activeCount={selectedApproaches.length + selectedSampleCategories.length}
-                    >
+              {/* ========== UNIFIED FILTERS FOR ALL CATEGORIES ========== */}
+              
+              {/* Clinical Section */}
+              <FilterSection 
+                title={isPatient ? 'My Cancer' : 'Clinical'} 
+                defaultOpen={false}
+                activeCount={selectedCancerTypes.length + selectedTestScopes.length}
+              >
+                {/* Cancer Type - for MRD, TRM, CGP */}
+                {category !== 'ECD' && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
+                    <div className="max-h-40 overflow-y-auto">{config.cancerTypes?.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </>
+                )}
+                {/* Test Scope - for ECD only */}
+                {category === 'ECD' && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Type of Screening' : 'Scope'}</label>
+                    {config.testScopes?.map(s => <Checkbox key={s} label={isPatient ? (s.includes('Single') ? 'Single cancer type' : 'Multiple cancer types') : s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
+                  </>
+                )}
+              </FilterSection>
+
+              {/* Methodology Section */}
+              {!isPatient && (
+                <FilterSection 
+                  title="Methodology" 
+                  defaultOpen={false}
+                  activeCount={selectedApproaches.length + selectedSampleCategories.length}
+                >
+                  {/* Approach - for MRD, TRM, CGP */}
+                  {category !== 'ECD' && config.approaches && (
+                    <>
                       <label className="text-xs text-gray-500 mb-1 block">Approach</label>
                       {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
+                    </>
+                  )}
+                  {/* Sample Type - all categories */}
+                  {config.sampleCategories && (
+                    <>
                       <label className="text-xs text-gray-500 mb-1 mt-3 block">Sample Type</label>
                       {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
-                    </FilterSection>
+                    </>
                   )}
-                  {isPatient && (
-                    <FilterSection title="Test Type" defaultOpen={false} activeCount={selectedApproaches.length}>
-                      <Checkbox label="Blood test only (no tissue needed)" checked={selectedApproaches.includes('Tumor-naïve')} onChange={() => toggle(setSelectedApproaches)('Tumor-naïve')} />
-                    </FilterSection>
-                  )}
+                </FilterSection>
+              )}
+              {/* Patient simplified test type */}
+              {isPatient && category !== 'ECD' && (
+                <FilterSection title="Test Type" defaultOpen={false} activeCount={selectedApproaches.length}>
+                  <Checkbox label="Blood test only (no tissue needed)" checked={selectedApproaches.includes('Tumor-naïve')} onChange={() => toggle(setSelectedApproaches)('Tumor-naïve')} />
+                </FilterSection>
+              )}
 
-                  {/* Regulatory & Access */}
-                  <FilterSection 
-                    title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
-                    defaultOpen={false}
-                    activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length}
-                  >
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
-                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
-                      </>
-                    )}
-                    <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
-                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
-                      </>
-                    )}
-                  </FilterSection>
+              {/* Regulatory & Access Section */}
+              <FilterSection 
+                title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
+                defaultOpen={false}
+                activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length}
+              >
+                {/* FDA Status - all categories, clinician only */}
+                {!isPatient && config.fdaStatuses && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
+                    {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
+                  </>
+                )}
+                {/* Coverage - all categories */}
+                <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
+                {config.reimbursements?.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                {/* Availability - MRD, ECD, TRM (not CGP) */}
+                {!isPatient && config.regions && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
+                    {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
+                  </>
+                )}
+              </FilterSection>
 
-                  {/* Performance */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Performance" 
-                      defaultOpen={false}
-                      activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0)}
-                    >
+              {/* Performance Section */}
+              {!isPatient && (
+                <FilterSection 
+                  title="Performance" 
+                  defaultOpen={false}
+                  activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0)}
+                >
+                  {/* Sensitivity - MRD, ECD, TRM (not CGP) */}
+                  {category !== 'CGP' && (
+                    <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
                       </label>
@@ -10996,6 +11026,11 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                         <span>50%</span>
                         <span>99%</span>
                       </div>
+                    </>
+                  )}
+                  {/* Specificity - MRD, ECD, TRM (not CGP) */}
+                  {category !== 'CGP' && (
+                    <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
                       </label>
@@ -11013,6 +11048,11 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                         <span>50%</span>
                         <span>99%</span>
                       </div>
+                    </>
+                  )}
+                  {/* TAT - MRD, TRM, CGP (not ECD) */}
+                  {category !== 'ECD' && (
+                    <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Max Turnaround: {maxTat >= 30 ? 'Any' : `${maxTat} days`}
                       </label>
@@ -11030,151 +11070,20 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                         <span>14 days</span>
                         <span>Any</span>
                       </div>
-                    </FilterSection>
+                    </>
                   )}
-
-                  {/* Validation */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Validation" 
-                      defaultOpen={false}
-                      activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0)}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="1000"
-                        step="100"
-                        value={minParticipants}
-                        onChange={updateSlider(setMinParticipants)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
-                        <span>0</span>
-                        <span>500</span>
-                        <span>1,000+</span>
-                      </div>
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        step="5"
-                        value={minPublications}
-                        onChange={updateSlider(setMinPublications)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>0</span>
-                        <span>50</span>
-                        <span>100+</span>
-                      </div>
-                    </FilterSection>
-                  )}
-                </>
+                </FilterSection>
               )}
 
-              {category === 'ECD' && (
-                <>
-                  {/* Clinical / Test Scope */}
-                  <FilterSection 
-                    title={isPatient ? 'Screening Type' : 'Test Scope'} 
-                    defaultOpen={false}
-                    activeCount={selectedTestScopes.length}
-                  >
-                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Type of Screening' : 'Scope'}</label>
-                    {config.testScopes.map(s => <Checkbox key={s} label={isPatient ? (s.includes('Single') ? 'Single cancer type' : 'Multiple cancer types') : s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
-                  </FilterSection>
-
-                  {/* Methodology */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Methodology" 
-                      defaultOpen={false}
-                      activeCount={selectedSampleCategories.length}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">Sample Type</label>
-                      {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
-                    </FilterSection>
-                  )}
-
-                  {/* Regulatory & Access */}
-                  <FilterSection 
-                    title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
-                    defaultOpen={false}
-                    activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length}
-                  >
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
-                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
-                      </>
-                    )}
-                    <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
-                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
-                      </>
-                    )}
-                  </FilterSection>
-
-                  {/* Performance */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Performance" 
-                      defaultOpen={false}
-                      activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0)}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="99"
-                        step="5"
-                        value={minSensitivity}
-                        onChange={updateSlider(setMinSensitivity)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
-                        <span>Any</span>
-                        <span>50%</span>
-                        <span>99%</span>
-                      </div>
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="99"
-                        step="5"
-                        value={minSpecificity}
-                        onChange={updateSlider(setMinSpecificity)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>Any</span>
-                        <span>50%</span>
-                        <span>99%</span>
-                      </div>
-                    </FilterSection>
-                  )}
-
-                  {/* Validation & Cost */}
-                  <FilterSection 
-                    title={isPatient ? 'Cost' : 'Validation & Cost'} 
-                    defaultOpen={false}
-                    activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0) + (maxPrice < 1000 ? 1 : 0)}
-                  >
+              {/* Validation Section */}
+              <FilterSection 
+                title={isPatient && category === 'ECD' ? 'Cost' : !isPatient ? 'Validation' : 'More Filters'} 
+                defaultOpen={false}
+                activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0) + (maxPrice < 1000 ? 1 : 0)}
+              >
+                {/* Price - ECD only */}
+                {category === 'ECD' && (
+                  <>
                     <label className="text-xs text-gray-500 mb-1 block">
                       {isPatient ? 'Budget' : 'Max List Price'}: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
                     </label>
@@ -11192,300 +11101,54 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       <span>$500</span>
                       <span>$1000+</span>
                     </div>
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 block">
-                          Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()}
-                        </label>
-                        <input
-                          type="range"
-                          min="0"
-                          max="100000"
-                          step="10000"
-                          value={minParticipants}
-                          onChange={updateSlider(setMinParticipants)}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
-                          <span>0</span>
-                          <span>50k</span>
-                          <span>100k+</span>
-                        </div>
-                        <label className="text-xs text-gray-500 mb-1 block">
-                          Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 20 ? '20+' : minPublications}
-                        </label>
-                        <input
-                          type="range"
-                          min="0"
-                          max="20"
-                          step="2"
-                          value={minPublications}
-                          onChange={updateSlider(setMinPublications)}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>10</span>
-                          <span>20+</span>
-                        </div>
-                      </>
-                    )}
-                  </FilterSection>
-                </>
-              )}
+                  </>
+                )}
+                {/* Trial Participants - MRD, ECD, TRM (not CGP), clinician only */}
+                {!isPatient && category !== 'CGP' && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 block">
+                      Min Trial Participants: {minParticipants === 0 ? 'Any' : category === 'ECD' ? (minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()) : (minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString())}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max={category === 'ECD' ? '100000' : '1000'}
+                      step={category === 'ECD' ? '10000' : '100'}
+                      value={minParticipants}
+                      onChange={updateSlider(setMinParticipants)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                      <span>0</span>
+                      <span>{category === 'ECD' ? '50k' : '500'}</span>
+                      <span>{category === 'ECD' ? '100k+' : '1,000+'}</span>
+                    </div>
+                  </>
+                )}
+                {/* Publications - all categories, clinician only */}
+                {!isPatient && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 block">
+                      Min Publications: {minPublications === 0 ? 'Any' : category === 'ECD' ? (minPublications >= 20 ? '20+' : minPublications) : category === 'CGP' ? (minPublications >= 1000 ? '1,000+' : minPublications) : (minPublications >= 100 ? '100+' : minPublications)}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max={category === 'ECD' ? '20' : category === 'CGP' ? '1000' : '100'}
+                      step={category === 'ECD' ? '2' : category === 'CGP' ? '50' : '5'}
+                      value={minPublications}
+                      onChange={updateSlider(setMinPublications)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0</span>
+                      <span>{category === 'ECD' ? '10' : category === 'CGP' ? '500' : '50'}</span>
+                      <span>{category === 'ECD' ? '20+' : category === 'CGP' ? '1,000+' : '100+'}</span>
+                    </div>
+                  </>
+                )}
+              </FilterSection>
 
-              {category === 'TRM' && (
-                <>
-                  {/* Clinical */}
-                  <FilterSection 
-                    title={isPatient ? 'My Cancer' : 'Clinical'} 
-                    defaultOpen={false}
-                    activeCount={selectedCancerTypes.length}
-                  >
-                    <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
-                    <div className="max-h-40 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </FilterSection>
-
-                  {/* Methodology */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Methodology" 
-                      defaultOpen={false}
-                      activeCount={selectedApproaches.length + selectedSampleCategories.length}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">Approach</label>
-                      {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
-                      <label className="text-xs text-gray-500 mb-1 mt-3 block">Sample Type</label>
-                      {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
-                    </FilterSection>
-                  )}
-
-                  {/* Regulatory & Access */}
-                  <FilterSection 
-                    title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
-                    defaultOpen={false}
-                    activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length}
-                  >
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
-                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
-                      </>
-                    )}
-                    <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
-                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
-                      </>
-                    )}
-                  </FilterSection>
-
-                  {/* Performance */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Performance" 
-                      defaultOpen={false}
-                      activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0)}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="99"
-                        step="5"
-                        value={minSensitivity}
-                        onChange={updateSlider(setMinSensitivity)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
-                        <span>Any</span>
-                        <span>50%</span>
-                        <span>99%</span>
-                      </div>
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="99"
-                        step="5"
-                        value={minSpecificity}
-                        onChange={updateSlider(setMinSpecificity)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
-                        <span>Any</span>
-                        <span>50%</span>
-                        <span>99%</span>
-                      </div>
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Max Turnaround: {maxTat >= 30 ? 'Any' : `${maxTat} days`}
-                      </label>
-                      <input
-                        type="range"
-                        min="1"
-                        max="30"
-                        step="1"
-                        value={maxTat}
-                        onChange={updateSlider(setMaxTat)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>1 day</span>
-                        <span>14 days</span>
-                        <span>Any</span>
-                      </div>
-                    </FilterSection>
-                  )}
-
-                  {/* Validation */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Validation" 
-                      defaultOpen={false}
-                      activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0)}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="1000"
-                        step="100"
-                        value={minParticipants}
-                        onChange={updateSlider(setMinParticipants)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
-                        <span>0</span>
-                        <span>500</span>
-                        <span>1,000+</span>
-                      </div>
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        step="10"
-                        value={minPublications}
-                        onChange={updateSlider(setMinPublications)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>0</span>
-                        <span>50</span>
-                        <span>100+</span>
-                      </div>
-                    </FilterSection>
-                  )}
-                </>
-              )}
-
-              {category === 'CGP' && (
-                <>
-                  {/* Clinical */}
-                  <FilterSection 
-                    title={isPatient ? 'My Cancer' : 'Clinical'} 
-                    defaultOpen={false}
-                    activeCount={selectedSampleCategories.length + selectedCancerTypes.length}
-                  >
-                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Sample Type' : 'Sample Category'}</label>
-                    {config.sampleCategories.map(s => <Checkbox key={s} label={s} checked={selectedSampleCategories.includes(s)} onChange={() => toggle(setSelectedSampleCategories)(s)} />)}
-                    <label className="text-xs text-gray-500 mb-1 mt-3 block">Cancer Type</label>
-                    <div className="max-h-40 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </FilterSection>
-
-                  {/* Methodology */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Methodology" 
-                      defaultOpen={false}
-                      activeCount={selectedApproaches.length}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">Approach</label>
-                      {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
-                    </FilterSection>
-                  )}
-
-                  {/* Regulatory & Access */}
-                  <FilterSection 
-                    title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
-                    defaultOpen={false}
-                    activeCount={selectedFdaStatus.length + selectedReimbursement.length}
-                  >
-                    {!isPatient && (
-                      <>
-                        <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
-                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
-                      </>
-                    )}
-                    <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                  </FilterSection>
-
-                  {/* Performance */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Performance" 
-                      defaultOpen={false}
-                      activeCount={maxTat < 30 ? 1 : 0}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Max Turnaround: {maxTat >= 30 ? 'Any' : `${maxTat} days`}
-                      </label>
-                      <input
-                        type="range"
-                        min="1"
-                        max="30"
-                        step="1"
-                        value={maxTat}
-                        onChange={updateSlider(setMaxTat)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>1 day</span>
-                        <span>14 days</span>
-                        <span>Any</span>
-                      </div>
-                    </FilterSection>
-                  )}
-
-                  {/* Validation */}
-                  {!isPatient && (
-                    <FilterSection 
-                      title="Validation" 
-                      defaultOpen={false}
-                      activeCount={minPublications > 0 ? 1 : 0}
-                    >
-                      <label className="text-xs text-gray-500 mb-1 block">
-                        Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 1000 ? '1,000+' : minPublications}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="1000"
-                        step="50"
-                        value={minPublications}
-                        onChange={updateSlider(setMinPublications)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>0</span>
-                        <span>500</span>
-                        <span>1,000+</span>
-                      </div>
-                    </FilterSection>
-                  )}
-                </>
-              )}
               </div>
               {canScrollMore && (
                 <div className="h-8 bg-gradient-to-t from-white via-white to-transparent flex-shrink-0 -mt-8 relative z-10 pointer-events-none flex items-end justify-center pb-1">
