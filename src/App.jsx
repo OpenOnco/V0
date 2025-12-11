@@ -53,6 +53,18 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 11, 2025',
     type: 'updated',
+    testId: 'platform',
+    testName: 'Miscellaneous security fixes',
+    vendor: 'OpenOnco',
+    category: 'MRD',
+    description: 'Miscellaneous security fixes.',
+    contributor: 'Casey Morris',
+    affiliation: 'Sweetgum Software',
+    citation: null
+  },
+  {
+    date: 'Dec 11, 2025',
+    type: 'updated',
     testId: 'multiple',
     testName: 'Clinical Settings Tags',
     vendor: 'Multiple',
@@ -8536,7 +8548,7 @@ const SubmissionsPage = () => {
         <p className="text-gray-600 mb-6">Recent updates to the OpenOnco test database, including community contributions.</p>
         
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-[72rem] overflow-y-auto">
             {DATABASE_CHANGELOG.map((entry, idx) => (
               <div 
                 key={`${entry.testId}-${idx}`} 
