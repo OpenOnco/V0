@@ -52,6 +52,18 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 11, 2025',
+    type: 'updated',
+    testId: 'mrd-19',
+    testName: 'clonoSEQ',
+    vendor: 'Adaptive Biotechnologies',
+    category: 'MRD',
+    description: 'Clarified sample requirements: baseline Clonality (ID) test accepts fresh or archived samples from bone marrow aspirate, peripheral blood, or soft tissue (e.g., plasmacytoma, lymph node biopsy). Subsequent Tracking (MRD) tests use standard fresh bone marrow or blood.',
+    contributor: 'Christine Hanley',
+    affiliation: 'Adaptive Biotechnologies (vendor)',
+    citation: null
+  },
+  {
+    date: 'Dec 11, 2025',
     type: 'added',
     testId: 'cgp-17',
     testName: 'Guardant360 Liquid',
@@ -2292,7 +2304,7 @@ const mrdTestData = [
     "lodNotes": "LoD of 1.9 malignant cells at 20 μg DNA input. Sensitivity scales with DNA input - higher DNA input enables deeper detection. Maximum sensitivity of 10⁻⁶ achievable with sufficient sample material.",
     "lodCitations": "https://www.clonoseq.com/wp-content/uploads/2021/08/PNL-10027-03_clonoSEQ-Technical-Information.pdf",
     "requiresTumorTissue": "No",
-    "requiresTumorTissueNotes": "Does not require solid tumor tissue. Requires high-disease-burden baseline sample (bone marrow aspirate or peripheral blood with high tumor burden) at diagnosis for initial Clonality (ID) test to identify trackable sequences. Subsequent MRD tracking uses standard bone marrow or blood samples.",
+    "requiresTumorTissueNotes": "Does not require solid tumor tissue. Requires high-disease-burden baseline sample (fresh or archived) for initial Clonality (ID) test to identify trackable sequences: Fresh or archived sample from bone marrow aspirate, peripheral blood, or soft tissue. Subsequent clonoSEQ Tracking (MRD) uses standard fresh bone marrow or blood samples.",
     "requiresMatchedNormal": "No",
     "requiresMatchedNormalNotes": "Does not require separate matched normal sequencing. Clonality criteria (≥3% of like sequences, ≥0.2% of total cells, etc.) distinguish malignant from normal B/T-cell populations.",
     "initialTat": 14,
