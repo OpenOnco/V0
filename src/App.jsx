@@ -22,7 +22,7 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
-  { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 11, 2025' },
+  { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
@@ -52,27 +52,15 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 11, 2025',
-    type: 'updated',
-    testId: 'mrd-1',
-    testName: 'Haystack MRD',
-    vendor: 'Quest Diagnostics',
-    category: 'MRD',
-    description: 'Added detection floor (0.2 ppm) alongside LoD95 (6 ppm) for Haystack per vendor feedback. Corrected RaDaR (NeoGenomics) FDA status to include Breakthrough Device designation (March 2021). Clarified Foresight CLARITY LoD: 0.7 ppm is LoD95 for lymphoma; solid tumor platform (in development) has 0.3 ppm LoD95 with <0.1 ppm floor.',
-    contributor: 'Daniel Edelstein',
-    affiliation: 'Haystack/Quest (vendor)',
-    citation: null
-  },
-  {
-    date: 'Dec 11, 2025',
-    type: 'updated',
-    testId: 'platform',
-    testName: 'Miscellaneous security fixes',
-    vendor: 'OpenOnco',
-    category: 'MRD',
-    description: 'Miscellaneous security fixes.',
-    contributor: 'Casey Morris',
-    affiliation: 'Sweetgum Software',
-    citation: null
+    type: 'added',
+    testId: 'cgp-17',
+    testName: 'Guardant360 Liquid',
+    vendor: 'Guardant Health',
+    category: 'CGP',
+    description: 'Added comprehensive 744-gene liquid biopsy LDT (distinct from 74-gene FDA-approved CDx). Features: genomic + epigenomic (promoter methylation) insights, CHIP filtering, virus detection (EBV/HPV), tumor fraction quantification. Runs on Guardant Infinity platform with 10x more genes and 10x higher sensitivity than previous version.',
+    contributor: 'Brandon (Scott) Guida PhD',
+    affiliation: 'Guardant Health (vendor)',
+    citation: 'https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf'
   },
   {
     date: 'Dec 11, 2025',
@@ -87,7 +75,7 @@ const DATABASE_CHANGELOG = [
     citation: null
   },
   {
-    date: 'Dec 11, 2025',
+    date: 'Dec 12, 2025',
     type: 'added',
     testId: 'mrd-23',
     testName: 'LymphoVista',
@@ -672,7 +660,7 @@ const Markdown = ({ children, className = '' }) => {
   return <div className={className}>{renderMarkdown(children)}</div>;
 };
 
-// Helper to get persona from localStorage (used by chat components)
+// Helper to get persona from localStorage (used by NewsFeed and chat components)
 const getStoredPersona = () => {
   try {
     return localStorage.getItem('openonco-persona');
@@ -894,6 +882,372 @@ const LifecycleNavigator = ({ onNavigate }) => {
   );
 };
 
+// ============================================
+// NewsFeed Component - AI-generated prose digest, vertical scroll
+// ============================================
+const NewsFeed = ({ onNavigate }) => {
+  const [isPaused, setIsPaused] = useState(false);
+  const [digest, setDigest] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [lastGenerated, setLastGenerated] = useState(null);
+  const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
+  const scrollRef = useRef(null);
+
+  // Category colors for recently added badges
+  const categoryColors = {
+    MRD: 'bg-orange-500',
+    ECD: 'bg-emerald-500',
+    TRM: 'bg-sky-500',
+    CGP: 'bg-violet-500'
+  };
+
+  // Handle click on recently added test
+  const handleTestClick = (test) => {
+    if (onNavigate) {
+      onNavigate(test.category, test.id);
+    }
+  };
+
+  // Listen for persona changes from other components
+  useEffect(() => {
+    const handlePersonaChange = (e) => {
+      setPersona(e.detail);
+    };
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+
+  // Persona-specific fallback digests if API fails
+  const fallbackDigests = {
+    'Clinician': `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
+
+**1. The MRD Sensitivity Arms Race: Natera's $450M Bet on 0.3 ppm Detection (Dec 5)**
+Natera closed its acquisition of Foresight Diagnostics ($275M upfront, $175M earnouts), gaining PhasED-Seq technology with LOD95 of 0.3 ppm. Foresight's CLARITY assay was the first ctDNA-MRD test in NCCN Guidelines for DLBCL. Integration into Signatera expected 2026. Combined portfolio: 15 abstracts at ASH 2025 including 7 orals.
+[Read more →](https://www.fiercebiotech.com/medtech/natera-buys-foresight-diagnostics-cancer-mrd-deal-worth-450m)
+
+**2. Can SimpleScreen Dethrone Shield? Freenome's $330M Gamble (Dec 5)**
+Freenome's SPAC merger funds SimpleScreen CRC test commercialization ahead of mid-2026 FDA decision. Head-to-head competition with Shield (Guardant) anticipated. The transaction includes $90M from trust plus $240M PIPE led by Perceptive Advisors and RA Capital.
+[Read more →](https://www.statnews.com/2025/12/05/freenome-plans-go-public-early-cancer-detection/)
+
+**3. Is ctDNA Enough? cfRNA Emerges as Complementary Signal at SABCS (Dec 9-12)**
+SERENA-6 data showing benefit from ESR1 mutation-guided therapy modification sparks debate on ctDNA escalation/de-escalation protocols. Sessions cover cfRNA sequencing and novel ctDNA analyses for breast cancer MRD—suggesting DNA alone may miss key biology.
+[Read more →](https://sabcs.org/)
+
+**4. Why 26% of Oncologists Still Don't Know MRD Guidelines Exist (Dec 2)**
+Market valued at $4.93B (2024), 12.5% CAGR projected. IASLC survey reveals startling awareness gap: 26% of institutions unaware of biomarker testing guidelines—standardization remains the key barrier to adoption.
+[Read more →](https://www.marketsandmarkets.com/Market-Reports/liquid-biopsy-market-13966350.html)
+
+**5. Beyond DNA: Can Exosomes Catch What ctDNA Misses? (Dec 2)**
+Exosome liquid biopsy market growing from $91M to $159M by 2030. Multi-omic exosome analysis via AI enables detection of protein, RNA, and lipid cancer signatures beyond ctDNA—potentially filling gaps in ctDNA-low tumors.
+[Read more →](https://www.grandviewresearch.com/industry-analysis/liquid-biopsy-market)
+
+*Conferences: ASH 2025 (Dec 6-10), SABCS 2025 (Dec 9-12)*`,
+
+    'Patient': `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
+
+**1. Could Your Blood Test Detect Cancer Traces 10x Smaller? (Dec 5)**
+Natera, a leading cancer testing company, acquired Foresight Diagnostics to improve their ability to detect tiny traces of cancer in blood tests. This means more sensitive tests may become available to help doctors catch cancer recurrence earlier. The combined company will be presenting new research at major medical conferences this month.
+[Read more →](https://www.fiercebiotech.com/medtech/natera-buys-foresight-diagnostics-cancer-mrd-deal-worth-450m)
+
+**2. A Blood Test Instead of Colonoscopy? New Option Coming in 2026 (Dec 5)**
+Freenome is moving forward with their SimpleScreen blood test for colon cancer detection, which could be approved by mid-2026. This would give patients an alternative to colonoscopies for initial screening. The test would compete with Guardant's Shield test, giving patients more choices.
+[Read more →](https://www.statnews.com/2025/12/05/freenome-plans-go-public-early-cancer-detection/)
+
+**3. Should You Get More Chemo—or Less? Blood Tests May Soon Help Decide (Dec 9-12)**
+The San Antonio Breast Cancer Symposium will feature discussions on how blood tests can help guide treatment decisions. Researchers are exploring whether these tests can help determine if patients need more or less aggressive treatment, potentially sparing some patients from unnecessary chemotherapy.
+[Read more →](https://sabcs.org/)
+
+**4. Is Your Doctor Using the Latest Cancer Testing? Many Aren't (Dec 2)**
+The market for blood-based cancer tests is expected to double to $10 billion by 2030. But a surprising survey found 26% of cancer centers don't know current testing guidelines exist—ask your oncologist if they're up to date on liquid biopsy options.
+[Read more →](https://www.marketsandmarkets.com/Market-Reports/liquid-biopsy-market-13966350.html)
+
+**5. What If DNA Tests Miss Your Cancer? Scientists Have New Ideas (Dec 2)**
+Scientists are exploring ways to detect cancer signals beyond just DNA in blood. New approaches analyze tiny particles called exosomes that carry multiple types of cancer markers, potentially catching cancers that current DNA-only tests might miss.
+[Read more →](https://www.grandviewresearch.com/industry-analysis/liquid-biopsy-market)
+
+*Major cancer conferences this month may announce new findings that could affect available testing options.*`,
+
+    'Academic/Industry': `**Top 5 Liquid Biopsy News – Week of December 5, 2025**
+
+**1. 0.3 ppm LOD95: Has Natera Just Raised the MRD Sensitivity Bar? (Dec 5)**
+Natera's $275M upfront ($175M earnouts) acquisition of Foresight consolidates phased variant IP and lymphoma market position. Foresight's PhasED-Seq (LOD95: 0.3 ppm, detection <0.1 ppm) complements Signatera's tumor-informed approach. Strategic rationale: NCCN DLBCL guideline inclusion, 3 prospective MRD-driven trials, 40+ publications. Integration timeline: research use immediate, clinical launch 2026.
+[Read more →](https://www.fiercebiotech.com/medtech/natera-buys-foresight-diagnostics-cancer-mrd-deal-worth-450m)
+
+**2. Pre-FDA SPAC at $330M: Is Freenome Overvalued or Underappreciated? (Dec 5)**
+$330M SPAC merger (Perceptive Capital) values Freenome's multiomics platform pre-FDA decision. SimpleScreen pivotal data pending; mid-2026 approval expected. PIPE led by Perceptive Advisors and RA Capital with participation from ADAR1, Bain Capital Life Sciences, and Farallon. Post-transaction equity value approximately $1.1B.
+[Read more →](https://www.statnews.com/2025/12/05/freenome-plans-go-public-early-cancer-detection/)
+
+**3. ctDNA's Blind Spots: Why cfRNA Is Getting Serious Attention at SABCS (Dec 9-12)**
+SERENA-6 ESR1 mutation data catalyzes debate on MRD-adaptive trial designs. Key questions: optimal assay selection (tumor-informed vs. methylation vs. hybrid), timing of intervention, regulatory pathway for response-guided labeling. cfRNA sequencing emerging as complementary modality for transcriptional dynamics ctDNA can't capture.
+[Read more →](https://sabcs.org/)
+
+**4. The Adoption Paradox: $5B Market, 26% Guideline Unawareness (Dec 2)**
+ResearchAndMarkets projects liquid biopsy market doubles by 2030. Adoption headwinds: IASLC survey shows 26% guideline unawareness, 46% non-CAP/IASLC/AMP adherence. Multi-cancer screening technology driving growth; standardization critical for payer confidence.
+[Read more →](https://www.marketsandmarkets.com/Market-Reports/liquid-biopsy-market-13966350.html)
+
+**5. Orthogonal to ctDNA: Can EV Cargo Fill the Detection Gaps? (Dec 2)**
+Extracellular vesicle diagnostics gaining traction as orthogonal signal to ctDNA. AI-enabled multiomics (protein, RNA, lipid cargo) addresses ctDNA-low tumor types. Platform players positioning for MCED integration. Market: $91M→$159M by 2030.
+[Read more →](https://www.grandviewresearch.com/industry-analysis/liquid-biopsy-market)
+
+*Key data readouts: ASH 2025 (MRD heme), SABCS 2025 (breast MRD), FDA calendar (Shield MCD indication)*`
+  };
+
+  const fallbackDigest = fallbackDigests[persona] || fallbackDigests['Clinician'];
+
+  const getPersonaPrompt = (p) => {
+    switch(p) {
+      case 'Patient':
+        return `Write for patients and caregivers. Use clear, accessible language. Avoid jargon or briefly explain technical terms. Focus on practical implications: what tests are becoming available, insurance/cost news, and what this means for patients. Be warm and informative.`;
+      case 'Clinician':
+        return `Write for oncologists and healthcare providers. Use medical terminology freely. Focus on clinical performance metrics, FDA/regulatory updates, reimbursement decisions, guideline changes (NCCN, ASCO), and clinical trial results. Be direct and professional.`;
+      case 'Academic/Industry':
+        return `Write for researchers and industry professionals. Focus on M&A activity, technology platform comparisons, market dynamics, investment news, and competitive landscape. Include technical details about assay performance and methodology advances.`;
+      default:
+        return 'Write balanced summaries covering clinical, business, and research perspectives.';
+    }
+  };
+
+  const generateDigest = async (forceRefresh = false) => {
+    const cacheKey = `openonco_digest_${persona}_v1`;
+    const today = new Date().toDateString();
+    
+    // Check cache first (unless forcing refresh)
+    if (!forceRefresh) {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const { text, date, generatedAt } = JSON.parse(cached);
+          if (date === today && text) {
+            console.log(`NewsFeed: Using cached digest for ${persona}`);
+            setDigest(text);
+            setLastGenerated(new Date(generatedAt));
+            setIsLoading(false);
+            return;
+          }
+        }
+      } catch (e) {}
+    }
+
+    console.log(`NewsFeed: Generating new digest for ${persona}`);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{
+            role: 'user',
+            content: `Search for the latest liquid biopsy, ctDNA, MRD (minimal residual disease), and early cancer detection news from the past week.
+
+${getPersonaPrompt(persona)}
+
+Write a flowing prose digest titled "Top 5 Liquid Biopsy News" with the current week date. For each story:
+- Bold headline with date in parentheses
+- 3-4 sentence summary paragraph
+- End with "Read more:" followed by a link to the source article
+
+IMPORTANT: Make headlines engaging and thought-provoking, not dry announcements. Use questions, surprising angles, or highlight tensions. Examples:
+- Instead of "SABCS 2025: ctDNA-Guided Therapy (Dec 9-12)" write "Is ctDNA Enough? cfRNA Emerges as Complementary Signal (Dec 9)"
+- Instead of "Natera Acquires Foresight (Dec 5)" write "The MRD Sensitivity Arms Race: Natera's $450M Bet on 0.3 ppm Detection (Dec 5)"
+- Instead of "Market Report Shows Growth (Dec 2)" write "Why 26% of Oncologists Still Don't Know MRD Guidelines Exist (Dec 2)"
+
+End with a brief note about upcoming conferences or key things to watch.
+
+Write in a professional but engaging editorial style, like a weekly newsletter digest. Do not use bullet points or numbered lists within the summaries - write in flowing paragraphs.`
+          }]
+        })
+      });
+
+      const data = await response.json();
+      
+      let text = '';
+      for (const block of data.content || []) {
+        if (block.type === 'text') {
+          text += block.text;
+        }
+      }
+
+      if (text && text.length > 200) {
+        const now = new Date();
+        setDigest(text);
+        setLastGenerated(now);
+        
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            text,
+            date: today,
+            generatedAt: now.toISOString()
+          }));
+        } catch (e) {}
+        
+        setIsLoading(false);
+        return;
+      }
+      
+      throw new Error('Empty response');
+    } catch (e) {
+      console.error('Digest generation failed:', e);
+      setDigest(fallbackDigest);
+    }
+    
+    setIsLoading(false);
+  };
+
+  // Generate on mount
+  useEffect(() => {
+    generateDigest();
+  }, []);
+
+  // Regenerate when persona changes
+  useEffect(() => {
+    if (persona) {
+      generateDigest();
+    }
+  }, [persona]);
+
+  // Smooth vertical scroll - scroll down, reset at halfway (where duplicate starts) for seamless loop
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || isPaused || !digest) return;
+
+    let animationId;
+    const speed = 0.3;
+
+    const animate = () => {
+      // Content is duplicated, so reset when we reach halfway through total height
+      const resetPoint = el.scrollHeight / 2;
+      
+      if (el.scrollTop >= resetPoint) {
+        el.scrollTop = 0; // Jump back to start seamlessly
+      } else {
+        el.scrollTop += speed;
+      }
+      
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [isPaused, digest]);
+
+  const personaLabel = {
+    'Patient': '👤 Patient Edition',
+    'Clinician': '🩺 Clinician Edition', 
+    'Academic/Industry': '🔬 Industry Edition'
+  };
+
+  // Simple markdown-like rendering for bold text
+  const renderDigest = (text) => {
+    return text.split('\n').map((line, i) => {
+      // First handle links: [text](url)
+      const linkParts = line.split(/(\[[^\]]+\]\([^)]+\))/g);
+      const withLinks = linkParts.map((part, j) => {
+        const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+        if (linkMatch) {
+          return (
+            <a 
+              key={`link-${j}`} 
+              href={linkMatch[2]} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#2A63A4] hover:text-[#1E4A7A] hover:underline"
+            >
+              {linkMatch[1]}
+            </a>
+          );
+        }
+        return part;
+      });
+      
+      // Then handle bold and italic within non-link parts
+      const rendered = withLinks.map((part, j) => {
+        if (typeof part !== 'string') return part; // Already a React element (link)
+        
+        // Bold: **text**
+        const boldParts = part.split(/(\*\*[^*]+\*\*)/g);
+        return boldParts.map((bp, k) => {
+          if (bp.startsWith('**') && bp.endsWith('**')) {
+            return <strong key={`${j}-${k}`} className="font-semibold text-slate-800">{bp.slice(2, -2)}</strong>;
+          }
+          // Italic: *text*
+          if (bp.startsWith('*') && bp.endsWith('*') && !bp.startsWith('**')) {
+            return <em key={`${j}-${k}`} className="italic text-slate-500">{bp.slice(1, -1)}</em>;
+          }
+          return bp;
+        });
+      });
+      
+      return line.trim() ? (
+        <p key={i} className="mb-4 text-sm text-slate-600 leading-relaxed">
+          {rendered}
+        </p>
+      ) : <div key={i} className="h-2" />;
+    });
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-full flex flex-col">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="font-semibold text-slate-800">Liquid Biopsy News</h3>
+          <p className="text-xs text-slate-400 mt-0.5">
+            {personaLabel[persona] || 'Weekly Digest'}
+          </p>
+        </div>
+        <span className={`text-xs px-2 py-1 rounded-full ${
+          isLoading ? 'bg-blue-100 text-blue-700' :
+          isPaused ? 'bg-amber-100 text-amber-700' : 
+          'bg-emerald-100 text-emerald-700'
+        }`}>
+          {isLoading ? '🔄 Loading...' : isPaused ? '⏸ Paused' : '▶ Scrolling'}
+        </span>
+      </div>
+
+      {isLoading ? (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin w-8 h-8 border-2 border-slate-300 border-t-[#2A63A4] rounded-full mx-auto mb-3"></div>
+            <p className="text-sm text-slate-500">Generating your personalized digest...</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <style>{`
+            .news-scroll-container::-webkit-scrollbar { display: none; }
+          `}</style>
+          <div 
+            ref={scrollRef}
+            className="news-scroll-container flex-1 min-h-0 overflow-y-scroll"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div>
+              {renderDigest(digest)}
+              {/* Spacer then repeat for seamless loop */}
+              <div className="h-8 border-t border-slate-100 mt-4"></div>
+              {renderDigest(digest)}
+            </div>
+          </div>
+        </>
+      )}
+
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+        <p className="text-xs text-slate-400">
+          Hover to pause
+        </p>
+        <p className="text-xs text-slate-400">
+          AI-curated daily • {lastGenerated?.toLocaleDateString() || 'Today'}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 
 // ============================================
 // Build Info - Auto-generated when code is built
@@ -940,11 +1294,10 @@ const mrdTestData = [
     "stageIIISensitivityNotes": "Stage III-specific data not yet published; NCT07125729 head-to-head vs Signatera includes Stage II–IV CRC.",
     "landmarkSensitivityCitations": "https://haystackmrd.com/faq/",
     "longitudinalSensitivityCitations": "https://haystackmrd.com/",
-    "lod": "6 ppm (LoD95); 0.2 ppm (detection floor)",
-    "lod95": "6 ppm",
-    "lodFloor": "0.2 ppm",
+    "lod": "6 ppm",
+    "lod95": "6 ppm (≈0.0006% tumor fraction)",
     "lodCitations": "https://haystackmrd.com/",
-    "lodNotes": "LoD95 (95% limit of detection) is 6 ppm. Detection floor ('down to' level) is 0.2 ppm, representing lowest detectable ctDNA concentration. Per vendor (Dec 2025).",
+    "lodNotes": "LoD95 (95% limit of detection) is ~6 ppm (0.0006% tumor fraction). This represents the ctDNA level at which 95% of replicates are detected as positive in analytical validation studies.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "variantsTracked": "50",
@@ -1187,8 +1540,7 @@ const mrdTestData = [
     "followUpTatNotes": "Serial MRD monitoring blood draws generally reported within ~7 days after receipt.",
     "tat": 35.0,
     "tatNotes": "Approximate TAT ~5 weeks baseline, ~1 week longitudinally.",
-    "fdaStatus": "CLIA LDT; FDA Breakthrough Device designation (March 2021)",
-    "fdaStatusCitations": "https://www.globenewswire.com/en/news-release/2021/03/09/2189350/0/en/FDA-Grants-Breakthrough-Device-Designation-for-Inivata-s-RaDaR-Assay.html",
+    "fdaStatus": "CLIA LDT",
     "reimbursement": "Medicare coverage for selected indications; MolDX framework applied.",
     "reimbursementNote": "LCDs describe coverage in specific solid tumors (e.g., breast and HPV-negative head & neck cancer) with broader multi-tumor positioning in trials.",
     "commercialPayers": ["Blue Shield of California"],
@@ -1759,11 +2111,10 @@ const mrdTestData = [
     "specificity": 97.65,
     "specificityCitations": "Boehm N et al. Oncotarget 2025;16:329-336.",
     "specificityNotes": "Negative percent agreement 97.65% (95% CI 87.43-99.94%) in DLBCL validation. False positive rate 0.24%.",
-    "lod": "0.7 ppm (LoD95)",
-    "lod95": "0.7 ppm",
-    "lodFloor": null,
-    "lodCitations": "Boehm N et al. Oncotarget 2025;16:329-336; Natera acquisition press release Dec 2025.",
-    "lodNotes": "Lymphoma CLARITY assay: LoD95 is 0.7 ppm (validated in regulatory study with 120ng input). Solid tumor PhasED-Seq platform (in development): LoD95 0.3 ppm with detection floor <0.1 ppm per Natera acquisition announcement.",
+    "lod": "0.7 ppm",
+    "lod95": null,
+    "lodCitations": "Boehm N et al. Oncotarget 2025;16:329-336.",
+    "lodNotes": "LOD 0.7 ppm validated in regulatory study for lymphoma panel. Solid tumor version (in development) achieves 0.3 ppm. LOD95 not separately reported.",
     "leadTimeVsImaging": 200,
     "leadTimeVsImagingCitations": "Foresight CLARITY product page; Roschewski M et al. ASH 2023.",
     "leadTimeVsImagingNotes": "Detects relapse approximately 200 days earlier than PET/CT imaging in DLBCL. PhasED-Seq correctly identified 90% of patients who later relapsed vs 45% identified by PET/CT.",
@@ -3062,8 +3413,7 @@ const trmTestData = [
     "lod": "0.001% VAF",
     "lodNotes": "Analytical LoD ~0.001% VAF (~10 ppm), consistent with RaDaR ST MRD assay specifications. Earlier claims of 10⁻⁵–10⁻⁶ were not supported by peer-reviewed validation data.",
     "lodCitations": "PMC commercial MRD assay review; NeoGenomics RaDaR product specifications.",
-    "fdaStatus": "CLIA LDT; FDA Breakthrough Device designation (March 2021)",
-    "fdaStatusCitations": "https://www.globenewswire.com/en/news-release/2021/03/09/2189350/0/en/FDA-Grants-Breakthrough-Device-Designation-for-Inivata-s-RaDaR-Assay.html",
+    "fdaStatus": "LDT in NeoGenomics CLIA/CAP lab; not FDA-approved",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Used in clinical research and select clinical programs; payer coverage still emerging. NeoGenomics has also introduced a WES-based RaDaR ST assay, currently positioned for biopharma partners and interventional trials.",
     "commercialPayers": ["Blue Shield of California"],
@@ -3494,6 +3844,56 @@ const cgpTestData = [
     "numPublicationsNotes": "Guardant360 cited in >150 peer-reviewed publications (vendor estimate).",
     "numPublicationsCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
     "publicationsExampleCitations": ["https://pubmed.ncbi.nlm.nih.gov/33619370/", "https://pubmed.ncbi.nlm.nih.gov/37256839/"]
+  },
+  {
+    "id": "cgp-17",
+    "name": "Guardant360 Liquid",
+    "vendor": "Guardant Health",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Digital sequencing of cfDNA on Guardant Infinity platform; targets 744 genes; reports SNVs, indels, CNAs, CNLs, fusions/rearrangements, MSI, TMB, tumor fraction, and promoter methylation (epigenomic features). CHIP filtering via proprietary algorithm. Virus detection (EBV, HPV).",
+    "methodCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "genesAnalyzed": 744,
+    "genesAnalyzedCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "genesReported": 744,
+    "genesReportedNotes": "Full 744-gene panel reported. 10x more genes than previous Guardant360 version and 10x higher sensitivity for tumor fraction quantification.",
+    "genesReportedCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-Introduces-Major-Smart-Liquid-Biopsy-Upgrade-to-Market-Leading-Guardant360-Test-Further-Extending-Its-Best-in-Class-Performance/default.aspx",
+    "geneListUrl": "https://www.guardantcomplete.com/hcp/solutions/guardant360-liquid/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "CNLs", "Fusions/Rearrangements", "MSI", "TMB", "Tumor Fraction", "Promoter Methylation"],
+    "biomarkersReportedNotes": "First and only liquid biopsy to deliver genomic and epigenomic insights (promoter methylation) from a single input. CHIP variants flagged via proprietary algorithm.",
+    "biomarkersReportedCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "cancerTypes": ["All solid tumors"],
+    "cancerTypesCitations": "https://www.guardantcomplete.com/hcp/solutions/guardant360-liquid/",
+    "targetPopulation": "Patients with advanced solid tumors; comprehensive genomic and epigenomic profiling for treatment selection",
+    "targetPopulationCitations": "https://guardanthealth.com/products/tests-for-patients-with-early-and-advanced-stage-cancer/",
+    "fdaStatus": "CLIA LDT; not FDA-cleared/approved",
+    "fdaStatusNotes": "Developed as a Laboratory Developed Test (LDT) by Guardant Health Clinical Laboratory (CLIA-certified). Distinct from Guardant360 CDx which is FDA-approved but covers only 74 genes.",
+    "fdaStatusCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "fdaCompanionDxCount": 0,
+    "fdaCompanionDxCountNotes": "LDT version - no FDA companion diagnostic claims. For FDA-approved CDx, see Guardant360 CDx.",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer", "Melanoma"],
+    "nccnGuidelinesNotes": "Covers all guideline-recommended genomic biomarkers across advanced solid tumors plus emerging biomarkers. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1 | https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-Introduces-Major-Smart-Liquid-Biopsy-Upgrade-to-Market-Leading-Guardant360-Test-Further-Extending-Its-Best-in-Class-Performance/default.aspx",
+    "tat": "7 days",
+    "tatNotes": "Median 7 days from sample receipt to results.",
+    "tatCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "sampleRequirements": "Two 10 mL tubes of whole blood; ship same or next day at room temperature (do not freeze/refrigerate)",
+    "sampleRequirementsCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "lod": "SNVs: 0.20% VAF; Indels: 0.26%; CNAs: 2.46 copies; Fusions: 0.05%; MSI: 0.05%; Tumor Fraction: 1.6%",
+    "lodNotes": "LoD defined as allele fraction/copy number at 95% probability of detection for oncogenic variants. TMB evaluable at ≥0.3% sample allele fraction.",
+    "lodCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "specificity": "≥99.9% for SNVs, Indels, CNAs, CNLs, Fusions, MSI, Promoter Methylation",
+    "specificityCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Covered by Medicare and major private payers for comprehensive genomic profiling of all advanced solid tumors.",
+    "reimbursementCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-Introduces-Major-Smart-Liquid-Biopsy-Upgrade-to-Market-Leading-Guardant360-Test-Further-Extending-Its-Best-in-Class-Performance/default.aspx",
+    "availableRegions": ["US"],
+    "availableRegionsNotes": "US availability via Guardant Health. International availability via regional spec sheets (AMEA region).",
+    "availableRegionsCitations": "https://www.guardantcomplete.com/hcp/solutions/guardant360-liquid/",
+    "clinicalAvailability": "Commercially available in US; 2024 major upgrade launched",
+    "clinicalAvailabilityCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-Introduces-Major-Smart-Liquid-Biopsy-Upgrade-to-Market-Leading-Guardant360-Test-Further-Extending-Its-Best-in-Class-Performance/default.aspx"
   },
   {
     "id": "cgp-5",
@@ -5801,7 +6201,7 @@ const HomePage = ({ onNavigate }) => {
     }, { 
       flags: [`persona-${selectedPersona.toLowerCase().replace(/[^a-z]/g, '-')}`] 
     });
-    // Dispatch custom event so other components can refresh
+    // Dispatch custom event so NewsFeed can refresh
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
@@ -8049,6 +8449,18 @@ const SubmissionsPage = () => {
                 >
                   ← Use a different email
                 </button>
+                <p className="text-gray-500 text-xs mt-3">
+                  Code not arriving? Corporate firewalls sometimes block verification emails.{' '}
+                  <a 
+                    href="https://www.linkedin.com/in/alexgdickinson/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#2A63A4] hover:underline"
+                  >
+                    DM Alex on LinkedIn
+                  </a>
+                  {' '}to submit directly.
+                </p>
               </>
             )}
 
@@ -8155,6 +8567,18 @@ const SubmissionsPage = () => {
                 >
                   ← Use a different email
                 </button>
+                <p className="text-gray-500 text-xs mt-3">
+                  Code not arriving? Corporate firewalls sometimes block verification emails.{' '}
+                  <a 
+                    href="https://www.linkedin.com/in/alexgdickinson/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#2A63A4] hover:underline"
+                  >
+                    DM Alex on LinkedIn
+                  </a>
+                  {' '}to submit directly.
+                </p>
               </>
             )}
 
@@ -8198,7 +8622,7 @@ const SubmissionsPage = () => {
         <p className="text-gray-600 mb-6">Recent updates to the OpenOnco test database, including community contributions.</p>
         
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="max-h-[72rem] overflow-y-auto">
+          <div className="max-h-96 overflow-y-auto">
             {DATABASE_CHANGELOG.map((entry, idx) => (
               <div 
                 key={`${entry.testId}-${idx}`} 
