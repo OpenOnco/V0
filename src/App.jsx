@@ -22,6 +22,7 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-19', name: 'clonoSEQ', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 10, 2025' },
@@ -48,6 +49,18 @@ const RECENTLY_ADDED_TESTS = [
 //   - "OpenOnco" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 11, 2025',
+    type: 'added',
+    testId: 'mrd-22',
+    testName: 'CancerDetect',
+    vendor: 'IMBdx',
+    category: 'MRD',
+    description: 'Added Korean tumor-informed MRD test using large-scale mutation tracking (up to 300 variants). 0.001% LOD. Innovative Medical Technology designation.',
+    contributor: 'Sunghoon Heo',
+    affiliation: 'IMBdx (vendor)',
+    citation: 'https://www.nature.com/articles/s41416-023-02300-3'
+  },
   {
     date: 'Dec 11, 2025',
     type: 'added',
@@ -2381,6 +2394,69 @@ const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT from Natera. Complements Signatera for cases where tumor tissue is unavailable.",
     "technologyDifferentiator": "Tissue-free MRD for CRC - no tumor tissue required. Uses methylation-based detection rather than somatic variant tracking. Enables MRD testing when tissue is unavailable, insufficient, or degraded. Part of Natera's comprehensive MRD portfolio alongside Signatera and Signatera Genome."
+  },
+  {
+    "id": "mrd-22",
+    "sampleCategory": "Blood/Plasma",
+    "name": "CancerDetect",
+    "vendor": "IMBdx",
+    "approach": "Tumor-informed (hybrid)",
+    "method": "Tumor-informed hybrid approach combining large-scale personalized mutation tracking (up to 300 patient-specific variants from tumor WES) with tumor-agnostic hotspot regions covering 58 clinically actionable mutations across 15 genes. Uses hybridization capture with UMI-based error suppression and ultra-deep sequencing (~100,000x). Proprietary HQS technology for false positive reduction.",
+    "methodCitations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282 | https://www.nature.com/articles/s41416-023-02300-3",
+    "cancerTypes": [
+      "Colorectal cancer",
+      "Breast cancer",
+      "Gastric cancer"
+    ],
+    "targetPopulation": "Stage II-III solid tumor patients requiring MRD detection post-surgery, particularly CRC, breast, and gastric cancer",
+    "indicationsNotes": "Korean-developed tumor-informed MRD test using large-scale mutation profiling strategy. Tracks median 185 variants per patient (up to 300). Designated as 'Innovative Medical Technology' by Korean Ministry of Health and Welfare (similar to FDA Breakthrough Device). Used in nationwide phase III interventional trial (NCT05534087) for MRD-guided treatment escalation.",
+    "sensitivity": null,
+    "sensitivityNotes": "Clinical sensitivity 61.9% for predicting recurrence within 3 years at postoperative 3-week timepoint. In silico simulation shows increased sensitivity with more monitoring variants.",
+    "sensitivityCitations": "https://www.nature.com/articles/s41416-023-02300-3",
+    "specificity": 99.9,
+    "specificityNotes": "99.9% analytical specificity for bespoke (personalized) regions. 95% specificity for hotspot regions. 1.5% false positive rate in cross-panel analysis.",
+    "specificityCitations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
+    "lod": "0.001%",
+    "lod95": "0.001%",
+    "lodNotes": "LOD95 of 0.001% (10 ppm) for bespoke regions, 0.1% for hotspot regions. Limit of blank 0.0003% for bespoke regions. Achieved through large-scale mutation tracking combined with ultra-deep sequencing.",
+    "lodCitations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
+    "leadTimeVsImaging": null,
+    "leadTimeVsImagingNotes": "Postoperative MRD positivity strongly associated with recurrence (adjusted HR 8.40, 95% CI 3.49-20.2). Patients with MRD clearance after adjuvant therapy showed significantly better outcomes.",
+    "leadTimeVsImagingCitations": "https://www.nature.com/articles/s41416-023-02300-3",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires tumor tissue for whole-exome sequencing to identify patient-specific variants. Fresh frozen tissue preferred.",
+    "requiresMatchedNormal": "Yes",
+    "requiresMatchedNormalNotes": "PBMC sequencing used to filter germline variants and CHIP mutations from cfDNA results.",
+    "variantsTracked": "Up to 300",
+    "variantsTrackedNotes": "Median 185 variants tracked per patient (range 116-300). Large-scale mutation profiling strategy shown to improve sensitivity at low ctDNA fractions (<0.01%).",
+    "variantsTrackedCitations": "https://www.nature.com/articles/s41416-023-02300-3",
+    "initialTat": 28,
+    "initialTatNotes": "Initial TAT 28 days (4 weeks). Reduced from previous 8-10 weeks in earlier version.",
+    "followUpTat": 14,
+    "followUpTatNotes": "Follow-up monitoring TAT 14 days (2 weeks).",
+    "bloodVolume": null,
+    "bloodVolumeNotes": "1-10 mL plasma used for cfDNA extraction.",
+    "fdaStatus": "Not FDA cleared",
+    "fdaStatusNotes": "Korean 'Innovative Medical Technology' designation from Ministry of Health and Welfare (analogous to FDA Breakthrough Device Designation). Not FDA cleared for US market.",
+    "nccnRecommended": false,
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Korean national health insurance coverage under Innovative Medical Technology pathway. Not available in US market.",
+    "clinicalAvailability": "Commercially available in South Korea via IMBdx",
+    "clinicalAvailabilityCitations": "https://www.imbdx.com/eng/",
+    "availableRegions": ["South Korea"],
+    "availableRegionsNotes": "Currently available in South Korea. International expansion potential.",
+    "clinicalTrials": "Phase III interventional trial (NCT05534087) for MRD-guided treatment escalation in CRC. Validation studies in breast cancer (AACR 2025, SABCS 2023/2025) and gastric cancer (AACR 2025). Original CRC validation: 98 patients, Stage II-III, median 36.3 months follow-up.",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05534087 | https://www.nature.com/articles/s41416-023-02300-3",
+    "totalParticipants": 98,
+    "totalParticipantsNotes": "98 patients in primary CRC validation study. Phase III trial (NCT05534087) enrolling ~1,200 CRC patients.",
+    "numPublications": 2,
+    "numPublicationsNotes": "British Journal of Cancer 2023 (clinical validation), PLOS One 2025 (analytical validation). Multiple conference abstracts at AACR 2025, SABCS 2023/2025.",
+    "numPublicationsCitations": "https://www.nature.com/articles/s41416-023-02300-3 | https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "Commercially available in South Korea with Innovative Medical Technology designation. Previously known as AlphaLiquid®Detect.",
+    "technologyDifferentiator": "Large-scale mutation tracking (up to 300 variants vs typical 16-50) combined with tumor-agnostic hotspot panel. Korean-developed with strong regulatory pathway. Ultra-sensitive detection (0.001% LOD) through expanded variant coverage rather than deeper sequencing alone. Hybrid approach enables detection of both original tumor mutations and de novo resistance mutations."
   }
 ];
 
