@@ -4530,6 +4530,43 @@ const Checkbox = ({ checked, onChange, label }) => (
   </label>
 );
 
+// Collapsible filter section component
+const FilterSection = ({ title, defaultOpen = false, activeCount = 0, children }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  
+  return (
+    <div className="border-b border-gray-100 last:border-b-0">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 transition-colors -mx-2 px-2 rounded"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">{title}</span>
+          {activeCount > 0 && (
+            <span className="bg-emerald-100 text-emerald-700 text-xs font-medium px-1.5 py-0.5 rounded-full">
+              {activeCount}
+            </span>
+          )}
+        </div>
+        <svg 
+          className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor" 
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {isOpen && (
+        <div className="pb-4 space-y-1">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Badge = ({ children, variant = 'default', title }) => {
   const styles = {
     default: 'bg-gray-100 text-gray-700 border-gray-200',
@@ -10862,34 +10899,53 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
 
               {category === 'MRD' && (
                 <>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Cancer Type' : 'Cancer Type'}
-                    </label>
+                  {/* Clinical Context */}
+                  <FilterSection 
+                    title={isPatient ? 'My Cancer' : 'Clinical'} 
+                    defaultOpen={true}
+                    activeCount={selectedCancerTypes.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Insurance' : 'Coverage'}
-                    </label>
+                  </FilterSection>
+
+                  {/* Access & Coverage */}
+                  <FilterSection 
+                    title={isPatient ? 'Insurance' : 'Access & Coverage'} 
+                    defaultOpen={true}
+                    activeCount={selectedReimbursement.length + selectedRegions.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                  </div>
+                    {!isPatient && (
+                      <>
+                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
+                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
+                      </>
+                    )}
+                  </FilterSection>
+
                   {!isPatient && (
                     <>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
+                      {/* Methodology */}
+                      <FilterSection 
+                        title="Methodology" 
+                        defaultOpen={false}
+                        activeCount={selectedApproaches.length + selectedSampleCategories.length}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">Approach</label>
                         {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
+                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Sample Type</label>
                         {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Availability</label>
-                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      </FilterSection>
+
+                      {/* Evidence */}
+                      <FilterSection 
+                        title="Evidence" 
+                        defaultOpen={false}
+                        activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0)}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">
                           Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
                         </label>
                         <input
@@ -10898,19 +10954,15 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           max="1000"
                           step="100"
                           value={minParticipants}
-                          
-                          
                           onChange={updateSlider(setMinParticipants)}
                           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                         />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
                           <span>0</span>
                           <span>500</span>
                           <span>1,000+</span>
                         </div>
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                        <label className="text-xs text-gray-500 mb-1 block">
                           Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
                         </label>
                         <input
@@ -10919,8 +10971,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           max="100"
                           step="5"
                           value={minPublications}
-                          
-                          
                           onChange={updateSlider(setMinPublications)}
                           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                         />
@@ -10929,90 +10979,28 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           <span>50</span>
                           <span>100+</span>
                         </div>
-                      </div>
+                      </FilterSection>
                     </>
                   )}
                   {isPatient && (
-                    <div className="mb-5">
-                      <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                        Test Type
-                      </label>
+                    <FilterSection title="Test Type" defaultOpen={false} activeCount={selectedApproaches.length}>
                       <Checkbox label="Blood test only (no tissue needed)" checked={selectedApproaches.includes('Tumor-naïve')} onChange={() => toggle(setSelectedApproaches)('Tumor-naïve')} />
-                    </div>
+                    </FilterSection>
                   )}
                 </>
               )}
 
               {category === 'ECD' && (
                 <>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'Type of Screening' : 'Test Scope'}
-                    </label>
+                  {/* Screening Type */}
+                  <FilterSection 
+                    title={isPatient ? 'Screening Type' : 'Test Scope'} 
+                    defaultOpen={true}
+                    activeCount={selectedTestScopes.length + (maxPrice < 1000 ? 1 : 0)}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Type of Screening' : 'Scope'}</label>
                     {config.testScopes.map(s => <Checkbox key={s} label={isPatient ? (s.includes('Single') ? 'Single cancer type' : 'Multiple cancer types') : s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Insurance' : 'Coverage'}
-                    </label>
-                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                  </div>
-                  {!isPatient && (
-                    <>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
-                        {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Availability</label>
-                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                          Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()}
-                        </label>
-                        <input
-                          type="range"
-                          min="0"
-                          max="100000"
-                          step="10000"
-                          value={minParticipants}
-                          
-                          
-                          onChange={updateSlider(setMinParticipants)}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>50k</span>
-                          <span>100k+</span>
-                        </div>
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                          Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 20 ? '20+' : minPublications}
-                        </label>
-                        <input
-                          type="range"
-                          min="0"
-                          max="20"
-                          step="2"
-                          value={minPublications}
-                          
-                          
-                          onChange={updateSlider(setMinPublications)}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>10</span>
-                          <span>20+</span>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">
                       {isPatient ? 'Budget' : 'Max List Price'}: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
                     </label>
                     <input
@@ -11021,8 +11009,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       max="1000"
                       step="50"
                       value={maxPrice}
-                      
-                      
                       onChange={updateSlider(setMaxPrice)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
                     />
@@ -11031,40 +11017,131 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       <span>$500</span>
                       <span>$1000+</span>
                     </div>
-                  </div>
+                  </FilterSection>
+
+                  {/* Access & Coverage */}
+                  <FilterSection 
+                    title={isPatient ? 'Insurance' : 'Access & Coverage'} 
+                    defaultOpen={true}
+                    activeCount={selectedReimbursement.length + selectedRegions.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
+                    {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                    {!isPatient && (
+                      <>
+                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
+                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
+                      </>
+                    )}
+                  </FilterSection>
+
+                  {!isPatient && (
+                    <>
+                      {/* Methodology */}
+                      <FilterSection 
+                        title="Methodology" 
+                        defaultOpen={false}
+                        activeCount={selectedSampleCategories.length}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">Sample Type</label>
+                        {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
+                      </FilterSection>
+
+                      {/* Evidence */}
+                      <FilterSection 
+                        title="Evidence" 
+                        defaultOpen={false}
+                        activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0)}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">
+                          Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()}
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100000"
+                          step="10000"
+                          value={minParticipants}
+                          onChange={updateSlider(setMinParticipants)}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                          <span>0</span>
+                          <span>50k</span>
+                          <span>100k+</span>
+                        </div>
+                        <label className="text-xs text-gray-500 mb-1 block">
+                          Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 20 ? '20+' : minPublications}
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
+                          step="2"
+                          value={minPublications}
+                          onChange={updateSlider(setMinPublications)}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                          <span>0</span>
+                          <span>10</span>
+                          <span>20+</span>
+                        </div>
+                      </FilterSection>
+                    </>
+                  )}
                 </>
               )}
 
               {category === 'TRM' && (
                 <>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Cancer Type' : 'Cancer Type'}
-                    </label>
+                  {/* Clinical Context */}
+                  <FilterSection 
+                    title={isPatient ? 'My Cancer' : 'Clinical'} 
+                    defaultOpen={true}
+                    activeCount={selectedCancerTypes.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Insurance' : 'Coverage'}
-                    </label>
+                  </FilterSection>
+
+                  {/* Access & Coverage */}
+                  <FilterSection 
+                    title={isPatient ? 'Insurance' : 'Access & Coverage'} 
+                    defaultOpen={true}
+                    activeCount={selectedReimbursement.length + selectedRegions.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                  </div>
+                    {!isPatient && (
+                      <>
+                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
+                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
+                      </>
+                    )}
+                  </FilterSection>
+
                   {!isPatient && (
                     <>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
+                      {/* Methodology */}
+                      <FilterSection 
+                        title="Methodology" 
+                        defaultOpen={false}
+                        activeCount={selectedApproaches.length + selectedSampleCategories.length}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">Approach</label>
                         {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Sample Type</label>
+                        <label className="text-xs text-gray-500 mb-1 mt-3 block">Sample Type</label>
                         {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Availability</label>
-                        {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      </FilterSection>
+
+                      {/* Evidence */}
+                      <FilterSection 
+                        title="Evidence" 
+                        defaultOpen={false}
+                        activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0)}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">
                           Min Trial Participants: {minParticipants === 0 ? 'Any' : minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString()}
                         </label>
                         <input
@@ -11073,19 +11150,15 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           max="1000"
                           step="100"
                           value={minParticipants}
-                          
-                          
                           onChange={updateSlider(setMinParticipants)}
                           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                         />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
                           <span>0</span>
                           <span>500</span>
                           <span>1,000+</span>
                         </div>
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                        <label className="text-xs text-gray-500 mb-1 block">
                           Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 100 ? '100+' : minPublications}
                         </label>
                         <input
@@ -11094,8 +11167,6 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           max="100"
                           step="10"
                           value={minPublications}
-                          
-                          
                           onChange={updateSlider(setMinPublications)}
                           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                         />
@@ -11104,7 +11175,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           <span>50</span>
                           <span>100+</span>
                         </div>
-                      </div>
+                      </FilterSection>
                     </>
                   )}
                 </>
@@ -11112,36 +11183,53 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
 
               {category === 'CGP' && (
                 <>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'Sample Type' : 'Sample Category'}
-                    </label>
+                  {/* Clinical Context */}
+                  <FilterSection 
+                    title={isPatient ? 'My Cancer' : 'Clinical'} 
+                    defaultOpen={true}
+                    activeCount={selectedSampleCategories.length + selectedCancerTypes.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Sample Type' : 'Sample Category'}</label>
                     {config.sampleCategories.map(s => <Checkbox key={s} label={s} checked={selectedSampleCategories.includes(s)} onChange={() => toggle(setSelectedSampleCategories)(s)} />)}
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Cancer Type' : 'Cancer Type'}
-                    </label>
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">Cancer Type</label>
                     <div className="max-h-36 overflow-y-auto">{config.cancerTypes.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </div>
-                  <div className="mb-5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
-                      {isPatient ? 'My Insurance' : 'Coverage'}
-                    </label>
+                  </FilterSection>
+
+                  {/* Access & Regulatory */}
+                  <FilterSection 
+                    title={isPatient ? 'Insurance' : 'Access & Regulatory'} 
+                    defaultOpen={true}
+                    activeCount={selectedReimbursement.length + selectedFdaStatus.length}
+                  >
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                  </div>
+                    {!isPatient && (
+                      <>
+                        <label className="text-xs text-gray-500 mb-1 mt-3 block">FDA Status</label>
+                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
+                      </>
+                    )}
+                  </FilterSection>
+
                   {!isPatient && (
                     <>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Approach</label>
+                      {/* Methodology */}
+                      <FilterSection 
+                        title="Methodology" 
+                        defaultOpen={false}
+                        activeCount={selectedApproaches.length}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">Approach</label>
                         {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">FDA Status</label>
-                        {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
-                      </div>
-                      <div className="mb-5">
-                        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">
+                      </FilterSection>
+
+                      {/* Evidence */}
+                      <FilterSection 
+                        title="Evidence" 
+                        defaultOpen={false}
+                        activeCount={minPublications > 0 ? 1 : 0}
+                      >
+                        <label className="text-xs text-gray-500 mb-1 block">
                           Min Publications: {minPublications === 0 ? 'Any' : minPublications >= 1000 ? '1,000+' : minPublications}
                         </label>
                         <input
@@ -11158,7 +11246,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                           <span>500</span>
                           <span>1,000+</span>
                         </div>
-                      </div>
+                      </FilterSection>
                     </>
                   )}
                 </>
