@@ -5663,7 +5663,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       {/* Test Cards Grid */}
       <div className="p-4 border-t border-slate-100">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">All the tests we track</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">All the tests we track ({allTests.length})</p>
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-500">Sort:</span>
             <select
@@ -6452,7 +6452,7 @@ const DatabaseSummary = () => {
                 key={vendor.vendor} 
                 className={`flex items-center px-3 py-4 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
               >
-                <div className="w-12 flex-shrink-0 flex items-center justify-center">
+                <div className="w-16 flex-shrink-0 flex items-center justify-center">
                   <span className={`text-5xl font-bold ${rankStyles[index].text} opacity-40`}>{index + 1}</span>
                 </div>
                 <div className="flex flex-col items-center text-center flex-1 min-w-0">
@@ -6462,7 +6462,7 @@ const DatabaseSummary = () => {
                     <span className={`text-2xl font-bold ${rankStyles[index].text}`}>{Math.round(vendor.avgScore)}</span>
                     <span className="text-sm text-slate-400">vs</span>
                     <span className="text-xl font-bold text-slate-400">{fieldAvgScore}</span>
-                    <span className="text-[10px] text-slate-400">(Avg)</span>
+                    <span className="text-xs text-slate-400">(Avg)</span>
                   </div>
                 </div>
               </div>
