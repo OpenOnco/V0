@@ -10642,6 +10642,10 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [minParticipants, setMinParticipants] = useState(0);
   const [minPublications, setMinPublications] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
+  // Performance filters
+  const [minSensitivity, setMinSensitivity] = useState(0);
+  const [minSpecificity, setMinSpecificity] = useState(0);
+  const [maxTat, setMaxTat] = useState(30);
   const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
   const [detailTest, setDetailTest] = useState(null);
@@ -10815,15 +10819,32 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
         });
         if (!matchesRegion) return false;
       }
+      // Performance filters
+      if (minSensitivity > 0) {
+        const sens = parseFloat(test.sensitivity);
+        if (isNaN(sens) || sens < minSensitivity) return false;
+      }
+      if (minSpecificity > 0) {
+        const spec = parseFloat(test.specificity);
+        if (isNaN(spec) || spec < minSpecificity) return false;
+      }
+      if (maxTat < 30) {
+        // Check tat, initialTat, or followUpTat
+        const tatVal = test.tat || test.initialTat || test.followUpTat;
+        if (tatVal) {
+          const tatNum = parseFloat(tatVal);
+          if (!isNaN(tatNum) && tatNum > maxTat) return false;
+        }
+      }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600' };
 
@@ -10951,6 +10972,67 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     )}
                   </FilterSection>
 
+                  {/* Performance */}
+                  {!isPatient && (
+                    <FilterSection 
+                      title="Performance" 
+                      defaultOpen={false}
+                      activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0)}
+                    >
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="99"
+                        step="5"
+                        value={minSensitivity}
+                        onChange={updateSlider(setMinSensitivity)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                        <span>Any</span>
+                        <span>50%</span>
+                        <span>99%</span>
+                      </div>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="99"
+                        step="5"
+                        value={minSpecificity}
+                        onChange={updateSlider(setMinSpecificity)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                        <span>Any</span>
+                        <span>50%</span>
+                        <span>99%</span>
+                      </div>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Max Turnaround: {maxTat >= 30 ? 'Any' : `${maxTat} days`}
+                      </label>
+                      <input
+                        type="range"
+                        min="1"
+                        max="30"
+                        step="1"
+                        value={maxTat}
+                        onChange={updateSlider(setMaxTat)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <span>1 day</span>
+                        <span>14 days</span>
+                        <span>Any</span>
+                      </div>
+                    </FilterSection>
+                  )}
+
                   {/* Validation */}
                   {!isPatient && (
                     <FilterSection 
@@ -11042,6 +11124,50 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       </>
                     )}
                   </FilterSection>
+
+                  {/* Performance */}
+                  {!isPatient && (
+                    <FilterSection 
+                      title="Performance" 
+                      defaultOpen={false}
+                      activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0)}
+                    >
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="99"
+                        step="5"
+                        value={minSensitivity}
+                        onChange={updateSlider(setMinSensitivity)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                        <span>Any</span>
+                        <span>50%</span>
+                        <span>99%</span>
+                      </div>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="99"
+                        step="5"
+                        value={minSpecificity}
+                        onChange={updateSlider(setMinSpecificity)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <span>Any</span>
+                        <span>50%</span>
+                        <span>99%</span>
+                      </div>
+                    </FilterSection>
+                  )}
 
                   {/* Validation & Cost */}
                   <FilterSection 
@@ -11156,6 +11282,67 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     )}
                   </FilterSection>
 
+                  {/* Performance */}
+                  {!isPatient && (
+                    <FilterSection 
+                      title="Performance" 
+                      defaultOpen={false}
+                      activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0)}
+                    >
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="99"
+                        step="5"
+                        value={minSensitivity}
+                        onChange={updateSlider(setMinSensitivity)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                        <span>Any</span>
+                        <span>50%</span>
+                        <span>99%</span>
+                      </div>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="99"
+                        step="5"
+                        value={minSpecificity}
+                        onChange={updateSlider(setMinSpecificity)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                        <span>Any</span>
+                        <span>50%</span>
+                        <span>99%</span>
+                      </div>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Max Turnaround: {maxTat >= 30 ? 'Any' : `${maxTat} days`}
+                      </label>
+                      <input
+                        type="range"
+                        min="1"
+                        max="30"
+                        step="1"
+                        value={maxTat}
+                        onChange={updateSlider(setMaxTat)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <span>1 day</span>
+                        <span>14 days</span>
+                        <span>Any</span>
+                      </div>
+                    </FilterSection>
+                  )}
+
                   {/* Validation */}
                   {!isPatient && (
                     <FilterSection 
@@ -11243,6 +11430,33 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
                     {config.reimbursements.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                   </FilterSection>
+
+                  {/* Performance */}
+                  {!isPatient && (
+                    <FilterSection 
+                      title="Performance" 
+                      defaultOpen={false}
+                      activeCount={maxTat < 30 ? 1 : 0}
+                    >
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Max Turnaround: {maxTat >= 30 ? 'Any' : `${maxTat} days`}
+                      </label>
+                      <input
+                        type="range"
+                        min="1"
+                        max="30"
+                        step="1"
+                        value={maxTat}
+                        onChange={updateSlider(setMaxTat)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <span>1 day</span>
+                        <span>14 days</span>
+                        <span>Any</span>
+                      </div>
+                    </FilterSection>
+                  )}
 
                   {/* Validation */}
                   {!isPatient && (
