@@ -27,7 +27,7 @@ const RECENTLY_ADDED_TESTS = [
   { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
   { id: 'mrd-17', name: 'Labcorp Plasma Detect', vendor: 'Labcorp', category: 'MRD', dateAdded: 'Dec 8, 2025' },
   { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
-  { id: 'cgp-15', name: 'Neo Comprehensive', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
+  { id: 'cgp-15', name: 'NEO PanTracer Tissue', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 7, 2025' },
@@ -47,6 +47,18 @@ const RECENTLY_ADDED_TESTS = [
 //   - "OpenOnco" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 10, 2025',
+    type: 'updated',
+    testId: 'cgp-15',
+    testName: 'NEO PanTracer Tissue',
+    vendor: 'NeoGenomics',
+    category: 'CGP',
+    description: 'Renamed from "Neo Comprehensive" to "NEO PanTracer Tissue" to reflect NeoGenomics product rebrand.',
+    contributor: 'Heather Robinson',
+    affiliation: 'Illumina',
+    citation: 'https://www.neogenomics.com/providers/test/NTG-HCSX-02AX/neo-comprehensive-solid-tumor/'
+  },
   {
     date: 'Dec 10, 2025',
     type: 'updated',
@@ -3859,7 +3871,8 @@ const cgpTestData = [
   },
   {
     "id": "cgp-15",
-    "name": "Neo Comprehensive",
+    "name": "NEO PanTracer Tissue",
+    "previousName": "Neo Comprehensive",
     "vendor": "NeoGenomics",
     "sampleCategory": "Tissue",
     "approach": "Tissue CGP",
