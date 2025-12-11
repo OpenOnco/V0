@@ -541,6 +541,16 @@ const lifecycleColorClasses = {
 const Markdown = ({ children, className = '' }) => {
   if (!children) return null;
   
+  // Sanitize href to prevent XSS via javascript:, data:, etc.
+  const sanitizeHref = (url) => {
+    try {
+      const parsed = new URL(url, window.location.origin);
+      return ['http:', 'https:'].includes(parsed.protocol) ? url : null;
+    } catch {
+      return null;
+    }
+  };
+  
   const renderMarkdown = (text) => {
     const lines = text.split('\n');
     const elements = [];
@@ -593,7 +603,12 @@ const Markdown = ({ children, className = '' }) => {
         // Links: [text](url)
         match = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/);
         if (match) {
-          parts.push(<a key={partKey++} href={match[2]} target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline hover:text-emerald-700">{match[1]}</a>);
+          const safeHref = sanitizeHref(match[2]);
+          if (safeHref) {
+            parts.push(<a key={partKey++} href={safeHref} target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline hover:text-emerald-700">{match[1]}</a>);
+          } else {
+            parts.push(<span key={partKey++} className="text-gray-500">{match[1]}</span>);
+          }
           remaining = remaining.slice(match[0].length);
           continue;
         }
@@ -7378,15 +7393,6 @@ const LearnPage = ({ onNavigate }) => {
             </tbody>
           </table>
         </div>
-
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => onNavigate('home')}
-            className="bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
-          >
-            Back to Home
-          </button>
-        </div>
       </div>
 
     </div>
@@ -11688,21 +11694,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
-      {currentPage !== 'home' && (
-        <div className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <button
-              onClick={() => handleNavigate('home')}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-full text-slate-700 font-medium transition-all hover:shadow-sm"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              <span className="text-sm">Back to Home</span>
-            </button>
-          </div>
-        </div>
-      )}
       <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
       <Footer />
       <Analytics />
