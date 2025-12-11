@@ -6286,8 +6286,10 @@ const DatabaseSummary = () => {
           </div>
           
           <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
-            <div className="text-xs text-slate-500">
-              {qualifyingVendors.length} vendors with 2+ tests
+            <div className="text-xs text-slate-500 flex items-center gap-3">
+              <span>{qualifyingVendors.length} vendors with 2+ tests</span>
+              <span>•</span>
+              <span>{DATABASE_CHANGELOG.length} changelog entries</span>
             </div>
             <button 
               onClick={() => setShowFAQ(!showFAQ)}
@@ -8166,6 +8168,11 @@ const SubmissionsPage = () => {
                 key={`${entry.testId}-${idx}`} 
                 className={`p-4 flex items-start gap-4 ${idx !== DATABASE_CHANGELOG.length - 1 ? 'border-b border-gray-100' : ''}`}
               >
+                {/* Entry number */}
+                <div className="flex-shrink-0 w-8 text-right">
+                  <span className="text-sm font-mono text-gray-400">#{DATABASE_CHANGELOG.length - idx}</span>
+                </div>
+                
                 {/* Type indicator */}
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                   entry.type === 'added' ? 'bg-emerald-100 text-emerald-700' :
