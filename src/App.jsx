@@ -10646,6 +10646,11 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [minSensitivity, setMinSensitivity] = useState(0);
   const [minSpecificity, setMinSpecificity] = useState(0);
   const [maxTat, setMaxTat] = useState(30);
+  // Additional filters
+  const [nccnOnly, setNccnOnly] = useState(false);
+  const [tumorTissueRequired, setTumorTissueRequired] = useState('any'); // 'any', 'yes', 'no'
+  const [minGenes, setMinGenes] = useState(0);
+  const [minCdx, setMinCdx] = useState(0);
   const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
   const [showComparison, setShowComparison] = useState(false);
   const [detailTest, setDetailTest] = useState(null);
@@ -10836,15 +10841,24 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
           if (!isNaN(tatNum) && tatNum > maxTat) return false;
         }
       }
+      // NCCN filter
+      if (nccnOnly && !test.nccnRecommended) return false;
+      // Tumor tissue requirement filter
+      if (tumorTissueRequired === 'yes' && test.requiresTumorTissue !== 'Yes') return false;
+      if (tumorTissueRequired === 'no' && test.requiresTumorTissue !== 'No') return false;
+      // Genes analyzed filter (CGP)
+      if (minGenes > 0 && (!test.genesAnalyzed || test.genesAnalyzed < minGenes)) return false;
+      // Companion Dx count filter (CGP)
+      if (minCdx > 0 && (!test.fdaCompanionDxCount || test.fdaCompanionDxCount < minCdx)) return false;
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600' };
 
@@ -10949,7 +10963,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 <FilterSection 
                   title="Methodology" 
                   defaultOpen={false}
-                  activeCount={selectedApproaches.length + selectedSampleCategories.length}
+                  activeCount={selectedApproaches.length + selectedSampleCategories.length + (tumorTissueRequired !== 'any' ? 1 : 0)}
                 >
                   {/* Approach - for MRD, TRM, CGP */}
                   {category !== 'ECD' && config.approaches && (
@@ -10965,6 +10979,26 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                       {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
                     </>
                   )}
+                  {/* Tumor Tissue Requirement - MRD only */}
+                  {category === 'MRD' && (
+                    <>
+                      <label className="text-xs text-gray-500 mb-1 mt-3 block">Tumor Tissue Required</label>
+                      <div className="space-y-1">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="tumorTissue" checked={tumorTissueRequired === 'any'} onChange={() => setTumorTissueRequired('any')} className="w-3.5 h-3.5 text-blue-600" />
+                          <span className="text-sm text-gray-700">Any</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="tumorTissue" checked={tumorTissueRequired === 'no'} onChange={() => setTumorTissueRequired('no')} className="w-3.5 h-3.5 text-blue-600" />
+                          <span className="text-sm text-gray-700">No (tumor-naïve)</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="tumorTissue" checked={tumorTissueRequired === 'yes'} onChange={() => setTumorTissueRequired('yes')} className="w-3.5 h-3.5 text-blue-600" />
+                          <span className="text-sm text-gray-700">Yes (tumor-informed)</span>
+                        </label>
+                      </div>
+                    </>
+                  )}
                 </FilterSection>
               )}
               {/* Patient simplified test type */}
@@ -10978,13 +11012,20 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
               <FilterSection 
                 title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
                 defaultOpen={false}
-                activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length}
+                activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length + (nccnOnly ? 1 : 0)}
               >
                 {/* FDA Status - all categories, clinician only */}
                 {!isPatient && config.fdaStatuses && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
                     {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
+                  </>
+                )}
+                {/* NCCN Recommended - MRD, TRM (not ECD, CGP), clinician only */}
+                {!isPatient && (category === 'MRD' || category === 'TRM') && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">Guidelines</label>
+                    <Checkbox label="NCCN Recommended" checked={nccnOnly} onChange={() => setNccnOnly(!nccnOnly)} />
                   </>
                 )}
                 {/* Coverage - all categories */}
@@ -11004,7 +11045,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                 <FilterSection 
                   title="Performance" 
                   defaultOpen={false}
-                  activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0)}
+                  activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0) + (minGenes > 0 ? 1 : 0) + (minCdx > 0 ? 1 : 0)}
                 >
                   {/* Sensitivity - MRD, ECD, TRM (not CGP) */}
                   {category !== 'CGP' && (
@@ -11065,10 +11106,54 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
                         onChange={updateSlider(setMaxTat)}
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
                       />
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
                         <span>1 day</span>
                         <span>14 days</span>
                         <span>Any</span>
+                      </div>
+                    </>
+                  )}
+                  {/* Genes Analyzed - CGP only */}
+                  {category === 'CGP' && (
+                    <>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min Genes Analyzed: {minGenes === 0 ? 'Any' : minGenes >= 500 ? '500+' : minGenes}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="500"
+                        step="50"
+                        value={minGenes}
+                        onChange={updateSlider(setMinGenes)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1 mb-4">
+                        <span>Any</span>
+                        <span>250</span>
+                        <span>500+</span>
+                      </div>
+                    </>
+                  )}
+                  {/* FDA Companion Dx Count - CGP only */}
+                  {category === 'CGP' && (
+                    <>
+                      <label className="text-xs text-gray-500 mb-1 block">
+                        Min FDA Companion Dx: {minCdx === 0 ? 'Any' : minCdx}
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="60"
+                        step="5"
+                        value={minCdx}
+                        onChange={updateSlider(setMinCdx)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <span>Any</span>
+                        <span>30</span>
+                        <span>60</span>
                       </div>
                     </>
                   )}
