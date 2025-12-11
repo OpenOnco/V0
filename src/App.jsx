@@ -22,7 +22,7 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
-  { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 11, 2025' },
+  { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
@@ -52,6 +52,18 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 11, 2025',
+    type: 'updated',
+    testId: 'multiple',
+    testName: 'Clinical Settings Tags',
+    vendor: 'Multiple',
+    category: 'MRD',
+    description: 'Added clinicalSettings field to all MRD tests to capture validated clinical contexts: Neoadjuvant (monitoring during pre-surgery therapy), Post-Surgery (landmark ~4 weeks after resection), Post-Adjuvant (after chemotherapy), and Surveillance (longitudinal recurrence monitoring). Added filter by clinical setting. Based on vendor feedback from Personalis (Dan Norton) on clinical context-specific performance data.',
+    contributor: 'Dan Norton',
+    affiliation: 'Personalis',
+    citation: null
+  },
+  {
+    date: 'Dec 12, 2025',
     type: 'added',
     testId: 'mrd-23',
     testName: 'LymphoVista',
@@ -1293,6 +1305,8 @@ const mrdTestData = [
     "clinicalAvailability": "Clinical LDT – shipping",
     "clinicalTrials": "NCT07125729 (150; resectable stage II–IV CRC; Haystack vs Signatera head-to-head); NCT06979661 (25; MRD-PORT trial; post-op stage II–III NSCLC; Haystack MRD-guided RT); NCT05798663/AFT-57 (158; unresectable stage III NSCLC; atezolizumab ± tiragolumab CRT; Haystack MRD used for correlative MRD analyses)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT07125729 | https://clinicaltrials.gov/study/NCT06979661 | https://clinicaltrials.gov/study/NCT05798663",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical MRD assessment and longitudinal surveillance. Clinical trials focus on post-operative and surveillance settings in CRC and NSCLC.",
     "totalParticipants": 333,
     "numPublications": 17
   },
@@ -1353,6 +1367,8 @@ const mrdTestData = [
     "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf",
     "clinicalTrials": "NCT06230185 (422); VICTORI study interim cohort (~71)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06230185",
+    "clinicalSettings": ["Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical MRD, post-adjuvant assessment, and longitudinal surveillance. Medicare coverage specifically for breast cancer recurrence monitoring/surveillance setting.",
     "totalParticipants": 493,
     "numPublications": 4,
     "numPublicationsPlus": true
@@ -1423,6 +1439,8 @@ const mrdTestData = [
     "exampleTestReport": "https://www.exactsciences.com/-/media/project/headless/one-exact-web/documents/products-services/oncodetect/providers/sample-report-stage-iii-escalation.pdf?rev=10365d7a28c8467eb25d253943ce8fe9",
     "clinicalTrials": "NCT06398743 (416); α-CORRECT observational study (124)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06398743",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical MRD assessment (78% sensitivity) and longitudinal surveillance (91% sensitivity) in CRC per Alpha-CORRECT study.",
     "totalParticipants": 540,
     "numPublications": 1,
     "numPublicationsPlus": true
@@ -1471,6 +1489,8 @@ const mrdTestData = [
     "cptCodesNotes": "Contact vendor for current billing guidance.",
     "clinicalAvailability": "Clinical LDT – shipping (select geographies)",
     "clinicalTrials": "TRACER study (cTdna evaluation in eaRly breAst canCER); 100 patients with stage I–III breast cancer of all subtypes; Clinical Cancer Research, Jan 2025",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "TRACER study validated longitudinal MRD surveillance in early-stage breast cancer with lead time ~13.7 months vs imaging.",
     "totalParticipants": 100,
     "numPublications": 8,
     "numPublicationsPlus": true
@@ -1518,6 +1538,8 @@ const mrdTestData = [
     "cptCodesNotes": "Contact vendor for current billing guidance.",
     "clinicalAvailability": "Clinical LDT – shipping",
     "clinicalTrials": "ISLB 2025 bridging study, 'Performance Comparison of RaDaR 1.0 and RaDaR ST Assays for Circulating Tumor DNA Detection Across Solid Tumor Types'; 166 patients across 15 solid tumor types; 97% concordance with RaDaR 1.0",
+    "clinicalSettings": ["Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical MRD, post-adjuvant, and surveillance monitoring. Medicare coverage for HR+/HER2- breast cancer (including late recurrence >5 years) and HPV-negative head and neck cancer.",
     "totalParticipants": 166,
     "numPublications": 10,
     "numPublicationsPlus": true
@@ -1587,6 +1609,8 @@ const mrdTestData = [
     "clinicalAvailability": "Clinical LDT – shipping",
     "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf",
     "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000; Guardant Reveal ctDNA analysis)",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical landmark assessment (63% sensitivity) and longitudinal surveillance (81% sensitivity) in CRC. Medicare coverage for both post-surgical and surveillance settings.",
     "totalParticipants": 2000,
     "numPublications": 10,
     "numPublicationsPlus": true
@@ -1678,6 +1702,8 @@ const mrdTestData = [
     "exampleTestReport": "https://www.natera.com/resource-library/signatera/signatera-patient-test-sample-report/",
     "clinicalTrials": "BESPOKE CRC (NCT04264702); multicentre prospective observational study of ~2,000 stage I–IV colorectal cancer patients at up to 200 U.S. sites (MRD and surveillance cohorts)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT04264702",
+    "clinicalSettings": ["Neoadjuvant", "Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Most broadly validated across clinical settings. Neoadjuvant: breast cancer (I-SPY2 trial, Medicare covered). Post-surgery: landmark ~4 weeks (75% NSCLC sens). Post-adjuvant: after chemo completion. Surveillance: longitudinal monitoring (94% NSCLC sens). Medicare covers all settings for CRC, breast, bladder, NSCLC, ovarian.",
     "totalParticipants": 2000,
     "numPublications": 100,
     "numPublicationsPlus": true
@@ -1718,6 +1744,8 @@ const mrdTestData = [
     "cptCodes": "Contact vendor for current billing guidance.",
     "clinicalAvailability": "Clinical LDT – shipping for colorectal cancer; RUO version also available via Tempus Life Sciences.",
     "clinicalTrials": "GALAXY (CIRCULATE-Japan) subset analysis; 80 resected stage II–III colorectal cancer patients randomly selected and enriched for recurrence; Tempus xM tumor-naïve MRD assay with methylation + variant classifiers",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical landmark (61% sens, 94% spec) and longitudinal surveillance (83% sens, 90% spec) in CRC via GALAXY/CIRCULATE-Japan.",
     "totalParticipants": 80,
     "numPublications": 3,
     "numPublicationsPlus": true
@@ -1774,6 +1802,8 @@ const mrdTestData = [
     "independentValidationNotes": "Clinically validated in the PROVENC3 stage III colon cancer cohort (AACR 2024) and related ASCO/ESMO presentations assessing post-surgery and post-adjuvant ctDNA status and recurrence risk.",
     "clinicalTrials": "PROVENC3 (colon cancer validation with NKI); MEDOCC-CrEATE (stage II colon ACT); 10+ additional clinical studies in US and internationally",
     "clinicalTrialsCitations": "Labcorp press releases; Nature Medicine 2025; Clinical Cancer Research 2025.",
+    "clinicalSettings": ["Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated in PROVENC3 for post-surgical and post-adjuvant ctDNA assessment in stage III colon cancer. Longitudinal surveillance also validated.",
     "totalParticipants": 236,
     "totalParticipantsNotes": "236 patients in PROVENC3; currently evaluated in 10+ clinical studies across multiple cancer types.",
     "numPublications": 2,
@@ -1820,6 +1850,8 @@ const mrdTestData = [
     "availableRegionsNotes": "Investigational use available via Foundation Medicine and Roche global network for biopharma collaborations.",
     "clinicalAvailability": "Investigational / early access program via Foundation Medicine for MRD applications; biopharma and academic collaborations globally.",
     "clinicalTrials": "Used in translational and interventional cohorts for MRD (e.g., early bladder cancer post-cystectomy, stage II/III CRC) correlating ctDNA dynamics with outcomes.",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "Investigational MRD application validated in post-surgical and surveillance settings across multiple solid tumors. FDA Breakthrough Device designation for MRD detection.",
     "totalParticipants": null,
     "numPublications": 3,
     "numPublicationsPlus": true,
@@ -1867,6 +1899,8 @@ const mrdTestData = [
     "availableRegionsNotes": "RUO available globally via Foundation's FlexOMx Lab for biopharma and academic partnerships.",
     "clinicalAvailability": "Available globally to biopharma and academic partners as a central-lab RUO MRD solution via Foundation's FlexOMx Lab. Launched September 2025.",
     "clinicalTrials": "Positioned for MRD assessment and ctDNA kinetics in oncology drug-development studies, particularly early-stage or low-shed settings.",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "RUO platform for research use in post-surgical MRD assessment and longitudinal surveillance, particularly in early-stage or low-shedding tumors.",
     "totalParticipants": null,
     "numPublications": 0,
     "numPublicationsPlus": false,
@@ -1915,6 +1949,8 @@ const mrdTestData = [
     "clinicalAvailability": "Pre-commercial research platform. Clinical launch planned H1 2026 for muscle-invasive bladder cancer.",
     "clinicalTrials": "TOMBOLA trial (NCT04138628) – multicenter interventional in MIBC (100 patients); UMBRELLA trial (enrolled Q1 2025) for pancreatic cancer, sarcoma, CRC, NSCLC.",
     "clinicalTrialsCitations": "Veracyte Q1 2025 earnings; EAU25 presentation.",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "TOMBOLA trial validates post-surgical and surveillance MRD in muscle-invasive bladder cancer. Detected recurrence 93 days earlier than imaging.",
     "totalParticipants": 100,
     "numPublications": 2,
     "numPublicationsPlus": true,
@@ -1963,6 +1999,8 @@ const mrdTestData = [
     "clinicalAvailability": "Available to academic and biopharma partners as research platform. Guardant Reveal is the clinical LDT derived from this technology.",
     "clinicalTrials": "CRC MRD study at Massachusetts General (Parikh et al. 2021, n=103); COSMOS study; PEGASUS trial; COBRA trial.",
     "clinicalTrialsCitations": "Parikh AR et al. Clin Cancer Res 2021;27:5586-5594.",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "RUO platform validated for post-therapy landmark (56% sens at 1 month) and longitudinal surveillance (69% sens) in CRC.",
     "totalParticipants": 103,
     "numPublications": 5,
     "numPublicationsPlus": true,
@@ -2028,6 +2066,8 @@ const mrdTestData = [
     "clinicalAvailability": "Commercially available in US. Integrated into clinical practice by >1,000 healthcare providers at >400 medical sites. ~100,000 patient-physician encounters.",
     "clinicalTrials": "Phase II MRD+ study at Memorial Sloan Kettering (HB-200 intervention for HPV16+ HNSCC with molecular relapse); multiple validation cohorts.",
     "clinicalTrialsCitations": "Naveris press release April 2024; Chera BS et al. J Clin Oncol 2020;38:1050-1058; Berger BM et al. Clin Cancer Res 2022;28:4292-4301.",
+    "clinicalSettings": ["Neoadjuvant", "Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Used across entire care continuum for HPV+ cancers: pre-treatment baseline, treatment response during neoadjuvant/adjuvant therapy, post-treatment MRD assessment, and long-term surveillance. Median 4-month lead time vs imaging.",
     "totalParticipants": null,
     "totalParticipantsNotes": "Validation across multiple published cohorts totaling >1,000 patients; JAMA study included 163 diagnostic + 290 surveillance patients.",
     "numPublications": 35,
@@ -2091,6 +2131,8 @@ const mrdTestData = [
     "numPublications": 40,
     "numPublicationsPlus": true,
     "numPublicationsCitations": "Foresight website; Natera acquisition announcement noted 15 abstracts at ASH 2025.",
+    "clinicalSettings": ["Neoadjuvant", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for MRD assessment during/after frontline therapy in DLBCL and surveillance monitoring. First ctDNA-MRD test in NCCN Guidelines for DLBCL. Used to adjudicate PET-positive results at end of therapy.",
     "isRUO": false,
     "isInvestigational": true,
     "isClinicalLDT": true,
@@ -2159,6 +2201,8 @@ const mrdTestData = [
     "numPublications": 15,
     "numPublicationsPlus": true,
     "numPublicationsCitations": "TRACERx consortium publications; Garcia-Murillas et al.",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "TRACERx consortium validated post-surgical MRD assessment (93% recurrence prediction in NSCLC) and longitudinal surveillance (median 11.7 month lead time in breast cancer).",
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
@@ -2199,6 +2243,8 @@ const mrdTestData = [
     "numPublications": 5,
     "numPublicationsPlus": true,
     "numPublicationsCitations": "https://www.nature.com/articles/s41598-025-08986-0",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for post-surgical MRD assessment (HR=33.4 for MRD+ vs MRD-) and longitudinal disease monitoring (HR=4.39). Tumor-naïve approach enables testing without prior tissue profiling.",
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
@@ -2275,6 +2321,8 @@ const mrdTestData = [
     "numPublications": 100,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Extensive peer-reviewed evidence including validation studies in MM, ALL, CLL, lymphomas. Clinical data incorporated into FDA drug approvals and NCCN guidelines.",
+    "clinicalSettings": ["Neoadjuvant", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated across treatment phases for hematologic malignancies: during induction/consolidation therapy, after treatment completion, and long-term surveillance. NCCN recommends MRD assessment at each treatment stage in MM.",
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": false,
@@ -2348,6 +2396,8 @@ const mrdTestData = [
     "totalParticipantsNotes": "392 patients in initial pan-cancer validation cohort with >2,600 plasma samples analyzed.",
     "numPublications": 1,
     "numPublicationsNotes": "Initial clinical data presented at ASCO 2025. Backed by >100 publications for standard Signatera platform.",
+    "clinicalSettings": ["Neoadjuvant", "Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Same clinical settings as standard Signatera with enhanced 1 ppm sensitivity. Validates across neoadjuvant, post-surgical, post-adjuvant, and surveillance settings in breast, NSCLC, melanoma, RCC, CRC.",
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
@@ -2398,6 +2448,8 @@ const mrdTestData = [
     "clinicalAvailabilityCitations": "https://www.natera.com/oncology/latitude-tissue-free-mrd/",
     "clinicalTrials": "Validated in CIRCULATE-JAPAN GALAXY Study: 195 CRC patients, 1,300+ plasma samples. Latitude-positive patients had HR=10 for DFS (p<0.001). Latitude-positive patients who did not receive ACT had 100% relapse rate (26/26 PPV).",
     "clinicalTrialsCitations": "https://www.natera.com/oncology/latitude-tissue-free-mrd/",
+    "clinicalSettings": ["Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Tissue-free CRC MRD validated for post-surgical and post-adjuvant assessment, plus surveillance monitoring. GALAXY study showed HR=10 for recurrence in MRD+ patients.",
     "totalParticipants": 195,
     "totalParticipantsNotes": "195 patients in CIRCULATE-JAPAN GALAXY validation study with 1,300+ plasma samples.",
     "numPublications": null,
@@ -2465,6 +2517,8 @@ const mrdTestData = [
     "numPublications": 2,
     "numPublicationsNotes": "British Journal of Cancer 2023 (clinical validation), PLOS One 2025 (analytical validation). Multiple conference abstracts at AACR 2025, SABCS 2023/2025.",
     "numPublicationsCitations": "https://www.nature.com/articles/s41416-023-02300-3 | https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
+    "clinicalSettings": ["Post-Surgery", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for postoperative MRD assessment at 3 weeks (61.9% sens for recurrence) and after adjuvant therapy. MRD clearance post-adjuvant associated with better outcomes. Phase III interventional trial (NCT05534087) for MRD-guided treatment.",
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
@@ -2542,6 +2596,8 @@ const mrdTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Key conference presentations: Mattlener et al. ASH 2024 (LymphoVista HL validation in Hodgkin lymphoma); Schleifenbaum et al. EHA 2024 (LymphoVista validation in DLBCL). Peer-reviewed manuscripts under review/in submission as of December 2025.",
     "numPublicationsCitations": "https://ashpublications.org/blood/article/144/Supplement%201/4355/533429/Lymphovista-HL-a-Validated-Assay-for-Genotyping",
+    "clinicalSettings": ["Neoadjuvant", "Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Validated for interim response assessment (after 2 treatment cycles), post-treatment MRD assessment, and long-term surveillance. HD21 trial showed MRD-2 positivity prognostic even in PET-negative patients (HR 6.9 for PFS).",
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
@@ -4331,6 +4387,7 @@ const filterConfigs = {
     reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
+    clinicalSettings: ['Neoadjuvant', 'Post-Surgery', 'Post-Adjuvant', 'Surveillance'],
   },
   ECD: {
     // Oncologist priority: Single cancer or multi? Sample type? What's the target population? Covered?
@@ -4369,10 +4426,13 @@ const comparisonParams = {
     { key: 'method', label: 'Method' },
     { key: 'sampleCategory', label: 'Sample Type' },
     { key: 'cancerTypesStr', label: 'Cancer Types' },
+    { key: 'clinicalSettingsStr', label: 'Clinical Settings' },
     { key: 'sensitivity', label: 'Reported Sensitivity (%)' },
     { key: 'sensitivityStagesReported', label: 'Stages in Headline' },
     { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)' },
     { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)' },
+    { key: 'landmarkSensitivity', label: 'Post-Surgery Sensitivity (%)' },
+    { key: 'longitudinalSensitivity', label: 'Surveillance Sensitivity (%)' },
     { key: 'specificity', label: 'Reported Specificity (%)' },
     { key: 'analyticalSpecificity', label: 'Analytical Specificity (%)' },
     { key: 'clinicalSpecificity', label: 'Clinical Specificity (%)' },
@@ -9653,6 +9713,20 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           {test.cancerTypes && test.cancerTypes.slice(0, 3).map((type, i) => <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">{type.length > 20 ? type.slice(0, 20) + '...' : type}</span>)}
           {test.cancerTypes && test.cancerTypes.length > 3 && <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-xs">+{test.cancerTypes.length - 3}</span>}
         </div>
+        
+        {/* Clinical settings - MRD only */}
+        {category === 'MRD' && test.clinicalSettings && test.clinicalSettings.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {test.clinicalSettings.slice(0, 4).map((setting, i) => (
+              <span key={i} className="px-1.5 py-0.5 bg-orange-50 text-orange-600 border border-orange-200 rounded text-[10px] font-medium">
+                {setting === 'Post-Surgery' ? 'Post-Surg' : 
+                 setting === 'Surveillance' ? 'Surveil' :
+                 setting === 'Neoadjuvant' ? 'Neoadj' :
+                 setting === 'Post-Adjuvant' ? 'Post-Adj' : setting}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
       
       {/* Show detail button - pushed to bottom */}
@@ -10303,6 +10377,25 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   </div>
                 </Section>
               )}
+              
+              {/* Clinical Settings - MRD only */}
+              {category === 'MRD' && test.clinicalSettings && test.clinicalSettings.length > 0 && (
+                <Section title="Validated Clinical Settings">
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {test.clinicalSettings.map((setting, i) => (
+                      <span key={i} className="px-3 py-1.5 bg-orange-50 text-orange-700 border border-orange-200 rounded-full text-xs font-medium">
+                        {setting === 'Post-Surgery' ? '🔬 Post-Surgery (landmark)' : 
+                         setting === 'Surveillance' ? '📊 Surveillance (longitudinal)' :
+                         setting === 'Neoadjuvant' ? '💊 Neoadjuvant' :
+                         setting === 'Post-Adjuvant' ? '✅ Post-Adjuvant' : setting}
+                      </span>
+                    ))}
+                  </div>
+                  {test.clinicalSettingsNotes && (
+                    <p className="text-xs text-gray-500 mt-2">{test.clinicalSettingsNotes}</p>
+                  )}
+                </Section>
+              )}
                 </>
               )}
               
@@ -10525,6 +10618,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                       : param.key === 'commercialPayersStr' ? test.commercialPayers?.join(', ')
                       : param.key === 'availableRegionsStr' ? (test.availableRegions?.join(', ') || 'US')
                       : param.key === 'biomarkersReportedStr' ? test.biomarkersReported?.join(', ')
+                      : param.key === 'clinicalSettingsStr' ? test.clinicalSettings?.join(', ')
                       : test[param.key];
                     const hasValue = value != null && value !== '';
                     
@@ -10643,6 +10737,7 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [selectedSampleCategories, setSelectedSampleCategories] = useState([]);
   const [selectedFdaStatus, setSelectedFdaStatus] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
+  const [selectedClinicalSettings, setSelectedClinicalSettings] = useState([]);
   const [minParticipants, setMinParticipants] = useState(0);
   const [minPublications, setMinPublications] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -10828,6 +10923,11 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
         });
         if (!matchesRegion) return false;
       }
+      // Clinical Settings filter (MRD only)
+      if (selectedClinicalSettings.length > 0 && test.clinicalSettings) {
+        const hasMatchingSetting = selectedClinicalSettings.some(s => test.clinicalSettings.includes(s));
+        if (!hasMatchingSetting) return false;
+      }
       // Performance filters
       if (minSensitivity > 0) {
         const sens = parseFloat(test.sensitivity);
@@ -10856,13 +10956,13 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
       if (minCdx > 0 && (!test.fdaCompanionDxCount || test.fdaCompanionDxCount < minCdx)) return false;
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600' };
 
@@ -10944,13 +11044,42 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
               <FilterSection 
                 title={isPatient ? 'My Cancer' : 'Clinical'} 
                 defaultOpen={false}
-                activeCount={selectedCancerTypes.length + selectedTestScopes.length}
+                activeCount={selectedCancerTypes.length + selectedTestScopes.length + selectedClinicalSettings.length}
               >
                 {/* Cancer Type - for MRD, TRM, CGP */}
                 {category !== 'ECD' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
                     <div className="max-h-40 overflow-y-auto">{config.cancerTypes?.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
+                  </>
+                )}
+                {/* Clinical Setting - MRD only */}
+                {category === 'MRD' && !isPatient && config.clinicalSettings && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">Clinical Setting</label>
+                    <div className="space-y-0.5">
+                      {config.clinicalSettings.map(s => (
+                        <Checkbox 
+                          key={s} 
+                          label={s === 'Post-Surgery' ? 'Post-Surgery (landmark)' : s === 'Surveillance' ? 'Surveillance (longitudinal)' : s}
+                          checked={selectedClinicalSettings.includes(s)} 
+                          onChange={() => toggle(setSelectedClinicalSettings)(s)} 
+                        />
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1 italic">Filter by validated clinical context</p>
+                  </>
+                )}
+                {/* Patient-friendly clinical setting for MRD */}
+                {category === 'MRD' && isPatient && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">When in my treatment?</label>
+                    <div className="space-y-0.5">
+                      <Checkbox label="Before surgery (during chemo)" checked={selectedClinicalSettings.includes('Neoadjuvant')} onChange={() => toggle(setSelectedClinicalSettings)('Neoadjuvant')} />
+                      <Checkbox label="Right after surgery" checked={selectedClinicalSettings.includes('Post-Surgery')} onChange={() => toggle(setSelectedClinicalSettings)('Post-Surgery')} />
+                      <Checkbox label="After chemo finishes" checked={selectedClinicalSettings.includes('Post-Adjuvant')} onChange={() => toggle(setSelectedClinicalSettings)('Post-Adjuvant')} />
+                      <Checkbox label="Ongoing monitoring" checked={selectedClinicalSettings.includes('Surveillance')} onChange={() => toggle(setSelectedClinicalSettings)('Surveillance')} />
+                    </div>
                   </>
                 )}
                 {/* Test Scope - for ECD only */}
