@@ -5354,14 +5354,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
-        {/* Left: Lifecycle Navigator */}
-        <div className="lg:w-[55%] flex-shrink-0">
+        {/* Left: Lifecycle Navigator - Hidden on mobile */}
+        <div className="hidden md:block lg:w-[55%] flex-shrink-0">
           <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Explore Tests by Category</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
         {/* Right: Search Tools */}
-        <div className="lg:w-[45%] flex flex-col gap-3">
+        <div className="w-full lg:w-[45%] flex flex-col gap-3">
           <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-1 flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
@@ -6022,9 +6022,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Data Openness Overview (includes Top 3 ranking) - Only for Clinician/Academic views */}
+        {/* Data Openness Overview (includes Top 3 ranking) - Only for Clinician/Academic views, hidden on mobile */}
         {persona !== 'Patient' && (
-          <div className="mb-4">
+          <div className="hidden md:block mb-4">
             <DatabaseSummary />
           </div>
         )}
@@ -7201,13 +7201,13 @@ const FAQPage = () => {
         ))}
       </div>
 
-      {/* Openness Ranking */}
-      <div className="mt-8">
+      {/* Openness Ranking - Hidden on mobile */}
+      <div className="hidden md:block mt-8">
         <OpennessAward />
       </div>
 
-      {/* Database Summary */}
-      <div className="mt-6">
+      {/* Database Summary - Hidden on mobile */}
+      <div className="hidden md:block mt-6">
         <DatabaseSummary />
       </div>
     </div>
@@ -8357,13 +8357,13 @@ const SourceDataPage = () => {
         </p>
       </div>
 
-      {/* Openness Ranking */}
-      <div className="mt-8">
+      {/* Openness Ranking - Hidden on mobile */}
+      <div className="hidden md:block mt-8">
         <OpennessAward />
       </div>
 
-      {/* Database Summary */}
-      <div className="mt-6">
+      {/* Database Summary - Hidden on mobile */}
+      <div className="hidden md:block mt-6">
         <DatabaseSummary />
       </div>
     </div>
