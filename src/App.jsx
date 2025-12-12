@@ -4928,7 +4928,8 @@ const Badge = ({ children, variant = 'default', title }) => {
     success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     orange: 'bg-orange-50 text-orange-700 border-orange-200',
     green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    red: 'bg-sky-100 text-sky-700 border-sky-300',
+    red: 'bg-red-100 text-red-700 border-red-300',
+    sky: 'bg-sky-100 text-sky-700 border-sky-300',
     blue: 'bg-blue-50 text-blue-700 border-blue-200',
     purple: 'bg-purple-50 text-purple-700 border-purple-200',
     amber: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -9945,19 +9946,21 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 // ============================================
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
+  const isDiscontinued = test.isDiscontinued === true;
   
   return (
-    <div id={`test-card-${test.id}`} className={`h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div id={`test-card-${test.id}`} className={`h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all ${isDiscontinued ? 'opacity-60' : ''} ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* Header - clickable to show detail modal */}
       <div className="cursor-pointer flex-1" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              {test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0 
+              {isDiscontinued && <Badge variant="red">DISCONTINUED</Badge>}
+              {!isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0 
                 ? <Badge variant="success">Medicare+Private</Badge>
-                : test.reimbursement?.toLowerCase().includes('medicare') 
+                : !isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') 
                   ? <Badge variant="success">Medicare</Badge>
-                  : test.commercialPayers && test.commercialPayers.length > 0 
+                  : !isDiscontinued && test.commercialPayers && test.commercialPayers.length > 0 
                     ? <Badge variant="blue">Private</Badge>
                     : null}
               {test.adltStatus && <Badge variant="amber" title="CMS Advanced Diagnostic Laboratory Test - annual rate updates based on private payer data">ADLT</Badge>}
@@ -9968,7 +9971,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
-            <h3 className="font-semibold text-gray-900">{test.name}</h3>
+            <h3 className={`font-semibold ${isDiscontinued ? 'text-gray-500 line-through' : 'text-gray-900'}`}>{test.name}</h3>
             <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           {/* Prominent comparison checkbox - click selects for comparison, hidden on mobile */}
@@ -10073,6 +10076,8 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
 // Patient Test Card - Simplified view for patients
 // ============================================
 const PatientTestCard = ({ test, category, onShowDetail }) => {
+  const isDiscontinued = test.isDiscontinued === true;
+  
   // Determine coverage status
   const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
     !test.reimbursement?.toLowerCase().includes('not yet') &&
@@ -10125,20 +10130,22 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
   );
   
   return (
-    <div className="h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all">
+    <div className={`h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all ${isDiscontinued ? 'opacity-60' : ''}`}>
       {/* Header - clickable to show detail modal */}
       <div className="cursor-pointer flex-1 flex flex-col" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
-            <h3 className="font-semibold text-gray-900 text-lg">{test.name}</h3>
+            <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-500 line-through' : 'text-gray-900'}`}>{test.name}</h3>
             <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
+            isDiscontinued ? 'bg-red-100 text-red-700' :
             hasMedicare && hasPrivate ? 'bg-emerald-100 text-emerald-700' :
             hasMedicare || hasPrivate ? 'bg-blue-100 text-blue-700' :
             'bg-gray-100 text-gray-500'
           }`}>
-            {hasMedicare && hasPrivate ? 'Insurance Covered' :
+            {isDiscontinued ? 'DISCONTINUED' :
+             hasMedicare && hasPrivate ? 'Insurance Covered' :
              hasMedicare ? 'Medicare Covered' :
              hasPrivate ? 'Some Insurance' : 'Check Coverage'}
           </div>
@@ -10299,6 +10306,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
     !test.reimbursement?.toLowerCase().includes('no established');
   const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
   const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes' || test.sampleCategory === 'Tissue';
+  const isDiscontinued = test.isDiscontinued === true;
   
   // Section component for consistent styling
   const Section = ({ title, children, expertTopic }) => (
@@ -10330,6 +10338,18 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
       <style>{printStyles}</style>
       <div className="test-detail-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" onClick={onClose}>
         <div className="test-detail-print-area bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+          {/* Discontinued Banner */}
+          {isDiscontinued && (
+            <div className="bg-red-600 text-white px-5 py-3 flex items-center gap-3" style={{ flexShrink: 0 }}>
+              <svg className="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div>
+                <p className="font-bold">THIS TEST HAS BEEN DISCONTINUED</p>
+                <p className="text-sm text-red-100">{test.discontinuedReason || 'This product is no longer commercially available.'}</p>
+              </div>
+            </div>
+          )}
           {/* Header */}
           <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
             <div className="flex-1 mr-4">
