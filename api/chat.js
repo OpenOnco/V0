@@ -50,7 +50,7 @@ const DEFAULT_MODEL = 'claude-haiku-3-5-20241022';
 const MAX_TOKENS_LIMIT = 1024; // Cap max_tokens regardless of what client requests
 const MAX_MESSAGE_LENGTH = 4000; // Max characters per message
 const MAX_MESSAGES = 10; // Max messages in conversation
-const MAX_SYSTEM_PROMPT_LENGTH = 50000; // System prompt includes test database
+const MAX_SYSTEM_PROMPT_LENGTH = 200000; // System prompt includes test database
 
 // Required system prompt prefix - ensures this is an OpenOnco request
 const REQUIRED_SYSTEM_PREFIX = 'You are a liquid biopsy test information assistant for OpenOnco';
