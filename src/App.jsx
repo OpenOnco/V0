@@ -5990,16 +5990,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Which CGP tests have the fastest turnaround time?
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("I'm a patient - can you explain MRD tests in simple terms?")}
+                    onClick={() => handleChatSubmit("I am a patient, please use straightforward language")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    🩺 I'm a patient - can you explain MRD tests in simple terms?
+                    🩺 I am a patient, please use straightforward language
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("I'm an oncologist. Show me LOD, sensitivity, and specificity data for tumor-naïve MRD assays.")}
+                    onClick={() => handleChatSubmit("I am a physician, please use clinical language")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    👨‍⚕️ I'm an oncologist. Show me LOD and sensitivity data for tumor-naïve MRD assays.
+                    👨‍⚕️ I am a physician, please use clinical language
                   </button>
                 </div>
               </div>
