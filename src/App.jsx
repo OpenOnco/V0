@@ -4940,10 +4940,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: selectedModel,
-          max_tokens: 800,
-          system: systemPrompt,
-          messages: recentMessages
+          category: 'all',
+          persona: persona,
+          testData: JSON.stringify(chatTestData),
+          messages: recentMessages,
+          model: selectedModel
         })
       });
       
@@ -5495,10 +5496,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: selectedModel,
-          max_tokens: 800,
-          system: systemPrompt,
-          messages: recentMessages
+          category: 'all',
+          persona: persona,
+          testData: JSON.stringify(chatTestData),
+          messages: recentMessages,
+          model: selectedModel
         })
       });
       
@@ -6335,10 +6337,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: selectedModel,
-          max_tokens: 800,
-          system: systemPrompt,
-          messages: recentMessages
+          category: 'all',
+          persona: persona,
+          testData: JSON.stringify(chatTestData),
+          messages: recentMessages,
+          model: selectedModel
         })
       });
       
@@ -8956,10 +8959,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: selectedModel,
-          max_tokens: 800,
-          system: systemPrompt,
-          messages: conversationHistory
+          category: category,
+          persona: persona,
+          testData: JSON.stringify(chatTestData[category]),
+          messages: conversationHistory,
+          model: selectedModel
         })
       });
       const data = await response.json();
