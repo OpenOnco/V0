@@ -52,12 +52,12 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 12, 2025',
-    type: 'discontinued',
+    type: 'updated',
     testId: 'trm-1',
-    testName: 'Guardant360 Response',
+    testName: 'Guardant360 Response (DISCONTINUED)',
     vendor: 'Guardant Health',
     category: 'TRM',
-    description: 'Product sun-setted per vendor. Guardant has consolidated monitoring portfolio to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic). Guardant360 Response is no longer commercially available.',
+    description: 'PRODUCT DISCONTINUED: Sun-setted per vendor. Guardant has consolidated monitoring portfolio to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic). Guardant360 Response is no longer commercially available.',
     contributor: 'Brandon Guida PhD',
     affiliation: 'Guardant Health (vendor)',
     citation: null
@@ -8899,6 +8899,8 @@ const SubmissionsPage = () => {
                     <span>• {
                       !entry.affiliation || entry.affiliation === 'OpenOnco' 
                         ? 'OpenOnco' :
+                      !entry.vendor
+                        ? (entry.contributor ? `${entry.contributor} (${entry.affiliation})` : entry.affiliation) :
                       entry.vendor.toLowerCase().includes(entry.affiliation.toLowerCase()) || 
                       entry.affiliation.toLowerCase().includes(entry.vendor.split(' ')[0].toLowerCase())
                         ? `Vendor update: ${entry.contributor ? entry.contributor + ' (' + entry.affiliation + ')' : entry.affiliation}`
