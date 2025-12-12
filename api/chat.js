@@ -50,7 +50,6 @@ const DEFAULT_MODEL = 'claude-haiku-3-5-20241022';
 const MAX_TOKENS_LIMIT = 1024; // Cap max_tokens regardless of what client requests
 const MAX_MESSAGE_LENGTH = 4000; // Max characters per message
 const MAX_MESSAGES = 10; // Max messages in conversation
-const MAX_SYSTEM_PROMPT_LENGTH = 200000; // System prompt includes test database
 
 // Required system prompt prefix - ensures this is an OpenOnco request
 const REQUIRED_SYSTEM_PREFIX = 'You are a liquid biopsy test information assistant for OpenOnco';
@@ -97,9 +96,6 @@ function validateMessages(messages) {
 function validateSystemPrompt(system) {
   if (!system || typeof system !== 'string') {
     return { valid: false, error: 'System prompt required' };
-  }
-  if (system.length > MAX_SYSTEM_PROMPT_LENGTH) {
-    return { valid: false, error: 'System prompt too long' };
   }
   // Ensure this is a legitimate OpenOnco request
   if (!system.includes(REQUIRED_SYSTEM_PREFIX)) {
