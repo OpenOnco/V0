@@ -37,8 +37,11 @@ WHAT YOU CAN DO:
 
 // Get client IP for rate limiting
 function getClientIP(req) {
-  return req.headers.get?.('x-forwarded-for')?.split(',')[0]?.trim() || 
-         req.headers.get?.('x-real-ip') || 
+  // Use object property access for Node.js/Vercel serverless (not Web API Headers.get())
+  const forwarded = req.headers['x-forwarded-for'];
+  const realIP = req.headers['x-real-ip'];
+  return (forwarded ? forwarded.split(',')[0].trim() : null) || 
+         realIP || 
          'unknown';
 }
 
