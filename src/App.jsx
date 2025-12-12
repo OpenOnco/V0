@@ -22,6 +22,7 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'trm-12', name: 'Reveal TRM', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
@@ -29,7 +30,6 @@ const RECENTLY_ADDED_TESTS = [
   { id: 'mrd-19', name: 'clonoSEQ', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 10, 2025' },
   { id: 'cgp-16', name: 'Northstar Select', vendor: 'BillionToOne', category: 'CGP', dateAdded: 'Dec 9, 2025' },
   { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
-  { id: 'trm-10', name: 'Guardant360 Response', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 8, 2025' },
   { id: 'cgp-15', name: 'NEO PanTracer Tissue', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 7, 2025' },
@@ -50,6 +50,42 @@ const RECENTLY_ADDED_TESTS = [
 //   - "OpenOnco" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 12, 2025',
+    type: 'discontinued',
+    testId: 'trm-1',
+    testName: 'Guardant360 Response',
+    vendor: 'Guardant Health',
+    category: 'TRM',
+    description: 'Product sun-setted per vendor. Guardant has consolidated monitoring portfolio to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic). Guardant360 Response is no longer commercially available.',
+    contributor: 'Brandon Guida PhD',
+    affiliation: 'Guardant Health (vendor)',
+    citation: null
+  },
+  {
+    date: 'Dec 12, 2025',
+    type: 'added',
+    testId: 'trm-12',
+    testName: 'Reveal TRM',
+    vendor: 'Guardant Health',
+    category: 'TRM',
+    description: 'Added new methylation-based therapy response monitoring test for advanced/metastatic solid tumors. Uses Guardant Infinity platform with methylation-based tumor fraction (mTF) quantification. Precision down to ~0.01% TF, not confounded by CNAs or CHIP. Validated in >50,000 cfDNA samples across 20+ cancer types (AACR 2025).',
+    contributor: 'Brandon Guida PhD',
+    affiliation: 'Guardant Health (vendor)',
+    citation: null
+  },
+  {
+    date: 'Dec 12, 2025',
+    type: 'updated',
+    testId: 'mrd-6',
+    testName: 'Reveal MRD',
+    vendor: 'Guardant Health',
+    category: 'MRD',
+    description: 'Renamed from "Reveal" to "Reveal MRD" per vendor product consolidation. Expanded cancer types to include breast and non-small cell lung cancer (previously CRC only). Early-stage cancer focus for MRD detection/recurrence monitoring after curative-intent therapy.',
+    contributor: 'Brandon Guida PhD',
+    affiliation: 'Guardant Health (vendor)',
+    citation: null
+  },
   {
     date: 'Dec 13, 2025',
     type: 'feature',
@@ -824,8 +860,8 @@ const getSampleTests = (stageId) => {
   switch(stageId) {
     case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
     case 'CGP': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
-    case 'TRM': return ['Guardant360 Response', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
-    case 'MRD': return ['Signatera', 'Guardant Reveal', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
+    case 'TRM': return ['Reveal TRM', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
+    case 'MRD': return ['Signatera', 'Reveal MRD', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
     default: return [];
   }
 };
@@ -1694,14 +1730,16 @@ const mrdTestData = [
   {
     "id": "mrd-6",
     "sampleCategory": "Blood/Plasma",
-    "name": "Reveal",
-    "vendor": "Guardant",
+    "name": "Reveal MRD",
+    "vendor": "Guardant Health",
     "approach": "Tumor-naïve",
-    "method": "Tumor-naïve, blood-only ctDNA MRD test that integrates variant-based and methylation/epigenomic signals to detect residual disease and recurrence without requiring tumor tissue.",
+    "method": "Tumor-naïve, blood-only ctDNA MRD test using methylation-based detection and quantification on Guardant Infinity platform. Detects residual disease and recurrence without requiring tumor tissue.",
     "cancerTypes": [
-      "Colorectal"
+      "Colorectal",
+      "Breast",
+      "Non-small cell lung cancer (NSCLC)"
     ],
-    "indicationsNotes": "Guardant Reveal tumor-naïve ctDNA MRD test with Medicare coverage for colorectal cancer (CRC) post-surgery and surveillance after curative-intent treatment.",
+    "indicationsNotes": "Guardant Reveal MRD tumor-naïve ctDNA test for early-stage cancer MRD detection and recurrence monitoring after curative-intent treatment. Medicare coverage for CRC; breast and NSCLC coverage expanding.",
     "sensitivity": 81.0,
     "sensitivityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11443202/",
     "sensitivityNotes": "COSMOS 2024 longitudinal sensitivity for stage II+ CRC is ~81%. Earlier landmark/Reinert 2021 data showed 55-63% sensitivity. Headline value reflects current COSMOS longitudinal performance.",
@@ -3441,13 +3479,16 @@ const trmTestData = [
     "lod": "~0.1–0.2% VAF",
     "lodNotes": "Analytical validation demonstrates detection sensitivity down to ~0.1% MAF (mutant allele fraction) with high accuracy. Detection range 0.1%–0.8% VAF depending on variant type and sample characteristics.",
     "lodCitations": "Lanman RB et al. PLoS One 2015;10(10):e0140712; Guardant360 CDx technical specifications.",
-    "fdaStatus": "CLIA LDT; not FDA-approved as a CDx; used alongside FDA-approved Guardant360 CDx",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Billed as laboratory-developed test; payer coverage variable and often indication-specific",
+    "fdaStatus": "DISCONTINUED - CLIA LDT no longer available",
+    "reimbursement": "N/A - Discontinued",
+    "reimbursementNote": "Product sun-setted December 2025. Guardant has consolidated to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic) for monitoring applications.",
     "clinicalTrials": "SERENA-6 Phase III ESR1-mutant advanced breast cancer (866); clinical validation supported by 40+ studies using Guardant360 platform for ctDNA response assessment",
     "totalParticipants": 866,
     "numPublications": 40,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "isDiscontinued": true,
+    "discontinuedDate": "December 2025",
+    "discontinuedReason": "Product consolidated into Reveal TRM for therapy response monitoring"
   },
   {
     "id": "trm-2",
@@ -3689,17 +3730,17 @@ const trmTestData = [
     "leadTimeVsImaging": 56,
     "leadTimeVsImagingCitations": "Raja R et al. Clin Cancer Res 2018; Aggarwal C et al. JCO 2019; multiple immunotherapy and targeted therapy studies.",
     "leadTimeVsImagingNotes": "Predicts treatment response approximately 8 weeks (56 days) earlier than standard RECIST imaging across cancers and therapies. Molecular responders show significantly longer PFS than non-responders.",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusCitations": "Guardant Health website; Guardant360 Response product page.",
-    "reimbursement": "Coverage emerging",
-    "reimbursementNote": "Guardant360 (for initial profiling) has broad Medicare and commercial coverage. Response monitoring reimbursement pathways developing; local coverage determination expected.",
+    "fdaStatus": "DISCONTINUED - CLIA LDT no longer available",
+    "fdaStatusCitations": "Guardant Health vendor communication December 2025.",
+    "reimbursement": "N/A - Discontinued",
+    "reimbursementNote": "Product sun-setted December 2025. Guardant has consolidated to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic) for monitoring applications.",
     "listPrice": 5000,
-    "listPriceNotes": "Cash pay rate for Guardant360 Response is $5,000. Financial assistance available based on medical and financial need.",
+    "listPriceNotes": "Historical cash pay rate for Guardant360 Response was $5,000.",
     "listPriceCitations": "Guardant Health website.",
     "tat": "14 days",
     "tatNotes": "Results typically within 2 weeks. Used in conjunction with Guardant360 CDx for baseline profiling.",
-    "clinicalAvailability": "Clinical LDT – commercially available",
-    "clinicalAvailabilityNotes": "Launched June 2021. Part of Guardant Complete portfolio alongside Guardant360 CDx, Guardant360 Tissue, and Guardant Reveal.",
+    "clinicalAvailability": "DISCONTINUED - December 2025",
+    "clinicalAvailabilityNotes": "Launched June 2021, discontinued December 2025. Replaced by Reveal TRM for therapy response monitoring in advanced cancer.",
     "clinicalTrials": "50+ studies demonstrating molecular response predicts PFS across immunotherapy and targeted therapy",
     "clinicalTrialsCitations": "Raja R et al. Clin Cancer Res 2018; Aggarwal C et al. JCO 2019; Kim ST et al. Nat Med 2018; Shaw AT et al. J Thorac Oncol 2021.",
     "totalParticipants": 5000,
@@ -3713,9 +3754,12 @@ const trmTestData = [
     "variantsTrackedNotes": "Same 74-gene panel as Guardant360. Tracks all detected variants to quantify overall ctDNA burden changes.",
     "isRUO": false,
     "isInvestigational": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "First tissue-free liquid biopsy specifically for treatment response monitoring. Complements Guardant360 CDx for treatment selection by providing ongoing response assessment. Serial testing enables early detection of molecular progression before radiographic changes.",
-    "regulatoryStatusNotes": "CLIA-certified LDT performed at Guardant Health Clinical Laboratory (Redwood City, CA). Not FDA cleared/approved. Part of Guardant's oncology portfolio alongside FDA-approved Guardant360 CDx."
+    "isClinicalLDT": false,
+    "isDiscontinued": true,
+    "discontinuedDate": "December 2025",
+    "discontinuedReason": "Product consolidated into Reveal TRM for therapy response monitoring",
+    "technologyDifferentiator": "First tissue-free liquid biopsy specifically for treatment response monitoring. Replaced by methylation-based Reveal TRM which offers improved sensitivity and is not confounded by CNAs.",
+    "regulatoryStatusNotes": "DISCONTINUED December 2025. Previously CLIA-certified LDT performed at Guardant Health Clinical Laboratory (Redwood City, CA)."
   },
   {
     "id": "trm-11",
@@ -3760,6 +3804,59 @@ const trmTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Only commercially available liquid biopsy that sequences both plasma and buffy coat (WBC) to distinguish somatic tumor variants from clonal hematopoiesis (CH) and germline variants. CHIP subtraction prevents ~40% of samples from receiving potentially incorrect therapy recommendations based on non-tumor mutations."
+  },
+  {
+    "id": "trm-12",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Reveal TRM",
+    "vendor": "Guardant Health",
+    "approach": "Tumor-naïve (methylation-based)",
+    "method": "Methylation-based tumor fraction (mTF) quantification on Guardant Infinity platform. Tracks thousands of differentially methylated regions (DMRs) to detect and quantify ctDNA tumor burden without requiring tumor tissue. Provides high sensitivity and precision not confounded by copy number alterations (CNAs) or clonal hematopoiesis (CHIP).",
+    "methodCitations": "AACR 2025 Tumor Fraction Update presentation; Nakamura Y et al. Clin Cancer Res 2024; Liang et al. 2025 Cancer Res Commun.",
+    "cancerTypes": [
+      "Pan-cancer: any solid tumor on systemic therapy"
+    ],
+    "targetPopulation": "Patients with advanced/metastatic solid tumors receiving systemic therapy who need treatment response monitoring",
+    "responseDefinition": "Molecular responders defined by significant decrease in methylation-based tumor fraction (mTF) from baseline. mTF changes correlate with radiological tumor volume changes and predict clinical outcomes.",
+    "indicationsNotes": "Therapy response monitoring for advanced cancer with visible disease. Early prediction of therapy response and outcomes. Patients with significant decrease in ctDNA tumor fraction have better clinical response than molecular non-responders.",
+    "sensitivity": null,
+    "sensitivityNotes": "Not applicable for response monitoring - measures relative mTF changes over time rather than absolute detection.",
+    "specificity": null,
+    "specificityNotes": "High specificity for tumor-derived signal due to methylation approach that excludes non-tumor biological noise without requiring additional specimen types.",
+    "lod": "0.01% TF",
+    "lodNotes": "Methylation-based tumor fraction quantification validated with precision down to ~0.01% TF. Analytical validation in titrated samples shows linearity and precision across CRC, lung, and breast cancer. Not impacted by CNAs like genomic VAF approaches (R=0.78 vs R=0.66 correlation with CNV-based TF).",
+    "lodCitations": "AACR 2025 Tumor Fraction Update; cohort of >50,000 cfDNA samples from >20 cancer types.",
+    "leadTimeVsImaging": null,
+    "leadTimeVsImagingNotes": "mTF changes mirror radiological tumor volume changes (Harvey-Jones et al. Annals of Oncology 2024). Molecular response detectable earlier than imaging in many cases.",
+    "leadTimeVsImagingCitations": "Harvey-Jones et al. Annals of Oncology 2024; AACR 2025 presentations.",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory Developed Test performed at Guardant Health Clinical Laboratory (Redwood City, CA). Part of Guardant's consolidated monitoring portfolio using Infinity platform.",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "New product launched as successor to Guardant360 Response. Reimbursement pathways developing.",
+    "clinicalAvailability": "Clinical LDT – commercially available December 2025",
+    "clinicalAvailabilityNotes": "Launched December 2025 as part of Guardant portfolio consolidation. Replaces Guardant360 Response for therapy response monitoring in advanced cancer. Part of Reveal product family alongside Reveal MRD for early-stage cancer.",
+    "availableRegions": ["US"],
+    "tat": "7 days",
+    "tatNotes": "Vendor-reported 7-day median TAT, same as Reveal MRD.",
+    "sampleType": "Whole blood in Guardant cfDNA BCT tubes",
+    "bloodVolume": 20,
+    "bloodVolumeNotes": "Two 10mL Streck cfDNA tubes (approximately 20mL).",
+    "clinicalTrials": "Validated in >31,000 patients in LDT/CLIA setting; >50,000 cfDNA samples across >20 cancer types used for algorithm development",
+    "clinicalTrialsCitations": "AACR 2025 Tumor Fraction Update presentation.",
+    "totalParticipants": 31000,
+    "totalParticipantsNotes": "Pan-cancer landscape of tumor fraction in >31,000 patients across most frequent solid tumors from CLIA ordering.",
+    "numPublications": 80,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "Guardant Health claims >80 publications showing clinical feasibility or validity of genomic MR and/or monitoring.",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "Tumor-naïve approach - no tumor tissue required for panel design or analysis.",
+    "requiresMatchedNormal": "No",
+    "requiresMatchedNormalNotes": "Methylation-based approach provides improved exclusion of biological noise without additional sequencing of matched normal specimen.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "technologyDifferentiator": "Methylation-based tumor fraction quantification offers advantages over genomic VAF methods: (1) Tracks thousands of methylation loci vs handful of coding loci for higher sensitivity; (2) Not confounded by CNAs that affect genomic max-MAF estimates; (3) Excludes non-tumor noise (including CHIP) without requiring matched normal sequencing; (4) Validated precision down to 0.01% TF. Uses same Guardant Infinity platform as Reveal MRD, Shield, and Shield MCD.",
+    "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with methylation-based tumor fraction quantification."
   }
 ];
 
@@ -5266,7 +5363,7 @@ const TestShowcase = ({ onNavigate }) => {
   
   // Example questions for chat
   const exampleQuestions = [
-    "Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring",
+    "Compare Signatera and Reveal MRD for colorectal cancer MRD monitoring",
     "What ECD tests have Medicare coverage?",
     "Which CGP tests have the fastest turnaround time?"
   ];
@@ -5978,10 +6075,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
                   <button
-                    onClick={() => handleChatSubmit("Compare Signatera and Guardant Reveal for MRD monitoring")}
+                    onClick={() => handleChatSubmit("Compare Signatera and Reveal MRD for MRD monitoring")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Compare Signatera and Guardant Reveal for MRD monitoring
+                    Compare Signatera and Reveal MRD for MRD monitoring
                   </button>
                   <button
                     onClick={() => handleChatSubmit("Which CGP tests have the fastest turnaround time?")}
@@ -6384,7 +6481,7 @@ const HomePage = ({ onNavigate }) => {
   
   // All tests combined for chat header ticker
   const exampleQuestions = [
-    "Compare Signatera and Guardant Reveal for colorectal cancer MRD monitoring",
+    "Compare Signatera and Reveal MRD for colorectal cancer MRD monitoring",
     "What ECD tests have Medicare coverage?"
   ];
 
