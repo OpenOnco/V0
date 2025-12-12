@@ -10116,18 +10116,32 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   // Print styles for test detail - fixed for multi-page printing
   const printStyles = `
     @media print {
-      /* Hide everything except detail modal */
-      body > *:not(.test-detail-modal-root) { display: none !important; }
-      .test-detail-modal-root > *:not(.test-detail-print-area) { display: none !important; }
+      /* Hide everything except the print area */
+      body * {
+        visibility: hidden;
+      }
+      .test-detail-print-area,
+      .test-detail-print-area * {
+        visibility: visible;
+      }
       
       /* Reset modal positioning for print */
       .test-detail-modal-root {
-        position: static !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
         display: block !important;
-        background: none !important;
       }
       .test-detail-print-area { 
-        position: static !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
         max-height: none !important;
         height: auto !important;
         overflow: visible !important;
@@ -10135,14 +10149,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
         border-radius: 0 !important;
         max-width: 100% !important;
       }
+      
+      /* Allow content to flow across pages */
+      .test-detail-print-area,
       .test-detail-print-area > div {
         max-height: none !important;
         overflow: visible !important;
-      }
-      
-      /* Content should break across pages naturally */
-      .test-detail-print-area section { 
-        page-break-inside: avoid;
+        height: auto !important;
       }
       
       /* Hide interactive elements */
@@ -10720,18 +10733,32 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   // Print styles - fixed for multi-page printing
   const printStyles = `
     @media print {
-      /* Hide everything except comparison */
-      body > *:not(.comparison-modal-root) { display: none !important; }
-      .comparison-modal-root > *:not(.comparison-print-area) { display: none !important; }
+      /* Hide everything except the print area */
+      body * {
+        visibility: hidden;
+      }
+      .comparison-print-area,
+      .comparison-print-area * {
+        visibility: visible;
+      }
       
       /* Reset modal positioning for print */
       .comparison-modal-root {
-        position: static !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
         display: block !important;
-        background: none !important;
       }
       .comparison-print-area { 
-        position: static !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
         max-height: none !important;
         height: auto !important;
         overflow: visible !important;
@@ -10739,24 +10766,27 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
         border-radius: 0 !important;
         max-width: 100% !important;
       }
+      
+      /* Allow content to flow across pages */
+      .comparison-print-area,
       .comparison-print-area > div {
         max-height: none !important;
         overflow: visible !important;
+        height: auto !important;
       }
       
       /* Table should break across pages naturally */
       .comparison-print-area table { 
         font-size: 9px;
-        page-break-inside: auto;
-      }
-      .comparison-print-area tr { 
-        page-break-inside: avoid;
-        page-break-after: auto;
       }
       .comparison-print-area thead { 
         display: table-header-group;
       }
-      .comparison-print-area th, .comparison-print-area td { 
+      .comparison-print-area tr { 
+        page-break-inside: avoid;
+      }
+      .comparison-print-area th, 
+      .comparison-print-area td { 
         padding: 3px 5px;
       }
       
