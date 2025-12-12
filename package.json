@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
     "@vercel/analytics": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
