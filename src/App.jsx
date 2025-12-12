@@ -52,6 +52,18 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 13, 2025',
+    type: 'feature',
+    testId: null,
+    testName: 'Site Update',
+    vendor: null,
+    category: null,
+    description: 'Added shareable comparison links (copy link button in comparison modal). Fixed print-to-PDF bug that repeated Page 1 on all pages.',
+    contributor: 'Jeff Hull',
+    affiliation: 'BillionToOne (via LinkedIn)',
+    citation: null
+  },
+  {
+    date: 'Dec 13, 2025',
     type: 'updated',
     testId: 'mrd-15',
     testName: 'Foresight CLARITY Lymphoma',
@@ -5923,7 +5935,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
           <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI</h3>
           {/* Claude Chat Input */}
-          <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-1 flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
+          <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex flex-col gap-2">
               <div className="relative">
                 <input
@@ -5962,7 +5974,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             
             {/* Example Questions */}
             {messages.length === 0 && (
-              <div className="flex-1 flex flex-col mt-1.5">
+              <div className="flex-1 flex flex-col mt-2">
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
                   <button
@@ -5976,6 +5988,18 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
                     Which CGP tests have the fastest turnaround time?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("I'm a patient - can you explain MRD tests in simple terms?")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    🩺 I'm a patient - can you explain MRD tests in simple terms?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("I'm an oncologist. Show me LOD, sensitivity, and specificity data for tumor-naïve MRD assays.")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    👨‍⚕️ I'm an oncologist. Show me LOD and sensitivity data for tumor-naïve MRD assays.
                   </button>
                 </div>
               </div>
@@ -6009,23 +6033,23 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             )}
           </div>
 
-          {/* Text Search Bar */}
-          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-4 border-2 border-red-300 flex-1 flex flex-col justify-center shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
-            <p className="text-xs font-semibold text-red-700 uppercase tracking-wide mb-2 text-center">Or: Quick Search</p>
+          {/* Text Search Bar - Smaller */}
+          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
+            <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Or: Quick Search</p>
             <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Filter the test list below by name, vendor, cancer or test type..."
-                className="w-full px-3 py-2 pl-9 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
+                placeholder="Filter by name, vendor, cancer..."
+                className="w-full px-3 py-1.5 pl-8 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
               />
-              <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               {searchQuery && (
                 <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-red-400 hover:text-red-600">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -8752,24 +8776,25 @@ const SubmissionsPage = () => {
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                   entry.type === 'added' ? 'bg-emerald-100 text-emerald-700' :
                   entry.type === 'updated' ? 'bg-blue-100 text-blue-700' :
+                  entry.type === 'feature' ? 'bg-purple-100 text-purple-700' :
                   'bg-red-100 text-red-700'
                 }`}>
-                  {entry.type === 'added' ? '+' : entry.type === 'updated' ? '↑' : '−'}
+                  {entry.type === 'added' ? '+' : entry.type === 'updated' ? '↑' : entry.type === 'feature' ? '★' : '−'}
                 </div>
                 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-semibold text-gray-900">{entry.testName}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                    {entry.category && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       entry.category === 'MRD' ? 'bg-orange-100 text-orange-700' :
                       entry.category === 'ECD' ? 'bg-emerald-100 text-emerald-700' :
                       entry.category === 'TRM' ? 'bg-sky-100 text-sky-700' :
                       'bg-violet-100 text-violet-700'
                     }`}>
                       {entry.category}
-                    </span>
-                    <span className="text-xs text-gray-400">{entry.vendor}</span>
+                    </span>}
+                    {entry.vendor && <span className="text-xs text-gray-400">{entry.vendor}</span>}
                   </div>
                   <p className="text-sm text-gray-600 mt-1">{entry.description}</p>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
@@ -10088,20 +10113,41 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
     });
   };
   
-  // Print styles for test detail
+  // Print styles for test detail - fixed for multi-page printing
   const printStyles = `
     @media print {
-      body * { visibility: hidden; }
-      .test-detail-print-area, .test-detail-print-area * { visibility: visible; }
+      /* Hide everything except detail modal */
+      body > *:not(.test-detail-modal-root) { display: none !important; }
+      .test-detail-modal-root > *:not(.test-detail-print-area) { display: none !important; }
+      
+      /* Reset modal positioning for print */
+      .test-detail-modal-root {
+        position: static !important;
+        display: block !important;
+        background: none !important;
+      }
       .test-detail-print-area { 
-        position: absolute; 
-        left: 0; 
-        top: 0; 
-        width: 100%;
+        position: static !important;
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        max-width: 100% !important;
+      }
+      .test-detail-print-area > div {
         max-height: none !important;
         overflow: visible !important;
       }
+      
+      /* Content should break across pages naturally */
+      .test-detail-print-area section { 
+        page-break-inside: avoid;
+      }
+      
+      /* Hide interactive elements */
       .print\\:hidden { display: none !important; }
+      
       @page { margin: 0.5in; }
     }
   `;
@@ -10170,7 +10216,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   return (
     <>
       <style>{printStyles}</style>
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" onClick={onClose}>
+      <div className="test-detail-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" onClick={onClose}>
         <div className="test-detail-print-area bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
           {/* Header */}
           <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
@@ -10645,24 +10691,82 @@ const getLodUnitBadge = (unit) => {
 const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   const params = comparisonParams[category] || comparisonParams.MRD;
   const meta = categoryMeta[category];
+  const [linkCopied, setLinkCopied] = useState(false);
   
-  // Print styles
+  // Generate shareable link
+  const getShareableLink = () => {
+    const testIds = tests.map(t => t.id).join(',');
+    return `${window.location.origin}?category=${category}&compare=${testIds}`;
+  };
+  
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(getShareableLink());
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch (err) {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = getShareableLink();
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    }
+  };
+  
+  // Print styles - fixed for multi-page printing
   const printStyles = `
     @media print {
-      body * { visibility: hidden; }
-      .comparison-print-area, .comparison-print-area * { visibility: visible; }
+      /* Hide everything except comparison */
+      body > *:not(.comparison-modal-root) { display: none !important; }
+      .comparison-modal-root > *:not(.comparison-print-area) { display: none !important; }
+      
+      /* Reset modal positioning for print */
+      .comparison-modal-root {
+        position: static !important;
+        display: block !important;
+        background: none !important;
+      }
       .comparison-print-area { 
-        position: absolute; 
-        left: 0; 
-        top: 0; 
-        width: 100%;
+        position: static !important;
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        max-width: 100% !important;
+      }
+      .comparison-print-area > div {
         max-height: none !important;
         overflow: visible !important;
       }
+      
+      /* Table should break across pages naturally */
+      .comparison-print-area table { 
+        font-size: 9px;
+        page-break-inside: auto;
+      }
+      .comparison-print-area tr { 
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      .comparison-print-area thead { 
+        display: table-header-group;
+      }
+      .comparison-print-area th, .comparison-print-area td { 
+        padding: 3px 5px;
+      }
+      
+      /* Hide interactive elements */
       .print\\:hidden { display: none !important; }
-      .comparison-print-area table { font-size: 10px; }
-      .comparison-print-area th, .comparison-print-area td { padding: 4px 6px; }
-      @page { margin: 0.5in; size: landscape; }
+      
+      @page { 
+        margin: 0.4in; 
+        size: landscape;
+      }
     }
   `;
   
@@ -10717,7 +10821,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   return (
     <>
       <style>{printStyles}</style>
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:backdrop-blur-none" onClick={onClose}>
+      <div className="comparison-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:backdrop-blur-none" onClick={onClose}>
         <div className="comparison-print-area bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
           {/* Colored Header */}
           <div className={`flex justify-between items-center p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
@@ -10733,6 +10837,23 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
               </div>
             </div>
           <div className="flex items-center gap-2">
+            {/* Copy Link Button */}
+            <button 
+              onClick={copyLink} 
+              className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors print:hidden flex items-center gap-1`}
+              title="Copy shareable link"
+            >
+              {linkCopied ? (
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              )}
+              {linkCopied && <span className="text-white text-xs">Copied!</span>}
+            </button>
             <button 
               onClick={() => window.print()} 
               className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors print:hidden`}
@@ -10924,7 +11045,7 @@ const getSuggestedTests = (selectedTestIds, allTests, maxSuggestions = 6) => {
 // ============================================
 // Category Page
 // ============================================
-const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) => {
+const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onClearInitialTest }) => {
   const meta = categoryMeta[category];
   const config = filterConfigs[category];
   const tests = meta.tests;
@@ -10950,8 +11071,17 @@ const CategoryPage = ({ category, initialSelectedTestId, onClearInitialTest }) =
   const [tumorTissueRequired, setTumorTissueRequired] = useState('any'); // 'any', 'yes', 'no'
   const [minGenes, setMinGenes] = useState(0);
   const [minCdx, setMinCdx] = useState(0);
-  const [selectedTests, setSelectedTests] = useState(initialSelectedTestId ? [initialSelectedTestId] : []);
-  const [showComparison, setShowComparison] = useState(false);
+  const [selectedTests, setSelectedTests] = useState(() => {
+    // Initialize from either comparison IDs or single test ID
+    if (initialCompareIds && initialCompareIds.length >= 2) {
+      return initialCompareIds;
+    }
+    return initialSelectedTestId ? [initialSelectedTestId] : [];
+  });
+  const [showComparison, setShowComparison] = useState(() => {
+    // Auto-open comparison if we have compare IDs
+    return initialCompareIds && initialCompareIds.length >= 2;
+  });
   const [detailTest, setDetailTest] = useState(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [canScrollMore, setCanScrollMore] = useState(false);
@@ -11703,18 +11833,27 @@ export default function App() {
   
   const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
+  const [initialCompareIds, setInitialCompareIds] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
   
-  // Check URL parameters on mount for direct test links
+  // Check URL parameters on mount for direct test links and comparison links
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category');
     const testId = params.get('test');
+    const compareIds = params.get('compare');
     
     if (category && ['MRD', 'ECD', 'TRM', 'CGP'].includes(category)) {
       setCurrentPage(category);
       if (testId) {
         setInitialSelectedTestId(testId);
+      }
+      if (compareIds) {
+        // Parse comma-separated test IDs for comparison
+        const ids = compareIds.split(',').filter(id => id.trim());
+        if (ids.length >= 2) {
+          setInitialCompareIds(ids);
+        }
       }
       // Clear URL parameters after reading
       window.history.replaceState({}, '', window.location.pathname);
@@ -11777,7 +11916,7 @@ export default function App() {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': case 'CGP': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} onClearInitialTest={() => setInitialSelectedTestId(null)} />;
+      case 'MRD': case 'ECD': case 'TRM': case 'CGP': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage />;
