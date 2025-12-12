@@ -641,8 +641,75 @@ const Markdown = ({ children, className = '' }) => {
       return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : parts;
     };
 
-    for (let i = 0; i < lines.length; i++) {
+    // Helper to parse table cells from a row
+    const parseTableRow = (line) => {
+      return line
+        .split('|')
+        .map(cell => cell.trim())
+        .filter((_, idx, arr) => idx > 0 && idx < arr.length - 1 || (arr[0] !== '' && idx === 0) || (arr[arr.length-1] !== '' && idx === arr.length - 1))
+        .filter(cell => cell !== '');
+    };
+
+    // Check if a line is a table separator (|---|---|)
+    const isTableSeparator = (line) => {
+      return /^\|?[\s\-:|]+\|?$/.test(line) && line.includes('-');
+    };
+
+    // Check if a line looks like a table row
+    const isTableRow = (line) => {
+      return line.includes('|') && !isTableSeparator(line);
+    };
+
+    let i = 0;
+    while (i < lines.length) {
       const line = lines[i];
+
+      // Table detection: look for pattern of row, separator, rows
+      if (isTableRow(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+        flushList();
+        
+        // Parse header
+        const headerCells = parseTableRow(line);
+        
+        // Skip separator
+        i += 2;
+        
+        // Parse body rows
+        const bodyRows = [];
+        while (i < lines.length && isTableRow(lines[i])) {
+          bodyRows.push(parseTableRow(lines[i]));
+          i++;
+        }
+        
+        // Render table
+        elements.push(
+          <div key={key++} className="overflow-x-auto my-2">
+            <table className="min-w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  {headerCells.map((cell, idx) => (
+                    <th key={idx} className="border border-gray-300 px-3 py-1.5 text-left font-semibold text-gray-700">
+                      {parseInline(cell)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bodyRows.map((row, rowIdx) => (
+                  <tr key={rowIdx} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    {row.map((cell, cellIdx) => (
+                      <td key={cellIdx} className="border border-gray-300 px-3 py-1.5 text-gray-600">
+                        {parseInline(cell)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+        continue;
+      }
 
       // Headers
       const headerMatch = line.match(/^(#{1,6})\s+(.+)$/);
@@ -660,6 +727,7 @@ const Markdown = ({ children, className = '' }) => {
         };
         const Tag = `h${level}`;
         elements.push(<Tag key={key++} className={headerClasses[level]}>{content}</Tag>);
+        i++;
         continue;
       }
 
@@ -669,6 +737,7 @@ const Markdown = ({ children, className = '' }) => {
         if (listType !== 'ul') flushList();
         listType = 'ul';
         currentList.push(<li key={key++}>{parseInline(ulMatch[1])}</li>);
+        i++;
         continue;
       }
 
@@ -678,18 +747,21 @@ const Markdown = ({ children, className = '' }) => {
         if (listType !== 'ol') flushList();
         listType = 'ol';
         currentList.push(<li key={key++}>{parseInline(olMatch[1])}</li>);
+        i++;
         continue;
       }
 
       // Empty line
       if (line.trim() === '') {
         flushList();
+        i++;
         continue;
       }
 
       // Regular paragraph
       flushList();
       elements.push(<p key={key++} className="my-1">{parseInline(line)}</p>);
+      i++;
     }
 
     flushList();
