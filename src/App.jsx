@@ -4940,11 +4940,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: recentMessages,
-          testData: JSON.stringify(chatTestData),
-          keyLegend: chatKeyLegend,
-          persona: persona,
-          model: selectedModel
+          model: selectedModel,
+          max_tokens: 800,
+          system: systemPrompt,
+          messages: recentMessages
         })
       });
       
@@ -5496,10 +5495,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: recentMessages,
-          testData: JSON.stringify(chatTestData),
-          persona: persona,
-          model: selectedModel
+          model: selectedModel,
+          max_tokens: 800,
+          system: systemPrompt,
+          messages: recentMessages
         })
       });
       
@@ -6336,11 +6335,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: recentMessages,
-          testData: JSON.stringify(chatTestData),
-          keyLegend: chatKeyLegend,
-          persona: persona,
-          model: selectedModel
+          model: selectedModel,
+          max_tokens: 800,
+          system: systemPrompt,
+          messages: recentMessages
         })
       });
       
@@ -8958,12 +8956,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: conversationHistory,
-          testData: JSON.stringify(chatTestData[category]),
-          keyLegend: chatKeyLegend,
-          persona: persona,
           model: selectedModel,
-          context: category
+          max_tokens: 800,
+          system: systemPrompt,
+          messages: conversationHistory
         })
       });
       const data = await response.json();
