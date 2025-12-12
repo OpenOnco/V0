@@ -173,11 +173,17 @@ export default async function handler(req, res) {
     
   } catch (error) {
     console.error('Chat API error:', error.message);
+    console.error('Full error:', error);
     
     if (error.status === 429) {
       return res.status(429).json({ error: 'Service temporarily unavailable' });
     }
     
-    return res.status(500).json({ error: 'An error occurred' });
+    // Return details for debugging (remove in production)
+    return res.status(500).json({ 
+      error: 'An error occurred',
+      message: error.message,
+      type: error.constructor.name
+    });
   }
 }
