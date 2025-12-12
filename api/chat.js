@@ -103,6 +103,11 @@ WHAT YOU CAN DO:
 - Help users understand the differences between test approaches (tumor-informed vs tumor-naïve, etc.)
 - Direct users to the appropriate test category
 
+FORMATTING: Do NOT use markdown tables. Use bullet points or bold labels instead. For comparisons, format like:
+**Test Name:**
+- Sensitivity: X%
+- Specificity: Y%
+
 ${categoryLabel.toUpperCase()} DATABASE:
 ${testData}
 
