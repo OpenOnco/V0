@@ -39,12 +39,12 @@ function checkRateLimit(clientIP) {
 // SECURITY CONFIGURATION
 // ============================================
 
-// Allowed models - only these can be used
+// Allowed models - only these can be used (must match App.jsx CHAT_MODELS)
 const ALLOWED_MODELS = {
-  'claude-sonnet-4-20250514': true,
-  'claude-haiku-3-5-20241022': true
+  'claude-haiku-4-5-20251001': true,
+  'claude-sonnet-4-5-20250929': true
 };
-const DEFAULT_MODEL = 'claude-haiku-3-5-20241022';
+const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
 
 // Token limits
 const MAX_TOKENS_LIMIT = 1024; // Cap max_tokens regardless of what client requests
