@@ -5941,14 +5941,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all overflow-hidden`}
               >
-                {/* Diagonal slash for discontinued tests */}
+                {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
-                    <svg className="w-full h-full" preserveAspectRatio="none">
-                      <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
-                    </svg>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-gray-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                      DISCONTINUED
+                    </span>
                   </div>
                 )}
                 <div className="flex items-start justify-between mb-1">
@@ -6256,14 +6256,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all overflow-hidden`}
               >
-                {/* Diagonal slash for discontinued tests */}
+                {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
-                    <svg className="w-full h-full" preserveAspectRatio="none">
-                      <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
-                    </svg>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-gray-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                      DISCONTINUED
+                    </span>
                   </div>
                 )}
                 <div className="flex items-start justify-between mb-1">
@@ -10027,15 +10027,13 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const isDiscontinued = test.isDiscontinued === true;
   
   return (
-    <div id={`test-card-${test.id}`} className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
-      {/* Diagonal slash for discontinued tests */}
+    <div id={`test-card-${test.id}`} className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+      {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-          <div className="absolute top-0 left-0 w-full h-full">
-            <svg className="w-full h-full" preserveAspectRatio="none">
-              <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
-            </svg>
-          </div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-gray-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
+            DISCONTINUED
+          </span>
         </div>
       )}
       {/* Header - clickable to show detail modal */}
@@ -10218,15 +10216,13 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
   );
   
   return (
-    <div className={`relative h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all`}>
-      {/* Diagonal slash for discontinued tests */}
+    <div className={`relative h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all overflow-hidden`}>
+      {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-          <div className="absolute top-0 left-0 w-full h-full">
-            <svg className="w-full h-full" preserveAspectRatio="none">
-              <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
-            </svg>
-          </div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-gray-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
+            DISCONTINUED
+          </span>
         </div>
       )}
       {/* Header - clickable to show detail modal */}
