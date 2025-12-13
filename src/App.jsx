@@ -51,6 +51,18 @@ const RECENTLY_ADDED_TESTS = [
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
   {
+    date: 'Dec 13, 2025',
+    type: 'updated',
+    testId: 'mrd-23',
+    testName: 'LymphoVista',
+    vendor: 'LIQOMICS',
+    category: 'MRD',
+    description: 'Corrected turnaround times per vendor: Initial TAT and Follow-up TAT both 10 days (previously listed as 2-4 weeks).',
+    contributor: 'Jens Winter',
+    affiliation: 'LIQOMICS (vendor)',
+    citation: null
+  },
+  {
     date: 'Dec 12, 2025',
     type: 'updated',
     testId: 'cgp-16',
@@ -2762,10 +2774,10 @@ const mrdTestData = [
     "requiresTumorTissueNotes": "Blood-based assay. Initial genotyping can use blood sample (ctDNA) or tissue if available. Does not require solid tumor biopsy.",
     "requiresMatchedNormal": "No",
     "requiresMatchedNormalNotes": "Genotyping identifies lymphoma-specific mutations from ctDNA without requiring matched normal sequencing.",
-    "initialTat": "2-4 weeks",
-    "initialTatNotes": "Initial genotyping test to identify patient-specific mutations: 2-4 weeks.",
-    "followUpTat": "2-4 weeks",
-    "followUpTatNotes": "Serial MRD monitoring of known mutations: 2-4 weeks from sample receipt.",
+    "initialTat": "10 days",
+    "initialTatNotes": "Initial genotyping test to identify patient-specific mutations: 10 days.",
+    "followUpTat": "10 days",
+    "followUpTatNotes": "Serial MRD monitoring of known mutations: 10 days from sample receipt.",
     "bloodVolume": "20 mL",
     "bloodVolumeNotes": "20 mL blood in cfDNA tubes required for testing.",
     "sampleRequirements": "20 mL blood in cfDNA preservation tubes",
