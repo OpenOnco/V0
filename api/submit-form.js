@@ -76,6 +76,7 @@ export default async function handler(req, res) {
     await resend.emails.send({
       from: 'OpenOnco <noreply@openonco.org>',
       to: 'alexgdickinson@gmail.com',
+      replyTo: submitterEmail,
       subject: subject,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
