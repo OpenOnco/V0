@@ -8933,7 +8933,7 @@ const SubmissionsPage = () => {
 
       {/* Database Changelog Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Database Changelog</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Database Changelog</h2>
         <p className="text-gray-600 mb-6">Recent updates to the OpenOnco test database, including community contributions.</p>
         
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
