@@ -6676,7 +6676,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         {/* Banner */}
         <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-4">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 text-center">
-            OpenOnco: Cancer Tests—Collected, Curated, Explained
+            Advanced Molecular Diagnostics: Collected, Curated, Explained
           </h1>
         </div>
 
@@ -7502,21 +7502,21 @@ const LearnPage = ({ onNavigate }) => {
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-          NGS-Based Cancer Testing: A Technical Overview
+          Advanced Molecular Diagnostics: A Technical Overview
         </h1>
         <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-          Next-generation sequencing has enabled blood-based tests across the full cancer care continuum—from early detection to post-treatment surveillance.
+          Modern diagnostic technologies—from next-generation sequencing to protein biomarker analysis—enable blood-based tests across the full cancer care continuum, from early detection to post-treatment surveillance.
         </p>
       </div>
 
       {/* The Technology Section */}
       <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-12 border border-slate-200">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Underlying Technology</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Underlying Technologies</h2>
         <p className="text-gray-700 mb-4">
-          When cells undergo apoptosis or necrosis, they release DNA fragments into the bloodstream. This <strong>cell-free DNA (cfDNA)</strong> can be isolated from plasma and analyzed. In cancer patients, a fraction of cfDNA derives from tumor cells—this is <strong>circulating tumor DNA (ctDNA)</strong>, which carries the same somatic alterations present in the tumor.
+          Advanced molecular diagnostics leverage multiple technologies to extract clinically actionable information from patient samples. <strong>Cell-free DNA (cfDNA)</strong> analysis isolates DNA fragments released by cells into the bloodstream—in cancer patients, a fraction derives from tumor cells (<strong>circulating tumor DNA or ctDNA</strong>), carrying the same somatic alterations present in the tumor. Beyond DNA, tests may analyze methylation patterns, protein biomarkers, or structural variants.
         </p>
         <p className="text-gray-700 mb-6">
-          NGS-based liquid biopsy tests exploit this biology to answer different clinical questions depending on the patient's disease state:
+          These technologies answer different clinical questions depending on the patient's disease state:
         </p>
         <div className="grid sm:grid-cols-2 gap-4">
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
@@ -7753,7 +7753,7 @@ const FAQPage = () => {
       question: "What types of tests does OpenOnco cover?",
       answer: (
         <p>
-          OpenOnco focuses on laboratory-developed tests (LDTs) and services that patients and clinicians can access directly. We cover four categories of cancer testing: <strong>Early Cancer Detection (ECD)</strong> for screening, <strong>Comprehensive Genomic Profiling (TDS)</strong> for newly diagnosed patients, <strong>Treatment Response Monitoring (TRM)</strong> for patients on active treatment, and <strong>Minimal Residual Disease (MRD)</strong> for surveillance after treatment. We do not include reagent kits or assay systems that laboratories must purchase and validate themselves—our focus is on orderable services.
+          OpenOnco focuses on advanced molecular diagnostics—laboratory-developed tests (LDTs) and services that patients and clinicians can access directly. We cover four categories: <strong>Early Cancer Detection (ECD)</strong> for screening, <strong>Treatment Decision Support (TDS)</strong> for guiding treatment decisions in newly diagnosed patients, <strong>Treatment Response Monitoring (TRM)</strong> for patients on active treatment, and <strong>Minimal Residual Disease (MRD)</strong> for surveillance after treatment. We include tests using various technologies—genomic sequencing, methylation analysis, protein biomarkers, and more—as long as they're orderable clinical services rather than reagent kits laboratories must validate themselves.
         </p>
       )
     },
