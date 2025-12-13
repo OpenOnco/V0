@@ -7529,8 +7529,8 @@ const LearnPage = ({ onNavigate }) => {
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
             <span className="text-2xl">🧬</span>
             <div>
-              <p className="font-semibold text-gray-900">Genomic Profiling</p>
-              <p className="text-sm text-gray-600">Identify actionable mutations for therapy selection</p>
+              <p className="font-semibold text-gray-900">Treatment Decisions</p>
+              <p className="text-sm text-gray-600">Guide therapy selection and intervention decisions</p>
             </div>
           </div>
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
@@ -8525,7 +8525,7 @@ const SubmissionsPage = () => {
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
                 { key: 'TRM', label: 'TRM', desc: 'Treatment Response', color: 'sky' },
-                { key: 'TDS', label: 'TDS', desc: 'Genomic Profiling', color: 'violet' },
+                { key: 'TDS', label: 'TDS', desc: 'Treatment Decisions', color: 'violet' },
               ].map(cat => (
                 <button
                   key={cat.key}
@@ -9060,8 +9060,8 @@ const SourceDataPage = () => {
           tests: trmTestData
         },
         TDS: {
-          name: 'Comprehensive Genomic Profiling',
-          description: 'Tests for identifying actionable genomic alterations to guide targeted therapy selection',
+          name: 'Treatment Decision Support',
+          description: 'Tests for guiding treatment decisions including therapy selection and intervention decisions',
           testCount: tdsTestData.length,
           tests: tdsTestData
         }
