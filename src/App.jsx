@@ -22,15 +22,16 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'tds-18', name: 'IsoPSA', vendor: 'Cleveland Diagnostics', category: 'TDS', dateAdded: 'Dec 13, 2025' },
   { id: 'trm-12', name: 'Reveal TRM', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-19', name: 'clonoSEQ', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 10, 2025' },
-  { id: 'cgp-16', name: 'Northstar Select', vendor: 'BillionToOne', category: 'CGP', dateAdded: 'Dec 9, 2025' },
+  { id: 'tds-16', name: 'Northstar Select', vendor: 'BillionToOne', category: 'TDS', dateAdded: 'Dec 9, 2025' },
   { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
-  { id: 'cgp-15', name: 'NEO PanTracer Tissue', vendor: 'NeoGenomics', category: 'CGP', dateAdded: 'Dec 8, 2025' },
+  { id: 'tds-15', name: 'NEO PanTracer Tissue', vendor: 'NeoGenomics', category: 'TDS', dateAdded: 'Dec 8, 2025' },
   { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 7, 2025' },
   { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 7, 2025' },
@@ -52,6 +53,18 @@ const RECENTLY_ADDED_TESTS = [
 const DATABASE_CHANGELOG = [
   {
     date: 'Dec 13, 2025',
+    type: 'added',
+    testId: 'tds-18',
+    testName: 'IsoPSA',
+    vendor: 'Cleveland Diagnostics',
+    category: 'TDS',
+    description: 'Added FDA PMA-approved protein structure-based prostate cancer diagnostic. IsoClear platform analyzes PSA structural variants (not concentration) to aid biopsy decisions. 90.2% sensitivity, runs on standard analyzers (COBAS, Siemens, Abbott). In NCCN and AUA/SUO guidelines, Medicare covered.',
+    contributor: 'Sameer Rohatgi',
+    affiliation: 'Cleveland Diagnostics',
+    citation: 'https://www.businesswire.com/news/home/20251201324198/en/FDA-Approves-IsoPSA----Cleveland-Diagnostics-Novel-Blood-Based-Prostate-Cancer-Test'
+  },
+  {
+    date: 'Dec 13, 2025',
     type: 'updated',
     testId: 'mrd-23',
     testName: 'LymphoVista',
@@ -65,10 +78,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 12, 2025',
     type: 'updated',
-    testId: 'cgp-16',
+    testId: 'tds-16',
     testName: 'Northstar Select',
     vendor: 'BillionToOne',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Updated reimbursement status: Medicare coverage via MolDx (Palmetto GBA LCD L38043) effective February 14, 2025.',
     contributor: 'David Huland',
     affiliation: 'BillionToOne (vendor)',
@@ -161,10 +174,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 11, 2025',
     type: 'added',
-    testId: 'cgp-17',
+    testId: 'tds-17',
     testName: 'Guardant360 Liquid',
     vendor: 'Guardant Health',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Added comprehensive 744-gene liquid biopsy LDT (distinct from 74-gene FDA-approved CDx). Features: genomic + epigenomic (promoter methylation) insights, CHIP filtering, virus detection (EBV/HPV), tumor fraction quantification. Runs on Guardant Infinity platform with 10x more genes and 10x higher sensitivity than previous version.',
     contributor: 'Brandon (Scott) Guida PhD',
     affiliation: 'Guardant Health (vendor)',
@@ -245,10 +258,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 10, 2025',
     type: 'updated',
-    testId: 'cgp-15',
+    testId: 'tds-15',
     testName: 'NEO PanTracer Tissue',
     vendor: 'NeoGenomics',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Renamed from "Neo Comprehensive" to "NEO PanTracer Tissue" to reflect NeoGenomics product rebrand.',
     contributor: 'Heather Robinson',
     affiliation: 'Illumina',
@@ -293,10 +306,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 10, 2025',
     type: 'updated',
-    testId: 'cgp-1',
+    testId: 'tds-1',
     testName: 'FoundationOne CDx',
     vendor: 'Foundation Medicine',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Added international availability info - available in 100+ countries via Roche global network (EU lab in Penzberg, Germany; MHLW approved in Japan)',
     contributor: null,
     affiliation: 'OpenOnco',
@@ -305,10 +318,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 10, 2025',
     type: 'updated',
-    testId: 'cgp-2',
+    testId: 'tds-2',
     testName: 'FoundationOne Liquid CDx',
     vendor: 'Foundation Medicine',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Added international availability info - available in 100+ countries via Roche global network',
     contributor: null,
     affiliation: 'OpenOnco',
@@ -317,10 +330,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 10, 2025',
     type: 'updated',
-    testId: 'cgp-3',
+    testId: 'tds-3',
     testName: 'FoundationOne Heme',
     vendor: 'Foundation Medicine',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Added international availability info - available via Roche global network',
     contributor: null,
     affiliation: 'OpenOnco',
@@ -377,10 +390,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 9, 2025',
     type: 'added',
-    testId: 'cgp-16',
+    testId: 'tds-16',
     testName: 'Northstar Select',
     vendor: 'BillionToOne',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Initial database entry - liquid biopsy CGP with 0.15% VAF LOD',
     contributor: 'Rob Manor',
     affiliation: 'BillionToOne',
@@ -437,10 +450,10 @@ const DATABASE_CHANGELOG = [
   {
     date: 'Dec 8, 2025',
     type: 'added',
-    testId: 'cgp-15',
+    testId: 'tds-15',
     testName: 'Neo Comprehensive',
     vendor: 'NeoGenomics',
-    category: 'CGP',
+    category: 'TDS',
     description: 'Initial database entry',
     contributor: null,
     affiliation: 'OpenOnco',
@@ -555,9 +568,9 @@ const LIFECYCLE_STAGES = [
     arrowDirection: 'right',
   },
   { 
-    id: 'CGP', 
-    name: 'Comprehensive Genomic Profiling',
-    acronym: 'CGP',
+    id: 'TDS', 
+    name: 'Treatment Decision Support',
+    acronym: 'TDS',
     phase: 'Newly Diagnosed',
     color: 'violet',
     icon: '🧬',
@@ -872,7 +885,7 @@ const getStoredPersona = () => {
 const getTestCount = (stageId) => {
   switch(stageId) {
     case 'ECD': return typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13;
-    case 'CGP': return 8; // Placeholder until CGP data exists
+    case 'TDS': return 8; // Placeholder until TDS data exists
     case 'TRM': return typeof trmTestData !== 'undefined' ? trmTestData.length : 9;
     case 'MRD': return typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15;
     default: return 0;
@@ -883,7 +896,7 @@ const getTestCount = (stageId) => {
 const getSampleTests = (stageId) => {
   switch(stageId) {
     case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
-    case 'CGP': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
+    case 'TDS': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
     case 'TRM': return ['Reveal TRM', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
     case 'MRD': return ['Signatera', 'Reveal MRD', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
     default: return [];
@@ -1027,7 +1040,7 @@ const LifecycleNavigator = ({ onNavigate }) => {
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10,
+    TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10,
     TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 9,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
   };
@@ -1093,7 +1106,7 @@ const NewsFeed = ({ onNavigate }) => {
     MRD: 'bg-orange-500',
     ECD: 'bg-emerald-500',
     TRM: 'bg-sky-500',
-    CGP: 'bg-violet-500'
+    TDS: 'bg-violet-500'
   };
 
   // Handle click on recently added test
@@ -3885,13 +3898,13 @@ const trmTestData = [
 ];
 
 // ============================================
-// DATA: CGP Tests
+// DATA: TDS Tests (Treatment Decision Support - formerly CGP)
 // ============================================
 // ⛔ STOP! Adding or editing a test? Update DATABASE_CHANGELOG first! (line ~35)
 
-const cgpTestData = [
+const tdsTestData = [
   {
-    "id": "cgp-1",
+    "id": "tds-1",
     "name": "FoundationOne CDx",
     "vendor": "Foundation Medicine",
     "sampleCategory": "Tissue",
@@ -3950,7 +3963,7 @@ const cgpTestData = [
     "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1200/JCO.2017.75.3780"]
   },
   {
-    "id": "cgp-2",
+    "id": "tds-2",
     "name": "FoundationOne Liquid CDx",
     "vendor": "Foundation Medicine",
     "sampleCategory": "Blood/Plasma",
@@ -4005,7 +4018,7 @@ const cgpTestData = [
     "clinicalAvailabilityCitations": "https://www.cancernetwork.com/view/fda-approves-foundationone-liquid-cdx-as-companion-diagnostic"
   },
   {
-    "id": "cgp-3",
+    "id": "tds-3",
     "name": "FoundationOne Heme",
     "vendor": "Foundation Medicine",
     "sampleCategory": "Tissue/Blood/Bone Marrow",
@@ -4047,7 +4060,7 @@ const cgpTestData = [
     "clinicalAvailabilityCitations": "https://www.foundationmedicine.com/test/foundationone-heme"
   },
   {
-    "id": "cgp-4",
+    "id": "tds-4",
     "name": "Guardant360 CDx",
     "vendor": "Guardant Health",
     "sampleCategory": "Blood/Plasma",
@@ -4102,7 +4115,7 @@ const cgpTestData = [
     "publicationsExampleCitations": ["https://pubmed.ncbi.nlm.nih.gov/33619370/", "https://pubmed.ncbi.nlm.nih.gov/37256839/"]
   },
   {
-    "id": "cgp-17",
+    "id": "tds-17",
     "name": "Guardant360 Liquid",
     "vendor": "Guardant Health",
     "sampleCategory": "Blood/Plasma",
@@ -4152,7 +4165,7 @@ const cgpTestData = [
     "clinicalAvailabilityCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-Introduces-Major-Smart-Liquid-Biopsy-Upgrade-to-Market-Leading-Guardant360-Test-Further-Extending-Its-Best-in-Class-Performance/default.aspx"
   },
   {
-    "id": "cgp-5",
+    "id": "tds-5",
     "name": "Tempus xT CDx",
     "vendor": "Tempus AI",
     "sampleCategory": "Tissue",
@@ -4205,7 +4218,7 @@ const cgpTestData = [
     "complementaryTestsCitations": "https://www.tempus.com/oncology/genomic-profiling/xt-xr/"
   },
   {
-    "id": "cgp-6",
+    "id": "tds-6",
     "name": "Tempus xF",
     "vendor": "Tempus AI",
     "sampleCategory": "Blood/Plasma",
@@ -4245,7 +4258,7 @@ const cgpTestData = [
     "specificityCitations": "https://www.ncbi.nlm.nih.gov/gtr/tests/569040/"
   },
   {
-    "id": "cgp-7",
+    "id": "tds-7",
     "name": "Tempus xF+",
     "vendor": "Tempus AI",
     "sampleCategory": "Blood/Plasma",
@@ -4280,7 +4293,7 @@ const cgpTestData = [
     "clinicalAvailabilityCitations": "https://www.tempus.com/oncology/genomic-profiling/xf/"
   },
   {
-    "id": "cgp-8",
+    "id": "tds-8",
     "name": "MSK-IMPACT",
     "vendor": "Memorial Sloan Kettering",
     "sampleCategory": "Tissue",
@@ -4328,7 +4341,7 @@ const cgpTestData = [
     "keyFindingsCitations": "https://www.mskcc.org/news/fda-authorizes-msk-impact-test-analyzing-patient-tumors | https://www.cancer.gov/news-events/cancer-currents-blog/2017/genomic-profiling-tests-cancer"
   },
   {
-    "id": "cgp-9",
+    "id": "tds-9",
     "name": "MI Cancer Seek",
     "vendor": "Caris Life Sciences",
     "sampleCategory": "Tissue",
@@ -4373,7 +4386,7 @@ const cgpTestData = [
     "analyticalValidationCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html"
   },
   {
-    "id": "cgp-11",
+    "id": "tds-11",
     "name": "OncoExTra",
     "vendor": "Exact Sciences",
     "sampleCategory": "Tissue",
@@ -4410,7 +4423,7 @@ const cgpTestData = [
     "clinicalUtilityCitations": "https://www.oncotarget.com/article/28285/text/ | https://pubmed.ncbi.nlm.nih.gov/37256839/"
   },
   {
-    "id": "cgp-12",
+    "id": "tds-12",
     "name": "OmniSeq INSIGHT",
     "vendor": "Labcorp Oncology (OmniSeq)",
     "sampleCategory": "Tissue",
@@ -4445,7 +4458,7 @@ const cgpTestData = [
     "clinicalAvailabilityCitations": "https://oncology.labcorp.com/providers/order-a-test/omniseq-insight"
   },
   {
-    "id": "cgp-13",
+    "id": "tds-13",
     "name": "StrataNGS",
     "vendor": "Strata Oncology",
     "sampleCategory": "Tissue",
@@ -4481,7 +4494,7 @@ const cgpTestData = [
     "clinicalUtilityCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088 | https://pubmed.ncbi.nlm.nih.gov/34723565/"
   },
   {
-    "id": "cgp-14",
+    "id": "tds-14",
     "name": "MI Profile",
     "vendor": "Caris Life Sciences",
     "sampleCategory": "Tissue",
@@ -4518,7 +4531,7 @@ const cgpTestData = [
     "clinicalAvailabilityCitations": "https://www.carislifesciences.com/physicians/profiling/"
   },
   {
-    "id": "cgp-15",
+    "id": "tds-15",
     "name": "NEO PanTracer Tissue",
     "previousName": "Neo Comprehensive",
     "vendor": "NeoGenomics",
@@ -4560,7 +4573,7 @@ const cgpTestData = [
     "regulatoryStatusNotes": "CAP-accredited and CLIA-certified laboratories in Fort Myers and Tampa, FL; Aliso Viejo and San Diego, CA; Research Triangle Park, NC; and Houston, TX. New York State approved January 2024."
   },
   {
-    "id": "cgp-16",
+    "id": "tds-16",
     "name": "Northstar Select",
     "vendor": "BillionToOne",
     "sampleCategory": "Blood/Plasma",
@@ -4613,6 +4626,68 @@ const cgpTestData = [
     "independentValidation": "Prospective head-to-head validation against 6 commercially available assays from 4 CLIA/CAP labs (n=182 patients, 17+ tumor types, 6 community clinics + 1 hospital). Orthogonal ddPCR validation showed 98% concordance.",
     "independentValidationCitations": "Bower X et al. J Liq Biopsy 2025;9:1003222",
     "vendorDataSource": "Rob Manor (BillionToOne) submission Dec 2025"
+  },
+  {
+    "id": "tds-18",
+    "name": "IsoPSA",
+    "vendor": "Cleveland Diagnostics",
+    "sampleCategory": "Blood/Serum",
+    "approach": "Protein Structure Analysis",
+    "method": "IsoClear platform analyzes structural differences in PSA protein isoforms to distinguish cancer-derived PSA from benign elevations. Measures prostate cancer-specific structural variants of the PSA protein rather than total PSA concentration. Runs on standard clinical analyzers (Roche COBAS, Siemens, Abbott) enabling broad deployment from large centers to community practices.",
+    "methodCitations": "Klein EA et al. Eur Urol 2017 | Stovsky M et al. J Urol 2019",
+    "cancerTypes": ["Prostate cancer (high-grade)"],
+    "cancerTypesNotes": "Specifically designed to detect high-grade (clinically significant) prostate cancer, helping avoid unnecessary biopsies for low-grade or benign conditions.",
+    "targetPopulation": "Men ≥50 years of age with elevated PSA levels who are candidates for prostate biopsy decision-making",
+    "targetPopulationCitations": "FDA PMA approval December 2025",
+    "indicationsNotes": "Aid in the decision for prostate biopsy. Can be used prior to initial biopsy or in patients with prior negative biopsy who remain at elevated risk. Helps clinicians and patients make more informed biopsy decisions.",
+    "sensitivity": 90.2,
+    "sensitivityNotes": "90.2% sensitivity (95% CI: 86.4%-93.0%) for high-grade prostate cancer in prospective multicenter validation study (n=888).",
+    "sensitivityCitations": "FDA PMA clinical data; Klein EA et al. Eur Urol 2017",
+    "specificity": 45.5,
+    "specificityNotes": "45.5% specificity (95% CI: 41.4%-49.6%) for high-grade prostate cancer. Specificity is 2-3x higher than traditional PSA tests, potentially avoiding up to 46% of unnecessary biopsies.",
+    "specificityCitations": "FDA PMA clinical data; Klein EA et al. Eur Urol 2017",
+    "ppv": 47.7,
+    "ppvNotes": "47.7% PPV (95% CI: 45.7%-49.8%) for high-grade prostate cancer.",
+    "ppvCitations": "FDA PMA clinical data",
+    "npv": 89.3,
+    "npvNotes": "89.3% NPV (95% CI: 85.6%-92.2%) for high-grade prostate cancer, providing high confidence in negative results.",
+    "npvCitations": "FDA PMA clinical data",
+    "auc": 0.783,
+    "aucNotes": "AUC of 0.783 (95% CI: 0.752-0.814) for high-grade prostate cancer, outperforming total PSA and % free PSA.",
+    "aucCitations": "FDA PMA clinical data",
+    "fdaStatus": "FDA PMA Approved (December 2025)",
+    "fdaStatusNotes": "FDA Premarket Approval (PMA) granted December 1, 2025. Previously offered as CLIA LDT since 2020. Breakthrough Device Designation granted October 2019.",
+    "fdaStatusCitations": "https://www.businesswire.com/news/home/20251201324198/en/FDA-Approves-IsoPSA----Cleveland-Diagnostics-Novel-Blood-Based-Prostate-Cancer-Test",
+    "nccnRecommended": true,
+    "nccnGuidelinesAligned": ["Prostate Cancer Early Detection"],
+    "nccnGuidelinesNotes": "Included in NCCN Prostate Cancer Early Detection Guidelines (2025) for use prior to biopsy and in patients with prior negative biopsy at higher risk for clinically significant prostate cancer. Also in AUA/SUO Early Detection of Prostate Cancer Guideline (2023).",
+    "nccnGuidelinesCitations": "NCCN Guidelines Prostate Cancer Early Detection v1.2026",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage established. Commercial payer coverage for 140 million covered lives. More IsoPSAs ordered in first full year as LDT than Guardant360 tests in first 3 years.",
+    "reimbursementCitations": "Cleveland Diagnostics; Sameer Rohatgi communication Dec 2025",
+    "commercialPayers": ["Multiple commercial payers (140M covered lives)"],
+    "tat": "3-5 days",
+    "tatNotes": "Results typically available in 3-5 days from sample receipt.",
+    "tatCitations": "https://www.isopsa.com/for-patients/",
+    "sampleRequirements": "Blood draw in Streck tube",
+    "sampleRequirementsNotes": "Simple blood draw collected in Streck tube. No DRE required prior to collection.",
+    "sampleRequirementsCitations": "https://www.clevelanddx.com/isopsa-testing",
+    "clinicalAvailability": "Commercially available in US (LDT since 2020, FDA PMA December 2025)",
+    "clinicalAvailabilityNotes": "Available through Cleveland Diagnostics CLIA lab and Quest Diagnostics. IVD kit format enables deployment on standard clinical analyzers (Roche COBAS, Siemens, Abbott) at any laboratory.",
+    "clinicalAvailabilityCitations": "https://www.clevelanddx.com",
+    "availableRegions": ["US"],
+    "clinicalTrials": "Prospective multicenter validation study (n=888 patients scheduled for prostate biopsy)",
+    "clinicalTrialsCitations": "FDA PMA clinical data; Klein EA et al. Eur Urol 2017",
+    "totalParticipants": 888,
+    "totalParticipantsNotes": "888 patients in prospective multicenter validation study. Additional longitudinal outcome data published in Urology 2025.",
+    "numPublications": 10,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Extensive publication portfolio including Klein EA et al. Eur Urol 2017 (initial validation), Stovsky M et al. J Urol 2019, decision analysis in Urol Pract 2022, and longitudinal outcomes in Urology 2025.",
+    "numPublicationsCitations": "https://www.clevelanddx.com/news-archive",
+    "publicationsExampleCitations": ["Klein EA et al. Eur Urol 2017", "Stovsky M et al. J Urol 2019", "Abdallah et al. Urology 2025"],
+    "technologyDifferentiator": "Only FDA-approved protein structure-based cancer diagnostic. IsoClear platform measures structural differences in proteins rather than concentration. Deployable on standard clinical analyzers (Roche COBAS, Siemens, Abbott) enabling broad access from academic centers to community urology practices - not limited to centralized specialty labs.",
+    "regulatoryStatusNotes": "FDA PMA approved December 2025. Breakthrough Device Designation 2019. In NCCN and AUA/SUO guidelines. First protein structure-based cancer blood test to receive FDA approval.",
+    "vendorDataSource": "Sameer Rohatgi (Cleveland Diagnostics) communication Dec 2025"
   }
 ];
 
@@ -4660,7 +4735,7 @@ const chatTestData = {
   MRD: mrdTestData.map(compressTestForChat),
   ECD: ecdTestData.map(compressTestForChat),
   TRM: trmTestData.map(compressTestForChat),
-  CGP: cgpTestData.map(compressTestForChat),
+  TDS: tdsTestData.map(compressTestForChat),
 };
 
 // Key legend for chatbot prompt
@@ -4726,11 +4801,11 @@ const filterConfigs = {
     reimbursements: ['Medicare', 'Commercial'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   },
-  CGP: {
-    // CGP priority: Sample type (tissue vs liquid), cancer types, FDA status, coverage
-    cancerTypes: [...new Set(cgpTestData.flatMap(t => t.cancerTypes || []))].sort(),
-    sampleCategories: [...new Set(cgpTestData.map(t => t.sampleCategory || 'Unknown'))].sort(),
-    approaches: [...new Set(cgpTestData.map(t => t.approach || 'Unknown'))].sort(),
+  TDS: {
+    // TDS priority: Sample type (tissue vs liquid), cancer types, FDA status, coverage
+    cancerTypes: [...new Set(tdsTestData.flatMap(t => t.cancerTypes || []))].sort(),
+    sampleCategories: [...new Set(tdsTestData.map(t => t.sampleCategory || 'Unknown'))].sort(),
+    approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
     reimbursements: ['Medicare', 'Commercial'],
   }
@@ -4820,7 +4895,7 @@ const comparisonParams = {
     { key: 'commercialPayersStr', label: 'Private Insurance' },
     { key: 'availableRegionsStr', label: 'Availability' },
   ],
-  CGP: [
+  TDS: [
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
     { key: 'sampleCategory', label: 'Sample Type' },
@@ -4876,16 +4951,16 @@ const categoryMeta = {
     tests: trmTestData,
     sourceUrl: BUILD_INFO.sources.TRM,
   },
-  CGP: {
-    title: 'Comprehensive Genomic Profiling',
-    shortTitle: 'Genomic Profiling',
-    description: 'Comprehensive Genomic Profiling (CGP) tests analyze hundreds of genes simultaneously to identify actionable genomic alterations that can guide targeted therapy selection. Using next-generation sequencing (NGS) on tumor tissue or blood samples (liquid biopsy), these tests detect mutations, copy number alterations, gene fusions, and biomarkers like TMB and MSI. Results help oncologists match patients to FDA-approved targeted therapies, immunotherapies, and clinical trials based on the molecular profile of their cancer.',
+  TDS: {
+    title: 'Treatment Decision Support',
+    shortTitle: 'Treatment Decisions',
+    description: 'Treatment Decision Support (TDS) tests help guide clinical decisions about cancer treatment. This includes Comprehensive Genomic Profiling (CGP) tests that analyze tumor DNA/RNA to identify targetable mutations and match patients to therapies, as well as risk stratification tests that help determine whether interventions like biopsies are needed. These tests support personalized treatment decisions based on molecular and protein biomarker analysis.',
     // Patient-friendly versions
     patientTitle: 'Find My Best Treatment',
-    patientDescription: 'These tests analyze your tumor\'s genes to find specific treatments that may work best for your cancer. They can identify targeted therapies and clinical trials matched to your tumor.',
+    patientDescription: 'These tests help your doctor decide the best treatment approach for you. They can analyze your tumor\'s characteristics to find specific treatments that may work best, or help determine if procedures like biopsies are necessary.',
     color: 'violet',
-    tests: cgpTestData,
-    sourceUrl: BUILD_INFO.sources.CGP || '',
+    tests: tdsTestData,
+    sourceUrl: BUILD_INFO.sources.TDS || '',
   },
 };
 
@@ -5068,7 +5143,7 @@ const Footer = () => (
 // Unified Chat Component (All Categories)
 // ============================================
 const UnifiedChat = ({ isFloating = false, onClose = null }) => {
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -5199,7 +5274,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   return (
     <div className={`bg-white rounded-2xl border-2 border-[#9FC4E0] overflow-hidden shadow-lg ${isFloating ? 'flex flex-col' : ''}`} style={isFloating ? { height: '500px' } : {}}>
       <div className="bg-gradient-to-r from-[#EAF1F8] to-emerald-50 px-5 py-3 border-b border-[#D5E3F0] flex items-center justify-between flex-shrink-0">
-        <p className="text-[#163A5E] text-sm">Query our database of {totalTests} MRD, ECD, TRM, and CGP tests</p>
+        <p className="text-[#163A5E] text-sm">Query our database of {totalTests} MRD, ECD, TRM, and TDS tests</p>
         {isFloating && onClose && (
           <button onClick={onClose} className="text-[#2A63A4] hover:text-[#163A5E] p-1">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -5302,7 +5377,7 @@ const RecentlyAddedBanner = ({ onNavigate }) => {
     MRD: 'bg-orange-500',
     ECD: 'bg-emerald-500',
     TRM: 'bg-sky-500',
-    CGP: 'bg-violet-500'
+    TDS: 'bg-violet-500'
   };
 
   const handleTestClick = (test) => {
@@ -5391,13 +5466,13 @@ const TestShowcase = ({ onNavigate }) => {
   const exampleQuestions = [
     "Compare Signatera and Reveal MRD for colorectal cancer MRD monitoring",
     "What ECD tests have Medicare coverage?",
-    "Which CGP tests have the fastest turnaround time?"
+    "Which TDS tests have the fastest turnaround time?"
   ];
   
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 14,
+    TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 14,
     TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 11,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
   };
@@ -5407,7 +5482,7 @@ const TestShowcase = ({ onNavigate }) => {
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
     ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' }))
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' }))
   ];
 
   // Helper to count reimbursement entities
@@ -5485,7 +5560,7 @@ const TestShowcase = ({ onNavigate }) => {
     const sorted = [...baseTests];
     switch (sortBy) {
       case 'category':
-        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'CGP': 3 };
+        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3 };
         return sorted.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category] || a.vendor.localeCompare(b.vendor));
       case 'tat':
         return sorted.sort((a, b) => getTat(a) - getTat(b));
@@ -5664,7 +5739,7 @@ const TestShowcase = ({ onNavigate }) => {
     ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
     ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP' }))
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
   ];
 
   const getPersonaStyle = (p) => {
@@ -5829,7 +5904,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
   // Category button config for non-patient view
   const categoryButtons = [
     { id: 'ECD', name: 'Early Cancer Detection', phase: 'Healthy / Screening', icon: '🔬', color: 'emerald' },
-    { id: 'CGP', name: 'Comprehensive Genomic Profiling', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
+    { id: 'TDS', name: 'Treatment Decision Support', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
     { id: 'TRM', name: 'Treatment Response Monitoring', phase: 'Active Treatment', icon: '📊', color: 'sky' },
     { id: 'MRD', name: 'Minimal Residual Disease', phase: 'Surveillance', icon: '🎯', color: 'orange' },
   ];
@@ -5978,7 +6053,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
                   ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
                   TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
-                  CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
+                  TDS: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
                 };
                 const clrs = colorSchemes[category] || colorSchemes.MRD;
                 const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');
@@ -6006,7 +6081,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                         {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
                         {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
                         {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
-                        {category === 'CGP' && "This test analyzes your tumor's genes to find the best targeted treatments for your specific cancer."}
+                        {category === 'TDS' && "This test helps your doctor decide the best treatment approach for your specific cancer."}
                       </p>
                       <div className="grid grid-cols-2 gap-2">
                         <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
@@ -6107,10 +6182,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     Compare Signatera and Reveal MRD for MRD monitoring
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("Which CGP tests have the fastest turnaround time?")}
+                    onClick={() => handleChatSubmit("Which TDS tests have the fastest turnaround time?")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Which CGP tests have the fastest turnaround time?
+                    Which TDS tests have the fastest turnaround time?
                   </button>
                   <button
                     onClick={() => handleChatSubmit("I am a patient, please use straightforward language")}
@@ -6256,7 +6331,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
-            <span className="text-slate-500">CGP</span>
+            <span className="text-slate-500">TDS</span>
           </span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
@@ -6279,7 +6354,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
                 ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
                 TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
-                CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
+                TDS: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
               };
               const clrs = colorSchemes[category] || colorSchemes.MRD;
               const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');
@@ -6373,7 +6448,7 @@ const StatOfTheDay = ({ onNavigate }) => {
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', numIndications: t.cancerTypes?.length || 0 })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', numIndications: t.cancerTypes?.length || 0 })),
     ...trmTestData.map(t => ({ ...t, category: 'TRM', numIndications: t.cancerTypes?.length || 0 })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP', numIndications: t.cancerTypes?.length || 0 }))
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS', numIndications: t.cancerTypes?.length || 0 }))
   ];
   
   // Get today's stat based on day of week
@@ -6403,7 +6478,7 @@ const StatOfTheDay = ({ onNavigate }) => {
     MRD: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
     ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
     TRM: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' },
-    CGP: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
+    TDS: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
   };
 
   if (!todayStat || testsWithStat.length === 0) return null;
@@ -6748,16 +6823,16 @@ const DatabaseStatsSimple = () => {
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
   const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
   const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
+  const cgpParams = tdsTestData.length > 0 ? Object.keys(tdsTestData[0]).length : 0;
   
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (cgpTestData.length * cgpParams);
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
   
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
     ...ecdTestData.map(t => t.vendor),
     ...trmTestData.map(t => t.vendor),
-    ...cgpTestData.map(t => t.vendor)
+    ...tdsTestData.map(t => t.vendor)
   ]);
 
   return (
@@ -6808,9 +6883,9 @@ const DatabaseStatsSimple = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
-          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{cgpTestData.length}</div>
+          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{tdsTestData.length}</div>
           <div>
-            <p className="text-xs font-medium text-gray-800">CGP</p>
+            <p className="text-xs font-medium text-gray-800">TDS</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
           </div>
         </div>
@@ -6826,18 +6901,18 @@ const DatabaseSummary = () => {
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
   const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
   const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
+  const cgpParams = tdsTestData.length > 0 ? Object.keys(tdsTestData[0]).length : 0;
   
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (cgpTestData.length * cgpParams);
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
   
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...cgpTestData];
+  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
   
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
     ...ecdTestData.map(t => t.vendor),
     ...trmTestData.map(t => t.vendor),
-    ...cgpTestData.map(t => t.vendor)
+    ...tdsTestData.map(t => t.vendor)
   ]);
 
   // Helper functions
@@ -7060,7 +7135,7 @@ const DatabaseSummary = () => {
 const OpennessAward = () => {
   const [showFAQ, setShowFAQ] = useState(false);
   
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...cgpTestData];
+  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
   
   // Helper functions
   const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
@@ -7306,28 +7381,28 @@ const LearnPage = ({ onNavigate }) => {
       testCount: ecdTestData.length
     },
     {
-      id: 'CGP',
+      id: 'TDS',
       phase: 'Diagnosis',
-      name: 'Comprehensive Genomic Profiling',
-      acronym: 'CGP',
+      name: 'Treatment Decision Support',
+      acronym: 'TDS',
       color: 'violet',
       icon: '🧬',
-      clinicalQuestion: 'What actionable genomic alterations are present in the tumor?',
-      description: 'CGP tests sequence hundreds of cancer-related genes to identify somatic alterations that may guide therapy selection. These panels detect SNVs, indels, copy number alterations, gene fusions, and biomarkers like MSI status and tumor mutational burden (TMB).',
-      technology: 'Hybrid capture-based NGS enriches target regions (typically 300-500 genes) from either tumor tissue (FFPE) or plasma cfDNA. Tissue-based CGP offers higher sensitivity for low-frequency variants; liquid biopsy CGP provides faster turnaround and captures tumor heterogeneity. Many tests are FDA-approved as companion diagnostics for specific targeted therapies.',
+      clinicalQuestion: 'What is the best treatment approach for this patient?',
+      description: 'TDS tests help guide treatment decisions by providing molecular or biomarker information. This includes genomic profiling tests that identify actionable mutations for targeted therapy selection, as well as risk stratification tests that help determine whether interventions like biopsies are needed.',
+      technology: 'Includes multiple technologies: NGS-based comprehensive genomic profiling (CGP) from tumor tissue or liquid biopsy to identify targetable alterations; protein structure analysis for risk stratification; and other biomarker assays. Some tests are FDA-approved as companion diagnostics.',
       keyMetrics: [
-        'Limit of detection (LOD) for variant allele frequency (typically 5% for tissue, 0.1-0.5% for liquid)',
-        'Panel coverage breadth and depth',
-        'FDA approval status as companion diagnostic',
-        'Turnaround time (7-14 days typical)'
+        'Sensitivity and specificity for intended use case',
+        'FDA approval status and guideline recommendations',
+        'Turnaround time',
+        'Coverage by Medicare and commercial payers'
       ],
       challenges: [
-        'Tissue availability and quality (especially for liquid biopsy conversion)',
-        'Tumor heterogeneity may not be captured by single-site biopsy',
-        'Variants of uncertain significance (VUS) interpretation',
-        'Germline vs. somatic variant distinction'
+        'Matching test results to appropriate clinical decisions',
+        'Variants of uncertain significance (VUS) interpretation in genomic tests',
+        'Balancing sensitivity vs specificity for risk stratification',
+        'Integration into clinical workflow'
       ],
-      testCount: cgpTestData.length
+      testCount: tdsTestData.length
     },
     {
       id: 'TRM',
@@ -7491,7 +7566,7 @@ const LearnPage = ({ onNavigate }) => {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 <tr>
-                  <td className="py-2 px-3 text-gray-700">Advanced cancer (CGP)</td>
+                  <td className="py-2 px-3 text-gray-700">Advanced cancer (TDS)</td>
                   <td className="py-2 px-3 text-gray-600">1–10%+</td>
                   <td className="py-2 px-3 text-gray-600">0.5–5% VAF</td>
                 </tr>
@@ -7619,9 +7694,9 @@ const LearnPage = ({ onNavigate }) => {
                 <td className="py-3 px-4"><span className="text-emerald-600 font-medium">ECD →</span></td>
                 <td className="py-3 px-4 text-gray-600 text-sm">Cancer signal detected (Y/N), tissue of origin</td>
               </tr>
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('CGP')}>
+              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TDS')}>
                 <td className="py-3 px-4 text-gray-700">Newly diagnosed / therapy selection</td>
-                <td className="py-3 px-4"><span className="text-violet-600 font-medium">CGP →</span></td>
+                <td className="py-3 px-4"><span className="text-violet-600 font-medium">TDS →</span></td>
                 <td className="py-3 px-4 text-gray-600 text-sm">Actionable mutations, MSI, TMB, fusions</td>
               </tr>
               <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TRM')}>
@@ -7678,7 +7753,7 @@ const FAQPage = () => {
       question: "What types of tests does OpenOnco cover?",
       answer: (
         <p>
-          OpenOnco focuses on laboratory-developed tests (LDTs) and services that patients and clinicians can access directly. We cover four categories of cancer testing: <strong>Early Cancer Detection (ECD)</strong> for screening, <strong>Comprehensive Genomic Profiling (CGP)</strong> for newly diagnosed patients, <strong>Treatment Response Monitoring (TRM)</strong> for patients on active treatment, and <strong>Minimal Residual Disease (MRD)</strong> for surveillance after treatment. We do not include reagent kits or assay systems that laboratories must purchase and validate themselves—our focus is on orderable services.
+          OpenOnco focuses on laboratory-developed tests (LDTs) and services that patients and clinicians can access directly. We cover four categories of cancer testing: <strong>Early Cancer Detection (ECD)</strong> for screening, <strong>Comprehensive Genomic Profiling (TDS)</strong> for newly diagnosed patients, <strong>Treatment Response Monitoring (TRM)</strong> for patients on active treatment, and <strong>Minimal Residual Disease (MRD)</strong> for surveillance after treatment. We do not include reagent kits or assay systems that laboratories must purchase and validate themselves—our focus is on orderable services.
         </p>
       )
     },
@@ -8016,7 +8091,7 @@ const SubmissionsPage = () => {
     MRD: mrdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     ECD: ecdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     TRM: trmTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    CGP: cgpTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    TDS: tdsTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
   };
 
   // Parameters available for correction by category
@@ -8072,7 +8147,7 @@ const SubmissionsPage = () => {
       { key: 'numPublications', label: 'Number of Publications' },
       { key: 'other', label: 'Other (specify in notes)' },
     ],
-    CGP: [
+    TDS: [
       { key: 'genesAnalyzed', label: 'Genes Analyzed' },
       { key: 'biomarkersReported', label: 'Biomarkers Reported' },
       { key: 'fdaCompanionDxCount', label: 'FDA CDx Indications' },
@@ -8089,7 +8164,7 @@ const SubmissionsPage = () => {
   // Get current value of selected parameter for the selected test
   const getCurrentValue = () => {
     if (!existingTest || !selectedParameter || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : cgpTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : tdsTestData;
     const test = testList.find(t => t.id === existingTest);
     if (!test || selectedParameter === 'other') return '';
     const value = test[selectedParameter];
@@ -8099,7 +8174,7 @@ const SubmissionsPage = () => {
   // Get vendor name for selected test (for email validation)
   const getSelectedTestVendor = () => {
     if (!existingTest || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : cgpTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : tdsTestData;
     const test = testList.find(t => t.id === existingTest);
     return test?.vendor || '';
   };
@@ -8450,7 +8525,7 @@ const SubmissionsPage = () => {
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
                 { key: 'TRM', label: 'TRM', desc: 'Treatment Response', color: 'sky' },
-                { key: 'CGP', label: 'CGP', desc: 'Genomic Profiling', color: 'violet' },
+                { key: 'TDS', label: 'TDS', desc: 'Genomic Profiling', color: 'violet' },
               ].map(cat => (
                 <button
                   key={cat.key}
@@ -8984,14 +9059,14 @@ const SourceDataPage = () => {
           testCount: trmTestData.length,
           tests: trmTestData
         },
-        CGP: {
+        TDS: {
           name: 'Comprehensive Genomic Profiling',
           description: 'Tests for identifying actionable genomic alterations to guide targeted therapy selection',
-          testCount: cgpTestData.length,
-          tests: cgpTestData
+          testCount: tdsTestData.length,
+          tests: tdsTestData
         }
       },
-      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length
+      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length
     };
     return JSON.stringify(allData, null, 2);
   };
@@ -9036,7 +9111,7 @@ const SourceDataPage = () => {
               </div>
               <div>
                 <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
-                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length + cgpTestData.length} tests • MRD + ECD + TRM + CGP combined • JSON format</p>
+                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length} tests • MRD + ECD + TRM + TDS combined • JSON format</p>
               </div>
             </div>
             <button
@@ -10020,10 +10095,10 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
-          {category !== 'CGP' && test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
-          {category !== 'CGP' && test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
+          {category !== 'TDS' && test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
+          {category !== 'TDS' && test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
           {/* LOD display - show both LOD and LOD95 when available */}
-          {category !== 'CGP' && (test.lod != null || test.lod95 != null) && (
+          {category !== 'TDS' && (test.lod != null || test.lod95 != null) && (
             <div>
               {test.lod != null && test.lod95 != null ? (
                 // Both values available - show stacked with monitoring indicator
@@ -10055,9 +10130,9 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Lead Time</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
           {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-emerald-600">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
-          {category === 'CGP' && test.genesAnalyzed && <div><p className="text-lg font-bold text-violet-600">{test.genesAnalyzed}</p><p className="text-xs text-gray-500">Genes</p></div>}
-          {category === 'CGP' && test.fdaCompanionDxCount && <div><p className="text-lg font-bold text-emerald-600">{test.fdaCompanionDxCount}</p><p className="text-xs text-gray-500">CDx</p></div>}
-          {category === 'CGP' && test.tat && <div><p className="text-lg font-bold text-slate-600">{test.tat}</p><p className="text-xs text-gray-500">TAT</p></div>}
+          {category === 'TDS' && test.genesAnalyzed && <div><p className="text-lg font-bold text-violet-600">{test.genesAnalyzed}</p><p className="text-xs text-gray-500">Genes</p></div>}
+          {category === 'TDS' && test.fdaCompanionDxCount && <div><p className="text-lg font-bold text-emerald-600">{test.fdaCompanionDxCount}</p><p className="text-xs text-gray-500">CDx</p></div>}
+          {category === 'TDS' && test.tat && <div><p className="text-lg font-bold text-slate-600">{test.tat}</p><p className="text-xs text-gray-500">TAT</p></div>}
         </div>
         
         {/* Cancer types */}
@@ -10316,7 +10391,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
       sectionBorder: 'border-rose-200',
       sectionTitle: 'text-rose-800'
     },
-    CGP: { 
+    TDS: { 
       headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500', 
       sectionBg: 'bg-violet-50',
       sectionBorder: 'border-violet-200',
@@ -10434,7 +10509,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <YesNo yes={hasMedicare} label="Medicare coverage (age 65+)" />
                     <YesNo yes={hasPrivate} label="Private insurance options" />
                     <YesNo yes={!requiresTissue} label="Blood draw only (no surgery needed)" />
-                    {category === 'CGP' && test.fdaCompanionDxCount && (
+                    {category === 'TDS' && test.fdaCompanionDxCount && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">✓</span>
                         <span className="text-sm text-gray-700">FDA-approved for {test.fdaCompanionDxCount} drug matches</span>
@@ -10442,7 +10517,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     )}
                   </div>
                   <div>
-                    {category !== 'CGP' && (test.initialTat || test.tat) && (
+                    {category !== 'TDS' && (test.initialTat || test.tat) && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
                           {test.initialTat || test.tat}
@@ -10450,13 +10525,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <span className="text-sm text-gray-700">days for results</span>
                       </div>
                     )}
-                    {category === 'CGP' && test.tat && (
+                    {category === 'TDS' && test.tat && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">⏱</span>
                         <span className="text-sm text-gray-700">Results in {test.tat}</span>
                       </div>
                     )}
-                    {category === 'CGP' && test.genesAnalyzed && (
+                    {category === 'TDS' && test.genesAnalyzed && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center text-xs font-bold">🧬</span>
                         <span className="text-sm text-gray-700">Tests {test.genesAnalyzed} genes</span>
@@ -10477,14 +10552,14 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment. It can help your doctor know if treatment worked and watch for cancer coming back earlier than traditional scans."}
                   {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms. Finding cancer early often means better treatment options and outcomes."}
                   {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood over time, potentially detecting changes before imaging can."}
-                  {category === 'CGP' && "This test analyzes hundreds of genes in your tumor to find specific mutations that can be targeted with specialized treatments. It helps your doctor match you with the most effective therapies and clinical trials for your cancer."}
+                  {category === 'TDS' && "This test analyzes hundreds of genes in your tumor to find specific mutations that can be targeted with specialized treatments. It helps your doctor match you with the most effective therapies and clinical trials for your cancer."}
                 </p>
               </Section>
               
               {/* How It Works */}
               <Section title="How It Works">
                 <p className="text-gray-700">
-                  {category === 'CGP' 
+                  {category === 'TDS' 
                     ? (test.sampleCategory === 'Tissue' 
                         ? "Your doctor will send a sample of your tumor (from surgery or biopsy) to the lab. The test analyzes hundreds of genes to find specific mutations that can be matched to targeted treatments."
                         : "A simple blood draw is used to capture tumor DNA circulating in your bloodstream. The test analyzes this DNA to identify mutations that can guide treatment decisions.")
@@ -10493,7 +10568,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         : "Just a simple blood draw at your doctor's office or lab - no tumor sample needed. The test looks for general cancer signals in your blood.")}
                 </p>
                 {test.bloodVolume && <p className="text-sm text-gray-500 mt-2">Blood sample: {test.bloodVolume} mL (about {Math.round(test.bloodVolume / 5)} teaspoons)</p>}
-                {category === 'CGP' && test.tat && <p className="text-sm text-gray-500 mt-2">Results typically available in: {test.tat}</p>}
+                {category === 'TDS' && test.tat && <p className="text-sm text-gray-500 mt-2">Results typically available in: {test.tat}</p>}
               </Section>
               
               {/* Insurance & Cost */}
@@ -10504,7 +10579,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <p className="text-sm"><span className="font-medium">Private insurers:</span> {test.commercialPayers.join(', ')}</p>
                   )}
                   {test.commercialPayersNotes && <p className="text-xs text-gray-500 mt-1">{test.commercialPayersNotes}</p>}
-                  {(category === 'ECD' || category === 'CGP') && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>}
+                  {(category === 'ECD' || category === 'TDS') && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>}
                 </div>
               </Section>
               
@@ -10516,15 +10591,15 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How will the results change my treatment plan?</li>
                   {category === 'MRD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How often should I be retested?</li>}
                   {category === 'ECD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> What happens if the test finds something?</li>}
-                  {category === 'CGP' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Are there targeted therapies or clinical trials that match my results?</li>}
+                  {category === 'TDS' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Are there targeted therapies or clinical trials that match my results?</li>}
                 </ul>
               </Section>
             </>
           ) : (
             /* Clinician/Academic View */
             <>
-              {/* CGP-specific content */}
-              {category === 'CGP' && (
+              {/* TDS-specific content */}
+              {category === 'TDS' && (
                 <>
                   {/* Genomic Coverage */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -10604,8 +10679,8 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 </>
               )}
 
-              {/* Non-CGP content (MRD, ECD, TRM) */}
-              {category !== 'CGP' && (
+              {/* Non-TDS content (MRD, ECD, TRM) */}
+              {category !== 'TDS' && (
                 <>
               {/* Two-column layout for key metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -10980,7 +11055,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
       border: 'border-rose-100',
       closeBtnHover: 'hover:bg-rose-400/20'
     },
-    CGP: { 
+    TDS: { 
       headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500', 
       headerText: 'text-white',
       accent: 'bg-violet-50 border-violet-200',
@@ -11102,10 +11177,10 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                   <td className={`p-4 text-sm font-medium text-gray-600 ${colors.border} border-b`}>
                     <span className="flex items-center gap-1">
                       {param.label}
-                      {category !== 'CGP' && (param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
-                      {category !== 'CGP' && param.key === 'lod' && <ExpertInsight topic="lod" />}
-                      {category !== 'CGP' && param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
-                      {category !== 'CGP' && (param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
+                      {category !== 'TDS' && (param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
+                      {category !== 'TDS' && param.key === 'lod' && <ExpertInsight topic="lod" />}
+                      {category !== 'TDS' && param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
+                      {category !== 'TDS' && (param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
                     </span>
                   </td>
                   {tests.map(test => {
@@ -11454,9 +11529,9 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       // Tumor tissue requirement filter
       if (tumorTissueRequired === 'yes' && test.requiresTumorTissue !== 'Yes') return false;
       if (tumorTissueRequired === 'no' && test.requiresTumorTissue !== 'No') return false;
-      // Genes analyzed filter (CGP)
+      // Genes analyzed filter (TDS)
       if (minGenes > 0 && (!test.genesAnalyzed || test.genesAnalyzed < minGenes)) return false;
-      // Companion Dx count filter (CGP)
+      // Companion Dx count filter (TDS)
       if (minCdx > 0 && (!test.fdaCompanionDxCount || test.fdaCompanionDxCount < minCdx)) return false;
       return true;
     });
@@ -11550,7 +11625,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 defaultOpen={false}
                 activeCount={selectedCancerTypes.length + selectedTestScopes.length + selectedClinicalSettings.length}
               >
-                {/* Cancer Type - for MRD, TRM, CGP */}
+                {/* Cancer Type - for MRD, TRM, TDS */}
                 {category !== 'ECD' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
@@ -11602,7 +11677,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   defaultOpen={false}
                   activeCount={selectedApproaches.length + selectedSampleCategories.length + (tumorTissueRequired !== 'any' ? 1 : 0)}
                 >
-                  {/* Approach - for MRD, TRM, CGP */}
+                  {/* Approach - for MRD, TRM, TDS */}
                   {category !== 'ECD' && config.approaches && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">Approach</label>
@@ -11658,7 +11733,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
                   </>
                 )}
-                {/* NCCN Recommended - MRD, TRM (not ECD, CGP), clinician only */}
+                {/* NCCN Recommended - MRD, TRM (not ECD, TDS), clinician only */}
                 {!isPatient && (category === 'MRD' || category === 'TRM') && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Guidelines</label>
@@ -11668,7 +11743,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 {/* Coverage - all categories */}
                 <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
                 {config.reimbursements?.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                {/* Availability - MRD, ECD, TRM (not CGP) */}
+                {/* Availability - MRD, ECD, TRM (not TDS) */}
                 {!isPatient && config.regions && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
@@ -11684,8 +11759,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   defaultOpen={false}
                   activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0) + (minGenes > 0 ? 1 : 0) + (minCdx > 0 ? 1 : 0)}
                 >
-                  {/* Sensitivity - MRD, ECD, TRM (not CGP) */}
-                  {category !== 'CGP' && (
+                  {/* Sensitivity - MRD, ECD, TRM (not TDS) */}
+                  {category !== 'TDS' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
@@ -11706,8 +11781,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                       </div>
                     </>
                   )}
-                  {/* Specificity - MRD, ECD, TRM (not CGP) */}
-                  {category !== 'CGP' && (
+                  {/* Specificity - MRD, ECD, TRM (not TDS) */}
+                  {category !== 'TDS' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
@@ -11728,7 +11803,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                       </div>
                     </>
                   )}
-                  {/* TAT - MRD, TRM, CGP (not ECD) */}
+                  {/* TAT - MRD, TRM, TDS (not ECD) */}
                   {category !== 'ECD' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
@@ -11750,8 +11825,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                       </div>
                     </>
                   )}
-                  {/* Genes Analyzed - CGP only */}
-                  {category === 'CGP' && (
+                  {/* Genes Analyzed - TDS only */}
+                  {category === 'TDS' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Genes Analyzed: {minGenes === 0 ? 'Any' : minGenes >= 500 ? '500+' : minGenes}
@@ -11772,8 +11847,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                       </div>
                     </>
                   )}
-                  {/* FDA Companion Dx Count - CGP only */}
-                  {category === 'CGP' && (
+                  {/* FDA Companion Dx Count - TDS only */}
+                  {category === 'TDS' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min FDA Companion Dx: {minCdx === 0 ? 'Any' : minCdx}
@@ -11825,8 +11900,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     </div>
                   </>
                 )}
-                {/* Trial Participants - MRD, ECD, TRM (not CGP), clinician only */}
-                {!isPatient && category !== 'CGP' && (
+                {/* Trial Participants - MRD, ECD, TRM (not TDS), clinician only */}
+                {!isPatient && category !== 'TDS' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
                       Min Trial Participants: {minParticipants === 0 ? 'Any' : category === 'ECD' ? (minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()) : (minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString())}
@@ -11851,21 +11926,21 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 {!isPatient && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
-                      Min Publications: {minPublications === 0 ? 'Any' : category === 'ECD' ? (minPublications >= 20 ? '20+' : minPublications) : category === 'CGP' ? (minPublications >= 1000 ? '1,000+' : minPublications) : (minPublications >= 100 ? '100+' : minPublications)}
+                      Min Publications: {minPublications === 0 ? 'Any' : category === 'ECD' ? (minPublications >= 20 ? '20+' : minPublications) : category === 'TDS' ? (minPublications >= 1000 ? '1,000+' : minPublications) : (minPublications >= 100 ? '100+' : minPublications)}
                     </label>
                     <input
                       type="range"
                       min="0"
-                      max={category === 'ECD' ? '20' : category === 'CGP' ? '1000' : '100'}
-                      step={category === 'ECD' ? '2' : category === 'CGP' ? '50' : '5'}
+                      max={category === 'ECD' ? '20' : category === 'TDS' ? '1000' : '100'}
+                      step={category === 'ECD' ? '2' : category === 'TDS' ? '50' : '5'}
                       value={minPublications}
                       onChange={updateSlider(setMinPublications)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
                       <span>0</span>
-                      <span>{category === 'ECD' ? '10' : category === 'CGP' ? '500' : '50'}</span>
-                      <span>{category === 'ECD' ? '20+' : category === 'CGP' ? '1,000+' : '100+'}</span>
+                      <span>{category === 'ECD' ? '10' : category === 'TDS' ? '500' : '50'}</span>
+                      <span>{category === 'ECD' ? '20+' : category === 'TDS' ? '1,000+' : '100+'}</span>
                     </div>
                   </>
                 )}
@@ -11982,7 +12057,7 @@ export default function App() {
     '/mrd': 'MRD',
     '/ecd': 'ECD',
     '/trm': 'TRM',
-    '/cgp': 'CGP'
+    '/tds': 'TDS'
   };
   
   const pageToPath = {
@@ -11996,7 +12071,7 @@ export default function App() {
     'MRD': '/mrd',
     'ECD': '/ecd',
     'TRM': '/trm',
-    'CGP': '/cgp'
+    'TDS': '/tds'
   };
   
   // Initialize currentPage from URL path
@@ -12017,7 +12092,7 @@ export default function App() {
     const testId = params.get('test');
     const compareIds = params.get('compare');
     
-    if (category && ['MRD', 'ECD', 'TRM', 'CGP'].includes(category)) {
+    if (category && ['MRD', 'ECD', 'TRM', 'TDS'].includes(category)) {
       setCurrentPage(category);
       if (testId) {
         setInitialSelectedTestId(testId);
@@ -12065,7 +12140,7 @@ export default function App() {
   const handleNavigate = (page, testId = null) => {
     // Track navigation with feature flags
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
-    if (['MRD', 'ECD', 'TRM', 'CGP'].includes(page)) {
+    if (['MRD', 'ECD', 'TRM', 'TDS'].includes(page)) {
       track('category_viewed', { 
         category: page,
         from_test_link: testId !== null 
@@ -12090,7 +12165,7 @@ export default function App() {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': case 'CGP': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
+      case 'MRD': case 'ECD': case 'TRM': case 'TDS': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage />;
