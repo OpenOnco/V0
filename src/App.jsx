@@ -5935,21 +5935,36 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           {filteredTests.map(test => {
             const badges = getPatientBadges(test);
             const colors = colorClasses[test.color];
+            const isDiscontinued = test.isDiscontinued === true;
             
             return (
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
+                {/* Diagonal slash for discontinued tests */}
+                {isDiscontinued && (
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+                    <svg className="w-full h-full" preserveAspectRatio="none">
+                      <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
+                    </svg>
+                  </div>
+                )}
                 <div className="flex items-start justify-between mb-1">
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
+                    <p className={`text-xs font-semibold truncate ${isDiscontinued ? 'text-gray-400' : 'text-slate-800'}`}>{test.name}</p>
                     <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
                   </div>
-                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                    {test.category}
-                  </span>
+                  {isDiscontinued ? (
+                    <span className="bg-gray-200 text-gray-600 text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0">
+                      DISC
+                    </span>
+                  ) : (
+                    <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
+                      {test.category}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {badges.map((badge, idx) => (
@@ -6235,21 +6250,36 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           {filteredTests.map(test => {
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
+            const isDiscontinued = test.isDiscontinued === true;
             
             return (
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
+                {/* Diagonal slash for discontinued tests */}
+                {isDiscontinued && (
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+                    <svg className="w-full h-full" preserveAspectRatio="none">
+                      <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
+                    </svg>
+                  </div>
+                )}
                 <div className="flex items-start justify-between mb-1">
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-800 truncate">{test.name}</p>
+                    <p className={`text-xs font-semibold truncate ${isDiscontinued ? 'text-gray-400' : 'text-slate-800'}`}>{test.name}</p>
                     <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
                   </div>
-                  <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                    {test.category}
-                  </span>
+                  {isDiscontinued ? (
+                    <span className="bg-gray-200 text-gray-600 text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0">
+                      DISC
+                    </span>
+                  ) : (
+                    <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
+                      {test.category}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {badges.map((badge, idx) => (
