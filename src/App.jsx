@@ -9997,13 +9997,23 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const isDiscontinued = test.isDiscontinued === true;
   
   return (
-    <div id={`test-card-${test.id}`} className={`h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all ${isDiscontinued ? 'opacity-60' : ''} ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div id={`test-card-${test.id}`} className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+      {/* Diagonal slash for discontinued tests */}
+      {isDiscontinued && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+          <div className="absolute top-0 left-0 w-full h-full">
+            <svg className="w-full h-full" preserveAspectRatio="none">
+              <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
+            </svg>
+          </div>
+        </div>
+      )}
       {/* Header - clickable to show detail modal */}
       <div className="cursor-pointer flex-1" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              {isDiscontinued && <Badge variant="red">DISCONTINUED</Badge>}
+              {isDiscontinued && <Badge variant="slate">DISCONTINUED</Badge>}
               {!isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0 
                 ? <Badge variant="success">Medicare+Private</Badge>
                 : !isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') 
@@ -10019,7 +10029,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
-            <h3 className={`font-semibold ${isDiscontinued ? 'text-gray-500 line-through' : 'text-gray-900'}`}>{test.name}</h3>
+            <h3 className={`font-semibold ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
             <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           {/* Prominent comparison checkbox - click selects for comparison, hidden on mobile */}
@@ -10178,16 +10188,26 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
   );
   
   return (
-    <div className={`h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all ${isDiscontinued ? 'opacity-60' : ''}`}>
+    <div className={`relative h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all`}>
+      {/* Diagonal slash for discontinued tests */}
+      {isDiscontinued && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+          <div className="absolute top-0 left-0 w-full h-full">
+            <svg className="w-full h-full" preserveAspectRatio="none">
+              <line x1="0%" y1="100%" x2="100%" y2="0%" stroke="#9ca3af" strokeWidth="2" />
+            </svg>
+          </div>
+        </div>
+      )}
       {/* Header - clickable to show detail modal */}
       <div className="cursor-pointer flex-1 flex flex-col" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
-            <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-500 line-through' : 'text-gray-900'}`}>{test.name}</h3>
+            <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
             <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
-            isDiscontinued ? 'bg-red-100 text-red-700' :
+            isDiscontinued ? 'bg-gray-200 text-gray-600' :
             hasMedicare && hasPrivate ? 'bg-emerald-100 text-emerald-700' :
             hasMedicare || hasPrivate ? 'bg-blue-100 text-blue-700' :
             'bg-gray-100 text-gray-500'
