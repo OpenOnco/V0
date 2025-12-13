@@ -7480,7 +7480,7 @@ const LearnPage = ({ onNavigate }) => {
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-          Advanced Molecular Diagnostics: A Technical Overview
+          Advanced Molecular Diagnostics: An Overview
         </h1>
         <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
           Modern diagnostic technologies—from next-generation sequencing to protein biomarker analysis—enable blood-based tests across the full cancer care continuum, from early detection to post-treatment surveillance.
