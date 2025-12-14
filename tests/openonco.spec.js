@@ -164,39 +164,57 @@ test.describe('Test Detail Modal', () => {
 test.describe('Comparison Modal', () => {
   test('compare button appears with 2+ selections', async ({ page }) => {
     await page.goto('/mrd');
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(2000);
     
-    const checkboxes = page.locator('input[type="checkbox"]');
-    const count = await checkboxes.count();
+    // Use data-testid for compare buttons on test cards
+    const compareButtons = page.locator('[data-testid="compare-button"]');
+    const count = await compareButtons.count();
     
     if (count >= 2) {
-      await checkboxes.nth(0).click();
-      await checkboxes.nth(1).click();
+      // Click two different "Compare" buttons to select tests
+      await compareButtons.nth(0).click();
+      await page.waitForTimeout(300);
+      await compareButtons.nth(1).click();
       await page.waitForTimeout(500);
       
-      const compareBtn = page.locator('button').filter({ hasText: /Compare/i });
-      await expect(compareBtn.first()).toBeVisible({ timeout: 5000 });
+      // After selecting 2+, the main "Compare Tests" button should appear
+      const mainCompareBtn = page.locator('[data-testid="compare-tests-button"]');
+      await expect(mainCompareBtn).toBeVisible({ timeout: 5000 });
+    } else {
+      test.skip();
     }
   });
 
   test('comparison modal opens and has share button', async ({ page }) => {
     await page.goto('/mrd');
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(2000);
     
-    const checkboxes = page.locator('input[type="checkbox"]');
-    if (await checkboxes.count() >= 2) {
-      await checkboxes.nth(0).click();
-      await checkboxes.nth(1).click();
+    // Use data-testid for compare buttons on test cards
+    const compareButtons = page.locator('[data-testid="compare-button"]');
+    const count = await compareButtons.count();
+    
+    if (count >= 2) {
+      // Select two tests
+      await compareButtons.nth(0).click();
+      await page.waitForTimeout(300);
+      await compareButtons.nth(1).click();
+      await page.waitForTimeout(500);
       
-      const compareBtn = page.locator('button').filter({ hasText: /Compare/i });
-      if (await compareBtn.isVisible()) {
-        await compareBtn.click();
-        await page.waitForTimeout(1000);
-        
-        // Use data-testid or class
-        const modal = page.locator('[data-testid="comparison-modal"], .comparison-print-area, [class*="Comparing"]');
-        await expect(modal.first()).toBeVisible({ timeout: 5000 });
-      }
+      // Click the main "Compare Tests" button
+      const mainCompareBtn = page.locator('[data-testid="compare-tests-button"]');
+      await expect(mainCompareBtn).toBeVisible({ timeout: 5000 });
+      await mainCompareBtn.click();
+      await page.waitForTimeout(1500);
+      
+      // Check for comparison modal
+      const modal = page.locator('.comparison-print-area');
+      await expect(modal).toBeVisible({ timeout: 5000 });
+      
+      // Verify share button exists in modal
+      const shareBtn = page.locator('[data-testid="share-link-button"], button[title*="link"], button[title*="share"]');
+      await expect(shareBtn.first()).toBeVisible({ timeout: 3000 });
+    } else {
+      test.skip();
     }
   });
 });

@@ -10486,6 +10486,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                 : 'bg-white border-gray-300 text-gray-500 hover:border-emerald-400 hover:text-emerald-600'
             }`}
             title={isSelected ? 'Remove from comparison' : 'Add to comparison'}
+            data-testid="compare-button"
           >
             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
               isSelected ? 'bg-white border-white' : 'border-current'
@@ -12429,7 +12430,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 <p className="hidden md:block text-sm text-orange-600">Select at least one more test to compare</p>
               )}
               {!isPatient && selectedTests.length >= 2 && (
-                <button onClick={() => {
+                <button 
+                  onClick={() => {
                   // Track comparison with feature flags
                   const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
                   track('tests_compared', { 
@@ -12440,7 +12442,10 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     flags: [personaFlag, `category-${category.toLowerCase()}`] 
                   });
                   setShowComparison(true);
-                }} className="hidden md:flex bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium items-center gap-2">
+                }} 
+                  className="hidden md:flex bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium items-center gap-2"
+                  data-testid="compare-tests-button"
+                >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                   Compare ({selectedTests.length})
                 </button>
