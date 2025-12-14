@@ -13,7 +13,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   
   reporter: [
-    ['html', { outputFolder: 'test-results/html-report' }],
+    ['html', { outputFolder: 'playwright-report' }],
     ['list']
   ],
   
