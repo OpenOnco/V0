@@ -22,19 +22,16 @@ import { track } from '@vercel/analytics';
 // Format: { id, name, vendor, category, dateAdded }
 // Keep newest entries at top, maintain ~10 entries max
 const RECENTLY_ADDED_TESTS = [
+  { id: 'ecd-kit-1', name: 'Cologuard', vendor: 'Exact Sciences', category: 'ECD', dateAdded: 'Dec 14, 2025' },
+  { id: 'mrd-kit-1', name: 'clonoSEQ Assay (IVD Kit)', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 14, 2025' },
+  { id: 'tds-kit-1', name: 'TSO Comprehensive', vendor: 'Illumina', category: 'TDS', dateAdded: 'Dec 14, 2025' },
+  { id: 'trm-kit-1', name: 'cobas EGFR v2', vendor: 'Roche', category: 'TRM', dateAdded: 'Dec 14, 2025' },
   { id: 'tds-18', name: 'IsoPSA', vendor: 'Cleveland Diagnostics', category: 'TDS', dateAdded: 'Dec 13, 2025' },
   { id: 'trm-12', name: 'Reveal TRM', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
-  { id: 'mrd-19', name: 'clonoSEQ', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 10, 2025' },
-  { id: 'tds-16', name: 'Northstar Select', vendor: 'BillionToOne', category: 'TDS', dateAdded: 'Dec 9, 2025' },
-  { id: 'mrd-16', name: 'Invitae PCM', vendor: 'Labcorp (Invitae)', category: 'MRD', dateAdded: 'Dec 8, 2025' },
-  { id: 'tds-15', name: 'NEO PanTracer Tissue', vendor: 'NeoGenomics', category: 'TDS', dateAdded: 'Dec 8, 2025' },
-  { id: 'ecd-13', name: 'Signal-C', vendor: 'Universal DX', category: 'ECD', dateAdded: 'Dec 7, 2025' },
-  { id: 'ecd-12', name: 'ProVue Lung', vendor: 'PrognomiQ', category: 'ECD', dateAdded: 'Dec 7, 2025' },
-  { id: 'mrd-15', name: 'Foresight CLARITY', vendor: 'Natera/Foresight', category: 'MRD', dateAdded: 'Dec 7, 2025' },
 ];
 
 // ============================================
@@ -51,6 +48,66 @@ const RECENTLY_ADDED_TESTS = [
 //   - "OpenOnco" if affiliation is null or 'OpenOnco'
 // Keep newest entries at top
 const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 14, 2025',
+    type: 'feature',
+    testId: null,
+    testName: 'IVD Kit Support',
+    vendor: null,
+    category: 'All',
+    description: 'Added Product Type taxonomy distinguishing Self-Collection kits (patient collects at home), Laboratory IVD Kits (distributed reagents for CLIA labs), and Central Lab Services (send-out tests). New filter enables users to find tests by distribution model. Added 16 IVD kit entries across MRD, ECD, TRM, and TDS categories.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: null
+  },
+  {
+    date: 'Dec 14, 2025',
+    type: 'added',
+    testId: 'ecd-kit-1',
+    testName: 'Cologuard',
+    vendor: 'Exact Sciences',
+    category: 'ECD',
+    description: 'Added FDA PMA-approved self-collection CRC screening kit. Only at-home collection cancer screening test. Stool DNA + FIT, 92% CRC sensitivity, 87% specificity. USPSTF Grade A recommendation.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'https://www.cologuard.com/'
+  },
+  {
+    date: 'Dec 14, 2025',
+    type: 'added',
+    testId: 'mrd-kit-1',
+    testName: 'clonoSEQ Assay',
+    vendor: 'Adaptive Biotechnologies',
+    category: 'MRD',
+    description: 'Added FDA-cleared IVD kit for MRD detection in hematologic malignancies. First and only FDA-cleared MRD IVD. Available as reagent kit for MiSeqDx labs.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'https://www.clonoseq.com/'
+  },
+  {
+    date: 'Dec 14, 2025',
+    type: 'added',
+    testId: 'tds-kit-1',
+    testName: 'TruSight Oncology Comprehensive',
+    vendor: 'Illumina',
+    category: 'TDS',
+    description: 'Added first FDA-approved distributable CGP IVD kit with pan-cancer CDx claims. 517 genes, enables in-house comprehensive genomic profiling.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'https://www.illumina.com/products/by-type/ivd-products/trusight-oncology-comprehensive.html'
+  },
+  {
+    date: 'Dec 14, 2025',
+    type: 'added',
+    testId: 'trm-kit-1',
+    testName: 'cobas EGFR Mutation Test v2',
+    vendor: 'Roche',
+    category: 'TRM',
+    description: 'Added FDA-approved EGFR liquid biopsy CDx kit. First liquid biopsy test FDA-approved (2016). Gold standard for EGFR TKI therapy selection.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'https://diagnostics.roche.com/global/en/products/tests/cobas-egfr-mutation-test-v2-ins.html'
+  },
   {
     date: 'Dec 13, 2025',
     type: 'updated',
@@ -642,6 +699,65 @@ const lifecycleColorClasses = {
     textLight: 'text-orange-400',
     textDark: 'text-orange-700',
   },
+};
+
+// ============================================
+// Product Type Constants (IVD Kit vs Service)
+// ============================================
+const PRODUCT_TYPES = {
+  SELF_COLLECTION: {
+    id: 'Self-Collection',
+    label: 'Self-Collection',
+    icon: '🏠',
+    description: 'Patient collects sample at home',
+    bgColor: 'bg-teal-50',
+    textColor: 'text-teal-700',
+    borderColor: 'border-teal-200',
+  },
+  LAB_KIT: {
+    id: 'Laboratory IVD Kit',
+    label: 'Lab Kit',
+    icon: '🔬',
+    description: 'IVD kit run at CLIA-certified lab',
+    bgColor: 'bg-indigo-50',
+    textColor: 'text-indigo-700',
+    borderColor: 'border-indigo-200',
+  },
+  CENTRAL_LAB: {
+    id: 'Central Lab Service',
+    label: 'Service',
+    icon: '🏥',
+    description: 'Sample shipped to central laboratory',
+    bgColor: 'bg-slate-50',
+    textColor: 'text-slate-600',
+    borderColor: 'border-slate-200',
+  },
+};
+
+// Helper to get product type config
+const getProductTypeConfig = (productType) => {
+  if (!productType) return PRODUCT_TYPES.CENTRAL_LAB; // Default for existing tests
+  return Object.values(PRODUCT_TYPES).find(pt => pt.id === productType) || PRODUCT_TYPES.CENTRAL_LAB;
+};
+
+// Product Type Badge Component
+const ProductTypeBadge = ({ productType, size = 'sm' }) => {
+  const config = getProductTypeConfig(productType);
+  const sizeClasses = {
+    xs: 'text-[10px] px-1.5 py-0.5',
+    sm: 'text-xs px-2 py-0.5',
+    md: 'text-sm px-2.5 py-1',
+  };
+  
+  return (
+    <span 
+      className={`inline-flex items-center gap-1 ${sizeClasses[size]} ${config.bgColor} ${config.textColor} border ${config.borderColor} rounded-full font-medium`}
+      title={config.description}
+    >
+      <span>{config.icon}</span>
+      <span>{config.label}</span>
+    </span>
+  );
 };
 
 // ============================================
@@ -2459,6 +2575,146 @@ const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "European LDT offered from CLIA-equivalent laboratory in Germany. Strong academic validation via GHSG HD21 trial data. Not FDA-approved; no current US market presence.",
     "technologyDifferentiator": "Lymphoma-specific ctDNA MRD test addressing an underserved niche - most competitors focus on solid tumors or use immunosequencing (clonoSEQ) for heme malignancies. Uses duplex sequencing with disease-optimized gene panels for lymphoma genomics. Founded by Sven Borchmann MD/PhD, a leading Hodgkin lymphoma researcher at University of Cologne/GHSG. Dual utility: both interim assessment during treatment and post-treatment MRD surveillance. Positioned as ctDNA alternative to PET for molecular response assessment in lymphoma."
+  },
+  // ============================================
+  // IVD KITS - Laboratory kits (not central lab services)
+  // ============================================
+  {
+    "id": "mrd-kit-1",
+    "sampleCategory": "Bone Marrow/Blood",
+    "name": "clonoSEQ Assay",
+    "vendor": "Adaptive Biotechnologies",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina MiSeqDx",
+    "approach": "Tumor-informed",
+    "method": "NGS-based immunosequencing of IgH/IgK/TCR rearrangements; tracks patient-specific clonotype from diagnosis sample",
+    "cancerTypes": [
+      "Multiple Myeloma",
+      "B-ALL",
+      "CLL",
+      "Mantle Cell Lymphoma"
+    ],
+    "indicationsNotes": "First and only FDA-cleared IVD for MRD detection. Indicated for hematologic malignancies only. Available as reagent kit for labs with MiSeqDx, or as central lab service. CE-IVDR certified in EU.",
+    "sensitivity": 95,
+    "sensitivityNotes": "Detects MRD at 10^-6 sensitivity in bone marrow samples. FDA-cleared analytical sensitivity.",
+    "specificity": 99,
+    "lod": "1 cell in 1 million",
+    "lod95": "10^-6",
+    "lodNotes": "Ultra-sensitive detection using immunosequencing of clonal rearrangements; depth limited by cell input.",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires diagnostic sample to identify patient-specific clonotype for tracking",
+    "requiresMatchedNormal": "No",
+    "initialTat": 7,
+    "followUpTat": 7,
+    "bloodVolume": null,
+    "bloodVolumeNotes": "Primarily bone marrow; peripheral blood accepted for CLL",
+    "fdaStatus": "FDA-cleared IVD (2018); CE-IVDR (2024)",
+    "reimbursement": "Medicare LCD (MolDX); expanded coverage for MM, B-ALL, CLL, MCL",
+    "cptCodes": "0364U",
+    "clinicalAvailability": "FDA-cleared IVD kit; also available as central lab service",
+    "totalParticipants": 50000,
+    "numPublications": 200,
+    "numPublicationsPlus": true,
+    "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Primarily used for post-treatment response assessment and ongoing surveillance in hematologic malignancies. Supported by NCCN guidelines for MM, ALL.",
+    "technologyDifferentiator": "Only FDA-cleared MRD IVD kit. Unique immunosequencing approach tracks clonal Ig/TCR rearrangements rather than somatic mutations. Available as distributed IVD kit for labs with MiSeqDx, enabling in-house testing."
+  },
+  {
+    "id": "mrd-kit-2",
+    "sampleCategory": "Bone Marrow/Blood",
+    "name": "LeukoStrat CDx FLT3 Mutation Assay",
+    "vendor": "Invivoscribe",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "ABI 3500 Genetic Analyzer",
+    "approach": "Tumor-informed",
+    "method": "PCR-based detection of FLT3-ITD and TKD mutations; FDA-approved companion diagnostic",
+    "cancerTypes": [
+      "AML"
+    ],
+    "indicationsNotes": "FDA-approved companion diagnostic for VANFLYTA (quizartinib), RYDAPT (midostaurin), and XOSPATA (gilteritinib). Can be used for MRD tracking of FLT3 mutations.",
+    "sensitivity": null,
+    "sensitivityNotes": "Designed for mutation detection at diagnosis; MRD sensitivity depends on allelic ratio",
+    "lod": "5% ITD ratio",
+    "lodNotes": "Clinical cutoff for FLT3-ITD positivity; research protocols may achieve lower sensitivity for MRD",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "Uses bone marrow or peripheral blood directly",
+    "requiresMatchedNormal": "No",
+    "initialTat": 3,
+    "followUpTat": 3,
+    "fdaStatus": "FDA-approved CDx; CE-IVDR",
+    "reimbursement": "Medicare covered as CDx",
+    "clinicalAvailability": "FDA-approved IVD kit",
+    "totalParticipants": 10000,
+    "numPublications": 50,
+    "numPublicationsPlus": true,
+    "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Primary use is therapy selection (CDx); can be repurposed for MRD monitoring of FLT3-mutated AML.",
+    "technologyDifferentiator": "FDA-approved companion diagnostic available as distributed IVD kit. Labs with ABI genetic analyzers can run in-house. Unique value as CDx that can also track MRD."
+  },
+  {
+    "id": "mrd-kit-3",
+    "sampleCategory": "Bone Marrow/Blood",
+    "name": "LymphoTrack Dx IGH Assay",
+    "vendor": "Invivoscribe",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina MiSeq",
+    "approach": "Tumor-informed",
+    "method": "NGS-based B-cell clonality and MRD tracking via IGH gene rearrangements",
+    "cancerTypes": [
+      "B-cell lymphomas",
+      "CLL",
+      "B-ALL"
+    ],
+    "indicationsNotes": "CE-IVDR marked for B-cell clonality assessment and MRD tracking in B-cell malignancies. Part of LymphoTrack portfolio including IGK and TRG assays.",
+    "sensitivity": null,
+    "sensitivityNotes": "MRD sensitivity up to 10^-6 with sufficient DNA input",
+    "lod": "10^-4 to 10^-6",
+    "lodNotes": "Sensitivity depends on DNA input and sequencing depth; can achieve 1 in 1 million with optimized protocols",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires diagnostic sample to identify clonal IGH rearrangement",
+    "requiresMatchedNormal": "No",
+    "initialTat": 5,
+    "followUpTat": 3,
+    "fdaStatus": "CE-IVDR; FDA clearance pending",
+    "reimbursement": "Coverage varies; often reimbursed as clonality assay",
+    "clinicalAvailability": "CE-IVD kit; RUO in US",
+    "totalParticipants": 5000,
+    "numPublications": 30,
+    "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Used for both initial clonality assessment and longitudinal MRD monitoring in B-cell malignancies.",
+    "technologyDifferentiator": "CE-IVDR distributed kit enabling in-house NGS-based MRD. Works with MiSeq platform already common in molecular labs. Includes MyInformatics software for MRD trending."
+  },
+  {
+    "id": "mrd-kit-4",
+    "sampleCategory": "Bone Marrow",
+    "name": "BD OneFlow B-ALL MRD Kit",
+    "vendor": "BD Biosciences",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "BD FACSLyric Flow Cytometer",
+    "approach": "Tumor-naïve",
+    "method": "Multiparameter flow cytometry (Next Generation Flow); 8-color standardized panel for B-ALL MRD",
+    "cancerTypes": [
+      "B-ALL"
+    ],
+    "indicationsNotes": "CE-IVDR marked standardized flow cytometry MRD kit for B-cell ALL. Part of EuroFlow consortium standardization.",
+    "sensitivity": null,
+    "sensitivityNotes": "Sensitivity of 10^-4 to 10^-5 depending on cell events acquired",
+    "lod": "10^-4 to 10^-5",
+    "lodNotes": "Flow cytometry sensitivity depends on number of events; typically 10^-4 with 1 million cells",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "Tumor-naïve approach - no prior sample needed",
+    "requiresMatchedNormal": "No",
+    "initialTat": 1,
+    "followUpTat": 1,
+    "fdaStatus": "CE-IVDR; not FDA-cleared",
+    "reimbursement": "Coverage as flow cytometry MRD",
+    "clinicalAvailability": "CE-IVD kit",
+    "totalParticipants": 10000,
+    "numPublications": 100,
+    "numPublicationsPlus": true,
+    "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
+    "clinicalSettingsNotes": "Same-day results enable rapid treatment decisions. Standard of care for MRD monitoring in many European centers.",
+    "technologyDifferentiator": "Flow cytometry provides same-day results vs. 5-7 days for NGS. Standardized EuroFlow panels ensure reproducibility across labs. No prior sample needed (tumor-naïve). Different modality than NGS - may be complementary."
   }
 ];
 
@@ -3123,6 +3379,80 @@ const ecdTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Multiple conference presentations at DDW 2023, ASCO GI 2023, AACR 2022; peer-reviewed publications in preparation",
     "technologyDifferentiator": "Multi-omics approach combining methylation + fragmentation analysis with machine learning. Company claims to have identified specific cfDNA sequence regions that capture cancer's earliest signals. Spain-based biotech (Universal DX) with US office in Cambridge, MA. Platform technology (Signal-X) being extended to other GI cancers including pancreatic, liver, and gastric."
+  },
+  // ============================================
+  // IVD KITS - Self-Collection and Laboratory Kits
+  // ============================================
+  {
+    "id": "ecd-kit-1",
+    "sampleCategory": "Stool",
+    "name": "Cologuard",
+    "vendor": "Exact Sciences",
+    "productType": "Self-Collection",
+    "testScope": "Single-cancer (CRC)",
+    "approach": "Stool DNA + FIT",
+    "method": "Multi-target stool DNA test combining methylated BMP3/NDRG4, mutant KRAS, and fecal immunochemical test (FIT) for hemoglobin",
+    "cancerTypes": ["Colorectal cancer"],
+    "targetPopulation": "Average-risk adults 45+ for CRC screening",
+    "indicationsNotes": "FDA PMA-approved for CRC screening. Only at-home self-collection cancer screening test. Patient receives kit by mail, collects stool sample at home, ships to Exact Sciences lab.",
+    "sensitivity": 92,
+    "sensitivityNotes": "92% sensitivity for CRC; 42% for advanced adenomas in pivotal study",
+    "stageISensitivity": 93,
+    "stageIISensitivity": 94,
+    "stageIIISensitivity": 93,
+    "stageIVSensitivity": 92,
+    "specificity": 87,
+    "specificityNotes": "87% specificity; ~13% false positive rate",
+    "ppv": 3.7,
+    "ppvNotes": "PPV for CRC in average-risk screening population",
+    "npv": 99.9,
+    "fdaStatus": "FDA PMA-approved (2014); USPSTF Grade A",
+    "reimbursement": "Medicare covered; most commercial payers",
+    "reimbursementNote": "Covered by Medicare and most commercial insurers for average-risk CRC screening ages 45-85",
+    "commercialPayers": ["UnitedHealthcare", "Aetna", "Cigna", "BCBS", "Humana"],
+    "listPrice": 649,
+    "listPriceNotes": "List price $649; typically covered by insurance with no out-of-pocket",
+    "clinicalAvailability": "Self-collection kit shipped to patient home",
+    "tat": "1-2 weeks",
+    "screeningInterval": "Every 3 years",
+    "totalParticipants": 10000,
+    "numPublications": 100,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "ONLY self-collection cancer screening product. Patient collects sample at home with no clinic visit required for collection. Combines DNA biomarkers with FIT in single test. Supported by USPSTF Grade A recommendation and broad guideline inclusion."
+  },
+  {
+    "id": "ecd-kit-2",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Epi proColon",
+    "vendor": "Epigenomics",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Real-time PCR system",
+    "testScope": "Single-cancer (CRC)",
+    "approach": "Blood-based cfDNA methylation",
+    "method": "Detects methylated SEPT9 gene in plasma cfDNA via real-time PCR",
+    "cancerTypes": ["Colorectal cancer"],
+    "targetPopulation": "Average-risk adults who decline colonoscopy or stool-based testing",
+    "indicationsNotes": "FDA-approved blood-based CRC screening test. Intended for patients unwilling to undergo other screening methods.",
+    "sensitivity": 68,
+    "sensitivityNotes": "68% sensitivity for CRC (all stages); lower than stool-based tests",
+    "stageISensitivity": 57,
+    "stageIISensitivity": 72,
+    "stageIIISensitivity": 85,
+    "stageIVSensitivity": 78,
+    "specificity": 80,
+    "specificityNotes": "80% specificity in screening population",
+    "fdaStatus": "FDA-approved (2016)",
+    "reimbursement": "Medicare covered; limited commercial coverage",
+    "reimbursementNote": "Medicare coverage since 2016; commercial coverage variable",
+    "commercialPayers": [],
+    "listPrice": 192,
+    "clinicalAvailability": "FDA-approved IVD kit for laboratory use",
+    "tat": "3-5 days",
+    "screeningInterval": "Annual",
+    "totalParticipants": 8000,
+    "numPublications": 50,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "First FDA-approved blood-based CRC screening test. Distributed IVD kit for labs with PCR capability. Positioned for patients who refuse colonoscopy and stool tests - 'better than no screening.'"
   }
 ];
 
@@ -3476,6 +3806,147 @@ const trmTestData = [
     "isClinicalLDT": true,
     "technologyDifferentiator": "Methylation-based tumor fraction quantification offers advantages over genomic VAF methods: (1) Tracks thousands of methylation loci vs handful of coding loci for higher sensitivity; (2) Not confounded by CNAs that affect genomic max-MAF estimates; (3) Excludes non-tumor noise (including CHIP) without requiring matched normal sequencing; (4) Validated precision down to 0.01% TF. Uses same Guardant Infinity platform as Reveal MRD, Shield, and Shield MCD.",
     "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with epigenetic tumor fraction (epiTF) quantification."
+  },
+  // ============================================
+  // IVD KITS - Laboratory Kits for Treatment Response Monitoring
+  // ============================================
+  {
+    "id": "trm-kit-1",
+    "sampleCategory": "Blood/Plasma",
+    "name": "cobas EGFR Mutation Test v2",
+    "vendor": "Roche",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "cobas 4800/6800/8800 System",
+    "approach": "Tumor-agnostic",
+    "method": "Real-time PCR detection of 42 EGFR mutations including exon 19 deletions, L858R, T790M resistance mutation, and exon 20 insertions",
+    "cancerTypes": ["NSCLC"],
+    "targetPopulation": "NSCLC patients for EGFR TKI therapy selection and resistance monitoring",
+    "indicationsNotes": "FDA-approved companion diagnostic for multiple EGFR TKIs. First liquid biopsy test FDA-approved (June 2016). Detects T790M resistance mutation for osimertinib eligibility.",
+    "sensitivity": 85,
+    "sensitivityNotes": "~85% concordance with tissue for EGFR mutations in plasma",
+    "specificity": 98,
+    "lod": "0.1% MAF",
+    "lodNotes": "Limit of detection varies by mutation; generally 0.1-1% mutant allele frequency",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "Liquid biopsy - plasma cfDNA; also validated for tissue",
+    "requiresMatchedNormal": "No",
+    "tat": "1-2 days",
+    "leadTimeVsImaging": null,
+    "fdaStatus": "FDA-approved CDx (tissue 2013, plasma 2016)",
+    "reimbursement": "Medicare covered as CDx",
+    "clinicalAvailability": "FDA-approved IVD kit",
+    "totalParticipants": 50000,
+    "numPublications": 200,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Gold standard EGFR liquid biopsy kit. First FDA-approved liquid biopsy CDx. Distributed IVD kit for labs with cobas system. Rapid TAT (1-2 days) vs. NGS-based tests."
+  },
+  {
+    "id": "trm-kit-2",
+    "sampleCategory": "Blood/Plasma",
+    "name": "cobas KRAS Mutation Test",
+    "vendor": "Roche",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "cobas 4800 System",
+    "approach": "Tumor-agnostic",
+    "method": "Real-time PCR detection of KRAS mutations in codons 12, 13, and 61",
+    "cancerTypes": ["Colorectal cancer"],
+    "targetPopulation": "mCRC patients for anti-EGFR therapy selection",
+    "indicationsNotes": "FDA-approved companion diagnostic for cetuximab and panitumumab. KRAS wild-type required for anti-EGFR therapy eligibility.",
+    "sensitivity": 95,
+    "sensitivityNotes": "High concordance with tissue testing",
+    "specificity": 99,
+    "lod": "1% MAF",
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No",
+    "tat": "1-2 days",
+    "fdaStatus": "FDA-approved CDx",
+    "reimbursement": "Medicare covered as CDx",
+    "clinicalAvailability": "FDA-approved IVD kit",
+    "totalParticipants": 20000,
+    "numPublications": 100,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Rapid PCR-based KRAS testing for CRC. Distributed IVD kit enables in-house testing. Essential for anti-EGFR therapy decisions."
+  },
+  {
+    "id": "trm-kit-3",
+    "sampleCategory": "Blood/Plasma",
+    "name": "therascreen EGFR RGQ PCR Kit",
+    "vendor": "QIAGEN",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Rotor-Gene Q MDx",
+    "approach": "Tumor-agnostic",
+    "method": "Scorpions ARMS real-time PCR for EGFR exon 19 deletions, L858R, T790M, and other sensitizing mutations",
+    "cancerTypes": ["NSCLC"],
+    "targetPopulation": "NSCLC patients for EGFR TKI therapy selection",
+    "indicationsNotes": "CE-IVD marked. Widely used in EU and Asia. FDA-approved for tissue; CE-IVD for plasma.",
+    "sensitivity": 80,
+    "sensitivityNotes": "~80% sensitivity for major EGFR mutations in plasma",
+    "specificity": 98,
+    "lod": "1% MAF",
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No",
+    "tat": "1 day",
+    "fdaStatus": "FDA-approved (tissue); CE-IVD (plasma)",
+    "reimbursement": "Coverage varies by region",
+    "clinicalAvailability": "CE-IVD kit; FDA-approved for tissue",
+    "totalParticipants": 30000,
+    "numPublications": 150,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Rotor-Gene Q platform common in many molecular labs. Rapid same-day results. Lower capital equipment cost than cobas system."
+  },
+  {
+    "id": "trm-kit-4",
+    "sampleCategory": "Blood/Plasma",
+    "name": "OncoBEAM RAS CRC Kit",
+    "vendor": "Sysmex Inostics",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "OncoBEAM System",
+    "approach": "Tumor-agnostic",
+    "method": "BEAMing (Beads, Emulsion, Amplification, Magnetics) digital PCR for extended RAS panel including KRAS exons 2-4 and NRAS exons 2-4",
+    "cancerTypes": ["Colorectal cancer"],
+    "targetPopulation": "mCRC patients for anti-EGFR therapy selection and resistance monitoring",
+    "indicationsNotes": "CE-IVD marked for RAS testing in mCRC. Extended RAS panel covers all clinically relevant mutations. Ultra-sensitive digital PCR platform.",
+    "sensitivity": 95,
+    "sensitivityNotes": "BEAMing digital PCR provides high sensitivity for low-frequency mutations",
+    "specificity": 99,
+    "lod": "0.02% MAF",
+    "lodNotes": "Digital PCR achieves 0.02% MAF sensitivity - among the most sensitive RAS tests",
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No",
+    "tat": "3-5 days",
+    "fdaStatus": "CE-IVD",
+    "reimbursement": "Coverage varies; reimbursed in EU",
+    "clinicalAvailability": "CE-IVD kit",
+    "totalParticipants": 10000,
+    "numPublications": 50,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Ultra-sensitive digital PCR (BEAMing) achieves 0.02% MAF - one of the most sensitive RAS liquid biopsy tests. Extended RAS panel for comprehensive therapy selection."
+  },
+  {
+    "id": "trm-kit-5",
+    "sampleCategory": "Blood/Plasma",
+    "name": "PGDx elio plasma focus Dx",
+    "vendor": "Labcorp (Personal Genome Diagnostics)",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina NextSeq 550Dx",
+    "approach": "Tumor-agnostic",
+    "method": "NGS-based ~70-gene ctDNA panel; detects SNVs, indels, CNAs, and select fusions across pan-solid tumor biomarkers",
+    "cancerTypes": ["Pan-solid tumor"],
+    "targetPopulation": "Advanced solid tumor patients for therapy selection and response monitoring",
+    "indicationsNotes": "FDA De Novo authorized - first FDA-authorized pan-tumor liquid biopsy IVD kit. Enables decentralized NGS liquid biopsy testing.",
+    "sensitivity": null,
+    "sensitivityNotes": "Multi-gene panel; sensitivity varies by biomarker and VAF",
+    "lod": "0.5% MAF",
+    "lodNotes": "Analytical sensitivity ~0.5% VAF for most variants",
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No",
+    "tat": "5-7 days",
+    "fdaStatus": "FDA De Novo authorized",
+    "reimbursement": "Medicare LCD coverage",
+    "clinicalAvailability": "FDA-authorized IVD kit",
+    "totalParticipants": 5000,
+    "numPublications": 30,
+    "technologyDifferentiator": "First FDA-authorized pan-tumor liquid biopsy IVD kit. Enables hospitals to bring NGS liquid biopsy in-house. Part of elio platform including tissue CGP (elio tissue complete)."
   }
 ];
 
@@ -4270,6 +4741,129 @@ const tdsTestData = [
     "technologyDifferentiator": "Only FDA-approved protein structure-based cancer diagnostic. IsoClear platform measures structural differences in proteins rather than concentration. Deployable on standard clinical analyzers (Roche COBAS, Siemens, Abbott) enabling broad access from academic centers to community urology practices - not limited to centralized specialty labs.",
     "regulatoryStatusNotes": "FDA PMA approved December 2025. Breakthrough Device Designation 2019. In NCCN and AUA/SUO guidelines. First protein structure-based cancer blood test to receive FDA approval.",
     "vendorDataSource": "Sameer Rohatgi (Cleveland Diagnostics) communication Dec 2025"
+  },
+  // ============================================
+  // IVD KITS - Laboratory Kits for Treatment Decision Support / CGP
+  // ============================================
+  {
+    "id": "tds-kit-1",
+    "name": "TruSight Oncology Comprehensive (TSO Comp)",
+    "vendor": "Illumina",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "NextSeq 550Dx",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS covering 517 genes; detects SNVs, indels, CNAs, fusions/rearrangements; reports TMB, MSI status",
+    "genesAnalyzed": 517,
+    "cancerTypes": ["Pan-solid tumor"],
+    "indicationsNotes": "First FDA-approved distributable CGP IVD kit with pan-cancer CDx claims. Enables hospitals to bring comprehensive genomic profiling in-house. CE-IVD since March 2022.",
+    "fdaStatus": "FDA-approved (2024); CE-IVD",
+    "fdaCompanionDxCount": 15,
+    "fdaCompanionDxNotes": "Multiple companion diagnostic claims across solid tumors including NSCLC, breast, ovarian, prostate, CRC, melanoma",
+    "tmb": "Yes",
+    "tmbNotes": "TMB calculated and reported; supports pembrolizumab TMB-H indication",
+    "msi": "Yes",
+    "msiNotes": "MSI status determined from NGS data",
+    "reimbursement": "Medicare LCD (MolDX)",
+    "commercialPayers": ["UnitedHealthcare", "Aetna", "Cigna"],
+    "clinicalAvailability": "FDA-approved IVD kit",
+    "tat": "10-14 days",
+    "totalParticipants": 10000,
+    "numPublications": 50,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "First FDA-approved pan-cancer CGP IVD kit. Enables decentralized in-house CGP testing at hospitals with NextSeq 550Dx. Complete workflow solution with TruSight Oncology Analysis software."
+  },
+  {
+    "id": "tds-kit-2",
+    "name": "GeneseeqPrime",
+    "vendor": "Geneseeq Technology",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina NextSeq/NovaSeq",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS panel covering 425 cancer-related genes; detects SNVs, indels, CNAs, fusions; reports TMB and MSI",
+    "genesAnalyzed": 425,
+    "cancerTypes": ["Pan-solid tumor"],
+    "indicationsNotes": "FDA 510(k) cleared September 2025. Also CE-IVDR and NMPA (China) approved. First Chinese CGP to receive FDA clearance.",
+    "fdaStatus": "FDA 510(k) cleared (Sep 2025); CE-IVDR; NMPA",
+    "tmb": "Yes",
+    "msi": "Yes",
+    "reimbursement": "Emerging - new FDA clearance",
+    "clinicalAvailability": "FDA-cleared IVD kit",
+    "tat": "7-10 days",
+    "totalParticipants": 50000,
+    "numPublications": 100,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Global regulatory approvals (FDA, CE-IVDR, NMPA). Fresh FDA clearance (Sep 2025). Established in Asia market with US expansion. Competitive pricing expected."
+  },
+  {
+    "id": "tds-kit-3",
+    "name": "PGDx elio tissue complete",
+    "vendor": "Labcorp (Personal Genome Diagnostics)",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina NextSeq 550Dx",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS covering ~500 genes; comprehensive solid tumor profiling including SNVs, indels, CNAs, MSI, TMB",
+    "genesAnalyzed": 505,
+    "cancerTypes": ["Pan-solid tumor"],
+    "indicationsNotes": "FDA-cleared and CE-IVDR (July 2025). First and only test CE-marked for comprehensive solid tumor profiling under new EU IVDR regulation.",
+    "fdaStatus": "FDA-cleared; CE-IVDR (Jul 2025)",
+    "tmb": "Yes",
+    "msi": "Yes",
+    "reimbursement": "Medicare LCD coverage",
+    "commercialPayers": ["UnitedHealthcare", "Aetna"],
+    "clinicalAvailability": "FDA-cleared IVD kit",
+    "tat": "10-14 days",
+    "totalParticipants": 5000,
+    "numPublications": 30,
+    "technologyDifferentiator": "First CE-IVDR comprehensive CGP kit. Part of elio platform family including plasma focus Dx for liquid biopsy. PGDx analytics platform included."
+  },
+  {
+    "id": "tds-kit-4",
+    "name": "Oncomine Comprehensive Assay Plus",
+    "vendor": "Thermo Fisher Scientific",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Ion GeneStudio S5",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Amplicon-based NGS covering 500+ genes from DNA and RNA; detects SNVs, indels, CNAs, and fusions including novel fusions via RNA",
+    "genesAnalyzed": 500,
+    "cancerTypes": ["Pan-solid tumor"],
+    "indicationsNotes": "CE-IVD marked. DNA+RNA workflow captures both mutation and fusion biomarkers. Popular choice for labs with Ion Torrent infrastructure.",
+    "fdaStatus": "CE-IVD; RUO in US",
+    "tmb": "Yes",
+    "msi": "Yes",
+    "reimbursement": "Coverage varies",
+    "clinicalAvailability": "CE-IVD kit",
+    "tat": "5-7 days",
+    "totalParticipants": 20000,
+    "numPublications": 80,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Ion Torrent amplicon-based sequencing - lower DNA input requirements than hybrid-capture. DNA+RNA workflow in single assay. Strong in APAC market. Automated Genexus workflow option available."
+  },
+  {
+    "id": "tds-kit-5",
+    "name": "TSO 500",
+    "vendor": "Illumina",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "NextSeq 500/550/550Dx",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS covering 523 genes from DNA and RNA; comprehensive detection of SNVs, indels, CNAs, fusions, TMB, MSI",
+    "genesAnalyzed": 523,
+    "cancerTypes": ["Pan-solid tumor"],
+    "indicationsNotes": "CE-IVD marked. Predecessor to TSO Comprehensive. Widely deployed in EU laboratories. Research use only in US.",
+    "fdaStatus": "CE-IVD; RUO in US",
+    "tmb": "Yes",
+    "msi": "Yes",
+    "reimbursement": "Coverage varies",
+    "clinicalAvailability": "CE-IVD kit; RUO in US",
+    "tat": "7-10 days",
+    "totalParticipants": 50000,
+    "numPublications": 200,
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": "Established CE-IVD CGP panel with extensive real-world deployment. DNA+RNA enrichment in single workflow. Foundation for TSO Comprehensive."
   }
 ];
 
@@ -4278,6 +4872,7 @@ const compressTestForChat = (test) => {
   // Key mapping: long names → short names
   const keyMap = {
     id: 'id', name: 'nm', vendor: 'vn', approach: 'ap', method: 'mt', sampleCategory: 'samp',
+    productType: 'pType', platformRequired: 'platform',
     cancerTypes: 'ca', indicationsNotes: 'ind', sensitivity: 'sens', specificity: 'spec',
     analyticalSpecificity: 'aSpec', clinicalSpecificity: 'cSpec',
     ppv: 'ppv', npv: 'npv', lod: 'lod', lod95: 'lod95', lodNotes: 'lodN', requiresTumorTissue: 'tumorReq',
@@ -4297,6 +4892,7 @@ const compressTestForChat = (test) => {
     responseDefinition: 'respDef', independentValidation: 'indepVal',
     nccnGuidelines: 'nccn', technologyDifferentiator: 'techDiff',
     sensitivityNotes: 'sensN', specificityNotes: 'specN', ppvDefinition: 'ppvDef', npvDefinition: 'npvDef',
+    genesAnalyzed: 'genes', fdaCompanionDxCount: 'cdxCount', tmb: 'tmb', msi: 'msi',
   };
   
   const compressed = {};
@@ -4321,7 +4917,7 @@ const chatTestData = {
 };
 
 // Key legend for chatbot prompt
-const chatKeyLegend = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
+const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines, genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting.`;
 
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
@@ -4357,8 +4953,9 @@ ${scopeReminder}`;
 const filterConfigs = {
   MRD: {
     // Oncologist priority: What cancer? Sample type? Is it covered? Is it FDA approved?
+    productTypes: ['Central Lab Service', 'Laboratory IVD Kit'],
     cancerTypes: [...new Set(mrdTestData.flatMap(t => t.cancerTypes || []))].sort(),
-    sampleCategories: ['Blood/Plasma'],
+    sampleCategories: [...new Set(mrdTestData.map(t => t.sampleCategory || 'Blood/Plasma'))].sort(),
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
     reimbursements: ['Medicare', 'Commercial'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
@@ -4367,15 +4964,17 @@ const filterConfigs = {
   },
   ECD: {
     // Oncologist priority: Single cancer or multi? Sample type? What's the target population? Covered?
+    productTypes: ['Self-Collection', 'Central Lab Service', 'Laboratory IVD Kit'],
     testScopes: ['Single-cancer (CRC)', 'Multi-cancer (MCED)'],
     sampleCategories: ['Blood/Plasma', 'Stool'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
     reimbursements: ['Medicare', 'Commercial'],
-    approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)'],
+    approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)', 'Stool DNA + FIT'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   },
   TRM: {
     // Oncologist priority: What cancer? Sample type? Approach? Covered?
+    productTypes: ['Central Lab Service', 'Laboratory IVD Kit'],
     cancerTypes: [...new Set(trmTestData.flatMap(t => t.cancerTypes || []))].sort(),
     sampleCategories: ['Blood/Plasma'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
@@ -4385,6 +4984,7 @@ const filterConfigs = {
   },
   TDS: {
     // TDS priority: Sample type (tissue vs liquid), cancer types, FDA status, coverage
+    productTypes: ['Central Lab Service', 'Laboratory IVD Kit'],
     cancerTypes: [...new Set(tdsTestData.flatMap(t => t.cancerTypes || []))].sort(),
     sampleCategories: [...new Set(tdsTestData.map(t => t.sampleCategory || 'Unknown'))].sort(),
     approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
@@ -4398,6 +4998,8 @@ const filterConfigs = {
 // ============================================
 const comparisonParams = {
   MRD: [
+    { key: 'productType', label: 'Product Type' },
+    { key: 'platformRequired', label: 'Platform Required' },
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
     { key: 'sampleCategory', label: 'Sample Type' },
@@ -4427,6 +5029,8 @@ const comparisonParams = {
     { key: 'availableRegionsStr', label: 'Availability' },
   ],
   ECD: [
+    { key: 'productType', label: 'Product Type' },
+    { key: 'platformRequired', label: 'Platform Required' },
     { key: 'testScope', label: 'Scope' },
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
@@ -4459,6 +5063,8 @@ const comparisonParams = {
     { key: 'performanceNotes', label: 'Performance Notes' },
   ],
   TRM: [
+    { key: 'productType', label: 'Product Type' },
+    { key: 'platformRequired', label: 'Platform Required' },
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
     { key: 'sampleCategory', label: 'Sample Type' },
@@ -4478,6 +5084,8 @@ const comparisonParams = {
     { key: 'availableRegionsStr', label: 'Availability' },
   ],
   TDS: [
+    { key: 'productType', label: 'Product Type' },
+    { key: 'platformRequired', label: 'Platform Required' },
     { key: 'approach', label: 'Approach' },
     { key: 'method', label: 'Method' },
     { key: 'sampleCategory', label: 'Sample Type' },
@@ -9676,6 +10284,8 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {isDiscontinued && <Badge variant="slate">DISCONTINUED</Badge>}
+              {/* Product Type Badge - IVD Kit vs Service */}
+              {!isDiscontinued && test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
               {!isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0 
                 ? <Badge variant="success">Medicare+Private</Badge>
                 : !isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') 
@@ -9693,6 +10303,12 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
             </div>
             <h3 className={`font-semibold ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
             <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+            {/* Platform Required - for IVD Kits */}
+            {test.platformRequired && (
+              <p className="text-xs text-indigo-600 mt-0.5">
+                <span className="font-medium">Platform:</span> {test.platformRequired}
+              </p>
+            )}
           </div>
           {/* Prominent comparison checkbox - click selects for comparison, hidden on mobile */}
           <button
@@ -10948,6 +11564,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const [tumorTissueRequired, setTumorTissueRequired] = useState('any'); // 'any', 'yes', 'no'
   const [minGenes, setMinGenes] = useState(0);
   const [minCdx, setMinCdx] = useState(0);
+  const [selectedProductTypes, setSelectedProductTypes] = useState([]);
   const [selectedTests, setSelectedTests] = useState(() => {
     // Initialize from either comparison IDs or single test ID
     if (initialCompareIds && initialCompareIds.length >= 2) {
@@ -11161,15 +11778,20 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       if (minGenes > 0 && (!test.genesAnalyzed || test.genesAnalyzed < minGenes)) return false;
       // Companion Dx count filter (TDS)
       if (minCdx > 0 && (!test.fdaCompanionDxCount || test.fdaCompanionDxCount < minCdx)) return false;
+      // Product Type filter (IVD Kit vs Service)
+      if (selectedProductTypes.length > 0) {
+        const testProductType = test.productType || 'Central Lab Service'; // Default to service for existing tests
+        if (!selectedProductTypes.includes(testProductType)) return false;
+      }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); setSelectedProductTypes([]); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0 || selectedProductTypes.length;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600' };
 
@@ -11247,6 +11869,46 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
 
               {/* ========== UNIFIED FILTERS FOR ALL CATEGORIES ========== */}
               
+              {/* Product Type Section - NEW: IVD Kit vs Service */}
+              {config.productTypes && (
+                <FilterSection 
+                  title={isPatient ? 'How It Works' : 'Product Type'} 
+                  defaultOpen={true}
+                  activeCount={selectedProductTypes.length}
+                >
+                  <div className="space-y-1">
+                    {config.productTypes.map(pt => {
+                      const ptConfig = getProductTypeConfig(pt);
+                      return (
+                        <label key={pt} className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={selectedProductTypes.includes(pt)}
+                            onChange={() => toggle(setSelectedProductTypes)(pt)}
+                            className="w-3.5 h-3.5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                          />
+                          <span className="flex items-center gap-1.5 text-sm text-gray-700 group-hover:text-gray-900">
+                            <span>{ptConfig.icon}</span>
+                            <span>{isPatient ? (
+                              pt === 'Self-Collection' ? 'At-home collection' :
+                              pt === 'Laboratory IVD Kit' ? 'Hospital lab test' :
+                              'Send-away test'
+                            ) : ptConfig.label}</span>
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                  {!isPatient && (
+                    <p className="text-xs text-gray-400 mt-2 italic">
+                      🏠 Self-collection: patient collects at home<br/>
+                      🔬 Lab Kit: IVD kit run at any equipped lab<br/>
+                      🏥 Service: sample shipped to central lab
+                    </p>
+                  )}
+                </FilterSection>
+              )}
+
               {/* Clinical Section */}
               <FilterSection 
                 title={isPatient ? 'My Cancer' : 'Clinical'} 
