@@ -5779,7 +5779,11 @@ const TestShowcase = ({ onNavigate }) => {
     if (!searchQuery.trim()) return allTests;
     const terms = searchQuery.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
     return allTests.filter(test => {
-      const searchableText = `${test.name} ${test.vendor} ${test.category}`.toLowerCase();
+      // Include productType in search - "kit" finds all IVD kits, "service" finds central lab services
+      const productTypeSearchable = test.productType === 'Laboratory IVD Kit' ? 'kit ivd laboratory' :
+                                    test.productType === 'Self-Collection' ? 'self-collection home' :
+                                    'service central lab';
+      const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable}`.toLowerCase();
       return terms.every(term => searchableText.includes(term));
     });
   }, [allTests, searchQuery]);
@@ -6203,9 +6207,22 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       DISC
                     </span>
                   ) : (
-                    <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                      {test.category}
-                    </span>
+                    <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* Kit/Service badge */}
+                      {test.productType === 'Laboratory IVD Kit' ? (
+                        <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
+                          🔬Kit
+                        </span>
+                      ) : test.productType === 'Self-Collection' ? (
+                        <span className="bg-teal-100 text-teal-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Self-Collection">
+                          🏠Home
+                        </span>
+                      ) : null}
+                      {/* Category badge */}
+                      <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium`}>
+                        {test.category}
+                      </span>
+                    </div>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
@@ -6230,6 +6247,15 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Compact Legend */}
         <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
+          <span className="flex items-center gap-1">
+            <span className="bg-indigo-100 text-indigo-700 px-1 rounded">🔬Kit</span>
+            <span className="text-slate-500">IVD Kit</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="bg-teal-100 text-teal-700 px-1 rounded">🏠Home</span>
+            <span className="text-slate-500">Self-Collect</span>
+          </span>
+          <span className="text-slate-300">|</span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
             <span className="text-slate-500">After Treatment</span>
@@ -6518,9 +6544,22 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       DISC
                     </span>
                   ) : (
-                    <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0`}>
-                      {test.category}
-                    </span>
+                    <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* Kit/Service badge */}
+                      {test.productType === 'Laboratory IVD Kit' ? (
+                        <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
+                          🔬Kit
+                        </span>
+                      ) : test.productType === 'Self-Collection' ? (
+                        <span className="bg-teal-100 text-teal-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Self-Collection">
+                          🏠Home
+                        </span>
+                      ) : null}
+                      {/* Category badge */}
+                      <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium`}>
+                        {test.category}
+                      </span>
+                    </div>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
@@ -6545,6 +6584,15 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Compact Legend */}
         <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
+          <span className="flex items-center gap-1">
+            <span className="bg-indigo-100 text-indigo-700 px-1 rounded">🔬Kit</span>
+            <span className="text-slate-500">IVD Kit</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="bg-teal-100 text-teal-700 px-1 rounded">🏠Home</span>
+            <span className="text-slate-500">Self-Collect</span>
+          </span>
+          <span className="text-slate-300">|</span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             <span className="text-slate-500">ECD</span>
@@ -11684,7 +11732,11 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
     return tests.filter(test => {
       if (searchQuery) {
         const terms = searchQuery.toLowerCase().split(/\s+/).filter(t => t.length > 0);
-        const searchableText = `${test.name} ${test.vendor} ${category}`.toLowerCase();
+        // Include productType in search - "kit" finds all IVD kits, "service" finds central lab services
+        const productTypeSearchable = test.productType === 'Laboratory IVD Kit' ? 'kit ivd laboratory' :
+                                      test.productType === 'Self-Collection' ? 'self-collection home' :
+                                      'service central lab';
+        const searchableText = `${test.name} ${test.vendor} ${category} ${productTypeSearchable}`.toLowerCase();
         if (!terms.every(term => searchableText.includes(term))) return false;
       }
       if (selectedApproaches.length > 0 && !selectedApproaches.includes(test.approach)) return false;
