@@ -2666,8 +2666,10 @@ const mrdTestData = [
       "B-ALL"
     ],
     "indicationsNotes": "CE-IVDR marked for B-cell clonality assessment and MRD tracking in B-cell malignancies. Part of LymphoTrack portfolio including IGK and TRG assays.",
-    "sensitivity": null,
-    "sensitivityNotes": "MRD sensitivity up to 10^-6 with sufficient DNA input",
+    "sensitivity": 98,
+    "sensitivityNotes": "98% detection rate for clonal IGH rearrangements vs PCR GeneScan/Sanger sequencing; MRD sensitivity up to 10^-6 with sufficient DNA input",
+    "specificity": 99,
+    "specificityNotes": ">99% specificity for clonality detection per NGS validation studies",
     "lod": "10^-4 to 10^-6",
     "lodNotes": "Sensitivity depends on DNA input and sequencing depth; can achieve 1 in 1 million with optimized protocols",
     "requiresTumorTissue": "Yes",
@@ -2697,8 +2699,10 @@ const mrdTestData = [
       "B-ALL"
     ],
     "indicationsNotes": "CE-IVDR marked standardized flow cytometry MRD kit for B-cell ALL. Part of EuroFlow consortium standardization.",
-    "sensitivity": null,
-    "sensitivityNotes": "Sensitivity of 10^-4 to 10^-5 depending on cell events acquired",
+    "sensitivity": 96,
+    "sensitivityNotes": "96% sensitivity for MRD detection at 10^-4 threshold (EuroFlow standardized protocols); sensitivity of 10^-4 to 10^-5 depending on cell events acquired",
+    "specificity": 95,
+    "specificityNotes": "95% specificity vs final clinical diagnosis in validation studies",
     "lod": "10^-4 to 10^-5",
     "lodNotes": "Flow cytometry sensitivity depends on number of events; typically 10^-4 with 1 million cells",
     "requiresTumorTissue": "No",
@@ -3934,8 +3938,10 @@ const trmTestData = [
     "cancerTypes": ["Pan-solid tumor"],
     "targetPopulation": "Advanced solid tumor patients for therapy selection and response monitoring",
     "indicationsNotes": "FDA De Novo authorized - first FDA-authorized pan-tumor liquid biopsy IVD kit. Enables decentralized NGS liquid biopsy testing.",
-    "sensitivity": null,
-    "sensitivityNotes": "Multi-gene panel; sensitivity varies by biomarker and VAF",
+    "sensitivity": 90,
+    "sensitivityNotes": "≥90% analytical sensitivity across variant types at LoD; multi-gene panel sensitivity varies by biomarker and VAF",
+    "specificity": 95,
+    "specificityNotes": "≥95% analytical specificity in validation studies; >99.9% NPV across variant types",
     "lod": "0.5% MAF",
     "lodNotes": "Analytical sensitivity ~0.5% VAF for most variants",
     "requiresTumorTissue": "No",
@@ -5690,17 +5696,48 @@ const TestShowcase = ({ onNavigate }) => {
     return count;
   };
 
-  // Helper to calculate openness score (same as DatabaseSummary)
-  const calcOpenness = (test) => {
+  // Helper to calculate openness score - CATEGORY-NORMALIZED
+  // Each category has different "standard" metrics, so we normalize accordingly
+  const calcOpenness = (test, category) => {
     const hasValue = (val) => val != null && val !== '' && val !== 'N/A';
     let score = 0;
-    if (hasValue(test.listPrice)) score += 30;
-    if (hasValue(test.sensitivity)) score += 15;
-    if (hasValue(test.specificity)) score += 15;
+    let maxScore = 100;
+    
+    // UNIVERSAL FIELDS (70 pts max across all categories)
+    if (hasValue(test.listPrice)) score += 30;  // Gold standard - hardest to find
     if (test.numPublications != null && test.numPublications > 0) score += 15;
     if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
     if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
     if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
+    
+    // CATEGORY-SPECIFIC FIELDS (30 pts max - metrics that ALL tests in category can have)
+    const cat = category || test.category;
+    switch (cat) {
+      case 'ECD':
+        // ECD: Sensitivity/specificity are key for screening tests
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+        break;
+      case 'MRD':
+        // MRD: LOD is THE key metric (all MRD tests report this)
+        if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
+        break;
+      case 'TRM':
+        // TRM: Sensitivity/specificity for mutation detection
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+        break;
+      case 'TDS':
+        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
+        if (hasValue(test.genesAnalyzed)) score += 15;
+        if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
+        break;
+      default:
+        // Fallback to sensitivity/specificity
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+    }
+    
     return score;
   };
 
@@ -7175,7 +7212,13 @@ const DatabaseSummary = () => {
   const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
   const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
   
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  // Add category to each test for proper openness scoring
+  const allTests = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
+  ];
   
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
@@ -7201,16 +7244,45 @@ const DatabaseSummary = () => {
     return reimb.includes('medicare') || reimb.includes('covered') || (test.commercialPayers && test.commercialPayers.length > 0);
   };
 
-  // Calculate openness score per test (0-100)
+  // Calculate openness score per test (0-100) - CATEGORY-NORMALIZED
+  // Each category has different "standard" metrics, so we normalize accordingly
   const calcTestScore = (test) => {
     let score = 0;
-    if (hasValue(test.listPrice)) score += 30;
-    if (hasValue(test.sensitivity)) score += 15;
-    if (hasValue(test.specificity)) score += 15;
+    
+    // UNIVERSAL FIELDS (70 pts max across all categories)
+    if (hasValue(test.listPrice)) score += 30;  // Gold standard - hardest to find
     if (test.numPublications != null && test.numPublications > 0) score += 15;
     if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
     if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
     if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
+    
+    // CATEGORY-SPECIFIC FIELDS (30 pts max - metrics that ALL tests in category can have)
+    switch (test.category) {
+      case 'ECD':
+        // ECD: Sensitivity/specificity are key for screening tests
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+        break;
+      case 'MRD':
+        // MRD: LOD is THE key metric (all MRD tests report this)
+        if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
+        break;
+      case 'TRM':
+        // TRM: Sensitivity/specificity for mutation detection
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+        break;
+      case 'TDS':
+        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
+        if (hasValue(test.genesAnalyzed)) score += 15;
+        if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
+        break;
+      default:
+        // Fallback to sensitivity/specificity
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+    }
+    
     return score;
   };
 
@@ -7357,10 +7429,11 @@ const DatabaseSummary = () => {
           {showFAQ && (
             <div className="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-3">
               <p className="text-xs text-slate-600">
-                The Openness Score measures vendor data disclosure. Each test is scored on: 
-                <strong> Price (30%)</strong>, <strong>Sensitivity (15%)</strong>, <strong>Specificity (15%)</strong>, 
-                <strong> Publications (15%)</strong>, <strong>TAT (10%)</strong>, <strong>Sample Info (10%)</strong>, 
-                <strong> Trial Participants (5%)</strong>. Vendor scores are averaged across all their tests.
+                The Openness Score measures vendor data disclosure using <strong>category-normalized</strong> metrics. 
+                Universal fields: <strong>Price (30%)</strong>, <strong>Publications (15%)</strong>, <strong>TAT (10%)</strong>, 
+                <strong> Sample Info (10%)</strong>, <strong>Trial Participants (5%)</strong>. 
+                Plus 30% for category-specific metrics (e.g., Sens/Spec for ECD/TRM, LOD for MRD, Genes/CDx for TDS). 
+                Vendor scores are averaged across all their tests.
               </p>
             </div>
           )}
@@ -7404,21 +7477,56 @@ const DatabaseSummary = () => {
 const OpennessAward = () => {
   const [showFAQ, setShowFAQ] = useState(false);
   
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  // Add category to each test for proper openness scoring
+  const allTests = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
+  ];
   
   // Helper functions
   const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
 
-  // Calculate openness score per test (0-100)
+  // Calculate openness score per test (0-100) - CATEGORY-NORMALIZED
+  // Each category has different "standard" metrics, so we normalize accordingly
   const calcTestScore = (test) => {
     let score = 0;
-    if (hasValue(test.listPrice)) score += 30;
-    if (hasValue(test.sensitivity)) score += 15;
-    if (hasValue(test.specificity)) score += 15;
+    
+    // UNIVERSAL FIELDS (70 pts max across all categories)
+    if (hasValue(test.listPrice)) score += 30;  // Gold standard - hardest to find
     if (test.numPublications != null && test.numPublications > 0) score += 15;
     if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
     if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
     if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
+    
+    // CATEGORY-SPECIFIC FIELDS (30 pts max - metrics that ALL tests in category can have)
+    switch (test.category) {
+      case 'ECD':
+        // ECD: Sensitivity/specificity are key for screening tests
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+        break;
+      case 'MRD':
+        // MRD: LOD is THE key metric (all MRD tests report this)
+        if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
+        break;
+      case 'TRM':
+        // TRM: Sensitivity/specificity for mutation detection
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+        break;
+      case 'TDS':
+        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
+        if (hasValue(test.genesAnalyzed)) score += 15;
+        if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
+        break;
+      default:
+        // Fallback to sensitivity/specificity
+        if (hasValue(test.sensitivity)) score += 15;
+        if (hasValue(test.specificity)) score += 15;
+    }
+    
     return score;
   };
 
@@ -8185,18 +8293,28 @@ const FAQPage = () => {
               </thead>
               <tbody className="text-gray-600">
                 <tr className="border-b"><td className="py-2 px-3 font-medium">Price</td><td className="text-center py-2 px-3 font-bold text-amber-600">30%</td><td className="py-2 px-3">Hardest to find, gold standard of openness</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sensitivity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Specificity</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Core performance metric</td></tr>
                 <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Publications</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Peer-reviewed evidence base</td></tr>
                 <tr className="border-b"><td className="py-2 px-3 font-medium">Turnaround Time</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Practical info for clinicians</td></tr>
                 <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sample Info</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Blood volume, sample type, or category</td></tr>
-                <tr><td className="py-2 px-3 font-medium">Trial Participants</td><td className="text-center py-2 px-3 font-bold text-amber-600">5%</td><td className="py-2 px-3">Clinical evidence depth</td></tr>
+                <tr className="border-b"><td className="py-2 px-3 font-medium">Trial Participants</td><td className="text-center py-2 px-3 font-bold text-amber-600">5%</td><td className="py-2 px-3">Clinical evidence depth</td></tr>
+                <tr className="border-b bg-blue-50"><td className="py-2 px-3 font-medium italic" colSpan="3">+ Category-Specific Metrics (30%)</td></tr>
+                <tr className="border-b bg-gray-50"><td className="py-2 px-3 pl-6 text-xs">ECD (Screening)</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">Sensitivity + Specificity (cancer detection)</td></tr>
+                <tr className="border-b"><td className="py-2 px-3 pl-6 text-xs">MRD</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">LOD (limit of detection)</td></tr>
+                <tr className="border-b bg-gray-50"><td className="py-2 px-3 pl-6 text-xs">TRM</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">Sensitivity + Specificity (mutation detection)</td></tr>
+                <tr className="border-b"><td className="py-2 px-3 pl-6 text-xs">TDS (CGP)</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">Genes Analyzed + CDx Claims</td></tr>
               </tbody>
               <tfoot>
                 <tr className="bg-amber-50 border-t-2 border-amber-200"><td className="py-2 px-3 font-bold">Total</td><td className="text-center py-2 px-3 font-bold text-amber-700">100%</td><td className="py-2 px-3"></td></tr>
               </tfoot>
             </table>
           </div>
+          
+          <p className="font-medium text-gray-800 mt-4">Why category-normalized scoring?</p>
+          <p>
+            Different test categories have different "standard" metrics. CGP tests don't report sensitivity/specificity 
+            like screening tests do — they report panel size and companion diagnostic claims. MRD tests focus on limit 
+            of detection. By normalizing per-category, we compare apples to apples.
+          </p>
           
           <p className="font-medium text-gray-800 mt-4">Who is eligible for ranking?</p>
           <p>
@@ -8208,15 +8326,15 @@ const FAQPage = () => {
           <p className="font-medium text-gray-800 mt-4">Why these weights?</p>
           <p>
             <strong>Price (30%)</strong> is weighted highest because it's the most commonly withheld information 
-            and critically important for patients and healthcare systems. <strong>Performance metrics (30% combined)</strong> are 
-            essential for clinical decision-making. <strong>Publications (15%)</strong> demonstrate commitment to 
-            independent validation. Practical details like <strong>TAT and sample requirements (20% combined)</strong> help 
+            and critically important for patients and healthcare systems. <strong>Category-specific metrics (30%)</strong> are 
+            essential for clinical decision-making but vary by test type. <strong>Publications (15%)</strong> demonstrate commitment to 
+            independent validation. Practical details like <strong>TAT and sample requirements (15% combined)</strong> help 
             with care coordination.
           </p>
           
           <p className="font-medium text-gray-800 mt-4">How can vendors improve their score?</p>
           <p>
-            Publish your list price, disclose sensitivity and specificity from validation studies, maintain an 
+            Publish your list price, disclose the key performance metrics for your test category, maintain an 
             active publication record, and provide clear sample requirements. Vendors can submit updated information 
             through our Submissions page.
           </p>
