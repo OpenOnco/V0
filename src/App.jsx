@@ -6125,7 +6125,9 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
         
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-bold text-slate-800">
-            The {allTests.length} Tests We Track
+            {searchQuery 
+              ? `Search Results (${filteredTests.length})`
+              : `The ${allTests.length} Tests We Track`}
           </h3>
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-500">Sort Order</span>
@@ -6163,11 +6165,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           )}
         </div>
         
-        {searchQuery && (
-          <p className="text-xs text-slate-500 mb-2">
-            {filteredTests.length === 0 ? 'No tests found' : `Showing ${filteredTests.length} of ${allTests.length} tests`}
-          </p>
-        )}
         <p className="text-xs text-slate-500 text-center mb-3">
           Showing coverage, pricing & wait times
         </p>
@@ -6491,7 +6488,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       {/* Test Cards Grid */}
       <div className="p-4 border-t border-slate-100">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">All the tests we track ({allTests.length})</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            {searchQuery 
+              ? `Search results (${filteredTests.length})` 
+              : `All the tests we track (${allTests.length})`}
+          </p>
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-500">Sort:</span>
             <select
