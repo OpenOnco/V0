@@ -82,7 +82,8 @@ test.describe('Category Pages', () => {
       await page.goto(`/${category.toLowerCase()}`);
       await page.waitForTimeout(1500);
       
-      const cards = page.locator('[class*="cursor-pointer"], [class*="card"], [role="button"]');
+      // Use data-testid for more reliable selection
+      const cards = page.locator('[data-testid="test-card"], [data-testid="test-card-clickable"]');
       const count = await cards.count();
       
       expect(count).toBeGreaterThan(0);
@@ -99,13 +100,20 @@ test.describe('Test Detail Modal', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(1500);
     
-    const testCard = page.locator('[class*="cursor-pointer"]').first();
+    // Use data-testid for reliable test card selection
+    let testCard = page.locator('[data-testid="test-card-clickable"]').first();
+    
+    // Fallback: find cursor-pointer elements within the test grid area
+    if (!await testCard.isVisible()) {
+      testCard = page.locator('[data-testid="test-card"]').first();
+    }
     
     if (await testCard.isVisible()) {
       await testCard.click();
       await page.waitForTimeout(1000);
       
-      const modal = page.locator('[class*="fixed"][class*="inset"], [role="dialog"], .test-detail-print-area');
+      // Check for modal using data-testid or class
+      const modal = page.locator('[data-testid="test-detail-modal"], .test-detail-print-area, [class*="fixed"][class*="inset"]');
       await expect(modal.first()).toBeVisible({ timeout: 5000 });
     }
   });
@@ -114,12 +122,17 @@ test.describe('Test Detail Modal', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(1500);
     
-    const testCard = page.locator('[class*="cursor-pointer"]').first();
+    let testCard = page.locator('[data-testid="test-card-clickable"]').first();
+    if (!await testCard.isVisible()) {
+      testCard = page.locator('[data-testid="test-card"]').first();
+    }
+    
     if (await testCard.isVisible()) {
       await testCard.click();
       await page.waitForTimeout(1000);
       
-      const shareBtn = page.locator('button[title*="link"], button[title*="share"], button[title*="copy"]');
+      // Use data-testid or title attribute
+      const shareBtn = page.locator('[data-testid="share-link-button"], button[title*="link"], button[title*="share"], button[title*="copy"]');
       await expect(shareBtn.first()).toBeVisible({ timeout: 5000 });
     }
   });
@@ -128,12 +141,17 @@ test.describe('Test Detail Modal', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(1500);
     
-    const testCard = page.locator('[class*="cursor-pointer"]').first();
+    let testCard = page.locator('[data-testid="test-card-clickable"]').first();
+    if (!await testCard.isVisible()) {
+      testCard = page.locator('[data-testid="test-card"]').first();
+    }
+    
     if (await testCard.isVisible()) {
       await testCard.click();
       await page.waitForTimeout(1000);
       
-      const printBtn = page.locator('button[title*="print"], button[title*="PDF"]');
+      // Use data-testid or title attribute
+      const printBtn = page.locator('[data-testid="print-button"], button[title*="print"], button[title*="PDF"]');
       await expect(printBtn.first()).toBeVisible({ timeout: 5000 });
     }
   });
@@ -175,7 +193,8 @@ test.describe('Comparison Modal', () => {
         await compareBtn.click();
         await page.waitForTimeout(1000);
         
-        const modal = page.locator('.comparison-print-area, [class*="Comparing"]');
+        // Use data-testid or class
+        const modal = page.locator('[data-testid="comparison-modal"], .comparison-print-area, [class*="Comparing"]');
         await expect(modal.first()).toBeVisible({ timeout: 5000 });
       }
     }
@@ -214,7 +233,11 @@ test.describe('Print Functionality', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(1500);
     
-    const testCard = page.locator('[class*="cursor-pointer"]').first();
+    let testCard = page.locator('[data-testid="test-card-clickable"]').first();
+    if (!await testCard.isVisible()) {
+      testCard = page.locator('[data-testid="test-card"]').first();
+    }
+    
     if (await testCard.isVisible()) {
       await testCard.click();
       await page.waitForTimeout(1000);
@@ -233,7 +256,11 @@ test.describe('Print Functionality', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(1500);
     
-    const testCard = page.locator('[class*="cursor-pointer"]').first();
+    let testCard = page.locator('[data-testid="test-card-clickable"]').first();
+    if (!await testCard.isVisible()) {
+      testCard = page.locator('[data-testid="test-card"]').first();
+    }
+    
     if (await testCard.isVisible()) {
       await testCard.click();
       await page.waitForTimeout(1000);

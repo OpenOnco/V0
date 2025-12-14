@@ -10436,7 +10436,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const isDiscontinued = test.isDiscontinued === true;
   
   return (
-    <div id={`test-card-${test.id}`} className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -10446,7 +10446,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         </div>
       )}
       {/* Header - clickable to show detail modal */}
-      <div className="cursor-pointer flex-1" onClick={() => onShowDetail && onShowDetail(test)}>
+      <div className="cursor-pointer flex-1" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -10633,7 +10633,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
   );
   
   return (
-    <div className={`relative h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all overflow-hidden`}>
+    <div data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all overflow-hidden`}>
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -10643,7 +10643,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
         </div>
       )}
       {/* Header - clickable to show detail modal */}
-      <div className="cursor-pointer flex-1 flex flex-col" onClick={() => onShowDetail && onShowDetail(test)}>
+      <div className="cursor-pointer flex-1 flex flex-col" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
@@ -10847,7 +10847,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   return (
     <>
       <style>{printStyles}</style>
-      <div className="test-detail-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" onClick={onClose}>
+      <div className="test-detail-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" data-testid="test-detail-modal" onClick={onClose}>
         <div className="test-detail-print-area bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
           {/* Discontinued Banner */}
           {isDiscontinued && (
@@ -10879,6 +10879,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 onClick={copyLink} 
                 className="p-2 hover:bg-white/20 rounded-xl transition-colors print:hidden relative"
                 title="Copy link to this test"
+                data-testid="share-link-button"
               >
                 {linkCopied ? (
                   <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -10894,6 +10895,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 onClick={(e) => { e.stopPropagation(); window.print(); }} 
                 className="p-2 hover:bg-white/20 rounded-xl transition-colors print:hidden"
                 title="Print or save as PDF"
+                data-testid="print-button"
               >
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -11481,7 +11483,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   return (
     <>
       <style>{printStyles}</style>
-      <div className="comparison-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:backdrop-blur-none" onClick={onClose}>
+      <div className="comparison-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:backdrop-blur-none" data-testid="comparison-modal" onClick={onClose}>
         <div className="comparison-print-area bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
           {/* Colored Header */}
           <div className={`flex justify-between items-center p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
@@ -11502,6 +11504,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
               onClick={copyLink} 
               className={`p-2 ${colors.closeBtnHover} rounded-xl transition-colors print:hidden flex items-center gap-1`}
               title="Copy shareable link"
+              data-testid="share-link-button"
             >
               {linkCopied ? (
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
