@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
 import {
@@ -26,6 +27,15 @@ import {
   createCategoryMeta,
   filterConfigs,
   comparisonParams,
+  SEO_DEFAULTS,
+  PAGE_SEO,
+  slugify,
+  getTestUrl,
+  getTestBySlug,
+  getAbsoluteUrl,
+  generateTestSchema,
+  generateCategorySchema,
+  generateOrganizationSchema,
 } from './data';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
@@ -46,6 +56,43 @@ const VENDOR_BADGES = {
   'Exact Sciences': [
     { id: 'openness-leader', icon: '📊', label: 'Openness Leader', tooltip: 'Top 3 in OpenOnco Data Openness Ranking' }
   ],
+};
+
+// ============================================
+// SEO Component - Dynamic meta tags
+// ============================================
+const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
+  const fullTitle = title ? `${title} | ${SEO_DEFAULTS.siteName}` : SEO_DEFAULTS.siteName;
+  const fullUrl = `${SEO_DEFAULTS.siteUrl}${path}`;
+  const desc = description || SEO_DEFAULTS.defaultDescription;
+
+  return (
+    <Helmet>
+      <title>{fullTitle}</title>
+      <meta name="description" content={desc} />
+      <link rel="canonical" href={fullUrl} />
+
+      {/* Open Graph */}
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={desc} />
+      <meta property="og:url" content={fullUrl} />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content={SEO_DEFAULTS.siteName} />
+      <meta property="og:image" content={SEO_DEFAULTS.defaultImage} />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={desc} />
+
+      {/* Structured Data */}
+      {structuredData && (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      )}
+    </Helmet>
+  );
 };
 
 // ============================================
@@ -6511,10 +6558,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   
   const meta = categoryMeta[category];
   
-  // Copy shareable link to clipboard
+  // Copy shareable link to clipboard (SEO-friendly URL)
   const copyLink = (e) => {
     e.stopPropagation();
-    const url = `${window.location.origin}?category=${category}&test=${test.id}`;
+    const url = `${window.location.origin}${getTestUrl(test, category)}`;
     navigator.clipboard.writeText(url).then(() => {
       setLinkCopied(true);
       setTimeout(() => setLinkCopied(false), 2000);
@@ -8316,9 +8363,10 @@ export default function App() {
     '/mrd': 'MRD',
     '/ecd': 'ECD',
     '/trm': 'TRM',
-    '/tds': 'TDS'
+    '/tds': 'TDS',
+    '/alz-blood': 'ALZ-BLOOD'
   };
-  
+
   const pageToPath = {
     'home': '/',
     'submissions': '/submissions',
@@ -8330,32 +8378,57 @@ export default function App() {
     'MRD': '/mrd',
     'ECD': '/ecd',
     'TRM': '/trm',
-    'TDS': '/tds'
+    'TDS': '/tds',
+    'ALZ-BLOOD': '/alz-blood'
   };
-  
-  // Initialize currentPage from URL path
+
+  // Category URL prefixes for test routes
+  const categoryPrefixes = {
+    'mrd': 'MRD',
+    'ecd': 'ECD',
+    'trm': 'TRM',
+    'tds': 'TDS',
+    'alz-blood': 'ALZ-BLOOD'
+  };
+
+  // Initialize currentPage from URL path (handles /mrd/signatera style URLs)
   const getInitialPage = () => {
     const path = window.location.pathname.toLowerCase();
-    return pathToPage[path] || 'home';
+
+    // Check for individual test routes: /mrd/test-name
+    const testRouteMatch = path.match(/^\/(mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
+    if (testRouteMatch) {
+      const [, categoryPrefix, testSlug] = testRouteMatch;
+      const category = categoryPrefixes[categoryPrefix];
+      const test = getTestBySlug(testSlug, category);
+      if (test) {
+        return { page: category, testSlug, testId: test.id };
+      }
+    }
+
+    // Standard page routing
+    return { page: pathToPage[path] || 'home', testSlug: null, testId: null };
   };
-  
-  const [currentPage, setCurrentPage] = useState(getInitialPage);
-  const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
+
+  const initialRoute = getInitialPage();
+
+  const [currentPage, setCurrentPage] = useState(initialRoute.page);
+  const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
-  
-  // Check URL parameters on mount for direct test links and comparison links
+
+  // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category');
     const testId = params.get('test');
     const compareIds = params.get('compare');
-    
+
     // Security: Validate test IDs to prevent injection attacks
     // Valid format: lowercase letters followed by hyphen and digits (e.g., mrd-1, ecd-12, tds-5)
     const isValidTestId = (id) => /^[a-z]+-\d+$/.test(id);
-    
-    if (category && ['MRD', 'ECD', 'TRM', 'TDS'].includes(category)) {
+
+    if (category && ['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(category)) {
       setCurrentPage(category);
       if (testId && isValidTestId(testId)) {
         setInitialSelectedTestId(testId);
@@ -8385,6 +8458,20 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname.toLowerCase();
+
+      // Check for individual test routes: /mrd/test-name
+      const testRouteMatch = path.match(/^\/(mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
+      if (testRouteMatch) {
+        const [, categoryPrefix, testSlug] = testRouteMatch;
+        const category = categoryPrefixes[categoryPrefix];
+        const test = getTestBySlug(testSlug, category);
+        if (test) {
+          setCurrentPage(category);
+          setInitialSelectedTestId(test.id);
+          return;
+        }
+      }
+
       const page = pathToPage[path] || 'home';
       setCurrentPage(page);
       setInitialSelectedTestId(null);
@@ -8426,6 +8513,23 @@ export default function App() {
     window.history.pushState({page}, '', newPath);
   };
 
+  // Get SEO config for current page
+  const getSEOForPage = () => {
+    const seoConfig = PAGE_SEO[currentPage] || PAGE_SEO.home;
+    let structuredData = null;
+
+    // Add structured data based on page type
+    if (currentPage === 'home') {
+      structuredData = generateOrganizationSchema();
+    } else if (['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(currentPage)) {
+      const categoryMeta = createCategoryMeta();
+      const tests = categoryMeta[currentPage]?.tests || [];
+      structuredData = generateCategorySchema(currentPage, tests);
+    }
+
+    return { ...seoConfig, structuredData };
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
@@ -8440,12 +8544,22 @@ export default function App() {
     }
   };
 
+  const seoConfig = getSEOForPage();
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header currentPage={currentPage} onNavigate={handleNavigate} />
-      <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
-      <Footer />
-      <Analytics />
-    </div>
+    <HelmetProvider>
+      <SEO
+        title={seoConfig.title}
+        description={seoConfig.description}
+        path={seoConfig.path}
+        structuredData={seoConfig.structuredData}
+      />
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <Header currentPage={currentPage} onNavigate={handleNavigate} />
+        <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
+        <Footer />
+        <Analytics />
+      </div>
+    </HelmetProvider>
   );
 }

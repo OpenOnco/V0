@@ -1,0 +1,95 @@
+/**
+ * Sitemap Generator for OpenOnco
+ * Run with: node scripts/generate-sitemap.js
+ * Called automatically during build via package.json prebuild script
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const SITE_URL = 'https://openonco.org';
+const TODAY = new Date().toISOString().split('T')[0];
+
+const slugify = (text) =>
+  text.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+// Static pages
+const staticPages = [
+  { path: '/', priority: '1.0', changefreq: 'weekly' },
+  { path: '/mrd', priority: '0.9', changefreq: 'weekly' },
+  { path: '/ecd', priority: '0.9', changefreq: 'weekly' },
+  { path: '/trm', priority: '0.9', changefreq: 'weekly' },
+  { path: '/tds', priority: '0.9', changefreq: 'weekly' },
+  { path: '/alz-blood', priority: '0.9', changefreq: 'weekly' },
+  { path: '/learn', priority: '0.8', changefreq: 'monthly' },
+  { path: '/about', priority: '0.5', changefreq: 'monthly' },
+  { path: '/faq', priority: '0.6', changefreq: 'monthly' },
+  { path: '/how-it-works', priority: '0.6', changefreq: 'monthly' },
+  { path: '/data-sources', priority: '0.5', changefreq: 'monthly' },
+  { path: '/submissions', priority: '0.5', changefreq: 'monthly' },
+];
+
+async function generateSitemap() {
+  // Dynamically import the data module
+  const dataPath = path.join(__dirname, '../src/data.js');
+  const data = await import(dataPath);
+
+  const { mrdTestData, ecdTestData, trmTestData, tdsTestData, alzBloodTestData } = data;
+
+  const categoryTests = {
+    mrd: mrdTestData,
+    ecd: ecdTestData,
+    trm: trmTestData,
+    tds: tdsTestData,
+    'alz-blood': alzBloodTestData,
+  };
+
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`;
+
+  // Add static pages
+  staticPages.forEach(page => {
+    xml += `  <url>
+    <loc>${SITE_URL}${page.path}</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>
+`;
+  });
+
+  // Add individual test pages
+  let testCount = 0;
+  Object.entries(categoryTests).forEach(([category, tests]) => {
+    if (!tests) return;
+    tests.forEach(test => {
+      const slug = slugify(test.name);
+      xml += `  <url>
+    <loc>${SITE_URL}/${category}/${slug}</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+`;
+      testCount++;
+    });
+  });
+
+  xml += '</urlset>';
+
+  // Write to public folder
+  const outputPath = path.join(__dirname, '../public/sitemap.xml');
+  fs.writeFileSync(outputPath, xml);
+
+  console.log(`Sitemap generated: ${staticPages.length} static pages + ${testCount} test pages = ${staticPages.length + testCount} total URLs`);
+  console.log(`Output: ${outputPath}`);
+}
+
+generateSitemap().catch(console.error);

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://openonco.org/sitemap.xml

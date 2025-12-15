@@ -5142,3 +5142,191 @@ export const comparisonParams = {
     { key: 'numPublications', label: 'Publications' },
   ],
 };
+
+// ============================================
+// SEO Configuration
+// ============================================
+export const SEO_DEFAULTS = {
+  siteName: 'OpenOnco',
+  siteUrl: 'https://openonco.org',
+  defaultDescription: 'Compare cancer diagnostic tests side-by-side. Independent, transparent data on MRD, early detection, and treatment monitoring tests.',
+  defaultImage: 'https://openonco.org/og-image.png',
+};
+
+export const PAGE_SEO = {
+  home: {
+    title: 'Compare Cancer Diagnostic Tests',
+    description: 'Independent database comparing 60+ cancer blood tests. MRD, early detection, treatment monitoring - all specs side-by-side.',
+    path: '/'
+  },
+  MRD: {
+    title: 'MRD Tests Compared - Molecular Residual Disease',
+    description: 'Compare 20+ MRD tests: Signatera, Guardant Reveal, clonoSEQ, Oncodetect. Sensitivity, turnaround time, Medicare coverage.',
+    path: '/mrd'
+  },
+  ECD: {
+    title: 'Early Cancer Detection Tests - MCED & Screening',
+    description: 'Compare early cancer detection tests: Galleri, Shield, CancerSEEK. Multi-cancer screening sensitivity and specificity data.',
+    path: '/ecd'
+  },
+  TRM: {
+    title: 'Treatment Response Monitoring Tests',
+    description: 'Compare ctDNA tests for tracking cancer treatment response. Lead time vs imaging, sensitivity, clinical validation.',
+    path: '/trm'
+  },
+  TDS: {
+    title: 'CGP & Treatment Decision Support Tests',
+    description: 'Compare comprehensive genomic profiling tests: FoundationOne, Tempus xT, Guardant360. Genes analyzed, FDA companion diagnostics.',
+    path: '/tds'
+  },
+  'ALZ-BLOOD': {
+    title: "Alzheimer's Blood Biomarker Tests",
+    description: "Compare blood-based Alzheimer's tests measuring pTau217, amyloid-beta ratios. PET concordance, sensitivity, availability.",
+    path: '/alz-blood'
+  },
+  learn: {
+    title: 'Learn About Cancer Blood Tests',
+    description: 'Educational guides on liquid biopsy, MRD testing, early cancer detection, and how to interpret test results.',
+    path: '/learn'
+  },
+  about: {
+    title: 'About OpenOnco',
+    description: 'OpenOnco is a non-profit cancer diagnostic test database built in memory of Ingrid. Our mission is transparent, independent test comparison.',
+    path: '/about'
+  },
+  faq: {
+    title: 'Frequently Asked Questions',
+    description: 'Common questions about cancer blood tests, liquid biopsy, MRD testing, and how to use OpenOnco.',
+    path: '/faq'
+  },
+  'how-it-works': {
+    title: 'How OpenOnco Works',
+    description: 'Learn how OpenOnco collects, curates, and presents cancer diagnostic test data.',
+    path: '/how-it-works'
+  },
+  'data-sources': {
+    title: 'Data Sources',
+    description: 'OpenOnco data sources including FDA filings, peer-reviewed publications, and vendor documentation.',
+    path: '/data-sources'
+  },
+  submissions: {
+    title: 'Submit Data or Feedback',
+    description: 'Submit corrections, new test data, or feedback to improve OpenOnco.',
+    path: '/submissions'
+  },
+};
+
+// ============================================
+// URL Utilities
+// ============================================
+export const slugify = (text) =>
+  text.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+export const getTestUrl = (test, category) => {
+  const slug = slugify(test.name);
+  return `/${category.toLowerCase()}/${slug}`;
+};
+
+export const getTestBySlug = (slug, category) => {
+  const categoryMap = {
+    MRD: mrdTestData,
+    ECD: ecdTestData,
+    TRM: trmTestData,
+    TDS: tdsTestData,
+    'ALZ-BLOOD': alzBloodTestData,
+  };
+  const tests = categoryMap[category] || [];
+  return tests.find(t => slugify(t.name) === slug);
+};
+
+export const getAbsoluteUrl = (path) => `${SEO_DEFAULTS.siteUrl}${path}`;
+
+// ============================================
+// Structured Data Generators (JSON-LD)
+// ============================================
+export const generateTestSchema = (test, category) => {
+  const categoryLabels = {
+    MRD: 'Molecular Residual Disease Test',
+    ECD: 'Early Cancer Detection Test',
+    TRM: 'Treatment Response Monitoring Test',
+    TDS: 'Comprehensive Genomic Profiling Test',
+    'ALZ-BLOOD': "Alzheimer's Blood Biomarker Test"
+  };
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalTest',
+    '@id': getAbsoluteUrl(getTestUrl(test, category)),
+    name: test.name,
+    alternateName: test.id,
+    description: test.indicationsNotes || test.method,
+    manufacturer: {
+      '@type': 'Organization',
+      name: test.vendor
+    },
+    usedToDiagnose: (test.cancerTypes || []).join(', '),
+    relevantSpecialty: {
+      '@type': 'MedicalSpecialty',
+      name: category.includes('ALZ') ? 'Neurology' : 'Oncology'
+    },
+    medicineSystem: 'WesternConventional',
+    ...(test.sensitivity && { sensitivityValue: `${test.sensitivity}%` }),
+    ...(test.specificity && { specificityValue: `${test.specificity}%` }),
+    ...(test.fdaStatus && {
+      recognizingAuthority: {
+        '@type': 'Organization',
+        name: test.fdaStatus.includes('FDA') ? 'FDA' : 'CLIA'
+      }
+    })
+  };
+};
+
+export const generateCategorySchema = (category, tests) => {
+  const seo = PAGE_SEO[category] || PAGE_SEO.home;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${seo.title}`,
+    description: seo.description,
+    numberOfItems: tests.length,
+    itemListElement: tests.slice(0, 10).map((test, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'MedicalTest',
+        '@id': getAbsoluteUrl(getTestUrl(test, category)),
+        name: test.name,
+        manufacturer: {
+          '@type': 'Organization',
+          name: test.vendor
+        }
+      }
+    }))
+  };
+};
+
+export const generateOrganizationSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'NonProfit',
+  name: 'OpenOnco',
+  url: SEO_DEFAULTS.siteUrl,
+  logo: `${SEO_DEFAULTS.siteUrl}/og-image.png`,
+  description: 'Non-profit cancer diagnostic test database providing independent, transparent test comparison.',
+  foundingDate: '2024',
+});
+
+export const generateFAQSchema = (faqs) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(faq => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer
+    }
+  }))
+});
