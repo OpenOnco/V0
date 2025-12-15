@@ -478,16 +478,26 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     // Select a category (MRD)
     const mrdBtn = page.locator('button').filter({ hasText: /^MRD$/i });
     await mrdBtn.click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     
-    // Select a test from dropdown
-    const testSelect = page.locator('select').nth(1);
+    // Select a test from the "Select Test" dropdown
+    const testSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select a test")') });
     await testSelect.selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
-    // Fill in name fields
-    await page.fill('input[placeholder*="First"]', 'Test');
-    await page.fill('input[placeholder*="Last"]', 'User');
+    // Select a parameter from the "Parameter to Correct" dropdown
+    const paramSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select parameter")') });
+    await paramSelect.selectOption({ index: 1 });
+    await page.waitForTimeout(500);
+    
+    // Now the "Your Information" section should appear
+    // Fill in name fields using labels
+    const firstNameInput = page.locator('label:has-text("First Name")').locator('..').locator('input');
+    const lastNameInput = page.locator('label:has-text("Last Name")').locator('..').locator('input');
+    
+    await firstNameInput.fill('Samyuktha');
+    await lastNameInput.fill('Test');
+    await page.waitForTimeout(300);
     
     // Enter a known vendor domain email (illumina.com)
     const emailInput = page.locator('input[type="email"]');
@@ -543,16 +553,25 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     // Select a category (MRD)
     const mrdBtn = page.locator('button').filter({ hasText: /^MRD$/i });
     await mrdBtn.click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     
-    // Select a test from dropdown
-    const testSelect = page.locator('select').nth(1);
+    // Select a test from the "Select Test" dropdown
+    const testSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select a test")') });
     await testSelect.selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
+    // Select a parameter from the "Parameter to Correct" dropdown
+    const paramSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select parameter")') });
+    await paramSelect.selectOption({ index: 1 });
+    await page.waitForTimeout(500);
+    
     // Fill in name fields
-    await page.fill('input[placeholder*="First"]', 'Test');
-    await page.fill('input[placeholder*="Last"]', 'User');
+    const firstNameInput = page.locator('label:has-text("First Name")').locator('..').locator('input');
+    const lastNameInput = page.locator('label:has-text("Last Name")').locator('..').locator('input');
+    
+    await firstNameInput.fill('Test');
+    await lastNameInput.fill('Researcher');
+    await page.waitForTimeout(300);
     
     // Enter a legitimate institutional email (not a known vendor)
     const emailInput = page.locator('input[type="email"]');
@@ -586,16 +605,25 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     // Select a category (MRD)
     const mrdBtn = page.locator('button').filter({ hasText: /^MRD$/i });
     await mrdBtn.click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     
-    // Select a test from dropdown
-    const testSelect = page.locator('select').nth(1);
+    // Select a test from the "Select Test" dropdown
+    const testSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select a test")') });
     await testSelect.selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
+    // Select a parameter from the "Parameter to Correct" dropdown
+    const paramSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select parameter")') });
+    await paramSelect.selectOption({ index: 1 });
+    await page.waitForTimeout(500);
+    
     // Fill in name fields
-    await page.fill('input[placeholder*="First"]', 'Test');
-    await page.fill('input[placeholder*="Last"]', 'User');
+    const firstNameInput = page.locator('label:has-text("First Name")').locator('..').locator('input');
+    const lastNameInput = page.locator('label:has-text("Last Name")').locator('..').locator('input');
+    
+    await firstNameInput.fill('Test');
+    await lastNameInput.fill('User');
+    await page.waitForTimeout(300);
     
     // Enter a Gmail address
     const emailInput = page.locator('input[type="email"]');
