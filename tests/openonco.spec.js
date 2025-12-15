@@ -447,74 +447,70 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.waitForTimeout(1000);
     
     // Select "Submit a Correction" to see submitter type options
-    const correctionBtn = page.locator('button').filter({ hasText: /Correction/i });
-    await correctionBtn.click();
+    await page.getByRole('button', { name: /Correction/i }).click();
     await page.waitForTimeout(500);
     
     // Select "Independent Expert"
-    const submitterSelect = page.locator('select').first();
-    await submitterSelect.selectOption('expert');
+    await page.locator('select').first().selectOption('expert');
     await page.waitForTimeout(300);
     
     // Verify warning message appears
-    const warning = page.locator('text=Vendor employees should select');
-    await expect(warning).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('Vendor employees should select')).toBeVisible({ timeout: 3000 });
   });
 
   test('blocks vendor domain email when claiming Independent Expert', async ({ page }) => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
-    // Select "Submit a Correction"
-    const correctionBtn = page.locator('button').filter({ hasText: /Correction/i });
-    await correctionBtn.click();
+    // Step 1: Select "Submit a Correction"
+    await page.getByRole('button', { name: /Correction/i }).click();
     await page.waitForTimeout(500);
     
-    // Select "Independent Expert"
-    const submitterSelect = page.locator('select').first();
-    await submitterSelect.selectOption('expert');
+    // Step 2: Select "Independent Expert"
+    await page.locator('select').first().selectOption('expert');
     await page.waitForTimeout(300);
     
-    // Select a category (MRD)
-    const mrdBtn = page.locator('button').filter({ hasText: /^MRD$/i });
-    await mrdBtn.click();
+    // Step 3: Select MRD category
+    await page.getByRole('button', { name: 'MRD', exact: true }).click();
     await page.waitForTimeout(500);
     
-    // Select a test from the "Select Test" dropdown
-    const testSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select a test")') });
-    await testSelect.selectOption({ index: 1 });
+    // Step 4: Select first test (second select on page)
+    await page.locator('select').nth(1).selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
-    // Select a parameter from the "Parameter to Correct" dropdown
-    const paramSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select parameter")') });
-    await paramSelect.selectOption({ index: 1 });
+    // Step 5: Select first parameter (third select on page)
+    await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
-    // Now the "Your Information" section should appear
-    // Fill in name fields using labels
-    const firstNameInput = page.locator('label:has-text("First Name")').locator('..').locator('input');
-    const lastNameInput = page.locator('label:has-text("Last Name")').locator('..').locator('input');
+    // Step 6: Wait for Your Information section
+    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 3000 });
     
-    await firstNameInput.fill('Samyuktha');
-    await lastNameInput.fill('Test');
+    // Step 7: Scroll to make sure form is visible
+    await page.getByText('Your Information').scrollIntoViewIfNeeded();
     await page.waitForTimeout(300);
     
-    // Enter a known vendor domain email (illumina.com)
-    const emailInput = page.locator('input[type="email"]');
-    await emailInput.fill('samyuktha@illumina.com');
+    // Step 8: Fill the "New Value" field (required for corrections)
+    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
+    await page.waitForTimeout(200);
+    
+    // Step 9: Find name inputs within the grid-cols-2 section (first two text inputs after "Your Information")
+    const infoSection = page.locator('h3:has-text("Your Information")').locator('..');
+    const textInputsInSection = infoSection.locator('input[type="text"]');
+    await textInputsInSection.nth(0).fill('Samyuktha');
+    await textInputsInSection.nth(1).fill('Test');
     await page.waitForTimeout(300);
     
-    // Click Send Code button
-    const sendCodeBtn = page.locator('button').filter({ hasText: /Send Code/i });
-    await sendCodeBtn.click();
+    // Step 10: Fill email
+    await infoSection.locator('input[type="email"]').fill('samyuktha@illumina.com');
+    await page.waitForTimeout(300);
+    
+    // Step 11: Click Send Code button
+    await infoSection.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
     // Verify error message about vendor domain appears
-    const errorMsg = page.locator('text=illumina.com');
-    await expect(errorMsg).toBeVisible({ timeout: 3000 });
-    
-    const vendorRepMsg = page.locator('text=Test Vendor Representative');
-    await expect(vendorRepMsg).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText(/illumina\.com/)).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('Test Vendor Representative')).toBeVisible({ timeout: 3000 });
   });
 
   test('allows vendor domain email when Vendor Representative selected', async ({ page }) => {
@@ -522,122 +518,105 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.waitForTimeout(1000);
     
     // Select "Submit a Correction"
-    const correctionBtn = page.locator('button').filter({ hasText: /Correction/i });
-    await correctionBtn.click();
+    await page.getByRole('button', { name: /Correction/i }).click();
     await page.waitForTimeout(500);
     
     // Select "Test Vendor Representative"
-    const submitterSelect = page.locator('select').first();
-    await submitterSelect.selectOption('vendor');
+    await page.locator('select').first().selectOption('vendor');
     await page.waitForTimeout(300);
     
-    // Verify vendor verification warning appears (not the "vendor employees should select" warning)
-    const vendorWarning = page.locator('text=verify that your email comes from');
-    await expect(vendorWarning).toBeVisible({ timeout: 3000 });
+    // Verify vendor verification warning appears
+    await expect(page.getByText('verify that your email comes from')).toBeVisible({ timeout: 3000 });
   });
 
   test('allows non-vendor institutional email for Independent Expert', async ({ page }) => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
-    // Select "Submit a Correction"
-    const correctionBtn = page.locator('button').filter({ hasText: /Correction/i });
-    await correctionBtn.click();
+    // Complete form flow
+    await page.getByRole('button', { name: /Correction/i }).click();
     await page.waitForTimeout(500);
     
-    // Select "Independent Expert"
-    const submitterSelect = page.locator('select').first();
-    await submitterSelect.selectOption('expert');
+    await page.locator('select').first().selectOption('expert');
     await page.waitForTimeout(300);
     
-    // Select a category (MRD)
-    const mrdBtn = page.locator('button').filter({ hasText: /^MRD$/i });
-    await mrdBtn.click();
+    await page.getByRole('button', { name: 'MRD', exact: true }).click();
     await page.waitForTimeout(500);
     
-    // Select a test from the "Select Test" dropdown
-    const testSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select a test")') });
-    await testSelect.selectOption({ index: 1 });
+    await page.locator('select').nth(1).selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
-    // Select a parameter from the "Parameter to Correct" dropdown
-    const paramSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select parameter")') });
-    await paramSelect.selectOption({ index: 1 });
+    await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
-    // Fill in name fields
-    const firstNameInput = page.locator('label:has-text("First Name")').locator('..').locator('input');
-    const lastNameInput = page.locator('label:has-text("Last Name")').locator('..').locator('input');
-    
-    await firstNameInput.fill('Test');
-    await lastNameInput.fill('Researcher');
+    // Wait for Your Information section and scroll
+    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 3000 });
+    await page.getByText('Your Information').scrollIntoViewIfNeeded();
     await page.waitForTimeout(300);
     
-    // Enter a legitimate institutional email (not a known vendor)
-    const emailInput = page.locator('input[type="email"]');
-    await emailInput.fill('researcher@stanford.edu');
+    // Fill New Value field
+    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
+    await page.waitForTimeout(200);
+    
+    // Fill form fields
+    const infoSection = page.locator('h3:has-text("Your Information")').locator('..');
+    const textInputsInSection = infoSection.locator('input[type="text"]');
+    await textInputsInSection.nth(0).fill('Test');
+    await textInputsInSection.nth(1).fill('Researcher');
+    await infoSection.locator('input[type="email"]').fill('researcher@stanford.edu');
     await page.waitForTimeout(300);
     
-    // Click Send Code button
-    const sendCodeBtn = page.locator('button').filter({ hasText: /Send Code/i });
-    await sendCodeBtn.click();
+    // Click Send Code
+    await infoSection.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
     // Should NOT see the vendor domain error
-    const vendorError = page.locator('text=appears to be from a diagnostic test vendor');
-    await expect(vendorError).not.toBeVisible({ timeout: 1000 });
+    await expect(page.getByText('appears to be from a diagnostic test vendor')).not.toBeVisible({ timeout: 1000 });
   });
 
   test('blocks free email providers', async ({ page }) => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
-    // Select "Submit a Correction"
-    const correctionBtn = page.locator('button').filter({ hasText: /Correction/i });
-    await correctionBtn.click();
+    // Complete form flow
+    await page.getByRole('button', { name: /Correction/i }).click();
     await page.waitForTimeout(500);
     
-    // Select "Independent Expert"
-    const submitterSelect = page.locator('select').first();
-    await submitterSelect.selectOption('expert');
+    await page.locator('select').first().selectOption('expert');
     await page.waitForTimeout(300);
     
-    // Select a category (MRD)
-    const mrdBtn = page.locator('button').filter({ hasText: /^MRD$/i });
-    await mrdBtn.click();
+    await page.getByRole('button', { name: 'MRD', exact: true }).click();
     await page.waitForTimeout(500);
     
-    // Select a test from the "Select Test" dropdown
-    const testSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select a test")') });
-    await testSelect.selectOption({ index: 1 });
+    await page.locator('select').nth(1).selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
-    // Select a parameter from the "Parameter to Correct" dropdown
-    const paramSelect = page.locator('select').filter({ has: page.locator('option:has-text("Select parameter")') });
-    await paramSelect.selectOption({ index: 1 });
+    await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
-    // Fill in name fields
-    const firstNameInput = page.locator('label:has-text("First Name")').locator('..').locator('input');
-    const lastNameInput = page.locator('label:has-text("Last Name")').locator('..').locator('input');
-    
-    await firstNameInput.fill('Test');
-    await lastNameInput.fill('User');
+    // Wait for Your Information section and scroll
+    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 3000 });
+    await page.getByText('Your Information').scrollIntoViewIfNeeded();
     await page.waitForTimeout(300);
     
-    // Enter a Gmail address
-    const emailInput = page.locator('input[type="email"]');
-    await emailInput.fill('testuser@gmail.com');
+    // Fill New Value field
+    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
+    await page.waitForTimeout(200);
+    
+    // Fill form fields
+    const infoSection = page.locator('h3:has-text("Your Information")').locator('..');
+    const textInputsInSection = infoSection.locator('input[type="text"]');
+    await textInputsInSection.nth(0).fill('Test');
+    await textInputsInSection.nth(1).fill('User');
+    await infoSection.locator('input[type="email"]').fill('testuser@gmail.com');
     await page.waitForTimeout(300);
     
-    // Click Send Code button
-    const sendCodeBtn = page.locator('button').filter({ hasText: /Send Code/i });
-    await sendCodeBtn.click();
+    // Click Send Code
+    await infoSection.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
     // Verify error about free email providers
-    const errorMsg = page.locator('text=company/institutional email');
-    await expect(errorMsg).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('company/institutional email')).toBeVisible({ timeout: 3000 });
   });
 });
 
