@@ -10,8 +10,6 @@ import {
   alzBloodTestData,
   DATABASE_CHANGELOG,
   RECENTLY_ADDED_TESTS,
-} from './data/testData';
-import {
   DOMAINS,
   getDomain,
   getSiteConfig,
@@ -24,7 +22,7 @@ import {
   createCategoryMeta,
   filterConfigs,
   comparisonParams,
-} from './config/siteConfig';
+} from './data/data';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
