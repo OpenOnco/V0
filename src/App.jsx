@@ -513,6 +513,11 @@ const LifecycleNavigator = ({ onNavigate }) => {
     return getStagesByDomain(currentDomain).sort((a, b) => a.gridPosition - b.gridPosition);
   }, [currentDomain]);
 
+  // Separate array for animation order (clockwise: UL, UR, LR, LL)
+  const animationStages = useMemo(() => {
+    return getStagesByDomain(currentDomain).sort((a, b) => a.animationOrder - b.animationOrder);
+  }, [currentDomain]);
+
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
@@ -522,18 +527,18 @@ const LifecycleNavigator = ({ onNavigate }) => {
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
 
-  const highlightedStageId = isHovering && hoveredStageId ? hoveredStageId : (domainStages[pulseIndex % domainStages.length]?.id || domainStages[0]?.id);
+  const highlightedStageId = isHovering && hoveredStageId ? hoveredStageId : (animationStages[pulseIndex % animationStages.length]?.id || animationStages[0]?.id);
   
   // Pulse animation - 3 seconds per stage
   useEffect(() => {
     if (isHovering) return;
 
     const interval = setInterval(() => {
-      setPulseIndex(prev => (prev + 1) % domainStages.length);
+      setPulseIndex(prev => (prev + 1) % animationStages.length);
     }, 2250);
 
     return () => clearInterval(interval);
-  }, [isHovering, domainStages.length]);
+  }, [isHovering, animationStages.length]);
   
   const handleSelect = (stageId) => {
     onNavigate(stageId);
