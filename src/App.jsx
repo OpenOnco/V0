@@ -4265,6 +4265,7 @@ const SubmissionsPage = () => {
   const [lastName, setLastName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [vendorDomainWarning, setVendorDomainWarning] = useState(''); // Tracks detected vendor domain when claiming independent expert
   const [submitted, setSubmitted] = useState(false);
   
   // New test fields
@@ -4413,6 +4414,48 @@ const SubmissionsPage = () => {
     return freeProviders.includes(domain);
   };
 
+  // Known diagnostic test vendor domains - used to detect vendor reps claiming to be independent experts
+  const KNOWN_VENDOR_DOMAINS = [
+    // Liquid biopsy / MRD vendors
+    'natera.com', 'guardanthealth.com', 'foundationmedicine.com', 'tempus.com',
+    'personalgenome.com', 'personalis.com', 'archerdx.com', 'invitae.com',
+    'neogenomics.com', 'myriad.com', 'myriadgenetics.com', 'exactsciences.com',
+    'grail.com', 'grailbio.com', 'freenome.com', 'delfi.com', 'delfidiagnostics.com',
+    'biodesix.com', 'helicodx.com', 'caris.com', 'carislifesciences.com',
+    'ambry.com', 'ambrygen.com', 'adaptivebiotech.com', 'adaptive.com',
+    'illumina.com', 'roche.com', 'rochesequencing.com', 'thermofisher.com',
+    'agilent.com', 'qiagen.com', 'pacbio.com', 'oxfordnanopore.com',
+    'labcorp.com', 'quest.com', 'questdiagnostics.com', 'genomichealth.com',
+    'biocept.com', 'inivata.com', 'resolution.bio', 'resolutionbio.com',
+    'sysmex.com', 'sysmex-inostics.com', 'biotheranostics.com',
+    'arup.utah.edu', 'aruplab.com', 'mdxhealth.com', 'veracyte.com',
+    'haystack.com', 'haystackoncology.com', 'circulogene.com', 'curematch.com',
+    'neomedics.com', 'c2i-genomics.com', 'c2igenomics.com',
+    // Alzheimer's diagnostics vendors
+    'quanterix.com', 'fujirebio.com', 'roche.com', 'siemens-healthineers.com',
+    'alzdiscovery.org', 'alector.com', 'biogen.com', 'eisai.com',
+    'precivityad.com', 'lumipulse.com',
+    // General life sciences / CROs that might submit data
+    'covance.com', 'ppd.com', 'iqvia.com', 'parexel.com', 'syneos.com',
+  ];
+
+  // Check if email appears to be from a known vendor domain
+  const isKnownVendorDomain = (email) => {
+    if (!email) return null;
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (!domain) return null;
+    
+    // Check for exact match
+    const exactMatch = KNOWN_VENDOR_DOMAINS.find(vendorDomain => domain === vendorDomain);
+    if (exactMatch) return exactMatch;
+    
+    // Check if domain ends with a known vendor domain (e.g., mail.illumina.com)
+    const subdomainMatch = KNOWN_VENDOR_DOMAINS.find(vendorDomain => domain.endsWith('.' + vendorDomain));
+    if (subdomainMatch) return subdomainMatch;
+    
+    return null;
+  };
+
   // Check if email domain matches vendor
   // Check if email domain contains vendor name (loose match)
   const emailMatchesVendor = (email, vendor) => {
@@ -4431,12 +4474,24 @@ const SubmissionsPage = () => {
   const validateEmail = () => {
     if (!validateEmailFormat(contactEmail)) {
       setEmailError('Please enter a valid email address');
+      setVendorDomainWarning('');
       return false;
     }
 
     if (isFreeEmail(contactEmail)) {
       setEmailError('Please use a company/institutional email (not Gmail, Yahoo, etc.)');
+      setVendorDomainWarning('');
       return false;
+    }
+
+    // Check for vendor domain mismatch with "Independent Expert" selection
+    if (submitterType === 'expert' && (submissionType === 'new' || submissionType === 'correction')) {
+      const detectedVendorDomain = isKnownVendorDomain(contactEmail);
+      if (detectedVendorDomain) {
+        setEmailError(`Your email domain (${detectedVendorDomain}) appears to be from a diagnostic test vendor. Please select "Test Vendor Representative" instead of "Independent Expert".`);
+        setVendorDomainWarning(detectedVendorDomain);
+        return false;
+      }
     }
 
     // Only check vendor email match for vendor submissions on test data
@@ -4444,11 +4499,13 @@ const SubmissionsPage = () => {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
       if (!emailMatchesVendor(contactEmail, vendor)) {
         setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
+        setVendorDomainWarning('');
         return false;
       }
     }
 
     setEmailError('');
+    setVendorDomainWarning('');
     return true;
   };
 
@@ -4721,7 +4778,7 @@ const SubmissionsPage = () => {
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
             <select
               value={submitterType}
-              onChange={(e) => { setSubmitterType(e.target.value); setEmailError(''); setVerificationStep('form'); }}
+              onChange={(e) => { setSubmitterType(e.target.value); setEmailError(''); setVendorDomainWarning(''); setVerificationStep('form'); }}
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
             >
               <option value="">-- Select --</option>
@@ -4732,7 +4789,10 @@ const SubmissionsPage = () => {
               <p className="text-sm text-amber-600 mt-2">⚠️ We will verify that your email comes from the vendor's domain</p>
             )}
             {submitterType === 'expert' && (
-              <p className="text-sm text-gray-500 mt-2">Expert submissions require a company or institutional email</p>
+              <div className="mt-2 space-y-1">
+                <p className="text-sm text-gray-500">Expert submissions require a company or institutional email</p>
+                <p className="text-sm text-amber-600">⚠️ Vendor employees should select "Test Vendor Representative" — we auto-detect vendor domains</p>
+              </div>
             )}
           </div>
         )}
