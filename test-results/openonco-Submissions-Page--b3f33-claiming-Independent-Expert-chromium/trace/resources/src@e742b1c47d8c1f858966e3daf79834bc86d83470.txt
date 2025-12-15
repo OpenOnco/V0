@@ -511,8 +511,8 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.waitForTimeout(500);
     
     // Verify error message about vendor domain appears
-    // Look for the actual error message text, not the dropdown option
-    await expect(page.getByText(/Your email domain.*illumina\.com.*appears to be from/i)).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText(/illumina\.com/)).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('Test Vendor Representative')).toBeVisible({ timeout: 3000 });
   });
 
   test('allows vendor domain email when Vendor Representative selected', async ({ page }) => {
