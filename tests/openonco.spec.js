@@ -446,8 +446,8 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
-    // Select "Submit a Correction" to see submitter type options
-    await page.getByRole('button', { name: /Correction/i }).click();
+    // Select "File a Correction" to see submitter type options
+    await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
     // Select "Independent Expert"
@@ -462,16 +462,16 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
-    // Step 1: Select "Submit a Correction"
-    await page.getByRole('button', { name: /Correction/i }).click();
+    // Step 1: Select "File a Correction"
+    await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
     // Step 2: Select "Independent Expert"
     await page.locator('select').first().selectOption('expert');
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     
-    // Step 3: Select MRD category
-    await page.getByRole('button', { name: 'MRD', exact: true }).click();
+    // Step 3: Select MRD category (button contains "MRD" and description)
+    await page.locator('button:has-text("MRD")').first().click();
     await page.waitForTimeout(500);
     
     // Step 4: Select first test (second select on page)
@@ -482,30 +482,30 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
-    // Step 6: Wait for Your Information section
-    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 3000 });
+    // Step 6: Wait for form to fully render
+    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
+    await page.waitForTimeout(500);
     
-    // Step 7: Scroll to make sure form is visible
-    await page.getByText('Your Information').scrollIntoViewIfNeeded();
+    // Step 7: Fill all visible text inputs in order
+    const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
+    const textInputCount = await allTextInputs.count();
+    
+    // Fill from the end - Last Name is last text input, First Name is second to last
+    if (textInputCount >= 2) {
+      await allTextInputs.nth(textInputCount - 2).fill('Samyuktha');
+      await allTextInputs.nth(textInputCount - 1).fill('Test');
+    }
+    
+    // Also fill New Value if present
+    await allTextInputs.first().fill('Test correction value').catch(() => {});
     await page.waitForTimeout(300);
     
-    // Step 8: Fill the "New Value" field (required for corrections)
-    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
-    await page.waitForTimeout(200);
-    
-    // Step 9: Find name inputs within the grid-cols-2 section (first two text inputs after "Your Information")
-    const infoSection = page.locator('h3:has-text("Your Information")').locator('..');
-    const textInputsInSection = infoSection.locator('input[type="text"]');
-    await textInputsInSection.nth(0).fill('Samyuktha');
-    await textInputsInSection.nth(1).fill('Test');
+    // Step 8: Fill email
+    await page.locator('input[type="email"]').fill('samyuktha@illumina.com');
     await page.waitForTimeout(300);
     
-    // Step 10: Fill email
-    await infoSection.locator('input[type="email"]').fill('samyuktha@illumina.com');
-    await page.waitForTimeout(300);
-    
-    // Step 11: Click Send Code button
-    await infoSection.getByRole('button', { name: /Send Code/i }).click();
+    // Step 9: Click Send Code button
+    await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
     // Verify error message about vendor domain appears
@@ -517,8 +517,8 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
-    // Select "Submit a Correction"
-    await page.getByRole('button', { name: /Correction/i }).click();
+    // Select "File a Correction"
+    await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
     // Select "Test Vendor Representative"
@@ -534,13 +534,13 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.waitForTimeout(1000);
     
     // Complete form flow
-    await page.getByRole('button', { name: /Correction/i }).click();
+    await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
     await page.locator('select').first().selectOption('expert');
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     
-    await page.getByRole('button', { name: 'MRD', exact: true }).click();
+    await page.locator('button:has-text("MRD")').first().click();
     await page.waitForTimeout(500);
     
     await page.locator('select').nth(1).selectOption({ index: 1 });
@@ -549,25 +549,27 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
-    // Wait for Your Information section and scroll
-    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 3000 });
-    await page.getByText('Your Information').scrollIntoViewIfNeeded();
+    // Wait for form
+    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
+    await page.waitForTimeout(500);
+    
+    // Fill all text inputs
+    const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
+    const textInputCount = await allTextInputs.count();
+    
+    if (textInputCount >= 2) {
+      await allTextInputs.nth(textInputCount - 2).fill('Test');
+      await allTextInputs.nth(textInputCount - 1).fill('Researcher');
+    }
+    await allTextInputs.first().fill('Test correction value').catch(() => {});
     await page.waitForTimeout(300);
     
-    // Fill New Value field
-    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
-    await page.waitForTimeout(200);
-    
-    // Fill form fields
-    const infoSection = page.locator('h3:has-text("Your Information")').locator('..');
-    const textInputsInSection = infoSection.locator('input[type="text"]');
-    await textInputsInSection.nth(0).fill('Test');
-    await textInputsInSection.nth(1).fill('Researcher');
-    await infoSection.locator('input[type="email"]').fill('researcher@stanford.edu');
+    // Fill email
+    await page.locator('input[type="email"]').fill('researcher@stanford.edu');
     await page.waitForTimeout(300);
     
     // Click Send Code
-    await infoSection.getByRole('button', { name: /Send Code/i }).click();
+    await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
     // Should NOT see the vendor domain error
@@ -579,13 +581,13 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.waitForTimeout(1000);
     
     // Complete form flow
-    await page.getByRole('button', { name: /Correction/i }).click();
+    await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
     await page.locator('select').first().selectOption('expert');
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     
-    await page.getByRole('button', { name: 'MRD', exact: true }).click();
+    await page.locator('button:has-text("MRD")').first().click();
     await page.waitForTimeout(500);
     
     await page.locator('select').nth(1).selectOption({ index: 1 });
@@ -594,25 +596,27 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
-    // Wait for Your Information section and scroll
-    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 3000 });
-    await page.getByText('Your Information').scrollIntoViewIfNeeded();
+    // Wait for form
+    await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
+    await page.waitForTimeout(500);
+    
+    // Fill all text inputs
+    const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
+    const textInputCount = await allTextInputs.count();
+    
+    if (textInputCount >= 2) {
+      await allTextInputs.nth(textInputCount - 2).fill('Test');
+      await allTextInputs.nth(textInputCount - 1).fill('User');
+    }
+    await allTextInputs.first().fill('Test correction value').catch(() => {});
     await page.waitForTimeout(300);
     
-    // Fill New Value field
-    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
-    await page.waitForTimeout(200);
-    
-    // Fill form fields
-    const infoSection = page.locator('h3:has-text("Your Information")').locator('..');
-    const textInputsInSection = infoSection.locator('input[type="text"]');
-    await textInputsInSection.nth(0).fill('Test');
-    await textInputsInSection.nth(1).fill('User');
-    await infoSection.locator('input[type="email"]').fill('testuser@gmail.com');
+    // Fill email
+    await page.locator('input[type="email"]').fill('testuser@gmail.com');
     await page.waitForTimeout(300);
     
     // Click Send Code
-    await infoSection.getByRole('button', { name: /Send Code/i }).click();
+    await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
     // Verify error about free email providers
