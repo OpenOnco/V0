@@ -1,0 +1,694 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "OpenOnco" [ref=e7] [cursor=pointer]
+      - navigation [ref=e8]:
+        - button "Home" [ref=e9] [cursor=pointer]
+        - button "Submissions" [ref=e10] [cursor=pointer]
+        - button "How it Works" [ref=e11] [cursor=pointer]
+        - button "Data Download" [ref=e12] [cursor=pointer]
+        - button "FAQ" [ref=e13] [cursor=pointer]
+        - button "Learn" [ref=e14] [cursor=pointer]
+        - button "About" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - heading "Submissions" [level=1] [ref=e18]
+      - paragraph [ref=e19]: Help us improve OpenOnco with your feedback and data contributions.
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Test Data Update
+          - generic [ref=e23]:
+            - button "Suggest a New Test Notify us of a test not in our database" [ref=e24] [cursor=pointer]:
+              - generic [ref=e25]: Suggest a New Test
+              - generic [ref=e26]: Notify us of a test not in our database
+            - button "File a Correction Suggest an update to existing test data" [ref=e27] [cursor=pointer]:
+              - generic [ref=e28]: File a Correction
+              - generic [ref=e29]: Suggest an update to existing test data
+          - generic [ref=e30]: Bug Reports & Feature Requests
+          - generic [ref=e31]:
+            - button "Report a Bug Something isn't working correctly" [ref=e32] [cursor=pointer]:
+              - generic [ref=e33]: Report a Bug
+              - generic [ref=e34]: Something isn't working correctly
+            - button "Request a Feature Suggest an improvement or new capability" [ref=e35] [cursor=pointer]:
+              - generic [ref=e36]: Request a Feature
+              - generic [ref=e37]: Suggest an improvement or new capability
+        - generic [ref=e38]:
+          - generic [ref=e39]: I am submitting as a...
+          - combobox [ref=e40]:
+            - option "-- Select --"
+            - option "Test Vendor Representative"
+            - option "Independent Expert / Researcher" [selected]
+          - paragraph [ref=e41]: Expert submissions require a company or institutional email
+        - generic [ref=e42]:
+          - generic [ref=e43]: Test Category
+          - generic [ref=e44]:
+            - button "MRD Minimal Residual Disease" [ref=e45] [cursor=pointer]:
+              - generic [ref=e46]: MRD
+              - generic [ref=e47]: Minimal Residual Disease
+            - button "ECD Early Cancer Detection" [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]: ECD
+              - generic [ref=e50]: Early Cancer Detection
+            - button "TRM Treatment Response" [ref=e51] [cursor=pointer]:
+              - generic [ref=e52]: TRM
+              - generic [ref=e53]: Treatment Response
+            - button "TDS Treatment Decisions" [ref=e54] [cursor=pointer]:
+              - generic [ref=e55]: TDS
+              - generic [ref=e56]: Treatment Decisions
+        - generic [ref=e57]:
+          - heading "Correction Request" [level=3] [ref=e58]
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Select Test *
+              - combobox [ref=e62]:
+                - option "-- Select a test --"
+                - option "Haystack MRD (Quest Diagnostics)" [selected]
+                - option "NeXT Personal Dx (Personalis)"
+                - option "Oncodetect (Exact Sciences)"
+                - option "Pathlight (SAGA Diagnostics)"
+                - option "RaDaR ST (NeoGenomics)"
+                - option "Reveal MRD (Guardant Health)"
+                - option "Signatera (Natera)"
+                - option "Tempus xM MRD (Tempus)"
+                - option "Labcorp Plasma Detect (Labcorp)"
+                - option "FoundationOne Tracker (MRD) (Foundation Medicine / Natera)"
+                - option "Foundation TI-WGS MRD (RUO) (Foundation Medicine)"
+                - option "Veracyte MRD (C2i Genomics platform) (Veracyte (C2i Genomics))"
+                - option "Guardant LUNAR (RUO platform) (Guardant Health)"
+                - option "NavDx (Naveris)"
+                - option "Foresight CLARITY Lymphoma (Natera)"
+                - option "Invitae PCM (Labcorp (Invitae))"
+                - option "Caris Assure (Caris Life Sciences)"
+                - option "clonoSEQ (Adaptive Biotechnologies)"
+                - option "Signatera Genome (Natera)"
+                - option "Latitude (Natera)"
+                - option "CancerDetect (IMBdx)"
+                - option "LymphoVista (LIQOMICS)"
+                - option "CancerVista (LIQOMICS)"
+                - option "clonoSEQ Assay (Adaptive Biotechnologies)"
+                - option "LymphoTrack Dx IGH Assay (Invivoscribe)"
+                - option "BD OneFlow B-ALL MRD Kit (BD Biosciences)"
+            - generic [ref=e63]:
+              - generic [ref=e64]: Parameter to Correct *
+              - combobox [ref=e65]:
+                - option "-- Select parameter --"
+                - option "Sensitivity (%)" [selected]
+                - option "Specificity (%)"
+                - option "Analytical Specificity (%)"
+                - option "Clinical Specificity (%)"
+                - option "LOD (Detection Threshold)"
+                - option "LOD95 (95% Confidence)"
+                - option "Variants Tracked"
+                - option "Initial Turnaround Time (days)"
+                - option "Follow-up Turnaround Time (days)"
+                - option "Blood Volume (mL)"
+                - option "cfDNA Input (ng)"
+                - option "FDA Status"
+                - option "Reimbursement Status"
+                - option "CPT Codes"
+                - option "Clinical Trials"
+                - option "Total Trial Participants"
+                - option "Number of Publications"
+                - option "Other (specify in notes)"
+            - generic [ref=e66]: "Current value: 95"
+            - generic [ref=e67]:
+              - generic [ref=e68]: New Value *
+              - textbox "Enter the correct value" [ref=e69]: Test correction value
+            - generic [ref=e70]:
+              - generic [ref=e71]: Citation/Source URL *
+              - textbox "https://..." [ref=e72]: https://example.com/source
+              - paragraph [ref=e73]: Link to publication or source supporting this value
+        - generic [ref=e74]:
+          - heading "Your Information" [level=3] [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - generic [ref=e78]: First Name *
+              - textbox [ref=e79]: Samyuktha
+            - generic [ref=e80]:
+              - generic [ref=e81]: Last Name *
+              - textbox [ref=e82]: Test
+          - generic [ref=e83]: Work Email *
+          - generic [ref=e84]:
+            - textbox "you@company.com" [ref=e85]: samyuktha@illumina.com
+            - button "Send Code" [ref=e86] [cursor=pointer]
+          - paragraph [ref=e87]: Network error. Please try again.
+        - button "Verify Email to Submit Request" [disabled] [ref=e88]
+      - generic [ref=e89]:
+        - heading "Database Changelog" [level=2] [ref=e90]
+        - paragraph [ref=e91]: Recent updates to the OpenOnco test database, including community contributions.
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e96]: "#46"
+            - generic [ref=e97]: +
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - generic [ref=e100]: CancerVista
+                - generic [ref=e101]: MRD
+                - generic [ref=e102]: LIQOMICS
+              - paragraph [ref=e103]: "Added multi-solid tumor MRD assay from LIQOMICS. Technically validated with LoD 3.30×10⁻⁶. Covers 17 anatomical sites including bladder, brain, breast, cervix, colorectal, esophagus, head and neck, kidney, liver, lung, ovary, pancreas, prostate, skin, stomach, thyroid, and uterus. MRD detection: 80% sensitivity, 96.7% specificity, 94.3% accuracy at threshold 2.5×10⁻⁵. Variant detection: 93.17% sensitivity, >99% specificity for mAF ≥1%. 20 mL blood sample, 10-day TAT. Available in Europe."
+              - generic [ref=e104]:
+                - generic [ref=e105]: Dec 15, 2025
+                - generic [ref=e106]: "• Vendor update: Jens Winter (LIQOMICS (vendor))"
+          - generic [ref=e107]:
+            - generic [ref=e109]: "#45"
+            - generic [ref=e110]: +
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: IColocomf
+                - generic [ref=e114]: ECD
+                - generic [ref=e115]: Wuhan Ammunition Life Technology
+              - paragraph [ref=e116]: Added NMPA/CE-approved stool DNA methylation test for CRC screening. Dual-target SDC2+TFPI2 qPCR assay. 95.31% CRC sensitivity, 96.93% Stage I-II sensitivity, 96.67% specificity vs healthy controls. Validated in independent multicenter trial (n=1,164) published in J Mol Diagn 2022. First Chinese stool DNA test in database. Available in China and Europe.
+              - generic [ref=e117]:
+                - generic [ref=e118]: Dec 15, 2025
+                - generic [ref=e119]: "• Vendor update: Tingting Li (Wuhan Ammunition Life Technology (vendor))"
+          - generic [ref=e120]:
+            - generic [ref=e122]: "#44"
+            - generic [ref=e123]: ↑
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - generic [ref=e126]: Data Accuracy Corrections
+                - generic [ref=e127]: Multiple
+              - paragraph [ref=e128]: "Corrected overstated claims and regulatory status: Cologuard - removed \"ONLY\" self-collection claim, moved USPSTF to guidelines field; TSO Comprehensive - narrowed CDx claims to FDA-labeled scope (NTRK/RET at launch); TSO 500 - clarified RUO in US; Oncomine Comprehensive Assay Plus - changed to RUO pending CE-IVD verification; GeneseeqPrime - corrected clearance date to Aug 2025; Epi proColon - updated reimbursement to \"coverage variable/limited\"; clonoSEQ - added US/EU distribution model notes."
+              - generic [ref=e129]:
+                - generic [ref=e130]: Dec 14, 2025
+                - generic [ref=e131]: • OpenOnco
+          - generic [ref=e132]:
+            - generic [ref=e134]: "#43"
+            - generic [ref=e135]: ↑
+            - generic [ref=e136]:
+              - generic [ref=e137]:
+                - generic [ref=e138]: CDx Category Reclassification
+                - generic [ref=e139]: Multiple
+              - paragraph [ref=e140]: "Reclassified 6 therapy-selection companion diagnostics from TRM/MRD to TDS: cobas EGFR v2, cobas KRAS, therascreen EGFR, OncoBEAM RAS CRC, PGDx elio plasma focus (from TRM), and LeukoStrat CDx FLT3 (from MRD). These tests are primarily CDx for therapy selection, not treatment response monitoring or MRD detection. Category placement now reflects FDA-labeled intended use."
+              - generic [ref=e141]:
+                - generic [ref=e142]: Dec 14, 2025
+                - generic [ref=e143]: • OpenOnco
+          - generic [ref=e144]:
+            - generic [ref=e146]: "#42"
+            - generic [ref=e147]: ★
+            - generic [ref=e148]:
+              - generic [ref=e149]:
+                - generic [ref=e150]: IVD Kit Support
+                - generic [ref=e151]: All
+              - paragraph [ref=e152]: "Added Product Type taxonomy distinguishing Self-Collection kits (patient collects at home), Laboratory IVD Kits (distributed reagents for CLIA labs), and Central Lab Services (send-out tests). New filter enables users to find tests by distribution model. Added 16 IVD kit entries: ECD - Cologuard, Epi proColon; MRD - clonoSEQ Assay, LymphoTrack Dx IGH Assay, BD OneFlow B-ALL MRD Kit; TDS - TruSight Oncology Comprehensive, GeneseeqPrime, PGDx elio tissue complete, Oncomine Comprehensive Assay Plus, TSO 500, cobas EGFR Mutation Test v2, cobas KRAS Mutation Test, therascreen EGFR RGQ PCR Kit, OncoBEAM RAS CRC Kit, PGDx elio plasma focus Dx, LeukoStrat CDx FLT3 Mutation Assay."
+              - generic [ref=e153]:
+                - generic [ref=e154]: Dec 14, 2025
+                - generic [ref=e155]: • OpenOnco
+          - generic [ref=e156]:
+            - generic [ref=e158]: "#41"
+            - generic [ref=e159]: +
+            - generic [ref=e160]:
+              - generic [ref=e161]:
+                - generic [ref=e162]: Cologuard
+                - generic [ref=e163]: ECD
+                - generic [ref=e164]: Exact Sciences
+              - paragraph [ref=e165]: Added FDA PMA-approved self-collection CRC screening kit. Only at-home collection cancer screening test. Stool DNA + FIT, 92% CRC sensitivity, 87% specificity. USPSTF Grade A recommendation.
+              - generic [ref=e166]:
+                - generic [ref=e167]: Dec 14, 2025
+                - generic [ref=e168]: • OpenOnco
+          - generic [ref=e169]:
+            - generic [ref=e171]: "#40"
+            - generic [ref=e172]: +
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - generic [ref=e175]: clonoSEQ Assay
+                - generic [ref=e176]: MRD
+                - generic [ref=e177]: Adaptive Biotechnologies
+              - paragraph [ref=e178]: Added FDA-cleared IVD kit for MRD detection in hematologic malignancies. First and only FDA-cleared MRD IVD. Available as reagent kit for MiSeqDx labs.
+              - generic [ref=e179]:
+                - generic [ref=e180]: Dec 14, 2025
+                - generic [ref=e181]: • OpenOnco
+          - generic [ref=e182]:
+            - generic [ref=e184]: "#39"
+            - generic [ref=e185]: +
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: TruSight Oncology Comprehensive
+                - generic [ref=e189]: TDS
+                - generic [ref=e190]: Illumina
+              - paragraph [ref=e191]: Added first FDA-approved distributable CGP IVD kit with pan-cancer CDx claims. 517 genes, enables in-house comprehensive genomic profiling.
+              - generic [ref=e192]:
+                - generic [ref=e193]: Dec 14, 2025
+                - generic [ref=e194]: • OpenOnco
+          - generic [ref=e195]:
+            - generic [ref=e197]: "#38"
+            - generic [ref=e198]: +
+            - generic [ref=e199]:
+              - generic [ref=e200]:
+                - generic [ref=e201]: cobas EGFR Mutation Test v2
+                - generic [ref=e202]: TDS
+                - generic [ref=e203]: Roche
+              - paragraph [ref=e204]: Added FDA-approved EGFR liquid biopsy CDx kit. First liquid biopsy test FDA-approved (2016). Gold standard for EGFR TKI therapy selection.
+              - generic [ref=e205]:
+                - generic [ref=e206]: Dec 14, 2025
+                - generic [ref=e207]: • OpenOnco
+          - generic [ref=e208]:
+            - generic [ref=e210]: "#37"
+            - generic [ref=e211]: ↑
+            - generic [ref=e212]:
+              - generic [ref=e213]:
+                - generic [ref=e214]: Reveal TRM
+                - generic [ref=e215]: TRM
+                - generic [ref=e216]: Guardant Health
+              - paragraph [ref=e217]: "Corrected tumor fraction methodology for Reveal TRM and Reveal MRD: epiTF (epigenetic Tumor Fraction) calculated from 19,000+ differentially methylated loci, mutation-agnostic. Removed duplicate Guardant360 Response entry (trm-10)."
+              - generic [ref=e218]:
+                - generic [ref=e219]: Dec 13, 2025
+                - generic [ref=e220]: "• Vendor update: Brandon Guida (Guardant Health (vendor))"
+          - generic [ref=e221]:
+            - generic [ref=e223]: "#36"
+            - generic [ref=e224]: +
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - generic [ref=e227]: IsoPSA
+                - generic [ref=e228]: TDS
+                - generic [ref=e229]: Cleveland Diagnostics
+              - paragraph [ref=e230]: Added FDA PMA-approved protein structure-based prostate cancer diagnostic. IsoClear platform analyzes PSA structural variants (not concentration) to aid biopsy decisions. 90.2% sensitivity, runs on standard analyzers (COBAS, Siemens, Abbott). In NCCN and AUA/SUO guidelines, Medicare covered.
+              - generic [ref=e231]:
+                - generic [ref=e232]: Dec 13, 2025
+                - generic [ref=e233]: "• Vendor update: Sameer Rohatgi (Cleveland Diagnostics)"
+          - generic [ref=e234]:
+            - generic [ref=e236]: "#35"
+            - generic [ref=e237]: ↑
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - generic [ref=e240]: LymphoVista
+                - generic [ref=e241]: MRD
+                - generic [ref=e242]: LIQOMICS
+              - paragraph [ref=e243]: "Corrected turnaround times per vendor: Initial TAT and Follow-up TAT both 10 days (previously listed as 2-4 weeks)."
+              - generic [ref=e244]:
+                - generic [ref=e245]: Dec 13, 2025
+                - generic [ref=e246]: "• Vendor update: Jens Winter (LIQOMICS (vendor))"
+          - generic [ref=e247]:
+            - generic [ref=e249]: "#34"
+            - generic [ref=e250]: ↑
+            - generic [ref=e251]:
+              - generic [ref=e252]:
+                - generic [ref=e253]: Northstar Select
+                - generic [ref=e254]: TDS
+                - generic [ref=e255]: BillionToOne
+              - paragraph [ref=e256]: "Updated reimbursement status: Medicare coverage via MolDx (Palmetto GBA LCD L38043) effective February 14, 2025."
+              - generic [ref=e257]:
+                - generic [ref=e258]: Dec 12, 2025
+                - generic [ref=e259]: "• Vendor update: David Huland (BillionToOne (vendor))"
+          - generic [ref=e260]:
+            - generic [ref=e262]: "#33"
+            - generic [ref=e263]: ↑
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - generic [ref=e266]: Guardant360 Response (DISCONTINUED)
+                - generic [ref=e267]: TRM
+                - generic [ref=e268]: Guardant Health
+              - paragraph [ref=e269]: "PRODUCT DISCONTINUED: Sun-setted per vendor. Guardant has consolidated monitoring portfolio to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic). Guardant360 Response is no longer commercially available."
+              - generic [ref=e270]:
+                - generic [ref=e271]: Dec 12, 2025
+                - generic [ref=e272]: "• Vendor update: Brandon Guida PhD (Guardant Health (vendor))"
+          - generic [ref=e273]:
+            - generic [ref=e275]: "#32"
+            - generic [ref=e276]: +
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - generic [ref=e279]: Reveal TRM
+                - generic [ref=e280]: TRM
+                - generic [ref=e281]: Guardant Health
+              - paragraph [ref=e282]: Added new methylation-based therapy response monitoring test for advanced/metastatic solid tumors. Uses Guardant Infinity platform with epigenetic tumor fraction (epiTF) quantification from 19,000+ differentially methylated loci—mutation-agnostic. Precision down to ~0.01% TF, not confounded by CNAs or CHIP. Validated in >50,000 cfDNA samples across 20+ cancer types (AACR 2025).
+              - generic [ref=e283]:
+                - generic [ref=e284]: Dec 12, 2025
+                - generic [ref=e285]: "• Vendor update: Brandon Guida PhD (Guardant Health (vendor))"
+          - generic [ref=e286]:
+            - generic [ref=e288]: "#31"
+            - generic [ref=e289]: ↑
+            - generic [ref=e290]:
+              - generic [ref=e291]:
+                - generic [ref=e292]: Reveal MRD
+                - generic [ref=e293]: MRD
+                - generic [ref=e294]: Guardant Health
+              - paragraph [ref=e295]: Renamed from "Reveal" to "Reveal MRD" per vendor product consolidation. Expanded cancer types to include breast and non-small cell lung cancer (previously CRC only). Early-stage cancer focus for MRD detection/recurrence monitoring after curative-intent therapy.
+              - generic [ref=e296]:
+                - generic [ref=e297]: Dec 12, 2025
+                - generic [ref=e298]: "• Vendor update: Brandon Guida PhD (Guardant Health (vendor))"
+          - generic [ref=e299]:
+            - generic [ref=e301]: "#30"
+            - generic [ref=e302]: ★
+            - generic [ref=e303]:
+              - generic [ref=e305]: Site Update
+              - paragraph [ref=e306]: Added shareable comparison links (copy link button in comparison modal). Fixed print-to-PDF bug that repeated Page 1 on all pages.
+              - generic [ref=e307]:
+                - generic [ref=e308]: Dec 13, 2025
+                - generic [ref=e309]: • Jeff Hull (BillionToOne (via LinkedIn))
+          - generic [ref=e310]:
+            - generic [ref=e312]: "#29"
+            - generic [ref=e313]: ↑
+            - generic [ref=e314]:
+              - generic [ref=e315]:
+                - generic [ref=e316]: Foresight CLARITY Lymphoma
+                - generic [ref=e317]: MRD
+                - generic [ref=e318]: Natera
+              - paragraph [ref=e319]: "Updated per vendor: Matched Normal = Yes; LOD95 = 0.7 ppm (previously listed as LOD). Added analytical validation publication citation."
+              - generic [ref=e320]:
+                - generic [ref=e321]: Dec 13, 2025
+                - generic [ref=e322]: "• Vendor update: John Truesdell (Natera/Foresight (vendor))"
+          - generic [ref=e323]:
+            - generic [ref=e325]: "#28"
+            - generic [ref=e326]: ↑
+            - generic [ref=e327]:
+              - generic [ref=e328]:
+                - generic [ref=e329]: NeXT Personal Dx
+                - generic [ref=e330]: MRD
+                - generic [ref=e331]: Personalis
+              - paragraph [ref=e332]: "Updated turnaround times per vendor: initial TAT now 21 days (was 35), follow-up TAT now 10 days (was 12). Confirmed blood volume (20 mL, two Streck tubes) and variants tracked (~1,800)."
+              - generic [ref=e333]:
+                - generic [ref=e334]: Dec 12, 2025
+                - generic [ref=e335]: "• Vendor update: Dan Norton (Personalis (vendor))"
+          - generic [ref=e336]:
+            - generic [ref=e338]: "#27"
+            - generic [ref=e339]: ↑
+            - generic [ref=e340]:
+              - generic [ref=e341]:
+                - generic [ref=e342]: clonoSEQ
+                - generic [ref=e343]: MRD
+                - generic [ref=e344]: Adaptive Biotechnologies
+              - paragraph [ref=e345]: "Clarified sample requirements: baseline Clonality (ID) test accepts fresh or archived samples from bone marrow aspirate, peripheral blood, or soft tissue (e.g., plasmacytoma, lymph node biopsy). Subsequent Tracking (MRD) tests use standard fresh bone marrow or blood."
+              - generic [ref=e346]:
+                - generic [ref=e347]: Dec 11, 2025
+                - generic [ref=e348]: "• Vendor update: Christine Hanley (Adaptive Biotechnologies (vendor))"
+          - generic [ref=e349]:
+            - generic [ref=e351]: "#26"
+            - generic [ref=e352]: +
+            - generic [ref=e353]:
+              - generic [ref=e354]:
+                - generic [ref=e355]: Guardant360 Liquid
+                - generic [ref=e356]: TDS
+                - generic [ref=e357]: Guardant Health
+              - paragraph [ref=e358]: "Added comprehensive 744-gene liquid biopsy LDT (distinct from 74-gene FDA-approved CDx). Features: genomic + epigenomic (promoter methylation) insights, CHIP filtering, virus detection (EBV/HPV), tumor fraction quantification. Runs on Guardant Infinity platform with 10x more genes and 10x higher sensitivity than previous version."
+              - generic [ref=e359]:
+                - generic [ref=e360]: Dec 11, 2025
+                - generic [ref=e361]: "• Vendor update: Brandon (Scott) Guida PhD (Guardant Health (vendor))"
+          - generic [ref=e362]:
+            - generic [ref=e364]: "#25"
+            - generic [ref=e365]: ↑
+            - generic [ref=e366]:
+              - generic [ref=e367]:
+                - generic [ref=e368]: Clinical Settings Tags
+                - generic [ref=e369]: MRD
+                - generic [ref=e370]: Multiple
+              - paragraph [ref=e371]: "Added clinicalSettings field to all MRD tests to capture validated clinical contexts: Neoadjuvant (monitoring during pre-surgery therapy), Post-Surgery (landmark ~4 weeks after resection), Post-Adjuvant (after chemotherapy), and Surveillance (longitudinal recurrence monitoring). Added filter by clinical setting. Based on vendor feedback from Personalis (Dan Norton) on clinical context-specific performance data."
+              - generic [ref=e372]:
+                - generic [ref=e373]: Dec 11, 2025
+                - generic [ref=e374]: • Dan Norton (Personalis)
+          - generic [ref=e375]:
+            - generic [ref=e377]: "#24"
+            - generic [ref=e378]: +
+            - generic [ref=e379]:
+              - generic [ref=e380]:
+                - generic [ref=e381]: LymphoVista
+                - generic [ref=e382]: MRD
+                - generic [ref=e383]: LIQOMICS
+              - paragraph [ref=e384]: "Added European lymphoma-focused ctDNA MRD test covering B-cell lymphomas (DLBCL, FL, MCL, Burkitt, CNS) and Hodgkin lymphoma via LymphoVista HL variant. Duplex sequencing with LoD 6.69×10⁻⁶. Clinical validation: 92.1% PPV in r/r DLBCL post-CAR-T/chemo (EHA 2024); HR 6.9 for PFS in Hodgkin (ASH 2024, HD21 trial)."
+              - generic [ref=e385]:
+                - generic [ref=e386]: Dec 12, 2025
+                - generic [ref=e387]: "• Vendor update: Jens Winter (LIQOMICS (vendor))"
+          - generic [ref=e388]:
+            - generic [ref=e390]: "#23"
+            - generic [ref=e391]: +
+            - generic [ref=e392]:
+              - generic [ref=e393]:
+                - generic [ref=e394]: CancerDetect
+                - generic [ref=e395]: MRD
+                - generic [ref=e396]: IMBdx
+              - paragraph [ref=e397]: Added Korean tumor-informed MRD test using large-scale mutation tracking (up to 300 variants). 0.001% LOD. Innovative Medical Technology designation.
+              - generic [ref=e398]:
+                - generic [ref=e399]: Dec 11, 2025
+                - generic [ref=e400]: "• Vendor update: Sunghoon Heo (IMBdx (vendor))"
+          - generic [ref=e401]:
+            - generic [ref=e403]: "#22"
+            - generic [ref=e404]: +
+            - generic [ref=e405]:
+              - generic [ref=e406]:
+                - generic [ref=e407]: Latitude
+                - generic [ref=e408]: MRD
+                - generic [ref=e409]: Natera
+              - paragraph [ref=e410]: Added tissue-free (tumor-naïve) methylation-based MRD test for CRC. No tumor tissue required. Validated in CIRCULATE-JAPAN GALAXY Study.
+              - generic [ref=e411]:
+                - generic [ref=e412]: Dec 11, 2025
+                - generic [ref=e413]: • Sunghoon Heo (IMBdx)
+          - generic [ref=e414]:
+            - generic [ref=e416]: "#21"
+            - generic [ref=e417]: +
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - generic [ref=e420]: Signatera Genome
+                - generic [ref=e421]: MRD
+                - generic [ref=e422]: Natera
+              - paragraph [ref=e423]: Added WGS-informed version of Signatera with 64 variants tracked and 1 ppm LOD (~100x more sensitive than standard Signatera).
+              - generic [ref=e424]:
+                - generic [ref=e425]: Dec 11, 2025
+                - generic [ref=e426]: • Sunghoon Heo (IMBdx)
+          - generic [ref=e427]:
+            - generic [ref=e429]: "#20"
+            - generic [ref=e430]: ↑
+            - generic [ref=e431]:
+              - generic [ref=e432]:
+                - generic [ref=e433]: Labcorp Plasma Detect
+                - generic [ref=e434]: MRD
+                - generic [ref=e435]: Labcorp
+              - paragraph [ref=e436]: "Fixed duplicate entry: merged mrd-17 into mrd-9. Updated with expanded cancer types (lung, bladder in validation), improved LOD (10 ppm), lead time data, and newer clinical trial citations."
+              - generic [ref=e437]:
+                - generic [ref=e438]: Dec 11, 2025
+                - generic [ref=e439]: • Sunghoon Heo (IMBdx)
+          - generic [ref=e440]:
+            - generic [ref=e442]: "#19"
+            - generic [ref=e443]: ↑
+            - generic [ref=e444]:
+              - generic [ref=e445]:
+                - generic [ref=e446]: NEO PanTracer Tissue
+                - generic [ref=e447]: TDS
+                - generic [ref=e448]: NeoGenomics
+              - paragraph [ref=e449]: Renamed from "Neo Comprehensive" to "NEO PanTracer Tissue" to reflect NeoGenomics product rebrand.
+              - generic [ref=e450]:
+                - generic [ref=e451]: Dec 10, 2025
+                - generic [ref=e452]: • Heather Robinson (Illumina)
+          - generic [ref=e453]:
+            - generic [ref=e455]: "#18"
+            - generic [ref=e456]: ↑
+            - generic [ref=e457]:
+              - generic [ref=e458]:
+                - generic [ref=e459]: clonoSEQ
+                - generic [ref=e460]: MRD
+                - generic [ref=e461]: Adaptive Biotechnologies
+              - paragraph [ref=e462]: "Vendor update: TAT changed to 7 days (serial monitoring) from 14 days (baseline); updated Target Population to list specific indications (ALL, CLL, DLBCL, MCL, MM); clarified tumor tissue requirement for hematologic assay."
+              - generic [ref=e463]:
+                - generic [ref=e464]: Dec 10, 2025
+                - generic [ref=e465]: "• Vendor update: Christine Hanley (Adaptive Biotechnologies)"
+          - generic [ref=e466]:
+            - generic [ref=e468]: "#17"
+            - generic [ref=e469]: ↑
+            - generic [ref=e470]:
+              - generic [ref=e471]:
+                - generic [ref=e472]: Medicare ADLT Data
+                - generic [ref=e473]: All
+                - generic [ref=e474]: Multiple
+              - paragraph [ref=e475]: "Added Medicare CLFS reimbursement rates and ADLT status to 8 tests: Signatera ($3,500), Guardant360 CDx ($5,000), FoundationOne CDx ($3,500), FoundationOne Liquid CDx ($3,500), Shield ($1,495), NavDx ($1,800), Tempus xT CDx ($4,500), clonoSEQ ($2,007). Added PLA vs CPT code type distinction."
+              - generic [ref=e476]:
+                - generic [ref=e477]: Dec 10, 2025
+                - generic [ref=e478]: • OpenOnco
+          - generic [ref=e479]:
+            - generic [ref=e481]: "#16"
+            - generic [ref=e482]: +
+            - generic [ref=e483]:
+              - generic [ref=e484]:
+                - generic [ref=e485]: clonoSEQ
+                - generic [ref=e486]: MRD
+                - generic [ref=e487]: Adaptive Biotechnologies
+              - paragraph [ref=e488]: Added clonoSEQ - first and only FDA-cleared MRD test for hematologic malignancies (MM, B-ALL, CLL). Uses NGS immunosequencing of B/T-cell receptor genes with 10⁻⁶ sensitivity. Medicare coverage for MM, ALL, CLL, DLBCL, MCL.
+              - generic [ref=e489]:
+                - generic [ref=e490]: Dec 10, 2025
+                - generic [ref=e491]: "• Vendor update: Christine Hanley (Adaptive Biotechnologies)"
+          - generic [ref=e492]:
+            - generic [ref=e494]: "#15"
+            - generic [ref=e495]: ↑
+            - generic [ref=e496]:
+              - generic [ref=e497]:
+                - generic [ref=e498]: FoundationOne CDx
+                - generic [ref=e499]: TDS
+                - generic [ref=e500]: Foundation Medicine
+              - paragraph [ref=e501]: Added international availability info - available in 100+ countries via Roche global network (EU lab in Penzberg, Germany; MHLW approved in Japan)
+              - generic [ref=e502]:
+                - generic [ref=e503]: Dec 10, 2025
+                - generic [ref=e504]: • OpenOnco
+          - generic [ref=e505]:
+            - generic [ref=e507]: "#14"
+            - generic [ref=e508]: ↑
+            - generic [ref=e509]:
+              - generic [ref=e510]:
+                - generic [ref=e511]: FoundationOne Liquid CDx
+                - generic [ref=e512]: TDS
+                - generic [ref=e513]: Foundation Medicine
+              - paragraph [ref=e514]: Added international availability info - available in 100+ countries via Roche global network
+              - generic [ref=e515]:
+                - generic [ref=e516]: Dec 10, 2025
+                - generic [ref=e517]: • OpenOnco
+          - generic [ref=e518]:
+            - generic [ref=e520]: "#13"
+            - generic [ref=e521]: ↑
+            - generic [ref=e522]:
+              - generic [ref=e523]:
+                - generic [ref=e524]: FoundationOne Heme
+                - generic [ref=e525]: TDS
+                - generic [ref=e526]: Foundation Medicine
+              - paragraph [ref=e527]: Added international availability info - available via Roche global network
+              - generic [ref=e528]:
+                - generic [ref=e529]: Dec 10, 2025
+                - generic [ref=e530]: • OpenOnco
+          - generic [ref=e531]:
+            - generic [ref=e533]: "#12"
+            - generic [ref=e534]: ↑
+            - generic [ref=e535]:
+              - generic [ref=e536]:
+                - generic [ref=e537]: FoundationOne Tracker (MRD)
+                - generic [ref=e538]: MRD
+                - generic [ref=e539]: Foundation Medicine
+              - paragraph [ref=e540]: Added international availability info for investigational/early access program
+              - generic [ref=e541]:
+                - generic [ref=e542]: Dec 10, 2025
+                - generic [ref=e543]: • OpenOnco
+          - generic [ref=e544]:
+            - generic [ref=e546]: "#11"
+            - generic [ref=e547]: ↑
+            - generic [ref=e548]:
+              - generic [ref=e549]:
+                - generic [ref=e550]: Foundation TI-WGS MRD (RUO)
+                - generic [ref=e551]: MRD
+                - generic [ref=e552]: Foundation Medicine
+              - paragraph [ref=e553]: Added international availability info for RUO via FlexOMx Lab
+              - generic [ref=e554]:
+                - generic [ref=e555]: Dec 10, 2025
+                - generic [ref=e556]: • OpenOnco
+          - generic [ref=e557]:
+            - generic [ref=e559]: "#10"
+            - generic [ref=e560]: ↑
+            - generic [ref=e561]:
+              - generic [ref=e562]:
+                - generic [ref=e563]: FoundationOne Tracker (TRM)
+                - generic [ref=e564]: TRM
+                - generic [ref=e565]: Foundation Medicine
+              - paragraph [ref=e566]: Added international availability info - available via Roche affiliates
+              - generic [ref=e567]:
+                - generic [ref=e568]: Dec 10, 2025
+                - generic [ref=e569]: • OpenOnco
+          - generic [ref=e570]:
+            - generic [ref=e572]: "#9"
+            - generic [ref=e573]: ↑
+            - generic [ref=e574]:
+              - generic [ref=e575]:
+                - generic [ref=e576]: FoundationOne Monitor
+                - generic [ref=e577]: TRM
+                - generic [ref=e578]: Foundation Medicine
+              - paragraph [ref=e579]: Added international availability info - available via Roche affiliates
+              - generic [ref=e580]:
+                - generic [ref=e581]: Dec 10, 2025
+                - generic [ref=e582]: • OpenOnco
+          - generic [ref=e583]:
+            - generic [ref=e585]: "#8"
+            - generic [ref=e586]: +
+            - generic [ref=e587]:
+              - generic [ref=e588]:
+                - generic [ref=e589]: Northstar Select
+                - generic [ref=e590]: TDS
+                - generic [ref=e591]: BillionToOne
+              - paragraph [ref=e592]: Initial database entry - liquid biopsy CGP with 0.15% VAF LOD
+              - generic [ref=e593]:
+                - generic [ref=e594]: Dec 9, 2025
+                - generic [ref=e595]: "• Vendor update: Rob Manor (BillionToOne)"
+          - generic [ref=e596]:
+            - generic [ref=e598]: "#7"
+            - generic [ref=e599]: ↑
+            - generic [ref=e600]:
+              - generic [ref=e601]:
+                - generic [ref=e602]: Northstar Response
+                - generic [ref=e603]: TRM
+                - generic [ref=e604]: BillionToOne
+              - paragraph [ref=e605]: Updated methylated loci count from >500 to >2200 (v2 panel expansion)
+              - generic [ref=e606]:
+                - generic [ref=e607]: Dec 9, 2025
+                - generic [ref=e608]: "• Vendor update: Rob Manor (BillionToOne)"
+          - generic [ref=e609]:
+            - generic [ref=e611]: "#6"
+            - generic [ref=e612]: −
+            - generic [ref=e613]:
+              - generic [ref=e614]:
+                - generic [ref=e615]: MSK-ACCESS powered with SOPHiA DDM
+                - generic [ref=e616]: TRM
+                - generic [ref=e617]: SOPHiA GENETICS
+              - paragraph [ref=e618]: Removed - RUO kitted product not directly orderable by physicians. Vendor confirmed test does not meet inclusion criteria.
+              - generic [ref=e619]:
+                - generic [ref=e620]: Dec 10, 2025
+                - generic [ref=e621]: "• Vendor update: Julien Pontis (SOPHiA GENETICS)"
+          - generic [ref=e622]:
+            - generic [ref=e624]: "#5"
+            - generic [ref=e625]: +
+            - generic [ref=e626]:
+              - generic [ref=e627]:
+                - generic [ref=e628]: Invitae PCM
+                - generic [ref=e629]: MRD
+                - generic [ref=e630]: Labcorp (Invitae)
+              - paragraph [ref=e631]: Initial database entry
+              - generic [ref=e632]:
+                - generic [ref=e633]: Dec 8, 2025
+                - generic [ref=e634]: • OpenOnco
+          - generic [ref=e635]:
+            - generic [ref=e637]: "#4"
+            - generic [ref=e638]: +
+            - generic [ref=e639]:
+              - generic [ref=e640]:
+                - generic [ref=e641]: Neo Comprehensive
+                - generic [ref=e642]: TDS
+                - generic [ref=e643]: NeoGenomics
+              - paragraph [ref=e644]: Initial database entry
+              - generic [ref=e645]:
+                - generic [ref=e646]: Dec 8, 2025
+                - generic [ref=e647]: • OpenOnco
+          - generic [ref=e648]:
+            - generic [ref=e650]: "#3"
+            - generic [ref=e651]: +
+            - generic [ref=e652]:
+              - generic [ref=e653]:
+                - generic [ref=e654]: Signal-C
+                - generic [ref=e655]: ECD
+                - generic [ref=e656]: Universal DX
+              - paragraph [ref=e657]: Initial database entry
+              - generic [ref=e658]:
+                - generic [ref=e659]: Dec 7, 2025
+                - generic [ref=e660]: • OpenOnco
+          - generic [ref=e661]:
+            - generic [ref=e663]: "#2"
+            - generic [ref=e664]: +
+            - generic [ref=e665]:
+              - generic [ref=e666]:
+                - generic [ref=e667]: Foresight CLARITY Lymphoma
+                - generic [ref=e668]: MRD
+                - generic [ref=e669]: Natera
+              - paragraph [ref=e670]: Initial database entry
+              - generic [ref=e671]:
+                - generic [ref=e672]: Dec 7, 2025
+                - generic [ref=e673]: • John Truesdell (Foresight Diagnostics)
+          - generic [ref=e674]:
+            - generic [ref=e676]: "#1"
+            - generic [ref=e677]: +
+            - generic [ref=e678]:
+              - generic [ref=e679]:
+                - generic [ref=e680]: EPISEEK
+                - generic [ref=e681]: ECD
+                - generic [ref=e682]: Precision Epigenomics
+              - paragraph [ref=e683]: Initial database entry
+              - generic [ref=e684]:
+                - generic [ref=e685]: Dec 5, 2025
+                - generic [ref=e686]: "• Vendor update: Richard Bernert (Precision Epigenomics)"
+  - contentinfo [ref=e687]:
+    - generic [ref=e688]:
+      - paragraph [ref=e689]:
+        - strong [ref=e690]: "Disclaimer:"
+        - text: OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices. Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.
+      - paragraph [ref=e691]: "Built: Dec 15, 2025, 07:21 AM PST"
+```

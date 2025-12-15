@@ -4726,7 +4726,10 @@ const SubmissionsPage = () => {
               <p className="text-sm text-amber-600 mt-2">⚠️ We will verify that your email comes from the vendor's domain</p>
             )}
             {submitterType === 'expert' && (
-              <p className="text-sm text-gray-500 mt-2">Expert submissions require a company or institutional email</p>
+              <>
+                <p className="text-sm text-amber-600 mt-2">⚠️ Vendor employees should select "Test Vendor Representative" above</p>
+                <p className="text-sm text-gray-500 mt-1">Expert submissions require a company or institutional email</p>
+              </>
             )}
           </div>
         )}
