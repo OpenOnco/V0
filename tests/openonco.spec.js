@@ -1,6 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../src/data.js';
 
 /**
  * OpenOnco Regression Test Suite
@@ -8,16 +9,16 @@ import fs from 'fs';
  */
 
 // ===========================================
-// EXPECTED VALUES - UPDATE WHEN ADDING TESTS
+// EXPECTED VALUES - DYNAMICALLY CALCULATED
 // ===========================================
 
 const EXPECTED = {
   testCounts: {
-    MRD: 26,
-    ECD: 15,
-    TRM: 15,
-    TDS: 22,
-    total: 78
+    MRD: mrdTestData.length,
+    ECD: ecdTestData.length,
+    TRM: trmTestData.length,
+    TDS: tdsTestData.length,
+    get total() { return this.MRD + this.ECD + this.TRM + this.TDS; }
   },
   categories: ['MRD', 'ECD', 'TRM', 'TDS'],
 };
