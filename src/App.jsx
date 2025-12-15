@@ -7588,9 +7588,9 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
               
               {/* Product Type Section - NEW: IVD Kit vs Service */}
               {config.productTypes && (
-                <FilterSection 
-                  title={isPatient ? 'How It Works' : 'Product Type'} 
-                  defaultOpen={true}
+                <FilterSection
+                  title={isPatient ? 'How It Works' : 'Product Type'}
+                  defaultOpen={false}
                   activeCount={selectedProductTypes.length}
                 >
                   <div className="space-y-1">

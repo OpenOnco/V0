@@ -15,7 +15,7 @@ export const filterConfigs = {
   },
   ECD: {
     // Oncologist priority: Single cancer or multi? Sample type? What's the target population? Covered?
-    productTypes: ['Self-Collection', 'Central Lab Service', 'Laboratory IVD Kit'],
+    productTypes: ['Central Lab Service', 'Laboratory IVD Kit', 'Self-Collection'],
     testScopes: ['Single-cancer (CRC)', 'Multi-cancer (MCED)'],
     sampleCategories: ['Blood/Plasma', 'Stool'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
