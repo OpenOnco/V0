@@ -1977,7 +1977,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Right: Search Tools */}
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
-          <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI</h3>
+          <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI:</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
             {/* Example Questions - shown when no messages */}
