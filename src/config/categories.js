@@ -1,5 +1,5 @@
 // Category definitions and metadata
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../data';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData, alzBloodTestData } from '../data';
 
 // Domain constants
 export const DOMAINS = {
@@ -211,7 +211,17 @@ export const createCategoryMeta = (buildInfoSources = {}) => ({
     sourceUrl: buildInfoSources.TDS || '',
     domain: DOMAINS.ONCO,
   },
-  // ALZ-BLOOD category will be added in Part 3
+  'ALZ-BLOOD': {
+    title: 'Blood Biomarkers',
+    shortTitle: 'Blood Tests',
+    description: "Blood-based biomarker tests for Alzheimer's disease detection and risk assessment. These tests measure proteins like phosphorylated tau (pTau217, pTau181) and amyloid-beta ratios (Abeta42/40) that indicate Alzheimer's pathology in the brain. Blood biomarkers offer a less invasive alternative to PET scans and lumbar punctures for detecting amyloid plaques and tau tangles.",
+    patientTitle: "Alzheimer's Blood Tests",
+    patientDescription: "These blood tests can help detect signs of Alzheimer's disease by measuring specific proteins. They're less invasive than brain scans or spinal taps and can help your doctor understand if Alzheimer's might be causing memory problems.",
+    color: 'indigo',
+    tests: alzBloodTestData,
+    sourceUrl: buildInfoSources['ALZ-BLOOD'] || '',
+    domain: DOMAINS.ALZ,
+  },
 });
 
 // Helper to get test list by category
@@ -221,7 +231,7 @@ export const getTestListByCategory = (categoryId) => {
     ECD: ecdTestData,
     TRM: trmTestData,
     TDS: tdsTestData,
-    // ALZ-BLOOD will be added in Part 3
+    'ALZ-BLOOD': alzBloodTestData,
   };
   return categoryMap[categoryId] || [];
 };

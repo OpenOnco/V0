@@ -1,5 +1,5 @@
 // Filter configurations by category
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../data';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData, alzBloodTestData } from '../data';
 
 export const filterConfigs = {
   MRD: {
@@ -42,5 +42,12 @@ export const filterConfigs = {
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
     reimbursements: ['Medicare', 'Commercial'],
   },
-  // ALZ-BLOOD filters will be added in Part 3
+  'ALZ-BLOOD': {
+    // Neurologist priority: What biomarker? Is it covered? What's the accuracy vs PET?
+    biomarkers: [...new Set(alzBloodTestData.flatMap(t => t.biomarkers || []))].sort(),
+    approaches: [...new Set(alzBloodTestData.map(t => t.approach || 'Unknown'))].sort(),
+    fdaStatuses: ['FDA Approved', 'CE-IVD', 'CLIA LDT', 'RUO', 'In development'],
+    reimbursements: ['Medicare LCD', 'Coverage varies', 'Not covered'],
+    regions: [...new Set(alzBloodTestData.flatMap(t => t.availableRegions || []))].sort(),
+  },
 };

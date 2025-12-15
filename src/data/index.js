@@ -5,3 +5,4 @@ export { mrdTestData } from './mrdTests';
 export { ecdTestData } from './ecdTests';
 export { trmTestData } from './trmTests';
 export { tdsTestData } from './tdsTests';
+export { alzBloodTestData } from './alzBloodTests';
