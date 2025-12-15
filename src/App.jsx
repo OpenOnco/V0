@@ -4433,6 +4433,47 @@ const SubmissionsPage = () => {
       return false;
     }
 
+    // Block vendor domain emails when claiming Independent Expert
+    if (submitterType === 'expert' && (submissionType === 'new' || submissionType === 'correction')) {
+      const emailDomain = contactEmail.split('@')[1]?.toLowerCase() || '';
+      // Known vendor domains - comprehensive list
+      const knownVendorDomains = [
+        { domain: 'illumina.com', vendor: 'Illumina' },
+        { domain: 'guardanthealth.com', vendor: 'Guardant Health' },
+        { domain: 'natera.com', vendor: 'Natera' },
+        { domain: 'foundationmedicine.com', vendor: 'Foundation Medicine' },
+        { domain: 'grail.com', vendor: 'Grail' },
+        { domain: 'exact.com', vendor: 'Exact Sciences' },
+        { domain: 'exactsciences.com', vendor: 'Exact Sciences' },
+        { domain: 'tempus.com', vendor: 'Tempus' },
+        { domain: 'personalis.com', vendor: 'Personalis' },
+        { domain: 'neogenomics.com', vendor: 'NeoGenomics' },
+        { domain: 'labcorp.com', vendor: 'Labcorp' },
+        { domain: 'quest.com', vendor: 'Quest Diagnostics' },
+        { domain: 'questdiagnostics.com', vendor: 'Quest Diagnostics' },
+        { domain: 'adaptivebiotech.com', vendor: 'Adaptive Biotechnologies' },
+        { domain: 'caris.com', vendor: 'Caris Life Sciences' },
+        { domain: 'carislifesciences.com', vendor: 'Caris Life Sciences' },
+        { domain: 'roche.com', vendor: 'Roche' },
+        { domain: 'veracyte.com', vendor: 'Veracyte' },
+        { domain: 'myriad.com', vendor: 'Myriad Genetics' },
+        { domain: 'invitae.com', vendor: 'Invitae' },
+        { domain: 'biofiredefense.com', vendor: 'BioFire' },
+        { domain: 'biofiredx.com', vendor: 'BioFire' },
+        { domain: 'freenome.com', vendor: 'Freenome' },
+        { domain: 'c2i-genomics.com', vendor: 'C2i Genomics' },
+        { domain: 'sagadiagnostics.com', vendor: 'SAGA Diagnostics' },
+        { domain: 'billiontoone.com', vendor: 'BillionToOne' },
+        { domain: 'sophiagenetics.com', vendor: 'SOPHiA GENETICS' },
+      ];
+      
+      const matchedVendor = knownVendorDomains.find(v => emailDomain === v.domain || emailDomain.endsWith('.' + v.domain));
+      if (matchedVendor) {
+        setEmailError(`Your email domain (${emailDomain}) appears to be from ${matchedVendor.vendor}. Please select "Test Vendor Representative" instead.`);
+        return false;
+      }
+    }
+
     // Only check vendor email match for vendor submissions on test data
     if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction')) {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
