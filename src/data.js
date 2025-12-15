@@ -2124,6 +2124,67 @@ export const ecdTestData = [
     "numPublicationsNotes": "Multiple conference presentations at DDW 2023, ASCO GI 2023, AACR 2022; peer-reviewed publications in preparation",
     "technologyDifferentiator": "Multi-omics approach combining methylation + fragmentation analysis with machine learning. Company claims to have identified specific cfDNA sequence regions that capture cancer's earliest signals. Spain-based biotech (Universal DX) with US office in Cambridge, MA. Platform technology (Signal-X) being extended to other GI cancers including pancreatic, liver, and gastric."
   },
+  {
+    "id": "ecd-14",
+    "sampleCategory": "Stool",
+    "name": "IColocomf",
+    "vendor": "Wuhan Ammunition Life Technology",
+    "testScope": "Single-cancer (CRC)",
+    "approach": "Stool DNA methylation",
+    "method": "Fluorescent quantitative PCR detection of methylated SDC2 and TFPI2 genes in intestinal exfoliated cells from stool samples. Dual-target methylation-specific PCR with bisulfite conversion.",
+    "cancerTypes": [
+      "Colorectal cancer"
+    ],
+    "targetPopulation": "Individuals assessed by physician as needing colonoscopy screening; high-risk CRC screening population",
+    "indicationGroup": "CRC",
+    "sensitivity": 95.31,
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34890778/",
+    "sensitivityNotes": "95.31% overall CRC sensitivity from multicenter clinical trial (n=1,164) published in J Mol Diagn 2022. Independent academic study - vendor did not participate in experimental research.",
+    "stageISensitivity": 96.93,
+    "stageISensitivityNotes": "Stage I-II combined: 96.93% (158/163 detected). Individual stage I data not separately reported.",
+    "stageIISensitivity": 96.93,
+    "stageIISensitivityNotes": "Stage I-II combined: 96.93% (158/163 detected)",
+    "stageIIISensitivity": 93.06,
+    "stageIIISensitivityNotes": "Stage III-IV combined: 93.06% (134/144 detected)",
+    "stageIVSensitivity": 93.06,
+    "stageIVSensitivityNotes": "Stage III-IV combined: 93.06% (134/144 detected)",
+    "advancedAdenomaSensitivity": 63.16,
+    "advancedAdenomaSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34890778/",
+    "advancedAdenomaSensitivityNotes": "63.16% sensitivity for advanced adenomas (n=38); 33.64% for non-advanced adenomas (n=110)",
+    "specificity": 96.67,
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/34890778/",
+    "specificityNotes": "96.67% specificity vs healthy controls (n=300). 93.15% specificity when including interfering diseases (other GI conditions). 88.39% specificity vs all non-CRC participants.",
+    "ppv": 75.68,
+    "ppvCitations": "https://pubmed.ncbi.nlm.nih.gov/34890778/",
+    "ppvNotes": "75.68% PPV for CRC in study population",
+    "npv": 98.03,
+    "npvCitations": "https://pubmed.ncbi.nlm.nih.gov/34890778/",
+    "npvNotes": "98.03% NPV for CRC in study population",
+    "performanceCitations": "https://pubmed.ncbi.nlm.nih.gov/34890778/ | https://pubmed.ncbi.nlm.nih.gov/35227195/ | https://pubmed.ncbi.nlm.nih.gov/33958894/ | https://pubmed.ncbi.nlm.nih.gov/35004840/",
+    "performanceNotes": "Multicenter, double-blinded, case-control study across 3 hospitals (Peking Union Medical College Hospital, First Affiliated Hospital of Anhui Medical University, Zhongnan Hospital of Wuhan University). 1,164 participants including 320 CRC, 148 adenomas, 396 interfering diseases, 300 healthy controls. Authors declare no conflict of interest; company did not participate in research.",
+    "leadTimeNotes": "Noninvasive stool-based alternative to colonoscopy for CRC screening in high-risk populations",
+    "fdaStatus": "NMPA approved (China, 2022); CE-IVD (EU, 2021)",
+    "fdaStatusNotes": "Approved by China National Medical Products Administration (NMPA) in 2022. CE marked for European market in 2021. Not FDA approved or available in US.",
+    "reimbursement": "Coverage varies by region",
+    "reimbursementNote": "Covered in China per regional healthcare policies. EU coverage varies by country. Not available in US market.",
+    "commercialPayers": [],
+    "availableRegions": ["China", "EU"],
+    "clinicalAvailability": "Commercially available in China and Europe",
+    "tat": "3-5 days",
+    "tatNotes": "3-5 days from sample receipt to results",
+    "sampleType": "Fresh stool sample (10-15g) in preservative buffer",
+    "sampleVolume": "10-15g stool in 45mL tube with 30mL preservative",
+    "cptCode": "N/A (not US market)",
+    "listPrice": 500,
+    "listPriceNotes": "Approximately $500 USD equivalent",
+    "screeningInterval": "Per physician recommendation",
+    "clinicalTrials": "ChiCTR2100050110 - multicenter clinical validation trial (1,164 participants)",
+    "clinicalTrialsCitations": "https://www.chictr.org.cn/historyversionpuben.aspx?regno=ChiCTR2100050110",
+    "totalParticipants": 1164,
+    "numPublications": 4,
+    "numPublicationsNotes": "4 peer-reviewed publications including J Mol Diagn 2022 multicenter validation study",
+    "technologyDifferentiator": "Dual-target stool DNA methylation test combining SDC2 and TFPI2 markers. SDC2 shows higher specificity, TFPI2 shows higher sensitivity - combination improves overall detection. Complementary methylation patterns for left-sided (TFPI2) vs right-sided (SDC2) colon cancers. First Chinese stool DNA methylation test in OpenOnco database."
+  },
   // ============================================
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
@@ -4021,8 +4082,20 @@ export const alzBloodTestData = [
   }
 ];
 
-// Database Changelog
+// Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 15, 2025',
+    type: 'added',
+    testId: 'ecd-14',
+    testName: 'IColocomf',
+    vendor: 'Wuhan Ammunition Life Technology',
+    category: 'ECD',
+    description: 'Added NMPA/CE-approved stool DNA methylation test for CRC screening. Dual-target SDC2+TFPI2 qPCR assay. 95.31% CRC sensitivity, 96.93% Stage I-II sensitivity, 96.67% specificity vs healthy controls. Validated in independent multicenter trial (n=1,164) published in J Mol Diagn 2022. First Chinese stool DNA test in database. Available in China and Europe.',
+    contributor: 'Tingting Li',
+    affiliation: 'Wuhan Ammunition Life Technology (vendor)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/34890778/'
+  },
   {
     date: 'Dec 14, 2025',
     type: 'updated',
@@ -4567,6 +4640,43 @@ export const RECENTLY_ADDED_TESTS = [
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
 ];
 
+// Database Changelog - OpenAlz (Alzheimer's)
+export const ALZ_DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 14, 2025',
+    type: 'added',
+    testId: null,
+    testName: 'OpenAlz Launch',
+    vendor: null,
+    category: 'ALZ-BLOOD',
+    description: 'Initial launch of OpenAlz.org with 9 blood-based Alzheimer\'s biomarker tests including PrecivityAD2, AD-Detect, Lumipulse pTau217, Elecsys pTau217, ALZpath pTau217, Simoa pTau181, PrecivityAD, Lumipulse Amyloid Ratio, and ADNEX Blood Test.',
+    contributor: null,
+    affiliation: 'OpenAlz',
+    citation: null
+  },
+];
+
+// Recently Added Tests - OpenAlz
+export const ALZ_RECENTLY_ADDED_TESTS = [
+  { id: 'alz-1', name: 'PrecivityAD2', vendor: 'C2N Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+  { id: 'alz-2', name: 'AD-Detect', vendor: 'Quest Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+  { id: 'alz-3', name: 'Lumipulse pTau217', vendor: 'Fujirebio', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+  { id: 'alz-5', name: 'ALZpath pTau217', vendor: 'ALZpath', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+  { id: 'alz-9', name: 'ADNEX Blood Test', vendor: 'Cogstate/Eisai', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+];
+
+// Helper to get domain-specific changelog
+export const getChangelog = (domain) => {
+  if (domain === 'alz') return ALZ_DATABASE_CHANGELOG;
+  return DATABASE_CHANGELOG;
+};
+
+// Helper to get domain-specific recently added tests
+export const getRecentlyAddedTests = (domain) => {
+  if (domain === 'alz') return ALZ_RECENTLY_ADDED_TESTS;
+  return RECENTLY_ADDED_TESTS;
+};
+
 
 // ============================================
 // Domain Detection
@@ -5032,3 +5142,191 @@ export const comparisonParams = {
     { key: 'numPublications', label: 'Publications' },
   ],
 };
+
+// ============================================
+// SEO Configuration
+// ============================================
+export const SEO_DEFAULTS = {
+  siteName: 'OpenOnco',
+  siteUrl: 'https://openonco.org',
+  defaultDescription: 'Compare cancer diagnostic tests side-by-side. Independent, transparent data on MRD, early detection, and treatment monitoring tests.',
+  defaultImage: 'https://openonco.org/og-image.png',
+};
+
+export const PAGE_SEO = {
+  home: {
+    title: 'Compare Cancer Diagnostic Tests',
+    description: 'Independent database comparing 60+ cancer blood tests. MRD, early detection, treatment monitoring - all specs side-by-side.',
+    path: '/'
+  },
+  MRD: {
+    title: 'MRD Tests Compared - Molecular Residual Disease',
+    description: 'Compare 20+ MRD tests: Signatera, Guardant Reveal, clonoSEQ, Oncodetect. Sensitivity, turnaround time, Medicare coverage.',
+    path: '/mrd'
+  },
+  ECD: {
+    title: 'Early Cancer Detection Tests - MCED & Screening',
+    description: 'Compare early cancer detection tests: Galleri, Shield, CancerSEEK. Multi-cancer screening sensitivity and specificity data.',
+    path: '/ecd'
+  },
+  TRM: {
+    title: 'Treatment Response Monitoring Tests',
+    description: 'Compare ctDNA tests for tracking cancer treatment response. Lead time vs imaging, sensitivity, clinical validation.',
+    path: '/trm'
+  },
+  TDS: {
+    title: 'CGP & Treatment Decision Support Tests',
+    description: 'Compare comprehensive genomic profiling tests: FoundationOne, Tempus xT, Guardant360. Genes analyzed, FDA companion diagnostics.',
+    path: '/tds'
+  },
+  'ALZ-BLOOD': {
+    title: "Alzheimer's Blood Biomarker Tests",
+    description: "Compare blood-based Alzheimer's tests measuring pTau217, amyloid-beta ratios. PET concordance, sensitivity, availability.",
+    path: '/alz-blood'
+  },
+  learn: {
+    title: 'Learn About Cancer Blood Tests',
+    description: 'Educational guides on liquid biopsy, MRD testing, early cancer detection, and how to interpret test results.',
+    path: '/learn'
+  },
+  about: {
+    title: 'About OpenOnco',
+    description: 'OpenOnco is a non-profit cancer diagnostic test database built in memory of Ingrid. Our mission is transparent, independent test comparison.',
+    path: '/about'
+  },
+  faq: {
+    title: 'Frequently Asked Questions',
+    description: 'Common questions about cancer blood tests, liquid biopsy, MRD testing, and how to use OpenOnco.',
+    path: '/faq'
+  },
+  'how-it-works': {
+    title: 'How OpenOnco Works',
+    description: 'Learn how OpenOnco collects, curates, and presents cancer diagnostic test data.',
+    path: '/how-it-works'
+  },
+  'data-sources': {
+    title: 'Data Sources',
+    description: 'OpenOnco data sources including FDA filings, peer-reviewed publications, and vendor documentation.',
+    path: '/data-sources'
+  },
+  submissions: {
+    title: 'Submit Data or Feedback',
+    description: 'Submit corrections, new test data, or feedback to improve OpenOnco.',
+    path: '/submissions'
+  },
+};
+
+// ============================================
+// URL Utilities
+// ============================================
+export const slugify = (text) =>
+  text.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+export const getTestUrl = (test, category) => {
+  const slug = slugify(test.name);
+  return `/${category.toLowerCase()}/${slug}`;
+};
+
+export const getTestBySlug = (slug, category) => {
+  const categoryMap = {
+    MRD: mrdTestData,
+    ECD: ecdTestData,
+    TRM: trmTestData,
+    TDS: tdsTestData,
+    'ALZ-BLOOD': alzBloodTestData,
+  };
+  const tests = categoryMap[category] || [];
+  return tests.find(t => slugify(t.name) === slug);
+};
+
+export const getAbsoluteUrl = (path) => `${SEO_DEFAULTS.siteUrl}${path}`;
+
+// ============================================
+// Structured Data Generators (JSON-LD)
+// ============================================
+export const generateTestSchema = (test, category) => {
+  const categoryLabels = {
+    MRD: 'Molecular Residual Disease Test',
+    ECD: 'Early Cancer Detection Test',
+    TRM: 'Treatment Response Monitoring Test',
+    TDS: 'Comprehensive Genomic Profiling Test',
+    'ALZ-BLOOD': "Alzheimer's Blood Biomarker Test"
+  };
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalTest',
+    '@id': getAbsoluteUrl(getTestUrl(test, category)),
+    name: test.name,
+    alternateName: test.id,
+    description: test.indicationsNotes || test.method,
+    manufacturer: {
+      '@type': 'Organization',
+      name: test.vendor
+    },
+    usedToDiagnose: (test.cancerTypes || []).join(', '),
+    relevantSpecialty: {
+      '@type': 'MedicalSpecialty',
+      name: category.includes('ALZ') ? 'Neurology' : 'Oncology'
+    },
+    medicineSystem: 'WesternConventional',
+    ...(test.sensitivity && { sensitivityValue: `${test.sensitivity}%` }),
+    ...(test.specificity && { specificityValue: `${test.specificity}%` }),
+    ...(test.fdaStatus && {
+      recognizingAuthority: {
+        '@type': 'Organization',
+        name: test.fdaStatus.includes('FDA') ? 'FDA' : 'CLIA'
+      }
+    })
+  };
+};
+
+export const generateCategorySchema = (category, tests) => {
+  const seo = PAGE_SEO[category] || PAGE_SEO.home;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${seo.title}`,
+    description: seo.description,
+    numberOfItems: tests.length,
+    itemListElement: tests.slice(0, 10).map((test, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'MedicalTest',
+        '@id': getAbsoluteUrl(getTestUrl(test, category)),
+        name: test.name,
+        manufacturer: {
+          '@type': 'Organization',
+          name: test.vendor
+        }
+      }
+    }))
+  };
+};
+
+export const generateOrganizationSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'NonProfit',
+  name: 'OpenOnco',
+  url: SEO_DEFAULTS.siteUrl,
+  logo: `${SEO_DEFAULTS.siteUrl}/og-image.png`,
+  description: 'Non-profit cancer diagnostic test database providing independent, transparent test comparison.',
+  foundingDate: '2024',
+});
+
+export const generateFAQSchema = (faqs) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(faq => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer
+    }
+  }))
+});

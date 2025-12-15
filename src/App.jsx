@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
 import {
@@ -10,6 +11,10 @@ import {
   alzBloodTestData,
   DATABASE_CHANGELOG,
   RECENTLY_ADDED_TESTS,
+  ALZ_DATABASE_CHANGELOG,
+  ALZ_RECENTLY_ADDED_TESTS,
+  getChangelog,
+  getRecentlyAddedTests,
   DOMAINS,
   getDomain,
   getSiteConfig,
@@ -22,6 +27,15 @@ import {
   createCategoryMeta,
   filterConfigs,
   comparisonParams,
+  SEO_DEFAULTS,
+  PAGE_SEO,
+  slugify,
+  getTestUrl,
+  getTestBySlug,
+  getAbsoluteUrl,
+  generateTestSchema,
+  generateCategorySchema,
+  generateOrganizationSchema,
 } from './data';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
@@ -42,6 +56,43 @@ const VENDOR_BADGES = {
   'Exact Sciences': [
     { id: 'openness-leader', icon: '📊', label: 'Openness Leader', tooltip: 'Top 3 in OpenOnco Data Openness Ranking' }
   ],
+};
+
+// ============================================
+// SEO Component - Dynamic meta tags
+// ============================================
+const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
+  const fullTitle = title ? `${title} | ${SEO_DEFAULTS.siteName}` : SEO_DEFAULTS.siteName;
+  const fullUrl = `${SEO_DEFAULTS.siteUrl}${path}`;
+  const desc = description || SEO_DEFAULTS.defaultDescription;
+
+  return (
+    <Helmet>
+      <title>{fullTitle}</title>
+      <meta name="description" content={desc} />
+      <link rel="canonical" href={fullUrl} />
+
+      {/* Open Graph */}
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={desc} />
+      <meta property="og:url" content={fullUrl} />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content={SEO_DEFAULTS.siteName} />
+      <meta property="og:image" content={SEO_DEFAULTS.defaultImage} />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={desc} />
+
+      {/* Structured Data */}
+      {structuredData && (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      )}
+    </Helmet>
+  );
 };
 
 // ============================================
@@ -3671,8 +3722,11 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const siteConfig = getSiteConfig();
+  const isAlz = siteConfig.domain === DOMAINS.ALZ;
 
-  const faqs = [
+  // OpenOnco FAQs
+  const oncoFaqs = [
     {
       question: "What types of tests does OpenOnco cover?",
       answer: (
@@ -3890,11 +3944,141 @@ const FAQPage = () => {
     }
   ];
 
+  // OpenAlz FAQs
+  const alzFaqs = [
+    {
+      question: "What types of tests does OpenAlz cover?",
+      answer: (
+        <p>
+          OpenAlz focuses on blood-based biomarker tests for Alzheimer's disease evaluation. We currently cover tests measuring pTau217, pTau181, and amyloid-beta ratios (Abeta42/40)—the leading plasma biomarkers for detecting Alzheimer's pathology. We include tests using various technologies including mass spectrometry and immunoassays, as long as they're clinically available or in late-stage development.
+        </p>
+      )
+    },
+    {
+      question: "Why blood tests for Alzheimer's?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            Traditionally, diagnosing Alzheimer's disease required expensive PET scans (~$5,000-8,000) or invasive lumbar punctures for CSF analysis. Blood-based biomarkers are transforming the field by offering:
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><strong>Accessibility</strong>—a simple blood draw vs. specialized imaging or spinal tap</li>
+            <li><strong>Cost</strong>—typically $500-1,500 vs. thousands for PET imaging</li>
+            <li><strong>Scalability</strong>—can be performed at any clinical laboratory</li>
+            <li><strong>Early detection</strong>—can identify pathology years before symptoms</li>
+          </ul>
+          <p>
+            The 2024 Alzheimer's Association appropriate use recommendations now support blood biomarkers as a first-line tool for evaluating patients with cognitive symptoms.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "What's the difference between pTau217 and Abeta42/40 tests?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            <strong>Abeta42/40 ratio</strong> measures amyloid-beta peptides in blood. A low ratio suggests amyloid plaque accumulation in the brain—one of the hallmarks of Alzheimer's pathology.
+          </p>
+          <p>
+            <strong>pTau217</strong> (phosphorylated tau at position 217) is currently considered the most specific blood biomarker for Alzheimer's. It detects tau pathology and shows changes early in the disease process.
+          </p>
+          <p>
+            Tests combining both biomarkers (like PrecivityAD2) generally show higher accuracy than single-biomarker tests.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "How accurate are blood tests compared to PET scans?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            The best blood biomarker tests show 88-93% concordance with amyloid PET imaging. This means they agree with PET results approximately 9 out of 10 times. For context:
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><strong>PrecivityAD2</strong> (pTau217 + Abeta42/40): ~88% concordance with amyloid PET</li>
+            <li><strong>Lumipulse pTau217</strong>: ~91% concordance with amyloid PET</li>
+            <li><strong>ALZpath pTau217</strong>: ~92% concordance with amyloid PET</li>
+          </ul>
+          <p>
+            While not as definitive as PET imaging, blood tests can effectively screen patients to determine who would benefit from confirmatory PET scans, reducing unnecessary procedures and costs.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "Are these tests covered by insurance?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            Coverage varies significantly by test and payer:
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><strong>PrecivityAD2</strong>—Medicare coverage via LCD (first Alzheimer's blood test with Medicare coverage)</li>
+            <li><strong>AD-Detect</strong>—Limited coverage, ~$500 out-of-pocket</li>
+            <li><strong>Other tests</strong>—Coverage varies; many are primarily research use</li>
+          </ul>
+          <p>
+            We're tracking reimbursement status for each test in our database to help patients and clinicians understand costs.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "Who should get tested?",
+      answer: (
+        <p>
+          According to the 2024 Alzheimer's Association appropriate use recommendations, blood biomarker tests are most appropriate for adults 55+ with mild cognitive impairment (MCI) or mild dementia who are being evaluated for possible Alzheimer's disease. These tests help determine whether amyloid pathology may be contributing to cognitive symptoms, guiding further workup and treatment decisions. They are not currently recommended for asymptomatic screening in the general population.
+        </p>
+      )
+    },
+    {
+      question: "Is OpenAlz affiliated with any test vendors?",
+      answer: (
+        <p>
+          No. OpenAlz is an independent resource with no financial relationships with test vendors. We don't accept advertising or sponsorship. Our goal is to provide unbiased, transparent information to help patients and clinicians navigate the rapidly evolving landscape of Alzheimer's blood testing.
+        </p>
+      )
+    },
+    {
+      question: "How does the AI chat feature work?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            Our chat feature is powered by Anthropic's Claude AI, designed to <strong>only reference information from our test database</strong>. This means answers are grounded in the same curated, cited data you see throughout OpenAlz.
+          </p>
+          <p>
+            However, <strong>AI can make mistakes</strong>. We recommend cross-checking important information with test vendors and discussing options with your healthcare provider before making decisions about testing.
+          </p>
+        </div>
+      )
+    },
+    {
+      question: "How can I report an error or suggest a test to add?",
+      answer: (
+        <p>
+          Please use the Submissions tab. We take data accuracy seriously and welcome corrections, new test suggestions, and general feedback.
+        </p>
+      )
+    },
+    {
+      question: "How do I contact OpenAlz?",
+      answer: (
+        <p>
+          The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry. We review all submissions and will respond if needed.
+        </p>
+      )
+    },
+  ];
+
+  const faqs = isAlz ? alzFaqs : oncoFaqs;
+
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
       <p className="text-gray-600 mb-8">
-        Common questions about OpenOnco, our data, and how to use the platform.
+        Common questions about {siteConfig.name}, our data, and how to use the platform.
       </p>
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-200">
         {faqs.map((faq, index) => (
@@ -3908,10 +4092,12 @@ const FAQPage = () => {
         ))}
       </div>
 
-      {/* Openness Ranking - Hidden on mobile */}
-      <div className="hidden md:block mt-8">
-        <OpennessAward />
-      </div>
+      {/* Openness Ranking - Hidden on mobile, only show for OpenOnco */}
+      {!isAlz && (
+        <div className="hidden md:block mt-8">
+          <OpennessAward />
+        </div>
+      )}
 
       {/* Database Summary - Hidden on mobile */}
       <div className="hidden md:block mt-6">
@@ -3924,68 +4110,154 @@ const FAQPage = () => {
 // ============================================
 // About Page
 // ============================================
-const AboutPage = () => (
-  <div className="max-w-3xl mx-auto px-6 py-16">
-    <h1 className="text-3xl font-bold text-gray-900 mb-8">About</h1>
-    <div className="prose prose-lg text-gray-700 space-y-6">
-      <p>
-        Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">Alex Dickinson</a>. Like many of you, my friends and family have been impacted by cancer throughout my life. Most significantly for me, my sister Ingrid died from a brain tumor when she was eleven and I was seven—you can see us together in the photo below.
-      </p>
-      <p>
-        Professionally I've had the good fortune to stumble into the amazing world of cancer diagnostics—the people, companies, and technologies. Along the way I've become convinced that the emerging new generation of molecular cancer tests (largely enabled by next-generation sequencing) will have an extraordinary impact on cancer detection and treatment.
-      </p>
-      <p>
-        Because these tests detect biomolecular events at tiny concentrations—now approaching one in a billion—this is a very complex field, and test data and options can overwhelm doctors and patients alike. This confusion will only increase as the number of tests rapidly expands due to both advances in the technology and the decision to maintain a low level of test regulation in the US.
-      </p>
-      <p>
-        OpenOnco is an effort to collect, curate, and explain to both patients and their doctors all the data on all these tests.
-      </p>
-      <p>
-        OpenOnco is a non-profit that I am self-funding in memory of my sister Ingrid.
-      </p>
+const AboutPage = () => {
+  const siteConfig = getSiteConfig();
+  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+
+  if (isAlz) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 py-16">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">About OpenAlz</h1>
+        <div className="prose prose-lg text-gray-700 space-y-6">
+          <p>
+            Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline">Alex Dickinson</a>. I also run <a href="https://openonco.org" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline">OpenOnco</a>, a non-profit database of cancer diagnostic tests that I started in memory of my sister Ingrid, who died from a brain tumor when she was eleven.
+          </p>
+          <p>
+            The same revolution in molecular diagnostics that's transforming cancer detection is now reaching Alzheimer's disease. Blood-based biomarkers like pTau217 and amyloid-beta ratios can now detect Alzheimer's pathology years before symptoms appear—and at a fraction of the cost of PET imaging.
+          </p>
+          <p>
+            But this rapidly evolving landscape can be overwhelming. New tests are launching constantly, each with different technologies, performance characteristics, and availability. OpenAlz is an effort to collect, curate, and explain all the data on these tests—helping patients, caregivers, and clinicians make informed decisions.
+          </p>
+          <p>
+            OpenAlz is a non-profit project, self-funded as an extension of my work on OpenOnco.
+          </p>
+        </div>
+        <div className="mt-12 flex justify-center">
+          <img 
+            src="/IngridandAlex.jpeg" 
+            alt="Ingrid and Alex" 
+            className="rounded-xl shadow-lg max-w-md w-full"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">About</h1>
+      <div className="prose prose-lg text-gray-700 space-y-6">
+        <p>
+          Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">Alex Dickinson</a>. Like many of you, my friends and family have been impacted by cancer throughout my life. Most significantly for me, my sister Ingrid died from a brain tumor when she was eleven and I was seven—you can see us together in the photo below.
+        </p>
+        <p>
+          Professionally I've had the good fortune to stumble into the amazing world of cancer diagnostics—the people, companies, and technologies. Along the way I've become convinced that the emerging new generation of molecular cancer tests (largely enabled by next-generation sequencing) will have an extraordinary impact on cancer detection and treatment.
+        </p>
+        <p>
+          Because these tests detect biomolecular events at tiny concentrations—now approaching one in a billion—this is a very complex field, and test data and options can overwhelm doctors and patients alike. This confusion will only increase as the number of tests rapidly expands due to both advances in the technology and the decision to maintain a low level of test regulation in the US.
+        </p>
+        <p>
+          OpenOnco is an effort to collect, curate, and explain to both patients and their doctors all the data on all these tests.
+        </p>
+        <p>
+          OpenOnco is a non-profit that I am self-funding in memory of my sister Ingrid.
+        </p>
+      </div>
+      <div className="mt-12 flex justify-center">
+        <img 
+          src="/IngridandAlex.jpeg" 
+          alt="Ingrid and Alex" 
+          className="rounded-xl shadow-lg max-w-md w-full"
+        />
+      </div>
     </div>
-    <div className="mt-12 flex justify-center">
-      <img 
-        src="/IngridandAlex.jpeg" 
-        alt="Ingrid and Alex" 
-        className="rounded-xl shadow-lg max-w-md w-full"
-      />
-    </div>
-  </div>
-);
+  );
+};
 
 // ============================================
 // How It Works Page
 // ============================================
-const HowItWorksPage = () => (
-  <div className="max-w-3xl mx-auto px-6 py-16">
-    <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
-    <div className="prose prose-lg text-gray-700 space-y-6">
+const HowItWorksPage = () => {
+  const siteConfig = getSiteConfig();
+  const isAlz = siteConfig.domain === DOMAINS.ALZ;
 
-      <h2 className="text-2xl font-bold text-gray-900">OpenOnco is Open</h2>
-      
-      <p>
-        The OpenOnco database is assembled from a wide variety of public sources including vendor databases, peer reviewed publications, and clinical trial registries. Sources are cited to the best of our ability along with context and notes on possible contradictory data and its resolution. Information on the database update process can be found below in the Technical Information section.
-      </p>
+  if (isAlz) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 py-16">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
+        <div className="prose prose-lg text-gray-700 space-y-6">
 
-      <p>
-        The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab. Go to the <strong>Submissions</strong> tab to tell us about a new test, request changes to test data, and send us bug reports and feature suggestions. You can also see our log of all data changes on the site.
-      </p>
+          <h2 className="text-2xl font-bold text-gray-900">OpenAlz is Open</h2>
+          
+          <p>
+            The OpenAlz database is assembled from public sources including vendor documentation, peer-reviewed publications, clinical validation studies, and regulatory filings. Sources are cited to the best of our ability along with context and notes on data interpretation.
+          </p>
 
-      <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
-      
-      <p className="mt-4">
-        OpenOnco is vibe-coded in React using Opus 4.5. The test database is hardcoded as a JSON structure inside the app. The app (and embedded database) are updated as-needed when new data or tools are added. You can find the build date of the version you are running under the <strong>Data Download</strong> tab. Data for each build is cross-checked by GPT Pro 5.1, Gemini 3, and Opus 4.5. Once the models have beaten each other into submission, the new code is committed to GitHub and deployed on Vercel.
-      </p>
+          <p>
+            The current version of the OpenAlz database is available for anyone to download—go to the <strong>Data Download</strong> tab. Go to the <strong>Submissions</strong> tab to tell us about a new test, request changes to test data, and send us bug reports and feature suggestions. You can also see our log of all data changes on the site.
+          </p>
 
+          <h2 className="text-2xl font-bold text-gray-900 mt-10">Understanding the Tests</h2>
+          
+          <p>
+            Blood-based Alzheimer's biomarkers are a rapidly evolving field. The main biomarkers we track are:
+          </p>
+          
+          <ul className="list-disc list-inside space-y-2 mt-4">
+            <li><strong>pTau217</strong> — Phosphorylated tau at position 217, currently the most AD-specific plasma biomarker</li>
+            <li><strong>pTau181</strong> — Phosphorylated tau at position 181, the first validated plasma tau biomarker</li>
+            <li><strong>Abeta42/40 ratio</strong> — Ratio of amyloid-beta 42 to 40, indicating amyloid plaque burden</li>
+          </ul>
+          
+          <p className="mt-4">
+            Tests use different technologies (mass spectrometry, immunoassays) and may measure single biomarkers or combinations. Performance is typically validated against amyloid PET imaging and/or CSF biomarkers.
+          </p>
+
+          <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
+          
+          <p className="mt-4">
+            OpenAlz is vibe-coded in React using Opus 4.5. The test database is hardcoded as a JSON structure inside the app. The app (and embedded database) are updated as-needed when new data or tools are added. You can find the build date of the version you are running under the <strong>Data Download</strong> tab.
+          </p>
+
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
+      <div className="prose prose-lg text-gray-700 space-y-6">
+
+        <h2 className="text-2xl font-bold text-gray-900">OpenOnco is Open</h2>
+        
+        <p>
+          The OpenOnco database is assembled from a wide variety of public sources including vendor databases, peer reviewed publications, and clinical trial registries. Sources are cited to the best of our ability along with context and notes on possible contradictory data and its resolution. Information on the database update process can be found below in the Technical Information section.
+        </p>
+
+        <p>
+          The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab. Go to the <strong>Submissions</strong> tab to tell us about a new test, request changes to test data, and send us bug reports and feature suggestions. You can also see our log of all data changes on the site.
+        </p>
+
+        <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
+        
+        <p className="mt-4">
+          OpenOnco is vibe-coded in React using Opus 4.5. The test database is hardcoded as a JSON structure inside the app. The app (and embedded database) are updated as-needed when new data or tools are added. You can find the build date of the version you are running under the <strong>Data Download</strong> tab. Data for each build is cross-checked by GPT Pro 5.1, Gemini 3, and Opus 4.5. Once the models have beaten each other into submission, the new code is committed to GitHub and deployed on Vercel.
+        </p>
+
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ============================================
 // Submissions Page
 // ============================================
 const SubmissionsPage = () => {
+  const siteConfig = getSiteConfig();
+  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
+  
   const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
   const [category, setCategory] = useState('');
@@ -4026,6 +4298,7 @@ const SubmissionsPage = () => {
     ECD: ecdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     TRM: trmTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     TDS: tdsTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    'ALZ-BLOOD': alzBloodTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
   };
 
   // Parameters available for correction by category
@@ -4093,12 +4366,26 @@ const SubmissionsPage = () => {
       { key: 'numPublications', label: 'Number of Publications' },
       { key: 'other', label: 'Other (specify in notes)' },
     ],
+    'ALZ-BLOOD': [
+      { key: 'sensitivity', label: 'Sensitivity (%)' },
+      { key: 'specificity', label: 'Specificity (%)' },
+      { key: 'concordanceWithPET', label: 'PET Concordance (%)' },
+      { key: 'concordanceWithCSF', label: 'CSF Concordance (%)' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'sampleRequirements', label: 'Sample Requirements' },
+      { key: 'fdaStatus', label: 'FDA/Regulatory Status' },
+      { key: 'reimbursement', label: 'Reimbursement/Coverage' },
+      { key: 'listPrice', label: 'List Price ($)' },
+      { key: 'totalParticipants', label: 'Validation Participants' },
+      { key: 'numPublications', label: 'Number of Publications' },
+      { key: 'other', label: 'Other (specify in notes)' },
+    ],
   };
 
   // Get current value of selected parameter for the selected test
   const getCurrentValue = () => {
     if (!existingTest || !selectedParameter || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : tdsTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData;
     const test = testList.find(t => t.id === existingTest);
     if (!test || selectedParameter === 'other') return '';
     const value = test[selectedParameter];
@@ -4381,7 +4668,7 @@ const SubmissionsPage = () => {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Submissions</h1>
-      <p className="text-gray-600 mb-8">Help us improve OpenOnco with your feedback and data contributions.</p>
+      <p className="text-gray-600 mb-8">Help us improve {siteConfig.name} with your feedback and data contributions.</p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
@@ -4454,13 +4741,15 @@ const SubmissionsPage = () => {
         {submitterType && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
+            <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
+              {(isAlz ? [
+                { key: 'ALZ-BLOOD', label: 'ALZ-BLOOD', desc: 'Blood Biomarkers', color: 'indigo' },
+              ] : [
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
                 { key: 'TRM', label: 'TRM', desc: 'Treatment Response', color: 'sky' },
                 { key: 'TDS', label: 'TDS', desc: 'Treatment Decisions', color: 'violet' },
-              ].map(cat => (
+              ]).map(cat => (
                 <button
                   key={cat.key}
                   type="button"
@@ -4890,18 +5179,18 @@ const SubmissionsPage = () => {
       {/* Database Changelog Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Database Changelog</h2>
-        <p className="text-gray-600 mb-6">Recent updates to the OpenOnco test database, including community contributions.</p>
+        <p className="text-gray-600 mb-6">Recent updates to the {siteConfig.name} test database, including community contributions.</p>
         
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="max-h-96 overflow-y-auto">
-            {DATABASE_CHANGELOG.map((entry, idx) => (
+            {domainChangelog.map((entry, idx) => (
               <div 
                 key={`${entry.testId}-${idx}`} 
-                className={`p-4 flex items-start gap-4 ${idx !== DATABASE_CHANGELOG.length - 1 ? 'border-b border-gray-100' : ''}`}
+                className={`p-4 flex items-start gap-4 ${idx !== domainChangelog.length - 1 ? 'border-b border-gray-100' : ''}`}
               >
                 {/* Entry number */}
                 <div className="flex-shrink-0 w-8 text-right">
-                  <span className="text-sm font-mono text-gray-400">#{DATABASE_CHANGELOG.length - idx}</span>
+                  <span className="text-sm font-mono text-gray-400">#{domainChangelog.length - idx}</span>
                 </div>
                 
                 {/* Type indicator */}
@@ -4922,6 +5211,7 @@ const SubmissionsPage = () => {
                       entry.category === 'MRD' ? 'bg-orange-100 text-orange-700' :
                       entry.category === 'ECD' ? 'bg-emerald-100 text-emerald-700' :
                       entry.category === 'TRM' ? 'bg-sky-100 text-sky-700' :
+                      entry.category === 'ALZ-BLOOD' ? 'bg-indigo-100 text-indigo-700' :
                       'bg-violet-100 text-violet-700'
                     }`}>
                       {entry.category}
@@ -4932,8 +5222,8 @@ const SubmissionsPage = () => {
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
                     <span>{entry.date}</span>
                     <span>• {
-                      !entry.affiliation || entry.affiliation === 'OpenOnco' 
-                        ? 'OpenOnco' :
+                      !entry.affiliation || entry.affiliation === 'OpenOnco' || entry.affiliation === 'OpenAlz'
+                        ? siteConfig.name :
                       !entry.vendor
                         ? (entry.contributor ? `${entry.contributor} (${entry.affiliation})` : entry.affiliation) :
                       entry.vendor.toLowerCase().includes(entry.affiliation.toLowerCase()) || 
@@ -6268,10 +6558,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   
   const meta = categoryMeta[category];
   
-  // Copy shareable link to clipboard
+  // Copy shareable link to clipboard (SEO-friendly URL)
   const copyLink = (e) => {
     e.stopPropagation();
-    const url = `${window.location.origin}?category=${category}&test=${test.id}`;
+    const url = `${window.location.origin}${getTestUrl(test, category)}`;
     navigator.clipboard.writeText(url).then(() => {
       setLinkCopied(true);
       setTimeout(() => setLinkCopied(false), 2000);
@@ -8073,9 +8363,10 @@ export default function App() {
     '/mrd': 'MRD',
     '/ecd': 'ECD',
     '/trm': 'TRM',
-    '/tds': 'TDS'
+    '/tds': 'TDS',
+    '/alz-blood': 'ALZ-BLOOD'
   };
-  
+
   const pageToPath = {
     'home': '/',
     'submissions': '/submissions',
@@ -8087,32 +8378,57 @@ export default function App() {
     'MRD': '/mrd',
     'ECD': '/ecd',
     'TRM': '/trm',
-    'TDS': '/tds'
+    'TDS': '/tds',
+    'ALZ-BLOOD': '/alz-blood'
   };
-  
-  // Initialize currentPage from URL path
+
+  // Category URL prefixes for test routes
+  const categoryPrefixes = {
+    'mrd': 'MRD',
+    'ecd': 'ECD',
+    'trm': 'TRM',
+    'tds': 'TDS',
+    'alz-blood': 'ALZ-BLOOD'
+  };
+
+  // Initialize currentPage from URL path (handles /mrd/signatera style URLs)
   const getInitialPage = () => {
     const path = window.location.pathname.toLowerCase();
-    return pathToPage[path] || 'home';
+
+    // Check for individual test routes: /mrd/test-name
+    const testRouteMatch = path.match(/^\/(mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
+    if (testRouteMatch) {
+      const [, categoryPrefix, testSlug] = testRouteMatch;
+      const category = categoryPrefixes[categoryPrefix];
+      const test = getTestBySlug(testSlug, category);
+      if (test) {
+        return { page: category, testSlug, testId: test.id };
+      }
+    }
+
+    // Standard page routing
+    return { page: pathToPage[path] || 'home', testSlug: null, testId: null };
   };
-  
-  const [currentPage, setCurrentPage] = useState(getInitialPage);
-  const [initialSelectedTestId, setInitialSelectedTestId] = useState(null);
+
+  const initialRoute = getInitialPage();
+
+  const [currentPage, setCurrentPage] = useState(initialRoute.page);
+  const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
-  
-  // Check URL parameters on mount for direct test links and comparison links
+
+  // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category');
     const testId = params.get('test');
     const compareIds = params.get('compare');
-    
+
     // Security: Validate test IDs to prevent injection attacks
     // Valid format: lowercase letters followed by hyphen and digits (e.g., mrd-1, ecd-12, tds-5)
     const isValidTestId = (id) => /^[a-z]+-\d+$/.test(id);
-    
-    if (category && ['MRD', 'ECD', 'TRM', 'TDS'].includes(category)) {
+
+    if (category && ['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(category)) {
       setCurrentPage(category);
       if (testId && isValidTestId(testId)) {
         setInitialSelectedTestId(testId);
@@ -8142,6 +8458,20 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname.toLowerCase();
+
+      // Check for individual test routes: /mrd/test-name
+      const testRouteMatch = path.match(/^\/(mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
+      if (testRouteMatch) {
+        const [, categoryPrefix, testSlug] = testRouteMatch;
+        const category = categoryPrefixes[categoryPrefix];
+        const test = getTestBySlug(testSlug, category);
+        if (test) {
+          setCurrentPage(category);
+          setInitialSelectedTestId(test.id);
+          return;
+        }
+      }
+
       const page = pathToPage[path] || 'home';
       setCurrentPage(page);
       setInitialSelectedTestId(null);
@@ -8183,6 +8513,23 @@ export default function App() {
     window.history.pushState({page}, '', newPath);
   };
 
+  // Get SEO config for current page
+  const getSEOForPage = () => {
+    const seoConfig = PAGE_SEO[currentPage] || PAGE_SEO.home;
+    let structuredData = null;
+
+    // Add structured data based on page type
+    if (currentPage === 'home') {
+      structuredData = generateOrganizationSchema();
+    } else if (['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(currentPage)) {
+      const categoryMeta = createCategoryMeta();
+      const tests = categoryMeta[currentPage]?.tests || [];
+      structuredData = generateCategorySchema(currentPage, tests);
+    }
+
+    return { ...seoConfig, structuredData };
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
@@ -8197,12 +8544,22 @@ export default function App() {
     }
   };
 
+  const seoConfig = getSEOForPage();
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header currentPage={currentPage} onNavigate={handleNavigate} />
-      <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
-      <Footer />
-      <Analytics />
-    </div>
+    <HelmetProvider>
+      <SEO
+        title={seoConfig.title}
+        description={seoConfig.description}
+        path={seoConfig.path}
+        structuredData={seoConfig.structuredData}
+      />
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <Header currentPage={currentPage} onNavigate={handleNavigate} />
+        <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
+        <Footer />
+        <Analytics />
+      </div>
+    </HelmetProvider>
   );
 }
