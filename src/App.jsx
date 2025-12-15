@@ -1222,19 +1222,12 @@ const TestShowcase = ({ onNavigate }) => {
   
   const isPatient = persona === 'Patient';
   
-  // Auto-scroll to show assistant response when it arrives
+  // Auto-scroll to bottom of messages when new messages arrive
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === 'assistant') {
-        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
-        const lastAssistantEl = messageElements[messageElements.length - 1];
-        if (lastAssistantEl) {
-          // Use offsetTop to scroll within container only (not page)
-          container.scrollTop = lastAssistantEl.offsetTop - 8;
-        }
-      }
+      // Scroll to bottom to show latest message
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages]);
   
@@ -1978,7 +1971,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator - Hidden on mobile */}
         <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Explore Tests by Category</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category to Explore Tests:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
@@ -1987,6 +1980,67 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
+            {/* Example Questions - shown when no messages */}
+            {messages.length === 0 && (
+              <div className="flex flex-col mb-3">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
+                  <button
+                    onClick={() => handleChatSubmit("Compare Signatera and Reveal MRD for MRD monitoring")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Compare Signatera and Reveal MRD for MRD monitoring
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("Which TDS tests have the fastest turnaround time?")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Which TDS tests have the fastest turnaround time?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("I am a patient, please use straightforward language")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    🩺 I am a patient, please use straightforward language
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("I am a physician, please use clinical language")}
+                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    👨‍⚕️ I am a physician, please use clinical language
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Messages Area - shown when there are messages */}
+            {messages.length > 0 && (
+              <div ref={chatContainerRef} className="flex-1 overflow-y-auto mb-3 p-2 space-y-2 bg-white rounded-lg border border-slate-200 max-h-64">
+                {messages.map((msg, i) => (
+                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div 
+                      className={`max-w-[85%] rounded-xl px-3 py-1.5 ${msg.role === 'user' ? 'text-white rounded-br-sm' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-bl-sm'}`}
+                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                    >
+                      {msg.role === 'user' ? (
+                        <p className="text-xs whitespace-pre-wrap">{msg.content}</p>
+                      ) : (
+                        <Markdown className="text-xs">{msg.content}</Markdown>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl rounded-bl-sm px-3 py-1.5">
+                      <p className="text-xs text-slate-500">Thinking...</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Chat Input - always at bottom */}
             <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex flex-col gap-2">
               <div className="relative">
                 <input
@@ -2022,66 +2076,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 </button>
               </div>
             </form>
-            
-            {/* Example Questions */}
-            {messages.length === 0 && (
-              <div className="flex-1 flex flex-col mt-2">
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
-                  <button
-                    onClick={() => handleChatSubmit("Compare Signatera and Reveal MRD for MRD monitoring")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                  >
-                    Compare Signatera and Reveal MRD for MRD monitoring
-                  </button>
-                  <button
-                    onClick={() => handleChatSubmit("Which TDS tests have the fastest turnaround time?")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                  >
-                    Which TDS tests have the fastest turnaround time?
-                  </button>
-                  <button
-                    onClick={() => handleChatSubmit("I am a patient, please use straightforward language")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                  >
-                    🩺 I am a patient, please use straightforward language
-                  </button>
-                  <button
-                    onClick={() => handleChatSubmit("I am a physician, please use clinical language")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
-                  >
-                    👨‍⚕️ I am a physician, please use clinical language
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Messages Area */}
-            {messages.length > 0 && (
-              <div ref={chatContainerRef} className="flex-1 overflow-y-auto mt-2 p-2 space-y-2 bg-white rounded-lg border border-slate-200">
-                {messages.map((msg, i) => (
-                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div 
-                      className={`max-w-[85%] rounded-xl px-3 py-1.5 ${msg.role === 'user' ? 'text-white rounded-br-sm' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-bl-sm'}`}
-                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
-                    >
-                      {msg.role === 'user' ? (
-                        <p className="text-xs whitespace-pre-wrap">{msg.content}</p>
-                      ) : (
-                        <Markdown className="text-xs">{msg.content}</Markdown>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl rounded-bl-sm px-3 py-1.5">
-                      <p className="text-xs text-slate-500">Thinking...</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
 
           {/* Text Search Bar - Smaller */}
@@ -4265,7 +4259,6 @@ const SubmissionsPage = () => {
   const [lastName, setLastName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [vendorDomainWarning, setVendorDomainWarning] = useState(''); // Tracks detected vendor domain when claiming independent expert
   const [submitted, setSubmitted] = useState(false);
   
   // New test fields
@@ -4414,48 +4407,6 @@ const SubmissionsPage = () => {
     return freeProviders.includes(domain);
   };
 
-  // Known diagnostic test vendor domains - used to detect vendor reps claiming to be independent experts
-  const KNOWN_VENDOR_DOMAINS = [
-    // Liquid biopsy / MRD vendors
-    'natera.com', 'guardanthealth.com', 'foundationmedicine.com', 'tempus.com',
-    'personalgenome.com', 'personalis.com', 'archerdx.com', 'invitae.com',
-    'neogenomics.com', 'myriad.com', 'myriadgenetics.com', 'exactsciences.com',
-    'grail.com', 'grailbio.com', 'freenome.com', 'delfi.com', 'delfidiagnostics.com',
-    'biodesix.com', 'helicodx.com', 'caris.com', 'carislifesciences.com',
-    'ambry.com', 'ambrygen.com', 'adaptivebiotech.com', 'adaptive.com',
-    'illumina.com', 'roche.com', 'rochesequencing.com', 'thermofisher.com',
-    'agilent.com', 'qiagen.com', 'pacbio.com', 'oxfordnanopore.com',
-    'labcorp.com', 'quest.com', 'questdiagnostics.com', 'genomichealth.com',
-    'biocept.com', 'inivata.com', 'resolution.bio', 'resolutionbio.com',
-    'sysmex.com', 'sysmex-inostics.com', 'biotheranostics.com',
-    'arup.utah.edu', 'aruplab.com', 'mdxhealth.com', 'veracyte.com',
-    'haystack.com', 'haystackoncology.com', 'circulogene.com', 'curematch.com',
-    'neomedics.com', 'c2i-genomics.com', 'c2igenomics.com',
-    // Alzheimer's diagnostics vendors
-    'quanterix.com', 'fujirebio.com', 'roche.com', 'siemens-healthineers.com',
-    'alzdiscovery.org', 'alector.com', 'biogen.com', 'eisai.com',
-    'precivityad.com', 'lumipulse.com',
-    // General life sciences / CROs that might submit data
-    'covance.com', 'ppd.com', 'iqvia.com', 'parexel.com', 'syneos.com',
-  ];
-
-  // Check if email appears to be from a known vendor domain
-  const isKnownVendorDomain = (email) => {
-    if (!email) return null;
-    const domain = email.split('@')[1]?.toLowerCase();
-    if (!domain) return null;
-    
-    // Check for exact match
-    const exactMatch = KNOWN_VENDOR_DOMAINS.find(vendorDomain => domain === vendorDomain);
-    if (exactMatch) return exactMatch;
-    
-    // Check if domain ends with a known vendor domain (e.g., mail.illumina.com)
-    const subdomainMatch = KNOWN_VENDOR_DOMAINS.find(vendorDomain => domain.endsWith('.' + vendorDomain));
-    if (subdomainMatch) return subdomainMatch;
-    
-    return null;
-  };
-
   // Check if email domain matches vendor
   // Check if email domain contains vendor name (loose match)
   const emailMatchesVendor = (email, vendor) => {
@@ -4474,24 +4425,12 @@ const SubmissionsPage = () => {
   const validateEmail = () => {
     if (!validateEmailFormat(contactEmail)) {
       setEmailError('Please enter a valid email address');
-      setVendorDomainWarning('');
       return false;
     }
 
     if (isFreeEmail(contactEmail)) {
       setEmailError('Please use a company/institutional email (not Gmail, Yahoo, etc.)');
-      setVendorDomainWarning('');
       return false;
-    }
-
-    // Check for vendor domain mismatch with "Independent Expert" selection
-    if (submitterType === 'expert' && (submissionType === 'new' || submissionType === 'correction')) {
-      const detectedVendorDomain = isKnownVendorDomain(contactEmail);
-      if (detectedVendorDomain) {
-        setEmailError(`Your email domain (${detectedVendorDomain}) appears to be from a diagnostic test vendor. Please select "Test Vendor Representative" instead of "Independent Expert".`);
-        setVendorDomainWarning(detectedVendorDomain);
-        return false;
-      }
     }
 
     // Only check vendor email match for vendor submissions on test data
@@ -4499,13 +4438,11 @@ const SubmissionsPage = () => {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
       if (!emailMatchesVendor(contactEmail, vendor)) {
         setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
-        setVendorDomainWarning('');
         return false;
       }
     }
 
     setEmailError('');
-    setVendorDomainWarning('');
     return true;
   };
 
@@ -4778,7 +4715,7 @@ const SubmissionsPage = () => {
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
             <select
               value={submitterType}
-              onChange={(e) => { setSubmitterType(e.target.value); setEmailError(''); setVendorDomainWarning(''); setVerificationStep('form'); }}
+              onChange={(e) => { setSubmitterType(e.target.value); setEmailError(''); setVerificationStep('form'); }}
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
             >
               <option value="">-- Select --</option>
@@ -4789,10 +4726,7 @@ const SubmissionsPage = () => {
               <p className="text-sm text-amber-600 mt-2">⚠️ We will verify that your email comes from the vendor's domain</p>
             )}
             {submitterType === 'expert' && (
-              <div className="mt-2 space-y-1">
-                <p className="text-sm text-gray-500">Expert submissions require a company or institutional email</p>
-                <p className="text-sm text-amber-600">⚠️ Vendor employees should select "Test Vendor Representative" — we auto-detect vendor domains</p>
-              </div>
+              <p className="text-sm text-gray-500 mt-2">Expert submissions require a company or institutional email</p>
             )}
           </div>
         )}
