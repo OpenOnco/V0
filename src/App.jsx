@@ -2,13 +2,15 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
-import { RECENTLY_ADDED_TESTS } from './data/recentlyAdded';
-import { DATABASE_CHANGELOG } from './data/changelog';
-import { mrdTestData } from './data/mrdTests';
-import { ecdTestData } from './data/ecdTests';
-import { trmTestData } from './data/trmTests';
-import { tdsTestData } from './data/tdsTests';
-import { alzBloodTestData } from './data/alzBloodTests';
+import {
+  mrdTestData,
+  ecdTestData,
+  trmTestData,
+  tdsTestData,
+  alzBloodTestData,
+  DATABASE_CHANGELOG,
+  RECENTLY_ADDED_TESTS,
+} from './data/testData';
 import {
   DOMAINS,
   getDomain,
@@ -22,7 +24,7 @@ import {
   createCategoryMeta,
   filterConfigs,
   comparisonParams,
-} from './config';
+} from './config/siteConfig';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
