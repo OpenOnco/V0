@@ -1660,7 +1660,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
     red: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' },
     sky: { bg: 'bg-sky-50', border: 'border-sky-200', badge: 'bg-sky-500', text: 'text-sky-600' },
-    violet: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
+    violet: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' },
+    indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200', badge: 'bg-indigo-500', text: 'text-indigo-600' }
   };
 
   // Category button config for non-patient view
@@ -3402,6 +3403,16 @@ const LearnPage = ({ onNavigate }) => {
       textDark: 'text-orange-700',
       button: 'bg-orange-500 hover:bg-orange-600',
       iconBg: 'bg-orange-100',
+    },
+    indigo: {
+      bg: 'bg-indigo-50',
+      bgMedium: 'bg-indigo-100',
+      border: 'border-indigo-200',
+      borderActive: 'border-indigo-500',
+      text: 'text-indigo-600',
+      textDark: 'text-indigo-700',
+      button: 'bg-indigo-500 hover:bg-indigo-600',
+      iconBg: 'bg-indigo-100',
     }
   };
 
@@ -7499,7 +7510,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); setSelectedProductTypes([]); };
   const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0 || selectedProductTypes.length;
 
-  const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600' };
+  const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600', indigo: 'from-indigo-500 to-indigo-600' };
 
   return (
     <>
@@ -8171,7 +8182,7 @@ export default function App() {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': case 'TDS': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
+      case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage />;
