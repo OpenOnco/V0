@@ -486,25 +486,27 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
     await page.waitForTimeout(500);
     
-    // Step 7: Fill all visible text inputs in order
+    // Step 7: Fill correction fields - New Value and Citation URL (both required)
+    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
+    await page.locator('input[placeholder="https://..."]').fill('https://example.com/source').catch(() => {});
+    await page.waitForTimeout(300);
+    
+    // Step 8: Fill name fields - find the inputs in the Your Information section
     const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
     const textInputCount = await allTextInputs.count();
     
-    // Fill from the end - Last Name is last text input, First Name is second to last
+    // First Name and Last Name are the last two text inputs
     if (textInputCount >= 2) {
       await allTextInputs.nth(textInputCount - 2).fill('Samyuktha');
       await allTextInputs.nth(textInputCount - 1).fill('Test');
     }
-    
-    // Also fill New Value if present
-    await allTextInputs.first().fill('Test correction value').catch(() => {});
     await page.waitForTimeout(300);
     
-    // Step 8: Fill email
+    // Step 9: Fill email
     await page.locator('input[type="email"]').fill('samyuktha@illumina.com');
     await page.waitForTimeout(300);
     
-    // Step 9: Click Send Code button
+    // Step 10: Click Send Code button
     await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
@@ -553,7 +555,12 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
     await page.waitForTimeout(500);
     
-    // Fill all text inputs
+    // Fill correction fields
+    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
+    await page.locator('input[placeholder="https://..."]').fill('https://example.com/source').catch(() => {});
+    await page.waitForTimeout(300);
+    
+    // Fill name fields
     const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
     const textInputCount = await allTextInputs.count();
     
@@ -561,7 +568,6 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
       await allTextInputs.nth(textInputCount - 2).fill('Test');
       await allTextInputs.nth(textInputCount - 1).fill('Researcher');
     }
-    await allTextInputs.first().fill('Test correction value').catch(() => {});
     await page.waitForTimeout(300);
     
     // Fill email
@@ -600,7 +606,12 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
     await page.waitForTimeout(500);
     
-    // Fill all text inputs
+    // Fill correction fields
+    await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
+    await page.locator('input[placeholder="https://..."]').fill('https://example.com/source').catch(() => {});
+    await page.waitForTimeout(300);
+    
+    // Fill name fields
     const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
     const textInputCount = await allTextInputs.count();
     
@@ -608,7 +619,6 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
       await allTextInputs.nth(textInputCount - 2).fill('Test');
       await allTextInputs.nth(textInputCount - 1).fill('User');
     }
-    await allTextInputs.first().fill('Test correction value').catch(() => {});
     await page.waitForTimeout(300);
     
     // Fill email
