@@ -22,7 +22,7 @@ import {
   createCategoryMeta,
   filterConfigs,
   comparisonParams,
-} from './data/data';
+} from './data';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
