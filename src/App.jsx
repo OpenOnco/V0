@@ -67,7 +67,7 @@ const DATABASE_CHANGELOG = [
     testName: 'IVD Kit Support',
     vendor: null,
     category: 'All',
-    description: 'Added Product Type taxonomy distinguishing Self-Collection kits (patient collects at home), Laboratory IVD Kits (distributed reagents for CLIA labs), and Central Lab Services (send-out tests). New filter enables users to find tests by distribution model. Added 16 IVD kit entries across MRD, ECD, TRM, and TDS categories.',
+    description: 'Added Product Type taxonomy distinguishing Self-Collection kits (patient collects at home), Laboratory IVD Kits (distributed reagents for CLIA labs), and Central Lab Services (send-out tests). New filter enables users to find tests by distribution model. Added 16 IVD kit entries: ECD - Cologuard, Epi proColon; MRD - clonoSEQ Assay, LymphoTrack Dx IGH Assay, BD OneFlow B-ALL MRD Kit; TDS - TruSight Oncology Comprehensive, GeneseeqPrime, PGDx elio tissue complete, Oncomine Comprehensive Assay Plus, TSO 500, cobas EGFR Mutation Test v2, cobas KRAS Mutation Test, therascreen EGFR RGQ PCR Kit, OncoBEAM RAS CRC Kit, PGDx elio plasma focus Dx, LeukoStrat CDx FLT3 Mutation Assay.',
     contributor: null,
     affiliation: 'OpenOnco',
     citation: null
