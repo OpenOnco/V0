@@ -8,9 +8,14 @@ import { mrdTestData } from './data/mrdTests';
 import { ecdTestData } from './data/ecdTests';
 import { trmTestData } from './data/trmTests';
 import { tdsTestData } from './data/tdsTests';
+import { alzBloodTestData } from './data/alzBloodTests';
 import {
+  DOMAINS,
+  getDomain,
+  getSiteConfig,
   LIFECYCLE_STAGES,
   LIFECYCLE_STAGES_BY_GRID,
+  getStagesByDomain,
   lifecycleColorClasses,
   PRODUCT_TYPES,
   getProductTypeConfig,
@@ -499,27 +504,34 @@ const LifecycleNavigator = ({ onNavigate }) => {
   const [pulseIndex, setPulseIndex] = useState(0);
   const [hoveredStageId, setHoveredStageId] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
-  
+
+  // Filter stages by current domain
+  const currentDomain = getDomain();
+  const domainStages = useMemo(() => {
+    return getStagesByDomain(currentDomain).sort((a, b) => a.gridPosition - b.gridPosition);
+  }, [currentDomain]);
+
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
     TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10,
     TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 9,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
+    'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
-  
-  const highlightedStageId = isHovering && hoveredStageId ? hoveredStageId : LIFECYCLE_STAGES[pulseIndex].id;
+
+  const highlightedStageId = isHovering && hoveredStageId ? hoveredStageId : (domainStages[pulseIndex % domainStages.length]?.id || domainStages[0]?.id);
   
   // Pulse animation - 3 seconds per stage
   useEffect(() => {
     if (isHovering) return;
-    
+
     const interval = setInterval(() => {
-      setPulseIndex(prev => (prev + 1) % 4);
+      setPulseIndex(prev => (prev + 1) % domainStages.length);
     }, 2250);
-    
+
     return () => clearInterval(interval);
-  }, [isHovering]);
+  }, [isHovering, domainStages.length]);
   
   const handleSelect = (stageId) => {
     onNavigate(stageId);
@@ -537,8 +549,8 @@ const LifecycleNavigator = ({ onNavigate }) => {
           100% { transform: translateX(-50%); }
         }
       `}</style>
-      <div className="grid grid-cols-2 gap-6">
-        {LIFECYCLE_STAGES_BY_GRID.map((stage) => (
+      <div className={`grid ${domainStages.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-2'} gap-6`}>
+        {domainStages.map((stage) => (
           <LifecycleStageCard
             key={stage.id}
             stage={stage}
@@ -742,13 +754,14 @@ const Badge = ({ children, variant = 'default', title }) => {
 // ============================================
 const Header = ({ currentPage, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const siteConfig = getSiteConfig();
+
   const handleNavigate = (page) => {
     onNavigate(page);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
   const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
@@ -821,18 +834,27 @@ const Header = ({ currentPage, onNavigate }) => {
 // ============================================
 // Footer
 // ============================================
-const Footer = () => (
-  <footer className="border-t border-gray-200 py-8 mt-12 bg-white">
-    <div className="max-w-4xl mx-auto px-6">
-      <p className="text-sm text-gray-500 leading-relaxed text-justify">
-        <strong>Disclaimer:</strong> OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. <strong>Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices.</strong> Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.
-      </p>
-      <p className="text-xs text-gray-400 mt-4 text-center">
-        Built: {BUILD_INFO.date}
-      </p>
-    </div>
-  </footer>
-);
+const Footer = () => {
+  const siteConfig = getSiteConfig();
+
+  const disclaimers = {
+    [DOMAINS.ONCO]: `OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices. Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.`,
+    [DOMAINS.ALZ]: `OpenAlz is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding Alzheimer's disease, cognitive symptoms, or treatment options. OpenAlz does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices. Reliance on any information provided by OpenAlz is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.`,
+  };
+
+  return (
+    <footer className="border-t border-gray-200 py-8 mt-12 bg-white">
+      <div className="max-w-4xl mx-auto px-6">
+        <p className="text-sm text-gray-500 leading-relaxed text-justify">
+          <strong>Disclaimer:</strong> {disclaimers[siteConfig.domain]}
+        </p>
+        <p className="text-xs text-gray-400 mt-4 text-center">
+          Built: {BUILD_INFO.date}
+        </p>
+      </div>
+    </footer>
+  );
+};
 
 // ============================================
 // Unified Chat Component (All Categories)
@@ -1123,14 +1145,17 @@ const TestShowcase = ({ onNavigate }) => {
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
   const [searchQuery, setSearchQuery] = useState('');
-  
+
+  // Get current domain for filtering
+  const currentDomain = getDomain();
+
   // Chat state for non-patient views
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const chatContainerRef = useRef(null);
-  
+
   // Track persona
   const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
   useEffect(() => {
@@ -1170,15 +1195,22 @@ const TestShowcase = ({ onNavigate }) => {
     TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 14,
     TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 11,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
+    'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
 
-  // Combine all tests with their category
-  const baseTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' }))
-  ];
+  // Combine tests with their category, filtered by domain
+  const baseTests = useMemo(() => {
+    if (currentDomain === DOMAINS.ALZ) {
+      return alzBloodTestData.map(t => ({ ...t, category: 'ALZ-BLOOD', color: 'indigo' }));
+    }
+    // Default: oncology domain
+    return [
+      ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
+      ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
+      ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
+      ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' }))
+    ];
+  }, [currentDomain]);
 
   // Helper to count reimbursement entities
   const countReimbursement = (test) => {
@@ -1247,7 +1279,7 @@ const TestShowcase = ({ onNavigate }) => {
       counts[t.vendor] = (counts[t.vendor] || 0) + 1;
     });
     return counts;
-  }, []);
+  }, [baseTests]);
 
   // Calculate vendor-level openness scores (for ranking sort)
   // Matches the logic in DatabaseSummary - vendors with 2+ tests get ranked, single-test vendors go to bottom
@@ -1271,7 +1303,7 @@ const TestShowcase = ({ onNavigate }) => {
       }
     });
     return scores;
-  }, []);
+  }, [baseTests]);
 
   // Get TAT value for sorting
   const getTat = (test) => {
@@ -1286,8 +1318,8 @@ const TestShowcase = ({ onNavigate }) => {
     const sorted = [...baseTests];
     switch (sortBy) {
       case 'category':
-        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3 };
-        return sorted.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category] || a.vendor.localeCompare(b.vendor));
+        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3, 'ALZ-BLOOD': 4 };
+        return sorted.sort((a, b) => (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
       case 'tat':
         return sorted.sort((a, b) => getTat(a) - getTat(b));
       case 'reimbursement':
@@ -1308,7 +1340,7 @@ const TestShowcase = ({ onNavigate }) => {
       default:
         return sorted.sort((a, b) => a.name.localeCompare(b.name));
     }
-  }, [sortBy, vendorTestCounts, vendorOpennessScores]);
+  }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests]);
 
   // Filter tests based on search query (supports multi-word: "exact ecd" matches Exact Sciences ECD tests)
   const filteredTests = useMemo(() => {
