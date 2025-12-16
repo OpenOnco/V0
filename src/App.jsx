@@ -499,7 +499,7 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       className={`
-        relative px-5 py-7 rounded-xl text-left transition-all duration-500 h-full
+        relative px-5 py-9 rounded-xl text-left transition-all duration-500 h-full
         ${isHighlighted 
           ? `${colors.bgMedium} border-2 ${colors.borderActive} shadow-lg` 
           : `${colors.bgLight} border ${colors.border}`
