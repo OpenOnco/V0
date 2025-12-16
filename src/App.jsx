@@ -8049,7 +8049,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
               {/* Cancer Type Section - FIRST FILTER */}
               <FilterSection
                 title={isPatient ? 'Cancer Type' : 'Cancer Type'}
-                defaultOpen={true}
+                defaultOpen={false}
                 activeCount={category === 'ECD' ? selectedIndicationGroups.length : selectedCancerTypes.length}
               >
                 {category === 'ECD' ? (
