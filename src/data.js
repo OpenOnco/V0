@@ -5399,6 +5399,7 @@ export const filterConfigs = {
   ECD: {
     productTypes: ['Central Lab Service', 'Laboratory IVD Kit', 'Self-Collection'],
     testScopes: ['Single-cancer', 'Multi-cancer'],  // Simplified - matches prefix of actual testScope values
+    indicationGroups: [...new Set(ecdTestData.map(t => t.indicationGroup).filter(Boolean))].sort(),
     sampleCategories: ['Blood/Plasma', 'Stool'],
     fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
     reimbursements: ['Medicare', 'Commercial'],
