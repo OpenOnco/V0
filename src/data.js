@@ -4499,6 +4499,18 @@ export const DATABASE_CHANGELOG = [
   {
     date: 'Dec 16, 2025',
     type: 'added',
+    testId: 'ecd-20',
+    testName: 'Avantect Pancreatic Cancer Test',
+    vendor: 'ClearNote Health',
+    category: 'ECD',
+    description: 'Added first single-cancer ECD test for pancreatic cancer. Uses novel 5-hydroxymethylcytosine (5hmC) cfDNA profiling rather than standard 5mC methylation. 68.3% early-stage (I/II) sensitivity, 96.9% specificity. Targets high-risk population: adults 50+ with new-onset T2DM (within 36 months), genetic predisposition, or family history. Validated in blinded cohort (n=3,674) published in Clin Gastroenterol Hepatol 2023 and J Mol Diagn 2024. Medicare covered at $1,160 (CPT 0410U). NYSDOH approved. Selected for NCI Vanguard study. PRECEDE Consortium member.',
+    contributor: 'Adrian Vilalta',
+    affiliation: 'ClearNote Health (vendor)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/36967102/ | https://pubmed.ncbi.nlm.nih.gov/39230538/'
+  },
+  {
+    date: 'Dec 16, 2025',
+    type: 'added',
     testId: 'ecd-19',
     testName: 'IUrisure',
     vendor: 'Wuhan Ammunition Life Technology',
