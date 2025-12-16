@@ -1977,7 +1977,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 
         {/* Right: Search Tools */}
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
-          <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI</h3>
+          <h3 className="text-lg font-bold text-slate-800 text-center">Explore Tests by AI:</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
             {/* Example Questions - shown when no messages */}
@@ -4433,6 +4433,47 @@ const SubmissionsPage = () => {
       return false;
     }
 
+    // Block vendor domain emails when claiming Independent Expert
+    if (submitterType === 'expert' && (submissionType === 'new' || submissionType === 'correction')) {
+      const emailDomain = contactEmail.split('@')[1]?.toLowerCase() || '';
+      // Known vendor domains - comprehensive list
+      const knownVendorDomains = [
+        { domain: 'illumina.com', vendor: 'Illumina' },
+        { domain: 'guardanthealth.com', vendor: 'Guardant Health' },
+        { domain: 'natera.com', vendor: 'Natera' },
+        { domain: 'foundationmedicine.com', vendor: 'Foundation Medicine' },
+        { domain: 'grail.com', vendor: 'Grail' },
+        { domain: 'exact.com', vendor: 'Exact Sciences' },
+        { domain: 'exactsciences.com', vendor: 'Exact Sciences' },
+        { domain: 'tempus.com', vendor: 'Tempus' },
+        { domain: 'personalis.com', vendor: 'Personalis' },
+        { domain: 'neogenomics.com', vendor: 'NeoGenomics' },
+        { domain: 'labcorp.com', vendor: 'Labcorp' },
+        { domain: 'quest.com', vendor: 'Quest Diagnostics' },
+        { domain: 'questdiagnostics.com', vendor: 'Quest Diagnostics' },
+        { domain: 'adaptivebiotech.com', vendor: 'Adaptive Biotechnologies' },
+        { domain: 'caris.com', vendor: 'Caris Life Sciences' },
+        { domain: 'carislifesciences.com', vendor: 'Caris Life Sciences' },
+        { domain: 'roche.com', vendor: 'Roche' },
+        { domain: 'veracyte.com', vendor: 'Veracyte' },
+        { domain: 'myriad.com', vendor: 'Myriad Genetics' },
+        { domain: 'invitae.com', vendor: 'Invitae' },
+        { domain: 'biofiredefense.com', vendor: 'BioFire' },
+        { domain: 'biofiredx.com', vendor: 'BioFire' },
+        { domain: 'freenome.com', vendor: 'Freenome' },
+        { domain: 'c2i-genomics.com', vendor: 'C2i Genomics' },
+        { domain: 'sagadiagnostics.com', vendor: 'SAGA Diagnostics' },
+        { domain: 'billiontoone.com', vendor: 'BillionToOne' },
+        { domain: 'sophiagenetics.com', vendor: 'SOPHiA GENETICS' },
+      ];
+      
+      const matchedVendor = knownVendorDomains.find(v => emailDomain === v.domain || emailDomain.endsWith('.' + v.domain));
+      if (matchedVendor) {
+        setEmailError(`Your email domain (${emailDomain}) appears to be from ${matchedVendor.vendor}. Please select "Test Vendor Representative" instead.`);
+        return false;
+      }
+    }
+
     // Only check vendor email match for vendor submissions on test data
     if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction')) {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
@@ -4726,7 +4767,10 @@ const SubmissionsPage = () => {
               <p className="text-sm text-amber-600 mt-2">⚠️ We will verify that your email comes from the vendor's domain</p>
             )}
             {submitterType === 'expert' && (
-              <p className="text-sm text-gray-500 mt-2">Expert submissions require a company or institutional email</p>
+              <>
+                <p className="text-sm text-amber-600 mt-2">⚠️ Vendor employees should select "Test Vendor Representative" above</p>
+                <p className="text-sm text-gray-500 mt-1">Expert submissions require a company or institutional email</p>
+              </>
             )}
           </div>
         )}
