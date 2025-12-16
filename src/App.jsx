@@ -423,7 +423,7 @@ const getSampleTests = (stageId) => {
 };
 
 // Arrow button component for lifecycle flow
-const LifecycleFlowArrow = ({ direction, isPulsing, color }) => {
+const LifecycleFlowArrow = ({ direction, color }) => {
   const colors = lifecycleColorClasses[color];
   
   const positions = {
@@ -443,15 +443,13 @@ const LifecycleFlowArrow = ({ direction, isPulsing, color }) => {
   return (
     <div className={`absolute z-20 ${positions[direction]}`}>
       <div className={`
-        w-7 h-7 rounded-full flex items-center justify-center transition-all duration-500
-        ${isPulsing 
-          ? `${colors.bg} shadow-lg scale-110` 
-          : `bg-white shadow-md border ${colors.border}`
-        }
+        w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200
+        bg-white shadow-md border ${colors.border}
+        group-hover:${colors.bg} group-hover:shadow-lg group-hover:scale-110
         ${rotations[direction]}
       `}>
         <svg 
-          className={`w-3.5 h-3.5 transition-colors duration-500 ${isPulsing ? 'text-white' : colors.textLight}`} 
+          className={`w-3.5 h-3.5 transition-colors duration-200 ${colors.textLight} group-hover:text-white`} 
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
@@ -464,20 +462,16 @@ const LifecycleFlowArrow = ({ direction, isPulsing, color }) => {
 };
 
 // Scrolling test names marquee
-const LifecycleScrollingTests = ({ tests, isHighlighted, color }) => {
+const LifecycleScrollingTests = ({ tests, color }) => {
   const colors = lifecycleColorClasses[color];
   const testString = tests.join('  •  ');
   const scrollContent = `${testString}  •  ${testString}  •  `;
   
   return (
-    <div className={`mt-3 pt-2 border-t transition-colors duration-500 overflow-hidden ${
-      isHighlighted ? colors.borderActive : colors.border
-    }`}>
+    <div className={`mt-3 pt-2 border-t transition-colors duration-200 overflow-hidden ${colors.border}`}>
       <div className="relative">
         <div 
-          className={`flex whitespace-nowrap text-xs transition-colors duration-500 ${
-            isHighlighted ? 'text-gray-600' : 'text-gray-400'
-          }`}
+          className="flex whitespace-nowrap text-xs text-gray-400 group-hover:text-gray-600"
           style={{
             animation: 'lifecycleScroll 15s linear infinite',
           }}
@@ -490,7 +484,7 @@ const LifecycleScrollingTests = ({ tests, isHighlighted, color }) => {
 };
 
 // Individual lifecycle stage card
-const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testCount }) => {
+const LifecycleStageCard = ({ stage, isHovered, onClick, onMouseEnter, onMouseLeave, testCount }) => {
   const colors = lifecycleColorClasses[stage.color];
   const sampleTests = getSampleTests(stage.id);
   
@@ -498,18 +492,20 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
     <button
       onClick={onClick}
       onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className={`
-        relative px-5 py-9 rounded-xl text-left transition-all duration-500 h-full
-        ${isHighlighted 
-          ? `${colors.bgMedium} border-2 ${colors.borderActive} shadow-lg` 
-          : `${colors.bgLight} border ${colors.border}`
+        relative px-5 py-9 rounded-xl text-left transition-all duration-200 h-full
+        border-2 shadow-md cursor-pointer
+        ${isHovered 
+          ? `${colors.bgMedium} ${colors.borderActive} shadow-lg scale-[1.02]` 
+          : `${colors.bgLight} ${colors.border} hover:shadow-lg hover:scale-[1.01]`
         }
       `}
     >
       <div className="flex items-center gap-4">
         <div className={`
-          w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-500
-          ${isHighlighted 
+          w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200
+          ${isHovered 
             ? `${colors.bg} text-white shadow-md` 
             : `${colors.bgMedium} ${colors.text}`
           }
@@ -517,54 +513,45 @@ const LifecycleStageCard = ({ stage, isHighlighted, onClick, onMouseEnter, testC
           <span className="text-2xl">{stage.icon}</span>
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className={`text-base font-bold leading-tight transition-colors duration-500 ${
-            isHighlighted ? colors.textDark : colors.text
+          <h3 className={`text-base font-bold leading-tight transition-colors duration-200 ${
+            isHovered ? colors.textDark : colors.text
           }`}>
             {stage.phase}: {stage.acronym}
           </h3>
-          <p className={`text-sm font-semibold mt-1 transition-colors duration-500 ${
-            isHighlighted ? colors.textDark : colors.text
+          <p className={`text-sm font-semibold mt-1 transition-colors duration-200 ${
+            isHovered ? colors.textDark : colors.text
           }`}>
             {stage.name}
           </p>
-          <p className={`text-sm font-semibold mt-1 transition-colors duration-500 ${
-            isHighlighted ? colors.text : colors.textLight
-          }`}>
-            {`Click to explore ${testCount} tests →`}
+          <p className={`text-sm font-semibold mt-1 transition-colors duration-200 ${colors.text}`}>
+            {`Explore ${testCount} tests →`}
           </p>
         </div>
       </div>
       
       <LifecycleScrollingTests 
         tests={sampleTests} 
-        isHighlighted={isHighlighted}
+        isHighlighted={isHovered}
         color={stage.color}
       />
       
       <LifecycleFlowArrow 
         direction={stage.arrowDirection} 
-        isPulsing={isHighlighted} 
+        isPulsing={isHovered} 
         color={stage.color}
       />
     </button>
   );
 };
 
-// Main lifecycle navigator component
+// Main lifecycle navigator component - static tiles (no animation loop)
 const LifecycleNavigator = ({ onNavigate }) => {
-  const [pulseIndex, setPulseIndex] = useState(0);
   const [hoveredStageId, setHoveredStageId] = useState(null);
-  const [isHovering, setIsHovering] = useState(false);
 
   // Filter stages by current domain
   const currentDomain = getDomain();
   const domainStages = useMemo(() => {
     return getStagesByDomain(currentDomain).sort((a, b) => a.gridPosition - b.gridPosition);
-  }, [currentDomain]);
-
-  // Separate array for animation order (clockwise: UL, UR, LR, LL)
-  const animationStages = useMemo(() => {
-    return getStagesByDomain(currentDomain).sort((a, b) => a.animationOrder - b.animationOrder);
   }, [currentDomain]);
 
   // Get dynamic test counts
@@ -576,43 +563,21 @@ const LifecycleNavigator = ({ onNavigate }) => {
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
 
-  const highlightedStageId = isHovering && hoveredStageId ? hoveredStageId : (animationStages[pulseIndex % animationStages.length]?.id || animationStages[0]?.id);
-  
-  // Pulse animation - 3 seconds per stage
-  useEffect(() => {
-    if (isHovering) return;
-
-    const interval = setInterval(() => {
-      setPulseIndex(prev => (prev + 1) % animationStages.length);
-    }, 2250);
-
-    return () => clearInterval(interval);
-  }, [isHovering, animationStages.length]);
-  
   const handleSelect = (stageId) => {
     onNavigate(stageId);
   };
   
   return (
-    <div 
-      className="relative"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => { setIsHovering(false); setHoveredStageId(null); }}
-    >
-      <style>{`
-        @keyframes lifecycleScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
+    <div className="relative">
       <div className={`grid ${domainStages.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-2'} gap-6`}>
         {domainStages.map((stage) => (
           <LifecycleStageCard
             key={stage.id}
             stage={stage}
-            isHighlighted={highlightedStageId === stage.id}
+            isHovered={hoveredStageId === stage.id}
             onClick={() => handleSelect(stage.id)}
             onMouseEnter={() => setHoveredStageId(stage.id)}
+            onMouseLeave={() => setHoveredStageId(null)}
             testCount={testCounts[stage.id]}
           />
         ))}
@@ -1188,6 +1153,158 @@ const RecentlyAddedBanner = ({ onNavigate }) => {
             </span>
           </div>
         ))}
+      </div>
+    </div>
+  );
+};
+
+
+// ============================================
+// Cancer Type Navigator - Browse tests by cancer type
+// ============================================
+const CancerTypeNavigator = ({ onNavigate }) => {
+  // Combine all tests and extract cancer types
+  const allTests = useMemo(() => [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+  ], []);
+
+  // Normalize cancer type names and group tests
+  const normalizeCancerType = (type) => {
+    if (!type) return null;
+    const lower = type.toLowerCase();
+    // Normalize common variations
+    if (lower.includes('colorectal') || lower.includes('colon') || lower.includes('crc')) return 'Colorectal';
+    if (lower.includes('breast')) return 'Breast';
+    if (lower.includes('lung') || lower.includes('nsclc')) return 'Lung';
+    if (lower.includes('prostate')) return 'Prostate';
+    if (lower.includes('pancrea')) return 'Pancreatic';
+    if (lower.includes('liver') || lower.includes('hcc') || lower.includes('hepato')) return 'Liver';
+    if (lower.includes('ovari')) return 'Ovarian';
+    if (lower.includes('bladder') || lower.includes('urothelial')) return 'Bladder';
+    if (lower.includes('gastric') || lower.includes('stomach') || lower.includes('esophag')) return 'Gastroesophageal';
+    if (lower.includes('head') && lower.includes('neck')) return 'Head & Neck';
+    if (lower.includes('melanoma') || lower.includes('skin')) return 'Melanoma';
+    if (lower.includes('lymphoma') || lower.includes('leukemia') || lower.includes('hematolog')) return 'Blood Cancers';
+    if (lower.includes('multi') || lower.includes('pan-cancer') || lower.includes('solid')) return 'Multi-cancer';
+    if (lower.includes('thyroid')) return 'Thyroid';
+    if (lower.includes('kidney') || lower.includes('renal')) return 'Kidney';
+    return type; // Return original if no normalization match
+  };
+
+  // Build cancer type -> tests mapping
+  const cancerTypeMap = useMemo(() => {
+    const map = {};
+    allTests.forEach(test => {
+      const types = test.cancerTypes || [];
+      types.forEach(type => {
+        const normalized = normalizeCancerType(type);
+        if (normalized) {
+          if (!map[normalized]) map[normalized] = [];
+          // Avoid duplicate test entries
+          if (!map[normalized].find(t => t.id === test.id)) {
+            map[normalized].push(test);
+          }
+        }
+      });
+    });
+    return map;
+  }, [allTests]);
+
+  // Define major cancer types with icons and colors (sorted by test count)
+  const cancerTypeConfig = {
+    'Colorectal': { icon: '🔵', color: 'blue', description: 'Colon & rectal cancers' },
+    'Breast': { icon: '🎀', color: 'pink', description: 'Breast cancer' },
+    'Lung': { icon: '🫁', color: 'slate', description: 'NSCLC & lung cancers' },
+    'Prostate': { icon: '♂️', color: 'indigo', description: 'Prostate cancer' },
+    'Liver': { icon: '🟤', color: 'amber', description: 'HCC & liver cancers' },
+    'Pancreatic': { icon: '🟡', color: 'yellow', description: 'Pancreatic cancer' },
+    'Bladder': { icon: '💧', color: 'cyan', description: 'Bladder & urothelial' },
+    'Ovarian': { icon: '🟣', color: 'purple', description: 'Ovarian cancer' },
+    'Gastroesophageal': { icon: '🔴', color: 'red', description: 'Stomach & esophageal' },
+    'Blood Cancers': { icon: '🩸', color: 'rose', description: 'Leukemia & lymphoma' },
+    'Multi-cancer': { icon: '🎯', color: 'emerald', description: 'Pan-tumor tests' },
+  };
+
+  const colorClasses = {
+    blue: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', hover: 'hover:bg-blue-100 hover:border-blue-400' },
+    pink: { bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-700', hover: 'hover:bg-pink-100 hover:border-pink-400' },
+    slate: { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-700', hover: 'hover:bg-slate-100 hover:border-slate-400' },
+    indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700', hover: 'hover:bg-indigo-100 hover:border-indigo-400' },
+    amber: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', hover: 'hover:bg-amber-100 hover:border-amber-400' },
+    yellow: { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-700', hover: 'hover:bg-yellow-100 hover:border-yellow-400' },
+    cyan: { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-700', hover: 'hover:bg-cyan-100 hover:border-cyan-400' },
+    purple: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', hover: 'hover:bg-purple-100 hover:border-purple-400' },
+    red: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', hover: 'hover:bg-red-100 hover:border-red-400' },
+    rose: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', hover: 'hover:bg-rose-100 hover:border-rose-400' },
+    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', hover: 'hover:bg-emerald-100 hover:border-emerald-400' },
+  };
+
+  // Get sorted cancer types by test count
+  const sortedCancerTypes = useMemo(() => {
+    return Object.entries(cancerTypeMap)
+      .filter(([type]) => cancerTypeConfig[type]) // Only show configured types
+      .sort((a, b) => b[1].length - a[1].length)
+      .slice(0, 12); // Top 12 cancer types
+  }, [cancerTypeMap]);
+
+  // Handle click - navigate to category with search filter
+  const handleCancerTypeClick = (cancerType, tests) => {
+    // Find the category with most tests for this cancer type
+    const categoryCounts = {};
+    tests.forEach(t => {
+      categoryCounts[t.category] = (categoryCounts[t.category] || 0) + 1;
+    });
+    const primaryCategory = Object.entries(categoryCounts)
+      .sort((a, b) => b[1] - a[1])[0][0];
+    
+    // Navigate to that category (the search/filter will need to be handled by CategoryPage)
+    onNavigate(primaryCategory);
+  };
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-800">Browse by Cancer Type</h2>
+        <p className="text-sm text-gray-500">Select a cancer type to see available tests</p>
+      </div>
+      <div className="p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {sortedCancerTypes.map(([cancerType, tests]) => {
+            const config = cancerTypeConfig[cancerType];
+            const colors = colorClasses[config?.color || 'slate'];
+            const categories = [...new Set(tests.map(t => t.category))];
+            
+            return (
+              <button
+                key={cancerType}
+                onClick={() => handleCancerTypeClick(cancerType, tests)}
+                className={`
+                  p-4 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer
+                  ${colors.bg} ${colors.border} ${colors.hover}
+                  hover:shadow-md hover:scale-[1.02]
+                `}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">{config?.icon || '🔬'}</span>
+                  <span className={`font-semibold ${colors.text}`}>{cancerType}</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                  {tests.length} tests across {categories.length} {categories.length === 1 ? 'category' : 'categories'}
+                </div>
+                <div className="flex gap-1 mt-2 flex-wrap">
+                  {categories.map(cat => (
+                    <span key={cat} className="text-[10px] px-1.5 py-0.5 bg-white rounded border border-gray-200 text-gray-600">
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -2685,9 +2802,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </div>
         )}
 
-        {/* Test Showcase - Only for Clinician/Academic views */}
+        {/* Browse Mode Toggle + Test Views - Only for Clinician/Academic views */}
         {persona !== 'Patient' && (
           <div className="mb-4">
+            {/* Browse Mode Toggle */}
             <TestShowcase onNavigate={onNavigate} />
           </div>
         )}
@@ -3318,12 +3436,12 @@ const LearnPage = ({ onNavigate }) => {
     {
       id: 'ECD',
       phase: 'Screening',
-      name: 'Early Cancer Detection',
+      name: 'Early Cancer Detection (ECD)',
       acronym: 'ECD',
       color: 'emerald',
       icon: '🔬',
       clinicalQuestion: 'Can cancer be detected before clinical presentation?',
-      description: 'Multi-cancer early detection (MCED) tests screen asymptomatic individuals for cancer signals in blood. These assays analyze tumor-derived molecules including ctDNA methylation patterns, fragmentomic features (cfDNA fragment size distributions and end motifs), and protein biomarkers.',
+      description: 'Early cancer detection (ECD) tests screen asymptomatic individuals for cancer signals in blood or stool. These assays analyze tumor-derived molecules including ctDNA methylation patterns, fragmentomic features (cfDNA fragment size distributions and end motifs), and protein biomarkers. Single-cancer tests focus on one cancer type (e.g., colorectal), while multi-cancer early detection (MCED) tests screen for signals across 50+ cancer types.',
       technology: 'Most ECD tests rely on methylation profiling, as cancer-specific methylation patterns are more abundant and consistent than somatic mutations in early-stage disease. Machine learning classifiers trained on methylation arrays can detect cancer signals and predict tissue of origin. Some platforms combine methylation with fragmentomics or proteomics for improved sensitivity.',
       keyMetrics: [
         'Sensitivity by cancer type and stage (typically 20-40% for stage I, 70-90% for stage IV)',
@@ -7592,6 +7710,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedApproaches, setSelectedApproaches] = useState([]);
   const [selectedCancerTypes, setSelectedCancerTypes] = useState([]);
+  const [selectedIndicationGroups, setSelectedIndicationGroups] = useState([]); // For ECD cancer type filtering
   const [selectedReimbursement, setSelectedReimbursement] = useState([]);
   const [selectedTestScopes, setSelectedTestScopes] = useState([]);
   const [selectedSampleCategories, setSelectedSampleCategories] = useState([]);
@@ -7765,7 +7884,15 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         });
         if (!matchesReimbursement) return false;
       }
-      if (selectedTestScopes.length > 0 && !selectedTestScopes.includes(test.testScope)) return false;
+      if (selectedTestScopes.length > 0) {
+        // Use prefix matching for test scopes (e.g., 'Single-cancer' matches 'Single-cancer (CRC)', 'Single-cancer (Lung)', etc.)
+        const matchesScope = selectedTestScopes.some(scope => test.testScope?.startsWith(scope));
+        if (!matchesScope) return false;
+      }
+      // Indication Group filter for ECD (cancer type filtering)
+      if (selectedIndicationGroups.length > 0 && category === 'ECD') {
+        if (!test.indicationGroup || !selectedIndicationGroups.includes(test.indicationGroup)) return false;
+      }
       if (selectedSampleCategories.length > 0 && !selectedSampleCategories.includes(test.sampleCategory)) return false;
       if (minParticipants > 0 && (!test.totalParticipants || test.totalParticipants < minParticipants)) return false;
       if (minPublications > 0 && (!test.numPublications || test.numPublications < minPublications)) return false;
@@ -7835,13 +7962,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       }
       return true;
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
   const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); setSelectedProductTypes([]); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0 || selectedProductTypes.length;
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedIndicationGroups.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0 || selectedProductTypes.length;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600', indigo: 'from-indigo-500 to-indigo-600' };
 
@@ -7919,7 +8046,42 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
 
               {/* ========== UNIFIED FILTERS FOR ALL CATEGORIES ========== */}
               
-              {/* Product Type Section - NEW: IVD Kit vs Service */}
+              {/* Cancer Type Section - FIRST FILTER */}
+              <FilterSection
+                title={isPatient ? 'Cancer Type' : 'Cancer Type'}
+                defaultOpen={false}
+                activeCount={category === 'ECD' ? selectedIndicationGroups.length : selectedCancerTypes.length}
+              >
+                {category === 'ECD' ? (
+                  /* ECD uses indicationGroups for cleaner cancer type filtering */
+                  <>
+                    <div className="space-y-1">
+                      {config.indicationGroups?.map(ig => (
+                        <Checkbox 
+                          key={ig} 
+                          label={ig === 'MCED' ? 'Multi-Cancer (MCED)' : ig === 'CRC' ? 'Colorectal (CRC)' : ig} 
+                          checked={selectedIndicationGroups.includes(ig)} 
+                          onChange={() => toggle(setSelectedIndicationGroups)(ig)} 
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  /* MRD, TRM, TDS use cancerTypes */
+                  <div className="max-h-48 overflow-y-auto space-y-1">
+                    {config.cancerTypes?.map(t => (
+                      <Checkbox 
+                        key={t} 
+                        label={t.length > 30 ? t.slice(0,30)+'...' : t} 
+                        checked={selectedCancerTypes.includes(t)} 
+                        onChange={() => toggle(setSelectedCancerTypes)(t)} 
+                      />
+                    ))}
+                  </div>
+                )}
+              </FilterSection>
+
+              {/* Product Type Section - IVD Kit vs Service */}
               {config.productTypes && (
                 <FilterSection
                   title={isPatient ? 'How It Works' : 'Product Type'}
@@ -7959,19 +8121,12 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 </FilterSection>
               )}
 
-              {/* Clinical Section */}
+              {/* Clinical Section - now without cancer types (moved to top) */}
               <FilterSection 
-                title={isPatient ? 'My Cancer' : 'Clinical'} 
+                title={isPatient ? 'Test Details' : 'Clinical'} 
                 defaultOpen={false}
-                activeCount={selectedCancerTypes.length + selectedTestScopes.length + selectedClinicalSettings.length}
+                activeCount={selectedTestScopes.length + selectedClinicalSettings.length}
               >
-                {/* Cancer Type - for MRD, TRM, TDS */}
-                {category !== 'ECD' && (
-                  <>
-                    <label className="text-xs text-gray-500 mb-1 block">Cancer Type</label>
-                    <div className="max-h-40 overflow-y-auto">{config.cancerTypes?.map(t => <Checkbox key={t} label={t.length > 28 ? t.slice(0,28)+'...' : t} checked={selectedCancerTypes.includes(t)} onChange={() => toggle(setSelectedCancerTypes)(t)} />)}</div>
-                  </>
-                )}
                 {/* Clinical Setting - MRD only */}
                 {category === 'MRD' && !isPatient && config.clinicalSettings && (
                   <>
@@ -8005,7 +8160,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 {category === 'ECD' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Type of Screening' : 'Scope'}</label>
-                    {config.testScopes?.map(s => <Checkbox key={s} label={isPatient ? (s.includes('Single') ? 'Single cancer type' : 'Multiple cancer types') : s} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
+                    {config.testScopes?.map(s => <Checkbox key={s} label={isPatient ? (s === 'Single-cancer' ? 'Single cancer type' : 'Multiple cancer types') : (s === 'Single-cancer' ? 'Single-cancer (CRC, Lung, Liver, etc.)' : 'Multi-cancer (MCED)')} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
                   </>
                 )}
               </FilterSection>
