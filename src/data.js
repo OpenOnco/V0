@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 17, 2025
+// Last updated: December 17, 2025 (added Liquid Trace Solid Tumor tds-20, Liquid Trace Hematology tds-21)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -13,7 +13,7 @@
 // │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-12     │ trm-13        │
-// │ TDS Tests            │ ~3269       │ tds-19     │ tds-20        │
+// │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-11 │ tds-kit-12    │
 // │ ALZ Blood Tests      │ ~4456       │ alz-9      │ alz-10        │
 // │ Changelog            │ ~4841       │ --         │ --            │
@@ -4149,6 +4149,118 @@ export const tdsTestData = [
       "submitterAffiliation": "University of Arkansas for Medical Sciences",
       "submissionDate": "2025-12-17",
       "submissionNotes": "Surprise you do not list this test, OncoType Dx, given the disruptive impact it has had since 2004. Please consider adding. This website is outstanding! Thank you."
+    }
+  },
+  {
+    "id": "tds-20",
+    "name": "Liquid Trace Solid Tumor",
+    "vendor": "Genomic Testing Cooperative (GTC)",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Combined cfDNA and cfRNA NGS from peripheral blood or CSF. cfDNA analysis detects SNVs, indels, CNAs, and chromosomal structural abnormalities. cfRNA analysis (>1,600 genes) detects gene fusions, expression levels, and alternative splicing variants. Includes TMB evaluation, T/B-cell clonality, HLA Class I genotyping, and viral detection (EBV, HPV, TTV).",
+    "methodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "methodNotes": "Unique cfDNA + cfRNA combination provides higher sensitivity than cfDNA-only liquid biopsies. cfRNA captures fusion genes from chromosomal translocations and expression-level changes that cfDNA misses. Studies show RNA sequencing is more sensitive for some mutations since cancer cells contain multiple RNA copies but only one mutated DNA copy.",
+    "genesAnalyzed": 1600,
+    "genesAnalyzedNotes": ">1,600 genes analyzed via cfRNA; cfDNA gene count not specified separately. Combined approach.",
+    "genesAnalyzedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "geneListUrl": "https://genomictestingcooperative.com/genomic-tests/cfdna-genes/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "Gene Expression", "TMB", "Chromosomal Abnormalities", "T/B-cell Clonality", "HLA Genotyping", "Viral (EBV, HPV, TTV)"],
+    "biomarkersReportedNotes": "cfRNA enables fusion detection and expression profiling not available from cfDNA-only tests. Viral detection includes EBV (lymphoid neoplasms), HPV (anogenital/oropharyngeal cancers), and TTV (immune competence marker).",
+    "biomarkersReportedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "cancerTypes": ["Lung", "Brain/CNS", "Breast", "Thyroid", "Colorectal", "Oropharyngeal", "Pancreatic", "Ovarian", "Prostate", "Other solid tumors"],
+    "cancerTypesCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling for diagnosis, treatment selection, or monitoring. CSF samples accepted for CNS tumors (can add MGMT methylation analysis for brain tumors when tumor DNA detected).",
+    "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
+    "nccnRecommended": false,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Covers guideline-recommended biomarkers. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "tat": "5-7 days",
+    "tatNotes": "RNA stability is 48-72 hours from blood draw; DNA stability is 7 days. Samples received beyond 72 hours may include only DNA results.",
+    "tatCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "sampleRequirements": "Peripheral blood: 10mL in EDTA tube. CSF: 7-10mL optimal (5mL minimum). Ship blood with cold pack (not directly contacting tube) overnight.",
+    "sampleRequirementsNotes": "For blood: RNA stability 48-72 hours, DNA stability 7 days. For CSF: Ship ASAP overnight, do not use anticoagulants, use clear tubes.",
+    "sampleRequirementsCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
+    "lodNotes": "Detection sensitivity varies by variant type and prior history. Tumor-informed or prior history samples achieve highest sensitivity.",
+    "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "International"],
+    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
+    "clinicalAvailability": "Commercially available",
+    "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "numPublications": 15,
+    "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
+    "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
+    "technologyDifferentiator": "Only commercially available liquid biopsy combining cfDNA and cfRNA analysis. cfRNA provides: (1) Higher sensitivity for some mutations due to multiple RNA copies per cell; (2) Fusion gene detection from chromosomal translocations; (3) Expression-level data including alternative splicing. Also includes T/B-cell clonality, HLA genotyping, and viral detection (EBV, HPV, TTV) not found in most liquid CGP tests. CSF sample option for CNS tumors. AI/machine learning integrated into analysis pipeline.",
+    "submissionInfo": {
+      "submittedBy": "Jeffrey Owen",
+      "submitterEmail": "jowen@genomictestingcooperative.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Submitted as TRM but reclassified to TDS (Liquid CGP) based on primary use case of comprehensive genomic profiling for treatment selection. Heme version submitted separately."
+    }
+  },
+  {
+    "id": "tds-21",
+    "name": "Liquid Trace Hematology",
+    "vendor": "Genomic Testing Cooperative (GTC)",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Combined cfDNA and cfRNA NGS from peripheral blood or CSF. Highly sensitive pan-cancer test for hematologic malignancies. cfRNA (>1,600 genes) enables detection of mutations and fusions often missed by cfDNA-only testing. Includes T/B-cell clonality detection, HLA Class I genotyping, and viral detection (TTV as immune competence marker).",
+    "methodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "methodNotes": "Can significantly reduce need for bone marrow biopsies. Detects chromosomal abnormalities, translocations, and gene amplifications from liquid biopsy. CSF samples ideally suited for characterizing lymphoma and multiple myeloma with CNS involvement.",
+    "genesAnalyzed": 1600,
+    "genesAnalyzedNotes": ">1,600 genes analyzed via cfRNA; combined cfDNA + cfRNA approach.",
+    "genesAnalyzedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "geneListUrl": "https://genomictestingcooperative.com/genomic-tests/cfdna-genes/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "Gene Expression", "Chromosomal Abnormalities", "T/B-cell Clonality", "HLA Genotyping", "TTV Viral Load", "CAR-T Detection"],
+    "biomarkersReportedNotes": "T/B-cell clonality detection important for diagnosis and monitoring of lymphoid and plasma cell malignancies. TTV (Torque Teno Virus) load serves as immune competence marker - high TTV associated with infection risk, low TTV with rejection risk in transplant patients. Can detect and monitor CAR-T cells in CSF.",
+    "biomarkersReportedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "cancerTypes": ["Multiple Myeloma", "Lymphoma", "Acute Lymphoblastic Leukemia (ALL)", "Acute Myeloid Leukemia (AML)", "Myelodysplastic Syndrome (MDS)", "Chronic Myelomonocytic Leukemia (CMML)", "Myeloproliferative Neoplasms (MPN)", "VEXAS Syndrome", "EBV-related Neoplasms", "Hypereosinophilia"],
+    "cancerTypesCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "targetPopulation": "Patients with hematologic malignancies requiring comprehensive genomic profiling for diagnosis, classification, treatment selection, or monitoring. Alternative to bone marrow biopsy in many cases. CSF samples for CNS involvement characterization and CAR-T monitoring.",
+    "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
+    "nccnRecommended": false,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["Acute Myeloid Leukemia", "Multiple Myeloma", "B-Cell Lymphomas"],
+    "nccnGuidelinesNotes": "Covers guideline-recommended biomarkers for hematologic malignancies. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "tat": "5-7 days",
+    "tatNotes": "RNA stability is 48-72 hours from blood draw; DNA stability is 7 days. Samples received beyond 72 hours may include only DNA results.",
+    "tatCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "sampleRequirements": "Peripheral blood: 10mL in EDTA tube. CSF: 7-10mL optimal (5mL minimum). Ship blood with cold pack (not directly contacting tube) overnight.",
+    "sampleRequirementsNotes": "For blood: RNA stability 48-72 hours, DNA stability 7 days. For CSF: Ship ASAP overnight, do not use anticoagulants, use clear tubes.",
+    "sampleRequirementsCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
+    "lodNotes": "Detection sensitivity varies by variant type and prior history. VAF used to monitor disease - higher VAF indicates higher tumor load; reduction in VAF after treatment indicates response.",
+    "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "International"],
+    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
+    "clinicalAvailability": "Commercially available",
+    "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "numPublications": 15,
+    "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
+    "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
+    "technologyDifferentiator": "Only commercially available hematology liquid biopsy combining cfDNA and cfRNA analysis. Can reduce need for bone marrow biopsies. Key differentiators: (1) cfRNA enables higher sensitivity and fusion detection; (2) T/B-cell clonality for lymphoid/plasma cell malignancy diagnosis; (3) TTV viral load as immune competence marker for transplant patients; (4) CAR-T cell detection and monitoring in CSF; (5) CSF samples for CNS involvement characterization. AI/machine learning integrated into analysis pipeline.",
+    "submissionInfo": {
+      "submittedBy": "Jeffrey Owen",
+      "submitterEmail": "jowen@genomictestingcooperative.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Submitted alongside Liquid Trace Solid Tumor. Entered as separate test due to distinct cancer type focus and additional hematology-specific biomarkers (T/B clonality, TTV, CAR-T detection)."
     }
   },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
