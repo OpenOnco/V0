@@ -7702,7 +7702,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.sensitivity ? `${test.sensitivity}%` : '—'}
-                        <CitationTooltip citations={test.sensitivityCitations} />
+                        {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
                       </span>
                     </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
@@ -7710,7 +7710,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.specificity ? `${test.specificity}%` : '—'}
-                        <CitationTooltip citations={test.specificityCitations} />
+                        {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
                       </span>
                     </div>
                     {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} />}
@@ -7721,7 +7721,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD (Limit of Detection)</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.lod ? formatLOD(test.lod) : '—'}
-                        <CitationTooltip citations={test.lodCitations} />
+                        {test.lod && <CitationTooltip citations={test.lodCitations} />}
                       </span>
                     </div>
                     {test.lod95 && (
