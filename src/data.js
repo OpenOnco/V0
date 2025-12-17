@@ -1,8 +1,262 @@
 // ============================================
-// Consolidated Data & Configuration
-// All test data arrays and site configuration
+// DATA.JS - OpenOnco Consolidated Data
+// Last updated: December 17, 2025 (added Liquid Trace Solid Tumor tds-20, Liquid Trace Hematology tds-21)
+// ============================================
+//
+// ┌─────────────────────────────────────────────────────────────────┐
+// │                        QUICK REFERENCE                          │
+// ├─────────────────────────────────────────────────────────────────┤
+// │ SECTION              │ START LINE  │ LAST ID    │ NEXT ID       │
+// ├─────────────────────────────────────────────────────────────────┤
+// │ MRD Tests            │ ~262        │ mrd-24     │ mrd-25        │
+// │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
+// │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
+// │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
+// │ TRM Tests            │ ~2919       │ trm-12     │ trm-13        │
+// │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
+// │ TDS IVD Kits         │ ~4155       │ tds-kit-11 │ tds-kit-12    │
+// │ ALZ Blood Tests      │ ~4456       │ alz-9      │ alz-10        │
+// │ Changelog            │ ~4841       │ --         │ --            │
+// └─────────────────────────────────────────────────────────────────┘
+//
+// LINE NUMBERS ARE APPROXIMATE - use Ctrl+F to find exact insertion points
+// Search for "// INSERT NEW [CATEGORY] TEST HERE" markers
+//
+// ============================================
+// TEMPLATES - Copy, fill in, paste at insertion point
 // ============================================
 
+/*
+┌─────────────────────────────────────────────────────────────────┐
+│ MRD TEST TEMPLATE                                               │
+│ Insert before: "// IVD KITS - Laboratory kits"                  │
+│ Search for: "// INSERT NEW MRD TEST HERE"                       │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    "id": "mrd-XX",
+    "sampleCategory": "Blood/Plasma",
+    "name": "",
+    "vendor": "",
+    "approach": "Tumor-informed",  // or "Tumor-naïve"
+    "method": "",
+    "cancerTypes": [],
+    "indicationsNotes": "",
+    "sensitivity": null,
+    "sensitivityNotes": "",
+    "specificity": null,
+    "specificityNotes": "",
+    "lod": "",
+    "lodNotes": "",
+    "requiresTumorTissue": "Yes",
+    "requiresMatchedNormal": "Yes",
+    "variantsTracked": "",
+    "initialTat": null,
+    "initialTatNotes": "",
+    "followUpTat": null,
+    "followUpTatNotes": "",
+    "bloodVolume": null,
+    "bloodVolumeNotes": "",
+    "fdaStatus": "CLIA LDT",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "",
+    "cptCodes": "",
+    "clinicalAvailability": "",
+    "clinicalTrials": "",
+    "clinicalSettings": ["Post-Surgery", "Surveillance"],
+    "totalParticipants": null,
+    "numPublications": null
+  },
+
+┌─────────────────────────────────────────────────────────────────┐
+│ ECD TEST TEMPLATE                                               │
+│ Insert before: "// IVD KITS - Self-Collection"                  │
+│ Search for: "// INSERT NEW ECD TEST HERE"                       │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    "id": "ecd-XX",
+    "sampleCategory": "Blood/Plasma",
+    "name": "",
+    "vendor": "",
+    "testScope": "Single-cancer (TYPE)",  // or "Multi-cancer (MCED)"
+    "approach": "Blood-based cfDNA screening (plasma)",
+    "method": "",
+    "cancerTypes": [],
+    "targetPopulation": "",
+    "indicationGroup": "",
+    "sensitivity": null,
+    "sensitivityCitations": "",
+    "stageISensitivity": null,
+    "stageIISensitivity": null,
+    "stageIIISensitivity": null,
+    "stageIVSensitivity": null,
+    "specificity": null,
+    "specificityCitations": "",
+    "ppv": null,
+    "npv": null,
+    "fdaStatus": "CLIA LDT",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "",
+    "clinicalAvailability": "",
+    "availableRegions": ["US"],
+    "tat": "",
+    "sampleType": "",
+    "cptCode": "",
+    "listPrice": null,
+    "screeningInterval": "",
+    "clinicalTrials": "",
+    "totalParticipants": null,
+    "numPublications": null
+  },
+
+┌─────────────────────────────────────────────────────────────────┐
+│ TRM TEST TEMPLATE                                               │
+│ Insert before: "];" that ends trmTestData                       │
+│ Search for: "// INSERT NEW TRM TEST HERE"                       │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    "id": "trm-XX",
+    "sampleCategory": "Blood/Plasma",
+    "name": "",
+    "vendor": "",
+    "approach": "Tumor-naïve",  // or "Tumor-informed"
+    "method": "",
+    "cancerTypes": [],
+    "targetPopulation": "",
+    "responseDefinition": "",
+    "indicationsNotes": "",
+    "sensitivity": null,
+    "specificity": null,
+    "lod": "",
+    "lodNotes": "",
+    "fdaStatus": "CLIA LDT",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "",
+    "clinicalAvailability": "",
+    "availableRegions": ["US"],
+    "tat": "",
+    "bloodVolume": null,
+    "clinicalTrials": "",
+    "totalParticipants": null,
+    "numPublications": null,
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No"
+  },
+
+┌─────────────────────────────────────────────────────────────────┐
+│ TDS TEST TEMPLATE (Central Lab Service)                         │
+│ Insert before: "// IVD KITS - Laboratory Kits for TDS"          │
+│ Search for: "// INSERT NEW TDS TEST HERE"                       │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    "id": "tds-XX",
+    "name": "",
+    "vendor": "",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Tissue",  // or "Blood/Plasma"
+    "approach": "Tissue CGP",  // or "Liquid CGP", "Gene Expression Profiling"
+    "method": "",
+    "methodCitations": "",
+    "genesAnalyzed": null,
+    "geneListUrl": "",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI"],
+    "cancerTypes": ["All solid tumors"],
+    "targetPopulation": "",
+    "fdaStatus": "CLIA LDT",
+    "fdaCompanionDxCount": null,
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": [],
+    "nccnGuidelinesNotes": "",
+    "tat": "",
+    "sampleRequirements": "",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "",
+    "listPrice": null,
+    "cptCodes": "",
+    "clinicalAvailability": "",
+    "numPublications": null
+  },
+
+┌─────────────────────────────────────────────────────────────────┐
+│ TDS IVD KIT TEMPLATE                                            │
+│ Insert before: "];" that ends tdsTestData                       │
+│ Search for: "// INSERT NEW TDS KIT HERE"                        │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    "id": "tds-kit-XX",
+    "name": "",
+    "vendor": "",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "",
+    "genesAnalyzed": null,
+    "cancerTypes": [],
+    "indicationsNotes": "",
+    "fdaStatus": "FDA-approved",  // or "CE-IVD", "RUO"
+    "reimbursement": "",
+    "clinicalAvailability": "",
+    "technologyDifferentiator": ""
+  },
+
+┌─────────────────────────────────────────────────────────────────┐
+│ ALZ BLOOD TEST TEMPLATE                                         │
+│ Insert before: "];" that ends alzBloodTestData                  │
+│ Search for: "// INSERT NEW ALZ TEST HERE"                       │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    "id": "alz-XX",
+    "sampleCategory": "Blood/Plasma",
+    "name": "",
+    "vendor": "",
+    "approach": "Immunoassay",  // or "Mass spectrometry"
+    "method": "",
+    "biomarkers": [],
+    "primaryBiomarker": "",
+    "targetPopulation": "",
+    "indicationsNotes": "",
+    "sensitivity": null,
+    "sensitivityNotes": "",
+    "specificity": null,
+    "specificityNotes": "",
+    "concordanceWithPET": null,
+    "concordanceWithCSF": null,
+    "tat": "",
+    "sampleRequirements": "",
+    "fdaStatus": "CLIA LDT",
+    "reimbursement": "Coverage varies",
+    "reimbursementNote": "",
+    "listPrice": null,
+    "clinicalAvailability": "",
+    "availableRegions": ["US"],
+    "totalParticipants": null,
+    "numPublications": null,
+    "technologyDifferentiator": ""
+  },
+
+┌─────────────────────────────────────────────────────────────────┐
+│ CHANGELOG ENTRY TEMPLATE                                        │
+│ Insert at TOP of DATABASE_CHANGELOG array                       │
+│ Search for: "export const DATABASE_CHANGELOG"                   │
+└─────────────────────────────────────────────────────────────────┘
+  {
+    date: 'Mon DD, YYYY',
+    type: 'added',  // or 'updated', 'feature'
+    testId: 'xxx-XX',
+    testName: '',
+    vendor: '',
+    category: 'TDS',  // MRD, ECD, TRM, TDS, ALZ
+    description: '',
+    contributor: null,  // or 'Name'
+    affiliation: 'OpenOnco',  // or 'Vendor Name (vendor)'
+    citation: null  // or 'https://...'
+  },
+*/
+
+// ============================================
+// TEST DATA ARRAYS START HERE
+// ============================================
 
 // MRD Tests
 export const mrdTestData = [
@@ -1422,6 +1676,8 @@ export const mrdTestData = [
     "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance."
   },
   // ============================================
+  // INSERT NEW MRD TEST HERE (above this line, before IVD KITS)
+  // ============================================
   // IVD KITS - Laboratory kits (not central lab services)
   // ============================================
   {
@@ -2299,6 +2555,8 @@ export const ecdTestData = [
     "vendorRequestedChanges": "2025-12-15: Added at vendor request (Chris Sale, CSO). Confirmed test is for symptomatic hematuria patients (diagnostic workup), not asymptomatic screening. Currently UKCA marked; CE-IVDR pending; US LDT route planned. Additional trial data expected from 2 hematuria studies + real-world surveillance study."
   },
   // ============================================
+  // INSERT NEW ECD TEST HERE (above this line, before IVD KITS)
+  // ============================================
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
   {
@@ -3004,6 +3262,7 @@ export const trmTestData = [
     "technologyDifferentiator": "Methylation-based tumor fraction quantification offers advantages over genomic VAF methods: (1) Tracks thousands of methylation loci vs handful of coding loci for higher sensitivity; (2) Not confounded by CNAs that affect genomic max-MAF estimates; (3) Excludes non-tumor noise (including CHIP) without requiring matched normal sequencing; (4) Validated precision down to 0.01% TF. Uses same Guardant Infinity platform as Reveal MRD, Shield, and Shield MCD.",
     "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with epigenetic tumor fraction (epiTF) quantification."
   }
+  // INSERT NEW TRM TEST HERE (above this line, add comma after previous entry)
 ];
 
 // TDS Tests
@@ -3811,6 +4070,200 @@ export const tdsTestData = [
     "regulatoryStatusNotes": "FDA PMA approved December 2025. Breakthrough Device Designation 2019. In NCCN and AUA/SUO guidelines. First protein structure-based cancer blood test to receive FDA approval.",
     "vendorDataSource": "Sameer Rohatgi (Cleveland Diagnostics) communication Dec 2025"
   },
+  {
+    "id": "tds-19",
+    "name": "Oncotype DX Breast Recurrence Score",
+    "vendor": "Exact Sciences",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Tissue",
+    "approach": "Gene Expression Profiling",
+    "method": "21-gene RT-PCR assay analyzing expression of 16 cancer-related genes and 5 reference genes in FFPE tumor tissue; generates Recurrence Score (0-100) that is both prognostic for 9-year distant recurrence risk and predictive of adjuvant chemotherapy benefit.",
+    "methodCitations": "https://www.exactsciences.com/cancer-testing/oncotype-dx-breast-recurrence-score-providers | https://pubmed.ncbi.nlm.nih.gov/15591335/",
+    "genesAnalyzed": 21,
+    "genesAnalyzedNotes": "16 cancer-related genes (proliferation: Ki67, STK15, BIRC5, CCNB1, MYBL2; HER2 group: GRB7, HER2; estrogen: ER, PGR, BCL2, SCUBE2; invasion: MMP11, CTSL2; other: GSTM1, BAG1, CD68) plus 5 reference/housekeeping genes (ACTB, GAPDH, GUS, RPLPO, TFRC).",
+    "genesAnalyzedCitations": "https://www.oncotarget.com/article/28148/text/",
+    "geneListUrl": "https://www.exactsciences.com/cancer-testing/oncotype-dx-breast-recurrence-score-providers",
+    "biomarkersReported": ["Gene Expression Score", "Recurrence Score (0-100)", "ER", "PR", "HER2"],
+    "biomarkersReportedNotes": "Provides continuous Recurrence Score (0-100) predicting 9-year distant recurrence risk and chemotherapy benefit. Also reports quantitative RNA expression of ER, PR, and HER2.",
+    "biomarkersReportedCitations": "https://www.exactsciences.com/cancer-testing/oncotype-dx-breast-recurrence-score-providers",
+    "cancerTypes": ["Breast cancer (HR+, HER2-)"],
+    "cancerTypesNotes": "Indicated for early-stage (Stage I, II, IIIA), hormone receptor-positive, HER2-negative invasive breast cancer. Applicable to node-negative or node-positive (1-3 nodes) disease.",
+    "cancerTypesCitations": "https://www.exactsciences.com/cancer-testing/oncotype-dx-breast-recurrence-score-patients",
+    "targetPopulation": "Patients with early-stage (Stage I-IIIA), HR+, HER2-, node-negative or node-positive (1-3 nodes) invasive breast cancer who are candidates for adjuvant systemic therapy",
+    "targetPopulationCitations": "https://www.nccn.org/guidelines/category_1",
+    "fdaStatus": "CLIA LDT - CAP-accredited, CLIA-certified; not FDA approved",
+    "fdaStatusNotes": "Performed at Genomic Health (Exact Sciences) centralized laboratory in Redwood City, CA. CAP-accredited and CLIA-certified for high-complexity clinical laboratory testing. In clinical use since 2004.",
+    "fdaStatusCitations": "https://www.exactsciences.com/cancer-testing/oncotype-dx-breast-recurrence-score-invasive-ductal",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "preferred",
+    "nccnGuidelinesAligned": ["Breast Cancer"],
+    "nccnGuidelinesNotes": "NCCN-preferred multigene assay with Category 1 evidence for node-negative and postmenopausal node-positive (1-3 nodes) HR+, HER2- breast cancer. Only test with Level 1 evidence for both prognosis AND prediction of chemotherapy benefit. Incorporated into AJCC 8th edition staging.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1",
+    "otherGuidelinesRecommended": ["ASCO", "ESMO", "St Gallen", "NICE"],
+    "otherGuidelinesNotes": "Incorporated into all major international breast cancer treatment guidelines including ASCO, ESMO, St Gallen Consensus, and NICE (UK). Only genomic assay with highest recommendation in 5 major international guidelines.",
+    "otherGuidelinesCitations": "https://www.oncotypedxtest.com/healthcare-professionals/oncotype-dx-recommended-by-international-guidelines",
+    "tat": "7-14 days",
+    "tatNotes": "Results typically available within 7-10 days from specimen receipt at lab; approximately 2 weeks from sample collection. Performed at centralized Genomic Health laboratory in Redwood City, CA.",
+    "tatCitations": "https://www.oncotypeiq.com/en-GB/breast-cancer/healthcare-professionals/oncotype-dx-breast-recurrence-score/how-to-order-a-test",
+    "sampleRequirements": "FFPE tumor tissue from core biopsy, lumpectomy, or mastectomy; formalin-fixed; 5 μm unstained slides or tissue block",
+    "sampleRequirementsNotes": "No additional procedure required - uses tissue already collected during biopsy or surgery. Specimen transported in specially prepared container to centralized laboratory.",
+    "sampleRequirementsCitations": "https://www.exactsciences.com/cancer-testing/oncotype-dx-breast-recurrence-score-patients",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare and majority of private insurers cover for eligible patients. Medicare FFS coverage for patients meeting clinical criteria. 80+ commercial health plans provide coverage. Exact Sciences Genomic Access Program (GAP) available for financial assistance.",
+    "reimbursementCitations": "https://precisiononcology.exactsciences.com/billing-financial-coverage",
+    "listPrice": 4000,
+    "listPriceNotes": "Approximately $4,000-$4,500.",
+    "listPriceCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5310948/",
+    "cptCodes": "81519",
+    "cptCodesNotes": "CPT 81519 for Oncotype DX Breast Recurrence Score; CPT 0045U for DCIS Score.",
+    "cptCodesCitations": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleId=55230",
+    "codeType": "PLA",
+    "medicareRate": 3416,
+    "medicareRateNotes": "Medicare reimbursement rate approximately $3,416.",
+    "medicareRateCitations": "https://www.genomeweb.com/molecular-diagnostics/cms-restores-reimbursement-rate-oncotype-dx-breast-cancer-test",
+    "medicareStatus": "Priced",
+    "adltStatus": true,
+    "availableRegions": ["US", "UK", "EU", "Canada", "Israel", "Japan", "Australia", "International"],
+    "availableRegionsNotes": "Available in 90+ countries. Publicly funded in UK, Ireland, Switzerland, Spain, Israel, Greece, and Canada. Samples shipped to centralized Genomic Health laboratory in Redwood City, CA (US) for testing.",
+    "availableRegionsCitations": "https://www.prnewswire.com/news-releases/publication-in-the-new-england-journal-of-medicine-confirms-that-tens-of-thousands-of-women-with-node-positive-early-stage-breast-cancer-can-avoid-chemotherapy-with-the-oncotype-dx-test-301435658.html",
+    "clinicalAvailability": "Commercially available since 2004; over 1 million patients tested worldwide",
+    "clinicalAvailabilityCitations": "https://www.exactsciences.com/en-gb/cancer-testing/oncotype-dx-tests",
+    "clinicalTrials": "TAILORx (NCT00310180; 10,273 patients); RxPONDER (NCT01272037; 5,083 patients); NSABP B-14; NSABP B-20; transATAC; SWOG-8814",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT00310180 | https://clinicaltrials.gov/study/NCT01272037",
+    "clinicalTrialsNotes": "Only multigene assay with Level 1 evidence from prospective randomized trials (TAILORx, RxPONDER) demonstrating prediction of chemotherapy benefit. TAILORx showed majority of node-negative patients can safely forgo chemotherapy; RxPONDER extended findings to node-positive postmenopausal patients.",
+    "totalParticipants": 15000,
+    "totalParticipantsNotes": "Over 15,000 patients in pivotal prospective trials (TAILORx + RxPONDER). Over 1 million patients tested commercially worldwide.",
+    "numPublications": 500,
+    "numPublicationsPlus": true,
+    "numPublicationsSource": "pubmed-estimate",
+    "numPublicationsNotes": "Over 500 peer-reviewed publications. Bibliometric analysis identified 530+ publications as of 2016; publication count has increased substantially since TAILORx (2018) and RxPONDER (2021) results.",
+    "numPublicationsCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5459968/",
+    "publicationsExampleCitations": ["Paik S et al. N Engl J Med 2004;351:2817-2826", "Sparano JA et al. N Engl J Med 2018;379:111-121", "Kalinsky K et al. N Engl J Med 2021;385:2336-2347"],
+    "technologyDifferentiator": "First commercially available multigene assay for breast cancer (2004). Pioneered genomic-guided treatment decisions in oncology. Only test with Level 1 evidence from prospective randomized trials (TAILORx, RxPONDER) demonstrating prediction of chemotherapy benefit. Transformed standard of care by enabling personalized chemotherapy decisions, sparing hundreds of thousands of patients from unnecessary chemotherapy. Gene expression profiling approach (not mutation detection) - fundamentally different methodology from CGP tests.",
+    "regulatoryStatusNotes": "CLIA-certified LDT in clinical use since 2004. Not FDA approved but considered standard of care with Category 1 NCCN recommendation. Incorporated into AJCC 8th edition pathological prognostic staging.",
+    "historicalSignificance": "Pioneered the era of genomic-guided personalized cancer care for breast cancer. In clinical use for over 20 years with over 1 million patients tested globally.",
+    "submissionInfo": {
+      "submittedBy": "Dr. Don Johann",
+      "submitterEmail": "djjohann@uams.edu",
+      "submitterType": "Independent Expert",
+      "submitterAffiliation": "University of Arkansas for Medical Sciences",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Surprise you do not list this test, OncoType Dx, given the disruptive impact it has had since 2004. Please consider adding. This website is outstanding! Thank you."
+    }
+  },
+  {
+    "id": "tds-20",
+    "name": "Liquid Trace Solid Tumor",
+    "vendor": "Genomic Testing Cooperative (GTC)",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Combined cfDNA and cfRNA NGS from peripheral blood or CSF. cfDNA analysis detects SNVs, indels, CNAs, and chromosomal structural abnormalities. cfRNA analysis (>1,600 genes) detects gene fusions, expression levels, and alternative splicing variants. Includes TMB evaluation, T/B-cell clonality, HLA Class I genotyping, and viral detection (EBV, HPV, TTV).",
+    "methodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "methodNotes": "Unique cfDNA + cfRNA combination provides higher sensitivity than cfDNA-only liquid biopsies. cfRNA captures fusion genes from chromosomal translocations and expression-level changes that cfDNA misses. Studies show RNA sequencing is more sensitive for some mutations since cancer cells contain multiple RNA copies but only one mutated DNA copy.",
+    "genesAnalyzed": 1600,
+    "genesAnalyzedNotes": ">1,600 genes analyzed via cfRNA; cfDNA gene count not specified separately. Combined approach.",
+    "genesAnalyzedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "geneListUrl": "https://genomictestingcooperative.com/genomic-tests/cfdna-genes/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "Gene Expression", "TMB", "Chromosomal Abnormalities", "T/B-cell Clonality", "HLA Genotyping", "Viral (EBV, HPV, TTV)"],
+    "biomarkersReportedNotes": "cfRNA enables fusion detection and expression profiling not available from cfDNA-only tests. Viral detection includes EBV (lymphoid neoplasms), HPV (anogenital/oropharyngeal cancers), and TTV (immune competence marker).",
+    "biomarkersReportedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "cancerTypes": ["Lung", "Brain/CNS", "Breast", "Thyroid", "Colorectal", "Oropharyngeal", "Pancreatic", "Ovarian", "Prostate", "Other solid tumors"],
+    "cancerTypesCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling for diagnosis, treatment selection, or monitoring. CSF samples accepted for CNS tumors (can add MGMT methylation analysis for brain tumors when tumor DNA detected).",
+    "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
+    "nccnRecommended": false,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer", "Ovarian Cancer"],
+    "nccnGuidelinesNotes": "Covers guideline-recommended biomarkers. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "tat": "5-7 days",
+    "tatNotes": "RNA stability is 48-72 hours from blood draw; DNA stability is 7 days. Samples received beyond 72 hours may include only DNA results.",
+    "tatCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "sampleRequirements": "Peripheral blood: 10mL in EDTA tube. CSF: 7-10mL optimal (5mL minimum). Ship blood with cold pack (not directly contacting tube) overnight.",
+    "sampleRequirementsNotes": "For blood: RNA stability 48-72 hours, DNA stability 7 days. For CSF: Ship ASAP overnight, do not use anticoagulants, use clear tubes.",
+    "sampleRequirementsCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
+    "lodNotes": "Detection sensitivity varies by variant type and prior history. Tumor-informed or prior history samples achieve highest sensitivity.",
+    "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "International"],
+    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
+    "clinicalAvailability": "Commercially available",
+    "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "numPublications": 15,
+    "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
+    "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
+    "technologyDifferentiator": "Only commercially available liquid biopsy combining cfDNA and cfRNA analysis. cfRNA provides: (1) Higher sensitivity for some mutations due to multiple RNA copies per cell; (2) Fusion gene detection from chromosomal translocations; (3) Expression-level data including alternative splicing. Also includes T/B-cell clonality, HLA genotyping, and viral detection (EBV, HPV, TTV) not found in most liquid CGP tests. CSF sample option for CNS tumors. AI/machine learning integrated into analysis pipeline.",
+    "submissionInfo": {
+      "submittedBy": "Jeffrey Owen",
+      "submitterEmail": "jowen@genomictestingcooperative.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Submitted as TRM but reclassified to TDS (Liquid CGP) based on primary use case of comprehensive genomic profiling for treatment selection. Heme version submitted separately."
+    }
+  },
+  {
+    "id": "tds-21",
+    "name": "Liquid Trace Hematology",
+    "vendor": "Genomic Testing Cooperative (GTC)",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Combined cfDNA and cfRNA NGS from peripheral blood or CSF. Highly sensitive pan-cancer test for hematologic malignancies. cfRNA (>1,600 genes) enables detection of mutations and fusions often missed by cfDNA-only testing. Includes T/B-cell clonality detection, HLA Class I genotyping, and viral detection (TTV as immune competence marker).",
+    "methodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "methodNotes": "Can significantly reduce need for bone marrow biopsies. Detects chromosomal abnormalities, translocations, and gene amplifications from liquid biopsy. CSF samples ideally suited for characterizing lymphoma and multiple myeloma with CNS involvement.",
+    "genesAnalyzed": 1600,
+    "genesAnalyzedNotes": ">1,600 genes analyzed via cfRNA; combined cfDNA + cfRNA approach.",
+    "genesAnalyzedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "geneListUrl": "https://genomictestingcooperative.com/genomic-tests/cfdna-genes/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "Gene Expression", "Chromosomal Abnormalities", "T/B-cell Clonality", "HLA Genotyping", "TTV Viral Load", "CAR-T Detection"],
+    "biomarkersReportedNotes": "T/B-cell clonality detection important for diagnosis and monitoring of lymphoid and plasma cell malignancies. TTV (Torque Teno Virus) load serves as immune competence marker - high TTV associated with infection risk, low TTV with rejection risk in transplant patients. Can detect and monitor CAR-T cells in CSF.",
+    "biomarkersReportedCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "cancerTypes": ["Multiple Myeloma", "Lymphoma", "Acute Lymphoblastic Leukemia (ALL)", "Acute Myeloid Leukemia (AML)", "Myelodysplastic Syndrome (MDS)", "Chronic Myelomonocytic Leukemia (CMML)", "Myeloproliferative Neoplasms (MPN)", "VEXAS Syndrome", "EBV-related Neoplasms", "Hypereosinophilia"],
+    "cancerTypesCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "targetPopulation": "Patients with hematologic malignancies requiring comprehensive genomic profiling for diagnosis, classification, treatment selection, or monitoring. Alternative to bone marrow biopsy in many cases. CSF samples for CNS involvement characterization and CAR-T monitoring.",
+    "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
+    "nccnRecommended": false,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["Acute Myeloid Leukemia", "Multiple Myeloma", "B-Cell Lymphomas"],
+    "nccnGuidelinesNotes": "Covers guideline-recommended biomarkers for hematologic malignancies. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "tat": "5-7 days",
+    "tatNotes": "RNA stability is 48-72 hours from blood draw; DNA stability is 7 days. Samples received beyond 72 hours may include only DNA results.",
+    "tatCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "sampleRequirements": "Peripheral blood: 10mL in EDTA tube. CSF: 7-10mL optimal (5mL minimum). Ship blood with cold pack (not directly contacting tube) overnight.",
+    "sampleRequirementsNotes": "For blood: RNA stability 48-72 hours, DNA stability 7 days. For CSF: Ship ASAP overnight, do not use anticoagulants, use clear tubes.",
+    "sampleRequirementsCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
+    "lodNotes": "Detection sensitivity varies by variant type and prior history. VAF used to monitor disease - higher VAF indicates higher tumor load; reduction in VAF after treatment indicates response.",
+    "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "International"],
+    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
+    "clinicalAvailability": "Commercially available",
+    "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "numPublications": 15,
+    "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
+    "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
+    "technologyDifferentiator": "Only commercially available hematology liquid biopsy combining cfDNA and cfRNA analysis. Can reduce need for bone marrow biopsies. Key differentiators: (1) cfRNA enables higher sensitivity and fusion detection; (2) T/B-cell clonality for lymphoid/plasma cell malignancy diagnosis; (3) TTV viral load as immune competence marker for transplant patients; (4) CAR-T cell detection and monitoring in CSF; (5) CSF samples for CNS involvement characterization. AI/machine learning integrated into analysis pipeline.",
+    "submissionInfo": {
+      "submittedBy": "Jeffrey Owen",
+      "submitterEmail": "jowen@genomictestingcooperative.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Submitted alongside Liquid Trace Solid Tumor. Entered as separate test due to distinct cancer type focus and additional hematology-specific biomarkers (T/B clonality, TTV, CAR-T detection)."
+    }
+  },
+  // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
   // IVD KITS - Laboratory Kits for Treatment Decision Support / CGP
   // ============================================
@@ -4108,6 +4561,7 @@ export const tdsTestData = [
     "numPublicationsPlus": true,
     "technologyDifferentiator": "FDA-approved companion diagnostic for FLT3-targeted AML therapies. Distributed IVD kit enables in-house testing on ABI genetic analyzers. Essential for quizartinib, midostaurin, and gilteritinib eligibility."
   }
+  // INSERT NEW TDS KIT HERE (above this line, add comma after previous entry)
 ];
 
 // ALZ Blood Tests
@@ -4492,10 +4946,23 @@ export const alzBloodTestData = [
     "isClinicalLDT": false,
     "technologyDifferentiator": "Unique multi-modal approach combining blood biomarkers with digital cognitive assessment. Designed for efficient screening and staging. Partnership with Eisai provides integration with AD therapeutic development. Addresses need for comprehensive, accessible AD evaluation."
   }
+  // INSERT NEW ALZ TEST HERE (above this line, add comma after previous entry)
 ];
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'tds-19',
+    testName: 'Oncotype DX Breast Recurrence Score',
+    vendor: 'Exact Sciences',
+    category: 'TDS',
+    description: 'Added foundational 21-gene RT-PCR breast cancer assay (in clinical use since 2004). Gene expression profiling for HR+/HER2- early-stage breast cancer. NCCN-preferred with Category 1 evidence. Only test with Level 1 evidence from prospective randomized trials (TAILORx n=10,273; RxPONDER n=5,083) for both prognosis AND chemotherapy benefit prediction. Over 1 million patients tested worldwide. 500+ publications. Medicare covered (~$3,416). First multigene assay to transform breast cancer treatment decisions.',
+    contributor: 'Dr. Don Johann',
+    affiliation: 'UAMS (independent expert)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/29860917/ | https://pubmed.ncbi.nlm.nih.gov/34914590/'
+  },
   {
     date: 'Dec 16, 2025',
     type: 'added',
