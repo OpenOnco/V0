@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 17, 2025 (added GTC Liquid Trace: tds-20 Solid Tumor, tds-21 Hematology, trm-13 Therapy Monitoring; vendor updates for CSF leadership, chimerism/MRD capabilities)
+// Last updated: December 17, 2025 (added GTC Liquid Trace: tds-20 Solid Tumor, tds-21 Hematology, trm-13 Therapy Monitoring; Medicare/NYSDOH/EU/UK coverage; CSF leadership, chimerism/MRD capabilities)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -3288,11 +3288,11 @@ export const trmTestData = [
     "lodNotes": "Detection sensitivity varies by variant type. Serial monitoring at consistent time points enables tracking of relative changes even at low VAF.",
     "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
     "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Contact GTC for current payer coverage information.",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. NYSDOH approved. CE-marked for EU. UKCA certified for UK.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare covered. Contact GTC for current payer coverage information.",
     "clinicalAvailability": "Commercially available",
-    "availableRegions": ["US", "International"],
+    "availableRegions": ["US", "EU", "UK"],
     "tat": "5-7 days",
     "tatNotes": "RNA stability 48-72 hours from blood draw; DNA stability 7 days.",
     "sampleType": "Peripheral blood (10mL EDTA) or CSF (7-10mL)",
@@ -4224,7 +4224,7 @@ export const tdsTestData = [
     "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling for diagnosis, treatment selection, or monitoring. CSF samples accepted for CNS tumors (can add MGMT methylation analysis for brain tumors when tumor DNA detected).",
     "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
     "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. NYSDOH approved. CE-marked for EU. UKCA certified for UK.",
     "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
     "nccnRecommended": false,
     "nccnAlignmentType": "biomarker-coverage",
@@ -4239,10 +4239,10 @@ export const tdsTestData = [
     "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
     "lodNotes": "Detection sensitivity varies by variant type and prior history. Tumor-informed or prior history samples achieve highest sensitivity.",
     "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Contact GTC for current payer coverage information.",
-    "availableRegions": ["US", "International"],
-    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare covered. Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "EU", "UK"],
+    "availableRegionsNotes": "NYSDOH approved. CE-marked for EU. UKCA certified for UK. US-based laboratory with international representatives.",
     "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
     "clinicalAvailability": "Commercially available",
     "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
@@ -4286,7 +4286,7 @@ export const tdsTestData = [
     "targetPopulation": "Patients with hematologic malignancies requiring comprehensive genomic profiling for diagnosis, classification, treatment selection, or monitoring. Alternative to bone marrow biopsy in many cases. CSF samples for CNS involvement characterization and CAR-T monitoring.",
     "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
     "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. NYSDOH approved. CE-marked for EU. UKCA certified for UK.",
     "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
     "nccnRecommended": false,
     "nccnAlignmentType": "biomarker-coverage",
@@ -4301,10 +4301,10 @@ export const tdsTestData = [
     "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
     "lodNotes": "Detection sensitivity varies by variant type and prior history. VAF used to monitor disease - higher VAF indicates higher tumor load; reduction in VAF after treatment indicates response.",
     "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Contact GTC for current payer coverage information.",
-    "availableRegions": ["US", "International"],
-    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare covered. Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "EU", "UK"],
+    "availableRegionsNotes": "NYSDOH approved. CE-marked for EU. UKCA certified for UK. US-based laboratory with international representatives.",
     "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
     "clinicalAvailability": "Commercially available",
     "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
@@ -5030,6 +5030,42 @@ export const alzBloodTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'tds-20',
+    testName: 'Liquid Trace Solid Tumor',
+    vendor: 'Genomic Testing Cooperative (GTC)',
+    category: 'TDS',
+    description: 'Added unique cfDNA + cfRNA combined liquid biopsy for solid tumors. Only commercially available liquid biopsy combining both analytes. >1,600 genes via cfRNA. cfRNA enables: higher sensitivity (multiple RNA copies vs single DNA copy), fusion gene detection from chromosomal translocations, expression-level data. LEADING PROVIDER FOR CSF LIQUID BIOPSY - optimal for CNS tumors (glioblastoma, CNS lymphomas/leukemias) and leptomeningeal disease. Includes T/B-cell clonality, HLA genotyping, viral detection (EBV, HPV, TTV). Reports include VAF + mutant molecules/mL for therapeutic monitoring. Medicare covered. NYSDOH approved. CE-marked (EU), UKCA certified (UK).',
+    contributor: 'Jeffrey Owen',
+    affiliation: 'Genomic Testing Cooperative (vendor)',
+    citation: 'https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/'
+  },
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'tds-21',
+    testName: 'Liquid Trace Hematology',
+    vendor: 'Genomic Testing Cooperative (GTC)',
+    category: 'TDS',
+    description: 'Added unique cfDNA + cfRNA liquid biopsy for hematologic malignancies. Can significantly reduce need for bone marrow biopsies. Key differentiators: (1) cfDNA chimerism analysis for post-transplant relapse prediction; (2) MRD via mutations AND chromosomal abnormalities (beyond Signatera-style mutation-only approach); (3) T/B-cell clonality; (4) TTV viral load as immune competence marker; (5) CAR-T detection/monitoring in CSF. Published validation: cfDNA detected MORE mutations than bone marrow (92 vs 61); cfDNA chimerism predicted relapse better than CD3+ chimerism (Rowley et al. Cancers 2025). Medicare covered. NYSDOH approved. CE-marked (EU), UKCA certified (UK).',
+    contributor: 'Jeffrey Owen',
+    affiliation: 'Genomic Testing Cooperative (vendor)',
+    citation: 'https://doi.org/10.3390/cancers17040625'
+  },
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'trm-13',
+    testName: 'Liquid Trace (Therapy Monitoring)',
+    vendor: 'Genomic Testing Cooperative (GTC)',
+    category: 'TRM',
+    description: 'Added therapy response monitoring entry for Liquid Trace. Only TRM test combining cfDNA + cfRNA. Reports include longitudinal VAF AND mutant molecules/mL tracking table for quantitative response assessment. Response definition: VAF/molecules decrease = response; increase = progression or emerging resistance. Covers both solid tumors and hematologic malignancies. CSF option for CNS involvement and leptomeningeal disease monitoring. For hematology: includes chimerism analysis and chromosomal abnormalities for post-transplant MRD. Medicare covered. NYSDOH approved. CE-marked (EU), UKCA certified (UK).',
+    contributor: 'Jeffrey Owen',
+    affiliation: 'Genomic Testing Cooperative (vendor)',
+    citation: 'https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/'
+  },
   {
     date: 'Dec 17, 2025',
     type: 'added',
