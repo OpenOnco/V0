@@ -6540,6 +6540,133 @@ const InfoIcon = ({ citations, notes }) => {
 };
 
 // ============================================
+// Citation Tooltip - Shows source icon after parameter values
+// ============================================
+const CitationTooltip = ({ citations }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 320;
+      const popupHeight = 150;
+      
+      let left = rect.left - popupWidth / 2 + rect.width / 2;
+      if (left + popupWidth > window.innerWidth - 20) {
+        left = window.innerWidth - popupWidth - 20;
+      }
+      if (left < 20) left = 20;
+      
+      let top = rect.bottom + 8;
+      if (top + popupHeight > window.innerHeight - 20) {
+        top = rect.top - popupHeight - 8;
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
+  
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      if (buttonRef.current && !buttonRef.current.contains(e.target) &&
+          popupRef.current && !popupRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+  
+  // Close on scroll
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = (e) => {
+      if (popupRef.current && popupRef.current.contains(e.target)) return;
+      setIsOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [isOpen]);
+  
+  if (!citations) return null;
+  
+  return (
+    <span className="inline-flex items-center ml-1">
+      <button 
+        ref={buttonRef}
+        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+        className="w-4 h-4 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600 hover:text-blue-700 text-[10px] font-medium inline-flex items-center justify-center transition-colors cursor-pointer"
+        title="View source"
+      >
+        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+      </button>
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[9999] w-80 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden" 
+          style={popupStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="bg-slate-100 px-3 py-2 flex items-center justify-between border-b border-slate-200">
+            <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Source</span>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
+              className="text-slate-400 hover:text-slate-600 p-0.5 rounded hover:bg-slate-200 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="p-3 max-h-40 overflow-y-auto">
+            <div className="space-y-1.5">
+              {citations.split('|').map((c, i) => {
+                const url = c.trim();
+                const isUrl = url.startsWith('http');
+                return (
+                  <a 
+                    key={i} 
+                    href={isUrl ? url : '#'} 
+                    target={isUrl ? "_blank" : undefined}
+                    rel={isUrl ? "noopener noreferrer" : undefined}
+                    className={`block text-xs ${isUrl ? 'text-[#2A63A4] hover:underline' : 'text-slate-600'} break-words`}
+                  >
+                    {isUrl ? (
+                      <span className="flex items-start gap-1">
+                        <svg className="w-3 h-3 flex-shrink-0 mt-0.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        <span>{url.length > 60 ? url.slice(0, 60) + '...' : url}</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-start gap-1">
+                        <svg className="w-3 h-3 flex-shrink-0 mt-0.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>{url}</span>
+                      </span>
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </span>
+  );
+};
+
+// ============================================
 // Expert Insight Component - Shows expert context on metrics
 // Attribution: Expert Advisors MR and SW
 // ============================================
@@ -6857,7 +6984,10 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
           <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
           {expertTopic && <ExpertInsight topic={expertTopic} />}
         </div>
-        <span className="text-sm font-medium text-gray-900">{displayValue}</span>
+        <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+          {displayValue}
+          <CitationTooltip citations={citations} />
+        </span>
       </div>
     );
   }
@@ -6869,7 +6999,10 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
         <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
         {expertTopic && <ExpertInsight topic={expertTopic} />}
       </span>
-      <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
+      <span className="text-sm font-medium text-gray-900 text-right inline-flex items-center">
+        {displayValue}
+        <CitationTooltip citations={citations} />
+      </span>
     </div>
   );
 };
