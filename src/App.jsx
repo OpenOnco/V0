@@ -4535,8 +4535,11 @@ const SubmissionsPage = () => {
     const vendorClean = vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
     // Clean domain to just alphanumeric for matching (e.g., "ryght.ai" -> "ryghtai")
     const domainClean = fullDomain.replace(/[^a-z0-9]/g, '');
-    // Check if vendor name appears in domain
-    return domainClean.includes(vendorClean);
+    // Get domain without TLD for matching (e.g., "genomictestingcooperativecom" -> "genomictestingcooperative")
+    const domainWithoutTld = fullDomain.split('.').slice(0, -1).join('').replace(/[^a-z0-9]/g, '');
+    // Check if vendor name appears in domain OR domain appears in vendor name
+    // This handles cases like "Genomic Testing Cooperative (GTC)" where vendor has extra text
+    return domainClean.includes(vendorClean) || vendorClean.includes(domainWithoutTld);
   };
 
   // Validate email based on submitter type
@@ -4583,6 +4586,7 @@ const SubmissionsPage = () => {
         { domain: 'sagadiagnostics.com', vendor: 'SAGA Diagnostics' },
         { domain: 'billiontoone.com', vendor: 'BillionToOne' },
         { domain: 'sophiagenetics.com', vendor: 'SOPHiA GENETICS' },
+        { domain: 'genomictestingcooperative.com', vendor: 'Genomic Testing Cooperative (GTC)' },
       ];
       
       const matchedVendor = knownVendorDomains.find(v => emailDomain === v.domain || emailDomain.endsWith('.' + v.domain));
