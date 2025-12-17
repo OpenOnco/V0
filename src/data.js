@@ -6109,6 +6109,453 @@ export const comparisonParams = {
 };
 
 // ============================================
+// External Resources & Interlinking
+// ============================================
+// Authoritative external resources for each category
+// Used for category page resource sections and glossary tooltips
+
+export const STANDARDS_BODIES = {
+  BLOODPAC: {
+    name: 'Blood Profiling Atlas in Cancer (BLOODPAC)',
+    shortName: 'BLOODPAC',
+    description: 'Cancer Moonshot consortium focused on liquid biopsy standards and data sharing',
+    url: 'https://www.bloodpac.org',
+    logo: null
+  },
+  FRIENDS: {
+    name: 'Friends of Cancer Research',
+    shortName: 'Friends of Cancer Research',
+    description: 'Non-profit advancing regulatory science and patient-focused drug development',
+    url: 'https://friendsofcancerresearch.org',
+    logo: null
+  },
+  NCI: {
+    name: 'National Cancer Institute',
+    shortName: 'NCI',
+    description: 'U.S. federal government\'s principal agency for cancer research',
+    url: 'https://www.cancer.gov',
+    logo: null
+  },
+  FDA: {
+    name: 'U.S. Food and Drug Administration',
+    shortName: 'FDA',
+    description: 'Federal agency responsible for protecting public health through regulation of medical devices',
+    url: 'https://www.fda.gov',
+    logo: null
+  },
+  NCCN: {
+    name: 'National Comprehensive Cancer Network',
+    shortName: 'NCCN',
+    description: 'Alliance of cancer centers developing clinical practice guidelines',
+    url: 'https://www.nccn.org',
+    logo: null
+  },
+  LUNGEVITY: {
+    name: 'LUNGevity Foundation',
+    shortName: 'LUNGevity',
+    description: 'Lung cancer patient advocacy and research organization',
+    url: 'https://www.lungevity.org',
+    logo: null
+  },
+  ILSA: {
+    name: 'International Liquid Biopsy Standardization Alliance',
+    shortName: 'ILSA',
+    description: 'FNIH-hosted global alliance for liquid biopsy standardization',
+    url: 'https://fnih.org/our-programs/international-liquid-biopsy-standardization-alliance-ilsa/',
+    logo: null
+  },
+  ASCO: {
+    name: 'American Society of Clinical Oncology',
+    shortName: 'ASCO',
+    description: 'Professional organization for physicians and oncology professionals',
+    url: 'https://www.asco.org',
+    logo: null
+  }
+};
+
+export const EXTERNAL_RESOURCES = {
+  // General resources applicable across categories
+  general: [
+    {
+      id: 'nci-liquid-biopsy',
+      title: 'What Is a Liquid Biopsy?',
+      source: 'NCI',
+      type: 'definition',
+      audience: ['patient', 'clinician'],
+      url: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/liquid-biopsy',
+      description: 'Patient-friendly definition of liquid biopsy from the National Cancer Institute'
+    },
+    {
+      id: 'nci-ctdna',
+      title: 'Circulating Tumor DNA (ctDNA)',
+      source: 'NCI',
+      type: 'definition',
+      audience: ['patient', 'clinician'],
+      url: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/ctdna',
+      description: 'NCI dictionary definition of ctDNA'
+    },
+    {
+      id: 'nci-liquid-biopsy-blog',
+      title: 'Liquid Biopsy: Using DNA in Blood to Detect, Track, and Treat Cancer',
+      source: 'NCI',
+      type: 'overview',
+      audience: ['patient'],
+      url: 'https://www.cancer.gov/news-events/cancer-currents-blog/2017/liquid-biopsy-detects-treats-cancer',
+      description: 'Comprehensive overview of liquid biopsy applications in cancer care'
+    },
+    {
+      id: 'ilsa-overview',
+      title: 'International Liquid Biopsy Standardization Alliance',
+      source: 'ILSA',
+      type: 'standards',
+      audience: ['clinician', 'researcher'],
+      url: 'https://fnih.org/our-programs/international-liquid-biopsy-standardization-alliance-ilsa/',
+      description: 'Global effort to standardize liquid biopsy testing and reporting'
+    }
+  ],
+  
+  // MRD-specific resources
+  MRD: [
+    {
+      id: 'bloodpac-mrd-lexicon',
+      title: 'BLOODPAC MRD Terminology Lexicon',
+      source: 'BLOODPAC',
+      type: 'standards',
+      audience: ['clinician', 'researcher'],
+      url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+      description: 'Standardized terminology for MRD testing including tumor-informed, tumor-naïve, and molecular response definitions',
+      isPrimary: true
+    },
+    {
+      id: 'fda-ctdna-guidance',
+      title: 'FDA Guidance: Use of ctDNA in Early-Stage Solid Tumors',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/media/183874/download',
+      description: 'December 2024 FDA guidance on ctDNA for patient enrichment and response endpoints',
+      isPrimary: true
+    },
+    {
+      id: 'friends-ctdna',
+      title: 'ctDNA as a Clinical Endpoint',
+      source: 'FRIENDS',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://friendsofcancerresearch.org/ctdna/',
+      description: 'ctMoniTR project validating ctDNA as an early efficacy endpoint'
+    },
+    {
+      id: 'friends-ctdna-definition',
+      title: 'Circulating Tumor DNA Definition',
+      source: 'FRIENDS',
+      type: 'definition',
+      audience: ['clinician'],
+      url: 'https://friendsofcancerresearch.org/glossary-term/circulating-tumor-dna-ctdna/',
+      description: 'Technical definition of ctDNA from Friends of Cancer Research'
+    },
+    {
+      id: 'bloodpac-working-groups',
+      title: 'BLOODPAC Working Groups',
+      source: 'BLOODPAC',
+      type: 'standards',
+      audience: ['researcher'],
+      url: 'https://www.bloodpac.org/how-we-work',
+      description: 'Overview of BLOODPAC working groups developing liquid biopsy standards'
+    }
+  ],
+  
+  // ECD-specific resources
+  ECD: [
+    {
+      id: 'nci-lbc',
+      title: 'NCI Liquid Biopsy Consortium',
+      source: 'NCI',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://prevention.cancer.gov/research-areas/networks-consortia-programs/lbc',
+      description: 'NCI-funded consortium focused on early cancer detection research',
+      isPrimary: true
+    },
+    {
+      id: 'nci-ctdna-sensitivity',
+      title: 'Increasing ctDNA Detection in Blood',
+      source: 'NCI',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.cancer.gov/news-events/cancer-currents-blog/2024/liquid-biopsy-increase-ctdna-in-blood',
+      description: 'Research on improving liquid biopsy sensitivity for early detection'
+    },
+    {
+      id: 'lungevity-biomarker',
+      title: 'Biomarker Testing for Lung Cancer',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing',
+      description: 'Patient guide to understanding biomarker and liquid biopsy testing',
+      isPrimary: true
+    },
+    {
+      id: 'lungevity-booklet',
+      title: 'Biomarker Testing Booklet (PDF)',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://www.lungevity.org/sites/default/files/request-materials/LUNGevity-biomarker-testing-booklet-112817.pdf',
+      description: 'Downloadable patient education booklet on biomarker testing'
+    },
+    {
+      id: 'noonemissed',
+      title: 'No One Missed Campaign',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://noonemissed.org/lungcancer/us',
+      description: 'Campaign ensuring all lung cancer patients receive biomarker testing'
+    }
+  ],
+  
+  // TRM-specific resources
+  TRM: [
+    {
+      id: 'friends-ctmonitr',
+      title: 'ctMoniTR: ctDNA Monitoring for Treatment Response',
+      source: 'FRIENDS',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://friendsofcancerresearch.org/ctdna/',
+      description: 'Multi-stakeholder project validating ctDNA as an early efficacy endpoint',
+      isPrimary: true
+    },
+    {
+      id: 'friends-evidentiary-roadmap',
+      title: 'Evidentiary Framework for ctDNA',
+      source: 'FRIENDS',
+      type: 'regulatory',
+      audience: ['researcher'],
+      url: 'https://friendsofcancerresearch.org/wp-content/uploads/Framework-for-Integrating-Change-in-ctDNA-Levels-as-an-Efficacy-Measure-on-Oncology-Clinical-Trials.pdf',
+      description: 'Framework for integrating ctDNA changes as efficacy measures in clinical trials'
+    },
+    {
+      id: 'progress-for-patients',
+      title: 'Progress for Patients',
+      source: 'FRIENDS',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://progressforpatients.org',
+      description: 'Patient-focused information on cancer treatment advances'
+    },
+    {
+      id: 'fda-ctdna-trm',
+      title: 'FDA Guidance: ctDNA for Treatment Response',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/media/183874/download',
+      description: 'FDA guidance on using ctDNA to measure treatment response'
+    }
+  ],
+  
+  // TDS-specific resources
+  TDS: [
+    {
+      id: 'nccn-guidelines',
+      title: 'NCCN Clinical Practice Guidelines',
+      source: 'NCCN',
+      type: 'guidelines',
+      audience: ['clinician'],
+      url: 'https://www.nccn.org/guidelines/guidelines-detail',
+      description: 'Evidence-based clinical practice guidelines for oncology',
+      isPrimary: true
+    },
+    {
+      id: 'fda-cdx-list',
+      title: 'FDA List of Cleared or Approved Companion Diagnostics',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/list-cleared-or-approved-companion-diagnostic-devices-in-vitro-and-imaging-tools',
+      description: 'Complete list of FDA-approved companion diagnostic devices'
+    },
+    {
+      id: 'asco-cgp',
+      title: 'Comprehensive Genomic Profiling Education',
+      source: 'ASCO',
+      type: 'education',
+      audience: ['clinician'],
+      url: 'https://ascopubs.org/doi/10.1200/EDBK-25-481114',
+      description: 'ASCO educational resources on CGP testing and interpretation'
+    },
+    {
+      id: 'lungevity-clinical-value',
+      title: 'Clinical Value of Biomarker Testing',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://www.lungevity.org/learn-about-lungevity/precision-medicine/clinical-value-of-biomarker-testing-in-nsclc',
+      description: 'Patient guide to understanding the clinical value of biomarker testing'
+    }
+  ]
+};
+
+// Glossary of terms with authoritative source links
+export const GLOSSARY = {
+  'liquid-biopsy': {
+    term: 'Liquid Biopsy',
+    definition: 'A test done on a sample of blood to look for cancer cells or pieces of DNA from tumor cells that are circulating in the blood.',
+    shortDefinition: 'Blood test that detects cancer DNA or cells',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/liquid-biopsy',
+    source: 'NCI',
+    relatedTerms: ['ctDNA', 'cfDNA', 'CTC']
+  },
+  'ctdna': {
+    term: 'Circulating Tumor DNA (ctDNA)',
+    definition: 'Small pieces of DNA that are released into the bloodstream when cancer cells die. ctDNA carries the same genetic alterations as the tumor.',
+    shortDefinition: 'Tumor DNA fragments in blood',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/ctdna',
+    source: 'NCI',
+    relatedTerms: ['liquid-biopsy', 'cfDNA', 'VAF']
+  },
+  'cfdna': {
+    term: 'Cell-Free DNA (cfDNA)',
+    definition: 'DNA fragments circulating freely in the bloodstream, released from both normal and tumor cells. In cancer patients, a portion derives from tumor cells (ctDNA).',
+    shortDefinition: 'Free-floating DNA in blood',
+    sourceUrl: 'https://friendsofcancerresearch.org/glossary-term/circulating-tumor-dna-ctdna/',
+    source: 'Friends of Cancer Research',
+    relatedTerms: ['ctDNA', 'liquid-biopsy']
+  },
+  'mrd': {
+    term: 'Molecular Residual Disease (MRD)',
+    definition: 'Cancer that remains after treatment at levels too low to detect with standard imaging or laboratory tests, but detectable through sensitive molecular methods.',
+    shortDefinition: 'Remaining cancer detected by molecular tests',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['tumor-informed', 'tumor-naive', 'ctDNA']
+  },
+  'tumor-informed': {
+    term: 'Tumor-Informed Assay',
+    definition: 'An MRD testing approach that first sequences the patient\'s tumor to identify specific mutations, then designs a personalized test to track those mutations in blood.',
+    shortDefinition: 'Personalized test based on tumor sequencing',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'tumor-naive']
+  },
+  'tumor-naive': {
+    term: 'Tumor-Naïve Assay',
+    definition: 'An MRD testing approach that uses a fixed panel of common cancer genes without requiring prior tumor sequencing. Faster turnaround but generally less sensitive than tumor-informed approaches.',
+    shortDefinition: 'Fixed panel test without prior tumor analysis',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'tumor-informed']
+  },
+  'vaf': {
+    term: 'Variant Allele Frequency (VAF)',
+    definition: 'The percentage of sequencing reads containing a specific mutation. In ctDNA testing, VAF reflects the proportion of mutant DNA fragments in the sample.',
+    shortDefinition: 'Percentage of DNA with a specific mutation',
+    sourceUrl: 'https://friendsofcancerresearch.org/glossary-term/circulating-tumor-dna-ctdna/',
+    source: 'Friends of Cancer Research',
+    relatedTerms: ['ctDNA', 'lod']
+  },
+  'lod': {
+    term: 'Limit of Detection (LOD)',
+    definition: 'The lowest concentration of ctDNA that can be reliably detected by a test. Often expressed as VAF (e.g., 0.01%) or parts per million (ppm).',
+    shortDefinition: 'Lowest detectable ctDNA level',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['vaf', 'sensitivity']
+  },
+  'sensitivity': {
+    term: 'Sensitivity',
+    definition: 'The ability of a test to correctly identify patients who have the condition (true positive rate). A test with 90% sensitivity will detect 90 out of 100 patients with cancer.',
+    shortDefinition: 'Ability to detect true positives',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/sensitivity',
+    source: 'NCI',
+    relatedTerms: ['specificity', 'ppv', 'npv']
+  },
+  'specificity': {
+    term: 'Specificity',
+    definition: 'The ability of a test to correctly identify patients who do not have the condition (true negative rate). A test with 99% specificity will correctly rule out 99 of 100 patients without cancer.',
+    shortDefinition: 'Ability to avoid false positives',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/specificity',
+    source: 'NCI',
+    relatedTerms: ['sensitivity', 'ppv', 'npv']
+  },
+  'ngs': {
+    term: 'Next-Generation Sequencing (NGS)',
+    definition: 'High-throughput DNA sequencing technology that can analyze millions of DNA fragments simultaneously, enabling comprehensive genomic profiling.',
+    shortDefinition: 'High-throughput DNA sequencing',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/next-generation-sequencing',
+    source: 'NCI',
+    relatedTerms: ['cgp', 'ctDNA']
+  },
+  'cgp': {
+    term: 'Comprehensive Genomic Profiling (CGP)',
+    definition: 'A type of NGS test that analyzes hundreds of genes simultaneously to identify mutations, fusions, and other alterations that may guide treatment decisions.',
+    shortDefinition: 'Broad cancer gene panel test',
+    sourceUrl: 'https://ascopubs.org/doi/10.1200/EDBK-25-481114',
+    source: 'ASCO',
+    relatedTerms: ['ngs', 'companion-dx']
+  },
+  'companion-dx': {
+    term: 'Companion Diagnostic (CDx)',
+    definition: 'An FDA-approved test that is essential for the safe and effective use of a corresponding drug or biological product, typically identifying patients likely to benefit from a specific therapy.',
+    shortDefinition: 'Test linked to specific drug approval',
+    sourceUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics',
+    source: 'FDA',
+    relatedTerms: ['cgp', 'targeted-therapy']
+  },
+  'methylation': {
+    term: 'DNA Methylation',
+    definition: 'A chemical modification of DNA that can affect gene expression. Cancer-specific methylation patterns in cfDNA are used by some early detection tests to identify cancer signals.',
+    shortDefinition: 'Chemical DNA modification used in cancer detection',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/dna-methylation',
+    source: 'NCI',
+    relatedTerms: ['cfDNA', 'ecd']
+  },
+  'chip': {
+    term: 'Clonal Hematopoiesis of Indeterminate Potential (CHIP)',
+    definition: 'Age-related mutations in blood cells that can be confused with tumor-derived mutations in liquid biopsy tests. Advanced assays use various methods to filter out CHIP.',
+    shortDefinition: 'Age-related blood cell mutations that can confound testing',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/chip',
+    source: 'NCI',
+    relatedTerms: ['ctDNA', 'cfDNA']
+  }
+};
+
+// Category-specific standards attribution for display
+export const CATEGORY_STANDARDS = {
+  MRD: {
+    primary: 'BLOODPAC MRD Lexicon',
+    primaryUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    secondary: 'FDA ctDNA Guidance (Dec 2024)',
+    secondaryUrl: 'https://www.fda.gov/media/183874/download',
+    attribution: 'Terminology aligned with BLOODPAC Consortium MRD Lexicon'
+  },
+  ECD: {
+    primary: 'NCI Liquid Biopsy Consortium',
+    primaryUrl: 'https://prevention.cancer.gov/research-areas/networks-consortia-programs/lbc',
+    secondary: 'LUNGevity Foundation',
+    secondaryUrl: 'https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing',
+    attribution: 'Patient resources from LUNGevity Foundation'
+  },
+  TRM: {
+    primary: 'Friends of Cancer Research ctMoniTR',
+    primaryUrl: 'https://friendsofcancerresearch.org/ctdna/',
+    secondary: 'FDA ctDNA Guidance',
+    secondaryUrl: 'https://www.fda.gov/media/183874/download',
+    attribution: 'Endpoint validation research from Friends of Cancer Research'
+  },
+  TDS: {
+    primary: 'NCCN Clinical Practice Guidelines',
+    primaryUrl: 'https://www.nccn.org/guidelines/guidelines-detail',
+    secondary: 'FDA Companion Diagnostics',
+    secondaryUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics',
+    attribution: 'NCCN guideline-referenced'
+  }
+};
+
+// ============================================
 // SEO Configuration
 // ============================================
 export const SEO_DEFAULTS = {

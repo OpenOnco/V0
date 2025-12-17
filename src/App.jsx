@@ -36,6 +36,10 @@ import {
   generateTestSchema,
   generateCategorySchema,
   generateOrganizationSchema,
+  EXTERNAL_RESOURCES,
+  GLOSSARY,
+  CATEGORY_STANDARDS,
+  STANDARDS_BODIES,
 } from './data';
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
@@ -160,6 +164,229 @@ const ProductTypeBadge = ({ productType, size = 'sm' }) => {
       <span>{config.icon}</span>
       <span>{config.label}</span>
     </span>
+  );
+};
+
+// ============================================
+// Glossary Tooltip Component
+// ============================================
+const GlossaryTooltip = ({ termKey, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const term = GLOSSARY[termKey];
+  
+  if (!term) return children || null;
+  
+  return (
+    <span className="relative inline-block">
+      <button
+        type="button"
+        className="inline-flex items-center gap-0.5 text-inherit border-b border-dotted border-current cursor-help hover:text-emerald-600 transition-colors"
+        onClick={() => setIsOpen(!isOpen)}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        {children || term.term}
+        <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+      {isOpen && (
+        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl">
+          <div className="font-semibold mb-1">{term.term}</div>
+          <div className="text-gray-300 text-xs mb-2">{term.definition}</div>
+          <a 
+            href={term.sourceUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Source: {term.source}
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-900" />
+        </div>
+      )}
+    </span>
+  );
+};
+
+// ============================================
+// External Resource Link Component
+// ============================================
+const ExternalResourceLink = ({ resource, compact = false }) => {
+  const sourceColors = {
+    'NCI': 'bg-blue-50 text-blue-700 border-blue-200',
+    'FDA': 'bg-purple-50 text-purple-700 border-purple-200',
+    'BLOODPAC': 'bg-orange-50 text-orange-700 border-orange-200',
+    'FRIENDS': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    'NCCN': 'bg-violet-50 text-violet-700 border-violet-200',
+    'LUNGEVITY': 'bg-pink-50 text-pink-700 border-pink-200',
+    'ILSA': 'bg-cyan-50 text-cyan-700 border-cyan-200',
+    'ASCO': 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  };
+  
+  const typeIcons = {
+    'definition': '📖',
+    'standards': '📋',
+    'regulatory': '⚖️',
+    'research': '🔬',
+    'guidelines': '📜',
+    'patient-education': '💡',
+    'education': '🎓',
+    'overview': '📄',
+  };
+  
+  if (compact) {
+    return (
+      <a
+        href={resource.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${sourceColors[resource.source] || 'bg-gray-50 text-gray-700 border-gray-200'} hover:shadow-sm transition-shadow`}
+      >
+        <span>{typeIcons[resource.type] || '🔗'}</span>
+        <span>{resource.title}</span>
+        <svg className="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+    );
+  }
+  
+  return (
+    <a
+      href={resource.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all bg-white group"
+    >
+      <div className="flex items-start gap-3">
+        <span className="text-lg flex-shrink-0">{typeIcons[resource.type] || '🔗'}</span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-medium text-gray-900 group-hover:text-emerald-600 transition-colors">
+              {resource.title}
+            </span>
+            <svg className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-600 line-clamp-2">{resource.description}</p>
+          <span className={`inline-block mt-2 px-2 py-0.5 rounded text-xs font-medium ${sourceColors[resource.source] || 'bg-gray-100 text-gray-600'}`}>
+            {resource.source}
+          </span>
+        </div>
+      </div>
+    </a>
+  );
+};
+
+// ============================================
+// External Resources Section Component
+// ============================================
+const ExternalResourcesSection = ({ category, isPatient = false, compact = false }) => {
+  const categoryResources = EXTERNAL_RESOURCES[category] || [];
+  const generalResources = EXTERNAL_RESOURCES.general || [];
+  const standards = CATEGORY_STANDARDS[category];
+  
+  // Filter resources by audience
+  const audienceFilter = isPatient ? 'patient' : 'clinician';
+  const filteredCategoryResources = categoryResources.filter(r => 
+    r.audience.includes(audienceFilter) || r.audience.includes('researcher')
+  );
+  const filteredGeneralResources = generalResources.filter(r => 
+    r.audience.includes(audienceFilter)
+  );
+  
+  // Get primary resources for compact view
+  const primaryResources = filteredCategoryResources.filter(r => r.isPrimary);
+  
+  if (compact) {
+    return (
+      <div className="flex flex-wrap gap-2">
+        {primaryResources.slice(0, 3).map(resource => (
+          <ExternalResourceLink key={resource.id} resource={resource} compact />
+        ))}
+      </div>
+    );
+  }
+  
+  return (
+    <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-900">
+          {isPatient ? 'Learn More' : 'Standards & Resources'}
+        </h3>
+        {standards && (
+          <span className="text-xs text-gray-500 italic">{standards.attribution}</span>
+        )}
+      </div>
+      
+      {/* Category-specific resources */}
+      {filteredCategoryResources.length > 0 && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">
+            {isPatient ? 'Patient Resources' : 'Key References'}
+          </h4>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {filteredCategoryResources.slice(0, 4).map(resource => (
+              <ExternalResourceLink key={resource.id} resource={resource} />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* General resources */}
+      {!isPatient && filteredGeneralResources.length > 0 && (
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">General Resources</h4>
+          <div className="flex flex-wrap gap-2">
+            {filteredGeneralResources.map(resource => (
+              <ExternalResourceLink key={resource.id} resource={resource} compact />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Standards attribution */}
+      {standards && (
+        <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-gray-600">Referenced standards:</span>
+            <a 
+              href={standards.primaryUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-medium"
+            >
+              {standards.primary}
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            {standards.secondary && (
+              <>
+                <span className="text-gray-400">•</span>
+                <a 
+                  href={standards.secondaryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-medium"
+                >
+                  {standards.secondary}
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -3798,6 +4025,121 @@ const LearnPage = ({ onNavigate }) => {
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Authoritative Resources Section */}
+      <div className="mt-12 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 p-6 sm:p-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-2 text-center">Authoritative Resources</h2>
+        <p className="text-gray-600 text-center mb-6">OpenOnco terminology and standards are informed by these organizations</p>
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* BLOODPAC */}
+          <a 
+            href="https://www.bloodpac.org" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-2xl">🔬</span>
+              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">BLOODPAC</span>
+            </div>
+            <p className="text-sm text-gray-600">Cancer Moonshot consortium developing liquid biopsy standards and the MRD Terminology Lexicon</p>
+          </a>
+          
+          {/* Friends of Cancer Research */}
+          <a 
+            href="https://friendsofcancerresearch.org" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-2xl">🤝</span>
+              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">Friends of Cancer Research</span>
+            </div>
+            <p className="text-sm text-gray-600">ctMoniTR project validating ctDNA as an early efficacy endpoint in clinical trials</p>
+          </a>
+          
+          {/* NCI */}
+          <a 
+            href="https://www.cancer.gov" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-2xl">🏛️</span>
+              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">National Cancer Institute</span>
+            </div>
+            <p className="text-sm text-gray-600">Authoritative definitions and the NCI Liquid Biopsy Consortium for early detection research</p>
+          </a>
+          
+          {/* FDA */}
+          <a 
+            href="https://www.fda.gov/media/183874/download" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-2xl">⚖️</span>
+              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">FDA Guidance</span>
+            </div>
+            <p className="text-sm text-gray-600">December 2024 guidance on ctDNA for early-stage solid tumor drug development</p>
+          </a>
+        </div>
+        
+        {/* Additional Resources */}
+        <div className="mt-6 pt-6 border-t border-emerald-200">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 text-center">Additional Standards Bodies</h3>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a 
+              href="https://www.nccn.org/guidelines/guidelines-detail" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-violet-300 hover:text-violet-600 transition-colors"
+            >
+              📜 NCCN Guidelines
+              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            <a 
+              href="https://fnih.org/our-programs/international-liquid-biopsy-standardization-alliance-ilsa/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600 transition-colors"
+            >
+              🌐 ILSA (Global Standards)
+              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            <a 
+              href="https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-pink-300 hover:text-pink-600 transition-colors"
+            >
+              💡 LUNGevity Patient Resources
+              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            <a 
+              href="https://ascopubs.org/doi/10.1200/EDBK-25-481114" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition-colors"
+            >
+              🎓 ASCO Education
+              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -8020,6 +8362,14 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
             </p>
           </div>
         )}
+        
+        {/* Quick resources bar - shown for cancer categories */}
+        {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-gray-500 font-medium">Quick links:</span>
+            <ExternalResourcesSection category={category} isPatient={isPatient} compact />
+          </div>
+        )}
       </div>
 
       <section>
@@ -8531,6 +8881,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Ask a Question</h2>
         <CategoryChat category={category} />
       </section>
+
+      {/* Full Resources Section - for cancer categories */}
+      {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
+        <section className="mt-10">
+          <ExternalResourcesSection category={category} isPatient={isPatient} />
+        </section>
+      )}
 
       {!isPatient && showComparison && testsToCompare.length >= 2 && (
         <ComparisonModal tests={testsToCompare} category={category} onClose={() => setShowComparison(false)} onRemoveTest={(id) => { setSelectedTests(prev => prev.filter(i => i !== id)); if (selectedTests.length <= 2) setShowComparison(false); }} />
