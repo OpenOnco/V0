@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 17, 2025 (added GTC Liquid Trace: tds-20 Solid Tumor, tds-21 Hematology, trm-13 Therapy Monitoring; Medicare/NYSDOH/EU/UK coverage; CSF leadership, chimerism/MRD capabilities)
+// Last updated: December 17, 2025 (FIXES: URL slug collision for Tempus xF/xF+, changelog type corrections, filterConfigs documentation)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -25,6 +25,31 @@
 // ============================================
 // TEMPLATES - Copy, fill in, paste at insertion point
 // ============================================
+
+/*
+┌─────────────────────────────────────────────────────────────────┐
+│ FIELD SEMANTICS NOTES                                           │
+├─────────────────────────────────────────────────────────────────┤
+│ approach ("Tumor-informed" vs "Tumor-naïve"):                   │
+│   - Tumor-informed: Test uses patient-specific variants         │
+│     identified from a baseline sample (tumor tissue, bone       │
+│     marrow, or high-disease-burden blood)                       │
+│   - Tumor-naïve: Test uses fixed panels without patient-        │
+│     specific customization                                      │
+│                                                                 │
+│ requiresTumorTissue ("Yes" vs "No"):                            │
+│   - Indicates whether SOLID TUMOR TISSUE biopsy is required     │
+│   - Hematologic MRD tests (clonoSEQ, LymphoVista) may be        │
+│     tumor-informed but use blood/marrow, not tissue biopsies    │
+│   - A test can be tumor-informed with requiresTumorTissue: "No" │
+│     if it uses blood/marrow samples for baseline genotyping     │
+│                                                                 │
+│ slug (optional):                                                │
+│   - Explicit URL slug when auto-generated slug would collide    │
+│   - Example: Tempus xF+ has slug: "tempus-xf-plus" to avoid     │
+│     collision with Tempus xF (both → "tempus-xf" otherwise)     │
+└─────────────────────────────────────────────────────────────────┘
+*/
 
 /*
 ┌─────────────────────────────────────────────────────────────────┐
@@ -3682,6 +3707,7 @@ export const tdsTestData = [
   {
     "id": "tds-7",
     "name": "Tempus xF+",
+    "slug": "tempus-xf-plus",
     "vendor": "Tempus AI",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood/Plasma",
@@ -5404,10 +5430,10 @@ export const DATABASE_CHANGELOG = [
   },
   {
     date: 'Dec 11, 2025',
-    type: 'updated',
-    testId: 'multiple',
+    type: 'feature',
+    testId: null,
     testName: 'Clinical Settings Tags',
-    vendor: 'Multiple',
+    vendor: null,
     category: 'MRD',
     description: 'Added clinicalSettings field to all MRD tests to capture validated clinical contexts: Neoadjuvant (monitoring during pre-surgery therapy), Post-Surgery (landmark ~4 weeks after resection), Post-Adjuvant (after chemotherapy), and Surveillance (longitudinal recurrence monitoring). Added filter by clinical setting. Based on vendor feedback from Personalis (Dan Norton) on clinical context-specific performance data.',
     contributor: 'Dan Norton',
@@ -5500,10 +5526,10 @@ export const DATABASE_CHANGELOG = [
   },
   {
     date: 'Dec 10, 2025',
-    type: 'updated',
-    testId: 'multiple',
+    type: 'feature',
+    testId: null,
     testName: 'Medicare ADLT Data',
-    vendor: 'Multiple',
+    vendor: null,
     category: 'All',
     description: 'Added Medicare CLFS reimbursement rates and ADLT status to 8 tests: Signatera ($3,500), Guardant360 CDx ($5,000), FoundationOne CDx ($3,500), FoundationOne Liquid CDx ($3,500), Shield ($1,495), NavDx ($1,800), Tempus xT CDx ($4,500), clonoSEQ ($2,007). Added PLA vs CPT code type distinction.',
     contributor: null,
@@ -6046,24 +6072,32 @@ export const getTestListByCategory = (categoryId) => {
 // ============================================
 // Filter Configurations
 // ============================================
+// NOTE: Filter matching should use prefix/contains logic, not exact matching.
+// Many fdaStatus and reimbursement values are verbose sentences. The filter
+// options below represent categories that should match via prefix/contains:
+//   - "CLIA LDT" matches "CLIA LDT - not FDA approved", "CLIA LDT – NOT FDA approved", etc.
+//   - "Medicare" matches "Medicare (CRC only)", "Medicare LCD", "Medicare covered", etc.
+//   - "FDA Approved" matches "FDA-approved", "FDA PMA-approved", "FDA De Novo cleared", etc.
+// Future enhancement: Split into normalized category fields (e.g., fdaStatusCategory) 
+// plus free-text notes fields (e.g., fdaStatusNotes) for cleaner filtering.
 export const filterConfigs = {
   MRD: {
     productTypes: ['Central Lab Service', 'Laboratory IVD Kit'],
     cancerTypes: [...new Set(mrdTestData.flatMap(t => t.cancerTypes || []))].sort(),
     sampleCategories: [...new Set(mrdTestData.map(t => t.sampleCategory || 'Blood/Plasma'))].sort(),
-    fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
-    reimbursements: ['Medicare', 'Commercial'],
+    fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'RUO', 'Investigational'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
     approaches: ['Tumor-informed', 'Tumor-naïve'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
     clinicalSettings: ['Neoadjuvant', 'Post-Surgery', 'Post-Adjuvant', 'Surveillance'],
   },
   ECD: {
     productTypes: ['Central Lab Service', 'Laboratory IVD Kit', 'Self-Collection'],
-    testScopes: ['Single-cancer', 'Multi-cancer'],  // Simplified - matches prefix of actual testScope values
+    testScopes: ['Single-cancer', 'Multi-cancer'],  // Matches prefix of actual testScope values
     indicationGroups: [...new Set(ecdTestData.map(t => t.indicationGroup).filter(Boolean))].sort(),
     sampleCategories: ['Blood/Plasma', 'Stool'],
-    fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT', 'Investigational'],
-    reimbursements: ['Medicare', 'Commercial'],
+    fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'RUO', 'Investigational', 'PMA submitted'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Self-Pay', 'Not established'],
     approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)', 'Stool DNA + FIT'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   },
@@ -6071,9 +6105,9 @@ export const filterConfigs = {
     productTypes: ['Central Lab Service', 'Laboratory IVD Kit'],
     cancerTypes: [...new Set(trmTestData.flatMap(t => t.cancerTypes || []))].sort(),
     sampleCategories: ['Blood/Plasma'],
-    fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
+    fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'RUO', 'Investigational'],
     approaches: ['Tumor-informed', 'Tumor-naïve', 'Tumor-agnostic'],
-    reimbursements: ['Medicare', 'Commercial'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
     regions: ['US', 'EU', 'UK', 'International', 'RUO'],
   },
   TDS: {
@@ -6081,8 +6115,8 @@ export const filterConfigs = {
     cancerTypes: [...new Set(tdsTestData.flatMap(t => t.cancerTypes || []))].sort(),
     sampleCategories: [...new Set(tdsTestData.map(t => t.sampleCategory || 'Unknown'))].sort(),
     approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
-    fdaStatuses: ['FDA Approved', 'FDA Breakthrough', 'LDT'],
-    reimbursements: ['Medicare', 'Commercial'],
+    fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'NMPA', 'RUO'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
   },
   'ALZ-BLOOD': {
     biomarkers: [...new Set(alzBloodTestData.flatMap(t => t.biomarkers || []))].sort(),
@@ -6635,6 +6669,54 @@ export const GLOSSARY = {
     sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/chip',
     source: 'NCI',
     relatedTerms: ['ctDNA', 'cfDNA']
+  },
+  'nccn': {
+    term: 'National Comprehensive Cancer Network (NCCN)',
+    definition: 'An alliance of leading cancer centers that develops clinical practice guidelines used by oncologists worldwide. NCCN guidelines recommend specific biomarkers to test for, though they do not endorse specific commercial assays.',
+    shortDefinition: 'Alliance developing cancer treatment guidelines',
+    sourceUrl: 'https://www.nccn.org/guidelines/guidelines-detail',
+    source: 'NCCN',
+    relatedTerms: ['companion-dx', 'cgp']
+  },
+  'fda-approved': {
+    term: 'FDA Approved/Cleared',
+    definition: 'Tests that have been reviewed by the FDA and meet analytical and clinical validation requirements. FDA-approved companion diagnostics (CDx) are linked to specific drug therapies.',
+    shortDefinition: 'Test reviewed and authorized by FDA',
+    sourceUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics',
+    source: 'FDA',
+    relatedTerms: ['companion-dx', 'ldt']
+  },
+  'ldt': {
+    term: 'Laboratory Developed Test (LDT)',
+    definition: 'A test developed and validated by an individual CLIA-certified laboratory rather than a commercial manufacturer. LDTs must meet CLIA quality standards but have not undergone FDA premarket review.',
+    shortDefinition: 'Test developed by individual lab, not FDA-reviewed',
+    sourceUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/laboratory-developed-tests',
+    source: 'FDA',
+    relatedTerms: ['fda-approved']
+  },
+  'ctdna-clearance': {
+    term: 'ctDNA Clearance',
+    definition: 'The transition from detectable to undetectable ctDNA levels, typically measured after treatment. Per BLOODPAC: clearance indicates molecular response but does not guarantee absence of disease.',
+    shortDefinition: 'Transition from detectable to undetectable ctDNA',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'molecular-response']
+  },
+  'molecular-response': {
+    term: 'Molecular Response',
+    definition: 'A measurable change in ctDNA levels following treatment. Per BLOODPAC MRD Lexicon: can be quantified as fold-change, percent reduction, or transition between detectable/undetectable states.',
+    shortDefinition: 'Measurable ctDNA change after treatment',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['ctdna-clearance', 'mrd']
+  },
+  'bloodpac': {
+    term: 'BLOODPAC (Blood Profiling Atlas in Cancer)',
+    definition: 'A Cancer Moonshot consortium of 30+ organizations developing standards for liquid biopsy testing. Published the MRD Terminology Lexicon in 2025 to standardize definitions across the field.',
+    shortDefinition: 'Consortium developing liquid biopsy standards',
+    sourceUrl: 'https://www.bloodpac.org',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'ctDNA', 'liquid-biopsy']
   }
 };
 
@@ -6748,11 +6830,13 @@ export const PAGE_SEO = {
 // ============================================
 export const slugify = (text) =>
   text.toLowerCase()
+    .replace(/\+/g, '-plus')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
 export const getTestUrl = (test, category) => {
-  const slug = slugify(test.name);
+  // Use explicit slug if defined, otherwise generate from name
+  const slug = test.slug || slugify(test.name);
   return `/${category.toLowerCase()}/${slug}`;
 };
 
@@ -6765,7 +6849,8 @@ export const getTestBySlug = (slug, category) => {
     'ALZ-BLOOD': alzBloodTestData,
   };
   const tests = categoryMap[category] || [];
-  return tests.find(t => slugify(t.name) === slug);
+  // Check explicit slug field first, then fall back to slugified name
+  return tests.find(t => (t.slug || slugify(t.name)) === slug);
 };
 
 export const getAbsoluteUrl = (path) => `${SEO_DEFAULTS.siteUrl}${path}`;
