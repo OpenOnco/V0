@@ -7700,25 +7700,37 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   <div className="space-y-1">
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
-                      <span className="text-sm font-medium text-gray-900">{test.sensitivity ? `${test.sensitivity}%` : '—'}</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.sensitivity ? `${test.sensitivity}%` : '—'}
+                        <CitationTooltip citations={test.sensitivityCitations} />
+                      </span>
                     </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
-                      <span className="text-sm font-medium text-gray-900">{test.specificity ? `${test.specificity}%` : '—'}</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.specificity ? `${test.specificity}%` : '—'}
+                        <CitationTooltip citations={test.specificityCitations} />
+                      </span>
                     </div>
-                    {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" />}
-                    {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" />}
+                    {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} />}
+                    {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" citations={test.clinicalSpecificityCitations} />}
                     <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
                     <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD (Limit of Detection)</GlossaryTooltip></span>
-                      <span className="text-sm font-medium text-gray-900">{test.lod ? formatLOD(test.lod) : '—'}</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.lod ? formatLOD(test.lod) : '—'}
+                        <CitationTooltip citations={test.lodCitations} />
+                      </span>
                     </div>
                     {test.lod95 && (
                       <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                         <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD95</GlossaryTooltip></span>
-                        <span className="text-sm font-medium text-gray-900">{test.lod95}</span>
+                        <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                          {test.lod95}
+                          <CitationTooltip citations={test.lod95Citations} />
+                        </span>
                       </div>
                     )}
                   </div>
@@ -7728,17 +7740,17 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 <Section title="Sample & Turnaround">
                   <div className="space-y-1">
                     <DataRow label="Sample Type" value={test.sampleCategory} />
-                    <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" />
-                    {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" />}
+                    <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} />
+                    {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} />}
                     {category === 'MRD' && (
                       <>
-                        <DataRow label="Initial TAT" value={test.initialTat} unit=" days" />
-                        <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" />
+                        <DataRow label="Initial TAT" value={test.initialTat} unit=" days" citations={test.initialTatCitations} notes={test.initialTatNotes} />
+                        <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
                       </>
                     )}
-                    {category !== 'MRD' && <DataRow label="TAT" value={test.tat} />}
-                    {test.leadTimeVsImaging && <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />}
-                    {test.variantsTracked && <DataRow label="Variants Tracked" value={test.variantsTracked} />}
+                    {category !== 'MRD' && <DataRow label="TAT" value={test.tat} citations={test.tatCitations} notes={test.tatNotes} />}
+                    {test.leadTimeVsImaging && <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />}
+                    {test.variantsTracked && <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />}
                   </div>
                 </Section>
               </div>
@@ -7775,10 +7787,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   </div>
                   {(test.landmarkSensitivity || test.longitudinalSensitivity) && (
                     <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-gray-100">
-                      {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" />}
-                      {test.landmarkSpecificity && <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" />}
-                      {test.longitudinalSensitivity && <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" />}
-                      {test.longitudinalSpecificity && <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" />}
+                      {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" citations={test.landmarkSensitivityCitations} />}
+                      {test.landmarkSpecificity && <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" citations={test.landmarkSpecificityCitations} />}
+                      {test.longitudinalSensitivity && <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" citations={test.longitudinalSensitivityCitations} />}
+                      {test.longitudinalSpecificity && <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" citations={test.longitudinalSpecificityCitations} />}
                     </div>
                   )}
                 </Section>
@@ -7789,8 +7801,8 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 {/* Regulatory & Coverage */}
                 <Section title="Regulatory & Coverage">
                   <div className="space-y-1">
-                    <DataRow label="FDA Status" value={test.fdaStatus} />
-                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
+                    <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} />
+                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
                     {test.medicareRate && (
                       <div className="py-1.5 flex justify-between items-center">
                         <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -7800,13 +7812,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <span className="text-sm font-semibold text-emerald-600">${test.medicareRate.toLocaleString()}</span>
                       </div>
                     )}
-                    {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} />}
-                    <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Code'} value={test.cptCodes || test.cptCode} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} />
-                    <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
+                    {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} citations={test.commercialPayersCitations} />}
+                    <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Code'} value={test.cptCodes || test.cptCode} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} citations={test.cptCodesCitations} />
+                    <DataRow label="Clinical Availability" value={test.clinicalAvailability} citations={test.clinicalAvailabilityCitations} notes={test.clinicalAvailabilityNotes} />
                     {test.availableRegions && test.availableRegions.length > 0 && (
                       <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
                     )}
-                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} />}
+                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />}
                   </div>
                 </Section>
                 
@@ -7825,7 +7837,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
                       </div>
                     )}
-                    <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} />
+                    <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} citations={test.independentValidationCitations} />
                     {test.clinicalTrials && (
                       <div className="pt-2 mt-2 border-t border-gray-100">
                         <p className="text-xs text-gray-500 mb-1">Key Trials</p>
@@ -7858,13 +7870,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <Section title="Test Requirements & Method">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <DataRow label="Approach" value={test.approach} expertTopic="tumorInformed" />
+                    <DataRow label="Approach" value={test.approach} expertTopic="tumorInformed" citations={test.approachCitations} />
                     <DataRow label="Requires Tumor Tissue" value={requiresTissue ? 'Yes' : 'No'} notes={test.requiresTumorTissueNotes} />
                     <DataRow label="Requires Matched Normal" value={test.requiresMatchedNormal} />
                   </div>
                   <div className="space-y-1">
-                    {test.method && <DataRow label="Method" value={test.method} />}
-                    {test.targetPopulation && <DataRow label="Target Population" value={test.targetPopulation} />}
+                    {test.method && <DataRow label="Method" value={test.method} citations={test.methodCitations} />}
+                    {test.targetPopulation && <DataRow label="Target Population" value={test.targetPopulation} citations={test.targetPopulationCitations} />}
                     {test.indicationGroup && <DataRow label="Indication Group" value={test.indicationGroup} />}
                   </div>
                 </div>
