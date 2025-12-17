@@ -4042,6 +4042,7 @@ const LearnPage = ({ onNavigate }) => {
               <div className="text-gray-700"><GlossaryTooltip termKey="ctdna" /></div>
               <div className="text-gray-700"><GlossaryTooltip termKey="cfdna" /></div>
               <div className="text-gray-700"><GlossaryTooltip termKey="mrd" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="bloodpac" /></div>
             </div>
           </div>
           
@@ -4053,6 +4054,7 @@ const LearnPage = ({ onNavigate }) => {
               <div className="text-gray-700"><GlossaryTooltip termKey="tumor-naive" /></div>
               <div className="text-gray-700"><GlossaryTooltip termKey="ngs" /></div>
               <div className="text-gray-700"><GlossaryTooltip termKey="cgp" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="methylation" /></div>
             </div>
           </div>
           
@@ -4067,12 +4069,24 @@ const LearnPage = ({ onNavigate }) => {
             </div>
           </div>
           
+          {/* MRD & Response */}
+          <div className="bg-orange-50 rounded-xl p-4 border border-orange-200">
+            <h3 className="text-sm font-semibold text-orange-700 uppercase tracking-wide mb-3">MRD & Response</h3>
+            <div className="space-y-2">
+              <div className="text-gray-700"><GlossaryTooltip termKey="molecular-response" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="ctdna-clearance" /></div>
+            </div>
+            <p className="text-xs text-orange-600 mt-3">Per BLOODPAC MRD Lexicon</p>
+          </div>
+          
           {/* Regulatory & Clinical */}
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
             <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Regulatory & Clinical</h3>
             <div className="space-y-2">
+              <div className="text-gray-700"><GlossaryTooltip termKey="nccn" /></div>
               <div className="text-gray-700"><GlossaryTooltip termKey="companion-dx" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="methylation" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="fda-approved" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="ldt" /></div>
               <div className="text-gray-700"><GlossaryTooltip termKey="chip" /></div>
             </div>
           </div>
@@ -7302,7 +7316,15 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 {hasMedicare && !hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
                 {!hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
                 {test.fdaStatus && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.fdaStatus.split(' - ')[0]}</span>}
-                {test.approach && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">{test.approach}</span>}
+                {test.approach && (
+                  <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">
+                    {test.approach === 'Tumor-informed' ? (
+                      <GlossaryTooltip termKey="tumor-informed">{test.approach}</GlossaryTooltip>
+                    ) : test.approach === 'Tumor-naïve' || test.approach === 'Tumor-naive' ? (
+                      <GlossaryTooltip termKey="tumor-naive">{test.approach}</GlossaryTooltip>
+                    ) : test.approach}
+                  </span>
+                )}
               </div>
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
               <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
@@ -7474,7 +7496,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
 
                   {/* FDA CDx & Guidelines */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Section title="FDA Companion Diagnostics">
+                    <Section title={<><GlossaryTooltip termKey="companion-dx">FDA Companion Diagnostics</GlossaryTooltip></>}>
                       <div className="space-y-1">
                         {test.fdaCompanionDxCount && (
                           <div className="py-1.5 flex justify-between items-center">
@@ -7483,14 +7505,24 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                           </div>
                         )}
                         {test.fdaCompanionDxCountNotes && <p className="text-xs text-gray-500 mt-1">{test.fdaCompanionDxCountNotes}</p>}
-                        <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} />
+                        <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                          <span className="text-xs text-gray-500"><GlossaryTooltip termKey="fda-approved">FDA Status</GlossaryTooltip></span>
+                          <span className="text-sm font-medium text-gray-900">{test.fdaStatus || '—'}</span>
+                        </div>
                         {test.fdaApprovalDate && <DataRow label="FDA Approval Date" value={test.fdaApprovalDate} citations={test.fdaApprovalDateCitations} />}
                       </div>
                     </Section>
                     
                     <Section title="Guidelines & Coverage">
                       <div className="space-y-1">
-                        <DataRow label="NCCN Recommended" value={test.nccnRecommended ? 'Yes' : 'No'} />
+                        <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                          <span className="text-xs text-gray-500 flex items-center gap-1">
+                            <GlossaryTooltip termKey="nccn">NCCN</GlossaryTooltip> Recommended
+                          </span>
+                          <span className={`text-sm font-medium ${test.nccnRecommended ? 'text-emerald-600' : 'text-gray-500'}`}>
+                            {test.nccnRecommended ? 'Yes' : 'No'}
+                          </span>
+                        </div>
                         {test.nccnGuidelinesAligned && <DataRow label="NCCN Guidelines" value={test.nccnGuidelinesAligned.join(', ')} notes={test.nccnGuidelinesNotes} citations={test.nccnGuidelinesCitations} />}
                         <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
                         {test.medicareRate && (
@@ -7531,17 +7563,31 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               {/* Two-column layout for key metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Performance Metrics */}
-                <Section title="Test Performance" expertTopic="sensitivity">
+                <Section title={<>Test Performance <span className="font-normal text-xs opacity-70">(hover terms for definitions)</span></>} expertTopic="sensitivity">
                   <div className="space-y-1">
-                    <DataRow label="Reported Sensitivity" value={test.sensitivity} unit="%" citations={test.sensitivityCitations} notes={test.sensitivityNotes} />
+                    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
+                      <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
+                      <span className="text-sm font-medium text-gray-900">{test.sensitivity ? `${test.sensitivity}%` : '—'}</span>
+                    </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
-                    <DataRow label="Reported Specificity" value={test.specificity} unit="%" citations={test.specificityCitations} notes={test.specificityNotes} />
+                    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
+                      <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
+                      <span className="text-sm font-medium text-gray-900">{test.specificity ? `${test.specificity}%` : '—'}</span>
+                    </div>
                     {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" />}
                     {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" />}
                     <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
                     <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
-                    <DataRow label="LOD" value={formatLOD(test.lod)} citations={test.lodCitations} notes={test.lodNotes} expertTopic="lod" />
-                    {test.lod95 && <DataRow label="LOD95" value={test.lod95} expertTopic="lodVsLod95" />}
+                    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
+                      <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD (Limit of Detection)</GlossaryTooltip></span>
+                      <span className="text-sm font-medium text-gray-900">{test.lod ? formatLOD(test.lod) : '—'}</span>
+                    </div>
+                    {test.lod95 && (
+                      <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
+                        <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD95</GlossaryTooltip></span>
+                        <span className="text-sm font-medium text-gray-900">{test.lod95}</span>
+                      </div>
+                    )}
                   </div>
                 </Section>
                 
@@ -7720,7 +7766,65 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   )}
                 </Section>
               )}
+              
+              {/* BLOODPAC Standards Reference - MRD only */}
+              {category === 'MRD' && !isPatientView && (
+                <div className="mt-4 p-3 bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg border border-orange-200">
+                  <div className="flex items-start gap-3">
+                    <span className="text-lg">📋</span>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-600 mb-1">
+                        MRD terminology on OpenOnco follows the <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/" target="_blank" rel="noopener noreferrer" className="font-medium text-orange-700 hover:text-orange-800 underline">BLOODPAC MRD Lexicon</a> standards.
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <GlossaryTooltip termKey="tumor-informed"><span className="text-xs px-2 py-0.5 bg-white rounded border border-orange-200 text-orange-700">Tumor-informed</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="tumor-naive"><span className="text-xs px-2 py-0.5 bg-white rounded border border-orange-200 text-orange-700">Tumor-naïve</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="molecular-response"><span className="text-xs px-2 py-0.5 bg-white rounded border border-orange-200 text-orange-700">Molecular Response</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="ctdna-clearance"><span className="text-xs px-2 py-0.5 bg-white rounded border border-orange-200 text-orange-700">ctDNA Clearance</span></GlossaryTooltip>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
                 </>
+              )}
+              
+              {/* TRM Standards Reference - ctMoniTR */}
+              {category === 'TRM' && !isPatientView && (
+                <div className="mt-4 p-3 bg-gradient-to-r from-sky-50 to-cyan-50 rounded-lg border border-sky-200">
+                  <div className="flex items-start gap-3">
+                    <span className="text-lg">📊</span>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-600 mb-1">
+                        Treatment response monitoring endpoints follow the <a href="https://friendsofcancerresearch.org/ctdna/" target="_blank" rel="noopener noreferrer" className="font-medium text-sky-700 hover:text-sky-800 underline">Friends of Cancer Research ctMoniTR</a> evidentiary framework.
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <GlossaryTooltip termKey="molecular-response"><span className="text-xs px-2 py-0.5 bg-white rounded border border-sky-200 text-sky-700">Molecular Response</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="vaf"><span className="text-xs px-2 py-0.5 bg-white rounded border border-sky-200 text-sky-700">VAF</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="ctdna"><span className="text-xs px-2 py-0.5 bg-white rounded border border-sky-200 text-sky-700">ctDNA</span></GlossaryTooltip>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* TDS Standards Reference - NCCN */}
+              {category === 'TDS' && !isPatientView && (
+                <div className="mt-4 p-3 bg-gradient-to-r from-violet-50 to-purple-50 rounded-lg border border-violet-200">
+                  <div className="flex items-start gap-3">
+                    <span className="text-lg">📋</span>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-600 mb-1">
+                        Biomarker recommendations reference <a href="https://www.nccn.org/guidelines/guidelines-detail" target="_blank" rel="noopener noreferrer" className="font-medium text-violet-700 hover:text-violet-800 underline">NCCN Clinical Practice Guidelines</a>. FDA companion diagnostics listed per <a href="https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics" target="_blank" rel="noopener noreferrer" className="font-medium text-violet-700 hover:text-violet-800 underline">FDA CDx database</a>.
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <GlossaryTooltip termKey="nccn"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">NCCN</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="companion-dx"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">Companion Dx</span></GlossaryTooltip>
+                        <GlossaryTooltip termKey="cgp"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">CGP</span></GlossaryTooltip>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
               
               {/* Example Report Link */}

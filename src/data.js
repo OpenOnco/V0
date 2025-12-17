@@ -6669,6 +6669,54 @@ export const GLOSSARY = {
     sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/chip',
     source: 'NCI',
     relatedTerms: ['ctDNA', 'cfDNA']
+  },
+  'nccn': {
+    term: 'National Comprehensive Cancer Network (NCCN)',
+    definition: 'An alliance of leading cancer centers that develops clinical practice guidelines used by oncologists worldwide. NCCN guidelines recommend specific biomarkers to test for, though they do not endorse specific commercial assays.',
+    shortDefinition: 'Alliance developing cancer treatment guidelines',
+    sourceUrl: 'https://www.nccn.org/guidelines/guidelines-detail',
+    source: 'NCCN',
+    relatedTerms: ['companion-dx', 'cgp']
+  },
+  'fda-approved': {
+    term: 'FDA Approved/Cleared',
+    definition: 'Tests that have been reviewed by the FDA and meet analytical and clinical validation requirements. FDA-approved companion diagnostics (CDx) are linked to specific drug therapies.',
+    shortDefinition: 'Test reviewed and authorized by FDA',
+    sourceUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics',
+    source: 'FDA',
+    relatedTerms: ['companion-dx', 'ldt']
+  },
+  'ldt': {
+    term: 'Laboratory Developed Test (LDT)',
+    definition: 'A test developed and validated by an individual CLIA-certified laboratory rather than a commercial manufacturer. LDTs must meet CLIA quality standards but have not undergone FDA premarket review.',
+    shortDefinition: 'Test developed by individual lab, not FDA-reviewed',
+    sourceUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/laboratory-developed-tests',
+    source: 'FDA',
+    relatedTerms: ['fda-approved']
+  },
+  'ctdna-clearance': {
+    term: 'ctDNA Clearance',
+    definition: 'The transition from detectable to undetectable ctDNA levels, typically measured after treatment. Per BLOODPAC: clearance indicates molecular response but does not guarantee absence of disease.',
+    shortDefinition: 'Transition from detectable to undetectable ctDNA',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'molecular-response']
+  },
+  'molecular-response': {
+    term: 'Molecular Response',
+    definition: 'A measurable change in ctDNA levels following treatment. Per BLOODPAC MRD Lexicon: can be quantified as fold-change, percent reduction, or transition between detectable/undetectable states.',
+    shortDefinition: 'Measurable ctDNA change after treatment',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['ctdna-clearance', 'mrd']
+  },
+  'bloodpac': {
+    term: 'BLOODPAC (Blood Profiling Atlas in Cancer)',
+    definition: 'A Cancer Moonshot consortium of 30+ organizations developing standards for liquid biopsy testing. Published the MRD Terminology Lexicon in 2025 to standardize definitions across the field.',
+    shortDefinition: 'Consortium developing liquid biopsy standards',
+    sourceUrl: 'https://www.bloodpac.org',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'ctDNA', 'liquid-biopsy']
   }
 };
 
