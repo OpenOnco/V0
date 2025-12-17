@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 17, 2025 (added Liquid Trace Solid Tumor tds-20, Liquid Trace Hematology tds-21)
+// Last updated: December 17, 2025 (added GTC Liquid Trace: tds-20 Solid Tumor, tds-21 Hematology, trm-13 Therapy Monitoring; Medicare/NYSDOH/EU/UK coverage; CSF leadership, chimerism/MRD capabilities)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -12,7 +12,7 @@
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
 // │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
-// │ TRM Tests            │ ~2919       │ trm-12     │ trm-13        │
+// │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
 // │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-11 │ tds-kit-12    │
 // │ ALZ Blood Tests      │ ~4456       │ alz-9      │ alz-10        │
@@ -3261,6 +3261,57 @@ export const trmTestData = [
     "isClinicalLDT": true,
     "technologyDifferentiator": "Methylation-based tumor fraction quantification offers advantages over genomic VAF methods: (1) Tracks thousands of methylation loci vs handful of coding loci for higher sensitivity; (2) Not confounded by CNAs that affect genomic max-MAF estimates; (3) Excludes non-tumor noise (including CHIP) without requiring matched normal sequencing; (4) Validated precision down to 0.01% TF. Uses same Guardant Infinity platform as Reveal MRD, Shield, and Shield MCD.",
     "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with epigenetic tumor fraction (epiTF) quantification."
+  },
+  {
+    "id": "trm-13",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Liquid Trace (Therapy Monitoring)",
+    "vendor": "Genomic Testing Cooperative (GTC)",
+    "approach": "Tumor-naïve",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "No tumor tissue required. Tumor-naïve cfDNA + cfRNA approach.",
+    "requiresMatchedNormal": "No",
+    "requiresMatchedNormalNotes": "No matched normal required.",
+    "method": "Combined cfDNA and cfRNA NGS from peripheral blood or CSF. Serial monitoring tracks both VAF (Variant Allele Frequency) AND mutant molecules per mL to quantify treatment response. Reports include tabular tracking of mutations over time. cfRNA analysis (>1,600 genes) adds sensitivity for detecting residual disease and emerging resistance mutations.",
+    "methodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/ | https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "cancerTypes": [
+      "Pan-cancer: solid tumors and hematologic malignancies"
+    ],
+    "cancerTypesNotes": "Solid tumors: lung, brain/CNS, breast, thyroid, colorectal, oropharyngeal, pancreatic, ovarian, prostate. Hematologic: AML, MDS, MPN, multiple myeloma, lymphoma, ALL, CMML, VEXAS.",
+    "targetPopulation": "Patients on systemic therapy requiring longitudinal disease monitoring. Includes solid tumors and hematologic malignancies. CSF samples for CNS involvement and leptomeningeal disease monitoring.",
+    "responseDefinition": "Change in VAF and/or mutant molecules per mL from baseline. Decrease indicates treatment response; increase indicates progression or emerging resistance. Reports include tabular tracking of mutations across serial samples.",
+    "indicationsNotes": "Serial monitoring for treatment response assessment. Reports include longitudinal VAF AND mutant molecules/mL tracking table. Higher VAF = higher tumor load; VAF reduction = response to treatment. Also detects emerging resistance mutations and clonal evolution.",
+    "sensitivity": null,
+    "sensitivityNotes": "Combined cfDNA + cfRNA provides higher sensitivity than cfDNA-only tests. cfRNA detects mutations often missed by cfDNA alone due to multiple RNA copies per cell.",
+    "specificity": null,
+    "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
+    "lodNotes": "Detection sensitivity varies by variant type. Serial monitoring at consistent time points enables tracking of relative changes even at low VAF.",
+    "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. NYSDOH approved. CE-marked for EU. UKCA certified for UK.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare covered. Contact GTC for current payer coverage information.",
+    "clinicalAvailability": "Commercially available",
+    "availableRegions": ["US", "EU", "UK"],
+    "tat": "5-7 days",
+    "tatNotes": "RNA stability 48-72 hours from blood draw; DNA stability 7 days.",
+    "sampleType": "Peripheral blood (10mL EDTA) or CSF (7-10mL)",
+    "bloodVolume": 10,
+    "bloodVolumeNotes": "10mL peripheral blood in EDTA tube. CSF: 7-10mL optimal (5mL minimum).",
+    "numPublications": 15,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "technologyDifferentiator": "Only commercially available therapy monitoring test combining cfDNA and cfRNA. Reports include VAF AND mutant molecules/mL tracking table for quantitative response assessment. cfRNA adds sensitivity for detecting residual disease and resistance mutations. LEADING PROVIDER FOR CSF LIQUID BIOPSY - optimal for monitoring CNS tumors (glioblastoma, CNS lymphomas/leukemias) and leptomeningeal disease (breast, lung, melanoma). For hematology: also includes chimerism analysis and chromosomal abnormalities for post-transplant MRD - going beyond mutation-only approaches.",
+    "submissionInfo": {
+      "submittedBy": "Jeffrey Owen",
+      "submitterEmail": "jowen@genomictestingcooperative.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Vendor clarified that Liquid Trace is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Added TRM entry in addition to TDS entries for CGP use case."
+    }
   }
   // INSERT NEW TRM TEST HERE (above this line, add comma after previous entry)
 ];
@@ -4173,7 +4224,7 @@ export const tdsTestData = [
     "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling for diagnosis, treatment selection, or monitoring. CSF samples accepted for CNS tumors (can add MGMT methylation analysis for brain tumors when tumor DNA detected).",
     "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
     "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. NYSDOH approved. CE-marked for EU. UKCA certified for UK.",
     "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
     "nccnRecommended": false,
     "nccnAlignmentType": "biomarker-coverage",
@@ -4188,23 +4239,29 @@ export const tdsTestData = [
     "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
     "lodNotes": "Detection sensitivity varies by variant type and prior history. Tumor-informed or prior history samples achieve highest sensitivity.",
     "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Contact GTC for current payer coverage information.",
-    "availableRegions": ["US", "International"],
-    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare covered. Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "EU", "UK"],
+    "availableRegionsNotes": "NYSDOH approved. CE-marked for EU. UKCA certified for UK. US-based laboratory with international representatives.",
     "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
     "clinicalAvailability": "Commercially available",
     "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
     "numPublications": 15,
     "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
     "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
-    "technologyDifferentiator": "Only commercially available liquid biopsy combining cfDNA and cfRNA analysis. cfRNA provides: (1) Higher sensitivity for some mutations due to multiple RNA copies per cell; (2) Fusion gene detection from chromosomal translocations; (3) Expression-level data including alternative splicing. Also includes T/B-cell clonality, HLA genotyping, and viral detection (EBV, HPV, TTV) not found in most liquid CGP tests. CSF sample option for CNS tumors. AI/machine learning integrated into analysis pipeline.",
+    "technologyDifferentiator": "Only commercially available liquid biopsy combining cfDNA and cfRNA analysis. cfRNA provides: (1) Higher sensitivity for some mutations due to multiple RNA copies per cell; (2) Fusion gene detection from chromosomal translocations; (3) Expression-level data including alternative splicing. Also includes T/B-cell clonality, HLA genotyping, and viral detection (EBV, HPV, TTV) not found in most liquid CGP tests. LEADING PROVIDER FOR CSF LIQUID BIOPSY - optimal sample input for CNS tumors (glioblastoma, CNS lymphomas/leukemias) and leptomeningeal disease (common in breast, lung, melanoma patients with prolonged survival). AI/machine learning integrated into analysis pipeline.",
+    "monitoringCapabilities": true,
+    "monitoringCapabilitiesNotes": "Reports include serial VAF tracking AND mutant molecules/mL for quantitative treatment response monitoring. Can be used for longitudinal disease monitoring in addition to initial genomic profiling.",
+    "csfLeadership": true,
+    "csfLeadershipNotes": "GTC is the leading provider of liquid biopsy on cerebrospinal fluid (CSF). CSF is the optimal sample for CNS tumors including glioblastoma, CNS lymphomas, CNS leukemias, and leptomeningeal disease which commonly occurs in breast, lung, and melanoma patients with prolonged survival.",
     "submissionInfo": {
       "submittedBy": "Jeffrey Owen",
       "submitterEmail": "jowen@genomictestingcooperative.com",
       "submitterType": "Vendor Representative",
       "submissionDate": "2025-12-17",
-      "submissionNotes": "Submitted as TRM but reclassified to TDS (Liquid CGP) based on primary use case of comprehensive genomic profiling for treatment selection. Heme version submitted separately."
+      "submissionNotes": "Submitted as TRM; also listed in TDS for CGP use case. Test is used for both initial profiling AND serial therapeutic monitoring via VAF/mutant molecules tracking.",
+      "vendorUpdateDate": "2025-12-17",
+      "vendorUpdateNotes": "Vendor clarified test is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Emphasized CSF leadership for CNS tumors and leptomeningeal disease."
     }
   },
   {
@@ -4229,7 +4286,7 @@ export const tdsTestData = [
     "targetPopulation": "Patients with hematologic malignancies requiring comprehensive genomic profiling for diagnosis, classification, treatment selection, or monitoring. Alternative to bone marrow biopsy in many cases. CSF samples for CNS involvement characterization and CAR-T monitoring.",
     "targetPopulationCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
     "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. NYSDOH approved. CE-marked for EU. UKCA certified for UK.",
     "fdaStatusCitations": "https://genomictestingcooperative.com/legal-licensing/licenses-cerifications/",
     "nccnRecommended": false,
     "nccnAlignmentType": "biomarker-coverage",
@@ -4244,24 +4301,46 @@ export const tdsTestData = [
     "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
     "lodNotes": "Detection sensitivity varies by variant type and prior history. VAF used to monitor disease - higher VAF indicates higher tumor load; reduction in VAF after treatment indicates response.",
     "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Contact GTC for current payer coverage information.",
-    "availableRegions": ["US", "International"],
-    "availableRegionsNotes": "US-based laboratory with international representatives. CE-marked for EU, UKCA certified for UK.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare covered. Contact GTC for current payer coverage information.",
+    "availableRegions": ["US", "EU", "UK"],
+    "availableRegionsNotes": "NYSDOH approved. CE-marked for EU. UKCA certified for UK. US-based laboratory with international representatives.",
     "availableRegionsCitations": "https://genomictestingcooperative.com/international-representatives/",
     "clinicalAvailability": "Commercially available",
     "clinicalAvailabilityCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
     "numPublications": 15,
     "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
     "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
-    "technologyDifferentiator": "Only commercially available hematology liquid biopsy combining cfDNA and cfRNA analysis. Can reduce need for bone marrow biopsies. Key differentiators: (1) cfRNA enables higher sensitivity and fusion detection; (2) T/B-cell clonality for lymphoid/plasma cell malignancy diagnosis; (3) TTV viral load as immune competence marker for transplant patients; (4) CAR-T cell detection and monitoring in CSF; (5) CSF samples for CNS involvement characterization. AI/machine learning integrated into analysis pipeline.",
+    "technologyDifferentiator": "Only commercially available hematology liquid biopsy combining cfDNA and cfRNA analysis. Can reduce need for bone marrow biopsies. Key differentiators: (1) cfRNA enables higher sensitivity and fusion detection; (2) T/B-cell clonality for lymphoid/plasma cell malignancy diagnosis; (3) TTV viral load as immune competence marker for transplant patients; (4) CAR-T cell detection and monitoring in CSF; (5) CSF samples for CNS involvement characterization; (6) cfDNA chimerism analysis for post-transplant relapse prediction; (7) Chromosomal abnormalities detection beyond mutations (going beyond Signatera-style mutation-only MRD). LEADING PROVIDER FOR CSF LIQUID BIOPSY in hematologic malignancies. AI/machine learning integrated into analysis pipeline.",
+    "monitoringCapabilities": true,
+    "monitoringCapabilitiesNotes": "Reports include serial VAF tracking AND mutant molecules/mL for treatment response monitoring. Published validation shows cfDNA detects MORE mutations than bone marrow (92 vs 61 mutations in same patients). Higher VAF = higher tumor load; VAF reduction = response to treatment.",
+    "chimerismCapabilities": true,
+    "chimerismCapabilitiesNotes": "cfDNA chimerism analysis for post-transplant monitoring. Published 2025 data (Rowley et al., Cancers) shows cfDNA chimerism predicts relapse more accurately than standard CD3+ cell chimerism. All relapsed patients showed downward trend in cfDNA chimerism detectable by day 56 post-transplant.",
+    "mrdCapabilities": true,
+    "mrdCapabilitiesNotes": "MRD detection via persistent adverse-risk driver mutations AND chromosomal abnormalities - going beyond mutation-only approaches like Signatera. Published data: patients who cleared adverse-risk mutations did not relapse; 6/7 patients with persistent adverse-risk mutations relapsed within 12 months post-transplant.",
+    "csfLeadership": true,
+    "csfLeadershipNotes": "Ideally suited for characterizing lymphoma and multiple myeloma with CNS involvement. Can detect and monitor CAR-T cells in CSF samples.",
     "submissionInfo": {
       "submittedBy": "Jeffrey Owen",
       "submitterEmail": "jowen@genomictestingcooperative.com",
       "submitterType": "Vendor Representative",
       "submissionDate": "2025-12-17",
-      "submissionNotes": "Submitted alongside Liquid Trace Solid Tumor. Entered as separate test due to distinct cancer type focus and additional hematology-specific biomarkers (T/B clonality, TTV, CAR-T detection)."
-    }
+      "submissionNotes": "Submitted alongside Liquid Trace Solid Tumor. Entered as separate test due to distinct cancer type focus and additional hematology-specific biomarkers (T/B clonality, TTV, CAR-T detection, chimerism).",
+      "vendorUpdateDate": "2025-12-17",
+      "vendorUpdateNotes": "Vendor clarified MRD approach includes chimerism analysis and chromosomal abnormalities beyond just mutations - differentiated from Signatera. Published 2025 papers on cfDNA chimerism predicting relapse post-transplant."
+    },
+    "publicationsKey": [
+      {
+        "citation": "Rowley SD, Albitar M, et al. cfDNA Chimerism and Somatic Mutation Testing in Early Prediction of Relapse After Allogeneic Stem Cell Transplantation for Myeloid Malignancies. Cancers 2025;17:625.",
+        "url": "https://doi.org/10.3390/cancers17040625",
+        "keyFinding": "cfDNA testing detected more mutations than bone marrow (92 vs 61); cfDNA chimerism predicted relapse better than CD3+ chimerism; adverse-risk mutation clearance = no relapse"
+      },
+      {
+        "citation": "Aljurf M, et al. Chimerism Analysis of Cell-Free DNA in Patients Treated with Hematopoietic Stem Cell Transplantation May Predict Early Relapse.",
+        "url": "https://genomictestingcooperative.com/chimerism-analysis-of-cell-free-dna/",
+        "keyFinding": "cfDNA chimerism more reliable than cellular DNA chimerism for predicting early relapse post-HSCT"
+      }
+    ]
   },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
@@ -4951,6 +5030,42 @@ export const alzBloodTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'tds-20',
+    testName: 'Liquid Trace Solid Tumor',
+    vendor: 'Genomic Testing Cooperative (GTC)',
+    category: 'TDS',
+    description: 'Added unique cfDNA + cfRNA combined liquid biopsy for solid tumors. Only commercially available liquid biopsy combining both analytes. >1,600 genes via cfRNA. cfRNA enables: higher sensitivity (multiple RNA copies vs single DNA copy), fusion gene detection from chromosomal translocations, expression-level data. LEADING PROVIDER FOR CSF LIQUID BIOPSY - optimal for CNS tumors (glioblastoma, CNS lymphomas/leukemias) and leptomeningeal disease. Includes T/B-cell clonality, HLA genotyping, viral detection (EBV, HPV, TTV). Reports include VAF + mutant molecules/mL for therapeutic monitoring. Medicare covered. NYSDOH approved. CE-marked (EU), UKCA certified (UK).',
+    contributor: 'Jeffrey Owen',
+    affiliation: 'Genomic Testing Cooperative (vendor)',
+    citation: 'https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/'
+  },
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'tds-21',
+    testName: 'Liquid Trace Hematology',
+    vendor: 'Genomic Testing Cooperative (GTC)',
+    category: 'TDS',
+    description: 'Added unique cfDNA + cfRNA liquid biopsy for hematologic malignancies. Can significantly reduce need for bone marrow biopsies. Key differentiators: (1) cfDNA chimerism analysis for post-transplant relapse prediction; (2) MRD via mutations AND chromosomal abnormalities (beyond Signatera-style mutation-only approach); (3) T/B-cell clonality; (4) TTV viral load as immune competence marker; (5) CAR-T detection/monitoring in CSF. Published validation: cfDNA detected MORE mutations than bone marrow (92 vs 61); cfDNA chimerism predicted relapse better than CD3+ chimerism (Rowley et al. Cancers 2025). Medicare covered. NYSDOH approved. CE-marked (EU), UKCA certified (UK).',
+    contributor: 'Jeffrey Owen',
+    affiliation: 'Genomic Testing Cooperative (vendor)',
+    citation: 'https://doi.org/10.3390/cancers17040625'
+  },
+  {
+    date: 'Dec 17, 2025',
+    type: 'added',
+    testId: 'trm-13',
+    testName: 'Liquid Trace (Therapy Monitoring)',
+    vendor: 'Genomic Testing Cooperative (GTC)',
+    category: 'TRM',
+    description: 'Added therapy response monitoring entry for Liquid Trace. Only TRM test combining cfDNA + cfRNA. Reports include longitudinal VAF AND mutant molecules/mL tracking table for quantitative response assessment. Response definition: VAF/molecules decrease = response; increase = progression or emerging resistance. Covers both solid tumors and hematologic malignancies. CSF option for CNS involvement and leptomeningeal disease monitoring. For hematology: includes chimerism analysis and chromosomal abnormalities for post-transplant MRD. Medicare covered. NYSDOH approved. CE-marked (EU), UKCA certified (UK).',
+    contributor: 'Jeffrey Owen',
+    affiliation: 'Genomic Testing Cooperative (vendor)',
+    citation: 'https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/'
+  },
   {
     date: 'Dec 17, 2025',
     type: 'added',
@@ -6106,6 +6221,453 @@ export const comparisonParams = {
     { key: 'totalParticipants', label: 'Validation Participants' },
     { key: 'numPublications', label: 'Publications' },
   ],
+};
+
+// ============================================
+// External Resources & Interlinking
+// ============================================
+// Authoritative external resources for each category
+// Used for category page resource sections and glossary tooltips
+
+export const STANDARDS_BODIES = {
+  BLOODPAC: {
+    name: 'Blood Profiling Atlas in Cancer (BLOODPAC)',
+    shortName: 'BLOODPAC',
+    description: 'Cancer Moonshot consortium focused on liquid biopsy standards and data sharing',
+    url: 'https://www.bloodpac.org',
+    logo: null
+  },
+  FRIENDS: {
+    name: 'Friends of Cancer Research',
+    shortName: 'Friends of Cancer Research',
+    description: 'Non-profit advancing regulatory science and patient-focused drug development',
+    url: 'https://friendsofcancerresearch.org',
+    logo: null
+  },
+  NCI: {
+    name: 'National Cancer Institute',
+    shortName: 'NCI',
+    description: 'U.S. federal government\'s principal agency for cancer research',
+    url: 'https://www.cancer.gov',
+    logo: null
+  },
+  FDA: {
+    name: 'U.S. Food and Drug Administration',
+    shortName: 'FDA',
+    description: 'Federal agency responsible for protecting public health through regulation of medical devices',
+    url: 'https://www.fda.gov',
+    logo: null
+  },
+  NCCN: {
+    name: 'National Comprehensive Cancer Network',
+    shortName: 'NCCN',
+    description: 'Alliance of cancer centers developing clinical practice guidelines',
+    url: 'https://www.nccn.org',
+    logo: null
+  },
+  LUNGEVITY: {
+    name: 'LUNGevity Foundation',
+    shortName: 'LUNGevity',
+    description: 'Lung cancer patient advocacy and research organization',
+    url: 'https://www.lungevity.org',
+    logo: null
+  },
+  ILSA: {
+    name: 'International Liquid Biopsy Standardization Alliance',
+    shortName: 'ILSA',
+    description: 'FNIH-hosted global alliance for liquid biopsy standardization',
+    url: 'https://fnih.org/our-programs/international-liquid-biopsy-standardization-alliance-ilsa/',
+    logo: null
+  },
+  ASCO: {
+    name: 'American Society of Clinical Oncology',
+    shortName: 'ASCO',
+    description: 'Professional organization for physicians and oncology professionals',
+    url: 'https://www.asco.org',
+    logo: null
+  }
+};
+
+export const EXTERNAL_RESOURCES = {
+  // General resources applicable across categories
+  general: [
+    {
+      id: 'nci-liquid-biopsy',
+      title: 'What Is a Liquid Biopsy?',
+      source: 'NCI',
+      type: 'definition',
+      audience: ['patient', 'clinician'],
+      url: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/liquid-biopsy',
+      description: 'Patient-friendly definition of liquid biopsy from the National Cancer Institute'
+    },
+    {
+      id: 'nci-ctdna',
+      title: 'Circulating Tumor DNA (ctDNA)',
+      source: 'NCI',
+      type: 'definition',
+      audience: ['patient', 'clinician'],
+      url: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/ctdna',
+      description: 'NCI dictionary definition of ctDNA'
+    },
+    {
+      id: 'nci-liquid-biopsy-blog',
+      title: 'Liquid Biopsy: Using DNA in Blood to Detect, Track, and Treat Cancer',
+      source: 'NCI',
+      type: 'overview',
+      audience: ['patient'],
+      url: 'https://www.cancer.gov/news-events/cancer-currents-blog/2017/liquid-biopsy-detects-treats-cancer',
+      description: 'Comprehensive overview of liquid biopsy applications in cancer care'
+    },
+    {
+      id: 'ilsa-overview',
+      title: 'International Liquid Biopsy Standardization Alliance',
+      source: 'ILSA',
+      type: 'standards',
+      audience: ['clinician', 'researcher'],
+      url: 'https://fnih.org/our-programs/international-liquid-biopsy-standardization-alliance-ilsa/',
+      description: 'Global effort to standardize liquid biopsy testing and reporting'
+    }
+  ],
+  
+  // MRD-specific resources
+  MRD: [
+    {
+      id: 'bloodpac-mrd-lexicon',
+      title: 'BLOODPAC MRD Terminology Lexicon',
+      source: 'BLOODPAC',
+      type: 'standards',
+      audience: ['clinician', 'researcher'],
+      url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+      description: 'Standardized terminology for MRD testing including tumor-informed, tumor-naïve, and molecular response definitions',
+      isPrimary: true
+    },
+    {
+      id: 'fda-ctdna-guidance',
+      title: 'FDA Guidance: Use of ctDNA in Early-Stage Solid Tumors',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/media/183874/download',
+      description: 'December 2024 FDA guidance on ctDNA for patient enrichment and response endpoints',
+      isPrimary: true
+    },
+    {
+      id: 'friends-ctdna',
+      title: 'ctDNA as a Clinical Endpoint',
+      source: 'FRIENDS',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://friendsofcancerresearch.org/ctdna/',
+      description: 'ctMoniTR project validating ctDNA as an early efficacy endpoint'
+    },
+    {
+      id: 'friends-ctdna-definition',
+      title: 'Circulating Tumor DNA Definition',
+      source: 'FRIENDS',
+      type: 'definition',
+      audience: ['clinician'],
+      url: 'https://friendsofcancerresearch.org/glossary-term/circulating-tumor-dna-ctdna/',
+      description: 'Technical definition of ctDNA from Friends of Cancer Research'
+    },
+    {
+      id: 'bloodpac-working-groups',
+      title: 'BLOODPAC Working Groups',
+      source: 'BLOODPAC',
+      type: 'standards',
+      audience: ['researcher'],
+      url: 'https://www.bloodpac.org/how-we-work',
+      description: 'Overview of BLOODPAC working groups developing liquid biopsy standards'
+    }
+  ],
+  
+  // ECD-specific resources
+  ECD: [
+    {
+      id: 'nci-lbc',
+      title: 'NCI Liquid Biopsy Consortium',
+      source: 'NCI',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://prevention.cancer.gov/research-areas/networks-consortia-programs/lbc',
+      description: 'NCI-funded consortium focused on early cancer detection research',
+      isPrimary: true
+    },
+    {
+      id: 'nci-ctdna-sensitivity',
+      title: 'Increasing ctDNA Detection in Blood',
+      source: 'NCI',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.cancer.gov/news-events/cancer-currents-blog/2024/liquid-biopsy-increase-ctdna-in-blood',
+      description: 'Research on improving liquid biopsy sensitivity for early detection'
+    },
+    {
+      id: 'lungevity-biomarker',
+      title: 'Biomarker Testing for Lung Cancer',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing',
+      description: 'Patient guide to understanding biomarker and liquid biopsy testing',
+      isPrimary: true
+    },
+    {
+      id: 'lungevity-booklet',
+      title: 'Biomarker Testing Booklet (PDF)',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://www.lungevity.org/sites/default/files/request-materials/LUNGevity-biomarker-testing-booklet-112817.pdf',
+      description: 'Downloadable patient education booklet on biomarker testing'
+    },
+    {
+      id: 'noonemissed',
+      title: 'No One Missed Campaign',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://noonemissed.org/lungcancer/us',
+      description: 'Campaign ensuring all lung cancer patients receive biomarker testing'
+    }
+  ],
+  
+  // TRM-specific resources
+  TRM: [
+    {
+      id: 'friends-ctmonitr',
+      title: 'ctMoniTR: ctDNA Monitoring for Treatment Response',
+      source: 'FRIENDS',
+      type: 'research',
+      audience: ['clinician', 'researcher'],
+      url: 'https://friendsofcancerresearch.org/ctdna/',
+      description: 'Multi-stakeholder project validating ctDNA as an early efficacy endpoint',
+      isPrimary: true
+    },
+    {
+      id: 'friends-evidentiary-roadmap',
+      title: 'Evidentiary Framework for ctDNA',
+      source: 'FRIENDS',
+      type: 'regulatory',
+      audience: ['researcher'],
+      url: 'https://friendsofcancerresearch.org/wp-content/uploads/Framework-for-Integrating-Change-in-ctDNA-Levels-as-an-Efficacy-Measure-on-Oncology-Clinical-Trials.pdf',
+      description: 'Framework for integrating ctDNA changes as efficacy measures in clinical trials'
+    },
+    {
+      id: 'progress-for-patients',
+      title: 'Progress for Patients',
+      source: 'FRIENDS',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://progressforpatients.org',
+      description: 'Patient-focused information on cancer treatment advances'
+    },
+    {
+      id: 'fda-ctdna-trm',
+      title: 'FDA Guidance: ctDNA for Treatment Response',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/media/183874/download',
+      description: 'FDA guidance on using ctDNA to measure treatment response'
+    }
+  ],
+  
+  // TDS-specific resources
+  TDS: [
+    {
+      id: 'nccn-guidelines',
+      title: 'NCCN Clinical Practice Guidelines',
+      source: 'NCCN',
+      type: 'guidelines',
+      audience: ['clinician'],
+      url: 'https://www.nccn.org/guidelines/guidelines-detail',
+      description: 'Evidence-based clinical practice guidelines for oncology',
+      isPrimary: true
+    },
+    {
+      id: 'fda-cdx-list',
+      title: 'FDA List of Cleared or Approved Companion Diagnostics',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/list-cleared-or-approved-companion-diagnostic-devices-in-vitro-and-imaging-tools',
+      description: 'Complete list of FDA-approved companion diagnostic devices'
+    },
+    {
+      id: 'asco-cgp',
+      title: 'Comprehensive Genomic Profiling Education',
+      source: 'ASCO',
+      type: 'education',
+      audience: ['clinician'],
+      url: 'https://ascopubs.org/doi/10.1200/EDBK-25-481114',
+      description: 'ASCO educational resources on CGP testing and interpretation'
+    },
+    {
+      id: 'lungevity-clinical-value',
+      title: 'Clinical Value of Biomarker Testing',
+      source: 'LUNGEVITY',
+      type: 'patient-education',
+      audience: ['patient'],
+      url: 'https://www.lungevity.org/learn-about-lungevity/precision-medicine/clinical-value-of-biomarker-testing-in-nsclc',
+      description: 'Patient guide to understanding the clinical value of biomarker testing'
+    }
+  ]
+};
+
+// Glossary of terms with authoritative source links
+export const GLOSSARY = {
+  'liquid-biopsy': {
+    term: 'Liquid Biopsy',
+    definition: 'A test done on a sample of blood to look for cancer cells or pieces of DNA from tumor cells that are circulating in the blood.',
+    shortDefinition: 'Blood test that detects cancer DNA or cells',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/liquid-biopsy',
+    source: 'NCI',
+    relatedTerms: ['ctDNA', 'cfDNA', 'CTC']
+  },
+  'ctdna': {
+    term: 'Circulating Tumor DNA (ctDNA)',
+    definition: 'Small pieces of DNA that are released into the bloodstream when cancer cells die. ctDNA carries the same genetic alterations as the tumor.',
+    shortDefinition: 'Tumor DNA fragments in blood',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/ctdna',
+    source: 'NCI',
+    relatedTerms: ['liquid-biopsy', 'cfDNA', 'VAF']
+  },
+  'cfdna': {
+    term: 'Cell-Free DNA (cfDNA)',
+    definition: 'DNA fragments circulating freely in the bloodstream, released from both normal and tumor cells. In cancer patients, a portion derives from tumor cells (ctDNA).',
+    shortDefinition: 'Free-floating DNA in blood',
+    sourceUrl: 'https://friendsofcancerresearch.org/glossary-term/circulating-tumor-dna-ctdna/',
+    source: 'Friends of Cancer Research',
+    relatedTerms: ['ctDNA', 'liquid-biopsy']
+  },
+  'mrd': {
+    term: 'Molecular Residual Disease (MRD)',
+    definition: 'Cancer that remains after treatment at levels too low to detect with standard imaging or laboratory tests, but detectable through sensitive molecular methods.',
+    shortDefinition: 'Remaining cancer detected by molecular tests',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['tumor-informed', 'tumor-naive', 'ctDNA']
+  },
+  'tumor-informed': {
+    term: 'Tumor-Informed Assay',
+    definition: 'An MRD testing approach that first sequences the patient\'s tumor to identify specific mutations, then designs a personalized test to track those mutations in blood.',
+    shortDefinition: 'Personalized test based on tumor sequencing',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'tumor-naive']
+  },
+  'tumor-naive': {
+    term: 'Tumor-Naïve Assay',
+    definition: 'An MRD testing approach that uses a fixed panel of common cancer genes without requiring prior tumor sequencing. Faster turnaround but generally less sensitive than tumor-informed approaches.',
+    shortDefinition: 'Fixed panel test without prior tumor analysis',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['mrd', 'tumor-informed']
+  },
+  'vaf': {
+    term: 'Variant Allele Frequency (VAF)',
+    definition: 'The percentage of sequencing reads containing a specific mutation. In ctDNA testing, VAF reflects the proportion of mutant DNA fragments in the sample.',
+    shortDefinition: 'Percentage of DNA with a specific mutation',
+    sourceUrl: 'https://friendsofcancerresearch.org/glossary-term/circulating-tumor-dna-ctdna/',
+    source: 'Friends of Cancer Research',
+    relatedTerms: ['ctDNA', 'lod']
+  },
+  'lod': {
+    term: 'Limit of Detection (LOD)',
+    definition: 'The lowest concentration of ctDNA that can be reliably detected by a test. Often expressed as VAF (e.g., 0.01%) or parts per million (ppm).',
+    shortDefinition: 'Lowest detectable ctDNA level',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    source: 'BLOODPAC',
+    relatedTerms: ['vaf', 'sensitivity']
+  },
+  'sensitivity': {
+    term: 'Sensitivity',
+    definition: 'The ability of a test to correctly identify patients who have the condition (true positive rate). A test with 90% sensitivity will detect 90 out of 100 patients with cancer.',
+    shortDefinition: 'Ability to detect true positives',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/sensitivity',
+    source: 'NCI',
+    relatedTerms: ['specificity', 'ppv', 'npv']
+  },
+  'specificity': {
+    term: 'Specificity',
+    definition: 'The ability of a test to correctly identify patients who do not have the condition (true negative rate). A test with 99% specificity will correctly rule out 99 of 100 patients without cancer.',
+    shortDefinition: 'Ability to avoid false positives',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/specificity',
+    source: 'NCI',
+    relatedTerms: ['sensitivity', 'ppv', 'npv']
+  },
+  'ngs': {
+    term: 'Next-Generation Sequencing (NGS)',
+    definition: 'High-throughput DNA sequencing technology that can analyze millions of DNA fragments simultaneously, enabling comprehensive genomic profiling.',
+    shortDefinition: 'High-throughput DNA sequencing',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/next-generation-sequencing',
+    source: 'NCI',
+    relatedTerms: ['cgp', 'ctDNA']
+  },
+  'cgp': {
+    term: 'Comprehensive Genomic Profiling (CGP)',
+    definition: 'A type of NGS test that analyzes hundreds of genes simultaneously to identify mutations, fusions, and other alterations that may guide treatment decisions.',
+    shortDefinition: 'Broad cancer gene panel test',
+    sourceUrl: 'https://ascopubs.org/doi/10.1200/EDBK-25-481114',
+    source: 'ASCO',
+    relatedTerms: ['ngs', 'companion-dx']
+  },
+  'companion-dx': {
+    term: 'Companion Diagnostic (CDx)',
+    definition: 'An FDA-approved test that is essential for the safe and effective use of a corresponding drug or biological product, typically identifying patients likely to benefit from a specific therapy.',
+    shortDefinition: 'Test linked to specific drug approval',
+    sourceUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics',
+    source: 'FDA',
+    relatedTerms: ['cgp', 'targeted-therapy']
+  },
+  'methylation': {
+    term: 'DNA Methylation',
+    definition: 'A chemical modification of DNA that can affect gene expression. Cancer-specific methylation patterns in cfDNA are used by some early detection tests to identify cancer signals.',
+    shortDefinition: 'Chemical DNA modification used in cancer detection',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/dna-methylation',
+    source: 'NCI',
+    relatedTerms: ['cfDNA', 'ecd']
+  },
+  'chip': {
+    term: 'Clonal Hematopoiesis of Indeterminate Potential (CHIP)',
+    definition: 'Age-related mutations in blood cells that can be confused with tumor-derived mutations in liquid biopsy tests. Advanced assays use various methods to filter out CHIP.',
+    shortDefinition: 'Age-related blood cell mutations that can confound testing',
+    sourceUrl: 'https://www.cancer.gov/publications/dictionaries/cancer-terms/def/chip',
+    source: 'NCI',
+    relatedTerms: ['ctDNA', 'cfDNA']
+  }
+};
+
+// Category-specific standards attribution for display
+export const CATEGORY_STANDARDS = {
+  MRD: {
+    primary: 'BLOODPAC MRD Lexicon',
+    primaryUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/',
+    secondary: 'FDA ctDNA Guidance (Dec 2024)',
+    secondaryUrl: 'https://www.fda.gov/media/183874/download',
+    attribution: 'Terminology aligned with BLOODPAC Consortium MRD Lexicon'
+  },
+  ECD: {
+    primary: 'NCI Liquid Biopsy Consortium',
+    primaryUrl: 'https://prevention.cancer.gov/research-areas/networks-consortia-programs/lbc',
+    secondary: 'LUNGevity Foundation',
+    secondaryUrl: 'https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing',
+    attribution: 'Patient resources from LUNGevity Foundation'
+  },
+  TRM: {
+    primary: 'Friends of Cancer Research ctMoniTR',
+    primaryUrl: 'https://friendsofcancerresearch.org/ctdna/',
+    secondary: 'FDA ctDNA Guidance',
+    secondaryUrl: 'https://www.fda.gov/media/183874/download',
+    attribution: 'Endpoint validation research from Friends of Cancer Research'
+  },
+  TDS: {
+    primary: 'NCCN Clinical Practice Guidelines',
+    primaryUrl: 'https://www.nccn.org/guidelines/guidelines-detail',
+    secondary: 'FDA Companion Diagnostics',
+    secondaryUrl: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/companion-diagnostics',
+    attribution: 'NCCN guideline-referenced'
+  }
 };
 
 // ============================================
