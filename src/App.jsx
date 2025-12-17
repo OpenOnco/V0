@@ -4269,6 +4269,44 @@ const FAQPage = () => {
       )
     },
     {
+      question: "What standards and terminology does OpenOnco follow?",
+      answer: (
+        <div className="space-y-3">
+          <p>
+            OpenOnco aligns its terminology and categories with authoritative standards bodies and research consortiums to ensure consistency with the broader field. Our key references include:
+          </p>
+          <ul className="list-disc list-inside space-y-2">
+            <li>
+              <strong>BLOODPAC MRD Lexicon</strong> — The Blood Profiling Atlas in Cancer consortium published a standardized terminology lexicon for MRD testing in 2025. We use their definitions for terms like "tumor-informed," "tumor-naïve," "molecular response," and "ctDNA clearance."
+              <br /><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View BLOODPAC MRD Lexicon</a>
+            </li>
+            <li>
+              <strong>FDA ctDNA Guidance (December 2024)</strong> — The FDA's guidance document on using ctDNA for early-stage solid tumor drug development informs how we describe regulatory pathways and clinical endpoints.
+              <br /><a href="https://www.fda.gov/media/183874/download" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View FDA Guidance (PDF)</a>
+            </li>
+            <li>
+              <strong>Friends of Cancer Research ctMoniTR</strong> — This multi-stakeholder project is validating ctDNA as an early efficacy endpoint. We reference their framework for treatment response monitoring.
+              <br /><a href="https://friendsofcancerresearch.org/ctdna/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View ctMoniTR Project</a>
+            </li>
+            <li>
+              <strong>NCI Cancer Dictionary</strong> — For patient-facing definitions of terms like "liquid biopsy" and "ctDNA," we reference the National Cancer Institute's authoritative definitions.
+              <br /><a href="https://www.cancer.gov/publications/dictionaries/cancer-terms/def/liquid-biopsy" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View NCI Dictionary</a>
+            </li>
+            <li>
+              <strong>NCCN Clinical Practice Guidelines</strong> — When we indicate a test covers "NCCN-recommended" biomarkers, we're referring to the National Comprehensive Cancer Network's evidence-based guidelines.
+              <br /><a href="https://www.nccn.org/guidelines/guidelines-detail" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View NCCN Guidelines</a>
+            </li>
+          </ul>
+          <p>
+            For patient education resources, we recommend <a href="https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700">LUNGevity's biomarker testing guides</a> and the <a href="https://noonemissed.org/lungcancer/us" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700">No One Missed campaign</a>.
+          </p>
+          <p className="text-sm text-gray-500 mt-4">
+            You'll find links to these resources throughout OpenOnco on each category page under "Standards & Resources."
+          </p>
+        </div>
+      )
+    },
+    {
       question: "How does the AI chat feature work, and can I trust its answers?",
       answer: (
         <div className="space-y-3">

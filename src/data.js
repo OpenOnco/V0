@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 17, 2025 (added Liquid Trace Solid Tumor tds-20, Liquid Trace Hematology tds-21)
+// Last updated: December 17, 2025 (added GTC Liquid Trace: tds-20 Solid Tumor, tds-21 Hematology, trm-13 Therapy Monitoring; vendor updates for CSF leadership, chimerism/MRD capabilities)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -12,7 +12,7 @@
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
 // │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
-// │ TRM Tests            │ ~2919       │ trm-12     │ trm-13        │
+// │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
 // │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-11 │ tds-kit-12    │
 // │ ALZ Blood Tests      │ ~4456       │ alz-9      │ alz-10        │
@@ -3261,6 +3261,57 @@ export const trmTestData = [
     "isClinicalLDT": true,
     "technologyDifferentiator": "Methylation-based tumor fraction quantification offers advantages over genomic VAF methods: (1) Tracks thousands of methylation loci vs handful of coding loci for higher sensitivity; (2) Not confounded by CNAs that affect genomic max-MAF estimates; (3) Excludes non-tumor noise (including CHIP) without requiring matched normal sequencing; (4) Validated precision down to 0.01% TF. Uses same Guardant Infinity platform as Reveal MRD, Shield, and Shield MCD.",
     "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with epigenetic tumor fraction (epiTF) quantification."
+  },
+  {
+    "id": "trm-13",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Liquid Trace (Therapy Monitoring)",
+    "vendor": "Genomic Testing Cooperative (GTC)",
+    "approach": "Tumor-naïve",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "No tumor tissue required. Tumor-naïve cfDNA + cfRNA approach.",
+    "requiresMatchedNormal": "No",
+    "requiresMatchedNormalNotes": "No matched normal required.",
+    "method": "Combined cfDNA and cfRNA NGS from peripheral blood or CSF. Serial monitoring tracks both VAF (Variant Allele Frequency) AND mutant molecules per mL to quantify treatment response. Reports include tabular tracking of mutations over time. cfRNA analysis (>1,600 genes) adds sensitivity for detecting residual disease and emerging resistance mutations.",
+    "methodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/ | https://genomictestingcooperative.com/genomic-tests/liquid-trace-hematologic-malignancies/",
+    "cancerTypes": [
+      "Pan-cancer: solid tumors and hematologic malignancies"
+    ],
+    "cancerTypesNotes": "Solid tumors: lung, brain/CNS, breast, thyroid, colorectal, oropharyngeal, pancreatic, ovarian, prostate. Hematologic: AML, MDS, MPN, multiple myeloma, lymphoma, ALL, CMML, VEXAS.",
+    "targetPopulation": "Patients on systemic therapy requiring longitudinal disease monitoring. Includes solid tumors and hematologic malignancies. CSF samples for CNS involvement and leptomeningeal disease monitoring.",
+    "responseDefinition": "Change in VAF and/or mutant molecules per mL from baseline. Decrease indicates treatment response; increase indicates progression or emerging resistance. Reports include tabular tracking of mutations across serial samples.",
+    "indicationsNotes": "Serial monitoring for treatment response assessment. Reports include longitudinal VAF AND mutant molecules/mL tracking table. Higher VAF = higher tumor load; VAF reduction = response to treatment. Also detects emerging resistance mutations and clonal evolution.",
+    "sensitivity": null,
+    "sensitivityNotes": "Combined cfDNA + cfRNA provides higher sensitivity than cfDNA-only tests. cfRNA detects mutations often missed by cfDNA alone due to multiple RNA copies per cell.",
+    "specificity": null,
+    "lod": "0.1-0.01% VAF (non-hotspot); 0.01-0.001% (hotspot); <0.001% (tumor-informed)",
+    "lodNotes": "Detection sensitivity varies by variant type. Serial monitoring at consistent time points enables tracking of relative changes even at low VAF.",
+    "lodCitations": "https://genomictestingcooperative.com/genomic-tests/liquid-trace-solid-tumor/",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory developed test performed at GTC's CLIA/CAP-certified laboratory. CE-marked. UKCA certified.",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Contact GTC for current payer coverage information.",
+    "clinicalAvailability": "Commercially available",
+    "availableRegions": ["US", "International"],
+    "tat": "5-7 days",
+    "tatNotes": "RNA stability 48-72 hours from blood draw; DNA stability 7 days.",
+    "sampleType": "Peripheral blood (10mL EDTA) or CSF (7-10mL)",
+    "bloodVolume": 10,
+    "bloodVolumeNotes": "10mL peripheral blood in EDTA tube. CSF: 7-10mL optimal (5mL minimum).",
+    "numPublications": 15,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "technologyDifferentiator": "Only commercially available therapy monitoring test combining cfDNA and cfRNA. Reports include VAF AND mutant molecules/mL tracking table for quantitative response assessment. cfRNA adds sensitivity for detecting residual disease and resistance mutations. LEADING PROVIDER FOR CSF LIQUID BIOPSY - optimal for monitoring CNS tumors (glioblastoma, CNS lymphomas/leukemias) and leptomeningeal disease (breast, lung, melanoma). For hematology: also includes chimerism analysis and chromosomal abnormalities for post-transplant MRD - going beyond mutation-only approaches.",
+    "submissionInfo": {
+      "submittedBy": "Jeffrey Owen",
+      "submitterEmail": "jowen@genomictestingcooperative.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-17",
+      "submissionNotes": "Vendor clarified that Liquid Trace is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Added TRM entry in addition to TDS entries for CGP use case."
+    }
   }
   // INSERT NEW TRM TEST HERE (above this line, add comma after previous entry)
 ];
@@ -4198,13 +4249,19 @@ export const tdsTestData = [
     "numPublications": 15,
     "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
     "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
-    "technologyDifferentiator": "Only commercially available liquid biopsy combining cfDNA and cfRNA analysis. cfRNA provides: (1) Higher sensitivity for some mutations due to multiple RNA copies per cell; (2) Fusion gene detection from chromosomal translocations; (3) Expression-level data including alternative splicing. Also includes T/B-cell clonality, HLA genotyping, and viral detection (EBV, HPV, TTV) not found in most liquid CGP tests. CSF sample option for CNS tumors. AI/machine learning integrated into analysis pipeline.",
+    "technologyDifferentiator": "Only commercially available liquid biopsy combining cfDNA and cfRNA analysis. cfRNA provides: (1) Higher sensitivity for some mutations due to multiple RNA copies per cell; (2) Fusion gene detection from chromosomal translocations; (3) Expression-level data including alternative splicing. Also includes T/B-cell clonality, HLA genotyping, and viral detection (EBV, HPV, TTV) not found in most liquid CGP tests. LEADING PROVIDER FOR CSF LIQUID BIOPSY - optimal sample input for CNS tumors (glioblastoma, CNS lymphomas/leukemias) and leptomeningeal disease (common in breast, lung, melanoma patients with prolonged survival). AI/machine learning integrated into analysis pipeline.",
+    "monitoringCapabilities": true,
+    "monitoringCapabilitiesNotes": "Reports include serial VAF tracking AND mutant molecules/mL for quantitative treatment response monitoring. Can be used for longitudinal disease monitoring in addition to initial genomic profiling.",
+    "csfLeadership": true,
+    "csfLeadershipNotes": "GTC is the leading provider of liquid biopsy on cerebrospinal fluid (CSF). CSF is the optimal sample for CNS tumors including glioblastoma, CNS lymphomas, CNS leukemias, and leptomeningeal disease which commonly occurs in breast, lung, and melanoma patients with prolonged survival.",
     "submissionInfo": {
       "submittedBy": "Jeffrey Owen",
       "submitterEmail": "jowen@genomictestingcooperative.com",
       "submitterType": "Vendor Representative",
       "submissionDate": "2025-12-17",
-      "submissionNotes": "Submitted as TRM but reclassified to TDS (Liquid CGP) based on primary use case of comprehensive genomic profiling for treatment selection. Heme version submitted separately."
+      "submissionNotes": "Submitted as TRM; also listed in TDS for CGP use case. Test is used for both initial profiling AND serial therapeutic monitoring via VAF/mutant molecules tracking.",
+      "vendorUpdateDate": "2025-12-17",
+      "vendorUpdateNotes": "Vendor clarified test is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Emphasized CSF leadership for CNS tumors and leptomeningeal disease."
     }
   },
   {
@@ -4254,14 +4311,36 @@ export const tdsTestData = [
     "numPublications": 15,
     "numPublicationsNotes": "Publications from GTC team on cfDNA/cfRNA liquid biopsy methodology. References listed on product page.",
     "numPublicationsCitations": "https://genomictestingcooperative.com/category/publications/",
-    "technologyDifferentiator": "Only commercially available hematology liquid biopsy combining cfDNA and cfRNA analysis. Can reduce need for bone marrow biopsies. Key differentiators: (1) cfRNA enables higher sensitivity and fusion detection; (2) T/B-cell clonality for lymphoid/plasma cell malignancy diagnosis; (3) TTV viral load as immune competence marker for transplant patients; (4) CAR-T cell detection and monitoring in CSF; (5) CSF samples for CNS involvement characterization. AI/machine learning integrated into analysis pipeline.",
+    "technologyDifferentiator": "Only commercially available hematology liquid biopsy combining cfDNA and cfRNA analysis. Can reduce need for bone marrow biopsies. Key differentiators: (1) cfRNA enables higher sensitivity and fusion detection; (2) T/B-cell clonality for lymphoid/plasma cell malignancy diagnosis; (3) TTV viral load as immune competence marker for transplant patients; (4) CAR-T cell detection and monitoring in CSF; (5) CSF samples for CNS involvement characterization; (6) cfDNA chimerism analysis for post-transplant relapse prediction; (7) Chromosomal abnormalities detection beyond mutations (going beyond Signatera-style mutation-only MRD). LEADING PROVIDER FOR CSF LIQUID BIOPSY in hematologic malignancies. AI/machine learning integrated into analysis pipeline.",
+    "monitoringCapabilities": true,
+    "monitoringCapabilitiesNotes": "Reports include serial VAF tracking AND mutant molecules/mL for treatment response monitoring. Published validation shows cfDNA detects MORE mutations than bone marrow (92 vs 61 mutations in same patients). Higher VAF = higher tumor load; VAF reduction = response to treatment.",
+    "chimerismCapabilities": true,
+    "chimerismCapabilitiesNotes": "cfDNA chimerism analysis for post-transplant monitoring. Published 2025 data (Rowley et al., Cancers) shows cfDNA chimerism predicts relapse more accurately than standard CD3+ cell chimerism. All relapsed patients showed downward trend in cfDNA chimerism detectable by day 56 post-transplant.",
+    "mrdCapabilities": true,
+    "mrdCapabilitiesNotes": "MRD detection via persistent adverse-risk driver mutations AND chromosomal abnormalities - going beyond mutation-only approaches like Signatera. Published data: patients who cleared adverse-risk mutations did not relapse; 6/7 patients with persistent adverse-risk mutations relapsed within 12 months post-transplant.",
+    "csfLeadership": true,
+    "csfLeadershipNotes": "Ideally suited for characterizing lymphoma and multiple myeloma with CNS involvement. Can detect and monitor CAR-T cells in CSF samples.",
     "submissionInfo": {
       "submittedBy": "Jeffrey Owen",
       "submitterEmail": "jowen@genomictestingcooperative.com",
       "submitterType": "Vendor Representative",
       "submissionDate": "2025-12-17",
-      "submissionNotes": "Submitted alongside Liquid Trace Solid Tumor. Entered as separate test due to distinct cancer type focus and additional hematology-specific biomarkers (T/B clonality, TTV, CAR-T detection)."
-    }
+      "submissionNotes": "Submitted alongside Liquid Trace Solid Tumor. Entered as separate test due to distinct cancer type focus and additional hematology-specific biomarkers (T/B clonality, TTV, CAR-T detection, chimerism).",
+      "vendorUpdateDate": "2025-12-17",
+      "vendorUpdateNotes": "Vendor clarified MRD approach includes chimerism analysis and chromosomal abnormalities beyond just mutations - differentiated from Signatera. Published 2025 papers on cfDNA chimerism predicting relapse post-transplant."
+    },
+    "publicationsKey": [
+      {
+        "citation": "Rowley SD, Albitar M, et al. cfDNA Chimerism and Somatic Mutation Testing in Early Prediction of Relapse After Allogeneic Stem Cell Transplantation for Myeloid Malignancies. Cancers 2025;17:625.",
+        "url": "https://doi.org/10.3390/cancers17040625",
+        "keyFinding": "cfDNA testing detected more mutations than bone marrow (92 vs 61); cfDNA chimerism predicted relapse better than CD3+ chimerism; adverse-risk mutation clearance = no relapse"
+      },
+      {
+        "citation": "Aljurf M, et al. Chimerism Analysis of Cell-Free DNA in Patients Treated with Hematopoietic Stem Cell Transplantation May Predict Early Relapse.",
+        "url": "https://genomictestingcooperative.com/chimerism-analysis-of-cell-free-dna/",
+        "keyFinding": "cfDNA chimerism more reliable than cellular DNA chimerism for predicting early relapse post-HSCT"
+      }
+    ]
   },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
