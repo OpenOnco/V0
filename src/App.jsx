@@ -3827,7 +3827,7 @@ const LearnPage = ({ onNavigate }) => {
       <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-12 border border-slate-200">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Underlying Technologies</h2>
         <p className="text-gray-700 mb-4">
-          Advanced molecular diagnostics leverage multiple technologies to extract clinically actionable information from patient samples. <strong>Cell-free DNA (cfDNA)</strong> analysis isolates DNA fragments released by cells into the bloodstream—in cancer patients, a fraction derives from tumor cells (<strong>circulating tumor DNA or ctDNA</strong>), carrying the same somatic alterations present in the tumor. Beyond DNA, tests may analyze methylation patterns, protein biomarkers, or structural variants.
+          Advanced molecular diagnostics leverage multiple technologies to extract clinically actionable information from patient samples. <GlossaryTooltip termKey="cfdna"><strong>Cell-free DNA (cfDNA)</strong></GlossaryTooltip> analysis isolates DNA fragments released by cells into the bloodstream—in cancer patients, a fraction derives from tumor cells (<GlossaryTooltip termKey="ctdna"><strong>circulating tumor DNA or ctDNA</strong></GlossaryTooltip>), carrying the same somatic alterations present in the tumor. Beyond DNA, tests may analyze <GlossaryTooltip termKey="methylation">methylation patterns</GlossaryTooltip>, protein biomarkers, or structural variants.
         </p>
         <p className="text-gray-700 mb-6">
           These technologies answer different clinical questions depending on the patient's disease state:
@@ -3851,13 +3851,13 @@ const LearnPage = ({ onNavigate }) => {
             <span className="text-2xl">📊</span>
             <div>
               <p className="font-semibold text-gray-900">Response Monitoring</p>
-              <p className="text-sm text-gray-600">Track ctDNA dynamics during active treatment</p>
+              <p className="text-sm text-gray-600">Track <GlossaryTooltip termKey="ctdna">ctDNA</GlossaryTooltip> dynamics during active treatment</p>
             </div>
           </div>
           <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
             <span className="text-2xl">🎯</span>
             <div>
-              <p className="font-semibold text-gray-900">MRD Detection</p>
+              <p className="font-semibold text-gray-900"><GlossaryTooltip termKey="mrd">MRD</GlossaryTooltip> Detection</p>
               <p className="text-sm text-gray-600">Identify residual disease after curative treatment</p>
             </div>
           </div>
@@ -3865,9 +3865,9 @@ const LearnPage = ({ onNavigate }) => {
         
         {/* ctDNA Signal Challenge */}
         <div className="mt-6 p-4 bg-white rounded-xl border border-gray-200">
-          <h3 className="font-semibold text-gray-900 mb-3">The ctDNA Signal Challenge</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">The <GlossaryTooltip termKey="ctdna">ctDNA</GlossaryTooltip> Signal Challenge</h3>
           <p className="text-sm text-gray-700 mb-3">
-            The fraction of cfDNA that derives from tumor (ctDNA fraction) varies dramatically by clinical context, which drives the sensitivity requirements for each test category:
+            The fraction of <GlossaryTooltip termKey="cfdna">cfDNA</GlossaryTooltip> that derives from tumor (<GlossaryTooltip termKey="ctdna">ctDNA</GlossaryTooltip> fraction) varies dramatically by clinical context, which drives the <GlossaryTooltip termKey="sensitivity">sensitivity</GlossaryTooltip> requirements for each test category:
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -3875,14 +3875,14 @@ const LearnPage = ({ onNavigate }) => {
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Clinical Context</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Typical ctDNA Fraction</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Required LOD</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Required <GlossaryTooltip termKey="lod">LOD</GlossaryTooltip></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 <tr>
                   <td className="py-2 px-3 text-gray-700">Advanced cancer (TDS)</td>
                   <td className="py-2 px-3 text-gray-600">1–10%+</td>
-                  <td className="py-2 px-3 text-gray-600">0.5–5% VAF</td>
+                  <td className="py-2 px-3 text-gray-600">0.5–5% <GlossaryTooltip termKey="vaf">VAF</GlossaryTooltip></td>
                 </tr>
                 <tr>
                   <td className="py-2 px-3 text-gray-700">Early-stage screening (ECD)</td>
@@ -3890,7 +3890,7 @@ const LearnPage = ({ onNavigate }) => {
                   <td className="py-2 px-3 text-gray-600">&lt;0.1% VAF</td>
                 </tr>
                 <tr>
-                  <td className="py-2 px-3 text-gray-700">Post-surgery surveillance (MRD)</td>
+                  <td className="py-2 px-3 text-gray-700">Post-surgery surveillance (<GlossaryTooltip termKey="mrd">MRD</GlossaryTooltip>)</td>
                   <td className="py-2 px-3 text-gray-600">0.001–0.01%</td>
                   <td className="py-2 px-3 text-gray-600">&lt;0.01% VAF</td>
                 </tr>
@@ -4026,6 +4026,61 @@ const LearnPage = ({ onNavigate }) => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Key Terms Glossary */}
+      <div className="mt-12 bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-2 text-center">Key Terms Glossary</h2>
+        <p className="text-gray-600 text-center mb-6">Hover or tap any term for its definition and authoritative source</p>
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Core Concepts */}
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Core Concepts</h3>
+            <div className="space-y-2">
+              <div className="text-gray-700"><GlossaryTooltip termKey="liquid-biopsy" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="ctdna" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="cfdna" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="mrd" /></div>
+            </div>
+          </div>
+          
+          {/* Testing Approaches */}
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Testing Approaches</h3>
+            <div className="space-y-2">
+              <div className="text-gray-700"><GlossaryTooltip termKey="tumor-informed" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="tumor-naive" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="ngs" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="cgp" /></div>
+            </div>
+          </div>
+          
+          {/* Performance Metrics */}
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Performance Metrics</h3>
+            <div className="space-y-2">
+              <div className="text-gray-700"><GlossaryTooltip termKey="sensitivity" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="specificity" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="lod" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="vaf" /></div>
+            </div>
+          </div>
+          
+          {/* Regulatory & Clinical */}
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Regulatory & Clinical</h3>
+            <div className="space-y-2">
+              <div className="text-gray-700"><GlossaryTooltip termKey="companion-dx" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="methylation" /></div>
+              <div className="text-gray-700"><GlossaryTooltip termKey="chip" /></div>
+            </div>
+          </div>
+        </div>
+        
+        <p className="text-xs text-gray-500 text-center mt-4">
+          Definitions sourced from NCI, BLOODPAC, FDA, ASCO, and Friends of Cancer Research
+        </p>
       </div>
 
       {/* Authoritative Resources Section */}
