@@ -7772,10 +7772,434 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
 };
 
 // ============================================
+// Field Definitions for Vendor Form
+// ============================================
+const FIELD_DEFINITIONS = {
+  // Identity
+  name: { label: 'Test Name', tooltip: 'The official commercial name of the test', section: 'identity' },
+  vendor: { label: 'Vendor', tooltip: 'The company that manufactures and/or offers the test', section: 'identity' },
+  approach: { label: 'Approach/Method', tooltip: 'The technical methodology (e.g., tumor-informed, tumor-naïve, NGS-based)', section: 'identity' },
+  cancerTypes: { label: 'Cancer Types', tooltip: 'Cancer types the test is validated for (comma-separated)', section: 'identity', isArray: true },
+  biomarkers: { label: 'Biomarkers', tooltip: 'Biomarkers measured by the test (comma-separated)', section: 'identity', isArray: true },
+  
+  // Analytical Performance
+  sensitivity: { label: 'Clinical Sensitivity', tooltip: 'The proportion of true positives correctly identified (as a percentage)', section: 'analytical', unit: '%' },
+  specificity: { label: 'Clinical Specificity', tooltip: 'The proportion of true negatives correctly identified (as a percentage)', section: 'analytical', unit: '%' },
+  landmarkSensitivity: { label: 'Landmark Sensitivity', tooltip: 'Sensitivity at a single post-surgery timepoint', section: 'analytical', unit: '%' },
+  landmarkSpecificity: { label: 'Landmark Specificity', tooltip: 'Specificity at a single post-surgery timepoint', section: 'analytical', unit: '%' },
+  longitudinalSensitivity: { label: 'Longitudinal Sensitivity', tooltip: 'Sensitivity during serial monitoring over time', section: 'analytical', unit: '%' },
+  longitudinalSpecificity: { label: 'Longitudinal Specificity', tooltip: 'Specificity during serial monitoring over time', section: 'analytical', unit: '%' },
+  lod: { label: 'Limit of Detection (LOD)', tooltip: 'The lowest concentration of analyte that can be reliably detected (e.g., 0.01% VAF, 1 ppm)', section: 'analytical' },
+  lod95: { label: 'LOD95', tooltip: 'The concentration at which 95% of samples are detected', section: 'analytical' },
+  ppv: { label: 'Positive Predictive Value', tooltip: 'Probability that a positive result indicates true disease', section: 'analytical', unit: '%' },
+  npv: { label: 'Negative Predictive Value', tooltip: 'Probability that a negative result indicates no disease', section: 'analytical', unit: '%' },
+  concordanceWithPET: { label: 'PET Concordance', tooltip: 'Agreement rate with PET imaging results', section: 'analytical', unit: '%' },
+  
+  // Clinical Evidence
+  numPublications: { label: 'Number of Publications', tooltip: 'Count of peer-reviewed publications supporting the test', section: 'evidence' },
+  totalParticipants: { label: 'Total Study Participants', tooltip: 'Combined number of patients across validation studies', section: 'evidence' },
+  clinicalTrials: { label: 'Key Clinical Trials', tooltip: 'Names of major clinical trials (semicolon-separated)', section: 'evidence' },
+  independentValidation: { label: 'Independent Validation', tooltip: 'Whether the test has been validated by independent researchers', section: 'evidence' },
+  
+  // Patient Experience
+  requiresTumorTissue: { label: 'Requires Tumor Tissue', tooltip: 'Whether a tumor biopsy sample is required', section: 'patientExperience' },
+  requiresMatchedNormal: { label: 'Requires Matched Normal', tooltip: 'Whether a matched normal (germline) sample is required', section: 'patientExperience' },
+  bloodVolume: { label: 'Blood Volume', tooltip: 'Amount of blood required per draw (in mL)', section: 'patientExperience', unit: ' mL' },
+  initialTat: { label: 'Initial Turnaround Time', tooltip: 'Days from sample receipt to first result', section: 'patientExperience', unit: ' days' },
+  followUpTat: { label: 'Follow-up Turnaround Time', tooltip: 'Days for subsequent monitoring results', section: 'patientExperience', unit: ' days' },
+  tat: { label: 'Turnaround Time', tooltip: 'Time from sample receipt to result delivery', section: 'patientExperience' },
+  sampleRequirements: { label: 'Sample Requirements', tooltip: 'Details about sample collection requirements', section: 'patientExperience' },
+  variantsTracked: { label: 'Variants Tracked', tooltip: 'Number of variants monitored for MRD detection', section: 'patientExperience' },
+  
+  // Access & Coverage
+  fdaStatus: { label: 'FDA Status', tooltip: 'Regulatory status (e.g., FDA cleared, CLIA LDT, RUO)', section: 'access' },
+  reimbursement: { label: 'Medicare Coverage', tooltip: 'Medicare reimbursement status and any LCD coverage', section: 'access' },
+  clinicalAvailability: { label: 'Clinical Availability', tooltip: 'Current availability status (e.g., commercially available, research only)', section: 'access' },
+  listPrice: { label: 'List Price', tooltip: 'Published list price without insurance (USD)', section: 'access', unit: '$', isCurrency: true },
+  cptCodes: { label: 'CPT/PLA Codes', tooltip: 'Billing codes for the test', section: 'access' },
+  medicareRate: { label: 'Medicare CLFS Rate', tooltip: 'Medicare Clinical Laboratory Fee Schedule reimbursement rate', section: 'access', unit: '$', isCurrency: true },
+  
+  // Method Details
+  method: { label: 'Method Description', tooltip: 'Technical description of how the test works', section: 'method' },
+  targetPopulation: { label: 'Target Population', tooltip: 'Intended patient population for the test', section: 'method' },
+  indicationsNotes: { label: 'Indications Notes', tooltip: 'Additional notes about test indications', section: 'method' },
+};
+
+// ============================================
+// Vendor Confirmation Form Component
+// ============================================
+const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
+  const [formData, setFormData] = useState({});
+  const [submitterInfo, setSubmitterInfo] = useState({ name: '', email: '', role: '', company: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  
+  // Get minimum params for this category
+  const minParams = MINIMUM_PARAMS[category] || {};
+  const minParamKeys = Object.values(minParams).flat().map(p => p.key);
+  
+  // Get all keys that have values in the test
+  const existingKeys = Object.keys(test).filter(key => {
+    const val = test[key];
+    if (key.endsWith('Citations') || key.endsWith('Notes') || key === 'id' || key === 'sampleCategory') return false;
+    if (val == null || val === '' || (Array.isArray(val) && val.length === 0)) return false;
+    return FIELD_DEFINITIONS[key] != null;
+  });
+  
+  // Recommended fields = min params
+  // Other fields = existing values not in min params
+  const recommendedFields = minParamKeys.filter(key => FIELD_DEFINITIONS[key]);
+  const otherFields = existingKeys.filter(key => !minParamKeys.includes(key) && FIELD_DEFINITIONS[key]);
+  
+  const handleFieldChange = (key, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [key]: { ...prev[key], [field]: value }
+    }));
+  };
+  
+  const formatCurrentValue = (key, value) => {
+    if (value == null || value === '') return '—';
+    if (Array.isArray(value)) return value.join(', ');
+    const def = FIELD_DEFINITIONS[key];
+    if (def?.isCurrency && typeof value === 'number') return `$${value.toLocaleString()}`;
+    if (def?.unit && typeof value === 'number') return `${value}${def.unit}`;
+    return String(value);
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Collect only changed fields
+    const changes = Object.entries(formData)
+      .filter(([key, data]) => data.newValue && data.newValue.trim() !== '')
+      .map(([key, data]) => ({
+        field: key,
+        label: FIELD_DEFINITIONS[key]?.label || key,
+        currentValue: formatCurrentValue(key, test[key]),
+        newValue: data.newValue,
+        citation: data.citation || ''
+      }));
+    
+    // Prepare submission data
+    const submission = {
+      testId: test.id,
+      testName: test.name,
+      vendor: test.vendor,
+      category,
+      submitter: submitterInfo,
+      changes,
+      timestamp: new Date().toISOString(),
+      confirmExisting: Object.keys(formData).filter(key => formData[key]?.confirmed).length
+    };
+    
+    // For now, we'll create a mailto link or log to console
+    // In production, this would POST to an API
+    console.log('Vendor Confirmation Submission:', submission);
+    
+    // Create mailto fallback
+    const subject = encodeURIComponent(`[OpenOnco] Vendor Data Update: ${test.name}`);
+    const body = encodeURIComponent(
+      `VENDOR DATA UPDATE REQUEST\n` +
+      `========================\n\n` +
+      `Test: ${test.name}\n` +
+      `Vendor: ${test.vendor}\n` +
+      `Category: ${category}\n\n` +
+      `Submitter: ${submitterInfo.name}\n` +
+      `Email: ${submitterInfo.email}\n` +
+      `Role: ${submitterInfo.role}\n` +
+      `Company: ${submitterInfo.company}\n\n` +
+      `PROPOSED CHANGES:\n` +
+      `-----------------\n` +
+      changes.map(c => `${c.label}:\n  Current: ${c.currentValue}\n  New: ${c.newValue}\n  Citation: ${c.citation || 'None provided'}`).join('\n\n') +
+      `\n\n---\nSubmitted via OpenOnco Vendor Confirmation Form`
+    );
+    
+    // Open mailto
+    window.location.href = `mailto:data@openonco.org?subject=${subject}&body=${body}`;
+    
+    setIsSubmitting(false);
+    setSubmitted(true);
+  };
+  
+  const FieldRow = ({ fieldKey, isRecommended }) => {
+    const def = FIELD_DEFINITIONS[fieldKey];
+    if (!def) return null;
+    
+    const currentValue = test[fieldKey];
+    const hasValue = currentValue != null && currentValue !== '' && !(Array.isArray(currentValue) && currentValue.length === 0);
+    const data = formData[fieldKey] || {};
+    
+    return (
+      <div className={`grid grid-cols-12 gap-3 py-3 border-b border-gray-100 items-start ${!hasValue && isRecommended ? 'bg-amber-50/50' : ''}`}>
+        {/* Field Name with Tooltip */}
+        <div className="col-span-3">
+          <div className="flex items-center gap-1">
+            <span className="text-sm font-medium text-gray-700">{def.label}</span>
+            <div className="relative group">
+              <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="absolute z-50 bottom-full left-0 mb-2 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                {def.tooltip}
+                <div className="absolute bottom-0 left-4 translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900" />
+              </div>
+            </div>
+          </div>
+          {!hasValue && isRecommended && (
+            <span className="text-[10px] text-amber-600 font-medium">RECOMMENDED</span>
+          )}
+        </div>
+        
+        {/* Current Value */}
+        <div className="col-span-2">
+          <span className={`text-sm ${hasValue ? 'text-gray-900' : 'text-gray-400 italic'}`}>
+            {formatCurrentValue(fieldKey, currentValue)}
+          </span>
+        </div>
+        
+        {/* New Value Input */}
+        <div className="col-span-4">
+          <input
+            type="text"
+            placeholder={hasValue ? 'Leave blank to confirm current' : 'Enter value...'}
+            value={data.newValue || ''}
+            onChange={(e) => handleFieldChange(fieldKey, 'newValue', e.target.value)}
+            className="w-full px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          />
+        </div>
+        
+        {/* Citation URL */}
+        <div className="col-span-3">
+          <input
+            type="url"
+            placeholder="https://..."
+            value={data.citation || ''}
+            onChange={(e) => handleFieldChange(fieldKey, 'citation', e.target.value)}
+            className="w-full px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          />
+        </div>
+      </div>
+    );
+  };
+  
+  if (submitted) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 text-center">
+          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Submission Prepared</h3>
+          <p className="text-gray-600 mb-6">
+            Your email client should open with the submission details. If it doesn't, please email{' '}
+            <a href="mailto:data@openonco.org" className="text-emerald-600 font-medium">data@openonco.org</a>{' '}
+            with your proposed changes.
+          </p>
+          <p className="text-sm text-gray-500 mb-6">
+            We review submissions within 2-3 business days. Once verified, your test will display the 
+            <span className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-medium">
+              ✓ VENDOR CONFIRMED
+            </span>
+            badge.
+          </p>
+          <button
+            onClick={onClose}
+            className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] flex flex-col">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Vendor Data Confirmation</h2>
+            <p className="text-sm text-gray-500">{test.name} • {test.vendor}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        {/* Info Banner */}
+        <div className="px-6 py-3 bg-emerald-50 border-b border-emerald-100 flex-shrink-0">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm text-emerald-800 font-medium">Get VENDOR CONFIRMED status</p>
+              <p className="text-xs text-emerald-700">
+                Review and confirm your test's data below. Provide updates with citations where applicable. 
+                Once verified, your test will display a trusted "Vendor Confirmed" badge visible to clinicians and patients.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-hidden flex flex-col">
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            {/* Submitter Info */}
+            <div className="mb-6 p-4 bg-gray-50 rounded-xl">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Your Information</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={submitterInfo.name}
+                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={submitterInfo.email}
+                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Role/Title *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g., Medical Director, Product Manager"
+                    value={submitterInfo.role}
+                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, role: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Company *</label>
+                  <input
+                    type="text"
+                    required
+                    value={submitterInfo.company}
+                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, company: e.target.value }))}
+                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Column Headers */}
+            <div className="grid grid-cols-12 gap-3 py-2 border-b-2 border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wide sticky top-0 bg-white">
+              <div className="col-span-3">Field</div>
+              <div className="col-span-2">Current Value</div>
+              <div className="col-span-4">New Value</div>
+              <div className="col-span-3">Citation URL</div>
+            </div>
+            
+            {/* Recommended Fields Section */}
+            {recommendedFields.length > 0 && (
+              <div className="mt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-sm font-semibold text-gray-800">Recommended Fields</span>
+                  <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded">
+                    {recommendedFields.length} fields
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 mb-3">
+                  These fields are part of the minimum data set for {category} tests. Completing them improves data quality.
+                </p>
+                {recommendedFields.map(key => (
+                  <FieldRow key={key} fieldKey={key} isRecommended={true} />
+                ))}
+              </div>
+            )}
+            
+            {/* Other Fields Section */}
+            {otherFields.length > 0 && (
+              <div className="mt-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-sm font-semibold text-gray-800">Other Fields</span>
+                  <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded">
+                    {otherFields.length} fields with existing data
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 mb-3">
+                  Update any existing data that needs correction. Leave blank to confirm current values.
+                </p>
+                {otherFields.map(key => (
+                  <FieldRow key={key} fieldKey={key} isRecommended={false} />
+                ))}
+              </div>
+            )}
+          </div>
+          
+          {/* Footer */}
+          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between flex-shrink-0 bg-gray-50">
+            <p className="text-xs text-gray-500">
+              Submissions are reviewed within 2-3 business days. Questions?{' '}
+              <a href="mailto:data@openonco.org" className="text-emerald-600 hover:underline">data@openonco.org</a>
+            </p>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-6 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    Submit for Review
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // Test Detail Modal
 // ============================================
 const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => {
   const [linkCopied, setLinkCopied] = useState(false);
+  const [showVendorForm, setShowVendorForm] = useState(false);
   
   if (!test) return null;
   
@@ -7952,16 +8376,19 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 {!isPatientView && MINIMUM_PARAMS[category] && (
                   <>
                     <CompletenessBadge test={test} category={category} />
-                    <a 
-                      href={`/submissions?test=${encodeURIComponent(test.id)}&category=${category}&action=confirm`}
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-medium rounded transition-colors print:hidden"
-                      title="Vendors can confirm or update this test's data"
+                    <button 
+                      onClick={() => setShowVendorForm(true)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-medium rounded transition-colors print:hidden"
+                      title="Vendors can confirm or update this test's data to receive VENDOR CONFIRMED status"
                     >
-                      <span>Vendor?</span>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Vendors: Update data for VENDOR CONFIRMED status</span>
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
-                    </a>
+                    </button>
                   </>
                 )}
               </div>
@@ -8527,6 +8954,15 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
         </div>
       </div>
     </div>
+    
+    {/* Vendor Confirmation Form Modal */}
+    {showVendorForm && (
+      <VendorConfirmationForm
+        test={test}
+        category={category}
+        onClose={() => setShowVendorForm(false)}
+      />
+    )}
     </>
   );
 };
