@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 17, 2025 (FIXES: URL slug collision for Tempus xF/xF+, changelog type corrections, filterConfigs documentation)
+// Last updated: December 18, 2025 (Added Hedera Profiling 2 ctDNA Test Panel - TDS IVD kit)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -14,7 +14,7 @@
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
 // │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
-// │ TDS IVD Kits         │ ~4155       │ tds-kit-11 │ tds-kit-12    │
+// │ TDS IVD Kits         │ ~4155       │ tds-kit-12 │ tds-kit-13    │
 // │ ALZ Blood Tests      │ ~4456       │ alz-9      │ alz-10        │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
@@ -4753,6 +4753,43 @@ export const tdsTestData = [
     "numPublications": 50,
     "numPublicationsPlus": true,
     "technologyDifferentiator": "FDA-approved companion diagnostic for FLT3-targeted AML therapies. Distributed IVD kit enables in-house testing on ABI genetic analyzers. Essential for quizartinib, midostaurin, and gilteritinib eligibility."
+  },
+  {
+    "id": "tds-kit-12",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Hedera Profiling 2 ctDNA Test Panel",
+    "vendor": "Hedera Dx",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina NextSeq 2000",
+    "approach": "Liquid CGP",
+    "method": "Hybrid capture-based NGS covering 32 genes; detects SNVs, indels, CNVs, fusions; reports MSI status. DNA-only workflow optimized for ctDNA with UMI/UDI error correction.",
+    "methodCitations": "https://pubmed.ncbi.nlm.nih.gov/41015181/",
+    "genesAnalyzed": 32,
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "MSI"],
+    "cancerTypes": ["Pan-solid tumor", "NSCLC", "Breast", "Colorectal"],
+    "targetPopulation": "Advanced solid tumor patients for biomarker-guided therapy selection",
+    "indicationsNotes": "Decentralized IVD kit for in-house liquid biopsy testing. Covers >80% of ESCAT Level I genes including ESR1, METex14, and MSI. Requires local validation under CE-IVDR for routine clinical use. Paired with Hedera Prime CE-IVD software for automated OncoKB-powered reporting.",
+    "sensitivity": 97,
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/41015181/",
+    "sensitivityNotes": "96.92% analytical sensitivity for SNVs/Indels at 0.5% VAF in reference standards; 100% fusion sensitivity; 94% concordance for ESCAT Level I variants in 137 clinical samples",
+    "specificity": 99.7,
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/41015181/",
+    "specificityNotes": "99.67% analytical specificity for SNVs/Indels at 0.5% VAF",
+    "lod": "0.5% VAF",
+    "lodCitations": "https://pubmed.ncbi.nlm.nih.gov/41015181/",
+    "lodNotes": "30 ng cfDNA input recommended; 10 ng minimum",
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No",
+    "tat": "5 days",
+    "fdaStatus": "CE-IVD (software); Performance Studies (panel)",
+    "fdaStatusNotes": "Hedera Prime software is CE-IVD registered medical device. Panel labeled for Performance Studies Only - requires local validation under CE-IVDR for clinical use. Not available in US.",
+    "reimbursement": "Coverage varies by country",
+    "clinicalAvailability": "CE-IVD kit (EU/International)",
+    "availableRegions": ["EU", "International"],
+    "totalParticipants": 137,
+    "totalParticipantsNotes": "International multicenter analytical validation across 10+ centers in 8 countries (France, Germany, Austria, Netherlands, Spain, Italy, Greece, India)",
+    "numPublications": 1,
+    "technologyDifferentiator": "Decentralized IVD kit for in-house hospital liquid biopsy. Compact 32-gene actionability-focused panel (>80% ESCAT Level I). DNA-only workflow with UMI/UDI error correction. Integrated Hedera Prime CE-IVD software with OncoKB for automated therapy matching. Hedera Comply program supports CE-IVDR local validation."
   }
   // INSERT NEW TDS KIT HERE (above this line, add comma after previous entry)
 ];
@@ -5144,6 +5181,18 @@ export const alzBloodTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 18, 2025',
+    type: 'added',
+    testId: 'tds-kit-12',
+    testName: 'Hedera Profiling 2 ctDNA Test Panel',
+    vendor: 'Hedera Dx',
+    category: 'TDS',
+    description: 'Added decentralized liquid biopsy IVD kit for in-house hospital testing. 32-gene hybrid capture NGS panel covering >80% of ESCAT Level I genes (ESR1, METex14, MSI). DNA-only workflow detects SNVs, indels, CNVs, fusions, MSI at 0.5% VAF LOD. 97% sensitivity, 99.7% specificity in international multicenter validation (10+ centers, 8 countries, 137 clinical samples). Paired with Hedera Prime CE-IVD software for OncoKB-powered therapy matching. CE-IVD (EU/International); requires local validation under CE-IVDR; not available in US.',
+    contributor: 'Thomas Vetterli',
+    affiliation: 'Hedera Dx (vendor)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/41015181/'
+  },
   {
     date: 'Dec 17, 2025',
     type: 'added',
