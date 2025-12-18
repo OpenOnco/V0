@@ -15,7 +15,6 @@
 // │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
 // │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-12 │ tds-kit-13    │
-// │ ALZ Blood Tests      │ ~4456       │ alz-9      │ alz-10        │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
 //
@@ -226,41 +225,6 @@
   },
 
 ┌─────────────────────────────────────────────────────────────────┐
-│ ALZ BLOOD TEST TEMPLATE                                         │
-│ Insert before: "];" that ends alzBloodTestData                  │
-│ Search for: "// INSERT NEW ALZ TEST HERE"                       │
-└─────────────────────────────────────────────────────────────────┘
-  {
-    "id": "alz-XX",
-    "sampleCategory": "Blood/Plasma",
-    "name": "",
-    "vendor": "",
-    "approach": "Immunoassay",  // or "Mass spectrometry"
-    "method": "",
-    "biomarkers": [],
-    "primaryBiomarker": "",
-    "targetPopulation": "",
-    "indicationsNotes": "",
-    "sensitivity": null,
-    "sensitivityNotes": "",
-    "specificity": null,
-    "specificityNotes": "",
-    "concordanceWithPET": null,
-    "concordanceWithCSF": null,
-    "tat": "",
-    "sampleRequirements": "",
-    "fdaStatus": "CLIA LDT",
-    "reimbursement": "Coverage varies",
-    "reimbursementNote": "",
-    "listPrice": null,
-    "clinicalAvailability": "",
-    "availableRegions": ["US"],
-    "totalParticipants": null,
-    "numPublications": null,
-    "technologyDifferentiator": ""
-  },
-
-┌─────────────────────────────────────────────────────────────────┐
 │ CHANGELOG ENTRY TEMPLATE                                        │
 │ Insert at TOP of DATABASE_CHANGELOG array                       │
 │ Search for: "export const DATABASE_CHANGELOG"                   │
@@ -271,7 +235,7 @@
     testId: 'xxx-XX',
     testName: '',
     vendor: '',
-    category: 'TDS',  // MRD, ECD, TRM, TDS, ALZ
+    category: 'TDS',  // MRD, ECD, TRM, TDS
     description: '',
     contributor: null,  // or 'Name'
     affiliation: 'OpenOnco',  // or 'Vendor Name (vendor)'
@@ -4833,396 +4797,6 @@ export const tdsTestData = [
   // INSERT NEW TDS KIT HERE (above this line, add comma after previous entry)
 ];
 
-// ALZ DISABLED - Data commented out for OpenOnco-only deployment
-// Original ALZ Blood Tests data preserved below in comments
-export const alzBloodTestData = [];
-
-/*
-// ALZ Blood Tests (DISABLED)
-// export const alzBloodTestData = [
-//   {
-//     "id": "alz-1",
-    "sampleCategory": "Blood/Plasma",
-    "name": "PrecivityAD2",
-    "vendor": "C2N Diagnostics",
-    "approach": "Mass spectrometry",
-    "method": "LC-MS/MS quantification of plasma pTau217 and Abeta42/40 ratio. Combines two biomarkers into the Amyloid Probability Score 2 (APS2) for improved accuracy in detecting brain amyloid and tau pathology.",
-    "methodCitations": "https://precivityad.com/precivityad2",
-    "biomarkers": ["pTau217", "Abeta42/40"],
-    "primaryBiomarker": "pTau217 + Abeta42/40",
-    "targetPopulation": "Adults 55+ with mild cognitive impairment (MCI) or mild dementia being evaluated for Alzheimer's disease",
-    "indicationsNotes": "Intended to aid in the evaluation of patients with MCI or mild dementia who are being assessed for Alzheimer's disease. Reports Amyloid Probability Score 2 (APS2) indicating likelihood of amyloid PET positivity. Medicare covered with LCD.",
-    "sensitivity": 88,
-    "sensitivityNotes": "88% sensitivity for detecting amyloid PET positivity in the intended use population (MCI/mild dementia)",
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/37768938/",
-    "specificity": 87,
-    "specificityNotes": "87% specificity vs amyloid PET in intended use population",
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/37768938/",
-    "ppv": null,
-    "ppvNotes": "PPV depends on pre-test probability; highest in MCI population with ~50% amyloid prevalence",
-    "npv": null,
-    "npvNotes": "NPV depends on pre-test probability",
-    "concordanceWithPET": 88,
-    "concordanceWithPETNotes": "88% overall agreement with amyloid PET",
-    "concordanceWithCSF": 90,
-    "concordanceWithCSFNotes": "~90% concordance with CSF biomarkers",
-    "tat": "7-10 business days",
-    "tatNotes": "Results typically available within 7-10 business days from sample receipt",
-    "sampleRequirements": "K2-EDTA plasma, 6 mL blood draw, shipped frozen",
-    "sampleRequirementsCitations": "https://precivityad.com/healthcare-professionals",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory-developed test performed at C2N Diagnostics CLIA-certified laboratory. Not FDA cleared/approved. Breakthrough Device designation granted.",
-    "nccnRecommended": false,
-    "guidelinesAligned": ["Alzheimer's Association appropriate use recommendations"],
-    "guidelinesNotes": "Aligns with 2024 Alzheimer's Association blood biomarker appropriate use recommendations for patients being evaluated for MCI or dementia",
-    "guidelinesCitations": "https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.13856",
-    "reimbursement": "Medicare LCD",
-    "reimbursementNote": "Medicare coverage via Palmetto GBA MolDX LCD (L39291) effective January 2024. First Alzheimer's blood test with Medicare coverage. ~$1,250 list price.",
-    "reimbursementCitations": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=39291",
-    "cptCodes": "0352U",
-    "listPrice": 1250,
-    "listPriceNotes": "Approximately $1,250; financial assistance available",
-    "clinicalAvailability": "Commercially available in US via C2N Diagnostics laboratory (St. Louis, MO)",
-    "clinicalAvailabilityCitations": "https://precivityad.com/",
-    "availableRegions": ["US"],
-    "availableRegionsNotes": "Currently US only. International expansion planned.",
-    "clinicalTrials": "Validated in multiple cohorts including TRAILBLAZER-ALZ, A4, AHEAD, BioFINDER-2. Over 8,000 samples analyzed in clinical validation.",
-    "clinicalTrialsCitations": "https://pubmed.ncbi.nlm.nih.gov/37768938/",
-    "totalParticipants": 8000,
-    "totalParticipantsNotes": "Clinical validation across multiple cohorts totaling ~8,000 samples",
-    "numPublications": 25,
-    "numPublicationsPlus": true,
-    "numPublicationsNotes": "Extensive peer-reviewed evidence including Alzheimer's & Dementia, JAMA Neurology, Nature Medicine publications",
-    "isRUO": false,
-    "isInvestigational": false,
-    "isClinicalLDT": true,
-    "regulatoryStatusNotes": "FDA Breakthrough Device designation. CLIA-certified LDT. First blood test with Medicare coverage for Alzheimer's evaluation.",
-    "technologyDifferentiator": "First Alzheimer's blood test with Medicare coverage. Combines pTau217 and Abeta42/40 via mass spectrometry for improved accuracy. APS2 score provides actionable probability of amyloid pathology. Validated against amyloid PET and CSF biomarkers."
-  },
-  {
-    "id": "alz-2",
-    "sampleCategory": "Blood/Plasma",
-    "name": "AD-Detect",
-    "vendor": "Quest Diagnostics",
-    "approach": "Mass spectrometry",
-    "method": "LC-MS/MS quantification of plasma Abeta42/40 ratio. Single biomarker approach measuring amyloid-beta peptide ratio as indicator of brain amyloid deposition.",
-    "methodCitations": "https://www.questdiagnostics.com/healthcare-professionals/about-our-tests/brain-health/ad-detect",
-    "biomarkers": ["Abeta42/40"],
-    "primaryBiomarker": "Abeta42/40 ratio",
-    "targetPopulation": "Adults 55+ with cognitive symptoms being evaluated for causes of cognitive decline",
-    "indicationsNotes": "Intended to help determine if brain amyloid pathology may be contributing to cognitive symptoms. Low Abeta42/40 ratio indicates higher likelihood of amyloid PET positivity.",
-    "sensitivity": 83,
-    "sensitivityNotes": "~83% sensitivity for detecting amyloid PET positivity",
-    "sensitivityCitations": "Quest Diagnostics clinical validation data",
-    "specificity": 85,
-    "specificityNotes": "~85% specificity vs amyloid PET",
-    "specificityCitations": "Quest Diagnostics clinical validation data",
-    "concordanceWithPET": 84,
-    "concordanceWithPETNotes": "~84% overall agreement with amyloid PET imaging",
-    "tat": "5-7 business days",
-    "tatNotes": "Results typically within 5-7 business days",
-    "sampleRequirements": "EDTA plasma, standard blood draw, shipped frozen",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory-developed test performed at Quest Diagnostics CLIA-certified laboratories",
-    "reimbursement": "Coverage varies",
-    "reimbursementNote": "Not yet Medicare covered. Out-of-pocket ~$500. Some commercial coverage available.",
-    "cptCodes": "0323U",
-    "listPrice": 500,
-    "listPriceNotes": "Approximately $500 list price",
-    "clinicalAvailability": "Commercially available nationwide via Quest Diagnostics laboratory network",
-    "clinicalAvailabilityCitations": "https://www.questdiagnostics.com/",
-    "availableRegions": ["US"],
-    "availableRegionsNotes": "Available throughout US via Quest laboratory network",
-    "totalParticipants": 2000,
-    "totalParticipantsNotes": "Clinical validation in ~2,000 patients",
-    "numPublications": 5,
-    "numPublicationsNotes": "Published validation data; leverages extensive amyloid ratio literature",
-    "isRUO": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "Single biomarker (Abeta42/40) approach offering accessibility through Quest's nationwide laboratory network. More affordable option for initial amyloid assessment. Simple interpretation: low ratio suggests amyloid pathology."
-  },
-  {
-    "id": "alz-3",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Lumipulse pTau217",
-    "vendor": "Fujirebio",
-    "approach": "Immunoassay (CLEIA)",
-    "method": "Chemiluminescent enzyme immunoassay (CLEIA) on Lumipulse G automated platform. Quantifies plasma pTau217, the most AD-specific phosphorylated tau epitope.",
-    "methodCitations": "https://www.fujirebio.com/en/products-solutions/lumipulse",
-    "biomarkers": ["pTau217"],
-    "primaryBiomarker": "pTau217",
-    "targetPopulation": "Adults being evaluated for Alzheimer's disease pathology",
-    "indicationsNotes": "CE-IVD marked in Europe for aid in diagnosis of Alzheimer's disease. Detects pTau217, which shows earliest changes in AD continuum.",
-    "sensitivity": 91,
-    "sensitivityNotes": "91% sensitivity for amyloid PET positivity in BioFINDER-2 cohort",
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38382644/",
-    "specificity": 92,
-    "specificityNotes": "92% specificity vs amyloid PET in BioFINDER-2",
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/38382644/",
-    "concordanceWithPET": 91,
-    "concordanceWithPETNotes": "91% overall agreement with amyloid PET (AUC 0.96)",
-    "concordanceWithCSF": 93,
-    "concordanceWithCSFNotes": "93% concordance with CSF pTau217",
-    "tat": "Same day",
-    "tatNotes": "Rapid automated immunoassay; same-day results possible with on-site Lumipulse system",
-    "sampleRequirements": "EDTA plasma, 200 uL minimum, standard blood draw",
-    "fdaStatus": "CE-IVD (EU); pending FDA",
-    "fdaStatusNotes": "CE-IVD marked in Europe. FDA submission anticipated. Available as LDT in select US laboratories.",
-    "guidelinesAligned": ["Swedish BioFINDER recommendations", "EU diagnostic workup pathways"],
-    "reimbursement": "Coverage varies by country",
-    "reimbursementNote": "EU: Coverage varies by country. US: Not yet broadly covered pending FDA clearance.",
-    "listPrice": null,
-    "listPriceNotes": "Pricing varies by laboratory; automated platform enables cost-effective testing",
-    "clinicalAvailability": "CE-IVD available in Europe. Available as LDT at select US laboratories.",
-    "availableRegions": ["EU", "US (limited)"],
-    "availableRegionsNotes": "Broadly available in EU; limited US availability as LDT",
-    "clinicalTrials": "Validated in BioFINDER-2, ADNI, and multiple European cohorts. Head-to-head comparisons show among highest accuracy of plasma biomarkers.",
-    "clinicalTrialsCitations": "https://pubmed.ncbi.nlm.nih.gov/38382644/",
-    "totalParticipants": 5000,
-    "totalParticipantsNotes": "Validated across >5,000 subjects in multiple cohorts",
-    "numPublications": 30,
-    "numPublicationsPlus": true,
-    "numPublicationsNotes": "Extensive BioFINDER-2 publications; considered reference standard for plasma pTau217",
-    "isRUO": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "Fully automated immunoassay platform enabling high-throughput, standardized testing. CE-IVD marked providing regulatory pathway for clinical use. pTau217 shows highest diagnostic accuracy among plasma biomarkers. Random access system allows integration into clinical laboratory workflow."
-  },
-  {
-    "id": "alz-4",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Elecsys pTau217",
-    "vendor": "Roche Diagnostics",
-    "approach": "Immunoassay (ECLIA)",
-    "method": "Electrochemiluminescence immunoassay (ECLIA) on cobas platform. Quantifies plasma pTau217 using Roche's established automated immunoassay infrastructure.",
-    "methodCitations": "https://diagnostics.roche.com/",
-    "biomarkers": ["pTau217"],
-    "primaryBiomarker": "pTau217",
-    "targetPopulation": "Adults being evaluated for Alzheimer's disease",
-    "indicationsNotes": "Under development for clinical use. Leverages Roche's global cobas platform installed base for potential broad accessibility.",
-    "sensitivity": 90,
-    "sensitivityNotes": "~90% sensitivity reported in validation studies",
-    "specificity": 90,
-    "specificityNotes": "~90% specificity vs amyloid PET",
-    "concordanceWithPET": 90,
-    "concordanceWithPETNotes": "~90% agreement with amyloid PET in clinical studies",
-    "tat": "Same day",
-    "tatNotes": "Automated platform enables same-day results",
-    "sampleRequirements": "EDTA plasma, standard cobas requirements",
-    "fdaStatus": "In development",
-    "fdaStatusNotes": "Under development; regulatory submission timeline TBD. Builds on Roche's extensive IVD experience.",
-    "reimbursement": "Not yet available",
-    "reimbursementNote": "Pending regulatory clearance and commercial launch",
-    "clinicalAvailability": "Not yet commercially available; in late-stage development",
-    "availableRegions": [],
-    "availableRegionsNotes": "Expected global availability via Roche's cobas network upon launch",
-    "clinicalTrials": "Clinical validation ongoing; leverages TRAILBLAZER-ALZ and other trial data",
-    "totalParticipants": null,
-    "numPublications": 5,
-    "numPublicationsNotes": "Early validation publications; full data expected with regulatory submission",
-    "isRUO": true,
-    "isInvestigational": true,
-    "isClinicalLDT": false,
-    "technologyDifferentiator": "Potential for massive scalability via Roche's global cobas installed base (>40,000 systems). Standardized ECLIA technology with established quality systems. Upon launch, could enable routine pTau217 testing in any laboratory with cobas system."
-  },
-  {
-    "id": "alz-5",
-    "sampleCategory": "Blood/Plasma",
-    "name": "ALZpath pTau217",
-    "vendor": "ALZpath",
-    "approach": "Immunoassay (Simoa)",
-    "method": "Single molecule array (Simoa) immunoassay using proprietary pTau217 antibody. Ultra-sensitive digital immunoassay technology enables detection at very low concentrations.",
-    "methodCitations": "https://alzpath.com/",
-    "biomarkers": ["pTau217"],
-    "primaryBiomarker": "pTau217",
-    "targetPopulation": "Adults being evaluated for Alzheimer's disease or at risk for AD",
-    "indicationsNotes": "Research use and clinical laboratory-developed testing. ALZpath's proprietary antibody licensed to multiple platforms and laboratories.",
-    "sensitivity": 93,
-    "sensitivityNotes": "93% sensitivity for detecting amyloid PET positivity in validation cohorts",
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38048578/",
-    "specificity": 91,
-    "specificityNotes": "91% specificity vs amyloid PET",
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/38048578/",
-    "concordanceWithPET": 92,
-    "concordanceWithPETNotes": "92% agreement with amyloid PET (AUC 0.97)",
-    "tat": "Variable",
-    "tatNotes": "TAT depends on testing laboratory; Simoa requires specialized equipment",
-    "sampleRequirements": "EDTA plasma, low volume required due to Simoa sensitivity",
-    "fdaStatus": "RUO / LDT",
-    "fdaStatusNotes": "Antibody available for research use. Clinical testing available as LDT at select laboratories.",
-    "reimbursement": "Coverage varies",
-    "reimbursementNote": "Not broadly covered; out-of-pocket costs vary by laboratory",
-    "listPrice": null,
-    "listPriceNotes": "Pricing varies by testing laboratory",
-    "clinicalAvailability": "Available through research collaborations and select clinical laboratories",
-    "clinicalAvailabilityCitations": "https://alzpath.com/",
-    "availableRegions": ["US", "EU", "International"],
-    "availableRegionsNotes": "Antibody licensed globally; clinical testing availability varies",
-    "clinicalTrials": "Validated in ADNI, BioFINDER, and multiple academic cohorts. Considered among most accurate pTau217 assays.",
-    "clinicalTrialsCitations": "https://pubmed.ncbi.nlm.nih.gov/38048578/",
-    "totalParticipants": 3000,
-    "totalParticipantsNotes": "Validated across >3,000 subjects in published studies",
-    "numPublications": 40,
-    "numPublicationsPlus": true,
-    "numPublicationsNotes": "Extensively validated in academic literature; high-profile Nature Medicine and JAMA publications",
-    "isRUO": true,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "Ultra-sensitive Simoa technology enables detection at lowest concentrations. Proprietary antibody showing among highest accuracy for plasma pTau217. Widely used in research enabling extensive validation data. Antibody licensed to multiple platforms."
-  },
-  {
-    "id": "alz-6",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Simoa pTau181",
-    "vendor": "Quanterix",
-    "approach": "Immunoassay (Simoa)",
-    "method": "Single molecule array (Simoa) digital immunoassay for plasma pTau181. Ultra-sensitive bead-based technology counts individual protein molecules.",
-    "methodCitations": "https://www.quanterix.com/simoa-technology/",
-    "biomarkers": ["pTau181"],
-    "primaryBiomarker": "pTau181",
-    "targetPopulation": "Adults being evaluated for Alzheimer's disease or neurodegeneration",
-    "indicationsNotes": "Research use and LDT. pTau181 was first plasma tau biomarker validated for AD; now considered less specific than pTau217 but still clinically useful.",
-    "sensitivity": 85,
-    "sensitivityNotes": "~85% sensitivity for amyloid PET positivity; lower than pTau217 assays",
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/32333900/",
-    "specificity": 83,
-    "specificityNotes": "~83% specificity vs amyloid PET",
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/32333900/",
-    "concordanceWithPET": 84,
-    "concordanceWithPETNotes": "84% agreement with amyloid PET (lower than pTau217 assays)",
-    "tat": "Variable",
-    "tatNotes": "TAT depends on laboratory; requires Simoa HD-X platform",
-    "sampleRequirements": "EDTA plasma, low volume (50-100 uL)",
-    "fdaStatus": "RUO",
-    "fdaStatusNotes": "Research use only. Available as LDT at select CLIA laboratories.",
-    "reimbursement": "Not covered",
-    "reimbursementNote": "Generally not covered by insurance; used primarily in research",
-    "listPrice": null,
-    "listPriceNotes": "Research pricing; varies by volume and laboratory",
-    "clinicalAvailability": "Available via Quanterix and licensed laboratories for research; limited clinical LDT availability",
-    "availableRegions": ["US", "EU", "International"],
-    "availableRegionsNotes": "Simoa platform installed globally; primarily research use",
-    "clinicalTrials": "Foundational plasma tau biomarker with validation in ADNI, BLSA, and dozens of cohorts",
-    "clinicalTrialsCitations": "https://pubmed.ncbi.nlm.nih.gov/32333900/",
-    "totalParticipants": 10000,
-    "totalParticipantsPlus": true,
-    "totalParticipantsNotes": "Most extensively validated plasma tau biomarker; >10,000 subjects across published studies",
-    "numPublications": 100,
-    "numPublicationsPlus": true,
-    "numPublicationsNotes": "Extensive literature; first plasma tau biomarker with clinical validation",
-    "isRUO": true,
-    "isClinicalLDT": false,
-    "technologyDifferentiator": "First plasma tau biomarker validated for AD detection. Extensive research validation and literature. Lower accuracy than pTau217 but established technology with broad data. Simoa platform enables ultra-sensitive detection."
-  },
-  {
-    "id": "alz-7",
-    "sampleCategory": "Blood/Plasma",
-    "name": "PrecivityAD",
-    "vendor": "C2N Diagnostics",
-    "approach": "Mass spectrometry",
-    "method": "LC-MS/MS quantification of plasma Abeta42/40 ratio. First-generation test from C2N measuring amyloid-beta peptide ratio.",
-    "methodCitations": "https://precivityad.com/",
-    "biomarkers": ["Abeta42/40"],
-    "primaryBiomarker": "Abeta42/40 ratio",
-    "targetPopulation": "Adults 60+ with cognitive symptoms being evaluated for Alzheimer's disease",
-    "indicationsNotes": "First-generation C2N test. Now largely superseded by PrecivityAD2 which adds pTau217 for improved accuracy. Still available for Abeta-only assessment.",
-    "sensitivity": 81,
-    "sensitivityNotes": "81% sensitivity for amyloid PET positivity (lower than PrecivityAD2)",
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/32333829/",
-    "specificity": 83,
-    "specificityNotes": "83% specificity vs amyloid PET",
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/32333829/",
-    "concordanceWithPET": 82,
-    "concordanceWithPETNotes": "82% agreement with amyloid PET",
-    "tat": "7-10 business days",
-    "tatNotes": "Same TAT as PrecivityAD2",
-    "sampleRequirements": "K2-EDTA plasma, 6 mL blood draw, shipped frozen",
-    "fdaStatus": "CLIA LDT",
-    "fdaStatusNotes": "Laboratory-developed test. Breakthrough Device designation.",
-    "reimbursement": "Medicare LCD",
-    "reimbursementNote": "Covered under same Medicare LCD as PrecivityAD2; ~$1,000 list price",
-    "cptCodes": "0350U",
-    "listPrice": 1000,
-    "listPriceNotes": "Approximately $1,000; lower than PrecivityAD2",
-    "clinicalAvailability": "Commercially available via C2N Diagnostics",
-    "availableRegions": ["US"],
-    "totalParticipants": 5000,
-    "numPublications": 20,
-    "numPublicationsNotes": "Foundational plasma Abeta publications from C2N",
-    "isRUO": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "First mass spectrometry plasma Abeta test with Medicare coverage. Single biomarker approach may be appropriate when pTau217 not needed. Established track record since 2020 launch."
-  },
-  {
-    "id": "alz-8",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Lumipulse Amyloid Ratio",
-    "vendor": "Fujirebio",
-    "approach": "Immunoassay (CLEIA)",
-    "method": "Chemiluminescent enzyme immunoassay (CLEIA) for plasma Abeta42/40 ratio on Lumipulse G platform. Automated immunoassay approach to amyloid measurement.",
-    "methodCitations": "https://www.fujirebio.com/",
-    "biomarkers": ["Abeta42/40"],
-    "primaryBiomarker": "Abeta42/40 ratio",
-    "targetPopulation": "Adults being evaluated for Alzheimer's disease amyloid pathology",
-    "indicationsNotes": "CE-IVD for amyloid ratio measurement. Can be combined with Lumipulse pTau217 for comprehensive blood biomarker assessment.",
-    "sensitivity": 82,
-    "sensitivityNotes": "~82% sensitivity for amyloid PET positivity",
-    "specificity": 84,
-    "specificityNotes": "~84% specificity vs amyloid PET",
-    "concordanceWithPET": 83,
-    "concordanceWithPETNotes": "83% agreement with amyloid PET",
-    "tat": "Same day",
-    "tatNotes": "Automated platform enables same-day results",
-    "sampleRequirements": "EDTA plasma, automated platform requirements",
-    "fdaStatus": "CE-IVD (EU)",
-    "fdaStatusNotes": "CE-IVD marked in Europe. US availability as LDT.",
-    "reimbursement": "Coverage varies",
-    "reimbursementNote": "EU coverage varies by country; limited US coverage",
-    "clinicalAvailability": "Available in Europe; limited US availability",
-    "availableRegions": ["EU", "US (limited)"],
-    "totalParticipants": 3000,
-    "numPublications": 15,
-    "numPublicationsNotes": "Validation publications including BioFINDER-2 cohort data",
-    "isRUO": false,
-    "isClinicalLDT": true,
-    "technologyDifferentiator": "Automated immunoassay for plasma Abeta ratio enabling integration with Lumipulse pTau217. CE-IVD marked providing clear regulatory pathway. Part of comprehensive Fujirebio AD blood biomarker menu."
-  },
-  {
-    "id": "alz-9",
-    "sampleCategory": "Blood/Plasma",
-    "name": "ADNEX Blood Test",
-    "vendor": "Cogstate (with Eisai)",
-    "approach": "Multi-biomarker panel",
-    "method": "Combines blood biomarkers with digital cognitive assessment for comprehensive AD risk evaluation. Integrates pTau217, Abeta42/40, and Cogstate Brief Battery cognitive scores.",
-    "methodCitations": "https://cogstate.com/",
-    "biomarkers": ["pTau217", "Abeta42/40", "Cognitive assessment"],
-    "primaryBiomarker": "Multi-modal (blood + cognitive)",
-    "targetPopulation": "Adults with subjective cognitive decline or early MCI being screened for AD clinical trials or clinical evaluation",
-    "indicationsNotes": "Integrated solution combining blood biomarkers with validated digital cognitive testing. Designed to improve efficiency of AD screening and clinical trial enrollment.",
-    "sensitivity": null,
-    "sensitivityNotes": "Performance data emerging from validation studies",
-    "specificity": null,
-    "specificityNotes": "Performance data emerging from validation studies",
-    "tat": "Variable",
-    "tatNotes": "Depends on biomarker testing laboratory and cognitive assessment scheduling",
-    "sampleRequirements": "Blood sample for biomarkers + digital cognitive assessment",
-    "fdaStatus": "Research/clinical development",
-    "fdaStatusNotes": "Integration platform in development. Individual components have varying regulatory status.",
-    "reimbursement": "Not established",
-    "reimbursementNote": "Reimbursement pathway in development",
-    "clinicalAvailability": "Available through research partnerships and select clinical programs",
-    "availableRegions": ["US", "International"],
-    "availableRegionsNotes": "Global availability through Cogstate network",
-    "clinicalTrials": "Used in AHEAD, TRAILBLAZER, and other AD prevention trials for screening",
-    "totalParticipants": null,
-    "numPublications": 5,
-    "numPublicationsNotes": "Emerging publications on integrated approach",
-    "isRUO": true,
-    "isInvestigational": true,
-    "isClinicalLDT": false,
-    "technologyDifferentiator": "Unique multi-modal approach combining blood biomarkers with digital cognitive assessment. Designed for efficient screening and staging. Partnership with Eisai provides integration with AD therapeutic development. Addresses need for comprehensive, accessible AD evaluation."
-  }
-  // INSERT NEW ALZ TEST HERE (above this line, add comma after previous entry)
-// ];
-*/
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
@@ -5927,46 +5501,13 @@ export const RECENTLY_ADDED_TESTS = [
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
 ];
 
-// ALZ DISABLED - Data commented out for OpenOnco-only deployment
-export const ALZ_DATABASE_CHANGELOG = [];
-export const ALZ_RECENTLY_ADDED_TESTS = [];
-
-/*
-// Database Changelog - OpenAlz (Alzheimer's) - DISABLED
-// export const ALZ_DATABASE_CHANGELOG = [
-//   {
-//     date: 'Dec 14, 2025',
-//     type: 'added',
-//     testId: null,
-//     testName: 'OpenAlz Launch',
-//     vendor: null,
-//     category: 'ALZ-BLOOD',
-//     description: 'Initial launch of OpenAlz.org with 9 blood-based Alzheimer\'s biomarker tests including PrecivityAD2, AD-Detect, Lumipulse pTau217, Elecsys pTau217, ALZpath pTau217, Simoa pTau181, PrecivityAD, Lumipulse Amyloid Ratio, and ADNEX Blood Test.',
-//     contributor: null,
-//     affiliation: 'OpenAlz',
-//     citation: null
-//   },
-// ];
-
-// Recently Added Tests - OpenAlz - DISABLED
-// export const ALZ_RECENTLY_ADDED_TESTS = [
-//   { id: 'alz-1', name: 'PrecivityAD2', vendor: 'C2N Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-//   { id: 'alz-2', name: 'AD-Detect', vendor: 'Quest Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-//   { id: 'alz-3', name: 'Lumipulse pTau217', vendor: 'Fujirebio', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-//   { id: 'alz-5', name: 'ALZpath pTau217', vendor: 'ALZpath', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-//   { id: 'alz-9', name: 'ADNEX Blood Test', vendor: 'Cogstate/Eisai', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-// ];
-*/
-
-// Helper to get domain-specific changelog
-export const getChangelog = (domain) => {
-  if (domain === 'alz') return ALZ_DATABASE_CHANGELOG;
+// Helper to get changelog
+export const getChangelog = () => {
   return DATABASE_CHANGELOG;
 };
 
-// Helper to get domain-specific recently added tests
-export const getRecentlyAddedTests = (domain) => {
-  if (domain === 'alz') return ALZ_RECENTLY_ADDED_TESTS;
+// Helper to get recently added tests
+export const getRecentlyAddedTests = () => {
   return RECENTLY_ADDED_TESTS;
 };
 
@@ -5975,39 +5516,14 @@ export const getRecentlyAddedTests = (domain) => {
 // Domain Detection
 // ============================================
 export const DOMAINS = {
-  ONCO: 'onco',
-  ALZ: 'alz'
+  ONCO: 'onco'
 };
 
 export const getDomain = () => {
-  if (typeof window === 'undefined') return DOMAINS.ONCO;
-
-  const hostname = window.location.hostname.toLowerCase();
-
-  if (hostname.includes('openalz') || hostname.includes('alz.')) {
-    return DOMAINS.ALZ;
-  }
-
-  // Default to oncology (openonco)
   return DOMAINS.ONCO;
 };
 
 export const getSiteConfig = () => {
-  const domain = getDomain();
-
-  if (domain === DOMAINS.ALZ) {
-    return {
-      domain: DOMAINS.ALZ,
-      name: 'OpenAlz',
-      tagline: "Alzheimer's Diagnostics Database",
-      description: "Compare blood-based Alzheimer's biomarker tests",
-      logoText: 'OpenAlz',
-      themeColor: '#6366f1', // Indigo for ALZ
-      categories: ['ALZ-BLOOD']
-    };
-  }
-
-  // Default: OpenOnco (oncology)
   return {
     domain: DOMAINS.ONCO,
     name: 'OpenOnco',
@@ -6070,18 +5586,6 @@ export const LIFECYCLE_STAGES = [
     animationOrder: 2,
     arrowDirection: 'left',
     domain: DOMAINS.ONCO,
-  },
-  {
-    id: 'ALZ-BLOOD',
-    name: 'Blood Biomarkers',
-    acronym: 'ALZ-BLOOD',
-    phase: 'Screening / Diagnosis',
-    color: 'indigo',
-    icon: '🧠',
-    gridPosition: 0,
-    animationOrder: 0,
-    arrowDirection: 'right',
-    domain: DOMAINS.ALZ,
   },
 ];
 
@@ -6233,17 +5737,6 @@ export const createCategoryMeta = (buildInfoSources = {}) => ({
     sourceUrl: buildInfoSources.TDS || '',
     domain: DOMAINS.ONCO,
   },
-  'ALZ-BLOOD': {
-    title: 'Blood Biomarkers',
-    shortTitle: 'Blood Tests',
-    description: "Blood-based biomarker tests for Alzheimer's disease detection and risk assessment. These tests measure proteins like phosphorylated tau (pTau217, pTau181) and amyloid-beta ratios (Abeta42/40) that indicate Alzheimer's pathology in the brain. Blood biomarkers offer a less invasive alternative to PET scans and lumbar punctures for detecting amyloid plaques and tau tangles.",
-    patientTitle: "Alzheimer's Blood Tests",
-    patientDescription: "These blood tests can help detect signs of Alzheimer's disease by measuring specific proteins. They're less invasive than brain scans or spinal taps and can help your doctor understand if Alzheimer's might be causing memory problems.",
-    color: 'indigo',
-    tests: alzBloodTestData,
-    sourceUrl: buildInfoSources['ALZ-BLOOD'] || '',
-    domain: DOMAINS.ALZ,
-  },
 });
 
 export const getTestListByCategory = (categoryId) => {
@@ -6252,7 +5745,6 @@ export const getTestListByCategory = (categoryId) => {
     ECD: ecdTestData,
     TRM: trmTestData,
     TDS: tdsTestData,
-    'ALZ-BLOOD': alzBloodTestData,
   };
   return categoryMap[categoryId] || [];
 };
@@ -6305,13 +5797,6 @@ export const filterConfigs = {
     approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
     fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'NMPA', 'RUO'],
     reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
-  },
-  'ALZ-BLOOD': {
-    biomarkers: [...new Set(alzBloodTestData.flatMap(t => t.biomarkers || []))].sort(),
-    approaches: [...new Set(alzBloodTestData.map(t => t.approach || 'Unknown'))].sort(),
-    fdaStatuses: ['FDA Approved', 'CE-IVD', 'CLIA LDT', 'RUO', 'In development'],
-    reimbursements: ['Medicare LCD', 'Coverage varies', 'Not covered'],
-    regions: [...new Set(alzBloodTestData.flatMap(t => t.availableRegions || []))].sort(),
   },
 };
 
@@ -6423,25 +5908,6 @@ export const comparisonParams = {
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Medicare' },
     { key: 'listPrice', label: 'List Price (USD)' },
-  ],
-  'ALZ-BLOOD': [
-    { key: 'approach', label: 'Technology' },
-    { key: 'primaryBiomarker', label: 'Primary Biomarker' },
-    { key: 'biomarkersStr', label: 'Biomarkers Measured' },
-    { key: 'method', label: 'Method' },
-    { key: 'targetPopulation', label: 'Target Population' },
-    { key: 'sensitivity', label: 'Sensitivity (%)' },
-    { key: 'specificity', label: 'Specificity (%)' },
-    { key: 'concordanceWithPET', label: 'PET Concordance (%)' },
-    { key: 'concordanceWithCSF', label: 'CSF Concordance (%)' },
-    { key: 'tat', label: 'Turnaround Time' },
-    { key: 'sampleRequirements', label: 'Sample Requirements' },
-    { key: 'fdaStatus', label: 'Regulatory Status' },
-    { key: 'reimbursement', label: 'Coverage' },
-    { key: 'listPrice', label: 'List Price (USD)' },
-    { key: 'availableRegionsStr', label: 'Availability' },
-    { key: 'totalParticipants', label: 'Validation Participants' },
-    { key: 'numPublications', label: 'Publications' },
   ],
 };
 
@@ -6981,11 +6447,6 @@ export const PAGE_SEO = {
     description: 'Compare comprehensive genomic profiling tests: FoundationOne, Tempus xT, Guardant360. Genes analyzed, FDA companion diagnostics.',
     path: '/tds'
   },
-  'ALZ-BLOOD': {
-    title: "Alzheimer's Blood Biomarker Tests",
-    description: "Compare blood-based Alzheimer's tests measuring pTau217, amyloid-beta ratios. PET concordance, sensitivity, availability.",
-    path: '/alz-blood'
-  },
   learn: {
     title: 'Learn About Cancer Blood Tests',
     description: 'Educational guides on liquid biopsy, MRD testing, early cancer detection, and how to interpret test results.',
@@ -7039,7 +6500,6 @@ export const getTestBySlug = (slug, category) => {
     ECD: ecdTestData,
     TRM: trmTestData,
     TDS: tdsTestData,
-    'ALZ-BLOOD': alzBloodTestData,
   };
   const tests = categoryMap[category] || [];
   // Check explicit slug field first, then fall back to slugified name
@@ -7056,8 +6516,7 @@ export const generateTestSchema = (test, category) => {
     MRD: 'Molecular Residual Disease Test',
     ECD: 'Early Cancer Detection Test',
     TRM: 'Treatment Response Monitoring Test',
-    TDS: 'Comprehensive Genomic Profiling Test',
-    'ALZ-BLOOD': "Alzheimer's Blood Biomarker Test"
+    TDS: 'Comprehensive Genomic Profiling Test'
   };
 
   return {
@@ -7074,7 +6533,7 @@ export const generateTestSchema = (test, category) => {
     usedToDiagnose: (test.cancerTypes || []).join(', '),
     relevantSpecialty: {
       '@type': 'MedicalSpecialty',
-      name: category.includes('ALZ') ? 'Neurology' : 'Oncology'
+      name: 'Oncology'
     },
     medicineSystem: 'WesternConventional',
     ...(test.sensitivity && { sensitivityValue: `${test.sensitivity}%` }),
