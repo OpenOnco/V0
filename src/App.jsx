@@ -7833,6 +7833,8 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
   const [submitterInfo, setSubmitterInfo] = useState({ name: '', email: '', role: '', company: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [submitError, setSubmitError] = useState('');
   
   // Get minimum params for this category
   const minParams = MINIMUM_PARAMS[category] || {};
@@ -7850,6 +7852,44 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
   // Other fields = existing values not in min params
   const recommendedFields = minParamKeys.filter(key => FIELD_DEFINITIONS[key]);
   const otherFields = existingKeys.filter(key => !minParamKeys.includes(key) && FIELD_DEFINITIONS[key]);
+  
+  // Email validation helpers
+  const validateEmailFormat = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  
+  const isFreeEmail = (email) => {
+    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com', 'protonmail.com', 'live.com', 'msn.com'];
+    const domain = email.split('@')[1]?.toLowerCase();
+    return freeProviders.includes(domain);
+  };
+  
+  const emailMatchesVendor = (email, vendor) => {
+    if (!email || !vendor) return false;
+    const fullDomain = email.split('@')[1]?.toLowerCase() || '';
+    const vendorClean = vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const domainClean = fullDomain.replace(/[^a-z0-9]/g, '');
+    const domainWithoutTld = fullDomain.split('.').slice(0, -1).join('').replace(/[^a-z0-9]/g, '');
+    return domainClean.includes(vendorClean) || vendorClean.includes(domainWithoutTld);
+  };
+  
+  const validateEmail = () => {
+    if (!validateEmailFormat(submitterInfo.email)) {
+      setEmailError('Please enter a valid email address');
+      return false;
+    }
+    if (isFreeEmail(submitterInfo.email)) {
+      setEmailError('Please use your company email (not Gmail, Yahoo, etc.)');
+      return false;
+    }
+    if (!emailMatchesVendor(submitterInfo.email, test.vendor)) {
+      setEmailError(`Email domain must match ${test.vendor} (e.g., @${test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '')}.com)`);
+      return false;
+    }
+    setEmailError('');
+    return true;
+  };
   
   const handleFieldChange = (key, field, value) => {
     setFormData(prev => ({
@@ -7869,7 +7909,11 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateEmail()) return;
+    
     setIsSubmitting(true);
+    setSubmitError('');
     
     // Collect only changed fields
     const changes = Object.entries(formData)
@@ -7882,45 +7926,50 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
         citation: data.citation || ''
       }));
     
-    // Prepare submission data
+    // Prepare submission data (matching submissions page format)
     const submission = {
-      testId: test.id,
-      testName: test.name,
-      vendor: test.vendor,
+      submissionType: 'vendor-confirmation',
+      submitter: {
+        firstName: submitterInfo.name.split(' ')[0] || submitterInfo.name,
+        lastName: submitterInfo.name.split(' ').slice(1).join(' ') || '',
+        email: submitterInfo.email,
+        role: submitterInfo.role,
+        company: submitterInfo.company,
+      },
       category,
-      submitter: submitterInfo,
-      changes,
+      vendorConfirmation: {
+        testId: test.id,
+        testName: test.name,
+        vendor: test.vendor,
+        changes,
+        confirmedFieldCount: recommendedFields.filter(key => {
+          const val = test[key];
+          return val != null && val !== '' && !(Array.isArray(val) && val.length === 0);
+        }).length,
+        totalRecommendedFields: recommendedFields.length,
+      },
       timestamp: new Date().toISOString(),
-      confirmExisting: Object.keys(formData).filter(key => formData[key]?.confirmed).length
     };
     
-    // For now, we'll create a mailto link or log to console
-    // In production, this would POST to an API
-    console.log('Vendor Confirmation Submission:', submission);
-    
-    // Create mailto fallback
-    const subject = encodeURIComponent(`[OpenOnco] Vendor Data Update: ${test.name}`);
-    const body = encodeURIComponent(
-      `VENDOR DATA UPDATE REQUEST\n` +
-      `========================\n\n` +
-      `Test: ${test.name}\n` +
-      `Vendor: ${test.vendor}\n` +
-      `Category: ${category}\n\n` +
-      `Submitter: ${submitterInfo.name}\n` +
-      `Email: ${submitterInfo.email}\n` +
-      `Role: ${submitterInfo.role}\n` +
-      `Company: ${submitterInfo.company}\n\n` +
-      `PROPOSED CHANGES:\n` +
-      `-----------------\n` +
-      changes.map(c => `${c.label}:\n  Current: ${c.currentValue}\n  New: ${c.newValue}\n  Citation: ${c.citation || 'None provided'}`).join('\n\n') +
-      `\n\n---\nSubmitted via OpenOnco Vendor Confirmation Form`
-    );
-    
-    // Open mailto
-    window.location.href = `mailto:data@openonco.org?subject=${subject}&body=${body}`;
+    try {
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submission })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'Failed to submit. Please try again.');
+      }
+    } catch (error) {
+      setSubmitError('Network error. Please try again.');
+    }
     
     setIsSubmitting(false);
-    setSubmitted(true);
   };
   
   const FieldRow = ({ fieldKey, isRecommended }) => {
@@ -7931,8 +7980,11 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
     const hasValue = currentValue != null && currentValue !== '' && !(Array.isArray(currentValue) && currentValue.length === 0);
     const data = formData[fieldKey] || {};
     
+    // Determine row background: green for filled, yellow for empty recommended
+    const rowBg = hasValue ? 'bg-emerald-50/50' : (isRecommended ? 'bg-amber-50/50' : '');
+    
     return (
-      <div className={`grid grid-cols-12 gap-3 py-3 border-b border-gray-100 items-start ${!hasValue && isRecommended ? 'bg-amber-50/50' : ''}`}>
+      <div className={`grid grid-cols-12 gap-3 py-3 border-b border-gray-100 items-start ${rowBg}`}>
         {/* Field Name with Tooltip */}
         <div className="col-span-3">
           <div className="flex items-center gap-1">
@@ -7949,6 +8001,9 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
           </div>
           {!hasValue && isRecommended && (
             <span className="text-[10px] text-amber-600 font-medium">RECOMMENDED</span>
+          )}
+          {hasValue && (
+            <span className="text-[10px] text-emerald-600 font-medium">✓ HAS DATA</span>
           )}
         </div>
         
@@ -7993,11 +8048,9 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Submission Prepared</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Submission Received!</h3>
           <p className="text-gray-600 mb-6">
-            Your email client should open with the submission details. If it doesn't, please email{' '}
-            <a href="mailto:data@openonco.org" className="text-emerald-600 font-medium">data@openonco.org</a>{' '}
-            with your proposed changes.
+            Thank you for confirming your test data. We'll review your submission and update the database.
           </p>
           <p className="text-sm text-gray-500 mb-6">
             We review submissions within 2-3 business days. Once verified, your test will display the 
@@ -8005,6 +8058,10 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
               ✓ VENDOR CONFIRMED
             </span>
             badge.
+          </p>
+          <p className="text-xs text-gray-400 mb-4">
+            Questions? Connect on{' '}
+            <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">LinkedIn</a>
           </p>
           <button
             onClick={onClose}
@@ -8054,6 +8111,19 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
           </div>
         </div>
         
+        {/* Legend */}
+        <div className="px-6 py-2 border-b border-gray-100 flex items-center gap-4 text-xs flex-shrink-0">
+          <span className="text-gray-500">Row colors:</span>
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 bg-emerald-50 border border-emerald-200 rounded"></span>
+            <span className="text-gray-600">Has data</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 bg-amber-50 border border-amber-200 rounded"></span>
+            <span className="text-gray-600">Recommended (missing)</span>
+          </span>
+        </div>
+        
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-hidden flex flex-col">
           <div className="flex-1 overflow-y-auto px-6 py-4">
@@ -8072,14 +8142,19 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Email *</label>
+                  <label className="block text-xs text-gray-500 mb-1">Company Email * <span className="text-gray-400">(must be @{test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '')} domain)</span></label>
                   <input
                     type="email"
                     required
                     value={submitterInfo.email}
-                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    onChange={(e) => {
+                      setSubmitterInfo(prev => ({ ...prev, email: e.target.value }));
+                      setEmailError('');
+                    }}
+                    onBlur={validateEmail}
+                    className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${emailError ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}
                   />
+                  {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
                 </div>
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Role/Title *</label>
@@ -8153,10 +8228,11 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
           {/* Footer */}
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between flex-shrink-0 bg-gray-50">
             <p className="text-xs text-gray-500">
-              Submissions are reviewed within 2-3 business days. Questions?{' '}
-              <a href="mailto:data@openonco.org" className="text-emerald-600 hover:underline">data@openonco.org</a>
+              Submissions reviewed within 2-3 business days. Questions?{' '}
+              <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Connect on LinkedIn</a>
             </p>
             <div className="flex items-center gap-3">
+              {submitError && <p className="text-xs text-red-600">{submitError}</p>}
               <button
                 type="button"
                 onClick={onClose}
@@ -8166,7 +8242,7 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !!emailError}
                 className="px-6 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isSubmitting ? (
