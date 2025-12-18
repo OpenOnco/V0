@@ -8291,23 +8291,14 @@ const MINIMUM_PARAMS = {
     ]
   },
   TDS: {
+    // NOTE: CGP tests don't report single sensitivity/specificity values - 
+    // performance varies by alteration type (SNVs, indels, CNAs, fusions)
     core: [
-      { key: 'sensitivity', label: 'Sensitivity' },
-      { key: 'specificity', label: 'Specificity' },
       { key: 'numPublications', label: 'Publications' },
       { key: 'tat', label: 'Turnaround Time' },
       { key: 'fdaStatus', label: 'FDA Status' },
     ]
   },
-  'ALZ-BLOOD': {
-    core: [
-      { key: 'sensitivity', label: 'Sensitivity' },
-      { key: 'specificity', label: 'Specificity' },
-      { key: 'numPublications', label: 'Publications' },
-      { key: 'tat', label: 'Turnaround Time' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-    ]
-  }
 };
 
 const FIELD_DEFINITIONS = {
