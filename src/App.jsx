@@ -2230,7 +2230,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
                       {/* BC badge - styled like category badges */}
                       {isBC && (
-                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium" title="Baseline Complete">
+                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium animate-pulse" title="Baseline Complete">
                           BC✓
                         </span>
                       )}
@@ -2579,7 +2579,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
                       {/* BC badge - styled like category badges */}
                       {isBC && (
-                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium" title="Baseline Complete">
+                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium animate-pulse" title="Baseline Complete">
                           BC✓
                         </span>
                       )}
@@ -3269,10 +3269,15 @@ const CompetitionsDetailModal = ({ test, category, onClose, onNavigateToSubmissi
         <div className={`px-5 py-4 bg-gradient-to-r ${meta?.gradient || 'from-gray-500 to-gray-600'}`}>
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <h2 className="text-xl font-bold text-white">{test.name}</h2>
                 {isBC && (
-                  <span className="px-2 py-0.5 bg-emerald-400 text-white text-xs font-bold rounded">BC</span>
+                  <span className="px-2.5 py-0.5 bg-emerald-400 text-white text-xs font-bold rounded flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    Baseline Complete
+                  </span>
                 )}
               </div>
               <p className="text-white/80">{test.vendor}</p>
@@ -8656,11 +8661,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
                 {isBC && (
-                  <span className="px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  <span className="px-3 py-1 bg-emerald-500 text-white text-sm font-bold rounded-full flex items-center gap-1.5">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    BC
+                    Baseline Complete
                   </span>
                 )}
               </div>
