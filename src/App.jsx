@@ -2209,14 +2209,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 onClick={() => onNavigate(test.category, test.id)}
                 className={`relative ${isBC ? 'border-emerald-400 shadow-sm shadow-emerald-100' : colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
-                {/* BC Badge */}
-                {isBC && !isDiscontinued && (
-                  <div className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white p-0.5 rounded-full shadow-sm z-10" title="Baseline Complete">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -2236,6 +2228,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* BC badge - styled like category badges */}
+                      {isBC && (
+                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium" title="Baseline Complete">
+                          BC✓
+                        </span>
+                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -2560,14 +2558,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 onClick={() => onNavigate(test.category, test.id)}
                 className={`relative ${isBC ? 'border-emerald-400 shadow-sm shadow-emerald-100' : colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
-                {/* BC Badge */}
-                {isBC && !isDiscontinued && (
-                  <div className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white p-0.5 rounded-full shadow-sm z-10" title="Baseline Complete">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -2587,6 +2577,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* BC badge - styled like category badges */}
+                      {isBC && (
+                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium" title="Baseline Complete">
+                          BC✓
+                        </span>
+                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -3176,6 +3172,11 @@ const CompetitionsPage = ({ onNavigate }) => {
           test={detailTest} 
           category={detailCategory} 
           onClose={() => { setDetailTest(null); setDetailCategory(null); }}
+          onNavigateToSubmissions={(testId, cat) => {
+            setDetailTest(null);
+            setDetailCategory(null);
+            onNavigate('submissions', { prefillTest: testId, prefillCategory: cat, submissionType: 'complete' });
+          }}
         />
       )}
     </div>
@@ -3185,9 +3186,8 @@ const CompetitionsPage = ({ onNavigate }) => {
 // ============================================
 // Competitions Detail Modal - Shows test with minimum fields status
 // ============================================
-const CompetitionsDetailModal = ({ test, category, onClose }) => {
+const CompetitionsDetailModal = ({ test, category, onClose, onNavigateToSubmissions }) => {
   const [linkCopied, setLinkCopied] = useState(false);
-  const [showSubmitModal, setShowSubmitModal] = useState(false);
   
   if (!test) return null;
   
@@ -3225,27 +3225,6 @@ const CompetitionsDetailModal = ({ test, category, onClose }) => {
     return String(val);
   };
   
-  // Generate mailto for quick submission
-  const generateMailto = () => {
-    const missingList = missingFields.map(f => `- ${f.label}: [PLEASE FILL IN]`).join('\n');
-    const subject = encodeURIComponent(`Data Submission: ${test.name}`);
-    const body = encodeURIComponent(
-`DATA SUBMISSION FOR OPENONCO
-
-Test: ${test.name}
-Vendor: ${test.vendor}
-Category: ${category}
-
-MISSING FIELDS TO COMPLETE:
-${missingList}
-
----
-Please fill in the values above and reply to this email.
-We'll update the database and the test will earn Baseline Complete (BC) status.`
-    );
-    return `mailto:info@openonco.org?subject=${subject}&body=${body}`;
-  };
-  
   return (
     <>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
@@ -3276,12 +3255,12 @@ We'll update the database and the test will earn Baseline Complete (BC) status.`
               )}
             </div>
             {!isBC && (
-              <a
-                href={generateMailto()}
+              <button
+                onClick={() => onNavigateToSubmissions(test.id, category)}
                 className="px-4 py-1.5 bg-white text-amber-600 hover:bg-amber-50 font-semibold rounded-lg text-sm transition-colors flex-shrink-0"
               >
                 Submit Missing Data →
-              </a>
+              </button>
             )}
           </div>
         </div>
@@ -3363,16 +3342,16 @@ We'll update the database and the test will earn Baseline Complete (BC) status.`
             {/* Submit CTA for incomplete tests */}
             {!isBC && (
               <div className="mt-4 pt-3 border-t border-amber-200">
-                <a
-                  href={generateMailto()}
+                <button
+                  onClick={() => onNavigateToSubmissions(test.id, category)}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  Email Missing Data
-                </a>
-                <p className="text-xs text-amber-700 mt-2">Click to open a pre-filled email. Just fill in the values and send!</p>
+                  Complete Missing Fields
+                </button>
+                <p className="text-xs text-amber-700 mt-2">Submit data to help this test reach Baseline Complete status.</p>
               </div>
             )}
           </div>
@@ -5606,7 +5585,7 @@ const HowItWorksPage = () => {
 // ============================================
 // Submissions Page
 // ============================================
-const SubmissionsPage = () => {
+const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const siteConfig = getSiteConfig();
   const isAlz = siteConfig.domain === DOMAINS.ALZ;
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
@@ -5634,6 +5613,25 @@ const SubmissionsPage = () => {
   const [selectedParameter, setSelectedParameter] = useState('');
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
+  
+  // Handle prefill from navigation (e.g., from Competitions page)
+  useEffect(() => {
+    if (prefill) {
+      if (prefill.submissionType) {
+        setSubmissionType(prefill.submissionType);
+      }
+      if (prefill.prefillCategory) {
+        setCategory(prefill.prefillCategory);
+      }
+      if (prefill.prefillTest) {
+        setExistingTest(prefill.prefillTest);
+      }
+      // Clear prefill after applying
+      if (onClearPrefill) {
+        onClearPrefill();
+      }
+    }
+  }, [prefill, onClearPrefill]);
   
   // Bug/Feature feedback fields
   const [feedbackDescription, setFeedbackDescription] = useState('');
@@ -5803,6 +5801,7 @@ const SubmissionsPage = () => {
       const emailDomain = contactEmail.split('@')[1]?.toLowerCase() || '';
       // Known vendor domains - comprehensive list
       const knownVendorDomains = [
+        { domain: 'ryght.ai', vendor: 'Ryght AI' },
         { domain: 'illumina.com', vendor: 'Illumina' },
         { domain: 'guardanthealth.com', vendor: 'Guardant Health' },
         { domain: 'natera.com', vendor: 'Natera' },
@@ -10541,6 +10540,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(initialRoute.page);
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
+  const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
 
   // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
@@ -10615,7 +10615,18 @@ export default function App() {
     document.documentElement.dataset.flags = JSON.stringify(flags);
   }, [persona, currentPage]);
 
-  const handleNavigate = (page, testId = null) => {
+  const handleNavigate = (page, testIdOrOptions = null) => {
+    // Handle options object for special navigation (like prefill for submissions)
+    let testId = null;
+    if (testIdOrOptions && typeof testIdOrOptions === 'object') {
+      // It's an options object
+      if (testIdOrOptions.prefillTest) {
+        setSubmissionPrefill(testIdOrOptions);
+      }
+    } else {
+      testId = testIdOrOptions;
+    }
+    
     // Track navigation with feature flags
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
     if (['MRD', 'ECD', 'TRM', 'TDS'].includes(page)) {
@@ -10664,7 +10675,7 @@ export default function App() {
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
-      case 'submissions': return <SubmissionsPage />;
+      case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
       default: return <HomePage onNavigate={handleNavigate} />;
