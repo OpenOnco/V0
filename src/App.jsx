@@ -3177,6 +3177,21 @@ const DatabaseStatsSimple = () => {
         <div className="flex items-center gap-2 mb-3">
           <span className="text-sm font-medium text-gray-700">Citation Quality</span>
           <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Performance Metrics</span>
+          <div className="relative group">
+            <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
+            <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <p className="font-semibold mb-2">Tier 1 = Key Clinical Performance Fields</p>
+              <div className="space-y-1.5 text-gray-300">
+                <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
+                <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
+                <p><span className="text-white">Stage-Specific:</span> Stage I–IV sensitivity</p>
+                <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
+                <p><span className="text-white">Screening:</span> advanced adenoma sensitivity, lead time vs imaging</p>
+              </div>
+              <p className="mt-2 text-gray-400 text-[10px]">These metrics require citations to ensure clinical credibility.</p>
+              <div className="absolute left-4 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+            </div>
+          </div>
         </div>
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
