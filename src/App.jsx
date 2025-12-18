@@ -8283,7 +8283,6 @@ const MINIMUM_PARAMS = {
       { key: 'initialTat', label: 'Initial TAT' },
       { key: 'fdaStatus', label: 'FDA Status' },
       { key: 'reimbursement', label: 'Medicare Coverage' },
-      { key: 'listPrice', label: 'List Price' },
     ]
   },
   ECD: {
@@ -8314,7 +8313,6 @@ const MINIMUM_PARAMS = {
       { key: 'numPublications', label: 'Publications' },
       { key: 'tat', label: 'Turnaround Time' },
       { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'listPrice', label: 'List Price' },
     ]
   },
   'ALZ-BLOOD': {
@@ -8324,7 +8322,6 @@ const MINIMUM_PARAMS = {
       { key: 'numPublications', label: 'Publications' },
       { key: 'tat', label: 'Turnaround Time' },
       { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'listPrice', label: 'List Price' },
     ]
   }
 };
@@ -8367,28 +8364,6 @@ const MinimumFieldsSection = ({ test, category }) => {
   const filledCount = fields.filter(f => f.filled).length;
   const totalCount = fields.length;
   const isBC = filledCount === totalCount;
-  const missingFields = fields.filter(f => !f.filled);
-  
-  // Generate mailto link for submitting missing data
-  const generateSubmitMailto = () => {
-    const missingList = missingFields.map(f => `- ${f.label}: [PLEASE FILL IN]`).join('\n');
-    const subject = encodeURIComponent(`Data Submission: ${test.name}`);
-    const body = encodeURIComponent(
-`DATA SUBMISSION FOR OPENONCO
-
-Test: ${test.name}
-Vendor: ${test.vendor}
-Category: ${category}
-
-MISSING FIELDS TO COMPLETE:
-${missingList}
-
----
-Please fill in the values above and reply to this email.
-We'll update the database and the test will earn Baseline Complete (BC) status.`
-    );
-    return `mailto:info@openonco.org?subject=${subject}&body=${body}`;
-  };
   
   const formatDisplayValue = (val) => {
     if (val == null || val === '') return '—';
@@ -8451,35 +8426,6 @@ We'll update the database and the test will earn Baseline Complete (BC) status.`
           </div>
         ))}
       </div>
-      
-      {/* CTA */}
-      {!isBC && (
-        <div className="mt-4 pt-3 border-t border-amber-200">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <div className="flex-1">
-              <p className="text-sm text-amber-800">{missingFields.length} field{missingFields.length !== 1 ? 's' : ''} needed for Baseline Complete status.</p>
-              <p className="text-xs text-amber-600">Click below to submit missing data via email.</p>
-            </div>
-            <a 
-              href={generateSubmitMailto()}
-              className="px-4 py-2 bg-amber-500 text-white text-sm font-semibold rounded-lg hover:bg-amber-600 transition-colors flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              Submit Missing Data
-            </a>
-          </div>
-        </div>
-      )}
-      
-      {isBC && (
-        <div className="mt-3 pt-3 border-t border-emerald-200">
-          <p className="text-xs text-emerald-700">
-            <strong>🏆 Baseline Complete:</strong> All minimum fields have been filled for this test.
-          </p>
-        </div>
-      )}
     </div>
   );
 };
