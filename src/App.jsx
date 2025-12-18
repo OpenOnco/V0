@@ -2866,7 +2866,7 @@ const CompletenessBadge = ({ percentage, size = 'md' }) => {
 };
 
 // Award Test Card Component
-const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
+const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const categoryColors = {
     MRD: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600' },
@@ -2879,7 +2879,10 @@ const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
   const isFullyFilled = completeness.percentage === 100 && !isVC;
   
   return (
-    <div className={`relative bg-white rounded-xl border-2 ${isVC ? 'border-blue-400 shadow-lg shadow-blue-100' : isFullyFilled ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}>
+    <div 
+      onClick={() => onShowDetail(test, category)}
+      className={`relative bg-white rounded-xl border-2 cursor-pointer ${isVC ? 'border-blue-400 shadow-lg shadow-blue-100' : isFullyFilled ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}
+    >
       {/* Top Badge */}
       {isVC ? (
         <div className="absolute -top-3 -right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
@@ -2944,19 +2947,30 @@ const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
           )}
         </div>
         
-        {/* View button */}
-        <button
-          onClick={() => onNavigate(category, test.id)}
-          className="flex-shrink-0 px-3 py-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
-        >
-          View →
-        </button>
+        {/* View indicator */}
+        <div className="flex-shrink-0 text-gray-400">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
       </div>
     </div>
   );
 };
 
 const CompetitionsPage = ({ onNavigate }) => {
+  // State for detail modal
+  const [detailTest, setDetailTest] = useState(null);
+  const [detailCategory, setDetailCategory] = useState(null);
+  const [showVCModal, setShowVCModal] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  
+  // Handler to show test detail
+  const handleShowDetail = (test, category) => {
+    setDetailTest(test);
+    setDetailCategory(category);
+  };
+  
   // Aggregate all tests with their categories and completeness scores
   const allTestsWithScores = useMemo(() => {
     const tests = [
@@ -3125,7 +3139,7 @@ const CompetitionsPage = ({ onNavigate }) => {
                     test={test} 
                     category={test.category}
                     completeness={test.completeness}
-                    onNavigate={onNavigate}
+                    onShowDetail={handleShowDetail}
                   />
                 ))}
               </div>
@@ -3152,6 +3166,567 @@ const CompetitionsPage = ({ onNavigate }) => {
             className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
           >
             View Submissions Page
+          </button>
+        </div>
+      </div>
+      
+      {/* Detail Modal with Competition Banner */}
+      {detailTest && (
+        <CompetitionsDetailModal 
+          test={detailTest} 
+          category={detailCategory} 
+          onClose={() => { setDetailTest(null); setDetailCategory(null); }}
+          showVCModal={showVCModal}
+          setShowVCModal={setShowVCModal}
+          showSubmitModal={showSubmitModal}
+          setShowSubmitModal={setShowSubmitModal}
+        />
+      )}
+    </div>
+  );
+};
+
+// ============================================
+// Competitions Detail Modal - Wraps test detail with competition banner
+// ============================================
+const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShowVCModal, showSubmitModal, setShowSubmitModal }) => {
+  const [linkCopied, setLinkCopied] = useState(false);
+  
+  if (!test) return null;
+  
+  const meta = categoryMeta[category];
+  const completeness = calculateTestCompleteness(test, category);
+  const isVC = test.vendorConfirmed === true;
+  const isFullyFilled = completeness.percentage === 100 && !isVC;
+  const missingCount = completeness.total - completeness.filled;
+  
+  // Copy shareable link
+  const copyLink = (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}${getTestUrl(test, category)}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    });
+  };
+  
+  // Minimum field details
+  const minParams = MINIMUM_PARAMS[category];
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  const fields = minParams?.core?.map(p => ({
+    key: p.key,
+    label: p.label,
+    value: test[p.key],
+    filled: hasValue(test[p.key])
+  })) || [];
+  
+  const formatDisplayValue = (val) => {
+    if (val == null || val === '') return '—';
+    if (Array.isArray(val)) return val.join(', ');
+    if (typeof val === 'number') return val.toLocaleString();
+    return String(val);
+  };
+  
+  return (
+    <>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div 
+        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Competition Status Banner */}
+        {!isVC && (
+          <div className={`px-4 py-3 ${isFullyFilled ? 'bg-emerald-500' : 'bg-amber-500'} text-white`}>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                {isFullyFilled ? (
+                  <>
+                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="font-medium">All minimum fields complete!</span>
+                    <span className="text-emerald-100 text-sm">— Eligible for VC status</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <span className="font-medium">{missingCount} minimum field{missingCount !== 1 ? 's' : ''} missing</span>
+                    <span className="text-amber-100 text-sm">— Highlighted below</span>
+                  </>
+                )}
+              </div>
+              <button
+                onClick={() => isFullyFilled ? setShowVCModal(true) : setShowSubmitModal(true)}
+                className={`px-4 py-1.5 ${isFullyFilled ? 'bg-white text-emerald-600 hover:bg-emerald-50' : 'bg-white text-amber-600 hover:bg-amber-50'} font-semibold rounded-lg text-sm transition-colors flex-shrink-0`}
+              >
+                {isFullyFilled ? 'Apply for VC Status →' : 'Submit Missing Data →'}
+              </button>
+            </div>
+          </div>
+        )}
+        
+        {/* VC Status Banner */}
+        {isVC && (
+          <div className="px-4 py-3 bg-blue-500 text-white">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span className="font-bold">Vendor Confirmed</span>
+              <span className="text-blue-100">— Data verified by {test.vendor}</span>
+              {test.vendorConfirmedDate && <span className="text-blue-200 text-sm ml-auto">{test.vendorConfirmedDate}</span>}
+            </div>
+          </div>
+        )}
+        
+        {/* Header */}
+        <div className={`px-5 py-4 bg-gradient-to-r ${meta?.gradient || 'from-gray-500 to-gray-600'}`}>
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-white">{test.name}</h2>
+              <p className="text-white/80">{test.vendor}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button onClick={copyLink} className="p-2 hover:bg-white/20 rounded-xl transition-colors" title="Copy link">
+                {linkCopied ? (
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                ) : (
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                )}
+              </button>
+              <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-xl transition-colors">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
+          {/* Minimum Fields Section - always shown prominently */}
+          <div className={`p-4 rounded-xl border-2 ${isVC ? 'bg-blue-50 border-blue-200' : isFullyFilled ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-semibold text-gray-800">Minimum Fields ({completeness.filled}/{completeness.total})</h3>
+              <span className={`text-sm font-medium ${isVC ? 'text-blue-600' : isFullyFilled ? 'text-emerald-600' : 'text-amber-600'}`}>
+                {completeness.percentage}% Complete
+              </span>
+            </div>
+            
+            {/* Progress bar */}
+            <div className="mb-4">
+              <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
+                <div 
+                  className={`h-full rounded-full transition-all ${isVC ? 'bg-blue-500' : isFullyFilled ? 'bg-emerald-500' : 'bg-amber-400'}`}
+                  style={{ width: `${completeness.percentage}%` }}
+                />
+              </div>
+            </div>
+            
+            {/* Fields grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {fields.map(field => (
+                <div 
+                  key={field.key} 
+                  className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-amber-100 border-amber-300 border-dashed'}`}
+                >
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    {field.filled ? (
+                      <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                    <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-amber-700'}`}>{field.label}</span>
+                  </div>
+                  <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-amber-600 italic'}`}>
+                    {field.filled ? formatDisplayValue(field.value) : 'Missing'}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Key Metrics */}
+          <div className="bg-gray-50 rounded-xl p-4">
+            <h3 className="font-semibold text-gray-800 mb-3">Key Metrics</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {test.sensitivity != null && (
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-emerald-600">{test.sensitivity}%</p>
+                  <p className="text-xs text-gray-500">Sensitivity</p>
+                </div>
+              )}
+              {test.specificity != null && (
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-emerald-600">{test.specificity}%</p>
+                  <p className="text-xs text-gray-500">Specificity</p>
+                </div>
+              )}
+              {test.lod && (
+                <div className="text-center">
+                  <p className="text-xl font-bold text-violet-600">{test.lod}</p>
+                  <p className="text-xs text-gray-500">LOD</p>
+                </div>
+              )}
+              {(test.tat || test.followUpTat || test.initialTat) && (
+                <div className="text-center">
+                  <p className="text-xl font-bold text-slate-600">{test.tat || test.followUpTat || test.initialTat}</p>
+                  <p className="text-xs text-gray-500">TAT</p>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Additional Info */}
+          {test.cancerTypes && test.cancerTypes.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-2">Cancer Types</h3>
+              <div className="flex flex-wrap gap-1">
+                {test.cancerTypes.map((ct, i) => (
+                  <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">{ct}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {test.fdaStatus && (
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-1">Regulatory Status</h3>
+              <p className="text-sm text-gray-600">{test.fdaStatus}</p>
+            </div>
+          )}
+          
+          {test.reimbursement && (
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-1">Reimbursement</h3>
+              <p className="text-sm text-gray-600">{test.reimbursement}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+    
+    {/* VC Application Modal */}
+    {showVCModal && (
+      <VCApplicationModal 
+        test={test} 
+        category={category}
+        onClose={() => setShowVCModal(false)} 
+      />
+    )}
+    
+    {/* Data Submission Modal */}
+    {showSubmitModal && (
+      <DataSubmissionModal 
+        test={test} 
+        category={category}
+        missingFields={fields.filter(f => !f.filled)}
+        onClose={() => setShowSubmitModal(false)} 
+      />
+    )}
+    </>
+  );
+};
+
+// ============================================
+// VC Application Modal
+// ============================================
+const VCApplicationModal = ({ test, category, onClose }) => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
+  const [agreed, setAgreed] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  
+  const validateEmail = () => {
+    if (!email || !email.includes('@')) {
+      setEmailError('Please enter a valid email address');
+      return false;
+    }
+    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (freeProviders.includes(domain)) {
+      setEmailError('Please use your company email');
+      return false;
+    }
+    setEmailError('');
+    return true;
+  };
+  
+  const handleSubmit = () => {
+    if (!validateEmail()) return;
+    if (!agreed) return;
+    
+    const subject = encodeURIComponent(`VC Application: ${test.name}`);
+    const body = encodeURIComponent(
+`VENDOR CONFIRMED (VC) APPLICATION
+
+I, ${name}, am an employee of ${test.vendor} serving as ${title}.
+
+I hereby confirm that the data displayed for ${test.name} on OpenOnco.org is accurate to the best of my knowledge as of ${new Date().toLocaleDateString()}.
+
+Test: ${test.name}
+Category: ${category}
+Test ID: ${test.id}
+
+Contact Email: ${email}
+
+By submitting this application, I certify that I am authorized to make this confirmation on behalf of ${test.vendor}.
+
+---
+Submitted via OpenOnco VC Application Form`
+    );
+    
+    window.open(`mailto:info@openonco.org?subject=${subject}&body=${body}`, '_blank');
+    onClose();
+  };
+  
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full" onClick={e => e.stopPropagation()}>
+        <div className="px-6 py-4 border-b border-gray-200 bg-blue-50 rounded-t-2xl">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Apply for VC Status</h2>
+              <p className="text-sm text-gray-600">{test.name}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="px-6 py-4 space-y-4">
+          <p className="text-sm text-gray-600">
+            Complete this form to apply for Vendor Confirmed status. We'll verify your application and update the database.
+          </p>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+            <input 
+              type="text" 
+              value={name} 
+              onChange={e => setName(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Jane Smith"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
+            <input 
+              type="text" 
+              value={title} 
+              onChange={e => setTitle(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Director of Marketing"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company Email *</label>
+            <input 
+              type="email" 
+              value={email} 
+              onChange={e => { setEmail(e.target.value); setEmailError(''); }}
+              onBlur={validateEmail}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${emailError ? 'border-red-300' : 'border-gray-300'}`}
+              placeholder="jane@company.com"
+            />
+            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+          </div>
+          
+          <div className="bg-gray-50 rounded-lg p-3">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={agreed} 
+                onChange={e => setAgreed(e.target.checked)}
+                className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-sm text-gray-700">
+                I confirm that I am an employee of <strong>{test.vendor}</strong> and that the data displayed for this test on OpenOnco is accurate to the best of my knowledge.
+              </span>
+            </label>
+          </div>
+        </div>
+        
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+          <button onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            Cancel
+          </button>
+          <button 
+            onClick={handleSubmit}
+            disabled={!name || !title || !email || !agreed}
+            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Send Application
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// Data Submission Modal
+// ============================================
+const DataSubmissionModal = ({ test, category, missingFields, onClose }) => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
+  const [applyForVC, setApplyForVC] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  
+  const validateEmail = () => {
+    if (!email || !email.includes('@')) {
+      setEmailError('Please enter a valid email address');
+      return false;
+    }
+    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (freeProviders.includes(domain)) {
+      setEmailError('Please use your company email');
+      return false;
+    }
+    setEmailError('');
+    return true;
+  };
+  
+  const handleSubmit = () => {
+    if (!validateEmail()) return;
+    
+    const missingList = missingFields.map(f => `- ${f.label}: [PLEASE FILL IN]`).join('\n');
+    const vcText = applyForVC ? `
+
+Additionally, once all fields are complete, I would like to apply for Vendor Confirmed (VC) status. I confirm that I am an employee of ${test.vendor} and the data will be accurate.` : '';
+    
+    const subject = encodeURIComponent(`Data Submission: ${test.name}`);
+    const body = encodeURIComponent(
+`DATA SUBMISSION FOR OPENONCO
+
+Test: ${test.name}
+Category: ${category}
+Test ID: ${test.id}
+Submitted by: ${name} (${title})
+Contact: ${email}
+
+MISSING FIELDS TO COMPLETE:
+${missingList}
+${vcText}
+
+---
+Please fill in the values above and we will update the database.
+Submitted via OpenOnco Data Submission Form`
+    );
+    
+    window.open(`mailto:info@openonco.org?subject=${subject}&body=${body}`, '_blank');
+    onClose();
+  };
+  
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full" onClick={e => e.stopPropagation()}>
+        <div className="px-6 py-4 border-b border-gray-200 bg-amber-50 rounded-t-2xl">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Submit Missing Data</h2>
+              <p className="text-sm text-gray-600">{test.name}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="px-6 py-4 space-y-4">
+          <p className="text-sm text-gray-600">
+            Help complete this test profile by submitting the missing data fields below.
+          </p>
+          
+          <div className="bg-amber-50 rounded-lg p-3">
+            <h4 className="text-sm font-medium text-amber-800 mb-2">Missing Fields ({missingFields.length})</h4>
+            <ul className="text-sm text-amber-700 space-y-1">
+              {missingFields.map(f => (
+                <li key={f.key} className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {f.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+            <input 
+              type="text" 
+              value={name} 
+              onChange={e => setName(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              placeholder="Jane Smith"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
+            <input 
+              type="text" 
+              value={title} 
+              onChange={e => setTitle(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              placeholder="Director of Marketing"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company Email *</label>
+            <input 
+              type="email" 
+              value={email} 
+              onChange={e => { setEmail(e.target.value); setEmailError(''); }}
+              onBlur={validateEmail}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 ${emailError ? 'border-red-300' : 'border-gray-300'}`}
+              placeholder="jane@company.com"
+            />
+            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+          </div>
+          
+          <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={applyForVC} 
+                onChange={e => setApplyForVC(e.target.checked)}
+                className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-sm text-blue-800">
+                <strong>Also apply for VC status</strong> — Once all fields are complete, I'd like to receive Vendor Confirmed status for this test.
+              </span>
+            </label>
+          </div>
+        </div>
+        
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+          <button onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            Cancel
+          </button>
+          <button 
+            onClick={handleSubmit}
+            disabled={!name || !title || !email}
+            className="px-6 py-2 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Open Email Draft
           </button>
         </div>
       </div>
