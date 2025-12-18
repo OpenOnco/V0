@@ -5635,6 +5635,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         setExistingTest(prefill.prefillTest);
         setIsPrefilled(true); // Mark as prefilled to lock selections
       }
+      // Scroll to top of page
+      window.scrollTo(0, 0);
       // Clear prefill after applying
       if (onClearPrefill) {
         onClearPrefill();
