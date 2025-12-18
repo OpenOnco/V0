@@ -4,7 +4,7 @@ Complete guide to implementing automated regression tests from scratch.
 
 ## What You Get
 
-- **60+ automated tests** covering all major features
+- **50+ automated tests** covering all major features
 - **Pre-deploy checks** to catch bugs before users see them  
 - **CI/CD ready** for GitHub Actions integration
 - **Visual debugging** with headed browser mode
@@ -38,8 +38,7 @@ your-project/
 ├── api/
 │   └── chat.js
 └── src/
-    ├── App.jsx
-    └── data.js              ← Test counts imported from here
+    └── App.jsx
 ```
 
 ---
@@ -99,47 +98,34 @@ TEST_URL=https://openonco.org npm run test:smoke
 
 | Test Suite | What It Checks |
 |------------|----------------|
-| **Homepage** | Loads, shows 95 tests, chat input works, all categories linked |
-| **Category Pages** | MRD/ECD/TRM/TDS all load, show test cards, correct counts |
-| **Individual Test URLs** | `/mrd/signatera` style routes work |
-| **Persona System** | Patient/Clinician/Academic switching, localStorage persistence |
-| **Clinical Settings** | MRD filter for Neoadjuvant/Post-Surgery/etc. |
-| **Test Detail Modal** | Opens, has share/print buttons, closes with Escape |
+| **Homepage** | Loads, shows 78 tests, chat input works |
+| **Category Pages** | MRD/ECD/TRM/TDS all load, show test cards |
+| **Test Detail Modal** | Opens, has share/print buttons, closes |
 | **Comparison Modal** | Opens with 2+ tests, share link works |
 | **Shareable Links** | `?compare=` and `?test=` URLs work |
 | **Print** | CSS loads, content visible (not blank) |
-| **Chat** | Input works, API responds, model selector available |
-| **Data Download** | JSON file valid structure |
+| **Chat** | Input works, API responds |
+| **Data Download** | JSON file has 78 tests, valid structure |
 | **Navigation** | All links work, back button works |
 | **Mobile** | Renders on small screens |
-| **Submissions** | Vendor domain validation, email blocking |
 | **Error Handling** | Invalid URLs don't crash |
-| **Static Pages** | About, FAQ, How It Works, etc. load |
 
 ---
 
-## Current Test Counts (Dec 2025)
+## Expected Test Counts
 
-Test counts are **dynamically imported** from `data.js`, so they auto-update when you add tests:
+When you add tests, update `tests/openonco.spec.js`:
 
-| Category | Tests |
-|----------|-------|
-| MRD | 27 |
-| ECD | 23 |
-| TRM | 12 |
-| TDS | 33 |
-| **Total** | **95** |
-
-The spec file imports directly from your data:
 ```javascript
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../src/data.js';
-
 const EXPECTED = {
   testCounts: {
-    MRD: mrdTestData.length,
-    ECD: ecdTestData.length,
-    // ... automatically correct
-  }
+    MRD: 26,    // Update when adding MRD tests
+    ECD: 15,    // Update when adding ECD tests
+    TRM: 15,    // Update when adding TRM tests
+    TDS: 22,    // Update when adding TDS tests
+    total: 78   // Update: sum of above
+  },
+  // ...
 };
 ```
 
@@ -230,13 +216,6 @@ test('chat responds', async ({ page }) => {
 npx playwright test -g "Print" --headed
 ```
 
-### Persona tests failing?
-
-Check localStorage is being set correctly:
-```bash
-npx playwright test -g "Persona" --headed --debug
-```
-
 ### Need to update selectors?
 
 Use Playwright's codegen to find selectors:
@@ -270,15 +249,3 @@ npx playwright codegen http://localhost:3000
 6. ✅ Run `npm run test:smoke` before every deploy
 
 That's it! You now have automated regression testing.
-
----
-
-## Changelog
-
-**Dec 17, 2025**
-- Added persona system tests (Patient/Clinician/Academic)
-- Added clinical settings filter tests (MRD)
-- Added individual test URL routing tests (`/mrd/signatera`)
-- Added model selector tests (Haiku/Sonnet)
-- Updated test counts: MRD 27, ECD 23, TRM 12, TDS 33 (total 95)
-- Added static pages test suite

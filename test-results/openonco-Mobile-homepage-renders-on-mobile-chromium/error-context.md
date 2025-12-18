@@ -1,0 +1,949 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]: OpenOnco
+      - button [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+  - main [ref=e10]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: "Build: Dec 15, 2025, 07:21 AM PST"
+      - 'heading "Advanced Molecular Diagnostics: Collected, Curated, Explained" [level=1] [ref=e15]'
+      - generic [ref=e17]:
+        - generic [ref=e19]:
+          - heading "Explore Tests by AI:" [level=3] [ref=e20]
+          - generic [ref=e21] [cursor=pointer]:
+            - generic [ref=e23]:
+              - generic [ref=e24]: "Try asking:"
+              - button "Compare Signatera and Reveal MRD for MRD monitoring" [ref=e25]
+              - button "Which TDS tests have the fastest turnaround time?" [ref=e26]
+              - button "🩺 I am a patient, please use straightforward language" [ref=e27]
+              - button "👨‍⚕️ I am a physician, please use clinical language" [ref=e28]
+            - generic [ref=e29]:
+              - generic [ref=e30]:
+                - textbox "Ask Claude about tests..." [ref=e31]
+                - img [ref=e32]
+              - generic [ref=e34]:
+                - combobox "Select AI model" [ref=e35]:
+                  - option "More speed" [selected]
+                  - option "More thinking"
+                - button "Ask" [disabled] [ref=e36]
+          - generic [ref=e37] [cursor=pointer]:
+            - paragraph [ref=e38]: "Or: Quick Search"
+            - generic [ref=e39]:
+              - textbox "Filter by name, vendor, cancer..." [ref=e40]
+              - img [ref=e41]
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - paragraph [ref=e45]: All the tests we track (90)
+            - generic [ref=e46]:
+              - generic [ref=e47]: "Sort:"
+              - combobox [ref=e48] [cursor=pointer]:
+                - option "Alphabetical" [selected]
+                - option "By Category"
+                - option "By TAT (fastest)"
+                - option "By Coverage"
+                - 'option "By # Tests"'
+                - option "By Openness"
+          - generic [ref=e49]:
+            - generic [ref=e50] [cursor=pointer]:
+              - generic [ref=e51]:
+                - generic [ref=e52]:
+                  - paragraph [ref=e53]: Avantect Pancreatic Cancer Test
+                  - paragraph [ref=e54]: ClearNote Health
+                - generic [ref=e56]: ECD
+              - generic [ref=e57]:
+                - generic [ref=e58]: "Sens: 68.3%"
+                - generic [ref=e59]: "Spec: 96.9%"
+                - generic [ref=e60]: "Pubs: 2"
+            - generic [ref=e61] [cursor=pointer]:
+              - generic [ref=e62]:
+                - generic [ref=e63]:
+                  - paragraph [ref=e64]: BD OneFlow B-ALL MRD Kit
+                  - paragraph [ref=e65]: BD Biosciences
+                - generic [ref=e66]:
+                  - generic "Laboratory IVD Kit" [ref=e67]: 🔬Kit
+                  - generic [ref=e68]: MRD
+              - generic [ref=e69]:
+                - generic [ref=e70]: "Sens: 96%"
+                - generic [ref=e71]: "Spec: 95%"
+                - generic [ref=e72]: "TAT: 1d"
+            - generic [ref=e73] [cursor=pointer]:
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - paragraph [ref=e76]: CancerDetect
+                  - paragraph [ref=e77]: IMBdx
+                - generic [ref=e79]: MRD
+              - generic [ref=e80]:
+                - generic [ref=e81]: "Spec: 99.9%"
+                - generic [ref=e82]: "TAT: 28d"
+                - generic [ref=e83]: "Pubs: 2"
+            - generic [ref=e84] [cursor=pointer]:
+              - generic [ref=e85]:
+                - generic [ref=e86]:
+                  - paragraph [ref=e87]: Cancerguard
+                  - paragraph [ref=e88]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e89]:
+                      - generic [ref=e90]: 📊
+                - generic [ref=e92]: ECD
+              - generic [ref=e93]:
+                - generic [ref=e94]: "Sens: 64%"
+                - generic [ref=e95]: "Spec: 97.4%"
+                - generic [ref=e96]: "Pubs: 2"
+            - generic [ref=e97] [cursor=pointer]:
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - paragraph [ref=e100]: CancerVista
+                  - paragraph [ref=e101]: LIQOMICS
+                - generic [ref=e103]: MRD
+              - generic [ref=e104]:
+                - generic [ref=e105]: "Sens: 80%"
+                - generic [ref=e106]: "Spec: 96.7%"
+                - generic [ref=e107]: "TAT: 10d"
+            - generic [ref=e108] [cursor=pointer]:
+              - generic [ref=e109]:
+                - generic [ref=e110]:
+                  - paragraph [ref=e111]: Caris Assure
+                  - paragraph [ref=e112]: Caris Life Sciences
+                - generic [ref=e114]: MRD
+              - generic [ref=e115]:
+                - generic [ref=e116]: "Spec: 99.6%"
+                - generic [ref=e117]: "TAT: 14d"
+                - generic [ref=e118]: "Pubs: 5"
+            - generic [ref=e119] [cursor=pointer]:
+              - generic [ref=e120]:
+                - generic [ref=e121]:
+                  - paragraph [ref=e122]: Caris Assure
+                  - paragraph [ref=e123]: Caris Life Sciences
+                - generic [ref=e125]: TRM
+              - generic [ref=e126]:
+                - generic [ref=e127]: "Sens: 93.8%"
+                - generic [ref=e128]: "Spec: 99.99%"
+                - generic [ref=e129]: "TAT: 10d"
+            - generic [ref=e130] [cursor=pointer]:
+              - generic [ref=e131]:
+                - generic [ref=e132]:
+                  - paragraph [ref=e133]: clonoSEQ
+                  - paragraph [ref=e134]: Adaptive Biotechnologies
+                - generic [ref=e136]: MRD
+              - generic [ref=e137]:
+                - generic [ref=e138]: "TAT: 14d"
+                - generic [ref=e139]: "Pubs: 100"
+                - generic [ref=e140]: "$: 2.0k"
+            - generic [ref=e141] [cursor=pointer]:
+              - generic [ref=e142]:
+                - generic [ref=e143]:
+                  - paragraph [ref=e144]: clonoSEQ Assay
+                  - paragraph [ref=e145]: Adaptive Biotechnologies
+                - generic [ref=e146]:
+                  - generic "Laboratory IVD Kit" [ref=e147]: 🔬Kit
+                  - generic [ref=e148]: MRD
+              - generic [ref=e149]:
+                - generic [ref=e150]: "Sens: 95%"
+                - generic [ref=e151]: "Spec: 99%"
+                - generic [ref=e152]: "TAT: 7d"
+            - generic [ref=e153] [cursor=pointer]:
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - paragraph [ref=e156]: cobas EGFR Mutation Test v2
+                  - paragraph [ref=e157]: Roche
+                - generic [ref=e158]:
+                  - generic "Laboratory IVD Kit" [ref=e159]: 🔬Kit
+                  - generic [ref=e160]: TDS
+              - generic [ref=e161]:
+                - generic [ref=e162]: "Sens: 85%"
+                - generic [ref=e163]: "Spec: 98%"
+                - generic [ref=e164]: "TAT: 1d"
+            - generic [ref=e165] [cursor=pointer]:
+              - generic [ref=e166]:
+                - generic [ref=e167]:
+                  - paragraph [ref=e168]: cobas KRAS Mutation Test
+                  - paragraph [ref=e169]: Roche
+                - generic [ref=e170]:
+                  - generic "Laboratory IVD Kit" [ref=e171]: 🔬Kit
+                  - generic [ref=e172]: TDS
+              - generic [ref=e173]:
+                - generic [ref=e174]: "Sens: 95%"
+                - generic [ref=e175]: "Spec: 99%"
+                - generic [ref=e176]: "TAT: 1d"
+            - generic [ref=e177] [cursor=pointer]:
+              - generic [ref=e178]:
+                - generic [ref=e179]:
+                  - paragraph [ref=e180]: Cologuard
+                  - paragraph [ref=e181]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e182]:
+                      - generic [ref=e183]: 📊
+                - generic [ref=e184]:
+                  - generic "Self-Collection" [ref=e185]: 🏠Home
+                  - generic [ref=e186]: ECD
+              - generic [ref=e187]:
+                - generic [ref=e188]: "Sens: 92%"
+                - generic [ref=e189]: "Spec: 87%"
+                - generic [ref=e190]: "TAT: 1d"
+            - generic [ref=e191] [cursor=pointer]:
+              - generic [ref=e192]:
+                - generic [ref=e193]:
+                  - paragraph [ref=e194]: Cologuard Plus
+                  - paragraph [ref=e195]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e196]:
+                      - generic [ref=e197]: 📊
+                - generic [ref=e199]: ECD
+              - generic [ref=e200]:
+                - generic [ref=e201]: "Sens: 93.9%"
+                - generic [ref=e202]: "Spec: 91%"
+                - generic [ref=e203]: "TAT: 3d"
+            - generic [ref=e204] [cursor=pointer]:
+              - generic [ref=e205]:
+                - generic [ref=e206]:
+                  - paragraph [ref=e207]: ColoSense
+                  - paragraph [ref=e208]: Geneoscopy
+                - generic [ref=e210]: ECD
+              - generic [ref=e211]:
+                - generic [ref=e212]: "Sens: 93%"
+                - generic [ref=e213]: "Spec: 88%"
+                - generic [ref=e214]: "Pubs: 3"
+            - generic [ref=e215] [cursor=pointer]:
+              - generic [ref=e216]:
+                - generic [ref=e217]:
+                  - paragraph [ref=e218]: Epi proColon
+                  - paragraph [ref=e219]: Epigenomics
+                - generic [ref=e220]:
+                  - generic "Laboratory IVD Kit" [ref=e221]: 🔬Kit
+                  - generic [ref=e222]: ECD
+              - generic [ref=e223]:
+                - generic [ref=e224]: "Sens: 68%"
+                - generic [ref=e225]: "Spec: 80%"
+                - generic [ref=e226]: "TAT: 3d"
+            - generic [ref=e227] [cursor=pointer]:
+              - generic [ref=e228]:
+                - generic [ref=e229]:
+                  - paragraph [ref=e230]: EPISEEK
+                  - paragraph [ref=e231]: Precision Epigenomics
+                - generic [ref=e233]: ECD
+              - generic [ref=e234]:
+                - generic [ref=e235]: "Sens: 54%"
+                - generic [ref=e236]: "Spec: 99.5%"
+                - generic [ref=e237]: "TAT: 5d"
+            - generic [ref=e238] [cursor=pointer]:
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - paragraph [ref=e241]: FirstLook Lung
+                  - paragraph [ref=e242]: DELFI Diagnostics
+                - generic [ref=e244]: ECD
+              - generic [ref=e245]:
+                - generic [ref=e246]: "Sens: 80%"
+                - generic [ref=e247]: "Spec: 58%"
+                - generic [ref=e248]: "TAT: 10d"
+            - generic [ref=e249] [cursor=pointer]:
+              - generic [ref=e250]:
+                - generic [ref=e251]:
+                  - paragraph [ref=e252]: Foresight CLARITY Lymphoma
+                  - paragraph [ref=e253]: Natera
+                - generic [ref=e255]: MRD
+              - generic [ref=e256]:
+                - generic [ref=e257]: "Sens: 90.62%"
+                - generic [ref=e258]: "Spec: 97.65%"
+                - generic [ref=e259]: "TAT: 8d"
+            - generic [ref=e260] [cursor=pointer]:
+              - generic [ref=e261]:
+                - generic [ref=e262]:
+                  - paragraph [ref=e263]: Foundation TI-WGS MRD (RUO)
+                  - paragraph [ref=e264]: Foundation Medicine
+                - generic [ref=e266]: MRD
+              - generic [ref=e268]: No data
+            - generic [ref=e269] [cursor=pointer]:
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - paragraph [ref=e272]: FoundationOne CDx
+                  - paragraph [ref=e273]: Foundation Medicine
+                - generic [ref=e275]: TDS
+              - generic [ref=e276]:
+                - generic [ref=e277]: "TAT: 8d"
+                - generic [ref=e278]: "Pubs: 1000"
+                - generic [ref=e279]: "$: 3.5k"
+            - generic [ref=e280] [cursor=pointer]:
+              - generic [ref=e281]:
+                - generic [ref=e282]:
+                  - paragraph [ref=e283]: FoundationOne Heme
+                  - paragraph [ref=e284]: Foundation Medicine
+                - generic [ref=e286]: TDS
+              - generic [ref=e287]:
+                - generic [ref=e288]: "TAT: 10d"
+                - generic [ref=e289]: "$: 3.5k"
+            - generic [ref=e290] [cursor=pointer]:
+              - generic [ref=e291]:
+                - generic [ref=e292]:
+                  - paragraph [ref=e293]: FoundationOne Liquid CDx
+                  - paragraph [ref=e294]: Foundation Medicine
+                - generic [ref=e296]: TDS
+              - generic [ref=e297]:
+                - generic [ref=e298]: "TAT: 7d"
+                - generic [ref=e299]: "$: 3.5k"
+            - generic [ref=e300] [cursor=pointer]:
+              - generic [ref=e301]:
+                - generic [ref=e302]:
+                  - paragraph [ref=e303]: FoundationOne Monitor
+                  - paragraph [ref=e304]: Foundation Medicine
+                - generic [ref=e306]: TRM
+              - generic [ref=e308]: "Pubs: 3"
+            - generic [ref=e309] [cursor=pointer]:
+              - generic [ref=e310]:
+                - generic [ref=e311]:
+                  - paragraph [ref=e312]: FoundationOne Tracker (MRD)
+                  - paragraph [ref=e313]: Foundation Medicine / Natera
+                - generic [ref=e315]: MRD
+              - generic [ref=e317]: "Pubs: 3"
+            - generic [ref=e318] [cursor=pointer]:
+              - generic [ref=e319]:
+                - generic [ref=e320]:
+                  - paragraph [ref=e321]: FoundationOne Tracker (TRM)
+                  - paragraph [ref=e322]: Foundation Medicine / Natera
+                - generic [ref=e324]: TRM
+              - generic [ref=e326]: "Pubs: 4"
+            - generic [ref=e327] [cursor=pointer]:
+              - generic [ref=e328]:
+                - generic [ref=e329]:
+                  - paragraph [ref=e330]: Freenome CRC Blood Test
+                  - paragraph [ref=e331]: Freenome
+                - generic [ref=e333]: ECD
+              - generic [ref=e334]:
+                - generic [ref=e335]: "Sens: 79.2%"
+                - generic [ref=e336]: "Spec: 91.5%"
+                - generic [ref=e337]: "Pubs: 2"
+            - generic [ref=e338] [cursor=pointer]:
+              - generic [ref=e339]:
+                - generic [ref=e340]:
+                  - paragraph [ref=e341]: GALEAS Bladder
+                  - paragraph [ref=e342]: Nonacus
+                - generic [ref=e344]: ECD
+              - generic [ref=e345]:
+                - generic [ref=e346]: "Sens: 90%"
+                - generic [ref=e347]: "Spec: 85%"
+                - generic [ref=e348]: "Pubs: 2"
+            - generic [ref=e349] [cursor=pointer]:
+              - generic [ref=e350]:
+                - generic [ref=e351]:
+                  - paragraph [ref=e352]: Galleri
+                  - paragraph [ref=e353]: GRAIL
+                - generic [ref=e355]: ECD
+              - generic [ref=e356]:
+                - generic [ref=e357]: "Sens: 51.5%"
+                - generic [ref=e358]: "Spec: 99.5%"
+                - generic [ref=e359]: "TAT: 10d"
+            - generic [ref=e360] [cursor=pointer]:
+              - generic [ref=e361]:
+                - generic [ref=e362]:
+                  - paragraph [ref=e363]: GeneseeqPrime
+                  - paragraph [ref=e364]: Geneseeq Technology
+                - generic [ref=e365]:
+                  - generic "Laboratory IVD Kit" [ref=e366]: 🔬Kit
+                  - generic [ref=e367]: TDS
+              - generic [ref=e368]:
+                - generic [ref=e369]: "TAT: 7d"
+                - generic [ref=e370]: "Pubs: 100"
+            - generic [ref=e371] [cursor=pointer]:
+              - generic [ref=e372]:
+                - generic [ref=e373]:
+                  - paragraph [ref=e374]: Guardant LUNAR (RUO platform)
+                  - paragraph [ref=e375]: Guardant Health
+                - generic [ref=e377]: MRD
+              - generic [ref=e378]:
+                - generic [ref=e379]: "Sens: 56%"
+                - generic [ref=e380]: "Spec: 100%"
+                - generic [ref=e381]: "Pubs: 5"
+            - generic [ref=e382] [cursor=pointer]:
+              - generic [ref=e383]:
+                - generic [ref=e384]:
+                  - paragraph [ref=e385]: Guardant360 CDx
+                  - paragraph [ref=e386]: Guardant Health
+                - generic [ref=e388]: TDS
+              - generic [ref=e389]:
+                - generic [ref=e390]: "TAT: 5d"
+                - generic [ref=e391]: "Pubs: 150"
+            - generic [ref=e392] [cursor=pointer]:
+              - generic [ref=e393]:
+                - generic [ref=e394]:
+                  - paragraph [ref=e395]: Guardant360 Liquid
+                  - paragraph [ref=e396]: Guardant Health
+                - generic [ref=e398]: TDS
+              - generic [ref=e399]:
+                - generic [ref=e400]: "Spec: ≥99.9%"
+                - generic [ref=e401]: "TAT: 7d"
+            - generic [ref=e402] [cursor=pointer]:
+              - generic:
+                - generic: DISCONTINUED
+              - generic [ref=e403]:
+                - generic [ref=e404]:
+                  - paragraph [ref=e405]: Guardant360 Response
+                  - paragraph [ref=e406]: Guardant Health
+                - generic [ref=e407]: DISC
+              - generic [ref=e409]: "Pubs: 40"
+            - generic [ref=e410] [cursor=pointer]:
+              - generic [ref=e411]:
+                - generic [ref=e412]:
+                  - paragraph [ref=e413]: Haystack MRD
+                  - paragraph [ref=e414]: Quest Diagnostics
+                - generic [ref=e416]: MRD
+              - generic [ref=e417]:
+                - generic [ref=e418]: "Sens: 95%"
+                - generic [ref=e419]: "TAT: 30d"
+                - generic [ref=e420]: "Pubs: 17"
+            - generic [ref=e421] [cursor=pointer]:
+              - generic [ref=e422]:
+                - generic [ref=e423]:
+                  - paragraph [ref=e424]: HelioLiver
+                  - paragraph [ref=e425]: Helio Genomics
+                - generic [ref=e427]: ECD
+              - generic [ref=e428]:
+                - generic [ref=e429]: "Sens: 85%"
+                - generic [ref=e430]: "Spec: 91%"
+                - generic [ref=e431]: "Pubs: 2"
+            - generic [ref=e432] [cursor=pointer]:
+              - generic [ref=e433]:
+                - generic [ref=e434]:
+                  - paragraph [ref=e435]: IColocomf
+                  - paragraph [ref=e436]: Wuhan Ammunition Life Technology
+                - generic [ref=e438]: ECD
+              - generic [ref=e439]:
+                - generic [ref=e440]: "Sens: 95.31%"
+                - generic [ref=e441]: "Spec: 96.67%"
+                - generic [ref=e442]: "TAT: 3d"
+            - generic [ref=e443] [cursor=pointer]:
+              - generic [ref=e444]:
+                - generic [ref=e445]:
+                  - paragraph [ref=e446]: IColohunter
+                  - paragraph [ref=e447]: Wuhan Ammunition Life Technology
+                - generic [ref=e449]: ECD
+              - generic [ref=e450]:
+                - generic [ref=e451]: "Sens: 91.2%"
+                - generic [ref=e452]: "Spec: 92.4%"
+                - generic [ref=e453]: "TAT: 3d"
+            - generic [ref=e454] [cursor=pointer]:
+              - generic [ref=e455]:
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: IEsohunter
+                  - paragraph [ref=e458]: Wuhan Ammunition Life Technology
+                - generic [ref=e460]: ECD
+              - generic [ref=e461]:
+                - generic [ref=e462]: "Sens: 87.4%"
+                - generic [ref=e463]: "Spec: 93.3%"
+                - generic [ref=e464]: "TAT: 3d"
+            - generic [ref=e465] [cursor=pointer]:
+              - generic [ref=e466]:
+                - generic [ref=e467]:
+                  - paragraph [ref=e468]: IHepcomf
+                  - paragraph [ref=e469]: Wuhan Ammunition Life Technology
+                - generic [ref=e471]: ECD
+              - generic [ref=e472]:
+                - generic [ref=e473]: "Sens: 92.3%"
+                - generic [ref=e474]: "Spec: 93.4%"
+                - generic [ref=e475]: "TAT: 3d"
+            - generic [ref=e476] [cursor=pointer]:
+              - generic [ref=e477]:
+                - generic [ref=e478]:
+                  - paragraph [ref=e479]: Invitae PCM
+                  - paragraph [ref=e480]: Labcorp (Invitae)
+                - generic [ref=e482]: MRD
+              - generic [ref=e483]:
+                - generic [ref=e484]: "Sens: 76.9%"
+                - generic [ref=e485]: "Spec: 100%"
+                - generic [ref=e486]: "TAT: 21d"
+            - generic [ref=e487] [cursor=pointer]:
+              - generic [ref=e488]:
+                - generic [ref=e489]:
+                  - paragraph [ref=e490]: IsoPSA
+                  - paragraph [ref=e491]: Cleveland Diagnostics
+                - generic [ref=e493]: TDS
+              - generic [ref=e494]:
+                - generic [ref=e495]: "Sens: 90.2%"
+                - generic [ref=e496]: "Spec: 45.5%"
+                - generic [ref=e497]: "TAT: 3d"
+            - generic [ref=e498] [cursor=pointer]:
+              - generic [ref=e499]:
+                - generic [ref=e500]:
+                  - paragraph [ref=e501]: IUrisure
+                  - paragraph [ref=e502]: Wuhan Ammunition Life Technology
+                - generic [ref=e504]: ECD
+              - generic [ref=e505]:
+                - generic [ref=e506]: "Sens: 93.94%"
+                - generic [ref=e507]: "Spec: 92.02%"
+                - generic [ref=e508]: "TAT: 3d"
+            - generic [ref=e509] [cursor=pointer]:
+              - generic [ref=e510]:
+                - generic [ref=e511]:
+                  - paragraph [ref=e512]: Labcorp Plasma Detect
+                  - paragraph [ref=e513]: Labcorp
+                - generic [ref=e515]: MRD
+              - generic [ref=e516]:
+                - generic [ref=e517]: "Spec: 99.4%"
+                - generic [ref=e518]: "TAT: 14d"
+                - generic [ref=e519]: "Pubs: 2"
+            - generic [ref=e520] [cursor=pointer]:
+              - generic [ref=e521]:
+                - generic [ref=e522]:
+                  - paragraph [ref=e523]: Latitude
+                  - paragraph [ref=e524]: Natera
+                - generic [ref=e526]: MRD
+              - generic [ref=e527]:
+                - generic [ref=e528]: "Sens: 81%"
+                - generic [ref=e529]: "Spec: 97%"
+            - generic [ref=e530] [cursor=pointer]:
+              - generic [ref=e531]:
+                - generic [ref=e532]:
+                  - paragraph [ref=e533]: LeukoStrat CDx FLT3 Mutation Assay
+                  - paragraph [ref=e534]: Invivoscribe
+                - generic [ref=e535]:
+                  - generic "Laboratory IVD Kit" [ref=e536]: 🔬Kit
+                  - generic [ref=e537]: TDS
+              - generic [ref=e538]:
+                - generic [ref=e539]: "TAT: 3d"
+                - generic [ref=e540]: "Pubs: 50"
+            - generic [ref=e541] [cursor=pointer]:
+              - generic [ref=e542]:
+                - generic [ref=e543]:
+                  - paragraph [ref=e544]: Liquid Trace (Therapy Monitoring)
+                  - paragraph [ref=e545]: Genomic Testing Cooperative (GTC)
+                - generic [ref=e547]: TRM
+              - generic [ref=e548]:
+                - generic [ref=e549]: "TAT: 5d"
+                - generic [ref=e550]: "Pubs: 15"
+            - generic [ref=e551] [cursor=pointer]:
+              - generic [ref=e552]:
+                - generic [ref=e553]:
+                  - paragraph [ref=e554]: Liquid Trace Hematology
+                  - paragraph [ref=e555]: Genomic Testing Cooperative (GTC)
+                - generic [ref=e557]: TDS
+              - generic [ref=e558]:
+                - generic [ref=e559]: "TAT: 5d"
+                - generic [ref=e560]: "Pubs: 15"
+            - generic [ref=e561] [cursor=pointer]:
+              - generic [ref=e562]:
+                - generic [ref=e563]:
+                  - paragraph [ref=e564]: Liquid Trace Solid Tumor
+                  - paragraph [ref=e565]: Genomic Testing Cooperative (GTC)
+                - generic [ref=e567]: TDS
+              - generic [ref=e568]:
+                - generic [ref=e569]: "TAT: 5d"
+                - generic [ref=e570]: "Pubs: 15"
+            - generic [ref=e571] [cursor=pointer]:
+              - generic [ref=e572]:
+                - generic [ref=e573]:
+                  - paragraph [ref=e574]: LymphoTrack Dx IGH Assay
+                  - paragraph [ref=e575]: Invivoscribe
+                - generic [ref=e576]:
+                  - generic "Laboratory IVD Kit" [ref=e577]: 🔬Kit
+                  - generic [ref=e578]: MRD
+              - generic [ref=e579]:
+                - generic [ref=e580]: "Sens: 98%"
+                - generic [ref=e581]: "Spec: 99%"
+                - generic [ref=e582]: "TAT: 5d"
+            - generic [ref=e583] [cursor=pointer]:
+              - generic [ref=e584]:
+                - generic [ref=e585]:
+                  - paragraph [ref=e586]: LymphoVista
+                  - paragraph [ref=e587]: LIQOMICS
+                - generic [ref=e589]: MRD
+              - generic [ref=e590]:
+                - generic [ref=e591]: "Sens: 100%"
+                - generic [ref=e592]: "Spec: 93%"
+                - generic [ref=e593]: "TAT: 10d"
+            - generic [ref=e594] [cursor=pointer]:
+              - generic [ref=e595]:
+                - generic [ref=e596]:
+                  - paragraph [ref=e597]: MI Cancer Seek
+                  - paragraph [ref=e598]: Caris Life Sciences
+                - generic [ref=e600]: TDS
+              - generic [ref=e602]: "TAT: 14d"
+            - generic [ref=e603] [cursor=pointer]:
+              - generic [ref=e604]:
+                - generic [ref=e605]:
+                  - paragraph [ref=e606]: MI Profile
+                  - paragraph [ref=e607]: Caris Life Sciences
+                - generic [ref=e609]: TDS
+              - generic [ref=e611]: "TAT: 10d"
+            - generic [ref=e612] [cursor=pointer]:
+              - generic [ref=e613]:
+                - generic [ref=e614]:
+                  - paragraph [ref=e615]: MSK-IMPACT
+                  - paragraph [ref=e616]: Memorial Sloan Kettering
+                - generic [ref=e618]: TDS
+              - generic [ref=e619]:
+                - generic [ref=e620]: "TAT: 2d"
+                - generic [ref=e621]: "Pubs: 1000"
+            - generic [ref=e622] [cursor=pointer]:
+              - generic [ref=e623]:
+                - generic [ref=e624]:
+                  - paragraph [ref=e625]: NavDx
+                  - paragraph [ref=e626]: Naveris
+                - generic [ref=e628]: MRD
+              - generic [ref=e629]:
+                - generic [ref=e630]: "Sens: 90.4%"
+                - generic [ref=e631]: "Spec: 98.6%"
+                - generic [ref=e632]: "Pubs: 35"
+            - generic [ref=e633] [cursor=pointer]:
+              - generic [ref=e634]:
+                - generic [ref=e635]:
+                  - paragraph [ref=e636]: NEO PanTracer Tissue
+                  - paragraph [ref=e637]: NeoGenomics
+                - generic [ref=e639]: TDS
+              - generic [ref=e641]: "TAT: 7d"
+            - generic [ref=e642] [cursor=pointer]:
+              - generic [ref=e643]:
+                - generic [ref=e644]:
+                  - paragraph [ref=e645]: NeXT Personal
+                  - paragraph [ref=e646]: Personalis
+                - generic [ref=e648]: TRM
+              - generic [ref=e650]: "Pubs: 5"
+            - generic [ref=e651] [cursor=pointer]:
+              - generic [ref=e652]:
+                - generic [ref=e653]:
+                  - paragraph [ref=e654]: NeXT Personal Dx
+                  - paragraph [ref=e655]: Personalis
+                - generic [ref=e657]: MRD
+              - generic [ref=e658]:
+                - generic [ref=e659]: "TAT: 21d"
+                - generic [ref=e660]: "Pubs: 4"
+            - generic [ref=e661] [cursor=pointer]:
+              - generic [ref=e662]:
+                - generic [ref=e663]:
+                  - paragraph [ref=e664]: Northstar Response
+                  - paragraph [ref=e665]: BillionToOne
+                - generic [ref=e667]: TRM
+              - generic [ref=e668]:
+                - generic [ref=e669]: "TAT: 10d"
+                - generic [ref=e670]: "Pubs: 5"
+            - generic [ref=e671] [cursor=pointer]:
+              - generic [ref=e672]:
+                - generic [ref=e673]:
+                  - paragraph [ref=e674]: Northstar Select
+                  - paragraph [ref=e675]: BillionToOne
+                - generic [ref=e677]: TDS
+              - generic [ref=e678]:
+                - generic [ref=e679]: "Spec: 99.9%"
+                - generic [ref=e680]: "TAT: 5d"
+                - generic [ref=e681]: "Pubs: 2"
+            - generic [ref=e682] [cursor=pointer]:
+              - generic [ref=e683]:
+                - generic [ref=e684]:
+                  - paragraph [ref=e685]: OmniSeq INSIGHT
+                  - paragraph [ref=e686]: Labcorp Oncology (OmniSeq)
+                - generic [ref=e688]: TDS
+              - generic [ref=e690]: "TAT: 10d"
+            - generic [ref=e691] [cursor=pointer]:
+              - generic [ref=e692]:
+                - generic [ref=e693]:
+                  - paragraph [ref=e694]: OncoBEAM RAS CRC Kit
+                  - paragraph [ref=e695]: Sysmex Inostics
+                - generic [ref=e696]:
+                  - generic "Laboratory IVD Kit" [ref=e697]: 🔬Kit
+                  - generic [ref=e698]: TDS
+              - generic [ref=e699]:
+                - generic [ref=e700]: "Sens: 95%"
+                - generic [ref=e701]: "Spec: 99%"
+                - generic [ref=e702]: "TAT: 3d"
+            - generic [ref=e703] [cursor=pointer]:
+              - generic [ref=e704]:
+                - generic [ref=e705]:
+                  - paragraph [ref=e706]: Oncodetect
+                  - paragraph [ref=e707]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e708]:
+                      - generic [ref=e709]: 📊
+                - generic [ref=e711]: MRD
+              - generic [ref=e712]:
+                - generic [ref=e713]: "Sens: 91%"
+                - generic [ref=e714]: "Spec: 94%"
+                - generic [ref=e715]: "TAT: 28d"
+            - generic [ref=e716] [cursor=pointer]:
+              - generic [ref=e717]:
+                - generic [ref=e718]:
+                  - paragraph [ref=e719]: OncoExTra
+                  - paragraph [ref=e720]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e721]:
+                      - generic [ref=e722]: 📊
+                - generic [ref=e724]: TDS
+              - generic [ref=e726]: "TAT: 10d"
+            - generic [ref=e727] [cursor=pointer]:
+              - generic [ref=e728]:
+                - generic [ref=e729]:
+                  - paragraph [ref=e730]: Oncoguard Liver
+                  - paragraph [ref=e731]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e732]:
+                      - generic [ref=e733]: 📊
+                - generic [ref=e735]: ECD
+              - generic [ref=e736]:
+                - generic [ref=e737]: "Sens: 88%"
+                - generic [ref=e738]: "Spec: 87%"
+                - generic [ref=e739]: "Pubs: 3"
+            - generic [ref=e740] [cursor=pointer]:
+              - generic [ref=e741]:
+                - generic [ref=e742]:
+                  - paragraph [ref=e743]: Oncomine Comprehensive Assay Plus
+                  - paragraph [ref=e744]: Thermo Fisher Scientific
+                - generic [ref=e745]:
+                  - generic "Laboratory IVD Kit" [ref=e746]: 🔬Kit
+                  - generic [ref=e747]: TDS
+              - generic [ref=e748]:
+                - generic [ref=e749]: "TAT: 5d"
+                - generic [ref=e750]: "Pubs: 80"
+            - generic [ref=e751] [cursor=pointer]:
+              - generic [ref=e752]:
+                - generic [ref=e753]:
+                  - paragraph [ref=e754]: Oncotype DX Breast Recurrence Score
+                  - paragraph [ref=e755]:
+                    - text: Exact Sciences
+                    - generic "Top 3 in OpenOnco Data Openness Ranking" [ref=e756]:
+                      - generic [ref=e757]: 📊
+                - generic [ref=e759]: TDS
+              - generic [ref=e760]:
+                - generic [ref=e761]: "TAT: 7d"
+                - generic [ref=e762]: "Pubs: 500"
+                - generic [ref=e763]: "$: 4.0k"
+            - generic [ref=e764] [cursor=pointer]:
+              - generic [ref=e765]:
+                - generic [ref=e766]:
+                  - paragraph [ref=e767]: Pathlight
+                  - paragraph [ref=e768]: SAGA Diagnostics
+                - generic [ref=e770]: MRD
+              - generic [ref=e771]:
+                - generic [ref=e772]: "TAT: 28d"
+                - generic [ref=e773]: "Pubs: 8"
+            - generic [ref=e774] [cursor=pointer]:
+              - generic [ref=e775]:
+                - generic [ref=e776]:
+                  - paragraph [ref=e777]: PGDx elio plasma focus Dx
+                  - paragraph [ref=e778]: Labcorp (Personal Genome Diagnostics)
+                - generic [ref=e779]:
+                  - generic "Laboratory IVD Kit" [ref=e780]: 🔬Kit
+                  - generic [ref=e781]: TDS
+              - generic [ref=e782]:
+                - generic [ref=e783]: "Sens: 90%"
+                - generic [ref=e784]: "Spec: 95%"
+                - generic [ref=e785]: "TAT: 5d"
+            - generic [ref=e786] [cursor=pointer]:
+              - generic [ref=e787]:
+                - generic [ref=e788]:
+                  - paragraph [ref=e789]: PGDx elio tissue complete
+                  - paragraph [ref=e790]: Labcorp (Personal Genome Diagnostics)
+                - generic [ref=e791]:
+                  - generic "Laboratory IVD Kit" [ref=e792]: 🔬Kit
+                  - generic [ref=e793]: TDS
+              - generic [ref=e794]:
+                - generic [ref=e795]: "TAT: 10d"
+                - generic [ref=e796]: "Pubs: 30"
+            - generic [ref=e797] [cursor=pointer]:
+              - generic [ref=e798]:
+                - generic [ref=e799]:
+                  - paragraph [ref=e800]: ProVue Lung
+                  - paragraph [ref=e801]: PrognomiQ
+                - generic [ref=e803]: ECD
+              - generic [ref=e804]:
+                - generic [ref=e805]: "Sens: 85%"
+                - generic [ref=e806]: "Spec: 55%"
+            - generic [ref=e807] [cursor=pointer]:
+              - generic [ref=e808]:
+                - generic [ref=e809]:
+                  - paragraph [ref=e810]: RaDaR
+                  - paragraph [ref=e811]: NeoGenomics
+                - generic [ref=e813]: TRM
+              - generic [ref=e815]: "Pubs: 15"
+            - generic [ref=e816] [cursor=pointer]:
+              - generic [ref=e817]:
+                - generic [ref=e818]:
+                  - paragraph [ref=e819]: RaDaR ST
+                  - paragraph [ref=e820]: NeoGenomics
+                - generic [ref=e822]: MRD
+              - generic [ref=e823]:
+                - generic [ref=e824]: "Sens: 95.7%"
+                - generic [ref=e825]: "Spec: 91%"
+                - generic [ref=e826]: "TAT: 35d"
+            - generic [ref=e827] [cursor=pointer]:
+              - generic [ref=e828]:
+                - generic [ref=e829]:
+                  - paragraph [ref=e830]: Reveal MRD
+                  - paragraph [ref=e831]: Guardant Health
+                - generic [ref=e833]: MRD
+              - generic [ref=e834]:
+                - generic [ref=e835]: "Sens: 81%"
+                - generic [ref=e836]: "Spec: 98%"
+                - generic [ref=e837]: "TAT: 7d"
+            - generic [ref=e838] [cursor=pointer]:
+              - generic [ref=e839]:
+                - generic [ref=e840]:
+                  - paragraph [ref=e841]: Reveal TRM
+                  - paragraph [ref=e842]: Guardant Health
+                - generic [ref=e844]: TRM
+              - generic [ref=e845]:
+                - generic [ref=e846]: "TAT: 7d"
+                - generic [ref=e847]: "Pubs: 80"
+            - generic [ref=e848] [cursor=pointer]:
+              - generic [ref=e849]:
+                - generic [ref=e850]:
+                  - paragraph [ref=e851]: Shield
+                  - paragraph [ref=e852]: Guardant Health
+                - generic [ref=e854]: ECD
+              - generic [ref=e855]:
+                - generic [ref=e856]: "Sens: 83.1%"
+                - generic [ref=e857]: "Spec: 89.6%"
+                - generic [ref=e858]: "Pubs: 5"
+            - generic [ref=e859] [cursor=pointer]:
+              - generic [ref=e860]:
+                - generic [ref=e861]:
+                  - paragraph [ref=e862]: Shield MCD
+                  - paragraph [ref=e863]: Guardant Health
+                - generic [ref=e865]: ECD
+              - generic [ref=e866]:
+                - generic [ref=e867]: "Sens: 60%"
+                - generic [ref=e868]: "Spec: 98.5%"
+            - generic [ref=e869] [cursor=pointer]:
+              - generic [ref=e870]:
+                - generic [ref=e871]:
+                  - paragraph [ref=e872]: Signal-C
+                  - paragraph [ref=e873]: Universal DX
+                - generic [ref=e875]: ECD
+              - generic [ref=e876]:
+                - generic [ref=e877]: "Sens: 93%"
+                - generic [ref=e878]: "Spec: 92%"
+                - generic [ref=e879]: "Pubs: 3"
+            - generic [ref=e880] [cursor=pointer]:
+              - generic [ref=e881]:
+                - generic [ref=e882]:
+                  - paragraph [ref=e883]: Signatera
+                  - paragraph [ref=e884]: Natera
+                - generic [ref=e886]: MRD
+              - generic [ref=e887]:
+                - generic [ref=e888]: "Sens: 94%"
+                - generic [ref=e889]: "Spec: 98%"
+                - generic [ref=e890]: "TAT: 28d"
+            - generic [ref=e891] [cursor=pointer]:
+              - generic [ref=e892]:
+                - generic [ref=e893]:
+                  - paragraph [ref=e894]: Signatera (IO Monitoring)
+                  - paragraph [ref=e895]: Natera
+                - generic [ref=e897]: TRM
+              - generic [ref=e899]: "Pubs: 125"
+            - generic [ref=e900] [cursor=pointer]:
+              - generic [ref=e901]:
+                - generic [ref=e902]:
+                  - paragraph [ref=e903]: Signatera Genome
+                  - paragraph [ref=e904]: Natera
+                - generic [ref=e906]: MRD
+              - generic [ref=e907]:
+                - generic [ref=e908]: "Sens: 94%"
+                - generic [ref=e909]: "Spec: 100%"
+                - generic [ref=e910]: "TAT: 28d"
+            - generic [ref=e911] [cursor=pointer]:
+              - generic [ref=e912]:
+                - generic [ref=e913]:
+                  - paragraph [ref=e914]: StrataNGS
+                  - paragraph [ref=e915]: Strata Oncology
+                - generic [ref=e917]: TDS
+              - generic [ref=e919]: "TAT: 7d"
+            - generic [ref=e920] [cursor=pointer]:
+              - generic [ref=e921]:
+                - generic [ref=e922]:
+                  - paragraph [ref=e923]: Tempus xF
+                  - paragraph [ref=e924]: Tempus AI
+                - generic [ref=e926]: TDS
+              - generic [ref=e927]:
+                - generic [ref=e928]: "Sens: >99%"
+                - generic [ref=e929]: "Spec: >99.9%"
+                - generic [ref=e930]: "TAT: 5d"
+            - generic [ref=e931] [cursor=pointer]:
+              - generic [ref=e932]:
+                - generic [ref=e933]:
+                  - paragraph [ref=e934]: Tempus xF+
+                  - paragraph [ref=e935]: Tempus AI
+                - generic [ref=e937]: TDS
+              - generic [ref=e939]: "TAT: 7d"
+            - generic [ref=e940] [cursor=pointer]:
+              - generic [ref=e941]:
+                - generic [ref=e942]:
+                  - paragraph [ref=e943]: Tempus xM for TRM
+                  - paragraph [ref=e944]: Tempus
+                - generic [ref=e946]: TRM
+              - generic [ref=e948]: "Pubs: 3"
+            - generic [ref=e949] [cursor=pointer]:
+              - generic [ref=e950]:
+                - generic [ref=e951]:
+                  - paragraph [ref=e952]: Tempus xM MRD
+                  - paragraph [ref=e953]: Tempus
+                - generic [ref=e955]: MRD
+              - generic [ref=e957]: "Pubs: 3"
+            - generic [ref=e958] [cursor=pointer]:
+              - generic [ref=e959]:
+                - generic [ref=e960]:
+                  - paragraph [ref=e961]: Tempus xT CDx
+                  - paragraph [ref=e962]: Tempus AI
+                - generic [ref=e964]: TDS
+              - generic [ref=e965]:
+                - generic [ref=e966]: "TAT: 14d"
+                - generic [ref=e967]: "$: 4.5k"
+            - generic [ref=e968] [cursor=pointer]:
+              - generic [ref=e969]:
+                - generic [ref=e970]:
+                  - paragraph [ref=e971]: therascreen EGFR RGQ PCR Kit
+                  - paragraph [ref=e972]: QIAGEN
+                - generic [ref=e973]:
+                  - generic "Laboratory IVD Kit" [ref=e974]: 🔬Kit
+                  - generic [ref=e975]: TDS
+              - generic [ref=e976]:
+                - generic [ref=e977]: "Sens: 80%"
+                - generic [ref=e978]: "Spec: 98%"
+                - generic [ref=e979]: "TAT: 1d"
+            - generic [ref=e980] [cursor=pointer]:
+              - generic [ref=e981]:
+                - generic [ref=e982]:
+                  - paragraph [ref=e983]: TruSight Oncology Comprehensive (TSO Comp)
+                  - paragraph [ref=e984]: Illumina
+                - generic [ref=e985]:
+                  - generic "Laboratory IVD Kit" [ref=e986]: 🔬Kit
+                  - generic [ref=e987]: TDS
+              - generic [ref=e988]:
+                - generic [ref=e989]: "TAT: 10d"
+                - generic [ref=e990]: "Pubs: 50"
+            - generic [ref=e991] [cursor=pointer]:
+              - generic [ref=e992]:
+                - generic [ref=e993]:
+                  - paragraph [ref=e994]: TSO 500
+                  - paragraph [ref=e995]: Illumina
+                - generic [ref=e997]: TDS
+              - generic [ref=e998]:
+                - generic [ref=e999]: "TAT: 7d"
+                - generic [ref=e1000]: "Pubs: 200"
+            - generic [ref=e1001] [cursor=pointer]:
+              - generic [ref=e1002]:
+                - generic [ref=e1003]:
+                  - paragraph [ref=e1004]: Veracyte MRD (C2i Genomics platform)
+                  - paragraph [ref=e1005]: Veracyte (C2i Genomics)
+                - generic [ref=e1007]: MRD
+              - generic [ref=e1008]:
+                - generic [ref=e1009]: "Sens: 91%"
+                - generic [ref=e1010]: "Spec: 88%"
+                - generic [ref=e1011]: "TAT: 14d"
+          - generic [ref=e1012]:
+            - generic [ref=e1013]:
+              - generic [ref=e1014]: 🔬Kit
+              - generic [ref=e1015]: IVD Kit
+            - generic [ref=e1016]:
+              - generic [ref=e1017]: 🏠Home
+              - generic [ref=e1018]: Self-Collect
+            - generic [ref=e1019]: "|"
+            - generic [ref=e1022]: ECD
+            - generic [ref=e1025]: TDS
+            - generic [ref=e1028]: TRM
+            - generic [ref=e1031]: MRD
+  - contentinfo [ref=e1032]:
+    - generic [ref=e1033]:
+      - paragraph [ref=e1034]:
+        - strong [ref=e1035]: "Disclaimer:"
+        - text: OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices. Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.
+      - paragraph [ref=e1036]: "Built: Dec 15, 2025, 07:21 AM PST"
+```
