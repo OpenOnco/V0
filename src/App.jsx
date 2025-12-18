@@ -2867,7 +2867,6 @@ const CompletenessBadge = ({ percentage, size = 'md' }) => {
 
 // Award Test Card Component
 const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
-  const colorVariant = categoryMeta[category]?.color || 'amber';
   const categoryColors = {
     MRD: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600' },
     ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
@@ -2875,42 +2874,26 @@ const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
     TDS: { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600' },
   };
   const colors = categoryColors[category] || categoryColors.MRD;
-  const isVC = test.vendorConfirmed === true;
-  const isFullyFilled = completeness.percentage === 100 && !isVC;
+  const isBC = completeness.percentage === 100;
   
   return (
     <div 
       onClick={() => onShowDetail(test, category)}
-      className={`relative bg-white rounded-xl border-2 cursor-pointer ${isVC ? 'border-blue-400 shadow-lg shadow-blue-100' : isFullyFilled ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}
+      className={`relative bg-white rounded-xl border-2 cursor-pointer ${isBC ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}
     >
-      {/* Top Badge */}
-      {isVC ? (
-        <div className="absolute -top-3 -right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
-          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-          VC
-        </div>
-      ) : isFullyFilled ? (
+      {/* BC Badge */}
+      {isBC && (
         <div className="absolute -top-3 -right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          Complete
+          BC
         </div>
-      ) : null}
+      )}
       
       <div className="flex items-start gap-4">
         {/* Completeness Score */}
-        {isVC ? (
-          <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold ring-2 ring-blue-300">
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          </div>
-        ) : (
-          <CompletenessBadge percentage={completeness.percentage} size="md" />
-        )}
+        <CompletenessBadge percentage={completeness.percentage} size="md" />
         
         {/* Test Info */}
         <div className="flex-1 min-w-0">
@@ -2923,28 +2906,21 @@ const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
           <h3 className="font-semibold text-gray-900 truncate">{test.name}</h3>
           <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           
-          {/* Progress bar - hidden for VC, show confirmation date instead */}
-          {isVC ? (
-            <div className="mt-2 text-xs text-blue-600">
-              <span className="font-medium">✓ Verified</span>
-              {test.vendorConfirmedDate && <span> • {test.vendorConfirmedDate}</span>}
+          {/* Progress bar */}
+          <div className="mt-2">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+              <span>{completeness.filled}/{completeness.total} minimum fields</span>
+              {completeness.missingFields.length > 0 && (
+                <span className="text-amber-600">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
+              )}
             </div>
-          ) : (
-            <div className="mt-2">
-              <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-                <span>{completeness.filled}/{completeness.total} minimum fields</span>
-                {completeness.missingFields.length > 0 && (
-                  <span className="text-amber-600">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
-                )}
-              </div>
-              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div 
-                  className={`h-full rounded-full transition-all ${completeness.percentage === 100 ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
-                  style={{ width: `${completeness.percentage}%` }}
-                />
-              </div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all ${completeness.percentage === 100 ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
+                style={{ width: `${completeness.percentage}%` }}
+              />
             </div>
-          )}
+          </div>
         </div>
         
         {/* View indicator */}
@@ -2962,8 +2938,6 @@ const CompetitionsPage = ({ onNavigate }) => {
   // State for detail modal
   const [detailTest, setDetailTest] = useState(null);
   const [detailCategory, setDetailCategory] = useState(null);
-  const [showVCModal, setShowVCModal] = useState(false);
-  const [showSubmitModal, setShowSubmitModal] = useState(false);
   
   // Handler to show test detail
   const handleShowDetail = (test, category) => {
@@ -2978,41 +2952,31 @@ const CompetitionsPage = ({ onNavigate }) => {
       ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
       ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
       ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
-    ].filter(t => !t.isDiscontinued); // Exclude discontinued tests
+    ].filter(t => !t.isDiscontinued);
     
     return tests.map(test => ({
       ...test,
       completeness: calculateTestCompleteness(test, test.category)
-    })).sort((a, b) => {
-      // VC tests first, then by completeness
-      if (a.vendorConfirmed && !b.vendorConfirmed) return -1;
-      if (!a.vendorConfirmed && b.vendorConfirmed) return 1;
-      return b.completeness.percentage - a.completeness.percentage;
-    });
+    })).sort((a, b) => b.completeness.percentage - a.completeness.percentage);
   }, []);
   
   // Group tests into tiers
   const tiers = useMemo(() => {
     const groups = {
-      vc: { label: 'Vendor Confirmed (VC)', sublabel: 'Verified by vendor representative', tests: [], color: 'blue', icon: '🏆' },
-      fullyFilled: { label: 'Fully Filled', sublabel: 'All minimum fields complete — eligible for VC', tests: [], color: 'emerald', icon: '✅' },
-      high: { label: '80-99%', sublabel: 'Almost there', tests: [], color: 'green', icon: '🥈' },
-      medium: { label: '60-79%', sublabel: 'Good progress', tests: [], color: 'amber', icon: '🥉' },
-      low: { label: '40-59%', sublabel: 'Room to improve', tests: [], color: 'orange', icon: '📊' },
-      minimal: { label: '0-39%', sublabel: 'Needs attention', tests: [], color: 'red', icon: '⚠️' },
+      bc: { label: 'Baseline Complete (BC)', sublabel: 'All minimum fields filled — ready for patients', tests: [], icon: '🏆' },
+      high: { label: '80-99%', sublabel: 'Almost there!', tests: [], icon: '🥈' },
+      medium: { label: '60-79%', sublabel: 'Good progress', tests: [], icon: '🥉' },
+      low: { label: '40-59%', sublabel: 'Room to improve', tests: [], icon: '📊' },
+      minimal: { label: '0-39%', sublabel: 'Needs attention', tests: [], icon: '⚠️' },
     };
     
     allTestsWithScores.forEach(test => {
-      if (test.vendorConfirmed) {
-        groups.vc.tests.push(test);
-      } else {
-        const pct = test.completeness.percentage;
-        if (pct === 100) groups.fullyFilled.tests.push(test);
-        else if (pct >= 80) groups.high.tests.push(test);
-        else if (pct >= 60) groups.medium.tests.push(test);
-        else if (pct >= 40) groups.low.tests.push(test);
-        else groups.minimal.tests.push(test);
-      }
+      const pct = test.completeness.percentage;
+      if (pct === 100) groups.bc.tests.push(test);
+      else if (pct >= 80) groups.high.tests.push(test);
+      else if (pct >= 60) groups.medium.tests.push(test);
+      else if (pct >= 40) groups.low.tests.push(test);
+      else groups.minimal.tests.push(test);
     });
     
     return groups;
@@ -3021,12 +2985,11 @@ const CompetitionsPage = ({ onNavigate }) => {
   // Calculate summary stats
   const stats = useMemo(() => {
     const total = allTestsWithScores.length;
-    const vcCount = tiers.vc.tests.length;
-    const fullyFilledCount = tiers.fullyFilled.tests.length;
+    const bcCount = tiers.bc.tests.length;
     const avgCompleteness = total > 0 
       ? Math.round(allTestsWithScores.reduce((sum, t) => sum + t.completeness.percentage, 0) / total)
       : 0;
-    return { total, vcCount, fullyFilledCount, avgCompleteness };
+    return { total, bcCount, avgCompleteness };
   }, [allTestsWithScores, tiers]);
 
   return (
@@ -3035,60 +2998,48 @@ const CompetitionsPage = ({ onNavigate }) => {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">OpenOnco Competitions</h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Our mission is simple: get the best data for patients and clinicians. 
-          We're inviting all vendors to complete their test profiles and earn recognition.
+          Help patients make informed decisions. Complete your test's minimum fields to earn the Baseline Complete badge.
         </p>
       </div>
       
-      {/* Competition Explanation */}
-      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 sm:p-8 border border-slate-200 mb-8">
+      {/* How It Works */}
+      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 sm:p-8 border border-emerald-200 mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <span className="text-2xl">🎯</span> How It Works
         </h2>
-        <div className="grid sm:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 gap-6">
           <div className="flex gap-3">
             <div className="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold">1</div>
             <div>
-              <h3 className="font-semibold text-gray-800">Fill Your Minimum Fields</h3>
-              <p className="text-sm text-gray-600">Each category has essential fields patients need. Submit your data via email or our Submissions page.</p>
+              <h3 className="font-semibold text-gray-800">Find Your Test</h3>
+              <p className="text-sm text-gray-600">Click any test below to see which minimum fields are missing.</p>
             </div>
           </div>
           <div className="flex gap-3">
             <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">2</div>
             <div>
-              <h3 className="font-semibold text-gray-800">Reach "Fully Filled" Status</h3>
-              <p className="text-sm text-gray-600">Once all minimum fields are complete, you enter the green tier and become eligible for VC status.</p>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">3</div>
-            <div>
-              <h3 className="font-semibold text-gray-800">Get Vendor Confirmed (VC)</h3>
-              <p className="text-sm text-gray-600">Send us a signed confirmation statement. VC tests get top placement in all showcases.</p>
+              <h3 className="font-semibold text-gray-800">Submit Missing Data</h3>
+              <p className="text-sm text-gray-600">Email us the missing values — we'll update the database and you'll earn the BC badge automatically.</p>
             </div>
           </div>
         </div>
-        <div className="mt-6 p-4 bg-white rounded-xl border border-slate-200">
+        <div className="mt-6 p-4 bg-white rounded-xl border border-emerald-200">
           <p className="text-sm text-gray-700">
-            <strong className="text-emerald-600">🌟 Everyone can win!</strong> This isn't about ranking vendors against each other — 
-            it's about making sure patients have the complete information they need. Every test that reaches VC status helps someone make a better decision about their care.
+            <strong className="text-emerald-600">🌟 Everyone can win!</strong> This isn't a ranking — it's about ensuring patients have complete information. 
+            Every test that reaches Baseline Complete helps someone make a better healthcare decision.
           </p>
         </div>
       </div>
       
       {/* Summary Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
           <p className="text-sm text-gray-500">Total Tests</p>
         </div>
-        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center">
-          <p className="text-3xl font-bold text-blue-600">{stats.vcCount}</p>
-          <p className="text-sm text-blue-600">Vendor Confirmed</p>
-        </div>
         <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-4 text-center">
-          <p className="text-3xl font-bold text-emerald-600">{stats.fullyFilledCount}</p>
-          <p className="text-sm text-emerald-600">Fully Filled</p>
+          <p className="text-3xl font-bold text-emerald-600">{stats.bcCount}</p>
+          <p className="text-sm text-emerald-600">Baseline Complete</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <p className="text-3xl font-bold text-gray-800">{stats.avgCompleteness}%</p>
@@ -3096,25 +3047,19 @@ const CompetitionsPage = ({ onNavigate }) => {
         </div>
       </div>
       
-      {/* VC Explanation */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
+      {/* BC Explanation */}
+      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8">
         <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+          <div className="flex-shrink-0 w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           </div>
           <div>
-            <h3 className="font-semibold text-blue-900 mb-1">What is Vendor Confirmed (VC)?</h3>
-            <p className="text-sm text-blue-800 mb-2">
-              VC is our verification badge. To earn it, a vendor representative emails us a statement confirming:
-            </p>
-            <ol className="text-sm text-blue-700 list-decimal list-inside space-y-1">
-              <li>They are employed by the vendor company</li>
-              <li>All minimum field values for their test on OpenOnco are accurate</li>
-            </ol>
-            <p className="text-sm text-blue-700 mt-2">
-              <strong>Reward:</strong> VC tests are listed first in their category showcases, on this page, and receive the trusted VC badge.
+            <h3 className="font-semibold text-emerald-900 mb-1">What is Baseline Complete (BC)?</h3>
+            <p className="text-sm text-emerald-800">
+              Tests earn the BC badge automatically when all minimum fields are filled. These fields include performance metrics 
+              (sensitivity, specificity), regulatory status, pricing, and turnaround time — the essentials patients and clinicians need.
             </p>
           </div>
         </div>
@@ -3150,36 +3095,24 @@ const CompetitionsPage = ({ onNavigate }) => {
       
       {/* Bottom CTA */}
       <div className="mt-12 text-center bg-slate-50 rounded-2xl p-8 border border-slate-200">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Participate?</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Complete Your Profile?</h3>
         <p className="text-gray-600 mb-4 max-w-xl mx-auto">
-          Complete your test's minimum fields and join the competition. Every completed profile helps patients make better decisions.
+          Click any test above to see what's missing, or email us directly with your data.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a 
-            href="mailto:info@openonco.org?subject=Data%20Submission%20for%20OpenOnco%20Competition"
-            className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
-          >
-            Submit Test Data
-          </a>
-          <button 
-            onClick={() => onNavigate('submissions')}
-            className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
-          >
-            View Submissions Page
-          </button>
-        </div>
+        <a 
+          href="mailto:info@openonco.org?subject=Data%20Submission%20for%20OpenOnco"
+          className="inline-block px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
+        >
+          Email Your Data
+        </a>
       </div>
       
-      {/* Detail Modal with Competition Banner */}
+      {/* Detail Modal */}
       {detailTest && (
         <CompetitionsDetailModal 
           test={detailTest} 
           category={detailCategory} 
           onClose={() => { setDetailTest(null); setDetailCategory(null); }}
-          showVCModal={showVCModal}
-          setShowVCModal={setShowVCModal}
-          showSubmitModal={showSubmitModal}
-          setShowSubmitModal={setShowSubmitModal}
         />
       )}
     </div>
@@ -3187,17 +3120,17 @@ const CompetitionsPage = ({ onNavigate }) => {
 };
 
 // ============================================
-// Competitions Detail Modal - Wraps test detail with competition banner
+// Competitions Detail Modal - Shows test with minimum fields status
 // ============================================
-const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShowVCModal, showSubmitModal, setShowSubmitModal }) => {
+const CompetitionsDetailModal = ({ test, category, onClose }) => {
   const [linkCopied, setLinkCopied] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
   
   if (!test) return null;
   
   const meta = categoryMeta[category];
   const completeness = calculateTestCompleteness(test, category);
-  const isVC = test.vendorConfirmed === true;
-  const isFullyFilled = completeness.percentage === 100 && !isVC;
+  const isBC = completeness.percentage === 100;
   const missingCount = completeness.total - completeness.filled;
   
   // Copy shareable link
@@ -3220,11 +3153,34 @@ const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShow
     filled: hasValue(test[p.key])
   })) || [];
   
+  const missingFields = fields.filter(f => !f.filled);
+  
   const formatDisplayValue = (val) => {
     if (val == null || val === '') return '—';
     if (Array.isArray(val)) return val.join(', ');
     if (typeof val === 'number') return val.toLocaleString();
     return String(val);
+  };
+  
+  // Generate mailto for quick submission
+  const generateMailto = () => {
+    const missingList = missingFields.map(f => `- ${f.label}: [PLEASE FILL IN]`).join('\n');
+    const subject = encodeURIComponent(`Data Submission: ${test.name}`);
+    const body = encodeURIComponent(
+`DATA SUBMISSION FOR OPENONCO
+
+Test: ${test.name}
+Vendor: ${test.vendor}
+Category: ${category}
+
+MISSING FIELDS TO COMPLETE:
+${missingList}
+
+---
+Please fill in the values above and reply to this email.
+We'll update the database and the test will earn Baseline Complete (BC) status.`
+    );
+    return `mailto:info@openonco.org?subject=${subject}&body=${body}`;
   };
   
   return (
@@ -3234,58 +3190,49 @@ const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShow
         className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
-        {/* Competition Status Banner */}
-        {!isVC && (
-          <div className={`px-4 py-3 ${isFullyFilled ? 'bg-emerald-500' : 'bg-amber-500'} text-white`}>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                {isFullyFilled ? (
-                  <>
-                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-medium">All minimum fields complete!</span>
-                    <span className="text-emerald-100 text-sm">— Eligible for VC status</span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-medium">{missingCount} minimum field{missingCount !== 1 ? 's' : ''} missing</span>
-                    <span className="text-amber-100 text-sm">— Highlighted below</span>
-                  </>
-                )}
-              </div>
-              <button
-                onClick={() => isFullyFilled ? setShowVCModal(true) : setShowSubmitModal(true)}
-                className={`px-4 py-1.5 ${isFullyFilled ? 'bg-white text-emerald-600 hover:bg-emerald-50' : 'bg-white text-amber-600 hover:bg-amber-50'} font-semibold rounded-lg text-sm transition-colors flex-shrink-0`}
-              >
-                {isFullyFilled ? 'Apply for VC Status →' : 'Submit Missing Data →'}
-              </button>
-            </div>
-          </div>
-        )}
-        
-        {/* VC Status Banner */}
-        {isVC && (
-          <div className="px-4 py-3 bg-blue-500 text-white">
+        {/* Status Banner */}
+        <div className={`px-4 py-3 ${isBC ? 'bg-emerald-500' : 'bg-amber-500'} text-white`}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="font-bold">Vendor Confirmed</span>
-              <span className="text-blue-100">— Data verified by {test.vendor}</span>
-              {test.vendorConfirmedDate && <span className="text-blue-200 text-sm ml-auto">{test.vendorConfirmedDate}</span>}
+              {isBC ? (
+                <>
+                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="font-bold">🏆 Baseline Complete!</span>
+                  <span className="text-emerald-100 text-sm">All minimum fields filled</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  <span className="font-medium">{missingCount} field{missingCount !== 1 ? 's' : ''} needed for BC</span>
+                  <span className="text-amber-100 text-sm">— Highlighted below</span>
+                </>
+              )}
             </div>
+            {!isBC && (
+              <a
+                href={generateMailto()}
+                className="px-4 py-1.5 bg-white text-amber-600 hover:bg-amber-50 font-semibold rounded-lg text-sm transition-colors flex-shrink-0"
+              >
+                Submit Missing Data →
+              </a>
+            )}
           </div>
-        )}
+        </div>
         
         {/* Header */}
         <div className={`px-5 py-4 bg-gradient-to-r ${meta?.gradient || 'from-gray-500 to-gray-600'}`}>
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold text-white">{test.name}</h2>
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-xl font-bold text-white">{test.name}</h2>
+                {isBC && (
+                  <span className="px-2 py-0.5 bg-emerald-400 text-white text-xs font-bold rounded">BC</span>
+                )}
+              </div>
               <p className="text-white/80">{test.vendor}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -3305,11 +3252,11 @@ const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShow
         
         {/* Scrollable Content */}
         <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
-          {/* Minimum Fields Section - always shown prominently */}
-          <div className={`p-4 rounded-xl border-2 ${isVC ? 'bg-blue-50 border-blue-200' : isFullyFilled ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
+          {/* Minimum Fields Section */}
+          <div className={`p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-gray-800">Minimum Fields ({completeness.filled}/{completeness.total})</h3>
-              <span className={`text-sm font-medium ${isVC ? 'text-blue-600' : isFullyFilled ? 'text-emerald-600' : 'text-amber-600'}`}>
+              <span className={`text-sm font-medium ${isBC ? 'text-emerald-600' : 'text-amber-600'}`}>
                 {completeness.percentage}% Complete
               </span>
             </div>
@@ -3318,7 +3265,7 @@ const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShow
             <div className="mb-4">
               <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
                 <div 
-                  className={`h-full rounded-full transition-all ${isVC ? 'bg-blue-500' : isFullyFilled ? 'bg-emerald-500' : 'bg-amber-400'}`}
+                  className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-amber-400'}`}
                   style={{ width: `${completeness.percentage}%` }}
                 />
               </div>
@@ -3349,6 +3296,22 @@ const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShow
                 </div>
               ))}
             </div>
+            
+            {/* Submit CTA for incomplete tests */}
+            {!isBC && (
+              <div className="mt-4 pt-3 border-t border-amber-200">
+                <a
+                  href={generateMailto()}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Email Missing Data
+                </a>
+                <p className="text-xs text-amber-700 mt-2">Click to open a pre-filled email. Just fill in the values and send!</p>
+              </div>
+            )}
           </div>
           
           {/* Key Metrics */}
@@ -3410,327 +3373,7 @@ const CompetitionsDetailModal = ({ test, category, onClose, showVCModal, setShow
         </div>
       </div>
     </div>
-    
-    {/* VC Application Modal */}
-    {showVCModal && (
-      <VCApplicationModal 
-        test={test} 
-        category={category}
-        onClose={() => setShowVCModal(false)} 
-      />
-    )}
-    
-    {/* Data Submission Modal */}
-    {showSubmitModal && (
-      <DataSubmissionModal 
-        test={test} 
-        category={category}
-        missingFields={fields.filter(f => !f.filled)}
-        onClose={() => setShowSubmitModal(false)} 
-      />
-    )}
     </>
-  );
-};
-
-// ============================================
-// VC Application Modal
-// ============================================
-const VCApplicationModal = ({ test, category, onClose }) => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [title, setTitle] = useState('');
-  const [agreed, setAgreed] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  
-  const validateEmail = () => {
-    if (!email || !email.includes('@')) {
-      setEmailError('Please enter a valid email address');
-      return false;
-    }
-    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
-    const domain = email.split('@')[1]?.toLowerCase();
-    if (freeProviders.includes(domain)) {
-      setEmailError('Please use your company email');
-      return false;
-    }
-    setEmailError('');
-    return true;
-  };
-  
-  const handleSubmit = () => {
-    if (!validateEmail()) return;
-    if (!agreed) return;
-    
-    const subject = encodeURIComponent(`VC Application: ${test.name}`);
-    const body = encodeURIComponent(
-`VENDOR CONFIRMED (VC) APPLICATION
-
-I, ${name}, am an employee of ${test.vendor} serving as ${title}.
-
-I hereby confirm that the data displayed for ${test.name} on OpenOnco.org is accurate to the best of my knowledge as of ${new Date().toLocaleDateString()}.
-
-Test: ${test.name}
-Category: ${category}
-Test ID: ${test.id}
-
-Contact Email: ${email}
-
-By submitting this application, I certify that I am authorized to make this confirmation on behalf of ${test.vendor}.
-
----
-Submitted via OpenOnco VC Application Form`
-    );
-    
-    window.open(`mailto:info@openonco.org?subject=${subject}&body=${body}`, '_blank');
-    onClose();
-  };
-  
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full" onClick={e => e.stopPropagation()}>
-        <div className="px-6 py-4 border-b border-gray-200 bg-blue-50 rounded-t-2xl">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">Apply for VC Status</h2>
-              <p className="text-sm text-gray-600">{test.name}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="px-6 py-4 space-y-4">
-          <p className="text-sm text-gray-600">
-            Complete this form to apply for Vendor Confirmed status. We'll verify your application and update the database.
-          </p>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-            <input 
-              type="text" 
-              value={name} 
-              onChange={e => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Jane Smith"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
-            <input 
-              type="text" 
-              value={title} 
-              onChange={e => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Director of Marketing"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Company Email *</label>
-            <input 
-              type="email" 
-              value={email} 
-              onChange={e => { setEmail(e.target.value); setEmailError(''); }}
-              onBlur={validateEmail}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${emailError ? 'border-red-300' : 'border-gray-300'}`}
-              placeholder="jane@company.com"
-            />
-            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
-          </div>
-          
-          <div className="bg-gray-50 rounded-lg p-3">
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={agreed} 
-                onChange={e => setAgreed(e.target.checked)}
-                className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">
-                I confirm that I am an employee of <strong>{test.vendor}</strong> and that the data displayed for this test on OpenOnco is accurate to the best of my knowledge.
-              </span>
-            </label>
-          </div>
-        </div>
-        
-        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-            Cancel
-          </button>
-          <button 
-            onClick={handleSubmit}
-            disabled={!name || !title || !email || !agreed}
-            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Send Application
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// Data Submission Modal
-// ============================================
-const DataSubmissionModal = ({ test, category, missingFields, onClose }) => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [title, setTitle] = useState('');
-  const [applyForVC, setApplyForVC] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  
-  const validateEmail = () => {
-    if (!email || !email.includes('@')) {
-      setEmailError('Please enter a valid email address');
-      return false;
-    }
-    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
-    const domain = email.split('@')[1]?.toLowerCase();
-    if (freeProviders.includes(domain)) {
-      setEmailError('Please use your company email');
-      return false;
-    }
-    setEmailError('');
-    return true;
-  };
-  
-  const handleSubmit = () => {
-    if (!validateEmail()) return;
-    
-    const missingList = missingFields.map(f => `- ${f.label}: [PLEASE FILL IN]`).join('\n');
-    const vcText = applyForVC ? `
-
-Additionally, once all fields are complete, I would like to apply for Vendor Confirmed (VC) status. I confirm that I am an employee of ${test.vendor} and the data will be accurate.` : '';
-    
-    const subject = encodeURIComponent(`Data Submission: ${test.name}`);
-    const body = encodeURIComponent(
-`DATA SUBMISSION FOR OPENONCO
-
-Test: ${test.name}
-Category: ${category}
-Test ID: ${test.id}
-Submitted by: ${name} (${title})
-Contact: ${email}
-
-MISSING FIELDS TO COMPLETE:
-${missingList}
-${vcText}
-
----
-Please fill in the values above and we will update the database.
-Submitted via OpenOnco Data Submission Form`
-    );
-    
-    window.open(`mailto:info@openonco.org?subject=${subject}&body=${body}`, '_blank');
-    onClose();
-  };
-  
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full" onClick={e => e.stopPropagation()}>
-        <div className="px-6 py-4 border-b border-gray-200 bg-amber-50 rounded-t-2xl">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">Submit Missing Data</h2>
-              <p className="text-sm text-gray-600">{test.name}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="px-6 py-4 space-y-4">
-          <p className="text-sm text-gray-600">
-            Help complete this test profile by submitting the missing data fields below.
-          </p>
-          
-          <div className="bg-amber-50 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-amber-800 mb-2">Missing Fields ({missingFields.length})</h4>
-            <ul className="text-sm text-amber-700 space-y-1">
-              {missingFields.map(f => (
-                <li key={f.key} className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  {f.label}
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-            <input 
-              type="text" 
-              value={name} 
-              onChange={e => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-              placeholder="Jane Smith"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
-            <input 
-              type="text" 
-              value={title} 
-              onChange={e => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-              placeholder="Director of Marketing"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Company Email *</label>
-            <input 
-              type="email" 
-              value={email} 
-              onChange={e => { setEmail(e.target.value); setEmailError(''); }}
-              onBlur={validateEmail}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 ${emailError ? 'border-red-300' : 'border-gray-300'}`}
-              placeholder="jane@company.com"
-            />
-            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
-          </div>
-          
-          <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={applyForVC} 
-                onChange={e => setApplyForVC(e.target.checked)}
-                className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <span className="text-sm text-blue-800">
-                <strong>Also apply for VC status</strong> — Once all fields are complete, I'd like to receive Vendor Confirmed status for this test.
-              </span>
-            </label>
-          </div>
-        </div>
-        
-        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-            Cancel
-          </button>
-          <button 
-            onClick={handleSubmit}
-            disabled={!name || !title || !email}
-            className="px-6 py-2 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Open Email Draft
-          </button>
-        </div>
-      </div>
-    </div>
   );
 };
 
@@ -8099,17 +7742,20 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
-  const isVC = test.vendorConfirmed === true;
+  
+  // Calculate BC status - automatic when 100% minimum fields complete
+  const completeness = calculateTestCompleteness(test, category);
+  const isBC = completeness.percentage === 100;
   
   return (
-    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isVC ? 'border-blue-400 shadow-md shadow-blue-100' : isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
-      {/* VC Badge - top right corner */}
-      {isVC && (
-        <div className="absolute -top-2 -right-2 bg-blue-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md flex items-center gap-0.5 z-10">
+    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isBC ? 'border-emerald-400 shadow-md shadow-emerald-100' : isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+      {/* BC Badge - top right corner */}
+      {isBC && !isDiscontinued && (
+        <div className="absolute -top-2 -right-2 bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md flex items-center gap-0.5 z-10">
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          VC
+          BC
         </div>
       )}
       {/* DISCONTINUED text overlay */}
@@ -8466,10 +8112,7 @@ const FIELD_DEFINITIONS = {
 };
 
 // ============================================
-// Vendor Confirmation Form
-// ============================================
-// ============================================
-// Minimum Fields Section - Shows completion status for VC eligibility
+// Minimum Fields Section - Shows completion status for BC (Baseline Complete)
 // ============================================
 const MinimumFieldsSection = ({ test, category }) => {
   const minParams = MINIMUM_PARAMS[category];
@@ -8486,26 +8129,26 @@ const MinimumFieldsSection = ({ test, category }) => {
   
   const filledCount = fields.filter(f => f.filled).length;
   const totalCount = fields.length;
-  const isComplete = filledCount === totalCount;
-  const isVC = test.vendorConfirmed === true;
+  const isBC = filledCount === totalCount;
+  const missingFields = fields.filter(f => !f.filled);
   
-  // Generate mailto link for VC verification
-  const generateVCMailto = () => {
-    const subject = encodeURIComponent(`Vendor Confirmed Request: ${test.name}`);
+  // Generate mailto link for submitting missing data
+  const generateSubmitMailto = () => {
+    const missingList = missingFields.map(f => `- ${f.label}: [PLEASE FILL IN]`).join('\n');
+    const subject = encodeURIComponent(`Data Submission: ${test.name}`);
     const body = encodeURIComponent(
-`I am writing to request Vendor Confirmed (VC) status for ${test.name} on OpenOnco.
-
-I, [YOUR NAME], am employed by ${test.vendor} and confirm that all minimum field values for ${test.name} on OpenOnco are accurate as of ${new Date().toLocaleDateString()}.
-
-My role/title: [YOUR TITLE]
-My company email: [YOUR EMAIL]
+`DATA SUBMISSION FOR OPENONCO
 
 Test: ${test.name}
+Vendor: ${test.vendor}
 Category: ${category}
-Test ID: ${test.id}
 
-Thank you,
-[YOUR NAME]`
+MISSING FIELDS TO COMPLETE:
+${missingList}
+
+---
+Please fill in the values above and reply to this email.
+We'll update the database and the test will earn Baseline Complete (BC) status.`
     );
     return `mailto:info@openonco.org?subject=${subject}&body=${body}`;
   };
@@ -8518,20 +8161,18 @@ Thank you,
   };
   
   return (
-    <div className={`mt-4 p-4 rounded-xl border-2 ${isVC ? 'bg-blue-50 border-blue-300' : isComplete ? 'bg-emerald-50 border-emerald-300' : 'bg-amber-50 border-amber-200'}`}>
+    <div className={`mt-4 p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-300' : 'bg-amber-50 border-amber-200'}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-gray-800">Minimum Fields for VC Status</h3>
-          {isVC ? (
-            <span className="px-2 py-0.5 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
+          <h3 className="font-semibold text-gray-800">Minimum Fields</h3>
+          {isBC ? (
+            <span className="px-2 py-0.5 bg-emerald-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
               <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              Vendor Confirmed
+              Baseline Complete
             </span>
-          ) : isComplete ? (
-            <span className="px-2 py-0.5 bg-emerald-500 text-white text-xs font-bold rounded">✓ Eligible for VC</span>
           ) : (
             <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
           )}
@@ -8542,7 +8183,7 @@ Thank you,
       <div className="mb-4">
         <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
           <div 
-            className={`h-full rounded-full transition-all ${isVC ? 'bg-blue-500' : isComplete ? 'bg-emerald-500' : 'bg-amber-400'}`}
+            className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-amber-400'}`}
             style={{ width: `${(filledCount / totalCount) * 100}%` }}
           />
         </div>
@@ -8575,45 +8216,30 @@ Thank you,
       </div>
       
       {/* CTA */}
-      {!isVC && (
-        <div className={`mt-4 pt-3 border-t ${isComplete ? 'border-emerald-200' : 'border-amber-200'}`}>
-          {isComplete ? (
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <div className="flex-1">
-                <p className="text-sm text-emerald-800 font-medium">All minimum fields complete! Ready for VC verification.</p>
-                <p className="text-xs text-emerald-600">Click below to send a verification request to OpenOnco.</p>
-              </div>
-              <a 
-                href={generateVCMailto()}
-                className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                Apply for VC Status
-              </a>
+      {!isBC && (
+        <div className="mt-4 pt-3 border-t border-amber-200">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="flex-1">
+              <p className="text-sm text-amber-800">{missingFields.length} field{missingFields.length !== 1 ? 's' : ''} needed for Baseline Complete status.</p>
+              <p className="text-xs text-amber-600">Click below to submit missing data via email.</p>
             </div>
-          ) : (
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <div className="flex-1">
-                <p className="text-sm text-amber-800">Complete all minimum fields to become eligible for Vendor Confirmed (VC) status.</p>
-                <p className="text-xs text-amber-600">Submit updates via our Submissions page or email info@openonco.org</p>
-              </div>
-              <a 
-                href="mailto:info@openonco.org?subject=Data%20Update%20Request"
-                className="px-4 py-2 bg-amber-500 text-white text-sm font-semibold rounded-lg hover:bg-amber-600 transition-colors"
-              >
-                Submit Data
-              </a>
-            </div>
-          )}
+            <a 
+              href={generateSubmitMailto()}
+              className="px-4 py-2 bg-amber-500 text-white text-sm font-semibold rounded-lg hover:bg-amber-600 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Submit Missing Data
+            </a>
+          </div>
         </div>
       )}
       
-      {isVC && (
-        <div className="mt-3 pt-3 border-t border-blue-200">
-          <p className="text-xs text-blue-700">
-            <strong>Vendor Confirmed:</strong> {test.vendor} has verified this data is accurate. Last confirmed: {test.vendorConfirmedDate || 'Date on file'}.
+      {isBC && (
+        <div className="mt-3 pt-3 border-t border-emerald-200">
+          <p className="text-xs text-emerald-700">
+            <strong>🏆 Baseline Complete:</strong> All minimum fields have been filled for this test.
           </p>
         </div>
       )}
@@ -8630,6 +8256,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   if (!test) return null;
   
   const meta = categoryMeta[category];
+  
+  // Calculate BC status
+  const completeness = calculateTestCompleteness(test, category);
+  const isBC = completeness.percentage === 100;
   
   // Copy shareable link to clipboard (SEO-friendly URL)
   const copyLink = (e) => {
@@ -8793,12 +8423,12 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
-                {test.vendorConfirmed && (
-                  <span className="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
+                {isBC && (
+                  <span className="px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    VC
+                    BC
                   </span>
                 )}
               </div>
@@ -9996,10 +9626,12 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       }
       return true;
     }).sort((a, b) => {
-      // Sort VC tests first, then by name
-      if (a.vendorConfirmed && !b.vendorConfirmed) return -1;
-      if (!a.vendorConfirmed && b.vendorConfirmed) return 1;
-      return 0; // Maintain original order for non-VC tests
+      // Sort BC (Baseline Complete) tests first, then by name
+      const aBC = calculateTestCompleteness(a, category).percentage === 100;
+      const bBC = calculateTestCompleteness(b, category).percentage === 100;
+      if (aBC && !bBC) return -1;
+      if (!aBC && bBC) return 1;
+      return 0; // Maintain original order for non-BC tests
     });
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
 
