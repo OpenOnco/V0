@@ -8,11 +8,11 @@ import {
   ecdTestData,
   trmTestData,
   tdsTestData,
-  alzBloodTestData,
+  // ALZ DISABLED: alzBloodTestData,
   DATABASE_CHANGELOG,
   RECENTLY_ADDED_TESTS,
-  ALZ_DATABASE_CHANGELOG,
-  ALZ_RECENTLY_ADDED_TESTS,
+  // ALZ DISABLED: ALZ_DATABASE_CHANGELOG,
+  // ALZ DISABLED: ALZ_RECENTLY_ADDED_TESTS,
   getChangelog,
   getRecentlyAddedTests,
   DOMAINS,
@@ -41,6 +41,11 @@ import {
   CATEGORY_STANDARDS,
   STANDARDS_BODIES,
 } from './data';
+
+// ALZ DISABLED: Placeholder constants to prevent errors
+const alzBloodTestData = [];
+const ALZ_DATABASE_CHANGELOG = [];
+const ALZ_RECENTLY_ADDED_TESTS = [];
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
@@ -3033,7 +3038,7 @@ const CompetitionsPage = ({ onNavigate }) => {
       {/* Main Intro */}
       <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 sm:p-8 border border-emerald-200 mb-8">
         <p className="text-gray-700 text-lg leading-relaxed mb-4">
-          Yes that's right — OpenOnco is running a competition (kinda)! We've got decent data now for nearly 100 advanced molecular tests, 
+          Yes that's right — OpenOnco is running a competition (kinda)! We've got data now for nearly 100 advanced molecular tests, 
           but that data is a distance from being complete. As a first step we want to make sure each test has a set of core data completed. 
           Tests that meet or exceed that core dataset get awarded a <strong className="text-emerald-700">Baseline Complete (BC)</strong> badge 👏👏👏
         </p>
@@ -4975,7 +4980,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
 
   // OpenOnco FAQs
   const oncoFaqs = [
@@ -5402,7 +5407,7 @@ const FAQPage = () => {
 // ============================================
 const AboutPage = () => {
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
 
   if (isAlz) {
     return (
@@ -5469,7 +5474,7 @@ const AboutPage = () => {
 // ============================================
 const HowItWorksPage = () => {
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
 
   if (isAlz) {
     return (
@@ -5545,7 +5550,7 @@ const HowItWorksPage = () => {
 // ============================================
 const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
   
   const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'complete', 'bug', 'feature'
