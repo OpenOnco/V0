@@ -2201,13 +2201,22 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getPatientBadges(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all overflow-hidden`}
+                className={`relative ${isBC ? 'border-emerald-400 shadow-sm shadow-emerald-100' : colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
+                {/* BC Badge */}
+                {isBC && !isDiscontinued && (
+                  <div className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white p-0.5 rounded-full shadow-sm z-10" title="Baseline Complete">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -2543,13 +2552,22 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all overflow-hidden`}
+                className={`relative ${isBC ? 'border-emerald-400 shadow-sm shadow-emerald-100' : colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
+                {/* BC Badge */}
+                {isBC && !isDiscontinued && (
+                  <div className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white p-0.5 rounded-full shadow-sm z-10" title="Baseline Complete">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -2896,23 +2914,29 @@ const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
       onClick={() => onShowDetail(test, category)}
       className={`relative bg-white rounded-xl border-2 cursor-pointer ${isBC ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}
     >
-      {/* BC Badge */}
+      {/* BC Badge - shows checkmark with text */}
       {isBC && (
-        <div className="absolute -top-3 -right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
+        <div className="absolute -top-3 -right-3 bg-emerald-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1 z-10">
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
-          BC
+          <span className="hidden sm:inline">Baseline Complete</span>
+          <span className="sm:hidden">BC</span>
         </div>
       )}
       
       <div className="flex items-start gap-4">
         {/* Large Percentage Display */}
-        <div className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center ${isBC ? 'bg-emerald-100' : completeness.percentage >= 60 ? 'bg-amber-100' : 'bg-red-100'}`}>
-          <span className={`text-2xl font-bold ${isBC ? 'text-emerald-600' : completeness.percentage >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
-            {completeness.percentage}%
-          </span>
-          {isBC && <span className="text-xs text-emerald-600 font-medium">Complete</span>}
+        <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center ${isBC ? 'bg-emerald-100' : completeness.percentage >= 60 ? 'bg-amber-100' : 'bg-red-100'}`}>
+          {isBC ? (
+            <svg className="w-7 h-7 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          ) : (
+            <span className={`text-xl font-bold ${completeness.percentage >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
+              {completeness.percentage}%
+            </span>
+          )}
         </div>
         
         {/* Test Info */}
@@ -3063,13 +3087,13 @@ const CompetitionsPage = ({ onNavigate }) => {
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0 w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
           </div>
           <div>
-            <h3 className="font-semibold text-emerald-900 mb-1">What is Baseline Complete (BC)?</h3>
+            <h3 className="font-semibold text-emerald-900 mb-1">What is Baseline Complete?</h3>
             <p className="text-sm text-emerald-800">
-              Tests earn the BC badge automatically when all minimum fields are filled. These fields include performance metrics 
+              Tests earn the Baseline Complete status automatically when all minimum fields are filled. These fields include performance metrics 
               (sensitivity, specificity), regulatory status, pricing, and turnaround time — the essentials patients and clinicians need.
             </p>
           </div>
@@ -3080,9 +3104,13 @@ const CompetitionsPage = ({ onNavigate }) => {
       {bcTests.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🏆</span>
+            <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">Baseline Complete (BC)</h2>
+              <h2 className="text-xl font-bold text-gray-800">Baseline Complete</h2>
               <p className="text-sm text-gray-500">All minimum fields filled — ready for patients • {bcTests.length} test{bcTests.length !== 1 ? 's' : ''}</p>
             </div>
           </div>
@@ -3104,7 +3132,11 @@ const CompetitionsPage = ({ onNavigate }) => {
       {inProgressTests.length > 0 && (
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">📊</span>
+            <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <h2 className="text-xl font-bold text-gray-800">In Progress</h2>
               <p className="text-sm text-gray-500">Sorted by completeness • {inProgressTests.length} test{inProgressTests.length !== 1 ? 's' : ''}</p>
@@ -5579,7 +5611,7 @@ const SubmissionsPage = () => {
   const isAlz = siteConfig.domain === DOMAINS.ALZ;
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
   
-  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'bug', 'feature'
+  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'complete', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
   const [category, setCategory] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -5596,6 +5628,9 @@ const SubmissionsPage = () => {
   
   // Correction fields
   const [existingTest, setExistingTest] = useState('');
+  
+  // Complete missing fields - multiple parameters with values
+  const [completeFieldEntries, setCompleteFieldEntries] = useState([{ parameter: '', value: '', citation: '' }]);
   const [selectedParameter, setSelectedParameter] = useState('');
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
@@ -5806,7 +5841,7 @@ const SubmissionsPage = () => {
     }
 
     // Only check vendor email match for vendor submissions on test data
-    if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction')) {
+    if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction' || submissionType === 'complete')) {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
       if (!emailMatchesVendor(contactEmail, vendor)) {
         setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
@@ -5831,7 +5866,7 @@ const SubmissionsPage = () => {
     if (submissionType === 'new') {
       vendor = newTestVendor;
       testName = newTestName;
-    } else if (submissionType === 'correction') {
+    } else if (submissionType === 'correction' || submissionType === 'complete') {
       vendor = getSelectedTestVendor();
       testName = existingTests[category]?.find(t => t.id === existingTest)?.name;
     }
@@ -6026,6 +6061,10 @@ const SubmissionsPage = () => {
       return newTestName && newTestVendor && newTestUrl;
     } else if (submissionType === 'correction') {
       return existingTest && selectedParameter && newValue && citation;
+    } else if (submissionType === 'complete') {
+      // Need test selected and at least one complete entry
+      return existingTest && completeFieldEntries.length > 0 && 
+        completeFieldEntries.every(e => e.parameter && e.value && e.citation);
     }
     
     return false;
@@ -6041,10 +6080,10 @@ const SubmissionsPage = () => {
         {/* Test Data Update */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); }}
+              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">Suggest a New Test</div>
@@ -6052,11 +6091,24 @@ const SubmissionsPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); }}
+              onClick={() => { setSubmissionType('complete'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setSelectedParameter(''); }}
+              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'complete' ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 hover:border-gray-300'}`}
+            >
+              <div className={`font-semibold flex items-center gap-1.5 ${submissionType === 'complete' ? 'text-emerald-700' : 'text-gray-800'}`}>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Complete Missing Fields
+              </div>
+              <div className="text-sm text-gray-500">Help a test reach Baseline Complete</div>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">File a Correction</div>
-              <div className="text-sm text-gray-500">Suggest an update to existing test data</div>
+              <div className="text-sm text-gray-500">Update existing test data</div>
             </button>
           </div>
           
@@ -6064,7 +6116,7 @@ const SubmissionsPage = () => {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); }}
+              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'bug' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'bug' ? 'text-red-700' : 'text-gray-800'}`}>Report a Bug</div>
@@ -6072,7 +6124,7 @@ const SubmissionsPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); }}
+              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'feature' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'feature' ? 'text-purple-700' : 'text-gray-800'}`}>Request a Feature</div>
@@ -6082,7 +6134,7 @@ const SubmissionsPage = () => {
         </div>
 
         {/* Submitter Type */}
-        {(submissionType === 'new' || submissionType === 'correction') && (
+        {(submissionType === 'new' || submissionType === 'correction' || submissionType === 'complete') && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
             <select
@@ -6122,7 +6174,7 @@ const SubmissionsPage = () => {
                 <button
                   key={cat.key}
                   type="button"
-                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); }}
+                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${category === cat.key ? `border-${cat.color}-500 bg-${cat.color}-50` : 'border-gray-200 hover:border-gray-300'}`}
                 >
                   <div className={`font-bold ${category === cat.key ? `text-${cat.color}-700` : 'text-gray-800'}`}>{cat.label}</div>
@@ -6260,6 +6312,161 @@ const SubmissionsPage = () => {
                   </div>
                 </>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* COMPLETE MISSING FIELDS: Select Test → Add Multiple Parameters */}
+        {submissionType === 'complete' && category && (
+          <div className="bg-white rounded-xl border border-emerald-200 p-6">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              Complete Missing Fields
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">Help a test reach Baseline Complete status by filling in missing data.</p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
+                <select
+                  value={existingTest}
+                  onChange={(e) => { setExistingTest(e.target.value); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); setEmailError(''); setVerificationStep('form'); }}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  required
+                >
+                  <option value="">-- Select a test --</option>
+                  {existingTests[category]?.map(test => {
+                    const completeness = calculateTestCompleteness(
+                      (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === test.id),
+                      category
+                    );
+                    const isComplete = completeness.percentage === 100;
+                    return (
+                      <option key={test.id} value={test.id} disabled={isComplete}>
+                        {test.name} ({test.vendor}) {isComplete ? '✓ Complete' : `— ${completeness.percentage}%`}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              {existingTest && (() => {
+                const testData = (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === existingTest);
+                const completeness = calculateTestCompleteness(testData, category);
+                const missingParams = parameterOptions[category]?.filter(p => completeness.missingFields.includes(p.label)) || [];
+                
+                // Get parameters that haven't been selected yet
+                const availableParams = missingParams.filter(p => !completeFieldEntries.some(e => e.parameter === p.key));
+                
+                return (
+                  <>
+                    {/* Show current completeness */}
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-emerald-800">Current Progress</span>
+                        <span className="text-sm font-bold text-emerald-600">{completeness.percentage}%</span>
+                      </div>
+                      <div className="h-2 bg-emerald-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-emerald-500 rounded-full transition-all"
+                          style={{ width: `${completeness.percentage}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-emerald-700 mt-2">
+                        {completeness.missingFields.length} field{completeness.missingFields.length !== 1 ? 's' : ''} needed for Baseline Complete: {completeness.missingFields.join(', ')}
+                      </p>
+                    </div>
+
+                    {/* Field entries */}
+                    {completeFieldEntries.map((entry, index) => (
+                      <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-sm font-medium text-gray-700">Field {index + 1}</span>
+                          {completeFieldEntries.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => setCompleteFieldEntries(entries => entries.filter((_, i) => i !== index))}
+                              className="text-red-500 hover:text-red-700 text-sm"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-600 mb-1">Missing Field <span className="text-red-500">*</span></label>
+                            <select
+                              value={entry.parameter}
+                              onChange={(e) => {
+                                const newEntries = [...completeFieldEntries];
+                                newEntries[index].parameter = e.target.value;
+                                setCompleteFieldEntries(newEntries);
+                              }}
+                              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                              required
+                            >
+                              <option value="">-- Select field --</option>
+                              {missingParams.filter(p => p.key === entry.parameter || !completeFieldEntries.some(e => e.parameter === p.key)).map(param => (
+                                <option key={param.key} value={param.key}>{param.label}</option>
+                              ))}
+                            </select>
+                          </div>
+                          {entry.parameter && (
+                            <>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-600 mb-1">Value <span className="text-red-500">*</span></label>
+                                <input
+                                  type="text"
+                                  value={entry.value}
+                                  onChange={(e) => {
+                                    const newEntries = [...completeFieldEntries];
+                                    newEntries[index].value = e.target.value;
+                                    setCompleteFieldEntries(newEntries);
+                                  }}
+                                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                  placeholder="Enter the value"
+                                  required
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-600 mb-1">Citation URL <span className="text-red-500">*</span></label>
+                                <input
+                                  type="url"
+                                  value={entry.citation}
+                                  onChange={(e) => {
+                                    const newEntries = [...completeFieldEntries];
+                                    newEntries[index].citation = e.target.value;
+                                    setCompleteFieldEntries(newEntries);
+                                  }}
+                                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                  placeholder="https://..."
+                                  required
+                                />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Add another field button */}
+                    {availableParams.length > 0 && completeFieldEntries.every(e => e.parameter && e.value && e.citation) && (
+                      <button
+                        type="button"
+                        onClick={() => setCompleteFieldEntries([...completeFieldEntries, { parameter: '', value: '', citation: '' }])}
+                        className="w-full py-2 border-2 border-dashed border-emerald-300 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add Another Field ({availableParams.length} remaining)
+                      </button>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -6408,7 +6615,12 @@ const SubmissionsPage = () => {
         )}
 
         {/* Your Information - Test Data */}
-        {category && (submissionType === 'new' ? newTestName && newTestVendor : existingTest && selectedParameter) && (
+        {category && (
+          submissionType === 'new' ? newTestName && newTestVendor : 
+          submissionType === 'correction' ? existingTest && selectedParameter :
+          submissionType === 'complete' ? existingTest && completeFieldEntries.length > 0 && completeFieldEntries[0].parameter :
+          false
+        ) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -7779,16 +7991,17 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const isBC = completeness.percentage === 100;
   
   return (
-    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isBC ? 'border-emerald-400 shadow-md shadow-emerald-100' : isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
-      {/* BC Badge - top right corner */}
+    <div className="relative">
+      {/* BC Badge - positioned outside card to avoid clipping */}
       {isBC && !isDiscontinued && (
-        <div className="absolute -top-2 -right-2 bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md flex items-center gap-0.5 z-10">
+        <div className="absolute -top-2 -right-2 bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md flex items-center gap-0.5 z-20">
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
           BC
         </div>
       )}
+      <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isBC ? 'border-emerald-400 shadow-md shadow-emerald-100' : isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -7924,6 +8137,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           </svg>
         </button>
       </div>
+    </div>
     </div>
   );
 };
