@@ -63,6 +63,50 @@ const VENDOR_BADGES = {
 };
 
 // ============================================
+// Tier 1 Citation Metrics - Dynamic calculation
+// ============================================
+// Tier 1 = Performance metrics that MUST have citations
+// These are the clinically critical numbers patients/clinicians rely on
+const TIER1_FIELDS = [
+  'sensitivity', 'specificity', 'ppv', 'npv',
+  'lod', 'lod95',
+  'stageISensitivity', 'stageIISensitivity', 'stageIIISensitivity', 'stageIVSensitivity',
+  'landmarkSensitivity', 'landmarkSpecificity',
+  'longitudinalSensitivity', 'longitudinalSpecificity',
+  'advancedAdenomaSensitivity',
+  'leadTimeVsImaging'
+];
+
+const calculateTier1Metrics = (allTestData) => {
+  let totalDataPoints = 0;
+  let citedDataPoints = 0;
+  
+  allTestData.forEach(test => {
+    TIER1_FIELDS.forEach(field => {
+      const value = test[field];
+      // Check if field has a non-null, non-empty value
+      if (value != null && value !== '' && value !== 'N/A') {
+        totalDataPoints++;
+        // Check if corresponding citation field exists and has value
+        const citationField = `${field}Citations`;
+        const citation = test[citationField];
+        if (citation && citation.trim() !== '') {
+          citedDataPoints++;
+        }
+      }
+    });
+  });
+  
+  const coverage = totalDataPoints > 0 ? (citedDataPoints / totalDataPoints * 100) : 0;
+  
+  return {
+    totalTier1DataPoints: totalDataPoints,
+    citedDataPoints: citedDataPoints,
+    citationCoverage: coverage.toFixed(1)
+  };
+};
+
+// ============================================
 // SEO Component - Dynamic meta tags
 // ============================================
 const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
@@ -3067,6 +3111,10 @@ const DatabaseStatsSimple = () => {
     ...trmTestData.map(t => t.vendor),
     ...tdsTestData.map(t => t.vendor)
   ]);
+  
+  // Calculate Tier 1 citation metrics dynamically
+  const allTestData = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  const tier1Metrics = calculateTier1Metrics(allTestData);
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -3093,7 +3141,7 @@ const DatabaseStatsSimple = () => {
       </div>
       
       {/* Category breakdown */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
           <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
           <div>
@@ -3120,6 +3168,28 @@ const DatabaseStatsSimple = () => {
           <div>
             <p className="text-xs font-medium text-gray-800">TDS</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Citation Quality - Tier 1 Performance Metrics */}
+      <div className="border-t border-gray-100 pt-4">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-sm font-medium text-gray-700">Citation Quality</span>
+          <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Performance Metrics</span>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-xl font-bold text-blue-800">{tier1Metrics.totalTier1DataPoints}</p>
+            <p className="text-[10px] text-blue-600">Tier 1 Data Points</p>
+          </div>
+          <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-xl font-bold text-blue-800">{tier1Metrics.citedDataPoints}</p>
+            <p className="text-[10px] text-blue-600">Cited</p>
+          </div>
+          <div className="text-center p-3 bg-green-50 rounded-lg border border-green-100">
+            <p className="text-xl font-bold text-green-700">{tier1Metrics.citationCoverage}%</p>
+            <p className="text-[10px] text-green-600">Coverage</p>
           </div>
         </div>
       </div>
