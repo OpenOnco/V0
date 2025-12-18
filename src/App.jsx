@@ -1057,7 +1057,7 @@ const Header = ({ currentPage, onNavigate }) => {
   const navItems = ['home', 'competitions', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
-    'competitions': 'Competitions',
+    'competitions': 'Competition!',
     'learn': 'Learn',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
@@ -3027,39 +3027,27 @@ const CompetitionsPage = ({ onNavigate }) => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">OpenOnco Competitions</h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Help patients make informed decisions. Complete your test's minimum fields to earn the Baseline Complete badge.
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">OpenOnco Competition!</h1>
       </div>
       
-      {/* How It Works */}
+      {/* Main Intro */}
       <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 sm:p-8 border border-emerald-200 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-2xl">🎯</span> How It Works
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-6">
-          <div className="flex gap-3">
-            <div className="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold">1</div>
-            <div>
-              <h3 className="font-semibold text-gray-800">Find Your Test</h3>
-              <p className="text-sm text-gray-600">Click any test below to see which minimum fields are missing.</p>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">2</div>
-            <div>
-              <h3 className="font-semibold text-gray-800">Submit Missing Data</h3>
-              <p className="text-sm text-gray-600">Email us the missing values — we'll update the database and you'll earn the BC badge automatically.</p>
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 p-4 bg-white rounded-xl border border-emerald-200">
-          <p className="text-sm text-gray-700">
-            <strong className="text-emerald-600">🌟 Everyone can win!</strong> This isn't a ranking — it's about ensuring patients have complete information. 
-            Every test that reaches Baseline Complete helps someone make a better healthcare decision.
-          </p>
-        </div>
+        <p className="text-gray-700 text-lg leading-relaxed mb-4">
+          Yes that's right — OpenOnco is running a competition (kinda)! We've got decent data now for over {stats.total} advanced molecular tests, 
+          but that data is a distance from being complete. As a first step we want to make sure each test has a set of core data completed. 
+          Tests that meet or exceed that core dataset get awarded a <strong className="text-emerald-700">Baseline Complete (BC)</strong> badge 👏👏👏
+        </p>
+        
+        <p className="text-gray-700 text-lg leading-relaxed mb-4">
+          The good news is <strong className="text-emerald-600 text-xl">{stats.bcCount} tests</strong> have already achieved BC and they will get listed 
+          first in all lists as an acknowledgement of their data completeness.
+        </p>
+        
+        <p className="text-gray-700 text-lg leading-relaxed">
+          Given that we have over {stats.total} tests now, that means there are <strong className="text-amber-600 text-xl">{inProgressTests.length} that still need work</strong>. 
+          To make it easy to complete the core set, vendors can click on a test below, choose "Submit Missing Data" and get presented with a pre-populated form. 
+          <span className="font-bold text-emerald-700 ml-1">DO IT!!!</span>
+        </p>
       </div>
       
       {/* Summary Stats */}
@@ -3072,27 +3060,9 @@ const CompetitionsPage = ({ onNavigate }) => {
           <p className="text-3xl font-bold text-emerald-600">{stats.bcCount}</p>
           <p className="text-sm text-emerald-600">Baseline Complete</p>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <p className="text-3xl font-bold text-gray-800">{stats.avgCompleteness}%</p>
-          <p className="text-sm text-gray-500">Avg Completeness</p>
-        </div>
-      </div>
-      
-      {/* BC Explanation */}
-      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8">
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="font-semibold text-emerald-900 mb-1">What is Baseline Complete?</h3>
-            <p className="text-sm text-emerald-800">
-              Tests earn the Baseline Complete status automatically when all minimum fields are filled. These fields include performance metrics 
-              (sensitivity, specificity), regulatory status, pricing, and turnaround time — the essentials patients and clinicians need.
-            </p>
-          </div>
+        <div className="bg-amber-50 rounded-xl border border-amber-200 p-4 text-center">
+          <p className="text-3xl font-bold text-amber-600">{inProgressTests.length}</p>
+          <p className="text-sm text-amber-600">Need Work</p>
         </div>
       </div>
       
