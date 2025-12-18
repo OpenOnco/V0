@@ -1751,23 +1751,38 @@ const TestShowcase = ({ onNavigate }) => {
     return isNaN(days) ? 999 : days;
   };
 
-  // Sort tests based on selected option
+  // Sort tests based on selected option - BC tests always come first
   const allTests = useMemo(() => {
     const sorted = [...baseTests];
+    
+    // Helper to check if test is BC
+    const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
+    
+    // First sort by BC status, then by selected criteria
+    const bcFirst = (a, b) => {
+      const aBC = isBC(a);
+      const bBC = isBC(b);
+      if (aBC && !bBC) return -1;
+      if (!aBC && bBC) return 1;
+      return 0;
+    };
+    
     switch (sortBy) {
       case 'category':
         const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3, 'ALZ-BLOOD': 4 };
-        return sorted.sort((a, b) => (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => bcFirst(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
       case 'tat':
-        return sorted.sort((a, b) => getTat(a) - getTat(b));
+        return sorted.sort((a, b) => bcFirst(a, b) || getTat(a) - getTat(b));
       case 'reimbursement':
-        return sorted.sort((a, b) => countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => bcFirst(a, b) || countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
       case 'vendorTests':
-        return sorted.sort((a, b) => vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => bcFirst(a, b) || vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
       case 'openness':
         // Sort by vendor openness ranking (same as openness award logic)
         // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
         return sorted.sort((a, b) => {
+          const bc = bcFirst(a, b);
+          if (bc !== 0) return bc;
           const scoreA = vendorOpennessScores[a.vendor] ?? -1;
           const scoreB = vendorOpennessScores[b.vendor] ?? -1;
           if (scoreA !== scoreB) return scoreB - scoreA;
@@ -1776,7 +1791,7 @@ const TestShowcase = ({ onNavigate }) => {
         });
       case 'vendor':
       default:
-        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+        return sorted.sort((a, b) => bcFirst(a, b) || a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests]);
 
@@ -2892,8 +2907,13 @@ const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
       )}
       
       <div className="flex items-start gap-4">
-        {/* Completeness Score */}
-        <CompletenessBadge percentage={completeness.percentage} size="md" />
+        {/* Large Percentage Display */}
+        <div className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center ${isBC ? 'bg-emerald-100' : completeness.percentage >= 60 ? 'bg-amber-100' : 'bg-red-100'}`}>
+          <span className={`text-2xl font-bold ${isBC ? 'text-emerald-600' : completeness.percentage >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
+            {completeness.percentage}%
+          </span>
+          {isBC && <span className="text-xs text-emerald-600 font-medium">Complete</span>}
+        </div>
         
         {/* Test Info */}
         <div className="flex-1 min-w-0">
@@ -2906,17 +2926,17 @@ const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
           <h3 className="font-semibold text-gray-900 truncate">{test.name}</h3>
           <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           
-          {/* Progress bar */}
+          {/* Progress bar with field count */}
           <div className="mt-2">
             <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-              <span>{completeness.filled}/{completeness.total} minimum fields</span>
+              <span className="font-medium">{completeness.filled}/{completeness.total} fields</span>
               {completeness.missingFields.length > 0 && (
-                <span className="text-amber-600">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
+                <span className="text-amber-600 truncate ml-2">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
               )}
             </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
               <div 
-                className={`h-full rounded-full transition-all ${completeness.percentage === 100 ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
+                className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
                 style={{ width: `${completeness.percentage}%` }}
               />
             </div>
@@ -2957,40 +2977,31 @@ const CompetitionsPage = ({ onNavigate }) => {
     return tests.map(test => ({
       ...test,
       completeness: calculateTestCompleteness(test, test.category)
-    })).sort((a, b) => b.completeness.percentage - a.completeness.percentage);
+    }));
   }, []);
   
-  // Group tests into tiers
-  const tiers = useMemo(() => {
-    const groups = {
-      bc: { label: 'Baseline Complete (BC)', sublabel: 'All minimum fields filled — ready for patients', tests: [], icon: '🏆' },
-      high: { label: '80-99%', sublabel: 'Almost there!', tests: [], icon: '🥈' },
-      medium: { label: '60-79%', sublabel: 'Good progress', tests: [], icon: '🥉' },
-      low: { label: '40-59%', sublabel: 'Room to improve', tests: [], icon: '📊' },
-      minimal: { label: '0-39%', sublabel: 'Needs attention', tests: [], icon: '⚠️' },
-    };
+  // Split into BC and In Progress, with proper sorting
+  const { bcTests, inProgressTests } = useMemo(() => {
+    const bc = allTestsWithScores
+      .filter(t => t.completeness.percentage === 100)
+      .sort((a, b) => b.completeness.filled - a.completeness.filled); // Most filled fields first
     
-    allTestsWithScores.forEach(test => {
-      const pct = test.completeness.percentage;
-      if (pct === 100) groups.bc.tests.push(test);
-      else if (pct >= 80) groups.high.tests.push(test);
-      else if (pct >= 60) groups.medium.tests.push(test);
-      else if (pct >= 40) groups.low.tests.push(test);
-      else groups.minimal.tests.push(test);
-    });
+    const inProgress = allTestsWithScores
+      .filter(t => t.completeness.percentage < 100)
+      .sort((a, b) => b.completeness.percentage - a.completeness.percentage); // Highest % first
     
-    return groups;
+    return { bcTests: bc, inProgressTests: inProgress };
   }, [allTestsWithScores]);
   
   // Calculate summary stats
   const stats = useMemo(() => {
     const total = allTestsWithScores.length;
-    const bcCount = tiers.bc.tests.length;
+    const bcCount = bcTests.length;
     const avgCompleteness = total > 0 
       ? Math.round(allTestsWithScores.reduce((sum, t) => sum + t.completeness.percentage, 0) / total)
       : 0;
     return { total, bcCount, avgCompleteness };
-  }, [allTestsWithScores, tiers]);
+  }, [allTestsWithScores, bcTests]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -3065,33 +3076,53 @@ const CompetitionsPage = ({ onNavigate }) => {
         </div>
       </div>
       
-      {/* Tier Groups */}
-      <div className="space-y-8">
-        {Object.entries(tiers).map(([key, group]) => (
-          group.tests.length > 0 && (
-            <div key={key}>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">{group.icon}</span>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-800">{group.label}</h2>
-                  <p className="text-sm text-gray-500">{group.sublabel} • {group.tests.length} test{group.tests.length !== 1 ? 's' : ''}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {group.tests.map(test => (
-                  <AwardTestCard 
-                    key={test.id} 
-                    test={test} 
-                    category={test.category}
-                    completeness={test.completeness}
-                    onShowDetail={handleShowDetail}
-                  />
-                ))}
-              </div>
+      {/* BC Group */}
+      {bcTests.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🏆</span>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">Baseline Complete (BC)</h2>
+              <p className="text-sm text-gray-500">All minimum fields filled — ready for patients • {bcTests.length} test{bcTests.length !== 1 ? 's' : ''}</p>
             </div>
-          )
-        ))}
-      </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {bcTests.map(test => (
+              <AwardTestCard 
+                key={test.id} 
+                test={test} 
+                category={test.category}
+                completeness={test.completeness}
+                onShowDetail={handleShowDetail}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* In Progress Group */}
+      {inProgressTests.length > 0 && (
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">📊</span>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">In Progress</h2>
+              <p className="text-sm text-gray-500">Sorted by completeness • {inProgressTests.length} test{inProgressTests.length !== 1 ? 's' : ''}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {inProgressTests.map(test => (
+              <AwardTestCard 
+                key={test.id} 
+                test={test} 
+                category={test.category}
+                completeness={test.completeness}
+                onShowDetail={handleShowDetail}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       
       {/* Bottom CTA */}
       <div className="mt-12 text-center bg-slate-50 rounded-2xl p-8 border border-slate-200">
