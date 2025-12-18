@@ -6905,6 +6905,11 @@ export const PAGE_SEO = {
     description: 'Independent database comparing 60+ cancer blood tests. MRD, early detection, treatment monitoring - all specs side-by-side.',
     path: '/'
   },
+  awards: {
+    title: 'OpenOnco Awards - Data Completeness Rankings',
+    description: 'Vendor data completeness rankings and recognition. See which cancer diagnostic tests have complete, transparent data.',
+    path: '/awards'
+  },
   MRD: {
     title: 'MRD Tests Compared - Molecular Residual Disease',
     description: 'Compare 20+ MRD tests: Signatera, Guardant Reveal, clonoSEQ, Oncodetect. Sensitivity, turnaround time, Medicare coverage.',

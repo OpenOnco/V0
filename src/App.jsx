@@ -1054,8 +1054,9 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
+  const navItems = ['awards', 'home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
   const getLabel = (page) => ({
+    'awards': 'Awards',
     'home': 'Home',
     'learn': 'Learn',
     'data-sources': 'Data Download',
@@ -2795,6 +2796,320 @@ const StatOfTheDay = ({ onNavigate }) => {
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// Awards Page - Data Completeness & Vendor Recognition
+// ============================================
+
+// Calculate completeness score for a single test
+const calculateTestCompleteness = (test, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return { filled: 0, total: 0, percentage: 0, missingFields: [] };
+  
+  const minFields = minParams.core;
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  
+  const filledFields = minFields.filter(p => hasValue(test[p.key]));
+  const missingFields = minFields.filter(p => !hasValue(test[p.key]));
+  const percentage = minFields.length > 0 
+    ? Math.round((filledFields.length / minFields.length) * 100) 
+    : 0;
+  
+  return {
+    filled: filledFields.length,
+    total: minFields.length,
+    percentage,
+    missingFields: missingFields.map(p => p.label)
+  };
+};
+
+// Completeness Badge Component
+const CompletenessBadge = ({ percentage, size = 'md' }) => {
+  const sizeClasses = {
+    sm: 'w-8 h-8 text-xs',
+    md: 'w-12 h-12 text-sm',
+    lg: 'w-16 h-16 text-lg'
+  };
+  
+  let bgColor, textColor, ringColor;
+  if (percentage === 100) {
+    bgColor = 'bg-emerald-500';
+    textColor = 'text-white';
+    ringColor = 'ring-emerald-300';
+  } else if (percentage >= 80) {
+    bgColor = 'bg-emerald-100';
+    textColor = 'text-emerald-700';
+    ringColor = 'ring-emerald-200';
+  } else if (percentage >= 60) {
+    bgColor = 'bg-amber-100';
+    textColor = 'text-amber-700';
+    ringColor = 'ring-amber-200';
+  } else if (percentage >= 40) {
+    bgColor = 'bg-orange-100';
+    textColor = 'text-orange-700';
+    ringColor = 'ring-orange-200';
+  } else {
+    bgColor = 'bg-red-100';
+    textColor = 'text-red-700';
+    ringColor = 'ring-red-200';
+  }
+  
+  return (
+    <div className={`${sizeClasses[size]} ${bgColor} ${textColor} rounded-full flex items-center justify-center font-bold ring-2 ${ringColor}`}>
+      {percentage}%
+    </div>
+  );
+};
+
+// Award Test Card Component
+const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
+  const colorVariant = categoryMeta[category]?.color || 'amber';
+  const categoryColors = {
+    MRD: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600' },
+    ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
+    TRM: { bg: 'bg-sky-50', border: 'border-sky-200', text: 'text-sky-600' },
+    TDS: { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600' },
+  };
+  const colors = categoryColors[category] || categoryColors.MRD;
+  
+  return (
+    <div className={`relative bg-white rounded-xl border-2 ${completeness.percentage === 100 ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}>
+      {/* 100% Complete Badge */}
+      {completeness.percentage === 100 && (
+        <div className="absolute -top-3 -right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          Complete
+        </div>
+      )}
+      
+      <div className="flex items-start gap-4">
+        {/* Completeness Score */}
+        <CompletenessBadge percentage={completeness.percentage} size="md" />
+        
+        {/* Test Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <span className={`px-2 py-0.5 ${colors.bg} ${colors.text} ${colors.border} border rounded text-xs font-medium`}>
+              {category}
+            </span>
+            {test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
+            {test.vendorConfirmed && (
+              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 border border-blue-200 rounded text-xs font-medium flex items-center gap-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Vendor Confirmed
+              </span>
+            )}
+          </div>
+          <h3 className="font-semibold text-gray-900 truncate">{test.name}</h3>
+          <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+          
+          {/* Progress bar */}
+          <div className="mt-2">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+              <span>{completeness.filled}/{completeness.total} minimum fields</span>
+              {completeness.missingFields.length > 0 && (
+                <span className="text-amber-600">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
+              )}
+            </div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all ${completeness.percentage === 100 ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
+                style={{ width: `${completeness.percentage}%` }}
+              />
+            </div>
+          </div>
+        </div>
+        
+        {/* View button */}
+        <button
+          onClick={() => onNavigate(category, test.id)}
+          className="flex-shrink-0 px-3 py-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+        >
+          View →
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const AwardsPage = ({ onNavigate }) => {
+  // Aggregate all tests with their categories and completeness scores
+  const allTestsWithScores = useMemo(() => {
+    const tests = [
+      ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+      ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+      ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+      ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+    ].filter(t => !t.isDiscontinued); // Exclude discontinued tests
+    
+    return tests.map(test => ({
+      ...test,
+      completeness: calculateTestCompleteness(test, test.category)
+    })).sort((a, b) => b.completeness.percentage - a.completeness.percentage);
+  }, []);
+  
+  // Group tests into quintiles
+  const quintiles = useMemo(() => {
+    const groups = {
+      complete: { label: '100% Complete', sublabel: 'All minimum fields filled', tests: [], color: 'emerald', icon: '🏆' },
+      high: { label: '80-99%', sublabel: 'Almost there', tests: [], color: 'green', icon: '🥈' },
+      medium: { label: '60-79%', sublabel: 'Good progress', tests: [], color: 'amber', icon: '🥉' },
+      low: { label: '40-59%', sublabel: 'Room to improve', tests: [], color: 'orange', icon: '📊' },
+      minimal: { label: '0-39%', sublabel: 'Needs attention', tests: [], color: 'red', icon: '⚠️' },
+    };
+    
+    allTestsWithScores.forEach(test => {
+      const pct = test.completeness.percentage;
+      if (pct === 100) groups.complete.tests.push(test);
+      else if (pct >= 80) groups.high.tests.push(test);
+      else if (pct >= 60) groups.medium.tests.push(test);
+      else if (pct >= 40) groups.low.tests.push(test);
+      else groups.minimal.tests.push(test);
+    });
+    
+    return groups;
+  }, [allTestsWithScores]);
+  
+  // Calculate summary stats
+  const stats = useMemo(() => {
+    const total = allTestsWithScores.length;
+    const complete = quintiles.complete.tests.length;
+    const avgCompleteness = total > 0 
+      ? Math.round(allTestsWithScores.reduce((sum, t) => sum + t.completeness.percentage, 0) / total)
+      : 0;
+    return { total, complete, avgCompleteness };
+  }, [allTestsWithScores, quintiles]);
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">OpenOnco Awards</h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Recognizing vendors who provide complete, transparent test data. Help patients and clinicians make informed decisions.
+        </p>
+      </div>
+      
+      {/* Summary Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
+          <p className="text-sm text-gray-500">Total Tests</p>
+        </div>
+        <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-4 text-center">
+          <p className="text-3xl font-bold text-emerald-600">{stats.complete}</p>
+          <p className="text-sm text-emerald-600">100% Complete</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <p className="text-3xl font-bold text-gray-800">{stats.avgCompleteness}%</p>
+          <p className="text-sm text-gray-500">Avg Completeness</p>
+        </div>
+        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center">
+          <p className="text-3xl font-bold text-blue-600">0</p>
+          <p className="text-sm text-blue-600">Vendor Confirmed</p>
+        </div>
+      </div>
+      
+      {/* CTA for Vendors */}
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-6 sm:p-8 text-white mb-8">
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex-shrink-0">
+            <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center">
+              <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex-1 text-center sm:text-left">
+            <h2 className="text-2xl font-bold mb-2">Vendor Confirmed Program</h2>
+            <p className="text-emerald-100 mb-4">
+              Get your test data verified and earn the "Vendor Confirmed" badge. Complete your minimum fields 
+              and submit for review to stand out to patients and clinicians.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start">
+              <button 
+                onClick={() => onNavigate('submissions')}
+                className="px-6 py-2.5 bg-white text-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 transition-colors"
+              >
+                Submit Your Data
+              </button>
+              <a 
+                href="mailto:info@openonco.org?subject=Vendor%20Confirmed%20Program"
+                className="px-6 py-2.5 bg-emerald-600 text-white font-semibold rounded-lg border-2 border-white/30 hover:bg-emerald-700 transition-colors text-center"
+              >
+                Apply for Verification
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Minimum Fields Explanation */}
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+            <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="font-semibold text-amber-800 mb-1">What are "Minimum Fields"?</h3>
+            <p className="text-sm text-amber-700">
+              Each category has a set of essential data fields that patients and clinicians need for informed decision-making. 
+              These include performance metrics (sensitivity, specificity), regulatory status, pricing, and turnaround time. 
+              Tests with 100% completion provide the transparency users deserve.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Quintile Groups */}
+      <div className="space-y-8">
+        {Object.entries(quintiles).map(([key, group]) => (
+          group.tests.length > 0 && (
+            <div key={key}>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">{group.icon}</span>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800">{group.label}</h2>
+                  <p className="text-sm text-gray-500">{group.sublabel} • {group.tests.length} test{group.tests.length !== 1 ? 's' : ''}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {group.tests.map(test => (
+                  <AwardTestCard 
+                    key={test.id} 
+                    test={test} 
+                    category={test.category}
+                    completeness={test.completeness}
+                    onNavigate={onNavigate}
+                  />
+                ))}
+              </div>
+            </div>
+          )
+        ))}
+      </div>
+      
+      {/* Bottom CTA */}
+      <div className="mt-12 text-center">
+        <p className="text-gray-600 mb-4">
+          Is your test missing data? Help us help patients by completing your test profile.
+        </p>
+        <button 
+          onClick={() => onNavigate('submissions')}
+          className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
+        >
+          Submit Test Data
+        </button>
       </div>
     </div>
   );
@@ -9687,6 +10002,7 @@ export default function App() {
   // Map URL paths to page names
   const pathToPage = {
     '/': 'home',
+    '/awards': 'awards',
     '/submissions': 'submissions',
     '/how-it-works': 'how-it-works',
     '/data-sources': 'data-sources',
@@ -9702,6 +10018,7 @@ export default function App() {
 
   const pageToPath = {
     'home': '/',
+    'awards': '/awards',
     'submissions': '/submissions',
     'how-it-works': '/how-it-works',
     'data-sources': '/data-sources',
@@ -9865,6 +10182,7 @@ export default function App() {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'awards': return <AwardsPage onNavigate={handleNavigate} />;
       case 'home': return <HomePage onNavigate={handleNavigate} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
