@@ -120,8 +120,8 @@ const MINIMUM_PARAMS = {
       { key: 'cancerTypes', label: 'Cancer Types', isArray: true, required: true },
     ],
     analytical: [
-      { key: 'sensitivity', label: 'Clinical Sensitivity', unit: '%', citationKey: 'sensitivityCitations', notesKey: 'sensitivityNotes' },
-      { key: 'specificity', label: 'Clinical Specificity', unit: '%', citationKey: 'specificityCitations', notesKey: 'specificityNotes' },
+      { key: 'sensitivity', label: 'Clinical Sensitivity', unit: '%', citationKey: 'sensitivityCitations', notesKey: 'sensitivityNotes', alternativeKey: 'landmarkSensitivity', alternativeCitationKey: 'landmarkSensitivityCitations', alternativeLabel: 'Landmark Sensitivity' },
+      { key: 'specificity', label: 'Clinical Specificity', unit: '%', citationKey: 'specificityCitations', notesKey: 'specificityNotes', alternativeKey: 'landmarkSpecificity', alternativeCitationKey: 'landmarkSpecificityCitations', alternativeLabel: 'Landmark Specificity' },
       { key: 'lod', label: 'Limit of Detection', citationKey: 'lodCitations', notesKey: 'lodNotes', formatter: 'lod' },
     ],
     evidence: [
@@ -258,6 +258,13 @@ const hasMinParamValue = (val) => {
   return true;
 };
 
+// Helper to check if a param has value (including alternative)
+const paramHasValue = (test, param) => {
+  if (hasMinParamValue(test[param.key])) return true;
+  if (param.alternativeKey && hasMinParamValue(test[param.alternativeKey])) return true;
+  return false;
+};
+
 // Calculate completeness for a test
 const calculateTestCompleteness = (test, category) => {
   const params = MINIMUM_PARAMS[category];
@@ -269,7 +276,7 @@ const calculateTestCompleteness = (test, category) => {
   Object.values(params).forEach(section => {
     section.forEach(param => {
       total++;
-      if (hasMinParamValue(test[param.key])) filled++;
+      if (paramHasValue(test, param)) filled++;
     });
   });
   
@@ -390,13 +397,79 @@ const ProductTypeBadge = ({ productType, size = 'sm' }) => {
 // ============================================
 const GlossaryTooltip = ({ termKey, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [placement, setPlacement] = useState('top'); // 'top' or 'bottom'
+  const buttonRef = useRef(null);
   const term = GLOSSARY[termKey];
   
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const tooltipHeight = 120; // Approximate tooltip height
+      const tooltipWidth = 288; // w-72 = 18rem = 288px
+      
+      // Check if tooltip would be clipped at top
+      const spaceAbove = rect.top;
+      const spaceBelow = window.innerHeight - rect.bottom;
+      
+      // Determine placement
+      const shouldPlaceBelow = spaceAbove < tooltipHeight + 10 && spaceBelow > spaceAbove;
+      setPlacement(shouldPlaceBelow ? 'bottom' : 'top');
+      
+      // Calculate position
+      let top, left;
+      if (shouldPlaceBelow) {
+        top = rect.bottom + 8;
+      } else {
+        top = rect.top - tooltipHeight - 8;
+      }
+      
+      // Center horizontally, but keep within viewport
+      left = rect.left + rect.width / 2 - tooltipWidth / 2;
+      left = Math.max(10, Math.min(left, window.innerWidth - tooltipWidth - 10));
+      
+      setPosition({ top, left });
+    }
+  }, [isOpen]);
+  
   if (!term) return children || null;
+  
+  const tooltipContent = isOpen && ReactDOM.createPortal(
+    <div 
+      className="fixed z-[9999] w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl"
+      style={{ top: position.top, left: position.left }}
+    >
+      <div className="font-semibold mb-1">{term.term}</div>
+      <div className="text-gray-300 text-xs mb-2">{term.definition}</div>
+      <a 
+        href={term.sourceUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300"
+        onClick={(e) => e.stopPropagation()}
+      >
+        Source: {term.source}
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+      {/* Arrow pointing to button */}
+      <div 
+        className={`absolute w-0 h-0 border-l-8 border-r-8 border-transparent ${
+          placement === 'top' 
+            ? 'bottom-0 translate-y-full border-t-8 border-t-gray-900' 
+            : 'top-0 -translate-y-full border-b-8 border-b-gray-900'
+        }`}
+        style={{ left: '50%', transform: `translateX(-50%) ${placement === 'top' ? 'translateY(100%)' : 'translateY(-100%)'}`}}
+      />
+    </div>,
+    document.body
+  );
   
   return (
     <span className="relative inline-block">
       <button
+        ref={buttonRef}
         type="button"
         className="inline-flex items-center gap-0.5 text-inherit border-b border-dotted border-current cursor-help hover:text-emerald-600 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
@@ -408,25 +481,7 @@ const GlossaryTooltip = ({ termKey, children }) => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </button>
-      {isOpen && (
-        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl">
-          <div className="font-semibold mb-1">{term.term}</div>
-          <div className="text-gray-300 text-xs mb-2">{term.definition}</div>
-          <a 
-            href={term.sourceUrl} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Source: {term.source}
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-900" />
-        </div>
-      )}
+      {tooltipContent}
     </span>
   );
 };
@@ -7269,11 +7324,24 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 // ============================================
 // MinParamRow - For Vendor Confirmation Display
 // Shows ALL minimum parameters, including empty ones
+// Supports alternativeKey for fields like sensitivity/landmarkSensitivity
 // ============================================
 const MinParamRow = ({ param, test }) => {
-  const value = test[param.key];
-  const citations = param.citationKey ? test[param.citationKey] : null;
-  const notes = param.notesKey ? test[param.notesKey] : null;
+  // Check primary key first, then alternative if available
+  let value = test[param.key];
+  let citations = param.citationKey ? test[param.citationKey] : null;
+  let notes = param.notesKey ? test[param.notesKey] : null;
+  let displayLabel = param.label;
+  let usingAlternative = false;
+  
+  // If primary value is empty and we have an alternative, use that
+  if (!hasMinParamValue(value) && param.alternativeKey && hasMinParamValue(test[param.alternativeKey])) {
+    value = test[param.alternativeKey];
+    citations = param.alternativeCitationKey ? test[param.alternativeCitationKey] : citations;
+    displayLabel = param.alternativeLabel || param.label;
+    usingAlternative = true;
+  }
+  
   const hasValue = hasMinParamValue(value);
   
   // Format the display value based on formatter type
@@ -7299,7 +7367,10 @@ const MinParamRow = ({ param, test }) => {
   return (
     <div className={`flex items-center justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4 group ${!hasValue ? 'bg-amber-50/50' : ''}`}>
       <span className="flex-shrink-0 flex items-center gap-1">
-        <span className="text-xs text-gray-500">{param.label}</span>
+        <span className="text-xs text-gray-500">{displayLabel}</span>
+        {usingAlternative && (
+          <span className="text-[9px] px-1 py-0.5 bg-blue-100 text-blue-600 rounded" title={`Using ${param.alternativeKey} instead of ${param.key}`}>alt</span>
+        )}
         {param.tooltip && (
           <span className="text-[10px] text-gray-400" title={param.tooltip}>ⓘ</span>
         )}
@@ -7335,7 +7406,7 @@ const MinParamSection = ({ sectionKey, params, test, colors }) => {
   const section = MIN_PARAM_SECTIONS[sectionKey];
   if (!section || !params || params.length === 0) return null;
   
-  const filledCount = params.filter(p => hasMinParamValue(test[p.key])).length;
+  const filledCount = params.filter(p => paramHasValue(test, p)).length;
   const totalCount = params.length;
   const isComplete = filledCount === totalCount;
   
