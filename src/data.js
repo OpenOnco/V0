@@ -6905,10 +6905,10 @@ export const PAGE_SEO = {
     description: 'Independent database comparing 60+ cancer blood tests. MRD, early detection, treatment monitoring - all specs side-by-side.',
     path: '/'
   },
-  awards: {
-    title: 'OpenOnco Awards - Data Completeness Rankings',
+  competitions: {
+    title: 'OpenOnco Competitions - Data Completeness Rankings',
     description: 'Vendor data completeness rankings and recognition. See which cancer diagnostic tests have complete, transparent data.',
-    path: '/awards'
+    path: '/competitions'
   },
   MRD: {
     title: 'MRD Tests Compared - Molecular Residual Disease',

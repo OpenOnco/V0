@@ -1054,10 +1054,10 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const navItems = ['awards', 'home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
+  const navItems = ['home', 'competitions', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
   const getLabel = (page) => ({
-    'awards': 'Awards',
     'home': 'Home',
+    'competitions': 'Competitions',
     'learn': 'Learn',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
@@ -2802,7 +2802,7 @@ const StatOfTheDay = ({ onNavigate }) => {
 };
 
 // ============================================
-// Awards Page - Data Completeness & Vendor Recognition
+// Competitions Page - Data Completeness & Vendor Recognition
 // ============================================
 
 // Calculate completeness score for a single test
@@ -2875,22 +2875,39 @@ const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
     TDS: { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600' },
   };
   const colors = categoryColors[category] || categoryColors.MRD;
+  const isVC = test.vendorConfirmed === true;
+  const isFullyFilled = completeness.percentage === 100 && !isVC;
   
   return (
-    <div className={`relative bg-white rounded-xl border-2 ${completeness.percentage === 100 ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}>
-      {/* 100% Complete Badge */}
-      {completeness.percentage === 100 && (
+    <div className={`relative bg-white rounded-xl border-2 ${isVC ? 'border-blue-400 shadow-lg shadow-blue-100' : isFullyFilled ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}>
+      {/* Top Badge */}
+      {isVC ? (
+        <div className="absolute -top-3 -right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          VC
+        </div>
+      ) : isFullyFilled ? (
         <div className="absolute -top-3 -right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
           Complete
         </div>
-      )}
+      ) : null}
       
       <div className="flex items-start gap-4">
         {/* Completeness Score */}
-        <CompletenessBadge percentage={completeness.percentage} size="md" />
+        {isVC ? (
+          <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold ring-2 ring-blue-300">
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+          </div>
+        ) : (
+          <CompletenessBadge percentage={completeness.percentage} size="md" />
+        )}
         
         {/* Test Info */}
         <div className="flex-1 min-w-0">
@@ -2899,33 +2916,32 @@ const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
               {category}
             </span>
             {test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
-            {test.vendorConfirmed && (
-              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 border border-blue-200 rounded text-xs font-medium flex items-center gap-1">
-                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Vendor Confirmed
-              </span>
-            )}
           </div>
           <h3 className="font-semibold text-gray-900 truncate">{test.name}</h3>
           <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           
-          {/* Progress bar */}
-          <div className="mt-2">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-              <span>{completeness.filled}/{completeness.total} minimum fields</span>
-              {completeness.missingFields.length > 0 && (
-                <span className="text-amber-600">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
-              )}
+          {/* Progress bar - hidden for VC, show confirmation date instead */}
+          {isVC ? (
+            <div className="mt-2 text-xs text-blue-600">
+              <span className="font-medium">✓ Verified</span>
+              {test.vendorConfirmedDate && <span> • {test.vendorConfirmedDate}</span>}
             </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div 
-                className={`h-full rounded-full transition-all ${completeness.percentage === 100 ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
-                style={{ width: `${completeness.percentage}%` }}
-              />
+          ) : (
+            <div className="mt-2">
+              <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                <span>{completeness.filled}/{completeness.total} minimum fields</span>
+                {completeness.missingFields.length > 0 && (
+                  <span className="text-amber-600">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
+                )}
+              </div>
+              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full rounded-full transition-all ${completeness.percentage === 100 ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
+                  style={{ width: `${completeness.percentage}%` }}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         
         {/* View button */}
@@ -2940,7 +2956,7 @@ const AwardTestCard = ({ test, category, completeness, onNavigate }) => {
   );
 };
 
-const AwardsPage = ({ onNavigate }) => {
+const CompetitionsPage = ({ onNavigate }) => {
   // Aggregate all tests with their categories and completeness scores
   const allTestsWithScores = useMemo(() => {
     const tests = [
@@ -2953,13 +2969,19 @@ const AwardsPage = ({ onNavigate }) => {
     return tests.map(test => ({
       ...test,
       completeness: calculateTestCompleteness(test, test.category)
-    })).sort((a, b) => b.completeness.percentage - a.completeness.percentage);
+    })).sort((a, b) => {
+      // VC tests first, then by completeness
+      if (a.vendorConfirmed && !b.vendorConfirmed) return -1;
+      if (!a.vendorConfirmed && b.vendorConfirmed) return 1;
+      return b.completeness.percentage - a.completeness.percentage;
+    });
   }, []);
   
-  // Group tests into quintiles
-  const quintiles = useMemo(() => {
+  // Group tests into tiers
+  const tiers = useMemo(() => {
     const groups = {
-      complete: { label: '100% Complete', sublabel: 'All minimum fields filled', tests: [], color: 'emerald', icon: '🏆' },
+      vc: { label: 'Vendor Confirmed (VC)', sublabel: 'Verified by vendor representative', tests: [], color: 'blue', icon: '🏆' },
+      fullyFilled: { label: 'Fully Filled', sublabel: 'All minimum fields complete — eligible for VC', tests: [], color: 'emerald', icon: '✅' },
       high: { label: '80-99%', sublabel: 'Almost there', tests: [], color: 'green', icon: '🥈' },
       medium: { label: '60-79%', sublabel: 'Good progress', tests: [], color: 'amber', icon: '🥉' },
       low: { label: '40-59%', sublabel: 'Room to improve', tests: [], color: 'orange', icon: '📊' },
@@ -2967,12 +2989,16 @@ const AwardsPage = ({ onNavigate }) => {
     };
     
     allTestsWithScores.forEach(test => {
-      const pct = test.completeness.percentage;
-      if (pct === 100) groups.complete.tests.push(test);
-      else if (pct >= 80) groups.high.tests.push(test);
-      else if (pct >= 60) groups.medium.tests.push(test);
-      else if (pct >= 40) groups.low.tests.push(test);
-      else groups.minimal.tests.push(test);
+      if (test.vendorConfirmed) {
+        groups.vc.tests.push(test);
+      } else {
+        const pct = test.completeness.percentage;
+        if (pct === 100) groups.fullyFilled.tests.push(test);
+        else if (pct >= 80) groups.high.tests.push(test);
+        else if (pct >= 60) groups.medium.tests.push(test);
+        else if (pct >= 40) groups.low.tests.push(test);
+        else groups.minimal.tests.push(test);
+      }
     });
     
     return groups;
@@ -2981,21 +3007,59 @@ const AwardsPage = ({ onNavigate }) => {
   // Calculate summary stats
   const stats = useMemo(() => {
     const total = allTestsWithScores.length;
-    const complete = quintiles.complete.tests.length;
+    const vcCount = tiers.vc.tests.length;
+    const fullyFilledCount = tiers.fullyFilled.tests.length;
     const avgCompleteness = total > 0 
       ? Math.round(allTestsWithScores.reduce((sum, t) => sum + t.completeness.percentage, 0) / total)
       : 0;
-    return { total, complete, avgCompleteness };
-  }, [allTestsWithScores, quintiles]);
+    return { total, vcCount, fullyFilledCount, avgCompleteness };
+  }, [allTestsWithScores, tiers]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">OpenOnco Awards</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Recognizing vendors who provide complete, transparent test data. Help patients and clinicians make informed decisions.
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">OpenOnco Competitions</h1>
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          Our mission is simple: get the best data for patients and clinicians. 
+          We're inviting all vendors to complete their test profiles and earn recognition.
         </p>
+      </div>
+      
+      {/* Competition Explanation */}
+      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 sm:p-8 border border-slate-200 mb-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span className="text-2xl">🎯</span> How It Works
+        </h2>
+        <div className="grid sm:grid-cols-3 gap-6">
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold">1</div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Fill Your Minimum Fields</h3>
+              <p className="text-sm text-gray-600">Each category has essential fields patients need. Submit your data via email or our Submissions page.</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">2</div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Reach "Fully Filled" Status</h3>
+              <p className="text-sm text-gray-600">Once all minimum fields are complete, you enter the green tier and become eligible for VC status.</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">3</div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Get Vendor Confirmed (VC)</h3>
+              <p className="text-sm text-gray-600">Send us a signed confirmation statement. VC tests get top placement in all showcases.</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 p-4 bg-white rounded-xl border border-slate-200">
+          <p className="text-sm text-gray-700">
+            <strong className="text-emerald-600">🌟 Everyone can win!</strong> This isn't about ranking vendors against each other — 
+            it's about making sure patients have the complete information they need. Every test that reaches VC status helps someone make a better decision about their care.
+          </p>
+        </div>
       </div>
       
       {/* Summary Stats */}
@@ -3004,76 +3068,47 @@ const AwardsPage = ({ onNavigate }) => {
           <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
           <p className="text-sm text-gray-500">Total Tests</p>
         </div>
+        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center">
+          <p className="text-3xl font-bold text-blue-600">{stats.vcCount}</p>
+          <p className="text-sm text-blue-600">Vendor Confirmed</p>
+        </div>
         <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-4 text-center">
-          <p className="text-3xl font-bold text-emerald-600">{stats.complete}</p>
-          <p className="text-sm text-emerald-600">100% Complete</p>
+          <p className="text-3xl font-bold text-emerald-600">{stats.fullyFilledCount}</p>
+          <p className="text-sm text-emerald-600">Fully Filled</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <p className="text-3xl font-bold text-gray-800">{stats.avgCompleteness}%</p>
           <p className="text-sm text-gray-500">Avg Completeness</p>
         </div>
-        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center">
-          <p className="text-3xl font-bold text-blue-600">0</p>
-          <p className="text-sm text-blue-600">Vendor Confirmed</p>
-        </div>
       </div>
       
-      {/* CTA for Vendors */}
-      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-6 sm:p-8 text-white mb-8">
-        <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div className="flex-shrink-0">
-            <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center">
-              <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-              </svg>
-            </div>
-          </div>
-          <div className="flex-1 text-center sm:text-left">
-            <h2 className="text-2xl font-bold mb-2">Vendor Confirmed Program</h2>
-            <p className="text-emerald-100 mb-4">
-              Get your test data verified and earn the "Vendor Confirmed" badge. Complete your minimum fields 
-              and submit for review to stand out to patients and clinicians.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start">
-              <button 
-                onClick={() => onNavigate('submissions')}
-                className="px-6 py-2.5 bg-white text-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 transition-colors"
-              >
-                Submit Your Data
-              </button>
-              <a 
-                href="mailto:info@openonco.org?subject=Vendor%20Confirmed%20Program"
-                className="px-6 py-2.5 bg-emerald-600 text-white font-semibold rounded-lg border-2 border-white/30 hover:bg-emerald-700 transition-colors text-center"
-              >
-                Apply for Verification
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Minimum Fields Explanation */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+      {/* VC Explanation */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
         <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div className="flex-shrink-0 w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           </div>
           <div>
-            <h3 className="font-semibold text-amber-800 mb-1">What are "Minimum Fields"?</h3>
-            <p className="text-sm text-amber-700">
-              Each category has a set of essential data fields that patients and clinicians need for informed decision-making. 
-              These include performance metrics (sensitivity, specificity), regulatory status, pricing, and turnaround time. 
-              Tests with 100% completion provide the transparency users deserve.
+            <h3 className="font-semibold text-blue-900 mb-1">What is Vendor Confirmed (VC)?</h3>
+            <p className="text-sm text-blue-800 mb-2">
+              VC is our verification badge. To earn it, a vendor representative emails us a statement confirming:
+            </p>
+            <ol className="text-sm text-blue-700 list-decimal list-inside space-y-1">
+              <li>They are employed by the vendor company</li>
+              <li>All minimum field values for their test on OpenOnco are accurate</li>
+            </ol>
+            <p className="text-sm text-blue-700 mt-2">
+              <strong>Reward:</strong> VC tests are listed first in their category showcases, on this page, and receive the trusted VC badge.
             </p>
           </div>
         </div>
       </div>
       
-      {/* Quintile Groups */}
+      {/* Tier Groups */}
       <div className="space-y-8">
-        {Object.entries(quintiles).map(([key, group]) => (
+        {Object.entries(tiers).map(([key, group]) => (
           group.tests.length > 0 && (
             <div key={key}>
               <div className="flex items-center gap-3 mb-4">
@@ -3100,16 +3135,25 @@ const AwardsPage = ({ onNavigate }) => {
       </div>
       
       {/* Bottom CTA */}
-      <div className="mt-12 text-center">
-        <p className="text-gray-600 mb-4">
-          Is your test missing data? Help us help patients by completing your test profile.
+      <div className="mt-12 text-center bg-slate-50 rounded-2xl p-8 border border-slate-200">
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Participate?</h3>
+        <p className="text-gray-600 mb-4 max-w-xl mx-auto">
+          Complete your test's minimum fields and join the competition. Every completed profile helps patients make better decisions.
         </p>
-        <button 
-          onClick={() => onNavigate('submissions')}
-          className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
-        >
-          Submit Test Data
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <a 
+            href="mailto:info@openonco.org?subject=Data%20Submission%20for%20OpenOnco%20Competition"
+            className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
+          >
+            Submit Test Data
+          </a>
+          <button 
+            onClick={() => onNavigate('submissions')}
+            className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+          >
+            View Submissions Page
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -7480,9 +7524,19 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
+  const isVC = test.vendorConfirmed === true;
   
   return (
-    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isVC ? 'border-blue-400 shadow-md shadow-blue-100' : isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+      {/* VC Badge - top right corner */}
+      {isVC && (
+        <div className="absolute -top-2 -right-2 bg-blue-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md flex items-center gap-0.5 z-10">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          VC
+        </div>
+      )}
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -7839,191 +7893,155 @@ const FIELD_DEFINITIONS = {
 // ============================================
 // Vendor Confirmation Form
 // ============================================
-const VendorConfirmationForm = ({ test, category, onClose }) => {
-  const [formData, setFormData] = useState({});
-  const [submitterInfo, setSubmitterInfo] = useState({ name: '', email: '', role: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [submitError, setSubmitError] = useState('');
+// ============================================
+// Minimum Fields Section - Shows completion status for VC eligibility
+// ============================================
+const MinimumFieldsSection = ({ test, category }) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return null;
   
-  const minParams = MINIMUM_PARAMS[category] || {};
-  const minParamKeys = Object.values(minParams).flat().map(p => p.key);
-  const recommendedFields = minParamKeys.filter(key => FIELD_DEFINITIONS[key]);
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
   
-  const validateEmail = () => {
-    const email = submitterInfo.email;
-    if (!email || !email.includes('@')) {
-      setEmailError('Please enter a valid email address');
-      return false;
-    }
-    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
-    const domain = email.split('@')[1]?.toLowerCase();
-    if (freeProviders.includes(domain)) {
-      setEmailError('Please use your company email');
-      return false;
-    }
-    setEmailError('');
-    return true;
-  };
+  const fields = minParams.core.map(p => ({
+    key: p.key,
+    label: p.label,
+    value: test[p.key],
+    filled: hasValue(test[p.key])
+  }));
   
-  const formatValue = (key, value) => {
-    if (value == null || value === '') return '—';
-    if (Array.isArray(value)) return value.join(', ');
-    return String(value);
-  };
+  const filledCount = fields.filter(f => f.filled).length;
+  const totalCount = fields.length;
+  const isComplete = filledCount === totalCount;
+  const isVC = test.vendorConfirmed === true;
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateEmail()) return;
-    setIsSubmitting(true);
-    setSubmitError('');
-    
-    const confirmed = [];
-    const changes = [];
-    Object.entries(formData).forEach(([key, data]) => {
-      if (data.action === 'confirm') {
-        confirmed.push({ field: key, label: FIELD_DEFINITIONS[key]?.label || key, value: formatValue(key, test[key]) });
-      } else if (data.action === 'update' && data.newValue?.trim()) {
-        changes.push({ field: key, label: FIELD_DEFINITIONS[key]?.label || key, currentValue: formatValue(key, test[key]), newValue: data.newValue, citation: data.citation || '' });
-      }
-    });
-    
-    const submission = {
-      submissionType: 'vendor-confirmation',
-      submitter: { firstName: submitterInfo.name.split(' ')[0] || submitterInfo.name, lastName: submitterInfo.name.split(' ').slice(1).join(' ') || '', email: submitterInfo.email, role: submitterInfo.role },
-      category,
-      vendorConfirmation: { testId: test.id, testName: test.name, vendor: test.vendor, confirmed, changes, totalRecommendedFields: recommendedFields.length },
-      timestamp: new Date().toISOString(),
-    };
-    
-    try {
-      const response = await fetch('/api/submit-form', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ submission }) });
-      if (response.ok) { setSubmitted(true); } else { setSubmitError('Failed to submit.'); }
-    } catch (error) { setSubmitError('Network error.'); }
-    setIsSubmitting(false);
-  };
-  
-  const actedCount = Object.values(formData).filter(d => d.action === 'confirm' || (d.action === 'update' && d.newValue)).length;
-  
-  if (submitted) {
-    return (
-      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50">
-        <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 text-center">
-          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Submission Received!</h3>
-          <p className="text-gray-600 mb-4">Thank you for confirming your test data.</p>
-          <button onClick={onClose} className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700">Done</button>
-        </div>
-      </div>
+  // Generate mailto link for VC verification
+  const generateVCMailto = () => {
+    const subject = encodeURIComponent(`Vendor Confirmed Request: ${test.name}`);
+    const body = encodeURIComponent(
+`I am writing to request Vendor Confirmed (VC) status for ${test.name} on OpenOnco.
+
+I, [YOUR NAME], am employed by ${test.vendor} and confirm that all minimum field values for ${test.name} on OpenOnco are accurate as of ${new Date().toLocaleDateString()}.
+
+My role/title: [YOUR TITLE]
+My company email: [YOUR EMAIL]
+
+Test: ${test.name}
+Category: ${category}
+Test ID: ${test.id}
+
+Thank you,
+[YOUR NAME]`
     );
-  }
+    return `mailto:info@openonco.org?subject=${subject}&body=${body}`;
+  };
+  
+  const formatDisplayValue = (val) => {
+    if (val == null || val === '') return '—';
+    if (Array.isArray(val)) return val.join(', ');
+    if (typeof val === 'number') return val.toLocaleString();
+    return String(val);
+  };
   
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
-        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Vendor Data Confirmation</h2>
-            <p className="text-sm text-gray-500">{test.name} • {test.vendor}</p>
-          </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
-            <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
+    <div className={`mt-4 p-4 rounded-xl border-2 ${isVC ? 'bg-blue-50 border-blue-300' : isComplete ? 'bg-emerald-50 border-emerald-300' : 'bg-amber-50 border-amber-200'}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-gray-800">Minimum Fields for VC Status</h3>
+          {isVC ? (
+            <span className="px-2 py-0.5 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              Vendor Confirmed
+            </span>
+          ) : isComplete ? (
+            <span className="px-2 py-0.5 bg-emerald-500 text-white text-xs font-bold rounded">✓ Eligible for VC</span>
+          ) : (
+            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
+          )}
         </div>
-        <div className="px-6 py-3 bg-emerald-50 border-b border-emerald-100">
-          <p className="text-sm text-emerald-800"><strong>Get VENDOR CONFIRMED status:</strong> Confirm existing data or provide updates.</p>
-        </div>
-        <form onSubmit={handleSubmit} className="flex-1 overflow-hidden flex flex-col">
-          <div className="flex-1 overflow-y-auto px-6 py-4">
-            <div className="mb-6 p-4 bg-gray-50 rounded-xl">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Your Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Name *</label>
-                  <input type="text" required value={submitterInfo.name} onChange={(e) => setSubmitterInfo(prev => ({ ...prev, name: e.target.value }))} className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg" />
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Vendor Email *</label>
-                  <input type="email" required value={submitterInfo.email} onChange={(e) => { setSubmitterInfo(prev => ({ ...prev, email: e.target.value })); setEmailError(''); }} onBlur={validateEmail} className={`w-full px-3 py-2 text-sm border rounded-lg ${emailError ? 'border-red-300' : 'border-gray-200'}`} />
-                  {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Role/Title *</label>
-                  <input type="text" required value={submitterInfo.role} onChange={(e) => setSubmitterInfo(prev => ({ ...prev, role: e.target.value }))} className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg" />
-                </div>
-              </div>
-            </div>
-            <div className="mb-4 text-sm text-gray-600">{actedCount} of {recommendedFields.length} fields reviewed</div>
-            <div className="space-y-3">
-              {recommendedFields.map(key => {
-                const def = FIELD_DEFINITIONS[key];
-                if (!def) return null;
-                const currentValue = test[key];
-                const hasValue = currentValue != null && currentValue !== '' && !(Array.isArray(currentValue) && currentValue.length === 0);
-                const data = formData[key] || {};
-                const isConfirmed = data.action === 'confirm';
-                const isUpdating = data.action === 'update';
-                return (
-                  <div key={key} className={`p-4 rounded-lg border ${isConfirmed ? 'border-emerald-400 bg-emerald-50' : 'border-gray-200'}`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="font-semibold text-gray-800">{def.label}</span>
-                      {!hasValue && <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">NEEDS DATA</span>}
-                      {isConfirmed && <span className="text-xs px-2 py-0.5 bg-emerald-500 text-white rounded font-medium">✓ CONFIRMED</span>}
-                    </div>
-                    <div className={`mb-3 p-3 rounded-lg ${hasValue ? 'bg-gray-100' : 'bg-amber-50 border border-dashed border-amber-300'}`}>
-                      <div className="text-xs text-gray-500 mb-1">Current Value</div>
-                      <div className={`text-lg font-semibold ${hasValue ? 'text-gray-900' : 'text-amber-600'}`}>{formatValue(key, currentValue)}</div>
-                    </div>
-                    {!isUpdating ? (
-                      <div className="flex gap-2">
-                        {hasValue && !isConfirmed && (
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'confirm' } }))} className="flex-1 px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600">
-                            ✓ Confirm This Value
-                          </button>
-                        )}
-                        {isConfirmed && (
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300">
-                            Undo
-                          </button>
-                        )}
-                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'update', newValue: '', citation: '' } }))} className="flex-1 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600">
-                          {hasValue ? 'Update Value' : '+ Add Value'}
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">New Value *</label>
-                          <input type="text" placeholder={`Enter ${def.label.toLowerCase()}...`} value={data.newValue || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], newValue: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Citation URL</label>
-                          <input type="url" placeholder="https://..." value={data.citation || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], citation: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
-                        </div>
-                        <div className="flex gap-2">
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
-                          <button type="button" disabled={!data.newValue} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">Save</button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
-            <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 hover:underline">Questions? Connect on LinkedIn</a>
-            <div className="flex items-center gap-3">
-              {submitError && <span className="text-xs text-red-600">{submitError}</span>}
-              <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-              <button type="submit" disabled={isSubmitting || !!emailError || actedCount === 0} className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50">{isSubmitting ? 'Submitting...' : 'Submit Confirmation'}</button>
-            </div>
-          </div>
-        </form>
       </div>
+      
+      {/* Progress bar */}
+      <div className="mb-4">
+        <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
+          <div 
+            className={`h-full rounded-full transition-all ${isVC ? 'bg-blue-500' : isComplete ? 'bg-emerald-500' : 'bg-amber-400'}`}
+            style={{ width: `${(filledCount / totalCount) * 100}%` }}
+          />
+        </div>
+      </div>
+      
+      {/* Fields grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        {fields.map(field => (
+          <div 
+            key={field.key} 
+            className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-amber-100/50 border-amber-300 border-dashed'}`}
+          >
+            <div className="flex items-center gap-1.5 mb-0.5">
+              {field.filled ? (
+                <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              )}
+              <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-amber-700'}`}>{field.label}</span>
+            </div>
+            <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-amber-600 italic'}`}>
+              {field.filled ? formatDisplayValue(field.value) : 'Missing'}
+            </p>
+          </div>
+        ))}
+      </div>
+      
+      {/* CTA */}
+      {!isVC && (
+        <div className={`mt-4 pt-3 border-t ${isComplete ? 'border-emerald-200' : 'border-amber-200'}`}>
+          {isComplete ? (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="flex-1">
+                <p className="text-sm text-emerald-800 font-medium">All minimum fields complete! Ready for VC verification.</p>
+                <p className="text-xs text-emerald-600">Click below to send a verification request to OpenOnco.</p>
+              </div>
+              <a 
+                href={generateVCMailto()}
+                className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Apply for VC Status
+              </a>
+            </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="flex-1">
+                <p className="text-sm text-amber-800">Complete all minimum fields to become eligible for Vendor Confirmed (VC) status.</p>
+                <p className="text-xs text-amber-600">Submit updates via our Submissions page or email info@openonco.org</p>
+              </div>
+              <a 
+                href="mailto:info@openonco.org?subject=Data%20Update%20Request"
+                className="px-4 py-2 bg-amber-500 text-white text-sm font-semibold rounded-lg hover:bg-amber-600 transition-colors"
+              >
+                Submit Data
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+      
+      {isVC && (
+        <div className="mt-3 pt-3 border-t border-blue-200">
+          <p className="text-xs text-blue-700">
+            <strong>Vendor Confirmed:</strong> {test.vendor} has verified this data is accurate. Last confirmed: {test.vendorConfirmedDate || 'Date on file'}.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
@@ -8033,7 +8051,6 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
 // ============================================
 const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => {
   const [linkCopied, setLinkCopied] = useState(false);
-  const [showVendorForm, setShowVendorForm] = useState(false);
   
   if (!test) return null;
   
@@ -8201,13 +8218,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
-                {!isPatientView && MINIMUM_PARAMS[category] && (
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setShowVendorForm(true); }}
-                    className="px-3 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-medium rounded-full transition-colors print:hidden"
-                  >
-                    Vendors: Update for CONFIRMED status →
-                  </button>
+                {test.vendorConfirmed && (
+                  <span className="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    VC
+                  </span>
                 )}
               </div>
             </div>
@@ -8729,14 +8746,16 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   </a>
                 </div>
               )}
+              
+              {/* Minimum Fields Section - for VC eligibility */}
+              {!isPatientView && MINIMUM_PARAMS[category] && (
+                <MinimumFieldsSection test={test} category={category} />
+              )}
             </>
           )}
         </div>
       </div>
     </div>
-    {showVendorForm && (
-      <VendorConfirmationForm test={test} category={category} onClose={() => setShowVendorForm(false)} />
-    )}
     </>
   );
 };
@@ -9401,6 +9420,11 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         if (!selectedProductTypes.includes(testProductType)) return false;
       }
       return true;
+    }).sort((a, b) => {
+      // Sort VC tests first, then by name
+      if (a.vendorConfirmed && !b.vendorConfirmed) return -1;
+      if (!a.vendorConfirmed && b.vendorConfirmed) return 1;
+      return 0; // Maintain original order for non-VC tests
     });
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
 
@@ -10002,7 +10026,7 @@ export default function App() {
   // Map URL paths to page names
   const pathToPage = {
     '/': 'home',
-    '/awards': 'awards',
+    '/competitions': 'competitions',
     '/submissions': 'submissions',
     '/how-it-works': 'how-it-works',
     '/data-sources': 'data-sources',
@@ -10018,7 +10042,7 @@ export default function App() {
 
   const pageToPath = {
     'home': '/',
-    'awards': '/awards',
+    'competitions': '/competitions',
     'submissions': '/submissions',
     'how-it-works': '/how-it-works',
     'data-sources': '/data-sources',
@@ -10182,8 +10206,8 @@ export default function App() {
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'awards': return <AwardsPage onNavigate={handleNavigate} />;
       case 'home': return <HomePage onNavigate={handleNavigate} />;
+      case 'competitions': return <CompetitionsPage onNavigate={handleNavigate} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
