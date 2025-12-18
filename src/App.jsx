@@ -5609,7 +5609,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const [existingTest, setExistingTest] = useState('');
   
   // Complete missing fields - multiple parameters with values
-  const [completeFieldEntries, setCompleteFieldEntries] = useState([{ parameter: '', value: '', citation: '' }]);
+  const [completeFieldEntries, setCompleteFieldEntries] = useState([]);
   const [selectedParameter, setSelectedParameter] = useState('');
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
@@ -6061,9 +6061,9 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
     } else if (submissionType === 'correction') {
       return existingTest && selectedParameter && newValue && citation;
     } else if (submissionType === 'complete') {
-      // Need test selected and at least one complete entry
+      // Need test selected and at least one field with both value and citation
       return existingTest && completeFieldEntries.length > 0 && 
-        completeFieldEntries.every(e => e.parameter && e.value && e.citation);
+        completeFieldEntries.some(e => e.value && e.citation);
     }
     
     return false;
@@ -6082,7 +6082,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
+              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">Suggest a New Test</div>
@@ -6103,7 +6103,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
+              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">File a Correction</div>
@@ -6115,7 +6115,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
+              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'bug' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'bug' ? 'text-red-700' : 'text-gray-800'}`}>Report a Bug</div>
@@ -6123,7 +6123,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
+              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'feature' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'feature' ? 'text-purple-700' : 'text-gray-800'}`}>Request a Feature</div>
@@ -6173,7 +6173,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                 <button
                   key={cat.key}
                   type="button"
-                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); }}
+                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); setCompleteFieldEntries([]); }}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${category === cat.key ? `border-${cat.color}-500 bg-${cat.color}-50` : 'border-gray-200 hover:border-gray-300'}`}
                 >
                   <div className={`font-bold ${category === cat.key ? `text-${cat.color}-700` : 'text-gray-800'}`}>{cat.label}</div>
@@ -6315,7 +6315,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           </div>
         )}
 
-        {/* COMPLETE MISSING FIELDS: Select Test → Add Multiple Parameters */}
+        {/* COMPLETE MISSING FIELDS: Select Test → Show All Missing Fields */}
         {submissionType === 'complete' && category && (
           <div className="bg-white rounded-xl border border-emerald-200 p-6">
             <h3 className="text-lg font-semibold text-emerald-800 mb-2 flex items-center gap-2">
@@ -6331,7 +6331,13 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                 <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
                 <select
                   value={existingTest}
-                  onChange={(e) => { setExistingTest(e.target.value); setCompleteFieldEntries([{ parameter: '', value: '', citation: '' }]); setEmailError(''); setVerificationStep('form'); }}
+                  onChange={(e) => { 
+                    setExistingTest(e.target.value); 
+                    // Reset field entries when test changes
+                    setCompleteFieldEntries([]); 
+                    setEmailError(''); 
+                    setVerificationStep('form'); 
+                  }}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   required
                 >
@@ -6354,10 +6360,19 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
               {existingTest && (() => {
                 const testData = (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === existingTest);
                 const completeness = calculateTestCompleteness(testData, category);
-                const missingParams = parameterOptions[category]?.filter(p => completeness.missingFields.includes(p.label)) || [];
                 
-                // Get parameters that haven't been selected yet
-                const availableParams = missingParams.filter(p => !completeFieldEntries.some(e => e.parameter === p.key));
+                // Get the actual missing field keys from MINIMUM_PARAMS
+                const minParams = MINIMUM_PARAMS[category]?.core || [];
+                const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+                const missingFields = minParams.filter(p => !hasValue(testData[p.key]));
+                
+                // Initialize completeFieldEntries if empty
+                if (completeFieldEntries.length === 0 && missingFields.length > 0) {
+                  setTimeout(() => {
+                    setCompleteFieldEntries(missingFields.map(f => ({ key: f.key, label: f.label, value: '', citation: '' })));
+                  }, 0);
+                  return null;
+                }
                 
                 return (
                   <>
@@ -6374,94 +6389,67 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                         />
                       </div>
                       <p className="text-xs text-emerald-700 mt-2">
-                        {completeness.missingFields.length} field{completeness.missingFields.length !== 1 ? 's' : ''} needed for Baseline Complete: {completeness.missingFields.join(', ')}
+                        Fill in any fields below to help complete this test's profile.
                       </p>
                     </div>
 
-                    {/* Field entries */}
-                    {completeFieldEntries.map((entry, index) => (
-                      <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm font-medium text-gray-700">Field {index + 1}</span>
-                          {completeFieldEntries.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => setCompleteFieldEntries(entries => entries.filter((_, i) => i !== index))}
-                              className="text-red-500 hover:text-red-700 text-sm"
-                            >
-                              Remove
-                            </button>
-                          )}
-                        </div>
-                        <div className="space-y-3">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-600 mb-1">Missing Field <span className="text-red-500">*</span></label>
-                            <select
-                              value={entry.parameter}
-                              onChange={(e) => {
-                                const newEntries = [...completeFieldEntries];
-                                newEntries[index].parameter = e.target.value;
-                                setCompleteFieldEntries(newEntries);
-                              }}
-                              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                              required
-                            >
-                              <option value="">-- Select field --</option>
-                              {missingParams.filter(p => p.key === entry.parameter || !completeFieldEntries.some(e => e.parameter === p.key)).map(param => (
-                                <option key={param.key} value={param.key}>{param.label}</option>
-                              ))}
-                            </select>
+                    {/* List all missing fields */}
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-gray-700">Missing Fields ({missingFields.length})</p>
+                      {completeFieldEntries.map((entry, index) => (
+                        <div key={entry.key} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-6 h-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold">
+                              {index + 1}
+                            </span>
+                            <span className="font-medium text-gray-800">{entry.label}</span>
+                            {entry.value && entry.citation && (
+                              <svg className="w-4 h-4 text-emerald-500 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            )}
                           </div>
-                          {entry.parameter && (
-                            <>
-                              <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">Value <span className="text-red-500">*</span></label>
-                                <input
-                                  type="text"
-                                  value={entry.value}
-                                  onChange={(e) => {
-                                    const newEntries = [...completeFieldEntries];
-                                    newEntries[index].value = e.target.value;
-                                    setCompleteFieldEntries(newEntries);
-                                  }}
-                                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                  placeholder="Enter the value"
-                                  required
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">Citation URL <span className="text-red-500">*</span></label>
-                                <input
-                                  type="url"
-                                  value={entry.citation}
-                                  onChange={(e) => {
-                                    const newEntries = [...completeFieldEntries];
-                                    newEntries[index].citation = e.target.value;
-                                    setCompleteFieldEntries(newEntries);
-                                  }}
-                                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                  placeholder="https://..."
-                                  required
-                                />
-                              </div>
-                            </>
-                          )}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-500 mb-1">Value</label>
+                              <input
+                                type="text"
+                                value={entry.value}
+                                onChange={(e) => {
+                                  const newEntries = [...completeFieldEntries];
+                                  newEntries[index].value = e.target.value;
+                                  setCompleteFieldEntries(newEntries);
+                                }}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                placeholder={`Enter ${entry.label.toLowerCase()}`}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-500 mb-1">Citation URL</label>
+                              <input
+                                type="url"
+                                value={entry.citation}
+                                onChange={(e) => {
+                                  const newEntries = [...completeFieldEntries];
+                                  newEntries[index].citation = e.target.value;
+                                  setCompleteFieldEntries(newEntries);
+                                }}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                placeholder="https://..."
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
 
-                    {/* Add another field button */}
-                    {availableParams.length > 0 && completeFieldEntries.every(e => e.parameter && e.value && e.citation) && (
-                      <button
-                        type="button"
-                        onClick={() => setCompleteFieldEntries([...completeFieldEntries, { parameter: '', value: '', citation: '' }])}
-                        className="w-full py-2 border-2 border-dashed border-emerald-300 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Another Field ({availableParams.length} remaining)
-                      </button>
+                    {/* Summary of filled fields */}
+                    {completeFieldEntries.some(e => e.value && e.citation) && (
+                      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                        <p className="text-sm text-emerald-800">
+                          <span className="font-medium">{completeFieldEntries.filter(e => e.value && e.citation).length}</span> of {completeFieldEntries.length} fields ready to submit
+                        </p>
+                      </div>
                     )}
                   </>
                 );
@@ -6617,7 +6605,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         {category && (
           submissionType === 'new' ? newTestName && newTestVendor : 
           submissionType === 'correction' ? existingTest && selectedParameter :
-          submissionType === 'complete' ? existingTest && completeFieldEntries.length > 0 && completeFieldEntries[0].parameter :
+          submissionType === 'complete' ? existingTest && completeFieldEntries.length > 0 && completeFieldEntries.some(e => e.value && e.citation) :
           false
         ) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
