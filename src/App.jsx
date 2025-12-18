@@ -5619,6 +5619,9 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
   
+  // Track if form was prefilled (from Competitions page navigation)
+  const [isPrefilled, setIsPrefilled] = useState(false);
+  
   // Handle prefill from navigation (e.g., from Competitions page)
   useEffect(() => {
     if (prefill) {
@@ -5630,6 +5633,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
       }
       if (prefill.prefillTest) {
         setExistingTest(prefill.prefillTest);
+        setIsPrefilled(true); // Mark as prefilled to lock selections
       }
       // Clear prefill after applying
       if (onClearPrefill) {
@@ -6081,8 +6085,9 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Test Data Update */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        {/* Test Data Update - hide when prefilled */}
+        {!isPrefilled && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <button
@@ -6135,9 +6140,10 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
               <div className="text-sm text-gray-500">Suggest an improvement or new capability</div>
             </button>
           </div>
-        </div>
+          </div>
+        )}
 
-        {/* Submitter Type */}
+        {/* Submitter Type - show for all data submissions including prefilled */}
         {(submissionType === 'new' || submissionType === 'correction' || submissionType === 'complete') && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
@@ -6163,7 +6169,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         )}
 
         {/* Category Selection */}
-        {submitterType && (
+        {/* Category Selection - hide when prefilled for complete submission */}
+        {submitterType && !(isPrefilled && submissionType === 'complete') && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
             <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
@@ -6332,35 +6339,48 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             <p className="text-sm text-gray-600 mb-4">Help a test reach Baseline Complete status by filling in missing data.</p>
             
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
-                <select
-                  value={existingTest}
-                  onChange={(e) => { 
-                    setExistingTest(e.target.value); 
-                    // Reset field entries when test changes
-                    setCompleteFieldEntries([]); 
-                    setEmailError(''); 
-                    setVerificationStep('form'); 
-                  }}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  required
-                >
-                  <option value="">-- Select a test --</option>
-                  {existingTests[category]?.map(test => {
-                    const completeness = calculateTestCompleteness(
-                      (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === test.id),
-                      category
-                    );
-                    const isComplete = completeness.percentage === 100;
-                    return (
-                      <option key={test.id} value={test.id} disabled={isComplete}>
-                        {test.name} ({test.vendor}) {isComplete ? '✓ Complete' : `— ${completeness.percentage}%`}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
+              {/* Show test name as static text when prefilled, otherwise show dropdown */}
+              {isPrefilled && existingTest ? (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <p className="text-xs text-gray-500 mb-1">Test</p>
+                  <p className="font-semibold text-gray-900">
+                    {existingTests[category]?.find(t => t.id === existingTest)?.name || existingTest}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {existingTests[category]?.find(t => t.id === existingTest)?.vendor}
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
+                  <select
+                    value={existingTest}
+                    onChange={(e) => { 
+                      setExistingTest(e.target.value); 
+                      // Reset field entries when test changes
+                      setCompleteFieldEntries([]); 
+                      setEmailError(''); 
+                      setVerificationStep('form'); 
+                    }}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    required
+                  >
+                    <option value="">-- Select a test --</option>
+                    {existingTests[category]?.map(test => {
+                      const completeness = calculateTestCompleteness(
+                        (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === test.id),
+                        category
+                      );
+                      const isComplete = completeness.percentage === 100;
+                      return (
+                        <option key={test.id} value={test.id} disabled={isComplete}>
+                          {test.name} ({test.vendor}) {isComplete ? '✓ Complete' : `— ${completeness.percentage}%`}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              )}
 
               {existingTest && (() => {
                 const testData = (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === existingTest);
@@ -6379,22 +6399,33 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                   return null;
                 }
                 
+                // Calculate dynamic progress including newly filled fields
+                const existingFilledCount = completeness.filled;
+                const newlyFilledCount = completeFieldEntries.filter(e => e.value && e.citation).length;
+                const totalFields = minParams.length;
+                const dynamicProgress = Math.round(((existingFilledCount + newlyFilledCount) / totalFields) * 100);
+                const willBeComplete = dynamicProgress === 100;
+                
                 return (
                   <>
-                    {/* Show current completeness */}
-                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                    {/* Show dynamic progress */}
+                    <div className={`border rounded-lg p-3 ${willBeComplete ? 'bg-emerald-100 border-emerald-300' : 'bg-emerald-50 border-emerald-200'}`}>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-emerald-800">Current Progress</span>
-                        <span className="text-sm font-bold text-emerald-600">{completeness.percentage}%</span>
+                        <span className="text-sm font-medium text-emerald-800">
+                          {willBeComplete ? '🎉 Ready for Baseline Complete!' : 'Progress'}
+                        </span>
+                        <span className={`text-sm font-bold ${willBeComplete ? 'text-emerald-700' : 'text-emerald-600'}`}>{dynamicProgress}%</span>
                       </div>
                       <div className="h-2 bg-emerald-100 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-emerald-500 rounded-full transition-all"
-                          style={{ width: `${completeness.percentage}%` }}
+                          className={`h-full rounded-full transition-all duration-300 ${willBeComplete ? 'bg-emerald-600' : 'bg-emerald-500'}`}
+                          style={{ width: `${dynamicProgress}%` }}
                         />
                       </div>
                       <p className="text-xs text-emerald-700 mt-2">
-                        Fill in any fields below to help complete this test's profile.
+                        {willBeComplete 
+                          ? 'All fields filled! Submit to complete this test\'s profile.'
+                          : `Fill in the fields below to help complete this test's profile.`}
                       </p>
                     </div>
 
@@ -6402,17 +6433,16 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                     <div className="space-y-3">
                       <p className="text-sm font-medium text-gray-700">Missing Fields ({missingFields.length})</p>
                       {completeFieldEntries.map((entry, index) => (
-                        <div key={entry.key} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div key={entry.key} className={`border rounded-lg p-4 ${entry.value && entry.citation ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-200'}`}>
                           <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold">
-                              {index + 1}
+                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${entry.value && entry.citation ? 'bg-emerald-500 text-white' : 'bg-amber-100 text-amber-600'}`}>
+                              {entry.value && entry.citation ? (
+                                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              ) : index + 1}
                             </span>
                             <span className="font-medium text-gray-800">{entry.label}</span>
-                            {entry.value && entry.citation && (
-                              <svg className="w-4 h-4 text-emerald-500 ml-auto" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            )}
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
