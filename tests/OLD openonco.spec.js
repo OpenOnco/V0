@@ -5,14 +5,7 @@ import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../src/data.
 
 /**
  * OpenOnco Regression Test Suite
- * Updated: December 17, 2025
- * 
- * Changes from Dec 14:
- * - Updated test counts: MRD 27, ECD 23, TRM 12, TDS 33
- * - Added persona switching tests
- * - Added clinical settings filter tests (MRD)
- * - Added individual test URL routing tests (/mrd/signatera)
- * - Added model selector tests
+ * Updated: Dec 14, 2025
  */
 
 // ===========================================
@@ -28,14 +21,6 @@ const EXPECTED = {
     get total() { return this.MRD + this.ECD + this.TRM + this.TDS; }
   },
   categories: ['MRD', 'ECD', 'TRM', 'TDS'],
-  categoryPaths: {
-    MRD: '/mrd',
-    ECD: '/ecd',
-    TRM: '/trm',
-    TDS: '/tds'
-  },
-  personas: ['Patient', 'Clinician', 'Academic/Industry'],
-  clinicalSettings: ['Neoadjuvant', 'Post-Surgery', 'Post-Adjuvant', 'Surveillance'],
 };
 
 // ===========================================
@@ -78,19 +63,6 @@ test.describe('Homepage', () => {
     
     expect(patientVisible || physicianVisible).toBeTruthy();
   });
-
-  test('all category cards link to correct pages', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(1000);
-    
-    for (const cat of EXPECTED.categories) {
-      const link = page.locator(`a[href="${EXPECTED.categoryPaths[cat]}"]`).first();
-      if (await link.isVisible()) {
-        const href = await link.getAttribute('href');
-        expect(href).toBe(EXPECTED.categoryPaths[cat]);
-      }
-    }
-  });
 });
 
 // ===========================================
@@ -99,10 +71,8 @@ test.describe('Homepage', () => {
 
 test.describe('Category Pages', () => {
   for (const category of EXPECTED.categories) {
-    const path = EXPECTED.categoryPaths[category];
-    
-    test(`${category} page loads via ${path}`, async ({ page }) => {
-      await page.goto(path);
+    test(`${category} page loads`, async ({ page }) => {
+      await page.goto(`/${category.toLowerCase()}`);
       await page.waitForTimeout(1000);
       
       const content = await page.textContent('body');
@@ -110,144 +80,16 @@ test.describe('Category Pages', () => {
     });
 
     test(`${category} page shows test cards`, async ({ page }) => {
-      await page.goto(path);
+      await page.goto(`/${category.toLowerCase()}`);
       await page.waitForTimeout(1500);
       
+      // Use data-testid for more reliable selection
       const cards = page.locator('[data-testid="test-card"], [data-testid="test-card-clickable"]');
       const count = await cards.count();
       
       expect(count).toBeGreaterThan(0);
     });
-    
-    test(`${category} page shows expected test count`, async ({ page }) => {
-      await page.goto(path);
-      await page.waitForTimeout(1500);
-      
-      const expectedCount = EXPECTED.testCounts[category];
-      const pageText = await page.textContent('body');
-      
-      expect(pageText).toContain(String(expectedCount));
-    });
   }
-});
-
-// ===========================================
-// INDIVIDUAL TEST URL ROUTING
-// ===========================================
-
-test.describe('Individual Test URLs', () => {
-  test('direct test URL /mrd/signatera loads test', async ({ page }) => {
-    await page.goto('/mrd/signatera');
-    await page.waitForTimeout(2000);
-    
-    const content = await page.textContent('body');
-    expect(content?.toLowerCase()).toContain('signatera');
-  });
-  
-  test('direct test URL opens modal or detail view', async ({ page }) => {
-    await page.goto('/mrd/signatera');
-    await page.waitForTimeout(2000);
-    
-    const modal = page.locator('[data-testid="test-detail-modal"], .test-detail-print-area, [class*="fixed"][class*="inset"]');
-    const detailContent = page.locator('text=Natera').first();
-    
-    const modalVisible = await modal.first().isVisible().catch(() => false);
-    const contentVisible = await detailContent.isVisible().catch(() => false);
-    
-    expect(modalVisible || contentVisible).toBeTruthy();
-  });
-  
-  test('invalid test slug shows category page gracefully', async ({ page }) => {
-    await page.goto('/mrd/nonexistent-test-xyz');
-    await page.waitForTimeout(1500);
-    
-    const content = await page.textContent('body');
-    expect(content?.includes('MRD') || content?.length > 100).toBeTruthy();
-  });
-});
-
-// ===========================================
-// PERSONA SYSTEM TESTS
-// ===========================================
-
-test.describe('Persona System', () => {
-  test('persona selector is visible', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(1000);
-    
-    const personaSelector = page.locator('select, [data-testid="persona-selector"]').filter({ hasText: /Patient|Clinician|Academic/i });
-    const personaButtons = page.locator('button').filter({ hasText: /Patient|Clinician|Academic/i });
-    
-    const selectorVisible = await personaSelector.first().isVisible().catch(() => false);
-    const buttonsVisible = await personaButtons.first().isVisible().catch(() => false);
-    
-    expect(selectorVisible || buttonsVisible).toBeTruthy();
-  });
-  
-  test('persona persists in localStorage', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(1000);
-    
-    await page.evaluate(() => {
-      localStorage.setItem('openonco-persona', 'Patient');
-    });
-    
-    await page.reload();
-    await page.waitForTimeout(1000);
-    
-    const storedPersona = await page.evaluate(() => localStorage.getItem('openonco-persona'));
-    expect(storedPersona).toBe('Patient');
-  });
-  
-  test('Patient persona shows simplified view on category page', async ({ page }) => {
-    await page.goto('/mrd');
-    
-    await page.evaluate(() => {
-      localStorage.setItem('openonco-persona', 'Patient');
-      window.dispatchEvent(new CustomEvent('personaChanged', { detail: 'Patient' }));
-    });
-    
-    await page.waitForTimeout(1500);
-    await page.reload();
-    await page.waitForTimeout(1500);
-    
-    const content = await page.textContent('body');
-    expect(content?.length).toBeGreaterThan(100);
-  });
-});
-
-// ===========================================
-// CLINICAL SETTINGS FILTER (MRD-SPECIFIC)
-// ===========================================
-
-test.describe('Clinical Settings Filter', () => {
-  test('MRD page has clinical settings filter options', async ({ page }) => {
-    await page.goto('/mrd');
-    await page.waitForTimeout(1500);
-    
-    await page.evaluate(() => {
-      localStorage.setItem('openonco-persona', 'Clinician');
-      window.dispatchEvent(new CustomEvent('personaChanged', { detail: 'Clinician' }));
-    });
-    await page.waitForTimeout(500);
-    
-    const content = await page.textContent('body');
-    
-    const hasSettings = EXPECTED.clinicalSettings.some(setting => 
-      content?.includes(setting)
-    );
-    expect(hasSettings).toBeTruthy();
-  });
-  
-  test('clinical settings tags appear on MRD test cards', async ({ page }) => {
-    await page.goto('/mrd');
-    await page.waitForTimeout(1500);
-    
-    const settingsTags = page.locator('text=Post-Surgery').first();
-    const hasTag = await settingsTags.isVisible().catch(() => false);
-    
-    expect(hasTag).toBeTruthy();
-  });
 });
 
 // ===========================================
@@ -259,8 +101,10 @@ test.describe('Test Detail Modal', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(1500);
     
+    // Use data-testid for reliable test card selection
     let testCard = page.locator('[data-testid="test-card-clickable"]').first();
     
+    // Fallback: find cursor-pointer elements within the test grid area
     if (!await testCard.isVisible()) {
       testCard = page.locator('[data-testid="test-card"]').first();
     }
@@ -269,6 +113,7 @@ test.describe('Test Detail Modal', () => {
       await testCard.click();
       await page.waitForTimeout(1000);
       
+      // Check for modal using data-testid or class
       const modal = page.locator('[data-testid="test-detail-modal"], .test-detail-print-area, [class*="fixed"][class*="inset"]');
       await expect(modal.first()).toBeVisible({ timeout: 5000 });
     }
@@ -287,6 +132,7 @@ test.describe('Test Detail Modal', () => {
       await testCard.click();
       await page.waitForTimeout(1000);
       
+      // Use data-testid or title attribute
       const shareBtn = page.locator('[data-testid="share-link-button"], button[title*="link"], button[title*="share"], button[title*="copy"]');
       await expect(shareBtn.first()).toBeVisible({ timeout: 5000 });
     }
@@ -305,30 +151,9 @@ test.describe('Test Detail Modal', () => {
       await testCard.click();
       await page.waitForTimeout(1000);
       
+      // Use data-testid or title attribute
       const printBtn = page.locator('[data-testid="print-button"], button[title*="print"], button[title*="PDF"]');
       await expect(printBtn.first()).toBeVisible({ timeout: 5000 });
-    }
-  });
-  
-  test('modal closes with escape key', async ({ page }) => {
-    await page.goto('/mrd');
-    await page.waitForTimeout(1500);
-    
-    let testCard = page.locator('[data-testid="test-card-clickable"]').first();
-    if (!await testCard.isVisible()) {
-      testCard = page.locator('[data-testid="test-card"]').first();
-    }
-    
-    if (await testCard.isVisible()) {
-      await testCard.click();
-      await page.waitForTimeout(1000);
-      
-      await page.keyboard.press('Escape');
-      await page.waitForTimeout(500);
-      
-      const modal = page.locator('.test-detail-print-area');
-      const stillVisible = await modal.isVisible().catch(() => false);
-      expect(true).toBeTruthy();
     }
   });
 });
@@ -342,15 +167,18 @@ test.describe('Comparison Modal', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(2000);
     
+    // Use data-testid for compare buttons on test cards
     const compareButtons = page.locator('[data-testid="compare-button"]');
     const count = await compareButtons.count();
     
     if (count >= 2) {
+      // Click two different "Compare" buttons to select tests
       await compareButtons.nth(0).click();
       await page.waitForTimeout(300);
       await compareButtons.nth(1).click();
       await page.waitForTimeout(500);
       
+      // After selecting 2+, the main "Compare Tests" button should appear
       const mainCompareBtn = page.locator('[data-testid="compare-tests-button"]');
       await expect(mainCompareBtn).toBeVisible({ timeout: 5000 });
     } else {
@@ -362,23 +190,28 @@ test.describe('Comparison Modal', () => {
     await page.goto('/mrd');
     await page.waitForTimeout(2000);
     
+    // Use data-testid for compare buttons on test cards
     const compareButtons = page.locator('[data-testid="compare-button"]');
     const count = await compareButtons.count();
     
     if (count >= 2) {
+      // Select two tests
       await compareButtons.nth(0).click();
       await page.waitForTimeout(300);
       await compareButtons.nth(1).click();
       await page.waitForTimeout(500);
       
+      // Click the main "Compare Tests" button
       const mainCompareBtn = page.locator('[data-testid="compare-tests-button"]');
       await expect(mainCompareBtn).toBeVisible({ timeout: 5000 });
       await mainCompareBtn.click();
       await page.waitForTimeout(1500);
       
+      // Check for comparison modal
       const modal = page.locator('.comparison-print-area');
       await expect(modal).toBeVisible({ timeout: 5000 });
       
+      // Verify share button exists in modal
       const shareBtn = page.locator('[data-testid="share-link-button"], button[title*="link"], button[title*="share"]');
       await expect(shareBtn.first()).toBeVisible({ timeout: 3000 });
     } else {
@@ -500,19 +333,6 @@ test.describe('Chat Functionality', () => {
       expect(count).toBeGreaterThan(0);
     }
   });
-  
-  test('model selector is available', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(1000);
-    
-    const modelSelector = page.locator('text=More speed').first();
-    const alternateSelector = page.locator('text=More thinking').first();
-    
-    const speedVisible = await modelSelector.isVisible().catch(() => false);
-    const thinkingVisible = await alternateSelector.isVisible().catch(() => false);
-    
-    expect(speedVisible || thinkingVisible).toBeTruthy();
-  });
 });
 
 // ===========================================
@@ -550,6 +370,7 @@ test.describe('Data Download', () => {
           expect(data).toHaveProperty('meta');
           expect(data).toHaveProperty('categories');
           expect(data).toHaveProperty('totalTests');
+          expect(data.totalTests).toBe(EXPECTED.testCounts.total);
         }
       }
     }
@@ -591,17 +412,6 @@ test.describe('Navigation', () => {
     
     expect(page.url()).not.toContain('mrd');
   });
-  
-  test('navigation between categories preserves state', async ({ page }) => {
-    await page.goto('/mrd');
-    await page.waitForTimeout(1000);
-    
-    await page.goto('/ecd');
-    await page.waitForTimeout(1000);
-    
-    const content = await page.textContent('body');
-    expect(content?.includes('ECD') || content?.toLowerCase().includes('early')).toBeTruthy();
-  });
 });
 
 // ===========================================
@@ -636,12 +446,15 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
+    // Select "File a Correction" to see submitter type options
     await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
+    // Select "Independent Expert"
     await page.locator('select').first().selectOption('expert');
     await page.waitForTimeout(300);
     
+    // Verify warning message appears
     await expect(page.getByText('Vendor employees should select')).toBeVisible({ timeout: 3000 });
   });
 
@@ -649,43 +462,56 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
+    // Step 1: Select "File a Correction"
     await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
+    // Step 2: Select "Independent Expert"
     await page.locator('select').first().selectOption('expert');
     await page.waitForTimeout(500);
     
+    // Step 3: Select MRD category (button contains "MRD" and description)
     await page.locator('button:has-text("MRD")').first().click();
     await page.waitForTimeout(500);
     
+    // Step 4: Select first test (second select on page)
     await page.locator('select').nth(1).selectOption({ index: 1 });
     await page.waitForTimeout(300);
     
+    // Step 5: Select first parameter (third select on page)
     await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
+    // Step 6: Wait for form to fully render
     await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
     await page.waitForTimeout(500);
     
+    // Step 7: Fill correction fields - New Value and Citation URL (both required)
     await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
     await page.locator('input[placeholder="https://..."]').fill('https://example.com/source').catch(() => {});
     await page.waitForTimeout(300);
     
+    // Step 8: Fill name fields - find the inputs in the Your Information section
     const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
     const textInputCount = await allTextInputs.count();
     
+    // First Name and Last Name are the last two text inputs
     if (textInputCount >= 2) {
       await allTextInputs.nth(textInputCount - 2).fill('Samyuktha');
       await allTextInputs.nth(textInputCount - 1).fill('Test');
     }
     await page.waitForTimeout(300);
     
+    // Step 9: Fill email
     await page.locator('input[type="email"]').fill('samyuktha@illumina.com');
     await page.waitForTimeout(300);
     
+    // Step 10: Click Send Code button
     await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
+    // Verify error message about vendor domain appears
+    // Look for the actual error message text, not the dropdown option
     await expect(page.getByText(/Your email domain.*illumina\.com.*appears to be from/i)).toBeVisible({ timeout: 3000 });
   });
 
@@ -693,12 +519,15 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
+    // Select "File a Correction"
     await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
+    // Select "Test Vendor Representative"
     await page.locator('select').first().selectOption('vendor');
     await page.waitForTimeout(300);
     
+    // Verify vendor verification warning appears
     await expect(page.getByText('verify that your email comes from')).toBeVisible({ timeout: 3000 });
   });
 
@@ -706,6 +535,7 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
+    // Complete form flow
     await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
@@ -721,13 +551,16 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
+    // Wait for form
     await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
     await page.waitForTimeout(500);
     
+    // Fill correction fields
     await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
     await page.locator('input[placeholder="https://..."]').fill('https://example.com/source').catch(() => {});
     await page.waitForTimeout(300);
     
+    // Fill name fields
     const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
     const textInputCount = await allTextInputs.count();
     
@@ -737,12 +570,15 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     }
     await page.waitForTimeout(300);
     
+    // Fill email
     await page.locator('input[type="email"]').fill('researcher@stanford.edu');
     await page.waitForTimeout(300);
     
+    // Click Send Code
     await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
+    // Should NOT see the vendor domain error
     await expect(page.getByText('appears to be from a diagnostic test vendor')).not.toBeVisible({ timeout: 1000 });
   });
 
@@ -750,6 +586,7 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.goto('/submissions');
     await page.waitForTimeout(1000);
     
+    // Complete form flow
     await page.getByText('File a Correction').click();
     await page.waitForTimeout(500);
     
@@ -765,13 +602,16 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     await page.locator('select').nth(2).selectOption({ index: 1 });
     await page.waitForTimeout(500);
     
+    // Wait for form
     await expect(page.getByText('Your Information')).toBeVisible({ timeout: 5000 });
     await page.waitForTimeout(500);
     
+    // Fill correction fields
     await page.locator('input[placeholder="Enter the correct value"]').fill('Test correction value').catch(() => {});
     await page.locator('input[placeholder="https://..."]').fill('https://example.com/source').catch(() => {});
     await page.waitForTimeout(300);
     
+    // Fill name fields
     const allTextInputs = page.locator('input:not([type="email"]):not([type="hidden"])');
     const textInputCount = await allTextInputs.count();
     
@@ -781,12 +621,15 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
     }
     await page.waitForTimeout(300);
     
+    // Fill email
     await page.locator('input[type="email"]').fill('testuser@gmail.com');
     await page.waitForTimeout(300);
     
+    // Click Send Code
     await page.getByRole('button', { name: /Send Code/i }).click();
     await page.waitForTimeout(500);
     
+    // Verify error about free email providers
     await expect(page.getByText('company/institutional email')).toBeVisible({ timeout: 3000 });
   });
 });
@@ -811,31 +654,4 @@ test.describe('Error Handling', () => {
     const content = await page.content();
     expect(content.length).toBeGreaterThan(100);
   });
-});
-
-// ===========================================
-// STATIC PAGES TESTS
-// ===========================================
-
-test.describe('Static Pages', () => {
-  const staticPages = [
-    { path: '/about', contains: ['OpenOnco', 'Ingrid'] },
-    { path: '/faq', contains: ['FAQ', 'question'] },
-    { path: '/how-it-works', contains: ['how', 'work'] },
-    { path: '/data-sources', contains: ['data', 'source'] },
-    { path: '/learn', contains: ['learn'] },
-  ];
-  
-  for (const pg of staticPages) {
-    test(`${pg.path} loads correctly`, async ({ page }) => {
-      await page.goto(pg.path);
-      await page.waitForTimeout(1000);
-      
-      const content = await page.textContent('body');
-      const hasExpectedContent = pg.contains.some(term => 
-        content?.toLowerCase().includes(term.toLowerCase())
-      );
-      expect(hasExpectedContent).toBeTruthy();
-    });
-  }
 });
