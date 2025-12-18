@@ -3095,6 +3095,31 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 // ============================================
 // Database Summary Component (Reusable)
 // ============================================
+
+// Helper function to calculate minimum field completion stats for a category
+const calculateMinimumFieldStats = (tests, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return { complete: 0, total: tests.length, percentage: 0 };
+  
+  const minFields = minParams.core.map(p => p.key);
+  
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  
+  const completeTests = tests.filter(test => 
+    minFields.every(field => hasValue(test[field]))
+  );
+  
+  const percentage = tests.length > 0 
+    ? Math.round((completeTests.length / tests.length) * 100) 
+    : 0;
+  
+  return {
+    complete: completeTests.length,
+    total: tests.length,
+    percentage
+  };
+};
+
 // Simple database stats for Data Download page
 const DatabaseStatsSimple = () => {
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
@@ -3115,6 +3140,12 @@ const DatabaseStatsSimple = () => {
   // Calculate Tier 1 citation metrics dynamically
   const allTestData = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
   const tier1Metrics = calculateTier1Metrics(allTestData);
+
+  // Calculate minimum field completion for each category
+  const mrdCompletion = calculateMinimumFieldStats(mrdTestData, 'MRD');
+  const ecdCompletion = calculateMinimumFieldStats(ecdTestData, 'ECD');
+  const trmCompletion = calculateMinimumFieldStats(trmTestData, 'TRM');
+  const tdsCompletion = calculateMinimumFieldStats(tdsTestData, 'TDS');
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -3140,34 +3171,70 @@ const DatabaseStatsSimple = () => {
         </div>
       </div>
       
-      {/* Category breakdown */}
+      {/* Category breakdown with completion stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
           <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">MRD</p>
             <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-orange-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-orange-500 rounded-full transition-all"
+                  style={{ width: `${mrdCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-orange-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{mrdCompletion.complete}/{mrdCompletion.total}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
           <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{ecdTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">ECD</p>
             <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-emerald-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-emerald-500 rounded-full transition-all"
+                  style={{ width: `${ecdCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-emerald-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{ecdCompletion.complete}/{ecdCompletion.total}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-sky-50 rounded-lg border border-sky-100">
           <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white text-xs font-bold">{trmTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">TRM</p>
             <p className="text-[10px] text-gray-500">{trmParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-sky-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-sky-500 rounded-full transition-all"
+                  style={{ width: `${trmCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-sky-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{trmCompletion.complete}/{trmCompletion.total}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
           <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{tdsTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">TDS</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-violet-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-violet-500 rounded-full transition-all"
+                  style={{ width: `${tdsCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-violet-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{tdsCompletion.complete}/{tdsCompletion.total}</span>
+            </div>
           </div>
         </div>
       </div>
