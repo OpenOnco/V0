@@ -7376,48 +7376,86 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
 };
 
 // ============================================
-// Field Definitions for Vendor Form
+// Minimum Parameters by Category
 // ============================================
+const MINIMUM_PARAMS = {
+  MRD: {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'lod', label: 'Limit of Detection' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'totalParticipants', label: 'Study Participants' },
+      { key: 'initialTat', label: 'Initial TAT' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Medicare Coverage' },
+      { key: 'listPrice', label: 'List Price' },
+    ]
+  },
+  ECD: {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'ppv', label: 'PPV' },
+      { key: 'npv', label: 'NPV' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'listPrice', label: 'List Price' },
+    ]
+  },
+  TRM: {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+    ]
+  },
+  TDS: {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'listPrice', label: 'List Price' },
+    ]
+  },
+  'ALZ-BLOOD': {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'listPrice', label: 'List Price' },
+    ]
+  }
+};
+
 const FIELD_DEFINITIONS = {
-  // Identity
   name: { label: 'Test Name', tooltip: 'The official commercial name of the test' },
-  vendor: { label: 'Vendor', tooltip: 'The company that manufactures and/or offers the test' },
-  approach: { label: 'Approach/Method', tooltip: 'The technical methodology (e.g., tumor-informed, tumor-naïve, NGS-based)' },
-  cancerTypes: { label: 'Cancer Types', tooltip: 'Cancer types the test is validated for' },
-  biomarkers: { label: 'Biomarkers', tooltip: 'Biomarkers measured by the test' },
-  
-  // Analytical Performance
-  sensitivity: { label: 'Clinical Sensitivity', tooltip: 'The proportion of true positives correctly identified' },
-  specificity: { label: 'Clinical Specificity', tooltip: 'The proportion of true negatives correctly identified' },
-  landmarkSensitivity: { label: 'Landmark Sensitivity', tooltip: 'Sensitivity at a single post-surgery timepoint' },
-  landmarkSpecificity: { label: 'Landmark Specificity', tooltip: 'Specificity at a single post-surgery timepoint' },
-  longitudinalSensitivity: { label: 'Longitudinal Sensitivity', tooltip: 'Sensitivity during serial monitoring over time' },
-  longitudinalSpecificity: { label: 'Longitudinal Specificity', tooltip: 'Specificity during serial monitoring over time' },
-  lod: { label: 'Limit of Detection (LOD)', tooltip: 'The lowest concentration of analyte that can be reliably detected' },
-  ppv: { label: 'Positive Predictive Value', tooltip: 'Probability that a positive result indicates true disease' },
-  npv: { label: 'Negative Predictive Value', tooltip: 'Probability that a negative result indicates no disease' },
-  
-  // Clinical Evidence
-  numPublications: { label: 'Number of Publications', tooltip: 'Count of peer-reviewed publications supporting the test' },
-  totalParticipants: { label: 'Total Study Participants', tooltip: 'Combined number of patients across validation studies' },
-  clinicalTrials: { label: 'Key Clinical Trials', tooltip: 'Names of major clinical trials' },
-  
-  // Patient Experience
-  requiresTumorTissue: { label: 'Requires Tumor Tissue', tooltip: 'Whether a tumor biopsy sample is required' },
-  bloodVolume: { label: 'Blood Volume', tooltip: 'Amount of blood required per draw (in mL)' },
-  initialTat: { label: 'Initial Turnaround Time', tooltip: 'Days from sample receipt to first result' },
-  followUpTat: { label: 'Follow-up Turnaround Time', tooltip: 'Days for subsequent monitoring results' },
-  tat: { label: 'Turnaround Time', tooltip: 'Time from sample receipt to result delivery' },
-  
-  // Access & Coverage
-  fdaStatus: { label: 'FDA Status', tooltip: 'Regulatory status (e.g., FDA cleared, CLIA LDT, RUO)' },
-  reimbursement: { label: 'Medicare Coverage', tooltip: 'Medicare reimbursement status and any LCD coverage' },
+  vendor: { label: 'Vendor', tooltip: 'The company that manufactures the test' },
+  sensitivity: { label: 'Sensitivity', tooltip: 'Proportion of true positives correctly identified' },
+  specificity: { label: 'Specificity', tooltip: 'Proportion of true negatives correctly identified' },
+  lod: { label: 'Limit of Detection', tooltip: 'Lowest concentration reliably detected' },
+  ppv: { label: 'PPV', tooltip: 'Positive Predictive Value' },
+  npv: { label: 'NPV', tooltip: 'Negative Predictive Value' },
+  numPublications: { label: 'Publications', tooltip: 'Number of peer-reviewed publications' },
+  totalParticipants: { label: 'Study Participants', tooltip: 'Total patients across validation studies' },
+  tat: { label: 'Turnaround Time', tooltip: 'Time from sample to result' },
+  initialTat: { label: 'Initial TAT', tooltip: 'Days for first result' },
+  followUpTat: { label: 'Follow-up TAT', tooltip: 'Days for subsequent results' },
+  fdaStatus: { label: 'FDA Status', tooltip: 'Regulatory approval status' },
+  reimbursement: { label: 'Medicare Coverage', tooltip: 'Medicare reimbursement status' },
+  listPrice: { label: 'List Price', tooltip: 'Published price without insurance' },
   clinicalAvailability: { label: 'Clinical Availability', tooltip: 'Current availability status' },
-  listPrice: { label: 'List Price', tooltip: 'Published list price without insurance (USD)' },
 };
 
 // ============================================
-// Vendor Confirmation Form Component
+// Vendor Confirmation Form
 // ============================================
 const VendorConfirmationForm = ({ test, category, onClose }) => {
   const [formData, setFormData] = useState({});
@@ -7427,12 +7465,10 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
   const [emailError, setEmailError] = useState('');
   const [submitError, setSubmitError] = useState('');
   
-  // Get minimum params for this category
   const minParams = MINIMUM_PARAMS[category] || {};
   const minParamKeys = Object.values(minParams).flat().map(p => p.key);
   const recommendedFields = minParamKeys.filter(key => FIELD_DEFINITIONS[key]);
   
-  // Email validation
   const validateEmail = () => {
     const email = submitterInfo.email;
     if (!email || !email.includes('@')) {
@@ -7442,14 +7478,7 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
     const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
     const domain = email.split('@')[1]?.toLowerCase();
     if (freeProviders.includes(domain)) {
-      setEmailError('Please use your company email (not Gmail, Yahoo, etc.)');
-      return false;
-    }
-    // Check if domain matches vendor
-    const vendorClean = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const domainClean = domain.replace(/[^a-z0-9]/g, '');
-    if (!domainClean.includes(vendorClean) && !vendorClean.includes(domainClean.split('.')[0])) {
-      setEmailError(`Email domain must match ${test.vendor}`);
+      setEmailError('Please use your company email');
       return false;
     }
     setEmailError('');
@@ -7465,61 +7494,31 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail()) return;
-    
     setIsSubmitting(true);
     setSubmitError('');
     
     const confirmed = [];
     const changes = [];
-    
     Object.entries(formData).forEach(([key, data]) => {
       if (data.action === 'confirm') {
         confirmed.push({ field: key, label: FIELD_DEFINITIONS[key]?.label || key, value: formatValue(key, test[key]) });
       } else if (data.action === 'update' && data.newValue?.trim()) {
-        changes.push({
-          field: key,
-          label: FIELD_DEFINITIONS[key]?.label || key,
-          currentValue: formatValue(key, test[key]),
-          newValue: data.newValue,
-          citation: data.citation || ''
-        });
+        changes.push({ field: key, label: FIELD_DEFINITIONS[key]?.label || key, currentValue: formatValue(key, test[key]), newValue: data.newValue, citation: data.citation || '' });
       }
     });
     
     const submission = {
       submissionType: 'vendor-confirmation',
-      submitter: {
-        firstName: submitterInfo.name.split(' ')[0] || submitterInfo.name,
-        lastName: submitterInfo.name.split(' ').slice(1).join(' ') || '',
-        email: submitterInfo.email,
-        role: submitterInfo.role,
-      },
+      submitter: { firstName: submitterInfo.name.split(' ')[0] || submitterInfo.name, lastName: submitterInfo.name.split(' ').slice(1).join(' ') || '', email: submitterInfo.email, role: submitterInfo.role },
       category,
-      vendorConfirmation: {
-        testId: test.id,
-        testName: test.name,
-        vendor: test.vendor,
-        confirmed,
-        changes,
-        totalRecommendedFields: recommendedFields.length,
-      },
+      vendorConfirmation: { testId: test.id, testName: test.name, vendor: test.vendor, confirmed, changes, totalRecommendedFields: recommendedFields.length },
       timestamp: new Date().toISOString(),
     };
     
     try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ submission })
-      });
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        setSubmitError('Failed to submit. Please try again.');
-      }
-    } catch (error) {
-      setSubmitError('Network error. Please try again.');
-    }
+      const response = await fetch('/api/submit-form', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ submission }) });
+      if (response.ok) { setSubmitted(true); } else { setSubmitError('Failed to submit.'); }
+    } catch (error) { setSubmitError('Network error.'); }
     setIsSubmitting(false);
   };
   
@@ -7530,17 +7529,10 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
       <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50">
         <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 text-center">
           <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
+            <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">Submission Received!</h3>
           <p className="text-gray-600 mb-4">Thank you for confirming your test data.</p>
-          <p className="text-sm text-gray-500 mb-6">
-            We review submissions within 2-3 business days. Once verified, your test will display the{' '}
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-medium">✓ VENDOR CONFIRMED</span>{' '}
-            badge.
-          </p>
           <button onClick={onClose} className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700">Done</button>
         </div>
       </div>
@@ -7550,65 +7542,39 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
-        {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Vendor Data Confirmation</h2>
             <p className="text-sm text-gray-500">{test.name} • {test.vendor}</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
-            <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
-        
-        {/* Info Banner */}
         <div className="px-6 py-3 bg-emerald-50 border-b border-emerald-100">
-          <p className="text-sm text-emerald-800">
-            <strong>Get VENDOR CONFIRMED status:</strong> Confirm existing data or provide updates with citations.
-          </p>
+          <p className="text-sm text-emerald-800"><strong>Get VENDOR CONFIRMED status:</strong> Confirm existing data or provide updates.</p>
         </div>
-        
-        {/* Form */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-hidden flex flex-col">
           <div className="flex-1 overflow-y-auto px-6 py-4">
-            {/* Submitter Info */}
             <div className="mb-6 p-4 bg-gray-50 rounded-xl">
               <h3 className="text-sm font-semibold text-gray-700 mb-3">Your Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Name *</label>
-                  <input type="text" required value={submitterInfo.name}
-                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500" />
+                  <input type="text" required value={submitterInfo.name} onChange={(e) => setSubmitterInfo(prev => ({ ...prev, name: e.target.value }))} className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg" />
                 </div>
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Vendor Email *</label>
-                  <input type="email" required value={submitterInfo.email}
-                    onChange={(e) => { setSubmitterInfo(prev => ({ ...prev, email: e.target.value })); setEmailError(''); }}
-                    onBlur={validateEmail}
-                    className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-emerald-500 ${emailError ? 'border-red-300 bg-red-50' : 'border-gray-200'}`} />
+                  <input type="email" required value={submitterInfo.email} onChange={(e) => { setSubmitterInfo(prev => ({ ...prev, email: e.target.value })); setEmailError(''); }} onBlur={validateEmail} className={`w-full px-3 py-2 text-sm border rounded-lg ${emailError ? 'border-red-300' : 'border-gray-200'}`} />
                   {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
                 </div>
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Role/Title *</label>
-                  <input type="text" required value={submitterInfo.role}
-                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, role: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500" />
+                  <input type="text" required value={submitterInfo.role} onChange={(e) => setSubmitterInfo(prev => ({ ...prev, role: e.target.value }))} className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg" />
                 </div>
               </div>
             </div>
-            
-            {/* Progress */}
-            <div className="mb-4 flex items-center justify-between text-sm">
-              <span className="text-gray-600">{actedCount} of {recommendedFields.length} fields reviewed</span>
-              <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-500" style={{ width: `${recommendedFields.length > 0 ? (actedCount / recommendedFields.length) * 100 : 0}%` }} />
-              </div>
-            </div>
-            
-            {/* Fields */}
+            <div className="mb-4 text-sm text-gray-600">{actedCount} of {recommendedFields.length} fields reviewed</div>
             <div className="space-y-3">
               {recommendedFields.map(key => {
                 const def = FIELD_DEFINITIONS[key];
@@ -7618,72 +7584,29 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
                 const data = formData[key] || {};
                 const isConfirmed = data.action === 'confirm';
                 const isUpdating = data.action === 'update';
-                
                 return (
-                  <div key={key} className={`p-4 rounded-lg border ${isConfirmed ? 'border-emerald-400 bg-emerald-50' : 'border-gray-200 bg-white'}`}>
-                    {/* Field header */}
+                  <div key={key} className={`p-4 rounded-lg border ${isConfirmed ? 'border-emerald-400 bg-emerald-50' : 'border-gray-200'}`}>
                     <div className="flex items-center gap-2 mb-2">
                       <span className="font-medium text-gray-800">{def.label}</span>
-                      <div className="relative group">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <div className="absolute z-50 bottom-full left-0 mb-2 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none">
-                          {def.tooltip}
-                        </div>
-                      </div>
                       {!hasValue && <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded">NEEDS DATA</span>}
                       {isConfirmed && <span className="text-xs px-2 py-0.5 bg-emerald-500 text-white rounded">✓ CONFIRMED</span>}
                     </div>
-                    
-                    {/* Current value display */}
                     <div className={`mb-3 p-3 rounded-lg ${hasValue ? 'bg-gray-100' : 'bg-amber-50 border border-dashed border-amber-300'}`}>
                       <div className="text-xs text-gray-500 mb-1">Current Value</div>
-                      <div className={`text-lg font-semibold ${hasValue ? 'text-gray-900' : 'text-amber-600'}`}>
-                        {formatValue(key, currentValue)}
-                      </div>
+                      <div className={`text-lg font-semibold ${hasValue ? 'text-gray-900' : 'text-amber-600'}`}>{formatValue(key, currentValue)}</div>
                     </div>
-                    
-                    {/* Actions */}
                     {!isUpdating ? (
                       <div className="flex gap-2">
-                        {hasValue && !isConfirmed && (
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'confirm' } }))}
-                            className="flex-1 px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600">
-                            ✓ Confirm This Value
-                          </button>
-                        )}
-                        {isConfirmed && (
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))}
-                            className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300">
-                            Undo
-                          </button>
-                        )}
-                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'update', newValue: '', citation: '' } }))}
-                          className="flex-1 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600">
-                          {hasValue ? 'Update Value' : '+ Add Value'}
-                        </button>
+                        {hasValue && !isConfirmed && <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'confirm' } }))} className="flex-1 px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600">✓ Confirm</button>}
+                        {isConfirmed && <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Undo</button>}
+                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'update', newValue: '', citation: '' } }))} className="flex-1 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600">{hasValue ? 'Update' : '+ Add'}</button>
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">New Value *</label>
-                          <input type="text" value={data.newValue || ''}
-                            onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], newValue: e.target.value } }))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Citation URL</label>
-                          <input type="url" value={data.citation || ''} placeholder="https://..."
-                            onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], citation: e.target.value } }))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                        </div>
+                      <div className="space-y-2">
+                        <input type="text" placeholder="New value" value={data.newValue || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], newValue: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                        <input type="url" placeholder="Citation URL" value={data.citation || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], citation: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
                         <div className="flex gap-2">
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))}
-                            className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
-                          <button type="button" onClick={() => {/* value saved via onChange */}}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                            disabled={!data.newValue}>Save</button>
+                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
                         </div>
                       </div>
                     )}
@@ -7692,18 +7615,12 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
               })}
             </div>
           </div>
-          
-          {/* Footer */}
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
-            <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" 
-              className="text-xs text-emerald-600 hover:underline">Questions? Connect on LinkedIn</a>
+            <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 hover:underline">Questions? LinkedIn</a>
             <div className="flex items-center gap-3">
               {submitError && <span className="text-xs text-red-600">{submitError}</span>}
               <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-              <button type="submit" disabled={isSubmitting || !!emailError || actedCount === 0}
-                className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50">
-                {isSubmitting ? 'Submitting...' : 'Submit Confirmation'}
-              </button>
+              <button type="submit" disabled={isSubmitting || !!emailError || actedCount === 0} className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50">{isSubmitting ? 'Submitting...' : 'Submit'}</button>
             </div>
           </div>
         </form>
@@ -7887,10 +7804,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
                 {!isPatientView && MINIMUM_PARAMS[category] && (
                   <button 
-                    onClick={() => setShowVendorForm(true)}
+                    onClick={(e) => { e.stopPropagation(); setShowVendorForm(true); }}
                     className="px-3 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-medium rounded-full transition-colors print:hidden"
                   >
-                    Vendors: Update data for CONFIRMED status →
+                    Vendors: Update for CONFIRMED status →
                   </button>
                 )}
               </div>
@@ -8418,14 +8335,8 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
         </div>
       </div>
     </div>
-    
-    {/* Vendor Confirmation Form */}
     {showVendorForm && (
-      <VendorConfirmationForm
-        test={test}
-        category={category}
-        onClose={() => setShowVendorForm(false)}
-      />
+      <VendorConfirmationForm test={test} category={category} onClose={() => setShowVendorForm(false)} />
     )}
     </>
   );
