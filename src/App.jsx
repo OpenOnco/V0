@@ -107,6 +107,180 @@ const calculateTier1Metrics = (allTestData) => {
 };
 
 // ============================================
+// MINIMUM PARAMETERS FOR VENDOR CONFIRMATION
+// These fields are shown in detail cards even when empty
+// Supports the "Vendor Confirmed" badge program
+// ============================================
+const MINIMUM_PARAMS = {
+  MRD: {
+    identity: [
+      { key: 'name', label: 'Test Name', required: true },
+      { key: 'vendor', label: 'Vendor', required: true },
+      { key: 'approach', label: 'Approach', tooltip: 'Tumor-informed vs tumor-naïve', required: true },
+      { key: 'cancerTypes', label: 'Cancer Types', isArray: true, required: true },
+    ],
+    analytical: [
+      { key: 'sensitivity', label: 'Clinical Sensitivity', unit: '%', citationKey: 'sensitivityCitations', notesKey: 'sensitivityNotes' },
+      { key: 'specificity', label: 'Clinical Specificity', unit: '%', citationKey: 'specificityCitations', notesKey: 'specificityNotes' },
+      { key: 'lod', label: 'Limit of Detection', citationKey: 'lodCitations', notesKey: 'lodNotes', formatter: 'lod' },
+    ],
+    evidence: [
+      { key: 'numPublications', label: 'Publications', plusKey: 'numPublicationsPlus' },
+      { key: 'totalParticipants', label: 'Study Participants', formatter: 'number' },
+    ],
+    patientExperience: [
+      { key: 'requiresTumorTissue', label: 'Requires Tumor Tissue', notesKey: 'requiresTumorTissueNotes' },
+      { key: 'initialTat', label: 'Initial TAT', unit: ' days', notesKey: 'initialTatNotes' },
+      { key: 'followUpTat', label: 'Follow-up TAT', unit: ' days', notesKey: 'followUpTatNotes' },
+    ],
+    access: [
+      { key: 'fdaStatus', label: 'FDA Status', citationKey: 'fdaStatusCitations', required: true },
+      { key: 'reimbursement', label: 'Reimbursement', notesKey: 'reimbursementNote', required: true },
+      { key: 'clinicalAvailability', label: 'Clinical Availability', citationKey: 'clinicalAvailabilityCitations', required: true },
+    ],
+  },
+  ECD: {
+    identity: [
+      { key: 'name', label: 'Test Name', required: true },
+      { key: 'vendor', label: 'Vendor', required: true },
+      { key: 'testScope', label: 'Test Scope', tooltip: 'Single vs multi-cancer', required: true },
+      { key: 'cancerTypes', label: 'Cancer Types', isArray: true, required: true },
+    ],
+    analytical: [
+      { key: 'sensitivity', label: 'Overall Sensitivity', unit: '%', citationKey: 'sensitivityCitations' },
+      { key: 'specificity', label: 'Specificity', unit: '%', citationKey: 'specificityCitations' },
+      { key: 'stageISensitivity', label: 'Stage I Sensitivity', unit: '%', citationKey: 'stageISensitivityCitations' },
+    ],
+    evidence: [
+      { key: 'numPublications', label: 'Publications', plusKey: 'numPublicationsPlus' },
+      { key: 'totalParticipants', label: 'Study Participants', formatter: 'number' },
+    ],
+    patientExperience: [
+      { key: 'sampleType', label: 'Sample Type' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'screeningInterval', label: 'Screening Interval' },
+    ],
+    access: [
+      { key: 'fdaStatus', label: 'FDA Status', citationKey: 'fdaStatusCitations', required: true },
+      { key: 'reimbursement', label: 'Reimbursement', notesKey: 'reimbursementNote', required: true },
+      { key: 'listPrice', label: 'List Price', formatter: 'currency', citationKey: 'listPriceCitations' },
+    ],
+  },
+  TRM: {
+    identity: [
+      { key: 'name', label: 'Test Name', required: true },
+      { key: 'vendor', label: 'Vendor', required: true },
+      { key: 'approach', label: 'Approach', tooltip: 'Tumor-informed vs tumor-naïve', required: true },
+      { key: 'cancerTypes', label: 'Cancer Types', isArray: true },
+    ],
+    analytical: [
+      { key: 'lod', label: 'Limit of Detection', citationKey: 'lodCitations', notesKey: 'lodNotes', formatter: 'lod' },
+      { key: 'responseDefinition', label: 'Response Definition' },
+    ],
+    evidence: [
+      { key: 'numPublications', label: 'Publications', plusKey: 'numPublicationsPlus' },
+    ],
+    patientExperience: [
+      { key: 'requiresTumorTissue', label: 'Requires Tumor Tissue', notesKey: 'requiresTumorTissueNotes' },
+    ],
+    access: [
+      { key: 'fdaStatus', label: 'FDA Status', citationKey: 'fdaStatusCitations', required: true },
+      { key: 'reimbursement', label: 'Reimbursement', notesKey: 'reimbursementNote', required: true },
+      { key: 'clinicalAvailability', label: 'Clinical Availability', citationKey: 'clinicalAvailabilityCitations' },
+    ],
+  },
+  TDS: {
+    identity: [
+      { key: 'name', label: 'Test Name', required: true },
+      { key: 'vendor', label: 'Vendor', required: true },
+      { key: 'approach', label: 'Approach', tooltip: 'Tissue vs liquid CGP', required: true },
+      { key: 'cancerTypes', label: 'Cancer Types', isArray: true, required: true },
+    ],
+    analytical: [
+      { key: 'genesAnalyzed', label: 'Genes Analyzed', formatter: 'number', citationKey: 'genesAnalyzedCitations' },
+      { key: 'biomarkersReported', label: 'Biomarkers Reported', isArray: true, citationKey: 'biomarkersReportedCitations' },
+    ],
+    evidence: [
+      { key: 'numPublications', label: 'Publications', plusKey: 'numPublicationsPlus' },
+    ],
+    patientExperience: [
+      { key: 'tat', label: 'Turnaround Time', notesKey: 'tatNotes' },
+      { key: 'sampleRequirements', label: 'Sample Requirements', notesKey: 'sampleRequirementsNotes' },
+    ],
+    access: [
+      { key: 'fdaStatus', label: 'FDA Status', citationKey: 'fdaStatusCitations', required: true },
+      { key: 'reimbursement', label: 'Reimbursement', notesKey: 'reimbursementNote', required: true },
+      { key: 'listPrice', label: 'List Price', formatter: 'currency', citationKey: 'listPriceCitations' },
+    ],
+  },
+  'ALZ-BLOOD': {
+    identity: [
+      { key: 'name', label: 'Test Name', required: true },
+      { key: 'vendor', label: 'Vendor', required: true },
+      { key: 'approach', label: 'Method', required: true },
+      { key: 'biomarkers', label: 'Biomarkers', isArray: true, required: true },
+    ],
+    analytical: [
+      { key: 'sensitivity', label: 'Sensitivity vs PET', unit: '%', citationKey: 'sensitivityCitations' },
+      { key: 'specificity', label: 'Specificity vs PET', unit: '%', citationKey: 'specificityCitations' },
+      { key: 'concordanceWithPET', label: 'PET Concordance', unit: '%', notesKey: 'concordanceWithPETNotes' },
+    ],
+    evidence: [
+      { key: 'numPublications', label: 'Publications', plusKey: 'numPublicationsPlus' },
+      { key: 'totalParticipants', label: 'Validation Participants', formatter: 'number' },
+    ],
+    patientExperience: [
+      { key: 'tat', label: 'Turnaround Time', notesKey: 'tatNotes' },
+      { key: 'sampleRequirements', label: 'Sample Requirements' },
+    ],
+    access: [
+      { key: 'fdaStatus', label: 'FDA Status', citationKey: 'fdaStatusCitations', required: true },
+      { key: 'reimbursement', label: 'Reimbursement', notesKey: 'reimbursementNote', required: true },
+      { key: 'listPrice', label: 'List Price', formatter: 'currency' },
+    ],
+  },
+};
+
+// Section labels for minimum parameters
+const MIN_PARAM_SECTIONS = {
+  identity: { label: 'Test Identity', icon: '🏷️' },
+  analytical: { label: 'Analytical Performance', icon: '📊' },
+  evidence: { label: 'Clinical Evidence', icon: '📚' },
+  patientExperience: { label: 'Patient Experience', icon: '⏱️' },
+  access: { label: 'Access & Coverage', icon: '💳' },
+};
+
+// Helper to check if a value is "filled"
+const hasMinParamValue = (val) => {
+  if (val == null) return false;
+  if (typeof val === 'string' && val.trim() === '') return false;
+  if (Array.isArray(val) && val.length === 0) return false;
+  return true;
+};
+
+// Calculate completeness for a test
+const calculateTestCompleteness = (test, category) => {
+  const params = MINIMUM_PARAMS[category];
+  if (!params) return { filled: 0, total: 0, percentage: 0 };
+  
+  let filled = 0;
+  let total = 0;
+  
+  Object.values(params).forEach(section => {
+    section.forEach(param => {
+      total++;
+      if (hasMinParamValue(test[param.key])) filled++;
+    });
+  });
+  
+  return {
+    filled,
+    total,
+    percentage: total > 0 ? Math.round((filled / total) * 100) : 0
+  };
+};
+
+// ============================================
 // SEO Component - Dynamic meta tags
 // ============================================
 const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
@@ -7093,6 +7267,135 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 };
 
 // ============================================
+// MinParamRow - For Vendor Confirmation Display
+// Shows ALL minimum parameters, including empty ones
+// ============================================
+const MinParamRow = ({ param, test }) => {
+  const value = test[param.key];
+  const citations = param.citationKey ? test[param.citationKey] : null;
+  const notes = param.notesKey ? test[param.notesKey] : null;
+  const hasValue = hasMinParamValue(value);
+  
+  // Format the display value based on formatter type
+  let displayValue = value;
+  if (hasValue) {
+    if (param.isArray && Array.isArray(value)) {
+      displayValue = value.join(', ');
+    } else if (param.formatter === 'number' && typeof value === 'number') {
+      displayValue = value.toLocaleString();
+    } else if (param.formatter === 'currency' && typeof value === 'number') {
+      displayValue = `$${value.toLocaleString()}`;
+    } else if (param.formatter === 'lod') {
+      displayValue = formatLOD(value);
+    }
+    if (param.unit && !param.formatter) {
+      displayValue = `${value}${param.unit}`;
+    }
+    if (param.plusKey && test[param.plusKey]) {
+      displayValue = `${displayValue}+`;
+    }
+  }
+  
+  return (
+    <div className={`flex items-center justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4 group ${!hasValue ? 'bg-amber-50/50' : ''}`}>
+      <span className="flex-shrink-0 flex items-center gap-1">
+        <span className="text-xs text-gray-500">{param.label}</span>
+        {param.tooltip && (
+          <span className="text-[10px] text-gray-400" title={param.tooltip}>ⓘ</span>
+        )}
+        {notes && (
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity" title={notes}>
+            <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+        )}
+      </span>
+      <span className={`text-sm text-right inline-flex items-center ${hasValue ? 'font-medium text-gray-900' : 'text-amber-600 italic text-xs'}`}>
+        {hasValue ? (
+          <>
+            {displayValue}
+            <CitationTooltip citations={citations} />
+          </>
+        ) : (
+          <span className="flex items-center gap-1">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Not provided
+          </span>
+        )}
+      </span>
+    </div>
+  );
+};
+
+// MinParamSection - Renders a section of minimum parameters
+const MinParamSection = ({ sectionKey, params, test, colors }) => {
+  const section = MIN_PARAM_SECTIONS[sectionKey];
+  if (!section || !params || params.length === 0) return null;
+  
+  const filledCount = params.filter(p => hasMinParamValue(test[p.key])).length;
+  const totalCount = params.length;
+  const isComplete = filledCount === totalCount;
+  
+  return (
+    <div className={`rounded-xl border ${colors.sectionBorder} overflow-hidden`}>
+      <div className={`${colors.sectionBg} px-4 py-2 border-b ${colors.sectionBorder} flex items-center justify-between`}>
+        <div className="flex items-center gap-2">
+          <span>{section.icon}</span>
+          <h3 className={`font-semibold text-sm uppercase tracking-wide ${colors.sectionTitle} leading-none`}>
+            {section.label}
+          </h3>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className={`text-[10px] px-1.5 py-0.5 rounded ${isComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+            {filledCount}/{totalCount}
+          </span>
+        </div>
+      </div>
+      <div className="bg-white p-4">
+        <div className="space-y-0">
+          {params.map(param => (
+            <MinParamRow key={param.key} param={param} test={test} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Completeness Badge for test detail header
+const CompletenessBadge = ({ test, category }) => {
+  const { filled, total, percentage } = calculateTestCompleteness(test, category);
+  const isComplete = percentage === 100;
+  
+  return (
+    <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+      isComplete 
+        ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' 
+        : 'bg-amber-100 text-amber-700 border border-amber-200'
+    }`} title={`${filled} of ${total} minimum parameters provided`}>
+      {isComplete ? (
+        <>
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          <span>Data Complete</span>
+        </>
+      ) : (
+        <>
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span>{percentage}% Complete</span>
+        </>
+      )}
+    </div>
+  );
+};
+
+// ============================================
 // Test Card
 // ============================================
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
@@ -7472,6 +7775,12 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
       sectionBg: 'bg-violet-50',
       sectionBorder: 'border-violet-200',
       sectionTitle: 'text-violet-800'
+    },
+    'ALZ-BLOOD': { 
+      headerBg: 'bg-gradient-to-r from-sky-500 to-cyan-500', 
+      sectionBg: 'bg-sky-50',
+      sectionBorder: 'border-sky-200',
+      sectionTitle: 'text-sky-800'
     }
   };
   const colors = colorSchemes[category] || colorSchemes.MRD;
@@ -7545,7 +7854,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 )}
               </div>
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
-              <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
+                <CompletenessBadge test={test} category={category} />
+              </div>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <button 
@@ -8052,6 +8364,68 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <GlossaryTooltip termKey="companion-dx"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">Companion Dx</span></GlossaryTooltip>
                         <GlossaryTooltip termKey="cgp"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">CGP</span></GlossaryTooltip>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* ============================================ */}
+              {/* MINIMUM PARAMETERS SECTION - For Vendor Confirmation */}
+              {/* Shows all required fields, highlighting missing data */}
+              {/* ============================================ */}
+              {!isPatientView && MINIMUM_PARAMS[category] && (
+                <div className="mt-6 pt-4 border-t-2 border-dashed border-gray-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">📋</span>
+                      <h3 className="font-semibold text-gray-800">Minimum Parameters for Vendor Confirmation</h3>
+                    </div>
+                    <CompletenessBadge test={test} category={category} />
+                  </div>
+                  
+                  <p className="text-xs text-gray-500 mb-4">
+                    These are the standard parameters OpenOnco tracks for all {category} tests. 
+                    Yellow highlighted rows indicate missing data that vendors can confirm.
+                    <a href="/submissions" className="ml-1 text-emerald-600 hover:text-emerald-700 font-medium">Submit corrections →</a>
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Left column: Identity + Analytical */}
+                    <div className="space-y-4">
+                      <MinParamSection 
+                        sectionKey="identity" 
+                        params={MINIMUM_PARAMS[category].identity} 
+                        test={test} 
+                        colors={colors} 
+                      />
+                      <MinParamSection 
+                        sectionKey="analytical" 
+                        params={MINIMUM_PARAMS[category].analytical} 
+                        test={test} 
+                        colors={colors} 
+                      />
+                    </div>
+                    
+                    {/* Right column: Evidence + Patient Experience + Access */}
+                    <div className="space-y-4">
+                      <MinParamSection 
+                        sectionKey="evidence" 
+                        params={MINIMUM_PARAMS[category].evidence} 
+                        test={test} 
+                        colors={colors} 
+                      />
+                      <MinParamSection 
+                        sectionKey="patientExperience" 
+                        params={MINIMUM_PARAMS[category].patientExperience} 
+                        test={test} 
+                        colors={colors} 
+                      />
+                      <MinParamSection 
+                        sectionKey="access" 
+                        params={MINIMUM_PARAMS[category].access} 
+                        test={test} 
+                        colors={colors} 
+                      />
                     </div>
                   </div>
                 </div>
