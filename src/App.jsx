@@ -7830,7 +7830,7 @@ const FIELD_DEFINITIONS = {
 // ============================================
 const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({});
-  const [submitterInfo, setSubmitterInfo] = useState({ name: '', email: '', role: '', company: '' });
+  const [submitterInfo, setSubmitterInfo] = useState({ name: '', email: '', role: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -7840,18 +7840,8 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
   const minParams = MINIMUM_PARAMS[category] || {};
   const minParamKeys = Object.values(minParams).flat().map(p => p.key);
   
-  // Get all keys that have values in the test
-  const existingKeys = Object.keys(test).filter(key => {
-    const val = test[key];
-    if (key.endsWith('Citations') || key.endsWith('Notes') || key === 'id' || key === 'sampleCategory') return false;
-    if (val == null || val === '' || (Array.isArray(val) && val.length === 0)) return false;
-    return FIELD_DEFINITIONS[key] != null;
-  });
-  
-  // Recommended fields = min params
-  // Other fields = existing values not in min params
+  // Only show recommended fields (min params)
   const recommendedFields = minParamKeys.filter(key => FIELD_DEFINITIONS[key]);
-  const otherFields = existingKeys.filter(key => !minParamKeys.includes(key) && FIELD_DEFINITIONS[key]);
   
   // Email validation helpers
   const validateEmailFormat = (email) => {
@@ -7891,10 +7881,10 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
     return true;
   };
   
-  const handleFieldChange = (key, field, value) => {
+  const handleFieldAction = (key, action, newValue = '', citation = '') => {
     setFormData(prev => ({
       ...prev,
-      [key]: { ...prev[key], [field]: value }
+      [key]: { action, newValue, citation }
     }));
   };
   
@@ -7915,18 +7905,29 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
     setIsSubmitting(true);
     setSubmitError('');
     
-    // Collect only changed fields
-    const changes = Object.entries(formData)
-      .filter(([key, data]) => data.newValue && data.newValue.trim() !== '')
-      .map(([key, data]) => ({
-        field: key,
-        label: FIELD_DEFINITIONS[key]?.label || key,
-        currentValue: formatCurrentValue(key, test[key]),
-        newValue: data.newValue,
-        citation: data.citation || ''
-      }));
+    // Collect confirmed and changed fields
+    const confirmed = [];
+    const changes = [];
     
-    // Prepare submission data (matching submissions page format)
+    Object.entries(formData).forEach(([key, data]) => {
+      if (data.action === 'confirm') {
+        confirmed.push({
+          field: key,
+          label: FIELD_DEFINITIONS[key]?.label || key,
+          value: formatCurrentValue(key, test[key])
+        });
+      } else if (data.action === 'update' && data.newValue && data.newValue.trim() !== '') {
+        changes.push({
+          field: key,
+          label: FIELD_DEFINITIONS[key]?.label || key,
+          currentValue: formatCurrentValue(key, test[key]),
+          newValue: data.newValue,
+          citation: data.citation || ''
+        });
+      }
+    });
+    
+    // Prepare submission data
     const submission = {
       submissionType: 'vendor-confirmation',
       submitter: {
@@ -7934,18 +7935,14 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
         lastName: submitterInfo.name.split(' ').slice(1).join(' ') || '',
         email: submitterInfo.email,
         role: submitterInfo.role,
-        company: submitterInfo.company,
       },
       category,
       vendorConfirmation: {
         testId: test.id,
         testName: test.name,
         vendor: test.vendor,
+        confirmed,
         changes,
-        confirmedFieldCount: recommendedFields.filter(key => {
-          const val = test[key];
-          return val != null && val !== '' && !(Array.isArray(val) && val.length === 0);
-        }).length,
         totalRecommendedFields: recommendedFields.length,
       },
       timestamp: new Date().toISOString(),
@@ -7972,72 +7969,129 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
     setIsSubmitting(false);
   };
   
-  const FieldRow = ({ fieldKey, isRecommended }) => {
+  const FieldRow = ({ fieldKey }) => {
     const def = FIELD_DEFINITIONS[fieldKey];
     if (!def) return null;
     
     const currentValue = test[fieldKey];
     const hasValue = currentValue != null && currentValue !== '' && !(Array.isArray(currentValue) && currentValue.length === 0);
     const data = formData[fieldKey] || {};
+    const isConfirmed = data.action === 'confirm';
+    const isUpdating = data.action === 'update';
     
-    // Determine row background: green for filled, yellow for empty recommended
-    const rowBg = hasValue ? 'bg-emerald-50/50' : (isRecommended ? 'bg-amber-50/50' : '');
+    // Determine row background: green for confirmed/has value, yellow for empty
+    const rowBg = isConfirmed ? 'bg-emerald-50' : (hasValue ? 'bg-emerald-50/30' : 'bg-amber-50/50');
     
     return (
-      <div className={`grid grid-cols-12 gap-3 py-3 border-b border-gray-100 items-start ${rowBg}`}>
-        {/* Field Name with Tooltip */}
-        <div className="col-span-3">
-          <div className="flex items-center gap-1">
-            <span className="text-sm font-medium text-gray-700">{def.label}</span>
-            <div className="relative group">
-              <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <div className="absolute z-50 bottom-full left-0 mb-2 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                {def.tooltip}
-                <div className="absolute bottom-0 left-4 translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900" />
+      <div className={`p-3 rounded-lg border ${isConfirmed ? 'border-emerald-300' : 'border-gray-200'} ${rowBg} mb-2`}>
+        {/* Field Header */}
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <div className="flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm font-medium text-gray-800">{def.label}</span>
+              <div className="relative group">
+                <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="absolute z-50 bottom-full left-0 mb-2 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  {def.tooltip}
+                  <div className="absolute bottom-0 left-4 translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900" />
+                </div>
               </div>
+              {!hasValue && (
+                <span className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">MISSING</span>
+              )}
+            </div>
+            <div className="mt-1">
+              <span className="text-sm text-gray-600">Current: </span>
+              <span className={`text-sm ${hasValue ? 'font-medium text-gray-900' : 'text-gray-400 italic'}`}>
+                {formatCurrentValue(fieldKey, currentValue)}
+              </span>
             </div>
           </div>
-          {!hasValue && isRecommended && (
-            <span className="text-[10px] text-amber-600 font-medium">RECOMMENDED</span>
+          
+          {/* Action Buttons */}
+          {!isUpdating && (
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {hasValue && !isConfirmed && (
+                <button
+                  type="button"
+                  onClick={() => handleFieldAction(fieldKey, 'confirm')}
+                  className="px-3 py-1.5 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition-colors"
+                >
+                  ✓ Confirm
+                </button>
+              )}
+              {isConfirmed && (
+                <span className="px-3 py-1.5 text-xs font-medium bg-emerald-500 text-white rounded-lg flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Confirmed
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => handleFieldAction(fieldKey, 'update', '', '')}
+                className="px-3 py-1.5 text-xs font-medium bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+              >
+                {hasValue ? 'Update' : '+ Add Value'}
+              </button>
+            </div>
           )}
-          {hasValue && (
-            <span className="text-[10px] text-emerald-600 font-medium">✓ HAS DATA</span>
-          )}
         </div>
         
-        {/* Current Value */}
-        <div className="col-span-2">
-          <span className={`text-sm ${hasValue ? 'text-gray-900' : 'text-gray-400 italic'}`}>
-            {formatCurrentValue(fieldKey, currentValue)}
-          </span>
-        </div>
-        
-        {/* New Value Input */}
-        <div className="col-span-4">
-          <input
-            type="text"
-            placeholder={hasValue ? 'Leave blank to confirm current' : 'Enter value...'}
-            value={data.newValue || ''}
-            onChange={(e) => handleFieldChange(fieldKey, 'newValue', e.target.value)}
-            className="w-full px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-          />
-        </div>
-        
-        {/* Citation URL */}
-        <div className="col-span-3">
-          <input
-            type="url"
-            placeholder="https://..."
-            value={data.citation || ''}
-            onChange={(e) => handleFieldChange(fieldKey, 'citation', e.target.value)}
-            className="w-full px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-          />
-        </div>
+        {/* Update Form (expanded) */}
+        {isUpdating && (
+          <div className="mt-3 pt-3 border-t border-gray-200">
+            <div className="grid grid-cols-1 gap-3">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">New Value *</label>
+                <input
+                  type="text"
+                  placeholder={`Enter ${def.label.toLowerCase()}...`}
+                  value={data.newValue || ''}
+                  onChange={(e) => handleFieldAction(fieldKey, 'update', e.target.value, data.citation)}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Citation URL (required for new data)</label>
+                <input
+                  type="url"
+                  placeholder="https://..."
+                  value={data.citation || ''}
+                  onChange={(e) => handleFieldAction(fieldKey, 'update', data.newValue, e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-3">
+              <button
+                type="button"
+                onClick={() => handleFieldAction(fieldKey, null)}
+                className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {/* Value is already saved via onChange */}}
+                className="px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                disabled={!data.newValue}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
+  
+  // Calculate progress
+  const actedCount = Object.values(formData).filter(d => d.action === 'confirm' || (d.action === 'update' && d.newValue)).length;
+  const progressPct = recommendedFields.length > 0 ? Math.round((actedCount / recommendedFields.length) * 100) : 0;
   
   if (submitted) {
     return (
@@ -8076,7 +8130,7 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
   
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
           <div>
@@ -8104,24 +8158,11 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
             <div>
               <p className="text-sm text-emerald-800 font-medium">Get VENDOR CONFIRMED status</p>
               <p className="text-xs text-emerald-700">
-                Review and confirm your test's data below. Provide updates with citations where applicable. 
-                Once verified, your test will display a trusted "Vendor Confirmed" badge visible to clinicians and patients.
+                Confirm existing data is accurate or provide updates with citations. 
+                Once verified, your test will display a trusted badge visible to clinicians and patients.
               </p>
             </div>
           </div>
-        </div>
-        
-        {/* Legend */}
-        <div className="px-6 py-2 border-b border-gray-100 flex items-center gap-4 text-xs flex-shrink-0">
-          <span className="text-gray-500">Row colors:</span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 bg-emerald-50 border border-emerald-200 rounded"></span>
-            <span className="text-gray-600">Has data</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 bg-amber-50 border border-amber-200 rounded"></span>
-            <span className="text-gray-600">Recommended (missing)</span>
-          </span>
         </div>
         
         {/* Form */}
@@ -8130,7 +8171,7 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
             {/* Submitter Info */}
             <div className="mb-6 p-4 bg-gray-50 rounded-xl">
               <h3 className="text-sm font-semibold text-gray-700 mb-3">Your Information</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Name *</label>
                   <input
@@ -8142,10 +8183,11 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Company Email * <span className="text-gray-400">(must be @{test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '')} domain)</span></label>
+                  <label className="block text-xs text-gray-500 mb-1">Vendor Email *</label>
                   <input
                     type="email"
                     required
+                    placeholder={`@${test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`}
                     value={submitterInfo.email}
                     onChange={(e) => {
                       setSubmitterInfo(prev => ({ ...prev, email: e.target.value }));
@@ -8161,74 +8203,41 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g., Medical Director, Product Manager"
+                    placeholder="e.g., Medical Director"
                     value={submitterInfo.role}
                     onChange={(e) => setSubmitterInfo(prev => ({ ...prev, role: e.target.value }))}
                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Company *</label>
-                  <input
-                    type="text"
-                    required
-                    value={submitterInfo.company}
-                    onChange={(e) => setSubmitterInfo(prev => ({ ...prev, company: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                  />
-                </div>
               </div>
             </div>
             
-            {/* Column Headers */}
-            <div className="grid grid-cols-12 gap-3 py-2 border-b-2 border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wide sticky top-0 bg-white">
-              <div className="col-span-3">Field</div>
-              <div className="col-span-2">Current Value</div>
-              <div className="col-span-4">New Value</div>
-              <div className="col-span-3">Citation URL</div>
+            {/* Progress Bar */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-sm font-medium text-gray-700">Progress</span>
+                <span className="text-sm text-gray-500">{actedCount} of {recommendedFields.length} fields reviewed</span>
+              </div>
+              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-emerald-500 transition-all duration-300"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
             </div>
             
-            {/* Recommended Fields Section */}
-            {recommendedFields.length > 0 && (
-              <div className="mt-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-semibold text-gray-800">Recommended Fields</span>
-                  <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded">
-                    {recommendedFields.length} fields
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500 mb-3">
-                  These fields are part of the minimum data set for {category} tests. Completing them improves data quality.
-                </p>
-                {recommendedFields.map(key => (
-                  <FieldRow key={key} fieldKey={key} isRecommended={true} />
-                ))}
-              </div>
-            )}
-            
-            {/* Other Fields Section */}
-            {otherFields.length > 0 && (
-              <div className="mt-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-semibold text-gray-800">Other Fields</span>
-                  <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded">
-                    {otherFields.length} fields with existing data
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500 mb-3">
-                  Update any existing data that needs correction. Leave blank to confirm current values.
-                </p>
-                {otherFields.map(key => (
-                  <FieldRow key={key} fieldKey={key} isRecommended={false} />
-                ))}
-              </div>
-            )}
+            {/* Fields */}
+            <div className="space-y-2">
+              {recommendedFields.map(key => (
+                <FieldRow key={key} fieldKey={key} />
+              ))}
+            </div>
           </div>
           
           {/* Footer */}
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between flex-shrink-0 bg-gray-50">
             <p className="text-xs text-gray-500">
-              Submissions reviewed within 2-3 business days. Questions?{' '}
+              Questions?{' '}
               <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">Connect on LinkedIn</a>
             </p>
             <div className="flex items-center gap-3">
@@ -8242,7 +8251,7 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting || !!emailError}
+                disabled={isSubmitting || !!emailError || actedCount === 0}
                 className="px-6 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isSubmitting ? (
@@ -8256,9 +8265,9 @@ const VendorConfirmationForm = ({ test, category, onClose, onSubmit }) => {
                 ) : (
                   <>
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Submit for Review
+                    Submit Confirmation
                   </>
                 )}
               </button>

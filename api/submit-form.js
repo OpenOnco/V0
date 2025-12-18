@@ -40,19 +40,39 @@ export default async function handler(req, res) {
     const testName = vc.testName || 'Unknown Test';
     const vendor = vc.vendor || 'Unknown Vendor';
     const category = submission.category || 'Unknown';
+    const confirmed = vc.confirmed || [];
     const changes = vc.changes || [];
-    const confirmedCount = vc.confirmedFieldCount || 0;
     const totalRecommended = vc.totalRecommendedFields || 0;
-    const completionPct = totalRecommended > 0 ? Math.round((confirmedCount / totalRecommended) * 100) : 0;
+    const reviewedCount = confirmed.length + changes.length;
     
     subject = `OpenOnco Vendor Confirmation: ${testName} (${category}) - ${vendor}`;
     headerColor = '#059669'; // Emerald green
+    
+    // Build confirmed fields list
+    let confirmedHtml = '';
+    if (confirmed.length > 0) {
+      confirmedHtml = `
+        <h3 style="color: #374151; margin-top: 24px;">✓ Confirmed Fields (${confirmed.length})</h3>
+        <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+          <tr style="background: #f9fafb;">
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Field</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Confirmed Value</th>
+          </tr>
+          ${confirmed.map(c => `
+            <tr style="background: #ecfdf5;">
+              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${c.label || c.field}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #059669;">${c.value || '—'}</td>
+            </tr>
+          `).join('')}
+        </table>
+      `;
+    }
     
     // Build changes table rows
     let changesHtml = '';
     if (changes.length > 0) {
       changesHtml = `
-        <h3 style="color: #374151; margin-top: 24px;">Proposed Changes</h3>
+        <h3 style="color: #374151; margin-top: 24px;">📝 Proposed Updates (${changes.length})</h3>
         <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
           <tr style="background: #f9fafb;">
             <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Field</th>
@@ -70,11 +90,13 @@ export default async function handler(req, res) {
           `).join('')}
         </table>
       `;
-    } else {
-      changesHtml = `
+    }
+    
+    if (confirmed.length === 0 && changes.length === 0) {
+      confirmedHtml = `
         <div style="background-color: #fef3c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0;">
-          <strong style="color: #92400e;">No changes proposed</strong>
-          <span style="color: #92400e;"> — Vendor is confirming existing data is accurate</span>
+          <strong style="color: #92400e;">No fields reviewed</strong>
+          <span style="color: #92400e;"> — Submission may be incomplete</span>
         </div>
       `;
     }
@@ -85,13 +107,13 @@ export default async function handler(req, res) {
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Test Name</td><td style="padding: 8px; border: 1px solid #ddd;">${testName}</td></tr>
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Vendor</td><td style="padding: 8px; border: 1px solid #ddd;">${vendor}</td></tr>
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Test ID</td><td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${vc.testId || 'N/A'}</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Data Completeness</td><td style="padding: 8px; border: 1px solid #ddd;">${confirmedCount}/${totalRecommended} recommended fields (${completionPct}%)</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Changes Proposed</td><td style="padding: 8px; border: 1px solid #ddd;">${changes.length} field(s)</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Fields Reviewed</td><td style="padding: 8px; border: 1px solid #ddd;">${reviewedCount} of ${totalRecommended} recommended fields</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Confirmed</td><td style="padding: 8px; border: 1px solid #ddd; color: #059669;">${confirmed.length} field(s)</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Updates Proposed</td><td style="padding: 8px; border: 1px solid #ddd; color: #2563eb;">${changes.length} field(s)</td></tr>
     `;
     
-    // Add submitter role and company for vendor confirmations
+    // Submitter info
     const submitterRole = submission.submitter?.role || 'Not provided';
-    const submitterCompany = submission.submitter?.company || 'Not provided';
     
     // Override the standard email template for vendor confirmations
     try {
@@ -123,10 +145,6 @@ export default async function handler(req, res) {
                 <td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Role/Title</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">${submitterRole}</td>
               </tr>
-              <tr>
-                <td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Company</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${submitterCompany}</td>
-              </tr>
             </table>
             
             <h3 style="color: #374151;">Test Details</h3>
@@ -134,15 +152,16 @@ export default async function handler(req, res) {
               ${detailsHtml}
             </table>
             
+            ${confirmedHtml}
             ${changesHtml}
             
             <div style="background-color: #eff6ff; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
               <strong style="color: #1e40af;">Next Steps:</strong>
               <ol style="color: #1e40af; margin: 8px 0 0 0; padding-left: 20px;">
-                <li>Review the proposed changes above</li>
+                <li>Review the confirmed and proposed changes above</li>
                 <li>Verify citations are valid</li>
-                <li>Update data.js with confirmed values</li>
-                <li>Add "vendorConfirmed: true" to the test record</li>
+                <li>Update data.js with new values</li>
+                <li>Add "vendorConfirmed: true" and "vendorConfirmedDate" to the test record</li>
               </ol>
             </div>
             
