@@ -3033,7 +3033,7 @@ const CompetitionsPage = ({ onNavigate }) => {
       {/* Main Intro */}
       <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 sm:p-8 border border-emerald-200 mb-8">
         <p className="text-gray-700 text-lg leading-relaxed mb-4">
-          Yes that's right — OpenOnco is running a competition (kinda)! We've got decent data now for over {stats.total} advanced molecular tests, 
+          Yes that's right — OpenOnco is running a competition (kinda)! We've got decent data now for nearly 100 advanced molecular tests, 
           but that data is a distance from being complete. As a first step we want to make sure each test has a set of core data completed. 
           Tests that meet or exceed that core dataset get awarded a <strong className="text-emerald-700">Baseline Complete (BC)</strong> badge 👏👏👏
         </p>
@@ -3044,7 +3044,7 @@ const CompetitionsPage = ({ onNavigate }) => {
         </p>
         
         <p className="text-gray-700 text-lg leading-relaxed">
-          Given that we have over {stats.total} tests now, that means there are <strong className="text-amber-600 text-xl">{inProgressTests.length} that still need work</strong>. 
+          Given that we have {stats.total} tests now, that means there are <strong className="text-amber-600 text-xl">{inProgressTests.length} that still need work</strong>. 
           To make it easy to complete the core set, vendors can click on a test below, choose "Submit Missing Data" and get presented with a pre-populated form. 
           <span className="font-bold text-emerald-700 ml-1">DO IT!!!</span>
         </p>
@@ -3069,23 +3069,24 @@ const CompetitionsPage = ({ onNavigate }) => {
       {/* BC Awardees Plaque */}
       {bcTests.length > 0 && (
         <div className="mb-8">
-          <div className="bg-gradient-to-br from-amber-800 to-amber-900 rounded-xl p-6 shadow-lg border-4 border-amber-700">
+          <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-xl p-6 shadow-lg border-2 border-emerald-500">
             <div className="text-center mb-4">
-              <h2 className="text-xl font-bold text-amber-100 tracking-wide">Baseline Complete Awardees</h2>
-              <div className="w-24 h-0.5 bg-amber-500 mx-auto mt-2"></div>
+              <h2 className="text-xl font-bold text-white tracking-wide">Baseline Complete (BC) Awardees</h2>
+              <div className="w-32 h-0.5 bg-emerald-300 mx-auto mt-2"></div>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
               {bcTests.map(test => (
                 <button
                   key={test.id}
                   onClick={() => handleShowDetail(test, test.category)}
-                  className="px-3 py-1.5 bg-amber-950/50 hover:bg-amber-950/70 border border-amber-600/50 rounded text-amber-100 text-sm font-medium transition-colors cursor-pointer"
+                  className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-emerald-400/50 rounded text-white text-sm font-medium transition-colors cursor-pointer flex items-center gap-1.5"
                 >
+                  <span className="bg-emerald-400 text-emerald-900 text-[10px] px-1 py-0.5 rounded font-bold">BC✓</span>
                   {test.name}
                 </button>
               ))}
             </div>
-            <p className="text-center text-amber-300/70 text-xs mt-4">{bcTests.length} tests with complete core data</p>
+            <p className="text-center text-emerald-200/70 text-xs mt-4">{bcTests.length} tests with complete core data</p>
           </div>
         </div>
       )}
@@ -3306,7 +3307,7 @@ const CompetitionsDetailModal = ({ test, category, onClose, onNavigateToSubmissi
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  Complete Missing Fields
+                  Complete Baseline Data
                 </button>
                 <p className="text-xs text-amber-700 mt-2">Submit data to help this test reach Baseline Complete status.</p>
               </div>
@@ -6057,11 +6058,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
               onClick={() => { setSubmissionType('complete'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setSelectedParameter(''); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'complete' ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className={`font-semibold flex items-center gap-1.5 ${submissionType === 'complete' ? 'text-emerald-700' : 'text-gray-800'}`}>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                Complete Missing Fields
+              <div className={`font-semibold ${submissionType === 'complete' ? 'text-emerald-700' : 'text-gray-800'}`}>
+                Complete Baseline Data
               </div>
               <div className="text-sm text-gray-500">Help a test reach Baseline Complete</div>
             </button>
@@ -6284,11 +6282,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         {/* COMPLETE MISSING FIELDS: Select Test → Show All Missing Fields */}
         {submissionType === 'complete' && category && (
           <div className="bg-white rounded-xl border border-emerald-200 p-6">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-2 flex items-center gap-2">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              Complete Missing Fields
+            <h3 className="text-lg font-semibold text-emerald-800 mb-2">
+              Complete Baseline Data
             </h3>
             <p className="text-sm text-gray-600 mb-4">Help a test reach Baseline Complete status by filling in missing data.</p>
             
