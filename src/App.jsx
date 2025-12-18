@@ -63,6 +63,50 @@ const VENDOR_BADGES = {
 };
 
 // ============================================
+// Tier 1 Citation Metrics - Dynamic calculation
+// ============================================
+// Tier 1 = Performance metrics that MUST have citations
+// These are the clinically critical numbers patients/clinicians rely on
+const TIER1_FIELDS = [
+  'sensitivity', 'specificity', 'ppv', 'npv',
+  'lod', 'lod95',
+  'stageISensitivity', 'stageIISensitivity', 'stageIIISensitivity', 'stageIVSensitivity',
+  'landmarkSensitivity', 'landmarkSpecificity',
+  'longitudinalSensitivity', 'longitudinalSpecificity',
+  'advancedAdenomaSensitivity',
+  'leadTimeVsImaging'
+];
+
+const calculateTier1Metrics = (allTestData) => {
+  let totalDataPoints = 0;
+  let citedDataPoints = 0;
+  
+  allTestData.forEach(test => {
+    TIER1_FIELDS.forEach(field => {
+      const value = test[field];
+      // Check if field has a non-null, non-empty value
+      if (value != null && value !== '' && value !== 'N/A') {
+        totalDataPoints++;
+        // Check if corresponding citation field exists and has value
+        const citationField = `${field}Citations`;
+        const citation = test[citationField];
+        if (citation && citation.trim() !== '') {
+          citedDataPoints++;
+        }
+      }
+    });
+  });
+  
+  const coverage = totalDataPoints > 0 ? (citedDataPoints / totalDataPoints * 100) : 0;
+  
+  return {
+    totalTier1DataPoints: totalDataPoints,
+    citedDataPoints: citedDataPoints,
+    citationCoverage: coverage.toFixed(1)
+  };
+};
+
+// ============================================
 // SEO Component - Dynamic meta tags
 // ============================================
 const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
@@ -3067,6 +3111,10 @@ const DatabaseStatsSimple = () => {
     ...trmTestData.map(t => t.vendor),
     ...tdsTestData.map(t => t.vendor)
   ]);
+  
+  // Calculate Tier 1 citation metrics dynamically
+  const allTestData = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  const tier1Metrics = calculateTier1Metrics(allTestData);
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -3093,7 +3141,7 @@ const DatabaseStatsSimple = () => {
       </div>
       
       {/* Category breakdown */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
           <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
           <div>
@@ -3120,6 +3168,28 @@ const DatabaseStatsSimple = () => {
           <div>
             <p className="text-xs font-medium text-gray-800">TDS</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Citation Quality - Tier 1 Performance Metrics */}
+      <div className="border-t border-gray-100 pt-4">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-sm font-medium text-gray-700">Citation Quality</span>
+          <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Performance Metrics</span>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-xl font-bold text-blue-800">{tier1Metrics.totalTier1DataPoints}</p>
+            <p className="text-[10px] text-blue-600">Tier 1 Data Points</p>
+          </div>
+          <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-xl font-bold text-blue-800">{tier1Metrics.citedDataPoints}</p>
+            <p className="text-[10px] text-blue-600">Cited</p>
+          </div>
+          <div className="text-center p-3 bg-green-50 rounded-lg border border-green-100">
+            <p className="text-xl font-bold text-green-700">{tier1Metrics.citationCoverage}%</p>
+            <p className="text-[10px] text-green-600">Coverage</p>
           </div>
         </div>
       </div>
@@ -6540,6 +6610,133 @@ const InfoIcon = ({ citations, notes }) => {
 };
 
 // ============================================
+// Citation Tooltip - Shows source icon after parameter values
+// ============================================
+const CitationTooltip = ({ citations }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 320;
+      const popupHeight = 150;
+      
+      let left = rect.left - popupWidth / 2 + rect.width / 2;
+      if (left + popupWidth > window.innerWidth - 20) {
+        left = window.innerWidth - popupWidth - 20;
+      }
+      if (left < 20) left = 20;
+      
+      let top = rect.bottom + 8;
+      if (top + popupHeight > window.innerHeight - 20) {
+        top = rect.top - popupHeight - 8;
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
+  
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      if (buttonRef.current && !buttonRef.current.contains(e.target) &&
+          popupRef.current && !popupRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+  
+  // Close on scroll
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = (e) => {
+      if (popupRef.current && popupRef.current.contains(e.target)) return;
+      setIsOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [isOpen]);
+  
+  if (!citations) return null;
+  
+  return (
+    <span className="inline-flex items-center ml-1">
+      <button 
+        ref={buttonRef}
+        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+        className="w-4 h-4 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600 hover:text-blue-700 text-[10px] font-medium inline-flex items-center justify-center transition-colors cursor-pointer"
+        title="View source"
+      >
+        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+      </button>
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[9999] w-80 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden" 
+          style={popupStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="bg-slate-100 px-3 py-2 flex items-center justify-between border-b border-slate-200">
+            <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Source</span>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
+              className="text-slate-400 hover:text-slate-600 p-0.5 rounded hover:bg-slate-200 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="p-3 max-h-40 overflow-y-auto">
+            <div className="space-y-1.5">
+              {citations.split('|').map((c, i) => {
+                const url = c.trim();
+                const isUrl = url.startsWith('http');
+                return (
+                  <a 
+                    key={i} 
+                    href={isUrl ? url : '#'} 
+                    target={isUrl ? "_blank" : undefined}
+                    rel={isUrl ? "noopener noreferrer" : undefined}
+                    className={`block text-xs ${isUrl ? 'text-[#2A63A4] hover:underline' : 'text-slate-600'} break-words`}
+                  >
+                    {isUrl ? (
+                      <span className="flex items-start gap-1">
+                        <svg className="w-3 h-3 flex-shrink-0 mt-0.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        <span>{url.length > 60 ? url.slice(0, 60) + '...' : url}</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-start gap-1">
+                        <svg className="w-3 h-3 flex-shrink-0 mt-0.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>{url}</span>
+                      </span>
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </span>
+  );
+};
+
+// ============================================
 // Expert Insight Component - Shows expert context on metrics
 // Attribution: Expert Advisors MR and SW
 // ============================================
@@ -6857,7 +7054,10 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
           <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
           {expertTopic && <ExpertInsight topic={expertTopic} />}
         </div>
-        <span className="text-sm font-medium text-gray-900">{displayValue}</span>
+        <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+          {displayValue}
+          <CitationTooltip citations={citations} />
+        </span>
       </div>
     );
   }
@@ -6869,7 +7069,10 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
         <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
         {expertTopic && <ExpertInsight topic={expertTopic} />}
       </span>
-      <span className="text-sm font-medium text-gray-900 text-right">{displayValue}</span>
+      <span className="text-sm font-medium text-gray-900 text-right inline-flex items-center">
+        {displayValue}
+        <CitationTooltip citations={citations} />
+      </span>
     </div>
   );
 };
@@ -7567,25 +7770,37 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   <div className="space-y-1">
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
-                      <span className="text-sm font-medium text-gray-900">{test.sensitivity ? `${test.sensitivity}%` : '—'}</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.sensitivity ? `${test.sensitivity}%` : '—'}
+                        {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
+                      </span>
                     </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
-                      <span className="text-sm font-medium text-gray-900">{test.specificity ? `${test.specificity}%` : '—'}</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.specificity ? `${test.specificity}%` : '—'}
+                        {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
+                      </span>
                     </div>
-                    {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" />}
-                    {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" />}
+                    {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} />}
+                    {test.clinicalSpecificity && <DataRow label="Clinical Specificity" value={test.clinicalSpecificity} unit="%" citations={test.clinicalSpecificityCitations} />}
                     <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
                     <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD (Limit of Detection)</GlossaryTooltip></span>
-                      <span className="text-sm font-medium text-gray-900">{test.lod ? formatLOD(test.lod) : '—'}</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.lod ? formatLOD(test.lod) : '—'}
+                        {test.lod && <CitationTooltip citations={test.lodCitations} />}
+                      </span>
                     </div>
                     {test.lod95 && (
                       <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                         <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD95</GlossaryTooltip></span>
-                        <span className="text-sm font-medium text-gray-900">{test.lod95}</span>
+                        <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                          {test.lod95}
+                          <CitationTooltip citations={test.lod95Citations} />
+                        </span>
                       </div>
                     )}
                   </div>
@@ -7595,17 +7810,17 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 <Section title="Sample & Turnaround">
                   <div className="space-y-1">
                     <DataRow label="Sample Type" value={test.sampleCategory} />
-                    <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" />
-                    {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" />}
+                    <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} />
+                    {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} />}
                     {category === 'MRD' && (
                       <>
-                        <DataRow label="Initial TAT" value={test.initialTat} unit=" days" />
-                        <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" />
+                        <DataRow label="Initial TAT" value={test.initialTat} unit=" days" citations={test.initialTatCitations} notes={test.initialTatNotes} />
+                        <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
                       </>
                     )}
-                    {category !== 'MRD' && <DataRow label="TAT" value={test.tat} />}
-                    {test.leadTimeVsImaging && <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" />}
-                    {test.variantsTracked && <DataRow label="Variants Tracked" value={test.variantsTracked} />}
+                    {category !== 'MRD' && <DataRow label="TAT" value={test.tat} citations={test.tatCitations} notes={test.tatNotes} />}
+                    {test.leadTimeVsImaging && <DataRow label="Lead Time vs Imaging" value={test.leadTimeVsImaging} unit=" days" citations={test.leadTimeVsImagingCitations} notes={test.leadTimeVsImagingNotes} />}
+                    {test.variantsTracked && <DataRow label="Variants Tracked" value={test.variantsTracked} citations={test.variantsTrackedCitations} notes={test.variantsTrackedNotes} />}
                   </div>
                 </Section>
               </div>
@@ -7642,10 +7857,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                   </div>
                   {(test.landmarkSensitivity || test.longitudinalSensitivity) && (
                     <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-gray-100">
-                      {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" />}
-                      {test.landmarkSpecificity && <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" />}
-                      {test.longitudinalSensitivity && <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" />}
-                      {test.longitudinalSpecificity && <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" />}
+                      {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" citations={test.landmarkSensitivityCitations} />}
+                      {test.landmarkSpecificity && <DataRow label="Landmark Specificity" value={test.landmarkSpecificity} unit="%" citations={test.landmarkSpecificityCitations} />}
+                      {test.longitudinalSensitivity && <DataRow label="Longitudinal Sensitivity" value={test.longitudinalSensitivity} unit="%" citations={test.longitudinalSensitivityCitations} />}
+                      {test.longitudinalSpecificity && <DataRow label="Longitudinal Specificity" value={test.longitudinalSpecificity} unit="%" citations={test.longitudinalSpecificityCitations} />}
                     </div>
                   )}
                 </Section>
@@ -7656,8 +7871,8 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 {/* Regulatory & Coverage */}
                 <Section title="Regulatory & Coverage">
                   <div className="space-y-1">
-                    <DataRow label="FDA Status" value={test.fdaStatus} />
-                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} />
+                    <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} />
+                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
                     {test.medicareRate && (
                       <div className="py-1.5 flex justify-between items-center">
                         <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -7667,13 +7882,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <span className="text-sm font-semibold text-emerald-600">${test.medicareRate.toLocaleString()}</span>
                       </div>
                     )}
-                    {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} />}
-                    <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Code'} value={test.cptCodes || test.cptCode} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} />
-                    <DataRow label="Clinical Availability" value={test.clinicalAvailability} />
+                    {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} citations={test.commercialPayersCitations} />}
+                    <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Code'} value={test.cptCodes || test.cptCode} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} citations={test.cptCodesCitations} />
+                    <DataRow label="Clinical Availability" value={test.clinicalAvailability} citations={test.clinicalAvailabilityCitations} notes={test.clinicalAvailabilityNotes} />
                     {test.availableRegions && test.availableRegions.length > 0 && (
                       <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
                     )}
-                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} />}
+                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />}
                   </div>
                 </Section>
                 
@@ -7692,7 +7907,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
                       </div>
                     )}
-                    <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} />
+                    <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} citations={test.independentValidationCitations} />
                     {test.clinicalTrials && (
                       <div className="pt-2 mt-2 border-t border-gray-100">
                         <p className="text-xs text-gray-500 mb-1">Key Trials</p>
@@ -7725,13 +7940,13 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <Section title="Test Requirements & Method">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <DataRow label="Approach" value={test.approach} expertTopic="tumorInformed" />
+                    <DataRow label="Approach" value={test.approach} expertTopic="tumorInformed" citations={test.approachCitations} />
                     <DataRow label="Requires Tumor Tissue" value={requiresTissue ? 'Yes' : 'No'} notes={test.requiresTumorTissueNotes} />
                     <DataRow label="Requires Matched Normal" value={test.requiresMatchedNormal} />
                   </div>
                   <div className="space-y-1">
-                    {test.method && <DataRow label="Method" value={test.method} />}
-                    {test.targetPopulation && <DataRow label="Target Population" value={test.targetPopulation} />}
+                    {test.method && <DataRow label="Method" value={test.method} citations={test.methodCitations} />}
+                    {test.targetPopulation && <DataRow label="Target Population" value={test.targetPopulation} citations={test.targetPopulationCitations} />}
                     {test.indicationGroup && <DataRow label="Indication Group" value={test.indicationGroup} />}
                   </div>
                 </div>
