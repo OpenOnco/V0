@@ -1062,7 +1062,7 @@ const Header = ({ currentPage, onNavigate }) => {
   const navItems = ['home', 'competitions', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
-    'competitions': 'Competition!',
+    'competitions': 'A Competition!',
     'learn': 'Learn',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
@@ -3032,7 +3032,7 @@ const CompetitionsPage = ({ onNavigate }) => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">OpenOnco Competition!</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">OpenOnco's First Competition!</h1>
       </div>
       
       {/* Main Intro */}
