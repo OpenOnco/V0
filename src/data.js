@@ -4833,10 +4833,15 @@ export const tdsTestData = [
   // INSERT NEW TDS KIT HERE (above this line, add comma after previous entry)
 ];
 
-// ALZ Blood Tests
-export const alzBloodTestData = [
-  {
-    "id": "alz-1",
+// ALZ DISABLED - Data commented out for OpenOnco-only deployment
+// Original ALZ Blood Tests data preserved below in comments
+export const alzBloodTestData = [];
+
+/*
+// ALZ Blood Tests (DISABLED)
+// export const alzBloodTestData = [
+//   {
+//     "id": "alz-1",
     "sampleCategory": "Blood/Plasma",
     "name": "PrecivityAD2",
     "vendor": "C2N Diagnostics",
@@ -5216,7 +5221,8 @@ export const alzBloodTestData = [
     "technologyDifferentiator": "Unique multi-modal approach combining blood biomarkers with digital cognitive assessment. Designed for efficient screening and staging. Partnership with Eisai provides integration with AD therapeutic development. Addresses need for comprehensive, accessible AD evaluation."
   }
   // INSERT NEW ALZ TEST HERE (above this line, add comma after previous entry)
-];
+// ];
+*/
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
@@ -5921,30 +5927,36 @@ export const RECENTLY_ADDED_TESTS = [
   { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
 ];
 
-// Database Changelog - OpenAlz (Alzheimer's)
-export const ALZ_DATABASE_CHANGELOG = [
-  {
-    date: 'Dec 14, 2025',
-    type: 'added',
-    testId: null,
-    testName: 'OpenAlz Launch',
-    vendor: null,
-    category: 'ALZ-BLOOD',
-    description: 'Initial launch of OpenAlz.org with 9 blood-based Alzheimer\'s biomarker tests including PrecivityAD2, AD-Detect, Lumipulse pTau217, Elecsys pTau217, ALZpath pTau217, Simoa pTau181, PrecivityAD, Lumipulse Amyloid Ratio, and ADNEX Blood Test.',
-    contributor: null,
-    affiliation: 'OpenAlz',
-    citation: null
-  },
-];
+// ALZ DISABLED - Data commented out for OpenOnco-only deployment
+export const ALZ_DATABASE_CHANGELOG = [];
+export const ALZ_RECENTLY_ADDED_TESTS = [];
 
-// Recently Added Tests - OpenAlz
-export const ALZ_RECENTLY_ADDED_TESTS = [
-  { id: 'alz-1', name: 'PrecivityAD2', vendor: 'C2N Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-  { id: 'alz-2', name: 'AD-Detect', vendor: 'Quest Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-  { id: 'alz-3', name: 'Lumipulse pTau217', vendor: 'Fujirebio', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-  { id: 'alz-5', name: 'ALZpath pTau217', vendor: 'ALZpath', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-  { id: 'alz-9', name: 'ADNEX Blood Test', vendor: 'Cogstate/Eisai', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
-];
+/*
+// Database Changelog - OpenAlz (Alzheimer's) - DISABLED
+// export const ALZ_DATABASE_CHANGELOG = [
+//   {
+//     date: 'Dec 14, 2025',
+//     type: 'added',
+//     testId: null,
+//     testName: 'OpenAlz Launch',
+//     vendor: null,
+//     category: 'ALZ-BLOOD',
+//     description: 'Initial launch of OpenAlz.org with 9 blood-based Alzheimer\'s biomarker tests including PrecivityAD2, AD-Detect, Lumipulse pTau217, Elecsys pTau217, ALZpath pTau217, Simoa pTau181, PrecivityAD, Lumipulse Amyloid Ratio, and ADNEX Blood Test.',
+//     contributor: null,
+//     affiliation: 'OpenAlz',
+//     citation: null
+//   },
+// ];
+
+// Recently Added Tests - OpenAlz - DISABLED
+// export const ALZ_RECENTLY_ADDED_TESTS = [
+//   { id: 'alz-1', name: 'PrecivityAD2', vendor: 'C2N Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+//   { id: 'alz-2', name: 'AD-Detect', vendor: 'Quest Diagnostics', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+//   { id: 'alz-3', name: 'Lumipulse pTau217', vendor: 'Fujirebio', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+//   { id: 'alz-5', name: 'ALZpath pTau217', vendor: 'ALZpath', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+//   { id: 'alz-9', name: 'ADNEX Blood Test', vendor: 'Cogstate/Eisai', category: 'ALZ-BLOOD', dateAdded: 'Dec 14, 2025' },
+// ];
+*/
 
 // Helper to get domain-specific changelog
 export const getChangelog = (domain) => {
