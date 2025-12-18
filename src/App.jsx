@@ -7586,10 +7586,10 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
                 const isUpdating = data.action === 'update';
                 return (
                   <div key={key} className={`p-4 rounded-lg border ${isConfirmed ? 'border-emerald-400 bg-emerald-50' : 'border-gray-200'}`}>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-gray-800">{def.label}</span>
-                      {!hasValue && <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded">NEEDS DATA</span>}
-                      {isConfirmed && <span className="text-xs px-2 py-0.5 bg-emerald-500 text-white rounded">✓ CONFIRMED</span>}
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="font-semibold text-gray-800">{def.label}</span>
+                      {!hasValue && <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">NEEDS DATA</span>}
+                      {isConfirmed && <span className="text-xs px-2 py-0.5 bg-emerald-500 text-white rounded font-medium">✓ CONFIRMED</span>}
                     </div>
                     <div className={`mb-3 p-3 rounded-lg ${hasValue ? 'bg-gray-100' : 'bg-amber-50 border border-dashed border-amber-300'}`}>
                       <div className="text-xs text-gray-500 mb-1">Current Value</div>
@@ -7597,16 +7597,33 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
                     </div>
                     {!isUpdating ? (
                       <div className="flex gap-2">
-                        {hasValue && !isConfirmed && <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'confirm' } }))} className="flex-1 px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600">✓ Confirm</button>}
-                        {isConfirmed && <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Undo</button>}
-                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'update', newValue: '', citation: '' } }))} className="flex-1 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600">{hasValue ? 'Update' : '+ Add'}</button>
+                        {hasValue && !isConfirmed && (
+                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'confirm' } }))} className="flex-1 px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600">
+                            ✓ Confirm This Value
+                          </button>
+                        )}
+                        {isConfirmed && (
+                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300">
+                            Undo
+                          </button>
+                        )}
+                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: { action: 'update', newValue: '', citation: '' } }))} className="flex-1 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600">
+                          {hasValue ? 'Update Value' : '+ Add Value'}
+                        </button>
                       </div>
                     ) : (
-                      <div className="space-y-2">
-                        <input type="text" placeholder="New value" value={data.newValue || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], newValue: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
-                        <input type="url" placeholder="Citation URL" value={data.citation || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], citation: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">New Value *</label>
+                          <input type="text" placeholder={`Enter ${def.label.toLowerCase()}...`} value={data.newValue || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], newValue: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Citation URL</label>
+                          <input type="url" placeholder="https://..." value={data.citation || ''} onChange={(e) => setFormData(prev => ({ ...prev, [key]: { ...prev[key], citation: e.target.value } }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                        </div>
                         <div className="flex gap-2">
-                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
+                          <button type="button" onClick={() => setFormData(prev => ({ ...prev, [key]: {} }))} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
+                          <button type="button" disabled={!data.newValue} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">Save</button>
                         </div>
                       </div>
                     )}
@@ -7616,11 +7633,11 @@ const VendorConfirmationForm = ({ test, category, onClose }) => {
             </div>
           </div>
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
-            <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 hover:underline">Questions? LinkedIn</a>
+            <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 hover:underline">Questions? Connect on LinkedIn</a>
             <div className="flex items-center gap-3">
               {submitError && <span className="text-xs text-red-600">{submitError}</span>}
               <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-              <button type="submit" disabled={isSubmitting || !!emailError || actedCount === 0} className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50">{isSubmitting ? 'Submitting...' : 'Submit'}</button>
+              <button type="submit" disabled={isSubmitting || !!emailError || actedCount === 0} className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50">{isSubmitting ? 'Submitting...' : 'Submit Confirmation'}</button>
             </div>
           </div>
         </form>
