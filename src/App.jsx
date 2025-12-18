@@ -3066,30 +3066,26 @@ const CompetitionsPage = ({ onNavigate }) => {
         </div>
       </div>
       
-      {/* BC Group */}
+      {/* BC Awardees Plaque */}
       {bcTests.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
+          <div className="bg-gradient-to-br from-amber-800 to-amber-900 rounded-xl p-6 shadow-lg border-4 border-amber-700">
+            <div className="text-center mb-4">
+              <h2 className="text-xl font-bold text-amber-100 tracking-wide">Baseline Complete Awardees</h2>
+              <div className="w-24 h-0.5 bg-amber-500 mx-auto mt-2"></div>
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">Baseline Complete</h2>
-              <p className="text-sm text-gray-500">All minimum fields filled — ready for patients • {bcTests.length} test{bcTests.length !== 1 ? 's' : ''}</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {bcTests.map(test => (
+                <button
+                  key={test.id}
+                  onClick={() => handleShowDetail(test, test.category)}
+                  className="px-3 py-1.5 bg-amber-950/50 hover:bg-amber-950/70 border border-amber-600/50 rounded text-amber-100 text-sm font-medium transition-colors cursor-pointer"
+                >
+                  {test.name}
+                </button>
+              ))}
             </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {bcTests.map(test => (
-              <AwardTestCard 
-                key={test.id} 
-                test={test} 
-                category={test.category}
-                completeness={test.completeness}
-                onShowDetail={handleShowDetail}
-              />
-            ))}
+            <p className="text-center text-amber-300/70 text-xs mt-4">{bcTests.length} tests with complete core data</p>
           </div>
         </div>
       )}
@@ -3104,8 +3100,8 @@ const CompetitionsPage = ({ onNavigate }) => {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">In Progress</h2>
-              <p className="text-sm text-gray-500">Sorted by completeness • {inProgressTests.length} test{inProgressTests.length !== 1 ? 's' : ''}</p>
+              <h2 className="text-xl font-bold text-gray-800">Need Work</h2>
+              <p className="text-sm text-gray-500">Click a test to submit missing data • {inProgressTests.length} test{inProgressTests.length !== 1 ? 's' : ''}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -3121,20 +3117,6 @@ const CompetitionsPage = ({ onNavigate }) => {
           </div>
         </div>
       )}
-      
-      {/* Bottom CTA */}
-      <div className="mt-12 text-center bg-slate-50 rounded-2xl p-8 border border-slate-200">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Complete Your Profile?</h3>
-        <p className="text-gray-600 mb-4 max-w-xl mx-auto">
-          Click any test above to see what's missing, or email us directly with your data.
-        </p>
-        <a 
-          href="mailto:info@openonco.org?subject=Data%20Submission%20for%20OpenOnco"
-          className="inline-block px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
-        >
-          Email Your Data
-        </a>
-      </div>
       
       {/* Detail Modal */}
       {detailTest && (
