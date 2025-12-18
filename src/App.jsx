@@ -265,6 +265,28 @@ const paramHasValue = (test, param) => {
   return false;
 };
 
+// Check if a field is a minimum param for a category
+const isMinParam = (category, fieldKey) => {
+  const params = MINIMUM_PARAMS[category];
+  if (!params) return false;
+  return Object.values(params).flat().some(p => p.key === fieldKey || p.alternativeKey === fieldKey);
+};
+
+// Empty value display - shows "Not yet available" for min params, dash for others
+const EmptyValue = ({ category, fieldKey }) => {
+  if (isMinParam(category, fieldKey)) {
+    return (
+      <span className="text-amber-600 italic text-xs inline-flex items-center gap-1">
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        Not yet available
+      </span>
+    );
+  }
+  return <span>—</span>;
+};
+
 // Calculate completeness for a test
 const calculateTestCompleteness = (test, category) => {
   const params = MINIMUM_PARAMS[category];
@@ -7927,7 +7949,21 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
               <div className="flex items-center gap-2 flex-wrap">
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
-                <CompletenessBadge test={test} category={category} />
+                {!isPatientView && MINIMUM_PARAMS[category] && (
+                  <>
+                    <CompletenessBadge test={test} category={category} />
+                    <a 
+                      href={`/submissions?test=${encodeURIComponent(test.id)}&category=${category}&action=confirm`}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-medium rounded transition-colors print:hidden"
+                      title="Vendors can confirm or update this test's data"
+                    >
+                      <span>Vendor?</span>
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -8108,7 +8144,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         {test.fdaCompanionDxCountNotes && <p className="text-xs text-gray-500 mt-1">{test.fdaCompanionDxCountNotes}</p>}
                         <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
                           <span className="text-xs text-gray-500"><GlossaryTooltip termKey="fda-approved">FDA Status</GlossaryTooltip></span>
-                          <span className="text-sm font-medium text-gray-900">{test.fdaStatus || '—'}</span>
+                          <span className="text-sm font-medium text-gray-900">{test.fdaStatus || <EmptyValue category={category} fieldKey="fdaStatus" />}</span>
                         </div>
                         {test.fdaApprovalDate && <DataRow label="FDA Approval Date" value={test.fdaApprovalDate} citations={test.fdaApprovalDateCitations} />}
                       </div>
@@ -8169,7 +8205,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.sensitivity ? `${test.sensitivity}%` : '—'}
+                        {test.sensitivity ? `${test.sensitivity}%` : <EmptyValue category={category} fieldKey="sensitivity" />}
                         {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
                       </span>
                     </div>
@@ -8177,7 +8213,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.specificity ? `${test.specificity}%` : '—'}
+                        {test.specificity ? `${test.specificity}%` : <EmptyValue category={category} fieldKey="specificity" />}
                         {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
                       </span>
                     </div>
@@ -8188,7 +8224,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD (Limit of Detection)</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.lod ? formatLOD(test.lod) : '—'}
+                        {test.lod ? formatLOD(test.lod) : <EmptyValue category={category} fieldKey="lod" />}
                         {test.lod && <CitationTooltip citations={test.lodCitations} />}
                       </span>
                     </div>
@@ -8212,8 +8248,20 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} />}
                     {category === 'MRD' && (
                       <>
-                        <DataRow label="Initial TAT" value={test.initialTat} unit=" days" citations={test.initialTatCitations} notes={test.initialTatNotes} />
-                        <DataRow label="Follow-up TAT" value={test.followUpTat} unit=" days" citations={test.followUpTatCitations} notes={test.followUpTatNotes} />
+                        <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                          <span className="text-xs text-gray-500">Initial TAT</span>
+                          <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                            {test.initialTat ? `${test.initialTat} days` : <EmptyValue category={category} fieldKey="initialTat" />}
+                            {test.initialTat && <CitationTooltip citations={test.initialTatCitations} />}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                          <span className="text-xs text-gray-500">Follow-up TAT</span>
+                          <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                            {test.followUpTat ? `${test.followUpTat} days` : <EmptyValue category={category} fieldKey="followUpTat" />}
+                            {test.followUpTat && <CitationTooltip citations={test.followUpTatCitations} />}
+                          </span>
+                        </div>
                       </>
                     )}
                     {category !== 'MRD' && <DataRow label="TAT" value={test.tat} citations={test.tatCitations} notes={test.tatNotes} />}
@@ -8269,8 +8317,20 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 {/* Regulatory & Coverage */}
                 <Section title="Regulatory & Coverage">
                   <div className="space-y-1">
-                    <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} />
-                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
+                    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                      <span className="text-xs text-gray-500">FDA Status</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.fdaStatus || <EmptyValue category={category} fieldKey="fdaStatus" />}
+                        {test.fdaStatus && <CitationTooltip citations={test.fdaStatusCitations} />}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                      <span className="text-xs text-gray-500">Medicare</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.reimbursement || <EmptyValue category={category} fieldKey="reimbursement" />}
+                        {test.reimbursement && <CitationTooltip citations={test.reimbursementCitations} />}
+                      </span>
+                    </div>
                     {test.medicareRate && (
                       <div className="py-1.5 flex justify-between items-center">
                         <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -8282,29 +8342,43 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     )}
                     {hasPrivate && <DataRow label="Private Insurance" value={test.commercialPayers.join(', ')} notes={test.commercialPayersNotes} citations={test.commercialPayersCitations} />}
                     <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Code'} value={test.cptCodes || test.cptCode} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} citations={test.cptCodesCitations} />
-                    <DataRow label="Clinical Availability" value={test.clinicalAvailability} citations={test.clinicalAvailabilityCitations} notes={test.clinicalAvailabilityNotes} />
+                    <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                      <span className="text-xs text-gray-500">Clinical Availability</span>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                        {test.clinicalAvailability || <EmptyValue category={category} fieldKey="clinicalAvailability" />}
+                        {test.clinicalAvailability && <CitationTooltip citations={test.clinicalAvailabilityCitations} />}
+                      </span>
+                    </div>
                     {test.availableRegions && test.availableRegions.length > 0 && (
                       <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
                     )}
-                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />}
+                    {(category === 'ECD' || category === 'TDS' || category === 'ALZ-BLOOD') && (
+                      <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                        <span className="text-xs text-gray-500">List Price</span>
+                        <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+                          {test.listPrice ? `$${test.listPrice.toLocaleString()}` : <EmptyValue category={category} fieldKey="listPrice" />}
+                          {test.listPrice && <CitationTooltip citations={test.listPriceCitations} />}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </Section>
                 
                 {/* Clinical Evidence */}
                 <Section title="Clinical Evidence" expertTopic="clinicalTrials">
                   <div className="space-y-1">
-                    {test.totalParticipants && (
-                      <div className="py-1.5 flex justify-between items-center">
-                        <span className="text-xs text-gray-500">Trial Participants</span>
-                        <span className="text-sm font-semibold" style={{ color: '#2A63A4' }}>{test.totalParticipants.toLocaleString()}</span>
-                      </div>
-                    )}
-                    {test.numPublications && (
-                      <div className="py-1.5 flex justify-between items-center">
-                        <span className="text-xs text-gray-500">Publications</span>
-                        <span className="text-sm font-semibold text-purple-600">{test.numPublications}{test.numPublicationsPlus ? '+' : ''}</span>
-                      </div>
-                    )}
+                    <div className="py-1.5 flex justify-between items-center border-b border-gray-100">
+                      <span className="text-xs text-gray-500">Trial Participants</span>
+                      <span className="text-sm font-semibold" style={{ color: '#2A63A4' }}>
+                        {test.totalParticipants ? test.totalParticipants.toLocaleString() : <EmptyValue category={category} fieldKey="totalParticipants" />}
+                      </span>
+                    </div>
+                    <div className="py-1.5 flex justify-between items-center border-b border-gray-100">
+                      <span className="text-xs text-gray-500">Publications</span>
+                      <span className="text-sm font-semibold text-purple-600">
+                        {test.numPublications ? `${test.numPublications}${test.numPublicationsPlus ? '+' : ''}` : <EmptyValue category={category} fieldKey="numPublications" />}
+                      </span>
+                    </div>
                     <DataRow label="Independent Validation" value={test.independentValidation} notes={test.independentValidationNotes} citations={test.independentValidationCitations} />
                     {test.clinicalTrials && (
                       <div className="pt-2 mt-2 border-t border-gray-100">
@@ -8435,68 +8509,6 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                         <GlossaryTooltip termKey="companion-dx"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">Companion Dx</span></GlossaryTooltip>
                         <GlossaryTooltip termKey="cgp"><span className="text-xs px-2 py-0.5 bg-white rounded border border-violet-200 text-violet-700">CGP</span></GlossaryTooltip>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {/* ============================================ */}
-              {/* MINIMUM PARAMETERS SECTION - For Vendor Confirmation */}
-              {/* Shows all required fields, highlighting missing data */}
-              {/* ============================================ */}
-              {!isPatientView && MINIMUM_PARAMS[category] && (
-                <div className="mt-6 pt-4 border-t-2 border-dashed border-gray-200">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">📋</span>
-                      <h3 className="font-semibold text-gray-800">Minimum Parameters for Vendor Confirmation</h3>
-                    </div>
-                    <CompletenessBadge test={test} category={category} />
-                  </div>
-                  
-                  <p className="text-xs text-gray-500 mb-4">
-                    These are the standard parameters OpenOnco tracks for all {category} tests. 
-                    Yellow highlighted rows indicate missing data that vendors can confirm.
-                    <a href="/submissions" className="ml-1 text-emerald-600 hover:text-emerald-700 font-medium">Submit corrections →</a>
-                  </p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Left column: Identity + Analytical */}
-                    <div className="space-y-4">
-                      <MinParamSection 
-                        sectionKey="identity" 
-                        params={MINIMUM_PARAMS[category].identity} 
-                        test={test} 
-                        colors={colors} 
-                      />
-                      <MinParamSection 
-                        sectionKey="analytical" 
-                        params={MINIMUM_PARAMS[category].analytical} 
-                        test={test} 
-                        colors={colors} 
-                      />
-                    </div>
-                    
-                    {/* Right column: Evidence + Patient Experience + Access */}
-                    <div className="space-y-4">
-                      <MinParamSection 
-                        sectionKey="evidence" 
-                        params={MINIMUM_PARAMS[category].evidence} 
-                        test={test} 
-                        colors={colors} 
-                      />
-                      <MinParamSection 
-                        sectionKey="patientExperience" 
-                        params={MINIMUM_PARAMS[category].patientExperience} 
-                        test={test} 
-                        colors={colors} 
-                      />
-                      <MinParamSection 
-                        sectionKey="access" 
-                        params={MINIMUM_PARAMS[category].access} 
-                        test={test} 
-                        colors={colors} 
-                      />
                     </div>
                   </div>
                 </div>
