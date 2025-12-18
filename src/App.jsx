@@ -1839,6 +1839,8 @@ const TestShowcase = ({ onNavigate }) => {
     // Price if available (mainly ECD tests)
     if (test.listPrice != null) {
       params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'neutral' });
+    } else if (test.medicareRate != null) {
+      params.push({ label: 'Medicare Rate', value: `$${test.medicareRate.toLocaleString()}`, type: 'neutral' });
     }
     
     // Blood-only vs requires tissue
@@ -1938,7 +1940,11 @@ const TestShowcase = ({ onNavigate }) => {
     if (followUpTat != null) params.push({ label: 'Follow-up TAT', value: `${followUpTat} days`, type: 'operational' });
     if (tat != null && initialTat == null) params.push({ label: 'TAT', value: `${tat} days`, type: 'operational' });
     
-    if (test.listPrice != null) params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'operational' });
+    if (test.listPrice != null) {
+      params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'operational' });
+    } else if (test.medicareRate != null) {
+      params.push({ label: 'Medicare Rate', value: `$${test.medicareRate.toLocaleString()}`, type: 'operational' });
+    }
     if (test.bloodVolume != null) params.push({ label: 'Blood Volume', value: `${test.bloodVolume} mL`, type: 'operational' });
     if (test.cancersDetected != null && typeof test.cancersDetected === 'number') params.push({ label: 'Cancers Detected', value: test.cancersDetected, type: 'operational' });
     
@@ -2072,9 +2078,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       badges.push({ label: 'Pubs', value: test.numPublications, type: 'clinical' });
     }
     
-    // Price
+    // Price (list price preferred, Medicare rate as fallback)
     if (test.listPrice != null) {
       badges.push({ label: '$', value: `${(test.listPrice/1000).toFixed(1)}k`, type: 'operational' });
+    } else if (test.medicareRate != null) {
+      badges.push({ label: '~$', value: `${(test.medicareRate/1000).toFixed(1)}k`, type: 'operational' });
     }
     
     // Return top 3 badges max
@@ -8003,7 +8011,11 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                     : null}
               {test.adltStatus && <Badge variant="amber" title="CMS Advanced Diagnostic Laboratory Test - annual rate updates based on private payer data">ADLT</Badge>}
               {test.codeType === 'PLA' && <Badge variant="slate" title="Proprietary Laboratory Analyses code - specific to this laboratory's test">PLA</Badge>}
-              {category === 'ECD' && test.listPrice && <Badge variant="amber">${test.listPrice}</Badge>}
+              {category === 'ECD' && (test.listPrice ? (
+                <Badge variant="amber">${test.listPrice}</Badge>
+              ) : test.medicareRate && (
+                <Badge variant="amber" title="Medicare rate - actual list price may vary">~${test.medicareRate}</Badge>
+              ))}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
@@ -8709,7 +8721,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <p className="text-sm"><span className="font-medium">Private insurers:</span> {test.commercialPayers.join(', ')}</p>
                   )}
                   {test.commercialPayersNotes && <p className="text-xs text-gray-500 mt-1">{test.commercialPayersNotes}</p>}
-                  {(category === 'ECD' || category === 'TDS') && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>}
+                  {(category === 'ECD' || category === 'TDS') && (test.listPrice ? (
+                    <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>
+                  ) : test.medicareRate && (
+                    <p className="text-sm mt-2"><span className="font-medium">Estimated price:</span> ~${test.medicareRate.toLocaleString()} <span className="text-xs text-gray-500">(Medicare rate - actual price may vary)</span></p>
+                  ))}
                 </div>
               </Section>
               
@@ -8796,7 +8812,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                             <span className="text-sm font-semibold text-emerald-600">${test.medicareRate.toLocaleString()}</span>
                           </div>
                         )}
-                        {test.listPrice && <DataRow label="List Price" value={`$${test.listPrice.toLocaleString()}`} citations={test.listPriceCitations} />}
+                        {test.listPrice ? (
+                          <DataRow label="List Price" value={`$${test.listPrice.toLocaleString()}`} citations={test.listPriceCitations} />
+                        ) : test.medicareRate && !test.listPrice && (
+                          <DataRow label="List Price (est.)" value={`~$${test.medicareRate.toLocaleString()}`} notes="Medicare rate shown - actual list price may vary" citations="https://www.cms.gov/medicare/payment/fee-schedules/clinical-laboratory" />
+                        )}
                         <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Codes'} value={test.cptCodes} citations={test.cptCodesCitations} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} />
                       </div>
                     </Section>
@@ -8947,7 +8967,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     {test.availableRegions && test.availableRegions.length > 0 && (
                       <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
                     )}
-                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />}
+                    {category === 'ECD' && (test.listPrice ? (
+                      <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />
+                    ) : test.medicareRate && (
+                      <DataRow label="List Price (est.)" value={`~$${test.medicareRate.toLocaleString()}`} notes="Medicare rate shown - actual list price may vary" citations="https://www.cms.gov/medicare/payment/fee-schedules/clinical-laboratory" />
+                    ))}
                   </div>
                 </Section>
                 
