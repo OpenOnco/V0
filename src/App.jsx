@@ -3520,7 +3520,7 @@ const DatabaseStatsSimple = () => {
           <div className="relative group">
             <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
             <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <p className="font-semibold mb-2">Tier 1 = Key Clinical Performance Fields</p>
+              <p className="font-semibold mb-2">Performance Metrics with Sources</p>
               <div className="space-y-1.5 text-gray-300">
                 <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
                 <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
@@ -3528,7 +3528,7 @@ const DatabaseStatsSimple = () => {
                 <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
                 <p><span className="text-white">Screening:</span> advanced adenoma sensitivity, lead time vs imaging</p>
               </div>
-              <p className="mt-2 text-gray-400 text-[10px]">These metrics require citations to ensure clinical credibility.</p>
+              <p className="mt-2 text-gray-400 text-[10px]">Tracks how many performance claims have citations.</p>
               <div className="absolute left-4 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
             </div>
           </div>
@@ -3536,7 +3536,7 @@ const DatabaseStatsSimple = () => {
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
             <p className="text-xl font-bold text-blue-800">{tier1Metrics.totalTier1DataPoints}</p>
-            <p className="text-[10px] text-blue-600">Tier 1 Data Points</p>
+            <p className="text-[10px] text-blue-600">Performance Metrics</p>
           </div>
           <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
             <p className="text-xl font-bold text-blue-800">{tier1Metrics.citedDataPoints}</p>
@@ -6468,7 +6468,7 @@ const SourceDataPage = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-600">Tier 1 Citations</span>
+                        <span className="text-gray-600">Citation Coverage</span>
                         <span className={`font-medium ${colors.text}`}>{m.tier1CitationRate}%</span>
                       </div>
                       <div className="h-2 bg-white rounded-full overflow-hidden">
@@ -6506,21 +6506,21 @@ const SourceDataPage = () => {
               <div className="relative group inline-block ml-1">
                 <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
                 <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <p className="font-semibold mb-2">Tier 1 = Key Clinical Performance Fields</p>
+                  <p className="font-semibold mb-2">Performance Metrics with Sources</p>
                   <div className="space-y-1.5 text-gray-300">
                     <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
                     <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
                     <p><span className="text-white">Stage-Specific:</span> Stage I–IV sensitivity</p>
                     <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
                   </div>
-                  <p className="mt-2 text-gray-400 text-[10px]">These metrics require citations to ensure clinical credibility.</p>
+                  <p className="mt-2 text-gray-400 text-[10px]">Tracks how many performance claims have citations.</p>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
                 <p className="text-2xl font-bold text-blue-800">{aggregate.tier1DataPoints}</p>
-                <p className="text-xs text-blue-600 mt-1">Tier 1 Data Points</p>
+                <p className="text-xs text-blue-600 mt-1">Performance Metrics</p>
               </div>
               <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
                 <p className="text-2xl font-bold text-blue-800">{aggregate.tier1Cited}</p>
@@ -6593,7 +6593,7 @@ const SourceDataPage = () => {
                   </div>
                   <div className="bg-white rounded-lg p-4 border border-gray-100">
                     <p className="text-2xl font-bold text-gray-800">{m.tier1CitationRate}%</p>
-                    <p className="text-xs text-gray-500">Tier 1 Citations</p>
+                    <p className="text-xs text-gray-500">Citation Coverage</p>
                     <p className="text-[10px] text-gray-400 mt-1">{m.tier1Cited} / {m.tier1DataPoints} cited</p>
                   </div>
                 </div>
