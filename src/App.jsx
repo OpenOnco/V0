@@ -1956,14 +1956,14 @@ const TestShowcase = ({ onNavigate }) => {
     return isNaN(days) ? 999 : days;
   };
 
-  // Sort tests based on selected option - BC tests always come first
+  // Sort tests based on selected option - non-BC (MISS) tests always at end
   const allTests = useMemo(() => {
     const sorted = [...baseTests];
     
-    // Helper to check if test is BC
+    // Helper to check if test is BC (Baseline Complete)
     const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
     
-    // First sort by BC status, then by selected criteria
+    // Non-BC tests go to end of all sorts
     const bcFirst = (a, b) => {
       const aBC = isBC(a);
       const bBC = isBC(b);
@@ -1996,7 +1996,8 @@ const TestShowcase = ({ onNavigate }) => {
         });
       case 'vendor':
       default:
-        return sorted.sort((a, b) => bcFirst(a, b) || a.name.localeCompare(b.name));
+        // Sort alphabetically by vendor name, then by test name
+        return sorted.sort((a, b) => bcFirst(a, b) || a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests]);
 
@@ -2420,7 +2421,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${isBC ? 'border-emerald-400 shadow-sm shadow-emerald-100' : colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+                className={`relative ${colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
@@ -2441,10 +2442,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
-                      {/* BC badge - styled like category badges */}
-                      {isBC && (
-                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium animate-pulse" title="Baseline Complete">
-                          BC✓
+                      {/* MISS badge for non-BC tests */}
+                      {!isBC && (
+                        <span className="bg-red-100 text-red-600 text-[9px] px-1 py-0.5 rounded font-medium" title="Missing required fields">
+                          MISS
                         </span>
                       )}
                       {/* Kit/Service badge */}
@@ -2769,7 +2770,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${isBC ? 'border-emerald-400 shadow-sm shadow-emerald-100' : colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+                className={`relative ${colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
@@ -2790,10 +2791,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
-                      {/* BC badge - styled like category badges */}
-                      {isBC && (
-                        <span className="bg-emerald-500 text-white text-[9px] px-1 py-0.5 rounded font-medium animate-pulse" title="Baseline Complete">
-                          BC✓
+                      {/* MISS badge for non-BC tests */}
+                      {!isBC && (
+                        <span className="bg-red-100 text-red-600 text-[9px] px-1 py-0.5 rounded font-medium" title="Missing required fields">
+                          MISS
                         </span>
                       )}
                       {/* Kit/Service badge */}
@@ -7745,16 +7746,13 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   
   return (
     <div className="relative">
-      {/* BC Badge - positioned outside card to avoid clipping */}
-      {isBC && !isDiscontinued && (
-        <div className="absolute -top-2 -right-2 bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md flex items-center gap-0.5 z-20">
-          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-          BC
+      {/* MISS Badge - positioned outside card for non-BC tests */}
+      {!isBC && !isDiscontinued && (
+        <div className="absolute -top-2 -right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md z-20">
+          MISS
         </div>
       )}
-      <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isBC ? 'border-emerald-400 shadow-md shadow-emerald-100' : isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+      <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -8157,20 +8155,18 @@ const MinimumFieldsSection = ({ test, category }) => {
   };
   
   return (
-    <div className={`mt-4 p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-300' : 'bg-amber-50 border-amber-200'}`}>
+    <div className={`mt-4 p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-200'}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <h3 className="font-semibold text-gray-800">Minimum Fields</h3>
           {isBC ? (
-            <span className="px-2 py-0.5 bg-emerald-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
-              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Baseline Complete
-            </span>
+            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
           ) : (
-            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
+            <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded flex items-center gap-1">
+              MISS
+              <span className="text-red-200">({filledCount}/{totalCount})</span>
+            </span>
           )}
         </div>
       </div>
@@ -8179,7 +8175,7 @@ const MinimumFieldsSection = ({ test, category }) => {
       <div className="mb-4">
         <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
           <div 
-            className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-amber-400'}`}
+            className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-red-400'}`}
             style={{ width: `${(filledCount / totalCount) * 100}%` }}
           />
         </div>
@@ -8190,7 +8186,7 @@ const MinimumFieldsSection = ({ test, category }) => {
         {fields.map(field => (
           <div 
             key={field.key} 
-            className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-amber-100/50 border-amber-300 border-dashed'}`}
+            className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-red-100/50 border-red-300 border-dashed'}`}
           >
             <div className="flex items-center gap-1.5 mb-0.5">
               {field.filled ? (
@@ -8198,13 +8194,13 @@ const MinimumFieldsSection = ({ test, category }) => {
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg className="w-4 h-4 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                <svg className="w-4 h-4 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
               )}
-              <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-amber-700'}`}>{field.label}</span>
+              <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-red-700'}`}>{field.label}</span>
             </div>
-            <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-amber-600 italic'}`}>
+            <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-red-600 italic'}`}>
               {field.filled ? formatDisplayValue(field.value) : 'Missing'}
             </p>
           </div>
@@ -8390,12 +8386,9 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
-                {isBC && (
-                  <span className="px-3 py-1 bg-emerald-500 text-white text-sm font-bold rounded-full flex items-center gap-1.5">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Baseline Complete
+                {!isBC && (
+                  <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full">
+                    MISS
                   </span>
                 )}
               </div>
@@ -9656,12 +9649,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       }
       return true;
     }).sort((a, b) => {
-      // Sort BC (Baseline Complete) tests first, then by name
+      // Sort non-BC (MISS) tests to end, then by vendor name alphabetically
       const aBC = calculateTestCompleteness(a, category).percentage === 100;
       const bBC = calculateTestCompleteness(b, category).percentage === 100;
       if (aBC && !bBC) return -1;
       if (!aBC && bBC) return 1;
-      return 0; // Maintain original order for non-BC tests
+      // Within same BC status, sort by vendor then test name
+      return a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name);
     });
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
 
