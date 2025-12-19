@@ -1147,10 +1147,9 @@ const Header = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const navItems = ['home', 'competitions', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
+  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
   const getLabel = (page) => ({
     'home': 'Home',
-    'competitions': 'A Competition!',
     'learn': 'Learn',
     'data-sources': 'Data Download',
     'how-it-works': 'How it Works',
@@ -2934,8 +2933,10 @@ const StatOfTheDay = ({ onNavigate }) => {
 };
 
 // ============================================
-// Competitions Page - Data Completeness & Vendor Recognition
+// Baseline Complete (BC) - Data Completeness Calculation
 // ============================================
+// NOTE: BC status is awarded to tests that have all minimum required fields filled.
+// When reviewing new test submissions, verify they meet BC requirements before adding.
 
 // Calculate completeness score for a single test
 const calculateTestCompleteness = (test, category) => {
@@ -2957,533 +2958,6 @@ const calculateTestCompleteness = (test, category) => {
     percentage,
     missingFields: missingFields.map(p => p.label)
   };
-};
-
-// Completeness Badge Component
-const CompletenessBadge = ({ percentage, size = 'md' }) => {
-  const sizeClasses = {
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-12 h-12 text-sm',
-    lg: 'w-16 h-16 text-lg'
-  };
-  
-  let bgColor, textColor, ringColor;
-  if (percentage === 100) {
-    bgColor = 'bg-emerald-500';
-    textColor = 'text-white';
-    ringColor = 'ring-emerald-300';
-  } else if (percentage >= 80) {
-    bgColor = 'bg-emerald-100';
-    textColor = 'text-emerald-700';
-    ringColor = 'ring-emerald-200';
-  } else if (percentage >= 60) {
-    bgColor = 'bg-amber-100';
-    textColor = 'text-amber-700';
-    ringColor = 'ring-amber-200';
-  } else if (percentage >= 40) {
-    bgColor = 'bg-orange-100';
-    textColor = 'text-orange-700';
-    ringColor = 'ring-orange-200';
-  } else {
-    bgColor = 'bg-red-100';
-    textColor = 'text-red-700';
-    ringColor = 'ring-red-200';
-  }
-  
-  return (
-    <div className={`${sizeClasses[size]} ${bgColor} ${textColor} rounded-full flex items-center justify-center font-bold ring-2 ${ringColor}`}>
-      {percentage}%
-    </div>
-  );
-};
-
-// Award Test Card Component
-const AwardTestCard = ({ test, category, completeness, onShowDetail }) => {
-  const categoryColors = {
-    MRD: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600' },
-    ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
-    TRM: { bg: 'bg-sky-50', border: 'border-sky-200', text: 'text-sky-600' },
-    TDS: { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600' },
-  };
-  const colors = categoryColors[category] || categoryColors.MRD;
-  const isBC = completeness.percentage === 100;
-  
-  return (
-    <div 
-      onClick={() => onShowDetail(test, category)}
-      className={`relative bg-white rounded-xl border-2 cursor-pointer ${isBC ? 'border-emerald-400 shadow-lg shadow-emerald-100' : 'border-gray-200'} p-4 transition-all hover:shadow-md`}
-    >
-      {/* BC Badge - shows checkmark with text */}
-      {isBC && (
-        <div className="absolute -top-3 -right-3 bg-emerald-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1 z-10">
-          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-          <span className="hidden sm:inline">Baseline Complete</span>
-          <span className="sm:hidden">BC</span>
-        </div>
-      )}
-      
-      <div className="flex items-start gap-4">
-        {/* Large Percentage Display */}
-        <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center ${isBC ? 'bg-emerald-100' : completeness.percentage >= 60 ? 'bg-amber-100' : 'bg-red-100'}`}>
-          {isBC ? (
-            <svg className="w-7 h-7 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          ) : (
-            <span className={`text-xl font-bold ${completeness.percentage >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
-              {completeness.percentage}%
-            </span>
-          )}
-        </div>
-        
-        {/* Test Info */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className={`px-2 py-0.5 ${colors.bg} ${colors.text} ${colors.border} border rounded text-xs font-medium`}>
-              {category}
-            </span>
-            {test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
-          </div>
-          <h3 className="font-semibold text-gray-900 truncate">{test.name}</h3>
-          <p className="text-sm text-gray-500">{test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
-          
-          {/* Progress bar with field count */}
-          <div className="mt-2">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-              <span className="font-medium">{completeness.filled}/{completeness.total} fields</span>
-              {completeness.missingFields.length > 0 && (
-                <span className="text-amber-600 truncate ml-2">Missing: {completeness.missingFields.slice(0, 2).join(', ')}{completeness.missingFields.length > 2 ? ` +${completeness.missingFields.length - 2}` : ''}</span>
-              )}
-            </div>
-            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-              <div 
-                className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : completeness.percentage >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
-                style={{ width: `${completeness.percentage}%` }}
-              />
-            </div>
-          </div>
-        </div>
-        
-        {/* View indicator */}
-        <div className="flex-shrink-0 text-gray-400">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const CompetitionsPage = ({ onNavigate }) => {
-  // State for detail modal
-  const [detailTest, setDetailTest] = useState(null);
-  const [detailCategory, setDetailCategory] = useState(null);
-  
-  // Handler to show test detail
-  const handleShowDetail = (test, category) => {
-    setDetailTest(test);
-    setDetailCategory(category);
-  };
-  
-  // Aggregate all tests with their categories and completeness scores
-  const allTestsWithScores = useMemo(() => {
-    const tests = [
-      ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-      ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-      ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-      ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
-    ].filter(t => !t.isDiscontinued);
-    
-    return tests.map(test => ({
-      ...test,
-      completeness: calculateTestCompleteness(test, test.category)
-    }));
-  }, []);
-  
-  // Split into BC and In Progress, with proper sorting
-  const { bcTests, inProgressTests } = useMemo(() => {
-    const bc = allTestsWithScores
-      .filter(t => t.completeness.percentage === 100)
-      .sort((a, b) => b.completeness.filled - a.completeness.filled); // Most filled fields first
-    
-    const inProgress = allTestsWithScores
-      .filter(t => t.completeness.percentage < 100)
-      .sort((a, b) => b.completeness.percentage - a.completeness.percentage); // Highest % first
-    
-    return { bcTests: bc, inProgressTests: inProgress };
-  }, [allTestsWithScores]);
-  
-  // Calculate summary stats
-  const stats = useMemo(() => {
-    const total = allTestsWithScores.length;
-    const bcCount = bcTests.length;
-    const avgCompleteness = total > 0 
-      ? Math.round(allTestsWithScores.reduce((sum, t) => sum + t.completeness.percentage, 0) / total)
-      : 0;
-    return { total, bcCount, avgCompleteness };
-  }, [allTestsWithScores, bcTests]);
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">OpenOnco's First Competition!</h1>
-      </div>
-      
-      {/* Main Intro */}
-      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 sm:p-8 border border-emerald-200 mb-8">
-        <p className="text-gray-700 text-lg leading-relaxed mb-4">
-          Yes that's right — OpenOnco is running a competition (kinda)! We've got data now for nearly 100 advanced molecular tests, 
-          but that data is a distance from being complete. As a first step we want to make sure each test has a set of core data completed. 
-          Tests that meet or exceed that core dataset get awarded a <strong className="text-emerald-700">Baseline Complete (BC)</strong> badge 👏👏👏
-        </p>
-        
-        <p className="text-gray-700 text-lg leading-relaxed mb-4">
-          The good news is <strong className="text-emerald-600 text-xl">{stats.bcCount} tests</strong> have already achieved BC and they will get listed 
-          first in all lists as an acknowledgement of their data completeness.
-        </p>
-        
-        <p className="text-gray-700 text-lg leading-relaxed">
-          Given that we have {stats.total} tests now, that means there are <strong className="text-amber-600 text-xl">{inProgressTests.length} that still need work</strong>. 
-          To make it easy to complete the core set, vendors can click on a test below, choose "Submit Missing Data" and get presented with a pre-populated form. 
-          <span className="font-bold text-emerald-700 ml-1">DO IT!!!</span>
-        </p>
-      </div>
-      
-      {/* Summary Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
-          <p className="text-sm text-gray-500">Total Tests</p>
-        </div>
-        <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-4 text-center">
-          <p className="text-3xl font-bold text-emerald-600">{stats.bcCount}</p>
-          <p className="text-sm text-emerald-600">Baseline Complete</p>
-        </div>
-        <div className="bg-amber-50 rounded-xl border border-amber-200 p-4 text-center">
-          <p className="text-3xl font-bold text-amber-600">{inProgressTests.length}</p>
-          <p className="text-sm text-amber-600">Need Work</p>
-        </div>
-      </div>
-      
-      {/* BC Awardees Plaque */}
-      {bcTests.length > 0 && (
-        <div className="mb-8">
-          <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-xl p-6 shadow-lg border-2 border-emerald-500">
-            <div className="text-center mb-4">
-              <h2 className="text-xl font-bold text-white tracking-wide">Baseline Complete (BC) Awardees</h2>
-              <div className="w-32 h-0.5 bg-emerald-300 mx-auto mt-2"></div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              {bcTests.map(test => (
-                <button
-                  key={test.id}
-                  onClick={() => handleShowDetail(test, test.category)}
-                  className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-emerald-400/50 rounded text-white text-sm font-medium transition-colors cursor-pointer flex items-center gap-1.5"
-                >
-                  <span className="bg-emerald-400 text-emerald-900 text-[10px] px-1 py-0.5 rounded font-bold">BC✓</span>
-                  {test.name}
-                </button>
-              ))}
-            </div>
-            <p className="text-center text-emerald-200/70 text-xs mt-4">{bcTests.length} tests with complete core data</p>
-          </div>
-        </div>
-      )}
-      
-      {/* In Progress Group */}
-      {inProgressTests.length > 0 && (
-        <div>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">Need Work</h2>
-              <p className="text-sm text-gray-500">Click a test to submit missing data • {inProgressTests.length} test{inProgressTests.length !== 1 ? 's' : ''}</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {inProgressTests.map(test => (
-              <AwardTestCard 
-                key={test.id} 
-                test={test} 
-                category={test.category}
-                completeness={test.completeness}
-                onShowDetail={handleShowDetail}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      
-      {/* Detail Modal */}
-      {detailTest && (
-        <CompetitionsDetailModal 
-          test={detailTest} 
-          category={detailCategory} 
-          onClose={() => { setDetailTest(null); setDetailCategory(null); }}
-          onNavigateToSubmissions={(testId, cat) => {
-            setDetailTest(null);
-            setDetailCategory(null);
-            onNavigate('submissions', { prefillTest: testId, prefillCategory: cat, submissionType: 'complete' });
-          }}
-        />
-      )}
-    </div>
-  );
-};
-
-// ============================================
-// Competitions Detail Modal - Shows test with minimum fields status
-// ============================================
-const CompetitionsDetailModal = ({ test, category, onClose, onNavigateToSubmissions }) => {
-  const [linkCopied, setLinkCopied] = useState(false);
-  
-  if (!test) return null;
-  
-  const meta = categoryMeta[category];
-  const completeness = calculateTestCompleteness(test, category);
-  const isBC = completeness.percentage === 100;
-  const missingCount = completeness.total - completeness.filled;
-  
-  // Copy shareable link
-  const copyLink = (e) => {
-    e.stopPropagation();
-    const url = `${window.location.origin}${getTestUrl(test, category)}`;
-    navigator.clipboard.writeText(url).then(() => {
-      setLinkCopied(true);
-      setTimeout(() => setLinkCopied(false), 2000);
-    });
-  };
-  
-  // Minimum field details
-  const minParams = MINIMUM_PARAMS[category];
-  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
-  const fields = minParams?.core?.map(p => ({
-    key: p.key,
-    label: p.label,
-    value: test[p.key],
-    filled: hasValue(test[p.key])
-  })) || [];
-  
-  const missingFields = fields.filter(f => !f.filled);
-  
-  const formatDisplayValue = (val) => {
-    if (val == null || val === '') return '—';
-    if (Array.isArray(val)) return val.join(', ');
-    if (typeof val === 'number') return val.toLocaleString();
-    return String(val);
-  };
-  
-  return (
-    <>
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
-      <div 
-        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden"
-        onClick={e => e.stopPropagation()}
-      >
-        {/* Status Banner */}
-        <div className={`px-4 py-3 ${isBC ? 'bg-emerald-500' : 'bg-amber-500'} text-white`}>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              {isBC ? (
-                <>
-                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="font-bold">🏆 Baseline Complete!</span>
-                  <span className="text-emerald-100 text-sm">All minimum fields filled</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  <span className="font-medium">{missingCount} field{missingCount !== 1 ? 's' : ''} needed for BC</span>
-                  <span className="text-amber-100 text-sm">— Highlighted below</span>
-                </>
-              )}
-            </div>
-            {!isBC && (
-              <button
-                onClick={() => onNavigateToSubmissions(test.id, category)}
-                className="px-4 py-1.5 bg-white text-amber-600 hover:bg-amber-50 font-semibold rounded-lg text-sm transition-colors flex-shrink-0"
-              >
-                Submit Missing Data →
-              </button>
-            )}
-          </div>
-        </div>
-        
-        {/* Header */}
-        <div className={`px-5 py-4 bg-gradient-to-r ${meta?.gradient || 'from-gray-500 to-gray-600'}`}>
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <h2 className="text-xl font-bold text-white">{test.name}</h2>
-                {isBC && (
-                  <span className="px-2.5 py-0.5 bg-emerald-400 text-white text-xs font-bold rounded flex items-center gap-1">
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Baseline Complete
-                  </span>
-                )}
-              </div>
-              <p className="text-white/80">{test.vendor}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button onClick={copyLink} className="p-2 hover:bg-white/20 rounded-xl transition-colors" title="Copy link">
-                {linkCopied ? (
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                ) : (
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-                )}
-              </button>
-              <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-xl transition-colors">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Scrollable Content */}
-        <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
-          {/* Minimum Fields Section */}
-          <div className={`p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-gray-800">Minimum Fields ({completeness.filled}/{completeness.total})</h3>
-              <span className={`text-sm font-medium ${isBC ? 'text-emerald-600' : 'text-amber-600'}`}>
-                {completeness.percentage}% Complete
-              </span>
-            </div>
-            
-            {/* Progress bar */}
-            <div className="mb-4">
-              <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
-                <div 
-                  className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-amber-400'}`}
-                  style={{ width: `${completeness.percentage}%` }}
-                />
-              </div>
-            </div>
-            
-            {/* Fields grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {fields.map(field => (
-                <div 
-                  key={field.key} 
-                  className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-amber-100 border-amber-300 border-dashed'}`}
-                >
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    {field.filled ? (
-                      <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    ) : (
-                      <svg className="w-4 h-4 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                    )}
-                    <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-amber-700'}`}>{field.label}</span>
-                  </div>
-                  <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-amber-600 italic'}`}>
-                    {field.filled ? formatDisplayValue(field.value) : 'Missing'}
-                  </p>
-                </div>
-              ))}
-            </div>
-            
-            {/* Submit CTA for incomplete tests */}
-            {!isBC && (
-              <div className="mt-4 pt-3 border-t border-amber-200">
-                <button
-                  onClick={() => onNavigateToSubmissions(test.id, category)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 transition-colors"
-                >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  Complete Baseline Data
-                </button>
-                <p className="text-xs text-amber-700 mt-2">Submit data to help this test reach Baseline Complete status.</p>
-              </div>
-            )}
-          </div>
-          
-          {/* Key Metrics */}
-          <div className="bg-gray-50 rounded-xl p-4">
-            <h3 className="font-semibold text-gray-800 mb-3">Key Metrics</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {test.sensitivity != null && (
-                <PerformanceMetricWithWarning 
-                  value={test.sensitivity} 
-                  label="Sensitivity" 
-                  test={test} 
-                  metric="sensitivity"
-                  size="lg"
-                />
-              )}
-              {test.specificity != null && (
-                <PerformanceMetricWithWarning 
-                  value={test.specificity} 
-                  label="Specificity" 
-                  test={test} 
-                  metric="specificity"
-                  size="lg"
-                />
-              )}
-              {test.lod && (
-                <div className="text-center">
-                  <p className="text-xl font-bold text-violet-600">{test.lod}</p>
-                  <p className="text-xs text-gray-500">LOD</p>
-                </div>
-              )}
-              {(test.tat || test.followUpTat || test.initialTat) && (
-                <div className="text-center">
-                  <p className="text-xl font-bold text-slate-600">{test.tat || test.followUpTat || test.initialTat}</p>
-                  <p className="text-xs text-gray-500">TAT</p>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Additional Info */}
-          {test.cancerTypes && test.cancerTypes.length > 0 && (
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-2">Cancer Types</h3>
-              <div className="flex flex-wrap gap-1">
-                {test.cancerTypes.map((ct, i) => (
-                  <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">{ct}</span>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {test.fdaStatus && (
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-1">Regulatory Status</h3>
-              <p className="text-sm text-gray-600">{test.fdaStatus}</p>
-            </div>
-          )}
-          
-          {test.reimbursement && (
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-1">Reimbursement</h3>
-              <p className="text-sm text-gray-600">{test.reimbursement}</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-    </>
-  );
 };
 
 // ============================================
@@ -5657,7 +5131,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const isAlz = false; // ALZ DISABLED
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
   
-  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'complete', 'bug', 'feature'
+  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
   const [category, setCategory] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -5913,7 +5387,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
     }
 
     // Only check vendor email match for vendor submissions on test data
-    if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction' || submissionType === 'complete')) {
+    if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction')) {
       const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
       if (!emailMatchesVendor(contactEmail, vendor)) {
         setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
@@ -5938,7 +5412,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
     if (submissionType === 'new') {
       vendor = newTestVendor;
       testName = newTestName;
-    } else if (submissionType === 'correction' || submissionType === 'complete') {
+    } else if (submissionType === 'correction') {
       vendor = getSelectedTestVendor();
       testName = existingTests[category]?.find(t => t.id === existingTest)?.name;
     }
@@ -6133,10 +5607,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
       return newTestName && newTestVendor && newTestUrl;
     } else if (submissionType === 'correction') {
       return existingTest && selectedParameter && newValue && citation;
-    } else if (submissionType === 'complete') {
-      // Need test selected and at least one field with both value and citation
-      return existingTest && completeFieldEntries.length > 0 && 
-        completeFieldEntries.some(e => e.value && e.citation);
     }
     
     return false;
@@ -6153,7 +5623,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         {!isPrefilled && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               type="button"
               onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
@@ -6161,16 +5631,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             >
               <div className="font-semibold text-gray-800">Suggest a New Test</div>
               <div className="text-sm text-gray-500">Notify us of a test not in our database</div>
-            </button>
-            <button
-              type="button"
-              onClick={() => { setSubmissionType('complete'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setSelectedParameter(''); }}
-              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'complete' ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 hover:border-gray-300'}`}
-            >
-              <div className={`font-semibold ${submissionType === 'complete' ? 'text-emerald-700' : 'text-gray-800'}`}>
-                Complete Baseline Data
-              </div>
-              <div className="text-sm text-gray-500">Help a test reach Baseline Complete</div>
             </button>
             <button
               type="button"
@@ -6205,7 +5665,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         )}
 
         {/* Submitter Type - show for all data submissions including prefilled */}
-        {(submissionType === 'new' || submissionType === 'correction' || submissionType === 'complete') && (
+        {(submissionType === 'new' || submissionType === 'correction') && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
             <select
@@ -6230,8 +5690,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         )}
 
         {/* Category Selection */}
-        {/* Category Selection - hide when prefilled for complete submission */}
-        {submitterType && !(isPrefilled && submissionType === 'complete') && (
+        {submitterType && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
             <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
@@ -6388,168 +5847,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           </div>
         )}
 
-        {/* COMPLETE MISSING FIELDS: Select Test → Show All Missing Fields */}
-        {submissionType === 'complete' && category && (
-          <div className="bg-white rounded-xl border border-emerald-200 p-6">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-2">
-              Complete Baseline Data
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">Help a test reach Baseline Complete status by filling in missing data.</p>
-            
-            <div className="space-y-4">
-              {/* Show test name as static text when prefilled, otherwise show dropdown */}
-              {isPrefilled && existingTest ? (
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Test</p>
-                  <p className="font-semibold text-gray-900">
-                    {existingTests[category]?.find(t => t.id === existingTest)?.name || existingTest}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {existingTests[category]?.find(t => t.id === existingTest)?.vendor}
-                  </p>
-                </div>
-              ) : (
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
-                  <select
-                    value={existingTest}
-                    onChange={(e) => { 
-                      setExistingTest(e.target.value); 
-                      // Reset field entries when test changes
-                      setCompleteFieldEntries([]); 
-                      setEmailError(''); 
-                      setVerificationStep('form'); 
-                    }}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    required
-                  >
-                    <option value="">-- Select a test --</option>
-                    {existingTests[category]?.map(test => {
-                      const completeness = calculateTestCompleteness(
-                        (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === test.id),
-                        category
-                      );
-                      const isComplete = completeness.percentage === 100;
-                      return (
-                        <option key={test.id} value={test.id} disabled={isComplete}>
-                          {test.name} ({test.vendor}) {isComplete ? '✓ Complete' : `— ${completeness.percentage}%`}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              )}
-
-              {existingTest && (() => {
-                const testData = (category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData).find(t => t.id === existingTest);
-                const completeness = calculateTestCompleteness(testData, category);
-                
-                // Get the actual missing field keys from MINIMUM_PARAMS
-                const minParams = MINIMUM_PARAMS[category]?.core || [];
-                const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
-                const missingFields = minParams.filter(p => !hasValue(testData[p.key]));
-                
-                // Initialize completeFieldEntries if empty
-                if (completeFieldEntries.length === 0 && missingFields.length > 0) {
-                  setTimeout(() => {
-                    setCompleteFieldEntries(missingFields.map(f => ({ key: f.key, label: f.label, value: '', citation: '' })));
-                  }, 0);
-                  return null;
-                }
-                
-                // Calculate dynamic progress including newly filled fields
-                const existingFilledCount = completeness.filled;
-                const newlyFilledCount = completeFieldEntries.filter(e => e.value && e.citation).length;
-                const totalFields = minParams.length;
-                const dynamicProgress = Math.round(((existingFilledCount + newlyFilledCount) / totalFields) * 100);
-                const willBeComplete = dynamicProgress === 100;
-                
-                return (
-                  <>
-                    {/* Show dynamic progress */}
-                    <div className={`border rounded-lg p-3 ${willBeComplete ? 'bg-emerald-100 border-emerald-300' : 'bg-emerald-50 border-emerald-200'}`}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-emerald-800">
-                          {willBeComplete ? '🎉 Ready for Baseline Complete!' : 'Progress'}
-                        </span>
-                        <span className={`text-sm font-bold ${willBeComplete ? 'text-emerald-700' : 'text-emerald-600'}`}>{dynamicProgress}%</span>
-                      </div>
-                      <div className="h-2 bg-emerald-100 rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-300 ${willBeComplete ? 'bg-emerald-600' : 'bg-emerald-500'}`}
-                          style={{ width: `${dynamicProgress}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-emerald-700 mt-2">
-                        {willBeComplete 
-                          ? 'All fields filled! Submit to complete this test\'s profile.'
-                          : `Fill in the fields below to help complete this test's profile.`}
-                      </p>
-                    </div>
-
-                    {/* List all missing fields */}
-                    <div className="space-y-3">
-                      <p className="text-sm font-medium text-gray-700">Missing Fields ({missingFields.length})</p>
-                      {completeFieldEntries.map((entry, index) => (
-                        <div key={entry.key} className={`border rounded-lg p-4 ${entry.value && entry.citation ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${entry.value && entry.citation ? 'bg-emerald-500 text-white' : 'bg-amber-100 text-amber-600'}`}>
-                              {entry.value && entry.citation ? (
-                                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                              ) : index + 1}
-                            </span>
-                            <span className="font-medium text-gray-800">{entry.label}</span>
-                          </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                              <label className="block text-xs font-medium text-gray-500 mb-1">Value</label>
-                              <input
-                                type="text"
-                                value={entry.value}
-                                onChange={(e) => {
-                                  const newEntries = [...completeFieldEntries];
-                                  newEntries[index].value = e.target.value;
-                                  setCompleteFieldEntries(newEntries);
-                                }}
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                placeholder={`Enter ${entry.label.toLowerCase()}`}
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-medium text-gray-500 mb-1">Citation URL</label>
-                              <input
-                                type="url"
-                                value={entry.citation}
-                                onChange={(e) => {
-                                  const newEntries = [...completeFieldEntries];
-                                  newEntries[index].citation = e.target.value;
-                                  setCompleteFieldEntries(newEntries);
-                                }}
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                placeholder="https://..."
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Summary of filled fields */}
-                    {completeFieldEntries.some(e => e.value && e.citation) && (
-                      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-                        <p className="text-sm text-emerald-800">
-                          <span className="font-medium">{completeFieldEntries.filter(e => e.value && e.citation).length}</span> of {completeFieldEntries.length} fields ready to submit
-                        </p>
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
-            </div>
-          </div>
-        )}
 
         {/* Bug Report / Feature Request Form */}
         {(submissionType === 'bug' || submissionType === 'feature') && (
@@ -6698,7 +5995,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         {category && (
           submissionType === 'new' ? newTestName && newTestVendor : 
           submissionType === 'correction' ? existingTest && selectedParameter :
-          submissionType === 'complete' ? existingTest && completeFieldEntries.length > 0 && completeFieldEntries.some(e => e.value && e.citation) :
           false
         ) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -10590,7 +9886,6 @@ export default function App() {
   // Map URL paths to page names
   const pathToPage = {
     '/': 'home',
-    '/competitions': 'competitions',
     '/submissions': 'submissions',
     '/how-it-works': 'how-it-works',
     '/data-sources': 'data-sources',
@@ -10606,7 +9901,6 @@ export default function App() {
 
   const pageToPath = {
     'home': '/',
-    'competitions': '/competitions',
     'submissions': '/submissions',
     'how-it-works': '/how-it-works',
     'data-sources': '/data-sources',
@@ -10783,7 +10077,6 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} />;
-      case 'competitions': return <CompetitionsPage onNavigate={handleNavigate} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
