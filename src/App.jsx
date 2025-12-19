@@ -8294,9 +8294,9 @@ const MINIMUM_PARAMS = {
     ]
   },
   TRM: {
+    // NOTE: TRM tests monitor ctDNA trends over time rather than binary MRD detection
+    // They don't report traditional sensitivity/specificity metrics
     core: [
-      { key: 'sensitivity', label: 'Sensitivity' },
-      { key: 'specificity', label: 'Specificity' },
       { key: 'numPublications', label: 'Publications' },
       { key: 'tat', label: 'Turnaround Time' },
       { key: 'fdaStatus', label: 'FDA Status' },

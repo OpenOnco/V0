@@ -3049,6 +3049,8 @@ export const trmTestData = [
     "lodNotes": "Analytical validation demonstrates detection sensitivity down to ~0.1% MAF (mutant allele fraction) with high accuracy. Detection range 0.1%–0.8% VAF depending on variant type and sample characteristics.",
     "lodCitations": "https://pubmed.ncbi.nlm.nih.gov/26474073/ | Lanman RB et al. PLoS One 2015;10(10):e0140712; https://guardanthealth.com/ | Guardant360 CDx technical specifications",
     "fdaStatus": "DISCONTINUED - CLIA LDT no longer available",
+    "tat": "7-14 days",
+    "tatNotes": "When available, TAT was 7-14 days based on Guardant360 platform turnaround time.",
     "reimbursement": "N/A - Discontinued",
     "reimbursementNote": "Product sun-setted December 2025. Guardant has consolidated to Reveal MRD (early-stage) and Reveal TRM (advanced/metastatic) for monitoring applications.",
     "clinicalTrials": "SERENA-6 Phase III ESR1-mutant advanced breast cancer (866); clinical validation supported by 40+ studies using Guardant360 platform for ctDNA response assessment",
