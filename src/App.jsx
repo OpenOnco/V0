@@ -217,6 +217,94 @@ const ProductTypeBadge = ({ productType, size = 'sm' }) => {
 };
 
 // ============================================
+// Performance Metric with Sample Size Warning
+// ============================================
+// Displays sensitivity/specificity with warning when 100% comes from small cohort
+const PerformanceMetricWithWarning = ({ 
+  value, 
+  label, 
+  test, 
+  metric = 'sensitivity', // 'sensitivity' or 'specificity'
+  size = 'lg' // 'sm', 'md', 'lg'
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
+  if (value == null) return null;
+  
+  // Check if this metric needs a warning (100% or ≥99.9% with small sample or analytical validation)
+  const needsWarning = (value >= 99.9 || value === 100) && 
+    (test.smallSampleWarning || test.analyticalValidationWarning);
+  
+  // Get warning details
+  const getWarningText = () => {
+    if (test.analyticalValidationWarning) {
+      return 'Analytical validation only - clinical performance may differ';
+    }
+    if (test.smallSampleWarning && test.validationCohortSize) {
+      return `Small validation cohort (n=${test.validationCohortSize})`;
+    }
+    if (test.smallSampleWarning) {
+      return 'Small validation cohort - interpret with caution';
+    }
+    return null;
+  };
+  
+  const warningText = getWarningText();
+  
+  const sizeClasses = {
+    sm: { value: 'text-lg', label: 'text-[10px]' },
+    md: { value: 'text-xl', label: 'text-xs' },
+    lg: { value: 'text-2xl', label: 'text-xs' }
+  };
+  
+  // Format display value
+  const displayValue = typeof value === 'number' 
+    ? `${value}${test[`${metric}Plus`] ? '+' : ''}%`
+    : `${value}${String(value).includes('%') ? '' : '%'}`;
+  
+  return (
+    <div className="text-center relative">
+      <div className="relative inline-block">
+        <p className={`font-bold ${needsWarning ? 'text-amber-600' : 'text-emerald-600'} ${sizeClasses[size].value}`}>
+          {displayValue}
+          {needsWarning && (
+            <span 
+              className="inline-block ml-1 cursor-help"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              onClick={() => setShowTooltip(!showTooltip)}
+            >
+              <svg className="w-4 h-4 inline text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </span>
+          )}
+        </p>
+        {/* Warning Tooltip */}
+        {needsWarning && showTooltip && (
+          <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-2 bg-amber-900 text-white text-xs rounded-lg shadow-xl">
+            <div className="font-semibold mb-1 flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Interpret with caution
+            </div>
+            <div className="text-amber-100">{warningText}</div>
+            {test.validationCohortStudy && (
+              <div className="text-amber-200 mt-1 text-[10px]">
+                Study: {test.validationCohortStudy}
+              </div>
+            )}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-6 border-r-6 border-t-6 border-transparent border-t-amber-900" />
+          </div>
+        )}
+      </div>
+      <p className={`text-gray-500 ${sizeClasses[size].label}`}>{label}</p>
+    </div>
+  );
+};
+
+// ============================================
 // Glossary Tooltip Component
 // ============================================
 const GlossaryTooltip = ({ termKey, children }) => {
@@ -2700,23 +2788,25 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-3 gap-4">
                       {selectedTest.sensitivity != null && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className={`font-bold text-emerald-600 ${String(selectedTest.sensitivity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                            {String(selectedTest.sensitivity).length > 20 
-                              ? (String(selectedTest.sensitivity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.sensitivity])[0] + (String(selectedTest.sensitivity).includes('%') ? '' : '%')
-                              : selectedTest.sensitivity + (String(selectedTest.sensitivity).includes('%') ? '' : '%')}
-                          </p>
-                          <p className="text-xs text-gray-500">Sensitivity</p>
+                        <div className="p-3 bg-gray-50 rounded-lg">
+                          <PerformanceMetricWithWarning 
+                            value={selectedTest.sensitivity} 
+                            label="Sensitivity" 
+                            test={selectedTest} 
+                            metric="sensitivity"
+                            size="lg"
+                          />
                         </div>
                       )}
                       {selectedTest.specificity != null && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className={`font-bold text-emerald-600 ${String(selectedTest.specificity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                            {String(selectedTest.specificity).length > 20 
-                              ? (String(selectedTest.specificity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.specificity])[0] + (String(selectedTest.specificity).includes('%') ? '' : '%')
-                              : selectedTest.specificity + (String(selectedTest.specificity).includes('%') ? '' : '%')}
-                          </p>
-                          <p className="text-xs text-gray-500">Specificity</p>
+                        <div className="p-3 bg-gray-50 rounded-lg">
+                          <PerformanceMetricWithWarning 
+                            value={selectedTest.specificity} 
+                            label="Specificity" 
+                            test={selectedTest} 
+                            metric="specificity"
+                            size="lg"
+                          />
                         </div>
                       )}
                       {(selectedTest.initialTat || selectedTest.tat) && (
@@ -3332,16 +3422,22 @@ const CompetitionsDetailModal = ({ test, category, onClose, onNavigateToSubmissi
             <h3 className="font-semibold text-gray-800 mb-3">Key Metrics</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {test.sensitivity != null && (
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-emerald-600">{test.sensitivity}%</p>
-                  <p className="text-xs text-gray-500">Sensitivity</p>
-                </div>
+                <PerformanceMetricWithWarning 
+                  value={test.sensitivity} 
+                  label="Sensitivity" 
+                  test={test} 
+                  metric="sensitivity"
+                  size="lg"
+                />
               )}
               {test.specificity != null && (
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-emerald-600">{test.specificity}%</p>
-                  <p className="text-xs text-gray-500">Specificity</p>
-                </div>
+                <PerformanceMetricWithWarning 
+                  value={test.specificity} 
+                  label="Specificity" 
+                  test={test} 
+                  metric="specificity"
+                  size="lg"
+                />
               )}
               {test.lod && (
                 <div className="text-center">
@@ -8052,8 +8148,36 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
-          {category !== 'TDS' && test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
-          {category !== 'TDS' && test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
+          {category !== 'TDS' && test.sensitivity != null && (
+            <div>
+              <p className={`text-lg font-bold ${(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : 'text-emerald-600'}`}>
+                {test.sensitivity}%
+                {test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                  <span className="inline-block ml-0.5" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'})` : 'Analytical validation only'}>
+                    <svg className="w-3 h-3 inline text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </span>
+                )}
+              </p>
+              <p className="text-xs text-gray-500">Reported Sens.</p>
+            </div>
+          )}
+          {category !== 'TDS' && test.specificity != null && (
+            <div>
+              <p className={`text-lg font-bold ${(test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : 'text-emerald-600'}`}>
+                {test.specificity}%
+                {test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                  <span className="inline-block ml-0.5" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'})` : 'Analytical validation only'}>
+                    <svg className="w-3 h-3 inline text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </span>
+                )}
+              </p>
+              <p className="text-xs text-gray-500">Specificity</p>
+            </div>
+          )}
           {/* LOD display - show both LOD and LOD95 when available */}
           {category !== 'TDS' && (test.lod != null || test.lod95 != null) && (
             <div>
@@ -8850,7 +8974,20 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.sensitivity ? `${test.sensitivity}%` : '—'}
+                        {test.sensitivity ? (
+                          <>
+                            <span className={(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : ''}>
+                              {test.sensitivity}%
+                            </span>
+                            {test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                              <span className="ml-1" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'}) - ${test.validationCohortStudy || 'interpret with caution'}` : 'Analytical validation only - clinical performance may differ'}>
+                                <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                              </span>
+                            )}
+                          </>
+                        ) : '—'}
                         {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
                       </span>
                     </div>
@@ -8858,7 +8995,20 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.specificity ? `${test.specificity}%` : '—'}
+                        {test.specificity ? (
+                          <>
+                            <span className={(test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : ''}>
+                              {test.specificity}%
+                            </span>
+                            {test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                              <span className="ml-1" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'}) - ${test.validationCohortStudy || 'interpret with caution'}` : 'Analytical validation only - clinical performance may differ'}>
+                                <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                              </span>
+                            )}
+                          </>
+                        ) : '—'}
                         {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
                       </span>
                     </div>
@@ -8880,6 +9030,31 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                           {test.lod95}
                           <CitationTooltip citations={test.lod95Citations} />
                         </span>
+                      </div>
+                    )}
+                    {/* Validation Cohort Warning */}
+                    {(test.smallSampleWarning || test.analyticalValidationWarning) && (
+                      <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <svg className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                          <div className="text-xs">
+                            <p className="font-semibold text-amber-800">
+                              {test.analyticalValidationWarning ? 'Analytical Validation Only' : 'Small Validation Cohort'}
+                            </p>
+                            <p className="text-amber-700 mt-0.5">
+                              {test.analyticalValidationWarning 
+                                ? 'Performance metrics from analytical validation (e.g., dilution series). Clinical performance may differ.' 
+                                : `Validation cohort${test.validationCohortSize ? ` n=${test.validationCohortSize}` : ''} is smaller than typical. Interpret 100% values with caution.`}
+                            </p>
+                            {test.validationCohortStudy && (
+                              <p className="text-amber-600 mt-1">
+                                <span className="font-medium">Study:</span> {test.validationCohortStudy}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
