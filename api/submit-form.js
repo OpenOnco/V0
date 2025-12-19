@@ -34,6 +34,151 @@ export default async function handler(req, res) {
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Type</td><td style="padding: 8px; border: 1px solid #ddd;">Feature Request</td></tr>
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold; vertical-align: top;">Description</td><td style="padding: 8px; border: 1px solid #ddd; white-space: pre-wrap;">${submission.feedback?.description || 'No description provided'}</td></tr>
     `;
+  } else if (submissionType === 'vendor-confirmation') {
+    // Vendor Confirmation submission
+    const vc = submission.vendorConfirmation || {};
+    const testName = vc.testName || 'Unknown Test';
+    const vendor = vc.vendor || 'Unknown Vendor';
+    const category = submission.category || 'Unknown';
+    const confirmed = vc.confirmed || [];
+    const changes = vc.changes || [];
+    const totalRecommended = vc.totalRecommendedFields || 0;
+    const reviewedCount = confirmed.length + changes.length;
+    
+    subject = `OpenOnco Vendor Confirmation: ${testName} (${category}) - ${vendor}`;
+    headerColor = '#059669'; // Emerald green
+    
+    // Build confirmed fields list
+    let confirmedHtml = '';
+    if (confirmed.length > 0) {
+      confirmedHtml = `
+        <h3 style="color: #374151; margin-top: 24px;">✓ Confirmed Fields (${confirmed.length})</h3>
+        <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+          <tr style="background: #f9fafb;">
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Field</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Confirmed Value</th>
+          </tr>
+          ${confirmed.map(c => `
+            <tr style="background: #ecfdf5;">
+              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${c.label || c.field}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #059669;">${c.value || '—'}</td>
+            </tr>
+          `).join('')}
+        </table>
+      `;
+    }
+    
+    // Build changes table rows
+    let changesHtml = '';
+    if (changes.length > 0) {
+      changesHtml = `
+        <h3 style="color: #374151; margin-top: 24px;">📝 Proposed Updates (${changes.length})</h3>
+        <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+          <tr style="background: #f9fafb;">
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Field</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Current Value</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">New Value</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Citation</th>
+          </tr>
+          ${changes.map(c => `
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${c.label || c.field}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #6b7280;">${c.currentValue || '—'}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #059669; font-weight: bold;">${c.newValue}</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${c.citation ? `<a href="${c.citation}" style="color: #2563eb;">${c.citation}</a>` : 'None'}</td>
+            </tr>
+          `).join('')}
+        </table>
+      `;
+    }
+    
+    if (confirmed.length === 0 && changes.length === 0) {
+      confirmedHtml = `
+        <div style="background-color: #fef3c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0;">
+          <strong style="color: #92400e;">No fields reviewed</strong>
+          <span style="color: #92400e;"> — Submission may be incomplete</span>
+        </div>
+      `;
+    }
+    
+    detailsHtml = `
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Submission Type</td><td style="padding: 8px; border: 1px solid #ddd;"><span style="background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 4px; font-weight: bold;">Vendor Confirmation</span></td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Category</td><td style="padding: 8px; border: 1px solid #ddd;">${category}</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Test Name</td><td style="padding: 8px; border: 1px solid #ddd;">${testName}</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Vendor</td><td style="padding: 8px; border: 1px solid #ddd;">${vendor}</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Test ID</td><td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${vc.testId || 'N/A'}</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Fields Reviewed</td><td style="padding: 8px; border: 1px solid #ddd;">${reviewedCount} of ${totalRecommended} recommended fields</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Confirmed</td><td style="padding: 8px; border: 1px solid #ddd; color: #059669;">${confirmed.length} field(s)</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Updates Proposed</td><td style="padding: 8px; border: 1px solid #ddd; color: #2563eb;">${changes.length} field(s)</td></tr>
+    `;
+    
+    // Submitter info
+    const submitterRole = submission.submitter?.role || 'Not provided';
+    
+    // Override the standard email template for vendor confirmations
+    try {
+      await resend.emails.send({
+        from: 'OpenOnco <noreply@openonco.org>',
+        to: 'alexgdickinson@gmail.com',
+        replyTo: submitterEmail,
+        subject: subject,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
+            <h2 style="color: ${headerColor};">✓ ${subject}</h2>
+            
+            <div style="background-color: #d1fae5; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
+              <strong style="color: #065f46;">Vendor Email Verified:</strong> 
+              <span style="color: #065f46;">${submitterEmail}</span>
+            </div>
+            
+            <h3 style="color: #374151; margin-top: 24px;">Submitter Information</h3>
+            <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Name</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${submitterName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Email</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${submitterEmail}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Role/Title</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${submitterRole}</td>
+              </tr>
+            </table>
+            
+            <h3 style="color: #374151;">Test Details</h3>
+            <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+              ${detailsHtml}
+            </table>
+            
+            ${confirmedHtml}
+            ${changesHtml}
+            
+            <div style="background-color: #eff6ff; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+              <strong style="color: #1e40af;">Next Steps:</strong>
+              <ol style="color: #1e40af; margin: 8px 0 0 0; padding-left: 20px;">
+                <li>Review the confirmed and proposed changes above</li>
+                <li>Verify citations are valid</li>
+                <li>Update data.js with new values</li>
+                <li>Add "vendorConfirmed: true" and "vendorConfirmedDate" to the test record</li>
+              </ol>
+            </div>
+            
+            <h3 style="color: #374151;">Full JSON Data:</h3>
+            <pre style="background-color: #f3f4f6; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 12px;">${jsonString}</pre>
+            
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+            <p style="color: #999; font-size: 12px;">Sent from OpenOnco Vendor Confirmation Form at ${submission.timestamp}</p>
+          </div>
+        `
+      });
+
+      return res.status(200).json({ success: true, message: 'Vendor confirmation sent successfully' });
+    } catch (error) {
+      console.error('Error sending vendor confirmation:', error);
+      return res.status(500).json({ error: 'Failed to send vendor confirmation' });
+    }
   } else {
     const submitterType = submission.submitterType === 'vendor' ? 'Vendor Representative' : 'Independent Expert';
     const category = submission.category || 'Unknown';

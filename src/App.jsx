@@ -8,11 +8,11 @@ import {
   ecdTestData,
   trmTestData,
   tdsTestData,
-  alzBloodTestData,
+  // ALZ DISABLED: alzBloodTestData,
   DATABASE_CHANGELOG,
   RECENTLY_ADDED_TESTS,
-  ALZ_DATABASE_CHANGELOG,
-  ALZ_RECENTLY_ADDED_TESTS,
+  // ALZ DISABLED: ALZ_DATABASE_CHANGELOG,
+  // ALZ DISABLED: ALZ_RECENTLY_ADDED_TESTS,
   getChangelog,
   getRecentlyAddedTests,
   DOMAINS,
@@ -41,6 +41,11 @@ import {
   CATEGORY_STANDARDS,
   STANDARDS_BODIES,
 } from './data';
+
+// ALZ DISABLED: Placeholder constants to prevent errors
+const alzBloodTestData = [];
+const ALZ_DATABASE_CHANGELOG = [];
+const ALZ_RECENTLY_ADDED_TESTS = [];
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
@@ -104,6 +109,119 @@ const calculateTier1Metrics = (allTestData) => {
     citedDataPoints: citedDataPoints,
     citationCoverage: coverage.toFixed(1)
   };
+};
+
+// ============================================
+// Category Quality Metrics Calculator
+// ============================================
+const calculateCategoryMetrics = (tests, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!tests || tests.length === 0) return null;
+  
+  const minFields = minParams?.core?.map(p => p.key) || [];
+  const allFields = tests.length > 0 ? Object.keys(tests[0]) : [];
+  const dataFields = allFields.filter(f => !f.endsWith('Citations') && !f.endsWith('Citation') && !f.endsWith('Notes') && f !== 'id');
+  
+  const hasVal = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  const hasCite = (val) => val && String(val).trim() !== '' && val !== 'N/A';
+  
+  const minFieldCompletion = tests.map(test => {
+    const filled = minFields.filter(field => hasVal(test[field])).length;
+    return { test: test.name, filled, total: minFields.length, complete: filled === minFields.length };
+  });
+  
+  const testsWithAllMinFields = minFieldCompletion.filter(t => t.complete).length;
+  
+  let totalFieldSlots = 0, filledFieldSlots = 0;
+  tests.forEach(test => {
+    dataFields.forEach(field => {
+      totalFieldSlots++;
+      if (hasVal(test[field])) filledFieldSlots++;
+    });
+  });
+  
+  let tier1DataPoints = 0, tier1Cited = 0;
+  tests.forEach(test => {
+    TIER1_FIELDS.forEach(field => {
+      const value = test[field];
+      if (value != null && value !== '' && value !== 'N/A') {
+        tier1DataPoints++;
+        const citationField = `${field}Citations`;
+        if (hasCite(test[citationField])) tier1Cited++;
+      }
+    });
+  });
+  
+  const fieldCompletionRates = minFields.map(field => {
+    const filled = tests.filter(t => hasVal(t[field])).length;
+    const citationField = `${field}Citations`;
+    const cited = tests.filter(t => hasCite(t[citationField])).length;
+    return {
+      field,
+      label: minParams.core.find(p => p.key === field)?.label || field,
+      filled,
+      total: tests.length,
+      percentage: Math.round((filled / tests.length) * 100),
+      cited,
+      citedPercentage: filled > 0 ? Math.round((cited / filled) * 100) : 0,
+    };
+  });
+  
+  return {
+    testCount: tests.length,
+    fieldCount: dataFields.length,
+    totalDataPoints: tests.length * dataFields.length,
+    filledDataPoints: filledFieldSlots,
+    overallFillRate: totalFieldSlots > 0 ? Math.round((filledFieldSlots / totalFieldSlots) * 100) : 0,
+    minFieldsRequired: minFields.length,
+    testsWithAllMinFields,
+    minFieldCompletionRate: Math.round((testsWithAllMinFields / tests.length) * 100),
+    tier1DataPoints,
+    tier1Cited,
+    tier1CitationRate: tier1DataPoints > 0 ? Math.round((tier1Cited / tier1DataPoints) * 100) : 0,
+    fieldCompletionRates,
+    minFieldCompletion,
+  };
+};
+
+// Category color schemes for quality dashboard
+const CATEGORY_COLORS = {
+  MRD: { bg: 'bg-orange-50', border: 'border-orange-200', accent: 'bg-orange-500', text: 'text-orange-700' },
+  ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', accent: 'bg-emerald-500', text: 'text-emerald-700' },
+  TRM: { bg: 'bg-sky-50', border: 'border-sky-200', accent: 'bg-sky-500', text: 'text-sky-700' },
+  TDS: { bg: 'bg-violet-50', border: 'border-violet-200', accent: 'bg-violet-500', text: 'text-violet-700' },
+};
+
+// CircularProgress component for quality visualization
+const CircularProgress = ({ value, size = 80, strokeWidth = 8, color = 'emerald' }) => {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (value / 100) * circumference;
+  const colorMap = {
+    emerald: { stroke: '#10b981', bg: '#d1fae5' },
+    orange: { stroke: '#f97316', bg: '#ffedd5' },
+    sky: { stroke: '#0ea5e9', bg: '#e0f2fe' },
+    violet: { stroke: '#8b5cf6', bg: '#ede9fe' },
+  };
+  const colors = colorMap[color] || colorMap.emerald;
+  
+  return (
+    <svg width={size} height={size} className="transform -rotate-90">
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={colors.bg} strokeWidth={strokeWidth} />
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={colors.stroke} strokeWidth={strokeWidth} strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-700 ease-out" />
+    </svg>
+  );
+};
+
+// Quality Grade Badge
+const QualityGrade = ({ percentage }) => {
+  let grade, bgColor, textColor;
+  if (percentage >= 95) { grade = 'A+'; bgColor = 'bg-emerald-100'; textColor = 'text-emerald-700'; }
+  else if (percentage >= 90) { grade = 'A'; bgColor = 'bg-emerald-50'; textColor = 'text-emerald-600'; }
+  else if (percentage >= 80) { grade = 'B'; bgColor = 'bg-blue-50'; textColor = 'text-blue-600'; }
+  else if (percentage >= 70) { grade = 'C'; bgColor = 'bg-yellow-50'; textColor = 'text-yellow-600'; }
+  else { grade = 'D'; bgColor = 'bg-red-50'; textColor = 'text-red-600'; }
+  return <span className={`px-2 py-0.5 rounded text-xs font-bold ${bgColor} ${textColor}`}>{grade}</span>;
 };
 
 // ============================================
@@ -208,6 +326,94 @@ const ProductTypeBadge = ({ productType, size = 'sm' }) => {
       <span>{config.icon}</span>
       <span>{config.label}</span>
     </span>
+  );
+};
+
+// ============================================
+// Performance Metric with Sample Size Warning
+// ============================================
+// Displays sensitivity/specificity with warning when 100% comes from small cohort
+const PerformanceMetricWithWarning = ({ 
+  value, 
+  label, 
+  test, 
+  metric = 'sensitivity', // 'sensitivity' or 'specificity'
+  size = 'lg' // 'sm', 'md', 'lg'
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
+  if (value == null) return null;
+  
+  // Check if this metric needs a warning (100% or ≥99.9% with small sample or analytical validation)
+  const needsWarning = (value >= 99.9 || value === 100) && 
+    (test.smallSampleWarning || test.analyticalValidationWarning);
+  
+  // Get warning details
+  const getWarningText = () => {
+    if (test.analyticalValidationWarning) {
+      return 'Analytical validation only - clinical performance may differ';
+    }
+    if (test.smallSampleWarning && test.validationCohortSize) {
+      return `Small validation cohort (n=${test.validationCohortSize})`;
+    }
+    if (test.smallSampleWarning) {
+      return 'Small validation cohort - interpret with caution';
+    }
+    return null;
+  };
+  
+  const warningText = getWarningText();
+  
+  const sizeClasses = {
+    sm: { value: 'text-lg', label: 'text-[10px]' },
+    md: { value: 'text-xl', label: 'text-xs' },
+    lg: { value: 'text-2xl', label: 'text-xs' }
+  };
+  
+  // Format display value
+  const displayValue = typeof value === 'number' 
+    ? `${value}${test[`${metric}Plus`] ? '+' : ''}%`
+    : `${value}${String(value).includes('%') ? '' : '%'}`;
+  
+  return (
+    <div className="text-center relative">
+      <div className="relative inline-block">
+        <p className={`font-bold ${needsWarning ? 'text-amber-600' : 'text-emerald-600'} ${sizeClasses[size].value}`}>
+          {displayValue}
+          {needsWarning && (
+            <span 
+              className="inline-block ml-1 cursor-help"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              onClick={() => setShowTooltip(!showTooltip)}
+            >
+              <svg className="w-4 h-4 inline text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </span>
+          )}
+        </p>
+        {/* Warning Tooltip */}
+        {needsWarning && showTooltip && (
+          <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-2 bg-amber-900 text-white text-xs rounded-lg shadow-xl">
+            <div className="font-semibold mb-1 flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Interpret with caution
+            </div>
+            <div className="text-amber-100">{warningText}</div>
+            {test.validationCohortStudy && (
+              <div className="text-amber-200 mt-1 text-[10px]">
+                Study: {test.validationCohortStudy}
+              </div>
+            )}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-6 border-r-6 border-t-6 border-transparent border-t-amber-900" />
+          </div>
+        )}
+      </div>
+      <p className={`text-gray-500 ${sizeClasses[size].label}`}>{label}</p>
+    </div>
   );
 };
 
@@ -1750,23 +1956,38 @@ const TestShowcase = ({ onNavigate }) => {
     return isNaN(days) ? 999 : days;
   };
 
-  // Sort tests based on selected option
+  // Sort tests based on selected option - non-BC (MISS) tests always at end
   const allTests = useMemo(() => {
     const sorted = [...baseTests];
+    
+    // Helper to check if test is BC (Baseline Complete)
+    const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
+    
+    // Non-BC tests go to end of all sorts
+    const bcFirst = (a, b) => {
+      const aBC = isBC(a);
+      const bBC = isBC(b);
+      if (aBC && !bBC) return -1;
+      if (!aBC && bBC) return 1;
+      return 0;
+    };
+    
     switch (sortBy) {
       case 'category':
         const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3, 'ALZ-BLOOD': 4 };
-        return sorted.sort((a, b) => (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => bcFirst(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
       case 'tat':
-        return sorted.sort((a, b) => getTat(a) - getTat(b));
+        return sorted.sort((a, b) => bcFirst(a, b) || getTat(a) - getTat(b));
       case 'reimbursement':
-        return sorted.sort((a, b) => countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => bcFirst(a, b) || countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
       case 'vendorTests':
-        return sorted.sort((a, b) => vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => bcFirst(a, b) || vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
       case 'openness':
         // Sort by vendor openness ranking (same as openness award logic)
         // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
         return sorted.sort((a, b) => {
+          const bc = bcFirst(a, b);
+          if (bc !== 0) return bc;
           const scoreA = vendorOpennessScores[a.vendor] ?? -1;
           const scoreB = vendorOpennessScores[b.vendor] ?? -1;
           if (scoreA !== scoreB) return scoreB - scoreA;
@@ -1775,7 +1996,8 @@ const TestShowcase = ({ onNavigate }) => {
         });
       case 'vendor':
       default:
-        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+        // Sort alphabetically by vendor name, then by test name
+        return sorted.sort((a, b) => bcFirst(a, b) || a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests]);
 
@@ -1818,6 +2040,8 @@ const TestShowcase = ({ onNavigate }) => {
     // Price if available (mainly ECD tests)
     if (test.listPrice != null) {
       params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'neutral' });
+    } else if (test.medicareRate != null) {
+      params.push({ label: 'Medicare Rate', value: `$${test.medicareRate.toLocaleString()}`, type: 'neutral' });
     }
     
     // Blood-only vs requires tissue
@@ -1917,7 +2141,11 @@ const TestShowcase = ({ onNavigate }) => {
     if (followUpTat != null) params.push({ label: 'Follow-up TAT', value: `${followUpTat} days`, type: 'operational' });
     if (tat != null && initialTat == null) params.push({ label: 'TAT', value: `${tat} days`, type: 'operational' });
     
-    if (test.listPrice != null) params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'operational' });
+    if (test.listPrice != null) {
+      params.push({ label: 'List Price', value: `$${test.listPrice.toLocaleString()}`, type: 'operational' });
+    } else if (test.medicareRate != null) {
+      params.push({ label: 'Medicare Rate', value: `$${test.medicareRate.toLocaleString()}`, type: 'operational' });
+    }
     if (test.bloodVolume != null) params.push({ label: 'Blood Volume', value: `${test.bloodVolume} mL`, type: 'operational' });
     if (test.cancersDetected != null && typeof test.cancersDetected === 'number') params.push({ label: 'Cancers Detected', value: test.cancersDetected, type: 'operational' });
     
@@ -2051,9 +2279,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       badges.push({ label: 'Pubs', value: test.numPublications, type: 'clinical' });
     }
     
-    // Price
+    // Price (list price preferred, Medicare rate as fallback)
     if (test.listPrice != null) {
       badges.push({ label: '$', value: `${(test.listPrice/1000).toFixed(1)}k`, type: 'operational' });
+    } else if (test.medicareRate != null) {
+      badges.push({ label: '~$', value: `${(test.medicareRate/1000).toFixed(1)}k`, type: 'operational' });
     }
     
     // Return top 3 badges max
@@ -2185,12 +2415,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getPatientBadges(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all overflow-hidden`}
+                className={`relative ${colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
@@ -2211,6 +2442,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* MISS badge for non-BC tests */}
+                      {!isBC && (
+                        <span className="bg-red-100 text-red-600 text-[9px] px-1 py-0.5 rounded font-medium" title="Missing required fields">
+                          MISS
+                        </span>
+                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -2527,12 +2764,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
               <div
                 key={test.id}
                 onClick={() => onNavigate(test.category, test.id)}
-                className={`relative ${colors.bg} ${colors.border} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all overflow-hidden`}
+                className={`relative ${colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
               >
                 {/* DISCONTINUED text overlay */}
                 {isDiscontinued && (
@@ -2553,6 +2791,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* MISS badge for non-BC tests */}
+                      {!isBC && (
+                        <span className="bg-red-100 text-red-600 text-[9px] px-1 py-0.5 rounded font-medium" title="Missing required fields">
+                          MISS
+                        </span>
+                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -2657,23 +2901,25 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-3 gap-4">
                       {selectedTest.sensitivity != null && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className={`font-bold text-emerald-600 ${String(selectedTest.sensitivity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                            {String(selectedTest.sensitivity).length > 20 
-                              ? (String(selectedTest.sensitivity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.sensitivity])[0] + (String(selectedTest.sensitivity).includes('%') ? '' : '%')
-                              : selectedTest.sensitivity + (String(selectedTest.sensitivity).includes('%') ? '' : '%')}
-                          </p>
-                          <p className="text-xs text-gray-500">Sensitivity</p>
+                        <div className="p-3 bg-gray-50 rounded-lg">
+                          <PerformanceMetricWithWarning 
+                            value={selectedTest.sensitivity} 
+                            label="Sensitivity" 
+                            test={selectedTest} 
+                            metric="sensitivity"
+                            size="lg"
+                          />
                         </div>
                       )}
                       {selectedTest.specificity != null && (
-                        <div className="text-center p-3 bg-gray-50 rounded-lg">
-                          <p className={`font-bold text-emerald-600 ${String(selectedTest.specificity).length > 10 ? 'text-sm' : 'text-2xl'}`}>
-                            {String(selectedTest.specificity).length > 20 
-                              ? (String(selectedTest.specificity).match(/^[>≥]?\d+\.?\d*%?/) || [selectedTest.specificity])[0] + (String(selectedTest.specificity).includes('%') ? '' : '%')
-                              : selectedTest.specificity + (String(selectedTest.specificity).includes('%') ? '' : '%')}
-                          </p>
-                          <p className="text-xs text-gray-500">Specificity</p>
+                        <div className="p-3 bg-gray-50 rounded-lg">
+                          <PerformanceMetricWithWarning 
+                            value={selectedTest.specificity} 
+                            label="Specificity" 
+                            test={selectedTest} 
+                            metric="specificity"
+                            size="lg"
+                          />
                         </div>
                       )}
                       {(selectedTest.initialTat || selectedTest.tat) && (
@@ -2798,6 +3044,34 @@ const StatOfTheDay = ({ onNavigate }) => {
       </div>
     </div>
   );
+};
+
+// ============================================
+// Baseline Complete (BC) - Data Completeness Calculation
+// ============================================
+// NOTE: BC status is awarded to tests that have all minimum required fields filled.
+// When reviewing new test submissions, verify they meet BC requirements before adding.
+
+// Calculate completeness score for a single test
+const calculateTestCompleteness = (test, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return { filled: 0, total: 0, percentage: 0, missingFields: [] };
+  
+  const minFields = minParams.core;
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  
+  const filledFields = minFields.filter(p => hasValue(test[p.key]));
+  const missingFields = minFields.filter(p => !hasValue(test[p.key]));
+  const percentage = minFields.length > 0 
+    ? Math.round((filledFields.length / minFields.length) * 100) 
+    : 0;
+  
+  return {
+    filled: filledFields.length,
+    total: minFields.length,
+    percentage,
+    missingFields: missingFields.map(p => p.label)
+  };
 };
 
 // ============================================
@@ -3095,6 +3369,31 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 // ============================================
 // Database Summary Component (Reusable)
 // ============================================
+
+// Helper function to calculate minimum field completion stats for a category
+const calculateMinimumFieldStats = (tests, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return { complete: 0, total: tests.length, percentage: 0 };
+  
+  const minFields = minParams.core.map(p => p.key);
+  
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  
+  const completeTests = tests.filter(test => 
+    minFields.every(field => hasValue(test[field]))
+  );
+  
+  const percentage = tests.length > 0 
+    ? Math.round((completeTests.length / tests.length) * 100) 
+    : 0;
+  
+  return {
+    complete: completeTests.length,
+    total: tests.length,
+    percentage
+  };
+};
+
 // Simple database stats for Data Download page
 const DatabaseStatsSimple = () => {
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
@@ -3115,6 +3414,12 @@ const DatabaseStatsSimple = () => {
   // Calculate Tier 1 citation metrics dynamically
   const allTestData = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
   const tier1Metrics = calculateTier1Metrics(allTestData);
+
+  // Calculate minimum field completion for each category
+  const mrdCompletion = calculateMinimumFieldStats(mrdTestData, 'MRD');
+  const ecdCompletion = calculateMinimumFieldStats(ecdTestData, 'ECD');
+  const trmCompletion = calculateMinimumFieldStats(trmTestData, 'TRM');
+  const tdsCompletion = calculateMinimumFieldStats(tdsTestData, 'TDS');
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -3140,34 +3445,70 @@ const DatabaseStatsSimple = () => {
         </div>
       </div>
       
-      {/* Category breakdown */}
+      {/* Category breakdown with completion stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
           <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">MRD</p>
             <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-orange-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-orange-500 rounded-full transition-all"
+                  style={{ width: `${mrdCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-orange-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{mrdCompletion.complete}/{mrdCompletion.total}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
           <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{ecdTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">ECD</p>
             <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-emerald-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-emerald-500 rounded-full transition-all"
+                  style={{ width: `${ecdCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-emerald-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{ecdCompletion.complete}/{ecdCompletion.total}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-sky-50 rounded-lg border border-sky-100">
           <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white text-xs font-bold">{trmTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">TRM</p>
             <p className="text-[10px] text-gray-500">{trmParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-sky-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-sky-500 rounded-full transition-all"
+                  style={{ width: `${trmCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-sky-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{trmCompletion.complete}/{trmCompletion.total}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
           <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{tdsTestData.length}</div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">TDS</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-violet-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-violet-500 rounded-full transition-all"
+                  style={{ width: `${tdsCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-violet-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{tdsCompletion.complete}/{tdsCompletion.total}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -3180,7 +3521,7 @@ const DatabaseStatsSimple = () => {
           <div className="relative group">
             <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
             <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <p className="font-semibold mb-2">Tier 1 = Key Clinical Performance Fields</p>
+              <p className="font-semibold mb-2">Performance Metrics with Sources</p>
               <div className="space-y-1.5 text-gray-300">
                 <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
                 <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
@@ -3188,7 +3529,7 @@ const DatabaseStatsSimple = () => {
                 <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
                 <p><span className="text-white">Screening:</span> advanced adenoma sensitivity, lead time vs imaging</p>
               </div>
-              <p className="mt-2 text-gray-400 text-[10px]">These metrics require citations to ensure clinical credibility.</p>
+              <p className="mt-2 text-gray-400 text-[10px]">Tracks how many performance claims have citations.</p>
               <div className="absolute left-4 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
             </div>
           </div>
@@ -3196,7 +3537,7 @@ const DatabaseStatsSimple = () => {
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
             <p className="text-xl font-bold text-blue-800">{tier1Metrics.totalTier1DataPoints}</p>
-            <p className="text-[10px] text-blue-600">Tier 1 Data Points</p>
+            <p className="text-[10px] text-blue-600">Performance Metrics</p>
           </div>
           <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
             <p className="text-xl font-bold text-blue-800">{tier1Metrics.citedDataPoints}</p>
@@ -4331,7 +4672,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
 
   // OpenOnco FAQs
   const oncoFaqs = [
@@ -4758,7 +5099,7 @@ const FAQPage = () => {
 // ============================================
 const AboutPage = () => {
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
 
   if (isAlz) {
     return (
@@ -4825,7 +5166,7 @@ const AboutPage = () => {
 // ============================================
 const HowItWorksPage = () => {
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
 
   if (isAlz) {
     return (
@@ -4899,9 +5240,9 @@ const HowItWorksPage = () => {
 // ============================================
 // Submissions Page
 // ============================================
-const SubmissionsPage = () => {
+const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const siteConfig = getSiteConfig();
-  const isAlz = siteConfig.domain === DOMAINS.ALZ;
+  const isAlz = false; // ALZ DISABLED
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
   
   const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'bug', 'feature'
@@ -4921,9 +5262,37 @@ const SubmissionsPage = () => {
   
   // Correction fields
   const [existingTest, setExistingTest] = useState('');
+  
+  // Complete missing fields - multiple parameters with values
+  const [completeFieldEntries, setCompleteFieldEntries] = useState([]);
   const [selectedParameter, setSelectedParameter] = useState('');
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
+  
+  // Track if form was prefilled (from Competitions page navigation)
+  const [isPrefilled, setIsPrefilled] = useState(false);
+  
+  // Handle prefill from navigation (e.g., from Competitions page)
+  useEffect(() => {
+    if (prefill) {
+      if (prefill.submissionType) {
+        setSubmissionType(prefill.submissionType);
+      }
+      if (prefill.prefillCategory) {
+        setCategory(prefill.prefillCategory);
+      }
+      if (prefill.prefillTest) {
+        setExistingTest(prefill.prefillTest);
+        setIsPrefilled(true); // Mark as prefilled to lock selections
+      }
+      // Scroll to top of page
+      window.scrollTo(0, 0);
+      // Clear prefill after applying
+      if (onClearPrefill) {
+        onClearPrefill();
+      }
+    }
+  }, [prefill, onClearPrefill]);
   
   // Bug/Feature feedback fields
   const [feedbackDescription, setFeedbackDescription] = useState('');
@@ -5093,6 +5462,7 @@ const SubmissionsPage = () => {
       const emailDomain = contactEmail.split('@')[1]?.toLowerCase() || '';
       // Known vendor domains - comprehensive list
       const knownVendorDomains = [
+        { domain: 'ryght.ai', vendor: 'Ryght AI' },
         { domain: 'illumina.com', vendor: 'Illumina' },
         { domain: 'guardanthealth.com', vendor: 'Guardant Health' },
         { domain: 'natera.com', vendor: 'Natera' },
@@ -5363,13 +5733,14 @@ const SubmissionsPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Test Data Update */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        {/* Test Data Update - hide when prefilled */}
+        {!isPrefilled && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); }}
+              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">Suggest a New Test</div>
@@ -5377,11 +5748,11 @@ const SubmissionsPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); }}
+              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">File a Correction</div>
-              <div className="text-sm text-gray-500">Suggest an update to existing test data</div>
+              <div className="text-sm text-gray-500">Update existing test data</div>
             </button>
           </div>
           
@@ -5389,7 +5760,7 @@ const SubmissionsPage = () => {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); }}
+              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'bug' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'bug' ? 'text-red-700' : 'text-gray-800'}`}>Report a Bug</div>
@@ -5397,16 +5768,17 @@ const SubmissionsPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); }}
+              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'feature' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'feature' ? 'text-purple-700' : 'text-gray-800'}`}>Request a Feature</div>
               <div className="text-sm text-gray-500">Suggest an improvement or new capability</div>
             </button>
           </div>
-        </div>
+          </div>
+        )}
 
-        {/* Submitter Type */}
+        {/* Submitter Type - show for all data submissions including prefilled */}
         {(submissionType === 'new' || submissionType === 'correction') && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
@@ -5447,7 +5819,7 @@ const SubmissionsPage = () => {
                 <button
                   key={cat.key}
                   type="button"
-                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); }}
+                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); setCompleteFieldEntries([]); }}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${category === cat.key ? `border-${cat.color}-500 bg-${cat.color}-50` : 'border-gray-200 hover:border-gray-300'}`}
                 >
                   <div className={`font-bold ${category === cat.key ? `text-${cat.color}-700` : 'text-gray-800'}`}>{cat.label}</div>
@@ -5588,6 +5960,7 @@ const SubmissionsPage = () => {
             </div>
           </div>
         )}
+
 
         {/* Bug Report / Feature Request Form */}
         {(submissionType === 'bug' || submissionType === 'feature') && (
@@ -5733,7 +6106,11 @@ const SubmissionsPage = () => {
         )}
 
         {/* Your Information - Test Data */}
-        {category && (submissionType === 'new' ? newTestName && newTestVendor : existingTest && selectedParameter) && (
+        {category && (
+          submissionType === 'new' ? newTestName && newTestVendor : 
+          submissionType === 'correction' ? existingTest && selectedParameter :
+          false
+        ) && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -5937,6 +6314,42 @@ const SubmissionsPage = () => {
 };
 
 const SourceDataPage = () => {
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  // Calculate metrics for all categories
+  const metrics = useMemo(() => ({
+    MRD: calculateCategoryMetrics(mrdTestData, 'MRD'),
+    ECD: calculateCategoryMetrics(ecdTestData, 'ECD'),
+    TRM: calculateCategoryMetrics(trmTestData, 'TRM'),
+    TDS: calculateCategoryMetrics(tdsTestData, 'TDS'),
+  }), []);
+
+  // Calculate aggregate metrics
+  const aggregate = useMemo(() => {
+    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    const allVendors = new Set(allTests.map(t => t.vendor));
+    
+    let totalTier1 = 0, citedTier1 = 0;
+    Object.values(metrics).forEach(m => {
+      if (m) { totalTier1 += m.tier1DataPoints; citedTier1 += m.tier1Cited; }
+    });
+    
+    const totalDataPoints = Object.values(metrics).reduce((sum, m) => sum + (m?.totalDataPoints || 0), 0);
+    const filledDataPoints = Object.values(metrics).reduce((sum, m) => sum + (m?.filledDataPoints || 0), 0);
+    
+    return {
+      totalTests: allTests.length,
+      totalVendors: allVendors.size,
+      totalDataPoints,
+      filledDataPoints,
+      overallFillRate: totalDataPoints > 0 ? Math.round((filledDataPoints / totalDataPoints) * 100) : 0,
+      tier1DataPoints: totalTier1,
+      tier1Cited: citedTier1,
+      tier1CitationRate: totalTier1 > 0 ? ((citedTier1 / totalTier1) * 100).toFixed(1) : 0,
+    };
+  }, [metrics]);
+
   const downloadFile = (content, filename, type) => {
     const blob = new Blob([content], { type });
     const url = URL.createObjectURL(blob);
@@ -5955,36 +6368,17 @@ const SourceDataPage = () => {
         version: BUILD_INFO.date,
         generatedAt: new Date().toISOString(),
         source: 'OpenOnco',
-        website: 'https://openonco.org'
+        website: 'https://openonco.org',
+        qualityMetrics: aggregate,
       },
       changelog: DATABASE_CHANGELOG,
       categories: {
-        MRD: {
-          name: 'Molecular Residual Disease',
-          description: 'Tests for detecting minimal/molecular residual disease after treatment',
-          testCount: mrdTestData.length,
-          tests: mrdTestData
-        },
-        ECD: {
-          name: 'Early Cancer Detection',
-          description: 'Screening and early detection tests including MCED',
-          testCount: ecdTestData.length,
-          tests: ecdTestData
-        },
-        TRM: {
-          name: 'Treatment Response Monitoring',
-          description: 'Tests for monitoring treatment response during therapy',
-          testCount: trmTestData.length,
-          tests: trmTestData
-        },
-        TDS: {
-          name: 'Treatment Decision Support',
-          description: 'Tests for guiding treatment decisions including therapy selection and intervention decisions',
-          testCount: tdsTestData.length,
-          tests: tdsTestData
-        }
+        MRD: { name: 'Molecular Residual Disease', testCount: mrdTestData.length, tests: mrdTestData, metrics: metrics.MRD },
+        ECD: { name: 'Early Cancer Detection', testCount: ecdTestData.length, tests: ecdTestData, metrics: metrics.ECD },
+        TRM: { name: 'Treatment Response Monitoring', testCount: trmTestData.length, tests: trmTestData, metrics: metrics.TRM },
+        TDS: { name: 'Treatment Decision Support', testCount: tdsTestData.length, tests: tdsTestData, metrics: metrics.TDS },
       },
-      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length
+      totalTests: aggregate.totalTests
     };
     return JSON.stringify(allData, null, 2);
   };
@@ -5994,13 +6388,11 @@ const SourceDataPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Header with Build Date */}
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
-        <p className="text-gray-600 mb-4">
-          OpenOnco is committed to openness. All data is open and downloadable.
-        </p>
+        <p className="text-gray-600 mb-4">OpenOnco is committed to openness. All data is open and downloadable.</p>
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full">
           <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -6009,76 +6401,325 @@ const SourceDataPage = () => {
         </div>
       </div>
 
-      {/* Summary Statistics */}
-      <div className="mb-8">
-        <DatabaseStatsSimple />
+      {/* Tab Navigation */}
+      <div className="flex gap-1 p-1 bg-gray-100 rounded-lg mb-6 max-w-md mx-auto">
+        {[{ id: 'overview', label: 'Overview' }, { id: 'quality', label: 'Data Quality' }, { id: 'download', label: 'Download' }].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === tab.id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Download Section */}
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Download Complete Dataset</h2>
+      {/* Overview Tab */}
+      {activeTab === 'overview' && (
+        <div className="space-y-6">
+          {/* Hero Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">{aggregate.totalTests}</p>
+              <p className="text-sm text-gray-500 mt-1">Total Tests</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">{aggregate.totalVendors}</p>
+              <p className="text-sm text-gray-500 mt-1">Vendors</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">{aggregate.totalDataPoints.toLocaleString()}</p>
+              <p className="text-sm text-gray-500 mt-1">Data Points</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">4</p>
+              <p className="text-sm text-gray-500 mt-1">Categories</p>
+            </div>
+          </div>
 
-      {/* Combined JSON Download */}
-      <div className="mb-8">
-        <div className="rounded-xl border-2 border-slate-300 bg-slate-50 p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
-                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length} tests • MRD + ECD + TRM + TDS combined • JSON format</p>
+          {/* Category Cards */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+              const m = metrics[category];
+              const colors = CATEGORY_COLORS[category];
+              if (!m) return null;
+              
+              return (
+                <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-5 cursor-pointer transition-all hover:shadow-md`} onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl ${colors.accent} flex items-center justify-center text-white font-bold text-lg`}>{m.testCount}</div>
+                      <div>
+                        <h3 className="font-bold text-gray-900">{category}</h3>
+                        <p className="text-xs text-gray-500">{m.fieldCount} fields tracked</p>
+                      </div>
+                    </div>
+                    <QualityGrade percentage={m.minFieldCompletionRate} />
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-gray-600">Baseline Complete</span>
+                        <span className={`font-medium ${colors.text}`}>{m.testsWithAllMinFields}/{m.testCount}</span>
+                      </div>
+                      <div className="h-2 bg-white rounded-full overflow-hidden">
+                        <div className={`h-full ${colors.accent} rounded-full transition-all duration-500`} style={{ width: `${m.minFieldCompletionRate}%` }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-gray-600">Citation Coverage</span>
+                        <span className={`font-medium ${colors.text}`}>{m.tier1CitationRate}%</span>
+                      </div>
+                      <div className="h-2 bg-white rounded-full overflow-hidden">
+                        <div className={`h-full ${colors.accent} rounded-full transition-all duration-500`} style={{ width: `${m.tier1CitationRate}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {expandedCategory === category && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">Required Field Completion</h4>
+                      <div className="space-y-2">
+                        {m.fieldCompletionRates.map(field => (
+                          <div key={field.field} className="flex items-center gap-2">
+                            <div className="w-28 text-xs text-gray-600 truncate" title={field.label}>{field.label}</div>
+                            <div className="flex-1 h-1.5 bg-white rounded-full overflow-hidden">
+                              <div className={`h-full ${colors.accent} rounded-full`} style={{ width: `${field.percentage}%` }} />
+                            </div>
+                            <div className="w-12 text-xs text-right font-medium text-gray-700">{field.filled}/{field.total}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Citation Quality */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <h3 className="text-lg font-semibold text-gray-800">Citation Quality</h3>
+              <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full font-medium">Performance Metrics</span>
+              <div className="relative group inline-block ml-1">
+                <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
+                <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="font-semibold mb-2">Performance Metrics with Sources</p>
+                  <div className="space-y-1.5 text-gray-300">
+                    <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
+                    <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
+                    <p><span className="text-white">Stage-Specific:</span> Stage I–IV sensitivity</p>
+                    <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
+                  </div>
+                  <p className="mt-2 text-gray-400 text-[10px]">Tracks how many performance claims have citations.</p>
+                </div>
               </div>
             </div>
-            <button
-              onClick={downloadJson}
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium text-white shadow-sm"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download JSON
-            </button>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                <p className="text-2xl font-bold text-blue-800">{aggregate.tier1DataPoints}</p>
+                <p className="text-xs text-blue-600 mt-1">Performance Metrics</p>
+              </div>
+              <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                <p className="text-2xl font-bold text-blue-800">{aggregate.tier1Cited}</p>
+                <p className="text-xs text-blue-600 mt-1">Cited</p>
+              </div>
+              <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
+                <p className="text-2xl font-bold text-green-700">{aggregate.tier1CitationRate}%</p>
+                <p className="text-xs text-green-600 mt-1">Coverage</p>
+              </div>
+            </div>
           </div>
         </div>
+      )}
 
-      </div>
+      {/* Data Quality Tab */}
+      {activeTab === 'quality' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Data Quality Framework</h3>
+            <p className="text-sm text-gray-600 mb-6">OpenOnco tracks data quality across multiple dimensions to ensure clinical reliability. Our Baseline Complete (BC) standard requires all minimum fields for each category to be filled.</p>
+            
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+                const m = metrics[category];
+                const colors = CATEGORY_COLORS[category];
+                if (!m) return null;
+                
+                return (
+                  <div key={category} className="text-center">
+                    <div className="relative inline-flex items-center justify-center mb-3">
+                      <CircularProgress value={m.minFieldCompletionRate} size={100} strokeWidth={10} color={category === 'MRD' ? 'orange' : category === 'ECD' ? 'emerald' : category === 'TRM' ? 'sky' : 'violet'} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xl font-bold text-gray-800">{m.minFieldCompletionRate}%</span>
+                      </div>
+                    </div>
+                    <h4 className={`font-semibold ${colors.text}`}>{category}</h4>
+                    <p className="text-xs text-gray-500">{m.testsWithAllMinFields} of {m.testCount} BC</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-      {/* Data Attribution */}
-      <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
-        <h3 className="font-semibold text-gray-900 mb-3">Data Sources & Attribution</h3>
-        <p className="text-sm text-gray-600 mb-4">
-          OpenOnco compiles publicly available information from multiple authoritative sources:
-        </p>
-        <ul className="text-sm text-gray-600 space-y-1 mb-4">
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>Vendor websites, product documentation, and healthcare professional resources</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>FDA approval documents, PMA summaries, and 510(k) clearances</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>Peer-reviewed publications and clinical trial results</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>CMS coverage determinations and reimbursement policies</span>
-          </li>
-        </ul>
-        <p className="text-xs text-gray-500">
-          This data is provided for informational purposes only. Always verify with official sources for clinical decision-making.
-        </p>
-      </div>
+          {/* Per-Category Breakdown */}
+          {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+            const m = metrics[category];
+            const colors = CATEGORY_COLORS[category];
+            if (!m) return null;
+            
+            return (
+              <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-6`}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800">{category} Quality Breakdown</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">{m.testCount} tests</span>
+                    <QualityGrade percentage={m.minFieldCompletionRate} />
+                  </div>
+                </div>
+                
+                <div className="grid sm:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-white rounded-lg p-4 border border-gray-100">
+                    <p className="text-2xl font-bold text-gray-800">{m.overallFillRate}%</p>
+                    <p className="text-xs text-gray-500">Overall Fill Rate</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{m.filledDataPoints.toLocaleString()} / {m.totalDataPoints.toLocaleString()} fields</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-100">
+                    <p className="text-2xl font-bold text-gray-800">{m.minFieldCompletionRate}%</p>
+                    <p className="text-xs text-gray-500">Baseline Complete</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{m.testsWithAllMinFields} / {m.testCount} tests</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-100">
+                    <p className="text-2xl font-bold text-gray-800">{m.tier1CitationRate}%</p>
+                    <p className="text-xs text-gray-500">Citation Coverage</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{m.tier1Cited} / {m.tier1DataPoints} cited</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                    <h4 className="text-sm font-semibold text-gray-700">Required Fields ({m.minFieldsRequired})</h4>
+                  </div>
+                  <div className="divide-y divide-gray-50">
+                    {m.fieldCompletionRates.map(field => (
+                      <div key={field.field} className="px-4 py-2.5 flex items-center gap-4">
+                        <div className="w-32 text-sm text-gray-700">{field.label}</div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                              <div className={`h-full ${colors.accent} rounded-full transition-all`} style={{ width: `${field.percentage}%` }} />
+                            </div>
+                            <span className="text-xs font-medium text-gray-600 w-16 text-right">{field.filled}/{field.total}</span>
+                          </div>
+                        </div>
+                        <div className="w-20 text-right">
+                          {field.citedPercentage > 0 && <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded">{field.citedPercentage}% cited</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
-      {/* Database Summary - Hidden on mobile */}
-      <div className="hidden md:block mt-6">
-        <DatabaseSummary />
-      </div>
+      {/* Download Tab */}
+      {activeTab === 'download' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border-2 border-slate-300 p-6">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
+                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 text-lg">Complete Dataset (All Categories)</h3>
+                  <p className="text-sm text-gray-500">{aggregate.totalTests} tests • MRD + ECD + TRM + TDS • JSON format with quality metrics</p>
+                </div>
+              </div>
+              <button onClick={downloadJson} className="flex items-center gap-2 px-6 py-3 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium text-white shadow-sm">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download JSON
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="font-semibold text-gray-900 mb-4">What's Included</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Complete Test Data</h4>
+                    <p className="text-xs text-gray-500">All fields for every test including performance metrics, regulatory status, and pricing</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Source Citations</h4>
+                    <p className="text-xs text-gray-500">Links to peer-reviewed publications, FDA documents, and vendor sources</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Quality Metrics</h4>
+                    <p className="text-xs text-gray-500">Per-category and per-test quality scores, completion rates, and citation coverage</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Version Metadata</h4>
+                    <p className="text-xs text-gray-500">Timestamp, version info, and database update history</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+            <h3 className="font-semibold text-gray-900 mb-3">Data Sources & Attribution</h3>
+            <p className="text-sm text-gray-600 mb-4">OpenOnco compiles publicly available information from multiple authoritative sources:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-sm text-gray-600">
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>Vendor websites and product documentation</span></div>
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>FDA approval documents and PMA summaries</span></div>
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>Peer-reviewed publications and clinical trials</span></div>
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>CMS coverage determinations</span></div>
+            </div>
+            <p className="text-xs text-gray-500 mt-4">This data is provided for informational purposes only. Always verify with official sources for clinical decision-making.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -7099,8 +7740,19 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
   
+  // Calculate BC status - automatic when 100% minimum fields complete
+  const completeness = calculateTestCompleteness(test, category);
+  const isBC = completeness.percentage === 100;
+  
   return (
-    <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
+    <div className="relative">
+      {/* MISS Badge - positioned outside card for non-BC tests */}
+      {!isBC && !isDiscontinued && (
+        <div className="absolute -top-2 -right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md z-20">
+          MISS
+        </div>
+      )}
+      <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -7126,7 +7778,11 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                     : null}
               {test.adltStatus && <Badge variant="amber" title="CMS Advanced Diagnostic Laboratory Test - annual rate updates based on private payer data">ADLT</Badge>}
               {test.codeType === 'PLA' && <Badge variant="slate" title="Proprietary Laboratory Analyses code - specific to this laboratory's test">PLA</Badge>}
-              {category === 'ECD' && test.listPrice && <Badge variant="amber">${test.listPrice}</Badge>}
+              {category === 'ECD' && (test.listPrice ? (
+                <Badge variant="amber">${test.listPrice}</Badge>
+              ) : test.medicareRate && (
+                <Badge variant="amber" title="Medicare rate - actual list price may vary">~${test.medicareRate}</Badge>
+              ))}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
@@ -7163,8 +7819,36 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
-          {category !== 'TDS' && test.sensitivity != null && <div><p className="text-lg font-bold text-emerald-600">{test.sensitivity}%</p><p className="text-xs text-gray-500">Reported Sens.</p></div>}
-          {category !== 'TDS' && test.specificity != null && <div><p className="text-lg font-bold text-emerald-600">{test.specificity}%</p><p className="text-xs text-gray-500">Specificity</p></div>}
+          {category !== 'TDS' && test.sensitivity != null && (
+            <div>
+              <p className={`text-lg font-bold ${(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : 'text-emerald-600'}`}>
+                {test.sensitivity}%
+                {test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                  <span className="inline-block ml-0.5" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'})` : 'Analytical validation only'}>
+                    <svg className="w-3 h-3 inline text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </span>
+                )}
+              </p>
+              <p className="text-xs text-gray-500">Reported Sens.</p>
+            </div>
+          )}
+          {category !== 'TDS' && test.specificity != null && (
+            <div>
+              <p className={`text-lg font-bold ${(test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : 'text-emerald-600'}`}>
+                {test.specificity}%
+                {test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                  <span className="inline-block ml-0.5" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'})` : 'Analytical validation only'}>
+                    <svg className="w-3 h-3 inline text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </span>
+                )}
+              </p>
+              <p className="text-xs text-gray-500">Specificity</p>
+            </div>
+          )}
           {/* LOD display - show both LOD and LOD95 when available */}
           {category !== 'TDS' && (test.lod != null || test.lod95 != null) && (
             <div>
@@ -7236,6 +7920,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           </svg>
         </button>
       </div>
+    </div>
     </div>
   );
 };
@@ -7376,6 +8061,156 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
 };
 
 // ============================================
+// Minimum Parameters by Category
+// ============================================
+const MINIMUM_PARAMS = {
+  MRD: {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'lod', label: 'Limit of Detection' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'totalParticipants', label: 'Study Participants' },
+      { key: 'initialTat', label: 'Initial TAT' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Medicare Coverage' },
+    ]
+  },
+  ECD: {
+    core: [
+      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'specificity', label: 'Specificity' },
+      { key: 'ppv', label: 'PPV' },
+      { key: 'npv', label: 'NPV' },
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'listPrice', label: 'List Price' },
+    ]
+  },
+  TRM: {
+    // NOTE: TRM tests monitor ctDNA trends over time rather than binary MRD detection
+    // They don't report traditional sensitivity/specificity metrics
+    core: [
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+    ]
+  },
+  TDS: {
+    // NOTE: CGP tests don't report single sensitivity/specificity values - 
+    // performance varies by alteration type (SNVs, indels, CNAs, fusions)
+    core: [
+      { key: 'numPublications', label: 'Publications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+    ]
+  },
+};
+
+const FIELD_DEFINITIONS = {
+  name: { label: 'Test Name', tooltip: 'The official commercial name of the test' },
+  vendor: { label: 'Vendor', tooltip: 'The company that manufactures the test' },
+  sensitivity: { label: 'Sensitivity', tooltip: 'Proportion of true positives correctly identified' },
+  specificity: { label: 'Specificity', tooltip: 'Proportion of true negatives correctly identified' },
+  lod: { label: 'Limit of Detection', tooltip: 'Lowest concentration reliably detected' },
+  ppv: { label: 'PPV', tooltip: 'Positive Predictive Value' },
+  npv: { label: 'NPV', tooltip: 'Negative Predictive Value' },
+  numPublications: { label: 'Publications', tooltip: 'Number of peer-reviewed publications' },
+  totalParticipants: { label: 'Study Participants', tooltip: 'Total patients across validation studies' },
+  tat: { label: 'Turnaround Time', tooltip: 'Time from sample to result' },
+  initialTat: { label: 'Initial TAT', tooltip: 'Days for first result' },
+  followUpTat: { label: 'Follow-up TAT', tooltip: 'Days for subsequent results' },
+  fdaStatus: { label: 'FDA Status', tooltip: 'Regulatory approval status' },
+  reimbursement: { label: 'Medicare Coverage', tooltip: 'Medicare reimbursement status' },
+  listPrice: { label: 'List Price', tooltip: 'Published price without insurance' },
+  clinicalAvailability: { label: 'Clinical Availability', tooltip: 'Current availability status' },
+};
+
+// ============================================
+// Minimum Fields Section - Shows completion status for BC (Baseline Complete)
+// ============================================
+const MinimumFieldsSection = ({ test, category }) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return null;
+  
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  
+  const fields = minParams.core.map(p => ({
+    key: p.key,
+    label: p.label,
+    value: test[p.key],
+    filled: hasValue(test[p.key])
+  }));
+  
+  const filledCount = fields.filter(f => f.filled).length;
+  const totalCount = fields.length;
+  const isBC = filledCount === totalCount;
+  
+  const formatDisplayValue = (val) => {
+    if (val == null || val === '') return '—';
+    if (Array.isArray(val)) return val.join(', ');
+    if (typeof val === 'number') return val.toLocaleString();
+    return String(val);
+  };
+  
+  return (
+    <div className={`mt-4 p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-200'}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-gray-800">Minimum Fields</h3>
+          {isBC ? (
+            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
+          ) : (
+            <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded flex items-center gap-1">
+              MISS
+              <span className="text-red-200">({filledCount}/{totalCount})</span>
+            </span>
+          )}
+        </div>
+      </div>
+      
+      {/* Progress bar */}
+      <div className="mb-4">
+        <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
+          <div 
+            className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-red-400'}`}
+            style={{ width: `${(filledCount / totalCount) * 100}%` }}
+          />
+        </div>
+      </div>
+      
+      {/* Fields grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        {fields.map(field => (
+          <div 
+            key={field.key} 
+            className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-red-100/50 border-red-300 border-dashed'}`}
+          >
+            <div className="flex items-center gap-1.5 mb-0.5">
+              {field.filled ? (
+                <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              )}
+              <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-red-700'}`}>{field.label}</span>
+            </div>
+            <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-red-600 italic'}`}>
+              {field.filled ? formatDisplayValue(field.value) : 'Missing'}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // Test Detail Modal
 // ============================================
 const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => {
@@ -7384,6 +8219,10 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
   if (!test) return null;
   
   const meta = categoryMeta[category];
+  
+  // Calculate BC status
+  const completeness = calculateTestCompleteness(test, category);
+  const isBC = completeness.percentage === 100;
   
   // Copy shareable link to clipboard (SEO-friendly URL)
   const copyLink = (e) => {
@@ -7545,7 +8384,14 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                 )}
               </div>
               <h2 className="text-2xl font-bold text-white">{test.name}</h2>
-              <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
+                {!isBC && (
+                  <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full">
+                    MISS
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <button 
@@ -7665,7 +8511,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <p className="text-sm"><span className="font-medium">Private insurers:</span> {test.commercialPayers.join(', ')}</p>
                   )}
                   {test.commercialPayersNotes && <p className="text-xs text-gray-500 mt-1">{test.commercialPayersNotes}</p>}
-                  {(category === 'ECD' || category === 'TDS') && test.listPrice && <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>}
+                  {(category === 'ECD' || category === 'TDS') && (test.listPrice ? (
+                    <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>
+                  ) : test.medicareRate && (
+                    <p className="text-sm mt-2"><span className="font-medium">Estimated price:</span> ~${test.medicareRate.toLocaleString()} <span className="text-xs text-gray-500">(Medicare rate - actual price may vary)</span></p>
+                  ))}
                 </div>
               </Section>
               
@@ -7752,7 +8602,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                             <span className="text-sm font-semibold text-emerald-600">${test.medicareRate.toLocaleString()}</span>
                           </div>
                         )}
-                        {test.listPrice && <DataRow label="List Price" value={`$${test.listPrice.toLocaleString()}`} citations={test.listPriceCitations} />}
+                        {test.listPrice ? (
+                          <DataRow label="List Price" value={`$${test.listPrice.toLocaleString()}`} citations={test.listPriceCitations} />
+                        ) : test.medicareRate && !test.listPrice && (
+                          <DataRow label="List Price (est.)" value={`~$${test.medicareRate.toLocaleString()}`} notes="Medicare rate shown - actual list price may vary" citations="https://www.cms.gov/medicare/payment/fee-schedules/clinical-laboratory" />
+                        )}
                         <DataRow label={test.codeType === 'PLA' ? 'PLA Code' : 'CPT Codes'} value={test.cptCodes} citations={test.cptCodesCitations} notes={test.codeType === 'PLA' ? 'Proprietary Laboratory Analyses - specific to this laboratory' : null} />
                       </div>
                     </Section>
@@ -7786,7 +8640,20 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.sensitivity ? `${test.sensitivity}%` : '—'}
+                        {test.sensitivity ? (
+                          <>
+                            <span className={(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : ''}>
+                              {test.sensitivity}%
+                            </span>
+                            {test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                              <span className="ml-1" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'}) - ${test.validationCohortStudy || 'interpret with caution'}` : 'Analytical validation only - clinical performance may differ'}>
+                                <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                              </span>
+                            )}
+                          </>
+                        ) : '—'}
                         {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
                       </span>
                     </div>
@@ -7794,7 +8661,20 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.specificity ? `${test.specificity}%` : '—'}
+                        {test.specificity ? (
+                          <>
+                            <span className={(test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : ''}>
+                              {test.specificity}%
+                            </span>
+                            {test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                              <span className="ml-1" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'}) - ${test.validationCohortStudy || 'interpret with caution'}` : 'Analytical validation only - clinical performance may differ'}>
+                                <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                              </span>
+                            )}
+                          </>
+                        ) : '—'}
                         {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
                       </span>
                     </div>
@@ -7816,6 +8696,31 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                           {test.lod95}
                           <CitationTooltip citations={test.lod95Citations} />
                         </span>
+                      </div>
+                    )}
+                    {/* Validation Cohort Warning */}
+                    {(test.smallSampleWarning || test.analyticalValidationWarning) && (
+                      <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <svg className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                          <div className="text-xs">
+                            <p className="font-semibold text-amber-800">
+                              {test.analyticalValidationWarning ? 'Analytical Validation Only' : 'Small Validation Cohort'}
+                            </p>
+                            <p className="text-amber-700 mt-0.5">
+                              {test.analyticalValidationWarning 
+                                ? 'Performance metrics from analytical validation (e.g., dilution series). Clinical performance may differ.' 
+                                : `Validation cohort${test.validationCohortSize ? ` n=${test.validationCohortSize}` : ''} is smaller than typical. Interpret 100% values with caution.`}
+                            </p>
+                            {test.validationCohortStudy && (
+                              <p className="text-amber-600 mt-1">
+                                <span className="font-medium">Study:</span> {test.validationCohortStudy}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -7903,7 +8808,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     {test.availableRegions && test.availableRegions.length > 0 && (
                       <DataRow label="Available Regions" value={test.availableRegions.join(', ')} />
                     )}
-                    {category === 'ECD' && test.listPrice && <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />}
+                    {category === 'ECD' && (test.listPrice ? (
+                      <DataRow label="List Price" value={`$${test.listPrice}`} citations={test.listPriceCitations} />
+                    ) : test.medicareRate && (
+                      <DataRow label="List Price (est.)" value={`~$${test.medicareRate.toLocaleString()}`} notes="Medicare rate shown - actual list price may vary" citations="https://www.cms.gov/medicare/payment/fee-schedules/clinical-laboratory" />
+                    ))}
                   </div>
                 </Section>
                 
@@ -8064,6 +8973,11 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
                     View Example Test Report →
                   </a>
                 </div>
+              )}
+              
+              {/* Minimum Fields Section - for VC eligibility */}
+              {!isPatientView && MINIMUM_PARAMS[category] && (
+                <MinimumFieldsSection test={test} category={category} />
               )}
             </>
           )}
@@ -8734,6 +9648,14 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         if (!selectedProductTypes.includes(testProductType)) return false;
       }
       return true;
+    }).sort((a, b) => {
+      // Sort non-BC (MISS) tests to end, then by vendor name alphabetically
+      const aBC = calculateTestCompleteness(a, category).percentage === 100;
+      const bBC = calculateTestCompleteness(b, category).percentage === 100;
+      if (aBC && !bBC) return -1;
+      if (!aBC && bBC) return 1;
+      // Within same BC status, sort by vendor then test name
+      return a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name);
     });
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
 
@@ -9396,6 +10318,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(initialRoute.page);
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
+  const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
 
   // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
@@ -9470,7 +10393,18 @@ export default function App() {
     document.documentElement.dataset.flags = JSON.stringify(flags);
   }, [persona, currentPage]);
 
-  const handleNavigate = (page, testId = null) => {
+  const handleNavigate = (page, testIdOrOptions = null) => {
+    // Handle options object for special navigation (like prefill for submissions)
+    let testId = null;
+    if (testIdOrOptions && typeof testIdOrOptions === 'object') {
+      // It's an options object
+      if (testIdOrOptions.prefillTest) {
+        setSubmissionPrefill(testIdOrOptions);
+      }
+    } else {
+      testId = testIdOrOptions;
+    }
+    
     // Track navigation with feature flags
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
     if (['MRD', 'ECD', 'TRM', 'TDS'].includes(page)) {
@@ -9518,7 +10452,7 @@ export default function App() {
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
-      case 'submissions': return <SubmissionsPage />;
+      case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
       default: return <HomePage onNavigate={handleNavigate} />;
