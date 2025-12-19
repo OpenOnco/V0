@@ -52,6 +52,35 @@
 
 /*
 ┌─────────────────────────────────────────────────────────────────┐
+│ BASELINE COMPLETE (BC) QUALITY STANDARD                         │
+├─────────────────────────────────────────────────────────────────┤
+│ All tests must meet Baseline Complete (BC) requirements before  │
+│ being added to the database. BC tests have ALL minimum fields   │
+│ filled in for their category. Check MINIMUM_PARAMS in App.jsx   │
+│ for the specific fields required per category.                  │
+│                                                                 │
+│ Key BC fields typically include:                                │
+│   - MRD: sensitivity, specificity, lod, initialTat, followUpTat,│
+│          fdaStatus, reimbursement, numPublications              │
+│   - ECD: sensitivity, specificity, fdaStatus, reimbursement,    │
+│          numPublications                                        │
+│   - TDS: genesAnalyzed, fdaStatus, tat, reimbursement,          │
+│          numPublications                                        │
+│   - TRM: sensitivity, specificity, fdaStatus, tat,              │
+│          reimbursement, numPublications                         │
+│                                                                 │
+│ Citation requirements for 100% sens/spec values:                │
+│   - If sensitivity or specificity = 100%, check validation data │
+│   - For small cohorts (<200 patients): set smallSampleWarning   │
+│   - For analytical validation only: set analyticalValidation-   │
+│     Warning = true                                              │
+│   - Always prefer PubMed/peer-reviewed citations over vendor    │
+│     websites for clinical performance data                      │
+└─────────────────────────────────────────────────────────────────┘
+*/
+
+/*
+┌─────────────────────────────────────────────────────────────────┐
 │ MRD TEST TEMPLATE                                               │
 │ Insert before: "// IVD KITS - Laboratory kits"                  │
 │ Search for: "// INSERT NEW MRD TEST HERE"                       │
