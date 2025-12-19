@@ -112,6 +112,119 @@ const calculateTier1Metrics = (allTestData) => {
 };
 
 // ============================================
+// Category Quality Metrics Calculator
+// ============================================
+const calculateCategoryMetrics = (tests, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!tests || tests.length === 0) return null;
+  
+  const minFields = minParams?.core?.map(p => p.key) || [];
+  const allFields = tests.length > 0 ? Object.keys(tests[0]) : [];
+  const dataFields = allFields.filter(f => !f.endsWith('Citations') && !f.endsWith('Citation') && !f.endsWith('Notes') && f !== 'id');
+  
+  const hasVal = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  const hasCite = (val) => val && String(val).trim() !== '' && val !== 'N/A';
+  
+  const minFieldCompletion = tests.map(test => {
+    const filled = minFields.filter(field => hasVal(test[field])).length;
+    return { test: test.name, filled, total: minFields.length, complete: filled === minFields.length };
+  });
+  
+  const testsWithAllMinFields = minFieldCompletion.filter(t => t.complete).length;
+  
+  let totalFieldSlots = 0, filledFieldSlots = 0;
+  tests.forEach(test => {
+    dataFields.forEach(field => {
+      totalFieldSlots++;
+      if (hasVal(test[field])) filledFieldSlots++;
+    });
+  });
+  
+  let tier1DataPoints = 0, tier1Cited = 0;
+  tests.forEach(test => {
+    TIER1_FIELDS.forEach(field => {
+      const value = test[field];
+      if (value != null && value !== '' && value !== 'N/A') {
+        tier1DataPoints++;
+        const citationField = `${field}Citations`;
+        if (hasCite(test[citationField])) tier1Cited++;
+      }
+    });
+  });
+  
+  const fieldCompletionRates = minFields.map(field => {
+    const filled = tests.filter(t => hasVal(t[field])).length;
+    const citationField = `${field}Citations`;
+    const cited = tests.filter(t => hasCite(t[citationField])).length;
+    return {
+      field,
+      label: minParams.core.find(p => p.key === field)?.label || field,
+      filled,
+      total: tests.length,
+      percentage: Math.round((filled / tests.length) * 100),
+      cited,
+      citedPercentage: filled > 0 ? Math.round((cited / filled) * 100) : 0,
+    };
+  });
+  
+  return {
+    testCount: tests.length,
+    fieldCount: dataFields.length,
+    totalDataPoints: tests.length * dataFields.length,
+    filledDataPoints: filledFieldSlots,
+    overallFillRate: totalFieldSlots > 0 ? Math.round((filledFieldSlots / totalFieldSlots) * 100) : 0,
+    minFieldsRequired: minFields.length,
+    testsWithAllMinFields,
+    minFieldCompletionRate: Math.round((testsWithAllMinFields / tests.length) * 100),
+    tier1DataPoints,
+    tier1Cited,
+    tier1CitationRate: tier1DataPoints > 0 ? Math.round((tier1Cited / tier1DataPoints) * 100) : 0,
+    fieldCompletionRates,
+    minFieldCompletion,
+  };
+};
+
+// Category color schemes for quality dashboard
+const CATEGORY_COLORS = {
+  MRD: { bg: 'bg-orange-50', border: 'border-orange-200', accent: 'bg-orange-500', text: 'text-orange-700' },
+  ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', accent: 'bg-emerald-500', text: 'text-emerald-700' },
+  TRM: { bg: 'bg-sky-50', border: 'border-sky-200', accent: 'bg-sky-500', text: 'text-sky-700' },
+  TDS: { bg: 'bg-violet-50', border: 'border-violet-200', accent: 'bg-violet-500', text: 'text-violet-700' },
+};
+
+// CircularProgress component for quality visualization
+const CircularProgress = ({ value, size = 80, strokeWidth = 8, color = 'emerald' }) => {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (value / 100) * circumference;
+  const colorMap = {
+    emerald: { stroke: '#10b981', bg: '#d1fae5' },
+    orange: { stroke: '#f97316', bg: '#ffedd5' },
+    sky: { stroke: '#0ea5e9', bg: '#e0f2fe' },
+    violet: { stroke: '#8b5cf6', bg: '#ede9fe' },
+  };
+  const colors = colorMap[color] || colorMap.emerald;
+  
+  return (
+    <svg width={size} height={size} className="transform -rotate-90">
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={colors.bg} strokeWidth={strokeWidth} />
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={colors.stroke} strokeWidth={strokeWidth} strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-700 ease-out" />
+    </svg>
+  );
+};
+
+// Quality Grade Badge
+const QualityGrade = ({ percentage }) => {
+  let grade, bgColor, textColor;
+  if (percentage >= 95) { grade = 'A+'; bgColor = 'bg-emerald-100'; textColor = 'text-emerald-700'; }
+  else if (percentage >= 90) { grade = 'A'; bgColor = 'bg-emerald-50'; textColor = 'text-emerald-600'; }
+  else if (percentage >= 80) { grade = 'B'; bgColor = 'bg-blue-50'; textColor = 'text-blue-600'; }
+  else if (percentage >= 70) { grade = 'C'; bgColor = 'bg-yellow-50'; textColor = 'text-yellow-600'; }
+  else { grade = 'D'; bgColor = 'bg-red-50'; textColor = 'text-red-600'; }
+  return <span className={`px-2 py-0.5 rounded text-xs font-bold ${bgColor} ${textColor}`}>{grade}</span>;
+};
+
+// ============================================
 // SEO Component - Dynamic meta tags
 // ============================================
 const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
@@ -6200,6 +6313,42 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
 };
 
 const SourceDataPage = () => {
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  // Calculate metrics for all categories
+  const metrics = useMemo(() => ({
+    MRD: calculateCategoryMetrics(mrdTestData, 'MRD'),
+    ECD: calculateCategoryMetrics(ecdTestData, 'ECD'),
+    TRM: calculateCategoryMetrics(trmTestData, 'TRM'),
+    TDS: calculateCategoryMetrics(tdsTestData, 'TDS'),
+  }), []);
+
+  // Calculate aggregate metrics
+  const aggregate = useMemo(() => {
+    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    const allVendors = new Set(allTests.map(t => t.vendor));
+    
+    let totalTier1 = 0, citedTier1 = 0;
+    Object.values(metrics).forEach(m => {
+      if (m) { totalTier1 += m.tier1DataPoints; citedTier1 += m.tier1Cited; }
+    });
+    
+    const totalDataPoints = Object.values(metrics).reduce((sum, m) => sum + (m?.totalDataPoints || 0), 0);
+    const filledDataPoints = Object.values(metrics).reduce((sum, m) => sum + (m?.filledDataPoints || 0), 0);
+    
+    return {
+      totalTests: allTests.length,
+      totalVendors: allVendors.size,
+      totalDataPoints,
+      filledDataPoints,
+      overallFillRate: totalDataPoints > 0 ? Math.round((filledDataPoints / totalDataPoints) * 100) : 0,
+      tier1DataPoints: totalTier1,
+      tier1Cited: citedTier1,
+      tier1CitationRate: totalTier1 > 0 ? ((citedTier1 / totalTier1) * 100).toFixed(1) : 0,
+    };
+  }, [metrics]);
+
   const downloadFile = (content, filename, type) => {
     const blob = new Blob([content], { type });
     const url = URL.createObjectURL(blob);
@@ -6218,36 +6367,17 @@ const SourceDataPage = () => {
         version: BUILD_INFO.date,
         generatedAt: new Date().toISOString(),
         source: 'OpenOnco',
-        website: 'https://openonco.org'
+        website: 'https://openonco.org',
+        qualityMetrics: aggregate,
       },
       changelog: DATABASE_CHANGELOG,
       categories: {
-        MRD: {
-          name: 'Molecular Residual Disease',
-          description: 'Tests for detecting minimal/molecular residual disease after treatment',
-          testCount: mrdTestData.length,
-          tests: mrdTestData
-        },
-        ECD: {
-          name: 'Early Cancer Detection',
-          description: 'Screening and early detection tests including MCED',
-          testCount: ecdTestData.length,
-          tests: ecdTestData
-        },
-        TRM: {
-          name: 'Treatment Response Monitoring',
-          description: 'Tests for monitoring treatment response during therapy',
-          testCount: trmTestData.length,
-          tests: trmTestData
-        },
-        TDS: {
-          name: 'Treatment Decision Support',
-          description: 'Tests for guiding treatment decisions including therapy selection and intervention decisions',
-          testCount: tdsTestData.length,
-          tests: tdsTestData
-        }
+        MRD: { name: 'Molecular Residual Disease', testCount: mrdTestData.length, tests: mrdTestData, metrics: metrics.MRD },
+        ECD: { name: 'Early Cancer Detection', testCount: ecdTestData.length, tests: ecdTestData, metrics: metrics.ECD },
+        TRM: { name: 'Treatment Response Monitoring', testCount: trmTestData.length, tests: trmTestData, metrics: metrics.TRM },
+        TDS: { name: 'Treatment Decision Support', testCount: tdsTestData.length, tests: tdsTestData, metrics: metrics.TDS },
       },
-      totalTests: mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length
+      totalTests: aggregate.totalTests
     };
     return JSON.stringify(allData, null, 2);
   };
@@ -6257,13 +6387,11 @@ const SourceDataPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Header with Build Date */}
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Data Download</h1>
-        <p className="text-gray-600 mb-4">
-          OpenOnco is committed to openness. All data is open and downloadable.
-        </p>
+        <p className="text-gray-600 mb-4">OpenOnco is committed to openness. All data is open and downloadable.</p>
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full">
           <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -6272,76 +6400,325 @@ const SourceDataPage = () => {
         </div>
       </div>
 
-      {/* Summary Statistics */}
-      <div className="mb-8">
-        <DatabaseStatsSimple />
+      {/* Tab Navigation */}
+      <div className="flex gap-1 p-1 bg-gray-100 rounded-lg mb-6 max-w-md mx-auto">
+        {[{ id: 'overview', label: 'Overview' }, { id: 'quality', label: 'Data Quality' }, { id: 'download', label: 'Download' }].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === tab.id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Download Section */}
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Download Complete Dataset</h2>
+      {/* Overview Tab */}
+      {activeTab === 'overview' && (
+        <div className="space-y-6">
+          {/* Hero Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">{aggregate.totalTests}</p>
+              <p className="text-sm text-gray-500 mt-1">Total Tests</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">{aggregate.totalVendors}</p>
+              <p className="text-sm text-gray-500 mt-1">Vendors</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">{aggregate.totalDataPoints.toLocaleString()}</p>
+              <p className="text-sm text-gray-500 mt-1">Data Points</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+              <p className="text-3xl font-bold text-gray-900">4</p>
+              <p className="text-sm text-gray-500 mt-1">Categories</p>
+            </div>
+          </div>
 
-      {/* Combined JSON Download */}
-      <div className="mb-8">
-        <div className="rounded-xl border-2 border-slate-300 bg-slate-50 p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900">Complete Dataset (All Categories)</h3>
-                <p className="text-sm text-gray-500">{mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length} tests • MRD + ECD + TRM + TDS combined • JSON format</p>
+          {/* Category Cards */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+              const m = metrics[category];
+              const colors = CATEGORY_COLORS[category];
+              if (!m) return null;
+              
+              return (
+                <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-5 cursor-pointer transition-all hover:shadow-md`} onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl ${colors.accent} flex items-center justify-center text-white font-bold text-lg`}>{m.testCount}</div>
+                      <div>
+                        <h3 className="font-bold text-gray-900">{category}</h3>
+                        <p className="text-xs text-gray-500">{m.fieldCount} fields tracked</p>
+                      </div>
+                    </div>
+                    <QualityGrade percentage={m.minFieldCompletionRate} />
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-gray-600">Baseline Complete</span>
+                        <span className={`font-medium ${colors.text}`}>{m.testsWithAllMinFields}/{m.testCount}</span>
+                      </div>
+                      <div className="h-2 bg-white rounded-full overflow-hidden">
+                        <div className={`h-full ${colors.accent} rounded-full transition-all duration-500`} style={{ width: `${m.minFieldCompletionRate}%` }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-gray-600">Tier 1 Citations</span>
+                        <span className={`font-medium ${colors.text}`}>{m.tier1CitationRate}%</span>
+                      </div>
+                      <div className="h-2 bg-white rounded-full overflow-hidden">
+                        <div className={`h-full ${colors.accent} rounded-full transition-all duration-500`} style={{ width: `${m.tier1CitationRate}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {expandedCategory === category && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">Required Field Completion</h4>
+                      <div className="space-y-2">
+                        {m.fieldCompletionRates.map(field => (
+                          <div key={field.field} className="flex items-center gap-2">
+                            <div className="w-28 text-xs text-gray-600 truncate" title={field.label}>{field.label}</div>
+                            <div className="flex-1 h-1.5 bg-white rounded-full overflow-hidden">
+                              <div className={`h-full ${colors.accent} rounded-full`} style={{ width: `${field.percentage}%` }} />
+                            </div>
+                            <div className="w-12 text-xs text-right font-medium text-gray-700">{field.filled}/{field.total}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Citation Quality */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <h3 className="text-lg font-semibold text-gray-800">Citation Quality</h3>
+              <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full font-medium">Performance Metrics</span>
+              <div className="relative group inline-block ml-1">
+                <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
+                <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="font-semibold mb-2">Tier 1 = Key Clinical Performance Fields</p>
+                  <div className="space-y-1.5 text-gray-300">
+                    <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
+                    <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
+                    <p><span className="text-white">Stage-Specific:</span> Stage I–IV sensitivity</p>
+                    <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
+                  </div>
+                  <p className="mt-2 text-gray-400 text-[10px]">These metrics require citations to ensure clinical credibility.</p>
+                </div>
               </div>
             </div>
-            <button
-              onClick={downloadJson}
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium text-white shadow-sm"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download JSON
-            </button>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                <p className="text-2xl font-bold text-blue-800">{aggregate.tier1DataPoints}</p>
+                <p className="text-xs text-blue-600 mt-1">Tier 1 Data Points</p>
+              </div>
+              <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                <p className="text-2xl font-bold text-blue-800">{aggregate.tier1Cited}</p>
+                <p className="text-xs text-blue-600 mt-1">Cited</p>
+              </div>
+              <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
+                <p className="text-2xl font-bold text-green-700">{aggregate.tier1CitationRate}%</p>
+                <p className="text-xs text-green-600 mt-1">Coverage</p>
+              </div>
+            </div>
           </div>
         </div>
+      )}
 
-      </div>
+      {/* Data Quality Tab */}
+      {activeTab === 'quality' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Data Quality Framework</h3>
+            <p className="text-sm text-gray-600 mb-6">OpenOnco tracks data quality across multiple dimensions to ensure clinical reliability. Our Baseline Complete (BC) standard requires all minimum fields for each category to be filled.</p>
+            
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+                const m = metrics[category];
+                const colors = CATEGORY_COLORS[category];
+                if (!m) return null;
+                
+                return (
+                  <div key={category} className="text-center">
+                    <div className="relative inline-flex items-center justify-center mb-3">
+                      <CircularProgress value={m.minFieldCompletionRate} size={100} strokeWidth={10} color={category === 'MRD' ? 'orange' : category === 'ECD' ? 'emerald' : category === 'TRM' ? 'sky' : 'violet'} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xl font-bold text-gray-800">{m.minFieldCompletionRate}%</span>
+                      </div>
+                    </div>
+                    <h4 className={`font-semibold ${colors.text}`}>{category}</h4>
+                    <p className="text-xs text-gray-500">{m.testsWithAllMinFields} of {m.testCount} BC</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-      {/* Data Attribution */}
-      <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
-        <h3 className="font-semibold text-gray-900 mb-3">Data Sources & Attribution</h3>
-        <p className="text-sm text-gray-600 mb-4">
-          OpenOnco compiles publicly available information from multiple authoritative sources:
-        </p>
-        <ul className="text-sm text-gray-600 space-y-1 mb-4">
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>Vendor websites, product documentation, and healthcare professional resources</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>FDA approval documents, PMA summaries, and 510(k) clearances</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>Peer-reviewed publications and clinical trial results</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">•</span>
-            <span>CMS coverage determinations and reimbursement policies</span>
-          </li>
-        </ul>
-        <p className="text-xs text-gray-500">
-          This data is provided for informational purposes only. Always verify with official sources for clinical decision-making.
-        </p>
-      </div>
+          {/* Per-Category Breakdown */}
+          {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+            const m = metrics[category];
+            const colors = CATEGORY_COLORS[category];
+            if (!m) return null;
+            
+            return (
+              <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-6`}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800">{category} Quality Breakdown</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">{m.testCount} tests</span>
+                    <QualityGrade percentage={m.minFieldCompletionRate} />
+                  </div>
+                </div>
+                
+                <div className="grid sm:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-white rounded-lg p-4 border border-gray-100">
+                    <p className="text-2xl font-bold text-gray-800">{m.overallFillRate}%</p>
+                    <p className="text-xs text-gray-500">Overall Fill Rate</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{m.filledDataPoints.toLocaleString()} / {m.totalDataPoints.toLocaleString()} fields</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-100">
+                    <p className="text-2xl font-bold text-gray-800">{m.minFieldCompletionRate}%</p>
+                    <p className="text-xs text-gray-500">Baseline Complete</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{m.testsWithAllMinFields} / {m.testCount} tests</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-100">
+                    <p className="text-2xl font-bold text-gray-800">{m.tier1CitationRate}%</p>
+                    <p className="text-xs text-gray-500">Tier 1 Citations</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{m.tier1Cited} / {m.tier1DataPoints} cited</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                    <h4 className="text-sm font-semibold text-gray-700">Required Fields ({m.minFieldsRequired})</h4>
+                  </div>
+                  <div className="divide-y divide-gray-50">
+                    {m.fieldCompletionRates.map(field => (
+                      <div key={field.field} className="px-4 py-2.5 flex items-center gap-4">
+                        <div className="w-32 text-sm text-gray-700">{field.label}</div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                              <div className={`h-full ${colors.accent} rounded-full transition-all`} style={{ width: `${field.percentage}%` }} />
+                            </div>
+                            <span className="text-xs font-medium text-gray-600 w-16 text-right">{field.filled}/{field.total}</span>
+                          </div>
+                        </div>
+                        <div className="w-20 text-right">
+                          {field.citedPercentage > 0 && <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded">{field.citedPercentage}% cited</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
-      {/* Database Summary - Hidden on mobile */}
-      <div className="hidden md:block mt-6">
-        <DatabaseSummary />
-      </div>
+      {/* Download Tab */}
+      {activeTab === 'download' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border-2 border-slate-300 p-6">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
+                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 text-lg">Complete Dataset (All Categories)</h3>
+                  <p className="text-sm text-gray-500">{aggregate.totalTests} tests • MRD + ECD + TRM + TDS • JSON format with quality metrics</p>
+                </div>
+              </div>
+              <button onClick={downloadJson} className="flex items-center gap-2 px-6 py-3 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium text-white shadow-sm">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download JSON
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="font-semibold text-gray-900 mb-4">What's Included</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Complete Test Data</h4>
+                    <p className="text-xs text-gray-500">All fields for every test including performance metrics, regulatory status, and pricing</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Source Citations</h4>
+                    <p className="text-xs text-gray-500">Links to peer-reviewed publications, FDA documents, and vendor sources</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Quality Metrics</h4>
+                    <p className="text-xs text-gray-500">Per-category and per-test quality scores, completion rates, and citation coverage</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900">Version Metadata</h4>
+                    <p className="text-xs text-gray-500">Timestamp, version info, and database update history</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+            <h3 className="font-semibold text-gray-900 mb-3">Data Sources & Attribution</h3>
+            <p className="text-sm text-gray-600 mb-4">OpenOnco compiles publicly available information from multiple authoritative sources:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-sm text-gray-600">
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>Vendor websites and product documentation</span></div>
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>FDA approval documents and PMA summaries</span></div>
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>Peer-reviewed publications and clinical trials</span></div>
+              <div className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">•</span><span>CMS coverage determinations</span></div>
+            </div>
+            <p className="text-xs text-gray-500 mt-4">This data is provided for informational purposes only. Always verify with official sources for clinical decision-making.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
