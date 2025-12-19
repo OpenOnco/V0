@@ -2431,6 +2431,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
+                {/* INCOMPLETE text overlay for non-BC tests */}
+                {!isBC && !isDiscontinued && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                      INCOMPLETE
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-start justify-between mb-1">
                   <div className="flex-1 min-w-0">
                     <p className={`text-xs font-semibold truncate ${isDiscontinued ? 'text-gray-400' : 'text-slate-800'}`}>{test.name}</p>
@@ -2442,12 +2450,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
-                      {/* MISS badge for non-BC tests */}
-                      {!isBC && (
-                        <span className="bg-red-100 text-red-600 text-[9px] px-1 py-0.5 rounded font-medium" title="Missing required fields">
-                          MISS
-                        </span>
-                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -2780,6 +2782,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
+                {/* INCOMPLETE text overlay for non-BC tests */}
+                {!isBC && !isDiscontinued && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                      INCOMPLETE
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-start justify-between mb-1">
                   <div className="flex-1 min-w-0">
                     <p className={`text-xs font-semibold truncate ${isDiscontinued ? 'text-gray-400' : 'text-slate-800'}`}>{test.name}</p>
@@ -2791,12 +2801,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
-                      {/* MISS badge for non-BC tests */}
-                      {!isBC && (
-                        <span className="bg-red-100 text-red-600 text-[9px] px-1 py-0.5 rounded font-medium" title="Missing required fields">
-                          MISS
-                        </span>
-                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -7746,18 +7750,20 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   
   return (
     <div className="relative">
-      {/* MISS Badge - positioned outside card for non-BC tests */}
-      {!isBC && !isDiscontinued && (
-        <div className="absolute -top-2 -right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md z-20">
-          MISS
-        </div>
-      )}
       <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
       {/* DISCONTINUED text overlay */}
       {isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <span className="text-gray-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
             DISCONTINUED
+          </span>
+        </div>
+      )}
+      {/* INCOMPLETE text overlay for non-BC tests */}
+      {!isBC && !isDiscontinued && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-red-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
+            INCOMPLETE
           </span>
         </div>
       )}
@@ -8163,9 +8169,8 @@ const MinimumFieldsSection = ({ test, category }) => {
           {isBC ? (
             <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
           ) : (
-            <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded flex items-center gap-1">
-              MISS
-              <span className="text-red-200">({filledCount}/{totalCount})</span>
+            <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
+              INCOMPLETE ({filledCount}/{totalCount})
             </span>
           )}
         </div>
@@ -8387,8 +8392,8 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-white/80">{test.vendor} • OpenOnco.org</p>
                 {!isBC && (
-                  <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full">
-                    MISS
+                  <span className="px-3 py-1 bg-red-500/80 text-white text-sm font-bold rounded">
+                    INCOMPLETE
                   </span>
                 )}
               </div>
