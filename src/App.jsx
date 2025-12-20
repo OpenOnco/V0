@@ -5337,6 +5337,44 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   // Track if form was prefilled (from Competitions page navigation)
   const [isPrefilled, setIsPrefilled] = useState(false);
   
+  // Track if this is an invited vendor (skip verification)
+  const [isInvitedVendor, setIsInvitedVendor] = useState(false);
+  
+  // Handle URL parameters for direct vendor invitations
+  // URL format: /submissions?invite=vendor&email=person@company.com&name=John%20Doe
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const inviteType = params.get('invite');
+    const inviteEmail = params.get('email');
+    const inviteName = params.get('name');
+    
+    if (inviteType === 'vendor' && inviteEmail) {
+      // Set up for vendor validation with pre-verified email
+      setSubmissionType('validation');
+      setSubmitterType('vendor');
+      setContactEmail(inviteEmail);
+      setVerificationStep('verified'); // Skip verification for invited vendors
+      setIsInvitedVendor(true);
+      
+      // Parse name if provided (format: "First Last")
+      if (inviteName) {
+        const nameParts = inviteName.trim().split(' ');
+        if (nameParts.length >= 1) {
+          setFirstName(nameParts[0]);
+        }
+        if (nameParts.length >= 2) {
+          setLastName(nameParts.slice(1).join(' '));
+        }
+      }
+      
+      // Clean up URL without reloading page
+      window.history.replaceState({}, '', window.location.pathname);
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+  }, []);
+  
   // Handle prefill from navigation (e.g., from Competitions page)
   useEffect(() => {
     if (prefill) {
@@ -5693,6 +5731,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         testName: testData?.name,
         vendor: testData?.vendor,
         edits: validationEdits,
+        isInvitedVendor: isInvitedVendor,
         attestation: {
           confirmed: validationAttestation,
           submitterName: `${firstName} ${lastName}`,
@@ -6004,8 +6043,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           </div>
         )}
 
-        {/* Category Selection */}
-        {submitterType && (
+        {/* Category Selection - only for new/correction, not validation */}
+        {submitterType && submissionType !== 'validation' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
             <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
@@ -6177,11 +6216,28 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
               </div>
             </div>
 
+            {/* Special banner for invited vendors */}
+            {isInvitedVendor && (
+              <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4 flex items-center gap-3 mb-4">
+                <svg className="w-8 h-8 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                </svg>
+                <div>
+                  <p className="font-semibold text-emerald-800">Welcome! You've been personally invited to validate your test data.</p>
+                  <p className="text-sm text-emerald-700">Your email has been pre-verified. Just complete your name and select your test below.</p>
+                </div>
+              </div>
+            )}
+
             {/* Step 1: Verify Email */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-2">
-                <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">1</span>
-                <span className="font-semibold text-emerald-800">Verify Your Vendor Email</span>
+                <span className={`w-6 h-6 rounded-full text-white text-sm font-bold flex items-center justify-center ${isInvitedVendor ? 'bg-emerald-400' : 'bg-emerald-500'}`}>
+                  {isInvitedVendor ? '✓' : '1'}
+                </span>
+                <span className="font-semibold text-emerald-800">
+                  {isInvitedVendor ? 'Your Information' : 'Verify Your Vendor Email'}
+                </span>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
@@ -6206,6 +6262,20 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                   />
                 </div>
               </div>
+
+              {/* Show locked email for invited vendors */}
+              {isInvitedVendor && verificationStep === 'verified' && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
+                  <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-emerald-800 font-medium">Email Pre-Verified</p>
+                    <p className="text-emerald-700 text-sm">{contactEmail}</p>
+                  </div>
+                  <span className="text-xs bg-emerald-200 text-emerald-800 px-2 py-1 rounded font-medium">INVITED</span>
+                </div>
+              )}
 
               {verificationStep === 'form' && (
                 <>
@@ -6273,7 +6343,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                 </>
               )}
 
-              {verificationStep === 'verified' && (
+              {verificationStep === 'verified' && !isInvitedVendor && (
                 <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4 flex items-center gap-3">
                   <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -6290,7 +6360,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             {verificationStep === 'verified' && (
               <div className="mt-8 pt-6 border-t border-emerald-200">
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">2</span>
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '1' : '2'}</span>
                   <span className="font-semibold text-emerald-800">Select Your Test</span>
                 </div>
                 
@@ -6318,7 +6388,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             {validationTest && (
               <div className="mt-8 pt-6 border-t border-emerald-200">
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">3</span>
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '2' : '3'}</span>
                   <span className="font-semibold text-emerald-800">Review & Update Data (Optional)</span>
                 </div>
                 
@@ -6413,7 +6483,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                 {/* Step 4: Attestation */}
                 <div className="mt-8 pt-6 border-t border-emerald-200">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">4</span>
+                    <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '3' : '4'}</span>
                     <span className="font-semibold text-emerald-800">Vendor Attestation</span>
                   </div>
                   
