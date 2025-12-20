@@ -7768,6 +7768,7 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
+  const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
   
   // Calculate BC status - automatic when 100% minimum fields complete
   const completeness = calculateTestCompleteness(test, category);
@@ -7784,8 +7785,16 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           </span>
         </div>
       )}
+      {/* CONFIRMED text overlay for company communications */}
+      {!isDiscontinued && hasCompanyComm && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <span className="text-emerald-500/20 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+            CONFIRMED
+          </span>
+        </div>
+      )}
       {/* INCOMPLETE text overlay for non-BC tests */}
-      {!isBC && !isDiscontinued && (
+      {!isBC && !isDiscontinued && !hasCompanyComm && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <span className="text-red-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
             INCOMPLETE
@@ -7816,7 +7825,6 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               ))}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
-              {!isDiscontinued && <CompanyCommunicationBadge testId={test.id} size="xs" />}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
@@ -7829,6 +7837,22 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               </p>
             )}
           </div>
+          {/* Company Communication indicator - top right corner */}
+          {hasCompanyComm && (
+            <div className="absolute top-3 right-3 group">
+              <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white cursor-help hover:bg-emerald-600 transition-colors">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              {/* Tooltip on hover */}
+              <div className="absolute top-10 right-0 bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
+                <div className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</div>
+                <div className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</div>
+                <div className="text-gray-400 text-[10px]">{COMPANY_CONTRIBUTIONS[test.id].date}</div>
+              </div>
+            </div>
+          )}
           {/* Prominent comparison checkbox - click selects for comparison, hidden on mobile */}
           <button
             onClick={(e) => { e.stopPropagation(); onSelect(test.id); }}
@@ -7962,6 +7986,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
 // ============================================
 const PatientTestCard = ({ test, category, onShowDetail }) => {
   const isDiscontinued = test.isDiscontinued === true;
+  const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
   
   // Determine coverage status
   const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
@@ -8024,15 +8049,36 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
           </span>
         </div>
       )}
+      {/* CONFIRMED text overlay for company communications */}
+      {!isDiscontinued && hasCompanyComm && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <span className="text-emerald-500/20 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+            CONFIRMED
+          </span>
+        </div>
+      )}
+      {/* Company Communication indicator - top right corner */}
+      {hasCompanyComm && (
+        <div className="absolute top-3 right-3 group z-20">
+          <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white cursor-help hover:bg-emerald-600 transition-colors">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </div>
+          {/* Tooltip on hover */}
+          <div className="absolute top-10 right-0 bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
+            <div className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</div>
+            <div className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</div>
+            <div className="text-gray-400 text-[10px]">{COMPANY_CONTRIBUTIONS[test.id].date}</div>
+          </div>
+        </div>
+      )}
       {/* Header - clickable to show detail modal */}
       <div className="cursor-pointer flex-1 flex flex-col" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
-            <div className="flex items-center gap-2">
-              <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
-              {!isDiscontinued && <CompanyCommunicationBadge testId={test.id} size="xs" />}
-            </div>
+            <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
             isDiscontinued ? 'bg-gray-200 text-gray-600' :
