@@ -41,6 +41,7 @@ import {
   CATEGORY_STANDARDS,
   STANDARDS_BODIES,
   COMPANY_CONTRIBUTIONS,
+  VENDOR_VERIFIED,
 } from './data';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
@@ -1988,8 +1989,15 @@ const TestShowcase = ({ onNavigate }) => {
     // Helper to check if test is BC (Baseline Complete)
     const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
     
-    // Non-BC tests go to end of all sorts
-    const bcFirst = (a, b) => {
+    // Priority order: 1) VENDOR VERIFIED, 2) BC tests, 3) Non-BC tests
+    const prioritySort = (a, b) => {
+      const aVerified = VENDOR_VERIFIED[a.id] !== undefined;
+      const bVerified = VENDOR_VERIFIED[b.id] !== undefined;
+      // VENDOR VERIFIED tests always come first
+      if (aVerified && !bVerified) return -1;
+      if (!aVerified && bVerified) return 1;
+      
+      // Then BC tests
       const aBC = isBC(a);
       const bBC = isBC(b);
       if (aBC && !bBC) return -1;
@@ -2000,19 +2008,19 @@ const TestShowcase = ({ onNavigate }) => {
     switch (sortBy) {
       case 'category':
         const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3, 'ALZ-BLOOD': 4 };
-        return sorted.sort((a, b) => bcFirst(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => prioritySort(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
       case 'tat':
-        return sorted.sort((a, b) => bcFirst(a, b) || getTat(a) - getTat(b));
+        return sorted.sort((a, b) => prioritySort(a, b) || getTat(a) - getTat(b));
       case 'reimbursement':
-        return sorted.sort((a, b) => bcFirst(a, b) || countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => prioritySort(a, b) || countReimbursement(b) - countReimbursement(a) || a.vendor.localeCompare(b.vendor));
       case 'vendorTests':
-        return sorted.sort((a, b) => bcFirst(a, b) || vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
+        return sorted.sort((a, b) => prioritySort(a, b) || vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
       case 'openness':
         // Sort by vendor openness ranking (same as openness award logic)
         // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
         return sorted.sort((a, b) => {
-          const bc = bcFirst(a, b);
-          if (bc !== 0) return bc;
+          const priority = prioritySort(a, b);
+          if (priority !== 0) return priority;
           const scoreA = vendorOpennessScores[a.vendor] ?? -1;
           const scoreB = vendorOpennessScores[b.vendor] ?? -1;
           if (scoreA !== scoreB) return scoreB - scoreA;
@@ -2022,7 +2030,7 @@ const TestShowcase = ({ onNavigate }) => {
       case 'vendor':
       default:
         // Sort alphabetically by vendor name, then by test name
-        return sorted.sort((a, b) => bcFirst(a, b) || a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name));
+        return sorted.sort((a, b) => prioritySort(a, b) || a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests]);
 
@@ -2441,6 +2449,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
             const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+            const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
@@ -2458,7 +2467,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   </div>
                 )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && !hasCompanyComm && (
+                {!isBC && !isDiscontinued && !hasCompanyComm && !hasVendorVerified && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -2476,13 +2485,28 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
-                      {/* VENDOR badge for company contributions */}
-                      {hasCompanyComm && (
+                      {/* VENDOR VERIFIED badge - green, pulsing */}
+                      {hasVendorVerified && (
                         <div className="relative group flex items-center">
-                          <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
-                            ✓VENDOR
+                          <span className="inline-flex items-center bg-emerald-500 text-white text-[9px] px-1 rounded font-bold cursor-help h-[18px] animate-pulse shadow-sm">
+                            ✓VERIFIED
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                            <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                            <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                            <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                          </div>
+                        </div>
+                      )}
+                      {/* VENDOR DATA badge - orange (only if not verified) */}
+                      {hasCompanyComm && !hasVendorVerified && (
+                        <div className="relative group flex items-center">
+                          <span className="inline-flex items-center bg-orange-100 text-orange-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
+                            VENDOR
+                          </span>
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                             <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                             <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                             <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -2806,6 +2830,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
             const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+            const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
@@ -2823,7 +2848,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   </div>
                 )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && !hasCompanyComm && (
+                {!isBC && !isDiscontinued && !hasCompanyComm && !hasVendorVerified && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -2841,13 +2866,28 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
-                      {/* VENDOR badge for company contributions */}
-                      {hasCompanyComm && (
+                      {/* VENDOR VERIFIED badge - green, pulsing */}
+                      {hasVendorVerified && (
                         <div className="relative group flex items-center">
-                          <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
-                            ✓VENDOR
+                          <span className="inline-flex items-center bg-emerald-500 text-white text-[9px] px-1 rounded font-bold cursor-help h-[18px] animate-pulse shadow-sm">
+                            ✓VERIFIED
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                            <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                            <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                            <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                          </div>
+                        </div>
+                      )}
+                      {/* VENDOR DATA badge - orange (only if not verified) */}
+                      {hasCompanyComm && !hasVendorVerified && (
+                        <div className="relative group flex items-center">
+                          <span className="inline-flex items-center bg-orange-100 text-orange-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
+                            VENDOR
+                          </span>
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                             <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                             <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                             <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -7110,9 +7150,16 @@ const SourceDataPage = () => {
                   style={{ width: `${aggregate.vendorContributionRate}%` }}
                 />
               </div>
-              <p className="text-xs text-gray-500 mt-2 text-center flex items-center justify-center gap-2">
-                Tests with the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200">✓ VENDOR</span> badge have data directly contributed or verified by the test manufacturer
-              </p>
+              <div className="mt-3 space-y-2">
+                <p className="text-xs text-gray-600 flex items-center gap-2">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white animate-pulse">✓ VERIFIED</span>
+                  <span>Vendor completed full validation process - highest trust tier, sorted to top</span>
+                </p>
+                <p className="text-xs text-gray-600 flex items-center gap-2">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700 border border-orange-200">VENDOR</span>
+                  <span>Data contributed or corrected by vendor representative</span>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -8419,6 +8466,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
   const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+  const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
   
   // Calculate BC status - automatic when 100% minimum fields complete
   const completeness = calculateTestCompleteness(test, category);
@@ -8436,7 +8484,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         </div>
       )}
       {/* INCOMPLETE text overlay for non-BC tests */}
-      {!isBC && !isDiscontinued && !hasCompanyComm && (
+      {!isBC && !isDiscontinued && !hasCompanyComm && !hasVendorVerified && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <span className="text-red-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
             INCOMPLETE
@@ -8449,11 +8497,28 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {isDiscontinued && <Badge variant="slate">DISCONTINUED</Badge>}
-              {/* VENDOR badge for company contributions */}
-              {!isDiscontinued && hasCompanyComm && (
+              {/* VENDOR VERIFIED badge - green, pulsing */}
+              {!isDiscontinued && hasVendorVerified && (
                 <div className="relative group inline-flex">
-                  <Badge variant="success">✓ VENDOR</Badge>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white animate-pulse shadow-sm">
+                    ✓ VERIFIED
+                  </span>
                   <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                    <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                    <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                    <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                  </div>
+                </div>
+              )}
+              {/* VENDOR DATA badge - orange (only if not verified) */}
+              {!isDiscontinued && hasCompanyComm && !hasVendorVerified && (
+                <div className="relative group inline-flex">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700 border border-orange-200">
+                    VENDOR
+                  </span>
+                  <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                     <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                     <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                     <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -8624,6 +8689,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
 const PatientTestCard = ({ test, category, onShowDetail }) => {
   const isDiscontinued = test.isDiscontinued === true;
   const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+  const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
   
   // Determine coverage status
   const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
@@ -8690,13 +8756,28 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
       <div className="cursor-pointer flex-1 flex flex-col" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
-            {/* VENDOR badge for company contributions */}
-            {hasCompanyComm && (
-              <div className="relative group inline-block mb-1">
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200 cursor-help">
-                  ✓ VENDOR
+            {/* VENDOR VERIFIED badge - green, pulsing */}
+            {hasVendorVerified && (
+              <div className="relative group inline-block mb-1 mr-1">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white cursor-help animate-pulse shadow-sm">
+                  ✓ VERIFIED
                 </span>
                 <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                  <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                  <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                  <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                </div>
+              </div>
+            )}
+            {/* VENDOR DATA badge - orange (only if not verified) */}
+            {hasCompanyComm && !hasVendorVerified && (
+              <div className="relative group inline-block mb-1">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-orange-50 text-orange-700 border-orange-200 cursor-help">
+                  VENDOR
+                </span>
+                <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                   <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                   <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                   <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -9075,13 +9156,28 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
           <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
             <div className="flex-1 mr-4">
               <div className="flex flex-wrap gap-2 mb-2">
-                {/* VENDOR badge for company contributions */}
-                {COMPANY_CONTRIBUTIONS[test.id] && (
+                {/* VENDOR VERIFIED badge - green, pulsing */}
+                {VENDOR_VERIFIED[test.id] && (
                   <div className="relative group flex items-center">
-                    <span className="px-2 py-0.5 bg-white text-emerald-700 rounded text-xs font-medium cursor-help">
-                      ✓ VENDOR
+                    <span className="px-2 py-0.5 bg-emerald-500 text-white rounded text-xs font-bold cursor-help animate-pulse shadow-sm">
+                      ✓ VERIFIED
                     </span>
                     <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                      <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                      <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                      <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                    </div>
+                  </div>
+                )}
+                {/* VENDOR DATA badge - orange (only if not verified) */}
+                {COMPANY_CONTRIBUTIONS[test.id] && !VENDOR_VERIFIED[test.id] && (
+                  <div className="relative group flex items-center">
+                    <span className="px-2 py-0.5 bg-orange-500 text-white rounded text-xs font-medium cursor-help">
+                      VENDOR
+                    </span>
+                    <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                       <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                       <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                       <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -10368,12 +10464,18 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       }
       return true;
     }).sort((a, b) => {
-      // Sort non-BC (MISS) tests to end, then by vendor name alphabetically
+      // Priority: 1) VENDOR VERIFIED, 2) BC tests, 3) Non-BC tests
+      const aVerified = VENDOR_VERIFIED[a.id] !== undefined;
+      const bVerified = VENDOR_VERIFIED[b.id] !== undefined;
+      if (aVerified && !bVerified) return -1;
+      if (!aVerified && bVerified) return 1;
+      
+      // Then sort non-BC (MISS) tests to end
       const aBC = calculateTestCompleteness(a, category).percentage === 100;
       const bBC = calculateTestCompleteness(b, category).percentage === 100;
       if (aBC && !bBC) return -1;
       if (!aBC && bBC) return 1;
-      // Within same BC status, sort by vendor then test name
+      // Within same status, sort by vendor then test name
       return a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name);
     });
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);

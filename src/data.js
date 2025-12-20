@@ -412,6 +412,22 @@ export const COMPANY_CONTRIBUTIONS = {
 };
 
 // ============================================
+// VENDOR VERIFIED - Full Validation Badge Tracking
+// Tests where vendor rep completed the Vendor Test Validation flow
+// These get the premium green "VENDOR VERIFIED" badge and sort priority
+// ============================================
+export const VENDOR_VERIFIED = {
+  // Add test IDs here after vendors complete the validation flow
+  // Example:
+  // 'mrd-25': {
+  //   name: 'Alex Dickinson',
+  //   company: 'Ryght',
+  //   verifiedDate: '2025-12-20',
+  //   editsSubmitted: 1
+  // }
+};
+
+// ============================================
 // TEST DATA ARRAYS START HERE
 // ============================================
 
