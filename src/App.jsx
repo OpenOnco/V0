@@ -2598,13 +2598,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator - Hidden on mobile */}
         <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category to Explore Tests:</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category for a Test Data Deep Dive:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
         {/* Right: Search Tools */}
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
-          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Demystify the Tests</h3>
+          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Demystify the Tests:</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
             {/* Example Questions - shown when no messages */}
@@ -2675,10 +2675,10 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Ask Claude about tests..."
-                  className="w-full px-3 py-2 pl-9 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+                  className="w-full px-3 py-2.5 pl-9 text-sm bg-blue-50 border-2 border-blue-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm"
                   disabled={isLoading}
                 />
-                <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </div>
