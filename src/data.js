@@ -273,6 +273,145 @@
 */
 
 // ============================================
+// COMPANY CONTRIBUTIONS - CC Badge Tracking
+// Maps test IDs to company rep submissions/communications
+// Includes: new test nominations + vendor-submitted corrections/updates
+// ============================================
+export const COMPANY_CONTRIBUTIONS = {
+  // Vendor Changelog Entries (22 tests - Dec 11-19)
+  'tds-22': {  // LiquidHALLMARK
+    name: 'Jeremy Au',
+    company: 'Lucence',
+    date: '2025-12-19'
+  },
+  'tds-kit-12': {  // Hedera Profiling 2
+    name: 'Thomas Vetterli',
+    company: 'Hedera Dx',
+    date: '2025-12-18'
+  },
+  'tds-20': {  // Liquid Trace Solid Tumor
+    name: 'Jeffrey Owen',
+    company: 'Genomic Testing Cooperative',
+    date: '2025-12-17'
+  },
+  'tds-21': {  // Liquid Trace Hematology
+    name: 'Jeffrey Owen',
+    company: 'Genomic Testing Cooperative',
+    date: '2025-12-17'
+  },
+  'trm-13': {  // Liquid Trace (Therapy Monitoring)
+    name: 'Jeffrey Owen',
+    company: 'Genomic Testing Cooperative',
+    date: '2025-12-17'
+  },
+  'ecd-20': {  // Avantect Pancreatic
+    name: 'Adrian Vilalta',
+    company: 'ClearNote Health',
+    date: '2025-12-16'
+  },
+  'ecd-19': {  // IUrisure
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-18': {  // IHepcomf
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-17': {  // IEsohunter
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-16': {  // IColohunter
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-14': {  // IColocomf
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-15': {  // GALEAS Bladder
+    name: 'Christopher Sale',
+    company: 'Nonacus',
+    date: '2025-12-16'
+  },
+  'tds-kit-1': {  // TruSight Oncology Comprehensive
+    name: 'Samyuktha Dasari',
+    company: 'Illumina',
+    date: '2025-12-15'
+  },
+  'mrd-24': {  // CancerVista
+    name: 'Jens Winter',
+    company: 'LIQOMICS',
+    date: '2025-12-15'
+  },
+  'mrd-23': {  // LymphoVista (vendor correction)
+    name: 'Jens Winter',
+    company: 'LIQOMICS',
+    date: '2025-12-13',
+    note: 'Corrected turnaround times'
+  },
+  'mrd-15': {  // Foresight CLARITY Lymphoma (vendor update)
+    name: 'John Truesdell',
+    company: 'Natera',
+    date: '2025-12-13',
+    note: 'Updated LOD95 and validation data'
+  },
+  'tds-16': {  // Northstar Select (vendor update)
+    name: 'David Huland',
+    company: 'BillionToOne',
+    date: '2025-12-12',
+    note: 'Updated Medicare reimbursement'
+  },
+  'trm-12': {  // Reveal TRM (new vendor submission)
+    name: 'Brandon Guida PhD',
+    company: 'Guardant Health',
+    date: '2025-12-12'
+  },
+  'mrd-6': {  // Reveal MRD (vendor rename/update)
+    name: 'Brandon Guida PhD',
+    company: 'Guardant Health',
+    date: '2025-12-12',
+    note: 'Renamed from Reveal; expanded cancer types'
+  },
+  'mrd-2': {  // NeXT Personal Dx (vendor correction)
+    name: 'Dan Norton',
+    company: 'Personalis',
+    date: '2025-12-12',
+    note: 'Corrected turnaround times'
+  },
+  'tds-17': {  // Guardant360 Liquid (new vendor submission)
+    name: 'Brandon Guida PhD',
+    company: 'Guardant Health',
+    date: '2025-12-11'
+  },
+  'mrd-19': {  // clonoSEQ (vendor clarification)
+    name: 'Christine Hanley',
+    company: 'Adaptive Biotechnologies',
+    date: '2025-12-11',
+    note: 'Clarified sample requirements'
+  },
+  
+  // Direct Company Nominations (18 tests - Dec 8-18)
+  // (These were added separately but may now overlap with changelog entries above)
+  'mrd-21': {  // Latitude
+    name: 'Sunghoon Heo',
+    company: 'IMBdx/Independent Expert',
+    date: '2025-12-10',
+    note: 'Submission for Natera'
+  },
+  'mrd-22': {  // CancerDetect
+    name: 'Sunghoon Heo',
+    company: 'IMBdx, Inc.',
+    date: '2025-12-10'
+  }
+};
+
+// ============================================
 // TEST DATA ARRAYS START HERE
 // ============================================
 

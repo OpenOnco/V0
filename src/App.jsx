@@ -40,6 +40,7 @@ import {
   GLOSSARY,
   CATEGORY_STANDARDS,
   STANDARDS_BODIES,
+  COMPANY_CONTRIBUTIONS,
 } from './data';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
@@ -305,6 +306,30 @@ const VendorBadge = ({ vendor, size = 'sm' }) => {
         </span>
       ))}
     </>
+  );
+};
+
+
+// CompanyCommunicationBadge component - displays CC badge for company-submitted tests
+const CompanyCommunicationBadge = ({ testId, size = 'sm' }) => {
+  const contribution = COMPANY_CONTRIBUTIONS[testId];
+  if (!contribution) return null;
+  
+  const sizeClasses = {
+    xs: 'text-[10px] px-1.5 py-0.5',
+    sm: 'text-xs px-2 py-1',
+    md: 'text-sm px-2.5 py-1',
+  };
+  
+  const tooltip = `${contribution.name} (${contribution.company})\nSubmitted: ${contribution.date}${contribution.note ? '\n' + contribution.note : ''}`;
+  
+  return (
+    <span 
+      className={`${sizeClasses[size]} bg-sky-100 text-sky-700 rounded-full font-medium whitespace-nowrap cursor-help hover:bg-sky-200 transition-colors`}
+      title={tooltip}
+    >
+      CC
+    </span>
   );
 };
 
@@ -2415,6 +2440,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getPatientBadges(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
@@ -2432,7 +2458,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   </div>
                 )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && (
+                {!isBC && !isDiscontinued && !hasCompanyComm && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -2450,6 +2476,19 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* VENDOR badge for company contributions */}
+                      {hasCompanyComm && (
+                        <div className="relative group">
+                          <span className="bg-emerald-100 text-emerald-700 text-[9px] px-1 py-0.5 rounded font-medium cursor-help">
+                            ✓VENDOR
+                          </span>
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                            <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                            <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                          </div>
+                        </div>
+                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -2598,7 +2637,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator - Hidden on mobile */}
         <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category for a Test Data Deep Dive:</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category for a Data Deep Dive:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
@@ -2766,6 +2805,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
@@ -2783,7 +2823,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   </div>
                 )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && (
+                {!isBC && !isDiscontinued && !hasCompanyComm && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -2801,6 +2841,19 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   ) : (
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* VENDOR badge for company contributions */}
+                      {hasCompanyComm && (
+                        <div className="relative group">
+                          <span className="bg-emerald-100 text-emerald-700 text-[9px] px-1 py-0.5 rounded font-medium cursor-help">
+                            ✓VENDOR
+                          </span>
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                            <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                            <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                          </div>
+                        </div>
+                      )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
                         <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
@@ -6334,6 +6387,9 @@ const SourceDataPage = () => {
     const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
     const allVendors = new Set(allTests.map(t => t.vendor));
     
+    // Count tests with vendor contributions
+    const testsWithVendorContribution = allTests.filter(t => COMPANY_CONTRIBUTIONS[t.id] !== undefined).length;
+    
     let totalTier1 = 0, citedTier1 = 0;
     Object.values(metrics).forEach(m => {
       if (m) { totalTier1 += m.tier1DataPoints; citedTier1 += m.tier1Cited; }
@@ -6351,6 +6407,8 @@ const SourceDataPage = () => {
       tier1DataPoints: totalTier1,
       tier1Cited: citedTier1,
       tier1CitationRate: totalTier1 > 0 ? ((citedTier1 / totalTier1) * 100).toFixed(1) : 0,
+      testsWithVendorContribution,
+      vendorContributionRate: allTests.length > 0 ? ((testsWithVendorContribution / allTests.length) * 100).toFixed(1) : 0,
     };
   }, [metrics]);
 
@@ -6438,6 +6496,38 @@ const SourceDataPage = () => {
             <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
               <p className="text-3xl font-bold text-gray-900">4</p>
               <p className="text-sm text-gray-500 mt-1">Categories</p>
+            </div>
+          </div>
+
+          {/* Vendor Contribution Stats */}
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200 p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-emerald-500 flex items-center justify-center">
+                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 text-lg">Vendor Contributions</h3>
+                  <p className="text-sm text-gray-600">Tests with data verified or provided by vendors</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-4xl font-bold text-emerald-600">{aggregate.vendorContributionRate}%</p>
+                <p className="text-sm text-gray-500">{aggregate.testsWithVendorContribution} of {aggregate.totalTests} tests</p>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-emerald-200">
+              <div className="w-full bg-emerald-100 rounded-full h-3">
+                <div 
+                  className="bg-emerald-500 h-3 rounded-full transition-all duration-500" 
+                  style={{ width: `${aggregate.vendorContributionRate}%` }}
+                />
+              </div>
+              <p className="text-xs text-gray-500 mt-2 text-center flex items-center justify-center gap-2">
+                Tests with the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200">✓ VENDOR</span> badge have data directly contributed or verified by the test manufacturer
+              </p>
             </div>
           </div>
 
@@ -7743,6 +7833,7 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
+  const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
   
   // Calculate BC status - automatic when 100% minimum fields complete
   const completeness = calculateTestCompleteness(test, category);
@@ -7760,7 +7851,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         </div>
       )}
       {/* INCOMPLETE text overlay for non-BC tests */}
-      {!isBC && !isDiscontinued && (
+      {!isBC && !isDiscontinued && !hasCompanyComm && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <span className="text-red-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
             INCOMPLETE
@@ -7773,6 +7864,17 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               {isDiscontinued && <Badge variant="slate">DISCONTINUED</Badge>}
+              {/* VENDOR badge for company contributions */}
+              {!isDiscontinued && hasCompanyComm && (
+                <div className="relative group inline-flex">
+                  <Badge variant="success">✓ VENDOR</Badge>
+                  <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                    <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                    <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                  </div>
+                </div>
+              )}
               {/* Product Type Badge - IVD Kit vs Service */}
               {!isDiscontinued && test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
               {!isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0 
@@ -7936,6 +8038,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
 // ============================================
 const PatientTestCard = ({ test, category, onShowDetail }) => {
   const isDiscontinued = test.isDiscontinued === true;
+  const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
   
   // Determine coverage status
   const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
@@ -8002,6 +8105,19 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
       <div className="cursor-pointer flex-1 flex flex-col" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
         <div className="flex justify-between items-start mb-3">
           <div>
+            {/* VENDOR badge for company contributions */}
+            {hasCompanyComm && (
+              <div className="relative group inline-block mb-1">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200 cursor-help">
+                  ✓ VENDOR
+                </span>
+                <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                  <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                  <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                </div>
+              </div>
+            )}
             <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
             <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
           </div>
@@ -8374,6 +8490,19 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
           <div className={`flex justify-between items-start p-5 ${colors.headerBg}`} style={{ flexShrink: 0 }}>
             <div className="flex-1 mr-4">
               <div className="flex flex-wrap gap-2 mb-2">
+                {/* VENDOR badge for company contributions */}
+                {COMPANY_CONTRIBUTIONS[test.id] && (
+                  <div className="relative group">
+                    <span className="px-2 py-0.5 bg-white text-emerald-700 rounded text-xs font-medium cursor-help">
+                      ✓ VENDOR
+                    </span>
+                    <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                      <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                      <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                    </div>
+                  </div>
+                )}
                 {hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare+Private</span>}
                 {hasMedicare && !hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
                 {!hasMedicare && hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
