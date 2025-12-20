@@ -2482,7 +2482,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                           <span className="bg-emerald-100 text-emerald-700 text-[9px] px-1 py-0.5 rounded font-medium cursor-help">
                             ✓VENDOR
                           </span>
-                          <div className="absolute right-0 bottom-full mb-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                             <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                             <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -2847,7 +2847,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                           <span className="bg-emerald-100 text-emerald-700 text-[9px] px-1 py-0.5 rounded font-medium cursor-help">
                             ✓VENDOR
                           </span>
-                          <div className="absolute right-0 bottom-full mb-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                             <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                             <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -6525,8 +6525,8 @@ const SourceDataPage = () => {
                   style={{ width: `${aggregate.vendorContributionRate}%` }}
                 />
               </div>
-              <p className="text-xs text-gray-500 mt-2 text-center">
-                Tests with ✓ VENDOR badge have data directly contributed or verified by the test manufacturer
+              <p className="text-xs text-gray-500 mt-2 text-center flex items-center justify-center gap-2">
+                Tests with the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200">✓ VENDOR</span> badge have data directly contributed or verified by the test manufacturer
               </p>
             </div>
           </div>
@@ -7868,7 +7868,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {!isDiscontinued && hasCompanyComm && (
                 <div className="relative group inline-flex">
                   <Badge variant="success">✓ VENDOR</Badge>
-                  <div className="absolute left-0 bottom-full mb-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                     <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                     <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -8111,7 +8111,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200 cursor-help">
                   ✓ VENDOR
                 </span>
-                <div className="absolute left-0 bottom-full mb-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                   <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                   <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
