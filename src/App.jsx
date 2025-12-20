@@ -1608,6 +1608,210 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 // ============================================
 // Recently Added Tests Banner - Full width at top of showcase
 // ============================================
+const RecentlyAddedBanner = ({ onNavigate }) => {
+  const categoryColors = {
+    MRD: 'bg-orange-500',
+    ECD: 'bg-emerald-500',
+    TRM: 'bg-sky-500',
+    TDS: 'bg-violet-500'
+  };
+
+  const handleTestClick = (test) => {
+    onNavigate(test.category, test.id);
+  };
+
+  // Take only the 5 most recent tests
+  const recentTests = RECENTLY_ADDED_TESTS.slice(0, 5);
+
+  return (
+    <div className="bg-gradient-to-r from-slate-50 to-white border border-slate-200 rounded-xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+        <h3 className="text-sm font-semibold text-slate-700">Recently Added Tests</h3>
+        <span className="text-xs text-slate-400">Updated weekly</span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {recentTests.map((test) => (
+          <div
+            key={test.id}
+            onClick={() => handleTestClick(test)}
+            className="flex flex-col p-3 bg-white border border-slate-100 rounded-lg cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
+          >
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`${categoryColors[test.category]} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
+                {test.category}
+              </span>
+              <span className="text-[10px] text-slate-400">{test.dateAdded}</span>
+            </div>
+            <span className="text-sm font-medium text-slate-800 group-hover:text-[#2A63A4] transition-colors truncate">
+              {test.name}
+            </span>
+            <span className="text-xs text-slate-500 truncate">
+              {test.vendor}<VendorBadge vendor={test.vendor} size="xs" />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+// ============================================
+// Cancer Type Navigator - Browse tests by cancer type
+// ============================================
+const CancerTypeNavigator = ({ onNavigate }) => {
+  // Combine all tests and extract cancer types
+  const allTests = useMemo(() => [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+  ], []);
+
+  // Normalize cancer type names and group tests
+  const normalizeCancerType = (type) => {
+    if (!type) return null;
+    const lower = type.toLowerCase();
+    // Normalize common variations
+    if (lower.includes('colorectal') || lower.includes('colon') || lower.includes('crc')) return 'Colorectal';
+    if (lower.includes('breast')) return 'Breast';
+    if (lower.includes('lung') || lower.includes('nsclc')) return 'Lung';
+    if (lower.includes('prostate')) return 'Prostate';
+    if (lower.includes('pancrea')) return 'Pancreatic';
+    if (lower.includes('liver') || lower.includes('hcc') || lower.includes('hepato')) return 'Liver';
+    if (lower.includes('ovari')) return 'Ovarian';
+    if (lower.includes('bladder') || lower.includes('urothelial')) return 'Bladder';
+    if (lower.includes('gastric') || lower.includes('stomach') || lower.includes('esophag')) return 'Gastroesophageal';
+    if (lower.includes('head') && lower.includes('neck')) return 'Head & Neck';
+    if (lower.includes('melanoma') || lower.includes('skin')) return 'Melanoma';
+    if (lower.includes('lymphoma') || lower.includes('leukemia') || lower.includes('hematolog')) return 'Blood Cancers';
+    if (lower.includes('multi') || lower.includes('pan-cancer') || lower.includes('solid')) return 'Multi-cancer';
+    if (lower.includes('thyroid')) return 'Thyroid';
+    if (lower.includes('kidney') || lower.includes('renal')) return 'Kidney';
+    return type; // Return original if no normalization match
+  };
+
+  // Build cancer type -> tests mapping
+  const cancerTypeMap = useMemo(() => {
+    const map = {};
+    allTests.forEach(test => {
+      const types = test.cancerTypes || [];
+      types.forEach(type => {
+        const normalized = normalizeCancerType(type);
+        if (normalized) {
+          if (!map[normalized]) map[normalized] = [];
+          // Avoid duplicate test entries
+          if (!map[normalized].find(t => t.id === test.id)) {
+            map[normalized].push(test);
+          }
+        }
+      });
+    });
+    return map;
+  }, [allTests]);
+
+  // Define major cancer types with icons and colors (sorted by test count)
+  const cancerTypeConfig = {
+    'Colorectal': { icon: '🔵', color: 'blue', description: 'Colon & rectal cancers' },
+    'Breast': { icon: '🎀', color: 'pink', description: 'Breast cancer' },
+    'Lung': { icon: '🫁', color: 'slate', description: 'NSCLC & lung cancers' },
+    'Prostate': { icon: '♂️', color: 'indigo', description: 'Prostate cancer' },
+    'Liver': { icon: '🟤', color: 'amber', description: 'HCC & liver cancers' },
+    'Pancreatic': { icon: '🟡', color: 'yellow', description: 'Pancreatic cancer' },
+    'Bladder': { icon: '💧', color: 'cyan', description: 'Bladder & urothelial' },
+    'Ovarian': { icon: '🟣', color: 'purple', description: 'Ovarian cancer' },
+    'Gastroesophageal': { icon: '🔴', color: 'red', description: 'Stomach & esophageal' },
+    'Blood Cancers': { icon: '🩸', color: 'rose', description: 'Leukemia & lymphoma' },
+    'Multi-cancer': { icon: '🎯', color: 'emerald', description: 'Pan-tumor tests' },
+  };
+
+  const colorClasses = {
+    blue: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', hover: 'hover:bg-blue-100 hover:border-blue-400' },
+    pink: { bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-700', hover: 'hover:bg-pink-100 hover:border-pink-400' },
+    slate: { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-700', hover: 'hover:bg-slate-100 hover:border-slate-400' },
+    indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700', hover: 'hover:bg-indigo-100 hover:border-indigo-400' },
+    amber: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', hover: 'hover:bg-amber-100 hover:border-amber-400' },
+    yellow: { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-700', hover: 'hover:bg-yellow-100 hover:border-yellow-400' },
+    cyan: { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-700', hover: 'hover:bg-cyan-100 hover:border-cyan-400' },
+    purple: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', hover: 'hover:bg-purple-100 hover:border-purple-400' },
+    red: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', hover: 'hover:bg-red-100 hover:border-red-400' },
+    rose: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', hover: 'hover:bg-rose-100 hover:border-rose-400' },
+    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', hover: 'hover:bg-emerald-100 hover:border-emerald-400' },
+  };
+
+  // Get sorted cancer types by test count
+  const sortedCancerTypes = useMemo(() => {
+    return Object.entries(cancerTypeMap)
+      .filter(([type]) => cancerTypeConfig[type]) // Only show configured types
+      .sort((a, b) => b[1].length - a[1].length)
+      .slice(0, 12); // Top 12 cancer types
+  }, [cancerTypeMap]);
+
+  // Handle click - navigate to category with search filter
+  const handleCancerTypeClick = (cancerType, tests) => {
+    // Find the category with most tests for this cancer type
+    const categoryCounts = {};
+    tests.forEach(t => {
+      categoryCounts[t.category] = (categoryCounts[t.category] || 0) + 1;
+    });
+    const primaryCategory = Object.entries(categoryCounts)
+      .sort((a, b) => b[1] - a[1])[0][0];
+    
+    // Navigate to that category (the search/filter will need to be handled by CategoryPage)
+    onNavigate(primaryCategory);
+  };
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-800">Browse by Cancer Type</h2>
+        <p className="text-sm text-gray-500">Select a cancer type to see available tests</p>
+      </div>
+      <div className="p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {sortedCancerTypes.map(([cancerType, tests]) => {
+            const config = cancerTypeConfig[cancerType];
+            const colors = colorClasses[config?.color || 'slate'];
+            const categories = [...new Set(tests.map(t => t.category))];
+            
+            return (
+              <button
+                key={cancerType}
+                onClick={() => handleCancerTypeClick(cancerType, tests)}
+                className={`
+                  p-4 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer
+                  ${colors.bg} ${colors.border} ${colors.hover}
+                  hover:shadow-md hover:scale-[1.02]
+                `}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">{config?.icon || '🔬'}</span>
+                  <span className={`font-semibold ${colors.text}`}>{cancerType}</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                  {tests.length} tests across {categories.length} {categories.length === 1 ? 'category' : 'categories'}
+                </div>
+                <div className="flex gap-1 mt-2 flex-wrap">
+                  {categories.map(cat => (
+                    <span key={cat} className="text-[10px] px-1.5 py-0.5 bg-white rounded border border-gray-200 text-gray-600">
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+// ============================================
+// Test Showcase Component - Static badge parameters for each test
+// ============================================
 const TestShowcase = ({ onNavigate }) => {
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
@@ -2169,7 +2373,6 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
   };
 
-
   // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -2566,6 +2769,131 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
 // ============================================
 // Stat of the Day Component
 // ============================================
+const StatOfTheDay = ({ onNavigate }) => {
+  // Day-based stat rotation (0=Sunday through 6=Saturday)
+  const dayStats = [
+    { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
+    { key: 'variantsTracked', label: 'Variants Tracked', unit: '', description: 'Most variants tracked (more ≠ better)', higherIsBetter: true, format: (v) => Number(v)?.toLocaleString(), filter: (v) => v != null && !isNaN(Number(v)) && Number(v) > 0, getValue: (t) => Number(t.variantsTracked) },
+    { key: 'tat', label: 'Turnaround Time', unit: ' days', description: 'Fastest turnaround', higherIsBetter: false, format: (v) => v, filter: (v) => v != null && v > 0 },
+    { key: 'sensitivity', label: 'Reported Sensitivity', unit: '%', description: 'Highest reported sensitivity (methodology varies)', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
+    { key: 'specificity', label: 'Reported Specificity', unit: '%', description: 'Highest reported specificity (methodology varies)', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 && v < 100 },
+    { key: 'numIndications', label: 'Cancer Indications', unit: '', description: 'Most cancer types covered', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0, getValue: (t) => t.cancerTypes?.length || 0 },
+    { key: 'numPublications', label: 'Publications', unit: '', description: 'Most peer-reviewed publications', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 },
+  ];
+  
+  // Combine all tests
+  const allTests = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD', numIndications: t.cancerTypes?.length || 0 })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD', numIndications: t.cancerTypes?.length || 0 })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM', numIndications: t.cancerTypes?.length || 0 })),
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS', numIndications: t.cancerTypes?.length || 0 }))
+  ];
+  
+  // Get today's stat based on day of week
+  const dayOfWeek = new Date().getDay();
+  const todayStat = dayStats[dayOfWeek];
+  
+  // Get value for a test (using custom getValue if defined)
+  const getStatValue = (test) => {
+    if (todayStat.getValue) return todayStat.getValue(test);
+    return test[todayStat.key];
+  };
+  
+  // Filter tests that have valid data for today's stat
+  const testsWithStat = allTests
+    .filter(t => {
+      const val = getStatValue(t);
+      return todayStat.filter(val);
+    })
+    .sort((a, b) => {
+      const aVal = getStatValue(a);
+      const bVal = getStatValue(b);
+      return todayStat.higherIsBetter ? bVal - aVal : aVal - bVal;
+    })
+    .slice(0, 3);
+  
+  const categoryColors = {
+    MRD: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
+    ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
+    TRM: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' },
+    TDS: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' }
+  };
+
+  if (!todayStat || testsWithStat.length === 0) return null;
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">📊</span>
+          <h3 className="text-base font-bold text-slate-800">Stat of the Day Top 3: <span style={{ color: '#2A63A4' }}>{todayStat.label}</span></h3>
+        </div>
+        <p className="text-xs text-slate-400">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
+      </div>
+      
+      <div className="flex gap-3">
+        {testsWithStat.map((test, idx) => {
+          const colors = categoryColors[test.category];
+          const statValue = getStatValue(test);
+          return (
+            <div
+              key={test.id}
+              onClick={() => onNavigate(test.category, test.id)}
+              className={`flex-1 ${colors.bg} ${colors.border} border rounded-lg p-3 cursor-pointer hover:shadow-md transition-all`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1">
+                  <span className="text-lg font-bold text-slate-300">#{idx + 1}</span>
+                  <span className={`${colors.badge} text-white text-[10px] px-1.5 py-0.5 rounded font-medium`}>
+                    {test.category}
+                  </span>
+                </div>
+                <p className={`text-lg font-bold ${colors.text}`}>
+                  {todayStat.format(statValue)}{todayStat.unit}
+                </p>
+              </div>
+              <p className="text-sm font-semibold text-slate-800 truncate">{test.name}</p>
+              <p className="text-xs text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// Baseline Complete (BC) - Data Completeness Calculation
+// ============================================
+// NOTE: BC status is awarded to tests that have all minimum required fields filled.
+// When reviewing new test submissions, verify they meet BC requirements before adding.
+
+// Calculate completeness score for a single test
+const calculateTestCompleteness = (test, category) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return { filled: 0, total: 0, percentage: 0, missingFields: [] };
+  
+  const minFields = minParams.core;
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+  
+  const filledFields = minFields.filter(p => hasValue(test[p.key]));
+  const missingFields = minFields.filter(p => !hasValue(test[p.key]));
+  const percentage = minFields.length > 0 
+    ? Math.round((filledFields.length / minFields.length) * 100) 
+    : 0;
+  
+  return {
+    filled: filledFields.length,
+    total: minFields.length,
+    percentage,
+    missingFields: missingFields.map(p => p.label)
+  };
+};
+
+// ============================================
+// Home Page (intro, navs, chat, and news)
+// ============================================
+
 const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
@@ -2762,6 +3090,164 @@ const calculateMinimumFieldStats = (tests, category) => {
 };
 
 // Simple database stats for Data Download page
+const DatabaseStatsSimple = () => {
+  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
+  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
+  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
+  const cgpParams = tdsTestData.length > 0 ? Object.keys(tdsTestData[0]).length : 0;
+  
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
+  
+  const allVendors = new Set([
+    ...mrdTestData.map(t => t.vendor),
+    ...ecdTestData.map(t => t.vendor),
+    ...trmTestData.map(t => t.vendor),
+    ...tdsTestData.map(t => t.vendor)
+  ]);
+  
+  // Calculate Tier 1 citation metrics dynamically
+  const allTestData = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  const tier1Metrics = calculateTier1Metrics(allTestData);
+
+  // Calculate minimum field completion for each category
+  const mrdCompletion = calculateMinimumFieldStats(mrdTestData, 'MRD');
+  const ecdCompletion = calculateMinimumFieldStats(ecdTestData, 'ECD');
+  const trmCompletion = calculateMinimumFieldStats(trmTestData, 'TRM');
+  const tdsCompletion = calculateMinimumFieldStats(tdsTestData, 'TDS');
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Database Overview</h3>
+      
+      {/* Main stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">{totalTests}</p>
+          <p className="text-xs text-gray-500">Total Tests</p>
+        </div>
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">{allVendors.size}</p>
+          <p className="text-xs text-gray-500">Vendors</p>
+        </div>
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">{totalDataPoints.toLocaleString()}</p>
+          <p className="text-xs text-gray-500">Data Points</p>
+        </div>
+        <div className="text-center p-3 bg-gray-50 rounded-lg">
+          <p className="text-2xl font-bold text-gray-800">4</p>
+          <p className="text-xs text-gray-500">Categories</p>
+        </div>
+      </div>
+      
+      {/* Category breakdown with completion stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
+          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-gray-800">MRD</p>
+            <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-orange-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-orange-500 rounded-full transition-all"
+                  style={{ width: `${mrdCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-orange-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{mrdCompletion.complete}/{mrdCompletion.total}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
+          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{ecdTestData.length}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-gray-800">ECD</p>
+            <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-emerald-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-emerald-500 rounded-full transition-all"
+                  style={{ width: `${ecdCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-emerald-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{ecdCompletion.complete}/{ecdCompletion.total}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-sky-50 rounded-lg border border-sky-100">
+          <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white text-xs font-bold">{trmTestData.length}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-gray-800">TRM</p>
+            <p className="text-[10px] text-gray-500">{trmParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-sky-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-sky-500 rounded-full transition-all"
+                  style={{ width: `${trmCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-sky-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{trmCompletion.complete}/{trmCompletion.total}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
+          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{tdsTestData.length}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-gray-800">TDS</p>
+            <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-violet-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-violet-500 rounded-full transition-all"
+                  style={{ width: `${tdsCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-violet-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{tdsCompletion.complete}/{tdsCompletion.total}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Citation Quality - Tier 1 Performance Metrics */}
+      <div className="border-t border-gray-100 pt-4">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-sm font-medium text-gray-700">Citation Quality</span>
+          <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Performance Metrics</span>
+          <div className="relative group flex items-center">
+            <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
+            <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <p className="font-semibold mb-2">Performance Metrics with Sources</p>
+              <div className="space-y-1.5 text-gray-300">
+                <p><span className="text-white">Core:</span> sensitivity, specificity, PPV, NPV</p>
+                <p><span className="text-white">Detection Limit:</span> LOD, LOD95</p>
+                <p><span className="text-white">Stage-Specific:</span> Stage I–IV sensitivity</p>
+                <p><span className="text-white">MRD:</span> landmark & longitudinal sens/spec</p>
+                <p><span className="text-white">Screening:</span> advanced adenoma sensitivity, lead time vs imaging</p>
+              </div>
+              <p className="mt-2 text-gray-400 text-[10px]">Tracks how many performance claims have citations.</p>
+              <div className="absolute left-4 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-xl font-bold text-blue-800">{tier1Metrics.totalTier1DataPoints}</p>
+            <p className="text-[10px] text-blue-600">Performance Metrics</p>
+          </div>
+          <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-xl font-bold text-blue-800">{tier1Metrics.citedDataPoints}</p>
+            <p className="text-[10px] text-blue-600">Cited</p>
+          </div>
+          <div className="text-center p-3 bg-green-50 rounded-lg border border-green-100">
+            <p className="text-xl font-bold text-green-700">{tier1Metrics.citationCoverage}%</p>
+            <p className="text-[10px] text-green-600">Coverage</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const DatabaseSummary = () => {
   const [showFAQ, setShowFAQ] = useState(false);
   
@@ -3279,6 +3765,19 @@ const OpennessAward = () => {
 
 // ============================================
 // Placeholder Pages
+// ============================================
+const PlaceholderPage = ({ title, description }) => (
+  <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+    <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
+    <p className="text-gray-600">{description}</p>
+  </div>
+);
+
+// ============================================
+// FAQ Page
+// ============================================
+// ============================================
+// Learn Page
 // ============================================
 const LearnPage = ({ onNavigate }) => {
   const categories = [
@@ -8224,7 +8723,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
         {/* Scrollable Content */}
         <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
           
-          {/* Clinical View */}
+          {/* Patient View */}
           {false ? (
             <>
               {/* Quick Facts for Patients */}
@@ -9498,6 +9997,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
             </span>
           </div>
         )}
+        
         
         {/* Quick resources bar - shown for cancer categories */}
         {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
