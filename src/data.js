@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 20, 2025 (Added RyghtMRD test entry for vendor verification testing)
+// Last updated: December 20, 2025 (VENDOR VERIFIED: RyghtMRD Test Platform - first vendor verification badge)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -417,14 +417,15 @@ export const COMPANY_CONTRIBUTIONS = {
 // These get the premium green "VENDOR VERIFIED" badge and sort priority
 // ============================================
 export const VENDOR_VERIFIED = {
-  // Add test IDs here after vendors complete the validation flow
-  // Example:
-  // 'mrd-25': {
-  //   name: 'Alex Dickinson',
-  //   company: 'Ryght',
-  //   verifiedDate: '2025-12-20',
-  //   editsSubmitted: 1
-  // }
+  'mrd-25': {
+    name: 'Alex Dickinson',
+    company: 'Ryght',
+    verifiedDate: '2025-12-20',
+    editsSubmitted: 1,
+    edits: [
+      { field: 'specificity', value: '44', citation: 'https://www.linkedin.com/feed/' }
+    ]
+  }
 };
 
 // ============================================
@@ -1944,9 +1945,9 @@ export const mrdTestData = [
     "sensitivity": 95.0,
     "sensitivityCitations": "https://ryght.ai",
     "sensitivityNotes": "Test data - 95% sensitivity in validation cohort.",
-    "specificity": 98.0,
-    "specificityCitations": "https://ryght.ai",
-    "specificityNotes": "Test data - 98% specificity in validation cohort.",
+    "specificity": 44.0,
+    "specificityCitations": "https://www.linkedin.com/feed/",
+    "specificityNotes": "VENDOR VERIFIED (Dec 20, 2025): Updated from 98% to 44% per vendor attestation.",
     "lod": "10 ppm",
     "lod95": "15 ppm",
     "lodCitations": "https://ryght.ai",
@@ -5296,6 +5297,18 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 20, 2025',
+    type: 'verified',
+    testId: 'mrd-25',
+    testName: 'RyghtMRD Test Platform',
+    vendor: 'Ryght',
+    category: 'MRD',
+    description: 'VENDOR VERIFIED: Test data validated by authorized vendor representative through the Vendor Test Validation flow. Vendor attested to data accuracy and submitted 1 correction (specificity updated). Test now displays ✓ VERIFIED badge and receives sort priority.',
+    contributor: 'Alex Dickinson',
+    affiliation: 'Ryght (vendor)',
+    citation: 'Vendor attestation via OpenOnco Vendor Verification'
+  },
   {
     date: 'Dec 19, 2025',
     type: 'added',
