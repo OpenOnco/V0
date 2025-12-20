@@ -4971,6 +4971,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   const [validationValue, setValidationValue] = useState('');
   const [validationCitation, setValidationCitation] = useState('');
   const [validationAttestation, setValidationAttestation] = useState(false);
+  const [verifiedTestsSession, setVerifiedTestsSession] = useState([]); // Track tests verified in this session
   
   // Track if form was prefilled (from Competitions page navigation)
   const [isPrefilled, setIsPrefilled] = useState(false);
@@ -5500,6 +5501,10 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
       const data = await response.json();
 
       if (response.ok) {
+        // Track this test as verified in the session (for vendor validation)
+        if (submissionType === 'validation' && validationTest) {
+          setVerifiedTestsSession(prev => [...prev, validationTest]);
+        }
         setSubmitted(true);
       } else {
         setSubmitError(data.error || 'Failed to submit. Please try again.');
@@ -5542,9 +5547,107 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     setValidationValue('');
     setValidationCitation('');
     setValidationAttestation(false);
+    setVerifiedTestsSession([]); // Clear session tracking on full reset
+  };
+
+  // Reset just validation fields for verifying another test (keeps email verified)
+  const resetValidationOnly = () => {
+    setSubmitted(false);
+    setValidationTest('');
+    setValidationEdits([]);
+    setValidationField('');
+    setValidationValue('');
+    setValidationCitation('');
+    setValidationAttestation(false);
+    setIsSubmitting(false);
+    setSubmitError('');
   };
 
   if (submitted) {
+    // For vendor validation, show option to verify another test
+    const remainingTests = submissionType === 'validation' ? getVendorTests() : [];
+    const allVendorTests = submissionType === 'validation' ? getVendorTests(true) : [];
+    const verifiedCount = verifiedTestsSession.length;
+    
+    if (submissionType === 'validation') {
+      return (
+        <div className="max-w-3xl mx-auto px-6 py-16 text-center">
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-200">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <svg className="w-16 h-16 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-emerald-800 mb-2">Test Verified!</h2>
+            <p className="text-emerald-700 mb-4">
+              Your validation has been submitted. The test will receive the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white">VENDOR VERIFIED</span> badge after review.
+            </p>
+            
+            {/* Progress indicator */}
+            <div className="bg-white rounded-lg p-4 mb-6 border border-emerald-200">
+              <div className="text-sm text-emerald-700 font-medium mb-2">Session Progress</div>
+              <div className="text-2xl font-bold text-emerald-800">
+                {verifiedCount} of {allVendorTests.length} tests verified
+              </div>
+              {verifiedCount > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1 justify-center">
+                  {verifiedTestsSession.map(testId => {
+                    const test = allVendorTests.find(t => t.id === testId);
+                    return test ? (
+                      <span key={testId} className="inline-flex items-center px-2 py-1 rounded text-xs bg-emerald-100 text-emerald-700">
+                        ✓ {test.name}
+                      </span>
+                    ) : null;
+                  })}
+                </div>
+              )}
+            </div>
+            
+            {remainingTests.length > 0 ? (
+              <>
+                <p className="text-emerald-600 mb-4">
+                  You have <strong>{remainingTests.length}</strong> more test{remainingTests.length > 1 ? 's' : ''} to verify. Would you like to continue?
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button 
+                    onClick={resetValidationOnly} 
+                    className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Verify Another Test
+                  </button>
+                  <button 
+                    onClick={resetForm} 
+                    className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Done for Now
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="bg-emerald-100 rounded-lg p-4 mb-6 border border-emerald-300">
+                  <div className="text-emerald-800 font-semibold text-lg mb-1">🎉 All Tests Verified!</div>
+                  <p className="text-emerald-700 text-sm">
+                    You've verified all {allVendorTests.length} test{allVendorTests.length > 1 ? 's' : ''} for your company. Thank you for your contribution!
+                  </p>
+                </div>
+                <button 
+                  onClick={resetForm} 
+                  className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors"
+                >
+                  Done
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+    
+    // Default success screen for other submission types
     return (
       <div className="max-w-3xl mx-auto px-6 py-16 text-center">
         <div className="bg-emerald-50 rounded-2xl p-8 border border-emerald-200">
@@ -5593,14 +5696,16 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   };
   
   // Get tests that match the vendor's email domain
-  const getVendorTests = () => {
+  const getVendorTests = (includeVerified = false) => {
     const domain = getVendorDomainFromEmail(contactEmail);
     if (!domain) return [];
     
     const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
     return allTests.filter(test => {
       const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-      return vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
+      const matchesVendor = vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
+      const notVerifiedYet = includeVerified || !verifiedTestsSession.includes(test.id);
+      return matchesVendor && notVerifiedYet;
     }).map(t => ({
       id: t.id,
       name: t.name,
