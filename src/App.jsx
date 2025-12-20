@@ -5563,6 +5563,52 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     setSubmitError('');
   };
 
+  // Get vendor domain from email for filtering tests
+  const getVendorDomainFromEmail = (email) => {
+    if (!email || !email.includes('@')) return '';
+    const domain = email.split('@')[1]?.toLowerCase() || '';
+    // Extract company name from domain (e.g., guardanthealth.com -> guardant)
+    return domain.split('.')[0];
+  };
+  
+  // Get tests that match the vendor's email domain
+  const getVendorTests = (includeVerified = false) => {
+    const domain = getVendorDomainFromEmail(contactEmail);
+    if (!domain) return [];
+    
+    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    return allTests.filter(test => {
+      const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const matchesVendor = vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
+      const notVerifiedYet = includeVerified || !verifiedTestsSession.includes(test.id);
+      return matchesVendor && notVerifiedYet;
+    }).map(t => ({
+      id: t.id,
+      name: t.name,
+      vendor: t.vendor,
+      category: mrdTestData.find(m => m.id === t.id) ? 'MRD' :
+                ecdTestData.find(e => e.id === t.id) ? 'ECD' :
+                trmTestData.find(r => r.id === t.id) ? 'TRM' : 'TDS'
+    }));
+  };
+  
+  // Get the selected validation test data
+  const getValidationTestData = () => {
+    if (!validationTest) return null;
+    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    return allTests.find(t => t.id === validationTest);
+  };
+  
+  // Get category for validation test
+  const getValidationTestCategory = () => {
+    if (!validationTest) return null;
+    if (mrdTestData.find(t => t.id === validationTest)) return 'MRD';
+    if (ecdTestData.find(t => t.id === validationTest)) return 'ECD';
+    if (trmTestData.find(t => t.id === validationTest)) return 'TRM';
+    if (tdsTestData.find(t => t.id === validationTest)) return 'TDS';
+    return null;
+  };
+
   if (submitted) {
     // For vendor validation, show option to verify another test
     const remainingTests = submissionType === 'validation' ? getVendorTests() : [];
@@ -5685,52 +5731,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     }
     
     return false;
-  };
-  
-  // Get vendor domain from email for filtering tests
-  const getVendorDomainFromEmail = (email) => {
-    if (!email || !email.includes('@')) return '';
-    const domain = email.split('@')[1]?.toLowerCase() || '';
-    // Extract company name from domain (e.g., guardanthealth.com -> guardant)
-    return domain.split('.')[0];
-  };
-  
-  // Get tests that match the vendor's email domain
-  const getVendorTests = (includeVerified = false) => {
-    const domain = getVendorDomainFromEmail(contactEmail);
-    if (!domain) return [];
-    
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
-    return allTests.filter(test => {
-      const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const matchesVendor = vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
-      const notVerifiedYet = includeVerified || !verifiedTestsSession.includes(test.id);
-      return matchesVendor && notVerifiedYet;
-    }).map(t => ({
-      id: t.id,
-      name: t.name,
-      vendor: t.vendor,
-      category: mrdTestData.find(m => m.id === t.id) ? 'MRD' :
-                ecdTestData.find(e => e.id === t.id) ? 'ECD' :
-                trmTestData.find(r => r.id === t.id) ? 'TRM' : 'TDS'
-    }));
-  };
-  
-  // Get the selected validation test data
-  const getValidationTestData = () => {
-    if (!validationTest) return null;
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
-    return allTests.find(t => t.id === validationTest);
-  };
-  
-  // Get category for validation test
-  const getValidationTestCategory = () => {
-    if (!validationTest) return null;
-    if (mrdTestData.find(t => t.id === validationTest)) return 'MRD';
-    if (ecdTestData.find(t => t.id === validationTest)) return 'ECD';
-    if (trmTestData.find(t => t.id === validationTest)) return 'TRM';
-    if (tdsTestData.find(t => t.id === validationTest)) return 'TDS';
-    return null;
   };
   
   // Add a validation edit
