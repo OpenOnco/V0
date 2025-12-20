@@ -5626,7 +5626,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
             </div>
             <h2 className="text-2xl font-bold text-emerald-800 mb-2">Test Verified!</h2>
             <p className="text-emerald-700 mb-4">
-              Your validation has been submitted. The test will receive the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white">VENDOR VERIFIED</span> badge after review.
+              Your validation has been submitted. The test will receive the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white">VENDOR VERIFIED</span> badge after successful review.
             </p>
             
             {/* Progress indicator */}
@@ -6327,10 +6327,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
                     />
                     <div>
                       <p className="font-medium text-gray-800">
-                        I confirm that I am an authorized representative of {getValidationTestData()?.vendor || 'this vendor'}
-                      </p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        I attest that the information displayed above {validationEdits.length > 0 ? '(with my proposed updates)' : ''} is accurate and complete to the best of my knowledge as of today's date.
+                        I confirm on behalf of {getValidationTestData()?.vendor || 'this vendor'} that the information displayed above {validationEdits.length > 0 ? '(with my proposed updates) ' : ''}is accurate and complete to the best of my knowledge as of today's date.
                       </p>
                     </div>
                   </label>
@@ -6657,7 +6654,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
                   )}
                 </button>
                 <p className="text-center text-emerald-100 text-sm mt-3">
-                  This test will receive the VENDOR VERIFIED badge after review
+                  This test will receive the VENDOR VERIFIED badge after successful review
                 </p>
               </div>
             ) : (
