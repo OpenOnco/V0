@@ -2604,7 +2604,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       {hasCompanyComm && !hasVendorVerified && (
                         <div className="relative group flex items-center">
                           <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
-                            ✓ INPUT
+                            ✓ VENDOR INPUT
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
@@ -6798,7 +6798,7 @@ const SourceDataPage = () => {
                   <span>Vendor completed full validation process - highest trust tier, sorted to top</span>
                 </p>
                 <p className="text-xs text-gray-600 flex items-center gap-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">✓ INPUT</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">✓ VENDOR INPUT</span>
                   <span>Data contributed or corrected by vendor representative</span>
                 </p>
               </div>
@@ -8157,7 +8157,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {!isDiscontinued && hasCompanyComm && !hasVendorVerified && (
                 <div className="relative group inline-flex">
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">
-                    ✓ INPUT
+                    ✓ VENDOR INPUT
                   </span>
                   <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
