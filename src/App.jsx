@@ -2440,6 +2440,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getPatientBadges(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
@@ -2456,8 +2457,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
+                {/* CONFIRMED text overlay for company communications */}
+                {!isDiscontinued && hasCompanyComm && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                    <span className="text-emerald-500/40 font-bold text-xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+                      CONFIRMED
+                    </span>
+                  </div>
+                )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && (
+                {!isBC && !isDiscontinued && !hasCompanyComm && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -2791,6 +2800,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
             
             return (
@@ -2807,8 +2817,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
+                {/* CONFIRMED text overlay for company communications */}
+                {!isDiscontinued && hasCompanyComm && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                    <span className="text-emerald-500/40 font-bold text-xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+                      CONFIRMED
+                    </span>
+                  </div>
+                )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && (
+                {!isBC && !isDiscontinued && !hasCompanyComm && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
