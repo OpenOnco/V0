@@ -5920,11 +5920,11 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                     <span className={`font-bold text-lg ${submissionType === 'validation' ? 'text-emerald-800' : 'text-emerald-700'}`}>
                       Vendor Test Validation
                     </span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">
-                      ✓ VENDOR
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white border border-emerald-600">
+                      VENDOR VERIFIED
                     </span>
                   </div>
-                  <div className="text-sm text-emerald-600">Verify and update your company's test data to earn the ✓ VENDOR badge</div>
+                  <div className="text-sm text-emerald-600">Verify and update your company's test data to earn the VENDOR VERIFIED badge</div>
                 </div>
                 <svg className={`w-6 h-6 transition-transform ${submissionType === 'validation' ? 'text-emerald-600 rotate-90' : 'text-emerald-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -5934,8 +5934,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           </div>
         )}
         
-        {/* Test Data Update - hide when prefilled */}
-        {!isPrefilled && (
+        {/* Test Data Update - hide when prefilled OR when validation selected */}
+        {!isPrefilled && submissionType !== 'validation' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -6173,7 +6173,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-emerald-800">Vendor Test Validation</h3>
-                <p className="text-sm text-emerald-600">Verify your company's test data and earn the ✓ VENDOR badge</p>
+                <p className="text-sm text-emerald-600">Verify your company's test data and earn the VENDOR VERIFIED badge</p>
               </div>
             </div>
 
@@ -6756,7 +6756,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                   )}
                 </button>
                 <p className="text-center text-emerald-100 text-sm mt-3">
-                  This test will receive the ✓ VENDOR badge after review
+                  This test will receive the VENDOR VERIFIED badge after review
                 </p>
               </div>
             ) : (
