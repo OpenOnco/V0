@@ -7788,7 +7788,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
       {/* CONFIRMED text overlay for company communications */}
       {!isDiscontinued && hasCompanyComm && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span className="text-emerald-500/20 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+          <span className="text-emerald-500/40 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
             CONFIRMED
           </span>
         </div>
@@ -8052,7 +8052,7 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
       {/* CONFIRMED text overlay for company communications */}
       {!isDiscontinued && hasCompanyComm && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span className="text-emerald-500/20 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+          <span className="text-emerald-500/40 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
             CONFIRMED
           </span>
         </div>
