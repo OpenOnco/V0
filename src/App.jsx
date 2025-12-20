@@ -2478,8 +2478,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
                       {/* VENDOR badge for company contributions */}
                       {hasCompanyComm && (
-                        <div className="relative group">
-                          <span className="bg-emerald-100 text-emerald-700 text-[9px] px-1 py-0.5 rounded font-medium cursor-help">
+                        <div className="relative group flex items-center">
+                          <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
                             ✓VENDOR
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -2491,16 +2491,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
-                        <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
+                        <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Laboratory IVD Kit">
                           🔬Kit
                         </span>
                       ) : test.productType === 'Self-Collection' ? (
-                        <span className="bg-teal-100 text-teal-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Self-Collection">
+                        <span className="inline-flex items-center bg-teal-100 text-teal-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Self-Collection">
                           🏠Home
                         </span>
                       ) : null}
                       {/* Category badge */}
-                      <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium`}>
+                      <span className={`inline-flex items-center ${colors.badge} text-white text-[9px] px-1 rounded font-medium h-[18px]`}>
                         {test.category}
                       </span>
                     </div>
@@ -2843,8 +2843,8 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
                       {/* VENDOR badge for company contributions */}
                       {hasCompanyComm && (
-                        <div className="relative group">
-                          <span className="bg-emerald-100 text-emerald-700 text-[9px] px-1 py-0.5 rounded font-medium cursor-help">
+                        <div className="relative group flex items-center">
+                          <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
                             ✓VENDOR
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -2856,16 +2856,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       )}
                       {/* Kit/Service badge */}
                       {test.productType === 'Laboratory IVD Kit' ? (
-                        <span className="bg-indigo-100 text-indigo-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Laboratory IVD Kit">
+                        <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Laboratory IVD Kit">
                           🔬Kit
                         </span>
                       ) : test.productType === 'Self-Collection' ? (
-                        <span className="bg-teal-100 text-teal-700 text-[9px] px-1 py-0.5 rounded font-medium" title="Self-Collection">
+                        <span className="inline-flex items-center bg-teal-100 text-teal-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Self-Collection">
                           🏠Home
                         </span>
                       ) : null}
                       {/* Category badge */}
-                      <span className={`${colors.badge} text-white text-[9px] px-1 py-0.5 rounded font-medium`}>
+                      <span className={`inline-flex items-center ${colors.badge} text-white text-[9px] px-1 rounded font-medium h-[18px]`}>
                         {test.category}
                       </span>
                     </div>
@@ -3575,7 +3575,7 @@ const DatabaseStatsSimple = () => {
         <div className="flex items-center gap-2 mb-3">
           <span className="text-sm font-medium text-gray-700">Citation Quality</span>
           <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Performance Metrics</span>
-          <div className="relative group">
+          <div className="relative group flex items-center">
             <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
             <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <p className="font-semibold mb-2">Performance Metrics with Sources</p>
@@ -5302,7 +5302,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const isAlz = false; // ALZ DISABLED
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
   
-  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'bug', 'feature'
+  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'validation', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
   const [category, setCategory] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -5326,8 +5326,54 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   const [newValue, setNewValue] = useState('');
   const [citation, setCitation] = useState('');
   
+  // Vendor validation fields
+  const [validationTest, setValidationTest] = useState('');
+  const [validationEdits, setValidationEdits] = useState([]); // Array of {field, value, citation}
+  const [validationField, setValidationField] = useState('');
+  const [validationValue, setValidationValue] = useState('');
+  const [validationCitation, setValidationCitation] = useState('');
+  const [validationAttestation, setValidationAttestation] = useState(false);
+  
   // Track if form was prefilled (from Competitions page navigation)
   const [isPrefilled, setIsPrefilled] = useState(false);
+  
+  // Track if this is an invited vendor (skip verification)
+  const [isInvitedVendor, setIsInvitedVendor] = useState(false);
+  
+  // Handle URL parameters for direct vendor invitations
+  // URL format: /submissions?invite=vendor&email=person@company.com&name=John%20Doe
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const inviteType = params.get('invite');
+    const inviteEmail = params.get('email');
+    const inviteName = params.get('name');
+    
+    if (inviteType === 'vendor' && inviteEmail) {
+      // Set up for vendor validation with pre-verified email
+      setSubmissionType('validation');
+      setSubmitterType('vendor');
+      setContactEmail(inviteEmail);
+      setVerificationStep('verified'); // Skip verification for invited vendors
+      setIsInvitedVendor(true);
+      
+      // Parse name if provided (format: "First Last")
+      if (inviteName) {
+        const nameParts = inviteName.trim().split(' ');
+        if (nameParts.length >= 1) {
+          setFirstName(nameParts[0]);
+        }
+        if (nameParts.length >= 2) {
+          setLastName(nameParts.slice(1).join(' '));
+        }
+      }
+      
+      // Clean up URL without reloading page
+      window.history.replaceState({}, '', window.location.pathname);
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+  }, []);
   
   // Handle prefill from navigation (e.g., from Competitions page)
   useEffect(() => {
@@ -5675,6 +5721,24 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
         type: submissionType === 'bug' ? 'Bug Report' : 'Feature Request',
         description: feedbackDescription,
       };
+    } else if (submissionType === 'validation') {
+      // Vendor Test Validation submission
+      const testData = getValidationTestData();
+      submission.submitterType = 'vendor';
+      submission.category = getValidationTestCategory();
+      submission.validation = {
+        testId: validationTest,
+        testName: testData?.name,
+        vendor: testData?.vendor,
+        edits: validationEdits,
+        isInvitedVendor: isInvitedVendor,
+        attestation: {
+          confirmed: validationAttestation,
+          submitterName: `${firstName} ${lastName}`,
+          submitterEmail: contactEmail,
+          timestamp: new Date().toISOString(),
+        }
+      };
     } else {
       submission.submitterType = submitterType;
       submission.category = category;
@@ -5745,6 +5809,13 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
     setVerificationError('');
     setIsSubmitting(false);
     setSubmitError('');
+    // Validation fields
+    setValidationTest('');
+    setValidationEdits([]);
+    setValidationField('');
+    setValidationValue('');
+    setValidationCitation('');
+    setValidationAttestation(false);
   };
 
   if (submitted) {
@@ -5772,6 +5843,10 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
       return feedbackDescription.trim().length > 0;
     }
     
+    if (submissionType === 'validation') {
+      return validationTest && validationAttestation;
+    }
+    
     if (!submitterType || !category) return false;
     
     if (submissionType === 'new') {
@@ -5782,6 +5857,68 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
     
     return false;
   };
+  
+  // Get vendor domain from email for filtering tests
+  const getVendorDomainFromEmail = (email) => {
+    if (!email || !email.includes('@')) return '';
+    const domain = email.split('@')[1]?.toLowerCase() || '';
+    // Extract company name from domain (e.g., guardanthealth.com -> guardant)
+    return domain.split('.')[0];
+  };
+  
+  // Get tests that match the vendor's email domain
+  const getVendorTests = () => {
+    const domain = getVendorDomainFromEmail(contactEmail);
+    if (!domain) return [];
+    
+    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    return allTests.filter(test => {
+      const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
+    }).map(t => ({
+      id: t.id,
+      name: t.name,
+      vendor: t.vendor,
+      category: mrdTestData.find(m => m.id === t.id) ? 'MRD' :
+                ecdTestData.find(e => e.id === t.id) ? 'ECD' :
+                trmTestData.find(r => r.id === t.id) ? 'TRM' : 'TDS'
+    }));
+  };
+  
+  // Get the selected validation test data
+  const getValidationTestData = () => {
+    if (!validationTest) return null;
+    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    return allTests.find(t => t.id === validationTest);
+  };
+  
+  // Get category for validation test
+  const getValidationTestCategory = () => {
+    if (!validationTest) return null;
+    if (mrdTestData.find(t => t.id === validationTest)) return 'MRD';
+    if (ecdTestData.find(t => t.id === validationTest)) return 'ECD';
+    if (trmTestData.find(t => t.id === validationTest)) return 'TRM';
+    if (tdsTestData.find(t => t.id === validationTest)) return 'TDS';
+    return null;
+  };
+  
+  // Add a validation edit
+  const addValidationEdit = () => {
+    if (!validationField || !validationValue || !validationCitation) return;
+    setValidationEdits([...validationEdits, {
+      field: validationField,
+      value: validationValue,
+      citation: validationCitation
+    }]);
+    setValidationField('');
+    setValidationValue('');
+    setValidationCitation('');
+  };
+  
+  // Remove a validation edit
+  const removeValidationEdit = (index) => {
+    setValidationEdits(validationEdits.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
@@ -5790,14 +5927,60 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Test Data Update - hide when prefilled */}
+        {/* Vendor Test Validation - Prominent Section */}
         {!isPrefilled && (
+          <div className={`rounded-xl border-2 p-6 transition-all ${submissionType === 'validation' ? 'border-emerald-500 bg-gradient-to-r from-emerald-50 to-teal-50' : 'border-emerald-200 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 hover:border-emerald-300'}`}>
+            <button
+              type="button"
+              onClick={() => { 
+                setSubmissionType('validation'); 
+                setSubmitterType('vendor');
+                setCategory('');
+                setExistingTest(''); 
+                setSelectedParameter(''); 
+                setFeedbackDescription(''); 
+                setCompleteFieldEntries([]);
+                setNewTestName('');
+                setNewTestVendor('');
+                setValidationTest('');
+                setValidationEdits([]);
+                setValidationAttestation(false);
+              }}
+              className="w-full text-left"
+            >
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${submissionType === 'validation' ? 'bg-emerald-500' : 'bg-emerald-400'}`}>
+                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className={`font-bold text-lg ${submissionType === 'validation' ? 'text-emerald-800' : 'text-emerald-700'}`}>
+                      Vendor Test Validation
+                    </span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white border border-emerald-600">
+                      VENDOR VERIFIED
+                    </span>
+                  </div>
+                  <div className="text-sm text-emerald-600">Verify and update your company's test data to earn the VENDOR VERIFIED badge</div>
+                </div>
+                <svg className={`w-6 h-6 transition-transform ${submissionType === 'validation' ? 'text-emerald-600 rotate-90' : 'text-emerald-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </button>
+          </div>
+        )}
+        
+        {/* Test Data Update - hide when prefilled OR when validation selected */}
+        {!isPrefilled && submissionType !== 'validation' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
+              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">Suggest a New Test</div>
@@ -5805,7 +5988,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([]); }}
+              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className="font-semibold text-gray-800">File a Correction</div>
@@ -5817,7 +6000,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); }}
+              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'bug' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'bug' ? 'text-red-700' : 'text-gray-800'}`}>Report a Bug</div>
@@ -5825,7 +6008,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
             </button>
             <button
               type="button"
-              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); }}
+              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'feature' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
               <div className={`font-semibold ${submissionType === 'feature' ? 'text-purple-700' : 'text-gray-800'}`}>Request a Feature</div>
@@ -5860,8 +6043,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
           </div>
         )}
 
-        {/* Category Selection */}
-        {submitterType && (
+        {/* Category Selection - only for new/correction, not validation */}
+        {submitterType && submissionType !== 'validation' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
             <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
@@ -6015,6 +6198,314 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                 </>
               )}
             </div>
+          </div>
+        )}
+
+        {/* VENDOR TEST VALIDATION FORM */}
+        {submissionType === 'validation' && (
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-emerald-800">Vendor Test Validation</h3>
+                <p className="text-sm text-emerald-600">Verify your company's test data and earn the VENDOR VERIFIED badge</p>
+              </div>
+            </div>
+
+            {/* Special banner for invited vendors */}
+            {isInvitedVendor && (
+              <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4 flex items-center gap-3 mb-4">
+                <svg className="w-8 h-8 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                </svg>
+                <div>
+                  <p className="font-semibold text-emerald-800">Welcome! You've been personally invited to validate your test data.</p>
+                  <p className="text-sm text-emerald-700">Your email has been pre-verified. Just complete your name and select your test below.</p>
+                </div>
+              </div>
+            )}
+
+            {/* Step 1: Verify Email */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className={`w-6 h-6 rounded-full text-white text-sm font-bold flex items-center justify-center ${isInvitedVendor ? 'bg-emerald-400' : 'bg-emerald-500'}`}>
+                  {isInvitedVendor ? '✓' : '1'}
+                </span>
+                <span className="font-semibold text-emerald-800">
+                  {isInvitedVendor ? 'Your Information' : 'Verify Your Vendor Email'}
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">First Name <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">Last Name <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Show locked email for invited vendors */}
+              {isInvitedVendor && verificationStep === 'verified' && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
+                  <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-emerald-800 font-medium">Email Pre-Verified</p>
+                    <p className="text-emerald-700 text-sm">{contactEmail}</p>
+                  </div>
+                  <span className="text-xs bg-emerald-200 text-emerald-800 px-2 py-1 rounded font-medium">INVITED</span>
+                </div>
+              )}
+
+              {verificationStep === 'form' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      Work Email <span className="text-red-500">*</span>
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        value={contactEmail}
+                        onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); setValidationTest(''); }}
+                        className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${emailError ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="you@yourcompany.com"
+                      />
+                      <button
+                        type="button"
+                        onClick={sendVerificationCode}
+                        disabled={isSendingCode || !contactEmail || !firstName || !lastName}
+                        className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                      >
+                        {isSendingCode ? 'Sending...' : 'Verify Email'}
+                      </button>
+                    </div>
+                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                    {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
+                    <p className="text-sm text-emerald-600 mt-2">⚠️ You must use your company email to verify your affiliation with the vendor</p>
+                  </div>
+                </>
+              )}
+
+              {verificationStep === 'verify' && (
+                <>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="text-blue-800">
+                      A verification code has been sent to <strong>{contactEmail}</strong>
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-center text-2xl tracking-widest"
+                      placeholder="• • • • • •"
+                      maxLength={6}
+                    />
+                    <button
+                      type="button"
+                      onClick={verifyCode}
+                      disabled={isVerifying || verificationCode.length !== 6}
+                      className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {isVerifying ? 'Verifying...' : 'Verify'}
+                    </button>
+                  </div>
+                  {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
+                  <button
+                    type="button"
+                    onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); }}
+                    className="text-emerald-600 text-sm hover:underline"
+                  >
+                    ← Use a different email
+                  </button>
+                </>
+              )}
+
+              {verificationStep === 'verified' && !isInvitedVendor && (
+                <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4 flex items-center gap-3">
+                  <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p className="text-emerald-800 font-medium">Email Verified!</p>
+                    <p className="text-emerald-700 text-sm">{contactEmail}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Step 2: Select Test (only after email verified) */}
+            {verificationStep === 'verified' && (
+              <div className="mt-8 pt-6 border-t border-emerald-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '1' : '2'}</span>
+                  <span className="font-semibold text-emerald-800">Select Your Test</span>
+                </div>
+                
+                {getVendorTests().length > 0 ? (
+                  <select
+                    value={validationTest}
+                    onChange={(e) => { setValidationTest(e.target.value); setValidationEdits([]); setValidationAttestation(false); }}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="">-- Select one of your company's tests --</option>
+                    {getVendorTests().map(test => (
+                      <option key={test.id} value={test.id}>{test.name} ({test.category})</option>
+                    ))}
+                  </select>
+                ) : (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-amber-800">
+                    <p className="font-medium">No tests found for your company</p>
+                    <p className="text-sm mt-1">We couldn't find tests matching your email domain. Please use "Suggest a New Test" or contact us if you believe this is an error.</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Step 3: Review & Edit Data (only after test selected) */}
+            {validationTest && (
+              <div className="mt-8 pt-6 border-t border-emerald-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '2' : '3'}</span>
+                  <span className="font-semibold text-emerald-800">Review & Update Data (Optional)</span>
+                </div>
+                
+                <p className="text-sm text-gray-600 mb-4">
+                  Review the current data below. You can add corrections or updates - each change requires a citation.
+                </p>
+
+                {/* Current Data Display */}
+                <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4 max-h-64 overflow-y-auto">
+                  <h4 className="font-medium text-gray-800 mb-2">{getValidationTestData()?.name}</h4>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {getValidationTestCategory() && parameterOptions[getValidationTestCategory()]?.slice(0, -1).map(param => {
+                      const testData = getValidationTestData();
+                      const value = testData?.[param.key];
+                      return (
+                        <div key={param.key} className="flex justify-between py-1 border-b border-gray-100">
+                          <span className="text-gray-500">{param.label}:</span>
+                          <span className="font-medium text-gray-800">{value || '—'}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Add Edit Form */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Add a correction or update:</label>
+                  <div className="grid grid-cols-1 gap-3">
+                    <select
+                      value={validationField}
+                      onChange={(e) => setValidationField(e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                      <option value="">-- Select field to update --</option>
+                      {getValidationTestCategory() && parameterOptions[getValidationTestCategory()]?.map(param => (
+                        <option key={param.key} value={param.key}>{param.label}</option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      value={validationValue}
+                      onChange={(e) => setValidationValue(e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      placeholder="New value"
+                    />
+                    <input
+                      type="url"
+                      value={validationCitation}
+                      onChange={(e) => setValidationCitation(e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      placeholder="Citation URL (required)"
+                    />
+                    <button
+                      type="button"
+                      onClick={addValidationEdit}
+                      disabled={!validationField || !validationValue || !validationCitation}
+                      className="w-full bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg hover:bg-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    >
+                      + Add Update
+                    </button>
+                  </div>
+                </div>
+
+                {/* Pending Edits */}
+                {validationEdits.length > 0 && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Pending updates ({validationEdits.length}):</label>
+                    <div className="space-y-2">
+                      {validationEdits.map((edit, idx) => (
+                        <div key={idx} className="flex items-center justify-between bg-white rounded-lg border border-emerald-200 p-3">
+                          <div className="flex-1">
+                            <span className="font-medium text-gray-800">{parameterOptions[getValidationTestCategory()]?.find(p => p.key === edit.field)?.label || edit.field}</span>
+                            <span className="text-gray-500 mx-2">→</span>
+                            <span className="text-emerald-700">{edit.value}</span>
+                            <p className="text-xs text-gray-400 truncate">{edit.citation}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeValidationEdit(idx)}
+                            className="text-red-500 hover:text-red-700 p-1"
+                          >
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 4: Attestation */}
+                <div className="mt-8 pt-6 border-t border-emerald-200">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '3' : '4'}</span>
+                    <span className="font-semibold text-emerald-800">Vendor Attestation</span>
+                  </div>
+                  
+                  <label className="flex items-start gap-3 p-4 bg-white rounded-lg border-2 border-emerald-300 cursor-pointer hover:bg-emerald-50 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={validationAttestation}
+                      onChange={(e) => setValidationAttestation(e.target.checked)}
+                      className="mt-1 w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                    />
+                    <div>
+                      <p className="font-medium text-gray-800">
+                        I confirm that I am an authorized representative of {getValidationTestData()?.vendor || 'this vendor'}
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        I attest that the information displayed above {validationEdits.length > 0 ? '(with my proposed updates)' : ''} is accurate and complete to the best of my knowledge as of today's date.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -6292,14 +6783,63 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
                 {submitError}
               </div>
             )}
-            <button
-              type="submit"
-              disabled={verificationStep !== 'verified' || isSubmitting}
-              className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-            >
-              {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit Request' : 'Submit Request'}
-            </button>
+            {submissionType === 'validation' ? (
+              /* Special Big Submit Button for Vendor Validation */
+              <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 shadow-lg">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span className="text-white text-lg font-medium">
+                    {validationEdits.length > 0 
+                      ? `Submitting validation with ${validationEdits.length} update${validationEdits.length > 1 ? 's' : ''}`
+                      : 'Confirming current data is accurate'}
+                  </span>
+                </div>
+                <button
+                  type="submit"
+                  disabled={verificationStep !== 'verified' || isSubmitting || !validationAttestation}
+                  className="w-full bg-white text-emerald-700 px-8 py-5 rounded-xl font-bold transition-all text-xl shadow-md hover:bg-emerald-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Submitting Validation...
+                    </>
+                  ) : !validationAttestation ? (
+                    <>
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      Check the attestation box above
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Submit Vendor Validation
+                    </>
+                  )}
+                </button>
+                <p className="text-center text-emerald-100 text-sm mt-3">
+                  This test will receive the VENDOR VERIFIED badge after review
+                </p>
+              </div>
+            ) : (
+              /* Standard Submit Button */
+              <button
+                type="submit"
+                disabled={verificationStep !== 'verified' || isSubmitting}
+                className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+              >
+                {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit Request' : 'Submit Request'}
+              </button>
+            )}
           </>
         )}
       </form>
@@ -8492,7 +9032,7 @@ const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => 
               <div className="flex flex-wrap gap-2 mb-2">
                 {/* VENDOR badge for company contributions */}
                 {COMPANY_CONTRIBUTIONS[test.id] && (
-                  <div className="relative group">
+                  <div className="relative group flex items-center">
                     <span className="px-2 py-0.5 bg-white text-emerald-700 rounded text-xs font-medium cursor-help">
                       ✓ VENDOR
                     </span>
