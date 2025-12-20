@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 18, 2025 (Added Hedera Profiling 2 ctDNA Test Panel - TDS IVD kit)
+// Last updated: December 19, 2025 (Added LiquidHALLMARK - Lucence ctDNA+ctRNA liquid biopsy)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -13,7 +13,7 @@
 // │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
-// │ TDS Tests            │ ~3269       │ tds-21     │ tds-22        │
+// │ TDS Tests            │ ~3269       │ tds-22     │ tds-23        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-12 │ tds-kit-13    │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
@@ -4648,6 +4648,101 @@ export const tdsTestData = [
       }
     ]
   },
+  {
+    "id": "tds-22",
+    "name": "LiquidHALLMARK",
+    "vendor": "Lucence",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP (ctDNA + ctRNA)",
+    "method": "Amplicon-based NGS (AmpliMark platform) of ctDNA (80 genes) and ctRNA (10 fusion targets); detects SNVs, indels, CNAs, MSI, and fusions with molecular barcode error correction. Combined ctDNA + ctRNA analysis increases actionable fusion detection by 36.7% vs ctDNA alone.",
+    "methodCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811 | https://pubmed.ncbi.nlm.nih.gov/35482824/",
+    "methodNotes": "AmpliMark proprietary technology uses unique molecular barcodes and error correction to maximize sensitivity. ctRNA addresses DNA-based fusion detection limitations from large introns. Available via Mayo Clinic Labs since March 2025.",
+    "genesAnalyzed": 80,
+    "genesAnalyzedNotes": "80 genes analyzed via ctDNA for SNVs, indels, CNAs, MSI. 10 genes analyzed via ctRNA for fusions.",
+    "genesAnalyzedCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "rnaGenesAnalyzed": 10,
+    "rnaGenesAnalyzedNotes": "10 ctRNA targets for actionable and emerging fusions: ALK, FGFR2, FGFR3, MET, NTRK1, NTRK2, RET, ROS1, TMPRSS2.",
+    "rnaGenesAnalyzedCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "geneListUrl": "https://www.mayocliniclabs.com/it-mmfiles/LiquidHALLMARK-Targets-by-Cancer-Type.pdf",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "MSI"],
+    "biomarkersReportedNotes": "MSI determined from 6 microsatellite loci (BAT25, BAT26, NR21, NR24, NR27, MONO27). MSI-H = 2+ sites, MSI-L = 1 site.",
+    "biomarkersReportedCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "cancerTypes": ["Solid tumors (lung, breast, colon, prostate, ovarian, gastric, liver, pancreatic, bladder, kidney, thyroid, melanoma, endometrial, cervical, head & neck)"],
+    "cancerTypesNotes": "Targets genes commonly associated with 15 cancer types.",
+    "cancerTypesCitations": "https://www.lucence.com/solutions/liquid-hallmark | https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "targetPopulation": "Patients with solid tumors requiring genomic profiling when tissue biopsy is not feasible or as complement to tissue testing",
+    "targetPopulationCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "lod": "0.1% VAF (SNVs/indels); 0.5% VAF (DNA fusions); 10 copies (RNA fusions)",
+    "lodNotes": "At 0.1% VAF: >91% sensitivity for SNVs, >95% for indels. At 0.5% VAF: >91% sensitivity for DNA fusions. Copy number LoD: gain 0.6 copy (1.3-fold), loss 0.71 copy (1.4-fold). MSI LoD: 5% DNA with deletions-insertions in microsatellite loci.",
+    "lodCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811 | https://pubmed.ncbi.nlm.nih.gov/35482824/",
+    "sensitivity": 99.38,
+    "sensitivityNotes": "99.38% sensitivity for SNVs at 0.1% VAF; 95.83% for indels at 0.1% VAF; >91% for fusions at 0.5% VAF. Performance validated using reference materials and 1,592 clinical samples.",
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/35482824/ | https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "specificity": 99,
+    "specificityNotes": ">99% specificity across mutation classes at 0.1-5% VAF. 93.8% concordance with EGFR allele-specific PCR (n=355); 84% concordance with cobas EGFR v2 (n=50), 100% for VAF >0.4%.",
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/35482824/ | https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "fdaStatus": "CLIA LDT – NOT FDA approved",
+    "fdaStatusNotes": "Laboratory developed test performed at Lucence Health Inc. CLIA-certified (05D2200843), CAP-accredited laboratory. Not cleared or approved by FDA.",
+    "fdaStatusCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer"],
+    "nccnGuidelinesNotes": "Covers 9 NCCN guideline-recommended biomarkers for NSCLC: EGFR, ALK, RET, ROS1, BRAF, KRAS, MET, ERBB2, NTRK1/2/3. LIQUIK study showed LiquidHALLMARK detected 15.6% more tissue-confirmed, NCCN guideline-recommended biomarkers than FDA-approved ctDNA-only test.",
+    "nccnGuidelinesCitations": "https://ascopubs.org/doi/10.1200/PO-25-00181 | https://www.lucence.com/lucencenews/lucence-confirms-comprehensive-medicare-coverage-for-liquidhallmark-and-demonstrates-sensitive-detection-of-lung-cancer-biomarkers-in-prospective-study/",
+    "tat": "8-12 days",
+    "tatNotes": "Results typically available 8-12 days from receipt of specimen. Test performed Monday through Friday.",
+    "tatCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "sampleRequirements": "20mL whole blood in 2x Streck cfDNA BCT tubes (10mL each); 4-day stability at ambient temperature",
+    "sampleRequirementsNotes": "Do not centrifuge or aliquot. Invert tubes to mix blood. Ship at ambient temperature. Gross hemolysis, lipemia, or icterus will result in rejection.",
+    "sampleRequirementsCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage via MolDX (Palmetto GBA), effective October 2, 2024, for all stages of advanced solid tumors. First Asian company to secure Medicare coverage for liquid biopsy in US (Feb 2023 for NSCLC, expanded 2024). CPT code 0571U.",
+    "reimbursementCitations": "https://www.lucence.com/lucencenews/lucence-secures-moldx-approval-for-liquidhallmark-ctdna-and-ctrna-liquid-biopsy-test-to-advance-non-invasive-cancer-diagnostics/ | https://www.lucence.com/lucencenews/lucence-confirms-comprehensive-medicare-coverage-for-liquidhallmark-and-demonstrates-sensitive-detection-of-lung-cancer-biomarkers-in-prospective-study/",
+    "cptCodes": "0571U",
+    "cptCodesCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
+    "codeType": "PLA",
+    "availableRegions": ["US", "Singapore", "International"],
+    "availableRegionsNotes": "US: Available via Mayo Clinic Labs (since March 2025) and Lucence Palo Alto lab (CLIA 05D2200843). Singapore: Lucence headquarters with CLIA/CAP-certified lab. International: Turkey (via Omnigen), India (via Agilus Diagnostics). NOT available in NY State.",
+    "availableRegionsCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811 | https://www.lucence.com/about",
+    "clinicalAvailability": "Commercially available in US since 2021; available via Mayo Clinic Labs since March 2025",
+    "clinicalAvailabilityCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811 | https://www.lucence.com/solutions/liquid-hallmark",
+    "clinicalTrials": "LIQUIK (prospective multicenter NSCLC study, n=200, 7 US sites); VA Palo Alto Health Care System liquid biopsy screening study",
+    "clinicalTrialsNotes": "LIQUIK primary endpoint: compare LiquidHALLMARK with tissue NGS for 9 guideline-recommended genes (EGFR, ALK, RET, ROS1, NTRK, MET, BRAF, ERBB2, KRAS) in treatment-naive metastatic NSCLC. Results published JCO Precision Oncology 2025.",
+    "clinicalTrialsCitations": "https://ascopubs.org/doi/10.1200/PO-25-00181 | https://www.lucence.com/lucencenews/liquik-study-for-lung-cancer/",
+    "totalParticipants": 1592,
+    "totalParticipantsNotes": "Clinical validation cohort of 1,592 patients across 30+ cancer types (Poh et al. PLoS One 2022). LIQUIK prospective study enrolled 200 metastatic NSCLC patients across 7 US sites.",
+    "totalParticipantsCitations": "https://pubmed.ncbi.nlm.nih.gov/35482824/ | https://ascopubs.org/doi/10.1200/PO-25-00181",
+    "numPublications": 10,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Key publications: Poh et al. PLoS One 2022 (analytical/clinical validation); Samol et al. JCO Precis Oncol 2025 (LIQUIK prospective study); Iams et al. JAMA Netw Open 2024 (multicancer cohort); Heeke et al. JTO Clin Res Rep 2025 (ALK ctRNA tracking); multiple ASCO/IASLC conference abstracts.",
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/35482824/ | https://ascopubs.org/doi/10.1200/PO-25-00181 | https://pubmed.ncbi.nlm.nih.gov/38231028/",
+    "technologyDifferentiator": "Combined ctDNA + ctRNA analysis increases actionable fusion detection by 36.7% vs ctDNA alone. AmpliMark proprietary amplicon-based sequencing with molecular barcode error correction enables ultrasensitive detection. ctRNA component addresses DNA-based fusion detection limitations from large introns. LIQUIK prospective study showed LiquidHALLMARK detected 15.6% more tissue-confirmed NCCN guideline-recommended biomarkers than FDA-approved ctDNA-only test with 93-100% agreement with tissue NGS. Available via Mayo Clinic Labs partnership since March 2025.",
+    "publicationsKey": [
+      {
+        "citation": "Poh J, et al. Analytical and clinical validation of an amplicon-based next generation sequencing assay for ultrasensitive detection of circulating tumor DNA. PLoS One. 2022;17(4):e0267389.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35482824/",
+        "keyFinding": "99.38% sensitivity for SNVs, 95.83% for indels at 0.1% VAF. 74.8% of clinical samples harbored actionable biomarkers."
+      },
+      {
+        "citation": "Samol J, et al. LiquidHallmark detects more tissue-confirmed guideline-recommended biomarkers in lung cancer: prospective multicenter study. JCO Precis Oncol. 2025;9:e2500181.",
+        "url": "https://ascopubs.org/doi/10.1200/PO-25-00181",
+        "keyFinding": "LiquidHALLMARK ctDNA+ctRNA detected 15.6% more tissue-confirmed NCCN biomarkers than FDA-approved ctDNA-only test. 93-100% agreement with tissue NGS."
+      },
+      {
+        "citation": "Iams WT, et al. Concurrent tissue and circulating tumor DNA molecular profiling to detect guideline-based targeted mutations in a multicancer cohort. JAMA Netw Open. 2024;7(1):e2351700.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38231028/",
+        "keyFinding": "Multicancer validation of liquid biopsy vs tissue profiling for guideline-recommended biomarkers."
+      }
+    ],
+    "submissionInfo": {
+      "submittedBy": "Jeremy Au",
+      "submitterEmail": "jeremy.au@lucence.com",
+      "submitterType": "Vendor Representative",
+      "submissionDate": "2025-12-19",
+      "submissionNotes": "New test submission via OpenOnco form. Performance data URLs provided: Mayo Clinic Labs catalog and Lucence website. Verified via Mayo Clinic Labs test catalog (LUCHM), Lucence press releases, PLoS One 2022 validation study, and JCO Precision Oncology 2025 LIQUIK study."
+    }
+  },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
   // IVD KITS - Laboratory Kits for Treatment Decision Support / CGP
@@ -5005,6 +5100,18 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 19, 2025',
+    type: 'added',
+    testId: 'tds-22',
+    testName: 'LiquidHALLMARK',
+    vendor: 'Lucence',
+    category: 'TDS',
+    description: 'Added ultrasensitive liquid biopsy combining ctDNA (80 genes) and ctRNA (10 fusion targets). AmpliMark amplicon-based NGS with molecular barcode error correction. Combined ctDNA+ctRNA increases actionable fusion detection by 36.7% vs ctDNA alone. 0.1% VAF LOD for SNVs/indels, 10 copies LOD for RNA fusions. LIQUIK prospective study (JCO Precis Oncol 2025) showed 15.6% more tissue-confirmed NCCN biomarkers detected vs FDA-approved ctDNA-only test. Medicare covered via MolDX (Oct 2024). Available via Mayo Clinic Labs since March 2025. First Asian company to secure Medicare coverage for liquid biopsy in US.',
+    contributor: 'Jeremy Au',
+    affiliation: 'Lucence (vendor)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/35482824/ | https://ascopubs.org/doi/10.1200/PO-25-00181'
+  },
   {
     date: 'Dec 18, 2025',
     type: 'added',
@@ -5693,6 +5800,7 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
+  { id: 'tds-22', name: 'LiquidHALLMARK', vendor: 'Lucence', category: 'TDS', dateAdded: 'Dec 19, 2025' },
   { id: 'mrd-24', name: 'CancerVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 15, 2025' },
   { id: 'ecd-kit-1', name: 'Cologuard', vendor: 'Exact Sciences', category: 'ECD', dateAdded: 'Dec 14, 2025' },
   { id: 'mrd-kit-1', name: 'clonoSEQ Assay (IVD Kit)', vendor: 'Adaptive Biotechnologies', category: 'MRD', dateAdded: 'Dec 14, 2025' },
@@ -5702,8 +5810,6 @@ export const RECENTLY_ADDED_TESTS = [
   { id: 'trm-12', name: 'Reveal TRM', vendor: 'Guardant Health', category: 'TRM', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-23', name: 'LymphoVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 12, 2025' },
   { id: 'mrd-22', name: 'CancerDetect', vendor: 'IMBdx', category: 'MRD', dateAdded: 'Dec 11, 2025' },
-  { id: 'mrd-21', name: 'Latitude', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
-  { id: 'mrd-20', name: 'Signatera Genome', vendor: 'Natera', category: 'MRD', dateAdded: 'Dec 11, 2025' },
 ];
 
 // Helper to get changelog
@@ -5912,9 +6018,9 @@ export const createCategoryMeta = (buildInfoSources = {}) => ({
   ECD: {
     title: 'Early Cancer Detection',
     shortTitle: 'Early Detection',
-    description: 'Early Cancer Detection (ECD) tests screen for cancer in people who have no symptoms, with the goal of catching the disease at its earliest and most treatable stages. These tests look for cancer signals in blood samples using various biomarkers including ctDNA methylation patterns, tumor-derived proteins, and genetic mutations. Some tests screen for a single cancer type (like colorectal), while multi-cancer early detection (MCED) tests can screen for dozens of cancer types simultaneously.',
+    description: 'Early Cancer Detection (ECD) tests screen for cancer in people who have no symptoms, with the goal of catching the disease at its earliest and most treatable stages. These tests look for cancer signals in blood or stool samples using various biomarkers including ctDNA methylation patterns, tumor-derived proteins, genetic mutations, and stool DNA markers. Some tests screen for a single cancer type (like colorectal), while multi-cancer early detection (MCED) tests can screen for dozens of cancer types simultaneously.',
     patientTitle: 'Cancer Screening Tests',
-    patientDescription: 'These blood tests look for signs of cancer before you have any symptoms. Finding cancer early, when it\'s easiest to treat, can save lives.',
+    patientDescription: 'These tests look for signs of cancer before you have any symptoms using a blood draw or stool sample. Finding cancer early, when it\'s easiest to treat, can save lives.',
     color: 'green',
     tests: ecdTestData,
     sourceUrl: buildInfoSources.ECD || '',
