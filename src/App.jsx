@@ -563,17 +563,18 @@ const ExternalResourceLink = ({ resource, compact = false }) => {
 // ============================================
 // External Resources Section Component
 // ============================================
-const ExternalResourcesSection = ({ category, compact = false }) => {
+const ExternalResourcesSection = ({ category, isPatient = false, compact = false }) => {
   const categoryResources = EXTERNAL_RESOURCES[category] || [];
   const generalResources = EXTERNAL_RESOURCES.general || [];
   const standards = CATEGORY_STANDARDS[category];
   
-  // Filter resources by audience (clinician/researcher view)
+  // Filter resources by audience
+  const audienceFilter = isPatient ? 'patient' : 'clinician';
   const filteredCategoryResources = categoryResources.filter(r => 
-    r.audience.includes('clinician') || r.audience.includes('researcher')
+    r.audience.includes(audienceFilter) || r.audience.includes('researcher')
   );
   const filteredGeneralResources = generalResources.filter(r => 
-    r.audience.includes('clinician')
+    r.audience.includes(audienceFilter)
   );
   
   // Get primary resources for compact view
@@ -593,7 +594,7 @@ const ExternalResourcesSection = ({ category, compact = false }) => {
     <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
-          Standards & Resources
+          {isPatient ? 'Learn More' : 'Standards & Resources'}
         </h3>
         {standards && (
           <span className="text-xs text-gray-500 italic">{standards.attribution}</span>
@@ -604,7 +605,7 @@ const ExternalResourcesSection = ({ category, compact = false }) => {
       {filteredCategoryResources.length > 0 && (
         <div className="mb-4">
           <h4 className="text-sm font-medium text-gray-700 mb-2">
-            Key References
+            {isPatient ? 'Patient Resources' : 'Key References'}
           </h4>
           <div className="grid sm:grid-cols-2 gap-3">
             {filteredCategoryResources.slice(0, 4).map(resource => (
@@ -615,7 +616,7 @@ const ExternalResourcesSection = ({ category, compact = false }) => {
       )}
       
       {/* General resources */}
-      {filteredGeneralResources.length > 0 && (
+      {!isPatient && filteredGeneralResources.length > 0 && (
         <div>
           <h4 className="text-sm font-medium text-gray-700 mb-2">General Resources</h4>
           <div className="flex flex-wrap gap-2">
@@ -1830,6 +1831,16 @@ const TestShowcase = ({ onNavigate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const chatContainerRef = useRef(null);
+
+  // Track persona
+  const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
+  useEffect(() => {
+    const handlePersonaChange = (e) => setPersona(e.detail);
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+  
+  const isPatient = persona === 'Patient';
   
   // Auto-scroll to bottom of messages when new messages arrive
   useEffect(() => {
@@ -2368,6 +2379,281 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
   };
 
+  // ========== PATIENT VIEW: Test cards grid ==========
+  if (isPatient) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+        {/* Under Construction Banner */}
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg flex items-center gap-3">
+          <span className="text-2xl">🚧</span>
+          <div>
+            <p className="font-semibold text-amber-800">Patient View Under Construction</p>
+            <p className="text-sm text-amber-700">We're actively improving this experience. Some features may be incomplete.</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-bold text-slate-800">
+            {searchQuery 
+              ? `Search Results (${filteredTests.length})`
+              : `The ${allTests.length} Tests We Track`}
+          </h3>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-500">Sort Order</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
+            >
+              <option value="vendor">Alphabetical</option>
+              <option value="category">By Category</option>
+              <option value="tat">By TAT (fastest)</option>
+              <option value="reimbursement">By Coverage</option>
+            </select>
+          </div>
+        </div>
+        
+        {/* Search Bar */}
+        <div className="relative mb-3">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search tests or vendors..."
+            className="w-full px-3 py-2 pl-8 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+          />
+          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        
+        <p className="text-xs text-slate-500 text-center mb-3">
+          Showing coverage, pricing & wait times
+        </p>
+        
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+          {filteredTests.length === 0 && searchQuery && (
+            <div className="col-span-full text-center py-8 text-slate-500">
+              No test or vendor match found.
+            </div>
+          )}
+          {filteredTests.map(test => {
+            const badges = getPatientBadges(test);
+            const colors = colorClasses[test.color];
+            const isDiscontinued = test.isDiscontinued === true;
+            const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+            const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
+            const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
+            
+            return (
+              <div
+                key={test.id}
+                onClick={() => onNavigate(test.category, test.id)}
+                className={`relative ${colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
+              >
+                {/* DISCONTINUED text overlay */}
+                {isDiscontinued && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-gray-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                      DISCONTINUED
+                    </span>
+                  </div>
+                )}
+                {/* INCOMPLETE text overlay for non-BC tests */}
+                {!isBC && !isDiscontinued && !hasCompanyComm && !hasVendorVerified && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                      INCOMPLETE
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-start justify-between mb-1">
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-xs font-semibold truncate ${isDiscontinued ? 'text-gray-400' : 'text-slate-800'}`}>{test.name}</p>
+                    <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
+                  </div>
+                  {isDiscontinued ? (
+                    <span className="bg-gray-200 text-gray-600 text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0">
+                      DISC
+                    </span>
+                  ) : (
+                    <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                      {/* VENDOR VERIFIED badge - green, pulsing */}
+                      {hasVendorVerified && (
+                        <div className="relative group flex items-center">
+                          <span className="inline-flex items-center bg-emerald-500 text-white text-[9px] px-1 rounded font-bold cursor-help h-[18px] animate-pulse shadow-sm">
+                            ✓VERIFIED
+                          </span>
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                            <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                            <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                            <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                          </div>
+                        </div>
+                      )}
+                      {/* VENDOR DATA badge - orange (only if not verified) */}
+                      {hasCompanyComm && !hasVendorVerified && (
+                        <div className="relative group flex items-center">
+                          <span className="inline-flex items-center bg-orange-100 text-orange-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
+                            VENDOR
+                          </span>
+                          <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
+                            <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                            <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                            <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                          </div>
+                        </div>
+                      )}
+                      {/* Kit/Service badge */}
+                      {test.productType === 'Laboratory IVD Kit' ? (
+                        <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Laboratory IVD Kit">
+                          🔬Kit
+                        </span>
+                      ) : test.productType === 'Self-Collection' ? (
+                        <span className="inline-flex items-center bg-teal-100 text-teal-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Self-Collection">
+                          🏠Home
+                        </span>
+                      ) : null}
+                      {/* Category badge */}
+                      <span className={`inline-flex items-center ${colors.badge} text-white text-[9px] px-1 rounded font-medium h-[18px]`}>
+                        {test.category}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {badges.map((badge, idx) => (
+                    <span 
+                      key={idx}
+                      className={`text-[10px] px-1.5 py-0.5 rounded ${
+                        badge.type === 'good' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                      }`}
+                    >
+                      {badge.label} {badge.value}
+                    </span>
+                  ))}
+                  {badges.length === 0 && (
+                    <span className="text-[10px] text-slate-400">No data</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Compact Legend */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
+          <span className="flex items-center gap-1">
+            <span className="bg-indigo-100 text-indigo-700 px-1 rounded">🔬Kit</span>
+            <span className="text-slate-500">IVD Kit</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="bg-teal-100 text-teal-700 px-1 rounded">🏠Home</span>
+            <span className="text-slate-500">Self-Collect</span>
+          </span>
+          <span className="text-slate-300">|</span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+            <span className="text-slate-500">After Treatment</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span className="text-slate-500">Screening</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+            <span className="text-slate-500">During Treatment</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+            <span className="text-slate-500">Diagnosis</span>
+          </span>
+        </div>
+
+        {/* Test Detail Modal - Patient View */}
+        {selectedTest && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedTest(null)}>
+            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+              {(() => {
+                const category = selectedTest.category;
+                const colorSchemes = {
+                  MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
+                  ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
+                  TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
+                  TDS: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
+                };
+                const clrs = colorSchemes[category] || colorSchemes.MRD;
+                const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');
+                const hasPrivate = selectedTest.commercialPayers && selectedTest.commercialPayers.length > 0;
+                
+                return (
+                  <>
+                    <div className={`flex justify-between items-start p-5 ${clrs.headerBg}`} style={{ flexShrink: 0 }}>
+                      <div className="flex-1 mr-4">
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {hasMedicare && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Medicare</span>}
+                          {hasPrivate && <span className="px-2 py-0.5 bg-white/20 text-white rounded text-xs font-medium">Private Insurance</span>}
+                        </div>
+                        <h2 className="text-2xl font-bold text-white">{selectedTest.name}</h2>
+                        <p className="text-white/80">{selectedTest.vendor}</p>
+                      </div>
+                      <button onClick={() => setSelectedTest(null)} className="p-2 hover:bg-white/20 rounded-xl transition-colors flex-shrink-0">
+                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="p-5 overflow-y-auto" style={{ flex: 1 }}>
+                      <p className="text-gray-700 mb-4">
+                        {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment to help your doctor know if treatment worked."}
+                        {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms."}
+                        {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood."}
+                        {category === 'TDS' && "This test helps your doctor decide the best treatment approach for your specific cancer."}
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className={`flex items-center gap-2 p-2 rounded-lg ${hasMedicare ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasMedicare ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                            {hasMedicare ? '✓' : '✗'}
+                          </span>
+                          <span className="text-sm">Medicare coverage</span>
+                        </div>
+                        <div className={`flex items-center gap-2 p-2 rounded-lg ${hasPrivate ? 'bg-emerald-50' : 'bg-gray-50'}`}>
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${hasPrivate ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'}`}>
+                            {hasPrivate ? '✓' : '✗'}
+                          </span>
+                          <span className="text-sm">Private insurance</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-gray-200 px-5 py-4 flex justify-between items-center bg-gray-50" style={{ flexShrink: 0 }}>
+                      <p className="text-sm text-gray-500">View full details in the navigator</p>
+                      <button
+                        onClick={() => { setSelectedTest(null); onNavigate(selectedTest.category, selectedTest.id); }}
+                        className="px-4 py-2 text-white rounded-lg font-medium hover:opacity-90"
+                        style={{ backgroundColor: '#2A63A4' }}
+                      >
+                        See All Options
+                      </button>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -2584,7 +2870,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                       {hasVendorVerified && (
                         <div className="relative group flex items-center">
                           <span className="inline-flex items-center bg-emerald-500 text-white text-[9px] px-1 rounded font-bold cursor-help h-[18px] animate-pulse shadow-sm">
-                            ✓ VENDOR VERIFIED
+                            ✓VERIFIED
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
@@ -2594,14 +2880,14 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                           </div>
                         </div>
                       )}
-                      {/* VENDOR INPUT badge - green (only if not verified) */}
+                      {/* VENDOR DATA badge - orange (only if not verified) */}
                       {hasCompanyComm && !hasVendorVerified && (
                         <div className="relative group flex items-center">
-                          <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
-                            ✓ INPUT
+                          <span className="inline-flex items-center bg-orange-100 text-orange-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
+                            VENDOR
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
+                            <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                             <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                             <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                             <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -3041,16 +3327,137 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
           </h1>
         </div>
 
-        {/* Browse Mode Toggle + Test Views */}
-        <div className="mb-4">
-          {/* Browse Mode Toggle */}
-          <TestShowcase onNavigate={onNavigate} />
-        </div>
+        {/* Unified Database Access Container - Only for Patients */}
+        {persona === 'Patient' && (
+          <div className="rounded-2xl border-2 border-slate-300 bg-slate-50 mb-4 overflow-hidden">
+            {/* Under Construction Banner */}
+            <div className="mx-4 mt-4 p-3 bg-amber-50 border border-amber-300 rounded-lg flex items-center gap-3">
+              <span className="text-2xl">🚧</span>
+              <div>
+                <p className="font-semibold text-amber-800">Patient View Under Construction</p>
+                <p className="text-sm text-amber-700">We're actively improving this experience. Some features may be incomplete.</p>
+              </div>
+            </div>
+            
+            {/* Container Header */}
+            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200 mt-4">
+              <h2 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">
+                Ask about liquid biopsy tests for cancer treatment
+              </h2>
+            </div>
+            
+            {/* Chat Section */}
+            <div className="bg-white">
+            
+            {/* Messages Area */}
+            {messages.length > 0 && (
+              <div ref={chatContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                {messages.map((msg, i) => (
+                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div 
+                      className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'text-white rounded-br-md' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md'}`}
+                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                    >
+                      {msg.role === 'user' ? (
+                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      ) : (
+                        <Markdown className="text-sm">{msg.content}</Markdown>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-2">
+                      <p className="text-sm text-slate-500">Thinking...</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* Input Area */}
+            <div className="p-4 lg:p-6 border-t border-slate-200 bg-white">
+              <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2 lg:gap-3 items-center">
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="px-2 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 cursor-pointer"
+                  title="Select AI model"
+                >
+                  {CHAT_MODELS.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Type your liquid biopsy test question here..."
+                  className="flex-1 border-2 rounded-lg px-4 py-2 lg:py-3 lg:text-lg focus:outline-none focus:ring-2"
+                  style={{ borderColor: '#2A63A4', '--tw-ring-color': '#2A63A4' }}
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !chatInput.trim()}
+                  className="text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-medium lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                >
+                  Ask
+                </button>
+              </form>
+              <p className="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+            </div>
+            
+            {/* Example Questions (show below input when no messages) */}
+            {messages.length === 0 && (
+              <div className="px-4 lg:px-6 py-3 bg-slate-50 border-t border-slate-100">
+                <div className="flex items-center gap-2 lg:gap-3 overflow-x-auto">
+                  <span className="text-xs lg:text-sm text-slate-500 flex-shrink-0">Try:</span>
+                  {exampleQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSubmit(q)}
+                      className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors whitespace-nowrap flex-shrink-0"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            </div>
+            
+            {/* Divider */}
+            <div className="mx-4 lg:mx-6 border-t border-slate-200"></div>
+            
+            {/* Lifecycle Navigator Header */}
+            <div className="px-4 lg:px-6 py-3 bg-slate-100 border-b border-slate-200">
+              <h3 className="text-sm lg:text-base font-semibold text-slate-600 uppercase tracking-wide">Or browse by category:</h3>
+            </div>
+            
+            {/* Lifecycle Navigator */}
+            <div className="p-4 lg:p-6">
+              <LifecycleNavigator onNavigate={onNavigate} />
+            </div>
+          </div>
+        )}
 
-        {/* Data Openness Overview (includes Top 3 ranking) - hidden on mobile */}
-        <div className="hidden md:block mb-4">
-          <DatabaseSummary />
-        </div>
+        {/* Browse Mode Toggle + Test Views - Only for Clinician/Academic views */}
+        {persona !== 'Patient' && (
+          <div className="mb-4">
+            {/* Browse Mode Toggle */}
+            <TestShowcase onNavigate={onNavigate} />
+          </div>
+        )}
+
+        {/* Data Openness Overview (includes Top 3 ranking) - Only for Clinician/Academic views, hidden on mobile */}
+        {persona !== 'Patient' && (
+          <div className="hidden md:block mb-4">
+            <DatabaseSummary />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -6788,11 +7195,11 @@ const SourceDataPage = () => {
               </div>
               <div className="mt-3 space-y-2">
                 <p className="text-xs text-gray-600 flex items-center gap-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white animate-pulse">✓ VENDOR VERIFIED</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white animate-pulse">✓ VERIFIED</span>
                   <span>Vendor completed full validation process - highest trust tier, sorted to top</span>
                 </p>
                 <p className="text-xs text-gray-600 flex items-center gap-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">✓ INPUT</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700 border border-orange-200">VENDOR</span>
                   <span>Data contributed or corrected by vendor representative</span>
                 </p>
               </div>
@@ -8137,7 +8544,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {!isDiscontinued && hasVendorVerified && (
                 <div className="relative group inline-flex">
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white animate-pulse shadow-sm">
-                    ✓ VENDOR VERIFIED
+                    ✓ VERIFIED
                   </span>
                   <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
@@ -8147,14 +8554,14 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                   </div>
                 </div>
               )}
-              {/* VENDOR INPUT badge - green (only if not verified) */}
+              {/* VENDOR DATA badge - orange (only if not verified) */}
               {!isDiscontinued && hasCompanyComm && !hasVendorVerified && (
                 <div className="relative group inline-flex">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">
-                    ✓ INPUT
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700 border border-orange-200">
+                    VENDOR
                   </span>
                   <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
+                    <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                     <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                     <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                     <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -8320,6 +8727,171 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
 };
 
 // ============================================
+// Patient Test Card - Simplified view for patients
+// ============================================
+const PatientTestCard = ({ test, category, onShowDetail }) => {
+  const isDiscontinued = test.isDiscontinued === true;
+  const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+  const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
+  
+  // Determine coverage status
+  const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
+    !test.reimbursement?.toLowerCase().includes('not yet') &&
+    !test.reimbursement?.toLowerCase().includes('no established');
+  const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
+  const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes';
+  
+  // Get wait time and simplify for display
+  const rawTat = test.initialTat || test.tat || null;
+  
+  // Parse TAT into a simple display format
+  const getTatDisplay = () => {
+    if (!rawTat) return null;
+    
+    // If it's a number, use it directly
+    if (typeof rawTat === 'number') {
+      return { value: `~${rawTat}`, suffix: 'days' };
+    }
+    
+    // If it's a string, try to extract the key info
+    const tatStr = String(rawTat).toLowerCase();
+    
+    // Check for "not" patterns (not available, not specified, etc.)
+    if (tatStr.includes('not ')) {
+      return { value: 'TBD', suffix: 'days', note: 'Not specified' };
+    }
+    
+    // Try to extract a number or range from the string
+    const numMatch = String(rawTat).match(/(\d+(?:-\d+)?)/);
+    if (numMatch) {
+      return { value: `~${numMatch[1]}`, suffix: 'days' };
+    }
+    
+    // Fallback - just show a generic indicator
+    return { value: '?', suffix: 'days', note: 'See details' };
+  };
+  
+  const tatDisplay = getTatDisplay();
+  
+  // Yes/No badge component
+  const YesNoBadge = ({ yes, label }) => (
+    <div className="flex items-center gap-2 py-1.5">
+      <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+        yes ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'
+      }`}>
+        {yes ? '✓' : '✗'}
+      </span>
+      <span className="text-sm text-gray-700">{label}</span>
+    </div>
+  );
+  
+  return (
+    <div data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-gray-300 transition-all overflow-hidden`}>
+      {/* DISCONTINUED text overlay */}
+      {isDiscontinued && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-gray-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
+            DISCONTINUED
+          </span>
+        </div>
+      )}
+      {/* Header - clickable to show detail modal */}
+      <div className="cursor-pointer flex-1 flex flex-col" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
+        <div className="flex justify-between items-start mb-3">
+          <div>
+            {/* VENDOR VERIFIED badge - green, pulsing */}
+            {hasVendorVerified && (
+              <div className="relative group inline-block mb-1 mr-1">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white cursor-help animate-pulse shadow-sm">
+                  ✓ VERIFIED
+                </span>
+                <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                  <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                  <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                  <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                </div>
+              </div>
+            )}
+            {/* VENDOR DATA badge - orange (only if not verified) */}
+            {hasCompanyComm && !hasVendorVerified && (
+              <div className="relative group inline-block mb-1">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-orange-50 text-orange-700 border-orange-200 cursor-help">
+                  VENDOR
+                </span>
+                <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
+                  <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                  <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                  <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                </div>
+              </div>
+            )}
+            <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
+            <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+          </div>
+          <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
+            isDiscontinued ? 'bg-gray-200 text-gray-600' :
+            hasMedicare && hasPrivate ? 'bg-emerald-100 text-emerald-700' :
+            hasMedicare || hasPrivate ? 'bg-blue-100 text-blue-700' :
+            'bg-gray-100 text-gray-500'
+          }`}>
+            {isDiscontinued ? 'DISCONTINUED' :
+             hasMedicare && hasPrivate ? 'Insurance Covered' :
+             hasMedicare ? 'Medicare Covered' :
+             hasPrivate ? 'Some Insurance' : 'Check Coverage'}
+          </div>
+        </div>
+        
+        {/* Key patient questions - always visible */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-3">
+          <YesNoBadge yes={hasMedicare} label="Medicare coverage" />
+          <YesNoBadge yes={hasPrivate} label="Private insurance" />
+          <YesNoBadge yes={!requiresTissue} label="Blood-only (no tissue)" />
+          {tatDisplay && (
+            <div className="flex items-center gap-2 py-1.5">
+              <span className={`min-w-6 h-6 px-1.5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                tatDisplay.note ? 'bg-gray-100 text-gray-500' : 'bg-blue-100 text-blue-700'
+              }`}>
+                {tatDisplay.value}
+              </span>
+              <span className="text-sm text-gray-700">{tatDisplay.suffix}</span>
+            </div>
+          )}
+        </div>
+        
+        {/* Cancer types */}
+        {test.cancerTypes && (
+          <div className="mb-2">
+            <p className="text-xs text-gray-500 mb-1">Works for:</p>
+            <div className="flex flex-wrap gap-1">
+              {test.cancerTypes.slice(0, 4).map((type, i) => (
+                <span key={i} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">
+                  {type.length > 20 ? type.slice(0, 20) + '...' : type}
+                </span>
+              ))}
+              {test.cancerTypes.length > 4 && (
+                <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-xs">
+                  +{test.cancerTypes.length - 4} more
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+        
+        {/* Show detail button - pushed to bottom */}
+        <button className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1 mt-auto pt-2">
+          Learn more
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // Minimum Parameters by Category
 // ============================================
 const MINIMUM_PARAMS = {
@@ -8471,7 +9043,7 @@ const MinimumFieldsSection = ({ test, category }) => {
 // ============================================
 // Test Detail Modal
 // ============================================
-const TestDetailModal = ({ test, category, onClose }) => {
+const TestDetailModal = ({ test, category, onClose, isPatientView = false }) => {
   const [linkCopied, setLinkCopied] = useState(false);
   
   if (!test) return null;
@@ -8631,7 +9203,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                 {VENDOR_VERIFIED[test.id] && (
                   <div className="relative group flex items-center">
                     <span className="px-2 py-0.5 bg-emerald-500 text-white rounded text-xs font-bold cursor-help animate-pulse shadow-sm">
-                      ✓ VENDOR VERIFIED
+                      ✓ VERIFIED
                     </span>
                     <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                       <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
@@ -8641,14 +9213,14 @@ const TestDetailModal = ({ test, category, onClose }) => {
                     </div>
                   </div>
                 )}
-                {/* VENDOR INPUT badge - green (only if not verified) */}
+                {/* VENDOR DATA badge - orange (only if not verified) */}
                 {COMPANY_CONTRIBUTIONS[test.id] && !VENDOR_VERIFIED[test.id] && (
                   <div className="relative group flex items-center">
-                    <span className="px-2 py-0.5 bg-emerald-400 text-white rounded text-xs font-medium cursor-help">
-                      ✓ INPUT
+                    <span className="px-2 py-0.5 bg-orange-500 text-white rounded text-xs font-medium cursor-help">
+                      VENDOR
                     </span>
                     <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
+                      <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
                       <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
                       <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
                       <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
@@ -8718,7 +9290,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
         <div className="overflow-y-auto p-5 space-y-4" style={{ flex: 1 }}>
           
           {/* Patient View */}
-          (
+          {isPatientView ? (
             <>
               {/* Quick Facts for Patients */}
               <Section title="Quick Facts">
@@ -9193,7 +9765,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
               
               {/* BLOODPAC Standards Reference - MRD only */}
-              {category === 'MRD' && (
+              {category === 'MRD' && !isPatientView && (
                 <div className="mt-4 p-3 bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg border border-orange-200">
                   <div className="flex items-start gap-3">
                     <span className="text-lg">📋</span>
@@ -9215,7 +9787,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
               
               {/* TRM Standards Reference - ctMoniTR */}
-              {category === 'TRM' && (
+              {category === 'TRM' && !isPatientView && (
                 <div className="mt-4 p-3 bg-gradient-to-r from-sky-50 to-cyan-50 rounded-lg border border-sky-200">
                   <div className="flex items-start gap-3">
                     <span className="text-lg">📊</span>
@@ -9234,7 +9806,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
               
               {/* TDS Standards Reference - NCCN */}
-              {category === 'TDS' && (
+              {category === 'TDS' && !isPatientView && (
                 <div className="mt-4 p-3 bg-gradient-to-r from-violet-50 to-purple-50 rounded-lg border border-violet-200">
                   <div className="flex items-start gap-3">
                     <span className="text-lg">📋</span>
@@ -9262,7 +9834,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
               
               {/* Minimum Fields Section - for VC eligibility */}
-              {MINIMUM_PARAMS[category] && (
+              {!isPatientView && MINIMUM_PARAMS[category] && (
                 <MinimumFieldsSection test={test} category={category} />
               )}
             </>
@@ -9720,15 +10292,26 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const filterScrollRef = useRef(null);
   const scrollLockRef = useRef(null);
   
+  // Track persona for conditional rendering
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  useEffect(() => {
+    const handlePersonaChange = (e) => setPersona(e.detail);
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+  
+  const isPatient = persona === 'Patient';
+  
   // Handler to show test detail with tracking
   const handleShowDetail = (test) => {
+    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
     track('test_detail_viewed', { 
       category: category,
       test_id: test.id,
       test_name: test.name,
       vendor: test.vendor
     }, { 
-      flags: [`category-${category.toLowerCase()}`] 
+      flags: [personaFlag, `category-${category.toLowerCase()}`] 
     });
     setDetailTest(test);
   };
@@ -9956,35 +10539,48 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       <div className="max-w-7xl mx-auto px-6 py-8" style={{ overflowAnchor: 'none' }}>
       <div className="mb-8">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${colorClasses[meta.color]} text-white text-sm font-medium mb-3`}>
-          {meta.shortTitle}
+          {isPatient ? meta.patientTitle : meta.shortTitle}
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          {meta.title}
+          {isPatient ? meta.patientTitle : meta.title}
         </h1>
-        <p className="text-gray-600">{meta.description}</p>
+        <p className="text-gray-600">{isPatient ? meta.patientDescription : meta.description}</p>
         
-        {/* Parameter type legend */}
-        <div className="flex items-center gap-4 mt-3 text-xs">
-          <span className="text-slate-500">Data types:</span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="text-slate-500">Clinical</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-violet-500"></span>
-            <span className="text-slate-500">Analytical</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-            <span className="text-slate-500">Operational</span>
-          </span>
-        </div>
+        {/* Parameter type legend - hide for patients */}
+        {!isPatient && (
+          <div className="flex items-center gap-4 mt-3 text-xs">
+            <span className="text-slate-500">Data types:</span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-slate-500">Clinical</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+              <span className="text-slate-500">Analytical</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+              <span className="text-slate-500">Operational</span>
+            </span>
+          </div>
+        )}
+        
+        {/* Patient-friendly intro */}
+        {isPatient && (
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <p className="text-sm text-blue-800">
+              <strong>💡 Tip:</strong> Use the filters to find tests that match your situation. 
+              Each test card shows whether it's covered by insurance and what's involved.
+              Always discuss testing options with your doctor.
+            </p>
+          </div>
+        )}
         
         {/* Quick resources bar - shown for cancer categories */}
         {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="text-xs text-gray-500 font-medium">Quick links:</span>
-            <ExternalResourcesSection category={category} compact />
+            <ExternalResourcesSection category={category} isPatient={isPatient} compact />
           </div>
         )}
       </div>
@@ -10019,7 +10615,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
               
               {/* Cancer Type Section - FIRST FILTER */}
               <FilterSection
-                title={'Cancer Type'}
+                title={isPatient ? 'Cancer Type' : 'Cancer Type'}
                 defaultOpen={false}
                 activeCount={category === 'ECD' ? selectedIndicationGroups.length : selectedCancerTypes.length}
               >
@@ -10055,7 +10651,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
               {/* Product Type Section - IVD Kit vs Service */}
               {config.productTypes && (
                 <FilterSection
-                  title={'Product Type'}
+                  title={isPatient ? 'How It Works' : 'Product Type'}
                   defaultOpen={false}
                   activeCount={selectedProductTypes.length}
                 >
@@ -10072,28 +10668,34 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                           />
                           <span className="flex items-center gap-1.5 text-sm text-gray-700 group-hover:text-gray-900">
                             <span>{ptConfig.icon}</span>
-                            <span>{ptConfig.label}</span>
+                            <span>{isPatient ? (
+                              pt === 'Self-Collection' ? 'At-home collection' :
+                              pt === 'Laboratory IVD Kit' ? 'Hospital lab test' :
+                              'Send-away test'
+                            ) : ptConfig.label}</span>
                           </span>
                         </label>
                       );
                     })}
                   </div>
-                  <p className="text-xs text-gray-400 mt-2 italic">
-                    🏠 Self-collection: patient collects at home<br/>
-                    🔬 Lab Kit: IVD kit run at any equipped lab<br/>
-                    🏥 Service: sample shipped to central lab
-                  </p>
+                  {!isPatient && (
+                    <p className="text-xs text-gray-400 mt-2 italic">
+                      🏠 Self-collection: patient collects at home<br/>
+                      🔬 Lab Kit: IVD kit run at any equipped lab<br/>
+                      🏥 Service: sample shipped to central lab
+                    </p>
+                  )}
                 </FilterSection>
               )}
 
               {/* Clinical Section - now without cancer types (moved to top) */}
               <FilterSection 
-                title={'Clinical'} 
+                title={isPatient ? 'Test Details' : 'Clinical'} 
                 defaultOpen={false}
                 activeCount={selectedTestScopes.length + selectedClinicalSettings.length}
               >
                 {/* Clinical Setting - MRD only */}
-                {category === 'MRD' && config.clinicalSettings && (
+                {category === 'MRD' && !isPatient && config.clinicalSettings && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Clinical Setting</label>
                     <div className="space-y-0.5">
@@ -10109,17 +10711,29 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     <p className="text-xs text-gray-400 mt-1 italic">Filter by validated clinical context</p>
                   </>
                 )}
+                {/* Patient-friendly clinical setting for MRD */}
+                {category === 'MRD' && isPatient && (
+                  <>
+                    <label className="text-xs text-gray-500 mb-1 mt-3 block">When in my treatment?</label>
+                    <div className="space-y-0.5">
+                      <Checkbox label="Before surgery (during chemo)" checked={selectedClinicalSettings.includes('Neoadjuvant')} onChange={() => toggle(setSelectedClinicalSettings)('Neoadjuvant')} />
+                      <Checkbox label="Right after surgery" checked={selectedClinicalSettings.includes('Post-Surgery')} onChange={() => toggle(setSelectedClinicalSettings)('Post-Surgery')} />
+                      <Checkbox label="After chemo finishes" checked={selectedClinicalSettings.includes('Post-Adjuvant')} onChange={() => toggle(setSelectedClinicalSettings)('Post-Adjuvant')} />
+                      <Checkbox label="Ongoing monitoring" checked={selectedClinicalSettings.includes('Surveillance')} onChange={() => toggle(setSelectedClinicalSettings)('Surveillance')} />
+                    </div>
+                  </>
+                )}
                 {/* Test Scope - for ECD only */}
                 {category === 'ECD' && (
                   <>
-                    <label className="text-xs text-gray-500 mb-1 block">Scope</label>
-                    {config.testScopes?.map(s => <Checkbox key={s} label={s === 'Single-cancer' ? 'Single-cancer (CRC, Lung, Liver, etc.)' : 'Multi-cancer (MCED)'} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
+                    <label className="text-xs text-gray-500 mb-1 block">{isPatient ? 'Type of Screening' : 'Scope'}</label>
+                    {config.testScopes?.map(s => <Checkbox key={s} label={isPatient ? (s === 'Single-cancer' ? 'Single cancer type' : 'Multiple cancer types') : (s === 'Single-cancer' ? 'Single-cancer (CRC, Lung, Liver, etc.)' : 'Multi-cancer (MCED)')} checked={selectedTestScopes.includes(s)} onChange={() => toggle(setSelectedTestScopes)(s)} />)}
                   </>
                 )}
               </FilterSection>
 
               {/* Methodology Section */}
-              {(
+              {!isPatient && (
                 <FilterSection 
                   title="Methodology" 
                   defaultOpen={false}
@@ -10161,32 +10775,38 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   )}
                 </FilterSection>
               )}
+              {/* Patient simplified test type */}
+              {isPatient && category !== 'ECD' && (
+                <FilterSection title="Test Type" defaultOpen={false} activeCount={selectedApproaches.length}>
+                  <Checkbox label="Blood test only (no tissue needed)" checked={selectedApproaches.includes('Tumor-naïve')} onChange={() => toggle(setSelectedApproaches)('Tumor-naïve')} />
+                </FilterSection>
+              )}
 
               {/* Regulatory & Access Section */}
               <FilterSection 
-                title={'Regulatory & Access'} 
+                title={isPatient ? 'Insurance & Access' : 'Regulatory & Access'} 
                 defaultOpen={false}
                 activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length + (nccnOnly ? 1 : 0)}
               >
-                {/* FDA Status - all categories */}
-                {config.fdaStatuses && (
+                {/* FDA Status - all categories, clinician only */}
+                {!isPatient && config.fdaStatuses && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">FDA Status</label>
                     {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
                   </>
                 )}
-                {/* NCCN Recommended - MRD, TRM (not ECD, TDS) */}
-                {(category === 'MRD' || category === 'TRM') && (
+                {/* NCCN Recommended - MRD, TRM (not ECD, TDS), clinician only */}
+                {!isPatient && (category === 'MRD' || category === 'TRM') && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Guidelines</label>
                     <Checkbox label="NCCN Recommended" checked={nccnOnly} onChange={() => setNccnOnly(!nccnOnly)} />
                   </>
                 )}
                 {/* Coverage - all categories */}
-                <label className="text-xs text-gray-500 mb-1 mt-3 block">Coverage</label>
-                {config.reimbursements?.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare' : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
+                <label className="text-xs text-gray-500 mb-1 mt-3 block">{isPatient ? 'My Insurance' : 'Coverage'}</label>
+                {config.reimbursements?.map(r => <Checkbox key={r} label={r === 'Medicare' ? (isPatient ? 'Medicare (age 65+)' : 'Medicare') : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                 {/* Availability - MRD, ECD, TRM (not TDS) */}
-                {config.regions && (
+                {!isPatient && config.regions && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
                     {config.regions.map(r => <Checkbox key={r} label={r === 'RUO' ? 'Research Use Only' : r === 'International' ? 'International/Global' : r} checked={selectedRegions.includes(r)} onChange={() => toggle(setSelectedRegions)(r)} />)}
@@ -10195,7 +10815,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
               </FilterSection>
 
               {/* Performance Section */}
-              {(
+              {!isPatient && (
                 <FilterSection 
                   title="Performance" 
                   defaultOpen={false}
@@ -10316,7 +10936,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
 
               {/* Validation Section */}
               <FilterSection 
-                title="Validation" 
+                title={isPatient && category === 'ECD' ? 'Cost' : !isPatient ? 'Validation' : 'More Filters'} 
                 defaultOpen={false}
                 activeCount={(minParticipants > 0 ? 1 : 0) + (minPublications > 0 ? 1 : 0) + (maxPrice < 1000 ? 1 : 0)}
               >
@@ -10324,7 +10944,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 {category === 'ECD' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
-                      {'Max List Price'}: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
+                      {isPatient ? 'Budget' : 'Max List Price'}: {maxPrice >= 1000 ? 'Any' : `$${maxPrice}`}
                     </label>
                     <input
                       type="range"
@@ -10343,7 +10963,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   </>
                 )}
                 {/* Trial Participants - MRD, ECD, TRM (not TDS), clinician only */}
-                {category !== 'TDS' && (
+                {!isPatient && category !== 'TDS' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
                       Min Trial Participants: {minParticipants === 0 ? 'Any' : category === 'ECD' ? (minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()) : (minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString())}
@@ -10365,7 +10985,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   </>
                 )}
                 {/* Publications - all categories, clinician only */}
-                {(
+                {!isPatient && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
                       Min Publications: {minPublications === 0 ? 'Any' : category === 'ECD' ? (minPublications >= 20 ? '20+' : minPublications) : category === 'TDS' ? (minPublications >= 1000 ? '1,000+' : minPublications) : (minPublications >= 100 ? '100+' : minPublications)}
@@ -10400,13 +11020,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
           <div className="flex-1" style={{ overflowAnchor: 'none', contain: 'layout' }}>
             <div className="flex justify-between items-center mb-4">
               <p className="text-sm text-gray-500">Showing {filteredTests.length} of {tests.length} tests</p>
-              {selectedTests.length === 0 && (
+              {!isPatient && selectedTests.length === 0 && (
                 <p className="hidden md:block text-sm text-gray-400 italic">💡 Select tests to compare them side-by-side</p>
               )}
-              {selectedTests.length === 1 && (
+              {!isPatient && selectedTests.length === 1 && (
                 <p className="hidden md:block text-sm text-orange-600">Select at least one more test to compare</p>
               )}
-              {selectedTests.length >= 2 && (
+              {!isPatient && selectedTests.length >= 2 && (
                 <button 
                   onClick={() => {
                   // Track comparison with feature flags
@@ -10430,7 +11050,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
             </div>
             
             {/* Smart Comparison Suggestions - Hidden on mobile */}
-            {selectedTests.length >= 1 && suggestedTests.length > 0 && (
+            {!isPatient && selectedTests.length >= 1 && suggestedTests.length > 0 && (
               <div className="hidden md:block mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl">
                 <div className="flex items-center gap-2 mb-2">
                   <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -10458,7 +11078,11 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" style={{ minHeight: '800px', overflowAnchor: 'none', contain: 'layout' }}>
               {filteredTests.map(test => 
-                <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} onShowDetail={handleShowDetail} />
+                isPatient ? (
+                  <PatientTestCard key={test.id} test={test} category={category} onShowDetail={handleShowDetail} />
+                ) : (
+                  <TestCard key={test.id} test={test} category={category} isSelected={selectedTests.includes(test.id)} onSelect={(id) => toggle(setSelectedTests)(id)} onShowDetail={handleShowDetail} />
+                )
               )}
             </div>
             {filteredTests.length === 0 && <div className="text-center py-12 text-gray-500"><p>No tests match your filters.</p><button onClick={clearFilters} className="text-emerald-600 text-sm mt-2">Clear filters</button></div>}
@@ -10474,16 +11098,16 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       {/* Full Resources Section - for cancer categories */}
       {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
         <section className="mt-10">
-          <ExternalResourcesSection category={category} />
+          <ExternalResourcesSection category={category} isPatient={isPatient} />
         </section>
       )}
 
-      {showComparison && testsToCompare.length >= 2 && (
+      {!isPatient && showComparison && testsToCompare.length >= 2 && (
         <ComparisonModal tests={testsToCompare} category={category} onClose={() => setShowComparison(false)} onRemoveTest={(id) => { setSelectedTests(prev => prev.filter(i => i !== id)); if (selectedTests.length <= 2) setShowComparison(false); }} />
       )}
       
       {detailTest && (
-        <TestDetailModal test={detailTest} category={category} onClose={() => setDetailTest(null)} />
+        <TestDetailModal test={detailTest} category={category} onClose={() => setDetailTest(null)} isPatientView={isPatient} />
       )}
     </div>
     </>
