@@ -2598,13 +2598,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator - Hidden on mobile */}
         <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category for a Test Data Deep Dive</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category for a Test Data Deep Dive:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
         {/* Right: Search Tools */}
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
-          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Demystify the Tests</h3>
+          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Demystify the Tests:</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
             {/* Example Questions - shown when no messages */}
