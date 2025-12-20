@@ -5297,7 +5297,7 @@ const HowItWorksPage = () => {
 // ============================================
 // Submissions Page
 // ============================================
-const SubmissionsPage = ({ prefill, onClearPrefill }) => {
+const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorInvite }) => {
   const siteConfig = getSiteConfig();
   const isAlz = false; // ALZ DISABLED
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
@@ -5340,9 +5340,43 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
   // Track if this is an invited vendor (skip verification)
   const [isInvitedVendor, setIsInvitedVendor] = useState(false);
   
-  // Handle URL parameters for direct vendor invitations
+  // Handle vendor invite from app-level URL parsing
+  useEffect(() => {
+    if (vendorInvite && vendorInvite.email) {
+      // Set up for vendor validation with pre-verified email
+      setSubmissionType('validation');
+      setSubmitterType('vendor');
+      setContactEmail(vendorInvite.email);
+      setVerificationStep('verified'); // Skip verification for invited vendors
+      setIsInvitedVendor(true);
+      
+      // Parse name if provided (format: "First Last")
+      if (vendorInvite.name) {
+        const nameParts = vendorInvite.name.trim().split(' ');
+        if (nameParts.length >= 1) {
+          setFirstName(nameParts[0]);
+        }
+        if (nameParts.length >= 2) {
+          setLastName(nameParts.slice(1).join(' '));
+        }
+      }
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+      
+      // Clear the invite after processing
+      if (onClearVendorInvite) {
+        onClearVendorInvite();
+      }
+    }
+  }, [vendorInvite, onClearVendorInvite]);
+  
+  // Handle URL parameters for direct vendor invitations (fallback)
   // URL format: /submissions?invite=vendor&email=person@company.com&name=John%20Doe
   useEffect(() => {
+    // Only run if vendorInvite prop wasn't provided
+    if (vendorInvite) return;
+    
     const params = new URLSearchParams(window.location.search);
     const inviteType = params.get('invite');
     const inviteEmail = params.get('email');
@@ -5373,7 +5407,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
       // Scroll to top
       window.scrollTo(0, 0);
     }
-  }, []);
+  }, [vendorInvite]);
   
   // Handle prefill from navigation (e.g., from Competitions page)
   useEffect(() => {
@@ -5724,13 +5758,24 @@ const SubmissionsPage = ({ prefill, onClearPrefill }) => {
     } else if (submissionType === 'validation') {
       // Vendor Test Validation submission
       const testData = getValidationTestData();
+      
+      // Auto-capture any pending edit that wasn't explicitly added
+      let allEdits = [...validationEdits];
+      if (validationField && validationValue && validationCitation) {
+        allEdits.push({
+          field: validationField,
+          value: validationValue,
+          citation: validationCitation
+        });
+      }
+      
       submission.submitterType = 'vendor';
       submission.category = getValidationTestCategory();
       submission.validation = {
         testId: validationTest,
         testName: testData?.name,
         vendor: testData?.vendor,
-        edits: validationEdits,
+        edits: allEdits,
         isInvitedVendor: isInvitedVendor,
         attestation: {
           confirmed: validationAttestation,
@@ -10993,6 +11038,7 @@ export default function App() {
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
+  const [vendorInvite, setVendorInvite] = useState(null);
   const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
 
   // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
@@ -11001,6 +11047,18 @@ export default function App() {
     const category = params.get('category');
     const testId = params.get('test');
     const compareIds = params.get('compare');
+    
+    // Handle vendor invite URLs for submissions page
+    const inviteType = params.get('invite');
+    const inviteEmail = params.get('email');
+    const inviteName = params.get('name');
+    
+    if (inviteType === 'vendor' && inviteEmail) {
+      setVendorInvite({ email: inviteEmail, name: inviteName });
+      // Clear URL parameters after reading
+      window.history.replaceState({}, '', window.location.pathname);
+      return; // Don't process other params
+    }
 
     // Security: Validate test IDs to prevent injection attacks
     // Valid format: lowercase letters followed by hyphen and digits (e.g., mrd-1, ecd-12, tds-5)
@@ -11126,7 +11184,7 @@ export default function App() {
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
-      case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} />;
+      case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
       default: return <HomePage onNavigate={handleNavigate} />;
