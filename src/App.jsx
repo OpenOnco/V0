@@ -6055,52 +6055,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Vendor Test Validation - Prominent Section */}
-        {!isPrefilled && (
-          <div className={`rounded-xl border-2 p-6 transition-all ${submissionType === 'validation' ? 'border-emerald-500 bg-gradient-to-r from-emerald-50 to-teal-50' : 'border-emerald-200 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 hover:border-emerald-300'}`}>
-            <button
-              type="button"
-              onClick={() => { 
-                setSubmissionType('validation'); 
-                setSubmitterType('vendor');
-                setCategory('');
-                setExistingTest(''); 
-                setSelectedParameter(''); 
-                setFeedbackDescription(''); 
-                setCompleteFieldEntries([]);
-                setNewTestName('');
-                setNewTestVendor('');
-                setValidationTest('');
-                setValidationEdits([]);
-                setValidationAttestation(false);
-              }}
-              className="w-full text-left"
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${submissionType === 'validation' ? 'bg-emerald-500' : 'bg-emerald-400'}`}>
-                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className={`font-bold text-lg ${submissionType === 'validation' ? 'text-emerald-800' : 'text-emerald-700'}`}>
-                      Vendor Test Validation
-                    </span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white border border-emerald-600">
-                      VENDOR VERIFIED
-                    </span>
-                  </div>
-                  <div className="text-sm text-emerald-600">Verify and update your company's test data to earn the VENDOR VERIFIED badge</div>
-                </div>
-                <svg className={`w-6 h-6 transition-transform ${submissionType === 'validation' ? 'text-emerald-600 rotate-90' : 'text-emerald-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </button>
-          </div>
-        )}
-        
         {/* Test Data Update - hide when prefilled OR when validation selected */}
         {!isPrefilled && submissionType !== 'validation' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -6143,6 +6097,52 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
               <div className="text-sm text-gray-500">Suggest an improvement or new capability</div>
             </button>
           </div>
+          </div>
+        )}
+
+        {/* Vendor Test Validation - Below other options */}
+        {!isPrefilled && (
+          <div className={`rounded-xl border-2 p-6 transition-all ${submissionType === 'validation' ? 'border-emerald-500 bg-gradient-to-r from-emerald-50 to-teal-50' : 'border-emerald-200 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 hover:border-emerald-300'}`}>
+            <button
+              type="button"
+              onClick={() => { 
+                setSubmissionType('validation'); 
+                setSubmitterType('vendor');
+                setCategory('');
+                setExistingTest(''); 
+                setSelectedParameter(''); 
+                setFeedbackDescription(''); 
+                setCompleteFieldEntries([]);
+                setNewTestName('');
+                setNewTestVendor('');
+                setValidationTest('');
+                setValidationEdits([]);
+                setValidationAttestation(false);
+              }}
+              className="w-full text-left"
+            >
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${submissionType === 'validation' ? 'bg-emerald-500' : 'bg-emerald-400'}`}>
+                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className={`font-bold text-lg ${submissionType === 'validation' ? 'text-emerald-800' : 'text-emerald-700'}`}>
+                      Vendor Test Validation
+                    </span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white border border-emerald-600">
+                      VENDOR VERIFIED
+                    </span>
+                  </div>
+                  <div className="text-sm text-emerald-600">Verify and update your company's test data to earn the VENDOR VERIFIED badge</div>
+                </div>
+                <svg className={`w-6 h-6 transition-transform ${submissionType === 'validation' ? 'text-emerald-600 rotate-90' : 'text-emerald-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </button>
           </div>
         )}
 
