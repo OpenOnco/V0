@@ -5809,12 +5809,55 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
         });
       }
       
+      const categoryFullName = {
+        'MRD': 'Minimal Residual Disease',
+        'ECD': 'Early Cancer Detection', 
+        'TRM': 'Treatment Response Monitoring',
+        'TDS': 'Treatment Decision Support'
+      }[getValidationTestCategory()] || getValidationTestCategory();
+      
       submission.submitterType = 'vendor';
       submission.category = getValidationTestCategory();
+      
+      // Email formatting helpers
+      const testNameDisplay = testData?.name || `Test ID: ${validationTest}`;
+      const vendorDisplay = testData?.vendor || 'Unknown Vendor';
+      
+      submission.emailSubject = `OpenOnco Vendor Validation: ${testNameDisplay} (${getValidationTestCategory()}) - ${isInvitedVendor ? 'Invited Vendor' : 'Vendor Representative'}`;
+      submission.emailSummary = {
+        header: `OpenOnco Vendor Validation Request: ${testNameDisplay} (${getValidationTestCategory()}) - ${isInvitedVendor ? 'Invited Vendor' : 'Vendor Representative'}`,
+        verificationBadge: `✓ Email Verified: ${contactEmail}${isInvitedVendor ? ' (Invited)' : ''}`,
+        details: [
+          { label: 'Submitter Type', value: isInvitedVendor ? 'Vendor Representative (Invited)' : 'Vendor Representative' },
+          { label: 'Category', value: `${getValidationTestCategory()} - ${categoryFullName}` },
+          { label: 'Test Name', value: testNameDisplay },
+          { label: 'Vendor', value: vendorDisplay },
+          { label: 'Edits Submitted', value: allEdits.length > 0 ? `${allEdits.length} field(s)` : 'None (validation only)' },
+          { label: 'Attestation', value: validationAttestation ? '✓ Confirmed' : '✗ Not confirmed' }
+        ],
+        editsFormatted: allEdits.map(e => `• ${e.field}: ${e.value} (Citation: ${e.citation})`).join('\n')
+      };
+      
+      // Also add correction-compatible object for server email template compatibility
+      submission.correction = {
+        testId: validationTest,
+        testName: testNameDisplay,
+        vendor: vendorDisplay,
+        parameter: allEdits.length > 0 ? 'Vendor Validation + Edits' : 'Vendor Validation (No Edits)',
+        parameterLabel: allEdits.length > 0 ? `Vendor Validation with ${allEdits.length} edit(s)` : 'Vendor Validation Only',
+        currentValue: 'See current test data',
+        newValue: allEdits.length > 0 
+          ? allEdits.map(e => `${e.field}: ${e.value}`).join('; ') 
+          : 'Vendor attests all data is accurate',
+        citation: allEdits.length > 0 
+          ? allEdits.map(e => e.citation).join(', ')
+          : 'Vendor attestation'
+      };
+      
       submission.validation = {
         testId: validationTest,
-        testName: testData?.name,
-        vendor: testData?.vendor,
+        testName: testNameDisplay,
+        vendor: vendorDisplay,
         edits: allEdits,
         isInvitedVendor: isInvitedVendor,
         attestation: {
