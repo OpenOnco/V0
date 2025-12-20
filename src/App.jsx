@@ -2598,7 +2598,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator - Hidden on mobile */}
         <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category to Deep Dive into our Data:</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Category for a Test Data Deep Dive</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
 
