@@ -2457,11 +2457,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
-                {/* CONFIRMED text overlay for company communications */}
+                {/* VENDOR CONTRIBUTION text overlay for company communications */}
                 {!isDiscontinued && hasCompanyComm && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                    <span className="text-emerald-500/40 font-bold text-xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
-                      CONFIRMED
+                    <span className="text-emerald-500/40 font-bold text-sm tracking-wider transform -rotate-12 whitespace-nowrap" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+                      VENDOR CONTRIBUTION
                     </span>
                   </div>
                 )}
@@ -2817,11 +2817,11 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
-                {/* CONFIRMED text overlay for company communications */}
+                {/* VENDOR CONTRIBUTION text overlay for company communications */}
                 {!isDiscontinued && hasCompanyComm && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                    <span className="text-emerald-500/40 font-bold text-xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
-                      CONFIRMED
+                    <span className="text-emerald-500/40 font-bold text-sm tracking-wider transform -rotate-12 whitespace-nowrap" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+                      VENDOR CONTRIBUTION
                     </span>
                   </div>
                 )}
@@ -7803,11 +7803,11 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
           </span>
         </div>
       )}
-      {/* CONFIRMED text overlay for company communications */}
+      {/* VENDOR CONTRIBUTION text overlay for company communications */}
       {!isDiscontinued && hasCompanyComm && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span className="text-emerald-500/40 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
-            CONFIRMED
+          <span className="text-emerald-500/40 font-bold text-2xl tracking-wider transform -rotate-12 whitespace-nowrap" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+            VENDOR CONTRIBUTION
           </span>
         </div>
       )}
@@ -8067,11 +8067,11 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
           </span>
         </div>
       )}
-      {/* CONFIRMED text overlay for company communications */}
+      {/* VENDOR CONTRIBUTION text overlay for company communications */}
       {!isDiscontinued && hasCompanyComm && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span className="text-emerald-500/40 font-bold text-5xl tracking-wider transform -rotate-12" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
-            CONFIRMED
+          <span className="text-emerald-500/40 font-bold text-2xl tracking-wider transform -rotate-12 whitespace-nowrap" title={`${COMPANY_CONTRIBUTIONS[test.id].name} (${COMPANY_CONTRIBUTIONS[test.id].company})`}>
+            VENDOR CONTRIBUTION
           </span>
         </div>
       )}
