@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 20, 2025 (VENDOR VERIFIED: RyghtMRD Test Platform - first vendor verification badge)
+// Last updated: December 20, 2025 (Removed Ryght test entry; vendor verification system ready for production)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -8,7 +8,7 @@
 // ├─────────────────────────────────────────────────────────────────┤
 // │ SECTION              │ START LINE  │ LAST ID    │ NEXT ID       │
 // ├─────────────────────────────────────────────────────────────────┤
-// │ MRD Tests            │ ~262        │ mrd-25     │ mrd-26        │
+// │ MRD Tests            │ ~262        │ mrd-24     │ mrd-25        │
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
 // │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
@@ -417,15 +417,14 @@ export const COMPANY_CONTRIBUTIONS = {
 // These get the premium green "VENDOR VERIFIED" badge and sort priority
 // ============================================
 export const VENDOR_VERIFIED = {
-  'mrd-25': {
-    name: 'Alex Dickinson',
-    company: 'Ryght',
-    verifiedDate: '2025-12-20',
-    editsSubmitted: 1,
-    edits: [
-      { field: 'specificity', value: '44', citation: 'https://www.linkedin.com/feed/' }
-    ]
-  }
+  // Add test IDs here after vendors complete the validation flow
+  // Example:
+  // 'mrd-1': {
+  //   name: 'John Smith',
+  //   company: 'Acme Diagnostics',
+  //   verifiedDate: '2025-12-20',
+  //   editsSubmitted: 2
+  // }
 };
 
 // ============================================
@@ -1927,47 +1926,6 @@ export const mrdTestData = [
     "regulatoryStatusNotes": "Technically validated assay. European LDT offered from LIQOMICS laboratory in Germany.",
     "technologyDifferentiator": "Multi-solid tumor MRD assay from LIQOMICS (same vendor as lymphoma-focused LymphoVista). Ultra-sensitive detection with LoD of 3.30×10⁻⁶. Covers 17 anatomical sites with optimized mutation panels for diverse solid tumors.",
     "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance."
-  },
-  {
-    "id": "mrd-25",
-    "sampleCategory": "Blood/Plasma",
-    "name": "RyghtMRD Test Platform",
-    "vendor": "Ryght",
-    "approach": "Tumor-informed",
-    "method": "AI-powered tumor-informed MRD assay using proprietary machine learning algorithms for ctDNA detection and variant calling.",
-    "cancerTypes": [
-      "Breast",
-      "Colorectal", 
-      "NSCLC",
-      "Pancreatic"
-    ],
-    "indicationsNotes": "Ryght AI-powered MRD test platform. TEST ENTRY FOR DEVELOPMENT PURPOSES.",
-    "sensitivity": 95.0,
-    "sensitivityCitations": "https://ryght.ai",
-    "sensitivityNotes": "Test data - 95% sensitivity in validation cohort.",
-    "specificity": 44.0,
-    "specificityCitations": "https://www.linkedin.com/feed/",
-    "specificityNotes": "VENDOR VERIFIED (Dec 20, 2025): Updated from 98% to 44% per vendor attestation.",
-    "lod": "10 ppm",
-    "lod95": "15 ppm",
-    "lodCitations": "https://ryght.ai",
-    "lodNotes": "Test data - analytical LOD.",
-    "requiresTumorTissue": "Yes",
-    "requiresMatchedNormal": "Yes",
-    "variantsTracked": "500",
-    "initialTat": 14.0,
-    "initialTatNotes": "Test data - 14 day turnaround for initial panel creation.",
-    "followUpTat": 7.0,
-    "followUpTatNotes": "Test data - 7 day turnaround for monitoring draws.",
-    "bloodVolume": 20.0,
-    "fdaStatus": "Development/Test Entry",
-    "reimbursement": "Not applicable - test entry",
-    "clinicalAvailability": "Development/Test",
-    "clinicalSettings": ["Post-Surgery", "Surveillance"],
-    "numPublications": 0,
-    "numPublicationsNotes": "Test entry for development purposes only.",
-    "isTestEntry": true,
-    "testEntryNotes": "This is a fake test entry for alex@ryght.ai to test the Vendor Verification flow. Remove before production."
   },
   // ============================================
   // INSERT NEW MRD TEST HERE (above this line, before IVD KITS)
@@ -5298,18 +5256,6 @@ export const tdsTestData = [
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
   {
-    date: 'Dec 20, 2025',
-    type: 'verified',
-    testId: 'mrd-25',
-    testName: 'RyghtMRD Test Platform',
-    vendor: 'Ryght',
-    category: 'MRD',
-    description: 'VENDOR VERIFIED: Test data validated by authorized vendor representative through the Vendor Test Validation flow. Vendor attested to data accuracy and submitted 1 correction (specificity updated). Test now displays ✓ VERIFIED badge and receives sort priority.',
-    contributor: 'Alex Dickinson',
-    affiliation: 'Ryght (vendor)',
-    citation: 'Vendor attestation via OpenOnco Vendor Verification'
-  },
-  {
     date: 'Dec 19, 2025',
     type: 'added',
     testId: 'tds-22',
@@ -6009,7 +5955,6 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
-  { id: 'mrd-25', name: 'RyghtMRD Test Platform', vendor: 'Ryght', category: 'MRD', dateAdded: 'Dec 20, 2025' },
   { id: 'tds-22', name: 'LiquidHALLMARK', vendor: 'Lucence', category: 'TDS', dateAdded: 'Dec 19, 2025' },
   { id: 'mrd-24', name: 'CancerVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 15, 2025' },
   { id: 'ecd-kit-1', name: 'Cologuard', vendor: 'Exact Sciences', category: 'ECD', dateAdded: 'Dec 14, 2025' },
