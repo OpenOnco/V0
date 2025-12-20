@@ -40,6 +40,7 @@ import {
   GLOSSARY,
   CATEGORY_STANDARDS,
   STANDARDS_BODIES,
+  COMPANY_CONTRIBUTIONS,
 } from './data';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
@@ -305,6 +306,30 @@ const VendorBadge = ({ vendor, size = 'sm' }) => {
         </span>
       ))}
     </>
+  );
+};
+
+
+// CompanyCommunicationBadge component - displays CC badge for company-submitted tests
+const CompanyCommunicationBadge = ({ testId, size = 'sm' }) => {
+  const contribution = COMPANY_CONTRIBUTIONS[testId];
+  if (!contribution) return null;
+  
+  const sizeClasses = {
+    xs: 'text-[10px] px-1.5 py-0.5',
+    sm: 'text-xs px-2 py-1',
+    md: 'text-sm px-2.5 py-1',
+  };
+  
+  const tooltip = `${contribution.name} (${contribution.company})\nSubmitted: ${contribution.date}${contribution.note ? '\n' + contribution.note : ''}`;
+  
+  return (
+    <span 
+      className={`${sizeClasses[size]} bg-sky-100 text-sky-700 rounded-full font-medium whitespace-nowrap cursor-help hover:bg-sky-200 transition-colors`}
+      title={tooltip}
+    >
+      CC
+    </span>
   );
 };
 
@@ -7791,6 +7816,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               ))}
               {test.totalParticipants && <Badge variant="blue">{test.totalParticipants.toLocaleString()} trial participants</Badge>}
               {test.numPublications && <Badge variant="purple">{test.numPublications}{test.numPublicationsPlus ? '+' : ''} pubs</Badge>}
+              {!isDiscontinued && <CompanyCommunicationBadge testId={test.id} size="xs" />}
               {test.approach && <Badge variant={colorVariant}>{test.approach}</Badge>}
               {test.testScope && <Badge variant={colorVariant}>{test.testScope}</Badge>}
             </div>
@@ -8003,7 +8029,10 @@ const PatientTestCard = ({ test, category, onShowDetail }) => {
         <div className="flex justify-between items-start mb-3">
           <div>
             <h3 className={`font-semibold text-lg ${isDiscontinued ? 'text-gray-400' : 'text-gray-900'}`}>{test.name}</h3>
-            <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-500">by {test.vendor}<VendorBadge vendor={test.vendor} size="sm" /></p>
+              {!isDiscontinued && <CompanyCommunicationBadge testId={test.id} size="xs" />}
+            </div>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
             isDiscontinued ? 'bg-gray-200 text-gray-600' :

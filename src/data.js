@@ -273,6 +273,100 @@
 */
 
 // ============================================
+// COMPANY CONTRIBUTIONS - CC Badge Tracking
+// Maps test IDs to company rep submissions/communications
+// ============================================
+export const COMPANY_CONTRIBUTIONS = {
+  // December 2025 Submissions
+  'mrd-19': {  // clonoSEQ
+    name: 'Christine Hanley',
+    company: 'Adaptive Biotechnologies',
+    date: '2025-12-10'
+  },
+  'mrd-21': {  // Latitude
+    name: 'Sunghoon Heo',
+    company: 'IMBdx/Independent Expert',
+    date: '2025-12-10',
+    note: 'Submission for Natera'
+  },
+  'mrd-22': {  // CancerDetect
+    name: 'Sunghoon Heo',
+    company: 'IMBdx, Inc.',
+    date: '2025-12-10'
+  },
+  'mrd-24': {  // CancerVista
+    name: 'Jens Winter',
+    company: 'LIQOMICS',
+    date: '2025-12-12'
+  },
+  'ecd-14': {  // IColocomf
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-12'
+  },
+  'ecd-15': {  // GALEAS Bladder
+    name: 'Christopher Sale',
+    company: 'Nonacus',
+    date: '2025-12-12'
+  },
+  'ecd-16': {  // IColohunter
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-17': {  // IEsohunter
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-18': {  // IHepcomf
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-19': {  // IUrisure
+    name: 'Tingting Li',
+    company: 'Wuhan Ammunition Life Technology',
+    date: '2025-12-16'
+  },
+  'ecd-20': {  // Avantect Pancreatic
+    name: 'Adrian Vilalta',
+    company: 'ClearNote Health',
+    date: '2025-12-16'
+  },
+  'trm-13': {  // Liquid Trace
+    name: 'Jeffrey Owen',
+    company: 'Genomic Testing Cooperative',
+    date: '2025-12-17'
+  },
+  'tds-16': {  // Northstar Select
+    name: 'Rob Manor',
+    company: 'BillionToOne',
+    date: '2025-12-08'
+  },
+  'tds-19': {  // Oncotype DX
+    name: 'Don Johann',
+    company: 'Independent Expert/UAMS',
+    date: '2025-12-17'
+  },
+  'tds-22': {  // LiquidHALLMARK
+    name: 'Jeremy Au',
+    company: 'Lucence',
+    date: '2025-12-18'
+  },
+  'tds-kit-1': {  // TruSight Oncology Comprehensive
+    name: 'Samyuktha Dasari',
+    company: 'Illumina',
+    date: '2025-12-15'
+  },
+  'tds-kit-12': {  // Hedera Profiling 2
+    name: 'Thomas Vetterli',
+    company: 'Hedera Dx',
+    date: '2025-12-18'
+  }
+};
+
+// ============================================
 // TEST DATA ARRAYS START HERE
 // ============================================
 
