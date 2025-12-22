@@ -34,8 +34,8 @@ export default defineConfig({
     },
   ],
 
-  /* Auto-start dev server before running tests */
-  webServer: {
+  /* Auto-start dev server before running tests (only if testing locally) */
+  webServer: process.env.TEST_URL ? undefined : {
     command: 'npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,

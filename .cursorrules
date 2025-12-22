@@ -1,0 +1,88 @@
+# OpenOnco Project Rules
+
+## Project Overview
+OpenOnco is a non-profit platform for tracking and comparing cancer diagnostic tests (liquid biopsy, molecular diagnostics). Built in memory of Ingrid. The goal is transparency and accessibility for patients, clinicians, and researchers.
+
+## Tech Stack
+- **Frontend:** React (single-page app, primarily App.jsx)
+- **Styling:** Tailwind CSS (utility-first, no separate CSS files)
+- **Hosting:** Vercel
+- **API:** Vercel serverless functions (`/api` folder)
+- **AI Chat:** Anthropic Claude API (proxied through serverless function for security)
+- **No backend database yet** - test data is stored inline in App.jsx
+
+## Code Patterns
+
+### React Components
+- Use functional components with hooks (useState, useEffect, useRef)
+- Keep components in App.jsx unless explicitly asked to split
+- Prefer inline arrow functions for event handlers
+- Use descriptive component names (TestCard, ComparisonModal, OncoChat)
+
+### Styling
+- Use Tailwind exclusively - no custom CSS
+- Color palette: emerald/teal for primary actions, amber for MRD, sky for ECD, violet for TRM, rose for CGP
+- Consistent spacing: p-4, p-6, gap-4, gap-6
+- Rounded corners: rounded-lg, rounded-xl, rounded-2xl
+- Shadows: shadow-sm, shadow-lg for elevation
+- Mobile-first: always include responsive classes (sm:, md:, lg:)
+
+### Data Structure
+Tests are stored as arrays of objects with these standard fields:
+```javascript
+{
+  name: "Test Name",
+  company: "Company Name",
+  methodology: "Tumor-informed / Tumor-naive",
+  cancerTypes: ["Solid tumors", "Breast", etc.],
+  sensitivity: "95%",
+  specificity: "99%",
+  lod: "0.01%",
+  tat: "7-10 days",
+  fdaStatus: "FDA approved / CLIA LDT",
+  cptCodes: ["0239U"],
+  reimbursement: "Medicare covered",
+  citations: [{ title: "", url: "", year: "" }],
+  lastUpdated: "2024-01"
+}
+```
+
+### API Security
+- Never expose API keys in frontend code
+- All Claude API calls go through `/api/chat.js`
+- Rate limiting: 20 requests/minute per IP
+- Server-side validation of model and max_tokens
+
+## Test Categories
+1. **MRD** (Molecular Residual Disease) - amber color - post-treatment monitoring
+2. **ECD** (Early Cancer Detection) - sky color - screening
+3. **TRM** (Treatment Response Monitoring) - violet color - during treatment
+4. **CGP** (Comprehensive Genomic Profiling) - rose color - treatment selection
+
+## UI Conventions
+- Category cards with colored gradients and icons
+- Test cards show key specs with badges
+- Comparison modal for side-by-side analysis
+- Filter sidebar with checkboxes
+- Chat box with message bubbles (user right, assistant left)
+- Loading states with animated spinners
+
+## When Making Changes
+1. Preserve existing test data - don't remove or modify unless asked
+2. Maintain mobile responsiveness
+3. Keep the clean, editorial design aesthetic
+4. Add comments for complex logic
+5. Test data accuracy is critical - flag if unsure
+
+## Common Tasks
+- "Add a new test" → Add to appropriate array (mrdTestData, ecdTestData, etc.)
+- "Update test info" → Find test by name, update fields, update lastUpdated
+- "New feature" → Add component, integrate into navigation/routing
+- "Fix styling" → Use Tailwind classes, check mobile breakpoints
+
+## Don't Do
+- Don't add external CSS files
+- Don't use class components
+- Don't expose API keys in frontend
+- Don't remove citation/source information
+- Don't make medical claims without sources

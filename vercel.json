@@ -59,7 +59,7 @@
       "destination": "/"
     },
     {
-      "source": "/((?!api|_next|static|favicon|.*\\..*).*)",
+      "source": "/((?!api|_next|static|favicon|@|node_modules|.*\\..*).*)",
       "destination": "/"
     }
   ],

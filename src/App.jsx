@@ -1089,7 +1089,7 @@ const LifecycleNavigator = ({ onNavigate }) => {
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
-  date: new Date(__BUILD_DATE__).toLocaleString('en-US', { 
+  date: new Date(typeof __BUILD_DATE__ !== 'undefined' ? __BUILD_DATE__ : new Date().toISOString()).toLocaleString('en-US', { 
     year: 'numeric', 
     month: 'short', 
     day: 'numeric',
@@ -2410,13 +2410,13 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     onClick={() => handleChatSubmit("I am a patient, please use straightforward language")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    🩺 I am a patient, please use straightforward language
+                    I am a patient, please use straightforward language
                   </button>
                   <button
                     onClick={() => handleChatSubmit("I am a physician, please use clinical language")}
                     className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    👨‍⚕️ I am a physician, please use clinical language
+                    I am a physician, please use clinical language
                   </button>
                 </div>
               </div>

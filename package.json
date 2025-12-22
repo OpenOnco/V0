@@ -7,7 +7,13 @@
     "dev": "vite",
     "build": "npm run generate-sitemap && vite build",
     "preview": "vite preview",
-    "generate-sitemap": "node scripts/generate-sitemap.js"
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "test": "playwright test",
+    "test:smoke": "playwright test -g 'Homepage|Category Pages' --reporter=list",
+    "test:full": "playwright test --reporter=list",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
