@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 20, 2025 (Removed Ryght test entry; vendor verification system ready for production)
+// Last updated: December 23, 2025 (LLM Data Review: Cancerguard added, LOD fixes, CE-IVDR updates, Pathlight Medicare/MolDX, Cologuard Plus FDA label, Galleri PATHFINDER-2)
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -10,7 +10,7 @@
 // ├─────────────────────────────────────────────────────────────────┤
 // │ MRD Tests            │ ~262        │ mrd-24     │ mrd-25        │
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
-// │ ECD Tests            │ ~1796       │ ecd-21     │ ecd-22        │
+// │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
 // │ TDS Tests            │ ~3269       │ tds-22     │ tds-23        │
@@ -661,8 +661,8 @@ export const mrdTestData = [
     "specificityCitations": "https://sagadiagnostics.com/saga-diagnostics-announces-u-s-commercial-launch/",
     "specificityNotes": "100% specificity in TRACER study validation cohort (n=100). ⚠️ Small cohort size; larger validation ongoing.",
     "smallSampleWarning": true,
-    "validationCohortSize": 100,
-    "validationCohortStudy": "TRACER study (Clinical Cancer Research, Jan 2025)",
+    "validationCohortSize": 121,
+    "validationCohortStudy": "TRACER study (Clinical Cancer Research, Jan 2025; expanded cohort SABCS 2025)",
     "landmarkSensitivity": null,
     "landmarkSpecificity": null,
     "longitudinalSensitivity": 100,
@@ -691,15 +691,18 @@ export const mrdTestData = [
     "tat": 14,
     "tatNotes": "Initial results in ~2 weeks; follow-up monitoring in ~3-5 days.",
     "fdaStatus": "CLIA LDT (US) with international laboratory service offerings.",
-    "reimbursement": "Medicare coverage for early-stage breast cancer; additional coverage emerging.",
-    "reimbursementNote": "CMS coverage established for Pathlight MRD in early-stage breast cancer across all subtypes (2025); other indications and payers evolving.",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage via MolDX (Palmetto GBA) positive determination July 30, 2025. Covered for recurrence monitoring in stage II-III breast cancer across all subtypes (HR+/HER2-, HER2+, TNBC) for up to 6 years surveillance. Coverage based on TRACER study evidence (100% sens/spec, 13.7-month lead time).",
+    "reimbursementCitations": "https://sagadiagnostics.com/saga-diagnostics-announces-medicare-coverage-for-pathlight-mrd-test-in-breast-cancer-across-all-subtypes/ | https://www.genomeweb.com/cancer/saga-diagnostics-mrd-test-receives-medicare-coverage-breast-cancer-recurrence-monitoring",
     "cptCodes": "No dedicated PLA as of 2025; payer-specific coding applies.",
     "cptCodesNotes": "Contact vendor for current billing guidance.",
     "clinicalAvailability": "Clinical LDT – shipping (select geographies)",
-    "clinicalTrials": "TRACER study (cTdna evaluation in eaRly breAst canCER); 100 patients with stage I–III breast cancer of all subtypes; Clinical Cancer Research, Jan 2025",
+    "clinicalTrials": "TRACER study (cTdna evaluation in eaRly breAst canCER); Clinical Cancer Research Jan 2025 (n=100), SABCS 2025 expanded cohort (n=121). CLAIRE (NCT pending - surveillance study in ER+/HER2- breast). CATER (MRD-guided capecitabine trial).",
+    "clinicalTrialsCitations": "https://doi.org/10.1158/1078-0432.CCR-24-3472 | https://www.businesswire.com/news/home/20251201531260/en/SAGA-Diagnostics-Showcases-New-Pathlight-MRD-Data-at-SABCS-2025",
     "clinicalSettings": ["Post-Surgery", "Surveillance"],
     "clinicalSettingsNotes": "TRACER study validated longitudinal MRD surveillance in early-stage breast cancer with lead time ~13.7 months vs imaging.",
-    "totalParticipants": 100,
+    "totalParticipants": 121,
+    "totalParticipantsNotes": "TRACER expanded cohort (SABCS 2025): 121 patients with TNBC, HER2+, or ER+/HER2- early breast cancer.",
     "numPublications": 8,
     "numPublicationsPlus": true
   },
@@ -992,11 +995,11 @@ export const mrdTestData = [
     "specificity": 99.4,
     "specificityCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect",
     "specificityNotes": "Analytical specificity ~99.4% for ctDNA-negative reference specimens in internal validation; clinical specificity for recurrence is still being characterized (PROVENC3 and related studies).",
-    "lod": "10 ppm",
-    "lod95": "10 ppm (0.001%)",
-    "lod95Citations": "https://www.nature.com/articles/s41591-024-03078-8",
-    "lodCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect | https://www.nature.com/articles/s41591-024-03078-8",
-    "lodNotes": "LOD95 of 0.001% (10 ppm). WGS approach tracks thousands of tumor-specific variants (vs 18-50 for WES-based approaches), enabling improved sensitivity at low ctDNA levels.",
+    "lod": "10 ppm (LOD50)",
+    "lod95": "50 ppm (0.005%)",
+    "lod95Citations": "https://www.prnewswire.com/news-releases/labcorp-launches-molecular-residual-disease-and-liquid-biopsy-solutions-302435767.html | https://oncology.labcorp.com/biopharma-partners/plasma-detect",
+    "lodCitations": "https://oncology.labcorp.com/biopharma-partners/plasma-detect | https://www.prnewswire.com/news-releases/labcorp-launches-molecular-residual-disease-and-liquid-biopsy-solutions-302435767.html",
+    "lodNotes": "LOD95 of 0.005% (50 ppm) per Labcorp official specifications. LOD50 ≈ 0.001% (10 ppm). WGS approach tracks thousands of tumor-specific variants (vs 18-50 for WES-based approaches), enabling improved sensitivity at low ctDNA levels.",
     "leadTimeVsImaging": null,
     "leadTimeVsImagingCitations": "Labcorp press releases Nov 2025.",
     "leadTimeVsImagingNotes": "Detects disease progression up to 18 months earlier than standard clinical measures (median 2.3 months lead time in chemotherapy monitoring study).",
@@ -1541,7 +1544,7 @@ export const mrdTestData = [
     "bloodVolumeNotes": "Bone marrow: 1 mL aspirate recommended. Blood (CLL): 2 mL whole blood. Sample requirements vary by specimen type.",
     "sampleRequirements": "Bone marrow aspirate (1 mL EDTA), peripheral blood (2 mL EDTA for CLL), or archived FFPE/slides. Fresh specimens preferred; stored specimens accepted with longer TAT.",
     "sampleRequirementsCitations": "https://www.clonoseq.com/ordering-clonoseq/",
-    "fdaStatus": "FDA De Novo cleared (Sept 2018 for MM and B-ALL; Aug 2020 expanded for CLL in blood and bone marrow). First FDA-cleared NGS-based MRD test.",
+    "fdaStatus": "FDA De Novo cleared (Sept 2018 for MM and B-ALL; Aug 2020 expanded for CLL in blood and bone marrow). CE-IVDR Class C certified (Aug 2024) - first IVDR-certified MRD test for lymphoid malignancies in EU. First FDA-cleared NGS-based MRD test.",
     "fdaApprovalDate": "2018-09-28",
     "fdaStatusCitations": "https://www.fda.gov/news-events/press-announcements/fda-authorizes-first-next-generation-sequencing-based-test-detect-very-low-levels-remaining-cancer | https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-receives-expanded-fda-clearance",
     "nccnRecommended": true,
@@ -2239,12 +2242,13 @@ export const ecdTestData = [
     "npvDefinition": "NPV for remaining cancer-free after No Cancer Signal Detected (12-month follow-up)",
     "tumorOriginAccuracy": 93,
     "tumorOriginAccuracyNotes": "Cancer Signal Origin (CSO) prediction accuracy: 93% top-1 prediction, 97% top-2 predictions in CCGA validation studies",
-    "performanceCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://pmc.ncbi.nlm.nih.gov/articles/PMC11024170/ | https://grail.com/press-releases/final-results-from-pathfinder-study-of-grails-multi-cancer-early-detection-blood-test-published-in-the-lancet/",
-    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%.",
+    "performanceCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://pmc.ncbi.nlm.nih.gov/articles/PMC11024170/ | https://grail.com/press-releases/final-results-from-pathfinder-study-of-grails-multi-cancer-early-detection-blood-test-published-in-the-lancet/ | PATHFINDER-2 ESMO 2025",
+    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%. PATHFINDER-2 (Oct 2025, n=23,000+): Galleri detected cancers ~7× more often than USPSTF A/B standard screening; ~62% of positive tests (Cancer Signal Detected) confirmed as cancer in follow-up, substantially higher PPV than earlier versions.",
     "leadTimeNotes": "PATHFINDER and PATHFINDER 2 show ~7-fold increase in cancers detected when added to USPSTF A/B screening; median diagnostic resolution ~1.5 months",
     "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; not FDA-approved; Breakthrough Device designation; PMA submission expected H1 2026",
     "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk",
+    "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk. REACH study: Medicare covers Galleri test and related workup for enrolled REACH participants (coverage of research, not general NCD).",
+    "reimbursementCitations": "https://grail.com/press-releases/grail-announces-first-participant-enrolled-in-reach-study-evaluating-clinical-impact-of-galleri-multi-cancer-early-detection-mced-test-in-the-medicare-population/",
     "commercialPayers": ["Curative Insurance", "Fountain Health", "Alignment Health Plan"],
     "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
     "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational.",
@@ -2257,8 +2261,8 @@ export const ecdTestData = [
     "cptCode": "Proprietary",
     "listPrice": 949.0,
     "screeningInterval": "Annual recommended",
-    "clinicalTrials": "NCT05611632 NHS-Galleri randomized screening trial (~140000); NCT05155605 PATHFINDER 2 safety/performance study (~35500); NCT03934866 SUMMIT high-risk lung cohort (13035)",
-    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866",
+    "clinicalTrials": "NCT05611632 NHS-Galleri randomized screening trial (~140000); NCT05155605 PATHFINDER 2 safety/performance study (~23000+, results Oct 2025); NCT03934866 SUMMIT high-risk lung cohort (13035); REACH study (Medicare coverage of research)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866 | https://grail.com/press-releases/grail-pathfinder-2-results-show-galleri-multi-cancer-early-detection-blood-test-increased-cancer-detection-more-than-seven-fold-when-added-to-uspstf-a-and-b-recommended-screenings/",
     "totalParticipants": 188535,
     "numPublications": 20,
     "numPublicationsPlus": true
@@ -2297,8 +2301,8 @@ export const ecdTestData = [
     "npv": 99.98,
     "npvCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
     "npvDefinition": "NPV for absence of CRC in BLUE-C average-risk screening population",
-    "performanceCitations": "BLUE-C pivotal trial NEJM 2024 (n=20000+); DeeP-C studies",
-    "performanceNotes": "Pivotal data show 94% sensitivity for CRC and 43% for APL; significantly outperforms FIT (94% vs 67% for CRC; 43% vs 23% for APL).",
+    "performanceCitations": "BLUE-C pivotal trial NEJM 2024 (n=20000+); DeeP-C studies; FDA PMA labeling 2024",
+    "performanceNotes": "Pivotal BLUE-C trial: 94% sensitivity for CRC and 43% for APL; significantly outperforms FIT (94% vs 67% for CRC; 43% vs 23% for APL). FDA-approved label (Oct 2024) and March 2025 launch materials emphasize **95% CRC sensitivity at 94% specificity** in the U.S. screening population, with ~40% fewer false positives vs original Cologuard.",
     "leadTimeNotes": "Non-invasive alternative to colonoscopy; 30% lower false positive rate vs original Cologuard; significantly improved adherence vs colonoscopy",
     "fdaStatus": "FDA-approved PMA October 4 2024",
     "reimbursement": "Medicare",
@@ -3052,6 +3056,70 @@ export const ecdTestData = [
     "isInvestigationalNotes": "Investigational in US; CE-IVD in EU/China. Prospective interventional studies ongoing.",
     "technologyDifferentiator": "First MCED test to receive Breakthrough Device Designation from both FDA and China NMPA. Focused panel (6 cancers) targets cancers with limited screening options (pancreatic, ovarian, liver, esophageal). Higher specificity (98.9%) than some competitors enables lower false positive burden. ELSA-seq platform combines methylation profiling with machine learning for cancer detection and tissue of origin prediction.",
     "vendorRequestedChanges": "2025-12-22: Added vendor-provided PPV (12.3%), NPV (99.9%), TAT (10-15 business days), and list price ($900) from Liankai Chi (Burning Rock Dx). 2025-12-23: Corrected CE mark note to specify China manufacturing only per Liankai Chi."
+  },
+  // Cancerguard - Added December 2025 (LLM Data Review)
+  {
+    "id": "ecd-22",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Cancerguard",
+    "vendor": "Exact Sciences",
+    "testScope": "Multi-cancer (MCED)",
+    "approach": "Blood-based cfDNA/protein MCED (plasma)",
+    "method": "Multi-analyte blood test combining cfDNA methylation patterns and protein biomarkers with machine learning algorithms to detect signals from 50+ cancer types. Builds on CancerSEEK and DETECT-A study foundation.",
+    "methodCitations": "https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test",
+    "cancerTypes": [
+      "Pancreatic",
+      "Ovarian",
+      "Liver",
+      "Lung",
+      "Colorectal",
+      "Esophageal",
+      "Stomach",
+      "50+ cancer types"
+    ],
+    "cancerTypesNotes": "Detects signals from 50+ cancer types. Highest sensitivity for 6 deadliest cancers (pancreatic, ovarian, liver, lung, CRC, esophageal) with limited screening options.",
+    "targetPopulation": "Adults 50+ at average or elevated risk for cancer; individuals seeking complementary screening beyond single-cancer tests",
+    "indicationGroup": "MCED",
+    "sensitivity": 64,
+    "sensitivityCitations": "https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test",
+    "sensitivityNotes": "64% overall sensitivity across cancers detected (excluding breast and prostate which have established screening). 68% sensitivity for 6 deadliest cancers (pancreatic, ovarian, liver, lung, CRC, esophageal). Stage I-II sensitivity: ~45-50%. Validated in ASCEND-2 study.",
+    "stageISensitivity": null,
+    "stageISensitivityNotes": "Stage I-II combined sensitivity approximately 45-50% per ASCEND-2 data.",
+    "specificity": 97.4,
+    "specificityCitations": "https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test",
+    "specificityNotes": "97.4% specificity across validation cohorts. Lower false positive rate than some MCED competitors.",
+    "ppv": null,
+    "ppvNotes": "PPV varies by population prevalence. In general screening population, estimated 10-15% based on specificity and cancer prevalence.",
+    "npv": null,
+    "npvNotes": "NPV >99% given low cancer prevalence in screening population.",
+    "performanceNotes": "Multi-analyte approach combining cfDNA methylation and protein biomarkers. Validation from DETECT-A (10,000 participants) and ASCEND-2 studies. FALCON registry (NCT06589310) enrolling ~25,000 participants for additional RWE.",
+    "performanceCitations": "https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test | https://clinicaltrials.gov/study/NCT06589310",
+    "leadTimeNotes": "Designed for early detection of cancers with poor prognosis and limited screening options. No formal lead time studies published yet.",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory-developed test available through Quest Diagnostics network. Not FDA approved/cleared. Regulatory pathway TBD.",
+    "reimbursement": "Not covered",
+    "reimbursementNote": "Not covered by Medicare or commercial insurance as of launch. Self-pay only. Coverage decisions pending utility data from FALCON registry.",
+    "commercialPayers": [],
+    "commercialPayersNotes": "No commercial payer coverage as of September 2025 launch. Self-pay only through Quest Diagnostics.",
+    "availableRegions": ["US"],
+    "clinicalAvailability": "Commercially available in US via Quest Diagnostics (7,000 sites) since September 10, 2025",
+    "tat": "10 days",
+    "tatNotes": "Approximately 10 business days from sample receipt to results.",
+    "sampleType": "Whole blood",
+    "sampleVolume": "Standard blood draw",
+    "listPrice": 689,
+    "listPriceCitations": "https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test",
+    "listPriceNotes": "$689 self-pay through Quest Diagnostics.",
+    "screeningInterval": "Annual (recommended)",
+    "clinicalTrials": "NCT06589310 (FALCON registry, ~25,000 participants); DETECT-A (10,000); ASCEND-2",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06589310",
+    "totalParticipants": 35000,
+    "totalParticipantsNotes": "FALCON enrolling ~25,000; DETECT-A ~10,000 participants.",
+    "numPublications": 10,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Publications from CancerSEEK, DETECT-A, and ASCEND studies form evidence base. Additional publications expected from FALCON registry.",
+    "technologyDifferentiator": "First MCED test from Exact Sciences, leveraging Thrive/CancerSEEK acquisition. Multi-analyte approach (cfDNA + protein) differs from methylation-only tests like Galleri. Competitive pricing ($689) vs Galleri ($949). Available through established Quest Diagnostics network (7,000 sites). Focuses on cancers lacking established screening tests.",
+    "dataSourceNotes": "Added December 2025 via LLM Data Review. Verified via Exact Sciences press releases (Sept 10, 2025 launch)."
   },
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
@@ -5413,6 +5481,42 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 23, 2025',
+    type: 'added',
+    testId: 'ecd-22',
+    testName: 'Cancerguard',
+    vendor: 'Exact Sciences',
+    category: 'ECD',
+    description: 'Added Exact Sciences Cancerguard MCED test - launched Sept 10, 2025 via Quest Diagnostics. Multi-analyte blood test (cfDNA + proteins) detecting 50+ cancer types. 64% overall sensitivity (68% for 6 deadliest cancers), 97.4% specificity. $689 list price. Based on CancerSEEK/DETECT-A foundation. FALCON registry (NCT06589310) enrolling ~25,000 participants.',
+    contributor: null,
+    affiliation: 'OpenOnco (LLM Data Review)',
+    citation: 'https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test'
+  },
+  {
+    date: 'Dec 23, 2025',
+    type: 'updated',
+    testId: 'mrd-9',
+    testName: 'Labcorp Plasma Detect',
+    vendor: 'Labcorp',
+    category: 'MRD',
+    description: 'CRITICAL FIX: Corrected LOD values per official Labcorp specifications. LOD95 is 0.005% (50 ppm), not 0.001% (10 ppm). The 0.001%/10 ppm value is LOD50. Updated citations to reference official Labcorp press release and product page.',
+    contributor: null,
+    affiliation: 'OpenOnco (LLM Data Review)',
+    citation: 'https://www.prnewswire.com/news-releases/labcorp-launches-molecular-residual-disease-and-liquid-biopsy-solutions-302435767.html'
+  },
+  {
+    date: 'Dec 23, 2025',
+    type: 'updated',
+    testId: 'mrd-19',
+    testName: 'clonoSEQ',
+    vendor: 'Adaptive Biotechnologies',
+    category: 'MRD',
+    description: 'Added CE-IVDR Class C certification (Aug 2024) - first IVDR-certified MRD test for lymphoid malignancies in EU. Enhanced regulatory status documentation.',
+    contributor: null,
+    affiliation: 'OpenOnco (LLM Data Review)',
+    citation: 'https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-receives-ce-ivdr-certification-clonoseq'
+  },
   {
     date: 'Dec 22, 2025',
     type: 'added',
