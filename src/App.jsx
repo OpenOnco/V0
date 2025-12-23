@@ -7957,7 +7957,7 @@ const CitationTooltip = ({ citations }) => {
       )}
     </span>
   );
-}};
+};
 
 // ============================================
 // Note Tooltip - Shows test-specific notes (amber icon)
