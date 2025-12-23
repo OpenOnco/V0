@@ -7987,7 +7987,7 @@ const NoteTooltip = ({ notes }) => {
     if (isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       const popupWidth = 320;
-      const popupHeight = 120;
+      const popupHeight = 150;
       
       let left = rect.left - popupWidth / 2 + rect.width / 2;
       if (left + popupWidth > window.innerWidth - 20) {
@@ -8060,7 +8060,7 @@ const NoteTooltip = ({ notes }) => {
               </svg>
             </button>
           </div>
-          <div className="p-3 max-h-32 overflow-y-auto">
+          <div className="p-3 max-h-40 overflow-y-auto">
             <p className="text-sm text-slate-700 leading-relaxed">{notes}</p>
           </div>
         </div>,
