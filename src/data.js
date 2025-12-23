@@ -305,7 +305,12 @@ export const COMPANY_CONTRIBUTIONS = {
     date: '2025-12-17'
   },
   'ecd-21': {  // OverC Multi-Cancer Detection Blood Test
-    name: 'liankai chi',
+    name: 'Liankai Chi',
+    company: 'Burning Rock Dx',
+    date: '2025-12-22'
+  },
+  'mrd-25': {  // CanCatch Custom
+    name: 'Liankai Chi',
     company: 'Burning Rock Dx',
     date: '2025-12-22'
   },
