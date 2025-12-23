@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, createContext, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Analytics } from '@vercel/analytics/react';
@@ -7582,6 +7582,9 @@ const PARAMETER_CHANGELOG = {
   // Format: "Parameter Name": [{ date: "YYYY-MM-DD", change: "Description of value change" }]
 };
 
+// Context for passing test info to nested components (e.g., ParameterLabel)
+const TestContext = createContext(null);
+
 // ============================================
 // Parameter Label Component (clickable with popup)
 // Shows: Definition + Changelog only
@@ -7593,8 +7596,27 @@ const ParameterLabel = ({ label, expertTopic, useGroupHover = false }) => {
   const buttonRef = useRef(null);
   const popupRef = useRef(null);
   
+  // Get test info from context (if available)
+  const test = useContext(TestContext);
+  const contribution = test?.id ? COMPANY_CONTRIBUTIONS[test.id] : null;
+  
   const definition = PARAMETER_DEFINITIONS[label];
-  const changelog = PARAMETER_CHANGELOG[label] || [];
+  const paramChangelog = PARAMETER_CHANGELOG[label] || [];
+  
+  // Build combined changelog: vendor contribution + parameter-specific changes
+  const changelog = useMemo(() => {
+    const entries = [...paramChangelog];
+    // Add baseline entry from vendor contribution
+    if (contribution) {
+      entries.push({
+        date: contribution.date,
+        change: `Data contributed by ${contribution.name} (${contribution.company})`
+      });
+    }
+    // Sort by date descending (most recent first)
+    return entries.sort((a, b) => b.date.localeCompare(a.date));
+  }, [paramChangelog, contribution]);
+  
   const expertInsight = expertTopic ? EXPERT_INSIGHTS[expertTopic] : null;
   
   // Only show as clickable if there's definition, changelog, or expert insight
@@ -8943,7 +8965,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
   );
 
   return (
-    <>
+    <TestContext.Provider value={test}>
       <style>{printStyles}</style>
       <div className="test-detail-modal-root fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white" data-testid="test-detail-modal" onClick={onClose}>
         <div className="test-detail-print-area bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
@@ -9610,7 +9632,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
         </div>
       </div>
     </div>
-    </>
+    </TestContext.Provider>
   );
 };
 
