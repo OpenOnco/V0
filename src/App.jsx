@@ -2569,6 +2569,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             const badges = getBadgeParams(test);
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
+            const isRUO = test.isRUO === true;
             const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
             const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
@@ -2587,8 +2588,16 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                     </span>
                   </div>
                 )}
+                {/* RUO (Research Use Only) text overlay */}
+                {isRUO && !isDiscontinued && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-amber-500/50 font-bold text-lg tracking-wider transform -rotate-12">
+                      RUO
+                    </span>
+                  </div>
+                )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && (
+                {!isBC && !isDiscontinued && !isRUO && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -8938,6 +8947,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
   const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
   const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes' || test.sampleCategory === 'Tissue';
   const isDiscontinued = test.isDiscontinued === true;
+  const isRUO = test.isRUO === true;
   
   // Section component for consistent styling
   const Section = ({ title, children, expertTopic }) => (
@@ -8978,6 +8988,18 @@ const TestDetailModal = ({ test, category, onClose }) => {
               <div>
                 <p className="font-bold">THIS TEST HAS BEEN DISCONTINUED</p>
                 <p className="text-sm text-red-100">{test.discontinuedReason || 'This product is no longer commercially available.'}</p>
+              </div>
+            </div>
+          )}
+          {/* RUO (Research Use Only) Banner */}
+          {isRUO && !isDiscontinued && (
+            <div className="bg-amber-500 text-white px-5 py-3 flex items-center gap-3" style={{ flexShrink: 0 }}>
+              <svg className="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+              <div>
+                <p className="font-bold">PENDING — RESEARCH USE ONLY</p>
+                <p className="text-sm text-amber-100">This test is not yet available for clinical ordering. {test.fdaStatusNotes || 'Clinical availability expected in the future.'}</p>
               </div>
             </div>
           )}

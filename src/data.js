@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 23, 2025 (LLM Data Review: Cancerguard added, LOD fixes, CE-IVDR updates, Pathlight Medicare/MolDX, Cologuard Plus FDA label, Galleri PATHFINDER-2)
+// Last updated: December 23, 2025 (Added PGDx elio plasma focus Dx [tds-kit-13], Tempus xM for TRM [trm-14, RUO])
 // ============================================
 //
 // ┌─────────────────────────────────────────────────────────────────┐
@@ -12,9 +12,9 @@
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
 // │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
-// │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
+// │ TRM Tests            │ ~2919       │ trm-14     │ trm-15        │
 // │ TDS Tests            │ ~3269       │ tds-22     │ tds-23        │
-// │ TDS IVD Kits         │ ~4155       │ tds-kit-12 │ tds-kit-13    │
+// │ TDS IVD Kits         │ ~4155       │ tds-kit-13 │ tds-kit-14    │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
 //
@@ -3951,6 +3951,52 @@ export const trmTestData = [
       "submissionDate": "2025-12-17",
       "submissionNotes": "Vendor clarified that Liquid Trace is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Added TRM entry in addition to TDS entries for CGP use case."
     }
+  },
+  {
+    "id": "trm-14",
+    "sampleCategory": "Blood/Plasma",
+    "name": "xM for TRM",
+    "vendor": "Tempus AI",
+    "approach": "Tumor-naïve",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "No tumor tissue required. Tumor-naïve ctDNA tumor fraction monitoring.",
+    "requiresMatchedNormal": "No",
+    "method": "Liquid biopsy assay that quantifies changes in circulating tumor DNA (ctDNA) tumor fraction longitudinally from blood samples. Uses a multi-parametric ensemble algorithm integrating copy number variations (CNVs) with somatic and germline variant allele frequencies (VAFs) to provide comprehensive tumor fraction estimation. Designed for early molecular response assessment in patients receiving immune checkpoint inhibitor (ICI) therapies.",
+    "methodCitations": "https://www.tempus.com/news/tempus-introduces-xm-an-assay-to-monitor-immunotherapy-response-for-patients-with-advanced-cancers/ | https://pmc.ncbi.nlm.nih.gov/articles/PMC11333675/",
+    "cancerTypes": [
+      "Advanced solid tumors (pan-cancer)"
+    ],
+    "cancerTypesNotes": "Intended for patients with advanced solid tumors receiving immune checkpoint inhibitor (ICI) therapy alone or in combination with chemotherapy.",
+    "targetPopulation": "Patients with advanced cancers receiving ICI therapies who require molecular response monitoring",
+    "responseDefinition": "Molecular Response (MR) vs Non-Molecular Response (nMR) based on ctDNA tumor fraction dynamics. Molecular responders show ctDNA clearance or significant reduction; non-molecular responders show persistent or increasing tumor fraction.",
+    "indicationsNotes": "Designed to detect molecular response to ICI prior to 6 weeks into treatment, enabling clinicians to stay ahead of disease progression and optimize therapeutic strategies. Longitudinal non-molecular responders associated with worse survival compared to molecular responders.",
+    "sensitivity": null,
+    "sensitivityNotes": "Per real-world cohort study (PMC11333675): Molecular response status correlated with real-world overall survival. Combines with imaging for improved outcome prediction beyond imaging alone.",
+    "specificity": null,
+    "specificityNotes": "Study demonstrated that model incorporating xM for TRM molecular response + imaging is more predictive of rwOS outcomes than imaging alone.",
+    "lod": null,
+    "lodNotes": "Tumor fraction quantification via ensemble algorithm. Specific LOD not publicly disclosed.",
+    "fdaStatus": "RUO (Research Use Only)",
+    "fdaStatusNotes": "Currently available for Research Use Only as of June 2025. Clinical availability expected later in 2025.",
+    "fdaStatusCitations": "https://www.tempus.com/news/tempus-introduces-xm-an-assay-to-monitor-immunotherapy-response-for-patients-with-advanced-cancers/",
+    "reimbursement": "Not applicable (RUO)",
+    "reimbursementNote": "Research Use Only - not available for clinical ordering. Clinical availability expected later in 2025.",
+    "clinicalAvailability": "Research Use Only (clinical launch expected late 2025)",
+    "availableRegions": ["US (RUO)"],
+    "tat": null,
+    "tatNotes": "Turnaround time not specified for RUO product.",
+    "sampleType": "Peripheral blood",
+    "clinicalTrials": "ASCO 2025 presentation: 'A molecular biomarker for longitudinal monitoring of therapeutic efficacy in a real-world cohort of advanced solid tumors treated with immune checkpoint inhibitors'",
+    "clinicalTrialsCitations": "https://www.tempus.com/news/tempus-introduces-xm-an-assay-to-monitor-immunotherapy-response-for-patients-with-advanced-cancers/",
+    "numPublications": 2,
+    "numPublicationsCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11333675/",
+    "numPublicationsNotes": "Clinical Cancer Research 2024 publication + ASCO 2025 abstract. Study demonstrated xM for TRM value in stratifying ICI therapy outcomes.",
+    "isRUO": true,
+    "isInvestigational": true,
+    "isClinicalLDT": false,
+    "technologyDifferentiator": "ICI-specific therapy response monitoring via longitudinal ctDNA tumor fraction quantification. Multi-parametric algorithm (CNVs + VAFs) for comprehensive tumor fraction estimation. Part of Tempus' growing portfolio alongside xM MRD. Positioned to address the ~57% of advanced/metastatic cancer patients eligible for ICIs, of whom only ~20% respond.",
+    "regulatoryStatusNotes": "RUO - awaiting clinical availability. Announced June 2025 at ASCO with clinical launch expected later in 2025.",
+    "dataSourceNotes": "Added December 2025 via LLM Data Review. Note: RUO status - not yet available for clinical ordering."
   }
   // INSERT NEW TRM TEST HERE (above this line, add comma after previous entry)
 ];
@@ -5474,6 +5520,53 @@ export const tdsTestData = [
     "totalParticipantsNotes": "International multicenter analytical validation across 10+ centers in 8 countries (France, Germany, Austria, Netherlands, Spain, Italy, Greece, India)",
     "numPublications": 1,
     "technologyDifferentiator": "Decentralized IVD kit for in-house hospital liquid biopsy. Compact 32-gene actionability-focused panel (>80% ESCAT Level I). DNA-only workflow with UMI/UDI error correction. Integrated Hedera Prime CE-IVD software with OncoKB for automated therapy matching. Hedera Comply program supports CE-IVDR local validation."
+  },
+  {
+    "id": "tds-kit-13",
+    "sampleCategory": "Blood/Plasma",
+    "name": "PGDx elio plasma focus Dx",
+    "vendor": "Labcorp/PGDx",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Illumina NextSeq",
+    "approach": "Liquid CGP (kitted IVD)",
+    "method": "Qualitative NGS-based IVD using targeted high-throughput hybridization-based capture for cfDNA. Detects SNVs and indels in 33 genes, copy number amplifications (CNAs) in 5 genes (CCND1, CD274, ERBB2, FGFR2, MET), and translocations in 3 genes (ALK, NTRK1, RET). 0.24 Mb panel size, 25 ng cfDNA input, 2x150 bp reads, 30,000x/2,600x total/deduplicated error-corrected coverage.",
+    "methodCitations": "https://www.personalgenome.com/products/elio-plasma-focus-dx | https://www.prnewswire.com/news-releases/labcorp-launches-molecular-residual-disease-and-liquid-biopsy-solutions-302435767.html",
+    "genesAnalyzed": 33,
+    "genesAnalyzedNotes": "33 genes for SNVs/indels, 5 genes for CNA amplifications (CCND1, CD274, ERBB2, FGFR2, MET), 3 genes for translocations (ALK, NTRK1, RET). Focused panel targeting guideline-recommended biomarkers.",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs (amplification)", "Translocations"],
+    "cancerTypes": ["Pan-solid tumors"],
+    "cancerTypesNotes": "Indicated for use across a wide range of solid tumor types, particularly when tumor tissue is limited or unavailable. Compatible with PGDx elio tissue complete for seamless tissue-to-liquid reflexing workflows.",
+    "targetPopulation": "Patients with advanced solid tumors requiring genomic profiling when tumor tissue is unavailable or insufficient",
+    "indicationsNotes": "First and only FDA-authorized kitted pan-solid tumor liquid biopsy test. Enables laboratories to retain control over patient specimens and data. As FDA-authorized IVD, requires only on-site verification (not full validation) for rapid implementation.",
+    "sensitivity": 96,
+    "sensitivityNotes": "Clinical success rate >96% per vendor. High sensitivity across all variant types per FDA De Novo authorization.",
+    "sensitivityCitations": "https://www.personalgenome.com/products/elio-plasma-focus-dx",
+    "specificity": null,
+    "specificityNotes": "FDA De Novo authorization indicates acceptable analytical performance. Specific specificity values not publicly disclosed.",
+    "lod": null,
+    "lodNotes": "25 ng cfDNA input. Detection sensitivity optimized for actionable variants in advanced solid tumors.",
+    "requiresTumorTissue": "No",
+    "requiresMatchedNormal": "No",
+    "tat": "4-5 days",
+    "tatCitations": "https://www.personalgenome.com/products/elio-plasma-focus-dx",
+    "tatNotes": "4-5 days from isolated nucleic acid to variant report. Rapid implementation with on-site verification only (FDA-authorized IVD).",
+    "fdaStatus": "FDA De Novo authorized (Aug 2, 2024)",
+    "fdaStatusNotes": "First and only FDA-authorized kitted pan-solid tumor liquid biopsy. De Novo classification (DEN240016) enables on-site verification (not full validation) for faster lab implementation. Commercially available since April 23, 2025.",
+    "fdaStatusCitations": "https://ir.labcorp.com/news-releases/news-release-details/labcorp-receives-fda-de-novo-marketing-authorization-pgdx-eliotm",
+    "fdaApprovalDate": "2024-08-02",
+    "reimbursement": "Coverage emerging",
+    "reimbursementNote": "FDA-authorized IVD kit. Labs retain sample and data ownership. Reimbursement varies by payer; contact Labcorp for guidance.",
+    "clinicalAvailability": "Commercially available (US) since April 2025",
+    "availableRegions": ["US"],
+    "listPrice": null,
+    "listPriceNotes": "Contact Labcorp/PGDx for pricing. Kitted model allows laboratory control over pricing and workflows.",
+    "numPublications": 1,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "AACR 2025 presentation on clinical performance. FDA De Novo authorization documentation.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "technologyDifferentiator": "First and only FDA-authorized KITTED pan-solid tumor liquid biopsy. Unlike central lab services, laboratories can run in-house retaining sample and data ownership. Compatible with PGDx elio tissue complete on same instrument for seamless tissue-to-liquid reflexing. Automated bioinformatics reduces manual variant curation burden. Go-live in as few as 6 weeks with streamlined verification process.",
+    "dataSourceNotes": "Added December 2025 via LLM Data Review. First FDA-authorized kitted liquid biopsy CGP for pan-solid tumors."
   }
   // INSERT NEW TDS KIT HERE (above this line, add comma after previous entry)
 ];
@@ -5492,6 +5585,30 @@ export const DATABASE_CHANGELOG = [
     contributor: null,
     affiliation: 'OpenOnco (LLM Data Review)',
     citation: 'https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test'
+  },
+  {
+    date: 'Dec 23, 2025',
+    type: 'added',
+    testId: 'tds-kit-13',
+    testName: 'PGDx elio plasma focus Dx',
+    vendor: 'Labcorp/PGDx',
+    category: 'TDS',
+    description: 'Added first and only FDA-authorized kitted pan-solid tumor liquid biopsy. FDA De Novo Aug 2024, commercial launch April 2025. 33-gene panel detecting SNVs/indels, CNAs (5 genes), translocations (ALK/NTRK1/RET). >96% clinical success rate. 4-5 day TAT. Enables in-house lab testing with sample/data ownership. Compatible with PGDx elio tissue complete for tissue-to-liquid workflows.',
+    contributor: null,
+    affiliation: 'OpenOnco (LLM Data Review)',
+    citation: 'https://ir.labcorp.com/news-releases/news-release-details/labcorp-receives-fda-de-novo-marketing-authorization-pgdx-eliotm'
+  },
+  {
+    date: 'Dec 23, 2025',
+    type: 'added',
+    testId: 'trm-14',
+    testName: 'xM for TRM',
+    vendor: 'Tempus AI',
+    category: 'TRM',
+    description: 'Added Tempus xM for TRM - ICI therapy response monitoring via longitudinal ctDNA tumor fraction quantification. Currently RUO (Research Use Only) with clinical availability expected late 2025. Multi-parametric algorithm (CNVs + VAFs). Detects molecular response <6 weeks into ICI treatment. ASCO 2025 + Clinical Cancer Research 2024 publications. Note: Added with new isRUO flag and RUO visual indicator.',
+    contributor: null,
+    affiliation: 'OpenOnco (LLM Data Review)',
+    citation: 'https://www.tempus.com/news/tempus-introduces-xm-an-assay-to-monitor-immunotherapy-response-for-patients-with-advanced-cancers/'
   },
   {
     date: 'Dec 23, 2025',
