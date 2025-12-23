@@ -3018,7 +3018,7 @@ export const ecdTestData = [
     "performanceNotes": "THUNDER case-control study with independent validation. MCDBT-1 model optimized for high specificity (98.9%); MCDBT-2 model available with higher sensitivity but lower specificity. Modeling suggests 38.7-46.4% reduction in late-stage incidence and 33.1-40.4% improvement in 5-year survival if used for screening.",
     "leadTimeNotes": "Prospective interventional studies (PREDICT, PRESCIENT) ongoing to validate in asymptomatic screening population.",
     "fdaStatus": "CE-IVDD; FDA Breakthrough Device Designation (Jan 2023); NMPA Breakthrough Device Designation (Oct 2023); not FDA-approved",
-    "fdaStatusNotes": "Only MCED test globally to receive Breakthrough Device Designation from both FDA and China NMPA. FDA's Breakthrough Device Designation covers 5 cancer types (Esophageal, Liver, Lung, Ovarian, Pancreatic) and does not include colorectal cancer. CE mark received May 2022 for US and China manufacturing facilities.",
+    "fdaStatusNotes": "Only MCED test globally to receive Breakthrough Device Designation from both FDA and China NMPA. FDA's Breakthrough Device Designation covers 5 cancer types (Esophageal, Liver, Lung, Ovarian, Pancreatic) and does not include colorectal cancer. CE mark received May 2022 for China manufacturing facilities.",
     "reimbursement": "Not established",
     "reimbursementNote": "Self-pay in China/EU markets. No US commercial availability. Reimbursement pathways not established.",
     "commercialPayers": [],
@@ -3046,7 +3046,7 @@ export const ecdTestData = [
     "isInvestigational": true,
     "isInvestigationalNotes": "Investigational in US; CE-IVD in EU/China. Prospective interventional studies ongoing.",
     "technologyDifferentiator": "First MCED test to receive Breakthrough Device Designation from both FDA and China NMPA. Focused panel (6 cancers) targets cancers with limited screening options (pancreatic, ovarian, liver, esophageal). Higher specificity (98.9%) than some competitors enables lower false positive burden. ELSA-seq platform combines methylation profiling with machine learning for cancer detection and tissue of origin prediction.",
-    "vendorRequestedChanges": "2025-12-22: Added vendor-provided PPV (12.3%), NPV (99.9%), TAT (10-15 business days), and list price ($900) from Liankai Chi (Burning Rock Dx)."
+    "vendorRequestedChanges": "2025-12-22: Added vendor-provided PPV (12.3%), NPV (99.9%), TAT (10-15 business days), and list price ($900) from Liankai Chi (Burning Rock Dx). 2025-12-23: Corrected CE mark note to specify China manufacturing only per Liankai Chi."
   },
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
