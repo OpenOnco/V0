@@ -7605,17 +7605,30 @@ const ParameterLabel = ({ label, expertTopic, useGroupHover = false }) => {
     if (isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       const popupWidth = 380;
-      const popupHeight = 400;
+      const popupHeight = 300; // Reduced for better fit
       
+      // Horizontal positioning
       let left = rect.left;
       if (left + popupWidth > window.innerWidth - 20) {
         left = Math.max(20, window.innerWidth - popupWidth - 20);
       }
       if (left < 20) left = 20;
       
-      let top = rect.bottom + 8;
-      if (top + popupHeight > window.innerHeight - 20) {
-        top = Math.max(20, rect.top - popupHeight - 8);
+      // Vertical positioning - prefer below, fall back to above, then constrain
+      let top;
+      const spaceBelow = window.innerHeight - rect.bottom - 20;
+      const spaceAbove = rect.top - 20;
+      
+      if (spaceBelow >= popupHeight) {
+        // Enough space below
+        top = rect.bottom + 8;
+      } else if (spaceAbove >= popupHeight) {
+        // Enough space above
+        top = rect.top - popupHeight - 8;
+      } else {
+        // Not enough space either way - position below and constrain height via CSS
+        top = Math.min(rect.bottom + 8, window.innerHeight - popupHeight - 20);
+        top = Math.max(20, top);
       }
       
       setPopupStyle({ left: `${left}px`, top: `${top}px` });
@@ -7666,12 +7679,12 @@ const ParameterLabel = ({ label, expertTopic, useGroupHover = false }) => {
       {isOpen && ReactDOM.createPortal(
         <div 
           ref={popupRef}
-          className="fixed z-[9999] w-96 bg-white border border-slate-200 rounded-xl shadow-2xl overflow-hidden"
+          className="fixed z-[9999] w-96 max-h-[80vh] bg-white border border-slate-200 rounded-xl shadow-2xl overflow-hidden flex flex-col"
           style={popupStyle}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-slate-700 to-slate-800 px-4 py-3 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-slate-700 to-slate-800 px-4 py-3 flex items-center justify-between flex-shrink-0">
             <h4 className="font-semibold text-white text-sm">{label}</h4>
             <button 
               onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
@@ -7684,7 +7697,7 @@ const ParameterLabel = ({ label, expertTopic, useGroupHover = false }) => {
           </div>
           
           {/* Scrollable content */}
-          <div className="max-h-64 overflow-y-auto">
+          <div className="overflow-y-auto flex-1">
             {/* Definition */}
             {definition && (
               <div className="px-4 py-3 border-b border-slate-100">
@@ -7890,14 +7903,14 @@ const CitationTooltip = ({ citations }) => {
   if (!citations) return null;
   
   return (
-    <span className="inline-flex items-center ml-1">
+    <span className="inline-flex items-center ml-1.5">
       <button 
         ref={buttonRef}
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        className="w-4 h-4 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600 hover:text-blue-700 text-[10px] font-medium inline-flex items-center justify-center transition-colors cursor-pointer"
+        className="w-5 h-5 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600 hover:text-blue-700 text-[10px] font-medium inline-flex items-center justify-center transition-colors cursor-pointer"
         title="View source"
       >
-        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
         </svg>
       </button>
@@ -8018,14 +8031,14 @@ const NoteTooltip = ({ notes }) => {
   if (!notes) return null;
   
   return (
-    <span className="inline-flex items-center ml-1">
+    <span className="inline-flex items-center ml-1.5">
       <button 
         ref={buttonRef}
         onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        className="w-4 h-4 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-600 hover:text-amber-700 text-[10px] font-bold inline-flex items-center justify-center transition-colors cursor-pointer"
+        className="w-5 h-5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-600 hover:text-amber-700 text-[10px] font-bold inline-flex items-center justify-center transition-colors cursor-pointer"
         title="View note"
       >
-        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
         </svg>
       </button>
@@ -9231,7 +9244,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                 <Section title={<>Test Performance <span className="font-normal text-xs opacity-70">(click terms for definitions)</span></>} expertTopic="sensitivity">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
-                      <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
+                      <span className="text-xs text-gray-500"><ParameterLabel label="Reported Sensitivity" useGroupHover={true} /></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.sensitivity ? (
                           <>
@@ -9248,11 +9261,12 @@ const TestDetailModal = ({ test, category, onClose }) => {
                           </>
                         ) : '—'}
                         {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
+                        {test.sensitivity && <NoteTooltip notes={test.sensitivityNotes} />}
                       </span>
                     </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
-                      <span className="text-xs text-gray-500"><GlossaryTooltip termKey="specificity">Reported Specificity</GlossaryTooltip></span>
+                      <span className="text-xs text-gray-500"><ParameterLabel label="Reported Specificity" useGroupHover={true} /></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.specificity ? (
                           <>
@@ -9269,6 +9283,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                           </>
                         ) : '—'}
                         {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
+                        {test.specificity && <NoteTooltip notes={test.specificityNotes} />}
                       </span>
                     </div>
                     {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} />}
@@ -9276,18 +9291,20 @@ const TestDetailModal = ({ test, category, onClose }) => {
                     <DataRow label="PPV" value={test.ppv} unit="%" citations={test.ppvCitations} notes={test.ppvNotes} />
                     <DataRow label="NPV" value={test.npv} unit="%" citations={test.npvCitations} notes={test.npvNotes} />
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
-                      <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD (Limit of Detection)</GlossaryTooltip></span>
+                      <span className="text-xs text-gray-500"><ParameterLabel label="LOD (Limit of Detection)" useGroupHover={true} /></span>
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.lod ? formatLOD(test.lod) : '—'}
                         {test.lod && <CitationTooltip citations={test.lodCitations} />}
+                        {test.lod && <NoteTooltip notes={test.lodNotes} />}
                       </span>
                     </div>
                     {test.lod95 && (
                       <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
-                        <span className="text-xs text-gray-500"><GlossaryTooltip termKey="lod">LOD95</GlossaryTooltip></span>
+                        <span className="text-xs text-gray-500"><ParameterLabel label="LOD95 (95% Confidence)" useGroupHover={true} /></span>
                         <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                           {test.lod95}
                           <CitationTooltip citations={test.lod95Citations} />
+                          <NoteTooltip notes={test.lod95Notes} />
                         </span>
                       </div>
                     )}
