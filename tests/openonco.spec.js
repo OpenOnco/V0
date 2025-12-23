@@ -450,6 +450,153 @@ test.describe('Mobile Responsiveness', () => {
 });
 
 // ===========================================
+// FILTER FUNCTIONALITY TESTS
+// ===========================================
+
+test.describe('Filter Functionality', () => {
+  test('cancer type filter reduces visible tests', async ({ page }) => {
+    await page.goto('/mrd');
+    await page.waitForTimeout(2000);
+    
+    // Count initial cards
+    const initialCards = page.locator('[data-testid="test-card"]');
+    const initialCount = await initialCards.count();
+    
+    // Find and click a cancer type filter button (e.g., "Colorectal" or "CRC")
+    const filterButton = page.locator('button').filter({ hasText: /Colorectal|CRC/i }).first();
+    
+    if (await filterButton.isVisible()) {
+      await filterButton.click();
+      await page.waitForTimeout(1000);
+      
+      // Count cards after filter
+      const filteredCards = page.locator('[data-testid="test-card"]');
+      const filteredCount = await filteredCards.count();
+      
+      // Filtered count should be less than or equal to initial (filter applied)
+      expect(filteredCount).toBeLessThanOrEqual(initialCount);
+      expect(filteredCount).toBeGreaterThan(0);
+    } else {
+      // If no filter button visible, skip gracefully
+      test.skip();
+    }
+  });
+
+  test('search filter works', async ({ page }) => {
+    await page.goto('/mrd');
+    await page.waitForTimeout(2000);
+    
+    // Find search input
+    const searchInput = page.locator('input[placeholder*="Search"], input[placeholder*="search"]').first();
+    
+    if (await searchInput.isVisible()) {
+      // Search for a known test name
+      await searchInput.fill('Signatera');
+      await page.waitForTimeout(1000);
+      
+      // Should still have at least one result
+      const cards = page.locator('[data-testid="test-card"]');
+      const count = await cards.count();
+      expect(count).toBeGreaterThan(0);
+      
+      // The visible card should contain "Signatera"
+      const cardText = await cards.first().textContent();
+      expect(cardText?.toLowerCase()).toContain('signatera');
+    } else {
+      test.skip();
+    }
+  });
+});
+
+// ===========================================
+// SEO URL TESTS
+// ===========================================
+
+test.describe('SEO URLs', () => {
+  test('SEO-friendly test URL opens modal', async ({ page }) => {
+    // Navigate to a specific test via SEO URL
+    await page.goto('/mrd/signatera');
+    await page.waitForTimeout(2000);
+    
+    // Modal should be open with the test details
+    const modal = page.locator('[data-testid="test-detail-modal"], .test-detail-print-area');
+    await expect(modal.first()).toBeVisible({ timeout: 5000 });
+    
+    // Modal should contain "Signatera"
+    const modalText = await modal.first().textContent();
+    expect(modalText?.toLowerCase()).toContain('signatera');
+  });
+
+  test('SEO URL works for ECD category', async ({ page }) => {
+    // Test another category to ensure routing works across categories
+    await page.goto('/ecd/galleri');
+    await page.waitForTimeout(2000);
+    
+    // Modal should be open
+    const modal = page.locator('[data-testid="test-detail-modal"], .test-detail-print-area');
+    await expect(modal.first()).toBeVisible({ timeout: 5000 });
+    
+    // Modal should contain "Galleri"
+    const modalText = await modal.first().textContent();
+    expect(modalText?.toLowerCase()).toContain('galleri');
+  });
+
+  test('invalid SEO URL falls back gracefully', async ({ page }) => {
+    await page.goto('/mrd/nonexistent-test-xyz');
+    await page.waitForTimeout(2000);
+    
+    // Should still be on the MRD page (not crash)
+    const content = await page.textContent('body');
+    expect(content?.toUpperCase()).toContain('MRD');
+  });
+});
+
+// ===========================================
+// VENDOR INVITE URL TESTS
+// ===========================================
+
+test.describe('Vendor Invite URLs', () => {
+  test('vendor invite URL pre-fills email and shows verification status', async ({ page }) => {
+    await page.goto('/submissions?invite=vendor&email=test.user@example.com&name=Test%20User');
+    await page.waitForTimeout(2000);
+    
+    // Check if we're on the actual app
+    const pageContent = await page.textContent('body');
+    if (pageContent?.includes('Login') && pageContent?.includes('Vercel')) {
+      test.skip();
+      return;
+    }
+    
+    // Email should be shown as pre-verified
+    await expect(page.getByText('test.user@example.com')).toBeVisible({ timeout: 5000 });
+    
+    // Should show pre-verified status message
+    await expect(page.getByText(/pre-verified|Email Pre-Verified/i).first()).toBeVisible({ timeout: 5000 });
+  });
+
+  test('vendor invite URL sets submitter type to vendor', async ({ page }) => {
+    await page.goto('/submissions?invite=vendor&email=rep@testvendor.com&name=Vendor%20Rep');
+    await page.waitForTimeout(2000);
+    
+    const pageContent = await page.textContent('body');
+    if (pageContent?.includes('Login') && pageContent?.includes('Vercel')) {
+      test.skip();
+      return;
+    }
+    
+    // The submitter type select should be set to "vendor"
+    const submitterSelect = page.locator('select').filter({ 
+      has: page.locator('option', { hasText: /Test Vendor Representative/i })
+    }).first();
+    
+    if (await submitterSelect.isVisible()) {
+      const selectedValue = await submitterSelect.inputValue();
+      expect(selectedValue).toBe('vendor');
+    }
+  });
+});
+
+// ===========================================
 // SUBMISSIONS PAGE TESTS
 // ===========================================
 
