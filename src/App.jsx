@@ -7976,8 +7976,26 @@ const CitationTooltip = ({ citations }) => {
 // Note Tooltip - Shows test-specific notes (amber icon)
 // Appears after citation link when notes exist
 // ============================================
-const NoteTooltip = ({ notes }) => {
+const NoteTooltip = ({ notes, value }) => {
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Check if note is redundant (just restates the value without adding info)
+  const isRedundantNote = (note, val) => {
+    if (!note || !val) return false;
+    const noteStr = String(note).toLowerCase().trim();
+    const valStr = String(val);
+    // Short notes that just restate value + "per vendor" or similar are redundant
+    // e.g., "12.3% PPV per vendor." or "99.9% NPV per vendor."
+    if (noteStr.length < 50 && 
+        noteStr.includes(valStr) && 
+        /per vendor|as reported|as stated|vendor data/i.test(noteStr)) {
+      return true;
+    }
+    return false;
+  };
+  
+  // Don't show tooltip if notes are empty or redundant
+  if (!notes || isRedundantNote(notes, value)) return null;
   const [popupStyle, setPopupStyle] = useState({});
   const buttonRef = useRef(null);
   const popupRef = useRef(null);
@@ -8027,8 +8045,6 @@ const NoteTooltip = ({ notes }) => {
     window.addEventListener('scroll', handleScroll, true);
     return () => window.removeEventListener('scroll', handleScroll, true);
   }, [isOpen]);
-  
-  if (!notes) return null;
   
   return (
     <span className="inline-flex items-center ml-1.5">
@@ -8392,7 +8408,7 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
         <span className="text-sm font-medium text-gray-900 inline-flex items-center flex-wrap">
           {displayValue}
           <CitationTooltip citations={citations} />
-          <NoteTooltip notes={notes} />
+          <NoteTooltip notes={notes} value={value} />
         </span>
       </div>
     );
@@ -8408,7 +8424,7 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
       <span className="text-sm font-medium text-gray-900 text-right inline-flex items-center">
         {displayValue}
         <CitationTooltip citations={citations} />
-        <NoteTooltip notes={notes} />
+        <NoteTooltip notes={notes} value={value} />
       </span>
     </div>
   );
@@ -9261,7 +9277,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                           </>
                         ) : '—'}
                         {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
-                        {test.sensitivity && <NoteTooltip notes={test.sensitivityNotes} />}
+                        {test.sensitivity && <NoteTooltip notes={test.sensitivityNotes} value={test.sensitivity} />}
                       </span>
                     </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
@@ -9283,7 +9299,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                           </>
                         ) : '—'}
                         {test.specificity && <CitationTooltip citations={test.specificityCitations} />}
-                        {test.specificity && <NoteTooltip notes={test.specificityNotes} />}
+                        {test.specificity && <NoteTooltip notes={test.specificityNotes} value={test.specificity} />}
                       </span>
                     </div>
                     {test.analyticalSpecificity && <DataRow label="Analytical Specificity" value={test.analyticalSpecificity} unit="%" citations={test.analyticalSpecificityCitations} />}
@@ -9295,7 +9311,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                       <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                         {test.lod ? formatLOD(test.lod) : '—'}
                         {test.lod && <CitationTooltip citations={test.lodCitations} />}
-                        {test.lod && <NoteTooltip notes={test.lodNotes} />}
+                        {test.lod && <NoteTooltip notes={test.lodNotes} value={test.lod} />}
                       </span>
                     </div>
                     {test.lod95 && (
@@ -9304,7 +9320,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                         <span className="text-sm font-medium text-gray-900 inline-flex items-center">
                           {test.lod95}
                           <CitationTooltip citations={test.lod95Citations} />
-                          <NoteTooltip notes={test.lod95Notes} />
+                          <NoteTooltip notes={test.lod95Notes} value={test.lod95} />
                         </span>
                       </div>
                     )}
