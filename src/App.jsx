@@ -797,8 +797,8 @@ const Markdown = ({ children, className = '' }) => {
         
         // Render table
         elements.push(
-          <div key={key++} className="overflow-x-auto my-2">
-            <table className="min-w-full text-sm border-collapse">
+          <div key={key++} className="overflow-x-auto my-2 -mx-4 w-[calc(100%+2rem)]" style={{ minWidth: 'max-content', maxWidth: 'calc(100vw - 4rem)' }}>
+            <table className="w-full text-sm border-collapse table-auto">
               <thead>
                 <tr className="bg-gray-100">
                   {headerCells.map((cell, idx) => (
@@ -1089,7 +1089,7 @@ const LifecycleNavigator = ({ onNavigate }) => {
 // Build Info - Auto-generated when code is built
 // ============================================
 const BUILD_INFO = {
-  date: new Date(__BUILD_DATE__).toLocaleString('en-US', { 
+  date: new Date(typeof __BUILD_DATE__ !== 'undefined' ? __BUILD_DATE__ : new Date().toISOString()).toLocaleString('en-US', { 
     year: 'numeric', 
     month: 'short', 
     day: 'numeric',
@@ -1397,12 +1397,33 @@ const UnifiedChat = ({ isFloating = false, onClose = null }) => {
       const container = chatContainerRef.current;
       const lastMessage = messages[messages.length - 1];
       if (lastMessage.role === 'assistant') {
-        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
-        const lastAssistantEl = messageElements[messageElements.length - 1];
-        if (lastAssistantEl) {
-          // Use offsetTop to scroll within container only (not page)
-          container.scrollTop = lastAssistantEl.offsetTop - 8;
-        }
+        // Wait for DOM to update, then scroll to show question and answer start
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            // Find the user message (question) that comes before this assistant response
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              // Calculate scroll position using getBoundingClientRect for accurate positioning
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              // Calculate relative position within the scrollable container
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              // Scroll to show question with padding above
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            } else {
+              // Fallback: scroll to assistant message if no user message found
+              const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+              const lastAssistantEl = messageElements[messageElements.length - 1];
+              if (lastAssistantEl) {
+                const containerRect = container.getBoundingClientRect();
+                const assistantRect = lastAssistantEl.getBoundingClientRect();
+                const relativeTop = assistantRect.top - containerRect.top + container.scrollTop;
+                container.scrollTop = Math.max(0, relativeTop - 8);
+              }
+            }
+          }, 150);
+        });
       }
     }
   }, [messages]);
@@ -2378,13 +2399,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
-        {/* Left: Lifecycle Navigator - Hidden on mobile */}
-        <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category for a Data Deep Dive:</h3>
-          <LifecycleNavigator onNavigate={onNavigate} />
-        </div>
-
-        {/* Right: Search Tools */}
+        {/* Left: Search Tools */}
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
           <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Demystify the Tests:</h3>
           {/* Claude Chat Input */}
@@ -2395,28 +2410,28 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
                   <button
-                    onClick={() => handleChatSubmit("Compare Signatera and Reveal MRD for MRD monitoring")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    onClick={() => handleChatSubmit("I'm being treated for breast cancer. What can these tests do for me?")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Compare Signatera and Reveal MRD for MRD monitoring
+                    I'm being treated for breast cancer. What can these tests do for me?
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("Which TDS tests have the fastest turnaround time?")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    onClick={() => handleChatSubmit("Compare MRD test sensitivities.")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Which TDS tests have the fastest turnaround time?
+                    Compare MRD test sensitivities.
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("I am a patient, please use straightforward language")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    onClick={() => handleChatSubmit("Please use less technical language.")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    🩺 I am a patient, please use straightforward language
+                    Please use less technical language.
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("I am a physician, please use clinical language")}
-                    className="text-[11px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                    onClick={() => handleChatSubmit("Why do some tests have both long and short turn around times?")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    👨‍⚕️ I am a physician, please use clinical language
+                    Why do some tests have both long and short turn around times?
                   </button>
                 </div>
               </div>
@@ -2511,6 +2526,12 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
             </div>
           </div>
         </div>
+
+        {/* Right: Lifecycle Navigator - Hidden on mobile */}
+        <div className="hidden md:block lg:w-[55%] flex-shrink-0">
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category for a Data Deep Dive:</h3>
+          <LifecycleNavigator onNavigate={onNavigate} />
+        </div>
       </div>
 
       {/* Test Cards Grid */}
@@ -2567,7 +2588,7 @@ Say "not specified" for missing data. When uncertain, err on the side of saying 
                   </div>
                 )}
                 {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && !hasCompanyComm && !hasVendorVerified && (
+                {!isBC && !isDiscontinued && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
                       INCOMPLETE
@@ -4935,6 +4956,47 @@ const HowItWorksPage = () => {
 // ============================================
 // Submissions Page
 // ============================================
+// 
+// VENDOR INVITE FEATURE - Custom URL Links for Vendor Validation
+// ============================================
+// 
+// This feature allows vendors to be invited via custom URL links that pre-fill
+// their information and skip email verification. This streamlines the vendor
+// validation workflow.
+//
+// URL Format:
+//   https://openonco.org/submissions?invite=vendor&email=EMAIL&name=NAME
+//
+// Parameters:
+//   - invite=vendor    : Tells the system this is a vendor invite (skips email verification)
+//   - email=xxx@yyy.com: Pre-fills email AND uses domain to match tests
+//   - name=First%20Last: Pre-fills first/last name fields (URL-encoded spaces)
+//
+// How it works:
+//   1. Vendor clicks link → lands on /submissions page
+//   2. System auto-detects invite=vendor parameter
+//   3. Email is pre-verified (no code needed since you sent the link)
+//   4. Name fields pre-filled from the name parameter
+//   5. Test dropdown auto-filtered - only shows tests where vendor name matches email domain
+//
+// Domain Matching Logic:
+//   - Extracts domain from email: dan.norton@personalis.com → "personalis"
+//   - Matches against vendor names: "Personalis" → matches
+//   - Uses fuzzy matching: removes non-alphanumeric chars, case-insensitive
+//   - Example: genomictestingcooperative.com → matches "Genomic Testing Cooperative (GTC)"
+//
+// Example URLs:
+//   https://openonco.org/submissions?invite=vendor&email=dan.norton@personalis.com&name=Dan%20Norton
+//   https://openonco.org/submissions?invite=vendor&email=jowen@genomictestingcooperative.com&name=Jeffrey%20Owen
+//
+// Implementation:
+//   - URL params parsed in main App component (line ~10737)
+//   - vendorInvite prop passed to SubmissionsPage
+//   - SubmissionsPage processes invite and sets up form (line ~5004)
+//   - getVendorTests() filters test dropdown (line ~5596)
+//   - emailMatchesVendor() validates domain matching (line ~5230)
+//
+// ============================================
 const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorInvite }) => {
   const siteConfig = getSiteConfig();
   const isAlz = false; // ALZ DISABLED
@@ -5010,8 +5072,17 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     }
   }, [vendorInvite, onClearVendorInvite]);
   
-  // Handle URL parameters for direct vendor invitations (fallback)
+  // ============================================
+  // VENDOR INVITE FALLBACK - Direct URL Parsing
+  // ============================================
+  // Fallback handler for vendor invite URLs if vendorInvite prop wasn't provided.
+  // This handles direct navigation to /submissions?invite=vendor&email=...
+  //
   // URL format: /submissions?invite=vendor&email=person@company.com&name=John%20Doe
+  //
+  // Note: Primary handling is in main App component (line ~10737) which passes
+  // vendorInvite prop. This is a fallback for edge cases.
+  // ============================================
   useEffect(() => {
     // Only run if vendorInvite prop wasn't provided
     if (vendorInvite) return;
@@ -5204,8 +5275,29 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     return freeProviders.includes(domain);
   };
 
-  // Check if email domain matches vendor
-  // Check if email domain contains vendor name (loose match)
+  // ============================================
+  // EMAIL DOMAIN TO VENDOR NAME MATCHING
+  // ============================================
+  // EMAIL DOMAIN TO VENDOR NAME MATCHING
+  // ============================================
+  // Validates that an email domain matches a vendor name.
+  // Used to ensure vendor submissions come from legitimate company emails.
+  //
+  // Matching Strategy:
+  //   1. Extract domain from email: dan.norton@personalis.com → "personalis"
+  //   2. Clean both domain and vendor name (remove non-alphanumeric, lowercase)
+  //   3. Check if vendor name appears in domain OR domain appears in vendor name
+  //
+  // Examples:
+  //   - personalis.com + "Personalis" → ✓ match
+  //   - genomictestingcooperative.com + "Genomic Testing Cooperative (GTC)" → ✓ match
+  //   - guardanthealth.com + "Guardant Health" → ✓ match
+  //
+  // This handles cases where:
+  //   - Vendor name has extra text: "Genomic Testing Cooperative (GTC)"
+  //   - Domain has subdomain: "dan.norton@personalis.com"
+  //   - Different capitalization or punctuation
+  // ============================================
   const emailMatchesVendor = (email, vendor) => {
     if (!email || !vendor) return false;
     // Get full domain after @ (e.g., "ryght.ai" or "ryghtinc.com")
@@ -5563,6 +5655,24 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     setSubmitError('');
   };
 
+  // ============================================
+  // VENDOR TEST FILTERING - Domain Matching
+  // ============================================
+  // Filters the test dropdown to show only tests from the vendor's company.
+  // Uses email domain to match vendor names.
+  //
+  // Matching Logic:
+  //   1. Extract domain from email: dan.norton@personalis.com → "personalis"
+  //   2. Compare against vendor names (case-insensitive, alphanumeric only)
+  //   3. Fuzzy match: checks if domain appears in vendor name OR vendor name in domain
+  //
+  // Examples:
+  //   - personalis.com → matches "Personalis"
+  //   - genomictestingcooperative.com → matches "Genomic Testing Cooperative (GTC)"
+  //   - guardanthealth.com → matches "Guardant Health"
+  //
+  // This is used in the vendor validation flow to show only relevant tests.
+  // ============================================
   // Get vendor domain from email for filtering tests
   const getVendorDomainFromEmail = (email) => {
     if (!email || !email.includes('@')) return '';
@@ -7212,12 +7322,33 @@ const CategoryChat = ({ category }) => {
       const container = chatContainerRef.current;
       const lastMessage = messages[messages.length - 1];
       if (lastMessage.role === 'assistant') {
-        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
-        const lastAssistantEl = messageElements[messageElements.length - 1];
-        if (lastAssistantEl) {
-          // Use offsetTop to scroll within container only (not page)
-          container.scrollTop = lastAssistantEl.offsetTop - 8;
-        }
+        // Wait for DOM to update, then scroll to show question and answer start
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            // Find the user message (question) that comes before this assistant response
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              // Calculate scroll position using getBoundingClientRect for accurate positioning
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              // Calculate relative position within the scrollable container
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              // Scroll to show question with padding above
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            } else {
+              // Fallback: scroll to assistant message if no user message found
+              const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+              const lastAssistantEl = messageElements[messageElements.length - 1];
+              if (lastAssistantEl) {
+                const containerRect = container.getBoundingClientRect();
+                const assistantRect = lastAssistantEl.getBoundingClientRect();
+                const relativeTop = assistantRect.top - containerRect.top + container.scrollTop;
+                container.scrollTop = Math.max(0, relativeTop - 8);
+              }
+            }
+          }, 150);
+        });
       }
     }
   }, [messages]);
@@ -7453,8 +7584,10 @@ const PARAMETER_CHANGELOG = {
 
 // ============================================
 // Parameter Label Component (clickable with popup)
+// Shows: Definition + Changelog only
+// Notes and citations now shown via separate inline tooltips
 // ============================================
-const ParameterLabel = ({ label, citations, notes, expertTopic, useGroupHover = false }) => {
+const ParameterLabel = ({ label, expertTopic, useGroupHover = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [popupStyle, setPopupStyle] = useState({});
   const buttonRef = useRef(null);
@@ -7464,8 +7597,8 @@ const ParameterLabel = ({ label, citations, notes, expertTopic, useGroupHover = 
   const changelog = PARAMETER_CHANGELOG[label] || [];
   const expertInsight = expertTopic ? EXPERT_INSIGHTS[expertTopic] : null;
   
-  // Only show as clickable if there's any content to display
-  const hasContent = definition || notes || citations || changelog.length > 0 || expertInsight;
+  // Only show as clickable if there's definition, changelog, or expert insight
+  const hasContent = definition || changelog.length > 0 || expertInsight;
   
   // Calculate popup position when opening
   useEffect(() => {
@@ -7551,7 +7684,7 @@ const ParameterLabel = ({ label, citations, notes, expertTopic, useGroupHover = 
           </div>
           
           {/* Scrollable content */}
-          <div className="max-h-80 overflow-y-auto">
+          <div className="max-h-64 overflow-y-auto">
             {/* Definition */}
             {definition && (
               <div className="px-4 py-3 border-b border-slate-100">
@@ -7572,40 +7705,8 @@ const ParameterLabel = ({ label, citations, notes, expertTopic, useGroupHover = 
               </div>
             )}
             
-            {/* Notes (instance-specific) */}
-            {notes && (
-              <div className="px-4 py-3 border-b border-slate-100">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Notes for This Test</p>
-                <p className="text-sm text-slate-700">{notes}</p>
-              </div>
-            )}
-            
-            {/* Sources (instance-specific) */}
-            {citations && (
-              <div className="px-4 py-3 border-b border-slate-100">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Sources</p>
-                <div className="space-y-1">
-                  {citations.split('|').map((c, i) => {
-                    const url = c.trim();
-                    const isUrl = url.startsWith('http');
-                    return (
-                      <a 
-                        key={i} 
-                        href={isUrl ? url : '#'} 
-                        target={isUrl ? "_blank" : undefined}
-                        rel={isUrl ? "noopener noreferrer" : undefined}
-                        className={`block text-xs ${isUrl ? 'text-[#2A63A4] hover:underline' : 'text-slate-600'}`}
-                      >
-                        → {url.length > 70 ? url.slice(0, 70) + '...' : url}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-            
             {/* Changelog */}
-            {changelog.length > 0 && (
+            {changelog.length > 0 ? (
               <div className="px-4 py-3 bg-slate-50">
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Change Log</p>
                 <div className="space-y-2">
@@ -7617,10 +7718,7 @@ const ParameterLabel = ({ label, citations, notes, expertTopic, useGroupHover = 
                   ))}
                 </div>
               </div>
-            )}
-            
-            {/* No changelog message */}
-            {changelog.length === 0 && (
+            ) : (
               <div className="px-4 py-3 bg-slate-50">
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Change Log</p>
                 <p className="text-xs text-slate-400 italic">No changes recorded for this parameter.</p>
@@ -7853,6 +7951,104 @@ const CitationTooltip = ({ citations }) => {
                 );
               })}
             </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </span>
+  );
+}};
+
+// ============================================
+// Note Tooltip - Shows test-specific notes (amber icon)
+// Appears after citation link when notes exist
+// ============================================
+const NoteTooltip = ({ notes }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 320;
+      const popupHeight = 120;
+      
+      let left = rect.left - popupWidth / 2 + rect.width / 2;
+      if (left + popupWidth > window.innerWidth - 20) {
+        left = window.innerWidth - popupWidth - 20;
+      }
+      if (left < 20) left = 20;
+      
+      let top = rect.bottom + 8;
+      if (top + popupHeight > window.innerHeight - 20) {
+        top = rect.top - popupHeight - 8;
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
+  
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      if (buttonRef.current && !buttonRef.current.contains(e.target) &&
+          popupRef.current && !popupRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+  
+  // Close on scroll
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = (e) => {
+      if (popupRef.current && popupRef.current.contains(e.target)) return;
+      setIsOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [isOpen]);
+  
+  if (!notes) return null;
+  
+  return (
+    <span className="inline-flex items-center ml-1">
+      <button 
+        ref={buttonRef}
+        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+        className="w-4 h-4 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-600 hover:text-amber-700 text-[10px] font-bold inline-flex items-center justify-center transition-colors cursor-pointer"
+        title="View note"
+      >
+        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+        </svg>
+      </button>
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[9999] w-80 bg-white border border-amber-200 rounded-lg shadow-xl overflow-hidden" 
+          style={popupStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="bg-amber-50 px-3 py-2 flex items-center justify-between border-b border-amber-200">
+            <span className="text-xs font-semibold text-amber-700 uppercase tracking-wide">Note for This Test</span>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
+              className="text-amber-400 hover:text-amber-600 p-0.5 rounded hover:bg-amber-100 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="p-3 max-h-32 overflow-y-auto">
+            <p className="text-sm text-slate-700 leading-relaxed">{notes}</p>
           </div>
         </div>,
         document.body
@@ -8165,6 +8361,7 @@ const ExpertInsight = ({ topic }) => {
 
 // ============================================
 // Data Row Component for expanded view
+// Layout: Label | Value + Citation + Note
 // ============================================
 const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   if (value === null || value === undefined) return null;
@@ -8176,12 +8373,13 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
     return (
       <div className="py-2 border-b border-gray-100 last:border-0 group cursor-pointer">
         <div className="mb-1 flex items-center gap-1">
-          <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
+          <ParameterLabel label={label} expertTopic={expertTopic} useGroupHover={true} />
           {expertTopic && <ExpertInsight topic={expertTopic} />}
         </div>
-        <span className="text-sm font-medium text-gray-900 inline-flex items-center">
+        <span className="text-sm font-medium text-gray-900 inline-flex items-center flex-wrap">
           {displayValue}
           <CitationTooltip citations={citations} />
+          <NoteTooltip notes={notes} />
         </span>
       </div>
     );
@@ -8191,12 +8389,13 @@ const DataRow = ({ label, value, unit, citations, notes, expertTopic }) => {
   return (
     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 last:border-0 gap-4 group cursor-pointer">
       <span className="flex-shrink-0 flex items-center gap-1">
-        <ParameterLabel label={label} citations={citations} notes={notes} expertTopic={expertTopic} useGroupHover={true} />
+        <ParameterLabel label={label} expertTopic={expertTopic} useGroupHover={true} />
         {expertTopic && <ExpertInsight topic={expertTopic} />}
       </span>
       <span className="text-sm font-medium text-gray-900 text-right inline-flex items-center">
         {displayValue}
         <CitationTooltip citations={citations} />
+        <NoteTooltip notes={notes} />
       </span>
     </div>
   );
@@ -8227,7 +8426,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         </div>
       )}
       {/* INCOMPLETE text overlay for non-BC tests */}
-      {!isBC && !isDiscontinued && !hasCompanyComm && !hasVendorVerified && (
+      {!isBC && !isDiscontinued && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <span className="text-red-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
             INCOMPLETE
@@ -9029,7 +9228,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               {/* Two-column layout for key metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Performance Metrics */}
-                <Section title={<>Test Performance <span className="font-normal text-xs opacity-70">(hover terms for definitions)</span></>} expertTopic="sensitivity">
+                <Section title={<>Test Performance <span className="font-normal text-xs opacity-70">(click terms for definitions)</span></>} expertTopic="sensitivity">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><GlossaryTooltip termKey="sensitivity">Reported Sensitivity</GlossaryTooltip></span>
@@ -9185,7 +9384,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                 {/* Regulatory & Coverage */}
                 <Section title="Regulatory & Coverage">
                   <div className="space-y-1">
-                    <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} />
+                    <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} notes={test.fdaStatusNotes} />
                     <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
                     {test.medicareRate && (
                       <div className="py-1.5 flex justify-between items-center">
@@ -10692,14 +10891,26 @@ export default function App() {
     const testId = params.get('test');
     const compareIds = params.get('compare');
     
-    // Handle vendor invite URLs for submissions page
+      // ============================================
+    // VENDOR INVITE URL HANDLING
+    // ============================================
+    // Parse vendor invite URL parameters:
+    //   /submissions?invite=vendor&email=person@company.com&name=John%20Doe
+    //
+    // This allows vendors to be invited via custom links that:
+    //   - Skip email verification (trusted link)
+    //   - Pre-fill email and name fields
+    //   - Auto-filter test dropdown to their company's tests
+    //
+    // See SubmissionsPage component (line ~4959) for full documentation
+    // ============================================
     const inviteType = params.get('invite');
     const inviteEmail = params.get('email');
     const inviteName = params.get('name');
     
     if (inviteType === 'vendor' && inviteEmail) {
       setVendorInvite({ email: inviteEmail, name: inviteName });
-      // Clear URL parameters after reading
+      // Clear URL parameters after reading (clean URL, no reload)
       window.history.replaceState({}, '', window.location.pathname);
       return; // Don't process other params
     }
@@ -10797,11 +11008,21 @@ export default function App() {
         flags: [personaFlag] 
       });
     }
+    
+    // Always update state and scroll, even if already on the page
     setCurrentPage(page);
-    setInitialSelectedTestId(testId);
+    setInitialSelectedTestId(testId || null);
+    // Clear compare IDs when navigating away from category pages
+    if (!['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(page)) {
+      setInitialCompareIds(null);
+    }
     // Update URL without page reload
     const newPath = pageToPath[page] || '/';
     window.history.pushState({page}, '', newPath);
+    // Always scroll to top when navigating (use requestAnimationFrame to ensure it happens after render)
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   };
 
   // Get SEO config for current page

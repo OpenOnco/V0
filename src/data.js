@@ -10,7 +10,7 @@
 // ├─────────────────────────────────────────────────────────────────┤
 // │ MRD Tests            │ ~262        │ mrd-24     │ mrd-25        │
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
-// │ ECD Tests            │ ~1796       │ ecd-20     │ ecd-21        │
+// │ ECD Tests            │ ~1796       │ ecd-21     │ ecd-22        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-13     │ trm-14        │
 // │ TDS Tests            │ ~3269       │ tds-22     │ tds-23        │
@@ -303,6 +303,11 @@ export const COMPANY_CONTRIBUTIONS = {
     name: 'Jeffrey Owen',
     company: 'Genomic Testing Cooperative',
     date: '2025-12-17'
+  },
+  'ecd-21': {  // OverC Multi-Cancer Detection Blood Test
+    name: 'liankai chi',
+    company: 'Burning Rock Dx',
+    date: '2025-12-22'
   },
   'ecd-20': {  // Avantect Pancreatic
     name: 'Adrian Vilalta',
@@ -1927,6 +1932,83 @@ export const mrdTestData = [
     "technologyDifferentiator": "Multi-solid tumor MRD assay from LIQOMICS (same vendor as lymphoma-focused LymphoVista). Ultra-sensitive detection with LoD of 3.30×10⁻⁶. Covers 17 anatomical sites with optimized mutation panels for diverse solid tumors.",
     "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance."
   },
+  {
+    "id": "mrd-25",
+    "sampleCategory": "Blood/Plasma",
+    "name": "CanCatch Custom",
+    "vendor": "Burning Rock Dx (brbiotech)",
+    "approach": "Tumor-informed",
+    "method": "Tumor-informed personalized MRD assay (also known as PROPHET - Patient-specific pROgnostic and Potential tHErapeutic marker Tracking). WES of tumor and matched normal identifies up to 50 patient-specific variants, which are tracked at 100,000x ultra-deep sequencing in plasma.",
+    "methodCitations": "https://doi.org/10.1016/j.ccell.2023.08.010 | https://pubmed.ncbi.nlm.nih.gov/37683638/",
+    "cancerTypes": [
+      "NSCLC",
+      "Colorectal",
+      "Esophageal",
+      "GIST"
+    ],
+    "cancerTypesNotes": "Clinical data published in NSCLC (Cancer Cell 2023), esophageal squamous cell carcinoma (Molecular Cancer 2025), colorectal cancer, and gastrointestinal stromal tumors (ASCO 2025).",
+    "indicationsNotes": "Tumor-informed personalized MRD assay from Burning Rock Dx (NASDAQ: BNR). Tracks up to 50 patient-specific variants identified from tumor/normal WES. Commercial trade name is CanCatch Custom; also referred to as PROPHET in academic publications.",
+    "sensitivity": 98.7,
+    "sensitivityCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "sensitivityNotes": "98.7% sensitivity reported by vendor. In MEDAL NSCLC study (n=181), preoperative ctDNA detection rates were: Stage IA 15.7%, IB 40%, II 75%, III 82.6%. Landmark sensitivity (3-30 days post-surgery) was 45%.",
+    "sensitivityStagesReported": "IA: 15.7%, IB: 40%, II: 75%, III: 82.6% (preoperative)",
+    "stageIISensitivity": 75,
+    "stageIISensitivityNotes": "75% preoperative detection rate in Stage II NSCLC patients (Chen et al., Cancer Cell 2023).",
+    "stageIIISensitivity": 82.6,
+    "stageIIISensitivityNotes": "82.6% preoperative detection rate in Stage III NSCLC patients (Chen et al., Cancer Cell 2023).",
+    "landmarkSensitivity": 45,
+    "landmarkSensitivityNotes": "45% sensitivity at landmark timepoint (3-30 days post-surgery) in NSCLC cohort.",
+    "landmarkSensitivityCitations": "https://doi.org/10.1016/j.ccell.2023.08.010",
+    "specificity": 99,
+    "specificityPlus": true,
+    "specificityCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "specificityNotes": ">99.0% specificity reported by vendor.",
+    "validationCohortSize": 181,
+    "validationCohortStudy": "MEDAL study (NCT03634826) - 181 patients, 760 plasma samples",
+    "lod": "0.004%",
+    "lod95": "0.004%",
+    "lodCitations": "https://doi.org/10.1016/j.ccell.2023.08.010 | Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "lodNotes": "LoD as low as 0.004% (4 ppm) per vendor. Analytical validation using Seracare ctDNA MRD Panel Mix confirmed similar performance.",
+    "leadTimeVsImaging": 299,
+    "leadTimeVsImagingCitations": "https://doi.org/10.1016/j.ccell.2023.08.010",
+    "leadTimeVsImagingNotes": "Median lead time of 299 days (~10 months) to radiologically confirmed recurrence in NSCLC cohort (Chen et al., Cancer Cell 2023).",
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "Requires tumor tissue for WES-based personalized panel design.",
+    "requiresMatchedNormal": "Yes",
+    "variantsTracked": "50",
+    "variantsTrackedNotes": "Up to 50 highly ranked patient-specific markers selected from tumor/normal WES. Panel designed to cover selected markers with 100,000x ultra-deep sequencing.",
+    "initialTat": 14,
+    "initialTatNotes": "14 days TAT per vendor.",
+    "followUpTat": 14,
+    "followUpTatNotes": "14 days TAT for monitoring samples per vendor.",
+    "tat": 14,
+    "tatNotes": "14 days turnaround time per vendor submission.",
+    "listPrice": "$4,000",
+    "listPriceNotes": "List price $4,000 (may vary depending on test package) per vendor.",
+    "fdaStatus": "Not FDA-approved (China/International LDT)",
+    "fdaStatusNotes": "Offered as laboratory service from Burning Rock Dx laboratory in Guangzhou, China. Not available in US market.",
+    "reimbursement": "Not established (China/International)",
+    "reimbursementNote": "Primarily serves Chinese and international markets. US reimbursement not applicable.",
+    "clinicalAvailability": "Commercially available in China and international markets via Burning Rock Dx laboratory.",
+    "clinicalAvailabilityNotes": "Burning Rock Biotech Limited (NASDAQ: BNR, LSE: BNR) is headquartered in Guangzhou, China.",
+    "clinicalAvailabilityCitations": "https://www.brbiotech.com/ | https://ir.brbiotech.com/",
+    "availableRegions": ["China", "International"],
+    "availableRegionsNotes": "Primary market is China. International availability through central laboratory services.",
+    "clinicalTrials": "NCT03634826 (MEDAL study; 181 early-stage NSCLC patients; PROPHET/CanCatch Custom for MRD detection)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT03634826 | https://doi.org/10.1016/j.ccell.2023.08.010",
+    "clinicalSettings": ["Post-Surgery", "Surveillance", "Neoadjuvant Response"],
+    "clinicalSettingsNotes": "Validated for post-surgical MRD detection, longitudinal surveillance, and assessment of neoadjuvant therapy response. OSCC study showed utility in guiding adjuvant immunotherapy decisions.",
+    "totalParticipants": 181,
+    "numPublications": 3,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/37683638/ | https://doi.org/10.1016/j.ccell.2023.08.010",
+    "numPublicationsNotes": "Key publication: Chen et al., Cancer Cell 2023. Additional publications in Molecular Cancer (OSCC, 2025) and ASCO/AACR conference presentations.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "Clinical LDT offered from Burning Rock laboratory in China. Not FDA-approved; primarily serves Chinese and international markets.",
+    "technologyDifferentiator": "Personalized tumor-informed MRD assay from leading Chinese NGS company. 100,000x ultra-deep sequencing with LoD of 0.004%. Demonstrated 299-day median lead time vs imaging in NSCLC. Head-to-head comparisons show superior performance vs tumor-agnostic and tumor-informed fixed-panel assays.",
+    "vendorRequestedChanges": "2025-12-22: Initial entry created based on vendor submission from Liankai Chi (Burning Rock Dx). Performance metrics from submission and Cancer Cell 2023 publication (Chen et al., PMID 37683638)."
+  },
   // ============================================
   // INSERT NEW MRD TEST HERE (above this line, before IVD KITS)
   // ============================================
@@ -2895,6 +2977,79 @@ export const ecdTestData = [
   // ============================================
   // INSERT NEW ECD TEST HERE (above this line, before IVD KITS)
   // ============================================
+  // OverC Multi-Cancer Detection Blood Test - Added December 2025
+  {
+    "id": "ecd-21",
+    "sampleCategory": "Blood/Plasma",
+    "name": "OverC Multi-Cancer Detection Blood Test",
+    "vendor": "Burning Rock Dx (brbiotech)",
+    "testScope": "Multi-cancer (MCED)",
+    "approach": "Blood-based cfDNA methylation MCED (plasma)",
+    "method": "Tumor-naïve cfDNA methylation profiling (ELSA-seq) with targeted NGS + machine-learning classifier; predicts cancer signal and tissue of origin (TPO)",
+    "cancerTypes": [
+      "Colorectal",
+      "Esophageal",
+      "Liver",
+      "Lung",
+      "Ovarian",
+      "Pancreatic"
+    ],
+    "targetPopulation": "Adults 50-75 years at average risk for cancer",
+    "indicationGroup": "MCED",
+    "sensitivity": 69.1,
+    "sensitivityCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext",
+    "sensitivityNotes": "69.1% overall sensitivity (MCDBT-1 model) across 6 cancer types in THUNDER study independent validation cohort (n=473 cancer, 473 non-cancer). Adjusted sensitivity 70.6% when weighted by China cancer incidence.",
+    "stageISensitivity": null,
+    "stageISensitivityNotes": "Overall stage I sensitivity not reported. Liver cancer stage-specific: Stage I 77.3%, Stage II 81.8%, Stage III 95.0%. Lung cancer: 52-81% across stages IA-III.",
+    "stageIISensitivity": null,
+    "stageIIISensitivity": null,
+    "stageIVSensitivity": null,
+    "specificity": 98.9,
+    "specificityCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext",
+    "specificityNotes": "98.9% specificity in THUNDER independent validation cohort.",
+    "ppv": 12.3,
+    "ppvCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "ppvNotes": "12.3% PPV per vendor.",
+    "npv": 99.9,
+    "npvCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "npvNotes": "99.9% NPV per vendor.",
+    "tumorOriginAccuracy": 83.2,
+    "tumorOriginAccuracyNotes": "Cancer Signal Origin (TPO) prediction accuracy: 83.2% top-1 prediction (TPO1), 91.7% top-2 predictions (TPO2) in THUNDER validation. Adjusted TPO1 accuracy 81.5% when weighted by China cancer incidence.",
+    "tumorOriginAccuracyCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext | https://ir.brbiotech.com/news-releases/news-release-details/burning-rock-received-breakthrough-device-designation-chinas",
+    "performanceCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext | https://pubmed.ncbi.nlm.nih.gov/33931567/",
+    "performanceNotes": "THUNDER case-control study with independent validation. MCDBT-1 model optimized for high specificity (98.9%); MCDBT-2 model available with higher sensitivity but lower specificity. Modeling suggests 38.7-46.4% reduction in late-stage incidence and 33.1-40.4% improvement in 5-year survival if used for screening.",
+    "leadTimeNotes": "Prospective interventional studies (PREDICT, PRESCIENT) ongoing to validate in asymptomatic screening population.",
+    "fdaStatus": "CE-IVDD; FDA Breakthrough Device Designation (Jan 2023); NMPA Breakthrough Device Designation (Oct 2023); not FDA-approved",
+    "fdaStatusNotes": "Only MCED test globally to receive Breakthrough Device Designation from both FDA and China NMPA. FDA's Breakthrough Device Designation covers 5 cancer types (Esophageal, Liver, Lung, Ovarian, Pancreatic) and does not include colorectal cancer. CE mark received May 2022 for US and China manufacturing facilities.",
+    "reimbursement": "Not established",
+    "reimbursementNote": "Self-pay in China/EU markets. No US commercial availability. Reimbursement pathways not established.",
+    "commercialPayers": [],
+    "availableRegions": ["China", "EU"],
+    "availableRegionsNotes": "CE-IVD available in EU. Primary commercial market is China. Not available in US (investigational only).",
+    "clinicalAvailability": "CE-IVD commercially available in China and EU; US investigational only",
+    "tat": "10-15 business days",
+    "tatNotes": "10-15 business days per vendor.",
+    "tatCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "sampleType": "Whole blood (cfDNA)",
+    "sampleVolume": null,
+    "cptCode": null,
+    "listPrice": 900,
+    "listPriceCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "listPriceNotes": "$900 list price per vendor.",
+    "screeningInterval": null,
+    "clinicalTrials": "THUNDER (development/validation, 2395 total); NCT04817306 PREDICT (14000, 9-cancer expansion); NCT04822792 PRESCIENT (12000, 22-cancer expansion)",
+    "clinicalTrialsCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext | https://clinicaltrials.gov/study/NCT04817306 | https://clinicaltrials.gov/study/NCT04822792",
+    "totalParticipants": 2395,
+    "totalParticipantsNotes": "THUNDER study: 1173 cancer + 1222 non-cancer participants across training, validation, and independent validation cohorts. PREDICT and PRESCIENT trials enrolling 10,000+ additional participants.",
+    "numPublications": 2,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Key publications: (1) THUNDER study, Annals of Oncology 2023; (2) ELSA-seq methodology, Nature Biomedical Engineering 2021. Additional conference presentations at ASCO, ESMO, ESMO Asia.",
+    "numPublicationsCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext | https://pubmed.ncbi.nlm.nih.gov/33931567/",
+    "isInvestigational": true,
+    "isInvestigationalNotes": "Investigational in US; CE-IVD in EU/China. Prospective interventional studies ongoing.",
+    "technologyDifferentiator": "First MCED test to receive Breakthrough Device Designation from both FDA and China NMPA. Focused panel (6 cancers) targets cancers with limited screening options (pancreatic, ovarian, liver, esophageal). Higher specificity (98.9%) than some competitors enables lower false positive burden. ELSA-seq platform combines methylation profiling with machine learning for cancer detection and tissue of origin prediction.",
+    "vendorRequestedChanges": "2025-12-22: Added vendor-provided PPV (12.3%), NPV (99.9%), TAT (10-15 business days), and list price ($900) from Liankai Chi (Burning Rock Dx)."
+  },
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
   {
@@ -5255,6 +5410,54 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 22, 2025',
+    type: 'added',
+    testId: 'mrd-25',
+    testName: 'CanCatch Custom',
+    vendor: 'Burning Rock Dx',
+    category: 'MRD',
+    description: 'Added tumor-informed personalized MRD assay (also known as PROPHET). WES of tumor/normal identifies up to 50 patient-specific variants tracked at 100,000x ultra-deep sequencing. 98.7% sensitivity, >99% specificity, LoD 0.004%. MEDAL study (n=181 NSCLC) showed 299-day median lead time vs imaging. 14-day TAT. ~$4,000 list price. Commercial from Burning Rock Dx (China/International). Head-to-head comparisons demonstrate superior performance vs fixed-panel MRD assays.',
+    contributor: 'Liankai Chi',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/37683638/ | https://doi.org/10.1016/j.ccell.2023.08.010'
+  },
+  {
+    date: 'Dec 22, 2025',
+    type: 'updated',
+    testId: 'ecd-21',
+    testName: 'OverC Multi-Cancer Detection Blood Test',
+    vendor: 'Burning Rock Dx',
+    category: 'ECD',
+    description: 'Updated FDA Breakthrough Device Designation note: FDA designation covers 5 cancer types (Esophageal, Liver, Lung, Ovarian, Pancreatic) and does not include colorectal cancer.',
+    contributor: 'Liankai Chi',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: null
+  },
+  {
+    date: 'Dec 22, 2025',
+    type: 'added',
+    testId: 'ecd-21',
+    testName: 'OverC Multi-Cancer Detection Blood Test',
+    vendor: 'Burning Rock Dx',
+    category: 'ECD',
+    description: 'Added Burning Rock Dx OverC MCDBT - 6-cancer MCED test with CE-IVDD marking and dual FDA/NMPA Breakthrough Device Designations. THUNDER study validation: 69.1% sensitivity, 98.9% specificity.',
+    contributor: 'liankai chi',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext'
+  },
+  {
+    date: 'Dec 22, 2025',
+    type: 'updated',
+    testId: 'ecd-21',
+    testName: 'OverC Multi-Cancer Detection Blood Test',
+    vendor: 'Burning Rock Dx',
+    category: 'ECD',
+    description: 'Added vendor-provided PPV (12.3%), NPV (99.9%), TAT (10-15 business days), and list price ($900).',
+    contributor: 'Liankai Chi',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'Vendor data'
+  },
   {
     date: 'Dec 19, 2025',
     type: 'added',

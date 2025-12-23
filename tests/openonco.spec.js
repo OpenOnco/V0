@@ -61,13 +61,19 @@ test.describe('Homepage', () => {
     await page.goto('/');
     await page.waitForTimeout(1000);
     
-    const patientPrompt = page.locator('button').filter({ hasText: /patient.*straightforward/i });
-    const physicianPrompt = page.locator('button').filter({ hasText: /physician.*clinical/i });
+    // Check for any of the new sample prompts
+    const breastCancerPrompt = page.locator('button').filter({ hasText: /breast cancer.*what can these tests/i });
+    const mrdSensitivityPrompt = page.locator('button').filter({ hasText: /compare.*mrd.*sensitivity/i });
+    const lessTechnicalPrompt = page.locator('button').filter({ hasText: /less technical language/i });
+    const turnaroundPrompt = page.locator('button').filter({ hasText: /turn.*around.*time/i });
     
-    const patientVisible = await patientPrompt.isVisible().catch(() => false);
-    const physicianVisible = await physicianPrompt.isVisible().catch(() => false);
+    const breastCancerVisible = await breastCancerPrompt.isVisible().catch(() => false);
+    const mrdVisible = await mrdSensitivityPrompt.isVisible().catch(() => false);
+    const lessTechnicalVisible = await lessTechnicalPrompt.isVisible().catch(() => false);
+    const turnaroundVisible = await turnaroundPrompt.isVisible().catch(() => false);
     
-    expect(patientVisible || physicianVisible).toBeTruthy();
+    // At least one sample prompt should be visible
+    expect(breastCancerVisible || mrdVisible || lessTechnicalVisible || turnaroundVisible).toBeTruthy();
   });
 });
 
@@ -459,31 +465,25 @@ test.describe('Submissions Page - Vendor Domain Validation', () => {
       return;
     }
     
-    // Select "File a Correction" - try multiple selectors
-    const correctionButton = page.getByText('File a Correction').or(
-      page.locator('button').filter({ hasText: /file.*correction/i })
-    ).or(
-      page.locator('[class*="border"]').filter({ hasText: /file.*correction/i })
-    );
+    // Select "File a Correction" button - find it by text
+    const correctionButton = page.getByText('File a Correction', { exact: false });
+    await expect(correctionButton).toBeVisible({ timeout: 5000 });
+    await correctionButton.click();
     
-    await expect(correctionButton.first()).toBeVisible({ timeout: 5000 });
-    await correctionButton.first().click();
-    await page.waitForTimeout(500);
+    // Wait for button to show selected state (blue background) - confirms click worked
+    await page.waitForTimeout(1000);
     
-    // Select "Independent Expert" - find the submitter type select
-    // It should be visible after clicking "File a Correction"
+    // Wait for submitter type section to appear - it should show after clicking correction
+    // Look for the label text first to confirm the section is visible
+    await expect(page.getByText(/I am submitting as/i).first()).toBeVisible({ timeout: 10000 });
+    
+    // Now find the select - it should have "Independent Expert" option
     const submitterSelect = page.locator('select').filter({ 
-      has: page.locator('option', { hasText: /Independent Expert|Test Vendor Representative/i })
-    }).or(
-      page.locator('select').filter({ hasText: /submitting as/i })
-    ).or(
-      page.locator('label:has-text("I am submitting as") + * select').or(
-        page.locator('select').first()
-      )
-    );
+      has: page.locator('option', { hasText: /Independent Expert/i })
+    });
     
-    await expect(submitterSelect).toBeVisible({ timeout: 5000 });
-    await submitterSelect.selectOption('expert');
+    await expect(submitterSelect.first()).toBeVisible({ timeout: 5000 });
+    await submitterSelect.first().selectOption('expert');
     await page.waitForTimeout(500);
     
     // Verify warning message appears
