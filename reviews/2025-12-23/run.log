@@ -1,0 +1,27 @@
+
+OpenOnco Data Review Pipeline
+Data file: /Users/adickinson/Documents/GitHub/V0/src/data.js
+LLMs: claude, openai, gemini, perplexity
+Output: /Users/adickinson/Documents/GitHub/V0/reviews/2025-12-23
+
+Loaded 535,860 characters from data.js
+
+Error with gemini: RetryError[<Future at 0x10bb30320 state=finished raised 
+ClientError>]
+⠼ claude ✓    
+⠼ openai ✓    
+⠼ gemini ✗    
+⠼ perplexity ✓
+
+Completed 3/4 reviews
+
+Generating consensus report...
+Consensus report saved to 
+/Users/adickinson/Documents/GitHub/V0/reviews/2025-12-23/consensus_report.md
+
+Done! Results in /Users/adickinson/Documents/GitHub/V0/reviews/2025-12-23
+
+ckinson/Documents/GitHub/V0/reviews/2025-12-23/consensus_report.md
+
+Done! Results in /Users/adickinson/Documents/GitHub/V0/reviews/2025-12-23
+

@@ -1,7 +1,25 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 23, 2025 (Added PGDx elio plasma focus Dx [tds-kit-13], Tempus xM for TRM [trm-14, RUO])
+// Last updated: December 24, 2025 (Added Resolution ctDx FIRST tds-23)
 // ============================================
+//
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║  ⚠️  STOP! BEFORE MAKING CHANGES, READ THE PROCESS DOCS  ⚠️              ║
+// ╠═══════════════════════════════════════════════════════════════════════════╣
+// ║                                                                           ║
+// ║  📄 NEW TEST SUBMISSION    → Read SUBMISSION_REVIEW.md first             ║
+// ║  📝 VENDOR CHANGE REQUEST  → Read CHANGE_REQUEST.md first                ║
+// ║                                                                           ║
+// ║  Both files are in the repo root: /Users/adickinson/Documents/GitHub/V0/ ║
+// ║                                                                           ║
+// ╠═══════════════════════════════════════════════════════════════════════════╣
+// ║  ✅ AFTER EVERY CHANGE, UPDATE THESE:                                    ║
+// ║     1. DATABASE_CHANGELOG (bottom of this file) - add entry              ║
+// ║     2. RECENTLY_ADDED_TESTS (for new tests only)                         ║
+// ║     3. Quick Reference table below (update LAST ID / NEXT ID)            ║
+// ║     4. "Last updated" line above (date + brief description)              ║
+// ║     5. vendorRequestedChanges field in the test object                   ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
 //
 // ┌─────────────────────────────────────────────────────────────────┐
 // │                        QUICK REFERENCE                          │
@@ -13,7 +31,7 @@
 // │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-14     │ trm-15        │
-// │ TDS Tests            │ ~3269       │ tds-22     │ tds-23        │
+// │ TDS Tests            │ ~3269       │ tds-23     │ tds-24        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-13 │ tds-kit-14    │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
@@ -2377,54 +2395,7 @@ export const ecdTestData = [
     "numPublicationsPlus": true
   },
   {
-    "id": "ecd-5",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Cancerguard",
-    "vendor": "Exact Sciences",
-    "testScope": "Multi-cancer (MCED)",
-    "approach": "Blood-based multi-biomarker MCED (plasma)",
-    "method": "cfDNA methylation + tumor-associated proteins + DNA mutation reflex testing - first multi-biomarker class MCED",
-    "cancerTypes": [
-      "50+ cancer types (excludes breast and prostate); 6 deadliest cancers: pancreatic, lung, liver, esophageal, stomach, ovarian"
-    ],
-    "targetPopulation": "Adults 50-84 years with no cancer diagnosis in past 3 years",
-    "indicationGroup": "MCED",
-    "sensitivity": 64.0,
-    "sensitivityCitations": "https://www.exactsciences.com/cancer-testing/cancerguard-mced-providers/resources",
-    "specificity": 97.4,
-    "specificityCitations": "https://www.exactsciences.com/cancer-testing/cancerguard-mced-providers/resources",
-    "ppv": 19.4,
-    "ppvCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11785667/",
-    "ppvDefinition": "PPV for any cancer in DETECT-A CancerSEEK interventional study",
-    "npv": 99.3,
-    "npvCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11785667/",
-    "npvDefinition": "NPV for absence of any cancer in DETECT-A CancerSEEK interventional study",
-    "tumorOriginAccuracy": null,
-    "tumorOriginAccuracyNotes": "Does not predict tissue of origin; uses imaging-guided diagnostic resolution pathway instead (up to $6,000 covered imaging workup)",
-    "performanceCitations": "DETECT-A (n=10006); ASCEND-2 (n=6354); FALCON Registry (n=25000 ongoing)",
-    "performanceNotes": "64% sensitivity for 17 cancer types excluding breast/prostate; 68% for 6 deadliest cancers; >33% early-stage (I-II) detected; 97.4% specificity.",
-    "leadTimeNotes": "First-of-its-kind multi-biomarker approach; imaging-guided resolution (no tissue of origin prediction)",
-    "fdaStatus": "LDT; not FDA-approved; Breakthrough Device Designation (via CancerSEEK)",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Not covered by Medicare or commercial payers; not billed to insurance; FSA/HSA eligible",
-    "clinicalAvailability": "Launched September 2025 via Quest Diagnostics (7000+ sites)",
-    "availableRegions": ["US"],
-    "tat": "Not publicly specified",
-    "sampleType": "Whole blood in LBgard tubes",
-    "sampleVolume": "4 tubes × 8.5 mL = 34 mL total",
-    "sampleStability": "72 hours at room temperature (15-25°C)",
-    "cptCode": "Proprietary",
-    "listPrice": 689.0,
-    "screeningInterval": "Annual recommended",
-    "clinicalTrials": "DETECT-A prospective interventional MCED (10006); ASCEND-2 classifier development (6354); NCT06589310 FALCON Registry (25000 target)",
-    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06589310",
-    "totalParticipants": 16360,
-    "numPublications": 2,
-    "numPublicationsPlus": true
-  },
-  {
     "id": "ecd-6",
-    "sampleCategory": "Blood/Plasma",
     "name": "Freenome CRC Blood Test",
     "vendor": "Freenome",
     "testScope": "Single-cancer (CRC)",
@@ -3567,7 +3538,7 @@ export const trmTestData = [
     "numPublications": 40,
     "numPublicationsPlus": true,
     "isDiscontinued": true,
-    "discontinuedDate": "December 2025",
+    "discontinuedDate": "December 2024",
     "discontinuedReason": "Product consolidated into Reveal TRM for therapy response monitoring"
   },
   {
@@ -5170,6 +5141,92 @@ export const tdsTestData = [
       "submissionNotes": "New test submission via OpenOnco form. Performance data URLs provided: Mayo Clinic Labs catalog and Lucence website. Verified via Mayo Clinic Labs test catalog (LUCHM), Lucence press releases, PLoS One 2022 validation study, and JCO Precision Oncology 2025 LIQUIK study."
     }
   },
+  {
+    "id": "tds-23",
+    "name": "Resolution ctDx FIRST",
+    "vendor": "Agilent / Resolution Bioscience",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP (ctDNA)",
+    "method": "Hybrid-capture NGS covering 109 genes for SNVs, indels, CNAs, and fusions. FDA-approved CDx for KRAS G12C (adagrasib) and EGFR tumor profiling in NSCLC. Professional services portion (CLIA, not FDA) includes comprehensive genomic profiling.",
+    "methodCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/agilent-resolution-ctdx-first-p210040 | https://www.resolutionbio.com/assays/Resolution-ctDx-FIRST.html",
+    "methodNotes": "First liquid biopsy NGS assay FDA-approved as CDx for adagrasib (KRAZATI). Single-site PMA performed at Resolution Bioscience CLIA lab in Kirkland, WA. Proprietary primer extension technology enables fusion detection without a priori knowledge of gene partner.",
+    "genesAnalyzed": 109,
+    "genesAnalyzedNotes": "109 genes: 103 with SNV/indel detection (64% with full CDS coverage), 54 with CNA detection, 13 with fusion detection.",
+    "genesAnalyzedCitations": "https://www.resolutionbio.com/assays/Resolution-ctDx-FIRST.html",
+    "geneListUrl": "https://www.resolutionbio.com/assays/Resolution-ctDx-FIRST.html",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions"],
+    "biomarkersReportedNotes": "FDA-approved for KRAS G12C and EGFR SNVs/deletions. Professional services (CLIA) includes all 109 genes across 4 alteration types.",
+    "biomarkersReportedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040B.pdf",
+    "cancerTypes": ["NSCLC"],
+    "cancerTypesNotes": "FDA indication limited to NSCLC. Professional services portion applicable to other solid tumors per oncologist discretion.",
+    "cancerTypesCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/agilent-resolution-ctdx-first-p210040",
+    "targetPopulation": "Adults with locally advanced or metastatic NSCLC requiring KRAS G12C or EGFR mutation testing for targeted therapy selection",
+    "targetPopulationCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040A.pdf",
+    "sensitivity": 66.2,
+    "sensitivityNotes": "66.2% PPA vs tissue for KRAS G12C (95% CI: 54.0-77.0%). EGFR variant PPA: 100% for L858R, 91.3% for exon 19 deletions, 88.9% for T790M vs ddPCR.",
+    "sensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2022.40.16_suppl.3057 | https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040B.pdf",
+    "specificity": 100,
+    "specificityNotes": "100% NPA for KRAS G12C vs tissue (95% CI: 94.7-100%). Zero false positive rate demonstrated in FDA analytical validation.",
+    "specificityCitations": "https://ascopubs.org/doi/10.1200/JCO.2022.40.16_suppl.3057 | https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040B.pdf",
+    "lod": "0.34-0.82% MAF",
+    "lodNotes": "LOD95 for SNVs and indels in KRAS and EGFR at 15ng cfDNA input ranged from 0.34% to 0.82%. KRAS G12C detected at low MAF (0.11-0.40%) in validation samples.",
+    "lodCitations": "https://ascopubs.org/doi/10.1200/JCO.2022.40.16_suppl.3057 | https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040B.pdf",
+    "fdaStatus": "FDA PMA approved (December 2022)",
+    "fdaStatusNotes": "PMA P210040 approved December 12, 2022. CDx for KRAS G12C to identify NSCLC patients eligible for adagrasib (KRAZATI). Also FDA-approved for EGFR tumor profiling per professional guidelines.",
+    "fdaStatusCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/agilent-resolution-ctdx-first-p210040",
+    "fdaCompanionDxCount": 1,
+    "fdaCompanionDxList": ["Adagrasib (KRAZATI) - KRAS G12C - NSCLC"],
+    "fdaCompanionDxNotes": "First liquid biopsy NGS CDx approved for adagrasib. If plasma negative, FDA recommends reflex to tissue testing with FDA-approved test.",
+    "fdaCompanionDxCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040A.pdf",
+    "nccnRecommended": true,
+    "nccnAlignmentType": "biomarker-coverage",
+    "nccnGuidelinesAligned": ["NSCLC"],
+    "nccnGuidelinesNotes": "Covers NCCN-recommended biomarkers for NSCLC including KRAS G12C and EGFR. 109-gene panel includes ALK, ROS1, RET, BRAF, MET, ERBB2, NTRK1/2/3.",
+    "nccnGuidelinesCitations": "https://www.resolutionbio.com/assays/Resolution-ctDx-FIRST.html",
+    "tat": "~9 days",
+    "tatNotes": "Based on ctDx platform performance; median TAT 9 days vs 20 days for tissue NGS in prospective NSCLC study.",
+    "tatCitations": "https://doi.org/10.1093/jnci/djy156",
+    "sampleRequirements": "Whole blood in Streck Cell-Free DNA BCT tubes; 7-day stability prior to plasma isolation",
+    "sampleRequirementsNotes": "cfDNA stable at -20°C for 30 days. Nominal 50ng cfDNA input (allowable range 15-75ng). Agilent Resolution ctDx FIRST Blood Collection Kit also available.",
+    "sampleRequirementsCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040A.pdf",
+    "reimbursement": "Medicare + Commercial",
+    "reimbursementNote": "Resolution ctDx platform covered by Medicare and private payors. FDA-approved CDx status supports coverage for NSCLC patients.",
+    "reimbursementCitations": "https://www.resolutionbio.com/company/press/2021.01.11_resolution_mirati_cdx.html",
+    "availableRegions": ["US"],
+    "availableRegionsNotes": "Single-site PMA test performed at Resolution Bioscience CLIA lab, Kirkland, WA. Available via Quest Diagnostics network (Jan 2023). Specimens collected at 2,100+ Quest patient service centers nationwide.",
+    "availableRegionsCitations": "https://clpmag.com/diagnostic-technologies/immunoassay/immunoassay-reagents-kits/quest-diagnostics-offers-agilents-resolution-ctdx-first-liquid-biopsy-test/",
+    "clinicalAvailability": "Commercially available since December 2022 (FDA approval); Quest Diagnostics distribution since January 2023",
+    "clinicalAvailabilityCitations": "https://www.investor.agilent.com/news-and-events/news/news-details/2022/Agilent-Resolution-ctDx-FIRST-Receives-FDA-Approval-as-a-Liquid-Biopsy-Companion-Diagnostic-Test-for-Advanced-Non-small-Cell-Lung-Cancer/default.aspx",
+    "clinicalTrials": "KRYSTAL-1 (NCT03785249) - Phase 1/2 adagrasib trial used for CDx clinical validation",
+    "clinicalTrialsNotes": "FDA approval based on analytical validation and bridging studies using KRYSTAL-1 patient samples. Demonstrated clinical benefit of adagrasib in KRAS G12C+ NSCLC patients identified by ctDx FIRST.",
+    "clinicalTrialsCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210040B.pdf",
+    "totalParticipants": 1000,
+    "totalParticipantsNotes": "Over 1,000 patients enrolled in ongoing prospective NSCLC study with Memorial Sloan Kettering Cancer Center demonstrating clinical response to plasma-directed therapy selection.",
+    "totalParticipantsCitations": "https://www.resolutionbio.com/company/press/2021.01.11_resolution_mirati_cdx.html",
+    "numPublications": 5,
+    "numPublicationsNotes": "Key: ASCO 2022 abstract (JCO 40:16_suppl.3057), FDA SSED, Lung Cancer 2019 (fusion sensitivity comparison), Clin Cancer Res 2016 (bias-corrected sequencing), JNCI 2018 (prospective ctDNA therapy selection).",
+    "numPublicationsCitations": "https://ascopubs.org/doi/10.1200/JCO.2022.40.16_suppl.3057 | https://doi.org/10.1016/j.lungcan.2019.06.004 | https://doi.org/10.1093/jnci/djy156",
+    "publicationsKey": [
+      {
+        "citation": "Pekker I, et al. Resolution ctDx FIRST plasma assay as a companion diagnostic for adagrasib. J Clin Oncol. 2022;40(16_suppl):3057.",
+        "url": "https://ascopubs.org/doi/10.1200/JCO.2022.40.16_suppl.3057",
+        "keyFinding": "66.2% PPA and 100% NPA for KRAS G12C vs tissue. LOD95 0.34-0.82% MAF. High concordance with ddPCR for EGFR variants."
+      },
+      {
+        "citation": "Supplee JG, et al. Sensitivity of next-generation sequencing assays detecting oncogenic fusions in plasma cell-free DNA. Lung Cancer. 2019;134:96-99.",
+        "url": "https://doi.org/10.1016/j.lungcan.2019.06.004",
+        "keyFinding": "ctDx platform detected fusions missed by other assays due to inverted/out-of-frame variants. Superior fusion detection vs Guardant360."
+      },
+      {
+        "citation": "Leighl NB, et al. Clinical Utility of Comprehensive Cell-Free DNA Analysis to Identify Genomic Biomarkers in Patients with Newly Diagnosed Metastatic NSCLC. Clin Cancer Res. 2019;25(15):4691-4700.",
+        "url": "https://doi.org/10.1158/1078-0432.CCR-19-0624",
+        "keyFinding": "Prospective study demonstrating clinical utility of ctDNA-directed therapy selection in metastatic NSCLC."
+      }
+    ],
+    "technologyDifferentiator": "First FDA-approved liquid biopsy NGS CDx for KRAS G12C inhibitor (adagrasib). Proprietary primer extension technology detects fusions without prior knowledge of gene partner. Quest Diagnostics distribution enables broad US access via 2,100+ patient service centers. Zero false positive rate for CDx biomarkers in FDA validation. Superior fusion detection vs competitors in head-to-head studies.",
+    "vendorRequestedChanges": "Dec 24, 2025: Added via LLM review pipeline recommendation - test identified as missing from OpenOnco database despite FDA CDx approval in December 2022."
+  },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
   // IVD KITS - Laboratory Kits for Treatment Decision Support / CGP
@@ -5574,6 +5631,18 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Dec 24, 2025',
+    type: 'added',
+    testId: 'tds-23',
+    testName: 'Resolution ctDx FIRST',
+    vendor: 'Agilent / Resolution Bioscience',
+    category: 'TDS',
+    description: 'Added FDA-approved liquid biopsy CDx for KRAS G12C (adagrasib). First NGS liquid biopsy CDx for KRAS G12C inhibitor. 109-gene hybrid-capture panel. 66.2% PPA vs tissue for KRAS G12C, 100% NPA, LOD95 0.34-0.82% MAF. FDA PMA P210040 approved Dec 2022. Available via Quest Diagnostics network. Identified as missing via LLM review pipeline.',
+    contributor: null,
+    affiliation: 'OpenOnco (LLM Data Review)',
+    citation: 'https://www.fda.gov/medical-devices/recently-approved-devices/agilent-resolution-ctdx-first-p210040 | https://ascopubs.org/doi/10.1200/JCO.2022.40.16_suppl.3057'
+  },
   {
     date: 'Dec 23, 2025',
     type: 'added',
@@ -6382,6 +6451,7 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
+  { id: 'tds-23', name: 'Resolution ctDx FIRST', vendor: 'Agilent / Resolution Bioscience', category: 'TDS', dateAdded: 'Dec 24, 2025' },
   { id: 'tds-22', name: 'LiquidHALLMARK', vendor: 'Lucence', category: 'TDS', dateAdded: 'Dec 19, 2025' },
   { id: 'mrd-24', name: 'CancerVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 15, 2025' },
   { id: 'ecd-kit-1', name: 'Cologuard', vendor: 'Exact Sciences', category: 'ECD', dateAdded: 'Dec 14, 2025' },

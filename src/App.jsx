@@ -448,26 +448,58 @@ const PerformanceMetricWithWarning = ({
 // ============================================
 const GlossaryTooltip = ({ termKey, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [popupStyle, setPopupStyle] = useState({});
+  const buttonRef = useRef(null);
   const term = GLOSSARY[termKey];
+  
+  // Calculate popup position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popupWidth = 288; // w-72 = 18rem = 288px
+      const popupHeight = 120; // approximate height
+      
+      // Horizontal positioning - prefer centered, but constrain to viewport
+      let left = rect.left + (rect.width / 2) - (popupWidth / 2);
+      if (left + popupWidth > window.innerWidth - 16) {
+        left = window.innerWidth - popupWidth - 16;
+      }
+      if (left < 16) left = 16;
+      
+      // Vertical positioning - prefer above, fall back to below
+      let top;
+      const spaceAbove = rect.top - 16;
+      if (spaceAbove >= popupHeight) {
+        top = rect.top - popupHeight - 8;
+      } else {
+        top = rect.bottom + 8;
+      }
+      
+      setPopupStyle({ left: `${left}px`, top: `${top}px` });
+    }
+  }, [isOpen]);
   
   if (!term) return children || null;
   
   return (
     <span className="relative inline-block">
       <button
+        ref={buttonRef}
         type="button"
-        className="inline-flex items-center gap-0.5 text-inherit border-b border-dotted border-current cursor-help hover:text-emerald-600 transition-colors"
+        className="inline-flex items-center gap-1 text-inherit border-b border-dotted border-current cursor-help hover:text-emerald-600 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
         {children || term.term}
-        <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
       </button>
-      {isOpen && (
-        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl">
+      {isOpen && ReactDOM.createPortal(
+        <div 
+          className="fixed z-[9999] w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl"
+          style={popupStyle}
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
           <div className="font-semibold mb-1">{term.term}</div>
           <div className="text-gray-300 text-xs mb-2">{term.definition}</div>
           <a 
@@ -482,8 +514,8 @@ const GlossaryTooltip = ({ termKey, children }) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-900" />
-        </div>
+        </div>,
+        document.body
       )}
     </span>
   );
@@ -3244,7 +3276,7 @@ const DatabaseStatsSimple = () => {
           <span className="text-sm font-medium text-gray-700">Citation Quality</span>
           <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Performance Metrics</span>
           <div className="relative group flex items-center">
-            <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
+            <span className="text-gray-400 hover:text-gray-600 cursor-help text-xs border-b border-dotted border-gray-400">?</span>
             <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <p className="font-semibold mb-2">Performance Metrics with Sources</p>
               <div className="space-y-1.5 text-gray-300">
@@ -7093,7 +7125,7 @@ const SourceDataPage = () => {
               <h3 className="text-lg font-semibold text-gray-800">Citation Quality</h3>
               <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full font-medium">Performance Metrics</span>
               <div className="relative group inline-block ml-1">
-                <span className="text-gray-400 hover:text-gray-600 cursor-help text-sm">ⓘ</span>
+                <span className="text-gray-400 hover:text-gray-600 cursor-help text-xs border-b border-dotted border-gray-400">?</span>
                 <div className="absolute left-0 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <p className="font-semibold mb-2">Performance Metrics with Sources</p>
                   <div className="space-y-1.5 text-gray-300">
@@ -8618,8 +8650,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                   <p className="text-sm font-bold text-violet-600">{test.lod}</p>
                   <p className="text-xs text-violet-400">{test.lod95}</p>
                   <p className="text-xs text-gray-500">LOD / LOD95</p>
-                  <span className="inline-flex items-center gap-0.5 text-[9px] text-violet-500 font-medium mt-0.5" title="Both LOD and LOD95 are reported; see expert notes on how to interpret the gap.">
-                    <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span className="inline-flex items-center gap-0.5 text-[9px] text-violet-500 font-medium mt-0.5 cursor-help" title="Both LOD and LOD95 are reported; see expert notes on how to interpret the gap.">
                     LOD+95
                   </span>
                 </>
