@@ -1,3 +1,20 @@
+/**
+ * ╔═══════════════════════════════════════════════════════════════════════════╗
+ * ║  DEPLOYMENT WORKFLOW - READ BEFORE PUSHING TO PRODUCTION                  ║
+ * ║                                                                           ║
+ * ║  See: /DEPLOY WORKFLOW.md                                                 ║
+ * ║                                                                           ║
+ * ║  Quick version:                                                           ║
+ * ║    1. npm run test:smoke           (local smoke tests)                    ║
+ * ║    2. vercel --yes                 (deploy to preview)                    ║
+ * ║    3. TEST_URL=<preview> npm test  (full tests against preview)           ║
+ * ║    4. Manual verification          (check preview in browser)             ║
+ * ║    5. vercel --prod --yes          (deploy to production)                 ║
+ * ║                                                                           ║
+ * ║  Or just run: ./workflow.sh                                               ║
+ * ╚═══════════════════════════════════════════════════════════════════════════╝
+ */
+
 import React, { useState, useMemo, useRef, useEffect, createContext, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
