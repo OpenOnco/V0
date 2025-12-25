@@ -3348,59 +3348,108 @@ const HomePage = ({ onNavigate }) => {
 
           {/* Chatbot Section for Patients - Blue theme to match logo */}
           <div className="bg-gradient-to-br from-[#1a5276] to-[#2874a6] rounded-2xl border border-[#1a5276] p-6 mb-6 shadow-lg">
-            <h2 className="text-xl font-semibold text-white mb-4 text-center">
-              Chat With Us to Work Out Your Test Options
-            </h2>
-            <p className="text-center text-blue-100 text-sm mb-4">
-              Tell us about your situation and we'll help you understand what tests might be relevant
-            </p>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold text-white text-center">
+                  Your Personal Test Consultation
+                </h2>
+                <p className="text-center text-blue-100 text-sm mt-1">
+                  Answer a few questions and we'll help you understand your options
+                </p>
+              </div>
+              {messages.length > 3 && (
+                <button
+                  onClick={() => {
+                    // Find the chat container and print it
+                    const printContent = messages.map(m => 
+                      `${m.role === 'user' ? 'You' : 'OpenOnco'}: ${m.content}`
+                    ).join('\n\n');
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(`
+                      <html>
+                        <head>
+                          <title>OpenOnco Consultation Summary</title>
+                          <style>
+                            body { font-family: system-ui, -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+                            h1 { color: #1a5276; border-bottom: 2px solid #1a5276; padding-bottom: 10px; }
+                            .message { margin: 20px 0; padding: 15px; border-radius: 10px; }
+                            .user { background: #e8f4fc; margin-left: 20%; }
+                            .assistant { background: #f5f5f5; margin-right: 20%; }
+                            .label { font-weight: bold; color: #1a5276; margin-bottom: 5px; }
+                            .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
+                          </style>
+                        </head>
+                        <body>
+                          <h1>🧬 OpenOnco Test Consultation</h1>
+                          <p style="color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
+                          ${messages.map(m => `
+                            <div class="message ${m.role}">
+                              <div class="label">${m.role === 'user' ? '👤 You' : '🤖 OpenOnco'}:</div>
+                              <div>${m.content.replace(/\n/g, '<br>')}</div>
+                            </div>
+                          `).join('')}
+                          <div class="footer">
+                            <p>This consultation is for educational purposes only. Always discuss testing options with your healthcare provider.</p>
+                            <p>Learn more at <strong>www.openonco.org</strong></p>
+                          </div>
+                        </body>
+                      </html>
+                    `);
+                    printWindow.document.close();
+                    printWindow.print();
+                  }}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-sm rounded-lg transition-colors"
+                  title="Print consultation summary"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print
+                </button>
+              )}
+            </div>
             
             {/* Chat messages */}
             <div 
               ref={chatContainerRef}
-              className="bg-white/95 rounded-xl p-4 mb-4 min-h-[200px] max-h-[400px] overflow-y-auto"
+              className="bg-white/95 rounded-xl p-4 mb-4 min-h-[250px] max-h-[450px] overflow-y-auto"
             >
-              {messages.length === 0 ? (
-                <div className="text-center text-gray-500 py-8">
-                  <p className="mb-4">Try asking:</p>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {getChatSuggestions('patient').map((suggestion, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleSubmit(suggestion)}
-                        className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-600 hover:border-[#2874a6] hover:text-[#1a5276] hover:bg-blue-50 transition-colors"
-                      >
-                        {suggestion}
-                      </button>
-                    ))}
+              {/* Initial greeting - always shown */}
+              <div className="space-y-4">
+                <div className="flex justify-start">
+                  <div className="max-w-[85%] rounded-xl px-4 py-3 bg-gray-100 border border-gray-200 text-gray-700">
+                    <div className="text-sm">
+                      Hi there! 👋 I'm here to help you understand which cancer blood tests might be right for your situation. 
+                      I'll ask you a few questions about your health, insurance, and care team, then give you personalized recommendations you can discuss with your doctor.
+                      <br/><br/>
+                      <strong>Let's start:</strong> What type of cancer are you dealing with, or are you being evaluated for?
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {messages.map((msg, idx) => (
-                    <div key={idx} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[85%] rounded-xl px-4 py-3 ${
-                        msg.role === 'user' 
-                          ? 'bg-[#2874a6] text-white' 
-                          : 'bg-gray-100 border border-gray-200 text-gray-700'
-                      }`}>
-                        <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                
+                {messages.map((msg, idx) => (
+                  <div key={idx} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[85%] rounded-xl px-4 py-3 ${
+                      msg.role === 'user' 
+                        ? 'bg-[#2874a6] text-white' 
+                        : 'bg-gray-100 border border-gray-200 text-gray-700'
+                    }`}>
+                      <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-100 border border-gray-200 rounded-xl px-4 py-3">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                       </div>
                     </div>
-                  ))}
-                  {isLoading && (
-                    <div className="flex justify-start">
-                      <div className="bg-gray-100 border border-gray-200 rounded-xl px-4 py-3">
-                        <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                          <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                          <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
             </div>
             
             {/* Chat input */}
@@ -3410,7 +3459,7 @@ const HomePage = ({ onNavigate }) => {
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Ask about cancer tests..."
+                placeholder="Type your answer..."
                 className="flex-1 px-4 py-3 bg-white border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50"
                 disabled={isLoading}
               />
