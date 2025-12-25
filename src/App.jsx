@@ -305,6 +305,117 @@ const CHAT_MODELS = [
   { id: 'claude-sonnet-4-5-20250929', name: 'More thinking', description: 'Deeper analysis' },
 ];
 
+// Simple Markdown Renderer for Chat
+// ============================================
+const SimpleMarkdown = ({ text, className = '' }) => {
+  // Convert markdown to HTML-safe React elements
+  const renderMarkdown = (content) => {
+    const lines = content.split('\n');
+    const elements = [];
+    let inList = false;
+    let listItems = [];
+    
+    const processInlineMarkdown = (text) => {
+      // Process bold (**text** or __text__)
+      // Process italic (*text* or _text_)
+      const parts = [];
+      let remaining = text;
+      let key = 0;
+      
+      // Match **bold** first, then *italic*
+      const regex = /(\*\*(.+?)\*\*)|(\*(.+?)\*)|(__(.+?)__)|(_(.+?)_)/g;
+      let lastIndex = 0;
+      let match;
+      
+      while ((match = regex.exec(text)) !== null) {
+        // Add text before match
+        if (match.index > lastIndex) {
+          parts.push(text.slice(lastIndex, match.index));
+        }
+        
+        // Add formatted text
+        if (match[2]) {
+          // **bold**
+          parts.push(<strong key={key++}>{match[2]}</strong>);
+        } else if (match[4]) {
+          // *italic*
+          parts.push(<em key={key++}>{match[4]}</em>);
+        } else if (match[6]) {
+          // __bold__
+          parts.push(<strong key={key++}>{match[6]}</strong>);
+        } else if (match[8]) {
+          // _italic_
+          parts.push(<em key={key++}>{match[8]}</em>);
+        }
+        
+        lastIndex = regex.lastIndex;
+      }
+      
+      // Add remaining text
+      if (lastIndex < text.length) {
+        parts.push(text.slice(lastIndex));
+      }
+      
+      return parts.length > 0 ? parts : [text];
+    };
+    
+    const flushList = () => {
+      if (listItems.length > 0) {
+        elements.push(
+          <ul key={elements.length} className="list-disc list-inside my-2 space-y-1">
+            {listItems.map((item, i) => <li key={i}>{processInlineMarkdown(item)}</li>)}
+          </ul>
+        );
+        listItems = [];
+      }
+      inList = false;
+    };
+    
+    lines.forEach((line, idx) => {
+      const trimmed = line.trim();
+      
+      // Bullet points
+      if (trimmed.startsWith('• ') || trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        inList = true;
+        listItems.push(trimmed.slice(2));
+        return;
+      }
+      
+      // If we were in a list and hit a non-list line, flush the list
+      if (inList && trimmed !== '') {
+        flushList();
+      }
+      
+      // Empty line
+      if (trimmed === '') {
+        if (inList) flushList();
+        elements.push(<br key={elements.length} />);
+        return;
+      }
+      
+      // Horizontal rule (---)
+      if (trimmed === '---') {
+        elements.push(<hr key={elements.length} className="my-3 border-gray-300" />);
+        return;
+      }
+      
+      // Regular paragraph
+      elements.push(
+        <p key={elements.length} className={idx > 0 ? 'mt-2' : ''}>
+          {processInlineMarkdown(line)}
+        </p>
+      );
+    });
+    
+    // Flush any remaining list
+    if (inList) flushList();
+    
+    return elements;
+  };
+  
+  return <div className={className}>{renderMarkdown(text)}</div>;
+};
+
 // Helper to check if vendor has badges
 const getVendorBadges = (vendor) => {
   if (!vendor) return [];
@@ -3419,10 +3530,11 @@ const HomePage = ({ onNavigate }) => {
                 <div className="flex justify-start">
                   <div className="max-w-[85%] rounded-xl px-4 py-3 bg-gray-100 border border-gray-200 text-gray-700">
                     <div className="text-sm">
-                      Hi there! 👋 I'm here to help you understand which cancer blood tests might be right for your situation. 
+                      Hi there! 👋 I'm here to help you understand which cancer blood tests might be right for your situation.
+                      <br/><br/>
                       I'll ask you a few questions about your health, insurance, and care team, then give you personalized recommendations you can discuss with your doctor.
                       <br/><br/>
-                      <strong>Let's start:</strong> What type of cancer are you dealing with, or are you being evaluated for?
+                      <strong>First, what's your name?</strong> (This helps me personalize our conversation)
                     </div>
                   </div>
                 </div>
@@ -3434,7 +3546,11 @@ const HomePage = ({ onNavigate }) => {
                         ? 'bg-[#2874a6] text-white' 
                         : 'bg-gray-100 border border-gray-200 text-gray-700'
                     }`}>
-                      <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                      {msg.role === 'assistant' ? (
+                        <SimpleMarkdown text={msg.content} className="text-sm" />
+                      ) : (
+                        <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                      )}
                     </div>
                   </div>
                 ))}
