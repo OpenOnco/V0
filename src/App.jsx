@@ -3462,10 +3462,10 @@ const HomePage = ({ onNavigate }) => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex-1">
                 <h2 className="text-xl font-semibold text-white text-center">
-                  Your Personal Test Consultation
+                  Learn What These Tests Can Do — And Which Might Help You
                 </h2>
                 <p className="text-center text-blue-100 text-sm mt-1">
-                  Answer a few questions and we'll help you understand your options
+                  Chat with us to understand your options and get personalized recommendations
                 </p>
               </div>
               {messages.length > 3 && (
