@@ -3526,42 +3526,39 @@ const HomePage = ({ onNavigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           {/* Patient Hero */}
           <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl px-6 py-8 sm:px-10 sm:py-10 border border-rose-100 mb-6">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 text-center mb-3">
-              Understand How the New Generation of Cancer Tests Can Help You
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 text-center">
+              Learn How the New Generation of Cancer Blood Tests Can Help You
             </h1>
-            <p className="text-center text-gray-600 max-w-2xl mx-auto">
-              Advanced blood tests can now detect cancer DNA, guide treatment decisions, and catch recurrence early. Learn what's available and what might be right for your situation.
-            </p>
           </div>
 
           {/* Three Info Buttons */}
-          <h2 className="text-lg font-semibold text-gray-700 mb-3">An overview of the 3 different types of new tests</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-2 md:gap-4 items-center mb-6">
             <button
               onClick={() => setPatientInfoModal('therapy')}
-              className="bg-violet-50 hover:bg-violet-100 border border-violet-200 hover:border-violet-300 rounded-xl p-5 text-left transition-all hover:shadow-md group"
+              className="bg-violet-50 hover:bg-violet-100 border border-violet-200 hover:border-violet-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
             >
-              <span className="text-3xl mb-3 block">🎯</span>
-              <h3 className="font-semibold text-violet-800 group-hover:text-violet-900 mb-1">Finding the Right Therapy</h3>
-              <p className="text-sm text-gray-600">Learn how genomic testing can match you with targeted treatments</p>
+              <h3 className="text-xl font-bold text-violet-800 group-hover:text-violet-900 mb-2">Tests that help find the right therapy to treat your cancer</h3>
+              <p className="text-sm text-violet-600 group-hover:text-violet-700">Click to learn more →</p>
             </button>
+            
+            <div className="hidden md:flex items-center justify-center text-gray-300 text-3xl font-light">→</div>
             
             <button
               onClick={() => setPatientInfoModal('monitoring')}
-              className="bg-rose-50 hover:bg-rose-100 border border-rose-200 hover:border-rose-300 rounded-xl p-5 text-left transition-all hover:shadow-md group"
+              className="bg-rose-50 hover:bg-rose-100 border border-rose-200 hover:border-rose-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
             >
-              <span className="text-3xl mb-3 block">📈</span>
-              <h3 className="font-semibold text-rose-800 group-hover:text-rose-900 mb-1">Tracking My Progress</h3>
-              <p className="text-sm text-gray-600">Blood tests that show if your treatment is working</p>
+              <h3 className="text-xl font-bold text-rose-800 group-hover:text-rose-900 mb-2">Tests that track how well your therapy is working</h3>
+              <p className="text-sm text-rose-600 group-hover:text-rose-700">Click to learn more →</p>
             </button>
+            
+            <div className="hidden md:flex items-center justify-center text-gray-300 text-3xl font-light">→</div>
             
             <button
               onClick={() => setPatientInfoModal('surveillance')}
-              className="bg-orange-50 hover:bg-orange-100 border border-orange-200 hover:border-orange-300 rounded-xl p-5 text-left transition-all hover:shadow-md group"
+              className="bg-orange-50 hover:bg-orange-100 border border-orange-200 hover:border-orange-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
             >
-              <span className="text-3xl mb-3 block">🔬</span>
-              <h3 className="font-semibold text-orange-800 group-hover:text-orange-900 mb-1">Keeping Watch After Treatment</h3>
-              <p className="text-sm text-gray-600">Detecting recurrence earlier than ever before</p>
+              <h3 className="text-xl font-bold text-orange-800 group-hover:text-orange-900 mb-2">Tests that keep watch after treatment</h3>
+              <p className="text-sm text-orange-600 group-hover:text-orange-700">Click to learn more →</p>
             </button>
           </div>
 
@@ -3579,11 +3576,8 @@ const HomePage = ({ onNavigate }) => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex-1">
                 <h2 className="text-xl font-semibold text-white text-center">
-                  Learn What These Tests Can Do — And Which Might Help You
+                  Chat with us to Learn More About These Tests — And Which Tests Best Match Your Treatment Needs
                 </h2>
-                <p className="text-center text-blue-100 text-sm mt-1">
-                  Chat with us to understand your options and get personalized recommendations
-                </p>
               </div>
               {messages.length > 3 && (
                 <button
@@ -3647,11 +3641,11 @@ const HomePage = ({ onNavigate }) => {
               <div className="flex justify-center items-center gap-4 mb-4">
                 <button 
                   onClick={() => { setPatientChatMode('learn'); setMessages([]); }}
-                  className={`flex items-center gap-1.5 text-sm font-semibold transition-colors ${
+                  className={`text-xl font-semibold transition-colors ${
                     patientChatMode === 'learn' ? 'text-[#1a5276]' : 'text-gray-400 hover:text-gray-500'
                   }`}
                 >
-                  <span>📚</span> Learn about the tests
+                  Learn about the tests
                 </button>
                 <button
                   onClick={() => { setPatientChatMode(patientChatMode === 'learn' ? 'find' : 'learn'); setMessages([]); }}
@@ -3663,11 +3657,11 @@ const HomePage = ({ onNavigate }) => {
                 </button>
                 <button 
                   onClick={() => { setPatientChatMode('find'); setMessages([]); }}
-                  className={`flex items-center gap-1.5 text-sm font-semibold transition-colors ${
+                  className={`text-xl font-semibold transition-colors ${
                     patientChatMode === 'find' ? 'text-[#1a5276]' : 'text-gray-400 hover:text-gray-500'
                   }`}
                 >
-                  <span>🎯</span> Find tests suited to me
+                  Find tests suited to my situation
                 </button>
               </div>
 
@@ -3680,9 +3674,26 @@ const HomePage = ({ onNavigate }) => {
                         <>
                           Hi! 👋 I'm here to help you understand cancer blood tests (also called liquid biopsy).
                           <br/><br/>
-                          Ask me anything — how these tests work, what they can detect, the difference between test types, what to expect, insurance questions, or anything else you're curious about.
-                          <br/><br/>
-                          <em>When you're ready to find specific tests for your situation, switch to <strong>"Find Tests for Me"</strong> above.</em>
+                          <span className="text-gray-600">You can ask me anything about these tests, or try these:</span>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {[
+                              "How do these blood tests work?",
+                              "What is MRD?",
+                              "What's the difference between test types?",
+                              "Will my insurance cover this?",
+                              "What is tumor-informed testing?",
+                              "How accurate are these tests?",
+                              "This is confusing me, simpler please"
+                            ].map((q, i) => (
+                              <button
+                                key={i}
+                                onClick={() => { setChatInput(q); }}
+                                className="px-3 py-1.5 bg-white border border-gray-300 rounded-full text-xs text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors"
+                              >
+                                {q}
+                              </button>
+                            ))}
+                          </div>
                         </>
                       ) : (
                         <>
@@ -3784,7 +3795,7 @@ const HomePage = ({ onNavigate }) => {
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Type your answer..."
+                placeholder="Type your answer...or ask a question!"
                 className="flex-1 px-4 py-3 bg-white border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50"
                 disabled={isLoading}
               />

@@ -953,15 +953,15 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(1000);
     
     // Should see patient hero
-    await expect(page.getByText('Understand How the New Generation of Cancer Tests Can Help You')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Learn How the New Generation of Cancer Blood Tests Can Help You')).toBeVisible({ timeout: 5000 });
     
     // Should see three info buttons
-    await expect(page.getByText('Finding the Right Therapy')).toBeVisible();
-    await expect(page.getByText('Tracking My Progress')).toBeVisible();
-    await expect(page.getByText('Keeping Watch After Treatment')).toBeVisible();
+    await expect(page.getByText('Tests that help find the right therapy to treat your cancer')).toBeVisible();
+    await expect(page.getByText('Tests that track how well your therapy is working')).toBeVisible();
+    await expect(page.getByText('Tests that keep watch after treatment')).toBeVisible();
     
     // Should see patient chat section
-    await expect(page.getByText('Learn What These Tests Can Do')).toBeVisible();
+    await expect(page.getByText('Chat with us to Learn More About These Tests')).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -986,8 +986,8 @@ test.describe('Persona System', () => {
     await page.goto('/');
     await page.waitForTimeout(1000);
     
-    // Click "Finding the Right Therapy" button
-    await page.getByText('Finding the Right Therapy').click();
+    // Click "Tests that help find the right therapy" button
+    await page.getByText('Tests that help find the right therapy to treat your cancer').click();
     await page.waitForTimeout(500);
     
     // Modal should open with educational content
