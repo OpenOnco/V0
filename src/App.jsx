@@ -3534,7 +3534,7 @@ const HomePage = ({ onNavigate }) => {
                       <br/><br/>
                       I'll ask you a few questions about your health, insurance, and care team, then give you personalized recommendations you can discuss with your doctor.
                       <br/><br/>
-                      <strong>First, what's your name?</strong> (This helps me personalize our conversation)
+                      <strong>Let's start:</strong> What type of cancer are you dealing with, or are you being evaluated for?
                     </div>
                   </div>
                 </div>
@@ -7841,7 +7841,24 @@ export default function App() {
     '/ecd': 'ECD',
     '/trm': 'TRM',
     '/tds': 'TDS',
-    '/alz-blood': 'ALZ-BLOOD'
+    '/alz-blood': 'ALZ-BLOOD',
+    // Persona direct access routes
+    '/patients': 'home',
+    '/patient': 'home',
+    '/rnd': 'home',
+    '/clinician': 'home',
+    '/clinicians': 'home',
+    '/medical': 'home'
+  };
+
+  // Map URL paths to personas (for direct persona access)
+  const pathToPersona = {
+    '/patients': 'patient',
+    '/patient': 'patient',
+    '/rnd': 'rnd',
+    '/clinician': 'medical',
+    '/clinicians': 'medical',
+    '/medical': 'medical'
   };
 
   const pageToPath = {
@@ -7884,7 +7901,8 @@ export default function App() {
     }
 
     // Standard page routing
-    return { page: pathToPage[path] || 'home', testSlug: null, testId: null };
+    const urlPersona = pathToPersona[path] || null;
+    return { page: pathToPage[path] || 'home', testSlug: null, testId: null, persona: urlPersona };
   };
 
   const initialRoute = getInitialPage();
@@ -7894,8 +7912,19 @@ export default function App() {
   const [initialCompareIds, setInitialCompareIds] = useState(null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
-  const [persona, setPersona] = useState(() => getStoredPersona() || 'rnd');
-  const [showPersonaGate, setShowPersonaGate] = useState(() => !getStoredPersona());
+  // Persona from URL takes precedence, then localStorage, then default to 'rnd'
+  const [persona, setPersona] = useState(() => initialRoute.persona || getStoredPersona() || 'rnd');
+  // Skip persona gate if URL specifies persona or if already stored
+  const [showPersonaGate, setShowPersonaGate] = useState(() => !initialRoute.persona && !getStoredPersona());
+
+  // Save persona to localStorage if it came from URL (so it persists)
+  useEffect(() => {
+    if (initialRoute.persona) {
+      savePersona(initialRoute.persona);
+      // Clean up URL to just show /
+      window.history.replaceState({}, '', '/');
+    }
+  }, []);
 
   // Handle persona selection (from gate or selector)
   const handlePersonaChange = (newPersona) => {
