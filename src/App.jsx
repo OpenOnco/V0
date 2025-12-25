@@ -2267,7 +2267,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
     orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
   };
 
-  // ========== PATIENT MODE: Simple search + grid only ==========
+  // ========== PATIENT MODE: Simple search + grid only (same cards as R&D) ==========
   if (patientMode) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -2297,7 +2297,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
           </div>
         </div>
 
-        {/* Test Cards Grid */}
+        {/* Test Cards Grid - Same as R&D */}
         <div className="p-4 border-t border-slate-100">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
@@ -2314,6 +2314,10 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
               >
                 <option value="vendor">Alphabetical</option>
                 <option value="category">By Category</option>
+                <option value="tat">By TAT (fastest)</option>
+                <option value="reimbursement">By Coverage</option>
+                <option value="vendorTests">By # Tests</option>
+                <option value="openness">By Openness</option>
               </select>
             </div>
           </div>
@@ -2329,42 +2333,145 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
               const colors = colorClasses[test.color];
               const isDiscontinued = test.isDiscontinued === true;
               const isRUO = test.isRUO === true;
+              const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
+              const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
+              const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
               
               return (
-                <button
+                <div
                   key={test.id}
-                  onClick={() => setSelectedTest(test)}
-                  className={`${colors.bg} ${colors.bgHover} ${colors.border} border rounded-lg p-2 text-left transition-all hover:shadow-md relative group`}
+                  onClick={() => onNavigate(test.category, test.id)}
+                  className={`relative ${colors.border} ${colors.bg} border rounded-lg p-2 cursor-pointer hover:shadow-md transition-all`}
                 >
-                  {/* Status badges */}
-                  {(isDiscontinued || isRUO) && (
-                    <div className="absolute top-1 right-1 flex gap-0.5">
-                      {isDiscontinued && (
-                        <span className="bg-gray-500 text-white text-[8px] px-1 py-0.5 rounded font-medium">DISC</span>
-                      )}
-                      {isRUO && (
-                        <span className="bg-amber-500 text-white text-[8px] px-1 py-0.5 rounded font-medium">RESEARCH ONLY</span>
-                      )}
+                  {/* DISCONTINUED text overlay */}
+                  {isDiscontinued && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <span className="text-gray-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                        DISCONTINUED
+                      </span>
                     </div>
                   )}
-                  
-                  <p className={`text-xs font-semibold ${colors.text} truncate pr-12`}>{test.name}</p>
-                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
-                  <p className={`text-[9px] ${colors.text} opacity-70 mt-0.5`}>{test.category}</p>
-                </button>
+                  {/* RUO (Research Use Only) text overlay */}
+                  {isRUO && !isDiscontinued && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <span className="text-amber-500/50 font-bold text-sm tracking-wider transform -rotate-12">
+                        RESEARCH ONLY
+                      </span>
+                    </div>
+                  )}
+                  {/* INCOMPLETE text overlay for non-BC tests */}
+                  {!isBC && !isDiscontinued && !isRUO && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
+                        INCOMPLETE
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-start justify-between mb-1">
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-xs font-semibold truncate ${isDiscontinued ? 'text-gray-400' : 'text-slate-800'}`}>{test.name}</p>
+                      <p className="text-[10px] text-slate-500 truncate">{test.vendor}<VendorBadge vendor={test.vendor} size="xs" /></p>
+                    </div>
+                    {isDiscontinued ? (
+                      <span className="bg-gray-200 text-gray-600 text-[9px] px-1 py-0.5 rounded font-medium ml-1 flex-shrink-0">
+                        DISC
+                      </span>
+                    ) : (
+                      <div className="flex items-center gap-0.5 flex-shrink-0 ml-1">
+                        {/* VENDOR VERIFIED badge - green, pulsing */}
+                        {hasVendorVerified && (
+                          <div className="relative group flex items-center">
+                            <span className="inline-flex items-center bg-emerald-500 text-white text-[9px] px-1 rounded font-bold cursor-help h-[18px] animate-pulse shadow-sm">
+                              ✓ VENDOR VERIFIED
+                            </span>
+                            <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                              <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
+                              <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
+                              <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
+                              <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                            </div>
+                          </div>
+                        )}
+                        {/* INPUT badge - light green (only if not verified) */}
+                        {hasCompanyComm && !hasVendorVerified && (
+                          <div className="relative group flex items-center">
+                            <span className="inline-flex items-center bg-emerald-100 text-emerald-700 text-[9px] px-1 rounded font-medium cursor-help h-[18px]">
+                              ✓ VENDOR INPUT
+                            </span>
+                            <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                              <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
+                              <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
+                              <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
+                              <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                            </div>
+                          </div>
+                        )}
+                        {/* Kit/Service badge */}
+                        {test.productType === 'Laboratory IVD Kit' ? (
+                          <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Laboratory IVD Kit">
+                            🔬Kit
+                          </span>
+                        ) : test.productType === 'Self-Collection' ? (
+                          <span className="inline-flex items-center bg-teal-100 text-teal-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Self-Collection">
+                            🏠Home
+                          </span>
+                        ) : null}
+                        {/* Category badge */}
+                        <span className={`inline-flex items-center ${colors.badge} text-white text-[9px] px-1 rounded font-medium h-[18px]`}>
+                          {test.category}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {badges.map((badge, idx) => (
+                      <span 
+                        key={idx}
+                        className={`text-[10px] px-1.5 py-0.5 rounded ${
+                          badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {badge.label}: {badge.value}
+                      </span>
+                    ))}
+                    {badges.length === 0 && (
+                      <span className="text-[10px] text-slate-400">No data</span>
+                    )}
+                  </div>
+                </div>
               );
             })}
           </div>
-        </div>
 
-        {/* Test Detail Modal */}
-        {selectedTest && (
-          <TestDetailModal
-            test={selectedTest}
-            onClose={() => setSelectedTest(null)}
-            allTests={allTests}
-          />
-        )}
+          {/* Compact Legend */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 text-[10px]">
+            <span className="flex items-center gap-1">
+              <span className="bg-indigo-100 text-indigo-700 px-1 rounded">🔬Kit</span>
+              <span className="text-slate-500">IVD Kit</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="bg-teal-100 text-teal-700 px-1 rounded">🏠Home</span>
+              <span className="text-slate-500">Self-Collect</span>
+            </span>
+            <span className="text-slate-300">|</span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              <span className="text-slate-500">ECD</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+              <span className="text-slate-500">TDS</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+              <span className="text-slate-500">TRM</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+              <span className="text-slate-500">MRD</span>
+            </span>
+          </div>
+        </div>
       </div>
     );
   }
