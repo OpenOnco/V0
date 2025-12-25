@@ -446,13 +446,12 @@ export const COMPANY_CONTRIBUTIONS = {
 // ============================================
 export const VENDOR_VERIFIED = {
   // Add test IDs here after vendors complete the validation flow
-  // Example:
-  // 'mrd-1': {
-  //   name: 'John Smith',
-  //   company: 'Acme Diagnostics',
-  //   verifiedDate: '2025-12-20',
-  //   editsSubmitted: 2
-  // }
+  'mrd-25': {  // CanCatch Custom
+    name: 'Liankai Chi',
+    company: 'Burning Rock Dx',
+    verifiedDate: '2025-12-24',
+    editsSubmitted: 4
+  },
 };
 
 // ============================================
