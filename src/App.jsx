@@ -59,7 +59,24 @@ import {
   STANDARDS_BODIES,
   COMPANY_CONTRIBUTIONS,
   VENDOR_VERIFIED,
+  BUILD_INFO,
 } from './data';
+
+// Component imports
+import { getStoredPersona, savePersona } from './utils/persona';
+import PersonaSelector from './components/PersonaSelector';
+import PersonaGate from './components/PersonaGate';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import DatabaseSummary from './components/DatabaseSummary';
+import OpennessAward from './components/OpennessAward';
+import FAQPage from './pages/FAQPage';
+import LearnPage from './pages/LearnPage';
+import AboutPage from './pages/AboutPage';
+import HowItWorksPage from './pages/HowItWorksPage';
+import SubmissionsPage from './pages/SubmissionsPage';
+import { getChatSuggestions } from './personaContent';
+import GlossaryTooltip from './components/GlossaryTooltip';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -460,85 +477,6 @@ const PerformanceMetricWithWarning = ({
   );
 };
 
-// ============================================
-// Glossary Tooltip Component
-// ============================================
-const GlossaryTooltip = ({ termKey, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [popupStyle, setPopupStyle] = useState({});
-  const buttonRef = useRef(null);
-  const term = GLOSSARY[termKey];
-  
-  // Calculate popup position when opening
-  useEffect(() => {
-    if (isOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      const popupWidth = 288; // w-72 = 18rem = 288px
-      const popupHeight = 120; // approximate height
-      
-      // Horizontal positioning - prefer centered, but constrain to viewport
-      let left = rect.left + (rect.width / 2) - (popupWidth / 2);
-      if (left + popupWidth > window.innerWidth - 16) {
-        left = window.innerWidth - popupWidth - 16;
-      }
-      if (left < 16) left = 16;
-      
-      // Vertical positioning - prefer above, fall back to below
-      let top;
-      const spaceAbove = rect.top - 16;
-      if (spaceAbove >= popupHeight) {
-        top = rect.top - popupHeight - 8;
-      } else {
-        top = rect.bottom + 8;
-      }
-      
-      setPopupStyle({ left: `${left}px`, top: `${top}px` });
-    }
-  }, [isOpen]);
-  
-  if (!term) return children || null;
-  
-  return (
-    <span className="relative inline-block">
-      <button
-        ref={buttonRef}
-        type="button"
-        className="inline-flex items-center gap-1 text-inherit border-b border-dotted border-current cursor-help hover:text-emerald-600 transition-colors"
-        onClick={() => setIsOpen(!isOpen)}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
-        {children || term.term}
-      </button>
-      {isOpen && ReactDOM.createPortal(
-        <div 
-          className="fixed z-[9999] w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl"
-          style={popupStyle}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-        >
-          <div className="font-semibold mb-1">{term.term}</div>
-          <div className="text-gray-300 text-xs mb-2">{term.definition}</div>
-          <a 
-            href={term.sourceUrl} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Source: {term.source}
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        </div>,
-        document.body
-      )}
-    </span>
-  );
-};
-
-// ============================================
 // External Resource Link Component
 // ============================================
 const ExternalResourceLink = ({ resource, compact = false }) => {
@@ -934,14 +872,7 @@ const Markdown = ({ children, className = '' }) => {
   return <div className={className}>{renderMarkdown(children)}</div>;
 };
 
-// Helper to get persona from localStorage (used by chat components)
-const getStoredPersona = () => {
-  try {
-    return localStorage.getItem('openonco-persona');
-  } catch {
-    return null;
-  }
-};
+// getStoredPersona imported from ./utils/persona
 
 // ============================================
 // Lifecycle Navigator Components
@@ -1137,22 +1068,8 @@ const LifecycleNavigator = ({ onNavigate }) => {
 // ============================================
 // Build Info - Auto-generated when code is built
 // ============================================
-const BUILD_INFO = {
-  date: new Date(typeof __BUILD_DATE__ !== 'undefined' ? __BUILD_DATE__ : new Date().toISOString()).toLocaleString('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZoneName: 'short'
-  }),
-  sources: {
-    MRD: 'https://docs.google.com/spreadsheets/d/16F_QRjpiqlrCK1f5fPSHQsODdE5QVPrrdx-0rfKAa5U/edit',
-    ECD: 'https://docs.google.com/spreadsheets/d/1eFZg2EtdnR4Ly_lrXoZxzI4Z2bH23LDkCAVCXrewwnI/edit',
-    TRM: 'https://docs.google.com/spreadsheets/d/1ZgvK8AgZzZ4XuZEija_m1FSffnnhvIgmVCkQvP1AIXE/edit',
-    TDS: 'https://docs.google.com/spreadsheets/d/1HxYNQ9s4qJKHxFMkYjW1uXBq3Zg3nVkFp3mQZQvZF0s/edit'
-  }
-};
+// BUILD_INFO imported from data.js
+// ============================================
 
 // Create categoryMeta using imported function with BUILD_INFO sources
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
@@ -1374,111 +1291,6 @@ const Badge = ({ children, variant = 'default', title }) => {
 
 // ============================================
 // Header
-// ============================================
-const Header = ({ currentPage, onNavigate }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const siteConfig = getSiteConfig();
-
-  const handleNavigate = (page) => {
-    onNavigate(page);
-    setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const navItems = ['home', 'submissions', 'how-it-works', 'data-sources', 'faq', 'learn', 'about'];
-  const getLabel = (page) => ({
-    'home': 'Home',
-    'learn': 'Learn',
-    'data-sources': 'Data Download',
-    'how-it-works': 'How it Works',
-    'submissions': 'Submissions',
-    'faq': 'FAQ',
-    'about': 'About'
-  }[page] || page);
-  
-  return (
-  <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-      <div className="cursor-pointer hidden sm:flex items-center flex-shrink-0" onClick={() => handleNavigate('home')}>
-        <img src="data:image/jpeg;base64,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" alt="OpenOnco" className="h-14" />
-      </div>
-      <span className="sm:hidden text-xl font-bold text-[#2A63A4] cursor-pointer" onClick={() => handleNavigate('home')}>OpenOnco</span>
-      <nav className="hidden sm:flex items-center flex-1 justify-evenly overflow-x-auto">
-        {navItems.map(page => (
-          <button
-            key={page}
-            onClick={() => handleNavigate(page)}
-            className={`px-2 sm:px-4 py-2 rounded-lg text-sm sm:text-lg font-semibold transition-colors whitespace-nowrap ${
-              currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-            }`}
-          >
-            {getLabel(page)}
-          </button>
-        ))}
-      </nav>
-      
-      {/* Mobile hamburger button */}
-      <button 
-        className="sm:hidden p-2 rounded-lg hover:bg-gray-100"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-      >
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          {mobileMenuOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
-      </button>
-    </div>
-    
-    {/* Mobile menu dropdown */}
-    {mobileMenuOpen && (
-      <div className="sm:hidden border-t border-gray-200 bg-white">
-        <div className="flex flex-col py-2">
-          {navItems.map(page => (
-            <button
-              key={page}
-              onClick={() => handleNavigate(page)}
-              className={`px-4 py-3 text-left font-medium ${
-                currentPage === page ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
-              }`}
-            >
-              {getLabel(page)}
-            </button>
-          ))}
-        </div>
-      </div>
-    )}
-  </header>
-  );
-};
-
-// ============================================
-// Footer
-// ============================================
-const Footer = () => {
-  const siteConfig = getSiteConfig();
-
-  const disclaimers = {
-    [DOMAINS.ONCO]: `OpenOnco is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or treatment options. OpenOnco does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices. Reliance on any information provided by OpenOnco is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.`,
-    [DOMAINS.ALZ]: `OpenAlz is provided for informational and educational purposes only. The information on this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding Alzheimer's disease, cognitive symptoms, or treatment options. OpenAlz does not recommend or endorse any specific tests, physicians, products, procedures, or opinions. Nothing on this website constitutes reimbursement or coverage guidance, and should not be used to determine insurance coverage, patient financial responsibility, or billing practices. Reliance on any information provided by OpenAlz is solely at your own risk. Test performance data, pricing, and availability are subject to change and should be verified directly with test vendors.`,
-  };
-
-  return (
-    <footer className="border-t border-gray-200 py-8 mt-12 bg-white">
-      <div className="max-w-4xl mx-auto px-6">
-        <p className="text-sm text-gray-500 leading-relaxed text-justify">
-          <strong>Disclaimer:</strong> {disclaimers[siteConfig.domain]}
-        </p>
-        <p className="text-xs text-gray-400 mt-4 text-center">
-          Built: {BUILD_INFO.date}
-        </p>
-      </div>
-    </footer>
-  );
-};
-
 // ============================================
 // Unified Chat Component (All Categories)
 // ============================================
@@ -1913,7 +1725,7 @@ const CancerTypeNavigator = ({ onNavigate }) => {
 // ============================================
 // Test Showcase Component - Static badge parameters for each test
 // ============================================
-const TestShowcase = ({ onNavigate }) => {
+const TestShowcase = ({ onNavigate, patientMode = false }) => {
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
   const [searchQuery, setSearchQuery] = useState('');
@@ -2455,6 +2267,108 @@ const TestShowcase = ({ onNavigate }) => {
     orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
   };
 
+  // ========== PATIENT MODE: Simple search + grid only ==========
+  if (patientMode) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        {/* Search Box - Bland/neutral styling */}
+        <div className="p-4">
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <p className="text-sm font-medium text-gray-500 mb-2 text-center">Search All Tests</p>
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter by test name, vendor, cancer type..."
+                className="w-full px-4 py-2.5 pl-10 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-300"
+              />
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Test Cards Grid */}
+        <div className="p-4 border-t border-slate-100">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              {searchQuery 
+                ? `Search results (${filteredTests.length})` 
+                : `All tests (${allTests.length})`}
+            </p>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-500">Sort:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-600 cursor-pointer hover:bg-slate-100"
+              >
+                <option value="vendor">Alphabetical</option>
+                <option value="category">By Category</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+            {filteredTests.length === 0 && searchQuery && (
+              <div className="col-span-full text-center py-8 text-slate-500">
+                No test or vendor match found.
+              </div>
+            )}
+            {filteredTests.map(test => {
+              const badges = getBadgeParams(test);
+              const colors = colorClasses[test.color];
+              const isDiscontinued = test.isDiscontinued === true;
+              const isRUO = test.isRUO === true;
+              
+              return (
+                <button
+                  key={test.id}
+                  onClick={() => setSelectedTest(test)}
+                  className={`${colors.bg} ${colors.bgHover} ${colors.border} border rounded-lg p-2 text-left transition-all hover:shadow-md relative group`}
+                >
+                  {/* Status badges */}
+                  {(isDiscontinued || isRUO) && (
+                    <div className="absolute top-1 right-1 flex gap-0.5">
+                      {isDiscontinued && (
+                        <span className="bg-gray-500 text-white text-[8px] px-1 py-0.5 rounded font-medium">DISC</span>
+                      )}
+                      {isRUO && (
+                        <span className="bg-amber-500 text-white text-[8px] px-1 py-0.5 rounded font-medium">RESEARCH ONLY</span>
+                      )}
+                    </div>
+                  )}
+                  
+                  <p className={`text-xs font-semibold ${colors.text} truncate pr-12`}>{test.name}</p>
+                  <p className="text-[10px] text-slate-500 truncate">{test.vendor}</p>
+                  <p className={`text-[9px] ${colors.text} opacity-70 mt-0.5`}>{test.category}</p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Test Detail Modal */}
+        {selectedTest && (
+          <TestDetailModal
+            test={selectedTest}
+            onClose={() => setSelectedTest(null)}
+            allTests={allTests}
+          />
+        )}
+      </div>
+    );
+  }
+
   // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -2985,13 +2899,177 @@ const calculateTestCompleteness = (test, category) => {
 // Home Page (intro, navs, chat, and news)
 // ============================================
 
+// ============================================
+// Patient Info Modal (for homepage info buttons)
+// ============================================
+const PATIENT_INFO_CONTENT = {
+  therapy: {
+    title: "Finding the Right Therapy",
+    subtitle: "How genomic testing can guide your treatment",
+    icon: "🎯",
+    color: "violet",
+    content: [
+      {
+        heading: "What is genomic testing?",
+        text: "Genomic tests analyze your tumor's DNA to find specific changes (mutations) that might be driving your cancer's growth. Think of it like finding the specific weak point in your cancer."
+      },
+      {
+        heading: "Why does it matter?",
+        text: "Many new cancer drugs are designed to target specific mutations. If your tumor has one of these mutations, a targeted therapy might work better than traditional chemotherapy—often with fewer side effects."
+      },
+      {
+        heading: "What to expect",
+        text: "Your doctor may order a test using either a tissue sample from your tumor or a simple blood draw. Results typically take 1-2 weeks and will show which treatments might work best for your specific cancer."
+      },
+      {
+        heading: "Questions to ask your doctor",
+        list: [
+          "Is genomic testing right for my type of cancer?",
+          "Are there targeted therapies available if we find a mutation?",
+          "Will my insurance cover this test?"
+        ]
+      }
+    ]
+  },
+  monitoring: {
+    title: "Tracking My Progress",
+    subtitle: "Blood tests that show if treatment is working",
+    icon: "📈",
+    color: "rose",
+    content: [
+      {
+        heading: "What are liquid biopsies?",
+        text: "These blood tests detect tiny pieces of tumor DNA floating in your bloodstream. As your tumor responds to treatment, the amount of this DNA changes—giving your doctor a real-time view of how well treatment is working."
+      },
+      {
+        heading: "Why is this better than scans alone?",
+        text: "Blood tests can sometimes detect changes weeks or months before they show up on CT scans or MRIs. This early warning can help your doctor adjust treatment sooner if needed."
+      },
+      {
+        heading: "What to expect",
+        text: "Just a simple blood draw—no surgery or imaging required. Your doctor may order these tests regularly during treatment to track your progress over time."
+      },
+      {
+        heading: "Questions to ask your doctor",
+        list: [
+          "How often should I have this test during treatment?",
+          "What changes in results should concern me?",
+          "How do these tests complement my regular scans?"
+        ]
+      }
+    ]
+  },
+  surveillance: {
+    title: "Keeping Watch After Treatment",
+    subtitle: "Detecting recurrence earlier than ever before",
+    icon: "🔬",
+    color: "orange",
+    content: [
+      {
+        heading: "What is MRD testing?",
+        text: "MRD stands for Minimal Residual Disease. These highly sensitive blood tests can detect microscopic amounts of cancer DNA that might remain after treatment—amounts too small to see on any scan."
+      },
+      {
+        heading: "Why is early detection important?",
+        text: "If cancer does return, catching it at the earliest possible stage often means more treatment options and better outcomes. MRD tests can sometimes detect recurrence months before traditional methods."
+      },
+      {
+        heading: "What to expect",
+        text: "After you complete treatment, your doctor may recommend periodic blood tests (often every 3-6 months) to monitor for any signs of the cancer returning. Some tests require an initial sample of your tumor to create a personalized test."
+      },
+      {
+        heading: "Questions to ask your doctor",
+        list: [
+          "Am I a good candidate for MRD monitoring?",
+          "How often should I be tested?",
+          "What happens if the test detects something?"
+        ]
+      }
+    ]
+  }
+};
+
+const PatientInfoModal = ({ type, onClose, onStartChat }) => {
+  if (!type || !PATIENT_INFO_CONTENT[type]) return null;
+  
+  const info = PATIENT_INFO_CONTENT[type];
+  const colorSchemes = {
+    violet: { bg: 'bg-violet-500', light: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700' },
+    rose: { bg: 'bg-rose-500', light: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700' },
+    orange: { bg: 'bg-orange-500', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' },
+  };
+  const colors = colorSchemes[info.color] || colorSchemes.violet;
+  
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className={`${colors.bg} px-6 py-5 text-white`}>
+          <div className="flex justify-between items-start">
+            <div>
+              <span className="text-3xl mb-2 block">{info.icon}</span>
+              <h2 className="text-2xl font-bold">{info.title}</h2>
+              <p className="text-white/80 mt-1">{info.subtitle}</p>
+            </div>
+            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-xl transition-colors">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 140px)' }}>
+          <div className="space-y-6">
+            {info.content.map((section, idx) => (
+              <div key={idx}>
+                <h3 className={`font-semibold ${colors.text} mb-2`}>{section.heading}</h3>
+                {section.text && <p className="text-gray-600 leading-relaxed">{section.text}</p>}
+                {section.list && (
+                  <ul className="mt-2 space-y-2">
+                    {section.list.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-gray-600">
+                        <span className={colors.text}>•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          {/* CTA */}
+          <div className={`mt-6 p-4 ${colors.light} ${colors.border} border rounded-xl`}>
+            <p className="text-sm text-gray-600 mb-3">
+              <span className="font-medium">Have questions about your specific situation?</span> Our AI assistant can help you understand your options and prepare for conversations with your doctor.
+            </p>
+            <button
+              onClick={() => {
+                onClose();
+                if (onStartChat) onStartChat();
+              }}
+              className={`w-full py-2.5 ${colors.bg} text-white rounded-lg font-medium hover:opacity-90 transition-opacity`}
+            >
+              Chat With Us →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const HomePage = ({ onNavigate }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [persona, setPersona] = useState(() => getStoredPersona() || 'Academic/Industry');
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'rnd');
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
+  const [patientInfoModal, setPatientInfoModal] = useState(null); // 'therapy' | 'monitoring' | 'surveillance' | null
   const chatContainerRef = useRef(null);
+  const patientChatInputRef = useRef(null);
 
   // Save persona to localStorage when changed and notify other components
   const handlePersonaSelect = (selectedPersona) => {
@@ -3097,7 +3175,159 @@ const HomePage = ({ onNavigate }) => {
     setIsLoading(false);
   };
 
-  // All personas use the same view, with chat prompt customized by persona
+  // Helper to focus patient chat
+  const focusPatientChat = () => {
+    setTimeout(() => {
+      if (patientChatInputRef.current) {
+        patientChatInputRef.current.focus();
+        patientChatInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  };
+
+  // PATIENT VIEW - simplified, focused on understanding
+  if (persona === 'patient') {
+    return (
+      <div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          {/* Patient Hero */}
+          <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl px-6 py-8 sm:px-10 sm:py-10 border border-rose-100 mb-6">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 text-center mb-3">
+              Understand How the New Generation of Cancer Tests Can Help You
+            </h1>
+            <p className="text-center text-gray-600 max-w-2xl mx-auto">
+              Advanced blood tests can now detect cancer DNA, guide treatment decisions, and catch recurrence early. Learn what's available and what might be right for your situation.
+            </p>
+          </div>
+
+          {/* Three Info Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <button
+              onClick={() => setPatientInfoModal('therapy')}
+              className="bg-violet-50 hover:bg-violet-100 border border-violet-200 hover:border-violet-300 rounded-xl p-5 text-left transition-all hover:shadow-md group"
+            >
+              <span className="text-3xl mb-3 block">🎯</span>
+              <h3 className="font-semibold text-violet-800 group-hover:text-violet-900 mb-1">Finding the Right Therapy</h3>
+              <p className="text-sm text-gray-600">Learn how genomic testing can match you with targeted treatments</p>
+            </button>
+            
+            <button
+              onClick={() => setPatientInfoModal('monitoring')}
+              className="bg-rose-50 hover:bg-rose-100 border border-rose-200 hover:border-rose-300 rounded-xl p-5 text-left transition-all hover:shadow-md group"
+            >
+              <span className="text-3xl mb-3 block">📈</span>
+              <h3 className="font-semibold text-rose-800 group-hover:text-rose-900 mb-1">Tracking My Progress</h3>
+              <p className="text-sm text-gray-600">Blood tests that show if your treatment is working</p>
+            </button>
+            
+            <button
+              onClick={() => setPatientInfoModal('surveillance')}
+              className="bg-orange-50 hover:bg-orange-100 border border-orange-200 hover:border-orange-300 rounded-xl p-5 text-left transition-all hover:shadow-md group"
+            >
+              <span className="text-3xl mb-3 block">🔬</span>
+              <h3 className="font-semibold text-orange-800 group-hover:text-orange-900 mb-1">Keeping Watch After Treatment</h3>
+              <p className="text-sm text-gray-600">Detecting recurrence earlier than ever before</p>
+            </button>
+          </div>
+
+          {/* Patient Info Modal */}
+          {patientInfoModal && (
+            <PatientInfoModal 
+              type={patientInfoModal} 
+              onClose={() => setPatientInfoModal(null)} 
+              onStartChat={focusPatientChat}
+            />
+          )}
+
+          {/* Chatbot Section for Patients - Blue theme to match logo */}
+          <div className="bg-gradient-to-br from-[#1a5276] to-[#2874a6] rounded-2xl border border-[#1a5276] p-6 mb-6 shadow-lg">
+            <h2 className="text-xl font-semibold text-white mb-4 text-center">
+              Chat With Us to Work Out Your Test Options
+            </h2>
+            <p className="text-center text-blue-100 text-sm mb-4">
+              Tell us about your situation and we'll help you understand what tests might be relevant
+            </p>
+            
+            {/* Chat messages */}
+            <div 
+              ref={chatContainerRef}
+              className="bg-white/95 rounded-xl p-4 mb-4 min-h-[200px] max-h-[400px] overflow-y-auto"
+            >
+              {messages.length === 0 ? (
+                <div className="text-center text-gray-500 py-8">
+                  <p className="mb-4">Try asking:</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {getChatSuggestions('patient').map((suggestion, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleSubmit(suggestion)}
+                        className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-600 hover:border-[#2874a6] hover:text-[#1a5276] hover:bg-blue-50 transition-colors"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {messages.map((msg, idx) => (
+                    <div key={idx} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[85%] rounded-xl px-4 py-3 ${
+                        msg.role === 'user' 
+                          ? 'bg-[#2874a6] text-white' 
+                          : 'bg-gray-100 border border-gray-200 text-gray-700'
+                      }`}>
+                        <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-gray-100 border border-gray-200 rounded-xl px-4 py-3">
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                          <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                          <span className="w-2 h-2 bg-[#2874a6] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* Chat input */}
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+              <input
+                ref={patientChatInputRef}
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ask about cancer tests..."
+                className="flex-1 px-4 py-3 bg-white border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50"
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !chatInput.trim()}
+                className="px-6 py-3 bg-white text-[#1a5276] rounded-xl font-semibold hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Chat
+              </button>
+            </form>
+          </div>
+
+          {/* Quick Search + Showcase */}
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">Directly Browse All {mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length} Tests</h2>
+            <TestShowcase onNavigate={onNavigate} patientMode={true} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // R&D / MEDICAL VIEW - full technical view (current default)
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative">
@@ -3308,3585 +3538,6 @@ const DatabaseStatsSimple = () => {
           <div className="text-center p-3 bg-green-50 rounded-lg border border-green-100">
             <p className="text-xl font-bold text-green-700">{tier1Metrics.citationCoverage}%</p>
             <p className="text-[10px] text-green-600">Coverage</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const DatabaseSummary = () => {
-  const [showFAQ, setShowFAQ] = useState(false);
-  
-  // Dynamically count actual fields per test
-  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
-  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const cgpParams = tdsTestData.length > 0 ? Object.keys(tdsTestData[0]).length : 0;
-  
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
-  
-  // Add category to each test for proper openness scoring
-  const allTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
-  ];
-  
-  const allVendors = new Set([
-    ...mrdTestData.map(t => t.vendor),
-    ...ecdTestData.map(t => t.vendor),
-    ...trmTestData.map(t => t.vendor),
-    ...tdsTestData.map(t => t.vendor)
-  ]);
-
-  // Helper functions
-  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
-
-  // Check if test has meaningful reimbursement (inclusion criteria for award)
-  const hasReimbursement = (test) => {
-    const reimb = (test.reimbursement || '').toLowerCase();
-    if (!reimb) return false;
-    if (reimb.includes('not applicable')) return false;
-    if (reimb.includes('not established')) return false;
-    if (reimb.includes('no established')) return false;
-    if (reimb.includes('no specific')) return false;
-    if (reimb === 'self-pay') return false;
-    if (reimb === 'coverage varies') return false;
-    if (reimb.startsWith('coverage emerging')) return false;
-    return reimb.includes('medicare') || reimb.includes('covered') || (test.commercialPayers && test.commercialPayers.length > 0);
-  };
-
-  // Calculate openness score per test (0-100) - CATEGORY-NORMALIZED
-  // Each category has different "standard" metrics, so we normalize accordingly
-  const calcTestScore = (test) => {
-    let score = 0;
-    
-    // UNIVERSAL FIELDS (70 pts max across all categories)
-    if (hasValue(test.listPrice)) score += 30;  // Gold standard - hardest to find
-    if (test.numPublications != null && test.numPublications > 0) score += 15;
-    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
-    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
-    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
-    
-    // CATEGORY-SPECIFIC FIELDS (30 pts max - metrics that ALL tests in category can have)
-    switch (test.category) {
-      case 'ECD':
-        // ECD: Sensitivity/specificity are key for screening tests
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
-        break;
-      case 'MRD':
-        // MRD: LOD is THE key metric (all MRD tests report this)
-        if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
-        break;
-      case 'TRM':
-        // TRM: Sensitivity/specificity for mutation detection
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
-        break;
-      case 'TDS':
-        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
-        if (hasValue(test.genesAnalyzed)) score += 15;
-        if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
-        break;
-      default:
-        // Fallback to sensitivity/specificity
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
-    }
-    
-    return score;
-  };
-
-  // Normalize vendor names
-  const normalizeVendor = (v) => {
-    if (!v) return 'Unknown';
-    if (v.includes('Guardant')) return 'Guardant Health';
-    if (v.includes('Foundation Medicine')) return 'Foundation Medicine';
-    return v;
-  };
-
-  // Count reimbursed tests for stats display
-  const reimbursedTests = allTests.filter(hasReimbursement);
-  
-  // Group ALL tests by vendor for openness scoring
-  const vendorScores = {};
-  allTests.forEach(test => {
-    const vendor = normalizeVendor(test.vendor);
-    if (!vendorScores[vendor]) {
-      vendorScores[vendor] = { scores: [], total: 0, count: 0, tests: [] };
-    }
-    const score = calcTestScore(test);
-    vendorScores[vendor].scores.push(score);
-    vendorScores[vendor].total += score;
-    vendorScores[vendor].count += 1;
-    vendorScores[vendor].tests.push({ name: test.name, score });
-  });
-
-  // Get qualifying vendors (2+ tests) sorted by score for Top 3
-  const qualifyingVendorsList = Object.entries(vendorScores)
-    .filter(([_, data]) => data.count >= 2)
-    .map(([vendor, data]) => ({
-      vendor,
-      avgScore: data.total / data.count,
-      testCount: data.count,
-      tests: data.tests
-    }))
-    .sort((a, b) => b.avgScore - a.avgScore);
-
-  const top3 = qualifyingVendorsList.slice(0, 3);
-
-  // Data quality metrics - calculate fill rates for key fields
-  const calcFillRate = (tests, checkFn) => {
-    if (!tests || tests.length === 0) return 0;
-    const filled = tests.filter(checkFn).length;
-    return Math.round((filled / tests.length) * 100);
-  };
-
-  const dataQualityMetrics = [
-    { label: 'List Price', rate: calcFillRate(allTests, t => hasValue(t.listPrice)), color: 'amber', description: 'published pricing' },
-    { label: 'Sensitivity', rate: calcFillRate(allTests, t => hasValue(t.sensitivity)), color: 'emerald', description: 'detection rate' },
-    { label: 'Specificity', rate: calcFillRate(allTests, t => hasValue(t.specificity)), color: 'emerald', description: 'true negative rate' },
-    { label: 'TAT', rate: calcFillRate(allTests, t => hasValue(t.tat) || hasValue(t.initialTat)), color: 'sky', description: 'turnaround time' },
-    { label: 'Publications', rate: calcFillRate(allTests, t => t.numPublications != null && t.numPublications > 0), color: 'violet', description: 'peer-reviewed' }
-  ];
-
-  // Calculate field average score (all qualifying vendors with 2+ tests)
-  const qualifyingVendors = Object.entries(vendorScores).filter(([_, data]) => data.count >= 2);
-  const fieldAvgScore = qualifyingVendors.length > 0 
-    ? Math.round(qualifyingVendors.reduce((sum, [_, data]) => sum + (data.total / data.count), 0) / qualifyingVendors.length)
-    : 0;
-
-  const getBarColor = (color) => ({
-    rose: 'bg-rose-500',
-    amber: 'bg-amber-500',
-    emerald: 'bg-emerald-500',
-    sky: 'bg-sky-500',
-    violet: 'bg-violet-500'
-  }[color] || 'bg-slate-500');
-
-  const getTextColor = (color) => ({
-    rose: 'text-rose-600',
-    amber: 'text-amber-600',
-    emerald: 'text-emerald-600',
-    sky: 'text-sky-600',
-    violet: 'text-violet-600'
-  }[color] || 'text-slate-600');
-
-  // Green gradient styles for Top 3 (dark to light)
-  const rankStyles = [
-    { bg: 'bg-gradient-to-r from-emerald-100 to-emerald-50', border: 'border-emerald-500', text: 'text-emerald-800' },
-    { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700' },
-    { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600' }
-  ];
-
-  return (
-    <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">
-
-      {/* Header with key stats */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-slate-700">Data Openness Overview</h2>
-        <div className="text-xs text-slate-500">Updated {BUILD_INFO.date.split(' ').slice(0, 2).join(' ')}</div>
-      </div>
-
-      {/* Top 3 Vendors Ranking - Horizontal */}
-      {top3.length > 0 && (
-        <div className="bg-white/40 rounded-xl p-4 mb-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-slate-700">Top 3 Vendors by Data Openness</h3>
-            <span className="text-[10px] text-slate-500">Min. 2 tests to qualify</span>
-          </div>
-          
-          <div className="grid grid-cols-3 gap-3">
-            {top3.map((vendor, index) => (
-              <div 
-                key={vendor.vendor} 
-                className={`flex items-center px-3 py-4 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
-              >
-                <div className="w-16 flex-shrink-0 flex items-center justify-center">
-                  <span className={`text-5xl font-bold ${rankStyles[index].text} opacity-40`}>{index + 1}</span>
-                </div>
-                <div className="flex flex-col items-center text-center flex-1 min-w-0">
-                  <p className={`font-semibold text-sm ${rankStyles[index].text} truncate w-full`}>{vendor.vendor}</p>
-                  <p className="text-[10px] text-slate-500 mb-1">{vendor.testCount} tests</p>
-                  <div className="flex items-center gap-1.5">
-                    <span className={`text-2xl font-bold ${rankStyles[index].text}`}>{Math.round(vendor.avgScore)}</span>
-                    <span className="text-sm text-slate-400">vs</span>
-                    <span className="text-xl font-bold text-slate-400">{fieldAvgScore}</span>
-                    <span className="text-xs text-slate-400">(Avg)</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
-            <div className="text-xs text-slate-500 flex items-center gap-3">
-              <span>{qualifyingVendors.length} vendors with 2+ tests</span>
-              <span>•</span>
-              <span>{DATABASE_CHANGELOG.length} changelog entries</span>
-            </div>
-            <button 
-              onClick={() => setShowFAQ(!showFAQ)}
-              className="text-xs text-slate-600 hover:text-slate-800 font-medium flex items-center gap-1"
-            >
-              {showFAQ ? 'Hide' : 'Methodology'}
-              <svg className={`w-3 h-3 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
-          
-          {/* Methodology FAQ */}
-          {showFAQ && (
-            <div className="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-3">
-              <p className="text-xs text-slate-600">
-                The Openness Score measures vendor data disclosure using <strong>category-normalized</strong> metrics. 
-                Universal fields: <strong>Price (30%)</strong>, <strong>Publications (15%)</strong>, <strong>TAT (10%)</strong>, 
-                <strong> Sample Info (10%)</strong>, <strong>Trial Participants (5%)</strong>. 
-                Plus 30% for category-specific metrics (e.g., Sens/Spec for ECD/TRM, LOD for MRD, Genes/CDx for TDS). 
-                Vendor scores are averaged across all their tests.
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-      
-      {/* Data Completeness Section */}
-      <div className="bg-white/40 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-700 mb-4">Data Completeness by Field</h3>
-        <div className="space-y-3">
-          {dataQualityMetrics.map(({ label, rate, color, description }) => (
-            <div key={label}>
-              <div className="flex justify-between items-center mb-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-slate-700">{label}</span>
-                  <span className="text-[10px] text-slate-400">{description}</span>
-                </div>
-                <span className={`text-sm font-bold ${getTextColor(color)}`}>{rate}%</span>
-              </div>
-              <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
-                <div 
-                  className={`h-full ${getBarColor(color)} rounded-full transition-all duration-500`}
-                  style={{ width: `${rate}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
-          Completeness rates reflect publicly available data across {totalTests} tests from {allVendors.size} vendors.
-        </p>
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// ============================================
-// Openness Ranking Component (Top 3)
-// ============================================
-const OpennessAward = () => {
-  const [showFAQ, setShowFAQ] = useState(false);
-  
-  // Add category to each test for proper openness scoring
-  const allTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
-  ];
-  
-  // Helper functions
-  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
-
-  // Calculate openness score per test (0-100) - CATEGORY-NORMALIZED
-  // Each category has different "standard" metrics, so we normalize accordingly
-  const calcTestScore = (test) => {
-    let score = 0;
-    
-    // UNIVERSAL FIELDS (70 pts max across all categories)
-    if (hasValue(test.listPrice)) score += 30;  // Gold standard - hardest to find
-    if (test.numPublications != null && test.numPublications > 0) score += 15;
-    if (hasValue(test.tat) || hasValue(test.initialTat)) score += 10;
-    if (hasValue(test.bloodVolume) || hasValue(test.sampleType) || hasValue(test.sampleCategory)) score += 10;
-    if (test.totalParticipants != null && test.totalParticipants > 0) score += 5;
-    
-    // CATEGORY-SPECIFIC FIELDS (30 pts max - metrics that ALL tests in category can have)
-    switch (test.category) {
-      case 'ECD':
-        // ECD: Sensitivity/specificity are key for screening tests
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
-        break;
-      case 'MRD':
-        // MRD: LOD is THE key metric (all MRD tests report this)
-        if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
-        break;
-      case 'TRM':
-        // TRM: Sensitivity/specificity for mutation detection
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
-        break;
-      case 'TDS':
-        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
-        if (hasValue(test.genesAnalyzed)) score += 15;
-        if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
-        break;
-      default:
-        // Fallback to sensitivity/specificity
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
-    }
-    
-    return score;
-  };
-
-  // Normalize vendor names
-  const normalizeVendor = (v) => {
-    if (!v) return 'Unknown';
-    if (v.includes('Guardant')) return 'Guardant Health';
-    if (v.includes('Foundation Medicine')) return 'Foundation Medicine';
-    return v;
-  };
-
-  // Group ALL tests by vendor for openness scoring
-  const vendorScores = {};
-  allTests.forEach(test => {
-    const vendor = normalizeVendor(test.vendor);
-    if (!vendorScores[vendor]) {
-      vendorScores[vendor] = { scores: [], total: 0, count: 0, tests: [] };
-    }
-    const score = calcTestScore(test);
-    vendorScores[vendor].scores.push(score);
-    vendorScores[vendor].total += score;
-    vendorScores[vendor].count += 1;
-    vendorScores[vendor].tests.push({ name: test.name, score });
-  });
-
-  // Get qualifying vendors (2+ tests) sorted by score
-  const qualifyingVendors = Object.entries(vendorScores)
-    .filter(([_, data]) => data.count >= 2)
-    .map(([vendor, data]) => ({
-      vendor,
-      avgScore: data.total / data.count,
-      testCount: data.count,
-      tests: data.tests
-    }))
-    .sort((a, b) => b.avgScore - a.avgScore);
-
-  const top3 = qualifyingVendors.slice(0, 3);
-  
-  // Calculate field average score
-  const fieldAvgScore = qualifyingVendors.length > 0 
-    ? Math.round(qualifyingVendors.reduce((sum, v) => sum + v.avgScore, 0) / qualifyingVendors.length)
-    : 0;
-
-  if (top3.length === 0) return null;
-
-  const rankStyles = [
-    { bg: 'bg-amber-100', border: 'border-amber-300', text: 'text-amber-700', badge: 'bg-amber-500', icon: '🥇' },
-    { bg: 'bg-slate-100', border: 'border-slate-300', text: 'text-slate-600', badge: 'bg-slate-400', icon: '🥈' },
-    { bg: 'bg-orange-100', border: 'border-orange-300', text: 'text-orange-700', badge: 'bg-orange-400', icon: '🥉' }
-  ];
-
-  return (
-    <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-4 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-slate-700">Top 3 Vendors by Data Openness</h3>
-        <span className="text-[10px] text-slate-500">Min. 2 tests to qualify</span>
-      </div>
-      
-      {/* Top 3 Ranking */}
-      <div className="space-y-2">
-        {top3.map((vendor, index) => (
-          <div 
-            key={vendor.vendor} 
-            className={`flex items-center gap-3 p-2.5 rounded-lg border ${rankStyles[index].bg} ${rankStyles[index].border}`}
-          >
-            <span className="text-xl">{rankStyles[index].icon}</span>
-            <div className="flex-1 min-w-0">
-              <p className={`font-semibold text-sm ${rankStyles[index].text} truncate`}>{vendor.vendor}</p>
-              <p className="text-[10px] text-slate-500">{vendor.testCount} tests</p>
-            </div>
-            <div className={`px-2.5 py-1 rounded-lg text-white text-sm font-bold ${rankStyles[index].badge}`}>
-              {Math.round(vendor.avgScore)}
-            </div>
-          </div>
-        ))}
-      </div>
-      
-      {/* Field average comparison */}
-      <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
-        <div className="text-xs text-slate-500">
-          Field average: <span className="font-semibold text-slate-700">{fieldAvgScore}</span> across {qualifyingVendors.length} qualifying vendors
-        </div>
-        <button 
-          onClick={() => setShowFAQ(!showFAQ)}
-          className="text-xs text-slate-600 hover:text-slate-800 font-medium flex items-center gap-1"
-        >
-          {showFAQ ? 'Hide' : 'Methodology'}
-          <svg className={`w-3 h-3 transition-transform ${showFAQ ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-      </div>
-      
-      {/* FAQ Section */}
-      {showFAQ && (
-        <div className="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-4">
-          <div>
-            <h4 className="font-semibold text-slate-800 mb-2">What is the Openness Score?</h4>
-            <p className="text-xs text-slate-600">
-              The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
-              It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
-              patients and clinicians make informed decisions.
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-slate-800 mb-2">How is it calculated?</h4>
-            <p className="text-xs text-slate-600 mb-2">Each test is scored based on disclosure of key fields (weights sum to 100):</p>
-            <div className="bg-white/60 rounded-lg p-3 overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left py-1.5 pr-4 font-semibold text-slate-700">Field</th>
-                    <th className="text-center py-1.5 px-2 font-semibold text-slate-700">Weight</th>
-                    <th className="text-left py-1.5 pl-4 font-semibold text-slate-700">Why it matters</th>
-                  </tr>
-                </thead>
-                <tbody className="text-slate-600">
-                  <tr className="border-b border-slate-100">
-                    <td className="py-1.5 pr-4 font-medium">List Price</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">30%</td>
-                    <td className="py-1.5 pl-4">Most critical for access decisions</td>
-                  </tr>
-                  <tr className="border-b border-slate-100">
-                    <td className="py-1.5 pr-4 font-medium">Sensitivity</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                    <td className="py-1.5 pl-4">Detection rate / true positive rate</td>
-                  </tr>
-                  <tr className="border-b border-slate-100">
-                    <td className="py-1.5 pr-4 font-medium">Specificity</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                    <td className="py-1.5 pl-4">Reduces unnecessary follow-ups</td>
-                  </tr>
-                  <tr className="border-b border-slate-100">
-                    <td className="py-1.5 pr-4 font-medium">Publications</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">15%</td>
-                    <td className="py-1.5 pl-4">Evidence of independent validation</td>
-                  </tr>
-                  <tr className="border-b border-slate-100">
-                    <td className="py-1.5 pr-4 font-medium">Turnaround Time</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">10%</td>
-                    <td className="py-1.5 pl-4">Practical info for clinicians</td>
-                  </tr>
-                  <tr className="border-b border-slate-100">
-                    <td className="py-1.5 pr-4 font-medium">Sample Info</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">10%</td>
-                    <td className="py-1.5 pl-4">Blood volume, sample type, or category</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1.5 pr-4 font-medium">Trial Participants</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-amber-600">5%</td>
-                    <td className="py-1.5 pl-4">Clinical evidence depth</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr className="border-t border-slate-200">
-                    <td className="py-1.5 pr-4 font-bold text-slate-800">Total</td>
-                    <td className="text-center py-1.5 px-2 font-bold text-slate-800">100%</td>
-                    <td className="py-1.5 pl-4"></td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-slate-800 mb-2">Who is eligible?</h4>
-            <p className="text-xs text-slate-600">
-              Vendors must have <strong>2 or more tests</strong> in the OpenOnco database to qualify for ranking. 
-              The vendor's score is the <strong>average</strong> across all their tests. This prevents a single 
-              well-documented test from dominating while encouraging comprehensive disclosure across product portfolios.
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-slate-800 mb-2">How can vendors improve their score?</h4>
-            <p className="text-xs text-slate-600">
-              Publish your list price, disclose sensitivity and specificity from validation studies, maintain an 
-              active publication record, and provide clear sample requirements. Vendors can submit updated information 
-              through our Submissions page.
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// ============================================
-// Placeholder Pages
-// ============================================
-const PlaceholderPage = ({ title, description }) => (
-  <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-    <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
-    <p className="text-gray-600">{description}</p>
-  </div>
-);
-
-// ============================================
-// FAQ Page
-// ============================================
-// ============================================
-// Learn Page
-// ============================================
-const LearnPage = ({ onNavigate }) => {
-  const categories = [
-    {
-      id: 'ECD',
-      phase: 'Screening',
-      name: 'Early Cancer Detection (ECD)',
-      acronym: 'ECD',
-      color: 'emerald',
-      icon: '🔬',
-      clinicalQuestion: 'Can cancer be detected before clinical presentation?',
-      description: 'Early cancer detection (ECD) tests screen asymptomatic individuals for cancer signals in blood or stool. These assays analyze tumor-derived molecules including ctDNA methylation patterns, fragmentomic features (cfDNA fragment size distributions and end motifs), and protein biomarkers. Single-cancer tests focus on one cancer type (e.g., colorectal), while multi-cancer early detection (MCED) tests screen for signals across 50+ cancer types.',
-      technology: 'Most ECD tests rely on methylation profiling, as cancer-specific methylation patterns are more abundant and consistent than somatic mutations in early-stage disease. Machine learning classifiers trained on methylation arrays can detect cancer signals and predict tissue of origin. Some platforms combine methylation with fragmentomics or proteomics for improved sensitivity.',
-      keyMetrics: [
-        'Sensitivity by cancer type and stage (typically 20-40% for stage I, 70-90% for stage IV)',
-        'Specificity (target >99% to minimize false positives in screening populations)',
-        'Positive predictive value (PPV) depends heavily on cancer prevalence',
-        'Cancer signal origin (CSO) accuracy for localization'
-      ],
-      challenges: [
-        'Low ctDNA fraction in early-stage disease (<0.1% VAF)',
-        'Clonal hematopoiesis of indeterminate potential (CHIP) confounds mutation-based approaches',
-        'Requires large validation cohorts across diverse cancer types',
-        'Clinical utility studies (mortality reduction) still in progress'
-      ],
-      testCount: ecdTestData.length
-    },
-    {
-      id: 'TDS',
-      phase: 'Diagnosis',
-      name: 'Treatment Decision Support',
-      acronym: 'TDS',
-      color: 'violet',
-      icon: '🧬',
-      clinicalQuestion: 'What is the best treatment approach for this patient?',
-      description: 'TDS tests help guide treatment decisions by providing molecular or biomarker information. This includes genomic profiling tests that identify actionable mutations for targeted therapy selection, as well as risk stratification tests that help determine whether interventions like biopsies are needed.',
-      technology: 'Includes multiple technologies: NGS-based comprehensive genomic profiling (CGP) from tumor tissue or liquid biopsy to identify targetable alterations; protein structure analysis for risk stratification; and other biomarker assays. Some tests are FDA-approved as companion diagnostics.',
-      keyMetrics: [
-        'Sensitivity and specificity for intended use case',
-        'FDA approval status and guideline recommendations',
-        'Turnaround time',
-        'Coverage by Medicare and commercial payers'
-      ],
-      challenges: [
-        'Matching test results to appropriate clinical decisions',
-        'Variants of uncertain significance (VUS) interpretation in genomic tests',
-        'Balancing sensitivity vs specificity for risk stratification',
-        'Integration into clinical workflow'
-      ],
-      testCount: tdsTestData.length
-    },
-    {
-      id: 'TRM',
-      phase: 'Treatment',
-      name: 'Treatment Response Monitoring',
-      acronym: 'TRM',
-      color: 'sky',
-      icon: '📊',
-      clinicalQuestion: 'Is the current therapy effective, and is resistance emerging?',
-      description: 'TRM uses serial liquid biopsies to quantify ctDNA dynamics during active therapy. Decreasing ctDNA levels correlate with treatment response; rising levels may indicate progression or resistance—often weeks before radiographic changes are detectable.',
-      technology: 'TRM approaches vary: some track specific mutations identified at baseline (tumor-informed), while others monitor a fixed panel of common cancer mutations (tumor-naïve). Quantification methods include variant allele frequency (VAF), absolute ctDNA concentration (copies/mL), or composite molecular response scores. Some platforms can detect emerging resistance mutations to guide therapy switching.',
-      keyMetrics: [
-        'Analytical sensitivity for quantification at low VAF',
-        'Coefficient of variation (CV) for serial measurements',
-        'Molecular response thresholds (fold-change or absolute cutoffs)',
-        'Correlation with clinical outcomes (PFS, OS)'
-      ],
-      challenges: [
-        'Standardization of "molecular response" definitions across platforms',
-        'Optimal sampling intervals during therapy',
-        'Integration with imaging-based response assessment',
-        'Cost of serial testing'
-      ],
-      testCount: trmTestData.length
-    },
-    {
-      id: 'MRD',
-      phase: 'Surveillance',
-      name: 'Minimal Residual Disease',
-      acronym: 'MRD',
-      color: 'orange',
-      icon: '🎯',
-      clinicalQuestion: 'Does molecular evidence of disease persist after curative-intent treatment?',
-      description: 'MRD testing detects residual cancer at levels far below imaging resolution (typically 0.01-0.001% VAF). MRD-positive status after surgery correlates with higher recurrence risk; MRD-negative results support molecular complete response. Serial MRD testing during surveillance can detect recurrence months before clinical presentation.',
-      technology: 'Tumor-informed MRD assays sequence the primary tumor to identify patient-specific mutations, then design custom PCR or hybrid capture panels to track those variants in plasma with maximum sensitivity. Tumor-naïve approaches use fixed panels or methylation signatures. Tumor-informed methods achieve lower LOD but require tissue and longer setup time.',
-      keyMetrics: [
-        'Limit of detection (LOD)—tumor-informed typically 0.001-0.01% VAF',
-        'Sensitivity (% of relapsing patients detected MRD+)',
-        'Specificity (% of non-relapsing patients correctly MRD-)',
-        'Lead time before clinical/radiographic recurrence'
-      ],
-      challenges: [
-        'Requires adequate tumor tissue for tumor-informed approaches',
-        'Turnaround time for custom assay design (2-4 weeks)',
-        'Optimal surveillance testing intervals not established for all cancers',
-        'Clinical utility data (does MRD-guided therapy improve outcomes?) still maturing'
-      ],
-      testCount: mrdTestData.length
-    }
-  ];
-
-  const colorClasses = {
-    emerald: {
-      bg: 'bg-emerald-50',
-      bgMedium: 'bg-emerald-100',
-      border: 'border-emerald-200',
-      borderActive: 'border-emerald-500',
-      text: 'text-emerald-600',
-      textDark: 'text-emerald-700',
-      button: 'bg-emerald-500 hover:bg-emerald-600',
-      iconBg: 'bg-emerald-100',
-    },
-    violet: {
-      bg: 'bg-violet-50',
-      bgMedium: 'bg-violet-100',
-      border: 'border-violet-200',
-      borderActive: 'border-violet-500',
-      text: 'text-violet-600',
-      textDark: 'text-violet-700',
-      button: 'bg-violet-500 hover:bg-violet-600',
-      iconBg: 'bg-violet-100',
-    },
-    sky: {
-      bg: 'bg-sky-50',
-      bgMedium: 'bg-sky-100',
-      border: 'border-sky-200',
-      borderActive: 'border-sky-500',
-      text: 'text-sky-600',
-      textDark: 'text-sky-700',
-      button: 'bg-sky-500 hover:bg-sky-600',
-      iconBg: 'bg-sky-100',
-    },
-    orange: {
-      bg: 'bg-orange-50',
-      bgMedium: 'bg-orange-100',
-      border: 'border-orange-200',
-      borderActive: 'border-orange-500',
-      text: 'text-orange-600',
-      textDark: 'text-orange-700',
-      button: 'bg-orange-500 hover:bg-orange-600',
-      iconBg: 'bg-orange-100',
-    },
-    indigo: {
-      bg: 'bg-indigo-50',
-      bgMedium: 'bg-indigo-100',
-      border: 'border-indigo-200',
-      borderActive: 'border-indigo-500',
-      text: 'text-indigo-600',
-      textDark: 'text-indigo-700',
-      button: 'bg-indigo-500 hover:bg-indigo-600',
-      iconBg: 'bg-indigo-100',
-    }
-  };
-
-  return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-          Advanced Molecular Diagnostics: An Overview
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-          Modern diagnostic technologies—from next-generation sequencing to protein biomarker analysis—enable blood-based tests across the full cancer care continuum, from early detection to post-treatment surveillance.
-        </p>
-      </div>
-
-      {/* The Technology Section */}
-      <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-12 border border-slate-200">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">The Underlying Technologies</h2>
-        <p className="text-gray-700 mb-4">
-          Advanced molecular diagnostics leverage multiple technologies to extract clinically actionable information from patient samples. <GlossaryTooltip termKey="cfdna"><strong>Cell-free DNA (cfDNA)</strong></GlossaryTooltip> analysis isolates DNA fragments released by cells into the bloodstream—in cancer patients, a fraction derives from tumor cells (<GlossaryTooltip termKey="ctdna"><strong>circulating tumor DNA or ctDNA</strong></GlossaryTooltip>), carrying the same somatic alterations present in the tumor. Beyond DNA, tests may analyze <GlossaryTooltip termKey="methylation">methylation patterns</GlossaryTooltip>, protein biomarkers, or structural variants.
-        </p>
-        <p className="text-gray-700 mb-6">
-          These technologies answer different clinical questions depending on the patient's disease state:
-        </p>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-            <span className="text-2xl">🔬</span>
-            <div>
-              <p className="font-semibold text-gray-900">Early Detection</p>
-              <p className="text-sm text-gray-600">Detect cancer signals in asymptomatic individuals</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-            <span className="text-2xl">🧬</span>
-            <div>
-              <p className="font-semibold text-gray-900">Treatment Decisions</p>
-              <p className="text-sm text-gray-600">Guide therapy selection and intervention decisions</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-            <span className="text-2xl">📊</span>
-            <div>
-              <p className="font-semibold text-gray-900">Response Monitoring</p>
-              <p className="text-sm text-gray-600">Track <GlossaryTooltip termKey="ctdna">ctDNA</GlossaryTooltip> dynamics during active treatment</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-            <span className="text-2xl">🎯</span>
-            <div>
-              <p className="font-semibold text-gray-900"><GlossaryTooltip termKey="mrd">MRD</GlossaryTooltip> Detection</p>
-              <p className="text-sm text-gray-600">Identify residual disease after curative treatment</p>
-            </div>
-          </div>
-        </div>
-        
-        {/* ctDNA Signal Challenge */}
-        <div className="mt-6 p-4 bg-white rounded-xl border border-gray-200">
-          <h3 className="font-semibold text-gray-900 mb-3">The <GlossaryTooltip termKey="ctdna">ctDNA</GlossaryTooltip> Signal Challenge</h3>
-          <p className="text-sm text-gray-700 mb-3">
-            The fraction of <GlossaryTooltip termKey="cfdna">cfDNA</GlossaryTooltip> that derives from tumor (<GlossaryTooltip termKey="ctdna">ctDNA</GlossaryTooltip> fraction) varies dramatically by clinical context, which drives the <GlossaryTooltip termKey="sensitivity">sensitivity</GlossaryTooltip> requirements for each test category:
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Clinical Context</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Typical ctDNA Fraction</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Required <GlossaryTooltip termKey="lod">LOD</GlossaryTooltip></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                <tr>
-                  <td className="py-2 px-3 text-gray-700">Advanced cancer (TDS)</td>
-                  <td className="py-2 px-3 text-gray-600">1–10%+</td>
-                  <td className="py-2 px-3 text-gray-600">0.5–5% <GlossaryTooltip termKey="vaf">VAF</GlossaryTooltip></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-3 text-gray-700">Early-stage screening (ECD)</td>
-                  <td className="py-2 px-3 text-gray-600">0.01–0.1%</td>
-                  <td className="py-2 px-3 text-gray-600">&lt;0.1% VAF</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-3 text-gray-700">Post-surgery surveillance (<GlossaryTooltip termKey="mrd">MRD</GlossaryTooltip>)</td>
-                  <td className="py-2 px-3 text-gray-600">0.001–0.01%</td>
-                  <td className="py-2 px-3 text-gray-600">&lt;0.01% VAF</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-3 text-gray-700">Treatment monitoring (TRM)</td>
-                  <td className="py-2 px-3 text-gray-600">Variable (dynamic)</td>
-                  <td className="py-2 px-3 text-gray-600">Quantitative accuracy</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* Detailed Category Sections */}
-      <div className="space-y-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-8">Test Categories: Technical Deep Dive</h2>
-        
-        {categories.map((cat) => {
-          const colors = colorClasses[cat.color];
-          return (
-            <div key={cat.id} className={`${colors.bg} ${colors.border} border-2 rounded-2xl overflow-hidden`}>
-              {/* Category Header */}
-              <div className={`${colors.bgMedium} px-6 py-4 border-b ${colors.border}`}>
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{cat.icon}</span>
-                  <div>
-                    <p className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>{cat.phase}</p>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{cat.name} ({cat.acronym})</h3>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Category Content */}
-              <div className="p-6 space-y-6">
-                {/* Clinical Question */}
-                <div className="bg-white rounded-xl p-4 border border-gray-200">
-                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Clinical Question</p>
-                  <p className="text-lg font-medium text-gray-900 italic">"{cat.clinicalQuestion}"</p>
-                </div>
-
-                {/* Description */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Overview</h4>
-                  <p className="text-gray-700">{cat.description}</p>
-                </div>
-
-                {/* Technology */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Technology & Methodology</h4>
-                  <p className="text-gray-700">{cat.technology}</p>
-                </div>
-
-                {/* Two columns for metrics and challenges */}
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Key Performance Metrics</h4>
-                    <ul className="space-y-2">
-                      {cat.keyMetrics.map((item, i) => (
-                        <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
-                          <span className={`${colors.text} mt-1`}>•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Technical Challenges</h4>
-                    <ul className="space-y-2">
-                      {cat.challenges.map((item, i) => (
-                        <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
-                          <span className={`${colors.text} mt-1`}>•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <div className="pt-2">
-                  <button
-                    onClick={() => onNavigate(cat.id)}
-                    className={`${colors.button} text-white px-6 py-3 rounded-xl font-semibold transition-colors flex items-center gap-2`}
-                  >
-                    Explore {cat.testCount} {cat.acronym} Tests
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Quick Reference Table */}
-      <div className="mt-12 bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Quick Reference: Test Category Selection</h2>
-        <p className="text-gray-600 text-center mb-6">Match clinical context to the appropriate test category:</p>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-900">Clinical Context</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900">Test Category</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900">Primary Output</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('ECD')}>
-                <td className="py-3 px-4 text-gray-700">Asymptomatic screening</td>
-                <td className="py-3 px-4"><span className="text-emerald-600 font-medium">ECD →</span></td>
-                <td className="py-3 px-4 text-gray-600 text-sm">Cancer signal detected (Y/N), tissue of origin</td>
-              </tr>
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TDS')}>
-                <td className="py-3 px-4 text-gray-700">Newly diagnosed / therapy selection</td>
-                <td className="py-3 px-4"><span className="text-violet-600 font-medium">TDS →</span></td>
-                <td className="py-3 px-4 text-gray-600 text-sm">Actionable mutations, MSI, TMB, fusions</td>
-              </tr>
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TRM')}>
-                <td className="py-3 px-4 text-gray-700">On active systemic therapy</td>
-                <td className="py-3 px-4"><span className="text-sky-600 font-medium">TRM →</span></td>
-                <td className="py-3 px-4 text-gray-600 text-sm">ctDNA quantification, molecular response</td>
-              </tr>
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('MRD')}>
-                <td className="py-3 px-4 text-gray-700">Post-curative treatment surveillance</td>
-                <td className="py-3 px-4"><span className="text-orange-600 font-medium">MRD →</span></td>
-                <td className="py-3 px-4 text-gray-600 text-sm">MRD status (positive/negative), recurrence risk</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Key Terms Glossary */}
-      <div className="mt-12 bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-2 text-center">Key Terms Glossary</h2>
-        <p className="text-gray-600 text-center mb-6">Hover or tap any term for its definition and authoritative source</p>
-        
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Core Concepts */}
-          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Core Concepts</h3>
-            <div className="space-y-2">
-              <div className="text-gray-700"><GlossaryTooltip termKey="liquid-biopsy" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="ctdna" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="cfdna" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="mrd" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="bloodpac" /></div>
-            </div>
-          </div>
-          
-          {/* Testing Approaches */}
-          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Testing Approaches</h3>
-            <div className="space-y-2">
-              <div className="text-gray-700"><GlossaryTooltip termKey="tumor-informed" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="tumor-naive" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="ngs" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="cgp" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="methylation" /></div>
-            </div>
-          </div>
-          
-          {/* Performance Metrics */}
-          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Performance Metrics</h3>
-            <div className="space-y-2">
-              <div className="text-gray-700"><GlossaryTooltip termKey="sensitivity" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="specificity" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="lod" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="vaf" /></div>
-            </div>
-          </div>
-          
-          {/* MRD & Response */}
-          <div className="bg-orange-50 rounded-xl p-4 border border-orange-200">
-            <h3 className="text-sm font-semibold text-orange-700 uppercase tracking-wide mb-3">MRD & Response</h3>
-            <div className="space-y-2">
-              <div className="text-gray-700"><GlossaryTooltip termKey="molecular-response" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="ctdna-clearance" /></div>
-            </div>
-            <p className="text-xs text-orange-600 mt-3">Per BLOODPAC MRD Lexicon</p>
-          </div>
-          
-          {/* Regulatory & Clinical */}
-          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Regulatory & Clinical</h3>
-            <div className="space-y-2">
-              <div className="text-gray-700"><GlossaryTooltip termKey="nccn" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="companion-dx" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="fda-approved" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="ldt" /></div>
-              <div className="text-gray-700"><GlossaryTooltip termKey="chip" /></div>
-            </div>
-          </div>
-        </div>
-        
-        <p className="text-xs text-gray-500 text-center mt-4">
-          Definitions sourced from NCI, BLOODPAC, FDA, ASCO, and Friends of Cancer Research
-        </p>
-      </div>
-
-      {/* Authoritative Resources Section */}
-      <div className="mt-12 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 p-6 sm:p-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-2 text-center">Authoritative Resources</h2>
-        <p className="text-gray-600 text-center mb-6">OpenOnco terminology and standards are informed by these organizations</p>
-        
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* BLOODPAC */}
-          <a 
-            href="https://www.bloodpac.org" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">🔬</span>
-              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">BLOODPAC</span>
-            </div>
-            <p className="text-sm text-gray-600">Cancer Moonshot consortium developing liquid biopsy standards and the MRD Terminology Lexicon</p>
-          </a>
-          
-          {/* Friends of Cancer Research */}
-          <a 
-            href="https://friendsofcancerresearch.org" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">🤝</span>
-              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">Friends of Cancer Research</span>
-            </div>
-            <p className="text-sm text-gray-600">ctMoniTR project validating ctDNA as an early efficacy endpoint in clinical trials</p>
-          </a>
-          
-          {/* NCI */}
-          <a 
-            href="https://www.cancer.gov" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">🏛️</span>
-              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">National Cancer Institute</span>
-            </div>
-            <p className="text-sm text-gray-600">Authoritative definitions and the NCI Liquid Biopsy Consortium for early detection research</p>
-          </a>
-          
-          {/* FDA */}
-          <a 
-            href="https://www.fda.gov/media/183874/download" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-white rounded-xl p-4 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">⚖️</span>
-              <span className="font-semibold text-gray-900 group-hover:text-emerald-600">FDA Guidance</span>
-            </div>
-            <p className="text-sm text-gray-600">December 2024 guidance on ctDNA for early-stage solid tumor drug development</p>
-          </a>
-        </div>
-        
-        {/* Additional Resources */}
-        <div className="mt-6 pt-6 border-t border-emerald-200">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 text-center">Additional Standards Bodies</h3>
-          <div className="flex flex-wrap justify-center gap-3">
-            <a 
-              href="https://www.nccn.org/guidelines/guidelines-detail" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-violet-300 hover:text-violet-600 transition-colors"
-            >
-              📜 NCCN Guidelines
-              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-            <a 
-              href="https://fnih.org/our-programs/international-liquid-biopsy-standardization-alliance-ilsa/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600 transition-colors"
-            >
-              🌐 ILSA (Global Standards)
-              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-            <a 
-              href="https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-pink-300 hover:text-pink-600 transition-colors"
-            >
-              💡 LUNGevity Patient Resources
-              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-            <a 
-              href="https://ascopubs.org/doi/10.1200/EDBK-25-481114" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition-colors"
-            >
-              🎓 ASCO Education
-              <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  );
-};
-
-// ============================================
-// FAQ Components
-// ============================================
-const FAQItem = ({ question, answer, isOpen, onClick }) => (
-  <div className="border-b border-gray-200 last:border-b-0">
-    <button
-      onClick={onClick}
-      className="w-full py-5 px-6 flex justify-between items-center text-left hover:bg-gray-50 transition-colors"
-    >
-      <span className="text-lg font-medium text-gray-900 pr-4">{question}</span>
-      <svg 
-        className={`w-5 h-5 text-gray-500 transform transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
-        fill="none" 
-        viewBox="0 0 24 24" 
-        stroke="currentColor"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-    {isOpen && (
-      <div className="pb-5 px-6 pr-12">
-        <div className="prose prose-lg text-gray-600">{answer}</div>
-      </div>
-    )}
-  </div>
-);
-
-const FAQPage = () => {
-  const [openIndex, setOpenIndex] = useState(null);
-  const siteConfig = getSiteConfig();
-  const isAlz = false; // ALZ DISABLED
-
-  // OpenOnco FAQs
-  const oncoFaqs = [
-    {
-      question: "What types of tests does OpenOnco cover?",
-      answer: (
-        <p>
-          OpenOnco focuses on advanced molecular diagnostics—laboratory-developed tests (LDTs) and services that patients and clinicians can access directly. We cover four categories: <strong>Early Cancer Detection (ECD)</strong> for screening, <strong>Treatment Decision Support (TDS)</strong> for guiding treatment decisions in newly diagnosed patients, <strong>Treatment Response Monitoring (TRM)</strong> for patients on active treatment, and <strong>Minimal Residual Disease (MRD)</strong> for surveillance after treatment. We include tests using various technologies—genomic sequencing, methylation analysis, protein biomarkers, and more—as long as they're orderable clinical services rather than reagent kits laboratories must validate themselves.
-        </p>
-      )
-    },
-    {
-      question: "Why aren't certain tests included in your database?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            We focus on tests that clinicians can order or patients can request directly. This means we exclude:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>IVD kits sold to laboratories</strong> (e.g., Oncomine Dx Target Test, TruSight Oncology Comprehensive)—these require labs to purchase, validate, and run themselves</li>
-            <li><strong>Research-use-only (RUO) assays</strong> not available for clinical ordering</li>
-            <li><strong>Tests no longer commercially available</strong></li>
-          </ul>
-          <p>
-            If you believe we're missing a test that should be included, please use the Submissions tab to let us know.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How do you decide what information to include for each test?",
-      answer: (
-        <p>
-          We prioritize publicly available, verifiable information from peer-reviewed publications, FDA submissions, company websites, and clinical guidelines (like NCCN). Every data point includes citations so you can verify the source. We focus on information most relevant to test selection: performance metrics (sensitivity, specificity, LOD), regulatory status, turnaround time, sample requirements, cancer types covered, and reimbursement status.
-        </p>
-      )
-    },
-    {
-      question: "How often is the database updated?",
-      answer: (
-        <p>
-          We update the database regularly as new tests launch, FDA approvals occur, or performance data is published. The build date shown on the Data Download page indicates when the current version was deployed. You can also check the "Recently Added" section on the home page to see the latest additions.
-        </p>
-      )
-    },
-    {
-      question: "What does it mean when a test is 'NCCN Recommended'?",
-      answer: (
-        <p>
-          This indicates that the test covers biomarkers recommended in NCCN (National Comprehensive Cancer Network) clinical guidelines for the relevant cancer type(s). It's important to note that NCCN recommends testing for specific biomarkers but does not endorse specific commercial assays by name. A test marked as "NCCN Recommended" means it can detect the biomarkers that NCCN guidelines say should be tested—not that NCCN has specifically endorsed that particular test.
-        </p>
-      )
-    },
-    {
-      question: "What's the difference between FDA-approved and LDT tests?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            <strong>FDA-approved/cleared tests</strong> have been reviewed by the FDA and meet specific analytical and clinical validation requirements. They often have companion diagnostic (CDx) claims linking test results to specific therapies.
-          </p>
-          <p>
-            <strong>Laboratory-developed tests (LDTs)</strong> are developed and validated by individual CLIA-certified laboratories. While they must meet CLIA quality standards, they haven't undergone FDA premarket review. Many high-quality tests are LDTs—FDA approval status alone doesn't determine clinical utility.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How should I interpret sensitivity and specificity numbers?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            <strong>Sensitivity</strong> measures how well a test detects disease when it's present (true positive rate). A 90% sensitivity means the test correctly identifies 90% of people who have the condition.
-          </p>
-          <p>
-            <strong>Specificity</strong> measures how well a test correctly identifies people without disease (true negative rate). A 99% specificity means only 1% of healthy people will get a false positive.
-          </p>
-          <p>
-            Important: These numbers can vary significantly based on the patient population, cancer stage, and how the study was conducted. Always look at the context and study population when comparing tests.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "Is OpenOnco affiliated with any test vendors?",
-      answer: (
-        <p>
-          No. OpenOnco is an independent resource with no financial relationships with test vendors. We don't accept advertising or sponsorship. Our goal is to provide unbiased, transparent information to help patients and clinicians make informed decisions.
-        </p>
-      )
-    },
-    {
-      question: "What standards and terminology does OpenOnco follow?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            OpenOnco aligns its terminology and categories with authoritative standards bodies and research consortiums to ensure consistency with the broader field. Our key references include:
-          </p>
-          <ul className="list-disc list-inside space-y-2">
-            <li>
-              <strong>BLOODPAC MRD Lexicon</strong> — The Blood Profiling Atlas in Cancer consortium published a standardized terminology lexicon for MRD testing in 2025. We use their definitions for terms like "tumor-informed," "tumor-naïve," "molecular response," and "ctDNA clearance."
-              <br /><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11897061/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View BLOODPAC MRD Lexicon</a>
-            </li>
-            <li>
-              <strong>FDA ctDNA Guidance (December 2024)</strong> — The FDA's guidance document on using ctDNA for early-stage solid tumor drug development informs how we describe regulatory pathways and clinical endpoints.
-              <br /><a href="https://www.fda.gov/media/183874/download" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View FDA Guidance (PDF)</a>
-            </li>
-            <li>
-              <strong>Friends of Cancer Research ctMoniTR</strong> — This multi-stakeholder project is validating ctDNA as an early efficacy endpoint. We reference their framework for treatment response monitoring.
-              <br /><a href="https://friendsofcancerresearch.org/ctdna/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View ctMoniTR Project</a>
-            </li>
-            <li>
-              <strong>NCI Cancer Dictionary</strong> — For patient-facing definitions of terms like "liquid biopsy" and "ctDNA," we reference the National Cancer Institute's authoritative definitions.
-              <br /><a href="https://www.cancer.gov/publications/dictionaries/cancer-terms/def/liquid-biopsy" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View NCI Dictionary</a>
-            </li>
-            <li>
-              <strong>NCCN Clinical Practice Guidelines</strong> — When we indicate a test covers "NCCN-recommended" biomarkers, we're referring to the National Comprehensive Cancer Network's evidence-based guidelines.
-              <br /><a href="https://www.nccn.org/guidelines/guidelines-detail" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 text-sm">→ View NCCN Guidelines</a>
-            </li>
-          </ul>
-          <p>
-            For patient education resources, we recommend <a href="https://www.lungevity.org/patients-care-partners/navigating-your-diagnosis/biomarker-testing" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700">LUNGevity's biomarker testing guides</a> and the <a href="https://noonemissed.org/lungcancer/us" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700">No One Missed campaign</a>.
-          </p>
-          <p className="text-sm text-gray-500 mt-4">
-            You'll find links to these resources throughout OpenOnco on each category page under "Standards & Resources."
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How does the AI chat feature work, and can I trust its answers?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Our chat feature is powered by Anthropic's Claude AI. We've designed it to <strong>only reference information from our test database</strong>—it cannot browse the internet or access external sources during your conversation. This means Claude's answers are grounded in the same curated, cited data you see throughout OpenOnco.
-          </p>
-          <p>
-            However, <strong>AI language models can still make mistakes</strong>. They may occasionally misinterpret questions, make errors in reasoning, or present information in misleading ways. This is a limitation of current AI technology, not specific to our implementation.
-          </p>
-          <p>
-            <strong>We strongly recommend:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li>Cross-checking any important information with vendor websites and official product documentation</li>
-            <li>Verifying clinical claims with peer-reviewed publications (we provide citations throughout the database)</li>
-            <li>If you're a patient, discussing test options with your doctor or healthcare provider before making decisions</li>
-          </ul>
-          <p>
-            The chat is best used as a starting point for exploration—not as a definitive source for clinical decision-making.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "Can I download the data?",
-      answer: (
-        <p>
-          Yes! Visit the Data Download tab to download the complete database in JSON format. The data is freely available for research, clinical decision support, or other non-commercial purposes.
-        </p>
-      )
-    },
-    {
-      question: "How can I report an error or suggest a correction?",
-      answer: (
-        <p>
-          Please use the Submissions tab and select "Request Changes to Test Data." Include the specific test name, the field that needs correction, and ideally a citation for the correct information. We take data accuracy seriously and will review all submissions.
-        </p>
-      )
-    },
-    {
-      question: "What's the difference between the Patient and Clinician views?",
-      answer: (
-        <p>
-          The Patient view simplifies information and focuses on practical questions: What does this test do? Is it covered by insurance? What's involved in getting tested? The Clinician and Academic/Industry views show more detailed technical information including performance metrics, FDA status, methodology details, and clinical validation data.
-        </p>
-      )
-    },
-    {
-      question: "How do I contact OpenOnco?",
-      answer: (
-        <p>
-          The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry—whether it's suggesting a new test, requesting data corrections, or providing general feedback. We review all submissions and will respond if needed.
-        </p>
-      )
-    },
-    {
-      question: "What is the Openness Score?",
-      answer: (
-        <div className="space-y-4">
-          <p>
-            The OpenOnco Openness Score measures how completely vendors disclose key information about their tests. 
-            It rewards vendors who publish pricing, performance data, and clinical evidence—information that helps 
-            patients and clinicians make informed decisions. Vendors are ranked by their average score across all tests.
-          </p>
-          
-          <p className="font-medium text-gray-800">How is it calculated?</p>
-          <p>Each test is scored based on disclosure of key fields (weights sum to 100):</p>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700 border-b">Field</th>
-                  <th className="text-center py-2 px-3 font-semibold text-gray-700 border-b">Weight</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700 border-b">Rationale</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600">
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Price</td><td className="text-center py-2 px-3 font-bold text-amber-600">30%</td><td className="py-2 px-3">Hardest to find, gold standard of openness</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Publications</td><td className="text-center py-2 px-3 font-bold text-amber-600">15%</td><td className="py-2 px-3">Peer-reviewed evidence base</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Turnaround Time</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Practical info for clinicians</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 font-medium">Sample Info</td><td className="text-center py-2 px-3 font-bold text-amber-600">10%</td><td className="py-2 px-3">Blood volume, sample type, or category</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 font-medium">Trial Participants</td><td className="text-center py-2 px-3 font-bold text-amber-600">5%</td><td className="py-2 px-3">Clinical evidence depth</td></tr>
-                <tr className="border-b bg-blue-50"><td className="py-2 px-3 font-medium italic" colSpan="3">+ Category-Specific Metrics (30%)</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 pl-6 text-xs">ECD (Screening)</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">Sensitivity + Specificity (cancer detection)</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 pl-6 text-xs">MRD</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">LOD (limit of detection)</td></tr>
-                <tr className="border-b bg-gray-50"><td className="py-2 px-3 pl-6 text-xs">TRM</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">Sensitivity + Specificity (mutation detection)</td></tr>
-                <tr className="border-b"><td className="py-2 px-3 pl-6 text-xs">TDS (CGP)</td><td className="text-center py-2 px-3 text-xs">30%</td><td className="py-2 px-3 text-xs">Genes Analyzed + CDx Claims</td></tr>
-              </tbody>
-              <tfoot>
-                <tr className="bg-amber-50 border-t-2 border-amber-200"><td className="py-2 px-3 font-bold">Total</td><td className="text-center py-2 px-3 font-bold text-amber-700">100%</td><td className="py-2 px-3"></td></tr>
-              </tfoot>
-            </table>
-          </div>
-          
-          <p className="font-medium text-gray-800 mt-4">Why category-normalized scoring?</p>
-          <p>
-            Different test categories have different "standard" metrics. CGP tests don't report sensitivity/specificity 
-            like screening tests do — they report panel size and companion diagnostic claims. MRD tests focus on limit 
-            of detection. By normalizing per-category, we compare apples to apples.
-          </p>
-          
-          <p className="font-medium text-gray-800 mt-4">Who is eligible for ranking?</p>
-          <p>
-            Vendors must have <strong>2 or more tests</strong> in the OpenOnco database to qualify. The vendor's 
-            score is the <strong>average</strong> across all their tests. This prevents a single well-documented 
-            test from dominating while encouraging comprehensive disclosure across product portfolios.
-          </p>
-          
-          <p className="font-medium text-gray-800 mt-4">Why these weights?</p>
-          <p>
-            <strong>Price (30%)</strong> is weighted highest because it's the most commonly withheld information 
-            and critically important for patients and healthcare systems. <strong>Category-specific metrics (30%)</strong> are 
-            essential for clinical decision-making but vary by test type. <strong>Publications (15%)</strong> demonstrate commitment to 
-            independent validation. Practical details like <strong>TAT and sample requirements (15% combined)</strong> help 
-            with care coordination.
-          </p>
-          
-          <p className="font-medium text-gray-800 mt-4">How can vendors improve their score?</p>
-          <p>
-            Publish your list price, disclose the key performance metrics for your test category, maintain an 
-            active publication record, and provide clear sample requirements. Vendors can submit updated information 
-            through our Submissions page.
-          </p>
-        </div>
-      )
-    }
-  ];
-
-  // OpenAlz FAQs
-  const alzFaqs = [
-    {
-      question: "What types of tests does OpenAlz cover?",
-      answer: (
-        <p>
-          OpenAlz focuses on blood-based biomarker tests for Alzheimer's disease evaluation. We currently cover tests measuring pTau217, pTau181, and amyloid-beta ratios (Abeta42/40)—the leading plasma biomarkers for detecting Alzheimer's pathology. We include tests using various technologies including mass spectrometry and immunoassays, as long as they're clinically available or in late-stage development.
-        </p>
-      )
-    },
-    {
-      question: "Why blood tests for Alzheimer's?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Traditionally, diagnosing Alzheimer's disease required expensive PET scans (~$5,000-8,000) or invasive lumbar punctures for CSF analysis. Blood-based biomarkers are transforming the field by offering:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>Accessibility</strong>—a simple blood draw vs. specialized imaging or spinal tap</li>
-            <li><strong>Cost</strong>—typically $500-1,500 vs. thousands for PET imaging</li>
-            <li><strong>Scalability</strong>—can be performed at any clinical laboratory</li>
-            <li><strong>Early detection</strong>—can identify pathology years before symptoms</li>
-          </ul>
-          <p>
-            The 2024 Alzheimer's Association appropriate use recommendations now support blood biomarkers as a first-line tool for evaluating patients with cognitive symptoms.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "What's the difference between pTau217 and Abeta42/40 tests?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            <strong>Abeta42/40 ratio</strong> measures amyloid-beta peptides in blood. A low ratio suggests amyloid plaque accumulation in the brain—one of the hallmarks of Alzheimer's pathology.
-          </p>
-          <p>
-            <strong>pTau217</strong> (phosphorylated tau at position 217) is currently considered the most specific blood biomarker for Alzheimer's. It detects tau pathology and shows changes early in the disease process.
-          </p>
-          <p>
-            Tests combining both biomarkers (like PrecivityAD2) generally show higher accuracy than single-biomarker tests.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How accurate are blood tests compared to PET scans?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            The best blood biomarker tests show 88-93% concordance with amyloid PET imaging. This means they agree with PET results approximately 9 out of 10 times. For context:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>PrecivityAD2</strong> (pTau217 + Abeta42/40): ~88% concordance with amyloid PET</li>
-            <li><strong>Lumipulse pTau217</strong>: ~91% concordance with amyloid PET</li>
-            <li><strong>ALZpath pTau217</strong>: ~92% concordance with amyloid PET</li>
-          </ul>
-          <p>
-            While not as definitive as PET imaging, blood tests can effectively screen patients to determine who would benefit from confirmatory PET scans, reducing unnecessary procedures and costs.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "Are these tests covered by insurance?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Coverage varies significantly by test and payer:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>PrecivityAD2</strong>—Medicare coverage via LCD (first Alzheimer's blood test with Medicare coverage)</li>
-            <li><strong>AD-Detect</strong>—Limited coverage, ~$500 out-of-pocket</li>
-            <li><strong>Other tests</strong>—Coverage varies; many are primarily research use</li>
-          </ul>
-          <p>
-            We're tracking reimbursement status for each test in our database to help patients and clinicians understand costs.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "Who should get tested?",
-      answer: (
-        <p>
-          According to the 2024 Alzheimer's Association appropriate use recommendations, blood biomarker tests are most appropriate for adults 55+ with mild cognitive impairment (MCI) or mild dementia who are being evaluated for possible Alzheimer's disease. These tests help determine whether amyloid pathology may be contributing to cognitive symptoms, guiding further workup and treatment decisions. They are not currently recommended for asymptomatic screening in the general population.
-        </p>
-      )
-    },
-    {
-      question: "Is OpenAlz affiliated with any test vendors?",
-      answer: (
-        <p>
-          No. OpenAlz is an independent resource with no financial relationships with test vendors. We don't accept advertising or sponsorship. Our goal is to provide unbiased, transparent information to help patients and clinicians navigate the rapidly evolving landscape of Alzheimer's blood testing.
-        </p>
-      )
-    },
-    {
-      question: "How does the AI chat feature work?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Our chat feature is powered by Anthropic's Claude AI, designed to <strong>only reference information from our test database</strong>. This means answers are grounded in the same curated, cited data you see throughout OpenAlz.
-          </p>
-          <p>
-            However, <strong>AI can make mistakes</strong>. We recommend cross-checking important information with test vendors and discussing options with your healthcare provider before making decisions about testing.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How can I report an error or suggest a test to add?",
-      answer: (
-        <p>
-          Please use the Submissions tab. We take data accuracy seriously and welcome corrections, new test suggestions, and general feedback.
-        </p>
-      )
-    },
-    {
-      question: "How do I contact OpenAlz?",
-      answer: (
-        <p>
-          The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry. We review all submissions and will respond if needed.
-        </p>
-      )
-    },
-  ];
-
-  const faqs = isAlz ? alzFaqs : oncoFaqs;
-
-  return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
-      <p className="text-gray-600 mb-8">
-        Common questions about {siteConfig.name}, our data, and how to use the platform.
-      </p>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-200">
-        {faqs.map((faq, index) => (
-          <FAQItem
-            key={index}
-            question={faq.question}
-            answer={faq.answer}
-            isOpen={openIndex === index}
-            onClick={() => setOpenIndex(openIndex === index ? null : index)}
-          />
-        ))}
-      </div>
-
-      {/* Openness Ranking - Hidden on mobile, only show for OpenOnco */}
-      {!isAlz && (
-        <div className="hidden md:block mt-8">
-          <OpennessAward />
-        </div>
-      )}
-
-      {/* Database Summary - Hidden on mobile */}
-      <div className="hidden md:block mt-6">
-        <DatabaseSummary />
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// About Page
-// ============================================
-const AboutPage = () => {
-  const siteConfig = getSiteConfig();
-  const isAlz = false; // ALZ DISABLED
-
-  if (isAlz) {
-    return (
-      <div className="max-w-3xl mx-auto px-6 py-16">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">About OpenAlz</h1>
-        <div className="prose prose-lg text-gray-700 space-y-6">
-          <p>
-            Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline">Alex Dickinson</a>. I also run <a href="https://openonco.org" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline">OpenOnco</a>, a non-profit database of cancer diagnostic tests that I started in memory of my sister Ingrid, who died from a brain tumor when she was eleven.
-          </p>
-          <p>
-            The same revolution in molecular diagnostics that's transforming cancer detection is now reaching Alzheimer's disease. Blood-based biomarkers like pTau217 and amyloid-beta ratios can now detect Alzheimer's pathology years before symptoms appear—and at a fraction of the cost of PET imaging.
-          </p>
-          <p>
-            But this rapidly evolving landscape can be overwhelming. New tests are launching constantly, each with different technologies, performance characteristics, and availability. OpenAlz is an effort to collect, curate, and explain all the data on these tests—helping patients, caregivers, and clinicians make informed decisions.
-          </p>
-          <p>
-            OpenAlz is a non-profit project, self-funded as an extension of my work on OpenOnco.
-          </p>
-        </div>
-        <div className="mt-12 flex justify-center">
-          <img 
-            src="/IngridandAlex.jpeg" 
-            alt="Ingrid and Alex" 
-            className="rounded-xl shadow-lg max-w-md w-full"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">About</h1>
-      <div className="prose prose-lg text-gray-700 space-y-6">
-        <p>
-          Hi, my name is <a href="https://www.linkedin.com/in/alexgdickinson/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 underline">Alex Dickinson</a>. Like many of you, my friends and family have been impacted by cancer throughout my life. Most significantly for me, my sister Ingrid died from a brain tumor when she was eleven and I was seven—you can see us together in the photo below.
-        </p>
-        <p>
-          Professionally I've had the good fortune to stumble into the amazing world of cancer diagnostics—the people, companies, and technologies. Along the way I've become convinced that the emerging new generation of molecular cancer tests (largely enabled by next-generation sequencing) will have an extraordinary impact on cancer detection and treatment.
-        </p>
-        <p>
-          Because these tests detect biomolecular events at tiny concentrations—now approaching one in a billion—this is a very complex field, and test data and options can overwhelm doctors and patients alike. This confusion will only increase as the number of tests rapidly expands due to both advances in the technology and the decision to maintain a low level of test regulation in the US.
-        </p>
-        <p>
-          OpenOnco is an effort to collect, curate, and explain to both patients and their doctors all the data on all these tests.
-        </p>
-        <p>
-          OpenOnco is a non-profit that I am self-funding in memory of my sister Ingrid.
-        </p>
-      </div>
-      <div className="mt-12 flex justify-center">
-        <img 
-          src="/IngridandAlex.jpeg" 
-          alt="Ingrid and Alex" 
-          className="rounded-xl shadow-lg max-w-md w-full"
-        />
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// How It Works Page
-// ============================================
-const HowItWorksPage = () => {
-  const siteConfig = getSiteConfig();
-  const isAlz = false; // ALZ DISABLED
-
-  if (isAlz) {
-    return (
-      <div className="max-w-3xl mx-auto px-6 py-16">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
-        <div className="prose prose-lg text-gray-700 space-y-6">
-
-          <h2 className="text-2xl font-bold text-gray-900">OpenAlz is Open</h2>
-          
-          <p>
-            The OpenAlz database is assembled from public sources including vendor documentation, peer-reviewed publications, clinical validation studies, and regulatory filings. Sources are cited to the best of our ability along with context and notes on data interpretation.
-          </p>
-
-          <p>
-            The current version of the OpenAlz database is available for anyone to download—go to the <strong>Data Download</strong> tab. Go to the <strong>Submissions</strong> tab to tell us about a new test, request changes to test data, and send us bug reports and feature suggestions. You can also see our log of all data changes on the site.
-          </p>
-
-          <h2 className="text-2xl font-bold text-gray-900 mt-10">Understanding the Tests</h2>
-          
-          <p>
-            Blood-based Alzheimer's biomarkers are a rapidly evolving field. The main biomarkers we track are:
-          </p>
-          
-          <ul className="list-disc list-inside space-y-2 mt-4">
-            <li><strong>pTau217</strong> — Phosphorylated tau at position 217, currently the most AD-specific plasma biomarker</li>
-            <li><strong>pTau181</strong> — Phosphorylated tau at position 181, the first validated plasma tau biomarker</li>
-            <li><strong>Abeta42/40 ratio</strong> — Ratio of amyloid-beta 42 to 40, indicating amyloid plaque burden</li>
-          </ul>
-          
-          <p className="mt-4">
-            Tests use different technologies (mass spectrometry, immunoassays) and may measure single biomarkers or combinations. Performance is typically validated against amyloid PET imaging and/or CSF biomarkers.
-          </p>
-
-          <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
-          
-          <p className="mt-4">
-            OpenAlz is vibe-coded in React using Opus 4.5. The test database is hardcoded as a JSON structure inside the app. The app (and embedded database) are updated as-needed when new data or tools are added. You can find the build date of the version you are running under the <strong>Data Download</strong> tab.
-          </p>
-
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h1>
-      <div className="prose prose-lg text-gray-700 space-y-6">
-
-        <h2 className="text-2xl font-bold text-gray-900">OpenOnco is Open</h2>
-        
-        <p>
-          The OpenOnco database is assembled from a wide variety of public sources including vendor databases, peer reviewed publications, and clinical trial registries. Sources are cited to the best of our ability along with context and notes on possible contradictory data and its resolution. Information on the database update process can be found below in the Technical Information section.
-        </p>
-
-        <p>
-          The current version of the OpenOnco database is available for anyone to download in several formats - go to the <strong>Data Download</strong> tab. Go to the <strong>Submissions</strong> tab to tell us about a new test, request changes to test data, and send us bug reports and feature suggestions. You can also see our log of all data changes on the site.
-        </p>
-
-        <h2 className="text-2xl font-bold text-gray-900 mt-10">Technical Information</h2>
-        
-        <p className="mt-4">
-          OpenOnco is vibe-coded in React using Opus 4.5. The test database is hardcoded as a JSON structure inside the app. The app (and embedded database) are updated as-needed when new data or tools are added. You can find the build date of the version you are running under the <strong>Data Download</strong> tab. Data for each build is cross-checked by GPT Pro 5.1, Gemini 3, and Opus 4.5. Once the models have beaten each other into submission, the new code is committed to GitHub and deployed on Vercel.
-        </p>
-
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// Submissions Page
-// ============================================
-// 
-// VENDOR INVITE FEATURE - Custom URL Links for Vendor Validation
-// ============================================
-// 
-// This feature allows vendors to be invited via custom URL links that pre-fill
-// their information and skip email verification. This streamlines the vendor
-// validation workflow.
-//
-// URL Format:
-//   https://openonco.org/submissions?invite=vendor&email=EMAIL&name=NAME
-//
-// Parameters:
-//   - invite=vendor    : Tells the system this is a vendor invite (skips email verification)
-//   - email=xxx@yyy.com: Pre-fills email AND uses domain to match tests
-//   - name=First%20Last: Pre-fills first/last name fields (URL-encoded spaces)
-//
-// How it works:
-//   1. Vendor clicks link → lands on /submissions page
-//   2. System auto-detects invite=vendor parameter
-//   3. Email is pre-verified (no code needed since you sent the link)
-//   4. Name fields pre-filled from the name parameter
-//   5. Test dropdown auto-filtered - only shows tests where vendor name matches email domain
-//
-// Domain Matching Logic:
-//   - Extracts domain from email: dan.norton@personalis.com → "personalis"
-//   - Matches against vendor names: "Personalis" → matches
-//   - Uses fuzzy matching: removes non-alphanumeric chars, case-insensitive
-//   - Example: genomictestingcooperative.com → matches "Genomic Testing Cooperative (GTC)"
-//
-// Example URLs:
-//   https://openonco.org/submissions?invite=vendor&email=dan.norton@personalis.com&name=Dan%20Norton
-//   https://openonco.org/submissions?invite=vendor&email=jowen@genomictestingcooperative.com&name=Jeffrey%20Owen
-//
-// Implementation:
-//   - URL params parsed in main App component (line ~10737)
-//   - vendorInvite prop passed to SubmissionsPage
-//   - SubmissionsPage processes invite and sets up form (line ~5004)
-//   - getVendorTests() filters test dropdown (line ~5596)
-//   - emailMatchesVendor() validates domain matching (line ~5230)
-//
-// ============================================
-const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorInvite }) => {
-  const siteConfig = getSiteConfig();
-  const isAlz = false; // ALZ DISABLED
-  const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
-  
-  const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'validation', 'bug', 'feature'
-  const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
-  const [category, setCategory] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  
-  // New test fields
-  const [newTestName, setNewTestName] = useState('');
-  const [newTestVendor, setNewTestVendor] = useState('');
-  const [newTestUrl, setNewTestUrl] = useState('');
-  const [newTestNotes, setNewTestNotes] = useState('');
-  
-  // Correction fields
-  const [existingTest, setExistingTest] = useState('');
-  
-  // Complete missing fields - multiple parameters with values
-  const [completeFieldEntries, setCompleteFieldEntries] = useState([]);
-  const [selectedParameter, setSelectedParameter] = useState('');
-  const [newValue, setNewValue] = useState('');
-  const [citation, setCitation] = useState('');
-  
-  // Vendor validation fields
-  const [validationTest, setValidationTest] = useState('');
-  const [validationEdits, setValidationEdits] = useState([]); // Array of {field, value, citation}
-  const [validationField, setValidationField] = useState('');
-  const [validationValue, setValidationValue] = useState('');
-  const [validationCitation, setValidationCitation] = useState('');
-  const [validationAttestation, setValidationAttestation] = useState(false);
-  const [verifiedTestsSession, setVerifiedTestsSession] = useState([]); // Track tests verified in this session
-  
-  // Track if form was prefilled (from Competitions page navigation)
-  const [isPrefilled, setIsPrefilled] = useState(false);
-  
-  // Track if this is an invited vendor (skip verification)
-  const [isInvitedVendor, setIsInvitedVendor] = useState(false);
-  
-  // Handle vendor invite from app-level URL parsing
-  useEffect(() => {
-    if (vendorInvite && vendorInvite.email) {
-      // Set up for vendor validation with pre-verified email
-      setSubmissionType('validation');
-      setSubmitterType('vendor');
-      setContactEmail(vendorInvite.email);
-      setVerificationStep('verified'); // Skip verification for invited vendors
-      setIsInvitedVendor(true);
-      
-      // Parse name if provided (format: "First Last")
-      if (vendorInvite.name) {
-        const nameParts = vendorInvite.name.trim().split(' ');
-        if (nameParts.length >= 1) {
-          setFirstName(nameParts[0]);
-        }
-        if (nameParts.length >= 2) {
-          setLastName(nameParts.slice(1).join(' '));
-        }
-      }
-      
-      // Scroll to top
-      window.scrollTo(0, 0);
-      
-      // Clear the invite after processing
-      if (onClearVendorInvite) {
-        onClearVendorInvite();
-      }
-    }
-  }, [vendorInvite, onClearVendorInvite]);
-  
-  // ============================================
-  // VENDOR INVITE FALLBACK - Direct URL Parsing
-  // ============================================
-  // Fallback handler for vendor invite URLs if vendorInvite prop wasn't provided.
-  // This handles direct navigation to /submissions?invite=vendor&email=...
-  //
-  // URL format: /submissions?invite=vendor&email=person@company.com&name=John%20Doe
-  //
-  // Note: Primary handling is in main App component (line ~10737) which passes
-  // vendorInvite prop. This is a fallback for edge cases.
-  // ============================================
-  useEffect(() => {
-    // Only run if vendorInvite prop wasn't provided
-    if (vendorInvite) return;
-    
-    const params = new URLSearchParams(window.location.search);
-    const inviteType = params.get('invite');
-    const inviteEmail = params.get('email');
-    const inviteName = params.get('name');
-    
-    if (inviteType === 'vendor' && inviteEmail) {
-      // Set up for vendor validation with pre-verified email
-      setSubmissionType('validation');
-      setSubmitterType('vendor');
-      setContactEmail(inviteEmail);
-      setVerificationStep('verified'); // Skip verification for invited vendors
-      setIsInvitedVendor(true);
-      
-      // Parse name if provided (format: "First Last")
-      if (inviteName) {
-        const nameParts = inviteName.trim().split(' ');
-        if (nameParts.length >= 1) {
-          setFirstName(nameParts[0]);
-        }
-        if (nameParts.length >= 2) {
-          setLastName(nameParts.slice(1).join(' '));
-        }
-      }
-      
-      // Clean up URL without reloading page
-      window.history.replaceState({}, '', window.location.pathname);
-      
-      // Scroll to top
-      window.scrollTo(0, 0);
-    }
-  }, [vendorInvite]);
-  
-  // Handle prefill from navigation (e.g., from Competitions page)
-  useEffect(() => {
-    if (prefill) {
-      if (prefill.submissionType) {
-        setSubmissionType(prefill.submissionType);
-      }
-      if (prefill.prefillCategory) {
-        setCategory(prefill.prefillCategory);
-      }
-      if (prefill.prefillTest) {
-        setExistingTest(prefill.prefillTest);
-        setIsPrefilled(true); // Mark as prefilled to lock selections
-      }
-      // Scroll to top of page
-      window.scrollTo(0, 0);
-      // Clear prefill after applying
-      if (onClearPrefill) {
-        onClearPrefill();
-      }
-    }
-  }, [prefill, onClearPrefill]);
-  
-  // Bug/Feature feedback fields
-  const [feedbackDescription, setFeedbackDescription] = useState('');
-  
-  // Email verification states
-  const [verificationStep, setVerificationStep] = useState('form');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [verificationToken, setVerificationToken] = useState('');
-  const [isSendingCode, setIsSendingCode] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationError, setVerificationError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-
-  // Get existing tests for correction dropdown
-  const existingTests = {
-    MRD: mrdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    ECD: ecdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    TRM: trmTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    TDS: tdsTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    'ALZ-BLOOD': alzBloodTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-  };
-
-  // Parameters available for correction by category
-  const parameterOptions = {
-    MRD: [
-      { key: 'sensitivity', label: 'Sensitivity (%)' },
-      { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'analyticalSpecificity', label: 'Analytical Specificity (%)' },
-      { key: 'clinicalSpecificity', label: 'Clinical Specificity (%)' },
-      { key: 'lod', label: 'LOD (Detection Threshold)' },
-      { key: 'lod95', label: 'LOD95 (95% Confidence)' },
-      { key: 'variantsTracked', label: 'Variants Tracked' },
-      { key: 'initialTat', label: 'Initial Turnaround Time (days)' },
-      { key: 'followUpTat', label: 'Follow-up Turnaround Time (days)' },
-      { key: 'bloodVolume', label: 'Blood Volume (mL)' },
-      { key: 'cfdnaInput', label: 'cfDNA Input (ng)' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'reimbursement', label: 'Reimbursement Status' },
-      { key: 'cptCodes', label: 'CPT Codes' },
-      { key: 'clinicalTrials', label: 'Clinical Trials' },
-      { key: 'totalParticipants', label: 'Total Trial Participants' },
-      { key: 'numPublications', label: 'Number of Publications' },
-      { key: 'other', label: 'Other (specify in notes)' },
-    ],
-    ECD: [
-      { key: 'sensitivity', label: 'Overall Sensitivity (%)' },
-      { key: 'stageISensitivity', label: 'Stage I Sensitivity (%)' },
-      { key: 'stageIISensitivity', label: 'Stage II Sensitivity (%)' },
-      { key: 'stageIIISensitivity', label: 'Stage III Sensitivity (%)' },
-      { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'ppv', label: 'Positive Predictive Value (%)' },
-      { key: 'npv', label: 'Negative Predictive Value (%)' },
-      { key: 'tat', label: 'Turnaround Time (days)' },
-      { key: 'listPrice', label: 'List Price ($)' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'reimbursement', label: 'Reimbursement Status' },
-      { key: 'screeningInterval', label: 'Screening Interval' },
-      { key: 'clinicalTrials', label: 'Clinical Trials' },
-      { key: 'totalParticipants', label: 'Total Trial Participants' },
-      { key: 'numPublications', label: 'Number of Publications' },
-      { key: 'other', label: 'Other (specify in notes)' },
-    ],
-    TRM: [
-      { key: 'sensitivity', label: 'Sensitivity (%)' },
-      { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'lod', label: 'LOD (Detection Threshold)' },
-      { key: 'lod95', label: 'LOD95 (95% Confidence)' },
-      { key: 'leadTimeVsImaging', label: 'Lead Time vs Imaging (days)' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'reimbursement', label: 'Reimbursement Status' },
-      { key: 'clinicalTrials', label: 'Clinical Trials' },
-      { key: 'totalParticipants', label: 'Total Trial Participants' },
-      { key: 'numPublications', label: 'Number of Publications' },
-      { key: 'other', label: 'Other (specify in notes)' },
-    ],
-    TDS: [
-      { key: 'genesAnalyzed', label: 'Genes Analyzed' },
-      { key: 'biomarkersReported', label: 'Biomarkers Reported' },
-      { key: 'fdaCompanionDxCount', label: 'FDA CDx Indications' },
-      { key: 'tat', label: 'Turnaround Time' },
-      { key: 'sampleRequirements', label: 'Sample Requirements' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'reimbursement', label: 'Reimbursement Status' },
-      { key: 'listPrice', label: 'List Price ($)' },
-      { key: 'numPublications', label: 'Number of Publications' },
-      { key: 'other', label: 'Other (specify in notes)' },
-    ],
-    'ALZ-BLOOD': [
-      { key: 'sensitivity', label: 'Sensitivity (%)' },
-      { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'concordanceWithPET', label: 'PET Concordance (%)' },
-      { key: 'concordanceWithCSF', label: 'CSF Concordance (%)' },
-      { key: 'tat', label: 'Turnaround Time' },
-      { key: 'sampleRequirements', label: 'Sample Requirements' },
-      { key: 'fdaStatus', label: 'FDA/Regulatory Status' },
-      { key: 'reimbursement', label: 'Reimbursement/Coverage' },
-      { key: 'listPrice', label: 'List Price ($)' },
-      { key: 'totalParticipants', label: 'Validation Participants' },
-      { key: 'numPublications', label: 'Number of Publications' },
-      { key: 'other', label: 'Other (specify in notes)' },
-    ],
-  };
-
-  // Get current value of selected parameter for the selected test
-  const getCurrentValue = () => {
-    if (!existingTest || !selectedParameter || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData;
-    const test = testList.find(t => t.id === existingTest);
-    if (!test || selectedParameter === 'other') return '';
-    const value = test[selectedParameter];
-    return value !== null && value !== undefined ? String(value) : 'Not specified';
-  };
-
-  // Get vendor name for selected test (for email validation)
-  const getSelectedTestVendor = () => {
-    if (!existingTest || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : tdsTestData;
-    const test = testList.find(t => t.id === existingTest);
-    return test?.vendor || '';
-  };
-
-  // Validate email format
-  const validateEmailFormat = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  // Check if email domain is free (Gmail, Yahoo, etc.)
-  const isFreeEmail = (email) => {
-    const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com', 'protonmail.com', 'live.com', 'msn.com'];
-    const domain = email.split('@')[1]?.toLowerCase();
-    return freeProviders.includes(domain);
-  };
-
-  // ============================================
-  // EMAIL DOMAIN TO VENDOR NAME MATCHING
-  // ============================================
-  // EMAIL DOMAIN TO VENDOR NAME MATCHING
-  // ============================================
-  // Validates that an email domain matches a vendor name.
-  // Used to ensure vendor submissions come from legitimate company emails.
-  //
-  // Matching Strategy:
-  //   1. Extract domain from email: dan.norton@personalis.com → "personalis"
-  //   2. Clean both domain and vendor name (remove non-alphanumeric, lowercase)
-  //   3. Check if vendor name appears in domain OR domain appears in vendor name
-  //
-  // Examples:
-  //   - personalis.com + "Personalis" → ✓ match
-  //   - genomictestingcooperative.com + "Genomic Testing Cooperative (GTC)" → ✓ match
-  //   - guardanthealth.com + "Guardant Health" → ✓ match
-  //
-  // This handles cases where:
-  //   - Vendor name has extra text: "Genomic Testing Cooperative (GTC)"
-  //   - Domain has subdomain: "dan.norton@personalis.com"
-  //   - Different capitalization or punctuation
-  // ============================================
-  const emailMatchesVendor = (email, vendor) => {
-    if (!email || !vendor) return false;
-    // Get full domain after @ (e.g., "ryght.ai" or "ryghtinc.com")
-    const fullDomain = email.split('@')[1]?.toLowerCase() || '';
-    // Clean vendor name to just alphanumeric (e.g., "Ryght Inc." -> "ryghtinc")
-    const vendorClean = vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-    // Clean domain to just alphanumeric for matching (e.g., "ryght.ai" -> "ryghtai")
-    const domainClean = fullDomain.replace(/[^a-z0-9]/g, '');
-    // Get domain without TLD for matching (e.g., "genomictestingcooperativecom" -> "genomictestingcooperative")
-    const domainWithoutTld = fullDomain.split('.').slice(0, -1).join('').replace(/[^a-z0-9]/g, '');
-    // Check if vendor name appears in domain OR domain appears in vendor name
-    // This handles cases like "Genomic Testing Cooperative (GTC)" where vendor has extra text
-    return domainClean.includes(vendorClean) || vendorClean.includes(domainWithoutTld);
-  };
-
-  // Validate email based on submitter type
-  const validateEmail = () => {
-    if (!validateEmailFormat(contactEmail)) {
-      setEmailError('Please enter a valid email address');
-      return false;
-    }
-
-    if (isFreeEmail(contactEmail)) {
-      setEmailError('Please use a company/institutional email (not Gmail, Yahoo, etc.)');
-      return false;
-    }
-
-    // Block vendor domain emails when claiming Independent Expert
-    if (submitterType === 'expert' && (submissionType === 'new' || submissionType === 'correction')) {
-      const emailDomain = contactEmail.split('@')[1]?.toLowerCase() || '';
-      // Known vendor domains - comprehensive list
-      const knownVendorDomains = [
-        { domain: 'ryght.ai', vendor: 'Ryght AI' },
-        { domain: 'illumina.com', vendor: 'Illumina' },
-        { domain: 'guardanthealth.com', vendor: 'Guardant Health' },
-        { domain: 'natera.com', vendor: 'Natera' },
-        { domain: 'foundationmedicine.com', vendor: 'Foundation Medicine' },
-        { domain: 'grail.com', vendor: 'Grail' },
-        { domain: 'exact.com', vendor: 'Exact Sciences' },
-        { domain: 'exactsciences.com', vendor: 'Exact Sciences' },
-        { domain: 'tempus.com', vendor: 'Tempus' },
-        { domain: 'personalis.com', vendor: 'Personalis' },
-        { domain: 'neogenomics.com', vendor: 'NeoGenomics' },
-        { domain: 'labcorp.com', vendor: 'Labcorp' },
-        { domain: 'quest.com', vendor: 'Quest Diagnostics' },
-        { domain: 'questdiagnostics.com', vendor: 'Quest Diagnostics' },
-        { domain: 'adaptivebiotech.com', vendor: 'Adaptive Biotechnologies' },
-        { domain: 'caris.com', vendor: 'Caris Life Sciences' },
-        { domain: 'carislifesciences.com', vendor: 'Caris Life Sciences' },
-        { domain: 'roche.com', vendor: 'Roche' },
-        { domain: 'veracyte.com', vendor: 'Veracyte' },
-        { domain: 'myriad.com', vendor: 'Myriad Genetics' },
-        { domain: 'invitae.com', vendor: 'Invitae' },
-        { domain: 'biofiredefense.com', vendor: 'BioFire' },
-        { domain: 'biofiredx.com', vendor: 'BioFire' },
-        { domain: 'freenome.com', vendor: 'Freenome' },
-        { domain: 'c2i-genomics.com', vendor: 'C2i Genomics' },
-        { domain: 'sagadiagnostics.com', vendor: 'SAGA Diagnostics' },
-        { domain: 'billiontoone.com', vendor: 'BillionToOne' },
-        { domain: 'sophiagenetics.com', vendor: 'SOPHiA GENETICS' },
-        { domain: 'genomictestingcooperative.com', vendor: 'Genomic Testing Cooperative (GTC)' },
-      ];
-      
-      const matchedVendor = knownVendorDomains.find(v => emailDomain === v.domain || emailDomain.endsWith('.' + v.domain));
-      if (matchedVendor) {
-        setEmailError(`Your email domain (${emailDomain}) appears to be from ${matchedVendor.vendor}. Please select "Test Vendor Representative" instead.`);
-        return false;
-      }
-    }
-
-    // Only check vendor email match for vendor submissions on test data
-    if (submitterType === 'vendor' && (submissionType === 'new' || submissionType === 'correction')) {
-      const vendor = submissionType === 'new' ? newTestVendor : getSelectedTestVendor();
-      if (!emailMatchesVendor(contactEmail, vendor)) {
-        setEmailError(`For vendor submissions, email domain must contain "${vendor || 'vendor name'}"`);
-        return false;
-      }
-    }
-
-    setEmailError('');
-    return true;
-  };
-
-  // Send verification code
-  const sendVerificationCode = async () => {
-    if (!validateEmail()) return;
-
-    setIsSendingCode(true);
-    setVerificationError('');
-
-    let vendor = 'OpenOnco';
-    let testName = submissionType === 'bug' ? 'Bug Report' : submissionType === 'feature' ? 'Feature Request' : '';
-    
-    if (submissionType === 'new') {
-      vendor = newTestVendor;
-      testName = newTestName;
-    } else if (submissionType === 'correction') {
-      vendor = getSelectedTestVendor();
-      testName = existingTests[category]?.find(t => t.id === existingTest)?.name;
-    }
-
-    try {
-      const response = await fetch('/api/send-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: contactEmail,
-          vendor: vendor,
-          testName: testName
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setVerificationToken(data.token);
-        setVerificationStep('verify');
-      } else {
-        setVerificationError(data.error || 'Failed to send verification code');
-      }
-    } catch (error) {
-      setVerificationError('Network error. Please try again.');
-    }
-
-    setIsSendingCode(false);
-  };
-
-  // Verify the code
-  const verifyCode = async () => {
-    if (verificationCode.length !== 6) {
-      setVerificationError('Please enter the 6-digit code');
-      return;
-    }
-
-    setIsVerifying(true);
-    setVerificationError('');
-
-    try {
-      const response = await fetch('/api/verify-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          token: verificationToken,
-          code: verificationCode
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setVerificationStep('verified');
-      } else {
-        setVerificationError(data.error || 'Verification failed');
-      }
-    } catch (error) {
-      setVerificationError('Network error. Please try again.');
-    }
-
-    setIsVerifying(false);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (verificationStep !== 'verified') {
-      setEmailError('Please verify your email first');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setSubmitError('');
-
-    let submission = {
-      submissionType,
-      submitter: {
-        firstName,
-        lastName,
-        email: contactEmail,
-      },
-      emailVerified: true,
-      timestamp: new Date().toISOString(),
-    };
-
-    if (submissionType === 'bug' || submissionType === 'feature') {
-      submission.feedback = {
-        type: submissionType === 'bug' ? 'Bug Report' : 'Feature Request',
-        description: feedbackDescription,
-      };
-    } else if (submissionType === 'validation') {
-      // Vendor Test Validation submission
-      const testData = getValidationTestData();
-      
-      // Auto-capture any pending edit that wasn't explicitly added
-      let allEdits = [...validationEdits];
-      if (validationField && validationValue && validationCitation) {
-        allEdits.push({
-          field: validationField,
-          value: validationValue,
-          citation: validationCitation
-        });
-      }
-      
-      const categoryFullName = {
-        'MRD': 'Minimal Residual Disease',
-        'ECD': 'Early Cancer Detection', 
-        'TRM': 'Treatment Response Monitoring',
-        'TDS': 'Treatment Decision Support'
-      }[getValidationTestCategory()] || getValidationTestCategory();
-      
-      submission.submitterType = 'vendor';
-      submission.category = getValidationTestCategory();
-      
-      // Email formatting helpers
-      const testNameDisplay = testData?.name || `Test ID: ${validationTest}`;
-      const vendorDisplay = testData?.vendor || 'Unknown Vendor';
-      
-      submission.emailSubject = `OpenOnco Vendor Validation: ${testNameDisplay} (${getValidationTestCategory()}) - ${isInvitedVendor ? 'Invited Vendor' : 'Vendor Representative'}`;
-      submission.emailSummary = {
-        header: `OpenOnco Vendor Validation Request: ${testNameDisplay} (${getValidationTestCategory()}) - ${isInvitedVendor ? 'Invited Vendor' : 'Vendor Representative'}`,
-        verificationBadge: `✓ Email Verified: ${contactEmail}${isInvitedVendor ? ' (Invited)' : ''}`,
-        details: [
-          { label: 'Submitter Type', value: isInvitedVendor ? 'Vendor Representative (Invited)' : 'Vendor Representative' },
-          { label: 'Category', value: `${getValidationTestCategory()} - ${categoryFullName}` },
-          { label: 'Test Name', value: testNameDisplay },
-          { label: 'Vendor', value: vendorDisplay },
-          { label: 'Edits Submitted', value: allEdits.length > 0 ? `${allEdits.length} field(s)` : 'None (validation only)' },
-          { label: 'Attestation', value: validationAttestation ? '✓ Confirmed' : '✗ Not confirmed' }
-        ],
-        editsFormatted: allEdits.map(e => `• ${e.field}: ${e.value} (Citation: ${e.citation})`).join('\n')
-      };
-      
-      // Also add correction-compatible object for server email template compatibility
-      submission.correction = {
-        testId: validationTest,
-        testName: testNameDisplay,
-        vendor: vendorDisplay,
-        parameter: allEdits.length > 0 ? 'Vendor Validation + Edits' : 'Vendor Validation (No Edits)',
-        parameterLabel: allEdits.length > 0 ? `Vendor Validation with ${allEdits.length} edit(s)` : 'Vendor Validation Only',
-        currentValue: 'See current test data',
-        newValue: allEdits.length > 0 
-          ? allEdits.map(e => `${e.field}: ${e.value}`).join('; ') 
-          : 'Vendor attests all data is accurate',
-        citation: allEdits.length > 0 
-          ? allEdits.map(e => e.citation).join(', ')
-          : 'Vendor attestation'
-      };
-      
-      submission.validation = {
-        testId: validationTest,
-        testName: testNameDisplay,
-        vendor: vendorDisplay,
-        edits: allEdits,
-        isInvitedVendor: isInvitedVendor,
-        attestation: {
-          confirmed: validationAttestation,
-          submitterName: `${firstName} ${lastName}`,
-          submitterEmail: contactEmail,
-          timestamp: new Date().toISOString(),
-        }
-      };
-    } else {
-      submission.submitterType = submitterType;
-      submission.category = category;
-      
-      if (submissionType === 'new') {
-        submission.newTest = {
-          name: newTestName,
-          vendor: newTestVendor,
-          performanceUrl: newTestUrl,
-          additionalNotes: newTestNotes,
-        };
-      } else if (submissionType === 'correction') {
-        submission.correction = {
-          testId: existingTest,
-          testName: existingTests[category]?.find(t => t.id === existingTest)?.name,
-          vendor: getSelectedTestVendor(),
-          parameter: selectedParameter,
-          parameterLabel: parameterOptions[category]?.find(p => p.key === selectedParameter)?.label,
-          currentValue: getCurrentValue(),
-          newValue: newValue,
-          citation: citation,
-        };
-      }
-    }
-
-    try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ submission })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Track this test as verified in the session (for vendor validation)
-        if (submissionType === 'validation' && validationTest) {
-          setVerifiedTestsSession(prev => [...prev, validationTest]);
-        }
-        setSubmitted(true);
-      } else {
-        setSubmitError(data.error || 'Failed to submit. Please try again.');
-      }
-    } catch (error) {
-      setSubmitError('Network error. Please try again.');
-    }
-
-    setIsSubmitting(false);
-  };
-
-  const resetForm = () => {
-    setSubmissionType('');
-    setSubmitterType('');
-    setCategory('');
-    setFirstName('');
-    setLastName('');
-    setContactEmail('');
-    setEmailError('');
-    setSubmitted(false);
-    setNewTestName('');
-    setNewTestVendor('');
-    setNewTestUrl('');
-    setNewTestNotes('');
-    setExistingTest('');
-    setSelectedParameter('');
-    setNewValue('');
-    setCitation('');
-    setFeedbackDescription('');
-    setVerificationStep('form');
-    setVerificationCode('');
-    setVerificationToken('');
-    setVerificationError('');
-    setIsSubmitting(false);
-    setSubmitError('');
-    // Validation fields
-    setValidationTest('');
-    setValidationEdits([]);
-    setValidationField('');
-    setValidationValue('');
-    setValidationCitation('');
-    setValidationAttestation(false);
-    setVerifiedTestsSession([]); // Clear session tracking on full reset
-  };
-
-  // Reset just validation fields for verifying another test (keeps email verified)
-  const resetValidationOnly = () => {
-    setSubmitted(false);
-    setValidationTest('');
-    setValidationEdits([]);
-    setValidationField('');
-    setValidationValue('');
-    setValidationCitation('');
-    setValidationAttestation(false);
-    setIsSubmitting(false);
-    setSubmitError('');
-  };
-
-  // ============================================
-  // VENDOR TEST FILTERING - Domain Matching
-  // ============================================
-  // Filters the test dropdown to show only tests from the vendor's company.
-  // Uses email domain to match vendor names.
-  //
-  // Matching Logic:
-  //   1. Extract domain from email: dan.norton@personalis.com → "personalis"
-  //   2. Compare against vendor names (case-insensitive, alphanumeric only)
-  //   3. Fuzzy match: checks if domain appears in vendor name OR vendor name in domain
-  //
-  // Examples:
-  //   - personalis.com → matches "Personalis"
-  //   - genomictestingcooperative.com → matches "Genomic Testing Cooperative (GTC)"
-  //   - guardanthealth.com → matches "Guardant Health"
-  //
-  // This is used in the vendor validation flow to show only relevant tests.
-  // ============================================
-  // Get vendor domain from email for filtering tests
-  const getVendorDomainFromEmail = (email) => {
-    if (!email || !email.includes('@')) return '';
-    const domain = email.split('@')[1]?.toLowerCase() || '';
-    // Extract company name from domain (e.g., guardanthealth.com -> guardant)
-    return domain.split('.')[0];
-  };
-  
-  // Get tests that match the vendor's email domain
-  const getVendorTests = (includeVerified = false) => {
-    const domain = getVendorDomainFromEmail(contactEmail);
-    if (!domain) return [];
-    
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
-    return allTests.filter(test => {
-      const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const matchesVendor = vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
-      const notVerifiedYet = includeVerified || !verifiedTestsSession.includes(test.id);
-      return matchesVendor && notVerifiedYet;
-    }).map(t => ({
-      id: t.id,
-      name: t.name,
-      vendor: t.vendor,
-      category: mrdTestData.find(m => m.id === t.id) ? 'MRD' :
-                ecdTestData.find(e => e.id === t.id) ? 'ECD' :
-                trmTestData.find(r => r.id === t.id) ? 'TRM' : 'TDS'
-    }));
-  };
-  
-  // Get the selected validation test data
-  const getValidationTestData = () => {
-    if (!validationTest) return null;
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
-    return allTests.find(t => t.id === validationTest);
-  };
-  
-  // Get category for validation test
-  const getValidationTestCategory = () => {
-    if (!validationTest) return null;
-    if (mrdTestData.find(t => t.id === validationTest)) return 'MRD';
-    if (ecdTestData.find(t => t.id === validationTest)) return 'ECD';
-    if (trmTestData.find(t => t.id === validationTest)) return 'TRM';
-    if (tdsTestData.find(t => t.id === validationTest)) return 'TDS';
-    return null;
-  };
-
-  if (submitted) {
-    // For vendor validation, show option to verify another test
-    const remainingTests = submissionType === 'validation' ? getVendorTests() : [];
-    const allVendorTests = submissionType === 'validation' ? getVendorTests(true) : [];
-    const verifiedCount = verifiedTestsSession.length;
-    
-    if (submissionType === 'validation') {
-      return (
-        <div className="max-w-3xl mx-auto px-6 py-16 text-center">
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-200">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <svg className="w-16 h-16 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-emerald-800 mb-2">Test Verified!</h2>
-            <p className="text-emerald-700 mb-4">
-              Your validation has been submitted. The test will receive the <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white">VENDOR VERIFIED</span> badge after successful review.
-            </p>
-            
-            {/* Progress indicator */}
-            <div className="bg-white rounded-lg p-4 mb-6 border border-emerald-200">
-              <div className="text-sm text-emerald-700 font-medium mb-2">Session Progress</div>
-              <div className="text-2xl font-bold text-emerald-800">
-                {verifiedCount} of {allVendorTests.length} tests verified
-              </div>
-              {verifiedCount > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1 justify-center">
-                  {verifiedTestsSession.map(testId => {
-                    const test = allVendorTests.find(t => t.id === testId);
-                    return test ? (
-                      <span key={testId} className="inline-flex items-center px-2 py-1 rounded text-xs bg-emerald-100 text-emerald-700">
-                        ✓ {test.name}
-                      </span>
-                    ) : null;
-                  })}
-                </div>
-              )}
-            </div>
-            
-            {remainingTests.length > 0 ? (
-              <>
-                <p className="text-emerald-600 mb-4">
-                  You have <strong>{remainingTests.length}</strong> more test{remainingTests.length > 1 ? 's' : ''} to verify. Would you like to continue?
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <button 
-                    onClick={resetValidationOnly} 
-                    className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold flex items-center justify-center gap-2"
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                    Verify Another Test
-                  </button>
-                  <button 
-                    onClick={resetForm} 
-                    className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors"
-                  >
-                    Done for Now
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="bg-emerald-100 rounded-lg p-4 mb-6 border border-emerald-300">
-                  <div className="text-emerald-800 font-semibold text-lg mb-1">🎉 All Tests Verified!</div>
-                  <p className="text-emerald-700 text-sm">
-                    You've verified all {allVendorTests.length} test{allVendorTests.length > 1 ? 's' : ''} for your company. Thank you for your contribution!
-                  </p>
-                </div>
-                <button 
-                  onClick={resetForm} 
-                  className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors"
-                >
-                  Done
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      );
-    }
-    
-    // Default success screen for other submission types
-    return (
-      <div className="max-w-3xl mx-auto px-6 py-16 text-center">
-        <div className="bg-emerald-50 rounded-2xl p-8 border border-emerald-200">
-          <svg className="w-16 h-16 text-emerald-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <h2 className="text-2xl font-bold text-emerald-800 mb-2">Request Submitted!</h2>
-          <p className="text-emerald-700 mb-6">Your request has been submitted successfully. We'll review it and update our database soon. Thank you for contributing!</p>
-          <button onClick={resetForm} className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors">
-            Submit Another Request
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Check if form is ready for email verification
-  const isReadyForVerification = () => {
-    if (!submissionType || !firstName || !lastName || !contactEmail) return false;
-    
-    if (submissionType === 'bug' || submissionType === 'feature') {
-      return feedbackDescription.trim().length > 0;
-    }
-    
-    if (submissionType === 'validation') {
-      return validationTest && validationAttestation;
-    }
-    
-    if (!submitterType || !category) return false;
-    
-    if (submissionType === 'new') {
-      return newTestName && newTestVendor && newTestUrl;
-    } else if (submissionType === 'correction') {
-      return existingTest && selectedParameter && newValue && citation;
-    }
-    
-    return false;
-  };
-  
-  // Add a validation edit
-  const addValidationEdit = () => {
-    if (!validationField || !validationValue || !validationCitation) return;
-    setValidationEdits([...validationEdits, {
-      field: validationField,
-      value: validationValue,
-      citation: validationCitation
-    }]);
-    setValidationField('');
-    setValidationValue('');
-    setValidationCitation('');
-  };
-  
-  // Remove a validation edit
-  const removeValidationEdit = (index) => {
-    setValidationEdits(validationEdits.filter((_, i) => i !== index));
-  };
-
-  return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
-      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Submissions</h1>
-      <p className="text-gray-600 mb-8">Help us improve {siteConfig.name} with your feedback and data contributions.</p>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        
-        {/* Test Data Update - hide when prefilled OR when validation selected */}
-        {!isPrefilled && submissionType !== 'validation' && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <label className="block text-sm font-semibold text-gray-700 mb-3">Test Data Update</label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
-              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
-            >
-              <div className="font-semibold text-gray-800">Suggest a New Test</div>
-              <div className="text-sm text-gray-500">Notify us of a test not in our database</div>
-            </button>
-            <button
-              type="button"
-              onClick={() => { setSubmissionType('correction'); setNewTestName(''); setNewTestVendor(''); setNewTestUrl(''); setFeedbackDescription(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
-              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'correction' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
-            >
-              <div className="font-semibold text-gray-800">File a Correction</div>
-              <div className="text-sm text-gray-500">Update existing test data</div>
-            </button>
-          </div>
-          
-          <label className="block text-sm font-semibold text-gray-700 mt-6 mb-3">Bug Reports & Feature Requests</label>
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => { setSubmissionType('bug'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
-              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'bug' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
-            >
-              <div className={`font-semibold ${submissionType === 'bug' ? 'text-red-700' : 'text-gray-800'}`}>Report a Bug</div>
-              <div className="text-sm text-gray-500">Something isn't working correctly</div>
-            </button>
-            <button
-              type="button"
-              onClick={() => { setSubmissionType('feature'); setSubmitterType(''); setCategory(''); setNewTestName(''); setNewTestVendor(''); setExistingTest(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
-              className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'feature' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}`}
-            >
-              <div className={`font-semibold ${submissionType === 'feature' ? 'text-purple-700' : 'text-gray-800'}`}>Request a Feature</div>
-              <div className="text-sm text-gray-500">Suggest an improvement or new capability</div>
-            </button>
-          </div>
-          </div>
-        )}
-
-        {/* Vendor Test Validation - Below other options */}
-        {!isPrefilled && (
-          <div className={`rounded-xl border-2 p-6 transition-all ${submissionType === 'validation' ? 'border-emerald-500 bg-gradient-to-r from-emerald-50 to-teal-50' : 'border-emerald-200 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 hover:border-emerald-300'}`}>
-            <button
-              type="button"
-              onClick={() => { 
-                setSubmissionType('validation'); 
-                setSubmitterType('vendor');
-                setCategory('');
-                setExistingTest(''); 
-                setSelectedParameter(''); 
-                setFeedbackDescription(''); 
-                setCompleteFieldEntries([]);
-                setNewTestName('');
-                setNewTestVendor('');
-                setValidationTest('');
-                setValidationEdits([]);
-                setValidationAttestation(false);
-              }}
-              className="w-full text-left"
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${submissionType === 'validation' ? 'bg-emerald-500' : 'bg-emerald-400'}`}>
-                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className={`font-bold text-lg ${submissionType === 'validation' ? 'text-emerald-800' : 'text-emerald-700'}`}>
-                      Vendor Test Validation
-                    </span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white border border-emerald-600">
-                      VENDOR VERIFIED
-                    </span>
-                  </div>
-                  <div className="text-sm text-emerald-600">Verify and update your company's test data to earn the VENDOR VERIFIED badge</div>
-                </div>
-                <svg className={`w-6 h-6 transition-transform ${submissionType === 'validation' ? 'text-emerald-600 rotate-90' : 'text-emerald-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </button>
-          </div>
-        )}
-
-        {/* Submitter Type - show for all data submissions including prefilled */}
-        {(submissionType === 'new' || submissionType === 'correction') && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">I am submitting as a...</label>
-            <select
-              value={submitterType}
-              onChange={(e) => { setSubmitterType(e.target.value); setEmailError(''); setVerificationStep('form'); }}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-            >
-              <option value="">-- Select --</option>
-              <option value="vendor">Test Vendor Representative</option>
-              <option value="expert">Independent Expert / Researcher</option>
-            </select>
-            {submitterType === 'vendor' && (
-              <p className="text-sm text-amber-600 mt-2">⚠️ We will verify that your email comes from the vendor's domain</p>
-            )}
-            {submitterType === 'expert' && (
-              <>
-                <p className="text-sm text-amber-600 mt-2">⚠️ Vendor employees should select "Test Vendor Representative" above</p>
-                <p className="text-sm text-gray-500 mt-1">Expert submissions require a company or institutional email</p>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Category Selection - only for new/correction, not validation */}
-        {submitterType && submissionType !== 'validation' && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
-            <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
-              {(isAlz ? [
-                { key: 'ALZ-BLOOD', label: 'ALZ-BLOOD', desc: 'Blood Biomarkers', color: 'indigo' },
-              ] : [
-                { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
-                { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
-                { key: 'TRM', label: 'TRM', desc: 'Treatment Response', color: 'sky' },
-                { key: 'TDS', label: 'TDS', desc: 'Treatment Decisions', color: 'violet' },
-              ]).map(cat => (
-                <button
-                  key={cat.key}
-                  type="button"
-                  onClick={() => { setCategory(cat.key); setExistingTest(''); setSelectedParameter(''); setCompleteFieldEntries([]); }}
-                  className={`p-3 rounded-lg border-2 text-center transition-all ${category === cat.key ? `border-${cat.color}-500 bg-${cat.color}-50` : 'border-gray-200 hover:border-gray-300'}`}
-                >
-                  <div className={`font-bold ${category === cat.key ? `text-${cat.color}-700` : 'text-gray-800'}`}>{cat.label}</div>
-                  <div className="text-xs text-gray-500">{cat.desc}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* NEW TEST: Basic Info + URL */}
-        {submissionType === 'new' && category && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">New Test Request</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Test Name <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  value={newTestName}
-                  onChange={(e) => setNewTestName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  placeholder="e.g., Signatera, Galleri, etc."
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Vendor/Company <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  value={newTestVendor}
-                  onChange={(e) => { setNewTestVendor(e.target.value); setEmailError(''); setVerificationStep('form'); }}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  placeholder="e.g., Natera, GRAIL, etc."
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">URL with Test Performance Data <span className="text-red-500">*</span></label>
-                <input
-                  type="url"
-                  value={newTestUrl}
-                  onChange={(e) => setNewTestUrl(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  placeholder="https://..."
-                  required
-                />
-                <p className="text-sm text-gray-500 mt-1">Link to publication, vendor page, or FDA approval with performance data</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Additional Notes</label>
-                <textarea
-                  value={newTestNotes}
-                  onChange={(e) => setNewTestNotes(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  rows={3}
-                  placeholder="Any additional context about this test..."
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* CORRECTION: Select Test → Select Parameter → New Value */}
-        {submissionType === 'correction' && category && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Correction Request</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Select Test <span className="text-red-500">*</span></label>
-                <select
-                  value={existingTest}
-                  onChange={(e) => { setExistingTest(e.target.value); setSelectedParameter(''); setNewValue(''); setEmailError(''); setVerificationStep('form'); }}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  required
-                >
-                  <option value="">-- Select a test --</option>
-                  {existingTests[category]?.map(test => (
-                    <option key={test.id} value={test.id}>{test.name} ({test.vendor})</option>
-                  ))}
-                </select>
-              </div>
-
-              {existingTest && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Parameter to Correct <span className="text-red-500">*</span></label>
-                  <select
-                    value={selectedParameter}
-                    onChange={(e) => { setSelectedParameter(e.target.value); setNewValue(''); }}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                    required
-                  >
-                    <option value="">-- Select parameter --</option>
-                    {parameterOptions[category]?.map(param => (
-                      <option key={param.key} value={param.key}>{param.label}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {selectedParameter && (
-                <>
-                  {selectedParameter !== 'other' && (
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <span className="text-sm text-gray-500">Current value: </span>
-                      <span className="text-sm font-medium text-gray-800">{getCurrentValue()}</span>
-                    </div>
-                  )}
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
-                      {selectedParameter === 'other' ? 'Describe the correction' : 'New Value'} <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={newValue}
-                      onChange={(e) => setNewValue(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                      placeholder={selectedParameter === 'other' ? 'Describe the parameter and new value...' : 'Enter the correct value'}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">Citation/Source URL <span className="text-red-500">*</span></label>
-                    <input
-                      type="url"
-                      value={citation}
-                      onChange={(e) => setCitation(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                      placeholder="https://..."
-                      required
-                    />
-                    <p className="text-sm text-gray-500 mt-1">Link to publication or source supporting this value</p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* VENDOR TEST VALIDATION FORM */}
-        {submissionType === 'validation' && (
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-emerald-800">Vendor Test Validation</h3>
-                <p className="text-sm text-emerald-600">Verify your company's test data and earn the VENDOR VERIFIED badge</p>
-              </div>
-            </div>
-
-            {/* Special banner for invited vendors */}
-            {isInvitedVendor && (
-              <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4 flex items-center gap-3 mb-4">
-                <svg className="w-8 h-8 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
-                </svg>
-                <div>
-                  <p className="font-semibold text-emerald-800">Welcome! You've been personally invited to validate your test data.</p>
-                  <p className="text-sm text-emerald-700">Your email has been pre-verified. Just complete your name and select your test below.</p>
-                </div>
-              </div>
-            )}
-
-            {/* Step 1: Verify Email */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className={`w-6 h-6 rounded-full text-white text-sm font-bold flex items-center justify-center ${isInvitedVendor ? 'bg-emerald-400' : 'bg-emerald-500'}`}>
-                  {isInvitedVendor ? '✓' : '1'}
-                </span>
-                <span className="font-semibold text-emerald-800">
-                  {isInvitedVendor ? 'Your Information' : 'Verify Your Vendor Email'}
-                </span>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">First Name <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Last Name <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Show locked email for invited vendors */}
-              {isInvitedVendor && verificationStep === 'verified' && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
-                  <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <div className="flex-1">
-                    <p className="text-emerald-800 font-medium">Email Pre-Verified</p>
-                    <p className="text-emerald-700 text-sm">{contactEmail}</p>
-                  </div>
-                  <span className="text-xs bg-emerald-200 text-emerald-800 px-2 py-1 rounded font-medium">INVITED</span>
-                </div>
-              )}
-
-              {verificationStep === 'form' && (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
-                      Work Email <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="email"
-                        value={contactEmail}
-                        onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); setValidationTest(''); }}
-                        className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-                        placeholder="you@yourcompany.com"
-                      />
-                      <button
-                        type="button"
-                        onClick={sendVerificationCode}
-                        disabled={isSendingCode || !contactEmail || !firstName || !lastName}
-                        className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-                      >
-                        {isSendingCode ? 'Sending...' : 'Verify Email'}
-                      </button>
-                    </div>
-                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-                    {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
-                    <p className="text-sm text-emerald-600 mt-2">⚠️ You must use your company email to verify your affiliation with the vendor</p>
-                  </div>
-                </>
-              )}
-
-              {verificationStep === 'verify' && (
-                <>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-blue-800">
-                      A verification code has been sent to <strong>{contactEmail}</strong>
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-center text-2xl tracking-widest"
-                      placeholder="• • • • • •"
-                      maxLength={6}
-                    />
-                    <button
-                      type="button"
-                      onClick={verifyCode}
-                      disabled={isVerifying || verificationCode.length !== 6}
-                      className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      {isVerifying ? 'Verifying...' : 'Verify'}
-                    </button>
-                  </div>
-                  {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
-                  <button
-                    type="button"
-                    onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); }}
-                    className="text-emerald-600 text-sm hover:underline"
-                  >
-                    ← Use a different email
-                  </button>
-                </>
-              )}
-
-              {verificationStep === 'verified' && !isInvitedVendor && (
-                <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4 flex items-center gap-3">
-                  <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <div>
-                    <p className="text-emerald-800 font-medium">Email Verified!</p>
-                    <p className="text-emerald-700 text-sm">{contactEmail}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Step 2: Select Test (only after email verified) */}
-            {verificationStep === 'verified' && (
-              <div className="mt-8 pt-6 border-t border-emerald-200">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '1' : '2'}</span>
-                  <span className="font-semibold text-emerald-800">Select Your Test</span>
-                </div>
-                
-                {getVendorTests().length > 0 ? (
-                  <select
-                    value={validationTest}
-                    onChange={(e) => { setValidationTest(e.target.value); setValidationEdits([]); setValidationAttestation(false); }}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  >
-                    <option value="">-- Select one of your company's tests --</option>
-                    {getVendorTests().map(test => (
-                      <option key={test.id} value={test.id}>{test.name} ({test.category})</option>
-                    ))}
-                  </select>
-                ) : (
-                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-amber-800">
-                    <p className="font-medium">No tests found for your company</p>
-                    <p className="text-sm mt-1">We couldn't find tests matching your email domain. Please use "Suggest a New Test" or contact us if you believe this is an error.</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Step 3: Review & Edit Data (only after test selected) */}
-            {validationTest && (
-              <div className="mt-8 pt-6 border-t border-emerald-200">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '2' : '3'}</span>
-                  <span className="font-semibold text-emerald-800">Review & Update Data (Optional)</span>
-                </div>
-                
-                <p className="text-sm text-gray-600 mb-4">
-                  Review the current data below. You can add corrections or updates - each change requires a citation.
-                </p>
-
-                {/* Current Data Display */}
-                <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4 max-h-64 overflow-y-auto">
-                  <h4 className="font-medium text-gray-800 mb-2">{getValidationTestData()?.name}</h4>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {getValidationTestCategory() && parameterOptions[getValidationTestCategory()]?.slice(0, -1).map(param => {
-                      const testData = getValidationTestData();
-                      const value = testData?.[param.key];
-                      return (
-                        <div key={param.key} className="flex justify-between py-1 border-b border-gray-100">
-                          <span className="text-gray-500">{param.label}:</span>
-                          <span className="font-medium text-gray-800">{value || '—'}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Add Edit Form */}
-                <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Add a correction or update:</label>
-                  <div className="grid grid-cols-1 gap-3">
-                    <select
-                      value={validationField}
-                      onChange={(e) => setValidationField(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
-                      <option value="">-- Select field to update --</option>
-                      {getValidationTestCategory() && parameterOptions[getValidationTestCategory()]?.map(param => (
-                        <option key={param.key} value={param.key}>{param.label}</option>
-                      ))}
-                    </select>
-                    <input
-                      type="text"
-                      value={validationValue}
-                      onChange={(e) => setValidationValue(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                      placeholder="New value"
-                    />
-                    <input
-                      type="url"
-                      value={validationCitation}
-                      onChange={(e) => setValidationCitation(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                      placeholder="Citation URL (required)"
-                    />
-                    <button
-                      type="button"
-                      onClick={addValidationEdit}
-                      disabled={!validationField || !validationValue || !validationCitation}
-                      className="w-full bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg hover:bg-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-                    >
-                      + Add Update
-                    </button>
-                  </div>
-                </div>
-
-                {/* Pending Edits */}
-                {validationEdits.length > 0 && (
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Pending updates ({validationEdits.length}):</label>
-                    <div className="space-y-2">
-                      {validationEdits.map((edit, idx) => (
-                        <div key={idx} className="flex items-center justify-between bg-white rounded-lg border border-emerald-200 p-3">
-                          <div className="flex-1">
-                            <span className="font-medium text-gray-800">{parameterOptions[getValidationTestCategory()]?.find(p => p.key === edit.field)?.label || edit.field}</span>
-                            <span className="text-gray-500 mx-2">→</span>
-                            <span className="text-emerald-700">{edit.value}</span>
-                            <p className="text-xs text-gray-400 truncate">{edit.citation}</p>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeValidationEdit(idx)}
-                            className="text-red-500 hover:text-red-700 p-1"
-                          >
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 4: Attestation */}
-                <div className="mt-8 pt-6 border-t border-emerald-200">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-sm font-bold flex items-center justify-center">{isInvitedVendor ? '3' : '4'}</span>
-                    <span className="font-semibold text-emerald-800">Vendor Attestation</span>
-                  </div>
-                  
-                  <label className="flex items-start gap-3 p-4 bg-white rounded-lg border-2 border-emerald-300 cursor-pointer hover:bg-emerald-50 transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={validationAttestation}
-                      onChange={(e) => setValidationAttestation(e.target.checked)}
-                      className="mt-1 w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                    />
-                    <div>
-                      <p className="font-medium text-gray-800">
-                        I confirm on behalf of {getValidationTestData()?.vendor || 'this vendor'} that the information displayed above {validationEdits.length > 0 ? '(with my proposed updates) ' : ''}is accurate and complete to the best of my knowledge as of today's date.
-                      </p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-
-        {/* Bug Report / Feature Request Form */}
-        {(submissionType === 'bug' || submissionType === 'feature') && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className={`text-lg font-semibold mb-4 ${submissionType === 'bug' ? 'text-red-700' : 'text-purple-700'}`}>
-              {submissionType === 'bug' ? 'Bug Report' : 'Feature Request'}
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                {submissionType === 'bug' ? 'Describe the bug' : 'Describe your feature idea'} <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                value={feedbackDescription}
-                onChange={(e) => setFeedbackDescription(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                rows={6}
-                placeholder={submissionType === 'bug' 
-                  ? 'Please describe what happened, what you expected to happen, and steps to reproduce the issue...'
-                  : 'Please describe the feature you would like to see and how it would help you...'}
-                required
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Your Information - Bug/Feature */}
-        {(submissionType === 'bug' || submissionType === 'feature') && feedbackDescription && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">First Name <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Last Name <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Email Verification for Bug/Feature */}
-            {verificationStep === 'form' && (
-              <>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Work Email <span className="text-red-500">*</span>
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    value={contactEmail}
-                    onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); }}
-                    className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="you@company.com"
-                  />
-                  <button
-                    type="button"
-                    onClick={sendVerificationCode}
-                    disabled={isSendingCode || !contactEmail || !firstName || !lastName}
-                    className="bg-[#2A63A4] text-white px-4 py-2 rounded-lg hover:bg-[#1E4A7A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-                  >
-                    {isSendingCode ? 'Sending...' : 'Send Code'}
-                  </button>
-                </div>
-                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-                {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
-                <p className="text-sm text-gray-500 mt-2">Company or institutional email required (not Gmail, Yahoo, etc.)</p>
-              </>
-            )}
-
-            {verificationStep === 'verify' && (
-              <>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <p className="text-blue-800">
-                    A verification code has been sent to <strong>{contactEmail}</strong>
-                  </p>
-                </div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">Enter 6-digit code</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] text-center text-2xl tracking-widest"
-                    placeholder="• • • • • •"
-                    maxLength={6}
-                  />
-                  <button
-                    type="button"
-                    onClick={verifyCode}
-                    disabled={isVerifying || verificationCode.length !== 6}
-                    className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isVerifying ? 'Verifying...' : 'Verify'}
-                  </button>
-                </div>
-                {verificationError && <p className="text-red-500 text-sm mt-2">{verificationError}</p>}
-                <button
-                  type="button"
-                  onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); setVerificationToken(''); }}
-                  className="text-[#2A63A4] text-sm mt-2 hover:underline"
-                >
-                  ← Use a different email
-                </button>
-                <p className="text-gray-500 text-xs mt-3">
-                  Code not arriving? Corporate firewalls sometimes block verification emails.{' '}
-                  <a 
-                    href="https://www.linkedin.com/in/alexgdickinson/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[#2A63A4] hover:underline"
-                  >
-                    DM Alex on LinkedIn
-                  </a>
-                  {' '}to submit directly.
-                </p>
-              </>
-            )}
-
-            {verificationStep === 'verified' && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
-                <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <p className="text-emerald-800 font-medium">Email Verified!</p>
-                  <p className="text-emerald-700 text-sm">{contactEmail}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Your Information - Test Data */}
-        {category && (
-          submissionType === 'new' ? newTestName && newTestVendor : 
-          submissionType === 'correction' ? existingTest && selectedParameter :
-          false
-        ) && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Information</h3>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">First Name <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Last Name <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4]"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Email Verification */}
-            {verificationStep === 'form' && (
-              <>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Work Email <span className="text-red-500">*</span>
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    value={contactEmail}
-                    onChange={(e) => { setContactEmail(e.target.value); setEmailError(''); }}
-                    className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder={submitterType === 'vendor' ? `you@${(submissionType === 'new' ? newTestVendor : getSelectedTestVendor()).toLowerCase().replace(/[^a-z]/g, '')}...` : 'you@company.com'}
-                  />
-                  <button
-                    type="button"
-                    onClick={sendVerificationCode}
-                    disabled={isSendingCode || !contactEmail || !firstName || !lastName}
-                    className="bg-[#2A63A4] text-white px-4 py-2 rounded-lg hover:bg-[#1E4A7A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-                  >
-                    {isSendingCode ? 'Sending...' : 'Send Code'}
-                  </button>
-                </div>
-                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-                {verificationError && <p className="text-red-500 text-sm mt-1">{verificationError}</p>}
-              </>
-            )}
-
-            {verificationStep === 'verify' && (
-              <>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <p className="text-blue-800">
-                    A verification code has been sent to <strong>{contactEmail}</strong>
-                  </p>
-                </div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">Enter 6-digit code</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2A63A4] text-center text-2xl tracking-widest"
-                    placeholder="• • • • • •"
-                    maxLength={6}
-                  />
-                  <button
-                    type="button"
-                    onClick={verifyCode}
-                    disabled={isVerifying || verificationCode.length !== 6}
-                    className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isVerifying ? 'Verifying...' : 'Verify'}
-                  </button>
-                </div>
-                {verificationError && <p className="text-red-500 text-sm mt-2">{verificationError}</p>}
-                <button
-                  type="button"
-                  onClick={() => { setVerificationStep('form'); setVerificationCode(''); setVerificationError(''); setVerificationToken(''); }}
-                  className="text-[#2A63A4] text-sm mt-2 hover:underline"
-                >
-                  ← Use a different email
-                </button>
-                <p className="text-gray-500 text-xs mt-3">
-                  Code not arriving? Corporate firewalls sometimes block verification emails.{' '}
-                  <a 
-                    href="https://www.linkedin.com/in/alexgdickinson/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[#2A63A4] hover:underline"
-                  >
-                    DM Alex on LinkedIn
-                  </a>
-                  {' '}to submit directly.
-                </p>
-              </>
-            )}
-
-            {verificationStep === 'verified' && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
-                <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <p className="text-emerald-800 font-medium">Email Verified!</p>
-                  <p className="text-emerald-700 text-sm">{contactEmail}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Submit Button */}
-        {isReadyForVerification() && (
-          <>
-            {submitError && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-                {submitError}
-              </div>
-            )}
-            {submissionType === 'validation' ? (
-              /* Special Big Submit Button for Vendor Validation */
-              <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 shadow-lg">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  <span className="text-white text-lg font-medium">
-                    {validationEdits.length > 0 
-                      ? `Submitting validation with ${validationEdits.length} update${validationEdits.length > 1 ? 's' : ''}`
-                      : 'Confirming current data is accurate'}
-                  </span>
-                </div>
-                <button
-                  type="submit"
-                  disabled={verificationStep !== 'verified' || isSubmitting || !validationAttestation}
-                  className="w-full bg-white text-emerald-700 px-8 py-5 rounded-xl font-bold transition-all text-xl shadow-md hover:bg-emerald-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Submitting Validation...
-                    </>
-                  ) : !validationAttestation ? (
-                    <>
-                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                      </svg>
-                      Check the attestation box above
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Submit Vendor Validation
-                    </>
-                  )}
-                </button>
-                <p className="text-center text-emerald-100 text-sm mt-3">
-                  This test will receive the VENDOR VERIFIED badge after successful review
-                </p>
-              </div>
-            ) : (
-              /* Standard Submit Button */
-              <button
-                type="submit"
-                disabled={verificationStep !== 'verified' || isSubmitting}
-                className="w-full text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg shadow-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
-              >
-                {isSubmitting ? 'Submitting...' : verificationStep !== 'verified' ? 'Verify Email to Submit Request' : 'Submit Request'}
-              </button>
-            )}
-          </>
-        )}
-      </form>
-
-      {/* Database Changelog Section */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Database Changelog</h2>
-        <p className="text-gray-600 mb-6">Recent updates to the {siteConfig.name} test database, including community contributions.</p>
-        
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="max-h-96 overflow-y-auto">
-            {domainChangelog.map((entry, idx) => (
-              <div 
-                key={`${entry.testId}-${idx}`} 
-                className={`p-4 flex items-start gap-4 ${idx !== domainChangelog.length - 1 ? 'border-b border-gray-100' : ''}`}
-              >
-                {/* Entry number */}
-                <div className="flex-shrink-0 w-8 text-right">
-                  <span className="text-sm font-mono text-gray-400">#{domainChangelog.length - idx}</span>
-                </div>
-                
-                {/* Type indicator */}
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                  entry.type === 'added' ? 'bg-emerald-100 text-emerald-700' :
-                  entry.type === 'updated' ? 'bg-blue-100 text-blue-700' :
-                  entry.type === 'feature' ? 'bg-purple-100 text-purple-700' :
-                  'bg-red-100 text-red-700'
-                }`}>
-                  {entry.type === 'added' ? '+' : entry.type === 'updated' ? '↑' : entry.type === 'feature' ? '★' : '−'}
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-semibold text-gray-900">{entry.testName}</span>
-                    {entry.category && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      entry.category === 'MRD' ? 'bg-orange-100 text-orange-700' :
-                      entry.category === 'ECD' ? 'bg-emerald-100 text-emerald-700' :
-                      entry.category === 'TRM' ? 'bg-sky-100 text-sky-700' :
-                      entry.category === 'ALZ-BLOOD' ? 'bg-indigo-100 text-indigo-700' :
-                      'bg-violet-100 text-violet-700'
-                    }`}>
-                      {entry.category}
-                    </span>}
-                    {entry.vendor && <span className="text-xs text-gray-400">{entry.vendor}</span>}
-                  </div>
-                  <p className="text-sm text-gray-600 mt-1">{entry.description}</p>
-                  <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-                    <span>{entry.date}</span>
-                    <span>• {
-                      !entry.affiliation || entry.affiliation === 'OpenOnco' || entry.affiliation === 'OpenAlz'
-                        ? siteConfig.name :
-                      !entry.vendor
-                        ? (entry.contributor ? `${entry.contributor} (${entry.affiliation})` : entry.affiliation) :
-                      entry.vendor.toLowerCase().includes(entry.affiliation.toLowerCase()) || 
-                      entry.affiliation.toLowerCase().includes(entry.vendor.split(' ')[0].toLowerCase())
-                        ? `Vendor update: ${entry.contributor ? entry.contributor + ' (' + entry.affiliation + ')' : entry.affiliation}`
-                        : entry.contributor ? `${entry.contributor} (${entry.affiliation})` : entry.affiliation
-                    }</span>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
@@ -10971,7 +7622,16 @@ export default function App() {
   const [initialCompareIds, setInitialCompareIds] = useState(null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
-  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'rnd');
+  const [showPersonaGate, setShowPersonaGate] = useState(() => !getStoredPersona());
+
+  // Handle persona selection (from gate or selector)
+  const handlePersonaChange = (newPersona) => {
+    setPersona(newPersona);
+    savePersona(newPersona);
+    setShowPersonaGate(false);
+    window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
+  };
 
   // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
   useEffect(() => {
@@ -11155,8 +7815,9 @@ export default function App() {
         path={seoConfig.path}
         structuredData={seoConfig.structuredData}
       />
+      {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Header currentPage={currentPage} onNavigate={handleNavigate} />
+        <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />
         <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
         <Footer />
         <Analytics />

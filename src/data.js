@@ -6486,6 +6486,24 @@ export const getDomain = () => {
   return DOMAINS.ONCO;
 };
 
+// Build info for display purposes
+export const BUILD_INFO = {
+  date: new Date(typeof __BUILD_DATE__ !== 'undefined' ? __BUILD_DATE__ : new Date().toISOString()).toLocaleString('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  }),
+  sources: {
+    MRD: 'https://docs.google.com/spreadsheets/d/16F_QRjpiqlrCK1f5fPSHQsODdE5QVPrrdx-0rfKAa5U/edit',
+    ECD: 'https://docs.google.com/spreadsheets/d/1eFZg2EtdnR4Ly_lrXoZxzI4Z2bH23LDkCAVCXrewwnI/edit',
+    TRM: 'https://docs.google.com/spreadsheets/d/1ZgvK8AgZzZ4XuZEija_m1FSffnnhvIgmVCkQvP1AIXE/edit',
+    TDS: 'https://docs.google.com/spreadsheets/d/1HxYNQ9s4qJKHxFMkYjW1uXBq3Zg3nVkFp3mQZQvZF0s/edit'
+  }
+};
+
 export const getSiteConfig = () => {
   return {
     domain: DOMAINS.ONCO,

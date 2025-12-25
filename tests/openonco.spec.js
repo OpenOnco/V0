@@ -5,8 +5,23 @@ import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../src/data.
 
 /**
  * OpenOnco Regression Test Suite
- * Updated: Dec 14, 2025
+ * Updated: Dec 24, 2025
  */
+
+// ===========================================
+// GLOBAL SETUP - Set default persona for all tests
+// ===========================================
+
+// Set R&D persona by default so tests don't get blocked by PersonaGate modal
+test.beforeEach(async ({ page }) => {
+  // Go to page and set localStorage before actual test navigation
+  await page.goto('/');
+  await page.evaluate(() => {
+    if (!localStorage.getItem('openonco-persona')) {
+      localStorage.setItem('openonco-persona', 'rnd');
+    }
+  });
+});
 
 // ===========================================
 // EXPECTED VALUES - DYNAMICALLY CALCULATED
@@ -889,5 +904,154 @@ test.describe('Error Handling', () => {
     
     const content = await page.content();
     expect(content.length).toBeGreaterThan(100);
+  });
+});
+
+// ===========================================
+// PERSONA SYSTEM TESTS
+// ===========================================
+
+test.describe('Persona System', () => {
+  test.beforeEach(async ({ page }) => {
+    // Clear localStorage before each test to reset persona state
+    await page.goto('/');
+    await page.evaluate(() => localStorage.clear());
+  });
+
+  test('persona gate appears on first visit', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    
+    // Should see the persona selection modal
+    await expect(page.getByText('Welcome to OpenOnco')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Patient / Caregiver')).toBeVisible();
+    await expect(page.getByText('Medical Professional')).toBeVisible();
+  });
+
+  test('selecting patient persona saves to localStorage', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    
+    // Click Patient option button
+    await page.getByRole('button', { name: /Patient \/ Caregiver/i }).click();
+    await page.waitForTimeout(300);
+    
+    // Click Continue button
+    await page.getByRole('button', { name: /Continue/i }).click();
+    await page.waitForTimeout(500);
+    
+    // Verify localStorage was set
+    const persona = await page.evaluate(() => localStorage.getItem('openonco-persona'));
+    expect(persona).toBe('patient');
+  });
+
+  test('patient homepage shows patient-specific elements', async ({ page }) => {
+    // Set patient persona via localStorage
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
+    await page.goto('/');
+    await page.waitForTimeout(1000);
+    
+    // Should see patient hero
+    await expect(page.getByText('Understand How the New Generation of Cancer Tests Can Help You')).toBeVisible({ timeout: 5000 });
+    
+    // Should see three info buttons
+    await expect(page.getByText('Finding the Right Therapy')).toBeVisible();
+    await expect(page.getByText('Tracking My Progress')).toBeVisible();
+    await expect(page.getByText('Keeping Watch After Treatment')).toBeVisible();
+    
+    // Should see patient chat section
+    await expect(page.getByText('Chat With Us to Work Out Your Test Options')).toBeVisible();
+  });
+
+  test('patient homepage hides R&D elements', async ({ page }) => {
+    // Set patient persona
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
+    await page.goto('/');
+    await page.waitForTimeout(1000);
+    
+    // Should NOT see the R&D test count banner (with "Collected, Curated, Explained")
+    await expect(page.getByText('Collected, Curated, Explained')).not.toBeVisible();
+    
+    // Should NOT see model selector (Claude, GPT, etc.)
+    const modelSelector = page.locator('select').filter({ hasText: /Claude|GPT|Gemini/i });
+    await expect(modelSelector).not.toBeVisible();
+  });
+
+  test('patient info modal opens and closes', async ({ page }) => {
+    // Set patient persona
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
+    await page.goto('/');
+    await page.waitForTimeout(1000);
+    
+    // Click "Finding the Right Therapy" button
+    await page.getByText('Finding the Right Therapy').click();
+    await page.waitForTimeout(500);
+    
+    // Modal should open with educational content
+    await expect(page.getByText('What is genomic testing?')).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('Questions to ask your doctor')).toBeVisible();
+    
+    // Close modal by clicking backdrop
+    await page.locator('.fixed.inset-0').click({ position: { x: 10, y: 10 } });
+    await page.waitForTimeout(500);
+    
+    // Modal content should be hidden
+    await expect(page.getByText('What is genomic testing?')).not.toBeVisible();
+  });
+
+  test('persona switcher in header works', async ({ page }) => {
+    // Start as R&D
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'rnd'));
+    await page.goto('/');
+    await page.waitForTimeout(1000);
+    
+    // Should see R&D banner
+    await expect(page.getByText('Collected, Curated, Explained')).toBeVisible({ timeout: 5000 });
+    
+    // Find and click persona dropdown in header
+    const personaDropdown = page.locator('select').filter({ hasText: /R&D|Patient|Clinician/i }).first();
+    if (await personaDropdown.isVisible()) {
+      await personaDropdown.selectOption('patient');
+      await page.waitForTimeout(1000);
+      
+      // Should now see patient homepage
+      await expect(page.getByText('Understand How the New Generation of Cancer Tests Can Help You')).toBeVisible({ timeout: 5000 });
+    }
+  });
+
+  test('patient can navigate to Learn page', async ({ page }) => {
+    // Set patient persona
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
+    await page.goto('/');
+    await page.waitForTimeout(1000);
+    
+    // Click Learn in navigation (it's a button, not a link) - use exact match
+    await page.getByRole('button', { name: 'Learn', exact: true }).click();
+    await page.waitForTimeout(1000);
+    
+    // Should see patient-friendly Learn content
+    await expect(page.getByText('Understanding Cancer Blood Tests')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Types of Cancer Blood Tests')).toBeVisible();
+  });
+
+  test('R&D persona shows full technical interface', async ({ page }) => {
+    // Set R&D persona
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'rnd'));
+    await page.goto('/');
+    await page.waitForTimeout(1000);
+    
+    // Should see R&D banner with test count
+    await expect(page.getByText('Collected, Curated, Explained')).toBeVisible({ timeout: 5000 });
+    
+    // Should see technical elements
+    const testCount = String(EXPECTED.testCounts.total);
+    const pageText = await page.textContent('body');
+    expect(pageText).toContain(testCount);
   });
 });

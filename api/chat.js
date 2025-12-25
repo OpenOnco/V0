@@ -47,7 +47,7 @@ const MAX_MESSAGE_LENGTH = 4000;
 const MAX_MESSAGES = 10;
 
 const VALID_CATEGORIES = ['MRD', 'ECD', 'TRM', 'CGP', 'all'];
-const VALID_PERSONAS = ['Patient', 'Clinician', 'Academic/Industry'];
+const VALID_PERSONAS = ['patient', 'medical', 'rnd'];
 
 // ============================================
 // SERVER-SIDE SYSTEM PROMPT CONSTRUCTION
@@ -78,23 +78,23 @@ CORRECT EXAMPLE:
   const scopeReminder = `SCOPE: Only discuss tests in the database. For medical advice, say "That's a question for your care team."`;
   
   switch(persona) {
-    case 'Patient':
+    case 'patient':
       return `${conversationalRules}
 
 AUDIENCE: Patient or caregiver.
-TONE: Warm, supportive, simple language.
+TONE: Warm, supportive, simple language. Avoid medical jargon.
 ${scopeReminder}`;
-    case 'Clinician':
+    case 'medical':
       return `${conversationalRules}
 
 AUDIENCE: Healthcare professional.
 TONE: Direct, collegial. Clinical terminology fine.
 ${scopeReminder}`;
-    case 'Academic/Industry':
+    case 'rnd':
       return `${conversationalRules}
 
 AUDIENCE: Researcher or industry professional.
-TONE: Technical and precise.
+TONE: Technical and precise. Include methodology details.
 ${scopeReminder}`;
     default:
       return `${conversationalRules}
@@ -207,7 +207,7 @@ export default async function handler(req, res) {
     }
 
     // Validate persona (default to Clinician if not provided)
-    const validatedPersona = VALID_PERSONAS.includes(persona) ? persona : 'Clinician';
+    const validatedPersona = VALID_PERSONAS.includes(persona) ? persona : 'medical';
 
     // Validate test data
     if (!testData || typeof testData !== 'string') {
