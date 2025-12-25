@@ -2385,7 +2385,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
         {/* Search Box - Bland/neutral styling */}
         <div className="p-4">
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-            <p className="text-sm font-medium text-gray-500 mb-2 text-center">Search All Tests</p>
+            <p className="text-sm font-medium text-gray-500 mb-2 text-center">If you're a DIY person, browse all {allTests.length} tests:</p>
             <div className="relative">
               <input
                 type="text"
@@ -3286,8 +3286,115 @@ const HomePage = ({ onNavigate }) => {
   const [persona, setPersona] = useState(() => getStoredPersona() || 'rnd');
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const [patientInfoModal, setPatientInfoModal] = useState(null); // 'therapy' | 'monitoring' | 'surveillance' | null
+  const [patientChatMode, setPatientChatMode] = useState('learn'); // 'learn' | 'find'
+  const [chatHeight, setChatHeight] = useState(350); // pixels, resizable
   const chatContainerRef = useRef(null);
   const patientChatInputRef = useRef(null);
+  
+  // Track patient consultation state to prevent repeat questions
+  const [patientState, setPatientState] = useState({
+    cancerType: null,
+    treatmentStatus: null,
+    hadGenomicTesting: null,
+    insuranceType: null,
+    costConcern: null,
+    hasOncologist: null,
+    doctorAwareness: null
+  });
+  
+  // Extract patient info from conversation to build state summary
+  const extractPatientState = (msgs) => {
+    const state = {
+      cancerType: null,
+      treatmentStatus: null,
+      hadGenomicTesting: null,
+      insuranceType: null,
+      costConcern: null,
+      hasOncologist: null,
+      doctorAwareness: null
+    };
+    
+    // Look through conversation pairs (user answer follows assistant question)
+    for (let i = 0; i < msgs.length; i++) {
+      const msg = msgs[i];
+      if (msg.role === 'user') {
+        const answer = msg.content.toLowerCase();
+        const prevAssistant = i > 0 ? msgs[i-1]?.content?.toLowerCase() || '' : '';
+        
+        // Cancer type - usually first answer
+        if (i === 0 || prevAssistant.includes('cancer') && prevAssistant.includes('type')) {
+          if (!state.cancerType && answer.length < 50) {
+            state.cancerType = msg.content;
+          }
+        }
+        
+        // Treatment status
+        if (prevAssistant.includes('treatment status') || prevAssistant.includes('newly diagnosed') || prevAssistant.includes('active treatment')) {
+          if (answer.includes('active') || answer.includes('chemo') || answer.includes('treatment')) {
+            state.treatmentStatus = answer.includes('finish') || answer.includes('done') || answer.includes('completed') ? 'finished treatment' : 'active treatment';
+          } else if (answer.includes('new') || answer.includes('diagnos')) {
+            state.treatmentStatus = 'newly diagnosed';
+          } else if (answer.includes('monitor') || answer.includes('surveillance') || answer.includes('watch')) {
+            state.treatmentStatus = 'monitoring';
+          } else if (answer.includes('finish') || answer.includes('done') || answer.includes('completed')) {
+            state.treatmentStatus = 'finished treatment';
+          }
+        }
+        
+        // Genomic testing
+        if (prevAssistant.includes('genomic') || prevAssistant.includes('genetic') || prevAssistant.includes('tumor') && prevAssistant.includes('test')) {
+          if (answer.includes('yes')) state.hadGenomicTesting = 'yes';
+          else if (answer.includes('no')) state.hadGenomicTesting = 'no';
+          else if (answer.includes("don't know") || answer.includes('not sure') || answer.includes('unsure')) state.hadGenomicTesting = 'unknown';
+        }
+        
+        // Insurance
+        if (prevAssistant.includes('insurance')) {
+          if (answer.includes('medicare')) state.insuranceType = 'Medicare';
+          else if (answer.includes('private') || answer.includes('employer')) state.insuranceType = 'private';
+          else if (answer.includes('uninsured') || answer.includes('no insurance')) state.insuranceType = 'uninsured';
+          else if (answer.includes('medicaid')) state.insuranceType = 'Medicaid';
+        }
+        
+        // Cost concern
+        if (prevAssistant.includes('cost') || prevAssistant.includes('out-of-pocket') || prevAssistant.includes('expense')) {
+          if (answer.includes("don't care") || answer.includes('not a concern') || answer.includes('no') || answer.includes('fine')) {
+            state.costConcern = 'no';
+          } else if (answer.includes('yes') || answer.includes('concern') || answer.includes('worried') || answer.includes('limited')) {
+            state.costConcern = 'yes';
+          }
+        }
+        
+        // Oncologist
+        if (prevAssistant.includes('oncologist') || prevAssistant.includes('doctor')) {
+          if (answer.includes('yes') || answer.includes('have')) state.hasOncologist = 'yes';
+          else if (answer.includes('no') || answer.includes("don't have")) state.hasOncologist = 'no';
+          
+          // Doctor awareness of liquid biopsy
+          if (answer.includes("don't know") || answer.includes('not familiar') || answer.includes("doesn't know")) {
+            state.doctorAwareness = 'no';
+          } else if (answer.includes('mentioned') || answer.includes('discussed') || answer.includes('knows about')) {
+            state.doctorAwareness = 'yes';
+          }
+        }
+      }
+    }
+    
+    return state;
+  };
+  
+  // Build a summary string of what we know
+  const getPatientStateSummary = (state) => {
+    const known = [];
+    if (state.cancerType) known.push(`Cancer type: ${state.cancerType}`);
+    if (state.treatmentStatus) known.push(`Treatment status: ${state.treatmentStatus}`);
+    if (state.hadGenomicTesting) known.push(`Had genomic testing: ${state.hadGenomicTesting}`);
+    if (state.insuranceType) known.push(`Insurance: ${state.insuranceType}`);
+    if (state.costConcern) known.push(`Cost concern: ${state.costConcern}`);
+    if (state.hasOncologist) known.push(`Has oncologist: ${state.hasOncologist}`);
+    if (state.doctorAwareness) known.push(`Doctor aware of liquid biopsy: ${state.doctorAwareness}`);
+    return known.length > 0 ? known.join('; ') : null;
+  };
 
   // Save persona to localStorage when changed and notify other components
   const handlePersonaSelect = (selectedPersona) => {
@@ -3368,6 +3475,13 @@ const HomePage = ({ onNavigate }) => {
       // Limit history to last 6 messages to reduce token usage
       const recentMessages = updatedMessages.slice(-6);
       
+      // For patient persona, extract what we already know to prevent repeat questions
+      let patientStateSummary = null;
+      if (persona === 'patient') {
+        const currentState = extractPatientState(updatedMessages);
+        patientStateSummary = getPatientStateSummary(currentState);
+      }
+      
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -3376,7 +3490,9 @@ const HomePage = ({ onNavigate }) => {
           persona: persona,
           testData: JSON.stringify(chatTestData),
           messages: recentMessages,
-          model: selectedModel
+          model: selectedModel,
+          patientStateSummary: patientStateSummary,
+          patientChatMode: persona === 'patient' ? patientChatMode : null
         })
       });
       
@@ -3419,6 +3535,7 @@ const HomePage = ({ onNavigate }) => {
           </div>
 
           {/* Three Info Buttons */}
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">An overview of the 3 different types of new tests</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <button
               onClick={() => setPatientInfoModal('therapy')}
@@ -3523,18 +3640,69 @@ const HomePage = ({ onNavigate }) => {
             {/* Chat messages */}
             <div 
               ref={chatContainerRef}
-              className="bg-white/95 rounded-xl p-4 mb-4 min-h-[250px] max-h-[450px] overflow-y-auto"
+              style={{ height: `${chatHeight}px`, minHeight: '200px', maxHeight: '600px' }}
+              className="bg-white/95 rounded-xl p-4 mb-1 overflow-y-auto"
             >
-              {/* Initial greeting - always shown */}
+              {/* Mode selector - toggle switch style */}
+              <div className="flex justify-center mb-4">
+                <div className="relative inline-flex bg-gray-200 rounded-full p-1 shadow-inner">
+                  {/* Sliding background indicator */}
+                  <div 
+                    className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-md transition-all duration-200 ease-in-out ${
+                      patientChatMode === 'find' ? 'left-[calc(50%+2px)]' : 'left-1'
+                    }`}
+                  />
+                  <button
+                    onClick={() => { setPatientChatMode('learn'); setMessages([]); }}
+                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                      patientChatMode === 'learn' 
+                        ? 'text-blue-700' 
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    <span>📚</span> Learn
+                  </button>
+                  <button
+                    onClick={() => { setPatientChatMode('find'); setMessages([]); }}
+                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                      patientChatMode === 'find' 
+                        ? 'text-blue-700' 
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    <span>🎯</span> Find Tests
+                  </button>
+                </div>
+              </div>
+
+              {/* Initial greeting - changes based on mode */}
               <div className="space-y-4">
                 <div className="flex justify-start">
                   <div className="max-w-[85%] rounded-xl px-4 py-3 bg-gray-100 border border-gray-200 text-gray-700">
                     <div className="text-sm">
-                      Hi there! 👋 I'm here to help you understand which cancer blood tests might be right for your situation.
-                      <br/><br/>
-                      I'll ask you a few questions about your health, insurance, and care team, then give you personalized recommendations you can discuss with your doctor.
-                      <br/><br/>
-                      <strong>Let's start:</strong> What type of cancer are you dealing with, or are you being evaluated for?
+                      {patientChatMode === 'learn' ? (
+                        <>
+                          Hi! 👋 I'm here to help you understand cancer blood tests (also called liquid biopsy).
+                          <br/><br/>
+                          Ask me anything — how these tests work, what they can detect, the difference between test types, what to expect, insurance questions, or anything else you're curious about.
+                          <br/><br/>
+                          <em>When you're ready to find specific tests for your situation, switch to <strong>"Find Tests for Me"</strong> above.</em>
+                        </>
+                      ) : (
+                        <>
+                          Let's find tests that might fit your situation. 🎯
+                          <br/><br/>
+                          I'll ask you a few questions about:
+                          <br/>
+                          <strong>1.</strong> Your clinical situation — to identify tests that might be a fit
+                          <br/>
+                          <strong>2.</strong> Insurance & access — to suggest the most accessible options
+                          <br/>
+                          <strong>3.</strong> Your doctor relationship — to help you prepare the conversation
+                          <br/><br/>
+                          <strong>Let's start:</strong> What type of cancer are you dealing with, or are you being evaluated for?
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -3568,6 +3736,32 @@ const HomePage = ({ onNavigate }) => {
               </div>
             </div>
             
+            {/* Resize handle */}
+            <div 
+              className="flex justify-center items-center py-1 mb-2 cursor-ns-resize group"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                const startY = e.clientY;
+                const startHeight = chatHeight;
+                
+                const handleMouseMove = (moveEvent) => {
+                  const delta = moveEvent.clientY - startY;
+                  const newHeight = Math.min(600, Math.max(200, startHeight + delta));
+                  setChatHeight(newHeight);
+                };
+                
+                const handleMouseUp = () => {
+                  document.removeEventListener('mousemove', handleMouseMove);
+                  document.removeEventListener('mouseup', handleMouseUp);
+                };
+                
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', handleMouseUp);
+              }}
+            >
+              <div className="w-12 h-1.5 bg-white/40 rounded-full group-hover:bg-white/70 transition-colors" />
+            </div>
+            
             {/* Chat input */}
             <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
               <input
@@ -3591,7 +3785,6 @@ const HomePage = ({ onNavigate }) => {
 
           {/* Quick Search + Showcase */}
           <div className="mb-4">
-            <h2 className="text-lg font-semibold text-gray-800 mb-3">Directly Browse All {mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length} Tests</h2>
             <TestShowcase onNavigate={onNavigate} patientMode={true} />
           </div>
         </div>
