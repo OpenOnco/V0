@@ -2385,7 +2385,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
         {/* Search Box - Bland/neutral styling */}
         <div className="p-4">
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-            <p className="text-sm font-medium text-gray-500 mb-2 text-center">If you're a DIY person, browse all {allTests.length} tests:</p>
+            <p className="text-base font-semibold text-gray-700 mb-2 text-center">If you're a DIY person, you can browse details on all {allTests.length} tests here:</p>
             <div className="relative">
               <input
                 type="text"
@@ -3643,36 +3643,32 @@ const HomePage = ({ onNavigate }) => {
               style={{ height: `${chatHeight}px`, minHeight: '200px', maxHeight: '600px' }}
               className="bg-white/95 rounded-xl p-4 mb-1 overflow-y-auto"
             >
-              {/* Mode selector - toggle switch style */}
-              <div className="flex justify-center mb-4">
-                <div className="relative inline-flex bg-gray-200 rounded-full p-1 shadow-inner">
-                  {/* Sliding background indicator */}
-                  <div 
-                    className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-md transition-all duration-200 ease-in-out ${
-                      patientChatMode === 'find' ? 'left-[calc(50%+2px)]' : 'left-1'
-                    }`}
-                  />
-                  <button
-                    onClick={() => { setPatientChatMode('learn'); setMessages([]); }}
-                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-                      patientChatMode === 'learn' 
-                        ? 'text-blue-700' 
-                        : 'text-gray-500 hover:text-gray-700'
-                    }`}
-                  >
-                    <span>📚</span> Learn
-                  </button>
-                  <button
-                    onClick={() => { setPatientChatMode('find'); setMessages([]); }}
-                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-                      patientChatMode === 'find' 
-                        ? 'text-blue-700' 
-                        : 'text-gray-500 hover:text-gray-700'
-                    }`}
-                  >
-                    <span>🎯</span> Find Tests
-                  </button>
-                </div>
+              {/* Mode selector - classic toggle switch with labels */}
+              <div className="flex justify-center items-center gap-4 mb-4">
+                <button 
+                  onClick={() => { setPatientChatMode('learn'); setMessages([]); }}
+                  className={`flex items-center gap-1.5 text-sm font-semibold transition-colors ${
+                    patientChatMode === 'learn' ? 'text-[#1a5276]' : 'text-gray-400 hover:text-gray-500'
+                  }`}
+                >
+                  <span>📚</span> Learn about the tests
+                </button>
+                <button
+                  onClick={() => { setPatientChatMode(patientChatMode === 'learn' ? 'find' : 'learn'); setMessages([]); }}
+                  className="relative w-14 h-8 bg-[#1a5276]/30 rounded-full cursor-pointer transition-colors hover:bg-[#1a5276]/40"
+                >
+                  <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-200 ${
+                    patientChatMode === 'find' ? 'left-7' : 'left-1'
+                  }`}></div>
+                </button>
+                <button 
+                  onClick={() => { setPatientChatMode('find'); setMessages([]); }}
+                  className={`flex items-center gap-1.5 text-sm font-semibold transition-colors ${
+                    patientChatMode === 'find' ? 'text-[#1a5276]' : 'text-gray-400 hover:text-gray-500'
+                  }`}
+                >
+                  <span>🎯</span> Find tests suited to me
+                </button>
               </div>
 
               {/* Initial greeting - changes based on mode */}
@@ -3738,7 +3734,7 @@ const HomePage = ({ onNavigate }) => {
             
             {/* Resize handle */}
             <div 
-              className="flex justify-center items-center py-1 mb-2 cursor-ns-resize group"
+              className="flex justify-center items-center py-2 mb-2 cursor-ns-resize group touch-none"
               onMouseDown={(e) => {
                 e.preventDefault();
                 const startY = e.clientY;
@@ -3758,8 +3754,27 @@ const HomePage = ({ onNavigate }) => {
                 document.addEventListener('mousemove', handleMouseMove);
                 document.addEventListener('mouseup', handleMouseUp);
               }}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                const startY = e.touches[0].clientY;
+                const startHeight = chatHeight;
+                
+                const handleTouchMove = (moveEvent) => {
+                  const delta = moveEvent.touches[0].clientY - startY;
+                  const newHeight = Math.min(600, Math.max(200, startHeight + delta));
+                  setChatHeight(newHeight);
+                };
+                
+                const handleTouchEnd = () => {
+                  document.removeEventListener('touchmove', handleTouchMove);
+                  document.removeEventListener('touchend', handleTouchEnd);
+                };
+                
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+                document.addEventListener('touchend', handleTouchEnd);
+              }}
             >
-              <div className="w-12 h-1.5 bg-white/40 rounded-full group-hover:bg-white/70 transition-colors" />
+              <div className="w-16 h-2 bg-white/50 rounded-full group-hover:bg-white/70 group-active:bg-white/90 transition-colors" />
             </div>
             
             {/* Chat input */}
