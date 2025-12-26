@@ -1860,12 +1860,26 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
   }, []);
   
   
-  // Auto-scroll to bottom of messages when new messages arrive
+  // Auto-scroll to show question at top when response arrives
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
-      // Scroll to bottom to show latest message
-      container.scrollTop = container.scrollHeight;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        // Wait for DOM to update, then scroll to show question at top
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            }
+          }, 150);
+        });
+      }
     }
   }, [messages]);
   
@@ -3411,19 +3425,25 @@ const HomePage = ({ onNavigate }) => {
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
   };
 
-  // Auto-scroll to show assistant response when it arrives
+  // Auto-scroll to show question at top when response arrives
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
       const container = chatContainerRef.current;
       const lastMessage = messages[messages.length - 1];
-      // When assistant responds, scroll container to show start of response
       if (lastMessage.role === 'assistant') {
-        const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
-        const lastAssistantEl = messageElements[messageElements.length - 1];
-        if (lastAssistantEl) {
-          // Use offsetTop to scroll within container only (not page)
-          container.scrollTop = lastAssistantEl.offsetTop - 8;
-        }
+        // Wait for DOM to update, then scroll to show question at top
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            }
+          }, 150);
+        });
       }
     }
   }, [messages]);
