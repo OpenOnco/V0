@@ -15,18 +15,13 @@ git push
 
 echo ""
 echo "⏳ Waiting for Vercel deployment..."
-sleep 20
+sleep 15
 
-# Capture vercel ls output and extract URL
-VERCEL_OUTPUT=$(vercel ls 2>&1 | grep -E "Preview|Ready" | head -1)
-PREVIEW_URL=$(echo "$VERCEL_OUTPUT" | grep -oE "https://[^ ]+\.vercel\.app" | head -1)
+# Get commit hash for unique URL
+COMMIT_HASH=$(git rev-parse --short HEAD)
 
 echo ""
 echo "🚀 Preview deployed!"
-if [ -n "$PREVIEW_URL" ]; then
-  echo ""
-  echo "📎 $PREVIEW_URL"
-  echo ""
-else
-  echo "📎 Check: https://vercel.com/alex-dickinsons-projects-2bee58ff/v0-42kj/deployments"
-fi
+echo ""
+echo "📎 https://v0-42kj-git-develop-alex-dickinsons-projects-2bee58ff.vercel.app"
+echo ""
