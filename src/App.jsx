@@ -2607,7 +2607,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Search Tools */}
-        <div className="w-full lg:w-[45%] flex flex-col gap-3">
+        <div className="w-full lg:w-[50%] flex flex-col gap-3">
           <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Explore Test Details:</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
@@ -2746,7 +2746,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
         </div>
 
         {/* Right: Lifecycle Navigator - Hidden on mobile */}
-        <div className="hidden md:block lg:w-[55%] flex-shrink-0">
+        <div className="hidden md:block lg:w-[50%] flex-shrink-0">
           <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
