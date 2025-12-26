@@ -2608,7 +2608,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Search Tools */}
         <div className="w-full lg:w-[45%] flex flex-col gap-3">
-          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Demystify the Tests:</h3>
+          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Explore Test Details:</h3>
           {/* Claude Chat Input */}
           <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
             {/* Example Questions - shown when no messages */}
@@ -2617,28 +2617,28 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
                   <button
-                    onClick={() => handleChatSubmit("I'm being treated for breast cancer. What can these tests do for me?")}
+                    onClick={() => handleChatSubmit("Compare LOD and analytical sensitivity across MRD assays.")}
                     className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    I'm being treated for breast cancer. What can these tests do for me?
+                    Compare LOD and analytical sensitivity across MRD assays.
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("Compare MRD test sensitivities.")}
+                    onClick={() => handleChatSubmit("Which tests have FDA clearance vs LDT status?")}
                     className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Compare MRD test sensitivities.
+                    Which tests have FDA clearance vs LDT status?
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("Please use less technical language.")}
+                    onClick={() => handleChatSubmit("What are the technical differences between tumor-informed and tumor-naïve approaches?")}
                     className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Please use less technical language.
+                    What are the technical differences between tumor-informed and tumor-naïve approaches?
                   </button>
                   <button
-                    onClick={() => handleChatSubmit("Why do some tests have both long and short turn around times?")}
+                    onClick={() => handleChatSubmit("Compare Medicare reimbursement rates for CGP panels.")}
                     className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
                   >
-                    Why do some tests have both long and short turn around times?
+                    Compare Medicare reimbursement rates for CGP panels.
                   </button>
                 </div>
               </div>
@@ -2736,7 +2736,7 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
 
         {/* Right: Lifecycle Navigator - Hidden on mobile */}
         <div className="hidden md:block lg:w-[55%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category for a Data Deep Dive:</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
       </div>

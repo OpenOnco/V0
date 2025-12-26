@@ -76,19 +76,19 @@ test.describe('Homepage', () => {
     await page.goto('/');
     await page.waitForTimeout(1000);
     
-    // Check for any of the new sample prompts
-    const breastCancerPrompt = page.locator('button').filter({ hasText: /breast cancer.*what can these tests/i });
-    const mrdSensitivityPrompt = page.locator('button').filter({ hasText: /compare.*mrd.*sensitivity/i });
-    const lessTechnicalPrompt = page.locator('button').filter({ hasText: /less technical language/i });
-    const turnaroundPrompt = page.locator('button').filter({ hasText: /turn.*around.*time/i });
+    // Check for any of the new sample prompts (technical/clinical focused)
+    const lodPrompt = page.locator('button').filter({ hasText: /LOD.*analytical sensitivity/i });
+    const fdaPrompt = page.locator('button').filter({ hasText: /FDA clearance.*LDT/i });
+    const tumorInformedPrompt = page.locator('button').filter({ hasText: /tumor-informed.*tumor-na/i });
+    const medicarePrompt = page.locator('button').filter({ hasText: /Medicare.*reimbursement/i });
     
-    const breastCancerVisible = await breastCancerPrompt.isVisible().catch(() => false);
-    const mrdVisible = await mrdSensitivityPrompt.isVisible().catch(() => false);
-    const lessTechnicalVisible = await lessTechnicalPrompt.isVisible().catch(() => false);
-    const turnaroundVisible = await turnaroundPrompt.isVisible().catch(() => false);
+    const lodVisible = await lodPrompt.isVisible().catch(() => false);
+    const fdaVisible = await fdaPrompt.isVisible().catch(() => false);
+    const tumorInformedVisible = await tumorInformedPrompt.isVisible().catch(() => false);
+    const medicareVisible = await medicarePrompt.isVisible().catch(() => false);
     
     // At least one sample prompt should be visible
-    expect(breastCancerVisible || mrdVisible || lessTechnicalVisible || turnaroundVisible).toBeTruthy();
+    expect(lodVisible || fdaVisible || tumorInformedVisible || medicareVisible).toBeTruthy();
   });
 });
 
