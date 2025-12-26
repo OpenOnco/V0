@@ -3707,7 +3707,7 @@ const HomePage = ({ onNavigate }) => {
                             ].map((q, i) => (
                               <button
                                 key={i}
-                                onClick={() => { setChatInput(q); }}
+                                onClick={() => handleSubmit(q)}
                                 className="px-3 py-1.5 bg-white border border-gray-300 rounded-full text-xs text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors"
                               >
                                 {q}
