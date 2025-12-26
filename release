@@ -1,0 +1,17 @@
+#!/bin/bash
+# OpenOnco Release: full test suite → push develop to main → openonco.org
+
+set -e
+cd "$(dirname "$0")"
+
+echo "🧪 Running full test suite..."
+npm run test:full
+
+echo ""
+echo "✅ Tests passed. Pushing to production..."
+git add -A
+git commit -m "${1:-release}" --allow-empty
+git push origin develop:main
+
+echo ""
+echo "🚀 Released to openonco.org!"

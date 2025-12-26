@@ -1,0 +1,22 @@
+#!/bin/bash
+# OpenOnco Preview: smoke tests → push to develop → Vercel preview URL
+
+set -e
+cd "$(dirname "$0")"
+
+echo "🧪 Running smoke tests..."
+npm run test:smoke
+
+echo ""
+echo "✅ Tests passed. Pushing to develop..."
+git add -A
+git commit -m "${1:-wip: preview}" --allow-empty
+git push
+
+echo ""
+echo "⏳ Waiting for Vercel deployment..."
+sleep 15
+vercel ls 2>&1 | grep "Preview" | head -1
+
+echo ""
+echo "🚀 Preview deployed!"
