@@ -956,7 +956,7 @@ test.describe('Persona System', () => {
     await expect(page.getByText('Learn How the New Generation of Cancer Blood Tests Can Help You')).toBeVisible({ timeout: 5000 });
     
     // Should see three info buttons
-    await expect(page.getByText('Tests that help find the right therapy to treat your cancer')).toBeVisible();
+    await expect(page.getByText('Tests that help find the right therapy for you')).toBeVisible();
     await expect(page.getByText('Tests that track how well your therapy is working')).toBeVisible();
     await expect(page.getByText('Tests that keep watch after treatment')).toBeVisible();
     
@@ -987,7 +987,7 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(1000);
     
     // Click "Tests that help find the right therapy" button
-    await page.getByText('Tests that help find the right therapy to treat your cancer').click();
+    await page.getByText('Tests that help find the right therapy for you').click();
     await page.waitForTimeout(500);
     
     // Modal should open with educational content
