@@ -2606,7 +2606,13 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
-        {/* Left: Search Tools */}
+        {/* Left: Lifecycle Navigator */}
+        <div className="hidden md:block lg:w-[50%] flex-shrink-0">
+          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
+          <LifecycleNavigator onNavigate={onNavigate} />
+        </div>
+
+        {/* Right: Claude Chat */}
         <div className="w-full lg:w-[50%] flex flex-col gap-3">
           <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Explore Test Details:</h3>
           {/* Claude Chat Input */}
@@ -2719,36 +2725,32 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
               </div>
             </form>
           </div>
-
-          {/* Text Search Bar - Smaller */}
-          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
-            <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Or: Quick Search</p>
-            <div className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Filter by name, vendor, cancer..."
-                className="w-full px-3 py-1.5 pl-8 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
-              />
-              <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-red-400 hover:text-red-600">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </div>
         </div>
+      </div>
 
-        {/* Right: Lifecycle Navigator - Hidden on mobile */}
-        <div className="hidden md:block lg:w-[50%] flex-shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
-          <LifecycleNavigator onNavigate={onNavigate} />
+      {/* Quick Search - Full Width Below */}
+      <div className="px-4 pb-4">
+        <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
+          <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Quick Search</p>
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Filter by name, vendor, cancer..."
+              className="w-full px-3 py-1.5 pl-8 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
+            />
+            <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-red-400 hover:text-red-600">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
