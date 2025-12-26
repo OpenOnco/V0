@@ -91,7 +91,7 @@ const LearnPage = ({ onNavigate }) => {
     {
       id: 'ECD',
       phase: 'Screening',
-      name: 'Early Cancer Detection (ECD)',
+      name: 'Early Cancer Detection',
       acronym: 'ECD',
       color: 'emerald',
       icon: '🔬',
