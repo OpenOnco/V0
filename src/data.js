@@ -6554,7 +6554,7 @@ export const LIFECYCLE_STAGES = [
     icon: '📊',
     gridPosition: 3,
     animationOrder: 3,
-    arrowDirection: 'up',
+    arrowDirection: 'left',
     domain: DOMAINS.ONCO,
   },
   {
@@ -6566,7 +6566,7 @@ export const LIFECYCLE_STAGES = [
     icon: '🎯',
     gridPosition: 2,
     animationOrder: 2,
-    arrowDirection: 'left',
+    arrowDirection: 'up',
     domain: DOMAINS.ONCO,
   },
 ];
