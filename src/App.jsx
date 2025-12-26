@@ -3666,31 +3666,27 @@ const HomePage = ({ onNavigate }) => {
               style={{ height: `${chatHeight}px`, minHeight: '200px', maxHeight: '600px' }}
               className="bg-white/95 rounded-xl p-4 mb-1 overflow-y-auto"
             >
-              {/* Mode selector - classic toggle switch with labels */}
-              <div className="flex justify-center items-center gap-4 mb-4">
+              {/* Mode selector - segmented control */}
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-4">
                 <button 
                   onClick={() => { setPatientChatMode('learn'); setMessages([]); }}
-                  className={`text-xl font-semibold transition-colors ${
-                    patientChatMode === 'learn' ? 'text-[#1a5276]' : 'text-gray-400 hover:text-gray-500'
+                  className={`px-4 py-2 rounded-full text-sm sm:text-base font-semibold transition-all ${
+                    patientChatMode === 'learn' 
+                      ? 'bg-[#1a5276] text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                   }`}
                 >
                   Learn about the tests
                 </button>
-                <button
-                  onClick={() => { setPatientChatMode(patientChatMode === 'learn' ? 'find' : 'learn'); setMessages([]); }}
-                  className="relative w-14 h-8 bg-[#1a5276]/30 rounded-full cursor-pointer transition-colors hover:bg-[#1a5276]/40"
-                >
-                  <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-200 ${
-                    patientChatMode === 'find' ? 'left-7' : 'left-1'
-                  }`}></div>
-                </button>
                 <button 
                   onClick={() => { setPatientChatMode('find'); setMessages([]); }}
-                  className={`text-xl font-semibold transition-colors ${
-                    patientChatMode === 'find' ? 'text-[#1a5276]' : 'text-gray-400 hover:text-gray-500'
+                  className={`px-4 py-2 rounded-full text-sm sm:text-base font-semibold transition-all ${
+                    patientChatMode === 'find' 
+                      ? 'bg-[#1a5276] text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                   }`}
                 >
-                  Find tests suited to my situation
+                  Find tests for my situation
                 </button>
               </div>
 
