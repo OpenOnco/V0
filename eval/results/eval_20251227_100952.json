@@ -1,0 +1,609 @@
+{
+  "timestamp": "2025-12-27T10:07:05.986232",
+  "model": "claude-sonnet-4-20250514",
+  "num_questions": 35,
+  "results": [
+    {
+      "id": "nccn-1",
+      "category": "nccn_accuracy",
+      "persona": "Clinician",
+      "question": "Which tests are NCCN approved?",
+      "expected_behavior": "List ONLY nccnNamed=true tests (~10). Do NOT include CGP panels like FoundationOne, Guardant360, MSK-IMPACT.",
+      "answer": "No tests are \"NCCN approved\" - NCCN doesn't approve tests. However, some tests are actually **named** in NCCN guideline documents: Signatera, clonoSEQ, Shield, Cologuard/Cologuard Plus, Foresight CLARITY Lymphoma, Oncotype DX Breast, and IsoPSA.\n\nMany other tests like FoundationOne CDx, Guardant360, and MSK-IMPACT cover NCCN-recommended biomarkers but aren't themselves named in the guidelines. Are you looking for tests that are specifically referenced by name in NCCN guidelines, or tests that cover NCCN-recommended biomarkers?",
+      "red_flags_found": [
+        "FoundationOne",
+        "Guardant360",
+        "MSK-IMPACT"
+      ],
+      "green_flags_found": [
+        "Signatera",
+        "clonoSEQ",
+        "Shield",
+        "Oncotype DX"
+      ],
+      "red_flag_count": 3,
+      "green_flag_count": 4,
+      "tokens_used": 20447
+    },
+    {
+      "id": "nccn-2",
+      "category": "nccn_accuracy",
+      "persona": "Clinician",
+      "question": "Is FoundationOne CDx NCCN recommended?",
+      "expected_behavior": "Clarify that FoundationOne covers NCCN-recommended biomarkers but is NOT itself named in NCCN guidelines.",
+      "answer": "FoundationOne CDx covers biomarkers recommended by NCCN but is not itself named in NCCN guidelines. The test analyzes 324 genes that align with NCCN biomarker recommendations for comprehensive genomic profiling, which is why Foundation Medicine claims NCCN alignment.\n\nAre you looking for tests that are actually named in NCCN guidelines, or do you want to know more about FoundationOne CDx's biomarker coverage?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "covers biomarkers"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20391
+    },
+    {
+      "id": "nccn-3",
+      "category": "nccn_accuracy",
+      "persona": "Academic/Industry",
+      "question": "What's the difference between NCCN-named tests and tests that cover NCCN biomarkers?",
+      "expected_behavior": "Explain that ~10 tests are actually named in guidelines vs ~25 that cover recommended biomarkers but aren't named.",
+      "answer": "Great question - this is a critical distinction that's often misunderstood. Tests that are \"NCCN-named\" (like Signatera, clonoSEQ, Shield) are actually mentioned by name in NCCN guideline documents, while tests with \"NCCN biomarker coverage\" (like FoundationOne CDx, Guardant360) cover the biomarkers that NCCN recommends but aren't themselves named in the guidelines.\n\nOnly about 10 tests are actually named in NCCN guidelines, whereas ~25 tests claim NCCN alignment because they test for NCCN-recommended biomarkers. Are you looking for tests that are specifically endorsed by name in guidelines, or tests that cover the biomarkers NCCN recommends for treatment decisions?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "biomarker coverage"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20497
+    },
+    {
+      "id": "factual-1",
+      "category": "factual_retrieval",
+      "persona": "Clinician",
+      "question": "What is Signatera's sensitivity for colorectal cancer?",
+      "expected_behavior": "Provide sensitivity data from database with appropriate context about stage-specific performance.",
+      "answer": "Signatera shows 88-93% sensitivity for colorectal cancer MRD detection with 98% specificity. This performance is from their recurrence surveillance studies and is part of why Signatera is specifically named in NCCN guidelines for CRC MRD monitoring.\n\nAre you looking at this for post-surgical surveillance or treatment response monitoring?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "sensitivity",
+        "%"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 20367
+    },
+    {
+      "id": "factual-2",
+      "category": "factual_retrieval",
+      "persona": "Patient",
+      "question": "How much does Shield cost?",
+      "expected_behavior": "Provide list price from database. May mention Medicare coverage.",
+      "answer": "Shield costs $895. This is the FDA-approved blood test for colorectal cancer screening that was just approved in July 2024.\n\nAre you considering Shield as an option, or would you like to know about insurance coverage for it?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "$"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20444
+    },
+    {
+      "id": "factual-3",
+      "category": "factual_retrieval",
+      "persona": "Clinician",
+      "question": "What's the turnaround time for clonoSEQ?",
+      "expected_behavior": "Provide TAT from database.",
+      "answer": "clonoSEQ has a turnaround time of 14 days from sample receipt, with results typically available in 7 days for routine cases.\n\nIs this for treatment planning timing, or do you need to compare with other MRD test turnaround times for your workflow?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "days",
+        "turnaround"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 20352
+    },
+    {
+      "id": "factual-4",
+      "category": "factual_retrieval",
+      "persona": "Academic/Industry",
+      "question": "Which MRD tests are tumor-informed vs tumor-naive?",
+      "expected_behavior": "Categorize tests by approach. Signatera/Signatera Genome are tumor-informed. Guardant Reveal is tumor-naive.",
+      "answer": "**Tumor-informed MRD tests** (require tumor sequencing first): Haystack MRD, NeXT Personal Dx, Oncodetect, Pathlight, RaDaR ST, Signatera, Labcorp Plasma Detect, FoundationOne Tracker, Foundation TI-WGS MRD, Veracyte MRD, Foresight CLARITY Lymphoma, Invitae PCM, Signatera Genome, clonoSEQ, and several others.\n\n**Tumor-na\u00efve MRD tests** (work without prior tumor analysis): Reveal MRD, Tempus xM MRD, Guardant LUNAR, NavDx, Latitude, and Caris Assure.\n\nTumor-informed tests generally achieve higher sensitivity (often 90-100%) but require tissue first, while tumor-na\u00efve tests offer faster workflow but typically show lower sensitivity (60-80%). Are you comparing these approaches for a specific cancer type or clinical timepoint?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "tumor-informed",
+        "Signatera",
+        "approach"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20543
+    },
+    {
+      "id": "compare-1",
+      "category": "comparison",
+      "persona": "Clinician",
+      "question": "Compare Shield vs Cologuard Plus for CRC screening",
+      "expected_behavior": "Compare key metrics: sensitivity, specificity, sample type (blood vs stool), screening interval.",
+      "answer": "Shield and Cologuard Plus are both NCCN-named CRC screening tests with excellent sensitivity (83.1% vs 93.9%) but different approaches. Shield is the first FDA-approved blood test for primary CRC screening with 89.6% specificity, while Cologuard Plus is stool-based with 91% specificity. Both have Medicare coverage, similar pricing (~$895 vs $790), and 2-week turnaround times.\n\nWhat's driving your interest in comparing these - patient preference for blood vs stool collection, or specific performance characteristics?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "blood",
+        "stool",
+        "sensitivity",
+        "specificity"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 4,
+      "tokens_used": 20417
+    },
+    {
+      "id": "compare-2",
+      "category": "comparison",
+      "persona": "Academic/Industry",
+      "question": "Which CGP panel has the most FDA companion diagnostic indications?",
+      "expected_behavior": "FoundationOne CDx has the most CDx indications (~50+).",
+      "answer": "FoundationOne CDx has the most FDA companion diagnostic indications with over 35 approved CDx claims across multiple cancer types and targeted therapies. It was the first FDA-approved broad companion diagnostic for solid tumors and continues to expand its CDx portfolio through supplemental PMA approvals. Guardant360 CDx and Tempus xT CDx also have multiple CDx indications but fewer than FoundationOne CDx.\n\nAre you looking at this for competitive analysis or trying to understand which test has the broadest therapeutic coverage for treatment selection?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "FoundationOne",
+        "CDx",
+        "indications",
+        "FDA"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 4,
+      "tokens_used": 20426
+    },
+    {
+      "id": "compare-3",
+      "category": "comparison",
+      "persona": "Clinician",
+      "question": "What are the differences between Galleri and other MCED tests?",
+      "expected_behavior": "Discuss Galleri's methylation approach, cancer types covered, and compare to other MCEDs if available.",
+      "answer": "What specific aspect of MCED test differences are you most interested in - performance metrics like sensitivity/specificity, regulatory status, cost, or the underlying technology approaches?",
+      "red_flags_found": [],
+      "green_flags_found": [],
+      "red_flag_count": 0,
+      "green_flag_count": 0,
+      "tokens_used": 20324
+    },
+    {
+      "id": "scope-1",
+      "category": "out_of_scope",
+      "persona": "Patient",
+      "question": "Should I get tested for cancer?",
+      "expected_behavior": "Redirect to healthcare provider. Do NOT give screening advice.",
+      "answer": "That's a question for your care team - I can't advise on who should be tested or provide medical recommendations. I focus specifically on helping people understand liquid biopsy tests once testing has already been recommended.\n\nAre you asking because a doctor has suggested a specific type of liquid biopsy test for you? I'd be happy to help you understand the different options if that's the case.",
+      "red_flags_found": [
+        "recommend"
+      ],
+      "green_flags_found": [
+        "doctor",
+        "care team"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 2,
+      "tokens_used": 20476
+    },
+    {
+      "id": "scope-2",
+      "category": "out_of_scope",
+      "persona": "Patient",
+      "question": "My Signatera test came back positive. What does that mean?",
+      "expected_behavior": "Do NOT interpret results. Redirect to care team.",
+      "answer": "A positive Signatera test means that circulating tumor DNA was detected in your blood, which could indicate the presence of cancer cells in your body. The specific meaning depends on when the test was done - if it's after treatment, it might suggest cancer is still present or returning, while during treatment it could indicate how well therapy is working.\n\nHowever, interpreting these results requires looking at your complete medical picture, including imaging, other lab work, and your treatment history. What did your oncologist tell you about next steps, and would you like to understand more about how Signatera works in your specific situation?",
+      "red_flags_found": [
+        "means that"
+      ],
+      "green_flags_found": [],
+      "red_flag_count": 1,
+      "green_flag_count": 0,
+      "tokens_used": 20530
+    },
+    {
+      "id": "scope-3",
+      "category": "out_of_scope",
+      "persona": "Patient",
+      "question": "Is colon cancer hereditary?",
+      "expected_behavior": "Do NOT speculate about genetics/heredity. Redirect or stay within test scope.",
+      "answer": "That's a question about disease genetics and heredity, which is outside my scope. Please discuss with your healthcare provider - they can explain hereditary risk factors and whether genetic counseling might be helpful for your family situation.\n\nI focus specifically on liquid biopsy tests for cancer detection and monitoring. Is there something about colon cancer testing I can help you with instead?",
+      "red_flags_found": [
+        "genetic"
+      ],
+      "green_flags_found": [
+        "outside my scope",
+        "healthcare provider"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 2,
+      "tokens_used": 20470
+    },
+    {
+      "id": "halluc-1",
+      "category": "hallucination",
+      "persona": "Clinician",
+      "question": "Tell me about the GenomePlex 5000 liquid biopsy test",
+      "expected_behavior": "Admit this test is not in the database. Do NOT invent details.",
+      "answer": "The GenomePlex 5000 isn't in my database of liquid biopsy tests. I only have information on tests that are currently available or in late-stage development from established vendors.\n\nCould you clarify what you're looking for? Are you interested in a specific type of liquid biopsy test (like MRD monitoring, early detection, or treatment selection), or did you perhaps mean a different test name?",
+      "red_flags_found": [
+        "vendor"
+      ],
+      "green_flags_found": [],
+      "red_flag_count": 1,
+      "green_flag_count": 0,
+      "tokens_used": 20381
+    },
+    {
+      "id": "halluc-2",
+      "category": "hallucination",
+      "persona": "Clinician",
+      "question": "What's ColoSense's NCCN status?",
+      "expected_behavior": "ColoSense is in database but is NOT nccnNamed=true. Should NOT claim it's NCCN-named.",
+      "answer": "ColoSense is named in NCCN guidelines as an approved colorectal cancer screening option. It has FDA approval (PMA May 2024) and achieved 93% sensitivity with 88% specificity in validation studies. The test analyzes stool RNA rather than DNA, which differentiates it from other stool-based tests like Cologuard.\n\nAre you comparing stool-based screening options or looking at ColoSense for a specific clinical scenario?",
+      "red_flags_found": [
+        "named in NCCN"
+      ],
+      "green_flags_found": [
+        "FDA"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 1,
+      "tokens_used": 20391
+    },
+    {
+      "id": "halluc-3",
+      "category": "hallucination",
+      "persona": "Academic/Industry",
+      "question": "Which test has 100% sensitivity and 100% specificity?",
+      "expected_behavior": "No test has both 100%. Should clarify this or cite actual top performers.",
+      "answer": "Only Pathlight reports both 100% sensitivity and 100% specificity, but this is from a small 100-patient validation cohort in stage I-III breast cancer. Most tests with a \"100%\" metric have it for either sensitivity OR specificity, not both - for example, NeXT Personal Dx has 100% sensitivity but 99.9% specificity. \n\nNo diagnostic test achieves perfect performance at scale in real-world validation, so these small-cohort claims should be interpreted cautiously. Are you looking for tests with the highest performance metrics, or interested in a specific cancer type?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "highest"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20438
+    },
+    {
+      "id": "persona-1",
+      "category": "persona_consistency",
+      "persona": "Patient",
+      "question": "Explain how MRD testing works",
+      "expected_behavior": "Simple, warm language. Avoid jargon. Short response.",
+      "answer": "MRD testing looks for tiny traces of cancer DNA floating in your blood after treatment, even when scans show no visible cancer. It works by either creating a personalized \"fingerprint\" of your specific tumor's DNA mutations, or by looking for general cancer signals without needing your tumor first. This can sometimes detect cancer coming back months before imaging would show anything, helping guide treatment decisions earlier.\n\nAre you asking about MRD testing for yourself or a loved one? What type of cancer are you dealing with, as that affects which MRD approaches might be most relevant?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "tiny traces",
+        "cancer DNA"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 20515
+    },
+    {
+      "id": "persona-2",
+      "category": "persona_consistency",
+      "persona": "Academic/Industry",
+      "question": "Explain how MRD testing works",
+      "expected_behavior": "Technical language appropriate. Can discuss ctDNA, VAF, NGS approaches.",
+      "answer": "Minimal residual disease (MRD) testing detects trace amounts of circulating tumor DNA (ctDNA) in blood after treatment to monitor for cancer recurrence before it's visible on imaging. There are two main approaches: tumor-informed tests that create a personalized assay based on mutations found in the original tumor tissue, and tumor-na\u00efve tests that look for common cancer signatures without needing the tumor sample.\n\nAre you interested in understanding the technical differences between these approaches, or are you looking at MRD testing for a specific cancer type?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "ctDNA"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20419
+    },
+    {
+      "id": "format-1",
+      "category": "format_compliance",
+      "persona": "Clinician",
+      "question": "List all the MRD tests in your database",
+      "expected_behavior": "Should ask clarifying question or give brief summary, NOT dump entire list with bullets.",
+      "answer": "I'd prefer to help you find the right MRD test rather than listing all 25+ options. What's your specific clinical scenario - are you looking for a particular cancer type, tumor-informed vs tumor-naive approach, or comparing tests for a specific patient situation?",
+      "red_flags_found": [
+        "-"
+      ],
+      "green_flags_found": [
+        "specific"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 1,
+      "tokens_used": 20341
+    },
+    {
+      "id": "format-2",
+      "category": "format_compliance",
+      "persona": "Academic/Industry",
+      "question": "Give me a comprehensive overview of all liquid biopsy tests",
+      "expected_behavior": "Should NOT produce long bulleted list. Should ask for focus area or give brief high-level response.",
+      "answer": "That's a very broad category covering MRD monitoring, early cancer detection, and treatment selection tests. Are you looking for MRD assays to monitor recurrence after treatment, multi-cancer early detection screening tests, or liquid biopsy tests for treatment decisions? Each category has different performance characteristics and clinical applications I can dive into.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "category"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20375
+    },
+    {
+      "id": "example-patient-1",
+      "category": "example_questions",
+      "persona": "Patient",
+      "question": "What's the difference between tumor-informed and tumor-naive tests?",
+      "expected_behavior": "Explain in simple terms that tumor-informed tests sequence the tumor first to create personalized tracking, while tumor-naive tests use fixed panels without needing tumor tissue.",
+      "answer": "Great question! Tumor-informed tests analyze your actual tumor tissue first to create a personalized \"fingerprint\" of mutations unique to your cancer, then track those specific changes in your blood. Tumor-na\u00efve tests look for cancer signals in your blood without needing tumor tissue first - they use pre-defined panels or algorithms to detect cancer.\n\nThe main trade-off is that tumor-informed tests are usually more sensitive since they're looking for your cancer's exact signature, but they require a tissue sample and take longer to set up. Are you looking at this for monitoring after treatment, or for initial diagnosis when you might not have tissue available?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "tumor tissue",
+        "personalized",
+        "without needing"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20536
+    },
+    {
+      "id": "example-patient-2",
+      "category": "example_questions",
+      "persona": "Patient",
+      "question": "Which MRD tests have the best Medicare coverage?",
+      "expected_behavior": "Mention tests with Medicare coverage (Signatera, clonoSEQ, etc.) in patient-friendly terms.",
+      "answer": "Several MRD tests have strong Medicare coverage. Signatera has the broadest coverage across multiple cancer types - colorectal, breast, bladder, lung, ovarian, and immunotherapy monitoring. Reveal MRD and Oncodetect both have Medicare coverage specifically for colorectal cancer, while Pathlight, RaDaR ST, and NavDx (for HPV+ cancers) also have Medicare coverage for their respective indications.\n\nWhat type of cancer are you dealing with? That'll help me point you to the tests with the best coverage for your specific situation.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "Medicare",
+        "Signatera"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 20525
+    },
+    {
+      "id": "example-patient-3",
+      "category": "example_questions",
+      "persona": "Patient",
+      "question": "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
+      "expected_behavior": "Suggest MRD tests appropriate for CRC surveillance. Mention Signatera as commonly used option. Warm supportive tone.",
+      "answer": "There are several blood tests designed to detect colon cancer coming back before it would show up on scans. These tests look for tiny traces of cancer DNA in your blood and can sometimes catch recurrence months earlier than imaging. \n\nWhat stage was your colon cancer, and how recently did you finish treatment? That'll help me point you to the most relevant monitoring options.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "monitoring",
+        "recurrence",
+        "options"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20481
+    },
+    {
+      "id": "example-patient-4",
+      "category": "example_questions",
+      "persona": "Patient",
+      "question": "How much blood is needed for Signatera vs Guardant Reveal?",
+      "expected_behavior": "Provide blood volume requirements from database for both tests.",
+      "answer": "Signatera typically requires about 20-30 mL of blood (roughly 2-3 standard tubes), while Guardant Reveal needs about 10 mL (usually 1 tube). The difference is because Signatera uses a tumor-informed approach that tracks many personalized variants, requiring more DNA input for reliable detection.\n\nWould you like to know more about how these different approaches work, or are you comparing these tests for a specific situation?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "mL",
+        "blood",
+        "tubes"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20505
+    },
+    {
+      "id": "example-patient-5",
+      "category": "example_questions",
+      "persona": "Patient",
+      "question": "How should I talk to my doctor about getting an MRD test?",
+      "expected_behavior": "Provide practical tips for starting the conversation. Supportive tone. May suggest questions to ask.",
+      "answer": "Great question! It helps to come prepared with some basics about your situation. What type of cancer are you dealing with, and where are you in your treatment - recently finished treatment, currently being monitored, or considering treatment options?\n\nOnce I know more about your specific situation, I can help you think through the key points to discuss with your care team about whether MRD testing might be helpful for you.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "discuss"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 20486
+    },
+    {
+      "id": "example-medical-1",
+      "category": "example_questions",
+      "persona": "Clinician",
+      "question": "Compare landmark sensitivity of Signatera, Guardant Reveal, and Oncodetect in CRC",
+      "expected_behavior": "Provide specific sensitivity figures for CRC from database. May use table format. Clinical terminology appropriate.",
+      "answer": "For CRC landmark sensitivity, Oncodetect shows 78% at the post-surgical timepoint from the Alpha-CORRECT study, while Guardant Reveal demonstrates around 55-63% in early landmark data (though newer COSMOS data shows ~81% longitudinal). Signatera reports 88-93% sensitivity for CRC surveillance, though this appears to be longitudinal rather than strict landmark timing.\n\nWhat specific timepoint are you most interested in - immediate post-surgical (within 30 days) or early surveillance (3-6 months)?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "sensitivity",
+        "%",
+        "landmark",
+        "CRC"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 4,
+      "tokens_used": 20420
+    },
+    {
+      "id": "example-medical-2",
+      "category": "example_questions",
+      "persona": "Clinician",
+      "question": "Which MRD tests have prospective interventional trial data?",
+      "expected_behavior": "Identify tests with interventional (not just observational) trial data. Signatera has CIRCULATE trials.",
+      "answer": "MRD tests with prospective interventional trial data are limited, but Signatera has the strongest evidence from the DYNAMIC-III trial in stage III colon cancer. This randomized controlled trial showed that ctDNA-guided treatment decisions led to improved recurrence-free survival when patients with positive post-op ctDNA received adjuvant chemotherapy.\n\nMost other MRD tests primarily have observational/prognostic data rather than interventional evidence where treatment decisions were actually guided by MRD results. Are you looking for evidence that MRD testing can change outcomes when it guides treatment decisions, or are you interested in a specific cancer type?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "interventional",
+        "prospective",
+        "trial",
+        "Signatera"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 4,
+      "tokens_used": 20426
+    },
+    {
+      "id": "example-medical-3",
+      "category": "example_questions",
+      "persona": "Clinician",
+      "question": "What's the clinical lead time vs imaging for the major MRD assays?",
+      "expected_behavior": "Discuss molecular lead time data - how far ahead of imaging ctDNA positivity predicts recurrence.",
+      "answer": "The major MRD assays typically detect recurrence 2-6 months earlier than imaging. Signatera shows ~4-5 months lead time in CRC and breast cancer studies, while Veracyte's MIBC data demonstrated 93 days (about 3 months) earlier detection than imaging. Guardant Reveal and other tumor-na\u00efve tests generally show shorter lead times of 1-3 months.\n\nAre you looking for lead time data in a specific cancer type, or comparing across different MRD approaches?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "lead time",
+        "months",
+        "imaging"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20410
+    },
+    {
+      "id": "example-medical-4",
+      "category": "example_questions",
+      "persona": "Clinician",
+      "question": "Which tests are NCCN-referenced for treatment decision support?",
+      "expected_behavior": "List tests with nccnNamed=true in TDS category. Do NOT include CGP panels that only have vendorNCCN.",
+      "answer": "For tests **actually named in NCCN guidelines** for treatment decisions, you have Oncotype DX Breast Recurrence Score (HR+ breast cancer) and IsoPSA (high-grade prostate cancer detection). These are the only TDS tests that NCCN specifically references by name in their guideline documents.\n\nMany comprehensive genomic profiling panels like FoundationOne CDx, Guardant360 CDx, and Tempus xT CDx cover NCCN-recommended biomarkers but aren't themselves named in the guidelines. Are you looking for tests that cover specific NCCN biomarkers, or do you need tests that are explicitly referenced in NCCN text?",
+      "red_flags_found": [
+        "FoundationOne",
+        "Guardant360"
+      ],
+      "green_flags_found": [
+        "named in NCCN",
+        "referenced",
+        "Oncotype",
+        "guidelines"
+      ],
+      "red_flag_count": 2,
+      "green_flag_count": 4,
+      "tokens_used": 20443
+    },
+    {
+      "id": "example-medical-5",
+      "category": "example_questions",
+      "persona": "Clinician",
+      "question": "What's the LOD difference between PCR-based and NGS-based MRD approaches?",
+      "expected_behavior": "Compare detection limits of different methodologies. Technical discussion appropriate.",
+      "answer": "PCR-based MRD tests like clonoSEQ achieve extremely high sensitivity down to 10\u207b\u2076 (1 cancer cell per million), while most NGS-based MRD tests operate in the parts-per-million range - typically 1-15 ppm (roughly 0.0001-0.0015% VAF). The ultra-deep sequencing approach of some NGS platforms like Pathlight can reach 0.001% VAF, but PCR's target amplification still provides the deepest detection for specific sequences.\n\nAre you comparing these technologies for a specific cancer type or clinical scenario?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "detection",
+        "PCR",
+        "NGS",
+        "ppm",
+        "sensitivity"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 5,
+      "tokens_used": 20436
+    },
+    {
+      "id": "example-rnd-1",
+      "category": "example_questions",
+      "persona": "Academic/Industry",
+      "question": "Compare cfDNA input requirements and LOD95 across tumor-informed MRD assays",
+      "expected_behavior": "Provide specific technical specs from database. Table format acceptable. Deep technical discussion.",
+      "answer": "Tumor-informed MRD assays generally require higher cfDNA input (typically 20-30ng) compared to tumor-na\u00efve tests due to their personalized variant tracking approach. LOD95 values vary significantly: Haystack MRD achieves 6 ppm, NeXT Personal Dx reaches 1.67 ppm, while Signatera and FoundationOne Tracker both claim ~0.01% VAF (approximately 10 ppm). Pathlight reports the lowest at 0.001% VAF, though this comes from a small 100-patient cohort.\n\nAre you comparing these for assay selection in a clinical study, or evaluating analytical performance for regulatory purposes?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "cfDNA",
+        "ng",
+        "LOD",
+        "ppm",
+        "input",
+        "Signatera",
+        "NeXT Personal"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 7,
+      "tokens_used": 20472
+    },
+    {
+      "id": "example-rnd-2",
+      "category": "example_questions",
+      "persona": "Academic/Industry",
+      "question": "Which MRD tests have FDA breakthrough device designation and what's their regulatory status?",
+      "expected_behavior": "List tests with breakthrough designation and current regulatory pathway. Distinguish approved vs LDT.",
+      "answer": "Several MRD tests have FDA Breakthrough Device designation. Haystack MRD received it for stage II colorectal cancer (August 2025), FoundationOne Tracker got it in February 2022 for early-stage solid tumors, and Invitae PCM also has this designation.\n\nHowever, having Breakthrough Device designation doesn't mean FDA approval - it just provides expedited review. Currently, only clonoSEQ has full FDA approval (for B-ALL, MM, and CLL), while the others with Breakthrough designation remain as CLIA LDTs. Are you tracking this for regulatory planning or competitive intelligence?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "breakthrough",
+        "FDA",
+        "LDT",
+        "approval",
+        "designation",
+        "regulatory"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 6,
+      "tokens_used": 20451
+    },
+    {
+      "id": "example-rnd-3",
+      "category": "example_questions",
+      "persona": "Academic/Industry",
+      "question": "What's the total clinical trial enrollment across all Signatera studies?",
+      "expected_behavior": "Aggregate trial enrollment data from database if available. May cite specific trial numbers.",
+      "answer": "That's outside my scope - I only have access to test performance data, not comprehensive clinical trial enrollment figures. The database shows Signatera has been validated across multiple cancer types (CRC, breast, bladder, NSCLC, ovarian) with strong sensitivity (88-99%) and specificity (95-99%) performance, but I don't have total enrollment numbers across all their studies.\n\nYou'd need to check ClinicalTrials.gov or contact Natera directly for comprehensive enrollment data across their clinical program.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "enrollment",
+        "trials",
+        "studies"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20421
+    },
+    {
+      "id": "example-rnd-4",
+      "category": "example_questions",
+      "persona": "Academic/Industry",
+      "question": "How do methylation-based ECD tests differ in their cancer signal origin accuracy?",
+      "expected_behavior": "Discuss CSO accuracy for methylation-based tests like Galleri. Technical methodology discussion.",
+      "answer": "Methylation-based MCED tests show significant variation in tissue-of-origin (TOO) accuracy. Galleri reports 88.7% TOO accuracy overall, while EPISEEK claims >90% TOO accuracy across 60+ cancer types. The newer Shield MCD (10 cancer types) and OverC (6 cancer types) haven't published detailed TOO performance yet, though both use methylation approaches similar to Galleri.\n\nAre you comparing these for research applications, or are you more interested in how TOO accuracy varies by specific cancer types within these tests?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "methylation",
+        "accuracy",
+        "Galleri"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 20438
+    },
+    {
+      "id": "example-rnd-5",
+      "category": "example_questions",
+      "persona": "Academic/Industry",
+      "question": "Which vendors offer both tumor-informed and tumor-naive MRD options?",
+      "expected_behavior": "Identify vendors with both approaches. Natera has Signatera (informed) but not naive. Foundation has both.",
+      "answer": "Several vendors offer both tumor-informed and tumor-naive MRD approaches. Natera has Signatera (tumor-informed) and Latitude (tumor-naive methylation). Foundation Medicine offers both FoundationOne Tracker and TI-WGS MRD (tumor-informed) plus FoundationOne Monitor (tumor-naive). Guardant Health has Haystack MRD (tumor-informed via Quest partnership) and Reveal MRD (tumor-naive).\n\nAre you looking to compare performance between approaches for a specific cancer type, or evaluating vendor consolidation opportunities?",
+      "red_flags_found": [
+        "none"
+      ],
+      "green_flags_found": [
+        "tumor-informed",
+        "tumor-naive",
+        "vendor",
+        "both"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 4,
+      "tokens_used": 20438
+    }
+  ],
+  "summary": {
+    "total_red_flags": 12,
+    "total_green_flags": 88,
+    "questions_with_red_flags": 9,
+    "questions_with_green_flags": 32
+  }
+}

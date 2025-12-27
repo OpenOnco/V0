@@ -182,6 +182,141 @@
       "expected_behavior": "Should NOT produce long bulleted list. Should ask for focus area or give brief high-level response.",
       "red_flags": ["###", "**", "1.", "•"],
       "green_flags": ["focus", "specific", "category", "narrow down"]
+    },
+    {
+      "id": "example-patient-1",
+      "category": "example_questions",
+      "question": "What's the difference between tumor-informed and tumor-naive tests?",
+      "persona": "Patient",
+      "expected_behavior": "Explain in simple terms that tumor-informed tests sequence the tumor first to create personalized tracking, while tumor-naive tests use fixed panels without needing tumor tissue.",
+      "red_flags": ["NGS", "variant allele frequency", "ctDNA quantification"],
+      "green_flags": ["tumor tissue", "personalized", "fixed panel", "without needing", "simple"]
+    },
+    {
+      "id": "example-patient-2",
+      "category": "example_questions",
+      "question": "Which MRD tests have the best Medicare coverage?",
+      "persona": "Patient",
+      "expected_behavior": "Mention tests with Medicare coverage (Signatera, clonoSEQ, etc.) in patient-friendly terms.",
+      "red_flags": ["don't know", "all the same", "LCD"],
+      "green_flags": ["Medicare", "covered", "Signatera", "clonoSEQ"]
+    },
+    {
+      "id": "example-patient-3",
+      "category": "example_questions",
+      "question": "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
+      "persona": "Patient",
+      "expected_behavior": "Suggest MRD tests appropriate for CRC surveillance. Mention Signatera as commonly used option. Warm supportive tone.",
+      "red_flags": ["should get", "must use", "you need"],
+      "green_flags": ["monitoring", "recurrence", "discuss with your doctor", "options", "Signatera"]
+    },
+    {
+      "id": "example-patient-4",
+      "category": "example_questions",
+      "question": "How much blood is needed for Signatera vs Guardant Reveal?",
+      "persona": "Patient",
+      "expected_behavior": "Provide blood volume requirements from database for both tests.",
+      "red_flags": ["don't know", "not sure"],
+      "green_flags": ["mL", "blood", "tubes", "volume"]
+    },
+    {
+      "id": "example-patient-5",
+      "category": "example_questions",
+      "question": "How should I talk to my doctor about getting an MRD test?",
+      "persona": "Patient",
+      "expected_behavior": "Provide practical tips for starting the conversation. Supportive tone. May suggest questions to ask.",
+      "red_flags": ["demand", "insist", "tell them you need"],
+      "green_flags": ["ask", "discuss", "conversation", "questions to ask", "oncologist"]
+    },
+    {
+      "id": "example-medical-1",
+      "category": "example_questions",
+      "question": "Compare landmark sensitivity of Signatera, Guardant Reveal, and Oncodetect in CRC",
+      "persona": "Clinician",
+      "expected_behavior": "Provide specific sensitivity figures for CRC from database. May use table format. Clinical terminology appropriate.",
+      "red_flags": ["don't have data", "all similar"],
+      "green_flags": ["sensitivity", "%", "landmark", "CRC", "colorectal"]
+    },
+    {
+      "id": "example-medical-2",
+      "category": "example_questions",
+      "question": "Which MRD tests have prospective interventional trial data?",
+      "persona": "Clinician",
+      "expected_behavior": "Identify tests with interventional (not just observational) trial data. Signatera has CIRCULATE trials.",
+      "red_flags": ["all have", "none have"],
+      "green_flags": ["interventional", "CIRCULATE", "prospective", "trial", "Signatera"]
+    },
+    {
+      "id": "example-medical-3",
+      "category": "example_questions",
+      "question": "What's the clinical lead time vs imaging for the major MRD assays?",
+      "persona": "Clinician",
+      "expected_behavior": "Discuss molecular lead time data - how far ahead of imaging ctDNA positivity predicts recurrence.",
+      "red_flags": ["don't know", "same as imaging"],
+      "green_flags": ["lead time", "months", "ahead", "imaging", "ctDNA"]
+    },
+    {
+      "id": "example-medical-4",
+      "category": "example_questions",
+      "question": "Which tests are NCCN-referenced for treatment decision support?",
+      "persona": "Clinician",
+      "expected_behavior": "List tests with nccnNamed=true in TDS category. Do NOT include CGP panels that only have vendorNCCN.",
+      "red_flags": ["FoundationOne", "Guardant360", "all CGP panels"],
+      "green_flags": ["named in NCCN", "referenced", "Oncotype", "guidelines"]
+    },
+    {
+      "id": "example-medical-5",
+      "category": "example_questions",
+      "question": "What's the LOD difference between PCR-based and NGS-based MRD approaches?",
+      "persona": "Clinician",
+      "expected_behavior": "Compare detection limits of different methodologies. Technical discussion appropriate.",
+      "red_flags": ["same sensitivity", "no difference"],
+      "green_flags": ["LOD", "detection", "PCR", "NGS", "ppm", "sensitivity"]
+    },
+    {
+      "id": "example-rnd-1",
+      "category": "example_questions",
+      "question": "Compare cfDNA input requirements and LOD95 across tumor-informed MRD assays",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Provide specific technical specs from database. Table format acceptable. Deep technical discussion.",
+      "red_flags": ["don't have specs", "all similar"],
+      "green_flags": ["cfDNA", "ng", "LOD", "ppm", "input", "Signatera", "NeXT Personal"]
+    },
+    {
+      "id": "example-rnd-2",
+      "category": "example_questions",
+      "question": "Which MRD tests have FDA breakthrough device designation and what's their regulatory status?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "List tests with breakthrough designation and current regulatory pathway. Distinguish approved vs LDT.",
+      "red_flags": ["all FDA approved", "none have"],
+      "green_flags": ["breakthrough", "FDA", "LDT", "approval", "designation", "regulatory"]
+    },
+    {
+      "id": "example-rnd-3",
+      "category": "example_questions",
+      "question": "What's the total clinical trial enrollment across all Signatera studies?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Aggregate trial enrollment data from database if available. May cite specific trial numbers.",
+      "red_flags": ["don't have data"],
+      "green_flags": ["enrollment", "participants", "trials", "studies", "NCT"]
+    },
+    {
+      "id": "example-rnd-4",
+      "category": "example_questions",
+      "question": "How do methylation-based ECD tests differ in their cancer signal origin accuracy?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Discuss CSO accuracy for methylation-based tests like Galleri. Technical methodology discussion.",
+      "red_flags": ["all the same", "don't know"],
+      "green_flags": ["methylation", "CSO", "signal origin", "accuracy", "Galleri"]
+    },
+    {
+      "id": "example-rnd-5",
+      "category": "example_questions",
+      "question": "Which vendors offer both tumor-informed and tumor-naive MRD options?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Identify vendors with both approaches. Natera has Signatera (informed) but not naive. Foundation has both.",
+      "red_flags": ["all vendors", "none"],
+      "green_flags": ["tumor-informed", "tumor-naive", "vendor", "both", "options"]
     }
   ]
 }
