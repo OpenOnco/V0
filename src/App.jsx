@@ -1522,7 +1522,7 @@ const CancerTypeNavigator = ({ onNavigate }) => {
 // ============================================
 // Test Showcase Component - Static badge parameters for each test
 // ============================================
-const TestShowcase = ({ onNavigate, patientMode = false }) => {
+const TestShowcase = ({ onNavigate, patientMode = false, hideNavigator = false }) => {
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
   const [searchQuery, setSearchQuery] = useState('');
@@ -2185,17 +2185,16 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
   // ========== CLINICIAN/ACADEMIC VIEW: Categories + Chat + Search ==========
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-      {/* Main Content: Side-by-side on desktop */}
-      <div className="p-4 flex flex-col lg:flex-row gap-4">
-        {/* Left: Lifecycle Navigator */}
-        <div className="w-full">
+      {/* Lifecycle Navigator - can be hidden when rendered separately */}
+      {!hideNavigator && (
+        <div className="p-4">
           <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
         </div>
-      </div>
+      )}
 
       {/* Quick Search - Full Width Below */}
-      <div className="px-4 pb-4">
+      <div className={`px-4 ${hideNavigator ? 'pt-4' : ''} pb-4`}>
         <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
           <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Quick Search</p>
           <div className="relative">
@@ -3338,11 +3337,14 @@ const HomePage = ({ onNavigate }) => {
           </h1>
         </div>
 
-        {/* Main content: TestShowcase + Chat side by side on desktop */}
+        {/* Row 1: LifecycleNavigator + Chat side by side */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
-          {/* TestShowcase - takes more space */}
+          {/* LifecycleNavigator (2x2 grid) */}
           <div className="lg:w-2/3">
-            <TestShowcase onNavigate={onNavigate} />
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+              <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
+              <LifecycleNavigator onNavigate={onNavigate} />
+            </div>
           </div>
           
           {/* Chat sidebar for R&D/Medical - fixed height, doesn't stretch */}
@@ -3465,6 +3467,11 @@ const HomePage = ({ onNavigate }) => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Row 2: Quick Search + Test Cards (full width) */}
+        <div className="mb-4">
+          <TestShowcase onNavigate={onNavigate} hideNavigator={true} />
         </div>
 
         {/* Data Openness Overview (includes Top 3 ranking) - hidden on mobile */}
