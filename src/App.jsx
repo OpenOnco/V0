@@ -3338,10 +3338,133 @@ const HomePage = ({ onNavigate }) => {
           </h1>
         </div>
 
-        {/* Browse Mode Toggle + Test Views */}
-        <div className="mb-4">
-          {/* Browse Mode Toggle */}
-          <TestShowcase onNavigate={onNavigate} />
+        {/* Main content: TestShowcase + Chat side by side on desktop */}
+        <div className="flex flex-col lg:flex-row gap-4 mb-4">
+          {/* TestShowcase - takes more space */}
+          <div className="lg:w-3/5">
+            <TestShowcase onNavigate={onNavigate} />
+          </div>
+          
+          {/* Chat sidebar for R&D/Medical */}
+          <div className="lg:w-2/5">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
+              {/* Chat header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                  <span className="font-medium text-gray-700 text-sm">Ask about tests</span>
+                </div>
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="text-xs border border-gray-200 rounded px-2 py-1 bg-white"
+                >
+                  {CHAT_MODELS.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+              </div>
+              
+              {/* Chat messages */}
+              <div 
+                ref={chatContainerRef}
+                className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50"
+                style={{ minHeight: '300px', maxHeight: '400px' }}
+              >
+                {messages.length === 0 ? (
+                  <div className="space-y-3">
+                    <div className="flex justify-start">
+                      <div className="max-w-[90%] rounded-xl px-4 py-3 bg-white border border-gray-200 text-gray-700">
+                        <p className="text-sm">
+                          {persona === 'medical' 
+                            ? "How can I help you navigate test options for your patients today?"
+                            : "Ready to dive into technical details. What would you like to explore?"
+                          }
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {(persona === 'medical' ? [
+                        "Compare MRD tests for CRC",
+                        "Which CGP panels have FDA CDx?",
+                        "TAT for Signatera?"
+                      ] : [
+                        "Compare LOD across MRD assays",
+                        "FDA vs LDT status?",
+                        "Tumor-informed vs tumor-naive?"
+                      ]).map((q, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSubmit(q)}
+                          className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700 transition-colors"
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  messages.map((msg, idx) => (
+                    <div key={idx} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[90%] rounded-xl px-4 py-2.5 ${
+                        msg.role === 'user' 
+                          ? 'bg-emerald-600 text-white' 
+                          : 'bg-white border border-gray-200 text-gray-700'
+                      }`}>
+                        {msg.role === 'assistant' ? (
+                          <SimpleMarkdown text={msg.content} className="text-sm" />
+                        ) : (
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                )}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Chat input */}
+              <div className="border-t border-gray-200 p-3 bg-white">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Ask about tests..."
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !chatInput.trim()}
+                    className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Send
+                  </button>
+                </form>
+                {messages.length > 0 && (
+                  <button
+                    onClick={() => setMessages([])}
+                    className="mt-2 text-xs text-gray-400 hover:text-gray-600"
+                  >
+                    Clear chat
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Data Openness Overview (includes Top 3 ranking) - hidden on mobile */}
