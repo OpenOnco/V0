@@ -1770,7 +1770,9 @@ const TestShowcase = ({
       const productTypeSearchable = test.productType === 'Laboratory IVD Kit' ? 'kit ivd laboratory' :
                                     test.productType === 'Self-Collection' ? 'self-collection home' :
                                     'service central lab';
-      const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable}`.toLowerCase();
+      // Include cancer types in search - "prostate" finds tests for prostate cancer
+      const cancerTypesSearchable = Array.isArray(test.cancerTypes) ? test.cancerTypes.join(' ') : (test.cancerTypes || '');
+      const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable}`.toLowerCase();
       return terms.every(term => searchableText.includes(term));
     });
   }, [allTests, searchQuery]);
