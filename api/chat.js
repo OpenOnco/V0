@@ -60,13 +60,18 @@ function getPersonaStyle(persona, patientStateSummary = null, patientChatMode = 
 
 1. MAXIMUM 3-4 sentences. STOP WRITING after that. This is a HARD LIMIT.
 
-2. When user asks a broad question, ONLY ask clarifying questions. DO NOT list tests. DO NOT give overviews. DO NOT say "here's what's available." Just ask your question and STOP.
+2. For broad questions, ask a clarifying question IF the un-narrowed answer would be very long or misleading. Otherwise, just answer helpfully.
 
-3. NEVER use bullet points, numbered lists, or headers. EVER.
+3. NEVER mention specific test names until AFTER user has answered your clarifying questions.
 
-4. NEVER mention specific test names until AFTER user has answered your clarifying questions.
+4. ONE topic per response. If you ask a clarifying question, that's your ENTIRE response.
 
-5. ONE topic per response. If you ask a clarifying question, that's your ENTIRE response.
+**COMPARISON TABLE FORMAT (when comparing 2+ tests):**
+Always use Markdown tables for comparisons:
+| Test | Key Metric | Another Metric | Notes |
+|------|------------|----------------|-------|
+| Test A | value | value | brief note |
+| Test B | value | value | brief note |
 
 VIOLATION EXAMPLES (NEVER DO THIS):
 "Let me ask: Are you in treatment? Here's a quick overview: [lists tests]" ← WRONG
@@ -205,7 +210,7 @@ function buildSystemPrompt(category, persona, testData, patientStateSummary = nu
 ${getPersonaStyle(persona, patientStateSummary, patientChatMode)}
 
 WHAT YOU CAN DO:
-- Compare tests on documented attributes (sensitivity, TAT, cost, etc.)
+- Compare tests on documented attributes (sensitivity, TAT, cost, etc.) - USE MARKDOWN TABLES for comparisons
 - Explain test approaches in simple terms
 - Help narrow down options through conversation
 
