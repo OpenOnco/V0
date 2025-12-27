@@ -434,7 +434,7 @@ const Chat = ({
           {showTitle && (
             <div className="flex-1 text-center">
               <h2 className="text-lg sm:text-xl font-semibold text-white">
-                Chat with us to Learn More About These Tests
+                Chat with us to Learn About These Tests and Your Own Options
               </h2>
             </div>
           )}

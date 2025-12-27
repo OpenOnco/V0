@@ -977,7 +977,7 @@ test.describe('Persona System', () => {
     await expect(page.getByText('Tests that will keep watch after treatment')).toBeVisible();
     
     // Should see patient chat section
-    await expect(page.getByText('Chat with us to Learn More About These Tests')).toBeVisible();
+    await expect(page.getByText('Chat with us to Learn About These Tests and Your Own Options')).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
