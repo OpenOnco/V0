@@ -1522,10 +1522,21 @@ const CancerTypeNavigator = ({ onNavigate }) => {
 // ============================================
 // Test Showcase Component - Static badge parameters for each test
 // ============================================
-const TestShowcase = ({ onNavigate, patientMode = false, hideNavigator = false }) => {
+const TestShowcase = ({ 
+  onNavigate, 
+  patientMode = false, 
+  hideNavigator = false, 
+  showQuickSearch = true,
+  searchQuery: externalSearchQuery,
+  setSearchQuery: externalSetSearchQuery
+}) => {
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [internalSearchQuery, setInternalSearchQuery] = useState('');
+  
+  // Use external state if provided, otherwise use internal state
+  const searchQuery = externalSearchQuery !== undefined ? externalSearchQuery : internalSearchQuery;
+  const setSearchQuery = externalSetSearchQuery || setInternalSearchQuery;
 
   // Get current domain for filtering
   const currentDomain = getDomain();
@@ -2193,31 +2204,35 @@ const TestShowcase = ({ onNavigate, patientMode = false, hideNavigator = false }
         </div>
       )}
 
-      {/* Quick Search - Full Width Below */}
-      <div className={`px-4 ${hideNavigator ? 'pt-4' : ''} pb-4`}>
-        <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
-          <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Quick Search</p>
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Filter by name, vendor, cancer..."
-              className="w-full px-3 py-1.5 pl-8 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
-            />
-            <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-red-400 hover:text-red-600">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            )}
+
+      {/* Quick Search - Full Width Below (only if not hidden) */}
+      {showQuickSearch && (
+        <div className={`px-4 ${hideNavigator ? 'pt-4' : ''} pb-4`}>
+          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
+            <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Quick Search</p>
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter by name, vendor, cancer..."
+                className="w-full px-3 py-1.5 pl-8 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
+              />
+              <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-red-400 hover:text-red-600">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
 
       {/* Test Cards Grid */}
       <div className="p-4 border-t border-slate-100">
@@ -2780,6 +2795,7 @@ const HomePage = ({ onNavigate }) => {
   const [patientInfoModal, setPatientInfoModal] = useState(null); // 'therapy' | 'monitoring' | 'surveillance' | null
   const [patientChatMode, setPatientChatMode] = useState('learn'); // 'learn' | 'find'
   const [chatHeight, setChatHeight] = useState(350); // pixels, resizable
+  const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
   const chatContainerRef = useRef(null);
   const patientChatInputRef = useRef(null);
   
@@ -3106,17 +3122,46 @@ const HomePage = ({ onNavigate }) => {
           </h1>
         </div>
 
-        {/* Row 1: LifecycleNavigator + Chat side by side */}
+        {/* Two-column layout: Left (LifecycleNavigator + QuickSearch) | Right (Chat) */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
-          {/* LifecycleNavigator (2x2 grid) */}
-          <div className="lg:w-1/2">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 h-full">
+          {/* Left column: LifecycleNavigator + Quick Search */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
+            {/* LifecycleNavigator (2x2 grid) */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
               <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
               <LifecycleNavigator onNavigate={onNavigate} />
             </div>
+            
+            {/* Quick Search - same width as 2x2 grid */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
+              <div className="p-4">
+                <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
+                  <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wide mb-1.5 text-center">Quick Search</p>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Filter by name, vendor, cancer..."
+                      className="w-full px-3 py-1.5 pl-8 text-sm bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-300"
+                    />
+                    <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-red-400 hover:text-red-600">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           
-          {/* Chat - uses unified Chat component */}
+          {/* Right column: Chat - full height */}
           <div className="lg:w-1/2">
             <Chat 
               persona={persona} 
@@ -3130,9 +3175,15 @@ const HomePage = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Row 2: Quick Search + Test Cards (full width) */}
+        {/* Row 2: Test Cards (full width) */}
         <div className="mb-4">
-          <TestShowcase onNavigate={onNavigate} hideNavigator={true} />
+          <TestShowcase 
+            onNavigate={onNavigate} 
+            hideNavigator={true} 
+            showQuickSearch={false} 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
         </div>
 
         {/* Data Openness Overview (includes Top 3 ranking) - hidden on mobile */}
