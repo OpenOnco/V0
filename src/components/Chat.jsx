@@ -347,7 +347,7 @@ const Chat = ({
                 Chat with us to Learn More About These Tests
               </h2>
             ) : (
-              <span className="font-medium text-sm">Ask about tests</span>
+              <h3 className="text-lg font-bold text-slate-800">Chat with Claude about the tests</h3>
             )}
           </div>
         )}
