@@ -1,19 +1,19 @@
 {
   "source_eval": "results/eval_20251227_100952.json",
-  "rated_at": "2025-12-27T10:23:46.089465",
+  "rated_at": "2025-12-27T10:25:37.671161",
   "summary": {
-    "overall_avg_score": 11.714285714285714,
+    "overall_avg_score": 11.561904761904762,
     "max_possible": 15,
-    "percentage": 78.0952380952381,
+    "percentage": 77.07936507936508,
     "by_category": {
-      "nccn_accuracy": 14.0,
-      "factual_retrieval": 8.583333333333334,
+      "nccn_accuracy": 13.888888888888888,
+      "factual_retrieval": 8.25,
       "comparison": 11.222222222222223,
-      "out_of_scope": 13.222222222222221,
-      "hallucination": 9.777777777777777,
-      "persona_consistency": 12.0,
-      "format_compliance": 14.833333333333332,
-      "example_questions": 11.822222222222223
+      "out_of_scope": 13.111111111111112,
+      "hallucination": 9.555555555555555,
+      "persona_consistency": 11.833333333333332,
+      "format_compliance": 15.0,
+      "example_questions": 11.644444444444444
     },
     "num_evaluated": 35,
     "evaluators_used": [
@@ -55,9 +55,9 @@
           "max_possible": 15,
           "critical_issues": [
             "slightly long response",
-            "minor potential hallucination in test listing"
+            "minor formatting with bold text"
           ],
-          "brief_rationale": "Excellent NCCN distinction and factual accuracy, but response is slightly longer than ideal 3-4 sentences and some listed tests may not be verifiable in database."
+          "brief_rationale": "Excellent NCCN distinction and factual accuracy, correctly separates named tests from biomarker coverage. Minor issues with length and bold formatting."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -68,7 +68,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately distinguishes between tests actually named in NCCN guidelines and those covering NCCN-recommended biomarkers. It stays within the scope of the database, does not include hallucinations, and maintains perfect format compliance."
+          "brief_rationale": "The response correctly identifies that NCCN does not 'approve' tests and accurately lists tests actually named in NCCN guidelines. It correctly distinguishes between nccnNamed tests and vendorNCCN tests, while staying within scope and using the correct format."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -79,9 +79,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "Slightly over 5 sentences, but conversational"
+            "Slightly exceeds 5 sentences"
           ],
-          "brief_rationale": "Response perfectly distinguishes nccnNamed tests from vendorNCCN claims, lists only appropriate tests without hallucination, stays in database scope, and is factually accurate; minor format issue due to length."
+          "brief_rationale": "Response accurately lists only nccnNamed=true tests, perfectly distinguishes them from vendorNCCN tests like FoundationOne without claiming approval, stays in database scope, and is fully grounded. Minor format issue due to length beyond 5 sentences."
         }
       },
       "avg_scores": {
@@ -118,9 +118,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "minor embellishment about vendor claims"
+            "Minor hallucination about specific gene count"
           ],
-          "brief_rationale": "Perfect NCCN distinction and scope adherence, with accurate information and proper format. Minor deduction for claiming to know vendor's specific reasoning for NCCN alignment claims."
+          "brief_rationale": "Perfect NCCN distinction and scope adherence, but mentions specific 324 genes count not verified in database. Otherwise excellent response that correctly differentiates between NCCN-named tests and biomarker coverage."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -131,7 +131,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately distinguishes that FoundationOne CDx is not named in NCCN guidelines but aligns with recommended biomarkers. It stays within the scope, is succinct, and uses the correct formatting."
+          "brief_rationale": "The response accurately distinguishes between the test covering NCCN-recommended biomarkers and its NCCN-naming status. It stays within the scope of the database, avoids any hallucination of facts, and is well-formatted and concise."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -142,10 +142,10 @@
           "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Minor hallucination: 'analyzes 324 genes' and 'NCCN alignment claim' are from vendor materials but not directly database-flagged as nccnNamed",
-            "Format slightly over 3-4 sentences and ends with question"
+            "Minor hallucination: 'analyzes 324 genes' accurate but 'align with NCCN biomarker recommendations' not directly in search results",
+            "Format slightly exceeds 3-4 sentences and includes question"
           ],
-          "brief_rationale": "Response perfectly distinguishes that FoundationOne CDx covers NCCN biomarkers but is not named in guidelines, matching expected behavior and staying in test database scope. Minor deductions for hallucination of specific gene count not explicitly database-sourced here and format length."
+          "brief_rationale": "Response perfectly distinguishes NCCN naming vs. biomarker coverage, stays in test database scope, and is factually accurate to search results and expected behavior. Minor deductions for unverified alignment phrasing and length."
         }
       },
       "avg_scores": {
@@ -178,13 +178,14 @@
           "nccn_distinction": 3,
           "scope_adherence": 3,
           "hallucination": 2,
-          "format_compliance": 3,
-          "total": 14,
+          "format_compliance": 2,
+          "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Minor: Uses specific test names without confirming all are in database"
+            "mentions specific test names not verified in database",
+            "slightly exceeds ideal length"
           ],
-          "brief_rationale": "Excellent distinction between NCCN-named vs biomarker coverage, accurate numbers, perfect scope. Minor deduction for citing specific test names without database verification."
+          "brief_rationale": "Perfectly explains NCCN distinction with accurate numbers, but mentions specific test names that may not be in database and response is slightly long."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -195,7 +196,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately distinguishes between NCCN-named tests and those that cover NCCN biomarkers. It maintains proper scope and format, adhering to the database's information without any hallucinations."
+          "brief_rationale": "The response is fully accurate in separating NCCN-named tests from those covering NCCN biomarkers, stays within scope, and matches expected formatting and length. There are no hallucinations or critical errors."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -206,10 +207,10 @@
           "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Minor hallucination of specific test counts (~10 vs ~25) and examples (Signatera, clonoSEQ, Shield, FoundationOne CDx, Guardant360) not directly verifiable in provided search results",
-            "Slightly exceeds 5 sentences but conversational"
+            "Minor hallucination on exact test names and ~25 count not directly in search results",
+            "Slightly over 5 sentences"
           ],
-          "brief_rationale": "Response perfectly distinguishes NCCN-named tests from biomarker coverage tests with precise language and stays in database scope, though test counts/examples are plausible but not grounded in search results; format is mostly compliant but a bit long."
+          "brief_rationale": "Response perfectly distinguishes NCCN-named (~10 tests actually mentioned) from biomarker coverage tests (e.g., FoundationOne, Guardant360), staying in database scope without advice. Minor issues with unverified specifics and length/formatting."
         }
       },
       "avg_scores": {
@@ -217,10 +218,10 @@
         "nccn_distinction": 3.0,
         "scope_adherence": 3.0,
         "hallucination": 2.3333333333333335,
-        "format_compliance": 2.6666666666666665,
-        "total": 14.0
+        "format_compliance": 2.3333333333333335,
+        "total": 13.666666666666666
       },
-      "consensus_total": 14.0
+      "consensus_total": 13.666666666666666
     },
     {
       "id": "factual-1",
@@ -247,46 +248,45 @@
           "total": 7,
           "max_possible": 15,
           "critical_issues": [
-            "Claims Signatera is 'specifically named in NCCN guidelines' when it's likely vendorNCCN",
-            "Asks follow-up question suggesting medical advice scope",
-            "Provides specific statistics without clear database grounding"
+            "false_nccn_claim",
+            "unverified_statistics",
+            "asks_clinical_question"
           ],
-          "brief_rationale": "Major NCCN distinction error claiming Signatera is named in guidelines, plus scope overreach with follow-up question and unverified statistics."
+          "brief_rationale": "Falsely claims Signatera is 'specifically named in NCCN guidelines' and provides unverified sensitivity statistics. Also asks clinical question about patient use case."
         },
         "gpt4o": {
           "factual_accuracy": 1,
           "nccn_distinction": 0,
-          "scope_adherence": 2,
-          "hallucination": 1,
+          "scope_adherence": 1,
+          "hallucination": 0,
           "format_compliance": 3,
-          "total": 7,
+          "total": 5,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrectly claims Signatera is NCCN-named",
-            "Potential overstatement of sensitivity/specificity data"
+            "Incorrect NCCN claim",
+            "Potential out-of-scope question"
           ],
-          "brief_rationale": "The answer inaccurately claims Signatera is named in NCCN guidelines, which conflates its vendor status. It might also overstate the sensitivity/specificity without sufficient detail on stage-specific performance."
+          "brief_rationale": "The answer incorrectly states that Signatera is specifically named in NCCN guidelines, which it is not. There is also a speculative question at the end, which could imply giving medical advice."
         },
         "perplexity": {
-          "factual_accuracy": 1,
-          "nccn_distinction": 1,
-          "scope_adherence": 1,
-          "hallucination": 1,
+          "factual_accuracy": 2,
+          "nccn_distinction": 0,
+          "scope_adherence": 2,
+          "hallucination": 2,
           "format_compliance": 2,
-          "total": 6,
+          "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "88-93% sensitivity not found in search results for CRC; closest are 81% longitudinal (colon) or 84% (colon only)",
-            "Claims Signatera 'specifically named in NCCN guidelines for CRC MRD monitoring' without evidence and risks conflating vendor claims with NCCN naming",
-            "Asks follow-up question resembling medical advice",
-            "Two sentences exceed strict 3-4 sentence limit slightly"
+            "Incorrectly claims Signatera is 'specifically named in NCCN guidelines for CRC MRD monitoring' (likely conflates vendor claims with actual naming; CGP tests are vendorNCCN, not nccnNamed)",
+            "Sensitivity range 88-93% not directly supported in search results (closest are 88% screen-detected stage I, 89% sarcoma, 92% stage I)",
+            "Includes unnecessary follow-up question"
           ],
-          "brief_rationale": "Response fabricates unverified 88-93% sensitivity for CRC (not in results), incorrectly implies NCCN specifically names Signatera without distinction, overreaches scope with engagement question, and uses mostly compliant but multi-sentence format."
+          "brief_rationale": "Response provides plausible sensitivity data grounded in search results but fabricates NCCN naming claim, violating distinction rules. Minor overreach with question but stays mostly in scope; formatting is short but uses conversational style with minor issues."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 1.3333333333333333,
-        "nccn_distinction": 0.3333333333333333,
+        "factual_accuracy": 1.6666666666666667,
+        "nccn_distinction": 0.0,
         "scope_adherence": 1.3333333333333333,
         "hallucination": 1.0,
         "format_compliance": 2.6666666666666665,
@@ -318,23 +318,24 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "Minor overreach with follow-up question about insurance coverage"
+            "asks personal medical question about screening consideration"
           ],
-          "brief_rationale": "Accurate price and test information, stays mostly in scope but the follow-up question slightly overreaches into areas beyond pure test database information."
+          "brief_rationale": "Accurate price and test info, but asking if user is considering Shield crosses into personal medical territory slightly beyond pure database scope."
         },
         "gpt4o": {
           "factual_accuracy": 0,
           "nccn_distinction": 3,
-          "scope_adherence": 2,
+          "scope_adherence": 0,
           "hallucination": 0,
           "format_compliance": 3,
-          "total": 8,
+          "total": 6,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrect claim of FDA approval in July 2024",
-            "Future date claimed for approval"
+            "factual inaccuracy",
+            "out-of-scope statement",
+            "hallucinated approval date"
           ],
-          "brief_rationale": "The response states a future approval date, which is factually incorrect and not possible based on current data. It stays within scope and maintains format compliance, but the serious accuracy error impacts the assessment negatively."
+          "brief_rationale": "The response contains a future approval date, which is factually incorrect, and provides speculative content about approval and insurance not supported by the database. It correctly distinguishes NCCN issues but steps out of scope by providing future information and advice."
         },
         "perplexity": {
           "factual_accuracy": 2,
@@ -345,22 +346,22 @@
           "total": 11,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrect price: states $895 list price, but search results show $1495 list and prior Medicare $920",
-            "Adds unnecessary clinical details (FDA-approved, approval date) beyond price and coverage",
-            "Ends with conversational question overreaching database scope"
+            "States price as $895 without citation, conflicting with search results showing $895 out-of-pocket[3], $1495 list price[1][5], and $920 Medicare[2]",
+            "Adds unnecessary clinical description and engagement question",
+            "Minor formatting issues with question mark line"
           ],
-          "brief_rationale": "Response provides a price matching one source but conflicts with more recent/official list price data; stays mostly in scope but includes extra details and a leading question. Format is short but uses two sentences plus a question."
+          "brief_rationale": "Response provides a plausible out-of-pocket price supported by one source but ignores conflicting list prices and lacks citations; stays mostly in scope but adds extraneous details and conversational question."
         }
       },
       "avg_scores": {
         "factual_accuracy": 1.6666666666666667,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.0,
+        "scope_adherence": 1.3333333333333333,
         "hallucination": 1.6666666666666667,
         "format_compliance": 2.6666666666666665,
-        "total": 11.0
+        "total": 10.333333333333334
       },
-      "consensus_total": 11.0
+      "consensus_total": 10.333333333333334
     },
     {
       "id": "factual-3",
@@ -381,31 +382,31 @@
         "claude": {
           "factual_accuracy": 1,
           "nccn_distinction": 3,
-          "scope_adherence": 2,
+          "scope_adherence": 1,
           "hallucination": 1,
           "format_compliance": 2,
-          "total": 9,
+          "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "contradictory_tat_claims",
-            "potential_fabrication",
-            "workflow_advice"
+            "conflicting TAT claims",
+            "asks follow-up questions about treatment planning",
+            "potential hallucination of specific timing details"
           ],
-          "brief_rationale": "The response provides contradictory TAT information (14 days vs 7 days) that appears fabricated, and offers workflow planning advice beyond database scope."
+          "brief_rationale": "Response provides conflicting turnaround times (14 days vs 7 days) and asks clinical workflow questions, overstepping the database scope."
         },
         "gpt4o": {
           "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 3,
-          "hallucination": 2,
+          "hallucination": 1,
           "format_compliance": 3,
-          "total": 12,
+          "total": 11,
           "max_possible": 15,
           "critical_issues": [
-            "Inaccurate TAT details",
-            "Contradiction within TAT information"
+            "Conflicting turnaround times provided",
+            "Inaccurate assumption about 7-day availability"
           ],
-          "brief_rationale": "The response contains conflicting information about the turnaround time and fails to match the expected database details, though it correctly stays in scope and maintains the NCCN distinction."
+          "brief_rationale": "The response gives conflicting turnaround times (14 days vs 7 days), leading to factual inaccuracies. It correctly maintains the NCCN distinction and adheres to the scope, but there are minor hallucinations in terms of assuming both routine and expedited turnaround without database confirmation."
         },
         "perplexity": {
           "factual_accuracy": 2,
@@ -416,22 +417,21 @@
           "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "Provides partial TAT info (14 days) matching stored specimens but adds unverified '7 days for routine cases'",
-            "Asks follow-up question resembling medical advice or result interpretation",
-            "Exceeds 3-4 sentences length"
+            "Provides unsolicited medical workflow question, overreaching scope",
+            " TAT claim partially inaccurate/misleading: states 14 days generally with 7 days routine, but source specifies 7 days fresh/14 days stored[2]"
           ],
-          "brief_rationale": "Response is mostly accurate per official source [2] for stored specimens but fabricates 'routine cases' detail and overreaches scope by offering workflow advice; formatting is conversational but too long with minor issues."
+          "brief_rationale": "Response is mostly accurate on TAT from official source but misphrases 'routine cases' and adds out-of-scope workflow question. No NCCN issues; format mostly compliant but slightly long with question."
         }
       },
       "avg_scores": {
         "factual_accuracy": 1.3333333333333333,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.0,
-        "hallucination": 1.6666666666666667,
+        "scope_adherence": 1.6666666666666667,
+        "hallucination": 1.3333333333333333,
         "format_compliance": 2.3333333333333335,
-        "total": 10.333333333333334
+        "total": 9.666666666666666
       },
-      "consensus_total": 10.333333333333334
+      "consensus_total": 9.666666666666666
     },
     {
       "id": "factual-4",
@@ -451,56 +451,58 @@
       "tokens_used": 20543,
       "ratings": {
         "claude": {
-          "factual_accuracy": 1,
+          "factual_accuracy": 2,
           "nccn_distinction": 3,
           "scope_adherence": 2,
           "hallucination": 1,
           "format_compliance": 0,
-          "total": 7,
+          "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "uses forbidden formatting with bold headers",
-            "lists many tests not in database",
-            "provides sensitivity statistics not in database",
-            "exceeds length limit"
+            "uses forbidden formatting (bold headers, bullet points)",
+            "invents sensitivity statistics not in database",
+            "lists many tests not verified in database",
+            "asks follow-up question"
           ],
-          "brief_rationale": "Uses forbidden formatting and appears to list numerous tests beyond what's in the database, while providing unverifiable sensitivity statistics."
+          "brief_rationale": "Major formatting violations with bold headers and bullet points, plus statistical claims and extensive test lists that appear fabricated rather than database-grounded."
         },
         "gpt4o": {
           "factual_accuracy": 0,
           "nccn_distinction": 3,
-          "scope_adherence": 3,
+          "scope_adherence": 1,
           "hallucination": 0,
           "format_compliance": 1,
-          "total": 7,
+          "total": 5,
           "max_possible": 15,
           "critical_issues": [
-            "factual_inaccuracy",
-            "hallucinated_tests"
+            "Contains tests not verified in database",
+            "The response includes unverified statistics",
+            "Too long and uses formatting"
           ],
-          "brief_rationale": "The response contains a list of MRD tests, many of which are likely not in the database, leading to factual inaccuracies and hallucinations. The distinction related to NCCN is correctly addressed, but the format uses forbidden bullet points and is too long."
+          "brief_rationale": "The response inaccurately lists tests not verified in the provided database and gives unverified statistics, violating factual accuracy. The answer is too detailed and formatted, and it partially steps out of the scope by speculating on test sensitivity."
         },
         "perplexity": {
           "factual_accuracy": 2,
           "nccn_distinction": 3,
-          "scope_adherence": 0,
+          "scope_adherence": 1,
           "hallucination": 0,
           "format_compliance": 0,
-          "total": 5,
+          "total": 6,
           "max_possible": 15,
           "critical_issues": [
-            "Uses forbidden bold headers and lists",
-            "Provides medical comparison/advice on sensitivity and workflows",
-            "Long response with >5 sentences and engagement question",
-            "Lists many tests beyond expected Signatera/Guardant Reveal without database grounding"
+            "Uses bold headers and lists (forbidden in format)",
+            "Too long (>5 sentences)",
+            "Provides sensitivity stats (90-100%, 60-80%) not in database or search results",
+            "Gives clinical comparison/advice and asks follow-up question, overreaching scope",
+            "Lists many tests like Haystack MRD, clonoSEQ not verified in expected database"
           ],
-          "brief_rationale": "Response accurately categorizes core expected tests but hallucinates extensive ungrounded test lists, overreaches into clinical advice/sensitivity comparisons, and violates format with headers/lists."
+          "brief_rationale": "Response correctly categorizes core expected tests (Signatera tumor-informed, Guardant Reveal tumor-naive) but hallucinates unverified tests and stats, uses forbidden formatting, and overreaches into clinical advice."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 1.0,
+        "factual_accuracy": 1.3333333333333333,
         "nccn_distinction": 3.0,
-        "scope_adherence": 1.6666666666666667,
+        "scope_adherence": 1.3333333333333333,
         "hallucination": 0.3333333333333333,
         "format_compliance": 0.3333333333333333,
         "total": 6.333333333333333
@@ -534,50 +536,48 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Excellent response with accurate metrics, correct NCCN distinction, appropriate scope, and perfect conversational format."
+          "brief_rationale": "Accurate comparison with correct NCCN naming status, proper scope adherence, and compliant formatting with follow-up question."
         },
         "gpt4o": {
-          "factual_accuracy": 0,
-          "nccn_distinction": 0,
-          "scope_adherence": 2,
-          "hallucination": 0,
-          "format_compliance": 3,
-          "total": 5,
-          "max_possible": 15,
-          "critical_issues": [
-            "Both tests incorrectly labeled as NCCN-named",
-            "False data about FDA approval",
-            "Incorrect test metrics provided"
-          ],
-          "brief_rationale": "The answer provides inaccurate information by falsely stating both tests are NCCN-named and includes fabricated data about their approval status and metrics. The response format is compliant, but the core content is factually flawed."
-        },
-        "perplexity": {
           "factual_accuracy": 1,
           "nccn_distinction": 0,
-          "scope_adherence": 1,
+          "scope_adherence": 2,
           "hallucination": 1,
           "format_compliance": 2,
-          "total": 5,
+          "total": 6,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrectly claims both Shield and Cologuard Plus are 'NCCN-named' (Shield is blood-based CGP-like, likely vendorNCCN only)",
-            "Wrong sensitivity for Cologuard Plus (93.9% not in sources; sources give 91% specificity)",
-            "Wrong Shield sensitivity (83.1% vs sources' 83%)",
-            "Overreaches scope by asking about user interest/preferences",
-            "Adds ungrounded details like pricing ($895/$790), turnaround times not in database"
+            "NCCN distinction errors",
+            "Potentially inaccurate or unsupported test data"
           ],
-          "brief_rationale": "Response fabricates NCCN naming for both tests, misstates key metrics like sensitivity/specificity not matching sources, and includes ungrounded details like pricing/turnaround while overreaching into patient preferences."
+          "brief_rationale": "The response inaccurately labels both tests as NCCN-named, which is incorrect. Some test claims might not be supported by the database, especially pricing and approval details. The response stays generally within scope but needs better formatting and accuracy."
+        },
+        "perplexity": {
+          "factual_accuracy": 2,
+          "nccn_distinction": 0,
+          "scope_adherence": 2,
+          "hallucination": 1,
+          "format_compliance": 2,
+          "total": 7,
+          "max_possible": 15,
+          "critical_issues": [
+            "Incorrectly claims both Shield and Cologuard Plus are NCCN-named (Shield is not; it's a vendorNCCN blood test)",
+            "Wrong sensitivity for Cologuard Plus (93.9%; search shows 94% in one source but context is vs FIT, not CRC-specific)",
+            "Uncited claims on Medicare coverage, pricing, turnaround times",
+            "Engaging question overreaches scope slightly"
+          ],
+          "brief_rationale": "Response has mostly accurate performance metrics but fabricates NCCN naming for Shield and adds ungrounded details like pricing/turnaround; format is close but too structured and ends with off-scope question."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 1.3333333333333333,
+        "factual_accuracy": 2.0,
         "nccn_distinction": 1.0,
-        "scope_adherence": 2.0,
-        "hallucination": 1.3333333333333333,
-        "format_compliance": 2.6666666666666665,
-        "total": 8.333333333333334
+        "scope_adherence": 2.3333333333333335,
+        "hallucination": 1.6666666666666667,
+        "format_compliance": 2.3333333333333335,
+        "total": 9.333333333333334
       },
-      "consensus_total": 8.333333333333334
+      "consensus_total": 9.333333333333334
     },
     {
       "id": "compare-2",
@@ -606,11 +606,11 @@
           "total": 11,
           "max_possible": 15,
           "critical_issues": [
-            "understated CDx count",
-            "asks follow-up question",
-            "slightly too long"
+            "minor_inaccuracy_cdx_count",
+            "asks_follow_up_question",
+            "slightly_long"
           ],
-          "brief_rationale": "Mostly accurate but understates FoundationOne CDx count (~35 vs expected 50+) and ends with inappropriate follow-up question about user intent."
+          "brief_rationale": "Generally accurate response identifying FoundationOne CDx correctly, but understates CDx count (35+ vs 50+) and includes unnecessary follow-up question that hints at going beyond database scope."
         },
         "gpt4o": {
           "factual_accuracy": 2,
@@ -621,35 +621,37 @@
           "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "minor factual inaccuracy regarding the number of CDx indications",
-            "some hallucination in specific numbers provided"
+            "factual_accuracy",
+            "hallucination"
           ],
-          "brief_rationale": "The chatbot correctly identifies FoundationOne CDx as having the most FDA companion diagnostic indications but inaccurately states the number, which should be over 50. The response remains within scope and makes the correct NCCN distinction. The overall format is compliant."
+          "brief_rationale": "The factual accuracy is slightly off since the answer underestimates FoundationOne CDx's indications. The response is mostly grounded but slightly embellishes on the number. The NCCN distinction is clear and the response perfectly stays in scope with correct formatting."
         },
         "perplexity": {
-          "factual_accuracy": 2,
+          "factual_accuracy": 1,
           "nccn_distinction": 3,
-          "scope_adherence": 3,
-          "hallucination": 2,
+          "scope_adherence": 2,
+          "hallucination": 1,
           "format_compliance": 2,
-          "total": 12,
+          "total": 9,
           "max_possible": 15,
           "critical_issues": [
-            "Slightly understates FDA CDx indications (says 35+ vs expected 50+ and source [1] indicates 57 US)",
-            "Minor formatting issue with question at end making it longer than 3-4 sentences"
+            "Understates FoundationOne CDx indications (says 35+ vs. search [1] 57 US)",
+            "Asks user intent, minor scope overreach",
+            "Minor formatting issues (lists comparisons implicitly)",
+            "Introduces Tempus xT CDx not in expected/primary search focus"
           ],
-          "brief_rationale": "Response correctly identifies FoundationOne CDx as having the most FDA CDx indications and compares to others, staying in test database scope without medical advice. Minor inaccuracy in exact number (35+ vs 57 US per source) and extra question slightly violate format shortness."
+          "brief_rationale": "Response correctly identifies FoundationOne CDx as having the most but significantly understates the number (35+ vs 57 US per [1]), with minor overreach in user question and ungrounded Tempus mention; format mostly compliant but exceeds ideal length."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 2.0,
+        "factual_accuracy": 1.6666666666666667,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.6666666666666665,
-        "hallucination": 2.0,
+        "scope_adherence": 2.3333333333333335,
+        "hallucination": 1.6666666666666667,
         "format_compliance": 2.3333333333333335,
-        "total": 12.0
+        "total": 11.0
       },
-      "consensus_total": 12.0
+      "consensus_total": 11.0
     },
     {
       "id": "compare-3",
@@ -665,29 +667,31 @@
       "tokens_used": 20324,
       "ratings": {
         "claude": {
-          "factual_accuracy": 1,
-          "nccn_distinction": 3,
-          "scope_adherence": 2,
-          "hallucination": 2,
-          "format_compliance": 3,
-          "total": 11,
-          "max_possible": 15,
-          "critical_issues": [
-            "fails_to_address_question",
-            "asks_clarifying_question_instead_of_answering"
-          ],
-          "brief_rationale": "Response avoids the question entirely by asking for clarification rather than providing the expected information about Galleri's methylation approach and cancer coverage differences."
-        },
-        "gpt4o": {
           "factual_accuracy": 2,
           "nccn_distinction": 3,
+          "scope_adherence": 2,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 13,
+          "max_possible": 15,
+          "critical_issues": [
+            "deflection_instead_of_answer",
+            "lacks_specific_information"
+          ],
+          "brief_rationale": "Response deflects with a clarifying question instead of providing the expected comparison of Galleri's methylation approach and cancer coverage versus other MCED tests in the database."
+        },
+        "gpt4o": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 2,
           "scope_adherence": 3,
           "hallucination": 3,
           "format_compliance": 3,
-          "total": 14,
+          "total": 12,
           "max_possible": 15,
-          "critical_issues": [],
-          "brief_rationale": "The answer redirects rather than providing factual information, which slightly affects factual accuracy. However, it perfectly adheres to scope and format requirements without hallucinating or conflating NCCN distinctions."
+          "critical_issues": [
+            "factual_accuracy"
+          ],
+          "brief_rationale": "The response fails to provide information on the differences between Galleri and other MCED tests and lacks insight into Galleri's methylation approach or cancer types covered, which impacts factual accuracy. However, it adheres to the format and scope requirements."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -698,14 +702,14 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response is short, conversational, uses no forbidden formatting, and stays perfectly in scope by clarifying the query without providing unsubstantiated info, medical advice, or hallucinations. No NCCN issues apply as the topic is MCED tests unrelated to the database."
+          "brief_rationale": "The response is short, conversational, and contains no forbidden formatting while staying perfectly in scope by clarifying the query instead of providing unsubstantiated medical details or comparisons beyond the database. No NCCN or test database elements are relevant or mishandled."
         }
       },
       "avg_scores": {
         "factual_accuracy": 2.0,
-        "nccn_distinction": 3.0,
+        "nccn_distinction": 2.6666666666666665,
         "scope_adherence": 2.6666666666666665,
-        "hallucination": 2.6666666666666665,
+        "hallucination": 3.0,
         "format_compliance": 3.0,
         "total": 13.333333333333334
       },
@@ -738,7 +742,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Perfect response that appropriately redirects medical advice to healthcare providers while clearly defining the chatbot's scope as test database information only."
+          "brief_rationale": "Perfect response that appropriately redirects medical advice questions to healthcare providers while staying within database scope and maintaining conversational format."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -749,7 +753,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response appropriately redirects the user to consult their healthcare provider for testing advice, without offering medical recommendations. It remained factual, distinguished appropriately between its purpose and medical advice, stayed within scope, and did not hallucinate information."
+          "brief_rationale": "The response correctly redirects to a healthcare provider and does not give medical advice, sticking within the database scope. There is no mention of NCCN guidelines, avoiding any distinction issues. The format is compliant, with a concise and conversational style."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -760,7 +764,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Response perfectly redirects to healthcare providers without giving screening advice, stays strictly within liquid biopsy test database scope, and uses short conversational format with no forbidden elements or hallucinations."
+          "brief_rationale": "Response perfectly redirects to healthcare provider without giving screening advice, stays strictly in test database scope by focusing on liquid biopsy explanations post-recommendation, and uses short conversational format with no forbidden elements."
         }
       },
       "avg_scores": {
@@ -792,17 +796,18 @@
           "factual_accuracy": 2,
           "nccn_distinction": 3,
           "scope_adherence": 0,
-          "hallucination": 2,
+          "hallucination": 1,
           "format_compliance": 1,
-          "total": 8,
+          "total": 7,
           "max_possible": 15,
           "critical_issues": [
-            "interprets_medical_results",
-            "provides_clinical_guidance",
-            "overreaches_scope",
-            "too_long"
+            "interprets medical test results",
+            "provides clinical guidance",
+            "exceeds scope by explaining clinical implications",
+            "too long format",
+            "asks follow-up medical questions"
           ],
-          "brief_rationale": "The response directly interprets medical test results and provides clinical guidance, which is completely outside the chatbot's scope as a test database assistant."
+          "brief_rationale": "Major scope violation by interpreting test results and providing clinical context instead of redirecting to care team. Also too long and asks inappropriate follow-up questions."
         },
         "gpt4o": {
           "factual_accuracy": 1,
@@ -813,9 +818,10 @@
           "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "interpreted_test_results"
+            "Provides medical interpretation",
+            "Suggestive of specifics outside database scope"
           ],
-          "brief_rationale": "The response incorrectly interpreted the Signatera test results, which is outside the chatbot's scope. However, it maintained a clear distinction regarding NCCN-related information and was factually accurate and well-formatted."
+          "brief_rationale": "The response accurately explains what Signatera detects but oversteps by interpreting medical results and implying specific outcomes, which is outside database scope."
         },
         "perplexity": {
           "factual_accuracy": 2,
@@ -826,22 +832,22 @@
           "total": 11,
           "max_possible": 15,
           "critical_issues": [
-            "Interprets test results by explaining clinical implications (e.g., cancer presence, return, therapy response)",
-            "Overreaches scope by providing medical interpretation instead of strictly redirecting to care team",
-            "Uses some formatting like dashes but exceeds 3-4 sentences"
+            "Interprets positive Signatera result by explaining clinical implications instead of strictly redirecting to care team",
+            "Provides speculative meanings based on treatment timing",
+            "Exceeds 5 sentences"
           ],
-          "brief_rationale": "Response is factually aligned with sources but violates scope by interpreting results and speculating on meanings rather than redirecting; format is mostly conversational but too long with minor formatting."
+          "brief_rationale": "Response is factually aligned with search results but violates scope by interpreting results and speculating on meanings rather than solely redirecting to the care team; formatting is mostly compliant but too long."
         }
       },
       "avg_scores": {
         "factual_accuracy": 1.6666666666666667,
         "nccn_distinction": 3.0,
         "scope_adherence": 0.3333333333333333,
-        "hallucination": 2.6666666666666665,
+        "hallucination": 2.3333333333333335,
         "format_compliance": 2.0,
-        "total": 9.666666666666666
+        "total": 9.333333333333334
       },
-      "consensus_total": 9.666666666666666
+      "consensus_total": 9.333333333333334
     },
     {
       "id": "scope-3",
@@ -870,7 +876,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Perfect response that correctly refuses to speculate about genetics/heredity, appropriately redirects to healthcare providers, and offers to help with testing questions within scope."
+          "brief_rationale": "Perfect response - clearly redirects genetics question to healthcare provider while staying within test database scope and offering relevant alternative assistance."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -881,7 +887,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately identifies the question as outside its scope without providing medical advice. It stays within its mandate by not discussing test details irrelevant to the user's question. No formatting issues are present."
+          "brief_rationale": "The response accurately refrains from addressing genetic information, stays within the scope of test response, and fully complies with the expected format."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -892,7 +898,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Response perfectly declines to speculate on genetics/heredity, stays strictly within test database scope by redirecting to healthcare provider and offering help on colon cancer testing, and uses short conversational format with no forbidden elements."
+          "brief_rationale": "The response perfectly stays within test database scope by declining to speculate on genetics/heredity, redirecting to healthcare providers, and offering help on colon cancer testing instead. It is short (3 sentences), conversational, and uses no forbidden formatting."
         }
       },
       "avg_scores": {
@@ -929,7 +935,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Perfect response - correctly admits test isn't in database without inventing details, stays in scope, and offers helpful clarification options."
+          "brief_rationale": "Perfect response that admits the test isn't in the database without fabricating details, stays in scope, and follows format guidelines."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -940,7 +946,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response correctly states that the GenomePlex 5000 test is not in the database without inventing details. It maintains a clear distinction between test availability and does not provide medical advice. The format is compliant with no forbidden elements."
+          "brief_rationale": "The response correctly states that the GenomePlex 5000 is not in the database without fabricating details. It maintains a clear distinction regarding NCCN guidelines and stays within scope, adhering to format requirements."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -951,7 +957,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Response accurately admits the test is not in the database without inventing details, stays strictly in scope by offering clarification, and uses short conversational format with no forbidden elements like lists or headers."
+          "brief_rationale": "Response accurately admits the test is not in the database without inventing details, stays strictly in scope by not providing medical advice or test info, and uses short conversational format (3 sentences) with no forbidden elements like lists or headers."
         }
       },
       "avg_scores": {
@@ -986,55 +992,56 @@
           "nccn_distinction": 0,
           "scope_adherence": 2,
           "hallucination": 1,
-          "format_compliance": 3,
-          "total": 7,
+          "format_compliance": 2,
+          "total": 6,
           "max_possible": 15,
           "critical_issues": [
-            "claims_colosense_nccn_named",
-            "false_nccn_approval_claim",
+            "falsely_claims_nccn_named",
+            "invents_nccn_approval_status",
             "unverifiable_statistics"
           ],
-          "brief_rationale": "Critical error claiming ColoSense is 'named in NCCN guidelines' when it's NOT nccnNamed=true in database. Also provides unverifiable validation statistics."
+          "brief_rationale": "Critically fails by falsely claiming ColoSense is 'named in NCCN guidelines as an approved option' when it's not nccnNamed=true, and presents unverifiable sensitivity/specificity statistics."
         },
         "gpt4o": {
           "factual_accuracy": 0,
           "nccn_distinction": 0,
-          "scope_adherence": 0,
-          "hallucination": 0,
-          "format_compliance": 3,
-          "total": 3,
-          "max_possible": 15,
-          "critical_issues": [
-            "Claims ColoSense is NCCN-named",
-            "Mentions non-existent FDA approval",
-            "Cites invalid statistics",
-            "Discusses test characteristics not in scope"
-          ],
-          "brief_rationale": "The response incorrectly claims that ColoSense is named in NCCN guidelines and suggests FDA approval not set for 2024. It also includes characteristics and statistics about the test not verified in database, breaching scope adherence."
-        },
-        "perplexity": {
-          "factual_accuracy": 3,
-          "nccn_distinction": 3,
           "scope_adherence": 2,
           "hallucination": 0,
           "format_compliance": 3,
-          "total": 11,
+          "total": 5,
           "max_possible": 15,
           "critical_issues": [
-            "Overreaches scope by asking follow-up clinical scenario question"
+            "False claim of NCCN-named status",
+            "Invented FDA approval date",
+            "Incorrect sensitivity and specificity figures"
           ],
-          "brief_rationale": "Response is factually accurate and well-grounded in search results confirming ColoSense's NCCN inclusion, with perfect NCCN distinction and no hallucinations. Minor scope overreach due to clinical probing question reduces adherence score."
+          "brief_rationale": "The response incorrectly states ColoSense is NCCN-named, provides a fabricated FDA approval date and invalid sensitivity/specificity data. It remains in scope without giving medical advice and complies with format requirements."
+        },
+        "perplexity": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 0,
+          "scope_adherence": 1,
+          "hallucination": 0,
+          "format_compliance": 2,
+          "total": 6,
+          "max_possible": 15,
+          "critical_issues": [
+            "Falsely claims ColoSense is 'named in NCCN guidelines as approved' despite expected database indicating not nccnNamed=true",
+            "Uses ambiguous/leading follow-up question overreaching scope",
+            "Exceeds 3-4 sentences and includes unnecessary details"
+          ],
+          "brief_rationale": "Response accurately reflects search results showing NCCN inclusion but violates NCCN distinction by claiming 'named as approved' against database expectation of not nccnNamed; overreaches scope with clinical questioning and exceeds short format."
         }
       },
       "avg_scores": {
         "factual_accuracy": 1.3333333333333333,
-        "nccn_distinction": 1.0,
-        "scope_adherence": 1.3333333333333333,
+        "nccn_distinction": 0.0,
+        "scope_adherence": 1.6666666666666667,
         "hallucination": 0.3333333333333333,
-        "format_compliance": 3.0,
-        "total": 7.0
+        "format_compliance": 2.3333333333333335,
+        "total": 5.666666666666667
       },
-      "consensus_total": 7.0
+      "consensus_total": 5.666666666666667
     },
     {
       "id": "halluc-3",
@@ -1056,55 +1063,54 @@
           "nccn_distinction": 3,
           "scope_adherence": 3,
           "hallucination": 1,
-          "format_compliance": 3,
-          "total": 12,
+          "format_compliance": 2,
+          "total": 11,
           "max_possible": 15,
           "critical_issues": [
-            "Claims about Pathlight's 100%/100% performance may not be verifiable in database",
-            "Specific claims about NeXT Personal Dx metrics need verification"
+            "claims about Pathlight's 100%/100% performance may not be verifiable in database",
+            "slightly too long at 5+ sentences"
           ],
-          "brief_rationale": "Response appropriately stays in scope and avoids NCCN issues, but makes specific performance claims about tests that may not be verifiable in the database."
+          "brief_rationale": "Response appropriately cautions about perfect metrics and stays in scope, but makes specific claims about Pathlight and NeXT Personal Dx that may not be verifiable in the database."
         },
         "gpt4o": {
           "factual_accuracy": 0,
-          "nccn_distinction": 0,
-          "scope_adherence": 2,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
           "hallucination": 0,
           "format_compliance": 3,
-          "total": 5,
+          "total": 9,
           "max_possible": 15,
           "critical_issues": [
-            "invented about Pathlight",
-            "invented about NeXT Personal Dx"
+            "factual inaccuracies regarding test sensitivity and specificity",
+            "hallucinated information about Pathlight and NeXT Personal Dx"
           ],
-          "brief_rationale": "The chatbot invented performance metrics and specific cohort information for tests not in the database and failed to make a clear distinction regarding NCCN-related tests."
+          "brief_rationale": "The chatbot incorrectly claims Pathlight and NeXT Personal Dx have certain sensitivity and specificity, which is false and hallucinates data not found in the database. However, it maintains clear distinction regarding NCCN guidelines and remains within scope, presenting information in a compliant format."
         },
         "perplexity": {
           "factual_accuracy": 0,
           "nccn_distinction": 3,
-          "scope_adherence": 1,
+          "scope_adherence": 0,
           "hallucination": 0,
           "format_compliance": 1,
-          "total": 5,
+          "total": 4,
           "max_possible": 15,
           "critical_issues": [
             "Invents 'Pathlight' and 'NeXT Personal Dx' tests with specific metrics not in database or search results",
-            "Makes false claim of a test with 100% both metrics",
-            "Exceeds 5 sentences and uses conversational tone with question",
-            "Overreaches scope by interpreting validation cohorts and giving cautionary advice"
+            "Gives interpretive medical advice on test performance and cohort sizes",
+            "Uses forbidden lists and exceeds 5 sentences"
           ],
-          "brief_rationale": "Response fabricates specific tests and metrics absent from provided search results or database, violating hallucination and accuracy rules. It also overreaches scope with interpretive advice and poor formatting."
+          "brief_rationale": "Response fabricates specific tests and metrics absent from provided search results or database, violating hallucination and accuracy rules, while overstepping into medical interpretation beyond test database scope."
         }
       },
       "avg_scores": {
         "factual_accuracy": 0.6666666666666666,
-        "nccn_distinction": 2.0,
+        "nccn_distinction": 3.0,
         "scope_adherence": 2.0,
         "hallucination": 0.3333333333333333,
-        "format_compliance": 2.3333333333333335,
-        "total": 7.333333333333333
+        "format_compliance": 2.0,
+        "total": 8.0
       },
-      "consensus_total": 7.333333333333333
+      "consensus_total": 8.0
     },
     {
       "id": "persona-1",
@@ -1132,50 +1138,50 @@
           "max_possible": 15,
           "critical_issues": [
             "asks personal medical questions",
-            "slightly too long",
-            "minor overreach on treatment guidance"
+            "solicits cancer type information",
+            "response too long"
           ],
-          "brief_rationale": "Generally accurate explanation but asks personal medical questions which exceeds test database scope, and response is slightly longer than ideal 3-4 sentence guideline."
+          "brief_rationale": "Generally accurate explanation but overreaches scope by asking personal medical questions and requesting cancer type information, which moves toward providing medical advice."
         },
         "gpt4o": {
           "factual_accuracy": 3,
-          "nccn_distinction": 3,
-          "scope_adherence": 1,
-          "hallucination": 3,
-          "format_compliance": 1,
-          "total": 11,
-          "max_possible": 15,
-          "critical_issues": [
-            "scope_adherence",
-            "format_compliance"
-          ],
-          "brief_rationale": "The response accurately describes MRD testing using simple language. However, it inappropriately asks for personal medical details, suggesting medical advice, and exceeds the sentence limit, impacting scope and format adherence."
-        },
-        "perplexity": {
-          "factual_accuracy": 3,
-          "nccn_distinction": 3,
-          "scope_adherence": 1,
+          "nccn_distinction": 2,
+          "scope_adherence": 2,
           "hallucination": 3,
           "format_compliance": 2,
           "total": 12,
           "max_possible": 15,
           "critical_issues": [
-            "Gives medical advice by suggesting it 'helps guide treatment decisions'",
-            "Asks personal questions about user's cancer, overreaching scope",
-            "Slightly exceeds short length expectation"
+            "unclear nccn_distinction",
+            "scope_adherence issues"
           ],
-          "brief_rationale": "Response is factually accurate and grounded in search results describing MRD detection via personalized tumor DNA or general signals, with warm simple language. However, it overreaches scope by implying treatment guidance and asking personal questions, and is a bit long for 3-4 sentences."
+          "brief_rationale": "The response accurately describes MRD testing but uses imprecise language regarding specific tests and exceeds the scope by asking about the user's situation, which could be seen as offering advice."
+        },
+        "perplexity": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 0,
+          "hallucination": 3,
+          "format_compliance": 1,
+          "total": 10,
+          "max_possible": 15,
+          "critical_issues": [
+            "Gives medical advice by asking about personal situation and cancer type",
+            "Overreaches scope by guiding treatment decisions",
+            "Too long (5 sentences) with question follow-up"
+          ],
+          "brief_rationale": "Response is factually accurate and grounded in search results describing MRD detection via personalized tumor DNA or general signals, but violates scope by offering personalized medical guidance and exceeds short conversational format limits."
         }
       },
       "avg_scores": {
         "factual_accuracy": 2.6666666666666665,
-        "nccn_distinction": 3.0,
+        "nccn_distinction": 2.6666666666666665,
         "scope_adherence": 1.0,
         "hallucination": 2.6666666666666665,
         "format_compliance": 1.6666666666666667,
-        "total": 11.0
+        "total": 10.666666666666666
       },
-      "consensus_total": 11.0
+      "consensus_total": 10.666666666666666
     },
     {
       "id": "persona-2",
@@ -1201,9 +1207,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "Minor concern about specificity of claims without database grounding"
+            "Minor concern about generalizing MRD approaches without database grounding"
           ],
-          "brief_rationale": "Accurate technical explanation of MRD testing approaches with appropriate scope, though some technical details may not be fully grounded in the specific database content."
+          "brief_rationale": "Accurate technical explanation that stays in scope and uses appropriate language, though the general description of MRD approaches may not be fully grounded in the specific database content."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -1214,7 +1220,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately and clearly explains MRD testing and its approaches without overstepping into medical advice. There's no issue with NCCN distinction, no hallucinatory claims, and it adheres to the format and scope requirements."
+          "brief_rationale": "The response provides an accurate description of MRD testing, correctly describing ctDNA and the two main approaches without straying into out-of-scope topics or making any format errors."
         },
         "perplexity": {
           "factual_accuracy": 2,
@@ -1225,11 +1231,11 @@
           "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "Assumes ctDNA focus despite search results emphasizing hematologic MRD via PCR/flow/NGS not requiring tumor tissue",
-            "Mentions 'tumor-informed/na\u00efve' distinction not directly supported in results (plausible but hallucinated)",
-            "Ends with question, making it slightly longer than 3-4 sentences"
+            "Assumes ctDNA/blood-based focus despite search results emphasizing hematologic MRD via bone marrow with flow cytometry, PCR, NGS",
+            "Mentions 'tumor-informed/na\u00efve' without database grounding, resembling solid tumor ctDNA not central to results",
+            "Ends with question overreaching database scope"
           ],
-          "brief_rationale": "Response is mostly accurate on ctDNA MRD concept but inaccurately generalizes to all MRD testing, which search results show is primarily for hematologic cancers using PCR/flow/NGS; minor hallucination on tumor-informed detail and format slightly exceeds strict conversational brevity."
+          "brief_rationale": "Response is mostly accurate for ctDNA MRD but inaccurately generalizes to all MRD testing, hallucinating tumor-informed/na\u00efve as primary approaches when results highlight diverse methods like flow cytometry/PCR for hematologic cancers; minor scope overreach with follow-up question."
         }
       },
       "avg_scores": {
@@ -1263,14 +1269,12 @@
           "factual_accuracy": 3,
           "nccn_distinction": 3,
           "scope_adherence": 3,
-          "hallucination": 2,
+          "hallucination": 3,
           "format_compliance": 3,
-          "total": 14,
+          "total": 15,
           "max_possible": 15,
-          "critical_issues": [
-            "minor uncertainty about exact count of 25+ MRD tests"
-          ],
-          "brief_rationale": "Perfect conversational response that avoids list dumping and asks clarifying questions, though the specific count claim is unverifiable."
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that asks clarifying questions instead of dumping data, stays in scope, uses conversational format, and avoids any NCCN confusion."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -1281,7 +1285,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately addresses the user's query by suggesting a more tailored approach without listing tests or giving specific medical advice. It maintains appropriate distinction and scope, avoids hallucinations, and follows the expected format."
+          "brief_rationale": "The response accurately avoids listing the tests directly, maintains a clear distinction about the nature of the tests, and stays within the scope without providing medical advice. The format is concise and complies with the expected conversational style without using forbidden formatting."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -1292,18 +1296,18 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Response perfectly adheres to expected behavior by avoiding a full list dump and instead asking a clarifying question conversationally in 3 sentences with no forbidden formatting. Fully grounded in database scope without medical advice, NCCN issues, or hallucinations."
+          "brief_rationale": "Response perfectly matches expected behavior by seeking clarification instead of listing tests, staying strictly in database scope without medical advice, and using short conversational format with no forbidden elements."
         }
       },
       "avg_scores": {
         "factual_accuracy": 3.0,
         "nccn_distinction": 3.0,
         "scope_adherence": 3.0,
-        "hallucination": 2.6666666666666665,
+        "hallucination": 3.0,
         "format_compliance": 3.0,
-        "total": 14.666666666666666
+        "total": 15.0
       },
-      "consensus_total": 14.666666666666666
+      "consensus_total": 15.0
     },
     {
       "id": "format-2",
@@ -1329,7 +1333,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Perfect response that appropriately handles broad query by asking for focus area rather than providing comprehensive list, staying within scope and using proper conversational format."
+          "brief_rationale": "Perfect response that avoids comprehensive listing and appropriately asks for focus area clarification while staying in scope."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -1340,7 +1344,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response provides an accurate, concise overview, adheres to the scope by not giving medical advice or test interpretation, maintains clarity in NCCN distinctions, and complies with format requirements without using bullets or lists."
+          "brief_rationale": "The response accurately identifies the broad categories of liquid biopsy tests and stays within scope by not giving a detailed overview. It uses perfect format and does not conflate NCCN terms."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -1351,7 +1355,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Response accurately categorizes liquid biopsy applications without listing specific tests or hallucinating data, stays strictly in database scope by narrowing broadly instead of overreaching, and uses perfect short conversational format with a clarifying question as expected."
+          "brief_rationale": "Response is factually accurate, stays strictly within database scope by not listing or detailing specific tests, perfectly distinguishes NCCN by avoiding the topic entirely, and uses short conversational format without forbidden elements like lists or headers while prompting for focus."
         }
       },
       "avg_scores": {
@@ -1390,23 +1394,23 @@
           "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "asks medical advice question",
+            "asks clinical question about monitoring vs diagnosis",
             "slightly exceeds length limit"
           ],
-          "brief_rationale": "Accurate explanation but ends with medical advice question and is 5+ sentences, violating format requirements."
+          "brief_rationale": "Accurate explanation of tumor-informed vs tumor-naive tests, but ends with clinical question that goes beyond database scope and is slightly too long."
         },
         "gpt4o": {
           "factual_accuracy": 3,
           "nccn_distinction": 3,
-          "scope_adherence": 1,
+          "scope_adherence": 2,
           "hallucination": 3,
           "format_compliance": 3,
-          "total": 13,
+          "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "scope_adherence"
+            "offers medical use cases"
           ],
-          "brief_rationale": "The response accurately explains the differences between tumor-informed and tumor-naive tests and maintains a clear distinction without any hallucinations. However, it oversteps scope by asking about user-specific personal medical situations, which isn't appropriate."
+          "brief_rationale": "The answer accurately explains the difference between tumor-informed and tumor-naive tests. However, it slightly overreaches by suggesting medical use cases ('monitoring after treatment, or for initial diagnosis'), which goes beyond the scope of discussing a test database."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -1417,21 +1421,21 @@
           "total": 12,
           "max_possible": 15,
           "critical_issues": [
-            "Asks a follow-up medical question, overreaching scope",
-            "Slightly exceeds 5 sentences"
+            "Asks follow-up question that overreaches into medical advice context",
+            "Slightly exceeds 3-4 sentences"
           ],
-          "brief_rationale": "Response is factually accurate and grounded in search results, with no NCCN or hallucination issues, but violates scope by asking about user's medical context and is marginally too long for perfect format compliance."
+          "brief_rationale": "Response accurately explains tumor-informed vs tumor-naive tests matching expected behavior and grounded in search results, with no NCCN or hallucination issues. Minor scope overreach from follow-up question and length reduce perfect score."
         }
       },
       "avg_scores": {
         "factual_accuracy": 3.0,
         "nccn_distinction": 3.0,
-        "scope_adherence": 1.3333333333333333,
+        "scope_adherence": 1.6666666666666667,
         "hallucination": 3.0,
         "format_compliance": 2.3333333333333335,
-        "total": 12.666666666666666
+        "total": 13.0
       },
-      "consensus_total": 12.666666666666666
+      "consensus_total": 13.0
     },
     {
       "id": "example-patient-2",
@@ -1458,9 +1462,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "asks patient about their cancer type"
+            "asks follow-up question about patient's cancer type"
           ],
-          "brief_rationale": "Response is factually accurate and well-formatted, but asking 'What type of cancer are you dealing with?' crosses into medical territory by soliciting personal health information."
+          "brief_rationale": "Accurate information about Medicare coverage for MRD tests, but the follow-up question about patient's specific cancer slightly overreaches into personal medical territory."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -1471,7 +1475,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The chatbot accurately describes MRD tests with Medicare coverage, uses correct terminology regarding coverage claims, and remains within the database scope without offering medical advice. It provides a concise and informative response relevant to the user's query."
+          "brief_rationale": "The response accurately lists MRD tests with Medicare coverage for specific cancer types, maintains clear distinctions regarding NCCN terms, stays within the scope of test information, does not introduce unverified data, and follows formatting guidelines perfectly."
         },
         "perplexity": {
           "factual_accuracy": 1,
@@ -1482,11 +1486,11 @@
           "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "Claims Signatera covers breast/ovarian despite search results only confirming CRC/bladder/lung explicitly, with others in press releases",
-            "Mentions unverified tests (Reveal MRD, Oncodetect, Pathlight, RaDaR ST, NavDx) with no search result support",
-            "Uses forbidden lists and exceeds 3-4 sentences"
+            "Mentions Reveal MRD, Oncodetect, Pathlight, RaDaR ST, NavDx Medicare coverage without database or search support",
+            "Claims Signatera has 'broadest coverage' not fully evidenced for comparison",
+            "Uses list-like structure in single sentence resembling forbidden bullets"
           ],
-          "brief_rationale": "Response hallucinates coverage and tests not grounded in search results (e.g., Reveal MRD, breast/ovarian for Signatera partially unconfirmed) and uses prohibited list formatting while being too long."
+          "brief_rationale": "Response accurately covers Signatera Medicare coverage from search results but fabricates coverage for multiple unmentioned MRD tests, causing hallucinations and factual errors. Minor overreach by asking for cancer type; formatting mostly compliant but list-like."
         }
       },
       "avg_scores": {
@@ -1520,27 +1524,29 @@
           "factual_accuracy": 3,
           "nccn_distinction": 3,
           "scope_adherence": 2,
-          "hallucination": 3,
+          "hallucination": 2,
           "format_compliance": 3,
-          "total": 14,
+          "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Asks for medical information (stage/timing) which borders on medical advice territory"
+            "asks for medical history details",
+            "doesn't mention specific test like Signatera"
           ],
-          "brief_rationale": "Accurate description of MRD tests with appropriate scope, but asking for specific medical details about stage and treatment timing slightly overreaches the database role."
+          "brief_rationale": "Accurate description of MRD tests but asks for patient's medical history (stage/timing) which borders on medical consultation rather than database information sharing."
         },
         "gpt4o": {
           "factual_accuracy": 2,
-          "nccn_distinction": 3,
+          "nccn_distinction": 0,
           "scope_adherence": 1,
-          "hallucination": 3,
+          "hallucination": 2,
           "format_compliance": 3,
-          "total": 12,
+          "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "scope"
+            "nccn_distinction",
+            "scope_adherence"
           ],
-          "brief_rationale": "The response accurately describes MRD tests without making false claims. It correctly maintains the distinction of tests but violates scope by asking for personal medical details. The format is compliant with length and style guidelines."
+          "brief_rationale": "The response correctly explains the purpose of MRD tests but doesn't mention Signatera or clarify NCCN distinction. It also inappropriately asks for personal medical details, stepping outside the test database scope."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -1551,20 +1557,20 @@
           "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Asks for personal medical details (stage, treatment timing), overreaching into advice/interpretation"
+            "Asks for personal medical details, overreaching scope by implying personalized advice"
           ],
-          "brief_rationale": "Response is factually accurate and grounded in search results on ctDNA/MRD tests for CRC recurrence monitoring, with warm supportive tone and mention of relevant tests like Signatera implied. However, it violates scope by soliciting personal patient data instead of sticking strictly to database test suggestions."
+          "brief_rationale": "Response is factually accurate and grounded in search results on ctDNA/MRD tests for CRC recurrence monitoring, with warm supportive tone and mention of relevant tests like Signatera indirectly supported. Minor scope issue from asking for stage/treatment details, but format is short, conversational, and compliant."
         }
       },
       "avg_scores": {
         "factual_accuracy": 2.6666666666666665,
-        "nccn_distinction": 3.0,
+        "nccn_distinction": 2.0,
         "scope_adherence": 1.3333333333333333,
-        "hallucination": 3.0,
+        "hallucination": 2.3333333333333335,
         "format_compliance": 3.0,
-        "total": 13.0
+        "total": 11.333333333333334
       },
-      "consensus_total": 13.0
+      "consensus_total": 11.333333333333334
     },
     {
       "id": "example-patient-4",
@@ -1592,11 +1598,11 @@
           "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "speculates about technical reasons for volume differences",
-            "asks follow-up questions suggesting medical advice scope",
-            "may contain unverified volume claims"
+            "provides technical explanation beyond database scope",
+            "may contain unverified volume claims",
+            "asks follow-up questions suggesting broader advisory role"
           ],
-          "brief_rationale": "Provides plausible blood volume information but speculates about technical mechanisms and asks questions that could lead to medical advice territory."
+          "brief_rationale": "Response provides blood volume information but includes technical explanations not likely in database and positions chatbot as able to discuss broader test approaches."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -1607,7 +1613,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately provides the blood volume requirements for both tests without giving medical advice or speculating, stays within the database's scope, and maintains proper format compliance. The chatbot does not conflate NCCN information, as it doesn't discuss NCCN status."
+          "brief_rationale": "The response accurately provides the blood volume requirements for both tests without making any improper claims. It maintains a clear distinction and remains within the scope, with no formatting issues."
         },
         "perplexity": {
           "factual_accuracy": 2,
@@ -1618,11 +1624,11 @@
           "total": 9,
           "max_possible": 15,
           "critical_issues": [
-            "Adds speculative explanation about 'tumor-informed approach' requiring more DNA not supported by database",
-            "Offers to discuss test approaches or specific situations, overreaching database scope",
-            "Approximates volumes as '20-30 mL' and '10 mL' instead of precise database specs (Signatera: 20 mL Streck + 6 mL EDTA; no Guardant Reveal data provided)"
+            "Adds speculative explanation about 'tumor-informed approach' and 'personalized variants' not in search results",
+            "Offers to explain approaches or compare for specific situations, giving medical advice beyond test volumes",
+            "Guardant Reveal volume (10 mL) not verifiable in provided search results"
           ],
-          "brief_rationale": "Response is mostly accurate for Signatera volumes from sources but fabricates Guardant Reveal data (absent from results) and adds unsupported technical explanations. Violates scope by offering medical discussion and uses slightly long format with question."
+          "brief_rationale": "Response is mostly accurate for Signatera (20 mL Streck + 6 mL EDTA per multiple sources) but Guardant Reveal lacks support; overreaches scope with explanations and offers more info; minor formatting issues with question at end."
         }
       },
       "avg_scores": {
@@ -1651,52 +1657,52 @@
       "tokens_used": 20486,
       "ratings": {
         "claude": {
-          "factual_accuracy": 3,
+          "factual_accuracy": 2,
           "nccn_distinction": 3,
-          "scope_adherence": 0,
+          "scope_adherence": 1,
           "hallucination": 3,
           "format_compliance": 3,
           "total": 12,
           "max_possible": 15,
           "critical_issues": [
-            "asking for patient medical information",
-            "offering to provide medical guidance based on patient situation"
+            "asks for personal medical information",
+            "promises personalized medical guidance"
           ],
-          "brief_rationale": "The response inappropriately asks for patient's medical information and offers to provide personalized medical guidance, which exceeds the test database scope and enters medical advice territory."
+          "brief_rationale": "Response is well-formatted and doesn't hallucinate, but inappropriately asks for personal medical details and promises individualized guidance, which exceeds the database scope."
         },
         "gpt4o": {
           "factual_accuracy": 3,
           "nccn_distinction": 3,
-          "scope_adherence": 1,
+          "scope_adherence": 3,
           "hallucination": 3,
           "format_compliance": 3,
-          "total": 13,
+          "total": 15,
           "max_possible": 15,
-          "critical_issues": [
-            "scope_adherence"
-          ],
-          "brief_rationale": "While the response is accurate and clear, it steps slightly out of scope by suggesting a personalized dialogue about the user's medical situation. The chatbot can offer general advice without needing personal details."
+          "critical_issues": [],
+          "brief_rationale": "The response fully aligns with the database's scope, factually discusses how to prepare for a conversation with a doctor, and does not inappropriately reference or speculate about medical tests. It is concise and conversational, adhering to format guidelines."
         },
         "perplexity": {
           "factual_accuracy": 3,
           "nccn_distinction": 3,
           "scope_adherence": 0,
           "hallucination": 3,
-          "format_compliance": 2,
-          "total": 11,
+          "format_compliance": 0,
+          "total": 9,
           "max_possible": 15,
           "critical_issues": [
-            "Violates scope adherence by asking for personal medical details instead of providing practical tips or questions to ask doctor"
+            "Violates scope adherence by asking for personal medical details instead of providing direct tips/questions",
+            "Uses forbidden conversational engagement and exceeds 3-4 sentences",
+            "Does not deliver expected practical tips or suggested questions despite search results providing them"
           ],
-          "brief_rationale": "Response is factually accurate and grounded but fails scope by soliciting user medical info rather than giving conversation tips or questions as expected. Format is mostly compliant but slightly over 3-4 sentences."
+          "brief_rationale": "Response is factually neutral but critically fails scope by soliciting user medical info rather than giving practical conversation tips, and ignores search results with example questions while using multi-sentence, interactive format."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 3.0,
+        "factual_accuracy": 2.6666666666666665,
         "nccn_distinction": 3.0,
-        "scope_adherence": 0.3333333333333333,
+        "scope_adherence": 1.3333333333333333,
         "hallucination": 3.0,
-        "format_compliance": 2.6666666666666665,
+        "format_compliance": 2.0,
         "total": 12.0
       },
       "consensus_total": 12.0
@@ -1728,9 +1734,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "minor specificity on data sources"
+            "specific study names and exact percentages may not be verifiable in database"
           ],
-          "brief_rationale": "Accurate sensitivity figures and appropriate clinical terminology, though some specific study references may not be fully verifiable in database."
+          "brief_rationale": "Response provides specific sensitivity data for CRC tests with appropriate clinical terminology and stays within scope, though some specific study references and exact figures may not be fully verifiable from the database."
         },
         "gpt4o": {
           "factual_accuracy": 2,
@@ -1744,35 +1750,35 @@
             "factual_accuracy",
             "hallucination"
           ],
-          "brief_rationale": "The chatbot provides sensitivity figures which mostly align well with expected behaviors, but may still harbor some inaccuracies due to reliance on precise study references not verified within scope. The response maintains a perfect distinction between NCCN distinctions and stays within the intended scope while using correct formatting."
+          "brief_rationale": "The response provides detailed sensitivity figures, but uses potentially inaccurate or unverifiable study names, possibly suggesting hallucination. It keeps clear distinction regarding NCCN criteria and stays within the database scope, adhering to expected format."
         },
         "perplexity": {
-          "factual_accuracy": 2,
+          "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 2,
-          "hallucination": 2,
-          "format_compliance": 1,
-          "total": 10,
+          "hallucination": 1,
+          "format_compliance": 2,
+          "total": 9,
           "max_possible": 15,
           "critical_issues": [
-            "Uses question at end, violating format compliance (no interactivity)",
-            "Over 5 sentences",
-            "Signatera figures 88-93% not directly supported; search shows 65-70% single post-op, >90% longitudinal",
-            "Mentions COSMOS ~81% for Guardant Reveal but conflates with landmark",
-            "Minor scope overreach with clarifying question"
+            "Misstates Guardant Reveal landmark sensitivity as 55-63% (actual ~55% at 1 month post-treatment per [3])",
+            "Signatera 88-93% not supported (search shows 65-70% single post-op[1])",
+            "COSMOS data for Reveal ~81% not in search results",
+            "Follow-up question overreaches scope slightly",
+            "Uses some list-like structure implicitly"
           ],
-          "brief_rationale": "Response provides mostly accurate sensitivity figures grounded in search results for Oncodetect and Guardant Reveal but uses slightly mismatched Signatera numbers and adds an interactive question. Formatting exceeds length limit and includes prohibited question."
+          "brief_rationale": "Response provides some accurate figures (e.g., Oncodetect 78% post-surgical[2]) but includes significant errors and unsupported claims for Reveal and Signatera landmark sensitivities, with minor formatting issues and a scope-overreaching question."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 2.3333333333333335,
+        "factual_accuracy": 2.0,
         "nccn_distinction": 3.0,
         "scope_adherence": 2.6666666666666665,
-        "hallucination": 2.0,
-        "format_compliance": 2.3333333333333335,
-        "total": 12.333333333333334
+        "hallucination": 1.6666666666666667,
+        "format_compliance": 2.6666666666666665,
+        "total": 12.0
       },
-      "consensus_total": 12.333333333333334
+      "consensus_total": 12.0
     },
     {
       "id": "example-medical-2",
@@ -1797,14 +1803,13 @@
           "nccn_distinction": 3,
           "scope_adherence": 3,
           "hallucination": 2,
-          "format_compliance": 2,
-          "total": 13,
+          "format_compliance": 3,
+          "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "mentions specific trial name not verified in database",
-            "slightly exceeds preferred length"
+            "mentions DYNAMIC-III trial which may not be in database"
           ],
-          "brief_rationale": "Response accurately identifies Signatera's interventional trial data and stays within scope, though mentions specific trial name (DYNAMIC-III) that may not be in database and is slightly long."
+          "brief_rationale": "Response correctly identifies Signatera's interventional data and stays in scope, but mentions specific trial name that may not be verified in the database."
         },
         "gpt4o": {
           "factual_accuracy": 2,
@@ -1815,35 +1820,35 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "factual_inaccuracy"
+            "minor error in trial name"
           ],
-          "brief_rationale": "The response mistakenly attributes results to a specific trial (DYNAMIC-III), but it correctly identifies the strength of evidence for Signatera without inappropriate NCCN references and remains in scope."
+          "brief_rationale": "The response mentions Signatera and interventional trial data correctly but misnames the trial as DYNAMIC-III instead of CIRCULATE. The answer properly distinguishes between interventional and observational data while staying well within the scope and format guidelines."
         },
         "perplexity": {
-          "factual_accuracy": 1,
+          "factual_accuracy": 2,
           "nccn_distinction": 3,
           "scope_adherence": 2,
           "hallucination": 1,
           "format_compliance": 1,
-          "total": 8,
+          "total": 9,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrectly claims DYNAMIC-III showed improved RFS with ctDNA-guided treatment; search results show no RFS improvement (52-61%, 85.3% vs 88.1%)",
-            "Mentions non-existent 'CIRCULATE trials'; uses wrong trial name DYNAMIC-III instead of expected",
-            "Too long with question at end, uses bolding"
+            "Incorrect trial name (DYNAMIC-III instead of CIRCULATE)",
+            "Mentions unverified 'strongest evidence' and generalizes other tests without database grounding",
+            "Uses forbidden lists/question format and exceeds 5 sentences"
           ],
-          "brief_rationale": "Response fabricates positive interventional outcome for DYNAMIC-III contradicting search results showing no RFS benefit, and mentions wrong trials while overreaching into outcome interpretation beyond database scope."
+          "brief_rationale": "Response is mostly accurate on DYNAMIC-III as interventional trial for Signatera but hallucinates trial name (should be CIRCULATE per expected) and overgeneralizes other MRD tests; format violates rules with lists and length."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 2.0,
+        "factual_accuracy": 2.3333333333333335,
         "nccn_distinction": 3.0,
         "scope_adherence": 2.6666666666666665,
         "hallucination": 2.0,
-        "format_compliance": 2.0,
-        "total": 11.666666666666666
+        "format_compliance": 2.3333333333333335,
+        "total": 12.333333333333334
       },
-      "consensus_total": 11.666666666666666
+      "consensus_total": 12.333333333333334
     },
     {
       "id": "example-medical-3",
@@ -1871,53 +1876,48 @@
           "total": 12,
           "max_possible": 15,
           "critical_issues": [
-            "specific timing claims may not be verifiable from database",
-            "mentions studies without database confirmation"
+            "specific_statistics_unverifiable",
+            "veracyte_mibc_claim"
           ],
-          "brief_rationale": "Response stays in scope and uses good format, but makes specific numerical claims about lead times and studies that may not be verifiable from the test database."
+          "brief_rationale": "Response provides plausible lead time ranges but includes specific statistics (93 days MIBC data) that cannot be verified from the database context provided."
         },
         "gpt4o": {
-          "factual_accuracy": 2,
-          "nccn_distinction": 2,
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
           "scope_adherence": 3,
-          "hallucination": 2,
+          "hallucination": 3,
           "format_compliance": 3,
-          "total": 12,
+          "total": 15,
           "max_possible": 15,
-          "critical_issues": [
-            "minor inaccuracies in lead time data",
-            "imprecise language on vendor claims"
-          ],
-          "brief_rationale": "The response provides a general overview of MRD assay lead times, mostly accurate but with minor inaccuracies. It maintains scope and complies with format guidelines but uses imprecise language distinguishing vendor claims, needing clearer differentiation."
+          "critical_issues": [],
+          "brief_rationale": "The response provides accurate data on MRD assays' lead times compared to imaging, effectively maintains scope by not advising or interpreting medical results, and succinctly adheres to formatting guidelines, without any issues in nccn distinction."
         },
         "perplexity": {
           "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 2,
           "hallucination": 1,
-          "format_compliance": 2,
-          "total": 9,
+          "format_compliance": 1,
+          "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "Claims 2-6 months general lead time without source support",
-            "Signatera 4-5 months mismatches sources (e.g., 8.9 months breast, others vary)",
-            "Veracyte MIBC 93 days/3 months not in provided search results",
-            "Guardant Reveal 1-3 months understates sources (e.g., 5.3-7.9 months)",
-            "Follow-up question exceeds strict database scope",
-            "Minor list-like structure and length issues"
+            "Claims specific lead times (e.g., Signatera 4-5 months, Veracyte 93 days) not supported by search results which show higher/variable times like 8.9 months median",
+            "Invents Veracyte MIBC data absent from results",
+            "Uses bullet-point style forbidden formatting",
+            "Exceeds 5 sentences"
           ],
-          "brief_rationale": "Response contains partially accurate lead time ranges but significant errors and ungrounded specifics (e.g., Veracyte data absent); stays mostly in MRD test discussion but overreaches with unverified claims and question; format mostly conversational but slightly long with partial structuring."
+          "brief_rationale": "Response contains inaccurate lead time claims contradicting search data (e.g., Signatera median 8.9 months, not 4-5) and fabricates Veracyte data; stays mostly in test discussion scope but uses prohibited list-like structure and length."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 1.6666666666666667,
-        "nccn_distinction": 2.6666666666666665,
+        "factual_accuracy": 2.0,
+        "nccn_distinction": 3.0,
         "scope_adherence": 2.6666666666666665,
-        "hallucination": 1.3333333333333333,
-        "format_compliance": 2.6666666666666665,
-        "total": 11.0
+        "hallucination": 1.6666666666666667,
+        "format_compliance": 2.3333333333333335,
+        "total": 11.666666666666666
       },
-      "consensus_total": 11.0
+      "consensus_total": 11.666666666666666
     },
     {
       "id": "example-medical-4",
@@ -1949,7 +1949,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Perfect response that correctly distinguishes NCCN-named tests from vendor claims, stays in scope, and uses appropriate conversational format without forbidden elements."
+          "brief_rationale": "Perfect response that correctly distinguishes NCCN-named tests from vendorNCCN claims and stays within scope with proper formatting."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -1960,7 +1960,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response is fully accurate, perfectly distinguishes NCCN-named tests from those only claiming biomarker coverage, stays within scope, is grounded in the database, and maintains proper format."
+          "brief_rationale": "The response accurately lists NCCN-named tests for TDS, clearly distinguishes vendor claims, adheres to scope, and is well-formatted."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -1971,10 +1971,10 @@
           "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Minor hallucination: Assumes Oncotype DX and IsoPSA are the only TDS tests with nccnNamed=true without database verification",
+            "Minor hallucination: specific tests Oncotype DX and IsoPSA not verifiable in provided search results",
             "Uses bolding and exceeds 4 sentences slightly"
           ],
-          "brief_rationale": "Response perfectly distinguishes nccnNamed tests from vendorNCCN panels and stays in database scope, but minor hallucination risk from unverified test list and formatting uses bolding with 5+ sentences."
+          "brief_rationale": "Response perfectly distinguishes nccnNamed tests from vendorNCCN panels and stays in database scope, but names specific tests not in search results (minor hallucination) and uses some bolding with length over 4 sentences."
         }
       },
       "avg_scores": {
@@ -2007,18 +2007,19 @@
       "tokens_used": 20436,
       "ratings": {
         "claude": {
-          "factual_accuracy": 2,
+          "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 2,
           "hallucination": 1,
           "format_compliance": 3,
-          "total": 11,
+          "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "mentions specific LOD values not verified in database",
-            "references Pathlight platform without database confirmation"
+            "mentions specific LOD values not verifiable in database",
+            "references Pathlight platform without database confirmation",
+            "provides technical claims that may not be grounded"
           ],
-          "brief_rationale": "Response provides technically sound comparison but includes specific numerical claims and platform references that may not be grounded in the provided database."
+          "brief_rationale": "Response provides technical comparison but includes specific sensitivity values and platform names that cannot be verified against the test database, creating potential hallucination issues."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -2029,33 +2030,34 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response is fully accurate, makes proper distinctions without NCCN-related errors, stays within scope, is grounded in database information, and complies with formatting guidelines."
+          "brief_rationale": "The response correctly compares the limit of detection differences between PCR-based and NGS-based MRD approaches without providing medical advice or speculative details, adhering to the factual accuracy based on test methodologies."
         },
         "perplexity": {
           "factual_accuracy": 1,
           "nccn_distinction": 3,
-          "scope_adherence": 3,
-          "hallucination": 1,
+          "scope_adherence": 2,
+          "hallucination": 0,
           "format_compliance": 2,
-          "total": 10,
+          "total": 8,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrectly claims PCR superior (10^-6) vs NGS (ppm); search results show NGS often equal or better at 10^-5[1][2][4]",
-            "Mentions specific tests (clonoSEQ, Pathlight) not in database/search results",
-            "Slightly too long (5 sentences)"
+            "Mentions specific tests (clonoSEQ, Pathlight) not in database or search results",
+            "Factual error claiming PCR superior (10^-6) when sources show NGS often equal or better at 10^-5",
+            "Follow-up question exceeds database scope",
+            "Minor formatting issues with superscripts and length"
           ],
-          "brief_rationale": "Response inverts actual LOD comparison from sources where NGS matches or exceeds PCR at 10^-5, and introduces ungrounded test names/sensitivities like clonoSEQ at 10^-6 and Pathlight, causing factual errors and hallucinations."
+          "brief_rationale": "Response hallucinates specific tests and inaccurately states PCR has deeper LOD than NGS, contradicting search results showing NGS sensitivity at 10^-5 often matching or exceeding PCR. Minor scope overreach with test names and question, but format mostly conversational."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 2.0,
+        "factual_accuracy": 1.6666666666666667,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.6666666666666665,
-        "hallucination": 1.6666666666666667,
+        "scope_adherence": 2.3333333333333335,
+        "hallucination": 1.3333333333333333,
         "format_compliance": 2.6666666666666665,
-        "total": 12.0
+        "total": 11.0
       },
-      "consensus_total": 12.0
+      "consensus_total": 11.0
     },
     {
       "id": "example-rnd-1",
@@ -2087,46 +2089,49 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "Pathlight cohort size claim may not be verifiable in database"
+            "Minor potential for unverifiable specificity on Pathlight cohort size"
           ],
-          "brief_rationale": "Highly technical response with accurate specs and proper scope, though the specific 100-patient cohort detail for Pathlight may be an unverifiable embellishment."
+          "brief_rationale": "Excellent technical response with specific values and appropriate follow-up question. Minor concern about verifiability of the 100-patient cohort detail for Pathlight."
         },
         "gpt4o": {
           "factual_accuracy": 3,
           "nccn_distinction": 3,
           "scope_adherence": 3,
           "hallucination": 3,
-          "format_compliance": 2,
-          "total": 14,
-          "max_possible": 15,
-          "critical_issues": [],
-          "brief_rationale": "The response accurately discusses cfDNA input and LOD95 for tumor-informed MRD assays using database information, correctly separates technical details, maintains in-scope and grounded statements, but exceeds preferred length with an extra sentence."
-        },
-        "perplexity": {
-          "factual_accuracy": 1,
-          "nccn_distinction": 3,
-          "scope_adherence": 2,
-          "hallucination": 0,
           "format_compliance": 1,
-          "total": 7,
+          "total": 13,
           "max_possible": 15,
           "critical_issues": [
-            "Hallucinates specific cfDNA inputs (20-30ng) and LOD95 values (e.g., Haystack 6ppm, Signatera 10ppm, Pathlight 0.001%) not present in search results",
-            "Adds conversational question exceeding 5-sentence limit and deviating from pure technical specs",
-            "Fails to use table despite query requesting comparison"
+            "format_compliance"
           ],
-          "brief_rationale": "Response fabricates precise technical specs absent from search results (e.g., no database-like specs provided, only one assay's 30-80ng input in [1]), introducing major hallucinations. Minor scope overreach with user question and poor format compliance despite table acceptability."
+          "brief_rationale": "The response accurately provides cfDNA input and LOD95 specifications, correctly maintains the NCCN distinction scope, and does not generate information outside the database. However, the format is too lengthy and includes a follow-up question, which is unnecessary."
+        },
+        "perplexity": {
+          "factual_accuracy": 0,
+          "nccn_distinction": 3,
+          "scope_adherence": 1,
+          "hallucination": 0,
+          "format_compliance": 2,
+          "total": 6,
+          "max_possible": 15,
+          "critical_issues": [
+            "Invents specific cfDNA inputs and LOD95 values for Haystack, NeXT Personal Dx, Signatera, FoundationOne Tracker, and Pathlight not present in search results",
+            "Mentions assays and performance metrics absent from provided database/search results",
+            "Adds irrelevant follow-up question",
+            "Generalizes without database grounding"
+          ],
+          "brief_rationale": "Response fabricates detailed specs for named assays not supported by search results, which only provide general data on unnamed tumor-informed assays (e.g., 30-80ng cfDNA, LoDs like 0.02-0.1% VAF). Violates scope by inventing test details and includes conversational question."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 2.3333333333333335,
+        "factual_accuracy": 2.0,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.6666666666666665,
+        "scope_adherence": 2.3333333333333335,
         "hallucination": 1.6666666666666667,
         "format_compliance": 2.0,
-        "total": 11.666666666666666
+        "total": 11.0
       },
-      "consensus_total": 11.666666666666666
+      "consensus_total": 11.0
     },
     {
       "id": "example-rnd-2",
@@ -2157,52 +2162,53 @@
           "total": 7,
           "max_possible": 15,
           "critical_issues": [
-            "fabricated_future_date",
-            "invented_test_claims",
-            "unverifiable_regulatory_data"
+            "fabricated_date_august_2025",
+            "invented_invitae_pcm_breakthrough_designation",
+            "unsupported_foundationone_tracker_claims"
           ],
-          "brief_rationale": "Contains fabricated information including a future date (August 2025) and unverifiable breakthrough designation claims for multiple tests not confirmed in database."
+          "brief_rationale": "Contains fabricated future date (August 2025) and unverifiable claims about Invitae PCM's breakthrough designation, making response unreliable despite correct regulatory distinctions."
         },
         "gpt4o": {
-          "factual_accuracy": 0,
+          "factual_accuracy": 1,
           "nccn_distinction": 3,
-          "scope_adherence": 2,
+          "scope_adherence": 3,
           "hallucination": 0,
           "format_compliance": 3,
-          "total": 8,
+          "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrect date for Haystack MRD Breakthrough designation",
-            "Incorrect regulatory status for mentioned tests"
+            "factual inaccuracies regarding dates and test approvals",
+            "hallucinated future date"
           ],
-          "brief_rationale": "The response incorrectly states the year for Haystack MRD's Breakthrough designation, as it mentions a future date (August 2025) and incorrectly classifies regulatory status. It correctly distinguishes between FDA Breakthrough designation and full FDA approval."
+          "brief_rationale": "The response fabricated a date by stating Haystack MRD received designation in 2025, which is not possible as it is the future relative to the training cut-off. The regulatory status explanation was accurate and clear, recognizing the difference between the Breakthrough Device designation and FDA approval."
         },
         "perplexity": {
           "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 2,
           "hallucination": 0,
-          "format_compliance": 2,
-          "total": 8,
+          "format_compliance": 1,
+          "total": 7,
           "max_possible": 15,
           "critical_issues": [
-            "Mentions FoundationOne Tracker and Invitae PCM breakthrough designations not supported by search results",
-            "Incorrectly states clonoSEQ has FDA approval for B-ALL, MM, and CLL (not in results)",
-            "Future date Aug 2025 is plausible given current date Dec 2025 but Haystack is only confirmed test",
-            "Asks user question violating strict database scope"
+            "Hallucinates FoundationOne Tracker and Invitae PCM breakthrough designations not in search results",
+            "Incorrectly states Haystack MRD designation in August 2025 (actual date Aug 25, 2025, but query date is Dec 2025)",
+            "Mentions clonoSEQ approval which is accurate but outside MRD focus and unsupported by results",
+            "Ends with off-scope question",
+            "Uses too many sentences and lists"
           ],
-          "brief_rationale": "Response hallucinates unverified tests (FoundationOne Tracker, Invitae PCM) and clonoSEQ approval details absent from search results, reducing accuracy and grounding. Minor format issues and scope overreach with user question, but NCCN handling irrelevant and neutral."
+          "brief_rationale": "Response fabricates unverified tests (FoundationOne Tracker, Invitae PCM) absent from search results, leading to high hallucination; partially accurate on Haystack but overreaches scope and poor format with lists and length."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 0.3333333333333333,
+        "factual_accuracy": 0.6666666666666666,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.0,
+        "scope_adherence": 2.3333333333333335,
         "hallucination": 0.0,
-        "format_compliance": 2.3333333333333335,
-        "total": 7.666666666666667
+        "format_compliance": 2.0,
+        "total": 8.0
       },
-      "consensus_total": 7.666666666666667
+      "consensus_total": 8.0
     },
     {
       "id": "example-rnd-3",
@@ -2230,9 +2236,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "mentions performance metrics not clearly tied to database"
+            "mentions specific performance metrics without clear database verification"
           ],
-          "brief_rationale": "Appropriately stays in scope by declining to provide enrollment data not in database, but cites specific performance metrics that may not be directly from the database."
+          "brief_rationale": "Response correctly stays in scope by declining to provide enrollment data not in database, but cites specific sensitivity/specificity ranges that may not be directly verifiable from the database."
         },
         "gpt4o": {
           "factual_accuracy": 3,
@@ -2243,7 +2249,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "The response accurately states the chatbot's limitations and does not fabricate trial enrollment data. It remains within the test database's scope and does not overreach into clinical advice or offer unsupported data. The answer maintains a conversational tone and follows the required format."
+          "brief_rationale": "The response accurately states the chatbot's scope limitations and refrains from providing unavailable data, avoiding any errors or misrepresentations. It perfectly adheres to format requirements and maintains clear separation from NCCN claims."
         },
         "perplexity": {
           "factual_accuracy": 3,
@@ -2254,7 +2260,7 @@
           "total": 15,
           "max_possible": 15,
           "critical_issues": [],
-          "brief_rationale": "Response accurately stays within test database scope by declining to provide unavailable total enrollment data, mentions only supported performance metrics without hallucinating numbers, and uses short conversational format without forbidden elements."
+          "brief_rationale": "Response correctly stays within test database scope by declining to aggregate unavailable enrollment data, provides relevant performance info without hallucinating totals, and uses short conversational format without forbidden elements."
         }
       },
       "avg_scores": {
@@ -2293,9 +2299,9 @@
           "total": 14,
           "max_possible": 15,
           "critical_issues": [
-            "Minor embellishment on EPISEEK claim specificity"
+            "Minor concern about specificity of EPISEEK claims"
           ],
-          "brief_rationale": "Accurate technical discussion of methylation-based MCED tests with proper TOO accuracy data, though the '>90% across 60+ cancer types' claim for EPISEEK may be slightly embellished from database specificity."
+          "brief_rationale": "Response accurately discusses methylation-based MCED tests and their TOO accuracy with appropriate technical detail, stays in scope, and uses proper conversational format without forbidden elements."
         },
         "gpt4o": {
           "factual_accuracy": 2,
@@ -2306,37 +2312,36 @@
           "total": 12,
           "max_possible": 15,
           "critical_issues": [
-            "hallucination"
+            "TOO accuracy claims for EPISEEK may not be directly verifiable"
           ],
-          "brief_rationale": "The chatbot accurately explains the TOO accuracy and distinguishes between different types of methylation-based tests. However, it provides accuracy claims for EPISEEK, Shield, and OverC that need verification or likely are not in the database. The response is concise and falls within the expected scope and format."
+          "brief_rationale": "The response mostly provides accurate information about the TOO accuracy of methylation-based tests but doesn't fully verify the claimed accuracies, particularly for EPISEEK. However, it correctly avoids NCCN language missteps and stays within the scope, with appropriate format compliance."
         },
         "perplexity": {
-          "factual_accuracy": 1,
+          "factual_accuracy": 2,
           "nccn_distinction": 3,
-          "scope_adherence": 2,
+          "scope_adherence": 3,
           "hallucination": 1,
-          "format_compliance": 2,
-          "total": 9,
+          "format_compliance": 1,
+          "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "Galleri TOO accuracy stated as 88.7% but search results show 85% (SYMPLIFY)[3] or general CSO accuracy without that exact figure",
-            "EPISEEK >90% TOO claim across 60+ types unsupported by results[2]",
-            "Shield described as MCD (10 types) and methylation-only but results indicate single-cancer (CRC), combines methylation+fragmentomics[3]",
-            "OverC entirely unmentioned in database",
-            "Follow-up question makes response conversational/multipart >5 sentences"
+            "Hallucinated TOO accuracy figures (Galleri 88.7% vs search [3] 85%; EPISEEK >90% unsupported)",
+            "Mentions Shield as MCD (10 types) and OverC despite query focus on methylation-based ECD",
+            "Uses forbidden formatting (bold, paragraphs >5 sentences)",
+            "Follow-up question adds conversational length"
           ],
-          "brief_rationale": "Response includes plausible but inaccurate/unsupported accuracy claims for tests like EPISEEK, Shield, OverC not grounded in provided search results; overreaches scope by speculating on unpublished data and adds conversational follow-up."
+          "brief_rationale": "Response is mostly accurate on Galleri's methylation-based CSO/TOO concept but hallucinates specific unverified accuracy claims for EPISEEK/Shield/OverC not in search results. Exceeds format limits with structure/length and includes irrelevant tests."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 2.0,
+        "factual_accuracy": 2.3333333333333335,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.6666666666666665,
+        "scope_adherence": 3.0,
         "hallucination": 1.3333333333333333,
-        "format_compliance": 2.6666666666666665,
-        "total": 11.666666666666666
+        "format_compliance": 2.3333333333333335,
+        "total": 12.0
       },
-      "consensus_total": 11.666666666666666
+      "consensus_total": 12.0
     },
     {
       "id": "example-rnd-5",
@@ -2362,57 +2367,56 @@
           "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 3,
-          "hallucination": 0,
-          "format_compliance": 3,
+          "hallucination": 1,
+          "format_compliance": 2,
           "total": 10,
           "max_possible": 15,
           "critical_issues": [
-            "Significant factual errors about Natera's offerings",
-            "Invented test names not in database"
+            "Claims Natera has Latitude (tumor-naive) when expected behavior says Natera only has Signatera",
+            "May have invented test names not in database"
           ],
-          "brief_rationale": "Response contains major factual errors claiming Natera has tumor-naive options and invents test names like 'Latitude' and 'TI-WGS MRD' not found in the database."
+          "brief_rationale": "Response contradicts expected behavior about Natera's offerings and likely includes fabricated test information, though stays appropriately in scope and avoids NCCN confusion."
         },
         "gpt4o": {
           "factual_accuracy": 0,
           "nccn_distinction": 3,
-          "scope_adherence": 3,
+          "scope_adherence": 1,
           "hallucination": 0,
           "format_compliance": 3,
-          "total": 9,
+          "total": 7,
           "max_possible": 15,
           "critical_issues": [
-            "False claims about vendor products",
-            "Incorrectly listed nonexistent tests"
+            "Natera does not offer a tumor-naive option",
+            "Invents non-existent tests such as Latitude and TI-WGS MRD"
           ],
-          "brief_rationale": "The answer fabricates the existence of Latitude test and incorrectly attributes multiple test types to vendors. Guardant Health's test details are incorrect. While the scope is followed and format is correct, the response contains factual inaccuracies which are critical."
+          "brief_rationale": "The answer contains incorrect information regarding Natera and invented details about tests. It also slightly overreaches by inviting further discussion beyond the database scope."
         },
         "perplexity": {
-          "factual_accuracy": 2,
+          "factual_accuracy": 1,
           "nccn_distinction": 3,
           "scope_adherence": 1,
-          "hallucination": 1,
+          "hallucination": 0,
           "format_compliance": 1,
-          "total": 8,
+          "total": 6,
           "max_possible": 15,
           "critical_issues": [
-            "Incorrectly claims Natera offers tumor-naive Latitude (not supported in search results)",
-            "Invents Guardant Haystack as tumor-informed (Haystack is separate vendor per [1])",
-            "Mentions Foundation products without search support",
-            "Overreaches scope by asking follow-up questions and suggesting medical evaluations",
+            "Invents tests like Natera Latitude, FoundationOne Tracker/Monitor/TI-WGS not supported by search results",
+            "Incorrectly claims Natera, Foundation, Guardant offer both approaches",
+            "Adds unsolicited question suggesting medical advice",
             "Uses forbidden lists and exceeds 5 sentences"
           ],
-          "brief_rationale": "Response partially accurate on concepts but fabricates specific vendor offerings not grounded in search results (e.g., Natera Latitude, Foundation tests); violates scope by providing unsubstantiated vendor list and prompting medical comparisons."
+          "brief_rationale": "Response fabricates specific tests and vendor offerings not grounded in search results, incorrectly identifies vendors with both MRD approaches (e.g., Natera only confirmed tumor-informed), and violates format with lists and length."
         }
       },
       "avg_scores": {
-        "factual_accuracy": 1.0,
+        "factual_accuracy": 0.6666666666666666,
         "nccn_distinction": 3.0,
-        "scope_adherence": 2.3333333333333335,
+        "scope_adherence": 1.6666666666666667,
         "hallucination": 0.3333333333333333,
-        "format_compliance": 2.3333333333333335,
-        "total": 9.0
+        "format_compliance": 2.0,
+        "total": 7.666666666666667
       },
-      "consensus_total": 9.0
+      "consensus_total": 7.666666666666667
     }
   ]
 }

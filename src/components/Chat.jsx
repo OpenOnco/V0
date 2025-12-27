@@ -616,9 +616,9 @@ const Chat = ({
         {messages.length > 0 && (
           <button
             onClick={clearChat}
-            className="mt-2 text-xs text-gray-400 hover:text-gray-600"
+            className={`mt-2 text-xs ${isPatient ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-gray-600'}`}
           >
-            Clear chat
+            Reset Chat
           </button>
         )}
       </div>
