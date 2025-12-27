@@ -243,12 +243,11 @@ const Chat = ({
   const suggestions = useMemo(() => {
     if (persona === 'patient' && chatMode === 'learn') {
       return [
-        "How do these blood tests work?",
-        "What is MRD?",
-        "What's the difference between test types?",
-        "Will my insurance cover this?",
-        "What is tumor-informed testing?",
-        "How accurate are these tests?"
+        "What's the difference between tumor-informed and tumor-naive tests?",
+        "Which MRD tests have the best Medicare coverage?",
+        "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
+        "How much blood is needed for Signatera vs Guardant Reveal?",
+        "How should I talk to my doctor about getting an MRD test?"
       ];
     }
     return getSuggestedQuestions(persona);
