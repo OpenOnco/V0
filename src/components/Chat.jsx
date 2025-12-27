@@ -499,28 +499,31 @@ const Chat = ({
         {/* Welcome message + suggestions */}
         {messages.length === 0 && (
           <div className="space-y-3">
-            <div className="flex justify-start">
-              <div className={`max-w-[90%] rounded-xl px-4 py-3 ${theme.assistantBubble}`}>
-                <div className="text-sm whitespace-pre-wrap">{welcomeMessage}</div>
-                {/* Inline suggestions for patient learn mode */}
-                {isPatient && chatMode === 'learn' && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {suggestions.map((q, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSubmit(q)}
-                        className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                )}
+            {/* Welcome message bubble only for patient */}
+            {isPatient && (
+              <div className="flex justify-start">
+                <div className={`max-w-[90%] rounded-xl px-4 py-3 ${theme.assistantBubble}`}>
+                  <div className="text-sm whitespace-pre-wrap">{welcomeMessage}</div>
+                  {/* Inline suggestions for patient learn mode */}
+                  {chatMode === 'learn' && (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {suggestions.map((q, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSubmit(q)}
+                          className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-            {/* Suggestions below welcome for non-patient */}
+            )}
+            {/* Suggestions only (no welcome bubble) for non-patient */}
             {!isPatient && (
-              <div className="mt-3">
+              <div>
                 <p className="text-xs text-slate-500 mb-2 font-medium">Try an example question:</p>
                 <div className="flex flex-wrap gap-2">
                   {suggestions.map((q, i) => (
