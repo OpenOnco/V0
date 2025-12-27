@@ -247,6 +247,7 @@ const Chat = ({
         "I've just finished my cancer treatment. What can these tests do for me?",
         "Which MRD tests have the best Medicare coverage?",
         "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
+        "My PSA is elevated and my doctor mentioned a biopsy. Are there blood tests that could help decide if I really need one?",
         "How much blood is needed for Signatera vs Guardant Reveal?",
         "How should I talk to my doctor about getting an MRD test?",
         "I have stage IIA ER+/HER2- breast cancer, had a lumpectomy and finished AC-T chemo. My oncologist mentioned a blood test to monitor for recurrence - which ones work for hormone-positive breast cancer?"
@@ -512,7 +513,7 @@ const Chat = ({
                         <button
                           key={i}
                           onClick={() => handleSubmit(q)}
-                          className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
+                          className={`px-3 py-1.5 border rounded-full text-xs text-left transition-colors ${theme.suggestionBtn}`}
                         >
                           {q}
                         </button>
@@ -531,7 +532,7 @@ const Chat = ({
                     <button
                       key={i}
                       onClick={() => handleSubmit(q)}
-                      className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
+                      className={`px-3 py-1.5 border rounded-full text-xs text-left transition-colors ${theme.suggestionBtn}`}
                     >
                       {q}
                     </button>
