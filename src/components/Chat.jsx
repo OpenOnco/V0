@@ -15,13 +15,16 @@ const CHAT_MODELS = [
   { id: 'claude-sonnet-4-5-20250929', name: 'More thinking', description: 'Deeper analysis' },
 ];
 
-// Simple Markdown renderer
+// Simple Markdown renderer with table support
 const SimpleMarkdown = ({ text, className = '' }) => {
   const renderMarkdown = (content) => {
     const lines = content.split('\n');
     const elements = [];
     let listItems = [];
     let listType = null;
+    let tableRows = [];
+    let tableHeaders = [];
+    let inTable = false;
     
     const flushList = () => {
       if (listItems.length > 0) {
@@ -32,6 +35,38 @@ const SimpleMarkdown = ({ text, className = '' }) => {
         }
         listItems = [];
         listType = null;
+      }
+    };
+
+    const flushTable = () => {
+      if (tableHeaders.length > 0 || tableRows.length > 0) {
+        elements.push(
+          <div key={`table-${elements.length}`} className="overflow-x-auto my-3">
+            <table className="min-w-full text-sm border-collapse">
+              {tableHeaders.length > 0 && (
+                <thead>
+                  <tr className="bg-slate-100">
+                    {tableHeaders.map((cell, i) => (
+                      <th key={i} className="border border-slate-300 px-3 py-2 text-left font-semibold whitespace-nowrap">{formatInline(cell.trim(), `th-${i}`)}</th>
+                    ))}
+                  </tr>
+                </thead>
+              )}
+              <tbody>
+                {tableRows.map((row, rowIdx) => (
+                  <tr key={rowIdx} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    {row.map((cell, cellIdx) => (
+                      <td key={cellIdx} className="border border-slate-300 px-3 py-2 whitespace-nowrap">{formatInline(cell.trim(), `td-${rowIdx}-${cellIdx}`)}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+        tableHeaders = [];
+        tableRows = [];
+        inTable = false;
       }
     };
     
@@ -79,8 +114,36 @@ const SimpleMarkdown = ({ text, className = '' }) => {
       
       return parts.length > 0 ? parts : text;
     };
+
+    // Check if line is a table row (starts and ends with |, or just has |)
+    const isTableRow = (line) => line.includes('|') && line.trim().startsWith('|');
+    const isTableSeparator = (line) => /^\|[\s\-:|]+\|$/.test(line.trim());
+    const parseTableRow = (line) => {
+      return line.split('|').slice(1, -1); // Remove empty first and last from | split
+    };
     
     lines.forEach((line, idx) => {
+      // Check for table
+      if (isTableRow(line)) {
+        flushList();
+        if (isTableSeparator(line)) {
+          // This is the separator row, skip it but mark that we have headers
+          inTable = true;
+          return;
+        }
+        const cells = parseTableRow(line);
+        if (!inTable && tableHeaders.length === 0) {
+          // First row is headers
+          tableHeaders = cells;
+        } else {
+          tableRows.push(cells);
+        }
+        inTable = true;
+        return;
+      } else if (inTable) {
+        flushTable();
+      }
+
       const olMatch = line.match(/^(\d+)\.\s+(.+)$/);
       const ulMatch = line.match(/^[-*]\s+(.+)$/);
       
@@ -103,6 +166,7 @@ const SimpleMarkdown = ({ text, className = '' }) => {
     });
     
     flushList();
+    flushTable();
     return elements;
   };
   
@@ -163,7 +227,7 @@ const Chat = ({
       container: 'bg-white border-slate-200',
       header: '',  // no special header background
       messageArea: 'bg-white',
-      userBubble: 'bg-emerald-600 text-white',
+      userBubble: 'bg-emerald-100 border border-emerald-400 text-emerald-900',
       assistantBubble: 'bg-slate-50 border border-slate-200 text-slate-700',
       loadingDot: 'bg-emerald-500',
       suggestionBtn: 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700',
@@ -456,16 +520,19 @@ const Chat = ({
             </div>
             {/* Suggestions below welcome for non-patient */}
             {!isPatient && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {suggestions.map((q, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSubmit(q)}
-                    className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
-                  >
-                    {q}
-                  </button>
-                ))}
+              <div className="mt-3">
+                <p className="text-xs text-slate-500 mb-2 font-medium">Try an example question:</p>
+                <div className="flex flex-wrap gap-2">
+                  {suggestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSubmit(q)}
+                      className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -521,7 +588,7 @@ const Chat = ({
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={isPatient ? "Type your question..." : "Ask about tests..."}
+            placeholder={isPatient ? "Type your question..." : "Ask about testing, describe a situation, compare specific tests..."}
             className={`flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 border ${theme.input}`}
             disabled={isLoading}
           />
