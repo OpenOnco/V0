@@ -488,7 +488,7 @@ const Chat = ({
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
               }`}
             >
-              Learn about the tests
+              Learn about the tests in general
             </button>
             <button 
               onClick={() => { setChatMode('find'); setMessages([]); }}
@@ -498,7 +498,7 @@ const Chat = ({
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
               }`}
             >
-              Walk me through my options
+              Walk me through my personal options
             </button>
           </div>
         )}
