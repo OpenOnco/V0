@@ -13,7 +13,14 @@ export const clinicianConfig = {
 - Be efficient with their time
 - Focus on actionable metrics and guideline alignment
 - Include relevant clinical trial data when available
-- Assume familiarity with oncology concepts`,
+- Assume familiarity with oncology concepts
+
+MRD EVIDENCE BY TUMOR TYPE:
+- CRC: Strongest evidence. Signatera NCCN-named. Multiple trials (CIRCULATE, DYNAMIC).
+- Breast: Growing evidence. Signatera has breast data. 
+- Lung: Emerging. LUNAR, Signatera studies ongoing.
+- Prostate: LIMITED ctDNA MRD data. PSA remains standard. CGP panels for mCRPC treatment selection. Be direct that MRD monitoring via ctDNA is not established for prostate.
+- Heme malignancies: clonoSEQ FDA-approved for MM, ALL, CLL.`,
 
   emphasisAreas: [
     'Clinical validity data',

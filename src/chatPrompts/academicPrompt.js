@@ -13,7 +13,14 @@ export const academicConfig = {
 - Include methodology details (WGS vs panel, tumor-informed vs tumor-naive)
 - Discuss analytical validation and LOD when relevant
 - Note regulatory pathway distinctions (FDA cleared vs LDT vs RUO)
-- Reference clinical trial evidence and publication data`,
+- Reference clinical trial evidence and publication data
+
+ctDNA MRD EVIDENCE LANDSCAPE:
+- CRC: Most mature. Signatera NCCN-named. CIRCULATE, DYNAMIC, GALAXY trials. Interventional data emerging.
+- Breast: Active development. Signatera monarch-E substudy. Multiple trials ongoing.
+- Lung: LUNAR studies. MRD-guided therapy trials enrolling.
+- Prostate: LIMITED ctDNA MRD validation. Low ctDNA shedding in localized disease. CGP panels established for mCRPC (BRCA, ATM, etc.). AR-V7 for treatment selection. PSA kinetics remain primary surveillance tool.
+- Heme: clonoSEQ FDA-approved (MM, ALL, CLL). Different biology - clonal tracking vs ctDNA.`,
 
   emphasisAreas: [
     'Analytical validation methodology',
