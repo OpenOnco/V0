@@ -970,9 +970,9 @@ test.describe('Persona System', () => {
     await expect(page.getByText('Learn How the New Generation of Cancer Blood Tests Can Help You')).toBeVisible({ timeout: 5000 });
     
     // Should see three info buttons
-    await expect(page.getByText('Tests that help find the right therapy for you')).toBeVisible();
-    await expect(page.getByText('Tests that track how well your therapy is working')).toBeVisible();
-    await expect(page.getByText('Tests that keep watch after treatment')).toBeVisible();
+    await expect(page.getByText('Tests that will help find the right therapy for me')).toBeVisible();
+    await expect(page.getByText('Tests that will track how well my therapy is working')).toBeVisible();
+    await expect(page.getByText('Tests that will keep watch after treatment')).toBeVisible();
     
     // Should see patient chat section
     await expect(page.getByText('Chat with us to Learn More About These Tests')).toBeVisible();
