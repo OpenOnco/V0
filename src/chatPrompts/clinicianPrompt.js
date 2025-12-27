@@ -44,9 +44,11 @@ export const clinicianConfig = {
   ],
 
   suggestedQuestions: [
-    "Compare MRD tests for stage II-III CRC",
-    "Which CGP panels have the most FDA CDx indications?",
-    "What's the TAT and coverage for Signatera?"
+    "Compare landmark sensitivity of Signatera, Guardant Reveal, and Oncodetect in CRC",
+    "Which MRD tests have prospective interventional trial data?",
+    "What's the clinical lead time vs imaging for the major MRD assays?",
+    "Which tests are NCCN-referenced for treatment decision support?",
+    "What's the LOD difference between PCR-based and NGS-based MRD approaches?"
   ],
 
   welcomeMessage: "How can I help you navigate liquid biopsy options today?"

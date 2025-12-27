@@ -44,9 +44,11 @@ export const academicConfig = {
   ],
 
   suggestedQuestions: [
-    "Compare LOD across tumor-informed MRD assays",
-    "Which tests have FDA clearance vs LDT status?",
-    "What clinical trials are studying MRD-guided therapy?"
+    "Compare cfDNA input requirements and LOD95 across tumor-informed MRD assays",
+    "Which MRD tests have FDA breakthrough device designation and what's their regulatory status?",
+    "What's the total clinical trial enrollment across all Signatera studies?",
+    "How do methylation-based ECD tests differ in their cancer signal origin accuracy?",
+    "Which vendors offer both tumor-informed and tumor-naive MRD options?"
   ],
 
   welcomeMessage: "Ready to dive into the technical details. What would you like to explore?"

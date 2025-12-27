@@ -80,29 +80,31 @@ test.describe('Homepage', () => {
     await page.waitForTimeout(1000);
     
     // Check for sample prompts across all personas
-    // R&D prompts
-    const lodComparePrompt = page.locator('button').filter({ hasText: /Compare LOD/i });
-    const fdaLdtPrompt = page.locator('button').filter({ hasText: /FDA vs LDT/i });
-    const tumorInformedPrompt = page.locator('button').filter({ hasText: /tumor-informed/i });
-    // Medical prompts
-    const mrdCrcPrompt = page.locator('button').filter({ hasText: /MRD.*CRC/i });
-    const cgpFdaPrompt = page.locator('button').filter({ hasText: /CGP.*FDA/i });
-    // Patient prompts
-    const howWorkPrompt = page.locator('button').filter({ hasText: /How do these blood tests work/i });
-    const whatMrdPrompt = page.locator('button').filter({ hasText: /What is MRD/i });
-    const insurancePrompt = page.locator('button').filter({ hasText: /insurance cover/i });
+    // R&D prompts (new)
+    const cfDnaPrompt = page.locator('button').filter({ hasText: /cfDNA input/i });
+    const fdaBreakthroughPrompt = page.locator('button').filter({ hasText: /FDA breakthrough/i });
+    const signatera = page.locator('button').filter({ hasText: /Signatera/i });
+    // Medical prompts (new)
+    const landmarkSensitivity = page.locator('button').filter({ hasText: /landmark sensitivity/i });
+    const interventionalTrial = page.locator('button').filter({ hasText: /interventional trial/i });
+    const nccnReferenced = page.locator('button').filter({ hasText: /NCCN-referenced/i });
+    // Patient prompts (new)
+    const tumorInformedNaive = page.locator('button').filter({ hasText: /tumor-informed.*tumor-naive/i });
+    const medicarePrompt = page.locator('button').filter({ hasText: /Medicare coverage/i });
+    const colonCancerPrompt = page.locator('button').filter({ hasText: /colon cancer/i });
     
-    const lodCompareVisible = await lodComparePrompt.isVisible().catch(() => false);
-    const fdaLdtVisible = await fdaLdtPrompt.isVisible().catch(() => false);
-    const tumorInformedVisible = await tumorInformedPrompt.isVisible().catch(() => false);
-    const mrdCrcVisible = await mrdCrcPrompt.isVisible().catch(() => false);
-    const cgpFdaVisible = await cgpFdaPrompt.isVisible().catch(() => false);
-    const howWorkVisible = await howWorkPrompt.isVisible().catch(() => false);
-    const whatMrdVisible = await whatMrdPrompt.isVisible().catch(() => false);
-    const insuranceVisible = await insurancePrompt.isVisible().catch(() => false);
+    const cfDnaVisible = await cfDnaPrompt.isVisible().catch(() => false);
+    const fdaBreakthroughVisible = await fdaBreakthroughPrompt.isVisible().catch(() => false);
+    const signateraVisible = await signatera.isVisible().catch(() => false);
+    const landmarkVisible = await landmarkSensitivity.isVisible().catch(() => false);
+    const interventionalVisible = await interventionalTrial.isVisible().catch(() => false);
+    const nccnVisible = await nccnReferenced.isVisible().catch(() => false);
+    const tumorInformedNaiveVisible = await tumorInformedNaive.isVisible().catch(() => false);
+    const medicareVisible = await medicarePrompt.isVisible().catch(() => false);
+    const colonVisible = await colonCancerPrompt.isVisible().catch(() => false);
     
     // At least one sample prompt should be visible (any persona)
-    expect(lodCompareVisible || fdaLdtVisible || tumorInformedVisible || mrdCrcVisible || cgpFdaVisible || howWorkVisible || whatMrdVisible || insuranceVisible).toBeTruthy();
+    expect(cfDnaVisible || fdaBreakthroughVisible || signateraVisible || landmarkVisible || interventionalVisible || nccnVisible || tumorInformedNaiveVisible || medicareVisible || colonVisible).toBeTruthy();
   });
 });
 

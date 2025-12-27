@@ -46,9 +46,11 @@ export const patientConfig = {
 
   // Suggested starter questions for patient persona
   suggestedQuestions: [
-    "What is liquid biopsy testing?",
-    "How do I know if a test is covered by insurance?",
-    "What questions should I ask my doctor about testing?"
+    "What's the difference between tumor-informed and tumor-naive tests?",
+    "Which MRD tests have the best Medicare coverage?",
+    "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
+    "How much blood is needed for Signatera vs Guardant Reveal?",
+    "How should I talk to my doctor about getting an MRD test?"
   ],
 
   // Opening message when chat starts
