@@ -3340,16 +3340,16 @@ const HomePage = ({ onNavigate }) => {
         {/* Row 1: LifecycleNavigator + Chat side by side */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
           {/* LifecycleNavigator (2x2 grid) */}
-          <div className="lg:w-2/3">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+          <div className="lg:w-1/2">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 h-full">
               <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
               <LifecycleNavigator onNavigate={onNavigate} />
             </div>
           </div>
           
-          {/* Chat sidebar for R&D/Medical - fixed height, doesn't stretch */}
-          <div className="lg:w-1/3 lg:self-start">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col" style={{ maxHeight: '420px' }}>
+          {/* Chat sidebar for R&D/Medical - fills height to match navigator */}
+          <div className="lg:w-1/2">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
               {/* Chat header */}
               <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 bg-gray-50">
                 <div className="flex items-center gap-2">
@@ -3373,7 +3373,7 @@ const HomePage = ({ onNavigate }) => {
               <div 
                 ref={chatContainerRef}
                 className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50"
-                style={{ minHeight: '200px', maxHeight: '280px' }}
+                style={{ minHeight: '150px' }}
               >
                 {messages.length === 0 ? (
                   <div className="space-y-3">
