@@ -1,114 +1,233 @@
 /**
- * OpenOnco Reusable Chat Component
+ * OpenOnco Unified Chat Component
  * 
- * Single chat implementation that can be configured per persona.
- * Based on the patient chat UI (most mature).
+ * Based on patient chat (most feature-rich), parameterized for all personas.
+ * Features: mode toggle, resizable, print, model selector, suggestions
  */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { buildSystemPrompt, getSuggestedQuestions, getWelcomeMessage } from '../chatPrompts';
 import { track } from '@vercel/analytics';
 
-// Chat model options
+// Chat model options - matches App.jsx
 const CHAT_MODELS = [
-  { id: 'claude-sonnet', name: 'Claude Sonnet', provider: 'anthropic' },
-  { id: 'gpt-4o', name: 'GPT-4o', provider: 'openai' }
+  { id: 'claude-haiku-4-5-20251001', name: 'More speed', description: 'Fast responses' },
+  { id: 'claude-sonnet-4-5-20250929', name: 'More thinking', description: 'Deeper analysis' },
 ];
 
+// Simple Markdown renderer
+const SimpleMarkdown = ({ text, className = '' }) => {
+  const renderMarkdown = (content) => {
+    const lines = content.split('\n');
+    const elements = [];
+    let listItems = [];
+    let listType = null;
+    
+    const flushList = () => {
+      if (listItems.length > 0) {
+        if (listType === 'ol') {
+          elements.push(<ol key={`list-${elements.length}`} className="list-decimal list-inside my-2 space-y-1">{listItems}</ol>);
+        } else {
+          elements.push(<ul key={`list-${elements.length}`} className="list-disc list-inside my-2 space-y-1">{listItems}</ul>);
+        }
+        listItems = [];
+        listType = null;
+      }
+    };
+    
+    const formatInline = (text, keyPrefix = '') => {
+      const parts = [];
+      let remaining = text;
+      let partIndex = 0;
+      
+      while (remaining) {
+        const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
+        const linkMatch = remaining.match(/\[([^\]]+)\]\(([^)]+)\)/);
+        
+        let firstMatch = null;
+        let matchType = null;
+        
+        if (boldMatch && (!linkMatch || boldMatch.index < linkMatch.index)) {
+          firstMatch = boldMatch;
+          matchType = 'bold';
+        } else if (linkMatch) {
+          firstMatch = linkMatch;
+          matchType = 'link';
+        }
+        
+        if (!firstMatch) {
+          if (remaining) parts.push(<span key={`${keyPrefix}-${partIndex++}`}>{remaining}</span>);
+          break;
+        }
+        
+        if (firstMatch.index > 0) {
+          parts.push(<span key={`${keyPrefix}-${partIndex++}`}>{remaining.slice(0, firstMatch.index)}</span>);
+        }
+        
+        if (matchType === 'bold') {
+          parts.push(<strong key={`${keyPrefix}-${partIndex++}`} className="font-semibold">{firstMatch[1]}</strong>);
+        } else if (matchType === 'link') {
+          parts.push(
+            <a key={`${keyPrefix}-${partIndex++}`} href={firstMatch[2]} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+              {firstMatch[1]}
+            </a>
+          );
+        }
+        
+        remaining = remaining.slice(firstMatch.index + firstMatch[0].length);
+      }
+      
+      return parts.length > 0 ? parts : text;
+    };
+    
+    lines.forEach((line, idx) => {
+      const olMatch = line.match(/^(\d+)\.\s+(.+)$/);
+      const ulMatch = line.match(/^[-*]\s+(.+)$/);
+      
+      if (olMatch) {
+        if (listType !== 'ol') flushList();
+        listType = 'ol';
+        listItems.push(<li key={`li-${idx}`}>{formatInline(olMatch[2], `li-${idx}`)}</li>);
+      } else if (ulMatch) {
+        if (listType !== 'ul') flushList();
+        listType = 'ul';
+        listItems.push(<li key={`li-${idx}`}>{formatInline(ulMatch[1], `li-${idx}`)}</li>);
+      } else {
+        flushList();
+        if (line.trim() === '') {
+          elements.push(<br key={`br-${idx}`} />);
+        } else {
+          elements.push(<p key={`p-${idx}`} className="my-1">{formatInline(line, `p-${idx}`)}</p>);
+        }
+      }
+    });
+    
+    flushList();
+    return elements;
+  };
+  
+  return <div className={`prose prose-sm max-w-none ${className}`}>{renderMarkdown(text)}</div>;
+};
+
 /**
- * Reusable Chat Component
+ * Unified Chat Component
  * 
- * @param {Object} props
- * @param {string} props.persona - 'patient' | 'medical' | 'rnd'
- * @param {Array} props.testData - Compressed test data for context
- * @param {string} props.category - Optional category filter ('MRD', 'ECD', etc.)
- * @param {Object} props.categoryMeta - Optional category metadata
- * @param {boolean} props.isFloating - Floating chat mode (default: false)
- * @param {Function} props.onClose - Close handler for floating mode
- * @param {number} props.height - Chat height in pixels (default: 400)
- * @param {boolean} props.resizable - Allow height resizing (default: false)
- * @param {boolean} props.showModelSelector - Show model dropdown (default: true)
- * @param {Array} props.customSuggestions - Override default suggestions
+ * @param {string} persona - 'patient' | 'medical' | 'rnd'
+ * @param {Object} testData - Test data for system prompt
+ * @param {string} variant - 'full' (patient-style) | 'sidebar' (compact for R&D/Medical)
+ * @param {boolean} showModeToggle - Show Learn/Find toggle (patient only)
+ * @param {boolean} resizable - Allow height resize
+ * @param {boolean} showTitle - Show header title
+ * @param {number} initialHeight - Initial height in pixels
+ * @param {string} className - Additional CSS classes
  */
 const Chat = ({
   persona = 'patient',
-  testData = [],
-  category = null,
-  categoryMeta = null,
-  isFloating = false,
-  onClose = null,
-  height = 400,
-  resizable = false,
-  showModelSelector = true,
-  customSuggestions = null
+  testData = {},
+  variant = 'full',
+  showModeToggle = false,
+  resizable = true,
+  showTitle = true,
+  initialHeight = 350,
+  className = ''
 }) => {
-  const welcomeMessage = getWelcomeMessage(persona);
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: welcomeMessage }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const [chatHeight, setChatHeight] = useState(height);
-  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [chatMode, setChatMode] = useState('learn'); // 'learn' | 'find' (patient only)
+  const [chatHeight, setChatHeight] = useState(initialHeight);
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Get suggestions - custom or from persona config
-  const suggestions = customSuggestions || getSuggestedQuestions(persona);
-
-  // Build system prompt - memoized
-  const systemPrompt = useMemo(() => {
-    return buildSystemPrompt(persona, testData, {
-      category,
-      meta: categoryMeta,
-      includeKeyLegend: true,
-      includeExamples: true
-    });
-  }, [persona, testData, category, categoryMeta]);
-
-  // Reset chat when persona changes
-  useEffect(() => {
-    setMessages([{ role: 'assistant', content: getWelcomeMessage(persona) }]);
-    setShowSuggestions(true);
+  // Theme configuration per persona
+  const theme = useMemo(() => {
+    if (persona === 'patient') {
+      return {
+        container: 'bg-gradient-to-br from-[#1a5276] to-[#2874a6] border-[#1a5276]',
+        header: 'text-white',
+        messageArea: 'bg-white/95',
+        userBubble: 'bg-[#2874a6] text-white',
+        assistantBubble: 'bg-gray-100 border border-gray-200 text-gray-700',
+        loadingDot: 'bg-[#2874a6]',
+        suggestionBtn: 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700',
+        input: 'bg-white border-0 focus:ring-white/50',
+        submitBtn: 'bg-white text-[#1a5276] hover:bg-blue-50',
+        resizeHandle: 'bg-white/50 group-hover:bg-white/70',
+        spinnerColor: 'text-white',
+        modelSelect: 'bg-white/90 border-white/50'
+      };
+    }
+    // R&D and Medical - emerald theme
+    return {
+      container: 'bg-white border-gray-200',
+      header: 'text-gray-700 bg-gray-50 border-b border-gray-100',
+      messageArea: 'bg-gray-50',
+      userBubble: 'bg-emerald-600 text-white',
+      assistantBubble: 'bg-white border border-gray-200 text-gray-700',
+      loadingDot: 'bg-emerald-500',
+      suggestionBtn: 'bg-white border-gray-200 text-gray-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700',
+      input: 'border-gray-200 focus:ring-emerald-500',
+      submitBtn: 'bg-emerald-600 text-white hover:bg-emerald-700',
+      resizeHandle: 'bg-gray-300 group-hover:bg-gray-400',
+      spinnerColor: 'text-emerald-600',
+      modelSelect: 'bg-white border-gray-200'
+    };
   }, [persona]);
 
-  // Auto-scroll to show question at top when response arrives
-  useEffect(() => {
-    if (chatContainerRef.current && messages.length > 1) {
-      const container = chatContainerRef.current;
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === 'assistant') {
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            const userMessages = container.querySelectorAll('[data-message-role="user"]');
-            const lastUserEl = userMessages[userMessages.length - 1];
-            if (lastUserEl) {
-              const containerRect = container.getBoundingClientRect();
-              const userRect = lastUserEl.getBoundingClientRect();
-              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
-              container.scrollTop = Math.max(0, relativeTop - 20);
-            }
-          }, 150);
-        });
-      }
+  // Get suggestions based on persona and mode
+  const suggestions = useMemo(() => {
+    if (persona === 'patient' && chatMode === 'learn') {
+      return [
+        "How do these blood tests work?",
+        "What is MRD?",
+        "What's the difference between test types?",
+        "Will my insurance cover this?",
+        "What is tumor-informed testing?",
+        "How accurate are these tests?"
+      ];
     }
-  }, [messages]);
+    return getSuggestedQuestions(persona);
+  }, [persona, chatMode]);
+
+  // Welcome message based on persona and mode
+  const welcomeMessage = useMemo(() => {
+    if (persona === 'patient') {
+      if (chatMode === 'learn') {
+        return "Hi! 👋 I'm here to help you understand cancer blood tests (also called liquid biopsy).";
+      }
+      return "Let's find tests that might fit your situation. 🎯\n\nI'll ask you a few questions about:\n1. Your clinical situation — to identify tests that might be a fit\n2. Insurance & access — to suggest the most accessible options\n3. Your doctor relationship — to help you prepare the conversation\n\n**Let's start:** What type of cancer are you dealing with, or are you being evaluated for?";
+    }
+    return getWelcomeMessage(persona);
+  }, [persona, chatMode]);
+
+  // Build system prompt
+  const systemPrompt = useMemo(() => {
+    return buildSystemPrompt(persona, testData, { includeExamples: true });
+  }, [persona, testData]);
+
+  // Auto-scroll on new messages
+  useEffect(() => {
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      requestAnimationFrame(() => {
+        container.scrollTop = container.scrollHeight;
+      });
+    }
+  }, [messages, isLoading]);
 
   const handleSubmit = async (suggestedQuestion = null) => {
     const question = suggestedQuestion || input.trim();
     if (!question || isLoading) return;
 
     setInput('');
-    setShowSuggestions(false);
 
-    // Track chat submission
     track('chat_message_sent', {
       persona,
       model: selectedModel,
       message_length: question.length,
       is_suggested: !!suggestedQuestion,
-      category: category || 'all'
+      chat_mode: chatMode
     });
 
     const newUserMessage = { role: 'user', content: question };
@@ -121,7 +240,7 @@ const Chat = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: updatedMessages.filter(m => m.role !== 'assistant' || updatedMessages.indexOf(m) > 0),
+          messages: updatedMessages,
           systemPrompt,
           model: selectedModel
         })
@@ -142,129 +261,271 @@ const Chat = ({
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
+  const clearChat = () => {
+    setMessages([]);
+    track('chat_cleared', { persona, chat_mode: chatMode });
   };
 
-  const clearChat = () => {
-    setMessages([{ role: 'assistant', content: welcomeMessage }]);
-    setShowSuggestions(true);
-    track('chat_cleared', { persona, category: category || 'all' });
+  const printChat = () => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>OpenOnco Consultation Summary</title>
+          <style>
+            body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+            h1 { color: #1a5276; border-bottom: 2px solid #1a5276; padding-bottom: 10px; }
+            .message { margin: 20px 0; padding: 15px; border-radius: 10px; }
+            .user { background: #e8f4fc; margin-left: 20%; }
+            .assistant { background: #f5f5f5; margin-right: 20%; }
+            .label { font-weight: bold; color: #1a5276; margin-bottom: 5px; }
+            .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <h1>🧬 OpenOnco Test Consultation</h1>
+          <p style="color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
+          ${messages.map(m => `
+            <div class="message ${m.role}">
+              <div class="label">${m.role === 'user' ? '👤 You' : '🤖 OpenOnco'}:</div>
+              <div>${m.content.replace(/\n/g, '<br>')}</div>
+            </div>
+          `).join('')}
+          <div class="footer">
+            <p>This consultation is for educational purposes only. Always discuss testing options with your healthcare provider.</p>
+            <p>Learn more at <strong>www.openonco.org</strong></p>
+          </div>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
   };
+
+  // Resize handlers
+  const handleResizeStart = (startY, isTouchEvent = false) => {
+    const startHeight = chatHeight;
+    
+    const handleMove = (moveEvent) => {
+      const currentY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+      const delta = currentY - startY;
+      const newHeight = Math.min(600, Math.max(200, startHeight + delta));
+      setChatHeight(newHeight);
+    };
+    
+    const handleEnd = () => {
+      document.removeEventListener(isTouchEvent ? 'touchmove' : 'mousemove', handleMove);
+      document.removeEventListener(isTouchEvent ? 'touchend' : 'mouseup', handleEnd);
+    };
+    
+    document.addEventListener(isTouchEvent ? 'touchmove' : 'mousemove', handleMove, isTouchEvent ? { passive: false } : undefined);
+    document.addEventListener(isTouchEvent ? 'touchend' : 'mouseup', handleEnd);
+  };
+
+  const isCompact = variant === 'sidebar';
+  const isPatient = persona === 'patient';
 
   return (
-    <div className={`flex flex-col ${isFloating ? 'h-full' : ''}`}>
-      {/* Header with model selector and clear button */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 bg-gray-50">
-        <div className="flex items-center gap-2">
-          {showModelSelector && (
-            <select
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              className="text-xs border border-gray-200 rounded px-2 py-1 bg-white"
-            >
-              {CHAT_MODELS.map(m => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </select>
+    <div className={`rounded-2xl border shadow-sm overflow-hidden flex flex-col ${theme.container} ${isCompact ? '' : 'p-6'} ${className}`}>
+      {/* Header */}
+      <div className={`flex items-center justify-between ${isCompact ? 'px-4 py-2 ' + theme.header : 'mb-4'}`}>
+        {/* Loading spinner (left) */}
+        <div className="w-8 flex-shrink-0">
+          {isLoading && (
+            <svg className={`w-5 h-5 ${theme.spinnerColor} animate-spin`} fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
           )}
         </div>
+
+        {/* Title (center) */}
+        {showTitle && (
+          <div className="flex-1 text-center">
+            {isPatient ? (
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
+                Chat with us to Learn More About These Tests
+              </h2>
+            ) : (
+              <span className="font-medium text-sm">Ask about tests</span>
+            )}
+          </div>
+        )}
+
+        {/* Right side: model selector + print */}
         <div className="flex items-center gap-2">
-          {messages.length > 1 && (
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className={`text-xs border rounded px-2 py-1 ${theme.modelSelect}`}
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+          {messages.length > 2 && (
             <button
-              onClick={clearChat}
-              className="text-xs text-gray-500 hover:text-gray-700"
+              onClick={printChat}
+              className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors ${
+                isPatient ? 'bg-white/20 hover:bg-white/30 text-white' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+              }`}
+              title="Print consultation"
             >
-              Clear
-            </button>
-          )}
-          {isFloating && onClose && (
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
+              {!isCompact && 'Print'}
             </button>
           )}
         </div>
       </div>
 
-      {/* Messages container */}
-      <div
+      {/* Messages area */}
+      <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4"
-        style={{ height: isFloating ? undefined : chatHeight }}
+        className={`overflow-y-auto ${isCompact ? 'p-4' : 'rounded-xl p-4 mb-1'} ${theme.messageArea}`}
+        style={{ 
+          height: isCompact ? undefined : `${chatHeight}px`,
+          minHeight: isCompact ? '150px' : '200px',
+          maxHeight: isCompact ? undefined : '600px',
+          flex: isCompact ? 1 : undefined
+        }}
       >
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            data-message-role={msg.role}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                msg.role === 'user'
-                  ? 'bg-blue-600 text-white rounded-br-md'
-                  : 'bg-gray-100 text-gray-800 rounded-bl-md'
+        {/* Mode toggle (patient only) */}
+        {showModeToggle && (
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-4">
+            <button 
+              onClick={() => { setChatMode('learn'); setMessages([]); }}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                chatMode === 'learn' 
+                  ? 'bg-[#1a5276] text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
               }`}
             >
-              <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-            </div>
+              Learn about the tests
+            </button>
+            <button 
+              onClick={() => { setChatMode('find'); setMessages([]); }}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                chatMode === 'find' 
+                  ? 'bg-[#1a5276] text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+              }`}
+            >
+              Find tests for my situation
+            </button>
           </div>
-        ))}
+        )}
 
+        {/* Welcome message + suggestions */}
+        {messages.length === 0 && (
+          <div className="space-y-3">
+            <div className="flex justify-start">
+              <div className={`max-w-[90%] rounded-xl px-4 py-3 ${theme.assistantBubble}`}>
+                <div className="text-sm whitespace-pre-wrap">{welcomeMessage}</div>
+                {/* Inline suggestions for patient learn mode */}
+                {isPatient && chatMode === 'learn' && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {suggestions.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSubmit(q)}
+                        className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Suggestions below welcome for non-patient */}
+            {!isPatient && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {suggestions.map((q, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleSubmit(q)}
+                    className={`px-3 py-1.5 border rounded-full text-xs transition-colors ${theme.suggestionBtn}`}
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Messages */}
+        {messages.length > 0 && (
+          <div className="space-y-4">
+            {messages.map((msg, idx) => (
+              <div key={idx} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[85%] rounded-xl px-4 py-3 ${msg.role === 'user' ? theme.userBubble : theme.assistantBubble}`}>
+                  {msg.role === 'assistant' ? (
+                    <SimpleMarkdown text={msg.content} className="text-sm" />
+                  ) : (
+                    <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Loading indicator */}
         {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 rounded-2xl rounded-bl-md px-4 py-3">
+          <div className="flex justify-start mt-4">
+            <div className={`rounded-xl px-4 py-3 ${theme.assistantBubble}`}>
               <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className={`w-2 h-2 ${theme.loadingDot} rounded-full animate-bounce`} style={{ animationDelay: '0ms' }}></span>
+                <span className={`w-2 h-2 ${theme.loadingDot} rounded-full animate-bounce`} style={{ animationDelay: '150ms' }}></span>
+                <span className={`w-2 h-2 ${theme.loadingDot} rounded-full animate-bounce`} style={{ animationDelay: '300ms' }}></span>
               </div>
             </div>
           </div>
         )}
-
-        {/* Suggestions */}
-        {showSuggestions && suggestions.length > 0 && messages.length === 1 && (
-          <div className="space-y-2 mt-4">
-            <p className="text-xs text-gray-500 font-medium">Try asking:</p>
-            {suggestions.map((q, i) => (
-              <button
-                key={i}
-                onClick={() => handleSubmit(q)}
-                className="block w-full text-left text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg px-3 py-2 transition-colors"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
+      {/* Resize handle */}
+      {resizable && !isCompact && (
+        <div 
+          className="flex justify-center items-center py-2 mb-2 cursor-ns-resize group touch-none"
+          onMouseDown={(e) => { e.preventDefault(); handleResizeStart(e.clientY, false); }}
+          onTouchStart={(e) => { e.preventDefault(); handleResizeStart(e.touches[0].clientY, true); }}
+        >
+          <div className={`w-16 h-2 rounded-full transition-colors ${theme.resizeHandle}`} />
+        </div>
+      )}
+
       {/* Input area */}
-      <div className="border-t border-gray-200 p-3">
-        <div className="flex gap-2">
+      <div className={`${isCompact ? 'border-t border-gray-200 p-3 bg-white' : ''}`}>
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your question..."
+            placeholder={isPatient ? "Type your question..." : "Ask about tests..."}
+            className={`flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 ${theme.input}`}
             disabled={isLoading}
-            className="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50"
           />
           <button
-            onClick={() => handleSubmit()}
-            disabled={!input.trim() || isLoading}
-            className="bg-blue-600 text-white rounded-full px-4 py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${theme.submitBtn}`}
           >
-            Send
+            {isPatient ? 'Chat' : 'Send'}
           </button>
-        </div>
+        </form>
+        {messages.length > 0 && (
+          <button
+            onClick={clearChat}
+            className="mt-2 text-xs text-gray-400 hover:text-gray-600"
+          >
+            Clear chat
+          </button>
+        )}
       </div>
     </div>
   );
