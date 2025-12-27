@@ -78,7 +78,6 @@ import SubmissionsPage from './pages/SubmissionsPage';
 import { getChatSuggestions } from './personaContent';
 import GlossaryTooltip from './components/GlossaryTooltip';
 import Chat from './components/Chat';
-import { buildSystemPrompt } from './chatPrompts';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -3005,11 +3004,6 @@ const HomePage = ({ onNavigate }) => {
     "Compare Signatera and Reveal MRD for colorectal cancer MRD monitoring",
     "What ECD tests have Medicare coverage?"
   ];
-
-  // Memoize system prompt - recompute when persona changes
-  const systemPrompt = useMemo(() => {
-    return buildSystemPrompt(persona, chatTestData, { includeExamples: true });
-  }, [persona]);
 
   const handleSubmit = async (question) => {
     const q = question || chatInput;

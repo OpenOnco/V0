@@ -1,8 +1,8 @@
 /**
- * Patient/Caregiver Persona Configuration
+ * Patient Persona UI Configuration
  * 
- * This is the most developed persona - warm, educational, supportive.
- * Focuses on helping patients understand options and prepare for doctor conversations.
+ * UI display settings: suggested questions and welcome message.
+ * ⚠️  Actual system prompt is in /api/chat.js (single source of truth)
  */
 
 export const patientConfig = {

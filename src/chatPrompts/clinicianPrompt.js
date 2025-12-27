@@ -1,8 +1,8 @@
 /**
- * Clinician/Medical Professional Persona Configuration
+ * Clinician Persona UI Configuration
  * 
- * Direct, collegial, clinical terminology is fine.
- * Focuses on actionable clinical information and guidelines.
+ * UI display settings: suggested questions and welcome message.
+ * ⚠️  Actual system prompt is in /api/chat.js (single source of truth)
  */
 
 export const clinicianConfig = {

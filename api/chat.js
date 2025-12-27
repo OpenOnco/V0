@@ -1,5 +1,20 @@
-// Secure Chat API Endpoint for OpenOnco
-// System prompt constructed server-side for security and smaller payloads
+/**
+ * OpenOnco Chat API Endpoint
+ * 
+ * 🚨 SINGLE SOURCE OF TRUTH FOR ALL CHAT SYSTEM PROMPTS 🚨
+ * 
+ * This file contains:
+ * - System prompt construction (getPersonaStyle, buildSystemPrompt)
+ * - Rate limiting
+ * - Message validation
+ * - Claude API calls
+ * 
+ * If you need to modify chat behavior, prompts, or persona rules,
+ * edit the getPersonaStyle() and buildSystemPrompt() functions below.
+ * 
+ * The /src/chatPrompts/ directory is for UI-only config (suggested questions,
+ * welcome messages) - NOT for system prompts.
+ */
 
 import Anthropic from "@anthropic-ai/sdk";
 

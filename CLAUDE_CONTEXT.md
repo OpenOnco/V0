@@ -27,14 +27,14 @@ OpenOnco is a non-profit database platform for cancer diagnostic tests, focusing
 │   ├── PersonaSelector.jsx
 │   ├── LifecycleNavigator.jsx  # 2x2 category grid
 │   └── TestShowcase.jsx # Quick search + test card grid
-├── chatPrompts/         # AI system prompts by persona
-│   ├── index.js         # Prompt builder
-│   ├── patientPrompts.js
-│   ├── medicalPrompts.js
-│   └── rndPrompts.js
+├── chatPrompts/         # UI config only (NOT system prompts)
+│   ├── index.js         # getSuggestedQuestions, getWelcomeMessage
+│   ├── patientPrompts.js   # Patient UI config
+│   ├── medicalPrompts.js   # Clinician UI config  
+│   └── rndPrompts.js       # R&D UI config
 
 /api
-├── chat.js              # Chat API endpoint (Claude)
+├── chat.js              # 🚨 SYSTEM PROMPTS LIVE HERE 🚨
 └── compare.js           # Test comparison endpoint
 
 /eval                    # Chatbot evaluation framework

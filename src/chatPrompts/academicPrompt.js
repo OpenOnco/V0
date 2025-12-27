@@ -1,8 +1,8 @@
 /**
- * Academic/R&D/Industry Persona Configuration
+ * R&D/Academic Persona UI Configuration
  * 
- * Technical and precise. Includes methodology details,
- * analytical validation nuances, and regulatory context.
+ * UI display settings: suggested questions and welcome message.
+ * ⚠️  Actual system prompt is in /api/chat.js (single source of truth)
  */
 
 export const academicConfig = {

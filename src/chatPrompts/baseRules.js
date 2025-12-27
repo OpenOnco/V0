@@ -1,7 +1,15 @@
 /**
- * Shared rules for all chat personas
- * These rules are non-negotiable and apply regardless of audience
+ * REFERENCE ONLY - NOT USED IN PRODUCTION
+ * 
+ * These rules were originally here for a modular prompt system.
+ * The actual system prompts are now in /api/chat.js (single source of truth).
+ * 
+ * Keeping this file as documentation/reference for prompt engineering decisions.
  */
+
+// ============================================
+// REFERENCE: Shared rules that could be used
+// ============================================
 
 export const conversationalRules = `
 **CRITICAL FORMAT RULES:**
