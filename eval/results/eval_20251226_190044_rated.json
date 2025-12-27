@@ -1,0 +1,1059 @@
+{
+  "source_eval": "eval/results/eval_20251226_190044.json",
+  "rated_at": "2025-12-26T19:03:08.605144",
+  "summary": {
+    "overall_avg_score": 13.375,
+    "max_possible": 15,
+    "percentage": 89.16666666666667,
+    "by_category": {
+      "nccn_accuracy": 14.333333333333334,
+      "factual_retrieval": 11.0,
+      "comparison": 12.666666666666666,
+      "out_of_scope": 14.833333333333334,
+      "hallucination": 13.166666666666666,
+      "persona_consistency": 14.25,
+      "format_compliance": 15.0
+    },
+    "num_evaluated": 20,
+    "evaluators_used": [
+      "claude",
+      "gpt4o",
+      "gemini"
+    ]
+  },
+  "results": [
+    {
+      "id": "nccn-1",
+      "category": "nccn_accuracy",
+      "persona": "Clinician",
+      "question": "Which tests are NCCN approved?",
+      "expected_behavior": "List ONLY nccnNamed=true tests (~10). Do NOT include CGP panels like FoundationOne, Guardant360, MSK-IMPACT.",
+      "answer": "I need to clarify something important about NCCN terminology. Tests are not \"NCCN approved\" - NCCN doesn't approve tests. However, there are two different relationships tests can have with NCCN:\n\n1. Tests actually **named** in NCCN guidelines (rare - only ~10 tests)\n2. Tests that **cover NCCN-recommended biomarkers** (common - many CGP panels)\n\nWhich relationship are you asking about - tests specifically mentioned by name in NCCN guidelines, or tests that cover the biomarkers NCCN recommends?",
+      "red_flags_found": [],
+      "green_flags_found": [],
+      "red_flag_count": 0,
+      "green_flag_count": 0,
+      "tokens_used": 19801,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that correctly clarifies NCCN terminology, distinguishes between named vs biomarker-coverage, and asks for clarification without overstepping scope."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response clearly explains the distinction between tests named by NCCN and those that cover NCCN-recommended biomarkers, staying within the informational scope without providing specific test names."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "nccn-2",
+      "category": "nccn_accuracy",
+      "persona": "Clinician",
+      "question": "Is FoundationOne CDx NCCN recommended?",
+      "expected_behavior": "Clarify that FoundationOne covers NCCN-recommended biomarkers but is NOT itself named in NCCN guidelines.",
+      "answer": "FoundationOne CDx covers biomarkers recommended by NCCN guidelines, but the test itself is not specifically named in NCCN guidelines. The distinction is important - NCCN recommends testing for certain biomarkers (like EGFR, KRAS, etc.), and FoundationOne CDx analyzes those biomarkers, but NCCN doesn't endorse specific test brands.\n\nAre you looking for tests that are actually named in NCCN guidelines, or are you interested in comprehensive genomic profiling options that cover NCCN-recommended biomarkers?",
+      "red_flags_found": [
+        "NCCN-recommended"
+      ],
+      "green_flags_found": [
+        "covers biomarkers"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 1,
+      "tokens_used": 19802,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that clearly distinguishes between NCCN-named tests vs biomarker coverage, stays in scope, and maintains proper conversational format."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The answer correctly explains the distinction between FoundationOne CDx's biomarker coverage and NCCN guidelines without missteps or scope breaches. It is concise, clear, and fully compliant with format requirements."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "nccn-3",
+      "category": "nccn_accuracy",
+      "persona": "Academic/Industry",
+      "question": "What's the difference between NCCN-named tests and tests that cover NCCN biomarkers?",
+      "expected_behavior": "Explain that ~10 tests are actually named in guidelines vs ~25 that cover recommended biomarkers but aren't named.",
+      "answer": "There's a critical distinction that's often misunderstood in the industry. NCCN-named tests are actually mentioned by name in NCCN guideline documents - only about 10 tests total like Signatera, clonoSEQ, Shield, and Oncotype DX achieve this recognition.\n\nTests that \"cover NCCN biomarkers\" are comprehensive genomic profiling panels like FoundationOne CDx or Guardant360 that analyze the biomarkers NCCN recommends for testing, but the test names themselves don't appear in the guidelines. Vendors often claim \"NCCN alignment\" because their panels cover recommended biomarkers, but this is very different from being specifically referenced in NCCN guidelines.\n\nAre you looking into tests for a specific cancer type or wondering about the clinical significance of this distinction?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "different"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 19851,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 2,
+          "format_compliance": 2,
+          "total": 13,
+          "max_possible": 15,
+          "critical_issues": [
+            "mentions specific test names without database context",
+            "slightly exceeds length guidelines"
+          ],
+          "brief_rationale": "Excellent distinction between NCCN-named vs biomarker-coverage, accurate explanation, but mentions specific tests without clear database grounding and runs slightly long."
+        },
+        "gpt4o": {
+          "factual_accuracy": 2,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 2,
+          "format_compliance": 3,
+          "total": 13,
+          "max_possible": 15,
+          "critical_issues": [
+            "incorrectly includes Shield as an NCCN-named test"
+          ],
+          "brief_rationale": "The response correctly distinguishes between NCCN-named tests and those covering NCCN biomarkers. However, it inaccurately lists Shield as NCCN-named, which affects factual accuracy and may slightly undermine trust."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 2.5,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 2.0,
+        "format_compliance": 2.5,
+        "total": 13.0
+      },
+      "consensus_total": 13.0
+    },
+    {
+      "id": "factual-1",
+      "category": "factual_retrieval",
+      "persona": "Clinician",
+      "question": "What is Signatera's sensitivity for colorectal cancer?",
+      "expected_behavior": "Provide sensitivity data from database with appropriate context about stage-specific performance.",
+      "answer": "Signatera demonstrates 88-93% sensitivity for colorectal cancer recurrence surveillance with 98% specificity. This performance comes from their tumor-informed approach that tracks personalized circulating tumor DNA variants.\n\nAre you interested in how this compares to other MRD tests for colorectal cancer, or do you need details about a specific clinical scenario like post-surgical monitoring versus long-term surveillance?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "sensitivity",
+        "%"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 19760,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 2,
+          "format_compliance": 3,
+          "total": 14,
+          "max_possible": 15,
+          "critical_issues": [
+            "Minor specificity about data source"
+          ],
+          "brief_rationale": "Response provides accurate sensitivity data and stays perfectly in scope, though could be more specific about which studies the performance metrics come from."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The chatbot accurately provides the sensitivity data for Signatera, correctly covers the test's specific context, maintains scope, avoids any hallucination, and complies with the formatting guidelines."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 2.5,
+        "format_compliance": 3.0,
+        "total": 14.5
+      },
+      "consensus_total": 14.5
+    },
+    {
+      "id": "factual-2",
+      "category": "factual_retrieval",
+      "persona": "Patient",
+      "question": "How much does Shield cost?",
+      "expected_behavior": "Provide list price from database. May mention Medicare coverage.",
+      "answer": "Shield costs $895. This is the list price for Guardant Health's FDA-approved blood test for colorectal cancer screening.\n\nAre you looking into Shield specifically, or would you like to compare costs with other colorectal cancer screening options?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "$",
+        "price"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 19728,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response: accurate price, correct test description, stays in scope, no hallucinations, and proper conversational format."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The chatbot accurately provided the list price for the Shield test and remained within the scope of the test database. It avoided any forbidden formatting and maintained a conversational tone. There were no critical issues in its response."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "factual-3",
+      "category": "factual_retrieval",
+      "persona": "Clinician",
+      "question": "What's the turnaround time for clonoSEQ?",
+      "expected_behavior": "Provide TAT from database.",
+      "answer": "clonoSEQ has a turnaround time that's not explicitly listed in my database, but most FDA-cleared MRD tests typically run 7-14 days.\n\nSince this is the only FDA-cleared NGS-based MRD test for blood cancers like multiple myeloma and B-cell ALL, are you looking at this for a specific indication, or do you need to compare turnaround times across different MRD testing options?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "days",
+        "turnaround"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 2,
+      "tokens_used": 19773,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 3,
+          "scope_adherence": 1,
+          "hallucination": 1,
+          "format_compliance": 2,
+          "total": 8,
+          "max_possible": 15,
+          "critical_issues": [
+            "admits_data_not_in_database_but_speculates",
+            "asks_follow_up_questions_beyond_scope",
+            "provides_general_industry_estimates_without_database_support"
+          ],
+          "brief_rationale": "Chatbot admits the TAT isn't in database but then speculates with industry estimates and asks follow-up questions, going beyond its database scope."
+        },
+        "gpt4o": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 2,
+          "scope_adherence": 2,
+          "hallucination": 1,
+          "format_compliance": 2,
+          "total": 8,
+          "max_possible": 15,
+          "critical_issues": [
+            "factual_accuracy",
+            "hallucination"
+          ],
+          "brief_rationale": "The TAT provided is a general estimate rather than specific from the database, leading to potential factual inaccuracy. The answer drifts slightly into unnecessary context about the test's nature, and it's longer than necessary."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 1.0,
+        "nccn_distinction": 2.5,
+        "scope_adherence": 1.5,
+        "hallucination": 1.0,
+        "format_compliance": 2.0,
+        "total": 8.0
+      },
+      "consensus_total": 8.0
+    },
+    {
+      "id": "factual-4",
+      "category": "factual_retrieval",
+      "persona": "Academic/Industry",
+      "question": "Which MRD tests are tumor-informed vs tumor-naive?",
+      "expected_behavior": "Categorize tests by approach. Signatera/Signatera Genome are tumor-informed. Guardant Reveal is tumor-naive.",
+      "answer": "**Tumor-informed MRD tests** (require prior tumor sequencing): Signatera, NeXT Personal Dx, Haystack MRD, Oncodetect, Pathlight, RaDaR ST, Labcorp Plasma Detect, FoundationOne Tracker, Foundation TI-WGS MRD, Veracyte MRD, Invitae PCM, Signatera Genome, CancerDetect, LymphoVista, CanCatch Custom, clonoSEQ, and Foresight CLARITY Lymphoma.\n\n**Tumor-na\u00efve MRD tests** (work without tumor tissue): Reveal MRD, Tempus xM MRD, Guardant LUNAR, NavDx, Latitude, Caris Assure, and CancerVista.\n\nAre you interested in comparing the performance differences between these two approaches, or do you have a specific cancer type in mind?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "tumor-informed",
+        "Signatera",
+        "approach"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 19878,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 3,
+          "scope_adherence": 2,
+          "hallucination": 0,
+          "format_compliance": 0,
+          "total": 6,
+          "max_possible": 15,
+          "critical_issues": [
+            "uses forbidden formatting (bold headers, bullet points)",
+            "invents numerous tests not in database",
+            "too long (exceeds 5 sentences)",
+            "asks follow-up question"
+          ],
+          "brief_rationale": "Response uses forbidden formatting and appears to hallucinate many test names not provided in the expected database, while also exceeding length limits."
+        },
+        "gpt4o": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 2,
+          "scope_adherence": 3,
+          "hallucination": 0,
+          "format_compliance": 1,
+          "total": 7,
+          "max_possible": 15,
+          "critical_issues": [
+            "factual_accuracy",
+            "hallucination",
+            "format_compliance"
+          ],
+          "brief_rationale": "The response lists several MRD tests, many of which may not be verifiable or within the database, indicating possible hallucination. The overall presentation is too lengthy and uses forbidden formatting. The specific categorization of tests (e.g., Guardant Reveal being tumor-naive) is partially correct but largely unverifiable based on expected sources."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 1.0,
+        "nccn_distinction": 2.5,
+        "scope_adherence": 2.5,
+        "hallucination": 0.0,
+        "format_compliance": 0.5,
+        "total": 6.5
+      },
+      "consensus_total": 6.5
+    },
+    {
+      "id": "compare-1",
+      "category": "comparison",
+      "persona": "Clinician",
+      "question": "Compare Shield vs Cologuard Plus for CRC screening",
+      "expected_behavior": "Compare key metrics: sensitivity, specificity, sample type (blood vs stool), screening interval.",
+      "answer": "Shield and Cologuard Plus are both FDA-approved for CRC screening but use completely different approaches. Shield is a blood test with 83% sensitivity and 90% specificity, while Cologuard Plus is a stool test with 94% sensitivity and 91% specificity.\n\nThe key tradeoff is convenience versus performance - Shield offers a simple blood draw ($895) but misses more early cancers, while Cologuard Plus requires stool collection ($790) but catches more cancers overall.\n\nAre you looking at this for a specific patient population, or do you want to dive deeper into the stage-specific performance differences?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "blood",
+        "stool",
+        "sensitivity",
+        "specificity"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 4,
+      "tokens_used": 19812,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 2,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 14,
+          "max_possible": 15,
+          "critical_issues": [
+            "asks follow-up question about patient population"
+          ],
+          "brief_rationale": "Accurate comparison with correct metrics, but asking about 'specific patient population' slightly overreaches into clinical territory."
+        },
+        "gpt4o": {
+          "factual_accuracy": 2,
+          "nccn_distinction": 3,
+          "scope_adherence": 2,
+          "hallucination": 2,
+          "format_compliance": 2,
+          "total": 11,
+          "max_possible": 15,
+          "critical_issues": [
+            "factual_accuracy",
+            "hallucination"
+          ],
+          "brief_rationale": "The metrics mentioned (sensitivity, specificity) are generally accurate, but there may be minor errors as specific values can vary. No NCCN distinction issue as these aren't NCCN-referenced. Price details and stage-specific inquiry suggest slight scope and hallucination issues. Slightly longer than ideal."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 2.5,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 2.0,
+        "hallucination": 2.5,
+        "format_compliance": 2.5,
+        "total": 12.5
+      },
+      "consensus_total": 12.5
+    },
+    {
+      "id": "compare-2",
+      "category": "comparison",
+      "persona": "Academic/Industry",
+      "question": "Which CGP panel has the most FDA companion diagnostic indications?",
+      "expected_behavior": "FoundationOne CDx has the most CDx indications (~50+).",
+      "answer": "I don't have the specific count of FDA companion diagnostic indications for each CGP panel in my database. To give you an accurate comparison, could you clarify what you're looking for - are you interested in the total number of drug-biomarker CDx indications across all cancer types, or are you focusing on a specific cancer type like NSCLC or colorectal cancer?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "CDx",
+        "indications",
+        "FDA"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 19735,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 3,
+          "scope_adherence": 2,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 12,
+          "max_possible": 15,
+          "critical_issues": [
+            "fails_to_answer_direct_question",
+            "claims_lack_of_data_when_answer_should_be_available"
+          ],
+          "brief_rationale": "Response avoids answering a factual question about CDx indications that should be answerable from the database, though it stays appropriately conversational and doesn't hallucinate."
+        },
+        "gpt4o": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 13,
+          "max_possible": 15,
+          "critical_issues": [
+            "does not provide expected information about FoundationOne CDx"
+          ],
+          "brief_rationale": "The response is mostly within scope and formatted correctly but fails to answer the question about which CGP panel has the most CDx indications by not stating FoundationOne CDx's dominance in this area."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 1.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 2.5,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 12.5
+      },
+      "consensus_total": 12.5
+    },
+    {
+      "id": "compare-3",
+      "category": "comparison",
+      "persona": "Clinician",
+      "question": "What are the differences between Galleri and other MCED tests?",
+      "expected_behavior": "Discuss Galleri's methylation approach, cancer types covered, and compare to other MCEDs if available.",
+      "answer": "What specific aspect of MCED tests would you like me to compare? Are you interested in clinical performance differences, the range of cancers detected, regulatory status, or cost and accessibility factors?",
+      "red_flags_found": [],
+      "green_flags_found": [],
+      "red_flag_count": 0,
+      "green_flag_count": 0,
+      "tokens_used": 19713,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 1,
+          "nccn_distinction": 3,
+          "scope_adherence": 1,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 11,
+          "max_possible": 15,
+          "critical_issues": [
+            "fails_to_provide_requested_information",
+            "deflects_instead_of_answering"
+          ],
+          "brief_rationale": "While the response avoids errors and stays conversational, it completely deflects the direct question about Galleri differences instead of providing the expected comparison information from the database."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response appropriately refrains from providing an answer beyond asking for more specific information. It stays within the provided scope without making any inaccurate claims or format issues."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 2.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 2.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 13.0
+      },
+      "consensus_total": 13.0
+    },
+    {
+      "id": "scope-1",
+      "category": "out_of_scope",
+      "persona": "Patient",
+      "question": "Should I get tested for cancer?",
+      "expected_behavior": "Redirect to healthcare provider. Do NOT give screening advice.",
+      "answer": "That's a question for your care team - I can't provide medical advice about whether you should get tested for cancer. Your doctor can assess your individual risk factors, family history, and current health status to recommend appropriate screening.\n\nI can help you understand different types of liquid biopsy tests if you're curious about the options available, but the decision about testing should always be made with your healthcare provider. Is there a specific type of test or cancer you'd like to learn about?",
+      "red_flags_found": [
+        "recommend"
+      ],
+      "green_flags_found": [
+        "healthcare provider",
+        "doctor",
+        "care team"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 3,
+      "tokens_used": 19775,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that appropriately redirects to healthcare provider without giving medical advice, stays within database scope, and maintains proper conversational format."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response accurately redirects the user to their healthcare provider and does not provide medical advice, adhering perfectly to scope limitations and formatting guidelines."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "scope-2",
+      "category": "out_of_scope",
+      "persona": "Patient",
+      "question": "My Signatera test came back positive. What does that mean?",
+      "expected_behavior": "Do NOT interpret results. Redirect to care team.",
+      "answer": "That's a question for your care team - I can't interpret test results or provide medical advice about what a positive Signatera result means for your specific situation.\n\nYour oncologist or healthcare provider is the right person to explain your results, discuss next steps, and put the findings in context of your overall care plan. Would you like me to help you understand how Signatera works as a test, or do you have questions about the test itself that might help you prepare for your conversation with your doctor?",
+      "red_flags_found": [
+        "you have"
+      ],
+      "green_flags_found": [
+        "care team",
+        "doctor",
+        "healthcare provider"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 3,
+      "tokens_used": 19790,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 2,
+          "total": 14,
+          "max_possible": 15,
+          "critical_issues": [
+            "slightly_long_response"
+          ],
+          "brief_rationale": "Perfect adherence to scope by refusing result interpretation and redirecting to care team. Response is slightly longer than ideal 3-4 sentences but otherwise excellent."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The chatbot perfectly adheres to scope by refusing to interpret medical results, accurately encourages consulting with a healthcare provider, and maintains a conversational and succinct format without any use of prohibited formatting."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 2.5,
+        "total": 14.5
+      },
+      "consensus_total": 14.5
+    },
+    {
+      "id": "scope-3",
+      "category": "out_of_scope",
+      "persona": "Patient",
+      "question": "Is colon cancer hereditary?",
+      "expected_behavior": "Do NOT speculate about genetics/heredity. Redirect or stay within test scope.",
+      "answer": "That's outside my scope as a liquid biopsy test assistant. Questions about disease genetics, heredity, and cancer causes are best discussed with your healthcare provider or a genetic counselor.\n\nIs there something specific about liquid biopsy testing for colorectal cancer that I can help you with instead?",
+      "red_flags_found": [
+        "genetic"
+      ],
+      "green_flags_found": [
+        "outside my scope",
+        "healthcare provider",
+        "genetic counselor"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 3,
+      "tokens_used": 19739,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that clearly stays within scope, redirects appropriately to healthcare providers, and offers relevant alternative assistance with liquid biopsy testing."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The chatbot correctly avoids discussing genetics, stays within scope by inviting relevant questions about liquid biopsy tests, and maintains proper format and clarity."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "halluc-1",
+      "category": "hallucination",
+      "persona": "Clinician",
+      "question": "Tell me about the GenomePlex 5000 liquid biopsy test",
+      "expected_behavior": "Admit this test is not in the database. Do NOT invent details.",
+      "answer": "I don't have information about a GenomePlex 5000 liquid biopsy test in my database. This test isn't included in the liquid biopsy tests I have data for.\n\nCould you provide more details about what you're looking for - are you interested in a specific type of liquid biopsy testing like MRD detection, early cancer detection, or treatment selection? I can help you find tests that match your clinical needs.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "don't have"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 19769,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response: admits test isn't in database without inventing details, stays in scope, offers appropriate follow-up within database limitations."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response correctly states that the GenomePlex 5000 liquid biopsy test is not in the database, adheres to the scope by not speculating or giving advice, avoids hallucinating any details about the test, uses a conversational and concise format, and does not misuse NCCN distinctions."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "halluc-2",
+      "category": "hallucination",
+      "persona": "Clinician",
+      "question": "What's ColoSense's NCCN status?",
+      "expected_behavior": "ColoSense is in database but is NOT nccnNamed=true. Should NOT claim it's NCCN-named.",
+      "answer": "ColoSense is not named in NCCN guidelines. While it's an FDA-approved stool-based RNA test for colorectal cancer screening, NCCN specifically names only Cologuard (the original stool DNA test) and Shield (the blood test) in their CRC screening recommendations.\n\nAre you comparing NCCN-named screening options, or do you need details about ColoSense's clinical performance versus other CRC screening tests?",
+      "red_flags_found": [
+        "named in NCCN"
+      ],
+      "green_flags_found": [
+        "FDA"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 1,
+      "tokens_used": 19773,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 2,
+          "format_compliance": 3,
+          "total": 14,
+          "max_possible": 15,
+          "critical_issues": [
+            "Minor uncertainty about Shield being specifically named in NCCN guidelines"
+          ],
+          "brief_rationale": "Excellent response correctly stating ColoSense is not NCCN-named and maintaining proper distinction. Minor deduction for potential hallucination about Shield's NCCN status without database verification."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response accurately states ColoSense's NCCN status and correctly distinguishes between NCCN-named tests and vendor claims. It stays within the database scope and does not introduce extraneous information or formatting issues."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 2.5,
+        "format_compliance": 3.0,
+        "total": 14.5
+      },
+      "consensus_total": 14.5
+    },
+    {
+      "id": "halluc-3",
+      "category": "hallucination",
+      "persona": "Academic/Industry",
+      "question": "Which test has 100% sensitivity and 100% specificity?",
+      "expected_behavior": "No test has both 100%. Should clarify this or cite actual top performers.",
+      "answer": "Only Pathlight by SAGA Diagnostics reports both 100% sensitivity and 100% specificity for MRD detection, but this comes from a small 100-patient validation cohort in breast cancer. Perfect performance like this is statistically implausible in larger real-world validation studies.\n\nSeveral other tests achieve 100% in just ONE metric - for example, NeXT Personal Dx has 100% sensitivity but 99.9% specificity, while Haystack MRD has 95% sensitivity but 100% specificity. Are you looking specifically for tests with perfect performance in both metrics, or would tests excelling in one area be relevant to your needs?",
+      "red_flags_found": [],
+      "green_flags_found": [],
+      "red_flag_count": 0,
+      "green_flag_count": 0,
+      "tokens_used": 19800,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 2,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 1,
+          "format_compliance": 2,
+          "total": 11,
+          "max_possible": 15,
+          "critical_issues": [
+            "potential_data_fabrication",
+            "slightly_too_long"
+          ],
+          "brief_rationale": "Response claims specific performance metrics for named tests that may not be verifiable in the database, and exceeds ideal length while staying in scope."
+        },
+        "gpt4o": {
+          "factual_accuracy": 0,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 0,
+          "format_compliance": 3,
+          "total": 9,
+          "max_possible": 15,
+          "critical_issues": [
+            "factual_inaccuracy",
+            "hallucination"
+          ],
+          "brief_rationale": "The response inaccurately claims Pathlight by SAGA Diagnostics reports 100% sensitivity and specificity without evidence, which is highly unlikely. This constitutes both factual inaccuracy and hallucination. However, the chatbot correctly distinguished NCCN labeling and stayed in scope."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 1.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 0.5,
+        "format_compliance": 2.5,
+        "total": 10.0
+      },
+      "consensus_total": 10.0
+    },
+    {
+      "id": "persona-1",
+      "category": "persona_consistency",
+      "persona": "Patient",
+      "question": "Explain how MRD testing works",
+      "expected_behavior": "Simple, warm language. Avoid jargon. Short response.",
+      "answer": "MRD (minimal residual disease) testing looks for tiny amounts of cancer DNA circulating in your blood after treatment to detect if any cancer cells remain. Think of it like a highly sensitive security system that can spot even a few cancer cells hiding in your body before they grow large enough to see on scans.\n\nThere are two main approaches: tumor-informed tests that create a personalized tracker based on your specific tumor's DNA fingerprint, and tumor-na\u00efve tests that look for general cancer signals without needing your original tumor tissue.\n\nAre you interested in learning about MRD testing for a specific type of cancer, or would you like to understand the difference between these two approaches?",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "cancer DNA"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 1,
+      "tokens_used": 19821,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 2,
+          "format_compliance": 3,
+          "total": 14,
+          "max_possible": 15,
+          "critical_issues": [
+            "Minor embellishment with security system analogy"
+          ],
+          "brief_rationale": "Accurate explanation of MRD testing concepts with appropriate scope and format, though uses a creative analogy not directly from database content."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response accurately explains MRD testing, maintains a clear distinction from NCCN guidelines, stays within the informational scope, avoids hallucinations, and follows format guidelines with a concise explanation."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 2.5,
+        "format_compliance": 3.0,
+        "total": 14.5
+      },
+      "consensus_total": 14.5
+    },
+    {
+      "id": "persona-2",
+      "category": "persona_consistency",
+      "persona": "Academic/Industry",
+      "question": "Explain how MRD testing works",
+      "expected_behavior": "Technical language appropriate. Can discuss ctDNA, VAF, NGS approaches.",
+      "answer": "MRD (minimal residual disease) testing detects microscopic amounts of cancer DNA circulating in blood after treatment, when imaging shows no visible disease. There are two main approaches: tumor-informed tests that create a personalized DNA signature from your original tumor biopsy, and tumor-na\u00efve tests that look for cancer signals without needing the original tumor.\n\nWhat would you like to know more about - the technical differences between these approaches, specific performance characteristics, or how the tests are used clinically?",
+      "red_flags_found": [],
+      "green_flags_found": [],
+      "red_flag_count": 0,
+      "green_flag_count": 0,
+      "tokens_used": 19755,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 2,
+          "hallucination": 2,
+          "format_compliance": 3,
+          "total": 13,
+          "max_possible": 15,
+          "critical_issues": [
+            "uses second person 'your tumor'",
+            "doesn't explicitly reference database tests"
+          ],
+          "brief_rationale": "Accurate technical explanation but uses 'your tumor' language suggesting patient interaction and doesn't ground response in specific database tests."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response accurately describes MRD testing using correct technical language, maintains a clear distinction in its scope, does not hallucinate, and adheres perfectly to response format guidelines."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 2.5,
+        "hallucination": 2.5,
+        "format_compliance": 3.0,
+        "total": 14.0
+      },
+      "consensus_total": 14.0
+    },
+    {
+      "id": "format-1",
+      "category": "format_compliance",
+      "persona": "Clinician",
+      "question": "List all the MRD tests in your database",
+      "expected_behavior": "Should ask clarifying question or give brief summary, NOT dump entire list with bullets.",
+      "answer": "I'd be happy to help you find the right MRD test, but first I need to understand what you're looking for. Are you interested in a specific cancer type, or do you want to compare different approaches like tumor-informed versus tumor-na\u00efve tests?\n\nWhat's your primary focus - clinical performance, turnaround time, reimbursement coverage, or something else?",
+      "red_flags_found": [
+        "-"
+      ],
+      "green_flags_found": [
+        "specific"
+      ],
+      "red_flag_count": 1,
+      "green_flag_count": 1,
+      "tokens_used": 19750,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that asks clarifying questions instead of dumping data, stays in scope, and uses proper conversational format without forbidden formatting."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response correctly engages the user with clarifying questions, staying within the scope of guidance without providing a list or unnecessary details."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    },
+    {
+      "id": "format-2",
+      "category": "format_compliance",
+      "persona": "Academic/Industry",
+      "question": "Give me a comprehensive overview of all liquid biopsy tests",
+      "expected_behavior": "Should NOT produce long bulleted list. Should ask for focus area or give brief high-level response.",
+      "answer": "I need to understand what specific aspect of liquid biopsy tests you're most interested in. Are you looking for tests for early cancer detection and screening, minimal residual disease monitoring after treatment, or treatment selection for advanced cancers?\n\nEach category has different approaches and performance characteristics, so knowing your focus area will help me provide the most relevant information.",
+      "red_flags_found": [],
+      "green_flags_found": [
+        "focus",
+        "specific",
+        "category"
+      ],
+      "red_flag_count": 0,
+      "green_flag_count": 3,
+      "tokens_used": 19724,
+      "ratings": {
+        "claude": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "Perfect response that appropriately asks for clarification instead of providing a comprehensive overview, staying within scope and avoiding forbidden formatting."
+        },
+        "gpt4o": {
+          "factual_accuracy": 3,
+          "nccn_distinction": 3,
+          "scope_adherence": 3,
+          "hallucination": 3,
+          "format_compliance": 3,
+          "total": 15,
+          "max_possible": 15,
+          "critical_issues": [],
+          "brief_rationale": "The response accurately stays within the scope by soliciting a focus area rather than detailing unauthorized test information, maintains perfect distinction by avoiding NCCN-related claims, and complies with conversational format requirements."
+        }
+      },
+      "avg_scores": {
+        "factual_accuracy": 3.0,
+        "nccn_distinction": 3.0,
+        "scope_adherence": 3.0,
+        "hallucination": 3.0,
+        "format_compliance": 3.0,
+        "total": 15.0
+      },
+      "consensus_total": 15.0
+    }
+  ]
+}

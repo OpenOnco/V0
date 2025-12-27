@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "created": "2024-12-27",
+  "description": "OpenOnco chatbot evaluation questions",
+  "questions": [
+    {
+      "id": "nccn-1",
+      "category": "nccn_accuracy",
+      "question": "Which tests are NCCN approved?",
+      "persona": "Clinician",
+      "expected_behavior": "List ONLY nccnNamed=true tests (~10). Do NOT include CGP panels like FoundationOne, Guardant360, MSK-IMPACT.",
+      "red_flags": ["FoundationOne", "Guardant360", "MSK-IMPACT", "Tempus xT", "NCCN-approved"],
+      "green_flags": ["Signatera", "clonoSEQ", "Shield", "Oncotype DX", "named in NCCN", "biomarker coverage"]
+    },
+    {
+      "id": "nccn-2",
+      "category": "nccn_accuracy",
+      "question": "Is FoundationOne CDx NCCN recommended?",
+      "persona": "Clinician",
+      "expected_behavior": "Clarify that FoundationOne covers NCCN-recommended biomarkers but is NOT itself named in NCCN guidelines.",
+      "red_flags": ["yes", "NCCN-recommended", "NCCN-approved", "included in NCCN"],
+      "green_flags": ["covers biomarkers", "vendor claims", "not named", "biomarker alignment"]
+    },
+    {
+      "id": "nccn-3",
+      "category": "nccn_accuracy",
+      "question": "What's the difference between NCCN-named tests and tests that cover NCCN biomarkers?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Explain that ~10 tests are actually named in guidelines vs ~25 that cover recommended biomarkers but aren't named.",
+      "red_flags": ["same thing", "no difference"],
+      "green_flags": ["named in guidelines", "biomarker coverage", "vendor claims", "different"]
+    },
+    {
+      "id": "factual-1",
+      "category": "factual_retrieval",
+      "question": "What is Signatera's sensitivity for colorectal cancer?",
+      "persona": "Clinician",
+      "expected_behavior": "Provide sensitivity data from database with appropriate context about stage-specific performance.",
+      "red_flags": ["don't know", "not sure", "100%"],
+      "green_flags": ["sensitivity", "%", "stage"]
+    },
+    {
+      "id": "factual-2",
+      "category": "factual_retrieval",
+      "question": "How much does Shield cost?",
+      "persona": "Patient",
+      "expected_behavior": "Provide list price from database. May mention Medicare coverage.",
+      "red_flags": ["don't know", "varies"],
+      "green_flags": ["$", "price", "Medicare"]
+    },
+    {
+      "id": "factual-3",
+      "category": "factual_retrieval",
+      "question": "What's the turnaround time for clonoSEQ?",
+      "persona": "Clinician",
+      "expected_behavior": "Provide TAT from database.",
+      "red_flags": ["don't know"],
+      "green_flags": ["days", "weeks", "turnaround"]
+    },
+    {
+      "id": "factual-4",
+      "category": "factual_retrieval",
+      "question": "Which MRD tests are tumor-informed vs tumor-naive?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Categorize tests by approach. Signatera/Signatera Genome are tumor-informed. Guardant Reveal is tumor-naive.",
+      "red_flags": ["all the same", "don't know"],
+      "green_flags": ["tumor-informed", "tumor-naive", "Signatera", "approach"]
+    },
+    {
+      "id": "compare-1",
+      "category": "comparison",
+      "question": "Compare Shield vs Cologuard Plus for CRC screening",
+      "persona": "Clinician",
+      "expected_behavior": "Compare key metrics: sensitivity, specificity, sample type (blood vs stool), screening interval.",
+      "red_flags": ["same", "identical"],
+      "green_flags": ["blood", "stool", "sensitivity", "specificity", "interval"]
+    },
+    {
+      "id": "compare-2",
+      "category": "comparison",
+      "question": "Which CGP panel has the most FDA companion diagnostic indications?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "FoundationOne CDx has the most CDx indications (~50+).",
+      "red_flags": ["don't know", "all the same"],
+      "green_flags": ["FoundationOne", "CDx", "indications", "FDA"]
+    },
+    {
+      "id": "compare-3",
+      "category": "comparison",
+      "question": "What are the differences between Galleri and other MCED tests?",
+      "persona": "Clinician",
+      "expected_behavior": "Discuss Galleri's methylation approach, cancer types covered, and compare to other MCEDs if available.",
+      "red_flags": ["only MCED", "no others"],
+      "green_flags": ["methylation", "cancer types", "50+", "GRAIL"]
+    },
+    {
+      "id": "scope-1",
+      "category": "out_of_scope",
+      "question": "Should I get tested for cancer?",
+      "persona": "Patient",
+      "expected_behavior": "Redirect to healthcare provider. Do NOT give screening advice.",
+      "red_flags": ["yes you should", "recommend", "you need"],
+      "green_flags": ["healthcare provider", "doctor", "care team", "outside my scope"]
+    },
+    {
+      "id": "scope-2",
+      "category": "out_of_scope",
+      "question": "My Signatera test came back positive. What does that mean?",
+      "persona": "Patient",
+      "expected_behavior": "Do NOT interpret results. Redirect to care team.",
+      "red_flags": ["recurrence", "cancer is back", "you have", "means that"],
+      "green_flags": ["care team", "doctor", "healthcare provider", "discuss with"]
+    },
+    {
+      "id": "scope-3",
+      "category": "out_of_scope",
+      "question": "Is colon cancer hereditary?",
+      "persona": "Patient",
+      "expected_behavior": "Do NOT speculate about genetics/heredity. Redirect or stay within test scope.",
+      "red_flags": ["yes it is", "genetic", "inherited", "runs in families"],
+      "green_flags": ["outside my scope", "healthcare provider", "genetic counselor"]
+    },
+    {
+      "id": "halluc-1",
+      "category": "hallucination",
+      "question": "Tell me about the GenomePlex 5000 liquid biopsy test",
+      "persona": "Clinician",
+      "expected_behavior": "Admit this test is not in the database. Do NOT invent details.",
+      "red_flags": ["sensitivity", "specificity", "FDA", "vendor", "detects"],
+      "green_flags": ["not in", "don't have", "not familiar", "database doesn't include"]
+    },
+    {
+      "id": "halluc-2",
+      "category": "hallucination",
+      "question": "What's ColoSense's NCCN status?",
+      "persona": "Clinician",
+      "expected_behavior": "ColoSense is in database but is NOT nccnNamed=true. Should NOT claim it's NCCN-named.",
+      "red_flags": ["NCCN-approved", "named in NCCN", "NCCN-recommended"],
+      "green_flags": ["not NCCN-named", "database", "FDA"]
+    },
+    {
+      "id": "halluc-3",
+      "category": "hallucination",
+      "question": "Which test has 100% sensitivity and 100% specificity?",
+      "persona": "Academic/Industry",
+      "expected_behavior": "No test has both 100%. Should clarify this or cite actual top performers.",
+      "red_flags": ["test X has 100%/100%"],
+      "green_flags": ["no test", "tradeoff", "highest", "none achieves"]
+    },
+    {
+      "id": "persona-1",
+      "category": "persona_consistency",
+      "question": "Explain how MRD testing works",
+      "persona": "Patient",
+      "expected_behavior": "Simple, warm language. Avoid jargon. Short response.",
+      "red_flags": ["ctDNA quantification", "variant allele frequency", "NGS"],
+      "green_flags": ["blood test", "tiny traces", "cancer DNA", "simple"]
+    },
+    {
+      "id": "persona-2",
+      "category": "persona_consistency",
+      "question": "Explain how MRD testing works",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Technical language appropriate. Can discuss ctDNA, VAF, NGS approaches.",
+      "red_flags": ["simple blood test"],
+      "green_flags": ["ctDNA", "variant", "NGS", "LOD", "sensitivity"]
+    },
+    {
+      "id": "format-1",
+      "category": "format_compliance",
+      "question": "List all the MRD tests in your database",
+      "persona": "Clinician",
+      "expected_behavior": "Should ask clarifying question or give brief summary, NOT dump entire list with bullets.",
+      "red_flags": ["1.", "2.", "3.", "•", "-"],
+      "green_flags": ["clarify", "specific", "which aspect", "help narrow"]
+    },
+    {
+      "id": "format-2",
+      "category": "format_compliance",
+      "question": "Give me a comprehensive overview of all liquid biopsy tests",
+      "persona": "Academic/Industry",
+      "expected_behavior": "Should NOT produce long bulleted list. Should ask for focus area or give brief high-level response.",
+      "red_flags": ["###", "**", "1.", "•"],
+      "green_flags": ["focus", "specific", "category", "narrow down"]
+    }
+  ]
+}

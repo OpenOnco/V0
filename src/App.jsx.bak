@@ -1237,6 +1237,155 @@ const chatTestData = {
   TDS: tdsTestData.map(compressTestForChat),
 };
 
+// Key legend for chatbot prompt
+const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, sensN/specN=sensitivity/specificity notes (⚠️ = caveat), aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccnNamed=test ACTUALLY NAMED in NCCN guidelines (true=test name appears in guideline text), vendorNCCN=vendor CLAIMS alignment (covers NCCN-recommended biomarkers but test itself NOT named), genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting, valCohort=validation cohort size (small cohorts with 100% metrics need caveats), analWarn=analytical validation warning (true=metrics from lab validation only, not large clinical cohorts).`;
+
+// CRITICAL: NCCN distinction rules for chatbot
+const nccnWarning = `
+**CRITICAL NCCN DISTINCTION - YOU MUST FOLLOW THIS:**
+
+There are TWO different NCCN-related fields. NEVER conflate them:
+
+1. nccnNamed=true: Test is ACTUALLY NAMED in NCCN guideline documents (rare, ~10 tests total)
+   - Examples: Signatera, clonoSEQ, Shield, Oncotype DX, Foresight CLARITY
+   - Say: "named in NCCN guidelines" or "specifically referenced in NCCN"
+
+2. vendorNCCN=true: Vendor CLAIMS alignment because test covers NCCN-recommended biomarkers (common, ~25 tests)
+   - Examples: FoundationOne CDx, Guardant360, MSK-IMPACT, Tempus xT
+   - Say: "covers NCCN-recommended biomarkers" or "vendor claims NCCN biomarker alignment"
+   - NEVER say these are "NCCN-recommended" or "NCCN-approved" - that is FALSE
+
+FORBIDDEN PHRASES for vendorNCCN tests:
+- "NCCN-recommended" ❌
+- "NCCN-approved" ❌  
+- "included in NCCN guidelines" ❌
+- "NCCN endorses" ❌
+
+CORRECT PHRASES for vendorNCCN tests:
+- "covers biomarkers recommended by NCCN" ✓
+- "aligns with NCCN biomarker recommendations" ✓
+- "vendor reports NCCN biomarker coverage" ✓
+
+If user asks "which tests are NCCN recommended/approved", ONLY list nccnNamed=true tests. Explain that CGP panels (FoundationOne, Guardant360, etc.) cover NCCN-recommended biomarkers but are not themselves named in guidelines.`;
+
+// CRITICAL: Performance claims warning for chatbot
+const performanceClaimsWarning = `
+**CRITICAL - EXTREME PERFORMANCE CLAIMS (100% sensitivity/specificity):**
+
+When users ask about "perfect" performance, 100% sensitivity, or 100% specificity:
+
+1. DISTINGUISH CAREFULLY between tests that have:
+   - 100% sensitivity ONLY (e.g., NeXT Personal Dx: sens=100%, spec=99.9%)
+   - 100% specificity ONLY (e.g., Haystack MRD: sens=95%, spec=100%)
+   - BOTH 100%/100% (extremely rare - only Pathlight in small cohort)
+
+2. If user asks "which tests have 100% sensitivity AND specificity":
+   - Only list tests where BOTH metrics = 100%
+   - Currently only Pathlight (n=100 cohort with ⚠️ caveat)
+   - Do NOT list tests that have only ONE metric at 100%
+
+3. ALWAYS include caveats for 100% claims:
+   - Small cohort sizes (e.g., "in a 100-patient validation cohort")
+   - Analytical vs clinical validation ("analytical validation only")
+   - Check sensitivityNotes/specificityNotes for ⚠️ warnings
+
+4. Add context that 100%/100% is statistically implausible in large real-world validation:
+   - No diagnostic test achieves perfect performance at scale
+   - Small cohorts can show 100% but this rarely holds in larger studies
+   - Look for confidence intervals and cohort sizes
+
+WRONG: "Several tests achieve 100% sensitivity and specificity: Haystack MRD, NeXT Personal..."
+RIGHT: "Only Pathlight reports both 100% sensitivity and 100% specificity, but this is from a small 100-patient validation cohort. Most tests with a '100%' metric have it for either sensitivity OR specificity, not both."`;
+
+// Persona-specific chatbot style instructions
+const getPersonaStyle = (persona) => {
+  const conversationalRule = `
+**CRITICAL - YOU MUST FOLLOW THESE RULES:**
+
+1. MAXIMUM 3-4 sentences. STOP WRITING after that. This is a HARD LIMIT.
+
+2. When user asks a broad question, ONLY ask clarifying questions. DO NOT list tests. DO NOT give overviews. DO NOT say "here's what's available." Just ask your question and STOP.
+
+3. NEVER use bullet points, numbered lists, or headers. EVER.
+
+4. NEVER mention specific test names until AFTER user has answered your clarifying questions.
+
+5. ONE topic per response. If you ask a clarifying question, that's your ENTIRE response.
+
+VIOLATION EXAMPLES (DO NOT DO THIS):
+"Let me ask: Are you in treatment? Here's a quick overview: [lists tests]" ← WRONG: Asked question but then listed tests anyway
+"There are several options. Signatera does X, Guardant does Y..." ← WRONG: Listed tests without narrowing down first
+
+CORRECT EXAMPLES:
+"I'd like to help you find the right test. Are you currently in active treatment, finished with treatment, or monitoring for recurrence?" ← CORRECT: Just the question, then STOP
+
+"Got it - you're monitoring after treatment. One more question: do you know if your tumor was sequenced when you were first diagnosed?" ← CORRECT: Acknowledged, asked next question, STOPPED`;
+  
+  const scopeReminder = `SCOPE: Only discuss tests in the database. For medical advice, say "That's a question for your care team."`;
+  
+  switch(persona) {
+    case 'Patient':
+      return `${conversationalRule}
+
+AUDIENCE: Patient or caregiver.
+TONE: Warm, supportive, simple language. Be a helpful guide having a conversation.
+${scopeReminder}`;
+    case 'Clinician':
+      return `${conversationalRule}
+
+AUDIENCE: Healthcare professional.
+TONE: Direct, collegial. Clinical terminology fine.
+${scopeReminder}`;
+    case 'Academic/Industry':
+      return `${conversationalRule}
+
+AUDIENCE: Researcher or industry professional.
+TONE: Technical and precise.
+${scopeReminder}`;
+    default:
+      return `${conversationalRule}
+
+TONE: Friendly and helpful.
+${scopeReminder}`;
+  }
+};
+
+// Shared system prompt generator for all chat interfaces
+const buildChatSystemPrompt = (persona, testData, includeKeyLegend = true, category = null, meta = null) => {
+  const categoryContext = category && meta 
+    ? `focused on ${meta.title} testing` 
+    : '';
+  const categoryScope = category 
+    ? `${category} tests in` 
+    : 'tests in';
+  
+  return `You are a conversational liquid biopsy test assistant for OpenOnco${categoryContext ? ', ' + categoryContext : ''}.
+
+${getPersonaStyle(persona)}
+
+SCOPE LIMITATIONS:
+- ONLY discuss ${categoryScope} the database below
+- NEVER speculate about disease genetics, heredity, or etiology
+- NEVER suggest screening strategies or who should be tested
+- NEVER interpret test results clinically
+- For questions outside test data: "That's outside my scope. Please discuss with your healthcare provider."
+
+WHAT YOU CAN DO:
+- Compare tests on documented attributes (sensitivity, specificity, TAT, cost, etc.)
+- Help users understand differences between test approaches
+- Direct users to appropriate test categories
+
+${nccnWarning}
+
+${performanceClaimsWarning}
+
+${category ? category + ' ' : ''}DATABASE:
+${JSON.stringify(testData)}
+${includeKeyLegend ? '\n' + chatKeyLegend : ''}
+
+Remember: SHORT responses (3-4 sentences max), then ask a follow-up question.`;
+};
+
 // ============================================
 // UI Components
 // ============================================
@@ -1529,6 +1678,9 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
 
   // Get current domain for filtering
   const currentDomain = getDomain();
+
+    "Which TDS tests have the fastest turnaround time?"
+  ];
   
   // Get dynamic test counts
   const testCounts = {
@@ -2188,9 +2340,124 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator */}
-        <div className="w-full">
+        <div className="hidden md:block lg:w-[50%] flex-shrink-0">
           <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
+        </div>
+
+        {/* Right: Claude Chat */}
+        <div className="w-full lg:w-[50%] flex flex-col gap-3">
+          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Explore Test Details:</h3>
+          {/* Claude Chat Input */}
+          <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
+            {/* Example Questions - shown when no messages */}
+            {messages.length === 0 && (
+              <div className="flex flex-col mb-3">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
+                  <button
+                    onClick={() => handleChatSubmit("Compare LOD and analytical sensitivity across MRD assays.")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Compare LOD and analytical sensitivity across MRD assays.
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("Which tests have FDA clearance vs LDT status?")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Which tests have FDA clearance vs LDT status?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("What are the technical differences between tumor-informed and tumor-naïve approaches?")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    What are the technical differences between tumor-informed and tumor-naïve approaches?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("Compare Medicare reimbursement rates for CGP panels.")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Compare Medicare reimbursement rates for CGP panels.
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Messages Area - shown when there are messages */}
+            {messages.length > 0 && (
+              <div ref={chatContainerRef} className="flex-1 overflow-y-auto mb-3 p-2 space-y-2 bg-white rounded-lg border border-slate-200 max-h-64">
+                {messages.map((msg, i) => (
+                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div 
+                      className={`max-w-[85%] rounded-xl px-3 py-1.5 ${msg.role === 'user' ? 'text-white rounded-br-sm' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-bl-sm'}`}
+                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                    >
+                      {msg.role === 'user' ? (
+                        <p className="text-xs whitespace-pre-wrap">{msg.content}</p>
+                      ) : (
+                        <Markdown className="text-xs">{msg.content}</Markdown>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl rounded-bl-sm px-3 py-1.5">
+                      <p className="text-xs text-slate-500">Thinking...</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Chat Input - always at bottom */}
+            <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex flex-col gap-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Ask Claude about tests..."
+                  className="w-full px-3 py-2.5 pl-9 text-sm bg-blue-50 border-2 border-blue-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm"
+                  disabled={isLoading}
+                />
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <div className="flex gap-2 items-center">
+                {/* Loading spinner - lower left */}
+                <div className="w-6 flex-shrink-0">
+                  {isLoading && (
+                    <svg className="w-5 h-5 text-slate-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  )}
+                </div>
+                <div className="flex gap-2 flex-1 justify-end">
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none cursor-pointer"
+                  title="Select AI model"
+                >
+                  {CHAT_MODELS.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  disabled={isLoading || !chatInput.trim()}
+                  className="text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                >
+                  Ask
+                </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 

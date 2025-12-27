@@ -77,8 +77,6 @@ import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import { getChatSuggestions } from './personaContent';
 import GlossaryTooltip from './components/GlossaryTooltip';
-import Chat from './components/Chat';
-import { buildSystemPrompt } from './chatPrompts';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -1237,6 +1235,155 @@ const chatTestData = {
   TDS: tdsTestData.map(compressTestForChat),
 };
 
+// Key legend for chatbot prompt
+const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, sensN/specN=sensitivity/specificity notes (⚠️ = caveat), aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccnNamed=test ACTUALLY NAMED in NCCN guidelines (true=test name appears in guideline text), vendorNCCN=vendor CLAIMS alignment (covers NCCN-recommended biomarkers but test itself NOT named), genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting, valCohort=validation cohort size (small cohorts with 100% metrics need caveats), analWarn=analytical validation warning (true=metrics from lab validation only, not large clinical cohorts).`;
+
+// CRITICAL: NCCN distinction rules for chatbot
+const nccnWarning = `
+**CRITICAL NCCN DISTINCTION - YOU MUST FOLLOW THIS:**
+
+There are TWO different NCCN-related fields. NEVER conflate them:
+
+1. nccnNamed=true: Test is ACTUALLY NAMED in NCCN guideline documents (rare, ~10 tests total)
+   - Examples: Signatera, clonoSEQ, Shield, Oncotype DX, Foresight CLARITY
+   - Say: "named in NCCN guidelines" or "specifically referenced in NCCN"
+
+2. vendorNCCN=true: Vendor CLAIMS alignment because test covers NCCN-recommended biomarkers (common, ~25 tests)
+   - Examples: FoundationOne CDx, Guardant360, MSK-IMPACT, Tempus xT
+   - Say: "covers NCCN-recommended biomarkers" or "vendor claims NCCN biomarker alignment"
+   - NEVER say these are "NCCN-recommended" or "NCCN-approved" - that is FALSE
+
+FORBIDDEN PHRASES for vendorNCCN tests:
+- "NCCN-recommended" ❌
+- "NCCN-approved" ❌  
+- "included in NCCN guidelines" ❌
+- "NCCN endorses" ❌
+
+CORRECT PHRASES for vendorNCCN tests:
+- "covers biomarkers recommended by NCCN" ✓
+- "aligns with NCCN biomarker recommendations" ✓
+- "vendor reports NCCN biomarker coverage" ✓
+
+If user asks "which tests are NCCN recommended/approved", ONLY list nccnNamed=true tests. Explain that CGP panels (FoundationOne, Guardant360, etc.) cover NCCN-recommended biomarkers but are not themselves named in guidelines.`;
+
+// CRITICAL: Performance claims warning for chatbot
+const performanceClaimsWarning = `
+**CRITICAL - EXTREME PERFORMANCE CLAIMS (100% sensitivity/specificity):**
+
+When users ask about "perfect" performance, 100% sensitivity, or 100% specificity:
+
+1. DISTINGUISH CAREFULLY between tests that have:
+   - 100% sensitivity ONLY (e.g., NeXT Personal Dx: sens=100%, spec=99.9%)
+   - 100% specificity ONLY (e.g., Haystack MRD: sens=95%, spec=100%)
+   - BOTH 100%/100% (extremely rare - only Pathlight in small cohort)
+
+2. If user asks "which tests have 100% sensitivity AND specificity":
+   - Only list tests where BOTH metrics = 100%
+   - Currently only Pathlight (n=100 cohort with ⚠️ caveat)
+   - Do NOT list tests that have only ONE metric at 100%
+
+3. ALWAYS include caveats for 100% claims:
+   - Small cohort sizes (e.g., "in a 100-patient validation cohort")
+   - Analytical vs clinical validation ("analytical validation only")
+   - Check sensitivityNotes/specificityNotes for ⚠️ warnings
+
+4. Add context that 100%/100% is statistically implausible in large real-world validation:
+   - No diagnostic test achieves perfect performance at scale
+   - Small cohorts can show 100% but this rarely holds in larger studies
+   - Look for confidence intervals and cohort sizes
+
+WRONG: "Several tests achieve 100% sensitivity and specificity: Haystack MRD, NeXT Personal..."
+RIGHT: "Only Pathlight reports both 100% sensitivity and 100% specificity, but this is from a small 100-patient validation cohort. Most tests with a '100%' metric have it for either sensitivity OR specificity, not both."`;
+
+// Persona-specific chatbot style instructions
+const getPersonaStyle = (persona) => {
+  const conversationalRule = `
+**CRITICAL - YOU MUST FOLLOW THESE RULES:**
+
+1. MAXIMUM 3-4 sentences. STOP WRITING after that. This is a HARD LIMIT.
+
+2. When user asks a broad question, ONLY ask clarifying questions. DO NOT list tests. DO NOT give overviews. DO NOT say "here's what's available." Just ask your question and STOP.
+
+3. NEVER use bullet points, numbered lists, or headers. EVER.
+
+4. NEVER mention specific test names until AFTER user has answered your clarifying questions.
+
+5. ONE topic per response. If you ask a clarifying question, that's your ENTIRE response.
+
+VIOLATION EXAMPLES (DO NOT DO THIS):
+"Let me ask: Are you in treatment? Here's a quick overview: [lists tests]" ← WRONG: Asked question but then listed tests anyway
+"There are several options. Signatera does X, Guardant does Y..." ← WRONG: Listed tests without narrowing down first
+
+CORRECT EXAMPLES:
+"I'd like to help you find the right test. Are you currently in active treatment, finished with treatment, or monitoring for recurrence?" ← CORRECT: Just the question, then STOP
+
+"Got it - you're monitoring after treatment. One more question: do you know if your tumor was sequenced when you were first diagnosed?" ← CORRECT: Acknowledged, asked next question, STOPPED`;
+  
+  const scopeReminder = `SCOPE: Only discuss tests in the database. For medical advice, say "That's a question for your care team."`;
+  
+  switch(persona) {
+    case 'Patient':
+      return `${conversationalRule}
+
+AUDIENCE: Patient or caregiver.
+TONE: Warm, supportive, simple language. Be a helpful guide having a conversation.
+${scopeReminder}`;
+    case 'Clinician':
+      return `${conversationalRule}
+
+AUDIENCE: Healthcare professional.
+TONE: Direct, collegial. Clinical terminology fine.
+${scopeReminder}`;
+    case 'Academic/Industry':
+      return `${conversationalRule}
+
+AUDIENCE: Researcher or industry professional.
+TONE: Technical and precise.
+${scopeReminder}`;
+    default:
+      return `${conversationalRule}
+
+TONE: Friendly and helpful.
+${scopeReminder}`;
+  }
+};
+
+// Shared system prompt generator for all chat interfaces
+const buildChatSystemPrompt = (persona, testData, includeKeyLegend = true, category = null, meta = null) => {
+  const categoryContext = category && meta 
+    ? `focused on ${meta.title} testing` 
+    : '';
+  const categoryScope = category 
+    ? `${category} tests in` 
+    : 'tests in';
+  
+  return `You are a conversational liquid biopsy test assistant for OpenOnco${categoryContext ? ', ' + categoryContext : ''}.
+
+${getPersonaStyle(persona)}
+
+SCOPE LIMITATIONS:
+- ONLY discuss ${categoryScope} the database below
+- NEVER speculate about disease genetics, heredity, or etiology
+- NEVER suggest screening strategies or who should be tested
+- NEVER interpret test results clinically
+- For questions outside test data: "That's outside my scope. Please discuss with your healthcare provider."
+
+WHAT YOU CAN DO:
+- Compare tests on documented attributes (sensitivity, specificity, TAT, cost, etc.)
+- Help users understand differences between test approaches
+- Direct users to appropriate test categories
+
+${nccnWarning}
+
+${performanceClaimsWarning}
+
+${category ? category + ' ' : ''}DATABASE:
+${JSON.stringify(testData)}
+${includeKeyLegend ? '\n' + chatKeyLegend : ''}
+
+Remember: SHORT responses (3-4 sentences max), then ask a follow-up question.`;
+};
+
 // ============================================
 // UI Components
 // ============================================
@@ -1314,6 +1461,235 @@ const Badge = ({ children, variant = 'default', title }) => {
     </span>
   );
 };
+
+// ============================================
+// Header
+// ============================================
+// Unified Chat Component (All Categories)
+// ============================================
+const UnifiedChat = ({ isFloating = false, onClose = null }) => {
+  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
+  const chatContainerRef = useRef(null);
+
+  const suggestedQuestions = [
+    "Patient with breast cancer, stage II, neo-adjuvant, US, age 72. What MRD tests fit this profile and are reimbursable?",
+    "Compare Signatera and Reveal MRD"
+  ];
+
+  useEffect(() => { 
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        // Wait for DOM to update, then scroll to show question and answer start
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            // Find the user message (question) that comes before this assistant response
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              // Calculate scroll position using getBoundingClientRect for accurate positioning
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              // Calculate relative position within the scrollable container
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              // Scroll to show question with padding above
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            } else {
+              // Fallback: scroll to assistant message if no user message found
+              const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+              const lastAssistantEl = messageElements[messageElements.length - 1];
+              if (lastAssistantEl) {
+                const containerRect = container.getBoundingClientRect();
+                const assistantRect = lastAssistantEl.getBoundingClientRect();
+                const relativeTop = assistantRect.top - containerRect.top + container.scrollTop;
+                container.scrollTop = Math.max(0, relativeTop - 8);
+              }
+            }
+          }, 150);
+        });
+      }
+    }
+  }, [messages]);
+
+  // Track persona from localStorage
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  useEffect(() => {
+    // Listen for persona changes and reset chat
+    const handlePersonaChange = (e) => {
+      setPersona(e.detail);
+      setMessages([]);
+      setShowSuggestions(true);
+    };
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+
+  const handleSuggestionClick = (question) => {
+    setShowSuggestions(false);
+    setInput('');
+    submitQuestion(question);
+  };
+
+  // Memoize system prompt - recompute when persona changes
+  const systemPrompt = useMemo(() => {
+    return buildChatSystemPrompt(persona, chatTestData, true);
+  }, [persona]);
+
+  const submitQuestion = async (question) => {
+    setShowSuggestions(false);
+    const newUserMessage = { role: 'user', content: question };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
+    setIsLoading(true);
+
+    try {
+      // Limit history to last 6 messages to reduce token usage
+      const recentMessages = updatedMessages.slice(-6);
+      
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category: 'all',
+          persona: persona,
+          testData: JSON.stringify(chatTestData),
+          messages: recentMessages,
+          model: selectedModel
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.content && data.content[0] && data.content[0].text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        console.log('Unexpected response:', data);
+        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
+    }
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async () => {
+    if (!input.trim() || isLoading) return;
+    const userMessage = input.trim();
+    setInput('');
+    submitQuestion(userMessage);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  return (
+    <div className={`bg-white rounded-2xl border-2 border-[#9FC4E0] overflow-hidden shadow-lg ${isFloating ? 'flex flex-col' : ''}`} style={isFloating ? { height: '500px' } : {}}>
+      <div className="bg-gradient-to-r from-[#EAF1F8] to-emerald-50 px-5 py-3 border-b border-[#D5E3F0] flex items-center justify-between flex-shrink-0">
+        <p className="text-[#163A5E] text-sm">Query our database of {totalTests} MRD, ECD, TRM, and TDS tests</p>
+        {isFloating && onClose && (
+          <button onClick={onClose} className="text-[#2A63A4] hover:text-[#163A5E] p-1">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+      
+      <div ref={chatContainerRef} className={`overflow-y-auto p-4 space-y-3 bg-gray-50 ${isFloating ? 'flex-1' : 'h-80'}`}>
+        {/* Suggested Questions - shown when no messages */}
+        {showSuggestions && messages.length === 0 && !isLoading && (
+          <div className="h-full flex flex-col justify-center">
+            <p className="text-sm text-gray-500 text-center mb-4">Try one of these questions:</p>
+            <div className="grid grid-cols-1 gap-2">
+              {suggestedQuestions.map((question, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleSuggestionClick(question)}
+                  className="text-left px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] transition-colors shadow-sm"
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {messages.map((msg, i) => (
+          <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div 
+              className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                msg.role === 'user' 
+                  ? 'text-white rounded-br-md' 
+                  : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm'
+              }`}
+              style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+            >
+              {msg.role === 'user' ? (
+                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              ) : (
+                <Markdown className="text-sm">{msg.content}</Markdown>
+              )}
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm flex space-x-1.5">
+              <div className="w-2 h-2 bg-[#4A82B0] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-[#4A82B0] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-[#4A82B0] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <div className="border-t border-gray-200 p-4 bg-white flex-shrink-0">
+        <div className="flex gap-3 items-center">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
+            title="Select AI model"
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+          <input 
+            type="text" 
+            value={input} 
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type your liquid biopsy test question here..." 
+            className="flex-1 px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none shadow-sm placeholder:text-gray-400" 
+            style={{ borderColor: '#6AA1C8' }}
+          />
+          <button 
+            onClick={handleSubmit}
+            disabled={isLoading} 
+            className="text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+            style={{ backgroundColor: '#2A63A4' }}
+          >
+          Ask
+          </button>
+        </div>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+      </div>
+    </div>
+  );
+};
+
 
 // ============================================
 // Recently Added Tests Banner - Full width at top of showcase
@@ -1529,6 +1905,52 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
 
   // Get current domain for filtering
   const currentDomain = getDomain();
+
+  // Chat state for non-patient views
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
+  const chatContainerRef = useRef(null);
+
+  // Track persona
+  const [persona, setPersona] = useState(getStoredPersona() || 'Clinician');
+  useEffect(() => {
+    const handlePersonaChange = (e) => setPersona(e.detail);
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, []);
+  
+  
+  // Auto-scroll to show question at top when response arrives
+  useEffect(() => {
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        // Wait for DOM to update, then scroll to show question at top
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            }
+          }, 150);
+        });
+      }
+    }
+  }, [messages]);
+  
+  // Example questions for chat
+  const exampleQuestions = [
+    "Compare Signatera and Reveal MRD for colorectal cancer MRD monitoring",
+    "What ECD tests have Medicare coverage?",
+    "Which TDS tests have the fastest turnaround time?"
+  ];
   
   // Get dynamic test counts
   const testCounts = {
@@ -1865,6 +2287,65 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
     good: 'text-emerald-600',        // Patient: positive indicator
     neutral: 'text-slate-600'        // Patient: neutral indicator
   };
+
+  // Chat system prompt for non-patient views
+  const chatTestData = [
+    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
+    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
+    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
+  ];
+
+  const getPersonaStyle = (p) => {
+    const conversationalBase = `Keep responses to ONE short paragraph (3-4 sentences). Ask 1-2 follow-up questions to understand their needs. Never use bullets - write conversationally.`;
+    if (p === 'Clinician') return `${conversationalBase} Use clinical terminology freely. Be collegial and direct.`;
+    if (p === 'Academic/Industry') return `${conversationalBase} Include technical depth and methodology notes where relevant.`;
+    return `${conversationalBase} Be warm and accessible.`;
+  };
+
+  const systemPrompt = useMemo(() => {
+    return buildChatSystemPrompt(persona, chatTestData, false);
+  }, [persona]);
+
+  // Chat submit handler
+  const handleChatSubmit = async (question) => {
+    const q = question || chatInput;
+    if (!q.trim()) return;
+    
+    setChatInput('');
+    const newUserMessage = { role: 'user', content: q };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
+    setIsLoading(true);
+
+    try {
+      const recentMessages = updatedMessages.slice(-6);
+      
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category: 'all',
+          persona: persona,
+          testData: JSON.stringify(chatTestData),
+          messages: recentMessages,
+          model: selectedModel
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data?.content?.[0]?.text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
+    }
+    setIsLoading(false);
+  };
+
   // Static badge params - get top 2-3 key metrics for each test
   const getBadgeParams = (test) => {
     const badges = [];
@@ -2188,9 +2669,124 @@ const TestShowcase = ({ onNavigate, patientMode = false }) => {
       {/* Main Content: Side-by-side on desktop */}
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         {/* Left: Lifecycle Navigator */}
-        <div className="w-full">
+        <div className="hidden md:block lg:w-[50%] flex-shrink-0">
           <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
           <LifecycleNavigator onNavigate={onNavigate} />
+        </div>
+
+        {/* Right: Claude Chat */}
+        <div className="w-full lg:w-[50%] flex flex-col gap-3">
+          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude to Explore Test Details:</h3>
+          {/* Claude Chat Input */}
+          <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 border-2 border-slate-300 flex-[2] flex flex-col shadow-sm hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
+            {/* Example Questions - shown when no messages */}
+            {messages.length === 0 && (
+              <div className="flex flex-col mb-3">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-medium">Try asking:</span>
+                  <button
+                    onClick={() => handleChatSubmit("Compare LOD and analytical sensitivity across MRD assays.")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Compare LOD and analytical sensitivity across MRD assays.
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("Which tests have FDA clearance vs LDT status?")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Which tests have FDA clearance vs LDT status?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("What are the technical differences between tumor-informed and tumor-naïve approaches?")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    What are the technical differences between tumor-informed and tumor-naïve approaches?
+                  </button>
+                  <button
+                    onClick={() => handleChatSubmit("Compare Medicare reimbursement rates for CGP panels.")}
+                    className="text-[12px] text-left bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 hover:bg-[#EAF1F8] hover:border-[#6AA1C8] hover:text-[#1E4A7A] transition-colors"
+                  >
+                    Compare Medicare reimbursement rates for CGP panels.
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Messages Area - shown when there are messages */}
+            {messages.length > 0 && (
+              <div ref={chatContainerRef} className="flex-1 overflow-y-auto mb-3 p-2 space-y-2 bg-white rounded-lg border border-slate-200 max-h-64">
+                {messages.map((msg, i) => (
+                  <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div 
+                      className={`max-w-[85%] rounded-xl px-3 py-1.5 ${msg.role === 'user' ? 'text-white rounded-br-sm' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-bl-sm'}`}
+                      style={msg.role === 'user' ? { backgroundColor: '#2A63A4' } : {}}
+                    >
+                      {msg.role === 'user' ? (
+                        <p className="text-xs whitespace-pre-wrap">{msg.content}</p>
+                      ) : (
+                        <Markdown className="text-xs">{msg.content}</Markdown>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl rounded-bl-sm px-3 py-1.5">
+                      <p className="text-xs text-slate-500">Thinking...</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Chat Input - always at bottom */}
+            <form onSubmit={(e) => { e.preventDefault(); handleChatSubmit(); }} className="flex flex-col gap-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Ask Claude about tests..."
+                  className="w-full px-3 py-2.5 pl-9 text-sm bg-blue-50 border-2 border-blue-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm"
+                  disabled={isLoading}
+                />
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <div className="flex gap-2 items-center">
+                {/* Loading spinner - lower left */}
+                <div className="w-6 flex-shrink-0">
+                  {isLoading && (
+                    <svg className="w-5 h-5 text-slate-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  )}
+                </div>
+                <div className="flex gap-2 flex-1 justify-end">
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none cursor-pointer"
+                  title="Select AI model"
+                >
+                  {CHAT_MODELS.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  disabled={isLoading || !chatInput.trim()}
+                  className="text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                  style={{ background: 'linear-gradient(to right, #2A63A4, #1E4A7A)' }}
+                >
+                  Ask
+                </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
@@ -2947,7 +3543,7 @@ const HomePage = ({ onNavigate }) => {
 
   // Memoize system prompt - recompute when persona changes
   const systemPrompt = useMemo(() => {
-    return buildSystemPrompt(persona, chatTestData, { includeExamples: true });
+    return buildChatSystemPrompt(persona, chatTestData, true);
   }, [persona]);
 
   const handleSubmit = async (question) => {
@@ -3995,6 +4591,171 @@ const SourceDataPage = () => {
   );
 };
 
+// ============================================
+// Chat Component
+// ============================================
+const CategoryChat = ({ category }) => {
+  const meta = categoryMeta[category];
+  const [messages, setMessages] = useState([
+    { role: 'assistant', content: `Hi! I can help you understand ${meta.title} tests. Ask me about specific tests, comparisons, or clinical applications.` }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [persona, setPersona] = useState(() => getStoredPersona() || 'Clinician');
+  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => { 
+    if (chatContainerRef.current && messages.length > 0) {
+      const container = chatContainerRef.current;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        // Wait for DOM to update, then scroll to show question and answer start
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            // Find the user message (question) that comes before this assistant response
+            const userMessages = container.querySelectorAll('[data-message-role="user"]');
+            const lastUserEl = userMessages[userMessages.length - 1];
+            if (lastUserEl) {
+              // Calculate scroll position using getBoundingClientRect for accurate positioning
+              const containerRect = container.getBoundingClientRect();
+              const userRect = lastUserEl.getBoundingClientRect();
+              // Calculate relative position within the scrollable container
+              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
+              // Scroll to show question with padding above
+              container.scrollTop = Math.max(0, relativeTop - 20);
+            } else {
+              // Fallback: scroll to assistant message if no user message found
+              const messageElements = container.querySelectorAll('[data-message-role="assistant"]');
+              const lastAssistantEl = messageElements[messageElements.length - 1];
+              if (lastAssistantEl) {
+                const containerRect = container.getBoundingClientRect();
+                const assistantRect = lastAssistantEl.getBoundingClientRect();
+                const relativeTop = assistantRect.top - containerRect.top + container.scrollTop;
+                container.scrollTop = Math.max(0, relativeTop - 8);
+              }
+            }
+          }, 150);
+        });
+      }
+    }
+  }, [messages]);
+  
+  // Listen for persona changes
+  useEffect(() => {
+    const handlePersonaChange = (e) => {
+      setPersona(e.detail);
+      setMessages([{ role: 'assistant', content: `Hi! I can help you understand ${meta.title} tests. Ask me about specific tests, comparisons, or clinical applications.` }]);
+    };
+    window.addEventListener('personaChanged', handlePersonaChange);
+    return () => window.removeEventListener('personaChanged', handlePersonaChange);
+  }, [meta.title]);
+
+  // Memoize system prompt - recomputed if category or persona changes
+  const systemPrompt = useMemo(() => {
+    return buildChatSystemPrompt(persona, chatTestData[category], true, category, meta);
+  }, [category, meta, persona]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!input.trim() || isLoading) return;
+    const userMessage = input.trim();
+    
+    // Track chat submission with feature flags
+    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+    track('chat_message_sent', { 
+      category: category,
+      model: selectedModel,
+      message_length: userMessage.length
+    }, { 
+      flags: [personaFlag, `category-${category.toLowerCase()}`] 
+    });
+    
+    setInput('');
+    const newUserMessage = { role: 'user', content: userMessage };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
+    setIsLoading(true);
+
+    try {
+      // Skip the initial greeting, limit to last 6 messages
+      const conversationHistory = updatedMessages.slice(1).slice(-6);
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          category: category,
+          persona: persona,
+          testData: JSON.stringify(chatTestData[category]),
+          messages: conversationHistory,
+          model: selectedModel
+        })
+      });
+      const data = await response.json();
+      if (data && data.content && data.content[0] && data.content[0].text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', content: "Connection error. Please try again." }]);
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div ref={chatContainerRef} className="h-56 overflow-y-auto p-4 space-y-3">
+        {messages.map((msg, i) => (
+          <div key={i} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.role === 'user' ? 'bg-emerald-500 text-white rounded-br-md' : 'bg-gray-100 text-gray-800 rounded-bl-md'}`}>
+              {msg.role === 'user' ? (
+                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              ) : (
+                <Markdown className="text-sm">{msg.content}</Markdown>
+              )}
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-gray-100 rounded-2xl rounded-bl-md px-4 py-3 flex space-x-1">
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="border-t border-gray-200 p-3">
+        <div className="flex gap-2 items-center">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+            title="Select AI model"
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder={`Ask about ${meta.shortTitle}...`} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          <button onClick={handleSubmit} disabled={isLoading} className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-lg text-sm font-medium">Send</button>
+        </div>
+        <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Claude AI. Responses may be inaccurate and should be independently verified.</p>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // Info Icon Component (shows citations/notes on click)
 // ============================================
 // Helper function to format LOD as "ppm (% VAF)"
@@ -7381,6 +8142,11 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
             {filteredTests.length === 0 && <div className="text-center py-12 text-gray-500"><p>No tests match your filters.</p><button onClick={clearFilters} className="text-emerald-600 text-sm mt-2">Clear filters</button></div>}
           </div>
         </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Ask a Question</h2>
+        <CategoryChat category={category} />
       </section>
 
       {/* Full Resources Section - for cancer categories */}

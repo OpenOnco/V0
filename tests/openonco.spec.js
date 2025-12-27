@@ -66,29 +66,44 @@ test.describe('Homepage', () => {
   });
 
   test('chat input is visible', async ({ page }) => {
+    // Chat is only visible in patient persona
     await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
+    await page.reload();
+    await page.waitForTimeout(500);
     
-    const chatInput = page.locator('input[placeholder*="Ask Claude"], input[placeholder*="Ask"]');
+    const chatInput = page.locator('input[placeholder*="Ask Claude"], input[placeholder*="Ask"], input[placeholder*="ask"], input[placeholder*="Type"]');
     await expect(chatInput.first()).toBeVisible({ timeout: 5000 });
   });
 
   test('sample prompts are clickable', async ({ page }) => {
+    // Sample prompts are only visible in patient persona chat
     await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
+    await page.reload();
     await page.waitForTimeout(1000);
     
-    // Check for any of the new sample prompts (technical/clinical focused)
+    // Check for any sample prompts - R&D or Patient persona
+    // R&D prompts
     const lodPrompt = page.locator('button').filter({ hasText: /LOD.*analytical sensitivity/i });
     const fdaPrompt = page.locator('button').filter({ hasText: /FDA clearance.*LDT/i });
     const tumorInformedPrompt = page.locator('button').filter({ hasText: /tumor-informed.*tumor-na/i });
     const medicarePrompt = page.locator('button').filter({ hasText: /Medicare.*reimbursement/i });
+    // Patient prompts
+    const howWorkPrompt = page.locator('button').filter({ hasText: /How do these blood tests work/i });
+    const whatMrdPrompt = page.locator('button').filter({ hasText: /What is MRD/i });
+    const insurancePrompt = page.locator('button').filter({ hasText: /insurance cover/i });
     
     const lodVisible = await lodPrompt.isVisible().catch(() => false);
     const fdaVisible = await fdaPrompt.isVisible().catch(() => false);
     const tumorInformedVisible = await tumorInformedPrompt.isVisible().catch(() => false);
     const medicareVisible = await medicarePrompt.isVisible().catch(() => false);
+    const howWorkVisible = await howWorkPrompt.isVisible().catch(() => false);
+    const whatMrdVisible = await whatMrdPrompt.isVisible().catch(() => false);
+    const insuranceVisible = await insurancePrompt.isVisible().catch(() => false);
     
-    // At least one sample prompt should be visible
-    expect(lodVisible || fdaVisible || tumorInformedVisible || medicareVisible).toBeTruthy();
+    // At least one sample prompt should be visible (either persona)
+    expect(lodVisible || fdaVisible || tumorInformedVisible || medicareVisible || howWorkVisible || whatMrdVisible || insuranceVisible).toBeTruthy();
   });
 });
 
