@@ -244,7 +244,7 @@ const Chat = ({
   const suggestions = useMemo(() => {
     if (persona === 'patient' && chatMode === 'learn') {
       return [
-        "What's the difference between tumor-informed and tumor-naive tests?",
+        "I've just finished my cancer treatment. What can these tests do for me?",
         "Which MRD tests have the best Medicare coverage?",
         "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
         "How much blood is needed for Signatera vs Guardant Reveal?",
