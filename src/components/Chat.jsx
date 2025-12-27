@@ -158,20 +158,20 @@ const Chat = ({
         modelSelect: 'bg-white/90 border-white/50'
       };
     }
-    // R&D and Medical - emerald theme
+    // R&D and Medical - matches 2x2 navigator styling
     return {
-      container: 'bg-white border-gray-200',
-      header: 'text-gray-700 bg-gray-50 border-b border-gray-100',
-      messageArea: 'bg-gray-50',
+      container: 'bg-white border-slate-200',
+      header: '',  // no special header background
+      messageArea: 'bg-white',
       userBubble: 'bg-emerald-600 text-white',
-      assistantBubble: 'bg-white border border-gray-200 text-gray-700',
+      assistantBubble: 'bg-slate-50 border border-slate-200 text-slate-700',
       loadingDot: 'bg-emerald-500',
-      suggestionBtn: 'bg-white border-gray-200 text-gray-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700',
-      input: 'border-gray-200 focus:ring-emerald-500',
+      suggestionBtn: 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700',
+      input: 'border-slate-200 focus:ring-emerald-500',
       submitBtn: 'bg-emerald-600 text-white hover:bg-emerald-700',
-      resizeHandle: 'bg-gray-300 group-hover:bg-gray-400',
+      resizeHandle: 'bg-slate-300 group-hover:bg-slate-400',
       spinnerColor: 'text-emerald-600',
-      modelSelect: 'bg-white border-gray-200'
+      modelSelect: 'bg-white border-slate-200 text-slate-600'
     };
   }, [persona]);
 
@@ -332,64 +332,75 @@ const Chat = ({
   const isPatient = persona === 'patient';
 
   return (
-    <div className={`rounded-2xl border shadow-sm overflow-hidden flex flex-col ${theme.container} ${isCompact ? '' : 'p-6'} ${className}`}>
-      {/* Header */}
-      <div className={`flex items-center justify-between ${isCompact ? 'px-4 py-2 ' + theme.header : 'mb-4'}`}>
-        {/* Loading spinner (left) */}
-        <div className="w-8 flex-shrink-0">
-          {isLoading && (
-            <svg className={`w-5 h-5 ${theme.spinnerColor} animate-spin`} fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          )}
+    <div className={`rounded-2xl border shadow-sm overflow-hidden flex flex-col ${theme.container} ${isCompact ? 'p-4' : 'p-6'} ${className}`}>
+      {/* Header - matches navigator styling for sidebar */}
+      {isCompact ? (
+        <div className="mb-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold text-slate-800 flex-1 text-center">Chat with Claude about the tests</h3>
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className={`text-xs border rounded px-2 py-1 ${theme.modelSelect}`}
+            >
+              {CHAT_MODELS.map(m => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
+      ) : (
+        <div className="flex items-center justify-between mb-4">
+          {/* Loading spinner (left) */}
+          <div className="w-8 flex-shrink-0">
+            {isLoading && (
+              <svg className={`w-5 h-5 ${theme.spinnerColor} animate-spin`} fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            )}
+          </div>
 
-        {/* Title (center) */}
-        {showTitle && (
-          <div className="flex-1 text-center">
-            {isPatient ? (
+          {/* Title (center) */}
+          {showTitle && (
+            <div className="flex-1 text-center">
               <h2 className="text-lg sm:text-xl font-semibold text-white">
                 Chat with us to Learn More About These Tests
               </h2>
-            ) : (
-              <h3 className="text-lg font-bold text-slate-800">Chat with Claude about the tests</h3>
+            </div>
+          )}
+
+          {/* Right side: model selector + print */}
+          <div className="flex items-center gap-2">
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className={`text-xs border rounded px-2 py-1 ${theme.modelSelect}`}
+            >
+              {CHAT_MODELS.map(m => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+            {messages.length > 2 && (
+              <button
+                onClick={printChat}
+                className="flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors bg-white/20 hover:bg-white/30 text-white"
+                title="Print consultation"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print
+              </button>
             )}
           </div>
-        )}
-
-        {/* Right side: model selector + print */}
-        <div className="flex items-center gap-2">
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className={`text-xs border rounded px-2 py-1 ${theme.modelSelect}`}
-          >
-            {CHAT_MODELS.map(m => (
-              <option key={m.id} value={m.id}>{m.name}</option>
-            ))}
-          </select>
-          {messages.length > 2 && (
-            <button
-              onClick={printChat}
-              className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors ${
-                isPatient ? 'bg-white/20 hover:bg-white/30 text-white' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-              }`}
-              title="Print consultation"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              {!isCompact && 'Print'}
-            </button>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Messages area */}
       <div 
         ref={chatContainerRef}
-        className={`overflow-y-auto ${isCompact ? 'p-4' : 'rounded-xl p-4 mb-1'} ${theme.messageArea}`}
+        className={`overflow-y-auto ${isCompact ? '' : 'rounded-xl p-4 mb-1'} ${theme.messageArea}`}
         style={{ 
           height: isCompact ? undefined : `${chatHeight}px`,
           minHeight: isCompact ? '150px' : '200px',
@@ -505,7 +516,7 @@ const Chat = ({
       )}
 
       {/* Input area */}
-      <div className={`${isCompact ? 'border-t border-gray-200 p-3 bg-white' : ''}`}>
+      <div className={`${isCompact ? 'pt-3 mt-3 border-t border-slate-100' : ''}`}>
         <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-2">
           <input
             ref={inputRef}
@@ -513,7 +524,7 @@ const Chat = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={isPatient ? "Type your question..." : "Ask about tests..."}
-            className={`flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 ${theme.input}`}
+            className={`flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 border ${theme.input}`}
             disabled={isLoading}
           />
           <button
