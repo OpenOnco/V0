@@ -427,7 +427,7 @@ const Chat = ({
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
               }`}
             >
-              Find tests for my situation
+              Find tests for this situation
             </button>
           </div>
         )}

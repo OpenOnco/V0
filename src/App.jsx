@@ -3035,7 +3035,7 @@ const HomePage = ({ onNavigate }) => {
               onClick={() => setPatientInfoModal('therapy')}
               className="bg-violet-50 hover:bg-violet-100 border border-violet-200 hover:border-violet-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
             >
-              <h3 className="text-xl font-bold text-violet-800 group-hover:text-violet-900 mb-2">Tests that will help find the right therapy for me</h3>
+              <h3 className="text-xl font-bold text-violet-800 group-hover:text-violet-900 mb-2">Tests that will help find the right therapy</h3>
               <p className="text-sm text-violet-600 group-hover:text-violet-700">Click to learn more →</p>
             </button>
             
@@ -3045,7 +3045,7 @@ const HomePage = ({ onNavigate }) => {
               onClick={() => setPatientInfoModal('monitoring')}
               className="bg-rose-50 hover:bg-rose-100 border border-rose-200 hover:border-rose-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
             >
-              <h3 className="text-xl font-bold text-rose-800 group-hover:text-rose-900 mb-2">Tests that will track how well my therapy is working</h3>
+              <h3 className="text-xl font-bold text-rose-800 group-hover:text-rose-900 mb-2">Tests that will track how well therapy is working</h3>
               <p className="text-sm text-rose-600 group-hover:text-rose-700">Click to learn more →</p>
             </button>
             
