@@ -335,19 +335,17 @@ const Chat = ({
     <div className={`rounded-2xl border shadow-sm overflow-hidden flex flex-col ${theme.container} ${isCompact ? 'p-4' : 'p-6'} ${className}`}>
       {/* Header - matches navigator styling for sidebar */}
       {isCompact ? (
-        <div className="mb-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-slate-800 flex-1 text-center">Chat with Claude about the tests</h3>
-            <select
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              className={`text-xs border rounded px-2 py-1 ${theme.modelSelect}`}
-            >
-              {CHAT_MODELS.map(m => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </select>
-          </div>
+        <div className="mb-3 relative">
+          <h3 className="text-lg font-bold text-slate-800 text-center">Chat with Claude about the tests:</h3>
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className={`absolute right-0 top-0 text-xs border rounded px-2 py-1 ${theme.modelSelect}`}
+          >
+            {CHAT_MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
         </div>
       ) : (
         <div className="flex items-center justify-between mb-4">
