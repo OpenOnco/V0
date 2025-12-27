@@ -203,6 +203,7 @@ const Chat = ({
   const [chatHeight, setChatHeight] = useState(initialHeight);
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
+  const lastUserMessageRef = useRef(null);
 
   // Theme configuration per persona
   const theme = useMemo(() => {
@@ -264,12 +265,12 @@ const Chat = ({
     return getWelcomeMessage(persona);
   }, [persona, chatMode]);
 
-  // Auto-scroll on new messages
+  // Scroll to user's question after response arrives (so they see question + start of answer)
   useEffect(() => {
-    if (chatContainerRef.current && messages.length > 0) {
-      const container = chatContainerRef.current;
+    if (chatContainerRef.current && messages.length > 0 && !isLoading && lastUserMessageRef.current) {
       requestAnimationFrame(() => {
-        container.scrollTop = container.scrollHeight;
+        lastUserMessageRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+        lastUserMessageRef.current = null;
       });
     }
   }, [messages, isLoading]);
@@ -543,17 +544,27 @@ const Chat = ({
         {/* Messages */}
         {messages.length > 0 && (
           <div className="space-y-4">
-            {messages.map((msg, idx) => (
-              <div key={idx} data-message-role={msg.role} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-xl px-4 py-3 ${msg.role === 'user' ? theme.userBubble : theme.assistantBubble}`}>
-                  {msg.role === 'assistant' ? (
-                    <SimpleMarkdown text={msg.content} className="text-sm" />
-                  ) : (
-                    <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
-                  )}
+            {messages.map((msg, idx) => {
+              // Find the last user message to attach ref for scroll targeting
+              const isLastUserMessage = msg.role === 'user' && 
+                messages.slice(idx + 1).every(m => m.role !== 'user');
+              return (
+                <div 
+                  key={idx} 
+                  ref={isLastUserMessage ? (el) => { lastUserMessageRef.current = el; } : null}
+                  data-message-role={msg.role} 
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`max-w-[85%] rounded-xl px-4 py-3 ${msg.role === 'user' ? theme.userBubble : theme.assistantBubble}`}>
+                    {msg.role === 'assistant' ? (
+                      <SimpleMarkdown text={msg.content} className="text-sm" />
+                    ) : (
+                      <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
