@@ -33,20 +33,20 @@ ctDNA MRD EVIDENCE LANDSCAPE:
     {
       context: 'Researcher asks about detection limits',
       question: "What's the LOD for tumor-informed MRD assays?",
-      goodAnswer: "Tumor-informed assays achieve lower LODs by tracking patient-specific variants. Signatera claims ~0.01% (1 MTM/mL), Haystack MRD ~6 ppm (0.0006%), NeXT Personal ~1.67 ppm. Note these are analytical LODs from dilution series - clinical sensitivity varies by timepoint and indication. Which tumor type are you focused on?",
-      badAnswer: "The LOD varies by test. Some are more sensitive than others. You should check the specifications for each test."
+      goodAnswer: "Tumor-informed assays achieve lower LODs by tracking patient-specific variants. Signatera claims ~0.01% (1 MTM/mL), Haystack MRD ~6 ppm (0.0006%), NeXT Personal ~1.67 ppm. These are analytical LODs from dilution series - clinical sensitivity varies by timepoint and tumor type. Want a comparison table across all tumor-informed assays?",
+      badAnswer: "For your patient, the LOD should be sufficient to detect recurrence. I'd recommend using one of the more sensitive assays."
     },
     {
       context: 'Industry person asks about regulatory',
       question: "Which MRD tests have FDA approval vs LDT?",
-      goodAnswer: "Only clonoSEQ has full FDA approval (for B-ALL, MM, CLL). Signatera has Breakthrough Device designation and is widely used as a CLIA LDT. Most others (Guardant Reveal, Haystack, NeXT Personal) are LDTs. Foundation is rolling out TI-WGS MRD as RUO. Are you tracking for competitive intel or regulatory planning?",
-      badAnswer: "Some tests are FDA approved and others are LDTs. The regulatory status varies."
+      goodAnswer: "Only clonoSEQ has full FDA approval (for B-ALL, MM, CLL). Signatera has Breakthrough Device designation - operates as CLIA LDT. Others (Guardant Reveal, Haystack, NeXT Personal) are LDTs. Foundation's TI-WGS MRD is RUO. I can break down the regulatory pathway for any specific test if helpful.",
+      badAnswer: "You should use an FDA-approved test for your clinical trial if you want regulatory acceptance."
     },
     {
       context: 'Researcher asks about methodology',
       question: "How does tumor-naive differ from tumor-informed technically?",
-      goodAnswer: "Tumor-informed (Signatera, Haystack) sequences the tumor first to build a personalized panel of 16-1800 variants, then tracks those in plasma. Tumor-naive (Guardant Reveal, Invitae PCM) uses fixed panels with methylation or mutation signatures without prior tumor sequencing. Trade-off: informed has lower LOD but requires tissue and longer initial TAT. What's driving your question - clinical trial design or assay development?",
-      badAnswer: "Tumor-informed requires tumor tissue sequencing first while tumor-naive doesn't. They have different approaches."
+      goodAnswer: "Tumor-informed (Signatera, Haystack) sequences tumor first to build a personalized panel of 16-1800 variants, then tracks those in plasma. Tumor-naive (Guardant Reveal, Invitae PCM) uses fixed panels with methylation or mutation signatures without prior tumor sequencing. Trade-off: informed achieves lower LOD but requires tissue and longer initial TAT (~2 weeks vs ~1 week). Want specifics on variant counts or cfDNA input requirements?",
+      badAnswer: "For your study design, tumor-informed would be better if you have tissue available. I'd recommend Signatera or Haystack."
     }
   ],
 
@@ -58,7 +58,7 @@ ctDNA MRD EVIDENCE LANDSCAPE:
     "Which vendors offer both tumor-informed and tumor-naive MRD options?"
   ],
 
-  welcomeMessage: "Ready to dive into the technical details. What would you like to explore?"
+  welcomeMessage: "I have detailed specs on analytical validation, regulatory status, and clinical trial data. What would you like to look up?"
 };
 
 export default academicConfig;

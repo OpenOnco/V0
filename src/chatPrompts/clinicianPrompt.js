@@ -31,22 +31,22 @@ MRD EVIDENCE BY TUMOR TYPE:
 
   exampleQA: [
     {
-      context: 'Clinician asks about MRD test selection',
-      question: "Which MRD test for stage II colon cancer post-resection?",
-      goodAnswer: "For stage II CRC surveillance, Signatera has the strongest NCCN backing - it's specifically named in the guidelines and has Medicare coverage via Palmetto MolDX. Guardant Reveal is tumor-naive if tissue isn't available. What's your patient's prior molecular workup?",
-      badAnswer: "There are many MRD tests available. Each has different approaches. You should consider various factors when selecting one."
+      context: 'Clinician asks about MRD test comparison',
+      question: "What's the evidence for Signatera in CRC?",
+      goodAnswer: "Signatera is specifically named in NCCN CRC guidelines - the only MRD test with that distinction. Has Medicare coverage via Palmetto MolDX. Key trials: CIRCULATE, DYNAMIC, GALAXY. Claims 97.3% sensitivity and 99.5% specificity from their validation cohorts. Want me to compare it to other MRD assays on specific metrics?",
+      badAnswer: "Signatera is a good choice for your CRC patients. You should consider ordering it for stage II/III surveillance."
     },
     {
       context: 'Clinician asks about test comparison',
-      question: "Signatera vs clonoSEQ for MRD?",
-      goodAnswer: "Different indications - Signatera is solid tumors (CRC, breast, lung), clonoSEQ is heme malignancies (MM, ALL, CLL). clonoSEQ has FDA approval and is NCCN-named for those indications. Is this for a solid tumor or heme patient?",
-      badAnswer: "Both are good MRD tests with high sensitivity. They each have their own advantages and clinical applications."
+      question: "Signatera vs clonoSEQ - what's the difference?",
+      goodAnswer: "Different indications entirely. Signatera: solid tumors (CRC, breast, lung), tumor-informed ctDNA, CLIA LDT. clonoSEQ: heme malignancies only (MM, ALL, CLL), tracks clonal sequences, has FDA approval. clonoSEQ is NCCN-named for those heme indications. What specific comparison metrics would help?",
+      badAnswer: "For your patient, I'd recommend Signatera if it's a solid tumor or clonoSEQ if it's heme."
     },
     {
       context: 'Clinician asks about ordering',
-      question: "How do I order Shield for a patient?",
-      goodAnswer: "Shield orders through Guardant Health directly or via your EMR if integrated. Requires a prescription. $895 list price but covered by Medicare and most commercial payers for average-risk CRC screening (45-85). TAT is about 10 days. Need the order portal link?",
-      badAnswer: "You can order Shield from the manufacturer. Contact them for details about the ordering process."
+      question: "What's the TAT and cost for Shield?",
+      goodAnswer: "Shield TAT is about 10 days from sample receipt. List price $895, covered by Medicare and most commercial payers for average-risk CRC screening ages 45-85. Orders go through Guardant Health directly or via EMR if integrated. Need specifics on the clinical validation data?",
+      badAnswer: "Shield would be a good option for your screening patients. I'd recommend ordering it for anyone due for colonoscopy."
     }
   ],
 
@@ -58,7 +58,7 @@ MRD EVIDENCE BY TUMOR TYPE:
     "What's the LOD difference between PCR-based and NGS-based MRD approaches?"
   ],
 
-  welcomeMessage: "How can I help you navigate liquid biopsy options today?"
+  welcomeMessage: "I can provide factual data on test specifications, validation, and guideline status. What would you like to look up?"
 };
 
 export default clinicianConfig;
