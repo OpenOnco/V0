@@ -240,21 +240,10 @@ const Chat = ({
     };
   }, [persona]);
 
-  // Get suggestions based on persona and mode
+  // Get suggestions based on persona
   const suggestions = useMemo(() => {
-    if (persona === 'patient' && chatMode === 'learn') {
-      return [
-        "I've just finished my cancer treatment. What can these tests do for me?",
-        "Which MRD tests have the best Medicare coverage?",
-        "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
-        "My PSA is elevated and my doctor mentioned a biopsy. Are there blood tests that could help decide if I really need one?",
-        "How much blood is needed for Signatera vs Guardant Reveal?",
-        "How should I talk to my doctor about getting an MRD test?",
-        "I have stage IIA ER+/HER2- breast cancer, had a lumpectomy and finished AC-T chemo. My oncologist mentioned a blood test to monitor for recurrence - which ones work for hormone-positive breast cancer?"
-      ];
-    }
     return getSuggestedQuestions(persona);
-  }, [persona, chatMode]);
+  }, [persona]);
 
   // Welcome message based on persona and mode
   const welcomeMessage = useMemo(() => {
