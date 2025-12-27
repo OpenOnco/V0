@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { buildSystemPrompt, getSuggestedQuestions, getWelcomeMessage } from '../chatPrompts';
+import { getSuggestedQuestions, getWelcomeMessage } from '../chatPrompts';
 import { track } from '@vercel/analytics';
 
 // Chat model options - matches App.jsx
@@ -201,11 +201,6 @@ const Chat = ({
     return getWelcomeMessage(persona);
   }, [persona, chatMode]);
 
-  // Build system prompt
-  const systemPrompt = useMemo(() => {
-    return buildSystemPrompt(persona, testData, { includeExamples: true });
-  }, [persona, testData]);
-
   // Auto-scroll on new messages
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
@@ -236,20 +231,31 @@ const Chat = ({
     setIsLoading(true);
 
     try {
+      // Limit history to last 6 messages to reduce token usage
+      const recentMessages = updatedMessages.slice(-6);
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: updatedMessages,
-          systemPrompt,
-          model: selectedModel
+          category: 'all',
+          persona: persona,
+          testData: JSON.stringify(testData),
+          messages: recentMessages,
+          model: selectedModel,
+          patientChatMode: persona === 'patient' ? chatMode : null
         })
       });
 
       if (!response.ok) throw new Error('Chat request failed');
 
       const data = await response.json();
-      setMessages([...updatedMessages, { role: 'assistant', content: data.content }]);
+      
+      if (data?.content?.[0]?.text) {
+        setMessages([...updatedMessages, { role: 'assistant', content: data.content[0].text }]);
+      } else {
+        setMessages([...updatedMessages, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
+      }
     } catch (error) {
       console.error('Chat error:', error);
       setMessages([
