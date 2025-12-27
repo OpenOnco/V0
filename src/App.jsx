@@ -1208,7 +1208,7 @@ const compressTestForChat = (test) => {
     landmarkSensitivity: 'lmSens', landmarkSpecificity: 'lmSpec',
     longitudinalSensitivity: 'loSens', longitudinalSpecificity: 'loSpec',
     responseDefinition: 'respDef', independentValidation: 'indepVal',
-    nccnGuidelines: 'nccn', technologyDifferentiator: 'techDiff',
+    nccnNamedInGuidelines: 'nccnNamed', nccnGuidelineReference: 'nccnRef', vendorClaimsNCCNAlignment: 'vendorNCCN', vendorNCCNAlignmentIndications: 'vendorNCCNInd', technologyDifferentiator: 'techDiff',
     sensitivityNotes: 'sensN', specificityNotes: 'specN', ppvDefinition: 'ppvDef', npvDefinition: 'npvDef',
     genesAnalyzed: 'genes', fdaCompanionDxCount: 'cdxCount', tmb: 'tmb', msi: 'msi',
   };
@@ -1235,7 +1235,7 @@ const chatTestData = {
 };
 
 // Key legend for chatbot prompt
-const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines, genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting.`;
+const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccnNamed=test named in NCCN guidelines (true=actually named, not just biomarker coverage), vendorNCCN=vendor claims NCCN alignment (biomarker coverage only), genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting.`;
 
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
@@ -6441,15 +6441,40 @@ const TestDetailModal = ({ test, category, onClose }) => {
                     
                     <Section title="Guidelines & Coverage">
                       <div className="space-y-1">
-                        <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
-                          <span className="text-xs text-gray-500 flex items-center gap-1">
-                            <GlossaryTooltip termKey="nccn">NCCN</GlossaryTooltip> Recommended
-                          </span>
-                          <span className={`text-sm font-medium ${test.nccnRecommended ? 'text-emerald-600' : 'text-gray-500'}`}>
-                            {test.nccnRecommended ? 'Yes' : 'No'}
-                          </span>
-                        </div>
-                        {test.nccnGuidelinesAligned && <DataRow label="NCCN Guidelines" value={test.nccnGuidelinesAligned.join(', ')} notes={test.nccnGuidelinesNotes} citations={test.nccnGuidelinesCitations} />}
+                        {/* NCCN Status - New Schema */}
+                        {test.nccnNamedInGuidelines ? (
+                          <>
+                            <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                              <span className="text-xs text-gray-500 flex items-center gap-1">
+                                <GlossaryTooltip termKey="nccn">NCCN</GlossaryTooltip> Named in Guidelines
+                              </span>
+                              <span className="text-sm font-medium text-emerald-600 flex items-center gap-1">
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                                Yes
+                              </span>
+                            </div>
+                            {test.nccnGuidelineReference && <DataRow label="Guideline Reference" value={test.nccnGuidelineReference} notes={test.nccnGuidelinesNotes} />}
+                          </>
+                        ) : test.vendorClaimsNCCNAlignment ? (
+                          <>
+                            <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                              <span className="text-xs text-gray-500 flex items-center gap-1">
+                                Vendor Claims <GlossaryTooltip termKey="nccn">NCCN</GlossaryTooltip> Alignment
+                              </span>
+                              <span className="text-sm font-medium text-amber-600">Biomarker Coverage</span>
+                            </div>
+                            {test.vendorNCCNAlignmentIndications && test.vendorNCCNAlignmentIndications.length > 0 && (
+                              <DataRow label="Indications Claimed" value={test.vendorNCCNAlignmentIndications.join(', ')} notes={test.vendorNCCNAlignmentNotes} citations={test.vendorNCCNAlignmentCitation} />
+                            )}
+                          </>
+                        ) : (
+                          <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4">
+                            <span className="text-xs text-gray-500 flex items-center gap-1">
+                              <GlossaryTooltip termKey="nccn">NCCN</GlossaryTooltip> Status
+                            </span>
+                            <span className="text-sm font-medium text-gray-400">Not specified</span>
+                          </div>
+                        )}
                         <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
                         {test.medicareRate && (
                           <div className="py-1.5 flex justify-between items-center">
@@ -7494,8 +7519,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
           if (!isNaN(tatNum) && tatNum > maxTat) return false;
         }
       }
-      // NCCN filter
-      if (nccnOnly && !test.nccnRecommended) return false;
+      // NCCN filter - only tests actually named in NCCN guidelines
+      if (nccnOnly && !test.nccnNamedInGuidelines) return false;
       // Tumor tissue requirement filter
       if (tumorTissueRequired === 'yes' && test.requiresTumorTissue !== 'Yes') return false;
       if (tumorTissueRequired === 'no' && test.requiresTumorTissue !== 'No') return false;
@@ -7766,11 +7791,11 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
                   </>
                 )}
-                {/* NCCN Recommended - MRD, TRM (not ECD, TDS), clinician only */}
+                {/* NCCN Named - MRD, TRM (not ECD, TDS), clinician only */}
                 {(category === 'MRD' || category === 'TRM') && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Guidelines</label>
-                    <Checkbox label="NCCN Recommended" checked={nccnOnly} onChange={() => setNccnOnly(!nccnOnly)} />
+                    <Checkbox label="NCCN Named" checked={nccnOnly} onChange={() => setNccnOnly(!nccnOnly)} />
                   </>
                 )}
                 {/* Coverage - all categories */}
