@@ -248,7 +248,8 @@ const Chat = ({
         "Which MRD tests have the best Medicare coverage?",
         "I finished treatment for colon cancer - what tests could help monitor for recurrence?",
         "How much blood is needed for Signatera vs Guardant Reveal?",
-        "How should I talk to my doctor about getting an MRD test?"
+        "How should I talk to my doctor about getting an MRD test?",
+        "I have stage IIA ER+/HER2- breast cancer, had a lumpectomy and finished AC-T chemo. My oncologist mentioned a blood test to monitor for recurrence - which ones work for hormone-positive breast cancer?"
       ];
     }
     return getSuggestedQuestions(persona);
@@ -601,7 +602,7 @@ const Chat = ({
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={isPatient ? "Type your question..." : "Ask about testing, describe a situation, compare specific tests..."}
+            placeholder={isPatient ? "Ask a question or explain your situation..." : "Ask about testing, describe a situation, compare specific tests..."}
             className={`flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 border ${theme.input}`}
             disabled={isLoading}
           />
