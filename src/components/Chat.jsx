@@ -600,7 +600,7 @@ const Chat = ({
             disabled={isLoading || !input.trim()}
             className={`px-5 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${theme.submitBtn}`}
           >
-            {isPatient ? 'Chat' : 'Send'}
+            Ask
           </button>
         </form>
         {messages.length > 0 && (

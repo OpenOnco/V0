@@ -1003,7 +1003,7 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(1000);
     
     // Click "Tests that help find the right therapy" button
-    await page.getByText('Tests that help find the right therapy for you').click();
+    await page.getByText('Tests that will help find the right therapy').click();
     await page.waitForTimeout(500);
     
     // Modal should open with educational content
