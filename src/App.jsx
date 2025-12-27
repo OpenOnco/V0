@@ -1235,7 +1235,35 @@ const chatTestData = {
 };
 
 // Key legend for chatbot prompt
-const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccnNamed=test named in NCCN guidelines (true=actually named, not just biomarker coverage), vendorNCCN=vendor claims NCCN alignment (biomarker coverage only), genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting.`;
+const chatKeyLegend = `KEY: nm=name, vn=vendor, pType=product type (Self-Collection/Laboratory IVD Kit/Central Lab Service), platform=required instrument, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccnNamed=test ACTUALLY NAMED in NCCN guidelines (true=test name appears in guideline text), vendorNCCN=vendor CLAIMS alignment (covers NCCN-recommended biomarkers but test itself NOT named), genes=genes analyzed, cdxCount=FDA CDx indications, tmb/msi=TMB/MSI reporting.`;
+
+// CRITICAL: NCCN distinction rules for chatbot
+const nccnWarning = `
+**CRITICAL NCCN DISTINCTION - YOU MUST FOLLOW THIS:**
+
+There are TWO different NCCN-related fields. NEVER conflate them:
+
+1. nccnNamed=true: Test is ACTUALLY NAMED in NCCN guideline documents (rare, ~10 tests total)
+   - Examples: Signatera, clonoSEQ, Shield, Oncotype DX, Foresight CLARITY
+   - Say: "named in NCCN guidelines" or "specifically referenced in NCCN"
+
+2. vendorNCCN=true: Vendor CLAIMS alignment because test covers NCCN-recommended biomarkers (common, ~25 tests)
+   - Examples: FoundationOne CDx, Guardant360, MSK-IMPACT, Tempus xT
+   - Say: "covers NCCN-recommended biomarkers" or "vendor claims NCCN biomarker alignment"
+   - NEVER say these are "NCCN-recommended" or "NCCN-approved" - that is FALSE
+
+FORBIDDEN PHRASES for vendorNCCN tests:
+- "NCCN-recommended" ❌
+- "NCCN-approved" ❌  
+- "included in NCCN guidelines" ❌
+- "NCCN endorses" ❌
+
+CORRECT PHRASES for vendorNCCN tests:
+- "covers biomarkers recommended by NCCN" ✓
+- "aligns with NCCN biomarker recommendations" ✓
+- "vendor reports NCCN biomarker coverage" ✓
+
+If user asks "which tests are NCCN recommended/approved", ONLY list nccnNamed=true tests. Explain that CGP panels (FoundationOne, Guardant360, etc.) cover NCCN-recommended biomarkers but are not themselves named in guidelines.`;
 
 // Persona-specific chatbot style instructions
 const getPersonaStyle = (persona) => {
@@ -1314,6 +1342,8 @@ WHAT YOU CAN DO:
 - Compare tests on documented attributes (sensitivity, specificity, TAT, cost, etc.)
 - Help users understand differences between test approaches
 - Direct users to appropriate test categories
+
+${nccnWarning}
 
 ${category ? category + ' ' : ''}DATABASE:
 ${JSON.stringify(testData)}
