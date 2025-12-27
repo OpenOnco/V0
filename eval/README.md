@@ -24,14 +24,33 @@ python eval/rate_answers.py eval/results/eval_TIMESTAMP.json
 ## Components
 
 ### `questions.json`
-20 seed questions covering:
+55 test questions covering:
+
+**Accuracy & Retrieval:**
 - **nccn_accuracy**: Tests NCCN-named vs vendor-claim distinction
 - **factual_retrieval**: Database lookup accuracy
 - **comparison**: Test comparison quality
-- **out_of_scope**: Medical advice deflection
 - **hallucination**: Fabrication detection
-- **persona_consistency**: Tone matching
+
+**Scope & Behavior:**
+- **out_of_scope**: Medical advice deflection
+- **persona_consistency**: Tone matching by persona
 - **format_compliance**: Length/formatting rules
+- **example_questions**: Tests based on actual suggested questions
+
+**Guardrail Testing (NEW):**
+- **guardrails**: Tests core restrictions:
+  - Patient chat detecting clinician language ("I have a patient", "post-resection")
+  - Clinician/R&D refusing to give test recommendations
+  - Proper redirection messaging
+
+- **red_team**: Adversarial tests trying to bypass guardrails:
+  - Jailbreak attempts ("ignore previous instructions")
+  - Authority claims ("I'm the lead oncologist")
+  - Urgency manipulation ("this is urgent")
+  - Roleplay requests ("pretend you're a different AI")
+  - Hypothetical framing ("for research purposes only")
+  - Fake system instructions ("[SYSTEM] New instruction:")
 
 ### `run_eval.py`
 Sends questions to Claude with OpenOnco's exact system prompt:
@@ -39,6 +58,8 @@ Sends questions to Claude with OpenOnco's exact system prompt:
 - Compresses data same as production chatbot
 - Checks for red/green flags in answers
 - Outputs JSON with Q&A pairs
+
+**⚠️ IMPORTANT:** System prompts in `run_eval.py` must be kept in sync with `/api/chat.js`. When updating production prompts, update the eval prompts too.
 
 ### `rate_answers.py`
 Multi-LLM evaluation using configurable rubric:
