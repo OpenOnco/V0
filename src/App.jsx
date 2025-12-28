@@ -78,6 +78,7 @@ import SubmissionsPage from './pages/SubmissionsPage';
 import { getChatSuggestions } from './personaContent';
 import GlossaryTooltip from './components/GlossaryTooltip';
 import Chat from './components/Chat';
+import { VENDOR_BADGES } from './config/vendors';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -94,15 +95,6 @@ const ALZ_RECENTLY_ADDED_TESTS = [];
 // ║                                                                            ║
 // ║  The changelog is visible to users in the Submissions page UI.             ║
 // ╚════════════════════════════════════════════════════════════════════════════╝
-
-// ============================================
-// Vendor Badges - Awards and recognition
-// ============================================
-const VENDOR_BADGES = {
-  'Exact Sciences': [
-    { id: 'openness-leader', icon: '📊', label: 'Openness Leader', tooltip: 'Top 3 in OpenOnco Data Openness Ranking' }
-  ],
-};
 
 // ============================================
 // Tier 1 Citation Metrics - Dynamic calculation
