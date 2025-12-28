@@ -79,6 +79,7 @@ import { getChatSuggestions } from './personaContent';
 import GlossaryTooltip from './components/GlossaryTooltip';
 import Chat from './components/Chat';
 import { VENDOR_BADGES } from './config/vendors';
+import { CATEGORY_COLORS } from './config/categories';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -211,14 +212,6 @@ const calculateCategoryMetrics = (tests, category) => {
     fieldCompletionRates,
     minFieldCompletion,
   };
-};
-
-// Category color schemes for quality dashboard
-const CATEGORY_COLORS = {
-  MRD: { bg: 'bg-orange-50', border: 'border-orange-200', accent: 'bg-orange-500', text: 'text-orange-700' },
-  ECD: { bg: 'bg-emerald-50', border: 'border-emerald-200', accent: 'bg-emerald-500', text: 'text-emerald-700' },
-  TRM: { bg: 'bg-sky-50', border: 'border-sky-200', accent: 'bg-sky-500', text: 'text-sky-700' },
-  TDS: { bg: 'bg-violet-50', border: 'border-violet-200', accent: 'bg-violet-500', text: 'text-violet-700' },
 };
 
 // CircularProgress component for quality visualization
