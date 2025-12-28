@@ -91,6 +91,9 @@ import QualityGrade from './components/ui/QualityGrade';
 import Checkbox from './components/ui/Checkbox';
 import FilterSection from './components/ui/FilterSection';
 import Badge from './components/ui/Badge';
+import VendorBadge, { getVendorBadges } from './components/badges/VendorBadge';
+import CompanyCommunicationBadge from './components/badges/CompanyCommunicationBadge';
+import ProductTypeBadge from './components/badges/ProductTypeBadge';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -306,90 +309,6 @@ const SimpleMarkdown = ({ text, className = '' }) => {
   };
   
   return <div className={className}>{renderMarkdown(text)}</div>;
-};
-
-// Helper to check if vendor has badges
-const getVendorBadges = (vendor) => {
-  if (!vendor) return [];
-  // Check exact match first
-  if (VENDOR_BADGES[vendor]) return VENDOR_BADGES[vendor];
-  // Check if vendor name contains a badge key
-  for (const [key, badges] of Object.entries(VENDOR_BADGES)) {
-    if (vendor.includes(key) || key.includes(vendor)) return badges;
-  }
-  return [];
-};
-
-// VendorBadge component - displays badges next to vendor name
-const VendorBadge = ({ vendor, size = 'sm' }) => {
-  const badges = getVendorBadges(vendor);
-  if (badges.length === 0) return null;
-  
-  const sizeClasses = {
-    xs: 'text-xs',
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg'
-  };
-  
-  return (
-    <>
-      {badges.map(badge => (
-        <span 
-          key={badge.id}
-          className={`${sizeClasses[size]} cursor-help ml-1 inline-flex items-center`}
-          title={badge.tooltip}
-        >
-          <span className="hover:scale-110 transition-transform">{badge.icon}</span>
-        </span>
-      ))}
-    </>
-  );
-};
-
-
-// CompanyCommunicationBadge component - displays CC badge for company-submitted tests
-const CompanyCommunicationBadge = ({ testId, size = 'sm' }) => {
-  const contribution = COMPANY_CONTRIBUTIONS[testId];
-  if (!contribution) return null;
-  
-  const sizeClasses = {
-    xs: 'text-[10px] px-1.5 py-0.5',
-    sm: 'text-xs px-2 py-1',
-    md: 'text-sm px-2.5 py-1',
-  };
-  
-  const tooltip = `${contribution.name} (${contribution.company})\nSubmitted: ${contribution.date}${contribution.note ? '\n' + contribution.note : ''}`;
-  
-  return (
-    <span 
-      className={`${sizeClasses[size]} bg-sky-100 text-sky-700 rounded-full font-medium whitespace-nowrap cursor-help hover:bg-sky-200 transition-colors`}
-      title={tooltip}
-    >
-      CC
-    </span>
-  );
-};
-
-
-// Product Type Badge Component
-const ProductTypeBadge = ({ productType, size = 'sm' }) => {
-  const config = getProductTypeConfig(productType);
-  const sizeClasses = {
-    xs: 'text-[10px] px-1.5 py-0.5',
-    sm: 'text-xs px-2 py-0.5',
-    md: 'text-sm px-2.5 py-1',
-  };
-  
-  return (
-    <span 
-      className={`inline-flex items-center gap-1 ${sizeClasses[size]} ${config.bgColor} ${config.textColor} border ${config.borderColor} rounded-full font-medium`}
-      title={config.description}
-    >
-      <span>{config.icon}</span>
-      <span>{config.label}</span>
-    </span>
-  );
 };
 
 // ============================================
