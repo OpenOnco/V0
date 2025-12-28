@@ -88,6 +88,9 @@ import { formatLOD, detectLodUnit, getLodUnitBadge } from './utils/formatting';
 import { getSuggestedTests } from './utils/suggestions';
 import CircularProgress from './components/ui/CircularProgress';
 import QualityGrade from './components/ui/QualityGrade';
+import Checkbox from './components/ui/Checkbox';
+import FilterSection from './components/ui/FilterSection';
+import Badge from './components/ui/Badge';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -1122,84 +1125,6 @@ const chatTestData = {
   ECD: ecdTestData.map(compressTestForChat),
   TRM: trmTestData.map(compressTestForChat),
   TDS: tdsTestData.map(compressTestForChat),
-};
-
-// ============================================
-// UI Components
-// ============================================
-const Checkbox = ({ checked, onChange, label }) => (
-  <label className="flex items-center gap-2 cursor-pointer py-1 group">
-    <div 
-      onClick={onChange}
-      className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all flex-shrink-0 ${
-        checked ? 'bg-emerald-500 border-emerald-500' : 'border-gray-300 group-hover:border-gray-400'
-      }`}
-    >
-      {checked && (
-        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-      )}
-    </div>
-    <span className="text-sm text-gray-700">{label}</span>
-  </label>
-);
-
-// Collapsible filter section component
-const FilterSection = ({ title, defaultOpen = false, activeCount = 0, children }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-  
-  return (
-    <div className="border-b border-gray-100 last:border-b-0">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 transition-colors -mx-2 px-2 rounded"
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">{title}</span>
-          {activeCount > 0 && (
-            <span className="bg-emerald-100 text-emerald-700 text-xs font-medium px-1.5 py-0.5 rounded-full">
-              {activeCount}
-            </span>
-          )}
-        </div>
-        <svg 
-          className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor" 
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      {isOpen && (
-        <div className="pb-4 space-y-1">
-          {children}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Badge = ({ children, variant = 'default', title }) => {
-  const styles = {
-    default: 'bg-gray-100 text-gray-700 border-gray-200',
-    success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    orange: 'bg-orange-50 text-orange-700 border-orange-200',
-    green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    red: 'bg-red-100 text-red-700 border-red-300',
-    sky: 'bg-sky-100 text-sky-700 border-sky-300',
-    blue: 'bg-blue-50 text-blue-700 border-blue-200',
-    purple: 'bg-purple-50 text-purple-700 border-purple-200',
-    amber: 'bg-amber-50 text-amber-700 border-amber-200',
-    slate: 'bg-slate-100 text-slate-700 border-slate-300',
-  };
-  return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[variant]}`} title={title}>
-      {children}
-    </span>
-  );
 };
 
 // ============================================
