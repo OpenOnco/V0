@@ -126,8 +126,10 @@ export default function handler(req, res) {
     return res.status(400).json({ error: 'Path required' });
   }
   
-  // Normalize path
-  const path = '/' + (Array.isArray(requestPath) ? requestPath.join('/') : requestPath);
+  // Normalize path - handle both '/mrd/signatera' and 'mrd/signatera' formats
+  let path = Array.isArray(requestPath) ? requestPath.join('/') : requestPath;
+  // Ensure single leading slash
+  path = '/' + path.replace(/^\/+/, '');
   
   let ogData = null;
   
