@@ -84,6 +84,7 @@ import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, MINIMUM_PARAM
 import { EXPERT_INSIGHTS } from './config/expertInsights';
 import { PATIENT_INFO_CONTENT } from './config/patientContent';
 import { calculateTier1Metrics, calculateCategoryMetrics, calculateTestCompleteness, calculateMinimumFieldStats } from './utils/testMetrics';
+import { formatLOD, detectLodUnit, getLodUnitBadge } from './utils/formatting';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -3609,13 +3610,6 @@ const SourceDataPage = () => {
 
 // Info Icon Component (shows citations/notes on click)
 // ============================================
-// Helper function to format LOD as "ppm (% VAF)"
-const formatLOD = (lod) => {
-  // LOD values are now stored as strings in their original reported format
-  // No conversion needed - just return as-is
-  if (lod == null) return null;
-  return String(lod);
-};
 
 // Context for passing test info to nested components (e.g., ParameterLabel)
 const TestContext = createContext(null);
@@ -5460,30 +5454,6 @@ const TestDetailModal = ({ test, category, onClose }) => {
 
 // ============================================
 // Comparison Modal
-// ============================================
-// Helper to detect LOD unit type from string value
-const detectLodUnit = (lodValue) => {
-  if (!lodValue) return null;
-  const str = String(lodValue).toLowerCase();
-  if (str.includes('ppm')) return 'ppm';
-  if (str.includes('vaf') || str.includes('%')) return 'VAF';
-  if (str.includes('mtm') || str.includes('molecules')) return 'MTM';
-  if (str.includes('copies')) return 'copies';
-  return 'other';
-};
-
-// Get badge color for LOD unit
-const getLodUnitBadge = (unit) => {
-  const badges = {
-    'ppm': { bg: 'bg-violet-100', text: 'text-violet-700', label: 'ppm' },
-    'VAF': { bg: 'bg-blue-100', text: 'text-blue-700', label: 'VAF%' },
-    'MTM': { bg: 'bg-emerald-100', text: 'text-emerald-700', label: 'MTM' },
-    'copies': { bg: 'bg-amber-100', text: 'text-amber-700', label: 'copies' },
-    'other': { bg: 'bg-gray-100', text: 'text-gray-600', label: '—' },
-  };
-  return badges[unit] || badges.other;
-};
-
 const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
   const params = comparisonParams[category] || comparisonParams.MRD;
   const meta = categoryMeta[category];
