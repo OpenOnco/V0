@@ -18,6 +18,130 @@
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },
+    
+    {
+      "source": "/mrd/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/mrd/:slug*"
+    },
+    {
+      "source": "/ecd/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/ecd/:slug*"
+    },
+    {
+      "source": "/trm/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/trm/:slug*"
+    },
+    {
+      "source": "/tds/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/tds/:slug*"
+    },
+    {
+      "source": "/cgp/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/cgp/:slug*"
+    },
+    {
+      "source": "/test/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/test/:slug*"
+    },
+    
+    {
+      "source": "/mrd",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/mrd"
+    },
+    {
+      "source": "/ecd",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/ecd"
+    },
+    {
+      "source": "/trm",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/trm"
+    },
+    {
+      "source": "/tds",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/tds"
+    },
+    {
+      "source": "/cgp",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot).*"
+        }
+      ],
+      "destination": "/api/og?path=/cgp"
+    },
+    
     {
       "source": "/mrd",
       "destination": "/"
