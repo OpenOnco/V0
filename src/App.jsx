@@ -86,6 +86,8 @@ import { PATIENT_INFO_CONTENT } from './config/patientContent';
 import { calculateTier1Metrics, calculateCategoryMetrics, calculateTestCompleteness, calculateMinimumFieldStats } from './utils/testMetrics';
 import { formatLOD, detectLodUnit, getLodUnitBadge } from './utils/formatting';
 import { getSuggestedTests } from './utils/suggestions';
+import CircularProgress from './components/ui/CircularProgress';
+import QualityGrade from './components/ui/QualityGrade';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -102,38 +104,6 @@ const ALZ_RECENTLY_ADDED_TESTS = [];
 // ║                                                                            ║
 // ║  The changelog is visible to users in the Submissions page UI.             ║
 // ╚════════════════════════════════════════════════════════════════════════════╝
-
-// CircularProgress component for quality visualization
-const CircularProgress = ({ value, size = 80, strokeWidth = 8, color = 'emerald' }) => {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (value / 100) * circumference;
-  const colorMap = {
-    emerald: { stroke: '#10b981', bg: '#d1fae5' },
-    orange: { stroke: '#f97316', bg: '#ffedd5' },
-    sky: { stroke: '#0ea5e9', bg: '#e0f2fe' },
-    violet: { stroke: '#8b5cf6', bg: '#ede9fe' },
-  };
-  const colors = colorMap[color] || colorMap.emerald;
-  
-  return (
-    <svg width={size} height={size} className="transform -rotate-90">
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={colors.bg} strokeWidth={strokeWidth} />
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={colors.stroke} strokeWidth={strokeWidth} strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-700 ease-out" />
-    </svg>
-  );
-};
-
-// Quality Grade Badge
-const QualityGrade = ({ percentage }) => {
-  let grade, bgColor, textColor;
-  if (percentage >= 95) { grade = 'A+'; bgColor = 'bg-emerald-100'; textColor = 'text-emerald-700'; }
-  else if (percentage >= 90) { grade = 'A'; bgColor = 'bg-emerald-50'; textColor = 'text-emerald-600'; }
-  else if (percentage >= 80) { grade = 'B'; bgColor = 'bg-blue-50'; textColor = 'text-blue-600'; }
-  else if (percentage >= 70) { grade = 'C'; bgColor = 'bg-yellow-50'; textColor = 'text-yellow-600'; }
-  else { grade = 'D'; bgColor = 'bg-red-50'; textColor = 'text-red-600'; }
-  return <span className={`px-2 py-0.5 rounded text-xs font-bold ${bgColor} ${textColor}`}>{grade}</span>;
-};
 
 // ============================================
 // SEO Component - Dynamic meta tags
