@@ -371,11 +371,16 @@ I'll guide you through a few quick questions to narrow down the best options.
     return getWelcomeMessage(persona);
   }, [persona, chatMode, patientContext]);
 
-  // Restore scroll position after response arrives (so they see question + start of answer)
+  // Scroll to show user's question at top after response arrives
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0 && !isLoading && scrollPositionBeforeSubmit.current !== null) {
       requestAnimationFrame(() => {
-        chatContainerRef.current.scrollTop = scrollPositionBeforeSubmit.current;
+        // Find the last user message element and scroll it into view at the top
+        const userMessages = chatContainerRef.current.querySelectorAll('[data-message-role="user"]');
+        if (userMessages.length > 0) {
+          const lastUserMessage = userMessages[userMessages.length - 1];
+          lastUserMessage.scrollIntoView({ behavior: 'instant', block: 'start' });
+        }
         scrollPositionBeforeSubmit.current = null;
       });
     }
