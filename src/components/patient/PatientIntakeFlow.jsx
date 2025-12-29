@@ -134,14 +134,14 @@ const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
               className="flex-1 py-3.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-xl font-medium transition-colors text-sm flex items-center justify-center gap-2"
             >
               <span>📚</span>
-              <span>Learn About This</span>
+              <span>Chat to learn more about these tests</span>
             </button>
             <button
               onClick={() => onContinue('find')}
               className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors text-sm flex items-center justify-center gap-2"
             >
               <span>🔍</span>
-              <span>Find the Right Test</span>
+              <span>Chat to help find the tests suited to your situation</span>
             </button>
           </div>
         </div>
