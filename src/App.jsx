@@ -98,6 +98,7 @@ import SimpleMarkdown from './components/markdown/SimpleMarkdown';
 import Markdown from './components/markdown/Markdown';
 import ExternalResourcesSection, { ExternalResourceLink } from './components/markdown/ExternalResourcesSection';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
+import PatientIntakeFlow from './components/patient/PatientIntakeFlow';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
 import PerformanceMetricWithWarning from './components/ui/PerformanceMetricWithWarning';
 import TestShowcase from './components/test/TestShowcase';
@@ -400,11 +401,11 @@ const PatientInfoModal = ({ type, onClose, onStartChat }) => {
   );
 };
 
-const HomePage = ({ onNavigate }) => {
+const HomePage = ({ onNavigate, persona }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [persona, setPersona] = useState(() => getStoredPersona() || 'rnd');
+  // persona is now passed as prop from App
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
   const [patientInfoModal, setPatientInfoModal] = useState(null); // 'therapy' | 'monitoring' | 'surveillance' | null
   const [patientChatMode, setPatientChatMode] = useState('learn'); // 'learn' | 'find'
@@ -518,21 +519,6 @@ const HomePage = ({ onNavigate }) => {
     return known.length > 0 ? known.join('; ') : null;
   };
 
-  // Save persona to localStorage when changed and notify other components
-  const handlePersonaSelect = (selectedPersona) => {
-    setPersona(selectedPersona);
-    setMessages([]); // Reset chat so user can start fresh with new persona
-    localStorage.setItem('openonco-persona', selectedPersona);
-    // Track persona change with feature flags
-    track('persona_changed', { 
-      new_persona: selectedPersona 
-    }, { 
-      flags: [`persona-${selectedPersona.toLowerCase().replace(/[^a-z]/g, '-')}`] 
-    });
-    // Dispatch custom event so other components can respond to persona changes
-    window.dispatchEvent(new CustomEvent('personaChanged', { detail: selectedPersona }));
-  };
-
   // Auto-scroll to show question at top when response arrives
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0) {
@@ -642,77 +628,9 @@ const HomePage = ({ onNavigate }) => {
     }, 100);
   };
 
-  // PATIENT VIEW - simplified, focused on understanding
+  // PATIENT VIEW - New 3-step intake flow
   if (persona === 'patient') {
-    return (
-      <div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          {/* Patient Hero */}
-          <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl px-6 py-8 sm:px-10 sm:py-10 border border-rose-100 mb-6">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 text-center">
-              Learn How the New Generation of Cancer Blood Tests Can Help You
-            </h1>
-          </div>
-
-          {/* Three Info Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-2 md:gap-4 items-center mb-6">
-            <button
-              onClick={() => setPatientInfoModal('therapy')}
-              className="bg-violet-50 hover:bg-violet-100 border border-violet-200 hover:border-violet-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
-            >
-              <h3 className="text-xl font-bold text-violet-800 group-hover:text-violet-900 mb-2">Tests that will help find the right therapy</h3>
-              <p className="text-sm text-violet-600 group-hover:text-violet-700">Click to learn more →</p>
-            </button>
-            
-            <div className="hidden md:flex items-center justify-center text-gray-300 text-3xl font-light">→</div>
-            
-            <button
-              onClick={() => setPatientInfoModal('monitoring')}
-              className="bg-rose-50 hover:bg-rose-100 border border-rose-200 hover:border-rose-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
-            >
-              <h3 className="text-xl font-bold text-rose-800 group-hover:text-rose-900 mb-2">Tests that will track how well therapy is working</h3>
-              <p className="text-sm text-rose-600 group-hover:text-rose-700">Click to learn more →</p>
-            </button>
-            
-            <div className="hidden md:flex items-center justify-center text-gray-300 text-3xl font-light">→</div>
-            
-            <button
-              onClick={() => setPatientInfoModal('surveillance')}
-              className="bg-orange-50 hover:bg-orange-100 border border-orange-200 hover:border-orange-300 rounded-xl p-6 text-left transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-1 group"
-            >
-              <h3 className="text-xl font-bold text-orange-800 group-hover:text-orange-900 mb-2">Tests that will keep watch after treatment</h3>
-              <p className="text-sm text-orange-600 group-hover:text-orange-700">Click to learn more →</p>
-            </button>
-          </div>
-
-          {/* Patient Info Modal */}
-          {patientInfoModal && (
-            <PatientInfoModal 
-              type={patientInfoModal} 
-              onClose={() => setPatientInfoModal(null)} 
-              onStartChat={focusPatientChat}
-            />
-          )}
-
-          {/* Chatbot Section - Uses unified Chat component */}
-          <Chat 
-            persona="patient"
-            testData={chatTestData}
-            variant="full"
-            showModeToggle={true}
-            resizable={true}
-            showTitle={true}
-            initialHeight={350}
-            className="mb-6"
-          />
-
-          {/* Quick Search + Showcase */}
-          <div className="mb-4">
-            <TestShowcase onNavigate={onNavigate} patientMode={true} />
-          </div>
-        </div>
-      </div>
-    );
+    return <PatientIntakeFlow testData={chatTestData} />;
   }
 
   // R&D / MEDICAL VIEW - full technical view (current default)
@@ -1695,7 +1613,7 @@ export default function App() {
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'home': return <HomePage onNavigate={handleNavigate} />;
+      case 'home': return <HomePage onNavigate={handleNavigate} persona={persona} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;

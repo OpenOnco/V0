@@ -193,7 +193,8 @@ const Chat = ({
   resizable = true,
   showTitle = true,
   initialHeight = 350,
-  className = ''
+  className = '',
+  patientContext = null // { cancerType, journeyStage, journeyCode } from intake flow
 }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -245,16 +246,26 @@ const Chat = ({
     return getSuggestedQuestions(persona);
   }, [persona]);
 
-  // Welcome message based on persona and mode
+  // Welcome message based on persona, mode, and context
   const welcomeMessage = useMemo(() => {
     if (persona === 'patient') {
+      // If we have patient context from intake flow, use personalized message
+      if (patientContext?.cancerType && patientContext?.journeyStage) {
+        const journeyMessages = {
+          tds: `I can help you understand tests that guide treatment decisions for ${patientContext.cancerType}.`,
+          trm: `I can help you understand tests that monitor how well your ${patientContext.cancerType} treatment is working.`,
+          mrd: `I can help you understand tests that watch for ${patientContext.cancerType} returning after treatment.`
+        };
+        const journeyMsg = journeyMessages[patientContext.journeyCode] || `I can help you find the right tests for ${patientContext.cancerType}.`;
+        return `Hi! 👋 Based on what you've told me, you're looking at tests for **${patientContext.cancerType}** related to **${patientContext.journeyStage}**.\n\n${journeyMsg}\n\n**What questions do you have?**`;
+      }
       if (chatMode === 'learn') {
         return "Hi! 👋 I'm here to help you understand cancer blood tests (also called liquid biopsy).";
       }
       return "Let's find tests that might fit your situation. 🎯\n\nI'll ask you a few questions about:\n1. Your clinical situation — to identify tests that might be a fit\n2. Insurance & access — to suggest the most accessible options\n3. Your doctor relationship — to help you prepare the conversation\n\n**Let's start:** What type of cancer are you dealing with, or are you being evaluated for?";
     }
     return getWelcomeMessage(persona);
-  }, [persona, chatMode]);
+  }, [persona, chatMode, patientContext]);
 
   // Restore scroll position after response arrives (so they see question + start of answer)
   useEffect(() => {

@@ -3,6 +3,7 @@ import { PERSONAS } from '../personaConfig';
 import { getNavItems } from '../personaContent';
 import { getSiteConfig } from '../data';
 import PersonaSelector from './PersonaSelector';
+import TrustBanner from './patient/TrustBanner';
 
 const Header = ({ currentPage, onNavigate, persona, onPersonaChange }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -25,7 +26,10 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange }) => {
     'about': 'About'
   }[page] || page);
   
+  const showTrustBanner = persona === 'patient';
+  
   return (
+  <>
   <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
       <div className="cursor-pointer hidden sm:flex items-center flex-shrink-0" onClick={() => handleNavigate('home')}>
@@ -110,6 +114,9 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange }) => {
       </div>
     )}
   </header>
+  {/* Trust Banner for Patient Persona */}
+  {showTrustBanner && <TrustBanner />}
+  </>
   );
 };
 export default Header;

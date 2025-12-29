@@ -968,16 +968,20 @@ test.describe('Persona System', () => {
     await page.goto('/');
     await page.waitForTimeout(1000);
     
-    // Should see patient hero
-    await expect(page.getByText('Learn How the New Generation of Cancer Blood Tests Can Help You')).toBeVisible({ timeout: 5000 });
+    // Should see new 3-step intake flow header
+    await expect(page.getByText('Find the Right Test in 3 Simple Steps')).toBeVisible({ timeout: 5000 });
     
-    // Should see three info buttons
-    await expect(page.getByText('Tests that will help find the right therapy')).toBeVisible();
-    await expect(page.getByText('Tests that will track how well therapy is working')).toBeVisible();
-    await expect(page.getByText('Tests that will keep watch after treatment')).toBeVisible();
+    // Should see trust banner
+    await expect(page.getByText('Educational Patient Resource')).toBeVisible();
+    await expect(page.getByText('Independent Non-Profit')).toBeVisible();
     
-    // Should see patient chat section
-    await expect(page.getByText('Chat with us to Learn About These Tests and Your Own Options')).toBeVisible();
+    // Should see Step 1 - cancer type question
+    await expect(page.getByText('What kind of cancer are you concerned about?')).toBeVisible();
+    
+    // Should see journey cards (Step 2 - initially locked but visible)
+    await expect(page.getByText('Choosing the Right Treatment')).toBeVisible();
+    await expect(page.getByText('Tracking Treatment Response')).toBeVisible();
+    await expect(page.getByText('Keeping Watch After Treatment')).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -995,27 +999,32 @@ test.describe('Persona System', () => {
     await expect(modelSelector).not.toBeVisible();
   });
 
-  test('patient info modal opens and closes', async ({ page }) => {
+  test('patient intake flow works end-to-end', async ({ page }) => {
     // Set patient persona
     await page.goto('/');
     await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
     await page.goto('/');
     await page.waitForTimeout(1000);
     
-    // Click "Tests that help find the right therapy" button
-    await page.getByText('Tests that will help find the right therapy').click();
+    // Step 1: Select cancer type
+    await page.selectOption('select', 'Breast Cancer');
+    await page.waitForTimeout(500);
+    
+    // Step 2 should now be unlocked - click a journey card
+    await page.getByText('Choosing the Right Treatment').click();
     await page.waitForTimeout(500);
     
     // Modal should open with educational content
     await expect(page.getByText('What is genomic testing?')).toBeVisible({ timeout: 3000 });
     await expect(page.getByText('Questions to ask your doctor')).toBeVisible();
     
-    // Close modal by clicking backdrop
-    await page.locator('.fixed.inset-0').click({ position: { x: 10, y: 10 } });
+    // Click continue to proceed to chat
+    await page.getByText('Continue to Find Tests →').click();
     await page.waitForTimeout(500);
     
-    // Modal content should be hidden
-    await expect(page.getByText('What is genomic testing?')).not.toBeVisible();
+    // Step 3 chat should now be visible with context
+    await expect(page.getByText('Breast Cancer')).toBeVisible();
+    await expect(page.getByText('Choosing Treatment')).toBeVisible();
   });
 
   test('persona switcher in header works', async ({ page }) => {
