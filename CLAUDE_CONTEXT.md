@@ -17,42 +17,99 @@ OpenOnco is a non-profit database platform for cancer diagnostic tests, focusing
 
 ```
 /src
-├── App.jsx              # Main app (~7,500 lines) - routes, pages, state
+├── App.jsx              # Main router & layout (~1,700 lines)
 ├── data.js              # Test database + SEO config (~7,500 lines)
-├── personaConfig.js     # Persona definitions (patient, medical, rnd)
-├── personaContent.js    # Persona-specific UI content
+├── main.jsx             # React entry point
+├── index.css            # Global styles
+│
+├── config/              # Configuration constants
+│   ├── vendors.js       # VENDOR_BADGES
+│   ├── categories.js    # CATEGORY_COLORS
+│   ├── testFields.js    # PARAMETER_DEFINITIONS, MINIMUM_PARAMS, FIELD_DEFINITIONS
+│   ├── expertInsights.js # EXPERT_INSIGHTS
+│   └── patientContent.js # PATIENT_INFO_CONTENT
+│
+├── utils/               # Utility functions
+│   ├── persona.js       # localStorage helpers
+│   ├── testMetrics.js   # calculateTier1Metrics, calculateCategoryMetrics
+│   ├── formatting.js    # formatLOD, detectLodUnit
+│   └── suggestions.js   # getSuggestedTests
+│
 ├── components/
+│   ├── test/            # Test display components
+│   │   ├── TestShowcase.jsx     # Quick search + test grid (~975 lines)
+│   │   ├── TestDetailModal.jsx  # Test detail + comparison modals (~1,240 lines)
+│   │   └── TestCard.jsx         # Individual test card (~230 lines)
+│   │
+│   ├── ui/              # Reusable UI primitives
+│   │   ├── CircularProgress.jsx
+│   │   ├── QualityGrade.jsx
+│   │   ├── Badge.jsx
+│   │   ├── Checkbox.jsx
+│   │   ├── FilterSection.jsx
+│   │   └── PerformanceMetricWithWarning.jsx
+│   │
+│   ├── badges/          # Badge components
+│   │   ├── VendorBadge.jsx
+│   │   ├── ProductTypeBadge.jsx
+│   │   └── CompanyCommunicationBadge.jsx
+│   │
+│   ├── tooltips/        # Tooltip components
+│   │   └── index.jsx    # ParameterLabel, InfoIcon, CitationTooltip, etc.
+│   │
+│   ├── markdown/        # Markdown rendering
+│   │   ├── SimpleMarkdown.jsx
+│   │   ├── Markdown.jsx
+│   │   └── ExternalResourcesSection.jsx
+│   │
+│   ├── navigation/      # Navigation components
+│   │   └── index.jsx    # LifecycleNavigator, RecentlyAddedBanner, etc.
+│   │
+│   ├── CategoryPage.jsx # Category page (~850 lines)
+│   ├── Chat.jsx         # Unified chat component
 │   ├── Header.jsx       # Site header with nav + persona selector
-│   ├── Chat.jsx         # Unified chat component (all personas)
+│   ├── Footer.jsx
 │   ├── PersonaSelector.jsx
-│   ├── LifecycleNavigator.jsx  # 2x2 category grid
-│   └── TestShowcase.jsx # Quick search + test card grid
+│   ├── PersonaGate.jsx
+│   ├── DatabaseSummary.jsx
+│   └── TestCardGrid.jsx
+│
+├── pages/               # Route pages
+│   ├── HomePage.jsx
+│   ├── AboutPage.jsx
+│   ├── FAQPage.jsx
+│   ├── HowItWorksPage.jsx
+│   ├── LearnPage.jsx
+│   └── SubmissionsPage.jsx
+│
 ├── chatPrompts/         # UI config only (NOT system prompts)
 │   ├── index.js         # getSuggestedQuestions, getWelcomeMessage
-│   ├── patientPrompts.js   # Patient UI config
-│   ├── medicalPrompts.js   # Clinician UI config  
-│   └── rndPrompts.js       # R&D UI config
+│   ├── patientPrompt.js # Patient UI config
+│   ├── clinicianPrompt.js # Clinician UI config  
+│   └── academicPrompt.js  # R&D UI config
+│
+├── personaConfig.js     # Persona definitions (patient, medical, rnd)
+└── personaContent.js    # Persona-specific UI content
 
 /api
 ├── chat.js              # 🚨 SYSTEM PROMPTS LIVE HERE 🚨
-└── compare.js           # Test comparison endpoint
+├── og.js                # OG meta tags for link previews
+├── submit-form.js       # Test submission handler
+├── send-verification.js # Email verification
+└── verify-code.js       # Code verification
 
 /eval                    # Chatbot evaluation framework
-├── run-eval.js          # Multi-LLM evaluation runner
-├── questions.json       # Test questions with expected answers
+├── run_eval.py          # Send questions to chatbot
+├── rate_answers.py      # Multi-LLM scoring
+├── questions.json       # 53 test questions (includes guardrails + red team)
 └── README.md
 
 /tests
-├── openonco.spec.js     # Playwright tests (~1,100 lines)
-└── SETUP.md
+└── openonco.spec.js     # Playwright tests (51 tests)
 
 /WORFLOWS                # Review processes
 ├── SUBMISSION_REVIEW.md # New test submission process
 └── CHANGE_REQUEST.md    # Vendor change request process
-
-/public                  # Static assets
-├── OO_logo_2.png        # Main logo
-└── patient-icon.png
 ```
 
 ## Test Categories
@@ -71,7 +128,26 @@ Homepage layout differs by persona:
 - Patient: 3 lifecycle buttons (TDS, TRM, MRD) + chat
 - Medical/R&D: 2x2 LifecycleNavigator + chat sidebar (50/50 split)
 
-## Chat Component Architecture
+## Chat System Architecture
+
+### System Prompts (CRITICAL)
+**Location**: `/api/chat.js` - Single source of truth for all prompts sent to Claude.
+
+**DO NOT** edit `/src/chatPrompts/` for prompt changes - those are UI config only.
+
+### Guardrails
+Patient chat has strict guardrails:
+- Detects clinician language ("I have a patient", "post-resection") → redirects to Clinician view
+- Never gives ranked recommendations ("top choices", "#1 option")
+- Never suggests tests can replace imaging/standard of care
+- Always defers to oncologist for final decisions
+
+Clinician/R&D chat:
+- Data lookup only, not clinical advisor
+- Declines to recommend specific tests for patient scenarios
+- Provides factual comparisons (sensitivity, coverage, methodology)
+
+### Chat Component
 Unified `Chat.jsx` handles all personas via props:
 ```jsx
 <Chat 
@@ -94,50 +170,73 @@ npm test               # Full Playwright suite
 npm run test:smoke     # Quick smoke tests only
 ```
 
+## Evaluation Framework
+Located in `/eval`. Tests chatbot behavior including guardrails:
+
+**Categories:**
+- `nccn_accuracy` - NCCN-named vs vendor-claim distinction
+- `factual_retrieval` - Database lookup accuracy
+- `comparison` - Test comparison quality
+- `out_of_scope` - Medical advice deflection
+- `hallucination` - Fabrication detection
+- `guardrails` - Patient/clinician boundary enforcement
+- `red_team` - Adversarial attacks (jailbreak attempts, authority claims)
+
+```bash
+cd /Users/adickinson/Documents/GitHub/V0
+python3 eval/run_eval.py
+python3 eval/rate_answers.py eval/results/eval_*.json
+```
+
 ## Key Conventions
 1. **Slate colors** for UI (not gray) - matches design system
 2. **Emerald accent** for R&D/Medical actions
 3. **Blue gradient** for patient chat header
-4. **No "Me:" labels** - removed from UI
-5. **First-person language removed** from patient UI ("for me", "my")
+4. **No bullet points** in chat unless user requests them
+5. **3-4 sentence max** for chat responses
 
 ## Recent Major Work (Dec 2024)
-1. Persona system implementation
-2. Chat component unification (3 implementations → 1)
-3. System prompt modularization (chatPrompts/)
-4. Chatbot evaluation framework (eval/)
-5. Layout refactoring (50/50 split for R&D/Medical)
-6. New logo integration
+
+### App.jsx Refactor (Dec 28)
+Reduced App.jsx from 7,588 → 1,729 lines (-77%):
+- Extracted constants to `/src/config/`
+- Extracted utilities to `/src/utils/`
+- Extracted components to modular directories
+- All 49 tests passing
+
+### Chat Guardrails (Dec 28)
+- Added patient chat detection for clinician language
+- Blocked ranked recommendations
+- Added "tests complement, not replace imaging" rule
+- Created 53-question eval suite including red team tests
+
+### OG Meta Tags (Dec 28)
+- Dynamic link previews for test/category URLs
+- Expanded crawler user-agent patterns for iMessage
+
+### Earlier Work
+- Persona system implementation
+- Chat component unification (3 implementations → 1)
+- System prompt consolidation to /api/chat.js
+- Evaluation framework setup
 
 ## Database Structure (data.js)
-Tests stored in `TESTS` object keyed by category:
-```javascript
-TESTS = {
-  MRD: [...],
-  ECD: [...],
-  TRM: [...],
-  TDS: [...]
-}
-```
+Tests stored by category with fields like:
+- testName, vendor, fdaStatus, nccnNamedInGuidelines
+- sensitivity, specificity, tat, coverage
+- cancerTypes, methodology, etc.
 
-Each test has fields like: testName, vendor, fdaStatus, nccnGuidelines, sensitivity, specificity, tat, coverage, etc.
+```javascript
+export const mrdTestData = [...]
+export const ecdTestData = [...]
+export const trmTestData = [...]
+export const tdsTestData = [...]
+```
 
 ## API Endpoints
 - `POST /api/chat` - Chat with Claude
   - Body: { category, persona, testData, messages, model, patientChatMode }
   - Returns: { content: [{ text: "..." }] }
 
-- `POST /api/compare` - Compare tests
-  - Body: { tests, persona }
-
-## Evaluation System
-Located in `/eval`. Runs questions through chatbot and scores with multiple LLMs:
-```bash
-cd eval && node run-eval.js
-```
-Produces JSON results with accuracy metrics per question type.
-
-## Pending Items
-1. halluc-3 fix: Add system prompt rule for 100%/100% performance claims
-2. Consider TestCardGrid.jsx extraction
-3. Consider Gemini evaluator fix for 4-way consensus
+- `GET /api/og?path=/mrd/signatera` - OG meta tags for crawlers
+  - Returns: HTML with dynamic OG tags
