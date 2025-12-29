@@ -15,8 +15,8 @@ const CHAT_MODELS = [
   { id: 'claude-sonnet-4-5-20250929', name: 'More thinking', description: 'Deeper analysis' },
 ];
 
-// Simple Markdown renderer with table support
-const SimpleMarkdown = ({ text, className = '' }) => {
+// Simple Markdown renderer with table support and test ID linking
+const SimpleMarkdown = ({ text, className = '', onTestClick }) => {
   const renderMarkdown = (content) => {
     const lines = content.split('\n');
     const elements = [];
@@ -78,16 +78,27 @@ const SimpleMarkdown = ({ text, className = '' }) => {
       while (remaining) {
         const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
         const linkMatch = remaining.match(/\[([^\]]+)\]\(([^)]+)\)/);
+        const testIdMatch = remaining.match(/\[\[([a-z]+-\d+)\]\]/);
         
+        // Find the earliest match
         let firstMatch = null;
         let matchType = null;
+        let minIndex = Infinity;
         
-        if (boldMatch && (!linkMatch || boldMatch.index < linkMatch.index)) {
+        if (boldMatch && boldMatch.index < minIndex) {
+          minIndex = boldMatch.index;
           firstMatch = boldMatch;
           matchType = 'bold';
-        } else if (linkMatch) {
+        }
+        if (linkMatch && linkMatch.index < minIndex) {
+          minIndex = linkMatch.index;
           firstMatch = linkMatch;
           matchType = 'link';
+        }
+        if (testIdMatch && testIdMatch.index < minIndex) {
+          minIndex = testIdMatch.index;
+          firstMatch = testIdMatch;
+          matchType = 'testId';
         }
         
         if (!firstMatch) {
@@ -107,6 +118,25 @@ const SimpleMarkdown = ({ text, className = '' }) => {
               {firstMatch[1]}
             </a>
           );
+        } else if (matchType === 'testId') {
+          const testId = firstMatch[1];
+          if (onTestClick) {
+            parts.push(
+              <button
+                key={`${keyPrefix}-${partIndex++}`}
+                onClick={() => onTestClick([testId])}
+                className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+                title="View test details"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </button>
+            );
+          } else {
+            // No click handler, just remove the brackets
+            parts.push(<span key={`${keyPrefix}-${partIndex++}`}></span>);
+          }
         }
         
         remaining = remaining.slice(firstMatch.index + firstMatch[0].length);
@@ -186,6 +216,7 @@ const SimpleMarkdown = ({ text, className = '' }) => {
  * @param {string} className - Additional CSS classes
  * @param {Object} patientContext - { cancerType, journeyStage, journeyCode, chatMode } from intake flow
  * @param {Function} onModeChange - Callback when mode changes (for parent to handle)
+ * @param {Function} onViewTests - Callback when user clicks test links, receives array of test IDs
  */
 const Chat = ({
   persona = 'patient',
@@ -196,7 +227,8 @@ const Chat = ({
   showTitle = true,
   initialHeight = 350,
   className = '',
-  patientContext = null
+  patientContext = null,
+  onViewTests = null
 }) => {
   // Initialize chatMode from patientContext if available
   const [chatMode, setChatMode] = useState(() => patientContext?.chatMode || 'learn');
@@ -636,7 +668,7 @@ I'll guide you through a few quick questions to narrow down the best options.
               >
                 <div className={`max-w-[85%] rounded-xl px-4 py-3 ${msg.role === 'user' ? theme.userBubble : theme.assistantBubble}`}>
                   {msg.role === 'assistant' ? (
-                    <SimpleMarkdown text={msg.content} className="text-sm" />
+                    <SimpleMarkdown text={msg.content} className="text-sm" onTestClick={onViewTests} />
                   ) : (
                     <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
                   )}

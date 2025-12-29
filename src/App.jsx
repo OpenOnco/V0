@@ -628,6 +628,40 @@ const HomePage = ({ onNavigate, persona }) => {
     }, 100);
   };
 
+  // Handle viewing tests from chat (patient flow)
+  const handleViewTests = (testIds) => {
+    if (!testIds || testIds.length === 0) return;
+    
+    // Determine category from first test ID (e.g., 'mrd-1' -> 'MRD')
+    const firstId = testIds[0];
+    const categoryMatch = firstId.match(/^([a-z]+)-/);
+    if (!categoryMatch) return;
+    
+    const categoryMap = {
+      'mrd': 'MRD',
+      'ecd': 'ECD',
+      'trm': 'TRM',
+      'tds': 'TDS'
+    };
+    const category = categoryMap[categoryMatch[1]];
+    if (!category) return;
+    
+    // Navigate to category page with test(s) selected
+    if (testIds.length === 1) {
+      // Single test - go to detail view
+      setInitialSelectedTestId(testIds[0]);
+      setInitialCompareIds(null);
+    } else {
+      // Multiple tests - go to compare view
+      setInitialSelectedTestId(null);
+      setInitialCompareIds(testIds);
+    }
+    setCurrentPage(category);
+    
+    // Update URL
+    window.history.pushState({}, '', `/${category.toLowerCase()}`);
+  };
+
   // PATIENT VIEW - New 3-step intake flow
   if (persona === 'patient') {
     return <PatientIntakeFlow testData={chatTestData} />;

@@ -173,7 +173,7 @@ const StepIndicator = ({ currentStep }) => {
 /**
  * Main patient intake flow component
  */
-const PatientIntakeFlow = ({ testData }) => {
+const PatientIntakeFlow = ({ testData, onViewTests }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCancer, setSelectedCancer] = useState('');
   const [selectedJourney, setSelectedJourney] = useState(null);
@@ -514,6 +514,7 @@ const PatientIntakeFlow = ({ testData }) => {
             showTitle={false}
             initialHeight={300}
             patientContext={getChatContext()}
+            onViewTests={onViewTests}
           />
         )}
       </div>
