@@ -272,8 +272,8 @@ const Chat = ({
           const journeyMsg = journeyMessages[patientContext.journeyCode] || `I can help you learn about tests for ${patientContext.cancerType}.`;
           return `Hi! 👋 Based on what you've told me, you're looking at tests for **${patientContext.cancerType}** related to **${patientContext.journeyStage}**.\n\n${journeyMsg}\n\n**What questions do you have?**`;
         } else {
-          // Find mode - personal situation focus
-          return `Hi! 👋 Let's find the right tests for your situation.\n\nYou mentioned **${patientContext.cancerType}** and **${patientContext.journeyStage}**.\n\nI'll help you identify tests that might fit, understand insurance coverage, and prepare for conversations with your doctor.\n\n**Tell me more about where you are in your journey.**`;
+          // Find mode - guided questionnaire to narrow down tests
+          return `Hi! 👋 Let's find the right tests for your situation.\n\nI already know:\n• **Cancer type:** ${patientContext.cancerType}\n• **Stage:** ${patientContext.journeyStage}\n\nTo recommend the best-fit tests, I'll ask you a few quick questions about:\n1. **Insurance & coverage** — to find tests you can actually access\n2. **Your care team** — to help you have the right conversations\n3. **Your priorities** — what matters most to you\n\n**Let's start:** What type of insurance do you have? (Medicare, private/employer, Medicaid, or uninsured)`;
         }
       }
       // Fallback if no context

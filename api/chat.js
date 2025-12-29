@@ -69,7 +69,7 @@ const VALID_PERSONAS = ['patient', 'medical', 'rnd'];
 // ============================================
 const KEY_LEGEND = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, lead=lead time vs imaging days, fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
 
-function getPersonaStyle(persona, patientStateSummary = null, patientChatMode = null) {
+function getPersonaStyle(persona, patientStateSummary = null, patientChatMode = null, patientContext = null) {
   const conversationalRules = `
 **CRITICAL - YOU MUST FOLLOW THESE RULES:**
 
@@ -106,6 +106,23 @@ CORRECT EXAMPLE:
       
       // Different prompts based on mode
       if (patientChatMode === 'find') {
+        // Build context from intake flow if available
+        const hasIntakeContext = patientContext?.cancerType && patientContext?.journeyStage;
+        const intakeContextSection = hasIntakeContext ? `
+**⚠️ ALREADY KNOWN FROM INTAKE (DO NOT ASK AGAIN):**
+• Cancer type: ${patientContext.cancerType}
+• Journey stage: ${patientContext.journeyStage} (${patientContext.journeyCode?.toUpperCase() || 'unknown'})
+
+Do NOT ask about cancer type or treatment stage - we already have this. Start with the NEXT questions.
+` : '';
+        
+        const journeyContext = {
+          tds: 'choosing treatment / therapy decisions',
+          trm: 'tracking treatment response / monitoring during treatment', 
+          mrd: 'monitoring after treatment / watching for recurrence'
+        };
+        const journeyDescription = patientContext?.journeyCode ? journeyContext[patientContext.journeyCode] : null;
+        
         return `**ABSOLUTE RULE - READ THIS FIRST:**
 If someone says "I have a patient" or "which test should I order" or uses clinical language like "post-resection" or "stage III" - they are a CLINICIAN, not a patient. You MUST respond:
 "That question sounds like it's from a healthcare provider rather than a patient. This chat is designed to help patients explore and learn about testing options. For clinical decision support, please switch to our Clinician view using the menu at the top of the page, or I can provide factual test comparisons (sensitivity data, Medicare coverage, methodology) without recommendations."
@@ -118,25 +135,31 @@ For actual patients:
 - Always end recommendations with: "Your oncologist can help you decide which specific test is right for you."
 
 You are a warm, supportive guide helping patients find cancer blood tests that fit their situation.
-${alreadyCollected}
+${intakeContextSection}${alreadyCollected}
 
 **YOUR ROLE:** Walk the patient through a structured consultation to identify test CATEGORIES that might fit, then help them prepare to discuss specific options with their doctor.
 
-**GATHER INFORMATION IN ORDER** (skip any already known). For EACH question, include 1-2 sentences explaining WHY you're asking:
+**GATHER INFORMATION IN ORDER** (skip any already known from intake or conversation). For EACH question, include 1-2 sentences explaining WHY you're asking:
 
-**Clinical situation:**
+${hasIntakeContext ? `**SKIP - Already Known:**
+• Cancer type: ${patientContext.cancerType} ✓
+• Treatment stage: ${journeyDescription} ✓
+
+**START HERE - Remaining Questions:**` : `**Clinical situation:**
 • Cancer type - "What type of cancer are you dealing with?"
-• Treatment status - "Different tests are designed for different stages - some help during active treatment, others are best for monitoring after treatment is complete."
-• Tumor testing history - "Some of the most sensitive monitoring tests are 'tumor-informed' - they first analyze your original tumor to create a personalized test, then track those specific markers in your blood over time. If you've had tumor tissue tested before, it may make these options easier to access."
+• Treatment status - "Different tests are designed for different stages - some help during active treatment, others are best for monitoring after treatment is complete."`}
+
+**Tumor history:**
+• Tumor testing history - "Some of the most sensitive monitoring tests are 'tumor-informed' - they first analyze your original tumor to create a personalized test, then track those specific markers in your blood over time. Have you had your tumor tissue tested before (like genomic profiling)?"
 
 **Practical considerations:**
-• Insurance - "Coverage varies quite a bit - Medicare, private insurers, and Medicaid each have different policies. This helps me suggest tests you're more likely to get approved for."
+• Insurance - "Coverage varies quite a bit - Medicare, private insurers, and Medicaid each have different policies. This helps me suggest tests you're more likely to get approved for. What type of insurance do you have?"
 • Cost concerns - "Many companies offer financial assistance programs. If cost is a concern, I can point you to tests with strong patient support."
 
 **Doctor relationship:**
-• Oncologist & their awareness - "These tests are relatively new, so not all oncologists know them well yet. That's normal - I can help you prepare talking points."
+• Oncologist & their awareness - "These tests are relatively new, so not all oncologists know them well yet. That's normal - I can help you prepare talking points. Has your doctor mentioned liquid biopsy or ctDNA testing?"
 
-**NEVER REPEAT QUESTIONS** - Check conversation history before asking anything.
+**NEVER REPEAT QUESTIONS** - Check conversation history AND the intake context above before asking anything.
 
 **WHEN DISCUSSING OPTIONS (after gathering enough info):**
 • Explain which test CATEGORY fits their situation and why
@@ -265,12 +288,12 @@ ${scopeReminder}`;
   }
 }
 
-function buildSystemPrompt(category, persona, testData, patientStateSummary = null, patientChatMode = null) {
+function buildSystemPrompt(category, persona, testData, patientStateSummary = null, patientChatMode = null, patientContext = null) {
   const categoryLabel = category === 'all' ? 'liquid biopsy' : category;
   
   return `You are a conversational assistant for OpenOnco, helping users explore ${categoryLabel} tests.
 
-${getPersonaStyle(persona, patientStateSummary, patientChatMode)}
+${getPersonaStyle(persona, patientStateSummary, patientChatMode, patientContext)}
 
 WHAT YOU CAN DO:
 - Compare tests on documented attributes (sensitivity, TAT, cost, etc.) - USE MARKDOWN TABLES for comparisons
@@ -361,7 +384,8 @@ export default async function handler(req, res) {
       messages, 
       model: requestedModel,
       patientStateSummary,
-      patientChatMode
+      patientChatMode,
+      patientContext
     } = req.body;
 
     // Validate category
@@ -384,7 +408,7 @@ export default async function handler(req, res) {
     }
 
     // Build system prompt server-side (pass patient state for patient persona)
-    const systemPrompt = buildSystemPrompt(category, validatedPersona, testData, patientStateSummary, patientChatMode);
+    const systemPrompt = buildSystemPrompt(category, validatedPersona, testData, patientStateSummary, patientChatMode, patientContext);
 
     // Sanitize model
     const model = ALLOWED_MODELS[requestedModel] ? requestedModel : DEFAULT_MODEL;
