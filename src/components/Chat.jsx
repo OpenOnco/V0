@@ -273,7 +273,14 @@ const Chat = ({
           return `Hi! 👋 Based on what you've told me, you're looking at tests for **${patientContext.cancerType}** related to **${patientContext.journeyStage}**.\n\n${journeyMsg}\n\n**What questions do you have?**`;
         } else {
           // Find mode - guided questionnaire to narrow down tests
-          return `Hi! 👋 Let's find the right tests for your situation.\n\nI already know:\n• **Cancer type:** ${patientContext.cancerType}\n• **Stage:** ${patientContext.journeyStage}\n\nTo recommend the best-fit tests, I'll ask you a few quick questions about:\n1. **Insurance & coverage** — to find tests you can actually access\n2. **Your care team** — to help you have the right conversations\n3. **Your priorities** — what matters most to you\n\n**Let's start:** What type of insurance do you have? (Medicare, private/employer, Medicaid, or uninsured)`;
+          const journeyLabels = {
+            tds: 'Choosing treatment',
+            trm: 'Tracking treatment response',
+            mrd: 'Monitoring after treatment'
+          };
+          const journeyLabel = journeyLabels[patientContext.journeyCode] || patientContext.journeyStage;
+          
+          return `Hi! 👋 Let's find the right tests for your situation.\n\n**What I know:** ✓\n• Cancer type: ${patientContext.cancerType}\n• Where you are: ${journeyLabel}\n\n**What I need to find out:**\n• Have you had tumor tissue tested before?\n• What type of insurance do you have?\n• Has your doctor mentioned liquid biopsy testing?\n\nLet's start with the first one — **have you ever had genomic testing done on your tumor tissue** (like Foundation Medicine, Tempus, or similar)?`;
         }
       }
       // Fallback if no context
