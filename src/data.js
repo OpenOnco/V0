@@ -374,13 +374,16 @@ export const COMPANY_CONTRIBUTIONS = {
   'mrd-24': {  // CancerVista
     name: 'Jens Winter',
     company: 'LIQOMICS',
-    date: '2025-12-15'
+    date: '2025-12-15',
+    verifiedDate: '2025-12-28',
+    note: 'Vendor verified 2025-12-28'
   },
   'mrd-23': {  // LymphoVista (vendor correction)
     name: 'Jens Winter',
     company: 'LIQOMICS',
     date: '2025-12-13',
-    note: 'Corrected turnaround times'
+    verifiedDate: '2025-12-28',
+    note: 'Corrected turnaround times; vendor verified 2025-12-28'
   },
   'mrd-15': {  // Foresight CLARITY Lymphoma (vendor update)
     name: 'John Truesdell',
@@ -434,7 +437,9 @@ export const COMPANY_CONTRIBUTIONS = {
   'mrd-22': {  // CancerDetect
     name: 'Sunghoon Heo',
     company: 'IMBdx, Inc.',
-    date: '2025-12-10'
+    date: '2025-12-10',
+    verifiedDate: '2025-12-29',
+    note: 'Vendor verified with bloodVolume and cfdnaInput updates'
   }
 };
 
@@ -1786,8 +1791,11 @@ export const mrdTestData = [
     "initialTatNotes": "Initial TAT 28 days (4 weeks). Reduced from previous 8-10 weeks in earlier version.",
     "followUpTat": 14,
     "followUpTatNotes": "Follow-up monitoring TAT 14 days (2 weeks).",
-    "bloodVolume": null,
-    "bloodVolumeNotes": "1-10 mL plasma used for cfDNA extraction.",
+    "bloodVolume": "20 mL",
+    "bloodVolumeNotes": "20 mL whole blood required. 1-10 mL plasma used for cfDNA extraction.",
+    "bloodVolumeCitations": "https://www.imbdx.com/eng/about/detect.php",
+    "cfdnaInput": "30 ng",
+    "cfdnaInputCitations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
     "fdaStatus": "Not FDA cleared",
     "fdaStatusNotes": "Korean 'Innovative Medical Technology' designation from Ministry of Health and Welfare (analogous to FDA Breakthrough Device Designation). Not FDA cleared for US market.",
     "vendorClaimsNCCNAlignment": true,
@@ -1811,7 +1819,9 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Commercially available in South Korea with Innovative Medical Technology designation. Previously known as AlphaLiquid®Detect.",
-    "technologyDifferentiator": "Large-scale mutation tracking (up to 300 variants vs typical 16-50) combined with tumor-agnostic hotspot panel. Korean-developed with strong regulatory pathway. Ultra-sensitive detection (0.001% LOD) through expanded variant coverage rather than deeper sequencing alone. Hybrid approach enables detection of both original tumor mutations and de novo resistance mutations."
+    "technologyDifferentiator": "Large-scale mutation tracking (up to 300 variants vs typical 16-50) combined with tumor-agnostic hotspot panel. Korean-developed with strong regulatory pathway. Ultra-sensitive detection (0.001% LOD) through expanded variant coverage rather than deeper sequencing alone. Hybrid approach enables detection of both original tumor mutations and de novo resistance mutations.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-12-29: Vendor verified by Sunghoon Heo (sunghoon.heo@imbdx.com), IMBdx. Updated bloodVolume to 20 mL, added cfdnaInput 30 ng per vendor with citations."
   },
   {
     "id": "mrd-23",
@@ -1894,7 +1904,9 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "European LDT offered from CLIA-equivalent laboratory in Germany. Strong academic validation via GHSG HD21 trial data. Not FDA-approved; no current US market presence.",
-    "technologyDifferentiator": "Lymphoma-specific ctDNA MRD test addressing an underserved niche - most competitors focus on solid tumors or use immunosequencing (clonoSEQ) for heme malignancies. Uses duplex sequencing with disease-optimized gene panels for lymphoma genomics. Founded by Sven Borchmann MD/PhD, a leading Hodgkin lymphoma researcher at University of Cologne/GHSG. Dual utility: both interim assessment during treatment and post-treatment MRD surveillance. Positioned as ctDNA alternative to PET for molecular response assessment in lymphoma."
+    "technologyDifferentiator": "Lymphoma-specific ctDNA MRD test addressing an underserved niche - most competitors focus on solid tumors or use immunosequencing (clonoSEQ) for heme malignancies. Uses duplex sequencing with disease-optimized gene panels for lymphoma genomics. Founded by Sven Borchmann MD/PhD, a leading Hodgkin lymphoma researcher at University of Cologne/GHSG. Dual utility: both interim assessment during treatment and post-treatment MRD surveillance. Positioned as ctDNA alternative to PET for molecular response assessment in lymphoma.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate."
   },
   {
     "id": "mrd-24",
@@ -1964,7 +1976,8 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Technically validated assay. European LDT offered from LIQOMICS laboratory in Germany.",
     "technologyDifferentiator": "Multi-solid tumor MRD assay from LIQOMICS (same vendor as lymphoma-focused LymphoVista). Ultra-sensitive detection with LoD of 3.30×10⁻⁶. Covers 17 anatomical sites with optimized mutation panels for diverse solid tumors.",
-    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance."
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate."
   },
   {
     "id": "mrd-25",
