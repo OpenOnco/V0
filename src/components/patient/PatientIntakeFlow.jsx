@@ -54,6 +54,103 @@ const CANCER_TYPES = [
 ];
 
 /**
+ * Educational modal component with two CTA buttons
+ */
+const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
+  if (!journeyCode || !JOURNEY_CARDS[journeyCode]) return null;
+  
+  const card = JOURNEY_CARDS[journeyCode];
+  const info = PATIENT_INFO_CONTENT[card.modalKey];
+  
+  if (!info) return null;
+  
+  const colorSchemes = {
+    violet: { bg: 'bg-violet-500', light: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700', icon: 'bg-violet-100' },
+    rose: { bg: 'bg-rose-500', light: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', icon: 'bg-rose-100' },
+    orange: { bg: 'bg-orange-500', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', icon: 'bg-orange-100' },
+  };
+  const colors = colorSchemes[info.color] || colorSchemes.violet;
+  
+  return (
+    <div 
+      className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="px-7 pt-7 pb-0">
+          <div className="flex items-start gap-4">
+            <div className={`w-14 h-14 rounded-xl ${colors.icon} flex items-center justify-center flex-shrink-0`}>
+              <span className="text-3xl">{info.icon}</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl font-bold text-slate-900">{info.title}</h2>
+              <p className="text-sm text-slate-500 mt-0.5">{info.subtitle}</p>
+            </div>
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-slate-100 rounded-xl transition-colors text-slate-400 hover:text-slate-600"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="px-7 py-6 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 220px)' }}>
+          <div className="space-y-5">
+            {info.content.map((section, idx) => (
+              <div key={idx}>
+                <h3 className="font-semibold text-slate-800 mb-2">{section.heading}</h3>
+                {section.text && (
+                  <p className="text-slate-600 leading-relaxed text-sm">{section.text}</p>
+                )}
+                {section.list && (
+                  <ul className="mt-2 space-y-2">
+                    {section.list.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                        <span className="text-blue-500 mt-0.5">→</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Footer with two CTA buttons */}
+        <div className="px-7 pb-7 pt-4 border-t border-slate-100">
+          <p className="text-sm text-slate-500 mb-3 text-center">What would you like to do?</p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => onContinue('learn')}
+              className="flex-1 py-3.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-xl font-medium transition-colors text-sm flex items-center justify-center gap-2"
+            >
+              <span>📚</span>
+              <span>Learn About This</span>
+            </button>
+            <button
+              onClick={() => onContinue('find')}
+              className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors text-sm flex items-center justify-center gap-2"
+            >
+              <span>🔍</span>
+              <span>Find the Right Test</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
  * Step indicator component
  */
 const StepIndicator = ({ currentStep }) => {
@@ -74,66 +171,6 @@ const StepIndicator = ({ currentStep }) => {
 };
 
 /**
- * Journey card with two CTA buttons
- */
-const JourneyCard = ({ code, card, onSelect, isUnlocked }) => {
-  return (
-    <div 
-      className={`relative rounded-xl overflow-hidden border-2 border-slate-200 bg-slate-800 transition-all ${
-        isUnlocked ? 'hover:shadow-lg hover:border-slate-300' : 'opacity-50'
-      }`}
-    >
-      {/* Image */}
-      <div className="aspect-[4/3]">
-        <img 
-          src={card.image} 
-          alt={card.imageAlt}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.nextSibling.style.display = 'flex';
-          }}
-        />
-        <div 
-          className="w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 items-center justify-center text-slate-400 text-xs hidden"
-        >
-          {card.imageAlt}
-        </div>
-      </div>
-      
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
-      
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-        <h3 className="font-semibold text-sm leading-tight mb-1">{card.title}</h3>
-        <p className="text-xs text-white/70 mb-3">{card.subtitle}</p>
-        
-        {/* Two CTA buttons */}
-        <div className="flex flex-col gap-2">
-          <button
-            onClick={() => isUnlocked && onSelect(code, 'learn')}
-            disabled={!isUnlocked}
-            className="w-full py-2 px-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
-          >
-            <span>📚</span>
-            <span>Learn about this</span>
-          </button>
-          <button
-            onClick={() => isUnlocked && onSelect(code, 'find')}
-            disabled={!isUnlocked}
-            className="w-full py-2 px-3 bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
-          >
-            <span>🔍</span>
-            <span>Find the right test</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-/**
  * Main patient intake flow component
  */
 const PatientIntakeFlow = ({ testData }) => {
@@ -141,6 +178,8 @@ const PatientIntakeFlow = ({ testData }) => {
   const [selectedCancer, setSelectedCancer] = useState('');
   const [selectedJourney, setSelectedJourney] = useState(null);
   const [chatMode, setChatMode] = useState(null); // 'learn' | 'find'
+  const [showModal, setShowModal] = useState(false);
+  const [pendingJourney, setPendingJourney] = useState(null);
   
   const step2Ref = useRef(null);
   const step3Ref = useRef(null);
@@ -157,10 +196,17 @@ const PatientIntakeFlow = ({ testData }) => {
     }, 100);
   };
   
-  // Handle journey + mode selection from card buttons
-  const handleJourneySelect = (journeyCode, mode) => {
-    setSelectedJourney(journeyCode);
+  // Handle journey card click - show modal
+  const handleJourneyClick = (journeyCode) => {
+    setPendingJourney(journeyCode);
+    setShowModal(true);
+  };
+  
+  // Continue from modal with selected mode
+  const handleModalContinue = (mode) => {
+    setSelectedJourney(pendingJourney);
     setChatMode(mode);
+    setShowModal(false);
     setCurrentStep(3);
     
     // Scroll to step 3
@@ -335,7 +381,7 @@ const PatientIntakeFlow = ({ testData }) => {
               Where are you in your journey?
             </h2>
             <p className="text-sm text-slate-500">
-              Choose to learn about testing or find the right test for you
+              Click to learn more about each stage
             </p>
           </div>
         </div>
@@ -361,13 +407,34 @@ const PatientIntakeFlow = ({ testData }) => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {Object.entries(JOURNEY_CARDS).map(([code, card]) => (
-              <JourneyCard
+              <button
                 key={code}
-                code={code}
-                card={card}
-                onSelect={handleJourneySelect}
-                isUnlocked={isStep1Complete}
-              />
+                onClick={() => handleJourneyClick(code)}
+                disabled={!isStep1Complete}
+                className="relative rounded-xl overflow-hidden border-2 border-transparent transition-all hover:shadow-lg hover:-translate-y-1 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
+              >
+                <div className="aspect-[4/3] bg-slate-800">
+                  <img 
+                    src={card.image} 
+                    alt={card.imageAlt}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div 
+                    className="w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 items-center justify-center text-slate-400 text-xs hidden"
+                  >
+                    {card.imageAlt}
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-left text-white">
+                  <h3 className="font-semibold text-sm leading-tight">{card.title}</h3>
+                  <p className="text-xs text-white/70 mt-0.5">{card.subtitle}</p>
+                </div>
+              </button>
             ))}
           </div>
         )}
@@ -406,7 +473,7 @@ const PatientIntakeFlow = ({ testData }) => {
         
         {isStep2Complete && (
           <Chat 
-            key={`${selectedJourney}-${chatMode}`} // Reset chat when selections change
+            key={`${selectedJourney}-${chatMode}`}
             persona="patient"
             testData={testData}
             variant="full"
@@ -418,6 +485,15 @@ const PatientIntakeFlow = ({ testData }) => {
           />
         )}
       </div>
+      
+      {/* Educational Modal */}
+      {showModal && (
+        <EducationalModal
+          journeyCode={pendingJourney}
+          onClose={() => setShowModal(false)}
+          onContinue={handleModalContinue}
+        />
+      )}
     </div>
   );
 };
