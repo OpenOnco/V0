@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { PATIENT_INFO_CONTENT } from '../../config/patientContent';
 import Chat from '../Chat';
+import TestDetailModal from '../test/TestDetailModal';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../data';
 
 /**
  * Journey card content configuration
@@ -173,16 +175,46 @@ const StepIndicator = ({ currentStep }) => {
 /**
  * Main patient intake flow component
  */
-const PatientIntakeFlow = ({ testData, onViewTests }) => {
+const PatientIntakeFlow = ({ testData }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCancer, setSelectedCancer] = useState('');
   const [selectedJourney, setSelectedJourney] = useState(null);
   const [chatMode, setChatMode] = useState(null); // 'learn' | 'find'
   const [showModal, setShowModal] = useState(false);
   const [pendingJourney, setPendingJourney] = useState(null);
+  const [selectedTestForModal, setSelectedTestForModal] = useState(null); // For test detail popup
   
   const step2Ref = useRef(null);
   const step3Ref = useRef(null);
+  
+  // All test data for lookup
+  const allTestData = {
+    MRD: mrdTestData,
+    ECD: ecdTestData,
+    TRM: trmTestData,
+    TDS: tdsTestData
+  };
+  
+  // Handle clicking a test link in chat - show detail modal
+  const handleTestClick = (testIds) => {
+    if (!testIds || testIds.length === 0) return;
+    const testId = testIds[0]; // Just use first one
+    
+    // Parse category from ID (e.g., 'mrd-1' -> 'MRD')
+    const match = testId.match(/^([a-z]+)-/);
+    if (!match) return;
+    
+    const categoryMap = { mrd: 'MRD', ecd: 'ECD', trm: 'TRM', tds: 'TDS' };
+    const category = categoryMap[match[1]];
+    if (!category) return;
+    
+    // Find the test in that category
+    const tests = allTestData[category];
+    const test = tests?.find(t => t.id === testId);
+    if (test) {
+      setSelectedTestForModal({ test, category });
+    }
+  };
   
   // Handle cancer type selection
   const handleCancerSelect = (value) => {
@@ -514,7 +546,7 @@ const PatientIntakeFlow = ({ testData, onViewTests }) => {
             showTitle={false}
             initialHeight={300}
             patientContext={getChatContext()}
-            onViewTests={onViewTests}
+            onViewTests={handleTestClick}
           />
         )}
       </div>
@@ -525,6 +557,16 @@ const PatientIntakeFlow = ({ testData, onViewTests }) => {
           journeyCode={pendingJourney}
           onClose={() => setShowModal(false)}
           onContinue={handleModalContinue}
+        />
+      )}
+      
+      {/* Test Detail Modal */}
+      {selectedTestForModal && (
+        <TestDetailModal
+          test={selectedTestForModal.test}
+          category={selectedTestForModal.category}
+          onClose={() => setSelectedTestForModal(null)}
+          persona="patient"
         />
       )}
     </div>

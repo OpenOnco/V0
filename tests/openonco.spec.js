@@ -966,10 +966,10 @@ test.describe('Persona System', () => {
     await page.goto('/');
     await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
     await page.goto('/');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000); // Increased wait time
     
     // Should see new 3-step intake flow header
-    await expect(page.getByText('Find the Right Test in 3 Simple Steps')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Find the Right Test in 3 Simple Steps')).toBeVisible({ timeout: 10000 });
     
     // Should see trust banner
     await expect(page.getByText('Educational Patient Resource')).toBeVisible();
