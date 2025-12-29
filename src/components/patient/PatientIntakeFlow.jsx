@@ -130,17 +130,17 @@ const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
           <p className="text-xs text-slate-500 mb-2 text-center">What would you like to do?</p>
           <div className="flex flex-col gap-2">
             <button
-              onClick={() => onContinue('learn')}
-              className="flex items-center justify-between px-4 py-2.5 rounded-lg bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors text-left group"
-            >
-              <span className="text-slate-700 font-medium text-sm">Learn more about these tests</span>
-              <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
-            </button>
-            <button
               onClick={() => onContinue('find')}
               className="flex items-center justify-between px-4 py-2.5 rounded-lg bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors text-left group"
             >
               <span className="text-slate-700 font-medium text-sm">Find the right tests for me</span>
+              <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
+            </button>
+            <button
+              onClick={() => onContinue('learn')}
+              className="flex items-center justify-between px-4 py-2.5 rounded-lg bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors text-left group"
+            >
+              <span className="text-slate-500 text-sm">Or, learn more about these tests</span>
               <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
             </button>
           </div>
