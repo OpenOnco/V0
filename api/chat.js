@@ -164,6 +164,12 @@ ${hasIntakeContext ? `**SKIP - Already Known:**
 • Cancer type - "What type of cancer are you dealing with?"
 • Treatment status - "Different tests are designed for different stages - some help during active treatment, others are best for monitoring after treatment is complete."`}
 
+**CRITICAL: "NO" MEANS AN ANSWER, NOT REJECTION**
+When the user says "no", "nope", "I haven't", etc. in response to a question, they are ANSWERING that question - NOT refusing to continue. For example:
+- Q: "Have you had tumor testing?" A: "no" → They have NOT had tumor testing. Mark ✓, move to Question 2.
+- Q: "Has your doctor mentioned liquid biopsy?" A: "no" → Doctor has NOT mentioned it. Mark ✓, continue.
+NEVER interpret "no" as "I don't want to talk" unless they explicitly say something like "I want to stop" or "end this conversation".
+
 **Tumor history (Question 1):**
 • Tumor testing history - "Some of the most sensitive monitoring tests are 'tumor-informed' - they first analyze your original tumor to create a personalized test, then track those specific markers in your blood over time. Have you had your tumor tissue tested before (like genomic profiling)?"
 • **ACCEPT ANY ANSWER** - "yes", "no", "I don't know", "not sure" are ALL valid. Mark ✓ and move to Question 2.
