@@ -187,7 +187,18 @@ const SimpleMarkdown = ({ text, className = '', onTestClick }) => {
         listItems.push(<li key={`li-${idx}`}>{formatInline(ulMatch[1], `li-${idx}`)}</li>);
       } else {
         flushList();
-        if (line.trim() === '') {
+        // Check for headers
+        const h1Match = line.match(/^#\s+(.+)$/);
+        const h2Match = line.match(/^##\s+(.+)$/);
+        const h3Match = line.match(/^###\s+(.+)$/);
+        
+        if (h3Match) {
+          elements.push(<h4 key={`h3-${idx}`} className="text-sm font-semibold mt-3 mb-1">{formatInline(h3Match[1], `h3-${idx}`)}</h4>);
+        } else if (h2Match) {
+          elements.push(<h3 key={`h2-${idx}`} className="text-base font-semibold mt-4 mb-2">{formatInline(h2Match[1], `h2-${idx}`)}</h3>);
+        } else if (h1Match) {
+          elements.push(<h2 key={`h1-${idx}`} className="text-lg font-bold mt-4 mb-2">{formatInline(h1Match[1], `h1-${idx}`)}</h2>);
+        } else if (line.trim() === '' || line.trim() === '---') {
           elements.push(<br key={`br-${idx}`} />);
         } else {
           elements.push(<p key={`p-${idx}`} className="my-1">{formatInline(line, `p-${idx}`)}</p>);
@@ -375,11 +386,16 @@ I'll guide you through a few quick questions to narrow down the best options.
   useEffect(() => {
     if (chatContainerRef.current && messages.length > 0 && !isLoading && scrollPositionBeforeSubmit.current !== null) {
       requestAnimationFrame(() => {
-        // Find the last user message element and scroll it into view at the top
+        // Find the last user message element and scroll container so it's at top
         const userMessages = chatContainerRef.current.querySelectorAll('[data-message-role="user"]');
         if (userMessages.length > 0) {
           const lastUserMessage = userMessages[userMessages.length - 1];
-          lastUserMessage.scrollIntoView({ behavior: 'instant', block: 'start' });
+          // Get position relative to scroll container
+          const containerRect = chatContainerRef.current.getBoundingClientRect();
+          const messageRect = lastUserMessage.getBoundingClientRect();
+          const scrollOffset = messageRect.top - containerRect.top + chatContainerRef.current.scrollTop;
+          // Scroll so user message is at top with small padding
+          chatContainerRef.current.scrollTop = Math.max(0, scrollOffset - 8);
         }
         scrollPositionBeforeSubmit.current = null;
       });
