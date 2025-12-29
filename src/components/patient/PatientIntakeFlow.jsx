@@ -496,7 +496,7 @@ const PatientIntakeFlow = ({ testData }) => {
               ) : (
                 <>
                   <span>📚</span>
-                  <span>Switch to Learn</span>
+                  <span>Switch to learn more about tests</span>
                 </>
               )}
             </button>
