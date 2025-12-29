@@ -202,7 +202,18 @@ export default async function handler(req, res) {
     } else {
       testName = submission.correction?.testName || 'Unknown Test';
       vendor = submission.correction?.vendor || 'Unknown Vendor';
-      subject = `OpenOnco Correction Request: ${testName} (${category}) - ${submitterType}`;
+      
+      // Differentiate validation submissions from regular corrections
+      const isValidation = submissionType === 'validation';
+      const hasEdits = submission.validation?.edits?.length > 0;
+      
+      if (isValidation) {
+        subject = hasEdits 
+          ? `OpenOnco Vendor Validation + Edits: ${testName} (${category})`
+          : `OpenOnco Vendor Validation: ${testName} (${category})`;
+      } else {
+        subject = `OpenOnco Correction Request: ${testName} (${category}) - ${submitterType}`;
+      }
       headerColor = '#2A63A4';
       detailsHtml = `
         <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Submitter Type</td><td style="padding: 8px; border: 1px solid #ddd;">${submitterType}</td></tr>
