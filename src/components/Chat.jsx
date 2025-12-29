@@ -252,10 +252,43 @@ const Chat = ({
     };
   }, [persona]);
 
-  // Get suggestions based on persona and mode
+  // Get suggestions based on persona, mode, and patient context
   const suggestions = useMemo(() => {
+    // For patient with context, provide personalized suggestions
+    if (persona === 'patient' && patientContext?.cancerType && patientContext?.journeyCode) {
+      const cancer = patientContext.cancerType;
+      const journey = patientContext.journeyCode;
+      
+      if (chatMode === 'learn') {
+        // Learn mode - educational questions tailored to cancer type and journey
+        const journeySuggestions = {
+          tds: [
+            `What genomic tests are available for ${cancer}?`,
+            `How do liquid biopsy tests help choose ${cancer} treatment?`,
+            `What's the difference between tissue and blood-based testing?`,
+            `Which treatment selection tests have the best insurance coverage?`
+          ],
+          trm: [
+            `How do blood tests track ${cancer} treatment response?`,
+            `How often should I get tested during treatment?`,
+            `What does it mean if ctDNA levels go up or down?`,
+            `Which monitoring tests work best for ${cancer}?`
+          ],
+          mrd: [
+            `What MRD tests are available for ${cancer}?`,
+            `How early can MRD tests detect ${cancer} recurrence?`,
+            `What's the difference between Signatera and Guardant Reveal?`,
+            `How often should I get MRD testing after treatment?`,
+            `Which MRD tests have Medicare coverage for ${cancer}?`
+          ]
+        };
+        return journeySuggestions[journey] || journeySuggestions.mrd;
+      }
+      // Find mode doesn't show suggestions - it's a guided flow
+      return [];
+    }
     return getSuggestedQuestions(persona);
-  }, [persona]);
+  }, [persona, chatMode, patientContext]);
 
   // Welcome message based on persona, mode, and context
   const welcomeMessage = useMemo(() => {
@@ -280,7 +313,21 @@ const Chat = ({
           };
           const journeyLabel = journeyLabels[patientContext.journeyCode] || patientContext.journeyStage;
           
-          return `Hi! 👋 Let's find the right tests for your situation.\n\n**What I know:** ✓\n• Cancer type: ${patientContext.cancerType}\n• Where you are: ${journeyLabel}\n\n**What I need to find out:**\n• Have you had tumor tissue tested before?\n• What type of insurance do you have?\n• Has your doctor mentioned liquid biopsy testing?\n\nLet's start with the first one — **have you ever had genomic testing done on your tumor tissue** (like Foundation Medicine, Tempus, or similar)?`;
+          return `**Let's find the right tests for you** 🎯
+
+I'll guide you through a few quick questions to narrow down the best options.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**Your Progress**
+
+✓ Cancer type: ${patientContext.cancerType}
+✓ Where you are: ${journeyLabel}
+○ Prior testing history
+○ Insurance situation  
+○ Doctor conversation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Question 1 of 3:** Have you ever had genomic testing done on your tumor tissue (like Foundation Medicine, Tempus, or similar)?`;
         }
       }
       // Fallback if no context
