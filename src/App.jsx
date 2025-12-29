@@ -664,7 +664,7 @@ const HomePage = ({ onNavigate, persona }) => {
 
   // PATIENT VIEW - New 3-step intake flow
   if (persona === 'patient') {
-    return <PatientIntakeFlow testData={chatTestData} />;
+    return <PatientIntakeFlow testData={chatTestData} onViewTests={handleViewTests} />;
   }
 
   // R&D / MEDICAL VIEW - full technical view (current default)

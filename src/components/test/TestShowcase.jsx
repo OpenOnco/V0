@@ -333,7 +333,7 @@ const TestShowcase = ({
     if (test.stageIISensitivity != null) params.push({ label: 'Stage II Sens.', value: `${test.stageIISensitivity}%`, type: 'clinical' });
     
     const leadTime = extractNumber(test.leadTimeVsImaging);
-    if (leadTime != null) params.push({ label: 'Lead Time vs Imaging', value: `${leadTime} days`, type: 'clinical' });
+    if (leadTime != null) params.push({ label: 'Early Warning vs Imaging', value: `${leadTime} days`, type: 'clinical' });
     
     // Trial/publication parameters (evidence base)
     if (test.totalParticipants != null && test.totalParticipants > 0) params.push({ label: 'Trial Participants', value: test.totalParticipants.toLocaleString(), type: 'clinical' });
