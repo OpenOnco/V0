@@ -356,21 +356,35 @@ const Chat = ({
           };
           const journeyLabel = journeyLabels[patientContext.journeyCode] || patientContext.journeyStage;
           
+          // Journey-specific first question
+          const firstQuestion = {
+            mrd: 'Do you know if tumor tissue was saved from your surgery or biopsy?',
+            trm: 'What type of treatment are you currently on?',
+            tds: 'Have you already had genomic profiling done on your tumor?'
+          };
+          const question1 = firstQuestion[patientContext.journeyCode] || firstQuestion.mrd;
+          
+          // Journey-specific progress items
+          const progressItems = {
+            mrd: '○ Tissue availability\n○ Insurance',
+            trm: '○ Current treatment\n○ Insurance',
+            tds: '○ Prior genomic testing\n○ Insurance'
+          };
+          const progress = progressItems[patientContext.journeyCode] || progressItems.mrd;
+          
           return `**Let's find the right tests for you** 🎯
 
-I'll guide you through a few quick questions to narrow down the best options.
+Just 2 quick questions to narrow down the best options.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 **Your Progress**
 
 ✓ Cancer type: ${patientContext.cancerType}
 ✓ Where you are: ${journeyLabel}
-○ Prior testing history
-○ Insurance situation  
-○ Doctor conversation
+${progress}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**Question 1 of 3:** Have you ever had genomic testing done on your tumor tissue (like Foundation Medicine, Tempus, or similar)?`;
+**Question 1 of 2:** ${question1}`;
         }
       }
       // Fallback if no context
