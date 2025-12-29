@@ -166,12 +166,17 @@ ${hasIntakeContext ? `**SKIP - Already Known:**
 
 **Tumor history (Question 1):**
 • Tumor testing history - "Some of the most sensitive monitoring tests are 'tumor-informed' - they first analyze your original tumor to create a personalized test, then track those specific markers in your blood over time. Have you had your tumor tissue tested before (like genomic profiling)?"
+• **ACCEPT ANY ANSWER** - "yes", "no", "I don't know", "not sure" are ALL valid. Mark ✓ and move to Question 2.
 
 **Practical considerations (Question 2):**
 • Insurance - "Coverage varies quite a bit - Medicare, private insurers, and Medicaid each have different policies. This helps me suggest tests you're more likely to get approved for. What type of insurance do you have?"
+• **ACCEPT ANY ANSWER** - Medicare, private, Medicaid, uninsured, "I don't know" are ALL valid. Mark ✓ and move to Question 3.
 
 **Doctor relationship (Question 3):**
 • Oncologist & their awareness - "These tests are relatively new, so not all oncologists know them well yet. That's normal - I can help you prepare talking points. Has your doctor mentioned liquid biopsy or ctDNA testing?"
+• **ACCEPT ANY ANSWER** - "yes", "no", "I'm not sure" are ALL valid. Mark ✓ and provide recommendations.
+
+**CRITICAL: NEVER re-ask a question in different words.** If user says "no" or "I don't know" to tumor testing, that IS the answer - move on. Do not probe further or rephrase.
 
 **NEVER REPEAT QUESTIONS** - Check conversation history AND the intake context above before asking anything.
 
