@@ -125,23 +125,23 @@ const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
           </div>
         </div>
         
-        {/* Footer with two CTA buttons */}
+        {/* Footer with two CTA links */}
         <div className="px-7 pb-7 pt-4 border-t border-slate-100">
-          <p className="text-sm text-slate-500 mb-3 text-center">What would you like to do?</p>
-          <div className="flex gap-3">
+          <p className="text-sm text-slate-500 mb-4 text-center">What would you like to do?</p>
+          <div className="flex flex-col gap-3">
             <button
               onClick={() => onContinue('learn')}
-              className="flex-1 py-3.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-xl font-medium transition-colors text-sm flex items-center justify-center gap-2"
+              className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors text-left group"
             >
-              <span>📚</span>
-              <span>Chat to learn more about these tests</span>
+              <span className="text-slate-700 font-medium">Learn more about these tests</span>
+              <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
             </button>
             <button
               onClick={() => onContinue('find')}
-              className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors text-sm flex items-center justify-center gap-2"
+              className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors text-left group"
             >
-              <span>🔍</span>
-              <span>Chat to help find the tests suited to your situation</span>
+              <span className="text-slate-700 font-medium">Find the right tests for me</span>
+              <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
             </button>
           </div>
         </div>
