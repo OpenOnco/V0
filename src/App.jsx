@@ -414,7 +414,7 @@ const HomePage = ({ onNavigate, persona }) => {
   const chatContainerRef = useRef(null);
   const patientChatInputRef = useRef(null);
   
-  // Track patient consultation state to prevent repeat questions
+  // Track patient conversation state to prevent repeat questions
   const [patientState, setPatientState] = useState({
     cancerType: null,
     treatmentStatus: null,

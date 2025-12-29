@@ -386,7 +386,7 @@ const Chat = ({
           </style>
         </head>
         <body>
-          <h1>🧬 OpenOnco Test Consultation</h1>
+          <h1>🧬 OpenOnco Conversation Summary</h1>
           <p style="color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
           ${messages.map(m => `
             <div class="message ${m.role}">
@@ -395,7 +395,7 @@ const Chat = ({
             </div>
           `).join('')}
           <div class="footer">
-            <p>This consultation is for educational purposes only. Always discuss testing options with your healthcare provider.</p>
+            <p>This information is for educational purposes only. Always discuss testing options with your healthcare provider.</p>
             <p>Learn more at <strong>www.openonco.org</strong></p>
           </div>
         </body>
@@ -484,7 +484,7 @@ const Chat = ({
               <button
                 onClick={printChat}
                 className="flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors bg-white/20 hover:bg-white/30 text-white"
-                title="Print consultation"
+                title="Print conversation"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
