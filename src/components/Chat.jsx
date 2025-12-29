@@ -196,8 +196,7 @@ const Chat = ({
   showTitle = true,
   initialHeight = 350,
   className = '',
-  patientContext = null,
-  onModeChange = null
+  patientContext = null
 }) => {
   // Initialize chatMode from patientContext if available
   const [chatMode, setChatMode] = useState(() => patientContext?.chatMode || 'learn');
@@ -209,6 +208,14 @@ const Chat = ({
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
   const scrollPositionBeforeSubmit = useRef(null);
+
+  // Sync chatMode when patientContext.chatMode changes (from parent toggle)
+  useEffect(() => {
+    if (patientContext?.chatMode && patientContext.chatMode !== chatMode) {
+      setChatMode(patientContext.chatMode);
+      setMessages([]); // Reset chat on mode change
+    }
+  }, [patientContext?.chatMode]);
 
   // Theme configuration per persona
   const theme = useMemo(() => {
@@ -277,17 +284,6 @@ const Chat = ({
     }
     return getWelcomeMessage(persona);
   }, [persona, chatMode, patientContext]);
-
-  // Handle mode switch
-  const handleModeSwitch = () => {
-    const newMode = chatMode === 'learn' ? 'find' : 'learn';
-    setChatMode(newMode);
-    setMessages([]); // Reset chat on mode change
-    track('chat_mode_switched', { from: chatMode, to: newMode });
-    if (onModeChange) {
-      onModeChange(newMode);
-    }
-  };
 
   // Restore scroll position after response arrives (so they see question + start of answer)
   useEffect(() => {
@@ -466,28 +462,8 @@ const Chat = ({
           {/* Spacer when no title */}
           {hasPatientContext && <div className="flex-1" />}
 
-          {/* Right side: mode toggle + model selector + print */}
+          {/* Right side: model selector + print */}
           <div className="flex items-center gap-2">
-            {/* Mode toggle button for patient with context */}
-            {hasPatientContext && (
-              <button
-                onClick={handleModeSwitch}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white/20 hover:bg-white/30 text-white"
-                title={chatMode === 'learn' ? 'Switch to Find Tests mode' : 'Switch to Learn mode'}
-              >
-                {chatMode === 'learn' ? (
-                  <>
-                    <span>🔍</span>
-                    <span>Switch to Find Tests</span>
-                  </>
-                ) : (
-                  <>
-                    <span>📚</span>
-                    <span>Switch to Learn</span>
-                  </>
-                )}
-              </button>
-            )}
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
@@ -557,7 +533,7 @@ const Chat = ({
             {isPatient && (
               <div className="flex justify-start">
                 <div className={`max-w-[90%] rounded-xl px-4 py-3 ${theme.assistantBubble}`}>
-                  <div className="text-sm whitespace-pre-wrap">{welcomeMessage}</div>
+                  <SimpleMarkdown text={welcomeMessage} className="text-sm" />
                   {/* Inline suggestions for patient learn mode */}
                   {chatMode === 'learn' && (
                     <div className="flex flex-wrap gap-2 mt-3">

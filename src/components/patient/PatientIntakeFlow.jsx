@@ -215,6 +215,12 @@ const PatientIntakeFlow = ({ testData }) => {
     }, 100);
   };
   
+  // Handle mode switch
+  const handleModeSwitch = () => {
+    const newMode = chatMode === 'learn' ? 'find' : 'learn';
+    setChatMode(newMode);
+  };
+  
   // Reset to step 1
   const handleStartOver = () => {
     setSelectedCancer('');
@@ -449,26 +455,52 @@ const PatientIntakeFlow = ({ testData }) => {
             : 'border-slate-200 opacity-40 pointer-events-none'
         }`}
       >
-        <div className="flex items-start gap-4 mb-5">
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0 ${
-            isStep2Complete 
-              ? 'bg-blue-600 text-white' 
-              : 'bg-slate-200 text-slate-400'
-          }`}>
-            3
+        <div className="flex items-start justify-between gap-4 mb-5">
+          <div className="flex items-start gap-4">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0 ${
+              isStep2Complete 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-slate-200 text-slate-400'
+            }`}>
+              3
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-slate-800">
+                {chatMode === 'learn' 
+                  ? 'Learn about these tests' 
+                  : 'Let\'s find the right test for you'}
+              </h2>
+              <p className="text-sm text-slate-500">
+                {chatMode === 'learn'
+                  ? 'Ask questions and understand your options'
+                  : 'Chat with our guide to explore your options'}
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg font-semibold text-slate-800">
-              {chatMode === 'learn' 
-                ? 'Learn about these tests' 
-                : 'Let\'s find the right test for you'}
-            </h2>
-            <p className="text-sm text-slate-500">
-              {chatMode === 'learn'
-                ? 'Ask questions and understand your options'
-                : 'Chat with our guide to explore your options'}
-            </p>
-          </div>
+          
+          {/* Mode switch button */}
+          {isStep2Complete && (
+            <button
+              onClick={handleModeSwitch}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                chatMode === 'learn'
+                  ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+                  : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+              }`}
+            >
+              {chatMode === 'learn' ? (
+                <>
+                  <span>🔍</span>
+                  <span>Switch to Find Tests</span>
+                </>
+              ) : (
+                <>
+                  <span>📚</span>
+                  <span>Switch to Learn</span>
+                </>
+              )}
+            </button>
+          )}
         </div>
         
         {isStep2Complete && (
@@ -482,7 +514,6 @@ const PatientIntakeFlow = ({ testData }) => {
             showTitle={false}
             initialHeight={300}
             patientContext={getChatContext()}
-            onModeChange={(newMode) => setChatMode(newMode)}
           />
         )}
       </div>
