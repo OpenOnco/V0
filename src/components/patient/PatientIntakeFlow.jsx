@@ -473,7 +473,7 @@ const PatientIntakeFlow = ({ testData }) => {
         
         {isStep2Complete && (
           <Chat 
-            key={`${selectedJourney}-${chatMode}`}
+            key={selectedJourney}
             persona="patient"
             testData={testData}
             variant="full"
@@ -482,6 +482,7 @@ const PatientIntakeFlow = ({ testData }) => {
             showTitle={false}
             initialHeight={300}
             patientContext={getChatContext()}
+            onModeChange={(newMode) => setChatMode(newMode)}
           />
         )}
       </div>

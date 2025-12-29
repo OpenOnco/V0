@@ -184,6 +184,8 @@ const SimpleMarkdown = ({ text, className = '' }) => {
  * @param {boolean} showTitle - Show header title
  * @param {number} initialHeight - Initial height in pixels
  * @param {string} className - Additional CSS classes
+ * @param {Object} patientContext - { cancerType, journeyStage, journeyCode, chatMode } from intake flow
+ * @param {Function} onModeChange - Callback when mode changes (for parent to handle)
  */
 const Chat = ({
   persona = 'patient',
@@ -194,13 +196,15 @@ const Chat = ({
   showTitle = true,
   initialHeight = 350,
   className = '',
-  patientContext = null // { cancerType, journeyStage, journeyCode } from intake flow
+  patientContext = null,
+  onModeChange = null
 }) => {
+  // Initialize chatMode from patientContext if available
+  const [chatMode, setChatMode] = useState(() => patientContext?.chatMode || 'learn');
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const [chatMode, setChatMode] = useState('learn'); // 'learn' | 'find' (patient only)
   const [chatHeight, setChatHeight] = useState(initialHeight);
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
@@ -241,7 +245,7 @@ const Chat = ({
     };
   }, [persona]);
 
-  // Get suggestions based on persona
+  // Get suggestions based on persona and mode
   const suggestions = useMemo(() => {
     return getSuggestedQuestions(persona);
   }, [persona]);
@@ -251,14 +255,21 @@ const Chat = ({
     if (persona === 'patient') {
       // If we have patient context from intake flow, use personalized message
       if (patientContext?.cancerType && patientContext?.journeyStage) {
-        const journeyMessages = {
-          tds: `I can help you understand tests that guide treatment decisions for ${patientContext.cancerType}.`,
-          trm: `I can help you understand tests that monitor how well your ${patientContext.cancerType} treatment is working.`,
-          mrd: `I can help you understand tests that watch for ${patientContext.cancerType} returning after treatment.`
-        };
-        const journeyMsg = journeyMessages[patientContext.journeyCode] || `I can help you find the right tests for ${patientContext.cancerType}.`;
-        return `Hi! 👋 Based on what you've told me, you're looking at tests for **${patientContext.cancerType}** related to **${patientContext.journeyStage}**.\n\n${journeyMsg}\n\n**What questions do you have?**`;
+        if (chatMode === 'learn') {
+          // Learn mode - educational focus
+          const journeyMessages = {
+            tds: `I can help you understand tests that guide treatment decisions for ${patientContext.cancerType}.`,
+            trm: `I can help you understand tests that monitor how well your ${patientContext.cancerType} treatment is working.`,
+            mrd: `I can help you understand tests that watch for ${patientContext.cancerType} returning after treatment.`
+          };
+          const journeyMsg = journeyMessages[patientContext.journeyCode] || `I can help you learn about tests for ${patientContext.cancerType}.`;
+          return `Hi! 👋 Based on what you've told me, you're looking at tests for **${patientContext.cancerType}** related to **${patientContext.journeyStage}**.\n\n${journeyMsg}\n\n**What questions do you have?**`;
+        } else {
+          // Find mode - personal situation focus
+          return `Hi! 👋 Let's find the right tests for your situation.\n\nYou mentioned **${patientContext.cancerType}** and **${patientContext.journeyStage}**.\n\nI'll help you identify tests that might fit, understand insurance coverage, and prepare for conversations with your doctor.\n\n**Tell me more about where you are in your journey.**`;
+        }
       }
+      // Fallback if no context
       if (chatMode === 'learn') {
         return "Hi! 👋 I'm here to help you understand cancer blood tests (also called liquid biopsy).";
       }
@@ -266,6 +277,17 @@ const Chat = ({
     }
     return getWelcomeMessage(persona);
   }, [persona, chatMode, patientContext]);
+
+  // Handle mode switch
+  const handleModeSwitch = () => {
+    const newMode = chatMode === 'learn' ? 'find' : 'learn';
+    setChatMode(newMode);
+    setMessages([]); // Reset chat on mode change
+    track('chat_mode_switched', { from: chatMode, to: newMode });
+    if (onModeChange) {
+      onModeChange(newMode);
+    }
+  };
 
   // Restore scroll position after response arrives (so they see question + start of answer)
   useEffect(() => {
@@ -314,7 +336,8 @@ const Chat = ({
           testData: JSON.stringify(testData),
           messages: recentMessages,
           model: selectedModel,
-          patientChatMode: persona === 'patient' ? chatMode : null
+          patientChatMode: persona === 'patient' ? chatMode : null,
+          patientContext: persona === 'patient' ? patientContext : null
         })
       });
 
@@ -401,6 +424,7 @@ const Chat = ({
 
   const isCompact = variant === 'sidebar';
   const isPatient = persona === 'patient';
+  const hasPatientContext = isPatient && patientContext?.cancerType;
 
   return (
     <div className={`rounded-2xl border shadow-sm overflow-hidden flex flex-col ${theme.container} ${isCompact ? 'p-4' : 'p-6'} ${className}`}>
@@ -430,17 +454,40 @@ const Chat = ({
             )}
           </div>
 
-          {/* Title (center) */}
-          {showTitle && (
+          {/* Title (center) - hide if we have context */}
+          {showTitle && !hasPatientContext && (
             <div className="flex-1 text-center">
               <h2 className="text-lg sm:text-xl font-semibold text-white">
                 Chat with us to Learn About These Tests and Your Own Options
               </h2>
             </div>
           )}
+          
+          {/* Spacer when no title */}
+          {hasPatientContext && <div className="flex-1" />}
 
-          {/* Right side: model selector + print */}
+          {/* Right side: mode toggle + model selector + print */}
           <div className="flex items-center gap-2">
+            {/* Mode toggle button for patient with context */}
+            {hasPatientContext && (
+              <button
+                onClick={handleModeSwitch}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white/20 hover:bg-white/30 text-white"
+                title={chatMode === 'learn' ? 'Switch to Find Tests mode' : 'Switch to Learn mode'}
+              >
+                {chatMode === 'learn' ? (
+                  <>
+                    <span>🔍</span>
+                    <span>Switch to Find Tests</span>
+                  </>
+                ) : (
+                  <>
+                    <span>📚</span>
+                    <span>Switch to Learn</span>
+                  </>
+                )}
+              </button>
+            )}
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
@@ -477,7 +524,7 @@ const Chat = ({
           flex: isCompact ? 1 : undefined
         }}
       >
-        {/* Mode toggle (patient only) */}
+        {/* Mode toggle (patient only - legacy, controlled by showModeToggle prop) */}
         {showModeToggle && (
           <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-4">
             <button 
