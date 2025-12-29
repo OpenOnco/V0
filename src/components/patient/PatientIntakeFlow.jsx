@@ -77,22 +77,22 @@ const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden"
+        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col"
         onClick={e => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="px-7 pt-7 pb-0">
-          <div className="flex items-start gap-4">
-            <div className={`w-14 h-14 rounded-xl ${colors.icon} flex items-center justify-center flex-shrink-0`}>
-              <span className="text-3xl">{info.icon}</span>
+        {/* Header - compact */}
+        <div className="px-6 pt-5 pb-0 flex-shrink-0">
+          <div className="flex items-start gap-3">
+            <div className={`w-12 h-12 rounded-xl ${colors.icon} flex items-center justify-center flex-shrink-0`}>
+              <span className="text-2xl">{info.icon}</span>
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-xl font-bold text-slate-900">{info.title}</h2>
-              <p className="text-sm text-slate-500 mt-0.5">{info.subtitle}</p>
+              <h2 className="text-lg font-bold text-slate-900">{info.title}</h2>
+              <p className="text-sm text-slate-500">{info.subtitle}</p>
             </div>
             <button 
               onClick={onClose}
-              className="p-2 hover:bg-slate-100 rounded-xl transition-colors text-slate-400 hover:text-slate-600"
+              className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 hover:text-slate-600"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -101,17 +101,17 @@ const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
           </div>
         </div>
         
-        {/* Content */}
-        <div className="px-7 py-6 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 220px)' }}>
-          <div className="space-y-5">
+        {/* Content - scrollable, compact */}
+        <div className="px-6 py-4 overflow-y-auto flex-1 min-h-0">
+          <div className="space-y-3">
             {info.content.map((section, idx) => (
               <div key={idx}>
-                <h3 className="font-semibold text-slate-800 mb-2">{section.heading}</h3>
+                <h3 className="font-semibold text-slate-800 text-sm mb-1">{section.heading}</h3>
                 {section.text && (
                   <p className="text-slate-600 leading-relaxed text-sm">{section.text}</p>
                 )}
                 {section.list && (
-                  <ul className="mt-2 space-y-2">
+                  <ul className="mt-1.5 space-y-1">
                     {section.list.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
                         <span className="text-blue-500 mt-0.5">→</span>
@@ -125,22 +125,22 @@ const EducationalModal = ({ journeyCode, onClose, onContinue }) => {
           </div>
         </div>
         
-        {/* Footer with two CTA links */}
-        <div className="px-7 pb-7 pt-4 border-t border-slate-100">
-          <p className="text-sm text-slate-500 mb-4 text-center">What would you like to do?</p>
-          <div className="flex flex-col gap-3">
+        {/* Footer - prominent CTAs */}
+        <div className="px-6 pb-5 pt-3 border-t border-slate-100 flex-shrink-0 bg-slate-50 rounded-b-2xl">
+          <p className="text-xs text-slate-500 mb-2 text-center">What would you like to do?</p>
+          <div className="flex flex-col gap-2">
             <button
               onClick={() => onContinue('learn')}
-              className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors text-left group"
+              className="flex items-center justify-between px-4 py-2.5 rounded-lg bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors text-left group"
             >
-              <span className="text-slate-700 font-medium">Learn more about these tests</span>
+              <span className="text-slate-700 font-medium text-sm">Learn more about these tests</span>
               <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
             </button>
             <button
               onClick={() => onContinue('find')}
-              className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors text-left group"
+              className="flex items-center justify-between px-4 py-2.5 rounded-lg bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors text-left group"
             >
-              <span className="text-slate-700 font-medium">Find the right tests for me</span>
+              <span className="text-slate-700 font-medium text-sm">Find the right tests for me</span>
               <span className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all">→</span>
             </button>
           </div>
