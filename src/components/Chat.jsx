@@ -444,6 +444,13 @@ ${progress}
       // Limit history to last 6 messages to reduce token usage
       const recentMessages = updatedMessages.slice(-6);
       
+      // For patient chat, prepend the welcome message so Claude knows what Q1 was
+      let messagesForApi = recentMessages;
+      if (persona === 'patient' && chatMode === 'find' && patientContext?.cancerType) {
+        const welcomeAsAssistant = { role: 'assistant', content: welcomeMessage };
+        messagesForApi = [welcomeAsAssistant, ...recentMessages];
+      }
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -451,7 +458,7 @@ ${progress}
           category: 'all',
           persona: persona,
           testData: JSON.stringify(testData),
-          messages: recentMessages,
+          messages: messagesForApi,
           model: selectedModel,
           patientChatMode: persona === 'patient' ? chatMode : null,
           patientContext: persona === 'patient' ? patientContext : null
