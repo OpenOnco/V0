@@ -7,7 +7,7 @@ import {
   createCategoryMeta,
   BUILD_INFO,
 } from '../../data';
-import { TIER1_FIELDS } from '../../config/testFields';
+import { TIER1_FIELDS, MINIMUM_PARAMS } from '../../config/testFields';
 import { EXPERT_INSIGHTS } from '../../config/expertInsights';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
 import { formatLOD, detectLodUnit, getLodUnitBadge } from '../../utils/formatting';
@@ -23,6 +23,88 @@ import QualityGrade from '../ui/QualityGrade';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
+
+// ============================================
+// Minimum Fields Section - Shows completion status for BC (Baseline Complete)
+// ============================================
+const MinimumFieldsSection = ({ test, category }) => {
+  const minParams = MINIMUM_PARAMS[category];
+  if (!minParams?.core) return null;
+
+  const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
+
+  const fields = minParams.core.map(p => ({
+    key: p.key,
+    label: p.label,
+    value: test[p.key],
+    filled: hasValue(test[p.key])
+  }));
+
+  const filledCount = fields.filter(f => f.filled).length;
+  const totalCount = fields.length;
+  const isBC = filledCount === totalCount;
+
+  const formatDisplayValue = (val) => {
+    if (val == null || val === '') return '—';
+    if (Array.isArray(val)) return val.join(', ');
+    if (typeof val === 'number') return val.toLocaleString();
+    return String(val);
+  };
+
+  return (
+    <div className={`mt-4 p-4 rounded-xl border-2 ${isBC ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-200'}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-gray-800">Minimum Fields</h3>
+          {isBC ? (
+            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">{filledCount}/{totalCount} Complete</span>
+          ) : (
+            <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
+              INCOMPLETE ({filledCount}/{totalCount})
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="mb-4">
+        <div className="h-2 bg-white rounded-full overflow-hidden border border-gray-200">
+          <div
+            className={`h-full rounded-full transition-all ${isBC ? 'bg-emerald-500' : 'bg-red-400'}`}
+            style={{ width: `${(filledCount / totalCount) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Fields grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        {fields.map(field => (
+          <div
+            key={field.key}
+            className={`p-2 rounded-lg border ${field.filled ? 'bg-white border-gray-200' : 'bg-red-100/50 border-red-300 border-dashed'}`}
+          >
+            <div className="flex items-center gap-1.5 mb-0.5">
+              {field.filled ? (
+                <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              )}
+              <span className={`text-xs font-medium ${field.filled ? 'text-gray-700' : 'text-red-700'}`}>{field.label}</span>
+            </div>
+            <p className={`text-sm truncate ${field.filled ? 'text-gray-900' : 'text-red-600 italic'}`}>
+              {field.filled ? formatDisplayValue(field.value) : 'Missing'}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // ============================================
 // Test Detail Modal
