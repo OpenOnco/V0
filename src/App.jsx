@@ -15,8 +15,7 @@
  * ╚═══════════════════════════════════════════════════════════════════════════╝
  */
 
-import React, { useState, useMemo, useRef, useEffect, createContext, useContext } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
@@ -64,7 +63,6 @@ import {
 
 // Component imports
 import { getStoredPersona, savePersona } from './utils/persona';
-import PersonaSelector from './components/PersonaSelector';
 import PersonaGate from './components/PersonaGate';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -75,17 +73,12 @@ import LearnPage from './pages/LearnPage';
 import AboutPage from './pages/AboutPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
-import { getChatSuggestions } from './personaContent';
-import GlossaryTooltip from './components/GlossaryTooltip';
 import Chat from './components/Chat';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
 import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, MINIMUM_PARAMS, FIELD_DEFINITIONS } from './config/testFields';
-import { EXPERT_INSIGHTS } from './config/expertInsights';
 import { PATIENT_INFO_CONTENT } from './config/patientContent';
 import { calculateTier1Metrics, calculateCategoryMetrics, calculateTestCompleteness, calculateMinimumFieldStats } from './utils/testMetrics';
-import { formatLOD, detectLodUnit, getLodUnitBadge } from './utils/formatting';
-import { getSuggestedTests } from './utils/suggestions';
 import CircularProgress from './components/ui/CircularProgress';
 import QualityGrade from './components/ui/QualityGrade';
 import Checkbox from './components/ui/Checkbox';
@@ -94,13 +87,10 @@ import Badge from './components/ui/Badge';
 import VendorBadge, { getVendorBadges } from './components/badges/VendorBadge';
 import CompanyCommunicationBadge from './components/badges/CompanyCommunicationBadge';
 import ProductTypeBadge from './components/badges/ProductTypeBadge';
-import SimpleMarkdown from './components/markdown/SimpleMarkdown';
 import Markdown from './components/markdown/Markdown';
-import ExternalResourcesSection, { ExternalResourceLink } from './components/markdown/ExternalResourcesSection';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
 import PatientIntakeFlow from './components/patient/PatientIntakeFlow';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
-import PerformanceMetricWithWarning from './components/ui/PerformanceMetricWithWarning';
 import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
 import CategoryPage from './components/CategoryPage';
@@ -402,231 +392,7 @@ const PatientInfoModal = ({ type, onClose, onStartChat }) => {
 };
 
 const HomePage = ({ onNavigate, persona }) => {
-  const [chatInput, setChatInput] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  // persona is now passed as prop from App
-  const [selectedModel, setSelectedModel] = useState(CHAT_MODELS[0].id);
-  const [patientInfoModal, setPatientInfoModal] = useState(null); // 'therapy' | 'monitoring' | 'surveillance' | null
-  const [patientChatMode, setPatientChatMode] = useState('learn'); // 'learn' | 'find'
-  const [chatHeight, setChatHeight] = useState(350); // pixels, resizable
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
-  const chatContainerRef = useRef(null);
-  const patientChatInputRef = useRef(null);
-  
-  // Track patient conversation state to prevent repeat questions
-  const [patientState, setPatientState] = useState({
-    cancerType: null,
-    treatmentStatus: null,
-    hadGenomicTesting: null,
-    insuranceType: null,
-    costConcern: null,
-    hasOncologist: null,
-    doctorAwareness: null
-  });
-  
-  // Extract patient info from conversation to build state summary
-  const extractPatientState = (msgs) => {
-    const state = {
-      cancerType: null,
-      treatmentStatus: null,
-      hadGenomicTesting: null,
-      insuranceType: null,
-      costConcern: null,
-      hasOncologist: null,
-      doctorAwareness: null
-    };
-    
-    // Look through conversation pairs (user answer follows assistant question)
-    for (let i = 0; i < msgs.length; i++) {
-      const msg = msgs[i];
-      if (msg.role === 'user') {
-        const answer = msg.content.toLowerCase();
-        const prevAssistant = i > 0 ? msgs[i-1]?.content?.toLowerCase() || '' : '';
-        
-        // Cancer type - usually first answer
-        if (i === 0 || prevAssistant.includes('cancer') && prevAssistant.includes('type')) {
-          if (!state.cancerType && answer.length < 50) {
-            state.cancerType = msg.content;
-          }
-        }
-        
-        // Treatment status
-        if (prevAssistant.includes('treatment status') || prevAssistant.includes('newly diagnosed') || prevAssistant.includes('active treatment')) {
-          if (answer.includes('active') || answer.includes('chemo') || answer.includes('treatment')) {
-            state.treatmentStatus = answer.includes('finish') || answer.includes('done') || answer.includes('completed') ? 'finished treatment' : 'active treatment';
-          } else if (answer.includes('new') || answer.includes('diagnos')) {
-            state.treatmentStatus = 'newly diagnosed';
-          } else if (answer.includes('monitor') || answer.includes('surveillance') || answer.includes('watch')) {
-            state.treatmentStatus = 'monitoring';
-          } else if (answer.includes('finish') || answer.includes('done') || answer.includes('completed')) {
-            state.treatmentStatus = 'finished treatment';
-          }
-        }
-        
-        // Genomic testing
-        if (prevAssistant.includes('genomic') || prevAssistant.includes('genetic') || prevAssistant.includes('tumor') && prevAssistant.includes('test')) {
-          if (answer.includes('yes')) state.hadGenomicTesting = 'yes';
-          else if (answer.includes('no')) state.hadGenomicTesting = 'no';
-          else if (answer.includes("don't know") || answer.includes('not sure') || answer.includes('unsure')) state.hadGenomicTesting = 'unknown';
-        }
-        
-        // Insurance
-        if (prevAssistant.includes('insurance')) {
-          if (answer.includes('medicare')) state.insuranceType = 'Medicare';
-          else if (answer.includes('private') || answer.includes('employer')) state.insuranceType = 'private';
-          else if (answer.includes('uninsured') || answer.includes('no insurance')) state.insuranceType = 'uninsured';
-          else if (answer.includes('medicaid')) state.insuranceType = 'Medicaid';
-        }
-        
-        // Cost concern
-        if (prevAssistant.includes('cost') || prevAssistant.includes('out-of-pocket') || prevAssistant.includes('expense')) {
-          if (answer.includes("don't care") || answer.includes('not a concern') || answer.includes('no') || answer.includes('fine')) {
-            state.costConcern = 'no';
-          } else if (answer.includes('yes') || answer.includes('concern') || answer.includes('worried') || answer.includes('limited')) {
-            state.costConcern = 'yes';
-          }
-        }
-        
-        // Oncologist
-        if (prevAssistant.includes('oncologist') || prevAssistant.includes('doctor')) {
-          if (answer.includes('yes') || answer.includes('have')) state.hasOncologist = 'yes';
-          else if (answer.includes('no') || answer.includes("don't have")) state.hasOncologist = 'no';
-          
-          // Doctor awareness of liquid biopsy
-          if (answer.includes("don't know") || answer.includes('not familiar') || answer.includes("doesn't know")) {
-            state.doctorAwareness = 'no';
-          } else if (answer.includes('mentioned') || answer.includes('discussed') || answer.includes('knows about')) {
-            state.doctorAwareness = 'yes';
-          }
-        }
-      }
-    }
-    
-    return state;
-  };
-  
-  // Build a summary string of what we know
-  const getPatientStateSummary = (state) => {
-    const known = [];
-    if (state.cancerType) known.push(`Cancer type: ${state.cancerType}`);
-    if (state.treatmentStatus) known.push(`Treatment status: ${state.treatmentStatus}`);
-    if (state.hadGenomicTesting) known.push(`Had genomic testing: ${state.hadGenomicTesting}`);
-    if (state.insuranceType) known.push(`Insurance: ${state.insuranceType}`);
-    if (state.costConcern) known.push(`Cost concern: ${state.costConcern}`);
-    if (state.hasOncologist) known.push(`Has oncologist: ${state.hasOncologist}`);
-    if (state.doctorAwareness) known.push(`Doctor aware of liquid biopsy: ${state.doctorAwareness}`);
-    return known.length > 0 ? known.join('; ') : null;
-  };
-
-  // Auto-scroll to show question at top when response arrives
-  useEffect(() => {
-    if (chatContainerRef.current && messages.length > 0) {
-      const container = chatContainerRef.current;
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === 'assistant') {
-        // Wait for DOM to update, then scroll to show question at top
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            const userMessages = container.querySelectorAll('[data-message-role="user"]');
-            const lastUserEl = userMessages[userMessages.length - 1];
-            if (lastUserEl) {
-              const containerRect = container.getBoundingClientRect();
-              const userRect = lastUserEl.getBoundingClientRect();
-              const relativeTop = userRect.top - containerRect.top + container.scrollTop;
-              container.scrollTop = Math.max(0, relativeTop - 20);
-            }
-          }, 150);
-        });
-      }
-    }
-  }, [messages]);
-  
-  const colorClasses = {
-    orange: { card: 'bg-orange-50 border-orange-200 hover:border-orange-400 hover:shadow-lg hover:scale-[1.02] hover:bg-orange-100', btn: 'from-orange-500 to-orange-600' },
-    green: { card: 'bg-emerald-50 border-emerald-200 hover:border-emerald-400 hover:shadow-lg hover:scale-[1.02] hover:bg-emerald-100', btn: 'from-emerald-500 to-emerald-600' },
-    red: { card: 'bg-sky-100 border-sky-300 hover:border-sky-500 hover:shadow-lg hover:scale-[1.02] hover:bg-sky-200', btn: 'from-sky-500 to-sky-600' },
-  };
-
-  // Calculate total data points dynamically
-  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
-  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams);
-  
-  // All tests combined for chat header ticker
-  const exampleQuestions = [
-    "Compare Signatera and Reveal MRD for colorectal cancer MRD monitoring",
-    "What ECD tests have Medicare coverage?"
-  ];
-
-  const handleSubmit = async (question) => {
-    const q = question || chatInput;
-    if (!q.trim()) return;
-    
-    // Track homepage chat submission with feature flags
-    const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
-    track('home_chat_message_sent', { 
-      model: selectedModel,
-      message_length: q.trim().length,
-      is_suggested: question !== undefined
-    }, { 
-      flags: [personaFlag] 
-    });
-    
-    setChatInput('');
-    const newUserMessage = { role: 'user', content: q };
-    const updatedMessages = [...messages, newUserMessage];
-    setMessages(updatedMessages);
-    setIsLoading(true);
-
-    try {
-      // Limit history to last 6 messages to reduce token usage
-      const recentMessages = updatedMessages.slice(-6);
-      
-      // For patient persona, extract what we already know to prevent repeat questions
-      let patientStateSummary = null;
-      if (persona === 'patient') {
-        const currentState = extractPatientState(updatedMessages);
-        patientStateSummary = getPatientStateSummary(currentState);
-      }
-      
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          category: 'all',
-          persona: persona,
-          testData: JSON.stringify(chatTestData),
-          messages: recentMessages,
-          model: selectedModel,
-          patientStateSummary: patientStateSummary,
-          patientChatMode: persona === 'patient' ? patientChatMode : null
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (data?.content?.[0]?.text) {
-        setMessages(prev => [...prev, { role: 'assistant', content: data.content[0].text }]);
-      } else {
-        setMessages(prev => [...prev, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
-      }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting. Please try again in a moment." }]);
-    }
-    setIsLoading(false);
-  };
-
-  // Helper to focus patient chat
-  const focusPatientChat = () => {
-    setTimeout(() => {
-      if (patientChatInputRef.current) {
-        patientChatInputRef.current.focus();
-        patientChatInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 100);
-  };
 
   // PATIENT VIEW - New 3-step intake flow
   if (persona === 'patient') {
