@@ -979,9 +979,9 @@ test.describe('Persona System', () => {
     await expect(page.getByText('What kind of cancer are you concerned about?')).toBeVisible();
     
     // Should see journey cards (Step 2 - initially locked but visible)
-    await expect(page.getByText('Choosing the Right Treatment')).toBeVisible();
-    await expect(page.getByText('Tracking Treatment Response')).toBeVisible();
-    await expect(page.getByText('Keeping Watch After Treatment')).toBeVisible();
+    await expect(page.getByText('Tests that help choose my treatment')).toBeVisible();
+    await expect(page.getByText('Tests that track my response to treatment')).toBeVisible();
+    await expect(page.getByText('Tests that watch over me after treatment')).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {

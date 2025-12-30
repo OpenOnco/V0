@@ -10,7 +10,7 @@ import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../data';
 const JOURNEY_CARDS = {
   tds: {
     id: 'tds',
-    title: 'Choosing the Right Treatment',
+    title: 'Tests that help choose my treatment',
     subtitle: 'Tests that help guide therapy decisions',
     image: '/images/journey-treatment.png',
     imageAlt: 'Doctor and patient in conversation',
@@ -19,7 +19,7 @@ const JOURNEY_CARDS = {
   },
   trm: {
     id: 'trm',
-    title: 'Tracking Treatment Response',
+    title: 'Tests that track my response to treatment',
     subtitle: 'Tests that monitor how well treatment is working',
     image: '/images/journey-tracking.png',
     imageAlt: 'Patient during treatment, smiling',
@@ -28,7 +28,7 @@ const JOURNEY_CARDS = {
   },
   mrd: {
     id: 'mrd',
-    title: 'Keeping Watch After Treatment',
+    title: 'Tests that watch over me after treatment',
     subtitle: 'Tests that give you peace of mind',
     image: '/images/journey-keeping-watch.png',
     imageAlt: 'Survivor outdoors hiking',
