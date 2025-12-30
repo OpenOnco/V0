@@ -154,7 +154,8 @@ ${patientContext?.journeyCode === 'tds' ? `**TDS RECOMMENDATIONS (after Q2):**
 Recommend: **FoundationOne Liquid CDx** [[tds-1]], **Guardant360 CDx** [[tds-2]], **Tempus xF+** [[tds-4]]` : ''}
 
 **FORMAT FOR RECOMMENDATIONS:**
-Include progress tracker showing all ✓, then bullet list of 2-3 tests with [[test-id]] after each name.
+Use bullet points (not numbered lists) for test options - we're showing possibilities, not rankings.
+Include [[test-id]] after each test name for clickable links.
 End with: "Your oncologist can help you decide which is right for you."`;
       } else {
         // Learn mode (default)
