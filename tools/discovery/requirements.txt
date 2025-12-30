@@ -1,0 +1,10 @@
+# OpenOnco Discovery Agent Dependencies
+
+# HTTP client (async)
+httpx>=0.25.0
+
+# Anthropic SDK for Claude enrichment
+anthropic>=0.40.0
+
+# Optional: SendGrid for email (alternative to SMTP)
+# sendgrid>=6.10.0
