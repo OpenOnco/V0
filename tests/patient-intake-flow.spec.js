@@ -4,8 +4,12 @@ import { test, expect } from '@playwright/test';
 /**
  * Patient Intake Flow Tests
  * 
- * Tests the 3-step patient intake flow and chat Q&A sequences
+ * Tests the 3-step patient intake flow and chat Q&A sequences.
+ * API-dependent tests (those requiring chat responses) are skipped on localhost.
  */
+
+// Helper to check if we're running against localhost (no API)
+const isLocalhost = (baseURL) => baseURL?.includes('localhost') || baseURL?.includes('127.0.0.1');
 
 test.describe('Patient Intake Flow', () => {
   
@@ -64,65 +68,62 @@ test.describe('Patient Intake Flow', () => {
       await expect(chatArea.getByText(/tumor tissue.*saved|tissue.*surgery|biopsy/i).first()).toBeVisible({ timeout: 5000 });
     });
 
-    test('yes answer → proceeds to insurance question', async ({ page }) => {
-      await navigateToMrdFind(page);
+    // API-dependent tests - skip on localhost
+    test('yes answer → proceeds to insurance question', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
-      // Answer Q1
+      await navigateToMrdFind(page);
       await page.locator('input[type="text"], textarea').fill('yes');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
       
-      // Should see insurance question in response
       const messages = page.locator('[data-message-role="assistant"]');
       await expect(messages.last().getByText(/insurance/i).first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('no answer → proceeds to insurance question (not re-ask Q1)', async ({ page }) => {
-      await navigateToMrdFind(page);
+    test('no answer → proceeds to insurance question (not re-ask Q1)', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
-      // Answer Q1 with no
+      await navigateToMrdFind(page);
       await page.locator('input[type="text"], textarea').fill('no');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
       
-      // Should ask insurance, NOT re-ask about tissue
       const lastResponse = page.locator('[data-message-role="assistant"]').last();
       await expect(lastResponse.getByText(/insurance/i).first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('full flow: yes → Medicare → gets recommendations with test names', async ({ page }) => {
+    test('full flow: yes → Medicare → gets recommendations with test names', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
+      
       await navigateToMrdFind(page);
       
-      // Q1: yes
       await page.locator('input[type="text"], textarea').fill('yes');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
       
-      // Q2: Medicare
       await page.locator('input[type="text"], textarea').fill('Medicare');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(6000);
       
-      // Should have test recommendations - check for ANY test name
       const chatContent = await page.locator('.prose').last().textContent();
       const hasTestName = /Signatera|Guardant|RaDaR|FoundationOne|Pathlight|NeXT/i.test(chatContent || '');
       expect(hasTestName).toBe(true);
     });
 
-    test('full flow: no tissue → private insurance → gets recommendations', async ({ page }) => {
+    test('full flow: no tissue → private insurance → gets recommendations', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
+      
       await navigateToMrdFind(page, 'Colorectal Cancer');
       
-      // Q1: no
       await page.locator('input[type="text"], textarea').fill('no');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
       
-      // Q2: private
       await page.locator('input[type="text"], textarea').fill('private insurance');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(6000);
       
-      // Should have recommendations
       const chatContent = await page.locator('.prose').last().textContent();
       const hasRecommendation = /test|option|consider|recommend/i.test(chatContent || '');
       expect(hasRecommendation).toBe(true);
@@ -146,9 +147,10 @@ test.describe('Patient Intake Flow', () => {
       await expect(chatArea.getByText(/treatment.*on|What type of treatment/i).first()).toBeVisible({ timeout: 5000 });
     });
 
-    test('chemo answer → proceeds to insurance', async ({ page }) => {
-      await navigateToTrmFind(page);
+    test('chemo answer → proceeds to insurance', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
+      await navigateToTrmFind(page);
       await page.locator('input[type="text"], textarea').fill('chemotherapy');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
@@ -175,9 +177,10 @@ test.describe('Patient Intake Flow', () => {
       await expect(chatArea.getByText(/genomic.*profiling|Foundation.*Medicine|Tempus/i).first()).toBeVisible({ timeout: 5000 });
     });
 
-    test('no answer → proceeds to insurance', async ({ page }) => {
-      await navigateToTdsFind(page);
+    test('no answer → proceeds to insurance', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
+      await navigateToTdsFind(page);
       await page.locator('input[type="text"], textarea').fill('no');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
@@ -207,7 +210,9 @@ test.describe('Patient Intake Flow', () => {
 
   test.describe('Edge Cases', () => {
     
-    test('single word "no" is accepted as answer, not rejection', async ({ page }) => {
+    test('single word "no" is accepted as answer, not rejection', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
+      
       await page.locator('select').selectOption('Breast Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Keeping Watch After Treatment').click();
@@ -219,12 +224,13 @@ test.describe('Patient Intake Flow', () => {
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
       
-      // Should proceed to Q2 (insurance), NOT end conversation or re-ask Q1
       const lastResponse = await page.locator('[data-message-role="assistant"]').last().textContent();
       expect(lastResponse?.toLowerCase()).toContain('insurance');
     });
 
-    test('"I don\'t know" is accepted as answer', async ({ page }) => {
+    test('"I don\'t know" is accepted as answer', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
+      
       await page.locator('select').selectOption('Lung Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Keeping Watch After Treatment').click();
@@ -243,7 +249,9 @@ test.describe('Patient Intake Flow', () => {
 
   test.describe('Test Link Clicks', () => {
     
-    test('clicking test link icon opens detail modal', async ({ page }) => {
+    test('clicking test link icon opens detail modal', async ({ page, baseURL }) => {
+      test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
+      
       await page.locator('select').selectOption('Breast Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Keeping Watch After Treatment').click();
@@ -251,23 +259,19 @@ test.describe('Patient Intake Flow', () => {
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);
       
-      // Q1
       await page.locator('input[type="text"], textarea').fill('yes');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(4000);
       
-      // Q2
       await page.locator('input[type="text"], textarea').fill('Medicare');
       await page.keyboard.press('Enter');
       await page.waitForTimeout(6000);
       
-      // Look for test link icon
       const testLink = page.locator('button[title="View test details"]').first();
       if (await testLink.isVisible({ timeout: 5000 })) {
         await testLink.click();
         await page.waitForTimeout(1000);
         
-        // Should open modal with test details
         await expect(page.getByText(/Clinical Performance|Methodology|Reimbursement/i).first()).toBeVisible({ timeout: 5000 });
       }
     });

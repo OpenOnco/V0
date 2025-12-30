@@ -1018,13 +1018,13 @@ test.describe('Persona System', () => {
     await expect(page.getByText('What is genomic testing?')).toBeVisible({ timeout: 3000 });
     await expect(page.getByText('Questions to ask your doctor')).toBeVisible();
     
-    // Click continue to proceed to chat
-    await page.getByText('Continue to Find Tests →').click();
+    // Click Find mode to proceed to chat
+    await page.getByText('Find the right tests for me').click();
     await page.waitForTimeout(500);
     
     // Step 3 chat should now be visible with context
-    await expect(page.getByText('Breast Cancer')).toBeVisible();
-    await expect(page.getByText('Choosing Treatment')).toBeVisible();
+    await expect(page.getByText('Breast Cancer').first()).toBeVisible();
+    await expect(page.getByText('Choosing Treatment').first()).toBeVisible();
   });
 
   test('persona switcher in header works', async ({ page }) => {
