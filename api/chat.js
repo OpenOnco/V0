@@ -67,7 +67,7 @@ const VALID_PERSONAS = ['patient', 'medical', 'rnd'];
 // ============================================
 // SERVER-SIDE SYSTEM PROMPT CONSTRUCTION
 // ============================================
-const KEY_LEGEND = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, earlyWarn=early warning vs imaging days (how many days before imaging detects recurrence), fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
+const KEY_LEGEND = `KEY: nm=name, vn=vendor, ap=approach, mt=method, samp=sample type, ca=cancers, sens/spec=sensitivity/specificity%, aSpec=analytical specificity% (lab validation), cSpec=clinical specificity% (real-world, debatable in MRD), s1-s4=stage I-IV sensitivity, ppv/npv=predictive values, lod=detection threshold, lod95=95% confidence limit (gap between lod and lod95 means serial testing helps), tumorReq=requires tumor, vars=variants tracked, bvol=blood volume mL, cfIn=cfDNA input ng (critical for pharma - determines analytical sensitivity ceiling), tat1/tat2=initial/followup TAT days, earlyWarn=early warning days (how far ahead of imaging the test can detect recurrence - higher is better), fda=FDA status, reimb=reimbursement, privIns=commercial payers, regions=availability (US/EU/UK/International/RUO), avail=clinical availability status, trial=participants, pubs=publications, scope=test scope, pop=target population, origAcc=tumor origin accuracy%, price=list price, respDef=response definition, nccn=NCCN guidelines.`;
 
 function getPersonaStyle(persona, patientStateSummary = null, patientChatMode = null, patientContext = null) {
   const conversationalRules = `
@@ -156,6 +156,7 @@ Recommend: **FoundationOne Liquid CDx** [[tds-1]], **Guardant360 CDx** [[tds-2]]
 **FORMAT FOR RECOMMENDATIONS:**
 Use bullet points (not numbered lists) for test options - we're showing possibilities, not rankings.
 Include [[test-id]] after each test name for clickable links.
+When describing early warning capability, say "detects recurrence X days/months ahead of imaging" (positive framing) - NEVER say "lead time before recurrence shows" (negative framing).
 End with: "Your oncologist can help you decide which is right for you."`;
       } else {
         // Learn mode (default)
