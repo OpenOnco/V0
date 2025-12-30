@@ -468,8 +468,8 @@ const PatientIntakeFlow = ({ testData }) => {
                   </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-left text-white flex items-end h-1/2">
-                  <h3 className="font-bold text-lg leading-snug">{card.title}</h3>
+                <div className="absolute bottom-0 left-0 right-0 p-3 text-left text-white">
+                  <h3 className="font-semibold text-sm leading-snug">{card.title}</h3>
                 </div>
               </button>
             ))}
