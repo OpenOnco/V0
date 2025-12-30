@@ -542,9 +542,9 @@ const PatientIntakeFlow = ({ testData }) => {
             testData={testData}
             variant="full"
             showModeToggle={false}
-            resizable={false}
+            resizable={true}
             showTitle={false}
-            initialHeight={300}
+            initialHeight={600}
             patientContext={getChatContext()}
             onViewTests={handleTestClick}
           />
