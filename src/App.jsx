@@ -63,6 +63,7 @@ import {
 
 // Component imports
 import { getStoredPersona, savePersona } from './utils/persona';
+import { trackPageVisit, trackTestView, trackPersona } from './utils/sessionTracking';
 import PersonaGate from './components/PersonaGate';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -1198,9 +1199,11 @@ export default function App() {
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
-  const [persona, setPersona] = useState(() => initialRoute.persona || getStoredPersona() || 'rnd');
+  // Persona determined by URL only: /patients = patient, everything else = rnd
+  const [persona, setPersona] = useState(() => initialRoute.persona || 'rnd');
   // Skip persona gate if URL specifies persona or if already stored
-  const [showPersonaGate, setShowPersonaGate] = useState(() => !initialRoute.persona && !getStoredPersona());
+  // Persona gate temporarily disabled - access via URL only (/patients or /)
+  const [showPersonaGate, setShowPersonaGate] = useState(false);
 
   // Save persona to localStorage if it came from URL (so it persists)
   useEffect(() => {
@@ -1216,6 +1219,7 @@ export default function App() {
     setPersona(newPersona);
     savePersona(newPersona);
     setShowPersonaGate(false);
+    trackPersona(newPersona); // Track persona for feedback context
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
   };
 
@@ -1347,6 +1351,7 @@ export default function App() {
     // Always update state and scroll, even if already on the page
     setCurrentPage(page);
     setInitialSelectedTestId(testId || null);
+    trackPageVisit(page); // Track for feedback context
     // Clear compare IDs when navigating away from category pages
     if (!['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(page)) {
       setInitialCompareIds(null);
@@ -1403,7 +1408,7 @@ export default function App() {
       />
       {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />
+        <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} />
         <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
         <Footer />
         <Analytics />

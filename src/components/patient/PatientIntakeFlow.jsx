@@ -416,10 +416,10 @@ const PatientIntakeFlow = ({ testData }) => {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-slate-800">
-              Where are you in your journey?
+              What kind of cancer test are you looking for?
             </h2>
             <p className="text-sm text-slate-500">
-              Click to learn more about each stage
+              Click to learn more about each type
             </p>
           </div>
         </div>

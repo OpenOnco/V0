@@ -14,9 +14,8 @@ const isLocalhost = (baseURL) => baseURL?.includes('localhost') || baseURL?.incl
 test.describe('Patient Intake Flow', () => {
   
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
-    await page.goto('/');
+    // Access patient view via URL (persona selector disabled)
+    await page.goto('/patients');
     await page.waitForTimeout(1000);
   });
 
@@ -26,14 +25,14 @@ test.describe('Patient Intake Flow', () => {
     });
 
     test('can select breast cancer and advances to step 2', async ({ page }) => {
-      await page.locator('select').selectOption('Breast Cancer');
+      await page.locator('select').first().selectOption('Breast Cancer');
       await expect(page.getByText('Tests that help choose my treatment')).toBeVisible();
     });
   });
 
   test.describe('Step 2 - Journey Selection', () => {
     test.beforeEach(async ({ page }) => {
-      await page.locator('select').selectOption('Breast Cancer');
+      await page.locator('select').first().selectOption('Breast Cancer');
       await page.waitForTimeout(500);
     });
 
@@ -53,7 +52,7 @@ test.describe('Patient Intake Flow', () => {
   test.describe('MRD Journey - Find Mode Q&A Flow', () => {
     
     const navigateToMrdFind = async (page, cancerType = 'Breast Cancer') => {
-      await page.locator('select').selectOption(cancerType);
+      await page.locator('select').first().selectOption(cancerType);
       await page.waitForTimeout(500);
       await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
@@ -133,7 +132,7 @@ test.describe('Patient Intake Flow', () => {
   test.describe('TRM Journey - Find Mode Q&A Flow', () => {
     
     const navigateToTrmFind = async (page) => {
-      await page.locator('select').selectOption('Lung Cancer');
+      await page.locator('select').first().selectOption('Lung Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Tests that track my response to treatment').click();
       await page.waitForTimeout(500);
@@ -163,7 +162,7 @@ test.describe('Patient Intake Flow', () => {
   test.describe('TDS Journey - Find Mode Q&A Flow', () => {
     
     const navigateToTdsFind = async (page) => {
-      await page.locator('select').selectOption('Lung Cancer');
+      await page.locator('select').first().selectOption('Lung Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Tests that help choose my treatment').click();
       await page.waitForTimeout(500);
@@ -193,7 +192,7 @@ test.describe('Patient Intake Flow', () => {
   test.describe('Learn Mode', () => {
     
     test('MRD learn mode shows educational welcome and suggestions', async ({ page }) => {
-      await page.locator('select').selectOption('Breast Cancer');
+      await page.locator('select').first().selectOption('Breast Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
@@ -213,7 +212,7 @@ test.describe('Patient Intake Flow', () => {
     test('single word "no" is accepted as answer, not rejection', async ({ page, baseURL }) => {
       test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
-      await page.locator('select').selectOption('Breast Cancer');
+      await page.locator('select').first().selectOption('Breast Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
@@ -231,7 +230,7 @@ test.describe('Patient Intake Flow', () => {
     test('"I don\'t know" is accepted as answer', async ({ page, baseURL }) => {
       test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
-      await page.locator('select').selectOption('Lung Cancer');
+      await page.locator('select').first().selectOption('Lung Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
@@ -252,7 +251,7 @@ test.describe('Patient Intake Flow', () => {
     test('clicking test link icon opens detail modal', async ({ page, baseURL }) => {
       test.skip(isLocalhost(baseURL), 'Skipping API test on localhost');
       
-      await page.locator('select').selectOption('Breast Cancer');
+      await page.locator('select').first().selectOption('Breast Cancer');
       await page.waitForTimeout(500);
       await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);

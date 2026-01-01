@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   COMPANY_CONTRIBUTIONS,
   VENDOR_VERIFIED,
@@ -9,6 +9,7 @@ import { calculateTestCompleteness } from '../../utils/testMetrics';
 import Badge from '../ui/Badge';
 import VendorBadge from '../badges/VendorBadge';
 import ProductTypeBadge from '../badges/ProductTypeBadge';
+import FeedbackModal from '../patient/FeedbackModal';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
@@ -17,6 +18,7 @@ const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
 // Test Card
 // ============================================
 const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
   const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
@@ -220,7 +222,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
       </div>
 
       {/* Show detail button - pushed to bottom */}
-      <div className="border-t border-gray-100 pt-2 mt-auto">
+      <div className="border-t border-gray-100 pt-2 mt-auto flex items-center justify-between">
         <button
           onClick={() => onShowDetail && onShowDetail(test)}
           className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
@@ -230,8 +232,27 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowFeedbackModal(true);
+          }}
+          className="text-[10px] text-gray-400 hover:text-gray-600 flex items-center gap-0.5 transition-colors"
+          title="Report an error or suggest a correction"
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span className="hidden sm:inline">Report error</span>
+        </button>
       </div>
     </div>
+    
+    <FeedbackModal 
+      isOpen={showFeedbackModal}
+      onClose={() => setShowFeedbackModal(false)}
+      testName={`${test.name} (${test.id})`}
+    />
     </div>
   );
 };
