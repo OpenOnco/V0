@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { feedback, testName, sessionContext, url, timestamp } = req.body;
+  const { feedback, email, testName, sessionContext, url, timestamp } = req.body;
 
   if (!feedback) {
     return res.status(400).json({ error: 'Feedback is required' });
@@ -26,6 +26,12 @@ export default async function handler(req, res) {
       <div style="background: #f8fafc; padding: 20px; border: 1px solid #e2e8f0; border-top: none;">
         ${testName ? `
           <p style="margin: 0 0 12px 0;"><strong>Test:</strong> ${testName}</p>
+        ` : ''}
+        
+        ${email ? `
+          <p style="margin: 0 0 12px 0; padding: 8px 12px; background: #ecfdf5; border-radius: 6px; border-left: 3px solid #10b981;">
+            <strong>📧 Contact:</strong> <a href="mailto:${email}" style="color: #059669;">${email}</a> (open to follow-up)
+          </p>
         ` : ''}
         
         <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 16px;">

@@ -6,6 +6,7 @@ import { getSessionContext } from '../../utils/sessionTracking';
  */
 export default function FeedbackModal({ isOpen, onClose, testName = null }) {
   const [feedback, setFeedback] = useState('');
+  const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -26,6 +27,7 @@ export default function FeedbackModal({ isOpen, onClose, testName = null }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           feedback: feedback.trim(),
+          email: email.trim() || null,
           testName,
           sessionContext,
           url: window.location.href,
@@ -39,6 +41,7 @@ export default function FeedbackModal({ isOpen, onClose, testName = null }) {
 
       setStatus('success');
       setFeedback('');
+      setEmail('');
       
       // Auto-close after 2 seconds
       setTimeout(() => {
@@ -56,6 +59,7 @@ export default function FeedbackModal({ isOpen, onClose, testName = null }) {
     onClose();
     setStatus('idle');
     setFeedback('');
+    setEmail('');
     setErrorMsg('');
   };
 
@@ -115,6 +119,20 @@ export default function FeedbackModal({ isOpen, onClose, testName = null }) {
                 disabled={status === 'sending'}
                 autoFocus
               />
+              
+              <div className="mt-3">
+                <label className="block text-sm text-slate-600 mb-1">
+                  Open to follow-up questions? Leave your email (optional)
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
+                  disabled={status === 'sending'}
+                />
+              </div>
               
               {errorMsg && (
                 <p className="mt-2 text-sm text-red-600">{errorMsg}</p>
