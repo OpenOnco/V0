@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: January 1, 2026 (Added OncoCompass Target tds-24)
+// Last updated: January 1, 2026 (Added 4 Burning Rock tests: tds-24, tds-25, tds-kit-14, tds-kit-15)
 // ============================================
 //
 // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -31,8 +31,8 @@
 // │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-14     │ trm-15        │
-// │ TDS Tests            │ ~3269       │ tds-24     │ tds-25        │
-// │ TDS IVD Kits         │ ~4155       │ tds-kit-13 │ tds-kit-14    │
+// │ TDS Tests            │ ~3269       │ tds-25     │ tds-26        │
+// │ TDS IVD Kits         │ ~4155       │ tds-kit-15 │ tds-kit-16    │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
 //
@@ -5292,6 +5292,30 @@ export const tdsTestData = [
     "vendorVerified": false,
     "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Performance data and 129-paper publication list provided. Primary validation: BENEFIT trial (Lancet Respir Med 2018, PMID 30017884)."
   },
+  {
+    "id": "tds-25",
+    "name": "OncoScreen Focus CDx",
+    "vendor": "Burning Rock Dx (brbiotech)",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS panel targeting 13 genes from FFPE tissue; detects SNVs, indels, CNAs, and fusions",
+    "methodCitations": "https://us.brbiotech.com/fixed-panels/",
+    "genesAnalyzed": 13,
+    "genesAnalyzedNotes": "13 genes: EGFR, ALK, ROS1, RET, MET, ERBB2, BRAF, PIK3CA, KRAS, NRAS, HRAS, KIT, PDGFRA",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions"],
+    "cancerTypes": ["NSCLC", "CRC", "GIST"],
+    "cancerTypesNotes": "Focused panel for lung cancer therapy selection; covers key actionable genes for NSCLC, colorectal cancer, and gastrointestinal stromal tumors",
+    "cancerTypesCitations": "https://us.brbiotech.com/fixed-panels/",
+    "fdaStatus": "CLIA LDT (US); CE-IVD kit version available",
+    "fdaStatusNotes": "Central lab service offered from Burning Rock laboratory. CE-marked IVD kit version (OncoScreen Focus CDx Tissue Kit) available separately.",
+    "clinicalAvailability": "Commercially available via Burning Rock Dx laboratory",
+    "clinicalAvailabilityNotes": "Burning Rock Biotech Limited (NASDAQ: BNR, LSE: BNR)",
+    "isRUO": false,
+    "isClinicalLDT": true,
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests."
+  },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
   // IVD KITS - Laboratory Kits for Treatment Decision Support / CGP
@@ -5689,6 +5713,91 @@ export const tdsTestData = [
     "isInvestigational": false,
     "technologyDifferentiator": "First and only FDA-authorized KITTED pan-solid tumor liquid biopsy. Unlike central lab services, laboratories can run in-house retaining sample and data ownership. Compatible with PGDx elio tissue complete on same instrument for seamless tissue-to-liquid reflexing. Automated bioinformatics reduces manual variant curation burden. Go-live in as few as 6 weeks with streamlined verification process.",
     "dataSourceNotes": "Added December 2025 via LLM Data Review. First FDA-authorized kitted liquid biopsy CGP for pan-solid tumors."
+  },
+  {
+    "id": "tds-kit-14",
+    "name": "OncoScreen Focus CDx Tissue Kit",
+    "vendor": "Burning Rock Dx (brbiotech)",
+    "productType": "Laboratory IVD Kit",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP (kitted IVD)",
+    "method": "Qualitative NGS-based CE-IVD kit using targeted high-throughput hybridization-based capture for FFPE tissue. Detects SNVs, indels, rearrangements (fusions), and CNVs in 13 genes. Single-Tube-Hybridization, Anti-Contamination-Adapter, and Dual-End-Barcode techniques for rapid, contamination-minimized operation.",
+    "methodCitations": "https://us.brbiotech.com/p_details.php?class_id=102101101",
+    "genesAnalyzed": 13,
+    "genesAnalyzedNotes": "13 genes: EGFR, ALK, ROS1, RET, MET, ERBB2, BRAF, PIK3CA, KRAS, NRAS, HRAS, KIT, PDGFRA. Covers EMA/FDA/NMPA-approved targeted therapy biomarkers.",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions"],
+    "cancerTypes": ["NSCLC", "CRC", "GIST"],
+    "cancerTypesNotes": "CE-marked CDx for non-small cell lung cancer, colorectal cancer, and gastrointestinal stromal tumor",
+    "cancerTypesCitations": "https://us.brbiotech.com/p_details.php?class_id=102101101",
+    "sensitivity": 100,
+    "sensitivityNotes": "100% accuracy with no missed mutations in 117 clinical samples and commercial references",
+    "sensitivityCitations": "https://us.brbiotech.com/p_details.php?class_id=102101101",
+    "specificity": 100,
+    "specificityNotes": "100% accuracy with no false-positive mutations in 117 clinical samples and commercial references",
+    "specificityCitations": "https://us.brbiotech.com/p_details.php?class_id=102101101",
+    "sampleRequirements": "FFPE tissue; minimum 30ng DNA input",
+    "sampleRequirementsNotes": "Low input requirement (30ng) suitable for small samples such as needle biopsies",
+    "fdaStatus": "CE-IVD (June 2022)",
+    "fdaStatusNotes": "CE-marked June 2022. First NGS-based CDx kit approved by NMPA in China (July 2018) for EGFR/ALK/BRAF/KRAS.",
+    "fdaStatusCitations": "https://us.brbiotech.com/details.php?class_id=105107103&id=437",
+    "clinicalAvailability": "CE-IVD kit available in Europe and international markets",
+    "clinicalAvailabilityNotes": "Compatible with Nexus BR fully automated library preparation system",
+    "validationCohortSize": 117,
+    "validationCohortStudy": "117 clinical samples and commercial references",
+    "isRUO": false,
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests."
+  },
+  {
+    "id": "tds-kit-15",
+    "name": "OncoScreen Plus Cancer Mutation Profiling Tissue Kit",
+    "vendor": "Burning Rock Dx (brbiotech)",
+    "productType": "Laboratory IVD Kit",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP (kitted IVD)",
+    "method": "Comprehensive NGS-based CE-IVD kit covering 520 cancer-related genes from FFPE tissue. Detects SNVs, indels, CNVs, fusions, and complex biomarkers including TMB, MSI, and HRD. All-in-one solution for immunotherapy and targeted therapy guidance.",
+    "methodCitations": "https://www.brbiotech.com/en/p_details.php?class_id=102101102 | https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "genesAnalyzed": 520,
+    "genesAnalyzedNotes": "520 NCCN-recommended cancer-related genes spanning 1.64 Mb (312 genes with full exon coverage, 208 with selected regions). Comprehensive coverage for immunotherapy and targeted therapy.",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI", "HRD"],
+    "cancerTypes": ["Pan-solid tumor"],
+    "cancerTypesNotes": "Validated across 20 solid tumor types including lung (n=1971), GI (n=625), breast (n=120), gynecological (n=110), genitourinary (n=38)",
+    "cancerTypesCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "sensitivity": 97,
+    "sensitivityPlus": true,
+    "sensitivityNotes": "PPA >97% for SNV/INDEL/CNV/Fusion/MSI in 197 clinical samples. Tissue detection rate 97.9% across 3,005 patients.",
+    "sensitivityCitations": "https://www.brbiotech.com/en/p_details.php?class_id=102101102 | https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "specificity": 99,
+    "specificityPlus": true,
+    "specificityNotes": "NPA >99% for SNV/INDEL/CNV/Fusion/MSI. SNV/INDEL NPA >95.8%, Fusion NPA >98.9%, CNV/MSI NPA 100% in 83 benign tumors.",
+    "specificityCitations": "https://www.brbiotech.com/en/p_details.php?class_id=102101102",
+    "tmb": "Yes",
+    "tmbNotes": "TMB calculated from 520-gene panel. Strong correlation with WES-derived TMB (Pearson r=0.845, R²=0.756).",
+    "tmbCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "msi": "Yes",
+    "msiNotes": "MSI status determined from NGS data. MSI-H detected in endometrial (28.6%), CRC (2.5%), ovarian (2.0%), gastric (1.5%), lung adenocarcinoma (0.2%).",
+    "msiCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "fdaStatus": "CE-IVD (June 2022); Japan MHLW CDx (Sept 2025)",
+    "fdaStatusNotes": "CE-marked June 2022. Japan MHLW approved Sept 2025 as CDx for capivasertib (AstraZeneca) - detects PIK3CA, AKT1, PTEN for HR+/HER2- breast cancer.",
+    "fdaStatusCitations": "https://us.brbiotech.com/details.php?class_id=105107103&id=437 | https://www.globenewswire.com/news-release/2025/09/24/3155203/0/en/Burning-Rock-s-OncoGuide-OncoScreen-Plus-CDx-System-Now-Approved-in-Japan-as-a-Companion-Diagnostic-for-Capivasertib-in-Breast-Cancer.html",
+    "fdaCompanionDxCount": 1,
+    "fdaCompanionDxList": ["Capivasertib (Japan MHLW) - PIK3CA/AKT1/PTEN - HR+/HER2- breast cancer"],
+    "fdaCompanionDxNotes": "Japan MHLW CDx approval (Sept 2025) via Riken Genesis partnership. OncoGuide OncoScreen Plus CDx System for capivasertib therapy selection.",
+    "clinicalAvailability": "CE-IVD kit available in Europe, Japan (CDx), and international markets",
+    "clinicalAvailabilityNotes": "Compatible with MGI DNBSEQ-G400 sequencer (Japan). Burning Rock Biotech Limited (NASDAQ: BNR, LSE: BNR)",
+    "clinicalTrials": "L-MOCA study",
+    "clinicalTrialsNotes": "Outstanding performance in AstraZeneca's L-MOCA study",
+    "totalParticipants": 3005,
+    "totalParticipantsNotes": "Concordance study: 3,005 patients across 20 solid tumor types (PMID 35305253)",
+    "numPublications": 10,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Multiple publications including J Pers Med 2022 (PMID 35305253) concordance study, TMB validation studies, and CDx development.",
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "validationCohortSize": 197,
+    "validationCohortStudy": "197 clinical samples validated against TSO500, ddPCR, Fluorescent PCR-Capillary Electrophoresis, and WES",
+    "isRUO": false,
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests."
   }
   // INSERT NEW TDS KIT HERE (above this line, add comma after previous entry)
 ];
@@ -5696,6 +5805,42 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 1, 2026',
+    type: 'added',
+    testId: 'tds-kit-15',
+    testName: 'OncoScreen Plus Cancer Mutation Profiling Tissue Kit',
+    vendor: 'Burning Rock Dx',
+    category: 'TDS',
+    description: 'Added Burning Rock 520-gene comprehensive tissue CGP kit. CE-IVD (June 2022), Japan MHLW CDx (Sept 2025) for capivasertib. PPA >97%, NPA >99%. TMB, MSI, HRD biomarkers. Validated across 20 solid tumor types in 3,005 patients.',
+    contributor: 'Liankai Chi, PhD',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'https://pubmed.ncbi.nlm.nih.gov/35305253/'
+  },
+  {
+    date: 'Jan 1, 2026',
+    type: 'added',
+    testId: 'tds-kit-14',
+    testName: 'OncoScreen Focus CDx Tissue Kit',
+    vendor: 'Burning Rock Dx',
+    category: 'TDS',
+    description: 'Added Burning Rock 13-gene focused tissue CGP kit. CE-IVD (June 2022). 100% accuracy in 117 samples. 30ng minimum input. NSCLC/CRC/GIST indications.',
+    contributor: 'Liankai Chi, PhD',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'https://us.brbiotech.com/p_details.php?class_id=102101101'
+  },
+  {
+    date: 'Jan 1, 2026',
+    type: 'added',
+    testId: 'tds-25',
+    testName: 'OncoScreen Focus CDx',
+    vendor: 'Burning Rock Dx',
+    category: 'TDS',
+    description: 'Added Burning Rock 13-gene focused tissue CGP central lab service. CLIA LDT (US), CE-IVD kit version available. NSCLC/CRC/GIST indications. Scope expanded to include tissue tests.',
+    contributor: 'Liankai Chi, PhD',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'https://us.brbiotech.com/fixed-panels/'
+  },
   {
     date: 'Jan 1, 2026',
     type: 'added',
@@ -6528,6 +6673,9 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
+  { id: 'tds-kit-15', name: 'OncoScreen Plus Tissue Kit', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
+  { id: 'tds-kit-14', name: 'OncoScreen Focus CDx Tissue Kit', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
+  { id: 'tds-25', name: 'OncoScreen Focus CDx', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-24', name: 'OncoCompass Target', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-23', name: 'Resolution ctDx FIRST', vendor: 'Agilent / Resolution Bioscience', category: 'TDS', dateAdded: 'Dec 24, 2025' },
   { id: 'tds-22', name: 'LiquidHALLMARK', vendor: 'Lucence', category: 'TDS', dateAdded: 'Dec 19, 2025' },
