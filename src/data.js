@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: December 24, 2025 (Added Resolution ctDx FIRST tds-23)
+// Last updated: January 1, 2026 (Added OncoCompass Target tds-24)
 // ============================================
 //
 // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -31,7 +31,7 @@
 // │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-14     │ trm-15        │
-// │ TDS Tests            │ ~3269       │ tds-23     │ tds-24        │
+// │ TDS Tests            │ ~3269       │ tds-24     │ tds-25        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-13 │ tds-kit-14    │
 // │ Changelog            │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
@@ -5245,6 +5245,53 @@ export const tdsTestData = [
     "technologyDifferentiator": "First FDA-approved liquid biopsy NGS CDx for KRAS G12C inhibitor (adagrasib). Proprietary primer extension technology detects fusions without prior knowledge of gene partner. Quest Diagnostics distribution enables broad US access via 2,100+ patient service centers. Zero false positive rate for CDx biomarkers in FDA validation. Superior fusion detection vs competitors in head-to-head studies.",
     "vendorRequestedChanges": "Dec 24, 2025: Added via LLM review pipeline recommendation - test identified as missing from OpenOnco database despite FDA CDx approval in December 2022."
   },
+  {
+    "id": "tds-24",
+    "name": "OncoCompass Target",
+    "vendor": "Burning Rock Dx (brbiotech)",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Tumor-agnostic",
+    "method": "Capture-based NGS panel targeting 168 genes from cfDNA; detects SNVs, indels, CNAs, and fusions",
+    "methodCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9",
+    "genesAnalyzed": 168,
+    "genesAnalyzedNotes": "168-gene panel (LDT version); CE-marked version covers 101 genes",
+    "genesAnalyzedCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9",
+    "cancerTypes": ["NSCLC", "Pan-solid tumor"],
+    "cancerTypesNotes": "Primary validation in metastatic NSCLC (BENEFIT trial); applicable to pan-solid tumors for CGP",
+    "cancerTypesCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9",
+    "sensitivity": 96,
+    "sensitivityPlus": true,
+    "sensitivityNotes": "Analytical sensitivity for variant detection. 101-gene validation: 97.5% by-variant sensitivity in 904-patient cohort (Fan et al. 2024)",
+    "sensitivityCitations": "https://doi.org/10.1002/cam4.70078 | Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "specificity": 99.9,
+    "specificityNotes": "From 101-gene panel validation (n=904). Vendor reports 100% for 168-gene panel.",
+    "specificityCitations": "https://doi.org/10.1002/cam4.70078 | Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "lod": "0.3% VAF (SNV/Indel), 2.5 copies (CNV), 0.3% (fusions)",
+    "lodNotes": "Vendor data. 101-gene validation: LOD 0.38% SNV, 0.33% InDel, 0.33% fusion",
+    "lodCitations": "https://doi.org/10.1002/cam4.70078 | Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "fdaStatus": "CLIA LDT / CE-IVD (101-gene version)",
+    "fdaStatusNotes": "168-gene panel offered as LDT from Burning Rock laboratory. CE-marked 101-gene version available internationally.",
+    "tat": 9,
+    "tatNotes": "9 calendar days",
+    "tatCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "listPrice": "Varies by region",
+    "listPriceNotes": "Regional pricing structure",
+    "listPriceCitations": "Vendor data (Liankai Chi, Burning Rock, Dec 2025)",
+    "clinicalAvailability": "Commercially available in China and international markets via Burning Rock Dx laboratory",
+    "clinicalAvailabilityNotes": "Burning Rock Biotech Limited (NASDAQ: BNR, LSE: BNR)",
+    "clinicalTrials": "NCT02282267 (BENEFIT)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/ct2/show/NCT02282267",
+    "totalParticipants": 426,
+    "totalParticipantsNotes": "BENEFIT trial: 426 screened, 188 enrolled",
+    "numPublications": 129,
+    "numPublicationsNotes": "Used in 100+ clinical studies. Key journals: Nature Medicine, Nature Biotechnology, Lancet Respiratory Medicine, Annals of Oncology, JAMA Network Open",
+    "numPublicationsCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9 | Vendor-provided publication list (Dec 2025)",
+    "isRUO": false,
+    "isClinicalLDT": true,
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Performance data and 129-paper publication list provided. Primary validation: BENEFIT trial (Lancet Respir Med 2018, PMID 30017884)."
+  },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
   // IVD KITS - Laboratory Kits for Treatment Decision Support / CGP
@@ -5649,6 +5696,18 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 1, 2026',
+    type: 'added',
+    testId: 'tds-24',
+    testName: 'OncoCompass Target',
+    vendor: 'Burning Rock Dx',
+    category: 'TDS',
+    description: 'Added Burning Rock OncoCompass Target 168-gene liquid biopsy CGP panel. Vendor submission from Liankai Chi, PhD. >96% sensitivity, 99.9% specificity, 0.3% VAF LOD. Primary validation: BENEFIT trial (Lancet Respir Med 2018, n=426). 129 publications including Nature Medicine, Nature Biotechnology, Lancet Respiratory Medicine. CE-IVD 101-gene version available. 9-day TAT.',
+    contributor: 'Liankai Chi, PhD',
+    affiliation: 'Burning Rock Dx (vendor)',
+    citation: 'https://doi.org/10.1016/S2213-2600(18)30264-9 | https://doi.org/10.1002/cam4.70078'
+  },
   {
     date: 'Dec 24, 2025',
     type: 'added',
@@ -6469,6 +6528,7 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
+  { id: 'tds-24', name: 'OncoCompass Target', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-23', name: 'Resolution ctDx FIRST', vendor: 'Agilent / Resolution Bioscience', category: 'TDS', dateAdded: 'Dec 24, 2025' },
   { id: 'tds-22', name: 'LiquidHALLMARK', vendor: 'Lucence', category: 'TDS', dateAdded: 'Dec 19, 2025' },
   { id: 'mrd-24', name: 'CancerVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 15, 2025' },
