@@ -1,67 +1,42 @@
 import React, { useState } from 'react';
-import { getSessionContext } from '../../utils/sessionTracking';
+import FeedbackModal from './FeedbackModal';
 
 /**
  * Preview banner for patient portal prototype
- * Displays persistent warning that this is a preview version
- * Includes quick feedback link with session context
+ * Shows amber banner with feedback button that opens modal
  */
+export default function PreviewBanner() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-// Google Form URL for feedback
-const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScp-_BbFAEK5fDaQs7uz9qr8jyFz3aKGZxbdounzM0B_y2GZw/viewform';
-
-const PreviewBanner = ({ onDismiss }) => {
-  const [showCopied, setShowCopied] = useState(false);
-
-  const handleFeedbackClick = (e) => {
-    // Copy session context to clipboard for pasting into form
-    const context = getSessionContext();
-    const contextText = `Session: ${context.duration}\nPersona: ${context.persona}\nPages visited: ${context.pages}\nTests viewed: ${context.testsViewed}`;
-    
-    navigator.clipboard.writeText(contextText).then(() => {
-      setShowCopied(true);
-      setTimeout(() => setShowCopied(false), 2000);
-    }).catch(() => {
-      // Clipboard failed, still open the form
-    });
-    
-    // Open form in new tab
-    window.open(FEEDBACK_FORM_URL, '_blank');
-  };
+  const MessageIcon = () => (
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+  );
 
   return (
-    <div className="bg-amber-50 border-b-2 border-amber-300 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
-        <div className="flex items-center justify-center gap-2 sm:gap-4 text-sm">
-          {/* Microscope emoji + Preview text */}
-          <span className="flex items-center gap-2">
-            <span className="text-lg">🔬</span>
-            <span className="font-semibold text-amber-800">Preview Version</span>
-          </span>
-          
-          <span className="text-amber-400 hidden sm:inline">—</span>
-          
-          <span className="text-amber-700 hidden sm:inline">
-            You're helping us improve OpenOnco
-          </span>
-          
-          {/* Feedback button */}
+    <>
+      <div className="bg-amber-50 border-b border-amber-200">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-amber-800 text-sm">
+            <span>🔬</span>
+            <span className="font-medium">Preview Version</span>
+            <span className="hidden sm:inline text-amber-600">— Help us improve by sharing your thoughts</span>
+          </div>
           <button
-            onClick={handleFeedbackClick}
-            className="ml-2 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-full text-xs font-medium transition-colors border border-amber-300"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1 text-sm font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-full transition-colors"
           >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            Share Feedback
-            {showCopied && (
-              <span className="text-emerald-600 ml-1">(context copied!)</span>
-            )}
+            <MessageIcon />
+            <span>Share Feedback</span>
           </button>
         </div>
       </div>
-    </div>
+      
+      <FeedbackModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+    </>
   );
-};
-
-export default PreviewBanner;
+}
