@@ -16,16 +16,16 @@ export default function PreviewBanner() {
 
   return (
     <>
-      <div className="bg-amber-50 border-b border-amber-200">
+      <div className="bg-amber-400 border-b border-amber-500">
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-amber-800 text-sm">
+          <div className="flex items-center gap-2 text-amber-900 text-sm">
             <span>🔬</span>
-            <span className="font-medium">Preview Version</span>
-            <span className="hidden sm:inline text-amber-600">— Help us improve by sharing your thoughts</span>
+            <span className="font-semibold">Preview Version</span>
+            <span className="hidden sm:inline">— Help us improve by sharing your thoughts</span>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1 text-sm font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-full transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1 text-sm font-medium text-amber-900 bg-amber-200 hover:bg-amber-100 rounded-full transition-colors"
           >
             <MessageIcon />
             <span>Share Feedback</span>

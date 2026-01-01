@@ -127,10 +127,10 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreview
       </div>
     )}
   </header>
-  {/* Preview Banner for Patient Persona - shown above Trust Banner */}
-  {persona === 'patient' && showPreviewBanner && <PreviewBanner />}
   {/* Trust Banner for Patient Persona */}
   {showTrustBanner && <TrustBanner />}
+  {/* Preview Banner for Patient Persona - shown below Trust Banner */}
+  {persona === 'patient' && showPreviewBanner && <PreviewBanner />}
   </>
   );
 };
