@@ -20,6 +20,18 @@
     },
     
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/"
+    },
+    
+    {
       "source": "/mrd/:slug*",
       "has": [
         {

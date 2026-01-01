@@ -142,7 +142,7 @@ export default function handler(req, res) {
       ogData = {
         title: `${test.name} by ${test.vendor} | OpenOnco`,
         description: test.desc,
-        image: 'https://www.openonco.org/og-image.png',
+        image: `https://www.openonco.org/api/og-image?type=test&test=${encodeURIComponent(test.name)}&vendor=${encodeURIComponent(test.vendor)}&category=${test.category.toLowerCase()}`,
         url: `https://www.openonco.org${path}`,
       };
     }
@@ -157,7 +157,7 @@ export default function handler(req, res) {
       ogData = {
         title: `${test.name} by ${test.vendor} | OpenOnco`,
         description: test.desc,
-        image: 'https://www.openonco.org/og-image.png',
+        image: `https://www.openonco.org/api/og-image?type=test&test=${encodeURIComponent(test.name)}&vendor=${encodeURIComponent(test.vendor)}&category=${test.category.toLowerCase()}`,
         url: `https://www.openonco.org${path}`,
       };
     }
@@ -172,7 +172,7 @@ export default function handler(req, res) {
       ogData = {
         title: `${catInfo.name} | OpenOnco`,
         description: catInfo.desc,
-        image: 'https://www.openonco.org/og-image.png',
+        image: `https://www.openonco.org/api/og-image?type=category&category=${cat}`,
         url: `https://www.openonco.org${path}`,
       };
     }
@@ -182,8 +182,8 @@ export default function handler(req, res) {
   if (!ogData) {
     ogData = {
       title: 'OpenOnco: Cancer Tests—Collected, Curated, Explained',
-      description: 'Compare 60+ liquid biopsy cancer tests across MRD, early detection, treatment response monitoring, and comprehensive genomic profiling.',
-      image: 'https://www.openonco.org/og-image.png',
+      description: 'Compare 100+ liquid biopsy cancer tests across MRD, early detection, treatment response monitoring, and comprehensive genomic profiling.',
+      image: 'https://www.openonco.org/api/og-image?type=home',
       url: `https://www.openonco.org${path}`,
     };
   }
