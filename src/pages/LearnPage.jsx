@@ -18,26 +18,9 @@ const LearnPage = ({ onNavigate }) => {
   // Patient-friendly category content
   const patientCategories = [
     {
-      id: 'ECD',
-      phase: 'Screening',
-      name: 'Early Cancer Detection',
-      acronym: 'ECD',
-      color: 'emerald',
-      icon: '🔬',
-      clinicalQuestion: 'Can a blood test find cancer early?',
-      description: 'Early detection tests look for signs of cancer in your blood before you have any symptoms. These tests can sometimes find cancer at earlier stages when treatment is more effective. Some tests screen for one specific cancer, while newer "multi-cancer" tests can look for signals from many different cancer types at once.',
-      keyPoints: [
-        'Simple blood draw—no surgery or biopsy needed',
-        'May find cancer before symptoms appear',
-        'A positive result usually needs follow-up testing to confirm',
-        'Best for people at higher risk or as part of regular screening'
-      ],
-      testCount: ecdTestData.length
-    },
-    {
       id: 'TDS',
       phase: 'Diagnosis',
-      name: 'Finding the Right Treatment',
+      name: 'Tests that help choose my treatment',
       acronym: 'TDS',
       color: 'violet',
       icon: '🧬',
@@ -54,7 +37,7 @@ const LearnPage = ({ onNavigate }) => {
     {
       id: 'TRM',
       phase: 'Treatment',
-      name: 'Tracking Treatment Progress',
+      name: 'Tests that track my response to treatment',
       acronym: 'TRM',
       color: 'sky',
       icon: '📊',
@@ -71,7 +54,7 @@ const LearnPage = ({ onNavigate }) => {
     {
       id: 'MRD',
       phase: 'Surveillance',
-      name: 'Watching for Recurrence',
+      name: 'Tests that watch over me after treatment',
       acronym: 'MRD',
       color: 'orange',
       icon: '🔍',
