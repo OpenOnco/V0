@@ -22,7 +22,8 @@ const LearnPage = ({ onNavigate }) => {
       phase: 'Diagnosis',
       name: 'Tests that help choose my treatment',
       color: 'violet',
-      icon: '🧬',
+      image: '/images/journey-treatment.png',
+      imageAlt: 'Doctor and patient in conversation',
       clinicalQuestion: 'Which treatment will work best for my cancer?',
       description: 'These tests analyze your tumor to find specific characteristics that can help your doctor choose the most effective treatment. Some cancers have genetic changes that make them respond well to certain targeted therapies. Finding these changes can open up more treatment options.',
       keyPoints: [
@@ -38,7 +39,8 @@ const LearnPage = ({ onNavigate }) => {
       phase: 'Treatment',
       name: 'Tests that track my response to treatment',
       color: 'sky',
-      icon: '📊',
+      image: '/images/journey-tracking.png',
+      imageAlt: 'Patient during treatment',
       clinicalQuestion: 'Is my treatment working?',
       description: 'Monitoring tests measure tumor DNA in your blood over time to see if your treatment is working. Decreasing levels usually mean the treatment is effective. Rising levels might mean the cancer is becoming resistant, often detectable weeks before changes show up on scans.',
       keyPoints: [
@@ -54,7 +56,8 @@ const LearnPage = ({ onNavigate }) => {
       phase: 'Surveillance',
       name: 'Tests that watch over me after treatment',
       color: 'orange',
-      icon: '🔍',
+      image: '/images/journey-keeping-watch.png',
+      imageAlt: 'Survivor outdoors',
       clinicalQuestion: 'Has my cancer come back?',
       description: 'After you finish treatment, these tests look for tiny amounts of cancer DNA that might remain in your blood—this is called "minimal residual disease" or MRD. Finding it early can help your doctor act quickly if the cancer starts to return. Regular testing provides peace of mind and early warning.',
       keyPoints: [
@@ -330,10 +333,16 @@ const LearnPage = ({ onNavigate }) => {
               {/* Category Header */}
               <div className={`${colors.bgMedium} px-6 py-4 border-b ${colors.border}`}>
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl">{cat.icon}</span>
+                  {isPatient && cat.image ? (
+                    <img src={cat.image} alt={cat.imageAlt} className="w-12 h-12 rounded-lg object-cover" />
+                  ) : (
+                    <span className="text-3xl">{cat.icon}</span>
+                  )}
                   <div>
                     <p className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>{cat.phase}</p>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{cat.name} ({cat.acronym})</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                      {cat.name}{cat.acronym ? ` (${cat.acronym})` : ''}
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -342,7 +351,9 @@ const LearnPage = ({ onNavigate }) => {
               <div className="p-6 space-y-6">
                 {/* Clinical Question */}
                 <div className="bg-white rounded-xl p-4 border border-gray-200">
-                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Clinical Question</p>
+                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                    {isPatient ? 'Key Question' : 'Clinical Question'}
+                  </p>
                   <p className="text-lg font-medium text-gray-900 italic">"{cat.clinicalQuestion}"</p>
                 </div>
 
@@ -407,7 +418,7 @@ const LearnPage = ({ onNavigate }) => {
                     onClick={() => onNavigate(cat.id)}
                     className={`${colors.button} text-white px-6 py-3 rounded-xl font-semibold transition-colors flex items-center gap-2`}
                   >
-                    Explore {cat.testCount} {cat.acronym} Tests
+                    {isPatient ? `Explore ${cat.testCount} Tests` : `Explore ${cat.testCount} ${cat.acronym} Tests`}
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
