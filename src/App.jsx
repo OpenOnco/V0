@@ -63,6 +63,7 @@ import {
 
 // Component imports
 import { getStoredPersona, savePersona } from './utils/persona';
+import { trackPageVisit, trackTestView, trackPersona } from './utils/sessionTracking';
 import PersonaGate from './components/PersonaGate';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -1216,6 +1217,7 @@ export default function App() {
     setPersona(newPersona);
     savePersona(newPersona);
     setShowPersonaGate(false);
+    trackPersona(newPersona); // Track persona for feedback context
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
   };
 
@@ -1347,6 +1349,7 @@ export default function App() {
     // Always update state and scroll, even if already on the page
     setCurrentPage(page);
     setInitialSelectedTestId(testId || null);
+    trackPageVisit(page); // Track for feedback context
     // Clear compare IDs when navigating away from category pages
     if (!['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(page)) {
       setInitialCompareIds(null);

@@ -4,8 +4,9 @@ import { getNavItems } from '../personaContent';
 import { getSiteConfig } from '../data';
 import PersonaSelector from './PersonaSelector';
 import TrustBanner from './patient/TrustBanner';
+import PreviewBanner from './patient/PreviewBanner';
 
-const Header = ({ currentPage, onNavigate, persona, onPersonaChange }) => {
+const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreviewBanner = true }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const siteConfig = getSiteConfig();
 
@@ -32,10 +33,22 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange }) => {
   <>
   <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-      <div className="cursor-pointer hidden sm:flex items-center flex-shrink-0" onClick={() => handleNavigate('home')}>
+      <div className="cursor-pointer hidden sm:flex items-center flex-shrink-0 gap-2" onClick={() => handleNavigate('home')}>
         <img src="/OO_logo_2.png" alt="OpenOnco" className="h-14" />
+        {persona === 'patient' && showPreviewBanner && (
+          <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full border border-amber-300">
+            Preview
+          </span>
+        )}
       </div>
-      <span className="sm:hidden text-xl font-bold text-[#2A63A4] cursor-pointer" onClick={() => handleNavigate('home')}>OpenOnco</span>
+      <div className="sm:hidden flex items-center gap-2">
+        <span className="text-xl font-bold text-[#2A63A4] cursor-pointer" onClick={() => handleNavigate('home')}>OpenOnco</span>
+        {persona === 'patient' && showPreviewBanner && (
+          <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-semibold rounded-full border border-amber-300">
+            Preview
+          </span>
+        )}
+      </div>
       <nav className="hidden sm:flex items-center flex-1 justify-evenly overflow-x-auto">
         {navItems.map(page => (
           <button
@@ -114,6 +127,8 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange }) => {
       </div>
     )}
   </header>
+  {/* Preview Banner for Patient Persona - shown above Trust Banner */}
+  {persona === 'patient' && showPreviewBanner && <PreviewBanner />}
   {/* Trust Banner for Patient Persona */}
   {showTrustBanner && <TrustBanner />}
   </>
