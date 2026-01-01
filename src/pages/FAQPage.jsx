@@ -522,17 +522,19 @@ const FAQPage = () => {
         ))}
       </div>
 
-      {/* Openness Ranking - Hidden on mobile, only show for OpenOnco */}
-      {!isAlz && (
+      {/* Openness Ranking - Hidden on mobile, only show for OpenOnco R&D/Medical */}
+      {!isAlz && persona !== 'patient' && (
         <div className="hidden md:block mt-8">
           <OpennessAward />
         </div>
       )}
 
-      {/* Database Summary - Hidden on mobile */}
-      <div className="hidden md:block mt-6">
-        <DatabaseSummary />
-      </div>
+      {/* Database Summary - Hidden on mobile, only show for R&D/Medical */}
+      {persona !== 'patient' && (
+        <div className="hidden md:block mt-6">
+          <DatabaseSummary />
+        </div>
+      )}
     </div>
   );
 };
