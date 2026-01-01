@@ -27,7 +27,7 @@ test.describe('Patient Intake Flow', () => {
 
     test('can select breast cancer and advances to step 2', async ({ page }) => {
       await page.locator('select').selectOption('Breast Cancer');
-      await expect(page.getByText('Choosing the Right Treatment')).toBeVisible();
+      await expect(page.getByText('Tests that help choose my treatment')).toBeVisible();
     });
   });
 
@@ -38,13 +38,13 @@ test.describe('Patient Intake Flow', () => {
     });
 
     test('shows all three journey cards', async ({ page }) => {
-      await expect(page.getByText('Choosing the Right Treatment')).toBeVisible();
-      await expect(page.getByText('Tracking Treatment Response')).toBeVisible();
-      await expect(page.getByText('Keeping Watch After Treatment')).toBeVisible();
+      await expect(page.getByText('Tests that help choose my treatment')).toBeVisible();
+      await expect(page.getByText('Tests that track my response to treatment')).toBeVisible();
+      await expect(page.getByText('Tests that watch over me after treatment')).toBeVisible();
     });
 
     test('clicking MRD journey opens modal with mode options', async ({ page }) => {
-      await page.getByText('Keeping Watch After Treatment').click();
+      await page.getByText('Tests that watch over me after treatment').click();
       await expect(page.getByText('Find the right tests for me')).toBeVisible({ timeout: 3000 });
       await expect(page.getByText('Or, learn more about these tests')).toBeVisible();
     });
@@ -55,7 +55,7 @@ test.describe('Patient Intake Flow', () => {
     const navigateToMrdFind = async (page, cancerType = 'Breast Cancer') => {
       await page.locator('select').selectOption(cancerType);
       await page.waitForTimeout(500);
-      await page.getByText('Keeping Watch After Treatment').click();
+      await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);
@@ -135,7 +135,7 @@ test.describe('Patient Intake Flow', () => {
     const navigateToTrmFind = async (page) => {
       await page.locator('select').selectOption('Lung Cancer');
       await page.waitForTimeout(500);
-      await page.getByText('Tracking Treatment Response').click();
+      await page.getByText('Tests that track my response to treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);
@@ -165,7 +165,7 @@ test.describe('Patient Intake Flow', () => {
     const navigateToTdsFind = async (page) => {
       await page.locator('select').selectOption('Lung Cancer');
       await page.waitForTimeout(500);
-      await page.getByText('Choosing the Right Treatment').click();
+      await page.getByText('Tests that help choose my treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);
@@ -195,7 +195,7 @@ test.describe('Patient Intake Flow', () => {
     test('MRD learn mode shows educational welcome and suggestions', async ({ page }) => {
       await page.locator('select').selectOption('Breast Cancer');
       await page.waitForTimeout(500);
-      await page.getByText('Keeping Watch After Treatment').click();
+      await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Or, learn more about these tests').click();
       await page.waitForTimeout(1000);
@@ -215,7 +215,7 @@ test.describe('Patient Intake Flow', () => {
       
       await page.locator('select').selectOption('Breast Cancer');
       await page.waitForTimeout(500);
-      await page.getByText('Keeping Watch After Treatment').click();
+      await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);
@@ -233,7 +233,7 @@ test.describe('Patient Intake Flow', () => {
       
       await page.locator('select').selectOption('Lung Cancer');
       await page.waitForTimeout(500);
-      await page.getByText('Keeping Watch After Treatment').click();
+      await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);
@@ -254,7 +254,7 @@ test.describe('Patient Intake Flow', () => {
       
       await page.locator('select').selectOption('Breast Cancer');
       await page.waitForTimeout(500);
-      await page.getByText('Keeping Watch After Treatment').click();
+      await page.getByText('Tests that watch over me after treatment').click();
       await page.waitForTimeout(500);
       await page.getByText('Find the right tests for me').click();
       await page.waitForTimeout(1000);

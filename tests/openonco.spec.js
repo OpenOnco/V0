@@ -1011,12 +1011,12 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(500);
     
     // Step 2 should now be unlocked - click a journey card
-    await page.getByText('Choosing the Right Treatment').click();
+    await page.getByText('Tests that help choose my treatment').click();
     await page.waitForTimeout(500);
     
-    // Modal should open with educational content
-    await expect(page.getByText('What is genomic testing?')).toBeVisible({ timeout: 3000 });
-    await expect(page.getByText('Questions to ask your doctor')).toBeVisible();
+    // Modal should open with mode options
+    await expect(page.getByText('Find the right tests for me')).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('Or, learn more about these tests')).toBeVisible();
     
     // Click Find mode to proceed to chat
     await page.getByText('Find the right tests for me').click();
