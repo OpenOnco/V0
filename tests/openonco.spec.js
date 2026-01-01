@@ -934,7 +934,8 @@ test.describe('Persona System', () => {
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('persona gate appears on first visit', async ({ page }) => {
+  test.skip('persona gate appears on first visit', async ({ page }) => {
+    // SKIPPED: Persona gate temporarily disabled - access via URL only
     await page.goto('/');
     await page.waitForTimeout(500);
     
@@ -944,7 +945,8 @@ test.describe('Persona System', () => {
     await expect(page.getByText('Medical Professional')).toBeVisible();
   });
 
-  test('selecting patient persona saves to localStorage', async ({ page }) => {
+  test.skip('selecting patient persona saves to localStorage', async ({ page }) => {
+    // SKIPPED: Persona gate temporarily disabled - access via URL only
     await page.goto('/');
     await page.waitForTimeout(500);
     
@@ -962,10 +964,8 @@ test.describe('Persona System', () => {
   });
 
   test('patient homepage shows patient-specific elements', async ({ page }) => {
-    // Set patient persona via localStorage
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
-    await page.goto('/');
+    // Access patient view via URL
+    await page.goto('/patients');
     await page.waitForTimeout(2000); // Increased wait time
     
     // Should see new 3-step intake flow header
@@ -985,10 +985,8 @@ test.describe('Persona System', () => {
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
-    // Set patient persona
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
-    await page.goto('/');
+    // Access patient view via URL
+    await page.goto('/patients');
     await page.waitForTimeout(1000);
     
     // Should NOT see the R&D test count banner (with "Collected, Curated, Explained")
@@ -1000,10 +998,8 @@ test.describe('Persona System', () => {
   });
 
   test('patient intake flow works end-to-end', async ({ page }) => {
-    // Set patient persona
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
-    await page.goto('/');
+    // Access patient view via URL
+    await page.goto('/patients');
     await page.waitForTimeout(1000);
     
     // Step 1: Select cancer type
@@ -1028,31 +1024,23 @@ test.describe('Persona System', () => {
   });
 
   test('persona switcher in header works', async ({ page }) => {
-    // Start as R&D
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'rnd'));
+    // Test removed - persona selector temporarily disabled
+    // Access is now URL-based only: / = R&D, /patients = patient
+    
+    // Verify R&D via root URL
     await page.goto('/');
     await page.waitForTimeout(1000);
-    
-    // Should see R&D banner
     await expect(page.getByText('Collected, Curated, Explained')).toBeVisible({ timeout: 5000 });
     
-    // Find and click persona dropdown in header
-    const personaDropdown = page.locator('select').filter({ hasText: /R&D|Patient|Clinician/i }).first();
-    if (await personaDropdown.isVisible()) {
-      await personaDropdown.selectOption('patient');
-      await page.waitForTimeout(1000);
-      
-      // Should now see patient homepage
-      await expect(page.getByText('Understand How the New Generation of Cancer Tests Can Help You')).toBeVisible({ timeout: 5000 });
-    }
+    // Verify patient via /patients URL
+    await page.goto('/patients');
+    await page.waitForTimeout(1000);
+    await expect(page.getByText('Find the Right Test in 3 Simple Steps')).toBeVisible({ timeout: 5000 });
   });
 
   test('patient can navigate to Learn page', async ({ page }) => {
-    // Set patient persona
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'patient'));
-    await page.goto('/');
+    // Access patient view via URL
+    await page.goto('/patients');
     await page.waitForTimeout(1000);
     
     // Click Learn in navigation (it's a button, not a link) - use exact match
@@ -1065,9 +1053,7 @@ test.describe('Persona System', () => {
   });
 
   test('R&D persona shows full technical interface', async ({ page }) => {
-    // Set R&D persona
-    await page.goto('/');
-    await page.evaluate(() => localStorage.setItem('openonco-persona', 'rnd'));
+    // Access R&D view via root URL
     await page.goto('/');
     await page.waitForTimeout(1000);
     
