@@ -3538,6 +3538,55 @@ export const ecdTestData = [
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/36967102/ | https://pubmed.ncbi.nlm.nih.gov/39230538/",
     "numPublicationsNotes": "2 peer-reviewed publications: Clin Gastroenterol Hepatol 2023 (clinical validation, PMID 36967102), J Mol Diagn 2024 (analytical validation, PMID 39230538). Both authored by ClearNote Health employees.",
     "technologyDifferentiator": "First commercially available single-cancer ECD test for pancreatic cancer in OpenOnco database. Uses 5-hydroxymethylcytosine (5hmC) profiling rather than standard 5-methylcytosine (5mC) methylation—5hmC is an oxidized derivative of 5mC with distinct tissue-specific patterns. Targets defined high-risk population (new-onset T2DM, genetic predisposition, family history) rather than general population screening. Strong specificity (96.9%) critical for screening context where false positives lead to unnecessary workup."
+  },
+  {
+    "id": "ecd-25",
+    "sampleCategory": "Saliva",
+    "name": "CancerDetect Oral & Throat",
+    "vendor": "Viome",
+    "testScope": "Single-cancer (Oral/Throat)",
+    "approach": "Saliva-based metatranscriptomic screening",
+    "method": "RNA-based metatranscriptomic profiling of host and microbial gene expression in saliva, analyzed via machine-learning classifier to detect molecular signatures associated with OSCC and OPSCC",
+    "methodCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://www.nature.com/articles/s41525-021-00257-x",
+    "cancerTypes": [
+      "Oral squamous cell carcinoma (OSCC)",
+      "Oropharyngeal squamous cell carcinoma (OPSCC)"
+    ],
+    "cancerTypesNotes": "Detects molecular features in saliva associated with oral cavity and throat cancers; similar sensitivity for early and late-stage cancers",
+    "targetPopulation": "Adults ≥50 years OR adults ≥18 with tobacco use history (current or past)",
+    "indicationGroup": "Oral/Throat Cancer",
+    "sensitivity": 90,
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://cancerdetect.viome.com/",
+    "sensitivityNotes": "90% sensitivity for OSCC; 84.2-90% for OPSCC depending on source. Similar performance across early (Stage I/II) and late (Stage III/IV) stages per validation study.",
+    "specificity": 95,
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://cancerdetect.viome.com/",
+    "specificityNotes": "94-95% specificity across validation cohorts; 97.9% observed in larger technical validation (n=282)",
+    "performanceCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://www.nature.com/articles/s41525-021-00257-x",
+    "performanceNotes": "Validation cohort of 230 samples (20 OSCC, 76 OPSCC, 134 controls). Earlier Nature study (n=433) showed ROC AUC 0.87 for high-risk population, 0.9+ for OC-only cohort.",
+    "fdaStatus": "LDT - FDA Breakthrough Device Designation",
+    "fdaStatusNotes": "Lab-developed test performed in CLIA-certified laboratory (Bothell, WA). Received FDA Breakthrough Device designation for accelerated review. Not FDA-approved/cleared.",
+    "reimbursement": "Self-pay",
+    "reimbursementNote": "Direct-to-consumer test; no insurance coverage. Available via healthcare providers through ViomePRO.",
+    "availableRegions": ["US"],
+    "clinicalAvailability": "Commercially available in US (not available in NY due to state regulations)",
+    "tat": "~28 days",
+    "tatNotes": "Expect results within 4 weeks per vendor",
+    "sampleType": "Saliva rinse (at-home collection)",
+    "sampleVolume": "Saliva rinse kit provided",
+    "listPrice": 599,
+    "listPriceNotes": "$599 list price; promotional pricing available ($299 with DETECT code). Includes healthcare provider consultation if positive result.",
+    "numPublications": 2,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://www.nature.com/articles/s41525-021-00257-x",
+    "numPublicationsNotes": "Banavar et al. Oral Oncology 2023 (validation study, n=1,175); Banavar et al. npj Genomic Medicine 2021 (discovery study, n=433). Both from Viome Research Institute.",
+    "totalParticipants": 1175,
+    "validationCohortSize": 230,
+    "validationCohortStudy": "Prospective validation on 230 samples (20 OSCC, 76 OPSCC, 134 negatives including 14 pre-malignant) from high-risk population ≥50 years or with tobacco history",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "CLIA-certified LDT with FDA Breakthrough Device designation; not FDA-approved",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-01-01: Initial submission by Momchilo Vuyisich (Viome) with peer-reviewed publications. Vendor verified via email momo@viome.com."
   }
 ];
 
@@ -6673,6 +6722,7 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
+  { id: 'ecd-25', name: 'CancerDetect Oral & Throat', vendor: 'Viome', category: 'ECD', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-kit-15', name: 'OncoScreen Plus Tissue Kit', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-kit-14', name: 'OncoScreen Focus CDx Tissue Kit', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-25', name: 'OncoScreen Focus CDx', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
@@ -6982,7 +7032,7 @@ export const filterConfigs = {
     productTypes: ['Central Lab Service', 'Laboratory IVD Kit', 'Self-Collection'],
     testScopes: ['Single-cancer', 'Multi-cancer'],  // Matches prefix of actual testScope values
     indicationGroups: [...new Set(ecdTestData.map(t => t.indicationGroup).filter(Boolean))].sort(),
-    sampleCategories: ['Blood/Plasma', 'Stool'],
+    sampleCategories: ['Blood/Plasma', 'Saliva', 'Stool'],
     fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'RUO', 'Investigational', 'PMA submitted'],
     reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Self-Pay', 'Not established'],
     approaches: ['Blood-based cfDNA screening (plasma)', 'Blood-based cfDNA methylation MCED (plasma)', 'Stool DNA + FIT'],
