@@ -696,7 +696,20 @@ const TestDetailModal = ({ test, category, onClose }) => {
                 <Section title="Sample & Turnaround">
                   <div className="space-y-1">
                     <DataRow label="Sample Type" value={test.sampleCategory} />
-                    <DataRow label="Blood Volume" value={test.bloodVolume} unit=" mL" citations={test.bloodVolumeCitations} notes={test.bloodVolumeNotes} />
+                    {/* New sample fields with fallback to legacy bloodVolume */}
+                    <DataRow 
+                      label="Sample Volume" 
+                      value={test.sampleVolumeMl || test.bloodVolume} 
+                      unit=" mL" 
+                      citations={test.sampleCitations || test.bloodVolumeCitations} 
+                      notes={test.bloodVolumeNotes} 
+                    />
+                    {test.sampleTubeType && (
+                      <DataRow label="Collection Tube" value={test.sampleTubeType} />
+                    )}
+                    {test.sampleTubeCount && (
+                      <DataRow label="Tubes Required" value={test.sampleTubeCount} />
+                    )}
                     {test.cfdnaInput && <DataRow label="cfDNA Input" value={test.cfdnaInput} unit=" ng" citations={test.cfdnaInputCitations} />}
                     {category === 'MRD' && (
                       <>
@@ -1226,6 +1239,7 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                       : param.key === 'availableRegionsStr' ? (test.availableRegions?.join(', ') || 'US')
                       : param.key === 'biomarkersReportedStr' ? test.biomarkersReported?.join(', ')
                       : param.key === 'clinicalSettingsStr' ? test.clinicalSettings?.join(', ')
+                      : param.key === 'sampleVolumeMl' ? (test.sampleVolumeMl || test.bloodVolume)
                       : test[param.key];
                     const hasValue = value != null && value !== '';
                     

@@ -42,9 +42,9 @@ Before processing ANY submission:
 | Category fit | ✅ | Fits MRD, ECD, TRM, or TDS |
 | Validation data | ✅ | Has citable performance data (publications, FDA docs, or formal vendor data) |
 | Not duplicate | ✅ | Distinct from existing tests (not rebrand/regional variant) |
-| Liquid biopsy | ✅ | Blood, plasma, urine, or other liquid sample (no tissue-only) |
+| Sample type | ✅ | Blood, plasma, tissue, saliva, stool, or other clinical sample |
 
-**If any criterion fails:** Stop and explain to Alex. Suggest alternatives if applicable.
+**Note:** Tissue-based tests are now accepted for TDS category (expanded scope Jan 2026).
 
 ## A2: Category Classification
 
@@ -60,7 +60,7 @@ Before processing ANY submission:
 ### Core Fields (ALL tests)
 ```javascript
 id: "[category]-[number]",  // e.g., "mrd-26" - check existing IDs first
-sampleCategory: "Blood/Plasma" | "Urine" | "Other",
+sampleCategory: "Blood/Plasma" | "Tissue" | "Saliva" | "Stool" | "Bone Marrow" | "Urine",
 name: "[Official Test Name]",
 vendor: "[Company Name]",
 approach: "[Method approach - tumor-informed, tumor-naive, etc.]",
@@ -68,6 +68,36 @@ method: "[Technical description]",
 methodCitations: "[URL(s)]",
 cancerTypes: ["Type1", "Type2"],
 cancerTypesNotes: "[Context]",
+```
+
+### Sample Requirements Fields
+```javascript
+bloodVolume: "[number]",           // mL of whole blood required (patient draw)
+bloodVolumeCitations: "[URL]",
+bloodVolumeNotes: "[Context]",
+cfdnaInput: "[number or range]",   // ng of cfDNA required for assay (distinct from blood volume)
+cfdnaInputCitations: "[URL]",
+// Note: bloodVolume = what patient provides; cfdnaInput = what lab uses for assay
+```
+
+### NCCN Guideline Fields (IMPORTANT: Two Distinct Concepts)
+```javascript
+// OPTION 1: Test is NAMED in NCCN guidelines (rare - ~10 tests)
+nccnNamedInGuidelines: true/false,        // Test appears BY NAME in official NCCN guidelines
+nccnGuidelineReference: "[NCCN Guideline Name V.X.YYYY]",  // e.g., "NCCN Colon Cancer V.2.2025"
+nccnGuidelinesNotes: "[Context about the naming]",
+nccnGuidelinesCitations: "[URL to NCCN guideline]",
+
+// OPTION 2: Vendor CLAIMS alignment with NCCN biomarkers (common for CGP panels)
+vendorClaimsNCCNAlignment: true/false,    // Vendor claims test covers NCCN-recommended biomarkers
+vendorNCCNAlignmentCitation: "[URL to vendor claim]",
+vendorNCCNAlignmentIndications: ["NSCLC", "Breast Cancer"],  // Specific indications claimed
+vendorNCCNAlignmentNotes: "[Context - what biomarkers, what level of alignment]",
+
+// CRITICAL DISTINCTION:
+// - nccnNamedInGuidelines=true: "Signatera is named in NCCN CRC guidelines"
+// - vendorClaimsNCCNAlignment=true: "FoundationOne CDx covers NCCN-recommended biomarkers"
+// DO NOT conflate these - being named in guidelines ≠ covering guideline-recommended biomarkers
 ```
 
 ### Performance Fields
@@ -297,7 +327,7 @@ When a test should be removed (discontinued, never launched, etc.)
 - Category: [MRD/ECD/TRM/TDS]
 - Validation data: ✅ [sources]
 - Not duplicate: ✅
-- Liquid biopsy: ✅
+- Sample type: ✅ [Blood/Plasma/Tissue/Saliva/Stool]
 
 ### Extracted Data:
 [Complete test object ready for data.js]
@@ -366,5 +396,9 @@ When a test should be removed (discontinued, never launched, etc.)
 | LOD | `lod` | `lodNotes` | `lodCitations` |
 | TAT | `tat` | `tatNotes` | `tatCitations` |
 | Price | `listPrice` | `listPriceNotes` | `listPriceCitations` |
+| Blood Volume | `bloodVolume` | `bloodVolumeNotes` | `bloodVolumeCitations` |
+| cfDNA Input | `cfdnaInput` | — | `cfdnaInputCitations` |
+| NCCN Named | `nccnNamedInGuidelines` | `nccnGuidelinesNotes` | `nccnGuidelinesCitations` |
+| Vendor NCCN | `vendorClaimsNCCNAlignment` | `vendorNCCNAlignmentNotes` | `vendorNCCNAlignmentCitation` |
 
 **Pattern:** `[field]`, `[field]Notes`, `[field]Citations`
