@@ -38,7 +38,7 @@ const REQUIRED_FIELDS = {
 const IMPORTANT_FIELDS = {
   mrd: ['sensitivity', 'specificity', 'lod', 'fdaStatus', 'numPublications'],
   ecd: ['sensitivity', 'specificity', 'fdaStatus', 'numPublications'],
-  trm: ['sensitivity', 'specificity', 'fdaStatus', 'numPublications'],
+  trm: ['fdaStatus', 'numPublications'],  // TRM tests measure trends, not detection - sens/spec not applicable
   tds: ['genesAnalyzed', 'fdaStatus', 'numPublications'],
 };
 
@@ -271,6 +271,10 @@ function checkImportantFields(test, category) {
   
   for (const field of important) {
     const value = test[field];
+    // Skip if field is explicitly set to null with a notes field explaining why
+    if (field === 'genesAnalyzed' && value === null && test.genesAnalyzedNotes) {
+      continue;  // Intentionally N/A (e.g., protein tests)
+    }
     if (value === null || value === undefined || value === '') {
       findings.push(new AuditFinding(
         'medium',
