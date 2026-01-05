@@ -1212,9 +1212,10 @@ export default function App() {
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
   // Persona determined by URL only: /patients = patient, everything else = rnd
   const [persona, setPersona] = useState(() => initialRoute.persona || 'rnd');
-  // Skip persona gate if URL specifies persona or if already stored
-  // Persona gate temporarily disabled - access via URL only (/patients or /)
-  const [showPersonaGate, setShowPersonaGate] = useState(false);
+  // Show persona gate if no URL persona specified and no stored persona
+  const [showPersonaGate, setShowPersonaGate] = useState(() => {
+    return !initialRoute.persona && !getStoredPersona();
+  });
 
   // Save persona to localStorage if it came from URL (so it persists)
   useEffect(() => {
