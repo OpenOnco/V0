@@ -95,6 +95,7 @@ import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCo
 import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
 import CategoryPage from './components/CategoryPage';
+import { ComparePage, COMPARISON_PAGES } from './pages/ComparePage';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -1175,6 +1176,15 @@ export default function App() {
   const getInitialPage = () => {
     const path = window.location.pathname.toLowerCase();
 
+    // Check for comparison pages: /compare/signatera-vs-guardant-reveal
+    const compareMatch = path.match(/^\/compare\/([a-z0-9-]+)$/);
+    if (compareMatch) {
+      const [, slug] = compareMatch;
+      if (COMPARISON_PAGES[slug]) {
+        return { page: 'compare', compareSlug: slug, testSlug: null, testId: null, persona: null };
+      }
+    }
+
     // Check for individual test routes: /mrd/test-name
     const testRouteMatch = path.match(/^\/(mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
     if (testRouteMatch) {
@@ -1196,6 +1206,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(initialRoute.page);
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
+  const [currentCompareSlug, setCurrentCompareSlug] = useState(initialRoute.compareSlug || null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
@@ -1302,6 +1313,18 @@ export default function App() {
         }
       }
 
+      // Check for comparison routes: /compare/slug
+      const compareMatch = path.match(/^\/compare\/([a-z0-9-]+)$/);
+      if (compareMatch) {
+        const [, slug] = compareMatch;
+        if (COMPARISON_PAGES[slug]) {
+          setCurrentPage('compare');
+          setCurrentCompareSlug(slug);
+          setInitialSelectedTestId(null);
+          return;
+        }
+      }
+
       const page = pathToPage[path] || 'home';
       setCurrentPage(page);
       setInitialSelectedTestId(null);
@@ -1386,6 +1409,7 @@ export default function App() {
     switch (currentPage) {
       case 'home': return <HomePage onNavigate={handleNavigate} persona={persona} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
+      case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;

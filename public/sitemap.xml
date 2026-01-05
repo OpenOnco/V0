@@ -72,6 +72,37 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <!-- SEO Comparison Landing Pages -->
+  <url>
+    <loc>https://openonco.org/compare/signatera-vs-guardant-reveal</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/compare/galleri-vs-shield-mcd</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/compare/foundationone-vs-guardant360</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/compare/mrd-tests-2025</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/compare/tumor-informed-vs-tumor-naive</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://openonco.org/mrd/haystack-mrd</loc>
     <lastmod>2026-01-03</lastmod>
