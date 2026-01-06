@@ -283,11 +283,21 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       }
       return true;
     }).sort((a, b) => {
-      // Priority: 1) VENDOR VERIFIED, 2) BC tests, 3) Non-BC tests
-      const aVerified = VENDOR_VERIFIED[a.id] !== undefined;
-      const bVerified = VENDOR_VERIFIED[b.id] !== undefined;
+      // Priority: 1) VENDOR VERIFIED (newest first), 2) BC tests, 3) Non-BC tests
+      const aVerifiedData = VENDOR_VERIFIED[a.id];
+      const bVerifiedData = VENDOR_VERIFIED[b.id];
+      const aVerified = aVerifiedData !== undefined;
+      const bVerified = bVerifiedData !== undefined;
+      
       if (aVerified && !bVerified) return -1;
       if (!aVerified && bVerified) return 1;
+      
+      // Both verified: sort by date (newest first)
+      if (aVerified && bVerified) {
+        const aDate = aVerifiedData.verifiedDate || '1970-01-01';
+        const bDate = bVerifiedData.verifiedDate || '1970-01-01';
+        if (aDate !== bDate) return bDate.localeCompare(aDate);
+      }
       
       // Then sort non-BC (MISS) tests to end
       const aBC = calculateTestCompleteness(a, category).percentage === 100;

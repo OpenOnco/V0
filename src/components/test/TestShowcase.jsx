@@ -168,13 +168,23 @@ const TestShowcase = ({
     // Helper to check if test is BC (Baseline Complete)
     const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
     
-    // Priority order: 1) VENDOR VERIFIED, 2) BC tests, 3) Non-BC tests
+    // Priority order: 1) VENDOR VERIFIED (newest first), 2) BC tests, 3) Non-BC tests
     const prioritySort = (a, b) => {
-      const aVerified = VENDOR_VERIFIED[a.id] !== undefined;
-      const bVerified = VENDOR_VERIFIED[b.id] !== undefined;
+      const aVerifiedData = VENDOR_VERIFIED[a.id];
+      const bVerifiedData = VENDOR_VERIFIED[b.id];
+      const aVerified = aVerifiedData !== undefined;
+      const bVerified = bVerifiedData !== undefined;
+      
       // VENDOR VERIFIED tests always come first
       if (aVerified && !bVerified) return -1;
       if (!aVerified && bVerified) return 1;
+      
+      // Both verified: sort by date (newest first)
+      if (aVerified && bVerified) {
+        const aDate = aVerifiedData.verifiedDate || '1970-01-01';
+        const bDate = bVerifiedData.verifiedDate || '1970-01-01';
+        if (aDate !== bDate) return bDate.localeCompare(aDate); // Descending (newest first)
+      }
       
       // Then BC tests
       const aBC = isBC(a);
