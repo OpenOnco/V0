@@ -6089,6 +6089,30 @@ export const tdsTestData = [
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
   {
+    date: 'Jan 6, 2026',
+    type: 'verified',
+    testId: 'mrd-6',
+    testName: 'Reveal MRD',
+    vendor: 'Guardant Health',
+    category: 'MRD',
+    description: 'Vendor verification: Updated LOD from 0.01% VAF to 0.005% Tumor Fraction per vendor validation.',
+    contributor: 'Brandon Guida',
+    affiliation: 'Guardant Health (vendor)',
+    citation: 'https://www.guardantcomplete.com'
+  },
+  {
+    date: 'Jan 6, 2026',
+    type: 'verified',
+    testId: 'tds-17',
+    testName: 'Guardant360 Liquid',
+    vendor: 'Guardant Health',
+    category: 'TDS',
+    description: 'Vendor verification: Updated sample requirements with precise Streck tube specifications per official IFU.',
+    contributor: 'Brandon Guida',
+    affiliation: 'Guardant Health (vendor)',
+    citation: 'https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf'
+  },
+  {
     date: 'Jan 1, 2026',
     type: 'added',
     testId: 'tds-kit-15',
