@@ -880,6 +880,7 @@ export const mrdTestData = [
     "totalParticipants": 2000,
     "numPublications": 10,
     "numPublicationsPlus": true,
+    "vendorVerified": true,
     "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated LOD from 0.01% VAF to 0.005% Tumor Fraction per guardantcomplete.com."
   },
   {
@@ -4509,6 +4510,7 @@ export const tdsTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Same platform as Guardant360 CDx; extensive clinical validation and companion diagnostic studies across multiple cancer types",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34838325/",
+    "vendorVerified": true,
     "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated sampleRequirements with precise tube specifications per official IFU."
   },
   {
