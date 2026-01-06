@@ -1,415 +1,297 @@
-# OpenOnco Submission Processing Guide
+# OpenOnco Submission Process
 
 **Last updated:** 2026-01-06
 
-**Single source of truth for all OpenOnco data submissions.**
+---
 
-When Alex pastes any submission (new test, change request, vendor verification, correction), follow this process.
+## 🚨 MANDATORY COMPLETION CHECKLIST
+
+**STOP! Before committing ANY submission, verify ALL items for your submission type:**
+
+### For ALL Submissions:
+- [ ] `vendorRequestedChanges` field updated on test object
+- [ ] `DATABASE_CHANGELOG` entry added (top of array, ~line 6090)
+- [ ] `Last updated` comment at top of data.js updated
+- [ ] Build passes: `npm run build`
+- [ ] Smoke tests pass: `npm run test:smoke`
+
+### Additional for NEW TESTS:
+- [ ] Next ID used (check Quick Reference table in data.js header)
+- [ ] Quick Reference table updated with new LAST ID / NEXT ID
+- [ ] `RECENTLY_ADDED_TESTS` updated (if applicable)
+
+### Additional for VENDOR VERIFICATION:
+- [ ] `vendorVerified: true` on test object
+- [ ] `VENDOR_VERIFIED` object entry added (~line 463 in data.js)
+  ```javascript
+  '[test-id]': {
+    name: '[Submitter Name]',
+    company: '[Company]',
+    verifiedDate: '[YYYY-MM-DD]',
+    editsSubmitted: [number]
+  },
+  ```
+  ⚠️ **Missing this = no green badge, test won't sort to top!**
 
 ---
 
-## Phase 1: Triage - What Type of Submission?
+## Quick Reference
 
-| Type | Trigger Phrases | Go To |
-|------|-----------------|-------|
-| **New Test** | "new test", "add this test", vendor proposal, test data dump | → Section A |
-| **Change Request** | "update", "correction", "change", "fix", vendor email with edits | → Section B |
-| **Vendor Verification** | "vendor verified", "confirm data", company rep validating existing entry | → Section C |
-| **Deletion** | "remove", "discontinue", "no longer available" | → Section D |
-
----
-
-## Phase 2: Locate Context
-
-Before processing ANY submission:
-
-1. **Read current data.js** to understand existing tests
-2. **Search for the test** if it might already exist:
-   ```bash
-   grep -n "[test name or vendor]" src/data.js
-   ```
-3. **Check for duplicates** - same test, different name? Regional variant?
+| Submission Type | Trigger Phrases | Go To |
+|-----------------|-----------------|-------|
+| **New Test** | "new test", "add this test", vendor proposal | Section A |
+| **Change Request** | "update", "correction", "fix", vendor edits | Section B |
+| **Vendor Verification** | "vendor verified", company rep validating | Section C |
+| **Deletion** | "remove", "discontinue" | Section D |
 
 ---
 
-# Section A: New Test Submission
+## Before ANY Submission
 
-## A1: Eligibility Gate
+```bash
+# 1. Find existing test (if applicable)
+grep -n "[test name or vendor]" /Users/adickinson/Documents/GitHub/V0/src/data.js
 
-**ALL criteria must pass:**
+# 2. Check for duplicates
+grep -n "[test name]" /Users/adickinson/Documents/GitHub/V0/src/data.js
+```
 
-| Criterion | Required | Check |
-|-----------|----------|-------|
-| Real test | ✅ | Commercially available OR active clinical trials (not pure research) |
-| Category fit | ✅ | Fits MRD, ECD, TRM, or TDS |
-| Validation data | ✅ | Has citable performance data (publications, FDA docs, or formal vendor data) |
-| Not duplicate | ✅ | Distinct from existing tests (not rebrand/regional variant) |
-| Sample type | ✅ | Blood, plasma, tissue, saliva, stool, or other clinical sample |
+---
 
-**Note:** Tissue-based tests are now accepted for TDS category (expanded scope Jan 2026).
+# Section A: New Test
 
-## A2: Category Classification
+## A1: Eligibility (ALL must pass)
 
-| Category | Use Case | Key Metrics |
-|----------|----------|-------------|
-| **MRD** | Post-treatment monitoring, detecting recurrence | sensitivity, specificity, LOD, lead time |
-| **ECD** | Screening asymptomatic individuals | sensitivity by stage, specificity, PPV, NPV |
-| **TRM** | Tracking treatment response during therapy | genes covered, actionable findings rate |
-| **TDS** | Treatment decision support, therapy selection | FDA status, guideline inclusion |
+| Criterion | Required |
+|-----------|----------|
+| Real test | Commercially available OR active clinical trials |
+| Category fit | MRD, ECD, TRM, or TDS |
+| Validation data | Citable performance (publications, FDA, vendor) |
+| Not duplicate | Distinct from existing tests |
+| Liquid biopsy | Blood, plasma, urine (no tissue-only) |
 
-## A3: Extract Required Fields
+**Any fail → Stop and explain to Alex**
 
-### Core Fields (ALL tests)
+## A2: Get Next ID
+
+Check Quick Reference table at top of data.js:
+```
+// │ MRD Tests            │ ~480        │ mrd-25     │ mrd-26        │
+```
+
+## A3: Required Fields
+
 ```javascript
-id: "[category]-[number]",  // e.g., "mrd-26" - check existing IDs first
-sampleCategory: "Blood/Plasma" | "Tissue" | "Saliva" | "Stool" | "Bone Marrow" | "Urine",
+// Core
+id: "[category]-[number]",
+sampleCategory: "Blood/Plasma" | "Tissue" | "Stool" | "Urine",
 name: "[Official Test Name]",
 vendor: "[Company Name]",
-approach: "[Method approach - tumor-informed, tumor-naive, etc.]",
+approach: "[tumor-informed, tumor-naive, etc.]",
 method: "[Technical description]",
-methodCitations: "[URL(s)]",
 cancerTypes: ["Type1", "Type2"],
-cancerTypesNotes: "[Context]",
-```
 
-### Sample Requirements Fields
-```javascript
-bloodVolume: "[number]",           // mL of whole blood required (patient draw)
-bloodVolumeCitations: "[URL]",
-bloodVolumeNotes: "[Context]",
-cfdnaInput: "[number or range]",   // ng of cfDNA required for assay (distinct from blood volume)
-cfdnaInputCitations: "[URL]",
-// Note: bloodVolume = what patient provides; cfdnaInput = what lab uses for assay
-```
+// Sample Collection
+sampleVolumeMl: [number],
+sampleTubeType: "[Streck cfDNA BCT, etc.]",
+sampleTubeCount: [number],
+sampleCollectionNotes: "[Details]",
+sampleCitations: "[URL - REQUIRED]",
 
-### NCCN Guideline Fields (IMPORTANT: Two Distinct Concepts)
-```javascript
-// OPTION 1: Test is NAMED in NCCN guidelines (rare - ~10 tests)
-nccnNamedInGuidelines: true/false,        // Test appears BY NAME in official NCCN guidelines
-nccnGuidelineReference: "[NCCN Guideline Name V.X.YYYY]",  // e.g., "NCCN Colon Cancer V.2.2025"
-nccnGuidelinesNotes: "[Context about the naming]",
-nccnGuidelinesCitations: "[URL to NCCN guideline]",
+// Performance (with citations and notes for each)
+sensitivity: [0-100],
+sensitivityCitations: "[URL]",
+sensitivityNotes: "[Context]",
+specificity: [0-100],
+// ... same pattern for ppv, npv, lod
 
-// OPTION 2: Vendor CLAIMS alignment with NCCN biomarkers (common for CGP panels)
-vendorClaimsNCCNAlignment: true/false,    // Vendor claims test covers NCCN-recommended biomarkers
-vendorNCCNAlignmentCitation: "[URL to vendor claim]",
-vendorNCCNAlignmentIndications: ["NSCLC", "Breast Cancer"],  // Specific indications claimed
-vendorNCCNAlignmentNotes: "[Context - what biomarkers, what level of alignment]",
-
-// CRITICAL DISTINCTION:
-// - nccnNamedInGuidelines=true: "Signatera is named in NCCN CRC guidelines"
-// - vendorClaimsNCCNAlignment=true: "FoundationOne CDx covers NCCN-recommended biomarkers"
-// DO NOT conflate these - being named in guidelines ≠ covering guideline-recommended biomarkers
-```
-
-### Performance Fields
-```javascript
-sensitivity: [number 0-100],
-sensitivityCitations: "[URL or 'Vendor data (Name, Company, Date)']",
-sensitivityNotes: "[Context - must add value beyond the number]",
-
-specificity: [number 0-100],
-specificityPlus: true/false,  // if reported as ">99%" etc.
-specificityCitations: "[URL]",
-specificityNotes: "[Context]",
-
-ppv: [number],  // if available
-ppvCitations: "[URL]",
-npv: [number],  // if available
-npvCitations: "[URL]",
-
-lod: "[value with units]",
-lod95: "[value]",  // if different from lod
-lodCitations: "[URL]",
-lodNotes: "[Context]",
-```
-
-### Regulatory & Commercial Fields
-```javascript
+// Regulatory
 fdaStatus: "[Status]",
-fdaStatusNotes: "[Details]",
 reimbursement: "[Status]",
-reimbursementNote: "[Details]",
-clinicalAvailability: "[Description]",
-availableRegions: ["US", "EU", "China"],
-listPrice: "[Price or range]",
-listPriceNotes: "[Context]",
-tat: [number],  // turnaround time in days
-tatNotes: "[Context]",
-```
+tat: [number],
 
-### Evidence Fields
-```javascript
-clinicalTrials: "[NCT numbers and descriptions]",
-clinicalTrialsCitations: "[URLs]",
-totalParticipants: [number],
+// Evidence
 numPublications: [number],
 numPublicationsCitations: "[URLs]",
-numPublicationsNotes: "[Key publications]",
-validationCohortSize: [number],
-validationCohortStudy: "[Study name/description]",
+
+// Tracking
+vendorVerified: false,
+vendorRequestedChanges: "[YYYY-MM-DD]: Added via [source]"
 ```
 
-### Classification & Tracking Fields
-```javascript
-isRUO: true/false,
-isInvestigational: true/false,
-isClinicalLDT: true/false,
-regulatoryStatusNotes: "[Explanation]",
-vendorVerified: false,  // Set true only after vendor confirmation
-vendorRequestedChanges: "[Date]: [Description of submission and source]",
-```
+## A4: After Adding
 
-## A4: Quality Checks
-
-- [ ] Every performance metric has a citation
-- [ ] Notes add context (NOT just "X% per vendor")
-- [ ] 100% sens/spec flagged if cohort <100
-- [ ] PPV/NPV plausible given prevalence
-- [ ] All core fields populated
-- [ ] At least one citation source
+1. Update Quick Reference table (LAST ID / NEXT ID)
+2. Add to `DATABASE_CHANGELOG`
+3. Add to `RECENTLY_ADDED_TESTS` if featured
+4. Update `Last updated` comment
+5. **Run completion checklist above**
 
 ---
 
 # Section B: Change Request
 
-## B1: Identify Existing Test
+## B1: Identify Test
+```bash
+grep -n '"id": "[test-id]"' /Users/adickinson/Documents/GitHub/V0/src/data.js
+```
 
-1. Search data.js for test name/vendor
-2. Confirm test ID (e.g., `mrd-15`)
-3. Read current values for fields being changed
-
-## B2: Classify Change Type
+## B2: Change Types
 
 | Type | Examples | Review Level |
 |------|----------|--------------|
-| **Correction** | Typo fix, broken link, formatting | Low |
-| **Update** | New publication, FDA clearance, price change | Medium |
-| **Performance Change** | Sensitivity, specificity, PPV, NPV, LOD | **High - requires citation** |
-| **Claim Expansion** | New cancer types, new indications | **High - requires evidence** |
+| Correction | Typo, broken link | Low |
+| Update | New publication, FDA status | Medium |
+| Performance | Sensitivity, specificity, LOD | **High - citation required** |
+| Expansion | New cancer types | **High - evidence required** |
 
-## B3: Validation by Type
+## B3: Apply Change
 
-### Corrections
-- [ ] Error is clearly identified
-- [ ] Correct value is obvious
-- [ ] No citation needed for typos
+1. Edit the field(s)
+2. Update related notes/citations
+3. Append to `vendorRequestedChanges`:
+   ```javascript
+   "vendorRequestedChanges": "[existing]. [YYYY-MM-DD]: [Description] per [source]."
+   ```
 
-### Updates
-- [ ] New citation provided or found
-- [ ] Update is factual and verifiable
+## B4: After Changing
 
-### Performance Changes ⚠️
-- [ ] **Citation required** (publication or formal vendor data)
-- [ ] Compare to existing - is change reasonable?
-- [ ] If performance improved significantly, verify methodology is comparable
-- [ ] Update related notes field
-
-### Claim Expansions ⚠️
-- [ ] Evidence provided (studies, FDA label expansion)
-- [ ] Update `cancerTypes` array AND `cancerTypesNotes`
-
-## B4: Document the Change
-
-**Always append to `vendorRequestedChanges`:**
-```javascript
-"vendorRequestedChanges": "[existing]. 2025-01-15: Updated sensitivity from 95% to 97.2% per vendor (Name, Company) citing PMID xxxxx."
-```
+1. Add to `DATABASE_CHANGELOG`
+2. Update `Last updated` comment
+3. **Run completion checklist above**
 
 ---
 
 # Section C: Vendor Verification
 
-When a vendor representative confirms their test data is accurate.
-
 ## C1: Verify Authority
 
-- [ ] Submitter is from the vendor company
-- [ ] Has authority to confirm data (name, title, email in submission)
+- [ ] Submitter email matches vendor domain
+- [ ] Name and title provided
+- [ ] Attestation confirmed
 
-## C2: Process Verification
+## C2: Process Any Corrections
 
-1. **Review all fields** with vendor
-2. **Flag any discrepancies** they identify
-3. **Process any corrections** as Change Requests (Section B)
+If vendor identifies errors → Process as Change Request (Section B) first
 
-## C3: Update TWO Places (Both Required!)
+## C3: Update TWO Locations (Both Required!)
 
-⚠️ **CRITICAL:** Vendor verification requires updates in TWO locations:
-
-### 1. On the test object itself:
+### Location 1: Test Object
 ```javascript
 vendorVerified: true,
-vendorRequestedChanges: "[existing]. 2026-01-06: Vendor verified by [Name], [Title], [Company]."
+vendorRequestedChanges: "[existing]. [YYYY-MM-DD]: Vendor verified by [Name], [Company]."
 ```
 
-### 2. In the VENDOR_VERIFIED object (for badge + sort priority):
+### Location 2: VENDOR_VERIFIED Object (~line 463)
 ```javascript
-// Near line ~451 in data.js - look for "export const VENDOR_VERIFIED"
 export const VENDOR_VERIFIED = {
   // ... existing entries ...
   '[test-id]': {  // [Test Name]
     name: '[Submitter Name]',
     company: '[Company]',
     verifiedDate: '[YYYY-MM-DD]',
-    editsSubmitted: [number of changes made]
+    editsSubmitted: [number of changes]
   },
 };
 ```
 
-**Why both?**
-- `vendorVerified: true` on test = data tracking
-- `VENDOR_VERIFIED` object = green badge display + sort to top of list
+**⚠️ CRITICAL: Missing Location 2 = no green badge, test won't sort to top!**
+
+## C4: After Verifying
+
+1. Add to `DATABASE_CHANGELOG` with `type: 'verified'`
+2. Update `Last updated` comment
+3. **Run completion checklist above**
 
 ---
 
-# Section D: Deletion Request
+# Section D: Deletion
 
-When a test should be removed (discontinued, never launched, etc.)
+## D1: Valid Reasons Only
 
-## D1: Confirm Removal Reason
+| Valid | Action |
+|-------|--------|
+| Discontinued by vendor | Remove |
+| Never launched | Remove |
+| Duplicate | Merge data, remove duplicate |
+| Regulatory recall | Remove with note |
 
-| Valid Reasons | Action |
-|---------------|--------|
-| Test discontinued by vendor | Remove |
-| Never commercially launched | Remove |
-| Duplicate entry | Merge data into primary, remove duplicate |
-| Regulatory issues (recalled) | Remove with note |
-
-| Invalid Reasons | Action |
-|-----------------|--------|
-| Vendor doesn't like their data | Decline - offer corrections instead |
+| Invalid | Action |
+|---------|--------|
+| Vendor doesn't like data | Decline - offer corrections |
 | Competitor request | Decline |
 
-## D2: Process Deletion
+## D2: Process
 
-1. **Document reason** in commit message
-2. **Remove test object** from data.js
-3. **Remove from VERIFIED_CONTRIBUTORS** if present
-4. **Run tests** to ensure no broken references
+1. Remove test object from data.js
+2. Remove from `VENDOR_VERIFIED` if present
+3. Add to `DATABASE_CHANGELOG` with `type: 'removed'`
+4. **Run completion checklist above**
 
 ---
 
-# Red Flags - Escalate to Alex
+# Red Flags → Ask Alex
 
 | Red Flag | Concern |
 |----------|---------|
-| Performance dramatically improved (>10%) | Cherry-picked data? Different methodology? |
-| No peer-reviewed publications | Note as vendor-data-only |
+| Performance change >10% | Cherry-picked data? |
+| No peer-reviewed publications | Note as vendor-only |
 | 100% performance with n<50 | Add warning flag |
-| Contradictory claims | Ask for clarification |
+| Contradictory claims | Get clarification |
 | Request from non-vendor | Verify authority |
-| Removing citations | Why? May indicate retraction |
-| RUO test claiming clinical use | Regulatory concern |
+| RUO test claiming clinical use | Regulatory issue |
 
 ---
 
-# Final Checklist (All Submission Types)
+# Key Locations in data.js
 
-## Before Applying Changes
-- [ ] Submission type identified
-- [ ] Existing data reviewed
-- [ ] Quality checks passed
-- [ ] Red flags addressed
-- [ ] Alex approved (if flagged)
-
-## Apply Changes
-- [ ] Edit data.js with correct syntax
-- [ ] Update `vendorRequestedChanges` with date and description
-- [ ] Update VERIFIED_CONTRIBUTORS if applicable
-
-## Verify & Deploy
-- [ ] JSON syntax valid (no trailing commas)
-- [ ] Run: `npm run dev` - test renders correctly
-- [ ] Run: `npx playwright test -g "Homepage|Category Pages" --reporter=list`
-- [ ] Commit: `git commit -m "[Type]: [Test Name] - [Brief description]"`
-- [ ] Push: `git push`
+| What | Approximate Line | Search For |
+|------|------------------|------------|
+| Header/Instructions | 1-50 | Top of file |
+| Quick Reference Table | ~25-40 | `QUICK REFERENCE` |
+| VENDOR_VERIFIED object | ~463 | `export const VENDOR_VERIFIED` |
+| MRD tests | ~480 | `export const mrdTestData` |
+| ECD tests | ~2100 | `export const ecdTestData` |
+| TRM tests | ~3200 | `export const trmTestData` |
+| TDS tests | ~3550 | `export const tdsTestData` |
+| DATABASE_CHANGELOG | ~6090 | `export const DATABASE_CHANGELOG` |
 
 ---
 
-# Output Templates
+# DATABASE_CHANGELOG Entry Format
 
-## New Test Review
-```
-## New Test Review: [Test Name]
-
-### Eligibility: ✅ PASS / ❌ FAIL
-- Commercial: ✅
-- Category: [MRD/ECD/TRM/TDS]
-- Validation data: ✅ [sources]
-- Not duplicate: ✅
-- Sample type: ✅ [Blood/Plasma/Tissue/Saliva/Stool]
-
-### Extracted Data:
-[Complete test object ready for data.js]
-
-### Quality Notes:
-- Citations: [count] sources ✅
-- Notes quality: [assessment]
-- Red flags: [none / list]
-
-### Missing/Unclear:
-- [List items needing clarification]
-
-### Ready to Add: ✅ YES / ⏸️ PENDING [reason]
-```
-
-## Change Request Review
-```
-## Change Request: [Test Name]
-
-### Test ID: [id]
-### Requestor: [Name, Company]
-### Change Type: [Correction/Update/Performance/Expansion]
-
-### Requested Changes:
-1. [Field]: [old value] → [new value]
-2. ...
-
-### Validation:
-- [ ] Citation: [status]
-- [ ] Reasonable change: [assessment]
-
-### Proposed Edits:
-[Show specific line changes]
-
-### Ready to Apply: ✅ YES / ⏸️ PENDING [reason]
-```
-
-## Vendor Verification
-```
-## Vendor Verification: [Test Name]
-
-### Test ID: [id]
-### Verified by: [Name], [Title], [Company]
-### Date: [YYYY-MM-DD]
-
-### Data Reviewed: ✅ All fields confirmed accurate
-### Corrections Needed: [none / list]
-### Verification Status: ✅ COMPLETE
-
-### Updates Applied:
-- vendorVerified: true
-- vendorRequestedChanges: [appended]
-- VERIFIED_CONTRIBUTORS: [added/updated]
+```javascript
+{
+  date: 'Jan 6, 2026',
+  type: 'added' | 'updated' | 'verified' | 'removed',
+  testId: '[test-id]',
+  testName: '[Test Name]',
+  vendor: '[Company]',
+  category: 'MRD' | 'ECD' | 'TRM' | 'TDS',
+  description: '[What changed]',
+  contributor: '[Name]',
+  affiliation: '[Company] (vendor)' | 'OpenOnco',
+  citation: '[URL]'
+},
 ```
 
 ---
 
-# Field Reference
+# Verification Commands
 
-| Data Type | Field | Notes Field | Citation Field |
-|-----------|-------|-------------|----------------|
-| Sensitivity | `sensitivity` | `sensitivityNotes` | `sensitivityCitations` |
-| Specificity | `specificity` | `specificityNotes` | `specificityCitations` |
-| PPV | `ppv` | `ppvNotes` | `ppvCitations` |
-| NPV | `npv` | `npvNotes` | `npvCitations` |
-| LOD | `lod` | `lodNotes` | `lodCitations` |
-| TAT | `tat` | `tatNotes` | `tatCitations` |
-| Price | `listPrice` | `listPriceNotes` | `listPriceCitations` |
-| Blood Volume | `bloodVolume` | `bloodVolumeNotes` | `bloodVolumeCitations` |
-| cfDNA Input | `cfdnaInput` | — | `cfdnaInputCitations` |
-| NCCN Named | `nccnNamedInGuidelines` | `nccnGuidelinesNotes` | `nccnGuidelinesCitations` |
-| Vendor NCCN | `vendorClaimsNCCNAlignment` | `vendorNCCNAlignmentNotes` | `vendorNCCNAlignmentCitation` |
+```bash
+# Build check
+cd /Users/adickinson/Documents/GitHub/V0 && npm run build
 
-**Pattern:** `[field]`, `[field]Notes`, `[field]Citations`
+# Smoke tests
+npm run test:smoke
+
+# Full tests (before release)
+npm test
+
+# Deploy to preview
+git add src/data.js && git commit -m "[type]: [Test] - [description]" && git push origin develop
+
+# Deploy to production
+./release
+```

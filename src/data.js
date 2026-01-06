@@ -1,49 +1,26 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: 2026-01-06 (Guardant vendor validation - updated Reveal MRD LOD, Guardant360 Liquid sample requirements)
+// Last updated: 2026-01-06
 // ============================================
 //
-// ╔═══════════════════════════════════════════════════════════════════════════╗
-// ║  ⚠️  STOP! BEFORE MAKING CHANGES, READ THE PROCESS DOCS  ⚠️              ║
-// ╠═══════════════════════════════════════════════════════════════════════════╣
-// ║                                                                           ║
-// ║  📄 NEW TEST SUBMISSION    → Read SUBMISSION_PROCESS.md first            ║
-// ║  📝 VENDOR CHANGE REQUEST  → Read SUBMISSION_PROCESS.md first            ║
-// ║  ✅ VENDOR VERIFICATION    → Update BOTH places (see below)              ║
-// ║                                                                           ║
-// ║  Process doc: /Users/adickinson/Documents/GitHub/V0/SUBMISSION_PROCESS.md║
-// ║                                                                           ║
-// ╠═══════════════════════════════════════════════════════════════════════════╣
-// ║  🏷️  VENDOR VERIFICATION REQUIRES TWO UPDATES:                           ║
-// ║     1. VENDOR_VERIFIED object (~line 451) - adds badge + sort priority   ║
-// ║     2. vendorVerified: true on test object - data tracking               ║
-// ║     (Missing #1 = no green badge, test won't sort to top!)               ║
-// ╠═══════════════════════════════════════════════════════════════════════════╣
-// ║  ✅ AFTER EVERY CHANGE, UPDATE THESE:                                    ║
-// ║     1. DATABASE_CHANGELOG (bottom of this file) - add entry              ║
-// ║     2. RECENTLY_ADDED_TESTS (for new tests only)                         ║
-// ║     3. Quick Reference table below (update LAST ID / NEXT ID)            ║
-// ║     4. "Last updated" line above (date + brief description)              ║
-// ║     5. vendorRequestedChanges field in the test object                   ║
-// ╚═══════════════════════════════════════════════════════════════════════════╝
+// ⚠️  READ SUBMISSION_PROCESS.md BEFORE MAKING ANY CHANGES
+//     Location: /Users/adickinson/Documents/GitHub/V0/SUBMISSION_PROCESS.md
 //
 // ┌─────────────────────────────────────────────────────────────────┐
 // │                        QUICK REFERENCE                          │
 // ├─────────────────────────────────────────────────────────────────┤
 // │ SECTION              │ START LINE  │ LAST ID    │ NEXT ID       │
 // ├─────────────────────────────────────────────────────────────────┤
-// │ MRD Tests            │ ~262        │ mrd-24     │ mrd-25        │
+// │ VENDOR_VERIFIED      │ ~463        │ --         │ --            │
+// │ MRD Tests            │ ~500        │ mrd-24     │ mrd-25        │
 // │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
 // │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
 // │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
 // │ TRM Tests            │ ~2919       │ trm-14     │ trm-15        │
 // │ TDS Tests            │ ~3269       │ tds-25     │ tds-26        │
 // │ TDS IVD Kits         │ ~4155       │ tds-kit-15 │ tds-kit-16    │
-// │ Changelog            │ ~4841       │ --         │ --            │
+// │ DATABASE_CHANGELOG   │ ~4841       │ --         │ --            │
 // └─────────────────────────────────────────────────────────────────┘
-//
-// LINE NUMBERS ARE APPROXIMATE - use Ctrl+F to find exact insertion points
-// Search for "// INSERT NEW [CATEGORY] TEST HERE" markers
 //
 // ============================================
 // TEMPLATES - Copy, fill in, paste at insertion point
