@@ -7,11 +7,17 @@
 // ║  ⚠️  STOP! BEFORE MAKING CHANGES, READ THE PROCESS DOCS  ⚠️              ║
 // ╠═══════════════════════════════════════════════════════════════════════════╣
 // ║                                                                           ║
-// ║  📄 NEW TEST SUBMISSION    → Read SUBMISSION_REVIEW.md first             ║
-// ║  📝 VENDOR CHANGE REQUEST  → Read CHANGE_REQUEST.md first                ║
+// ║  📄 NEW TEST SUBMISSION    → Read SUBMISSION_PROCESS.md first            ║
+// ║  📝 VENDOR CHANGE REQUEST  → Read SUBMISSION_PROCESS.md first            ║
+// ║  ✅ VENDOR VERIFICATION    → Update BOTH places (see below)              ║
 // ║                                                                           ║
-// ║  Both files are in the repo root: /Users/adickinson/Documents/GitHub/V0/ ║
+// ║  Process doc: /Users/adickinson/Documents/GitHub/V0/SUBMISSION_PROCESS.md║
 // ║                                                                           ║
+// ╠═══════════════════════════════════════════════════════════════════════════╣
+// ║  🏷️  VENDOR VERIFICATION REQUIRES TWO UPDATES:                           ║
+// ║     1. VENDOR_VERIFIED object (~line 451) - adds badge + sort priority   ║
+// ║     2. vendorVerified: true on test object - data tracking               ║
+// ║     (Missing #1 = no green badge, test won't sort to top!)               ║
 // ╠═══════════════════════════════════════════════════════════════════════════╣
 // ║  ✅ AFTER EVERY CHANGE, UPDATE THESE:                                    ║
 // ║     1. DATABASE_CHANGELOG (bottom of this file) - add entry              ║
