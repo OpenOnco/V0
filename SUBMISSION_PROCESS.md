@@ -1,5 +1,7 @@
 # OpenOnco Submission Processing Guide
 
+**Last updated:** 2026-01-06
+
 **Single source of truth for all OpenOnco data submissions.**
 
 When Alex pastes any submission (new test, change request, vendor verification, correction), follow this process.
