@@ -232,25 +232,34 @@ When a vendor representative confirms their test data is accurate.
 1. **Review all fields** with vendor
 2. **Flag any discrepancies** they identify
 3. **Process any corrections** as Change Requests (Section B)
-4. **Update verification status:**
 
+## C3: Update TWO Places (Both Required!)
+
+⚠️ **CRITICAL:** Vendor verification requires updates in TWO locations:
+
+### 1. On the test object itself:
 ```javascript
 vendorVerified: true,
-vendorRequestedChanges: "[existing]. 2025-01-15: Vendor verified by [Name], [Title], [Company]."
+vendorRequestedChanges: "[existing]. 2026-01-06: Vendor verified by [Name], [Title], [Company]."
 ```
 
-## C3: Update VERIFIED_CONTRIBUTORS
-
-If this is first verification for this test:
-
+### 2. In the VENDOR_VERIFIED object (for badge + sort priority):
 ```javascript
-// In data.js VERIFIED_CONTRIBUTORS section
-'[test-id]': {
-  name: '[Submitter Name]',
-  company: '[Company]',
-  date: '[YYYY-MM-DD]'
-},
+// Near line ~451 in data.js - look for "export const VENDOR_VERIFIED"
+export const VENDOR_VERIFIED = {
+  // ... existing entries ...
+  '[test-id]': {  // [Test Name]
+    name: '[Submitter Name]',
+    company: '[Company]',
+    verifiedDate: '[YYYY-MM-DD]',
+    editsSubmitted: [number of changes made]
+  },
+};
 ```
+
+**Why both?**
+- `vendorVerified: true` on test = data tracking
+- `VENDOR_VERIFIED` object = green badge display + sort to top of list
 
 ---
 
