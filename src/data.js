@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: 2026-01-02 (Sample fields migration - added sampleVolumeMl, sampleTubeType, sampleTubeCount, sampleCitations)
+// Last updated: 2026-01-06 (Guardant vendor validation - updated Reveal MRD LOD, Guardant360 Liquid sample requirements)
 // ============================================
 //
 // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -840,9 +840,10 @@ export const mrdTestData = [
     "longitudinalSensitivityCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-COSMOS-Study-Published-in-Clinical-Cancer-Research-Validates-Utility-of-Guardant-Reveal-Liquid-Biopsy-Test-for-Predicting-Recurrence-in-Colorectal-Cancer/default.aspx",
     "longitudinalSpecificity": 98.0,
     "longitudinalSpecificityCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-COSMOS-Study-Published-in-Clinical-Cancer-Research-Validates-Utility-of-Guardant-Reveal-Liquid-Biopsy-Test-for-Predicting-Recurrence-in-Colorectal-Cancer/default.aspx",
-    "lod": "0.01% VAF",
-    "lodCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-COSMOS-Study-Published-in-Clinical-Cancer-Research-Validates-Utility-of-Guardant-Reveal-Liquid-Biopsy-Test-for-Predicting-Recurrence-in-Colorectal-Cancer/default.aspx",
-    "lodNotes": "Detection threshold approximately 0.01% VAF (~100 ppm); methylation-based detection (epiTF) enables tumor-naïve ctDNA detection at very low allele fractions.",
+    "lod": "0.005% Tumor Fraction",
+    "lod95": "0.005% Tumor Fraction",
+    "lodCitations": "https://www.guardantcomplete.com",
+    "lodNotes": "Detection threshold 0.005% Tumor Fraction (~50 ppm); methylation-based detection (epiTF) enables tumor-naïve ctDNA detection at very low tumor fractions. Updated from 0.01% VAF per vendor validation (Jan 2026).",
     "leadTimeVsImaging": 159.0,
     "leadTimeVsImagingCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2024/Guardant-Health-COSMOS-Study-Published-in-Clinical-Cancer-Research-Validates-Utility-of-Guardant-Reveal-Liquid-Biopsy-Test-for-Predicting-Recurrence-in-Colorectal-Cancer/default.aspx",
     "leadTimeVsImagingNotes": "CRC median 4.77 months from MRD+ to recurrence.",
@@ -878,7 +879,8 @@ export const mrdTestData = [
     "clinicalSettingsNotes": "Validated for post-surgical landmark assessment (63% sensitivity) and longitudinal surveillance (81% sensitivity) in CRC. Medicare coverage for both post-surgical and surveillance settings.",
     "totalParticipants": 2000,
     "numPublications": 10,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated LOD from 0.01% VAF to 0.005% Tumor Fraction per guardantcomplete.com."
   },
   {
     "id": "mrd-7",
@@ -4488,7 +4490,7 @@ export const tdsTestData = [
     "tat": "7 days",
     "tatNotes": "Median 7 days from sample receipt to results.",
     "tatCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
-    "sampleRequirements": "Two 10 mL tubes of whole blood; ship same or next day at room temperature (do not freeze/refrigerate)",
+    "sampleRequirements": "Two 10mL cfDNA BCT Streck Tubes (provided in the kit); Ship same/next day @ Room Temp carefully following the kit included IFU.",
     "sampleRequirementsCitations": "https://www.guardantcomplete.com/assets/pdf/Guardant360-Liquid-Specification-Sheet.pdf",
     "lod": "SNVs: 0.20% VAF; Indels: 0.26%; CNAs: 2.46 copies; Fusions: 0.05%; MSI: 0.05%; Tumor Fraction: 1.6%",
     "lodNotes": "LoD defined as allele fraction/copy number at 95% probability of detection for oncogenic variants. TMB evaluable at ≥0.3% sample allele fraction.",
@@ -4506,7 +4508,8 @@ export const tdsTestData = [
     "numPublications": 100,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Same platform as Guardant360 CDx; extensive clinical validation and companion diagnostic studies across multiple cancer types",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34838325/"
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34838325/",
+    "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated sampleRequirements with precise tube specifications per official IFU."
   },
   {
     "id": "tds-5",
