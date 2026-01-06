@@ -456,6 +456,18 @@ export const VENDOR_VERIFIED = {
     verifiedDate: '2025-12-24',
     editsSubmitted: 4
   },
+  'mrd-6': {  // Reveal MRD
+    name: 'Brandon Guida',
+    company: 'Guardant Health',
+    verifiedDate: '2026-01-06',
+    editsSubmitted: 1
+  },
+  'tds-17': {  // Guardant360 Liquid
+    name: 'Brandon Guida',
+    company: 'Guardant Health',
+    verifiedDate: '2026-01-06',
+    editsSubmitted: 1
+  },
 };
 
 // ============================================
