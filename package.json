@@ -11,6 +11,7 @@
     "test": "playwright test",
     "test:smoke": "playwright test -g 'Homepage|Category Pages' --reporter=list",
     "test:full": "playwright test --reporter=list",
+    "test:api": "playwright test --config=playwright.api.config.js --reporter=list",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report"

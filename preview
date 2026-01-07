@@ -1,11 +1,15 @@
 #!/bin/bash
-# OpenOnco Preview: smoke tests → push to develop → Vercel preview URL
+# OpenOnco Preview: smoke tests + API tests → push to develop → Vercel preview URL
 
 set -e
 cd "$(dirname "$0")"
 
 echo "🧪 Running smoke tests..."
 npm run test:smoke
+
+echo ""
+echo "🔌 Running API tests..."
+npm run test:api
 
 echo ""
 echo "✅ Tests passed. Pushing to develop..."

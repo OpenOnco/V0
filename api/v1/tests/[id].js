@@ -11,7 +11,7 @@
  * Response includes full test data with category context.
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../_data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../../src/data.js';
 
 // Build lookup map for fast access
 const TEST_LOOKUP = new Map();
@@ -67,31 +67,31 @@ export default function handler(req, res) {
       });
     }
 
-    // Look up test
-    const test = TEST_LOOKUP.get(id);
+    // Look up test (exact match first)
+    let test = TEST_LOOKUP.get(id);
 
+    // Try case-insensitive search if not found
     if (!test) {
-      // Try case-insensitive search
       const idLower = id.toLowerCase();
-      let foundTest = null;
       for (const [key, value] of TEST_LOOKUP) {
         if (key.toLowerCase() === idLower) {
-          foundTest = value;
+          test = value;
           break;
         }
       }
-
-      if (!foundTest) {
-        return res.status(404).json({
-          success: false,
-          error: 'Test not found',
-          message: `No test found with ID "${id}"`,
-          hint: 'Test IDs follow the pattern: mrd-1, ecd-5, trm-3, tds-12',
-        });
-      }
     }
 
-    let responseTest = test || foundTest;
+    // Return 404 if still not found
+    if (!test) {
+      return res.status(404).json({
+        success: false,
+        error: 'Test not found',
+        message: `No test found with ID "${id}"`,
+        hint: 'Test IDs follow the pattern: mrd-1, ecd-5, trm-3, tds-12',
+      });
+    }
+
+    let responseTest = test;
 
     // Filter fields if requested
     if (fields) {
@@ -110,9 +110,9 @@ export default function handler(req, res) {
 
     // Add useful links
     const links = {
-      self: `https://openonco.org/api/v1/tests/${id}`,
-      web: `https://openonco.org/${responseTest.category?.toLowerCase()}/${id}`,
-      category: `https://openonco.org/api/v1/tests?category=${responseTest.category?.toLowerCase()}`,
+      self: `https://openonco.org/api/v1/tests/${test.id}`,
+      web: `https://openonco.org/${test.category?.toLowerCase()}/${test.id}`,
+      category: `https://openonco.org/api/v1/tests?category=${test.category?.toLowerCase()}`,
     };
 
     return res.status(200).json({

@@ -14,7 +14,7 @@
  * Response includes CORS headers for cross-origin access.
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../src/data.js';
 
 // Category mapping
 const CATEGORY_DATA = {
@@ -32,20 +32,24 @@ const corsHeaders = {
   'Cache-Control': 'public, max-age=300, s-maxage=600', // 5min client, 10min CDN
 };
 
+function setCorsHeaders(res) {
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    res.setHeader(key, value);
+  });
+}
+
 export default function handler(req, res) {
+  // Set CORS headers for all responses
+  setCorsHeaders(res);
+
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return res.status(200).setHeaders(corsHeaders).end();
+    return res.status(200).end();
   }
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-
-  // Set CORS headers
-  Object.entries(corsHeaders).forEach(([key, value]) => {
-    res.setHeader(key, value);
-  });
 
   try {
     const {
