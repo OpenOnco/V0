@@ -14,7 +14,7 @@
  * Response includes CORS headers for cross-origin access.
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../src/data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
 
 // Category mapping
 const CATEGORY_DATA = {
