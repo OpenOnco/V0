@@ -424,6 +424,26 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 )}
               </FilterSection>
 
+              {/* Sample Type Section - NEW TOP-LEVEL FILTER */}
+              {config.sampleCategories && config.sampleCategories.length > 1 && (
+                <FilterSection
+                  title="Sample Type"
+                  defaultOpen={false}
+                  activeCount={selectedSampleCategories.length}
+                >
+                  <div className="space-y-1">
+                    {config.sampleCategories.map(s => (
+                      <Checkbox 
+                        key={s} 
+                        label={s} 
+                        checked={selectedSampleCategories.includes(s)} 
+                        onChange={() => toggle(setSelectedSampleCategories)(s)} 
+                      />
+                    ))}
+                  </div>
+                </FilterSection>
+              )}
+
               {/* Product Type Section - IVD Kit vs Service */}
               {config.productTypes && (
                 <FilterSection
@@ -497,20 +517,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 <FilterSection 
                   title="Methodology" 
                   defaultOpen={false}
-                  activeCount={selectedApproaches.length + selectedSampleCategories.length + (tumorTissueRequired !== 'any' ? 1 : 0)}
+                  activeCount={selectedApproaches.length + (tumorTissueRequired !== 'any' ? 1 : 0)}
                 >
                   {/* Approach - for MRD, TRM, TDS */}
                   {category !== 'ECD' && config.approaches && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">Approach</label>
                       {config.approaches.map(a => <Checkbox key={a} label={a} checked={selectedApproaches.includes(a)} onChange={() => toggle(setSelectedApproaches)(a)} />)}
-                    </>
-                  )}
-                  {/* Sample Type - all categories */}
-                  {config.sampleCategories && (
-                    <>
-                      <label className="text-xs text-gray-500 mb-1 mt-3 block">Sample Type</label>
-                      {config.sampleCategories.map(o => <Checkbox key={o} label={o} checked={selectedSampleCategories.includes(o)} onChange={() => toggle(setSelectedSampleCategories)(o)} />)}
                     </>
                   )}
                   {/* Tumor Tissue Requirement - MRD only */}
