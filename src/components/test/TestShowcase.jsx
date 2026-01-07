@@ -234,7 +234,9 @@ const TestShowcase = ({
                                     'service central lab';
       // Include cancer types in search - "prostate" finds tests for prostate cancer
       const cancerTypesSearchable = Array.isArray(test.cancerTypes) ? test.cancerTypes.join(' ') : (test.cancerTypes || '');
-      const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable}`.toLowerCase();
+      // Include sample category in search - "blood", "plasma", "tissue", "stool" filter by sample type
+      const sampleCategorySearchable = test.sampleCategory || '';
+      const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable} ${sampleCategorySearchable}`.toLowerCase();
       return terms.every(term => searchableText.includes(term));
     });
   }, [allTests, searchQuery]);
