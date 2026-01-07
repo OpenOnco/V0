@@ -504,6 +504,12 @@ export const VENDOR_VERIFIED = {
     verifiedDate: '2026-01-06',
     editsSubmitted: 1
   },
+  'ecd-20': {  // Avantect Pancreatic Cancer Test
+    name: 'Adrian Vilalta',
+    company: 'ClearNote Health',
+    verifiedDate: '2026-01-07',
+    editsSubmitted: 0
+  },
 };
 
 // ============================================
@@ -3795,7 +3801,9 @@ export const ecdTestData = [
     "numPublications": 2,
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/36967102/ | https://pubmed.ncbi.nlm.nih.gov/39230538/",
     "numPublicationsNotes": "2 peer-reviewed publications: Clin Gastroenterol Hepatol 2023 (clinical validation, PMID 36967102), J Mol Diagn 2024 (analytical validation, PMID 39230538). Both authored by ClearNote Health employees.",
-    "technologyDifferentiator": "First commercially available single-cancer ECD test for pancreatic cancer in OpenOnco database. Uses 5-hydroxymethylcytosine (5hmC) profiling rather than standard 5-methylcytosine (5mC) methylation—5hmC is an oxidized derivative of 5mC with distinct tissue-specific patterns. Targets defined high-risk population (new-onset T2DM, genetic predisposition, family history) rather than general population screening. Strong specificity (96.9%) critical for screening context where false positives lead to unnecessary workup."
+    "technologyDifferentiator": "First commercially available single-cancer ECD test for pancreatic cancer in OpenOnco database. Uses 5-hydroxymethylcytosine (5hmC) profiling rather than standard 5-methylcytosine (5mC) methylation—5hmC is an oxidized derivative of 5mC with distinct tissue-specific patterns. Targets defined high-risk population (new-onset T2DM, genetic predisposition, family history) rather than general population screening. Strong specificity (96.9%) critical for screening context where false positives lead to unnecessary workup.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-12-16: Initial submission by Adrian Vilalta (ClearNote Health). 2026-01-07: Vendor verified data accuracy - no changes requested."
   },
   {
     "id": "ecd-25",
