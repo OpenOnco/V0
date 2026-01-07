@@ -462,6 +462,30 @@ export const COMPANY_CONTRIBUTIONS = {
 // ============================================
 export const VENDOR_VERIFIED = {
   // Add test IDs here after vendors complete the validation flow
+  'mrd-26': {  // MRDVision
+    name: 'Sandra Balladares',
+    company: 'Inocras',
+    verifiedDate: '2026-01-07',
+    editsSubmitted: 0
+  },
+  'tds-26': {  // CellSight DNA
+    name: 'Kyle Dunn',
+    company: 'Cancer Cell Dx',
+    verifiedDate: '2026-01-07',
+    editsSubmitted: 0
+  },
+  'tds-27': {  // CancerVision
+    name: 'Sandra Balladares',
+    company: 'Inocras',
+    verifiedDate: '2026-01-07',
+    editsSubmitted: 0
+  },
+  'tds-22': {  // LiquidHALLMARK
+    name: 'Jeremy Au',
+    company: 'Lucence',
+    verifiedDate: '2026-01-07',
+    editsSubmitted: 2
+  },
   'mrd-25': {  // CanCatch Custom
     name: 'Liankai Chi',
     company: 'Burning Rock Dx',
