@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: 2026-01-06
+// Last updated: 2026-01-07
 // ============================================
 //
 // ⚠️  READ SUBMISSION_PROCESS.md BEFORE MAKING ANY CHANGES
@@ -9,17 +9,17 @@
 // ┌─────────────────────────────────────────────────────────────────┐
 // │                        QUICK REFERENCE                          │
 // ├─────────────────────────────────────────────────────────────────┤
-// │ SECTION              │ START LINE  │ LAST ID    │ NEXT ID       │
+// │ SECTION                    │ START LINE  │ NOTES               │
 // ├─────────────────────────────────────────────────────────────────┤
-// │ VENDOR_VERIFIED      │ ~463        │ --         │ --            │
-// │ MRD Tests            │ ~500        │ mrd-24     │ mrd-25        │
-// │ MRD IVD Kits         │ ~1680       │ mrd-kit-3  │ mrd-kit-4     │
-// │ ECD Tests            │ ~1796       │ ecd-22     │ ecd-23        │
-// │ ECD IVD Kits         │ ~2560       │ (check)    │ ecd-kit-1     │
-// │ TRM Tests            │ ~2919       │ trm-14     │ trm-15        │
-// │ TDS Tests            │ ~3269       │ tds-25     │ tds-26        │
-// │ TDS IVD Kits         │ ~4155       │ tds-kit-15 │ tds-kit-16    │
-// │ DATABASE_CHANGELOG   │ ~4841       │ --         │ --            │
+// │ VENDOR_VERIFIED            │ ~463        │ Vendor verification │
+// │ VENDOR_ASSISTANCE_PROGRAMS │ ~515        │ Patient assistance  │
+// │ MRD Tests                  │ ~750        │ mrd-26 next         │
+// │ MRD IVD Kits               │ ~1900       │ mrd-kit-4 next      │
+// │ ECD Tests                  │ ~2020       │ ecd-23 next         │
+// │ TRM Tests                  │ ~3140       │ trm-15 next         │
+// │ TDS Tests                  │ ~3490       │ tds-28 next         │
+// │ TDS IVD Kits               │ ~4370       │ tds-kit-16 next     │
+// │ DATABASE_CHANGELOG         │ ~5060       │ --                  │
 // └─────────────────────────────────────────────────────────────────┘
 //
 // ============================================
@@ -511,6 +511,230 @@ export const VENDOR_VERIFIED = {
     editsSubmitted: 0
   },
 };
+
+// ============================================
+// VENDOR PATIENT ASSISTANCE PROGRAMS
+// Source: Web research, verified 2026-01-07
+// Programs change frequently - verify with vendor before relying on them
+// ============================================
+export const VENDOR_ASSISTANCE_PROGRAMS = {
+  'Natera': {
+    programName: 'Compassionate Care / Financial Assistance Program',
+    hasProgram: true,
+    tests: ['Signatera', 'Altera', 'CLARITY Lymphoma', 'Signatera Genome', 'Latitude'],
+    description: 'Financial assistance and payment plan options to reduce patient out-of-pocket cost for qualifying patients.',
+    eligibility: 'Based on household size and income (Federal Poverty Level guidelines).',
+    maxOutOfPocket: null,
+    paymentPlans: 'Interest-free payment plans starting at $25/month',
+    applicationUrl: 'https://www.natera.com/oncology/billing/',
+    contactPhone: '650-489-9050 (select 2 for patients, then 4 for billing)',
+    contactEmail: 'signaterapc@natera.com',
+    dedicatedCoordinators: true,
+    lastVerified: '2026-01-07'
+  },
+  'Guardant Health': {
+    programName: 'Guardant Access Program',
+    hasProgram: true,
+    tests: ['Guardant360 CDx', 'Guardant360 Liquid', 'Guardant360 Tissue', 'Guardant Reveal', 'Guardant360 Response', 'Shield'],
+    description: 'Helps patients navigate insurance coverage, billing, and financial assistance eligibility; aims to minimize surprise bills.',
+    eligibility: 'Based on medical and financial need.',
+    maxOutOfPocket: null,
+    selfPayRates: { 'Guardant360': '$5,000', 'GuardantReveal': '$3,500' },
+    applicationUrl: 'https://guardanthealth.com/precision-oncology/for-patients/',
+    contactPhone: '855-722-7335 ext. 1, then press 2',
+    contactEmail: 'screeningpatient@guardanthealth.com',
+    autoEnrollment: 'Patients enroll by signing the Testing Requisition form',
+    lastVerified: '2026-01-07'
+  },
+  'Foundation Medicine': {
+    programName: 'FoundationAccess Financial Assistance Program',
+    hasProgram: true,
+    tests: ['FoundationOne CDx', 'FoundationOne Liquid CDx', 'FoundationOne Heme', 'FoundationOne RNA', 'FoundationOne Tracker'],
+    description: 'Reimbursement and financial assistance support to help patients access Foundation Medicine tests.',
+    eligibility: 'Based on medical and financial need.',
+    maxOutOfPocket: '$100 lifetime maximum for qualifying patients',
+    selfPayRate: '$3,500 per test',
+    coverageStats: '65% of commercially insured and 94% of Medicare patients pay $0',
+    applicationUrl: 'https://aid.foundationmedicine.com/',
+    contactPhone: '888-988-3639',
+    contactEmail: 'client.services@foundationmedicine.com',
+    lastVerified: '2026-01-07'
+  },
+  'GRAIL': {
+    programName: 'Financial Assistance Program',
+    hasProgram: true,
+    tests: ['Galleri'],
+    description: 'Financial assistance to reduce out-of-pocket cost for eligible individuals taking the Galleri test.',
+    eligibility: 'Based on income/financial need (Federal Poverty Level-based criteria).',
+    maxOutOfPocket: null,
+    paymentOptions: 'Check, credit card, HSA/FSA eligible',
+    coverageNotes: 'Limited insurance coverage currently; TRICARE covers with prior authorization',
+    applicationUrl: 'https://www.galleri.com/patient/the-galleri-test/cost',
+    contactPhone: '833-694-2553',
+    contactEmail: 'patient-advocate@grailbio.com',
+    patientAdvocate: true,
+    lastVerified: '2026-01-07'
+  },
+  'Exact Sciences': {
+    programName: 'Patient Assistance Program',
+    hasProgram: true,
+    tests: ['Cologuard', 'Cologuard Plus', 'Oncotype DX Breast', 'Oncotype DX Colon', 'OncoExTra', 'Cancerguard', 'Oncoguard Liver'],
+    description: 'Patient financial assistance and coverage support resources.',
+    eligibility: 'At or below 400% of Federal Poverty Level (FPL).',
+    coverageNotes: 'At or below FPL may receive testing at no cost',
+    applicationUrl: 'https://www.exactsciences.com/cancer-testing/coverage-financial-assistance',
+    estimatorTool: 'https://precisiononcology.exactsciences.com/patients-and-caregivers/testing-and-treating/cost-and-financial-resources',
+    contactPhone: '866-267-2322',
+    contactEmail: 'help@exactsciences.com',
+    inNetworkPlans: ['Aetna', 'Anthem', 'Cigna', 'Humana', 'UnitedHealthcare'],
+    lastVerified: '2026-01-07'
+  },
+  'Tempus': {
+    programName: 'Financial Assistance Program',
+    hasProgram: true,
+    tests: ['Tempus xT', 'Tempus xT CDx', 'Tempus xF', 'Tempus xR', 'Oncodetect', 'Tempus xM MRD'],
+    description: 'Financial assistance based on household income and circumstances.',
+    eligibility: 'Based on household income, household size, and circumstances.',
+    applicationUrl: 'https://access.tempus.com',
+    contactPhone: '888-988-8832',
+    lastVerified: '2026-01-07'
+  },
+  'Caris Life Sciences': {
+    programName: 'Patient Financial Assistance',
+    hasProgram: true,
+    tests: ['Caris MI Profile', 'Caris Assure'],
+    description: 'Financial assistance for qualifying patients to cover out-of-pocket costs.',
+    eligibility: 'Based on financial need assessment.',
+    applicationUrl: 'https://www.carismolecularintelligence.com/patients/financial-assistance/',
+    contactPhone: '888-979-8669',
+    lastVerified: '2026-01-07'
+  },
+  'Myriad Genetics': {
+    programName: 'Myriad Financial Assistance Program',
+    hasProgram: true,
+    tests: ['MyChoice CDx', 'BRACAnalysis CDx'],
+    description: 'Income-based financial assistance up to 100% discount for qualifying patients.',
+    eligibility: 'Based on Federal Poverty Level guidelines.',
+    maxOutOfPocket: '$0 for patients at or below 400% FPL',
+    applicationUrl: 'https://myriad.com/affordability/financial-assistance/',
+    contactPhone: '800-469-7423',
+    restrictions: 'Not available for federally funded insurance (Medicare, Medicaid, TRICARE, Medicare Advantage)',
+    lastVerified: '2026-01-07'
+  },
+  'Labcorp': {
+    programName: 'Financial Assistance Program / Patient Assistance Program',
+    hasProgram: true,
+    tests: ['Invitae PCM', 'Labcorp Plasma Detect'],
+    description: 'Billing support and financial assistance options; published ceiling self-pay prices.',
+    eligibility: 'Based on income and circumstances.',
+    typicalCost: 'Out-of-pocket typically less than $100 for insured patients',
+    maxBillToInsurance: '$1,500 per clinical area - lower than most providers',
+    familyVariantTesting: 'Free for family members of patients who used Financial Assistance Program',
+    applicationUrl: 'https://www.invitae.com/us/individual-faqs/billing',
+    contactPhone: '833-941-0828',
+    contactEmail: 'LcGeneticsBilling@labcorp.com',
+    uninsuredCeilingPrices: { 'Cancer': '$250', 'Rare Disease': '$299' },
+    lastVerified: '2026-01-07'
+  },
+  'Quest Diagnostics': {
+    programName: 'Patient Financial Assistance Program',
+    hasProgram: true,
+    tests: ['Haystack MRD'],
+    description: 'Tiered discounts and payment plans; specific hereditary cancer financial assistance cap.',
+    eligibility: 'Based on income and family size (HHS/FPL guidelines).',
+    maxOutOfPocket: '$200 out-of-pocket cap for qualifying Quest hereditary cancer tests',
+    freeForPoverty: 'Testing at $0 for patients at or below Federal Poverty Level',
+    paymentPlans: '0% financing for 12-month period',
+    applicationUrl: 'https://www.questdiagnostics.com/patients/billing-insurance/financial-assistance',
+    contactPhone: '866-436-3463 (866-GENE-INFO)',
+    processingTime: 'Approximately 2 weeks to process applications',
+    lastVerified: '2026-01-07'
+  },
+  'Adaptive Biotechnologies': {
+    programName: 'Adaptive Assist',
+    hasProgram: true,
+    tests: ['clonoSEQ'],
+    description: 'Helps patients with insurance/coverage and assesses eligibility for financial assistance.',
+    eligibility: 'Based on medical and financial need.',
+    coverageNotes: 'Most patients have no out-of-pocket cost; qualification for $0 may be valid for one year',
+    applicationUrl: 'https://www.clonoseq.com/patient/other-blood-cancers/adaptive-assist/',
+    contactPhone: '855-236-9230',
+    contactEmail: 'support@clonoseq.com',
+    lastVerified: '2026-01-07'
+  },
+  'NeoGenomics': {
+    programName: 'NeoGenomics Financial Assistance Program',
+    hasProgram: true,
+    tests: ['RaDaR', 'NEO PanTracer'],
+    description: 'Financial assistance application for patients who certify that testing would cause financial hardship.',
+    eligibility: 'Assessed via application; approval not guaranteed.',
+    applicationPdf: 'https://cms.neogenomics.com/sites/default/files/2025-01/FAA_Form_English_010925_Final_FF.pdf',
+    lastVerified: '2026-01-07'
+  },
+  'Burning Rock Dx': {
+    programName: null,
+    hasProgram: false,
+    tests: ['OncoScreen Plus', 'OverC MCDBT', 'BR Prophet', 'CanCatch Custom'],
+    description: 'No US-based patient financial assistance program identified.',
+    notes: 'Primarily serves China market; China is largely an out-of-pocket market for these tests',
+    contactUrl: 'https://www.brbiotech.com/en/',
+    lastVerified: '2026-01-07'
+  }
+};
+
+// Helper function to check if a test has assistance program by vendor name
+export const hasAssistanceProgram = (vendorName) => {
+  if (!vendorName) return false;
+  // Direct match
+  if (VENDOR_ASSISTANCE_PROGRAMS[vendorName]?.hasProgram) return true;
+  // Partial match (e.g., "Foundation Medicine / Natera" should match)
+  for (const vendor of Object.keys(VENDOR_ASSISTANCE_PROGRAMS)) {
+    if (vendorName.includes(vendor) && VENDOR_ASSISTANCE_PROGRAMS[vendor]?.hasProgram) {
+      return true;
+    }
+  }
+  return false;
+};
+
+// Helper to get assistance program details for a vendor
+export const getAssistanceProgramForVendor = (vendorName) => {
+  if (!vendorName) return null;
+  // Direct match first
+  if (VENDOR_ASSISTANCE_PROGRAMS[vendorName]) {
+    return VENDOR_ASSISTANCE_PROGRAMS[vendorName];
+  }
+  // Partial match
+  for (const vendor of Object.keys(VENDOR_ASSISTANCE_PROGRAMS)) {
+    if (vendorName.includes(vendor)) {
+      return VENDOR_ASSISTANCE_PROGRAMS[vendor];
+    }
+  }
+  return null;
+};
+
+// Additional resources for all patients
+export const PATIENT_ASSISTANCE_RESOURCES = [
+  {
+    name: 'Cancer Financial Assistance Coalition (CFAC)',
+    url: 'https://cancerfac.org',
+    description: 'Consortium of organizations helping patients manage financial challenges from cancer diagnosis'
+  },
+  {
+    name: 'CancerCare',
+    url: 'https://www.cancercare.org/financial_assistance',
+    description: 'Financial assistance for cancer-related costs and co-pays; professional oncology social workers'
+  },
+  {
+    name: 'Patient Advocate Foundation',
+    url: 'https://www.patientadvocate.org/connect-with-services/financial-aid-funds/',
+    description: 'Various funds for specific cancer types including Merkel Cell Carcinoma, Ovarian Cancer, etc.'
+  },
+  {
+    name: 'American Cancer Society',
+    url: 'https://www.cancer.org',
+    description: 'Resources for finding financial help for cancer patients'
+  }
+];
 
 // ============================================
 // TEST DATA ARRAYS START HERE

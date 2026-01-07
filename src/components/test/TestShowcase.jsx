@@ -9,6 +9,7 @@ import {
   getDomain,
   COMPANY_CONTRIBUTIONS,
   VENDOR_VERIFIED,
+  hasAssistanceProgram,
 } from '../../data';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
 import VendorBadge from '../badges/VendorBadge';
@@ -29,6 +30,7 @@ const TestShowcase = ({
   const [selectedTest, setSelectedTest] = useState(null);
   const [sortBy, setSortBy] = useState('vendor');
   const [internalSearchQuery, setInternalSearchQuery] = useState('');
+  const [showOnlyWithAssistance, setShowOnlyWithAssistance] = useState(false);
   
   // Use external state if provided, otherwise use internal state
   const searchQuery = externalSearchQuery !== undefined ? externalSearchQuery : internalSearchQuery;
@@ -225,21 +227,32 @@ const TestShowcase = ({
 
   // Filter tests based on search query (supports multi-word: "exact ecd" matches Exact Sciences ECD tests)
   const filteredTests = useMemo(() => {
-    if (!searchQuery.trim()) return allTests;
-    const terms = searchQuery.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
-    return allTests.filter(test => {
-      // Include productType in search - "kit" finds all IVD kits, "service" finds central lab services
-      const productTypeSearchable = test.productType === 'Laboratory IVD Kit' ? 'kit ivd laboratory' :
-                                    test.productType === 'Self-Collection' ? 'self-collection home' :
-                                    'service central lab';
-      // Include cancer types in search - "prostate" finds tests for prostate cancer
-      const cancerTypesSearchable = Array.isArray(test.cancerTypes) ? test.cancerTypes.join(' ') : (test.cancerTypes || '');
-      // Include sample category in search - "blood", "plasma", "tissue", "stool" filter by sample type
-      const sampleCategorySearchable = test.sampleCategory || '';
-      const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable} ${sampleCategorySearchable}`.toLowerCase();
-      return terms.every(term => searchableText.includes(term));
-    });
-  }, [allTests, searchQuery]);
+    let result = allTests;
+    
+    // Filter by assistance program if enabled
+    if (showOnlyWithAssistance) {
+      result = result.filter(test => hasAssistanceProgram(test.vendor));
+    }
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const terms = searchQuery.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+      result = result.filter(test => {
+        // Include productType in search - "kit" finds all IVD kits, "service" finds central lab services
+        const productTypeSearchable = test.productType === 'Laboratory IVD Kit' ? 'kit ivd laboratory' :
+                                      test.productType === 'Self-Collection' ? 'self-collection home' :
+                                      'service central lab';
+        // Include cancer types in search - "prostate" finds tests for prostate cancer
+        const cancerTypesSearchable = Array.isArray(test.cancerTypes) ? test.cancerTypes.join(' ') : (test.cancerTypes || '');
+        // Include sample category in search - "blood", "plasma", "tissue", "stool" filter by sample type
+        const sampleCategorySearchable = test.sampleCategory || '';
+        const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable} ${sampleCategorySearchable}`.toLowerCase();
+        return terms.every(term => searchableText.includes(term));
+      });
+    }
+    
+    return result;
+  }, [allTests, searchQuery, showOnlyWithAssistance]);
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
@@ -521,6 +534,18 @@ const TestShowcase = ({
                 </button>
               )}
             </div>
+            {/* Assistance Program Filter */}
+            <label className="flex items-center gap-2 mt-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showOnlyWithAssistance}
+                onChange={(e) => setShowOnlyWithAssistance(e.target.checked)}
+                className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
+              />
+              <span className="text-sm text-gray-600">
+                Only show tests with <span className="font-medium text-emerald-600">financial assistance programs</span>
+              </span>
+            </label>
           </div>
         </div>
 

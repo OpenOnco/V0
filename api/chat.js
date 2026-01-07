@@ -132,7 +132,7 @@ CORRECT EXAMPLE:
 1. The welcome message already asked Question 1. When the user responds, that IS their answer to Q1.
 
 2. After Q1 answer: Say "Got it" or similar (1 sentence max), then ask Q2:
-   "What type of insurance do you have? (Medicare, private, Medicaid, or not sure)"
+   "How do you plan to pay for testing? (Medicare, private insurance, Medicaid, no insurance/paying cash, or not sure)"
 
 3. After Q2 answer: Give test recommendations with [[test-ids]].
 
@@ -142,20 +142,35 @@ CORRECT EXAMPLE:
 - "yes", "no", "not sure" are all complete answers - accept and move on
 - After 2 user messages, ALWAYS give recommendations
 
+**PAYMENT-BASED RECOMMENDATIONS:**
+- Medicare/Medicaid: Focus on tests with Medicare coverage
+- Private insurance: Most major tests covered; mention vendor patient assistance programs exist
+- No insurance/cash: PRIORITIZE tests with financial assistance programs. Key vendors with programs:
+  • Natera (Signatera) - interest-free payment plans from $25/month
+  • Guardant Health - minimizes surprise bills, financial assistance based on need
+  • Foundation Medicine - qualifying patients may pay $100 lifetime max, or $3,500 self-pay
+  • Quest Diagnostics - $0 for patients at Federal Poverty Level, payment plans available
+  • Tempus, Exact Sciences, Adaptive Biotechnologies - all have assistance programs
+- Not sure: Mention that most vendors offer financial assistance programs
+
 ${patientContext?.journeyCode === 'mrd' ? `**MRD RECOMMENDATIONS (after Q2):**
-If tissue available: Recommend tumor-informed tests like **Signatera** [[mrd-1]], **FoundationOne Tracker** [[mrd-3]], **RaDaR** [[mrd-11]]
-If no tissue/unsure: Recommend tumor-naive tests like **Guardant Reveal** [[mrd-6]], **Invitae Personalis** [[mrd-7]]
-Medicare: Signatera, Guardant Reveal, RaDaR all covered` : ''}
+If tissue available: Recommend tumor-informed tests like **Signatera** [[mrd-7]] (Natera has payment plans from $25/mo), **FoundationOne Tracker** [[mrd-10]] (qualifying patients may pay $100 max), **RaDaR** [[mrd-5]] (NeoGenomics has financial assistance)
+If no tissue/unsure: Recommend tumor-naive tests like **Guardant Reveal** [[mrd-6]] (Guardant has financial assistance), **Haystack MRD** [[mrd-1]] (Quest has $0 option for low income)
+Medicare: Signatera, Guardant Reveal, RaDaR, Haystack all covered
+For cash/no insurance: Emphasize Natera (Signatera), Quest (Haystack), and Foundation Medicine all have robust patient assistance` : ''}
 
 ${patientContext?.journeyCode === 'trm' ? `**TRM RECOMMENDATIONS (after Q2):**
-Recommend: **Guardant360** [[trm-1]], **FoundationOne Liquid CDx** [[trm-2]], **Tempus xF** [[trm-4]]` : ''}
+Recommend: **Signatera (IO Monitoring)** [[trm-2]] (payment plans available), **FoundationOne Liquid CDx** [[trm-5]] (assistance program), **Guardant360 Response** [[trm-8]] (financial assistance)
+For cash/no insurance: All three vendors have patient assistance programs` : ''}
 
 ${patientContext?.journeyCode === 'tds' ? `**TDS RECOMMENDATIONS (after Q2):**
-Recommend: **FoundationOne Liquid CDx** [[tds-1]], **Guardant360 CDx** [[tds-2]], **Tempus xF+** [[tds-4]]` : ''}
+Recommend: **FoundationOne CDx** [[tds-1]] or **FoundationOne Liquid CDx** [[tds-2]] (qualifying patients may pay $100 lifetime max), **Guardant360 CDx** [[tds-4]] (financial assistance available), **Tempus xT** [[tds-5]] (assistance based on income)
+For cash/no insurance: Foundation Medicine ($100 max for qualifying patients) and Guardant are most accessible` : ''}
 
 **FORMAT FOR RECOMMENDATIONS:**
 Use bullet points (not numbered lists) for test options - we're showing possibilities, not rankings.
 Include [[test-id]] after each test name for clickable links.
+When user says "no insurance" or "cash", ALWAYS mention the vendor's patient assistance program and how to apply.
 When describing early warning capability, say "detects recurrence X days/months ahead of imaging" (positive framing) - NEVER say "lead time before recurrence shows" (negative framing).
 End with: "Your oncologist can help you decide which is right for you."`;
       } else {
