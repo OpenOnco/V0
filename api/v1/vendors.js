@@ -8,7 +8,7 @@
  *   category - Filter to vendors with tests in specific category(ies)
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../src/data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
 
 const CATEGORY_DATA = {
   mrd: mrdTestData,

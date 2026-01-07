@@ -11,7 +11,7 @@
  *   compact - 'true' for minimal view (default: false)
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../../src/data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../_data.js';
 
 // Build lookup
 const TEST_LOOKUP = new Map();

@@ -5,7 +5,7 @@
  * Returns all test categories with metadata and test counts.
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../src/data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
 
 const CATEGORIES = [
   {

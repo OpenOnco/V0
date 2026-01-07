@@ -11,7 +11,7 @@
  * Response includes full test data with category context.
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../../src/data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../_data.js';
 
 // Build lookup map for fast access
 const TEST_LOOKUP = new Map();

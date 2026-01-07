@@ -5,7 +5,7 @@
  * Returns summary statistics about the OpenOnco database.
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../src/data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
 
 const ALL_DATA = {
   mrd: mrdTestData,
