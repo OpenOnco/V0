@@ -282,7 +282,9 @@ export const COMPANY_CONTRIBUTIONS = {
   'tds-22': {  // LiquidHALLMARK
     name: 'Jeremy Au',
     company: 'Lucence',
-    date: '2025-12-19'
+    date: '2025-12-19',
+    verifiedDate: '2026-01-07',
+    note: 'Vendor verified 2026-01-07. TAT updated to 7 Business Days; biomarkers clarified for cfDNA+cfRNA sources.'
   },
   'tds-kit-12': {  // Hedera Profiling 2
     name: 'Thomas Vetterli',
@@ -5314,8 +5316,8 @@ export const tdsTestData = [
     "rnaGenesAnalyzedNotes": "10 ctRNA targets for actionable and emerging fusions: ALK, FGFR2, FGFR3, MET, NTRK1, NTRK2, RET, ROS1, TMPRSS2.",
     "rnaGenesAnalyzedCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
     "geneListUrl": "https://www.mayocliniclabs.com/it-mmfiles/LiquidHALLMARK-Targets-by-Cancer-Type.pdf",
-    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "MSI"],
-    "biomarkersReportedNotes": "MSI determined from 6 microsatellite loci (BAT25, BAT26, NR21, NR24, NR27, MONO27). MSI-H = 2+ sites, MSI-L = 1 site.",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions (cfDNA + cfRNA)", "MSI"],
+    "biomarkersReportedNotes": "SNVs, Indels, CNAs, and MSI detected from cfDNA. Fusions detected from both cfDNA and cfRNA for enhanced sensitivity. MSI determined from 6 microsatellite loci (BAT25, BAT26, NR21, NR24, NR27, MONO27). MSI-H = 2+ sites, MSI-L = 1 site.",
     "biomarkersReportedCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
     "cancerTypes": ["Solid tumors (lung, breast, colon, prostate, ovarian, gastric, liver, pancreatic, bladder, kidney, thyroid, melanoma, endometrial, cervical, head & neck)"],
     "cancerTypesNotes": "Targets genes commonly associated with 15 cancer types.",
@@ -5338,8 +5340,8 @@ export const tdsTestData = [
     "vendorNCCNAlignmentCitation": "https://www.luminexcorp.com/",
     "vendorNCCNAlignmentIndications": ["NSCLC", "Breast Cancer", "Colorectal Cancer", "Prostate Cancer"],
     "vendorNCCNAlignmentNotes": "Covers 9 NCCN guideline-recommended biomarkers for NSCLC: EGFR, ALK, RET, ROS1, BRAF, KRAS, MET, ERBB2, NTRK1/2/3. LIQUIK study showed LiquidHALLMARK detected 15.6% more tissue-confirmed, NCCN guideline-recommended biomarkers than FDA-approved ctDNA-only test.",
-    "tat": "8-12 days",
-    "tatNotes": "Results typically available 8-12 days from receipt of specimen. Test performed Monday through Friday.",
+    "tat": "7 Business Days",
+    "tatNotes": "Results typically available in 7 business days from receipt of specimen. Test performed Monday through Friday.",
     "tatCitations": "https://www.mayocliniclabs.com/test-catalog/overview/622811",
     "sampleRequirements": "20mL whole blood in 2x Streck cfDNA BCT tubes (10mL each); 4-day stability at ambient temperature",
     "sampleRequirementsNotes": "Do not centrifuge or aliquot. Invert tubes to mix blood. Ship at ambient temperature. Gross hemolysis, lipemia, or icterus will result in rejection.",
@@ -5388,8 +5390,12 @@ export const tdsTestData = [
       "submitterEmail": "jeremy.au@lucence.com",
       "submitterType": "Vendor Representative",
       "submissionDate": "2025-12-19",
-      "submissionNotes": "New test submission via OpenOnco form. Performance data URLs provided: Mayo Clinic Labs catalog and Lucence website. Verified via Mayo Clinic Labs test catalog (LUCHM), Lucence press releases, PLoS One 2022 validation study, and JCO Precision Oncology 2025 LIQUIK study."
-    }
+      "submissionNotes": "New test submission via OpenOnco form. Performance data URLs provided: Mayo Clinic Labs catalog and Lucence website. Verified via Mayo Clinic Labs test catalog (LUCHM), Lucence press releases, PLoS One 2022 validation study, and JCO Precision Oncology 2025 LIQUIK study.",
+      "vendorVerifiedDate": "2026-01-07",
+      "vendorVerifiedBy": "Jeremy Au",
+      "vendorVerifiedNotes": "Vendor verified via OpenOnco validation form. Updates: TAT changed from 8-12 days to 7 Business Days; biomarkersReported clarified to note cfDNA+cfRNA sources for fusion detection."
+    },
+    "vendorVerified": true
   },
   {
     "id": "tds-23",
@@ -6065,6 +6071,18 @@ export const tdsTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 7, 2026',
+    type: 'verified',
+    testId: 'tds-22',
+    testName: 'LiquidHALLMARK',
+    vendor: 'Lucence',
+    category: 'TDS',
+    description: 'Vendor verified by Jeremy Au. Updates: TAT changed from 8-12 days to 7 Business Days; biomarkersReported clarified to note cfDNA+cfRNA sources for fusion detection.',
+    contributor: 'Jeremy Au',
+    affiliation: 'Lucence (vendor)',
+    citation: 'https://www.lucence.com/solutions/liquid-hallmark'
+  },
   {
     date: 'Jan 6, 2026',
     type: 'verified',
