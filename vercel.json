@@ -1,5 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/v1/**/*.js": {
+      "includeFiles": "src/data.js"
+    }
+  },
   "redirects": [
     {
       "source": "/:path*",
@@ -200,6 +205,44 @@
     }
   ],
   "headers": [
+    {
+      "source": "/api/v1/embed/:path*",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "ALLOWALL"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors *"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/api/v1/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, s-maxage=600"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
     {
       "source": "/api/:path*",
       "headers": [
