@@ -20,6 +20,18 @@
   ],
   "rewrites": [
     {
+      "source": "/api/v1/tests/:id",
+      "destination": "/api/v1?route=tests&id=:id"
+    },
+    {
+      "source": "/api/v1/embed/:type",
+      "destination": "/api/v1?route=embed&type=:type"
+    },
+    {
+      "source": "/api/v1/:route",
+      "destination": "/api/v1?route=:route"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },

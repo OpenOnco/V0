@@ -1,9 +1,40 @@
 /**
- * OpenOnco Public API - Documentation
- * GET /api/v1
+ * OpenOnco Public API v1 - Unified Handler
  * 
- * Returns API documentation and available endpoints.
+ * Routes:
+ *   GET /api/v1              - API documentation
+ *   GET /api/v1/tests        - List all tests
+ *   GET /api/v1/tests/:id    - Get single test
+ *   GET /api/v1/categories   - List categories
+ *   GET /api/v1/vendors      - List vendors
+ *   GET /api/v1/stats        - Database statistics
+ *   GET /api/v1/embed/test   - Embeddable test card
  */
+
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
+
+// ============================================================================
+// SHARED CONSTANTS
+// ============================================================================
+
+const CATEGORY_DATA = {
+  mrd: { data: mrdTestData, name: 'Molecular Residual Disease', shortName: 'MRD' },
+  ecd: { data: ecdTestData, name: 'Early Cancer Detection', shortName: 'ECD' },
+  trm: { data: trmTestData, name: 'Treatment Response Monitoring', shortName: 'TRM' },
+  tds: { data: tdsTestData, name: 'Treatment Decision Support', shortName: 'TDS' },
+};
+
+const TEST_LOOKUP = new Map();
+[
+  { data: mrdTestData, category: 'mrd' },
+  { data: ecdTestData, category: 'ecd' },
+  { data: trmTestData, category: 'trm' },
+  { data: tdsTestData, category: 'tds' },
+].forEach(({ data, category }) => {
+  data.forEach(test => {
+    TEST_LOOKUP.set(test.id, { ...test, category: category.toUpperCase(), categoryName: CATEGORY_DATA[category].name });
+  });
+});
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,358 +42,356 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const DOCS = {
-  name: 'OpenOnco Public API',
-  version: '1.0.0',
-  description: 'Public, read-only API for accessing the OpenOnco cancer diagnostic test database. Free to use, no authentication required.',
-  baseUrl: 'https://openonco.org/api/v1',
-  license: 'CC BY 4.0 - Free to use with attribution',
-  rateLimit: 'No strict limits, but please be reasonable (~100 req/min)',
-  caching: 'Responses are cached for 5-30 minutes. Data updates within 24 hours of database changes.',
+function setCorsHeaders(res) {
+  Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
+}
+
+// ============================================================================
+// ROUTE HANDLERS
+// ============================================================================
+
+function handleDocs(req, res) {
+  const accept = req.headers.accept || '';
+  const format = req.query.format;
   
-  endpoints: [
-    {
-      method: 'GET',
-      path: '/tests',
-      description: 'List all tests with optional filtering',
-      parameters: [
-        { name: 'category', type: 'string', description: 'Filter by category: mrd, ecd, trm, tds (comma-separated for multiple)' },
-        { name: 'vendor', type: 'string', description: 'Filter by vendor name (partial match, case-insensitive)' },
-        { name: 'cancer', type: 'string', description: 'Filter by cancer type (partial match)' },
-        { name: 'fda', type: 'string', description: 'Filter by FDA status: approved, ldt, breakthrough, all' },
-        { name: 'fields', type: 'string', description: 'Comma-separated list of fields to include' },
-        { name: 'limit', type: 'integer', description: 'Max results (default: 100, max: 500)' },
-        { name: 'offset', type: 'integer', description: 'Pagination offset' },
-      ],
-      examples: [
-        '/api/v1/tests',
-        '/api/v1/tests?category=mrd',
-        '/api/v1/tests?vendor=natera&category=mrd',
-        '/api/v1/tests?cancer=colorectal&fda=approved',
-        '/api/v1/tests?fields=sensitivity,specificity,lod&category=mrd',
-      ],
-    },
-    {
-      method: 'GET',
-      path: '/tests/{id}',
-      description: 'Get a single test by ID',
-      parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Test ID (e.g., mrd-1, ecd-5)' },
-        { name: 'fields', type: 'string', description: 'Comma-separated list of fields to include' },
-      ],
-      examples: [
-        '/api/v1/tests/mrd-1',
-        '/api/v1/tests/ecd-3?fields=sensitivity,specificity',
-      ],
-    },
-    {
-      method: 'GET',
-      path: '/categories',
-      description: 'List all test categories with metadata and counts',
-      examples: ['/api/v1/categories'],
-    },
-    {
-      method: 'GET',
-      path: '/vendors',
-      description: 'List all vendors with their test counts',
-      parameters: [
-        { name: 'category', type: 'string', description: 'Filter to vendors with tests in specific category' },
-      ],
-      examples: [
-        '/api/v1/vendors',
-        '/api/v1/vendors?category=mrd',
-      ],
-    },
-    {
-      method: 'GET',
-      path: '/stats',
-      description: 'Get database summary statistics',
-      examples: ['/api/v1/stats'],
-    },
-    {
-      method: 'GET',
-      path: '/embed/test',
-      description: 'Get embeddable HTML card for a test (for iframe embedding)',
-      parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Test ID' },
-        { name: 'theme', type: 'string', description: 'light or dark (default: light)' },
-        { name: 'width', type: 'integer', description: 'Card width in pixels (default: 400)' },
-        { name: 'compact', type: 'boolean', description: 'Minimal view (default: false)' },
-        { name: 'format', type: 'string', description: 'html or json (default: html)' },
-      ],
-      examples: [
-        '/api/v1/embed/test?id=mrd-1',
-        '/api/v1/embed/test?id=mrd-1&theme=dark&width=350',
-        '/api/v1/embed/test?id=mrd-1&format=json',
-      ],
-    },
-  ],
+  const docs = {
+    name: 'OpenOnco Public API',
+    version: '1.0.0',
+    description: 'Free, open access to cancer diagnostic test data',
+    baseUrl: 'https://openonco.org/api/v1',
+    license: 'CC BY 4.0',
+    endpoints: [
+      { method: 'GET', path: '/api/v1/tests', description: 'List all tests with filtering' },
+      { method: 'GET', path: '/api/v1/tests/:id', description: 'Get a single test by ID' },
+      { method: 'GET', path: '/api/v1/categories', description: 'List all test categories' },
+      { method: 'GET', path: '/api/v1/vendors', description: 'List all vendors' },
+      { method: 'GET', path: '/api/v1/stats', description: 'Database statistics' },
+      { method: 'GET', path: '/api/v1/embed/test', description: 'Embeddable test card' },
+    ],
+  };
 
-  categories: {
-    MRD: {
-      name: 'Molecular Residual Disease',
-      description: 'Post-treatment monitoring for cancer recurrence',
-      keyFields: ['sensitivity', 'specificity', 'lod', 'leadTime', 'initialTat', 'followUpTat'],
-    },
-    ECD: {
-      name: 'Early Cancer Detection',
-      description: 'Screening tests for asymptomatic individuals',
-      keyFields: ['sensitivity', 'specificity', 'ppv', 'npv', 'stageISensitivity', 'testScope'],
-    },
-    TRM: {
-      name: 'Treatment Response Monitoring',
-      description: 'Tracking treatment effectiveness during therapy',
-      keyFields: ['sensitivity', 'specificity', 'tat', 'responseDefinition'],
-    },
-    TDS: {
-      name: 'Treatment Decision Support',
-      description: 'Comprehensive genomic profiling for therapy selection',
-      keyFields: ['genesAnalyzed', 'fdaStatus', 'tat', 'sampleType'],
-    },
-  },
+  if (format === 'json' || !accept.includes('text/html')) {
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    return res.status(200).json(docs);
+  }
 
-  embedUsage: {
-    description: 'Embed OpenOnco test cards in your application',
-    iframe: '<iframe src="https://openonco.org/api/v1/embed/test?id=mrd-1" width="400" height="300" frameborder="0"></iframe>',
-    note: 'Cards automatically link back to OpenOnco for full details',
-  },
+  // Return HTML documentation
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  return res.status(200).send(`<!DOCTYPE html>
+<html><head><title>OpenOnco API</title>
+<style>body{font-family:system-ui;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.6}
+code{background:#f4f4f4;padding:2px 6px;border-radius:4px}
+pre{background:#f4f4f4;padding:16px;overflow-x:auto;border-radius:8px}
+h1{color:#059669}a{color:#059669}</style></head>
+<body><h1>OpenOnco Public API</h1>
+<p>Free, open access to cancer diagnostic test data. <a href="https://openonco.org">openonco.org</a></p>
+<h2>Endpoints</h2>
+${docs.endpoints.map(e => `<p><code>${e.method} ${e.path}</code> - ${e.description}</p>`).join('')}
+<h2>Example</h2>
+<pre>curl "https://openonco.org/api/v1/tests?category=mrd&limit=5"</pre>
+<p>License: CC BY 4.0</p></body></html>`);
+}
 
-  attribution: 'When using this API, please attribute: "Data from OpenOnco (openonco.org)"',
-  contact: 'For questions or issues: hello@openonco.org',
-  website: 'https://openonco.org',
-};
+function handleTests(req, res) {
+  const { category, vendor, cancer, fda = 'all', fields, limit = '100', offset = '0' } = req.query;
+  
+  const limitNum = Math.min(Math.max(1, parseInt(limit) || 100), 500);
+  const offsetNum = Math.max(0, parseInt(offset) || 0);
+
+  let tests = [];
+  const categories = category ? category.toLowerCase().split(',').map(c => c.trim()) : Object.keys(CATEGORY_DATA);
+
+  for (const cat of categories) {
+    if (CATEGORY_DATA[cat]) {
+      const categoryTests = CATEGORY_DATA[cat].data.map(test => ({
+        ...test,
+        category: cat.toUpperCase(),
+        categoryName: CATEGORY_DATA[cat].name,
+      }));
+      tests.push(...categoryTests);
+    }
+  }
+
+  if (vendor) {
+    const vendorLower = vendor.toLowerCase();
+    tests = tests.filter(t => t.vendor && t.vendor.toLowerCase().includes(vendorLower));
+  }
+
+  if (cancer) {
+    const cancerLower = cancer.toLowerCase();
+    tests = tests.filter(t => t.cancerTypes && t.cancerTypes.some(ct => ct.toLowerCase().includes(cancerLower)));
+  }
+
+  if (fda && fda !== 'all') {
+    tests = tests.filter(t => {
+      if (!t.fdaStatus) return false;
+      const status = t.fdaStatus.toLowerCase();
+      if (fda === 'approved') return status.includes('fda') && (status.includes('approved') || status.includes('cleared'));
+      if (fda === 'ldt') return status.includes('ldt') || status.includes('clia');
+      if (fda === 'breakthrough') return status.includes('breakthrough');
+      return true;
+    });
+  }
+
+  const totalCount = tests.length;
+  tests = tests.slice(offsetNum, offsetNum + limitNum);
+
+  if (fields) {
+    const fieldList = fields.split(',').map(f => f.trim());
+    const requiredFields = ['id', 'name', 'vendor', 'category', 'categoryName'];
+    const allowedFields = [...new Set([...requiredFields, ...fieldList])];
+    tests = tests.map(test => {
+      const filtered = {};
+      for (const field of allowedFields) {
+        if (test[field] !== undefined) filtered[field] = test[field];
+      }
+      return filtered;
+    });
+  }
+
+  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  return res.status(200).json({
+    success: true,
+    meta: { total: totalCount, limit: limitNum, offset: offsetNum, returned: tests.length, hasMore: offsetNum + tests.length < totalCount, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
+    data: tests,
+  });
+}
+
+function handleSingleTest(req, res, testId) {
+  let test = TEST_LOOKUP.get(testId);
+  if (!test) {
+    const idLower = testId.toLowerCase();
+    for (const [key, value] of TEST_LOOKUP) {
+      if (key.toLowerCase() === idLower) { test = value; break; }
+    }
+  }
+
+  if (!test) {
+    return res.status(404).json({ success: false, error: 'Test not found', message: `No test found with ID "${testId}"` });
+  }
+
+  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  return res.status(200).json({
+    success: true,
+    meta: { generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
+    links: { self: `https://openonco.org/api/v1/tests/${test.id}`, web: `https://openonco.org/${test.category?.toLowerCase()}/${test.id}` },
+    data: test,
+  });
+}
+
+function handleCategories(req, res) {
+  const categories = Object.entries(CATEGORY_DATA).map(([id, cat]) => ({
+    id,
+    name: cat.name,
+    shortName: cat.shortName,
+    description: getDescription(id),
+    stats: { totalTests: cat.data.length, vendors: [...new Set(cat.data.map(t => t.vendor))].length },
+    links: { tests: `https://openonco.org/api/v1/tests?category=${id}`, web: `https://openonco.org/${id}` },
+  }));
+
+  res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  return res.status(200).json({
+    success: true,
+    meta: { totalCategories: categories.length, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
+    data: categories,
+  });
+}
+
+function getDescription(id) {
+  const descriptions = {
+    mrd: 'Post-treatment surveillance to detect cancer recurrence at the molecular level',
+    ecd: 'Screening tests designed to detect cancer early, before symptoms appear',
+    trm: 'Monitor how well cancer treatment is working over time',
+    tds: 'Identify genetic alterations to guide therapy selection',
+  };
+  return descriptions[id] || '';
+}
+
+function handleVendors(req, res) {
+  const { category } = req.query;
+  const vendorMap = new Map();
+
+  Object.entries(CATEGORY_DATA).forEach(([catId, cat]) => {
+    cat.data.forEach(test => {
+      const vendor = test.vendor;
+      if (!vendorMap.has(vendor)) {
+        vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, trm: 0, tds: 0 }, kits: { mrd: 0, ecd: 0, trm: 0, tds: 0 }, totalTests: 0 });
+      }
+      const v = vendorMap.get(vendor);
+      if (test.isKitProduct) v.kits[catId]++;
+      else v.tests[catId]++;
+      v.totalTests++;
+    });
+  });
+
+  let vendors = Array.from(vendorMap.values()).sort((a, b) => b.totalTests - a.totalTests);
+
+  if (category) {
+    const cat = category.toLowerCase();
+    vendors = vendors.filter(v => (v.tests[cat] || 0) + (v.kits[cat] || 0) > 0);
+  }
+
+  res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  return res.status(200).json({
+    success: true,
+    meta: { totalVendors: vendors.length, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
+    data: vendors,
+  });
+}
+
+function handleStats(req, res) {
+  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  const stats = {
+    totals: {
+      tests: allTests.length,
+      vendors: [...new Set(allTests.map(t => t.vendor))].length,
+      cancerTypes: [...new Set(allTests.flatMap(t => t.cancerTypes || []))].length,
+    },
+    byCategory: {
+      MRD: { tests: mrdTestData.length, vendors: [...new Set(mrdTestData.map(t => t.vendor))].length },
+      ECD: { tests: ecdTestData.length, vendors: [...new Set(ecdTestData.map(t => t.vendor))].length },
+      TRM: { tests: trmTestData.length, vendors: [...new Set(trmTestData.map(t => t.vendor))].length },
+      TDS: { tests: tdsTestData.length, vendors: [...new Set(tdsTestData.map(t => t.vendor))].length },
+    },
+  };
+
+  res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  return res.status(200).json({
+    success: true,
+    meta: { generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
+    data: stats,
+  });
+}
+
+function handleEmbed(req, res) {
+  const { id, theme = 'light', width = '400', format } = req.query;
+
+  if (!id) {
+    return res.status(400).send('<!DOCTYPE html><html><body>Missing test ID</body></html>');
+  }
+
+  let test = TEST_LOOKUP.get(id);
+  if (!test) {
+    const idLower = id.toLowerCase();
+    for (const [key, value] of TEST_LOOKUP) {
+      if (key.toLowerCase() === idLower) { test = value; break; }
+    }
+  }
+
+  if (!test) {
+    return res.status(404).send('<!DOCTYPE html><html><body>Test not found</body></html>');
+  }
+
+  if (format === 'json') {
+    return res.status(200).json({
+      success: true,
+      embed: { iframe: `<iframe src="https://openonco.org/api/v1/embed/test?id=${test.id}" width="${width}" height="280" frameborder="0"></iframe>` },
+      data: { id: test.id, name: test.name, vendor: test.vendor, category: test.category },
+    });
+  }
+
+  const isDark = theme === 'dark';
+  const bg = isDark ? '#1f2937' : '#ffffff';
+  const text = isDark ? '#f9fafb' : '#111827';
+  const muted = isDark ? '#9ca3af' : '#6b7280';
+  const accent = '#059669';
+
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
+  res.setHeader('Content-Security-Policy', 'frame-ancestors *');
+  res.setHeader('Cache-Control', 'public, max-age=300');
+
+  return res.status(200).send(`<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:${bg};color:${text};padding:16px}
+.card{border:1px solid ${isDark ? '#374151' : '#e5e7eb'};border-radius:12px;padding:16px;max-width:${width}px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.name{font-size:16px;font-weight:600;color:${text}}
+.vendor{font-size:13px;color:${muted};margin-top:2px}
+.badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:9999px;background:${accent}20;color:${accent}}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.metric{background:${isDark ? '#374151' : '#f3f4f6'};padding:8px;border-radius:6px}
+.metric-label{font-size:11px;color:${muted};text-transform:uppercase}
+.metric-value{font-size:14px;font-weight:600;color:${text}}
+.footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid ${isDark ? '#374151' : '#e5e7eb'}}
+.link{font-size:12px;color:${accent};text-decoration:none}
+.powered{font-size:10px;color:${muted}}</style></head>
+<body><div class="card">
+<div class="header"><div><div class="name">${test.name}</div><div class="vendor">${test.vendor}</div></div><span class="badge">${test.category}</span></div>
+<div class="metrics">
+${test.sensitivity ? `<div class="metric"><div class="metric-label">Sensitivity</div><div class="metric-value">${test.sensitivity}%</div></div>` : ''}
+${test.specificity ? `<div class="metric"><div class="metric-label">Specificity</div><div class="metric-value">${test.specificity}%</div></div>` : ''}
+</div>
+<div class="footer"><a class="link" href="https://openonco.org/${test.category?.toLowerCase()}/${test.id}" target="_blank">View Details →</a><span class="powered">via openonco.org</span></div>
+</div></body></html>`);
+}
+
+// ============================================================================
+// MAIN HANDLER
+// ============================================================================
 
 export default function handler(req, res) {
+  setCorsHeaders(res);
+
   if (req.method === 'OPTIONS') {
-    Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
     return res.status(200).end();
   }
 
-  Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
-  res.setHeader('Cache-Control', 'public, max-age=3600');
-
-  // Check if HTML is requested
-  const acceptHeader = req.headers.accept || '';
-  if (acceptHeader.includes('text/html') && !req.query.format) {
-    res.setHeader('Content-Type', 'text/html');
-    return res.status(200).send(generateHTMLDocs());
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  return res.status(200).json(DOCS);
-}
+  try {
+    // Route based on query param (set by vercel rewrites) or URL path
+    const route = req.query.route || '';
+    const testId = req.query.id;
+    const embedType = req.query.type;
 
-function generateHTMLDocs() {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OpenOnco API Documentation</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-      color: #1f2937;
-      background: #f9fafb;
+    // Also support direct path parsing for local dev
+    const url = new URL(req.url, 'http://localhost');
+    const path = url.pathname.replace(/^\/api\/v1\/?/, '');
+    const segments = path.split('/').filter(Boolean);
+
+    // Determine routing - prefer query params, fall back to path
+    const routeKey = route || segments[0] || '';
+
+    if (!routeKey) {
+      return handleDocs(req, res);
     }
-    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-    h1 { font-size: 2.5rem; margin-bottom: 8px; }
-    h2 { font-size: 1.5rem; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb; }
-    h3 { font-size: 1.1rem; margin: 24px 0 8px; }
-    p { margin-bottom: 12px; color: #4b5563; }
-    .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 500;
+
+    if (routeKey === 'tests') {
+      if (testId) {
+        return handleSingleTest(req, res, testId);
+      }
+      if (segments[1]) {
+        return handleSingleTest(req, res, segments[1]);
+      }
+      return handleTests(req, res);
     }
-    .badge-blue { background: #dbeafe; color: #1d4ed8; }
-    .badge-green { background: #dcfce7; color: #166534; }
-    code {
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Monaco', 'Menlo', monospace;
-      font-size: 0.9em;
+
+    if (routeKey === 'categories') {
+      return handleCategories(req, res);
     }
-    pre {
-      background: #1f2937;
-      color: #f9fafb;
-      padding: 16px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin: 12px 0;
+
+    if (routeKey === 'vendors') {
+      return handleVendors(req, res);
     }
-    pre code { background: transparent; color: inherit; }
-    .endpoint {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 16px 0;
+
+    if (routeKey === 'stats') {
+      return handleStats(req, res);
     }
-    .endpoint-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+
+    if (routeKey === 'embed') {
+      if (embedType === 'test' || segments[1] === 'test') {
+        return handleEmbed(req, res);
+      }
     }
-    .method {
-      background: #10b981;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 0.8rem;
-    }
-    .path { font-family: monospace; font-size: 1.1rem; }
-    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
-    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
-    th { background: #f9fafb; font-weight: 600; }
-    .examples { margin-top: 12px; }
-    .example-link {
-      display: block;
-      color: #2563eb;
-      text-decoration: none;
-      font-family: monospace;
-      font-size: 0.9rem;
-      padding: 4px 0;
-    }
-    .example-link:hover { text-decoration: underline; }
-    .footer {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid #e5e7eb;
-      text-align: center;
-      color: #6b7280;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🧬 OpenOnco API</h1>
-    <p style="font-size: 1.2rem; margin-bottom: 24px;">
-      Public, read-only API for cancer diagnostic test data
-    </p>
-    
-    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px;">
-      <span class="badge badge-blue">v1.0.0</span>
-      <span class="badge badge-green">No Auth Required</span>
-      <span class="badge badge-green">CC BY 4.0</span>
-    </div>
 
-    <h2>Base URL</h2>
-    <pre><code>https://openonco.org/api/v1</code></pre>
+    return res.status(404).json({ error: 'Not found', route: routeKey });
 
-    <h2>Endpoints</h2>
-
-    <div class="endpoint">
-      <div class="endpoint-header">
-        <span class="method">GET</span>
-        <span class="path">/tests</span>
-      </div>
-      <p>List all tests with optional filtering</p>
-      <table>
-        <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
-        <tr><td>category</td><td>string</td><td>mrd, ecd, trm, tds (comma-separated)</td></tr>
-        <tr><td>vendor</td><td>string</td><td>Filter by vendor name (partial match)</td></tr>
-        <tr><td>cancer</td><td>string</td><td>Filter by cancer type</td></tr>
-        <tr><td>fda</td><td>string</td><td>approved, ldt, breakthrough, all</td></tr>
-        <tr><td>limit</td><td>int</td><td>Max results (default: 100)</td></tr>
-        <tr><td>offset</td><td>int</td><td>Pagination offset</td></tr>
-      </table>
-      <div class="examples">
-        <strong>Examples:</strong>
-        <a class="example-link" href="/api/v1/tests">/api/v1/tests</a>
-        <a class="example-link" href="/api/v1/tests?category=mrd">/api/v1/tests?category=mrd</a>
-        <a class="example-link" href="/api/v1/tests?vendor=natera">/api/v1/tests?vendor=natera</a>
-      </div>
-    </div>
-
-    <div class="endpoint">
-      <div class="endpoint-header">
-        <span class="method">GET</span>
-        <span class="path">/tests/{id}</span>
-      </div>
-      <p>Get a single test by ID</p>
-      <div class="examples">
-        <a class="example-link" href="/api/v1/tests/mrd-1">/api/v1/tests/mrd-1</a>
-        <a class="example-link" href="/api/v1/tests/ecd-3">/api/v1/tests/ecd-3</a>
-      </div>
-    </div>
-
-    <div class="endpoint">
-      <div class="endpoint-header">
-        <span class="method">GET</span>
-        <span class="path">/categories</span>
-      </div>
-      <p>List all test categories with metadata and counts</p>
-      <a class="example-link" href="/api/v1/categories">/api/v1/categories</a>
-    </div>
-
-    <div class="endpoint">
-      <div class="endpoint-header">
-        <span class="method">GET</span>
-        <span class="path">/vendors</span>
-      </div>
-      <p>List all vendors with test counts by category</p>
-      <a class="example-link" href="/api/v1/vendors">/api/v1/vendors</a>
-    </div>
-
-    <div class="endpoint">
-      <div class="endpoint-header">
-        <span class="method">GET</span>
-        <span class="path">/stats</span>
-      </div>
-      <p>Database summary statistics</p>
-      <a class="example-link" href="/api/v1/stats">/api/v1/stats</a>
-    </div>
-
-    <div class="endpoint">
-      <div class="endpoint-header">
-        <span class="method">GET</span>
-        <span class="path">/embed/test</span>
-      </div>
-      <p>Embeddable HTML card for iframes</p>
-      <table>
-        <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
-        <tr><td>id</td><td>string</td><td>Test ID (required)</td></tr>
-        <tr><td>theme</td><td>string</td><td>light or dark</td></tr>
-        <tr><td>width</td><td>int</td><td>Card width in pixels</td></tr>
-      </table>
-      <div class="examples">
-        <a class="example-link" href="/api/v1/embed/test?id=mrd-1" target="_blank">/api/v1/embed/test?id=mrd-1</a>
-      </div>
-      <h4 style="margin-top: 16px;">Embed Code:</h4>
-      <pre><code>&lt;iframe 
-  src="https://openonco.org/api/v1/embed/test?id=mrd-1" 
-  width="400" height="280" 
-  frameborder="0"
-&gt;&lt;/iframe&gt;</code></pre>
-    </div>
-
-    <h2>Response Format</h2>
-    <pre><code>{
-  "success": true,
-  "meta": {
-    "total": 56,
-    "generatedAt": "2025-01-06T...",
-    "source": "OpenOnco (openonco.org)",
-    "license": "CC BY 4.0"
-  },
-  "data": [...]
-}</code></pre>
-
-    <h2>Attribution</h2>
-    <p>When using this API, please include: <strong>"Data from OpenOnco (openonco.org)"</strong></p>
-
-    <div class="footer">
-      <p>Questions? <a href="mailto:hello@openonco.org">hello@openonco.org</a></p>
-      <p style="margin-top: 8px;"><a href="https://openonco.org">← Back to OpenOnco</a></p>
-    </div>
-  </div>
-</body>
-</html>`;
+  } catch (error) {
+    console.error('API Error:', error);
+    return res.status(500).json({ success: false, error: 'Internal server error', message: error.message });
+  }
 }
