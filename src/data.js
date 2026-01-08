@@ -286,6 +286,12 @@ export const COMPANY_CONTRIBUTIONS = {
     verifiedDate: '2026-01-06',
     note: 'Vendor-verified submission. WGS-based MRD with 1 ppm LOD using Ultima Genomics ppmSeq.'
   },
+  'ecd-27': {  // OncoXPLORE+
+    name: 'Christophe Van Huffel',
+    company: 'OncoDNA',
+    date: '2025-12-09',
+    note: 'Vendor submission. Multi-modal MCED (mutations + CNV + fragmentomics) from KU Leuven research. OncNGS Phase 3 finalist. Currently RUO.'
+  },
   'ecd-26': {  // Trucheck Intelli
     name: 'Jigar Pandya',
     company: 'Datar Cancer Genetics',
@@ -4155,6 +4161,71 @@ export const ecdTestData = [
       "submitterType": "expert",
       "submittedDate": "2026-01-07"
     }
+  },
+  {
+    "id": "ecd-27",
+    "sampleCategory": "Blood/Plasma",
+    "name": "OncoXPLORE+",
+    "vendor": "OncoDNA",
+    "category": "ECD",
+    "dateAdded": "Jan 8, 2026",
+    "testScope": "Multi-cancer",
+    "approach": "Multi-modal (mutations + CNV + fragmentomics)",
+    "method": "Integrates three parallel analytical tracks from a single blood sample: (1) 441-gene targeted panel covering 1.5 Mb including all exonic regions and 20bp flanking regions for SNVs, Indels, fusions, and splicing variants; (2) genome-wide Copy Number Alteration (CNA) profiling via LP-WGS; (3) GIPXplore fragmentomics module using proprietary ML pipeline analyzing genome-wide cfDNA fragmentation signatures for cancer detection and Tissue-of-Origin inference. Built on 15+ years of KU Leuven research.",
+    "methodCitations": "https://www.nature.com/articles/s41467-024-46435-0 | https://oncngs.eu | https://oncodna.com",
+    "cancerTypes": [
+      "Multi-solid tumors",
+      "Hematological malignancies"
+    ],
+    "cancerTypesNotes": "Pan-cancer detection capability; fragmentomics module can infer Tissue-of-Origin for localization. Specific validation data for colorectal cancer, breast cancer, and multiple myeloma.",
+    "cancerTypesCitations": "https://www.nature.com/articles/s41467-024-46435-0",
+    "targetPopulation": "High-risk asymptomatic individuals, NSAS triage, therapy selection when tissue unavailable",
+    "indicationGroup": "Multi-Cancer Early Detection",
+    "sensitivity": 53.5,
+    "sensitivityCitations": "https://www.nature.com/articles/s41467-024-46435-0 | Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
+    "sensitivityNotes": "~53.5% sensitivity for early-stage cancers at ~99% specificity in asymptomatic screening context. GIPXplore classifier achieved 81.62% overall accuracy with 95% specificity for pan-cancer detection. Cancer-specific AUCs from Nature Comms study: Multiple Myeloma 95.0%, Early-Stage Breast Cancer 90.1%, Colorectal Cancer 84.7%.",
+    "specificity": 99,
+    "specificityCitations": "https://www.nature.com/articles/s41467-024-46435-0 | Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
+    "specificityNotes": "~99% specificity in early-stage screening context. 95% specificity for pan-cancer GIPXplore classifier. Near 100% specificity for all variant types on targeted panel.",
+    "tissueOfOrigin": true,
+    "tissueOfOriginAccuracy": 88.7,
+    "tissueOfOriginNotes": "88.7% TOO accuracy for true positives using fragmentomics-based cell type deconvolution. Leverages cell-type-specific epigenetic patterns; can identify contributions from 490+ cell types.",
+    "tissueOfOriginCitations": "https://www.nature.com/articles/s41467-024-46435-0",
+    "lod": "0.3% VAF",
+    "lodNotes": "Analytical LoD near 0.3% VAF for targeted 441-gene panel. Technical sensitivity: 88.6% at 0.5% VAF, >93% at 1% VAF, >93% at 2% VAF.",
+    "lodCitations": "Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
+    "genesAnalyzed": 441,
+    "genesAnalyzedNotes": "441-gene targeted panel covering 1.5 Mb content. Detects SNVs, Indels, fusions, and unusual splicing. Complemented by genome-wide LP-WGS for CNA profiling.",
+    "genesAnalyzedCitations": "https://oncodna.com | Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
+    "fdaStatus": "RUO (CE-IVDR planned)",
+    "fdaStatusNotes": "Currently Research Use Only (RUO) kit for collaborative projects. CE-IVDR technical file submission planned for end of 2026. One of only 2 finalists in EU OncNGS Pre-Commercial Procurement project.",
+    "reimbursement": "Not applicable (investigational)",
+    "reimbursementNote": "RUO product; no reimbursement pathway currently",
+    "availableRegions": ["EU (RUO)"],
+    "clinicalAvailability": "RUO kit for collaborative projects; Phase 3 OncNGS clinical validation ongoing through March 2026",
+    "clinicalTrials": "OncNGS Phase 3 clinical validation at 7 European pilot hospitals including Institut Curie (France), Ludwig Maximilians University (Germany), Institut Jules Bordet (Belgium)",
+    "clinicalTrialsCitations": "https://oncngs.eu/index.php/phase3/",
+    "totalParticipants": null,
+    "validationCohortSize": 744,
+    "validationCohortStudy": "Nature Communications 2024 study: 744 healthy individuals and patients (Stanley et al.)",
+    "numPublications": 2,
+    "numPublicationsPlus": true,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/38472221/ | https://academic.oup.com/bioinformatics/article/40/9/btae522/7739698",
+    "numPublicationsNotes": "Stanley/Vermeesch et al., Nature Communications 2024 (cell type signatures in cfDNA fragmentation); Passemiers/Vermeesch et al., Bioinformatics 2024 (MetDecode methylation-based deconvolution). Additional OncNGS consortium publications in progress.",
+    "isRUO": true,
+    "isInvestigational": true,
+    "isClinicalLDT": false,
+    "regulatoryStatusNotes": "RUO product in OncNGS Phase 3 clinical validation (through March 2026). CE-IVDR submission planned end of 2026. Integrated into OncoKDM platform (registered medical device, GDPR compliant).",
+    "technologyDifferentiator": "Multi-modal liquid biopsy combining mutations + CNV + fragmentomics in single workflow. GIPXplore fragmentomics leverages cell-type-specific epigenetic patterns to detect cancer signals even when specific mutations are unknown or at very low concentrations. Tumor-naïve approach - no prior tissue biopsy required. Built on 15+ years of KU Leuven research. One of only 2 finalists in EU OncNGS Pre-Commercial Procurement.",
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2026-01-08: Initial submission by Christophe Van Huffel (OncoDNA) with detailed vendor responses to clarification questions. Performance data from Nature Communications 2024 and internal validation cohorts.",
+    "submissionInfo": {
+      "submittedBy": "Christophe Van Huffel",
+      "submitterEmail": "c.vanhuffel@oncodna.com",
+      "submitterType": "vendor",
+      "submittedDate": "2025-12-09",
+      "clarificationDate": "2026-01-08"
+    }
   }
 ];
 
@@ -7549,6 +7620,7 @@ export const DATABASE_CHANGELOG = [
 
 // Recently Added Tests
 export const RECENTLY_ADDED_TESTS = [
+  { id: 'ecd-27', name: 'OncoXPLORE+', vendor: 'OncoDNA', category: 'ECD', dateAdded: 'Jan 8, 2026' },
   { id: 'mrd-26', name: 'MRDVision', vendor: 'Inocras', category: 'MRD', dateAdded: 'Jan 7, 2026' },
   { id: 'ecd-26', name: 'Trucheck Intelli', vendor: 'Datar Cancer Genetics', category: 'ECD', dateAdded: 'Jan 7, 2026' },
   { id: 'tds-26', name: 'CellSight DNA', vendor: 'Cancer Cell Dx', category: 'TDS', dateAdded: 'Jan 7, 2026' },
