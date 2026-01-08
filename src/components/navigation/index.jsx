@@ -137,6 +137,9 @@ const LifecycleStageCard = ({ stage, isHovered, onClick, onMouseEnter, onMouseLe
           }`}>
             {stage.fullName || stage.name}
           </h3>
+          <p className={`text-xs text-gray-500 mt-0.5`}>
+            {stage.acronym}: {stage.technicalName}
+          </p>
           <p className={`text-sm font-semibold mt-1 transition-colors duration-200 ${colors.text}`}>
             {`Explore ${testCount} tests →`}
           </p>
