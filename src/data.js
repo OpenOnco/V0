@@ -516,6 +516,12 @@ export const VENDOR_VERIFIED = {
     verifiedDate: '2025-12-28',
     editsSubmitted: 1
   },
+  'mrd-24': {  // CancerVista
+    name: 'Jens Winter',
+    company: 'LIQOMICS',
+    verifiedDate: '2026-01-08',
+    editsSubmitted: 0
+  },
 };
 
 // ============================================
