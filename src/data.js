@@ -510,6 +510,12 @@ export const VENDOR_VERIFIED = {
     verifiedDate: '2026-01-07',
     editsSubmitted: 0
   },
+  'mrd-23': {  // LymphoVista
+    name: 'Jens Winter',
+    company: 'LIQOMICS',
+    verifiedDate: '2025-12-28',
+    editsSubmitted: 1
+  },
 };
 
 // ============================================
