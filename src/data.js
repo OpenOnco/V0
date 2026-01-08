@@ -7897,6 +7897,30 @@ export const createCategoryMeta = (buildInfoSources = {}) => ({
     sourceUrl: buildInfoSources.TDS || '',
     domain: DOMAINS.ONCO,
   },
+  // CGP - Alias for TDS (Comprehensive Genomic Profiling is the new primary name)
+  CGP: {
+    title: 'Comprehensive Genomic Profiling',
+    shortTitle: 'CGP Tests',
+    description: 'Comprehensive Genomic Profiling (CGP) tests analyze tumor DNA and RNA to identify actionable mutations, guide treatment selection, and match patients to targeted therapies and clinical trials. These tests sequence hundreds of cancer-related genes to find alterations that can be targeted with FDA-approved drugs or emerging treatments.',
+    patientTitle: 'Find My Best Treatment',
+    patientDescription: 'These tests analyze your tumor to find genetic changes that can help your doctor choose the most effective treatment for you.',
+    color: 'violet',
+    tests: tdsTestData,  // Uses same data as TDS for now
+    sourceUrl: buildInfoSources.TDS || '',
+    domain: DOMAINS.ONCO,
+  },
+  // HCT - Hereditary Cancer Testing (new category, empty for now)
+  HCT: {
+    title: 'Hereditary Cancer Testing',
+    shortTitle: 'Hereditary Risk',
+    description: 'Hereditary Cancer Testing identifies inherited gene mutations that increase cancer risk. These tests help identify individuals who may benefit from enhanced screening, risk-reducing interventions, or cascade testing of family members.',
+    patientTitle: 'Understand Your Cancer Risk',
+    patientDescription: 'These tests look for inherited gene changes that may increase your risk of developing certain cancers, helping you and your family make informed decisions about screening and prevention.',
+    color: 'purple',
+    tests: [],  // Empty for now, will be populated later
+    sourceUrl: '',
+    domain: DOMAINS.ONCO,
+  },
 });
 
 export const getTestListByCategory = (categoryId) => {
@@ -7905,6 +7929,8 @@ export const getTestListByCategory = (categoryId) => {
     ECD: ecdTestData,
     TRM: trmTestData,
     TDS: tdsTestData,
+    CGP: tdsTestData,  // CGP uses same data as TDS
+    HCT: [],           // Hereditary cancer testing - empty for now
   };
   return categoryMap[categoryId] || [];
 };
@@ -7957,6 +7983,24 @@ export const filterConfigs = {
     approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
     fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'NMPA', 'RUO'],
     reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
+  },
+  // CGP - Uses same filter config as TDS (same data source)
+  CGP: {
+    productTypes: ['Central Lab Service', 'Laboratory IVD Kit'],
+    cancerTypes: [...new Set(tdsTestData.flatMap(t => t.cancerTypes || []))].sort(),
+    sampleCategories: [...new Set(tdsTestData.map(t => t.sampleCategory || 'Unknown'))].sort(),
+    approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
+    fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'NMPA', 'RUO'],
+    reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
+  },
+  // HCT - Hereditary Cancer Testing (empty for now)
+  HCT: {
+    productTypes: [],
+    cancerTypes: [],
+    sampleCategories: [],
+    approaches: [],
+    fdaStatuses: [],
+    reimbursements: [],
   },
 };
 
@@ -8069,6 +8113,35 @@ export const comparisonParams = {
     { key: 'numPublications', label: 'Publications' },
     { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'reimbursement', label: 'Medicare' },
+    { key: 'listPrice', label: 'List Price (USD)' },
+  ],
+  // CGP - Uses same comparison params as TDS
+  CGP: [
+    { key: 'productType', label: 'Product Type' },
+    { key: 'platformRequired', label: 'Platform Required' },
+    { key: 'approach', label: 'Approach' },
+    { key: 'method', label: 'Method' },
+    { key: 'sampleCategory', label: 'Sample Type' },
+    { key: 'genesAnalyzed', label: 'Genes Analyzed' },
+    { key: 'biomarkersReportedStr', label: 'Biomarkers Reported' },
+    { key: 'cancerTypesStr', label: 'Target Cancers' },
+    { key: 'targetPopulation', label: 'Population' },
+    { key: 'fdaCompanionDxCount', label: 'FDA CDx Indications' },
+    { key: 'nccnRecommended', label: 'NCCN Recommended' },
+    { key: 'tat', label: 'Turnaround Time' },
+    { key: 'sampleRequirements', label: 'Sample Requirements' },
+    { key: 'numPublications', label: 'Publications' },
+    { key: 'fdaStatus', label: 'Regulatory' },
+    { key: 'reimbursement', label: 'Medicare' },
+    { key: 'listPrice', label: 'List Price (USD)' },
+  ],
+  // HCT - Hereditary Cancer Testing params (placeholder)
+  HCT: [
+    { key: 'productType', label: 'Product Type' },
+    { key: 'sampleCategory', label: 'Sample Type' },
+    { key: 'genesAnalyzed', label: 'Genes Analyzed' },
+    { key: 'tat', label: 'Turnaround Time' },
+    { key: 'fdaStatus', label: 'Regulatory' },
     { key: 'listPrice', label: 'List Price (USD)' },
   ],
 };
@@ -8361,7 +8434,42 @@ export const EXTERNAL_RESOURCES = {
       url: 'https://www.lungevity.org/learn-about-lungevity/precision-medicine/clinical-value-of-biomarker-testing-in-nsclc',
       description: 'Patient guide to understanding the clinical value of biomarker testing'
     }
-  ]
+  ],
+  
+  // CGP - Uses same resources as TDS
+  CGP: [
+    {
+      id: 'nccn-guidelines',
+      title: 'NCCN Clinical Practice Guidelines',
+      source: 'NCCN',
+      type: 'guidelines',
+      audience: ['clinician'],
+      url: 'https://www.nccn.org/guidelines/guidelines-detail',
+      description: 'Evidence-based clinical practice guidelines for oncology',
+      isPrimary: true
+    },
+    {
+      id: 'fda-cdx-list',
+      title: 'FDA List of Cleared or Approved Companion Diagnostics',
+      source: 'FDA',
+      type: 'regulatory',
+      audience: ['clinician', 'researcher'],
+      url: 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/list-cleared-or-approved-companion-diagnostic-devices-in-vitro-and-imaging-tools',
+      description: 'Complete list of FDA-approved companion diagnostic devices'
+    },
+    {
+      id: 'asco-cgp',
+      title: 'Comprehensive Genomic Profiling Education',
+      source: 'ASCO',
+      type: 'education',
+      audience: ['clinician'],
+      url: 'https://ascopubs.org/doi/10.1200/EDBK-25-481114',
+      description: 'ASCO educational resources on CGP testing and interpretation'
+    }
+  ],
+  
+  // HCT - Hereditary Cancer Testing resources (placeholder)
+  HCT: []
 };
 
 // Glossary of terms with authoritative source links
@@ -8589,25 +8697,37 @@ export const PAGE_SEO = {
     description: 'Vendor data completeness rankings and recognition. See which cancer diagnostic tests have complete, transparent data.',
     path: '/competitions'
   },
+  // Primary categories with new plain-language URLs
   MRD: {
-    title: 'MRD Tests Compared - Molecular Residual Disease',
+    title: 'Cancer Monitoring Tests - MRD & Recurrence Detection',
     description: 'Compare 20+ MRD tests: Signatera, Guardant Reveal, clonoSEQ, Oncodetect. Sensitivity, turnaround time, Medicare coverage.',
-    path: '/mrd'
+    path: '/monitor'
   },
   ECD: {
-    title: 'Early Cancer Detection Tests - MCED & Screening',
+    title: 'Cancer Screening Tests - Early Detection',
     description: 'Compare early cancer detection tests: Galleri, Shield, CancerSEEK. Multi-cancer screening sensitivity and specificity data.',
-    path: '/ecd'
+    path: '/screen'
   },
+  CGP: {
+    title: 'Treatment Selection Tests - CGP & Genomic Profiling',
+    description: 'Compare comprehensive genomic profiling tests: FoundationOne, Tempus xT, Guardant360. Genes analyzed, FDA companion diagnostics.',
+    path: '/treat'
+  },
+  HCT: {
+    title: 'Hereditary Cancer Tests - Genetic Risk Assessment',
+    description: 'Compare hereditary cancer risk tests. BRCA, Lynch syndrome, and multi-gene panel testing for inherited cancer predisposition.',
+    path: '/risk'
+  },
+  // Legacy category aliases (backward compatibility)
   TRM: {
-    title: 'Treatment Response Monitoring Tests',
+    title: 'Cancer Monitoring Tests - MRD & Recurrence Detection',
     description: 'Compare ctDNA tests for tracking cancer treatment response. Lead time vs imaging, sensitivity, clinical validation.',
-    path: '/trm'
+    path: '/monitor'
   },
   TDS: {
-    title: 'CGP & Treatment Decision Support Tests',
+    title: 'Treatment Selection Tests - CGP & Genomic Profiling',
     description: 'Compare comprehensive genomic profiling tests: FoundationOne, Tempus xT, Guardant360. Genes analyzed, FDA companion diagnostics.',
-    path: '/tds'
+    path: '/treat'
   },
   learn: {
     title: 'Learn About Cancer Blood Tests',
@@ -8644,6 +8764,18 @@ export const PAGE_SEO = {
 // ============================================
 // URL Utilities
 // ============================================
+
+// Category code to URL path mapping (new plain-language URLs)
+const categoryToPath = {
+  MRD: 'monitor',
+  ECD: 'screen',
+  CGP: 'treat',
+  HCT: 'risk',
+  // Legacy mappings
+  TRM: 'monitor',
+  TDS: 'treat',
+};
+
 export const slugify = (text) =>
   text.toLowerCase()
     .replace(/\+/g, '-plus')
@@ -8653,15 +8785,18 @@ export const slugify = (text) =>
 export const getTestUrl = (test, category) => {
   // Use explicit slug if defined, otherwise generate from name
   const slug = test.slug || slugify(test.name);
-  return `/${category.toLowerCase()}/${slug}`;
+  const urlPath = categoryToPath[category] || category.toLowerCase();
+  return `/${urlPath}/${slug}`;
 };
 
 export const getTestBySlug = (slug, category) => {
   const categoryMap = {
     MRD: mrdTestData,
     ECD: ecdTestData,
-    TRM: trmTestData,
-    TDS: tdsTestData,
+    TRM: trmTestData,  // Legacy: maps to MRD data eventually
+    TDS: tdsTestData,  // Legacy: maps to CGP data eventually
+    CGP: tdsTestData,  // CGP uses TDS data array
+    HCT: [],           // New category, empty for now
   };
   const tests = categoryMap[category] || [];
   // Check explicit slug field first, then fall back to slugified name
@@ -8675,9 +8810,12 @@ export const getAbsoluteUrl = (path) => `${SEO_DEFAULTS.siteUrl}${path}`;
 // ============================================
 export const generateTestSchema = (test, category) => {
   const categoryLabels = {
-    MRD: 'Molecular Residual Disease Test',
+    MRD: 'Cancer Monitoring & Residual Disease Test',
     ECD: 'Early Cancer Detection Test',
-    TRM: 'Treatment Response Monitoring Test',
+    CGP: 'Comprehensive Genomic Profiling Test',
+    HCT: 'Hereditary Cancer Risk Test',
+    // Legacy aliases
+    TRM: 'Cancer Monitoring & Residual Disease Test',
     TDS: 'Comprehensive Genomic Profiling Test'
   };
 

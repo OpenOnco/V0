@@ -391,6 +391,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://openonco.org/ecd/oncoxplore</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://openonco.org/trm/guardant360-response</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>

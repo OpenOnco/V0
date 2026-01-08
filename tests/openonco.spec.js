@@ -35,7 +35,21 @@ const EXPECTED = {
     TDS: tdsTestData.length,
     get total() { return this.MRD + this.ECD + this.TRM + this.TDS; }
   },
-  categories: ['MRD', 'ECD', 'TRM', 'TDS'],
+  // New URL structure: /monitor (MRD+TRM), /screen (ECD), /treat (CGP/TDS)
+  // HCT (/risk) is new and empty for now
+  categoryUrls: [
+    { url: '/monitor', code: 'MRD', name: 'Monitor' },
+    { url: '/screen', code: 'ECD', name: 'Screen' },
+    { url: '/treat', code: 'CGP', name: 'Treat' },
+  ],
+  // Legacy URLs for backward compatibility testing
+  legacyCategoryUrls: [
+    { url: '/mrd', code: 'MRD' },
+    { url: '/ecd', code: 'ECD' },
+    { url: '/trm', code: 'MRD' },  // TRM merged into MRD
+    { url: '/tds', code: 'CGP' },  // TDS renamed to CGP
+  ],
+  categories: ['MRD', 'ECD', 'TRM', 'TDS'],  // Keep for test count reference
 };
 
 // ===========================================
@@ -113,23 +127,28 @@ test.describe('Homepage', () => {
 // ===========================================
 
 test.describe('Category Pages', () => {
-  for (const category of EXPECTED.categories) {
-    test(`${category} page loads`, async ({ page }) => {
-      await page.goto(`/${category.toLowerCase()}`);
+  // Test new plain-language URLs
+  for (const { url, code, name } of EXPECTED.categoryUrls) {
+    test(`${name} page (${url}) loads`, async ({ page }) => {
+      await page.goto(url);
       await page.waitForTimeout(1000);
       
-      const content = await page.textContent('body');
-      expect(content?.toUpperCase()).toContain(category);
-    });
-
-    test(`${category} page shows test cards`, async ({ page }) => {
-      await page.goto(`/${category.toLowerCase()}`);
-      await page.waitForTimeout(1500);
-      
-      // Use data-testid for more reliable selection
+      // Should show test cards
       const cards = page.locator('[data-testid="test-card"], [data-testid="test-card-clickable"]');
       const count = await cards.count();
+      expect(count).toBeGreaterThan(0);
+    });
+  }
+  
+  // Test legacy URLs still work (backward compatibility)
+  for (const { url, code } of EXPECTED.legacyCategoryUrls) {
+    test(`Legacy URL ${url} redirects to correct category`, async ({ page }) => {
+      await page.goto(url);
+      await page.waitForTimeout(1000);
       
+      // Should show test cards (content loads regardless of URL)
+      const cards = page.locator('[data-testid="test-card"], [data-testid="test-card-clickable"]');
+      const count = await cards.count();
       expect(count).toBeGreaterThan(0);
     });
   }

@@ -1116,6 +1116,8 @@ const SourceDataPage = () => {
 // ============================================
 export default function App() {
   // Map URL paths to page names
+  // New plain-language URLs: /risk, /screen, /treat, /monitor
+  // Legacy URLs redirect: /mrd→/monitor, /ecd→/screen, /trm→/monitor, /tds→/treat
   const pathToPage = {
     '/': 'home',
     '/submissions': 'submissions',
@@ -1124,10 +1126,16 @@ export default function App() {
     '/faq': 'faq',
     '/learn': 'learn',
     '/about': 'about',
+    // New plain-language category URLs
+    '/risk': 'HCT',
+    '/screen': 'ECD',
+    '/treat': 'CGP',
+    '/monitor': 'MRD',
+    // Legacy URLs (kept for backward compatibility)
     '/mrd': 'MRD',
     '/ecd': 'ECD',
-    '/trm': 'TRM',
-    '/tds': 'TDS',
+    '/trm': 'MRD',  // TRM merged into MRD
+    '/tds': 'CGP',  // TDS renamed to CGP
     '/alz-blood': 'ALZ-BLOOD',
     // Persona direct access routes
     '/patients': 'home',
@@ -1156,19 +1164,26 @@ export default function App() {
     'faq': '/faq',
     'learn': '/learn',
     'about': '/about',
-    'MRD': '/mrd',
-    'ECD': '/ecd',
-    'TRM': '/trm',
-    'TDS': '/tds',
+    // Primary URLs (new plain-language)
+    'HCT': '/risk',
+    'ECD': '/screen',
+    'CGP': '/treat',
+    'MRD': '/monitor',
     'ALZ-BLOOD': '/alz-blood'
   };
 
-  // Category URL prefixes for test routes
+  // Category URL prefixes for test routes (supports both old and new URLs)
   const categoryPrefixes = {
+    // New plain-language prefixes
+    'risk': 'HCT',
+    'screen': 'ECD',
+    'treat': 'CGP',
+    'monitor': 'MRD',
+    // Legacy prefixes (for backward compatibility)
     'mrd': 'MRD',
     'ecd': 'ECD',
-    'trm': 'TRM',
-    'tds': 'TDS',
+    'trm': 'MRD',  // TRM tests now in MRD
+    'tds': 'CGP',  // TDS renamed to CGP
     'alz-blood': 'ALZ-BLOOD'
   };
 
@@ -1185,8 +1200,8 @@ export default function App() {
       }
     }
 
-    // Check for individual test routes: /mrd/test-name
-    const testRouteMatch = path.match(/^\/(mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
+    // Check for individual test routes: /monitor/signatera, /treat/foundationone, /mrd/test-name (legacy)
+    const testRouteMatch = path.match(/^\/(risk|screen|treat|monitor|mrd|ecd|trm|tds|alz-blood)\/([a-z0-9-]+)$/);
     if (testRouteMatch) {
       const [, categoryPrefix, testSlug] = testRouteMatch;
       const category = categoryPrefixes[categoryPrefix];
@@ -1411,7 +1426,7 @@ export default function App() {
       case 'home': return <HomePage onNavigate={handleNavigate} persona={persona} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
+      case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'CGP': case 'HCT': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;
