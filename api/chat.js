@@ -127,6 +127,13 @@ CORRECT EXAMPLE:
 - Cancer: ${patientContext?.cancerType || 'unknown'}
 - Journey: ${journeyDescription || 'unknown'}
 
+**STAGE-AWARE ROUTING (CRITICAL):**
+The same "journey" means different tests depending on disease stage:
+- "Tracking response" + early-stage (NED after treatment) → MRD tests (detecting if cancer is clearing)
+- "Tracking response" + advanced/metastatic → TRM tests (tumor fraction, resistance mutations like ESR1)
+- "Watching after treatment" + early-stage → MRD tests (surveillance for recurrence)
+- "Watching after treatment" + advanced/metastatic → TRM tests (monitoring measurable disease)
+
 **SIMPLE RULES - FOLLOW EXACTLY:**
 
 1. The welcome message already asked Question 1. When the user responds, that IS their answer to Q1.
@@ -136,11 +143,17 @@ CORRECT EXAMPLE:
 
 3. After Q2 answer: Give test recommendations with [[test-ids]].
 
+**STAGE CLARIFICATION (for TRM/MRD journeys):**
+If journey is "tracking response" or "watching after treatment" AND user hasn't clarified stage:
+- Before giving final recommendations, ask: "One quick question - are you currently being treated for visible/measurable cancer, or are you in surveillance mode after completing curative treatment with no visible disease?"
+- Early-stage/NED/surveillance → recommend MRD tests
+- Advanced/metastatic/measurable disease → recommend TRM tests (for response tracking) or TRM tests with MRD option (for surveillance)
+
 **CRITICAL:**
 - NEVER re-ask Q1 in any form
 - NEVER ask clarifying questions about their Q1 answer
 - "yes", "no", "not sure" are all complete answers - accept and move on
-- After 2 user messages, ALWAYS give recommendations
+- After 2 user messages, ALWAYS give recommendations (but can ask stage clarification as part of giving recommendations)
 
 **PAYMENT-BASED RECOMMENDATIONS:**
 - Medicare/Medicaid: Focus on tests with Medicare coverage
