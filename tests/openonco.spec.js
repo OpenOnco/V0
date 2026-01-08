@@ -1066,3 +1066,90 @@ test.describe('Persona System', () => {
     expect(pageText).toContain(testCount);
   });
 });
+
+// ===========================================
+// PATIENT ASSISTANCE PROGRAMS TESTS
+// ===========================================
+
+test.describe('Patient Assistance Programs', () => {
+  test('hasAssistanceProgram helper function works correctly', async ({ page }) => {
+    // Import and test the helper function directly
+    const { hasAssistanceProgram } = await import('../src/data.js');
+    
+    // Vendors with programs
+    expect(hasAssistanceProgram('Natera')).toBe(true);
+    expect(hasAssistanceProgram('Guardant Health')).toBe(true);
+    expect(hasAssistanceProgram('Foundation Medicine')).toBe(true);
+    expect(hasAssistanceProgram('Quest Diagnostics')).toBe(true);
+    expect(hasAssistanceProgram('Tempus')).toBe(true);
+    
+    // Partial match should work
+    expect(hasAssistanceProgram('Foundation Medicine / Natera')).toBe(true);
+    expect(hasAssistanceProgram('Labcorp (Invitae)')).toBe(true);
+    
+    // Vendor without US program
+    expect(hasAssistanceProgram('Burning Rock Dx')).toBe(false);
+    
+    // Unknown vendor
+    expect(hasAssistanceProgram('Unknown Vendor')).toBe(false);
+    expect(hasAssistanceProgram(null)).toBe(false);
+    expect(hasAssistanceProgram('')).toBe(false);
+  });
+
+  test('VENDOR_ASSISTANCE_PROGRAMS has required fields', async ({ page }) => {
+    const { VENDOR_ASSISTANCE_PROGRAMS } = await import('../src/data.js');
+    
+    // Check that all programs have required fields
+    for (const [vendor, program] of Object.entries(VENDOR_ASSISTANCE_PROGRAMS)) {
+      expect(program).toHaveProperty('hasProgram');
+      expect(program).toHaveProperty('tests');
+      expect(program).toHaveProperty('lastVerified');
+      
+      if (program.hasProgram) {
+        expect(program).toHaveProperty('programName');
+        expect(program).toHaveProperty('description');
+        expect(program).toHaveProperty('eligibility');
+      }
+    }
+  });
+
+  test('getAssistanceProgramForVendor returns correct program data', async ({ page }) => {
+    const { getAssistanceProgramForVendor } = await import('../src/data.js');
+    
+    // Test getting Natera program
+    const nateraProgram = getAssistanceProgramForVendor('Natera');
+    expect(nateraProgram).not.toBeNull();
+    expect(nateraProgram.hasProgram).toBe(true);
+    expect(nateraProgram.programName).toContain('Compassionate');
+    
+    // Test getting Foundation Medicine program
+    const fmiProgram = getAssistanceProgramForVendor('Foundation Medicine');
+    expect(fmiProgram).not.toBeNull();
+    expect(fmiProgram.maxOutOfPocket).toContain('$100');
+    
+    // Test partial match (vendor name contains multiple vendors)
+    const multiVendor = getAssistanceProgramForVendor('Foundation Medicine / Natera');
+    expect(multiVendor).not.toBeNull();
+    
+    // Test non-existent vendor
+    const unknown = getAssistanceProgramForVendor('NonExistent Vendor');
+    expect(unknown).toBeNull();
+  });
+
+  test('assistance programs cover major database vendors', async ({ page }) => {
+    const { VENDOR_ASSISTANCE_PROGRAMS, mrdTestData, tdsTestData } = await import('../src/data.js');
+    
+    // Get unique vendors from test data
+    const allTests = [...mrdTestData, ...tdsTestData];
+    const uniqueVendors = [...new Set(allTests.map(t => t.vendor))];
+    
+    // Check that we have programs for major vendors
+    const vendorsInPrograms = Object.keys(VENDOR_ASSISTANCE_PROGRAMS);
+    expect(vendorsInPrograms.length).toBeGreaterThanOrEqual(10);
+    
+    // Check specific major vendors are covered
+    expect(vendorsInPrograms).toContain('Natera');
+    expect(vendorsInPrograms).toContain('Guardant Health');
+    expect(vendorsInPrograms).toContain('Foundation Medicine');
+  });
+});
