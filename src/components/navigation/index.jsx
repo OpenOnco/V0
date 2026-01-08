@@ -134,13 +134,8 @@ const LifecycleStageCard = ({ stage, isHovered, onClick, onMouseEnter, onMouseLe
           <h3 className={`text-base font-bold leading-tight transition-colors duration-200 ${
             isHovered ? colors.textDark : colors.text
           }`}>
-            {stage.phase}: {stage.acronym}
+            {stage.fullName || stage.name}
           </h3>
-          <p className={`text-sm font-semibold mt-1 transition-colors duration-200 ${
-            isHovered ? colors.textDark : colors.text
-          }`}>
-            {stage.name}
-          </p>
           <p className={`text-sm font-semibold mt-1 transition-colors duration-200 ${colors.text}`}>
             {`Explore ${testCount} tests →`}
           </p>

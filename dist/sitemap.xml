@@ -7,28 +7,46 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd</loc>
+    <loc>https://openonco.org/monitor</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/screen</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/treat</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://openonco.org/mrd</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://openonco.org/ecd</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://openonco.org/trm</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://openonco.org/tds</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://openonco.org/alz-blood</loc>
@@ -73,643 +91,571 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/haystack-mrd</loc>
+    <loc>https://openonco.org/monitor/haystack-mrd</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/next-personal-dx</loc>
+    <loc>https://openonco.org/monitor/next-personal-dx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/oncodetect</loc>
+    <loc>https://openonco.org/monitor/oncodetect</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/pathlight</loc>
+    <loc>https://openonco.org/monitor/pathlight</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/radar-st</loc>
+    <loc>https://openonco.org/monitor/radar-st</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/reveal-mrd</loc>
+    <loc>https://openonco.org/monitor/reveal-mrd</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/signatera</loc>
+    <loc>https://openonco.org/monitor/signatera</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/tempus-xm-mrd</loc>
+    <loc>https://openonco.org/monitor/tempus-xm-mrd</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/labcorp-plasma-detect</loc>
+    <loc>https://openonco.org/monitor/labcorp-plasma-detect</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/foundationone-tracker-mrd</loc>
+    <loc>https://openonco.org/monitor/foundationone-tracker-mrd</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/foundation-ti-wgs-mrd-ruo</loc>
+    <loc>https://openonco.org/monitor/foundation-ti-wgs-mrd-ruo</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/veracyte-mrd-c2i-genomics-platform</loc>
+    <loc>https://openonco.org/monitor/veracyte-mrd-c2i-genomics-platform</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/guardant-lunar-ruo-platform</loc>
+    <loc>https://openonco.org/monitor/guardant-lunar-ruo-platform</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/navdx</loc>
+    <loc>https://openonco.org/monitor/navdx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/foresight-clarity-lymphoma</loc>
+    <loc>https://openonco.org/monitor/foresight-clarity-lymphoma</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/invitae-pcm</loc>
+    <loc>https://openonco.org/monitor/invitae-pcm</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/caris-assure</loc>
+    <loc>https://openonco.org/monitor/caris-assure</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/clonoseq</loc>
+    <loc>https://openonco.org/monitor/clonoseq</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/signatera-genome</loc>
+    <loc>https://openonco.org/monitor/signatera-genome</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/latitude</loc>
+    <loc>https://openonco.org/monitor/latitude</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/cancerdetect</loc>
+    <loc>https://openonco.org/monitor/cancerdetect</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/lymphovista</loc>
+    <loc>https://openonco.org/monitor/lymphovista</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/cancervista</loc>
+    <loc>https://openonco.org/monitor/cancervista</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/cancatch-custom</loc>
+    <loc>https://openonco.org/monitor/cancatch-custom</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/clonoseq-assay</loc>
+    <loc>https://openonco.org/monitor/clonoseq-assay</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/lymphotrack-dx-igh-assay</loc>
+    <loc>https://openonco.org/monitor/lymphotrack-dx-igh-assay</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/bd-oneflow-b-all-mrd-kit</loc>
+    <loc>https://openonco.org/monitor/bd-oneflow-b-all-mrd-kit</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/mrd/mrdvision</loc>
+    <loc>https://openonco.org/monitor/mrdvision</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/shield</loc>
+    <loc>https://openonco.org/screen/shield</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/galleri</loc>
+    <loc>https://openonco.org/screen/galleri</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/cologuard-plus</loc>
+    <loc>https://openonco.org/screen/cologuard-plus</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/colosense</loc>
+    <loc>https://openonco.org/screen/colosense</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/freenome-crc-blood-test</loc>
+    <loc>https://openonco.org/screen/freenome-crc-blood-test</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/firstlook-lung</loc>
+    <loc>https://openonco.org/screen/firstlook-lung</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/helioliver</loc>
+    <loc>https://openonco.org/screen/helioliver</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/oncoguard-liver</loc>
+    <loc>https://openonco.org/screen/oncoguard-liver</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/shield-mcd</loc>
+    <loc>https://openonco.org/screen/shield-mcd</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/episeek</loc>
+    <loc>https://openonco.org/screen/episeek</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/provue-lung</loc>
+    <loc>https://openonco.org/screen/provue-lung</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/signal-c</loc>
+    <loc>https://openonco.org/screen/signal-c</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/icolocomf</loc>
+    <loc>https://openonco.org/screen/icolocomf</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/galeas-bladder</loc>
+    <loc>https://openonco.org/screen/galeas-bladder</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/overc-multi-cancer-detection-blood-test</loc>
+    <loc>https://openonco.org/screen/overc-multi-cancer-detection-blood-test</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/cancerguard</loc>
+    <loc>https://openonco.org/screen/cancerguard</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/cologuard</loc>
+    <loc>https://openonco.org/screen/cologuard</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/epi-procolon</loc>
+    <loc>https://openonco.org/screen/epi-procolon</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/icolohunter</loc>
+    <loc>https://openonco.org/screen/icolohunter</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/iesohunter</loc>
+    <loc>https://openonco.org/screen/iesohunter</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/ihepcomf</loc>
+    <loc>https://openonco.org/screen/ihepcomf</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/iurisure</loc>
+    <loc>https://openonco.org/screen/iurisure</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/avantect-pancreatic-cancer-test</loc>
+    <loc>https://openonco.org/screen/avantect-pancreatic-cancer-test</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/cancerdetect-oral-throat</loc>
+    <loc>https://openonco.org/screen/cancerdetect-oral-throat</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/trucheck-intelli</loc>
+    <loc>https://openonco.org/screen/trucheck-intelli</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/ecd/oncoxplore</loc>
+    <loc>https://openonco.org/screen/oncoxplore</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/guardant360-response</loc>
+    <loc>https://openonco.org/treat/foundationone-cdx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/signatera-io-monitoring</loc>
+    <loc>https://openonco.org/treat/foundationone-liquid-cdx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/next-personal</loc>
+    <loc>https://openonco.org/treat/foundationone-heme</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/tempus-xm-for-trm</loc>
+    <loc>https://openonco.org/treat/guardant360-cdx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/radar</loc>
+    <loc>https://openonco.org/treat/guardant360-liquid</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/foundationone-tracker-trm</loc>
+    <loc>https://openonco.org/treat/tempus-xt-cdx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/foundationone-monitor</loc>
+    <loc>https://openonco.org/treat/tempus-xf</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/northstar-response</loc>
+    <loc>https://openonco.org/treat/tempus-xf</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/caris-assure</loc>
+    <loc>https://openonco.org/treat/msk-impact</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/reveal-trm</loc>
+    <loc>https://openonco.org/treat/mi-cancer-seek</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/liquid-trace-therapy-monitoring</loc>
+    <loc>https://openonco.org/treat/oncoextra</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/trm/xm-for-trm</loc>
+    <loc>https://openonco.org/treat/omniseq-insight</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/foundationone-cdx</loc>
+    <loc>https://openonco.org/treat/stratangs</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/foundationone-liquid-cdx</loc>
+    <loc>https://openonco.org/treat/mi-profile</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/foundationone-heme</loc>
+    <loc>https://openonco.org/treat/neo-pantracer-tissue</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/guardant360-cdx</loc>
+    <loc>https://openonco.org/treat/northstar-select</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/guardant360-liquid</loc>
+    <loc>https://openonco.org/treat/isopsa</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/tempus-xt-cdx</loc>
+    <loc>https://openonco.org/treat/oncotype-dx-breast-recurrence-score</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/tempus-xf</loc>
+    <loc>https://openonco.org/treat/liquid-trace-solid-tumor</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/tempus-xf</loc>
+    <loc>https://openonco.org/treat/liquid-trace-hematology</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/msk-impact</loc>
+    <loc>https://openonco.org/treat/liquidhallmark</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/mi-cancer-seek</loc>
+    <loc>https://openonco.org/treat/resolution-ctdx-first</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/oncoextra</loc>
+    <loc>https://openonco.org/treat/oncocompass-target</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/omniseq-insight</loc>
+    <loc>https://openonco.org/treat/oncoscreen-focus-cdx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/stratangs</loc>
+    <loc>https://openonco.org/treat/trusight-oncology-comprehensive-tso-comp</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/mi-profile</loc>
+    <loc>https://openonco.org/treat/geneseeqprime</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/neo-pantracer-tissue</loc>
+    <loc>https://openonco.org/treat/pgdx-elio-tissue-complete</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/northstar-select</loc>
+    <loc>https://openonco.org/treat/oncomine-comprehensive-assay-plus</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/isopsa</loc>
+    <loc>https://openonco.org/treat/tso-500</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/oncotype-dx-breast-recurrence-score</loc>
+    <loc>https://openonco.org/treat/cobas-egfr-mutation-test-v2</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/liquid-trace-solid-tumor</loc>
+    <loc>https://openonco.org/treat/cobas-kras-mutation-test</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/liquid-trace-hematology</loc>
+    <loc>https://openonco.org/treat/therascreen-egfr-rgq-pcr-kit</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/liquidhallmark</loc>
+    <loc>https://openonco.org/treat/oncobeam-ras-crc-kit</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/resolution-ctdx-first</loc>
+    <loc>https://openonco.org/treat/pgdx-elio-plasma-focus-dx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/oncocompass-target</loc>
+    <loc>https://openonco.org/treat/leukostrat-cdx-flt3-mutation-assay</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/oncoscreen-focus-cdx</loc>
+    <loc>https://openonco.org/treat/hedera-profiling-2-ctdna-test-panel</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/trusight-oncology-comprehensive-tso-comp</loc>
+    <loc>https://openonco.org/treat/pgdx-elio-plasma-focus-dx</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/geneseeqprime</loc>
+    <loc>https://openonco.org/treat/oncoscreen-focus-cdx-tissue-kit</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/pgdx-elio-tissue-complete</loc>
+    <loc>https://openonco.org/treat/oncoscreen-plus-cancer-mutation-profiling-tissue-kit</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/oncomine-comprehensive-assay-plus</loc>
+    <loc>https://openonco.org/treat/cellsight-dna</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://openonco.org/tds/tso-500</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/cobas-egfr-mutation-test-v2</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/cobas-kras-mutation-test</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/therascreen-egfr-rgq-pcr-kit</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/oncobeam-ras-crc-kit</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/pgdx-elio-plasma-focus-dx</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/leukostrat-cdx-flt3-mutation-assay</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/hedera-profiling-2-ctdna-test-panel</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/pgdx-elio-plasma-focus-dx</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/oncoscreen-focus-cdx-tissue-kit</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/oncoscreen-plus-cancer-mutation-profiling-tissue-kit</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/cellsight-dna</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://openonco.org/tds/cancervision</loc>
+    <loc>https://openonco.org/treat/cancervision</loc>
     <lastmod>2026-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
