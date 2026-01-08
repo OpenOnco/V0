@@ -9,6 +9,7 @@ import { calculateTestCompleteness } from '../../utils/testMetrics';
 import Badge from '../ui/Badge';
 import VendorBadge from '../badges/VendorBadge';
 import ProductTypeBadge from '../badges/ProductTypeBadge';
+import AssistanceBadge from '../badges/AssistanceBadge';
 import FeedbackModal from '../patient/FeedbackModal';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
@@ -83,6 +84,8 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               )}
               {/* Product Type Badge - IVD Kit vs Service */}
               {!isDiscontinued && test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
+              {/* Financial Assistance Badge */}
+              {!isDiscontinued && <AssistanceBadge vendor={test.vendor} size="sm" />}
               {!isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0
                 ? <Badge variant="success">Medicare+Private</Badge>
                 : !isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare')

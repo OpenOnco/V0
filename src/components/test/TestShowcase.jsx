@@ -246,7 +246,9 @@ const TestShowcase = ({
         const cancerTypesSearchable = Array.isArray(test.cancerTypes) ? test.cancerTypes.join(' ') : (test.cancerTypes || '');
         // Include sample category in search - "blood", "plasma", "tissue", "stool" filter by sample type
         const sampleCategorySearchable = test.sampleCategory || '';
-        const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable} ${sampleCategorySearchable}`.toLowerCase();
+        // Include assistance program in search - "assistance" or "financial" finds tests with programs
+        const assistanceSearchable = hasAssistanceProgram(test.vendor) ? 'assistance financial help support program' : '';
+        const searchableText = `${test.name} ${test.vendor} ${test.category} ${productTypeSearchable} ${cancerTypesSearchable} ${sampleCategorySearchable} ${assistanceSearchable}`.toLowerCase();
         return terms.every(term => searchableText.includes(term));
       });
     }
@@ -668,6 +670,12 @@ const TestShowcase = ({
                             🏠Home
                           </span>
                         ) : null}
+                        {/* Assistance badge */}
+                        {!isDiscontinued && hasAssistanceProgram(test.vendor) && (
+                          <span className="inline-flex items-center bg-rose-100 text-rose-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Financial assistance available">
+                            💝
+                          </span>
+                        )}
                         {/* Category badge */}
                         <span className={`inline-flex items-center ${colors.badge} text-white text-[9px] px-1 rounded font-medium h-[18px]`}>
                           {test.category}
@@ -704,6 +712,10 @@ const TestShowcase = ({
             <span className="flex items-center gap-1">
               <span className="bg-teal-100 text-teal-700 px-1 rounded">🏠Home</span>
               <span className="text-slate-500">Self-Collect</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="bg-rose-100 text-rose-700 px-1 rounded">💝</span>
+              <span className="text-slate-500">Assistance</span>
             </span>
             <span className="text-slate-300">|</span>
             <span className="flex items-center gap-1">
@@ -888,6 +900,12 @@ const TestShowcase = ({
                           🏠Home
                         </span>
                       ) : null}
+                      {/* Assistance badge */}
+                      {!isDiscontinued && hasAssistanceProgram(test.vendor) && (
+                        <span className="inline-flex items-center bg-rose-100 text-rose-700 text-[9px] px-1 rounded font-medium h-[18px]" title="Financial assistance available">
+                          💝
+                        </span>
+                      )}
                       {/* Category badge */}
                       <span className={`inline-flex items-center ${colors.badge} text-white text-[9px] px-1 rounded font-medium h-[18px]`}>
                         {test.category}
@@ -924,6 +942,10 @@ const TestShowcase = ({
           <span className="flex items-center gap-1">
             <span className="bg-teal-100 text-teal-700 px-1 rounded">🏠Home</span>
             <span className="text-slate-500">Self-Collect</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="bg-rose-100 text-rose-700 px-1 rounded">💝</span>
+            <span className="text-slate-500">Assistance</span>
           </span>
           <span className="text-slate-300">|</span>
           <span className="flex items-center gap-1">
