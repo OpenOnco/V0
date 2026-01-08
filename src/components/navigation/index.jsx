@@ -34,8 +34,9 @@ export const getSampleTests = (stageId) => {
   switch(stageId) {
     case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
     case 'TDS': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
-    case 'TRM': return ['Reveal TRM', 'Signatera (IO Monitoring)', 'NeXT Personal', 'RaDaR', 'Oncodetect'];
-    case 'MRD': return ['Signatera', 'Reveal MRD', 'RaDaR', 'Oncodetect', 'Invitae Personalis', 'FoundationOne Tracker'];
+    // MRD lifecycle stage includes both MRD and TRM tests
+    case 'MRD': return ['Signatera', 'Reveal MRD', 'RaDaR', 'Reveal TRM', 'Oncodetect', 'FoundationOne Tracker'];
+    case 'HCT': return []; // Coming soon
     default: return [];
   }
 };
@@ -168,11 +169,13 @@ export const LifecycleNavigator = ({ onNavigate }) => {
   }, [currentDomain]);
 
   // Get dynamic test counts
+  // MRD lifecycle stage combines MRD + TRM test categories
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
     TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10,
-    TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 9,
-    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
+    MRD: (typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15) + 
+         (typeof trmTestData !== 'undefined' ? trmTestData.length : 9),
+    HCT: 0, // New category, empty for now
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
 
