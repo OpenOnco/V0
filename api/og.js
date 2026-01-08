@@ -512,21 +512,27 @@ export default function handler(req, res) {
     }
   }
   
-  // Pattern: /[category]/[slug]
-  const categoryTestMatch = path.match(/^\\/(mrd|ecd|trm|tds|cgp)\\/([^\\/]+)\\/?$/i);
+  // Pattern: /[category]/[slug] - supports both new and legacy URLs
+  const categoryTestMatch = path.match(/^\\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\\/([^\\/]+)\\/?$/i);
   if (!html && categoryTestMatch) {
-    const category = categoryTestMatch[1].toLowerCase();
+    const categoryPath = categoryTestMatch[1].toLowerCase();
     const slug = categoryTestMatch[2].toLowerCase();
+    // Map new paths to old category codes for lookup
+    const pathToCategory = { monitor: 'mrd', screen: 'ecd', treat: 'tds', risk: 'hct' };
+    const category = pathToCategory[categoryPath] || categoryPath;
     const test = TEST_INFO[slug];
     if (test) {
       html = generateTestPageHtml({ test, category: test.category, url });
     }
   }
   
-  // Pattern: /[category] (category page)
-  const categoryMatch = path.match(/^\\/(mrd|ecd|trm|tds|cgp)\\/?$/i);
+  // Pattern: /[category] (category page) - supports both new and legacy URLs
+  const categoryMatch = path.match(/^\\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\\/?$/i);
   if (!html && categoryMatch) {
-    const category = categoryMatch[1].toLowerCase();
+    const categoryPath = categoryMatch[1].toLowerCase();
+    // Map new paths to old category codes for lookup
+    const pathToCategory = { monitor: 'mrd', screen: 'ecd', treat: 'tds', risk: 'hct' };
+    const category = pathToCategory[categoryPath] || categoryPath;
     const catInfo = CATEGORY_INFO[category];
     if (catInfo) {
       html = generateCategoryPageHtml({ category, catInfo, url });

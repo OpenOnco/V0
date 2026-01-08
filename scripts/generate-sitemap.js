@@ -19,13 +19,19 @@ const slugify = (text) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
-// Static pages
+// Static pages - use new plain-language URLs as primary, keep legacy for SEO continuity
 const staticPages = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/mrd', priority: '0.9', changefreq: 'weekly' },
-  { path: '/ecd', priority: '0.9', changefreq: 'weekly' },
-  { path: '/trm', priority: '0.9', changefreq: 'weekly' },
-  { path: '/tds', priority: '0.9', changefreq: 'weekly' },
+  // New primary URLs
+  { path: '/monitor', priority: '0.9', changefreq: 'weekly' },
+  { path: '/screen', priority: '0.9', changefreq: 'weekly' },
+  { path: '/treat', priority: '0.9', changefreq: 'weekly' },
+  // Legacy URLs (maintain for SEO - will redirect)
+  { path: '/mrd', priority: '0.8', changefreq: 'weekly' },
+  { path: '/ecd', priority: '0.8', changefreq: 'weekly' },
+  { path: '/trm', priority: '0.8', changefreq: 'weekly' },
+  { path: '/tds', priority: '0.8', changefreq: 'weekly' },
+  // Other pages
   { path: '/alz-blood', priority: '0.9', changefreq: 'weekly' },
   { path: '/learn', priority: '0.8', changefreq: 'monthly' },
   { path: '/about', priority: '0.5', changefreq: 'monthly' },
@@ -42,13 +48,14 @@ async function generateSitemap() {
 
   const { mrdTestData, ecdTestData, trmTestData, tdsTestData, alzBloodTestData } = data;
 
+  // Map category codes to new URL paths
   const categoryTests = {
-    mrd: mrdTestData,
-    ecd: ecdTestData,
-    trm: trmTestData,
-    tds: tdsTestData,
+    monitor: mrdTestData,     // MRD → /monitor
+    screen: ecdTestData,      // ECD → /screen
+    treat: tdsTestData,       // TDS/CGP → /treat
     'alz-blood': alzBloodTestData,
   };
+  // Note: TRM tests are merged into MRD/monitor, so we don't duplicate them
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
