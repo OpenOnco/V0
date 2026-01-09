@@ -4,6 +4,7 @@ import {
   ecdTestData,
   trmTestData,
   tdsTestData,
+  hctTestData,
   getDomain,
   getStagesByDomain,
   lifecycleColorClasses,
@@ -178,7 +179,7 @@ export const LifecycleNavigator = ({ onNavigate }) => {
     TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10,
     MRD: (typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15) + 
          (typeof trmTestData !== 'undefined' ? trmTestData.length : 9),
-    HCT: 0, // New category, empty for now
+    HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
 
