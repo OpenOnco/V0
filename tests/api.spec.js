@@ -77,6 +77,19 @@ test.describe('API v1 - Tests List Endpoint', () => {
     }
   });
 
+  test('filters by HCT category', async ({ request }) => {
+    const response = await request.get(`${API_BASE}/api/v1/tests?category=hct`);
+    const data = await response.json();
+    
+    expect(data.success).toBe(true);
+    expect(data.data.length).toBeGreaterThan(0);
+    
+    // All results should be HCT category
+    for (const test of data.data) {
+      expect(test.category).toBe('HCT');
+    }
+  });
+
   test('filters by vendor (partial match)', async ({ request }) => {
     const response = await request.get(`${API_BASE}/api/v1/tests?vendor=natera`);
     const data = await response.json();
@@ -187,14 +200,15 @@ test.describe('API v1 - Categories Endpoint', () => {
     const data = await response.json();
     
     expect(data.success).toBe(true);
-    expect(data.meta.totalCategories).toBe(4);
-    expect(data.data.length).toBe(4);
+    expect(data.meta.totalCategories).toBe(5);
+    expect(data.data.length).toBe(5);
     
     const categoryIds = data.data.map(c => c.id);
     expect(categoryIds).toContain('mrd');
     expect(categoryIds).toContain('ecd');
     expect(categoryIds).toContain('trm');
     expect(categoryIds).toContain('tds');
+    expect(categoryIds).toContain('hct');
   });
 
   test('categories have required metadata', async ({ request }) => {
@@ -235,6 +249,7 @@ test.describe('API v1 - Vendors Endpoint', () => {
     expect(firstVendor.totalTests).toBeGreaterThan(0);
     expect(firstVendor.tests.mrd).toBeDefined();
     expect(firstVendor.tests.ecd).toBeDefined();
+    expect(firstVendor.tests.hct).toBeDefined();
   });
 
   test('filters vendors by category', async ({ request }) => {

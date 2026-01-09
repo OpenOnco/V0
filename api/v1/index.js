@@ -11,17 +11,18 @@
  *   GET /api/v1/embed/test   - Embeddable test card
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../_data.js';
+import { mrdTestData, ecdTestData, trmTestData, tdsTestData, hctTestData } from '../_data.js';
 
 // ============================================================================
 // SHARED CONSTANTS
 // ============================================================================
 
 const CATEGORY_DATA = {
-  mrd: { data: mrdTestData, name: 'Molecular Residual Disease', shortName: 'MRD' },
-  ecd: { data: ecdTestData, name: 'Early Cancer Detection', shortName: 'ECD' },
-  trm: { data: trmTestData, name: 'Treatment Response Monitoring', shortName: 'TRM' },
-  tds: { data: tdsTestData, name: 'Treatment Decision Support', shortName: 'TDS' },
+  mrd: { data: mrdTestData, name: 'Molecular Residual Disease', shortName: 'MRD', urlPath: 'monitor' },
+  ecd: { data: ecdTestData, name: 'Early Cancer Detection', shortName: 'ECD', urlPath: 'screen' },
+  trm: { data: trmTestData, name: 'Treatment Response Monitoring', shortName: 'TRM', urlPath: 'monitor' },
+  tds: { data: tdsTestData, name: 'Treatment Decision Support', shortName: 'TDS', urlPath: 'treat' },
+  hct: { data: hctTestData, name: 'Hereditary Cancer Testing', shortName: 'HCT', urlPath: 'risk' },
 };
 
 const TEST_LOOKUP = new Map();
@@ -30,6 +31,7 @@ const TEST_LOOKUP = new Map();
   { data: ecdTestData, category: 'ecd' },
   { data: trmTestData, category: 'trm' },
   { data: tdsTestData, category: 'tds' },
+  { data: hctTestData, category: 'hct' },
 ].forEach(({ data, category }) => {
   data.forEach(test => {
     TEST_LOOKUP.set(test.id, { ...test, category: category.toUpperCase(), categoryName: CATEGORY_DATA[category].name });
@@ -68,6 +70,7 @@ function handleDocs(req, res) {
       { method: 'GET', path: '/api/v1/stats', description: 'Database statistics' },
       { method: 'GET', path: '/api/v1/embed/test', description: 'Embeddable test card' },
     ],
+    categories: ['mrd', 'ecd', 'trm', 'tds', 'hct'],
   };
 
   if (format === 'json' || !accept.includes('text/html')) {
@@ -88,8 +91,18 @@ h1{color:#059669}a{color:#059669}</style></head>
 <p>Free, open access to cancer diagnostic test data. <a href="https://openonco.org">openonco.org</a></p>
 <h2>Endpoints</h2>
 ${docs.endpoints.map(e => `<p><code>${e.method} ${e.path}</code> - ${e.description}</p>`).join('')}
-<h2>Example</h2>
-<pre>curl "https://openonco.org/api/v1/tests?category=mrd&limit=5"</pre>
+<h2>Categories</h2>
+<ul>
+<li><code>mrd</code> - Molecular Residual Disease</li>
+<li><code>ecd</code> - Early Cancer Detection</li>
+<li><code>trm</code> - Treatment Response Monitoring</li>
+<li><code>tds</code> - Treatment Decision Support</li>
+<li><code>hct</code> - Hereditary Cancer Testing</li>
+</ul>
+<h2>Examples</h2>
+<pre>curl "https://openonco.org/api/v1/tests?category=mrd&limit=5"
+curl "https://openonco.org/api/v1/tests?category=hct"
+curl "https://openonco.org/api/v1/stats"</pre>
 <p>License: CC BY 4.0</p></body></html>`);
 }
 
@@ -171,11 +184,15 @@ function handleSingleTest(req, res, testId) {
     return res.status(404).json({ success: false, error: 'Test not found', message: `No test found with ID "${testId}"` });
   }
 
+  // Get the URL path for this category
+  const catKey = test.category.toLowerCase();
+  const urlPath = CATEGORY_DATA[catKey]?.urlPath || catKey;
+
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
   return res.status(200).json({
     success: true,
     meta: { generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
-    links: { self: `https://openonco.org/api/v1/tests/${test.id}`, web: `https://openonco.org/${test.category?.toLowerCase()}/${test.id}` },
+    links: { self: `https://openonco.org/api/v1/tests/${test.id}`, web: `https://openonco.org/${urlPath}/${test.id}` },
     data: test,
   });
 }
@@ -185,9 +202,10 @@ function handleCategories(req, res) {
     id,
     name: cat.name,
     shortName: cat.shortName,
+    urlPath: cat.urlPath,
     description: getDescription(id),
     stats: { totalTests: cat.data.length, vendors: [...new Set(cat.data.map(t => t.vendor))].length },
-    links: { tests: `https://openonco.org/api/v1/tests?category=${id}`, web: `https://openonco.org/${id}` },
+    links: { tests: `https://openonco.org/api/v1/tests?category=${id}`, web: `https://openonco.org/${cat.urlPath}` },
   }));
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
@@ -204,6 +222,7 @@ function getDescription(id) {
     ecd: 'Screening tests designed to detect cancer early, before symptoms appear',
     trm: 'Monitor how well cancer treatment is working over time',
     tds: 'Identify genetic alterations to guide therapy selection',
+    hct: 'Germline genetic testing to assess inherited cancer predisposition risk',
   };
   return descriptions[id] || '';
 }
@@ -216,7 +235,7 @@ function handleVendors(req, res) {
     cat.data.forEach(test => {
       const vendor = test.vendor;
       if (!vendorMap.has(vendor)) {
-        vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, trm: 0, tds: 0 }, kits: { mrd: 0, ecd: 0, trm: 0, tds: 0 }, totalTests: 0 });
+        vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, trm: 0, tds: 0, hct: 0 }, kits: { mrd: 0, ecd: 0, trm: 0, tds: 0, hct: 0 }, totalTests: 0 });
       }
       const v = vendorMap.get(vendor);
       if (test.isKitProduct) v.kits[catId]++;
@@ -241,7 +260,7 @@ function handleVendors(req, res) {
 }
 
 function handleStats(req, res) {
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData, ...hctTestData];
   const stats = {
     totals: {
       tests: allTests.length,
@@ -253,6 +272,7 @@ function handleStats(req, res) {
       ECD: { tests: ecdTestData.length, vendors: [...new Set(ecdTestData.map(t => t.vendor))].length },
       TRM: { tests: trmTestData.length, vendors: [...new Set(trmTestData.map(t => t.vendor))].length },
       TDS: { tests: tdsTestData.length, vendors: [...new Set(tdsTestData.map(t => t.vendor))].length },
+      HCT: { tests: hctTestData.length, vendors: [...new Set(hctTestData.map(t => t.vendor))].length },
     },
   };
 
@@ -283,6 +303,10 @@ function handleEmbed(req, res) {
     return res.status(404).send('<!DOCTYPE html><html><body>Test not found</body></html>');
   }
 
+  // Get the URL path for this category
+  const catKey = test.category.toLowerCase();
+  const urlPath = CATEGORY_DATA[catKey]?.urlPath || catKey;
+
   if (format === 'json') {
     return res.status(200).json({
       success: true,
@@ -302,6 +326,11 @@ function handleEmbed(req, res) {
   res.setHeader('Content-Security-Policy', 'frame-ancestors *');
   res.setHeader('Cache-Control', 'public, max-age=300');
 
+  // HCT tests may have genesAnalyzed instead of sensitivity/specificity
+  const metric1 = test.sensitivity ? `<div class="metric"><div class="metric-label">Sensitivity</div><div class="metric-value">${test.sensitivity}%</div></div>` : 
+                  test.genesAnalyzed ? `<div class="metric"><div class="metric-label">Genes</div><div class="metric-value">${test.genesAnalyzed}</div></div>` : '';
+  const metric2 = test.specificity ? `<div class="metric"><div class="metric-label">Specificity</div><div class="metric-value">${test.specificity}%</div></div>` : '';
+
   return res.status(200).send(`<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:${bg};color:${text};padding:16px}
@@ -320,10 +349,10 @@ function handleEmbed(req, res) {
 <body><div class="card">
 <div class="header"><div><div class="name">${test.name}</div><div class="vendor">${test.vendor}</div></div><span class="badge">${test.category}</span></div>
 <div class="metrics">
-${test.sensitivity ? `<div class="metric"><div class="metric-label">Sensitivity</div><div class="metric-value">${test.sensitivity}%</div></div>` : ''}
-${test.specificity ? `<div class="metric"><div class="metric-label">Specificity</div><div class="metric-value">${test.specificity}%</div></div>` : ''}
+${metric1}
+${metric2}
 </div>
-<div class="footer"><a class="link" href="https://openonco.org/${test.category?.toLowerCase()}/${test.id}" target="_blank">View Details →</a><span class="powered">via openonco.org</span></div>
+<div class="footer"><a class="link" href="https://openonco.org/${urlPath}/${test.id}" target="_blank">View Details →</a><span class="powered">via openonco.org</span></div>
 </div></body></html>`);
 }
 
