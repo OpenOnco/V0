@@ -2373,8 +2373,10 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Technically validated assay. European LDT offered from LIQOMICS laboratory in Germany.",
     "technologyDifferentiator": "Multi-solid tumor MRD assay from LIQOMICS (same vendor as lymphoma-focused LymphoVista). Ultra-sensitive detection with LoD of 3.30×10⁻⁶. Covers 17 anatomical sites with optimized mutation panels for diverse solid tumors.",
+    "totalParticipants": 150,
+    "totalParticipantsNotes": "Technical validation conducted with 150 samples.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate."
+    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate. 2025-01-09: Added validation cohort size (150 samples) per Jens Winter email."
   },
   {
     "id": "mrd-25",
