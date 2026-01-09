@@ -139,6 +139,15 @@ export const MINIMUM_PARAMS = {
       { key: 'fdaStatus', label: 'FDA Status' },
     ]
   },
+  HCT: {
+    // NOTE: HCT (Hereditary Cancer Testing) focuses on germline variants
+    // Key metrics: genes covered, analytical performance, price/access
+    core: [
+      { key: 'genesAnalyzed', label: 'Genes Analyzed' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+    ]
+  },
 };
 
 export const FIELD_DEFINITIONS = {
