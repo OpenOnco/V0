@@ -12,6 +12,7 @@
  */
 
 import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../_data.js';
+import { generateHtmlDocs, generateJsonDocs } from './docs.js';
 
 // ============================================================================
 // SHARED CONSTANTS
@@ -55,54 +56,16 @@ function setCorsHeaders(res) {
 function handleDocs(req, res) {
   const accept = req.headers.accept || '';
   const format = req.query.format;
-  
-  const docs = {
-    name: 'OpenOnco Public API',
-    version: '1.0.0',
-    description: 'Free, open access to cancer diagnostic test data',
-    baseUrl: 'https://openonco.org/api/v1',
-    license: 'CC BY 4.0',
-    endpoints: [
-      { method: 'GET', path: '/api/v1/tests', description: 'List all tests with filtering' },
-      { method: 'GET', path: '/api/v1/tests/:id', description: 'Get a single test by ID' },
-      { method: 'GET', path: '/api/v1/categories', description: 'List all test categories' },
-      { method: 'GET', path: '/api/v1/vendors', description: 'List all vendors' },
-      { method: 'GET', path: '/api/v1/stats', description: 'Database statistics' },
-      { method: 'GET', path: '/api/v1/embed/test', description: 'Embeddable test card' },
-    ],
-    categories: ['mrd', 'ecd', 'cgp', 'hct'],
-  };
 
-  if (format === 'json' || !accept.includes('text/html')) {
+  if (format === 'json' || (!accept.includes('text/html') && accept.includes('application/json'))) {
     res.setHeader('Cache-Control', 'public, max-age=3600');
-    return res.status(200).json(docs);
+    return res.status(200).json(generateJsonDocs());
   }
 
-  // Return HTML documentation
+  // Return comprehensive HTML documentation
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 'public, max-age=3600');
-  return res.status(200).send(`<!DOCTYPE html>
-<html><head><title>OpenOnco API</title>
-<style>body{font-family:system-ui;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.6}
-code{background:#f4f4f4;padding:2px 6px;border-radius:4px}
-pre{background:#f4f4f4;padding:16px;overflow-x:auto;border-radius:8px}
-h1{color:#059669}a{color:#059669}</style></head>
-<body><h1>OpenOnco Public API</h1>
-<p>Free, open access to cancer diagnostic test data. <a href="https://openonco.org">openonco.org</a></p>
-<h2>Endpoints</h2>
-${docs.endpoints.map(e => `<p><code>${e.method} ${e.path}</code> - ${e.description}</p>`).join('')}
-<h2>Categories</h2>
-<ul>
-<li><code>mrd</code> - Molecular Residual Disease</li>
-<li><code>ecd</code> - Early Cancer Detection</li>
-<li><code>cgp</code> - Comprehensive Genomic Profiling</li>
-<li><code>hct</code> - Hereditary Cancer Testing</li>
-</ul>
-<h2>Examples</h2>
-<pre>curl "https://openonco.org/api/v1/tests?category=mrd&limit=5"
-curl "https://openonco.org/api/v1/tests?category=hct"
-curl "https://openonco.org/api/v1/stats"</pre>
-<p>License: CC BY 4.0</p></body></html>`);
+  return res.status(200).send(generateHtmlDocs());
 }
 
 function handleTests(req, res) {
