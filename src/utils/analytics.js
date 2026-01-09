@@ -36,8 +36,9 @@ export const initAnalytics = () => {
 
   posthog.init(POSTHOG_KEY, {
     api_host: POSTHOG_HOST,
-    // Respect user privacy
-    respect_dnt: true,
+    // Don't respect DNT - most users have it enabled by default in browsers
+    // and we need analytics to understand usage patterns
+    respect_dnt: false,
     // Capture page views automatically
     capture_pageview: false, // We'll do this manually for more control
     capture_pageleave: true,
