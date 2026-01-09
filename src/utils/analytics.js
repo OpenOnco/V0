@@ -15,10 +15,10 @@
 import posthog from 'posthog-js';
 
 // PostHog configuration
-// Key is hardcoded as fallback because it's a public frontend key (not secret)
-// and Vercel env var injection during build can be unreliable
-const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY || 'phc_i3Hw8Ph3vwoICch2CcX0WgYkC0lYOCQrmhWVKF7B0Aw';
-const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com';
+// Key is hardcoded because Vercel build doesn't inject env vars reliably
+// PostHog keys are public frontend keys (not secrets)
+const POSTHOG_KEY = 'phc_i3Hw8Ph3vwoICch2CcX0WgYkC0lYOCQrmhWVKF7B0Aw';
+const POSTHOG_HOST = 'https://us.i.posthog.com';
 
 let initialized = false;
 
