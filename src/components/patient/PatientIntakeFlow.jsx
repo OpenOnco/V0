@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { PATIENT_INFO_CONTENT } from '../../config/patientContent';
 import Chat from '../Chat';
 import TestDetailModal from '../test/TestDetailModal';
-import { mrdTestData, ecdTestData, tdsTestData, hctTestData } from '../../data';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../../data';
 
 /**
  * Journey card content configuration
@@ -191,23 +191,24 @@ const PatientIntakeFlow = ({ testData }) => {
   const allTestData = {
     MRD: mrdTestData,
     ECD: ecdTestData,
-    TDS: tdsTestData,
+    CGP: cgpTestData,
     HCT: hctTestData
   };
-  
+
   // Handle clicking a test link in chat - show detail modal
   const handleTestClick = (testIds) => {
     if (!testIds || testIds.length === 0) return;
     const testId = testIds[0]; // Just use first one
-    
+
     // Parse category from ID (e.g., 'mrd-1' -> 'MRD')
+    // Note: test IDs remain unchanged (tds-X stays tds-X) but maps to CGP category
     const match = testId.match(/^([a-z]+)-/);
     if (!match) return;
-    
-    const categoryMap = { mrd: 'MRD', ecd: 'ECD', cgp: 'TDS', hct: 'HCT', tds: 'TDS' };
+
+    const categoryMap = { mrd: 'MRD', ecd: 'ECD', cgp: 'CGP', hct: 'HCT', tds: 'CGP' };
     const category = categoryMap[match[1]];
     if (!category) return;
-    
+
     // Find the test in that category
     const tests = allTestData[category];
     const test = tests?.find(t => t.id === testId);

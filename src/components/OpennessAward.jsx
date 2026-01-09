@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { mrdTestData, ecdTestData, tdsTestData, hctTestData } from '../data';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../data';
 
 const OpennessAward = () => {
   const [showFAQ, setShowFAQ] = useState(false);
@@ -8,7 +8,7 @@ const OpennessAward = () => {
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP' })),
     ...hctTestData.map(t => ({ ...t, category: 'HCT' }))
   ];
   
@@ -42,8 +42,8 @@ const OpennessAward = () => {
         // HCT: Gene count is key for hereditary testing
         if (hasValue(test.genesAnalyzed)) score += 30;
         break;
-      case 'TDS':
-        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
+      case 'CGP':
+        // CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
         if (hasValue(test.genesAnalyzed)) score += 15;
         if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
         break;

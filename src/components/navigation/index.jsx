@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import {
   mrdTestData,
   ecdTestData,
-  tdsTestData,
+  cgpTestData,
   hctTestData,
   getDomain,
   getStagesByDomain,
@@ -22,7 +22,7 @@ const alzBloodTestData = [];
 export const getTestCount = (stageId) => {
   switch(stageId) {
     case 'ECD': return typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13;
-    case 'TDS': return typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10;
+    case 'CGP': return typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10;
     case 'MRD': return typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15;
     case 'HCT': return typeof hctTestData !== 'undefined' ? hctTestData.length : 0;
     default: return 0;
@@ -33,9 +33,8 @@ export const getTestCount = (stageId) => {
 export const getSampleTests = (stageId) => {
   switch(stageId) {
     case 'ECD': return ['Galleri', 'Shield', 'Cancerguard', 'Freenome CRC', 'GRAIL NHS', 'Cologuard Plus'];
-    case 'TDS': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
-    // MRD lifecycle stage includes both MRD and TRM tests
-    case 'MRD': return ['Signatera', 'Reveal MRD', 'RaDaR', 'Reveal TRM', 'Oncodetect', 'FoundationOne Tracker'];
+    case 'CGP': return ['FoundationOne CDx', 'Guardant360 CDx', 'Tempus xT CDx', 'MSK-IMPACT', 'MI Cancer Seek', 'OncoExTra'];
+    case 'MRD': return ['Signatera', 'Reveal MRD', 'RaDaR', 'Oncodetect', 'FoundationOne Tracker'];
     case 'HCT': return []; // Coming soon
     default: return [];
   }
@@ -174,7 +173,7 @@ export const LifecycleNavigator = ({ onNavigate }) => {
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10,
+    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
     HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
@@ -210,7 +209,7 @@ export const RecentlyAddedBanner = ({ onNavigate }) => {
   const categoryColors = {
     MRD: 'bg-orange-500',
     ECD: 'bg-emerald-500',
-    TDS: 'bg-violet-500',
+    CGP: 'bg-violet-500',
     HCT: 'bg-rose-500'
   };
 
@@ -263,7 +262,7 @@ export const CancerTypeNavigator = ({ onNavigate }) => {
   const allTests = useMemo(() => [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP' })),
     ...hctTestData.map(t => ({ ...t, category: 'HCT' })),
   ], []);
 

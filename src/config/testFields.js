@@ -121,16 +121,7 @@ export const MINIMUM_PARAMS = {
       { key: 'listPrice', label: 'List Price' },
     ]
   },
-  TRM: {
-    // NOTE: TRM tests monitor ctDNA trends over time rather than binary MRD detection
-    // They don't report traditional sensitivity/specificity metrics
-    core: [
-      { key: 'numPublications', label: 'Publications' },
-      { key: 'tat', label: 'Turnaround Time' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-    ]
-  },
-  TDS: {
+  CGP: {
     // NOTE: CGP tests don't report single sensitivity/specificity values -
     // performance varies by alteration type (SNVs, indels, CNAs, fusions)
     core: [

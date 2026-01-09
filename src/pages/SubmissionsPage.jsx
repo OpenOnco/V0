@@ -1008,7 +1008,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
               ] : [
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
-                { key: 'TDS', label: 'TDS', desc: 'Comprehensive Genomic Profiling', color: 'violet' },
+                { key: 'CGP', label: 'CGP', desc: 'Comprehensive Genomic Profiling', color: 'violet' },
                 { key: 'HCT', label: 'HCT', desc: 'Hereditary Cancer Testing', color: 'sky' },
               ]).map(cat => (
                 <button

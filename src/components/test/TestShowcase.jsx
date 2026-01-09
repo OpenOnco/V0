@@ -3,7 +3,7 @@ import { track } from '@vercel/analytics';
 import {
   mrdTestData,
   ecdTestData,
-  tdsTestData,
+  cgpTestData,
   hctTestData,
   DOMAINS,
   getDomain,
@@ -42,7 +42,7 @@ const TestShowcase = ({
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 14,
+    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 14,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
     HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
@@ -57,7 +57,7 @@ const TestShowcase = ({
     return [
       ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
       ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
-      ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' })),
+      ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' })),
       ...hctTestData.map(t => ({ ...t, category: 'HCT', color: 'rose' }))
     ];
   }, [currentDomain]);
@@ -107,7 +107,7 @@ const TestShowcase = ({
         // HCT: Gene count is key for hereditary testing
         if (hasValue(test.genesAnalyzed)) score += 30;
         break;
-      case 'TDS':
+      case 'CGP':
         // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
         if (hasValue(test.genesAnalyzed)) score += 15;
         if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
@@ -197,7 +197,7 @@ const TestShowcase = ({
     
     switch (sortBy) {
       case 'category':
-        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TDS': 2, 'HCT': 3, 'ALZ-BLOOD': 4 };
+        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'CGP': 2, 'HCT': 3, 'ALZ-BLOOD': 4 };
         return sorted.sort((a, b) => prioritySort(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
       case 'tat':
         return sorted.sort((a, b) => prioritySort(a, b) || getTat(a) - getTat(b));
@@ -495,7 +495,7 @@ const TestShowcase = ({
   // Category button config for non-patient view
   const categoryButtons = [
     { id: 'ECD', name: 'Early Cancer Detection', phase: 'Healthy / Screening', icon: '🔬', color: 'emerald' },
-    { id: 'TDS', name: 'Treatment Decision Support', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
+    { id: 'CGP', name: 'Comprehensive Genomic Profiling', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
     { id: 'MRD', name: 'Minimal Residual Disease', phase: 'Surveillance', icon: '🎯', color: 'orange' },
     { id: 'HCT', name: 'Hereditary Cancer Testing', phase: 'Risk Assessment', icon: '🧬', color: 'rose' },
   ];
@@ -722,7 +722,7 @@ const TestShowcase = ({
             </span>
             <span className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
-              <span className="text-slate-500">TDS</span>
+              <span className="text-slate-500">CGP</span>
             </span>
             <span className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
@@ -952,7 +952,7 @@ const TestShowcase = ({
           </span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
-            <span className="text-slate-500">TDS</span>
+            <span className="text-slate-500">CGP</span>
           </span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
@@ -974,7 +974,7 @@ const TestShowcase = ({
               const colorSchemes = {
                 MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
                 ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
-                TDS: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' },
+                CGP: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' },
                 HCT: { headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500' }
               };
               const clrs = colorSchemes[category] || colorSchemes.MRD;

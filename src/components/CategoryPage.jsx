@@ -592,7 +592,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   defaultOpen={false}
                   activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0) + (minGenes > 0 ? 1 : 0) + (minCdx > 0 ? 1 : 0)}
                 >
-                  {/* Sensitivity - MRD, ECD, TRM (not TDS) */}
+                  {/* Sensitivity - MRD, ECD, HCT (not CGP) */}
                   {category !== 'CGP' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
@@ -614,7 +614,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                       </div>
                     </>
                   )}
-                  {/* Specificity - MRD, ECD, TRM (not TDS) */}
+                  {/* Specificity - MRD, ECD, HCT (not CGP) */}
                   {category !== 'CGP' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
@@ -636,7 +636,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                       </div>
                     </>
                   )}
-                  {/* TAT - MRD, TRM, TDS (not ECD) */}
+                  {/* TAT - MRD, CGP, HCT (not ECD) */}
                   {category !== 'ECD' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
@@ -733,7 +733,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     </div>
                   </>
                 )}
-                {/* Trial Participants - MRD, ECD, TRM (not TDS), clinician only */}
+                {/* Trial Participants - MRD, ECD, HCT (not CGP), clinician only */}
                 {category !== 'CGP' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
