@@ -140,12 +140,11 @@ export const MINIMUM_PARAMS = {
     ]
   },
   HCT: {
-    // NOTE: HCT (Hereditary Cancer Testing) focuses on germline variants
-    // Key metrics: genes covered, analytical performance, price/access
+    // NOTE: HCT tests vary widely - comprehensive panels (50+ genes) vs targeted (1-5 genes)
+    // Minimal requirements to avoid penalizing legitimate targeted panels
     core: [
-      { key: 'genesAnalyzed', label: 'Genes Analyzed' },
-      { key: 'tat', label: 'Turnaround Time' },
       { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'sampleCategory', label: 'Sample Type' },
     ]
   },
 };
