@@ -1,6 +1,6 @@
 # OpenOnco Submission Process
 
-**Last updated:** 2026-01-06
+**Last updated:** 2026-01-08
 
 ---
 
@@ -35,6 +35,21 @@
 
 ---
 
+## Category Overview
+
+OpenOnco organizes tests into **4 lifecycle stages** (displayed on homepage):
+
+| Stage | Category Code | URL | Purpose | Sample Type |
+|-------|--------------|-----|---------|-------------|
+| **Hereditary Risk** | HCT | `/risk` | Germline testing for inherited cancer predisposition | Blood, Saliva |
+| **Cancer Screening** | ECD | `/screen` | Early detection in asymptomatic individuals | Blood, Stool, Saliva |
+| **Cancer Monitoring** | MRD + TRM | `/monitor` | Post-treatment surveillance & treatment response | Blood/Plasma |
+| **Treatment Selection** | TDS | `/treat` | CGP/biomarker testing to guide therapy | Tissue, Blood/Plasma |
+
+**Note:** MRD (Molecular Residual Disease) and TRM (Treatment Response Monitoring) are combined into the "Cancer Monitoring" lifecycle stage but remain separate data arrays internally.
+
+---
+
 ## Quick Reference
 
 | Submission Type | Trigger Phrases | Go To |
@@ -65,10 +80,15 @@ grep -n "[test name]" /Users/adickinson/Documents/GitHub/V0/src/data.js
 | Criterion | Required |
 |-----------|----------|
 | Real test | Commercially available OR active clinical trials |
-| Category fit | MRD, ECD, TRM, or TDS |
+| Category fit | HCT, ECD, MRD, TRM, or TDS (see Category Overview above) |
 | Validation data | Citable performance (publications, FDA, vendor) |
 | Not duplicate | Distinct from existing tests |
-| Liquid biopsy | Blood, plasma, urine (no tissue-only) |
+
+**Category-specific sample requirements:**
+- **HCT**: Blood or saliva (germline DNA) ✓
+- **ECD**: Blood, plasma, stool, saliva, urine ✓
+- **MRD/TRM**: Blood/plasma (ctDNA) ✓
+- **TDS**: Tissue or blood/plasma ✓
 
 **Any fail → Stop and explain to Alex**
 
@@ -77,38 +97,31 @@ grep -n "[test name]" /Users/adickinson/Documents/GitHub/V0/src/data.js
 Check Quick Reference table at top of data.js:
 ```
 // │ MRD Tests            │ ~480        │ mrd-25     │ mrd-26        │
+// │ HCT Tests            │ TBD         │ hct-0      │ hct-1         │
 ```
 
-## A3: Required Fields
+## A3: Required Fields by Category
 
+### Common Fields (ALL categories)
 ```javascript
-// Core
-id: "[category]-[number]",
-sampleCategory: "Blood/Plasma" | "Tissue" | "Stool" | "Urine",
+id: "[category]-[number]",           // e.g., "hct-1", "mrd-26", "ecd-28"
 name: "[Official Test Name]",
 vendor: "[Company Name]",
-approach: "[tumor-informed, tumor-naive, etc.]",
+productType: "Central Lab Service" | "Laboratory IVD Kit" | "Direct-to-Consumer",
+sampleCategory: "[See category-specific]",
 method: "[Technical description]",
-cancerTypes: ["Type1", "Type2"],
-
-// Sample Collection
-sampleVolumeMl: [number],
-sampleTubeType: "[Streck cfDNA BCT, etc.]",
-sampleTubeCount: [number],
-sampleCollectionNotes: "[Details]",
-sampleCitations: "[URL - REQUIRED]",
-
-// Performance (with citations and notes for each)
-sensitivity: [0-100],
-sensitivityCitations: "[URL]",
-sensitivityNotes: "[Context]",
-specificity: [0-100],
-// ... same pattern for ppv, npv, lod
+methodCitations: "[URL]",
 
 // Regulatory
 fdaStatus: "[Status]",
+fdaStatusCitations: "[URL]",
 reimbursement: "[Status]",
-tat: [number],
+reimbursementCitations: "[URL]",
+
+// Turnaround & Availability
+tat: "[X days or X-Y days]",
+tatCitations: "[URL]",
+availableRegions: ["US", "EU", ...],
 
 // Evidence
 numPublications: [number],
@@ -117,6 +130,107 @@ numPublicationsCitations: "[URLs]",
 // Tracking
 vendorVerified: false,
 vendorRequestedChanges: "[YYYY-MM-DD]: Added via [source]"
+```
+
+### HCT-Specific Fields (Hereditary Cancer Testing)
+```javascript
+// Sample
+sampleCategory: "Blood" | "Saliva" | "Blood or Saliva",
+sampleType: "[Whole blood EDTA, Saliva kit, etc.]",
+
+// Genes & Syndromes
+genesAnalyzed: [number],                    // Number of genes on panel
+genesAnalyzedCitations: "[URL]",
+geneListUrl: "[URL to full gene list]",
+keyGenes: ["BRCA1", "BRCA2", "MLH1", ...], // Notable genes covered
+syndromesDetected: ["HBOC", "Lynch Syndrome", "Li-Fraumeni", ...],
+cancerTypesAssessed: ["Breast", "Ovarian", "Colorectal", ...],
+
+// Performance
+analyticalSensitivity: [0-100],             // For variant detection
+analyticalSensitivityCitations: "[URL]",
+analyticalSpecificity: [0-100],
+analyticalSpecificityCitations: "[URL]",
+vusRate: [percentage],                      // Variant of Uncertain Significance rate
+vusRateCitations: "[URL]",
+deletionDuplicationAnalysis: "Yes" | "No" | "Select genes",
+
+// Population & Ordering
+targetPopulation: "[Who should get tested]",
+nccnCriteria: "[NCCN criteria alignment]",
+requiresPhysicianOrder: "Yes" | "No" | "Varies by state",
+
+// Support Services
+geneticCounselingIncluded: "Yes" | "No" | "Optional",
+cascadeTestingOffered: "Yes" | "No",        // Family member testing
+variantReclassificationPolicy: "Yes" | "No", // VUS update notifications
+```
+
+### MRD-Specific Fields
+```javascript
+sampleCategory: "Blood/Plasma",
+approach: "Tumor-informed" | "Tumor-naïve",
+cancerTypes: ["Colorectal", "Breast", ...],
+
+// Performance
+sensitivity: [0-100],
+sensitivityCitations: "[URL]",
+sensitivityNotes: "[Context - stages, timepoints]",
+specificity: [0-100],
+lod: "[X ppm or X%]",                       // Limit of detection
+lod95: "[value]",
+leadTime: "[X months vs imaging]",
+
+// Sample details
+sampleVolumeMl: [number],
+sampleTubeType: "[Streck cfDNA BCT, etc.]",
+initialTat: [days],                         // First test TAT
+followUpTat: [days],                        // Subsequent test TAT
+```
+
+### ECD-Specific Fields
+```javascript
+sampleCategory: "Blood/Plasma" | "Stool" | "Saliva" | "Urine",
+testScope: "Single-cancer (CRC)" | "Multi-cancer (MCED)",
+indicationGroup: "CRC" | "Lung" | "Liver" | "MCED" | ...,
+approach: "[Blood-based cfDNA screening, Stool DNA, etc.]",
+cancerTypes: ["Colorectal", ...],
+targetPopulation: "[Age range, risk level]",
+
+// Performance
+sensitivity: [0-100],
+stageISensitivity: [0-100],
+stageIISensitivity: [0-100],
+specificity: [0-100],
+ppv: [0-100],
+npv: [0-100],
+```
+
+### TRM-Specific Fields
+```javascript
+sampleCategory: "Blood/Plasma",
+approach: "Tumor-informed" | "Tumor-naïve" | "Tumor-agnostic",
+cancerTypes: [...],
+targetPopulation: "[Treatment setting]",
+responseDefinition: "[How molecular response is defined]",
+
+// Performance
+sensitivity: [0-100],
+specificity: [0-100],
+lod: "[value]",
+```
+
+### TDS-Specific Fields
+```javascript
+sampleCategory: "Tissue" | "Blood/Plasma" | "Tissue or Blood/Plasma",
+approach: "Tissue CGP" | "Liquid CGP" | "Gene Expression Profiling",
+genesAnalyzed: [number],
+biomarkersReported: ["SNVs", "Indels", "CNAs", "TMB", "MSI", ...],
+cancerTypes: ["All solid tumors", ...],
+
+// Companion Diagnostics
+fdaCompanionDxCount: [number],
+fdaCompanionDxCountCitations: "[URL]",
 ```
 
 ## A4: After Adding
@@ -142,8 +256,8 @@ grep -n '"id": "[test-id]"' /Users/adickinson/Documents/GitHub/V0/src/data.js
 |------|----------|--------------|
 | Correction | Typo, broken link | Low |
 | Update | New publication, FDA status | Medium |
-| Performance | Sensitivity, specificity, LOD | **High - citation required** |
-| Expansion | New cancer types | **High - evidence required** |
+| Performance | Sensitivity, specificity, LOD, VUS rate | **High - citation required** |
+| Expansion | New genes, cancer types, syndromes | **High - evidence required** |
 
 ## B3: Apply Change
 
@@ -240,6 +354,8 @@ export const VENDOR_VERIFIED = {
 | Contradictory claims | Get clarification |
 | Request from non-vendor | Verify authority |
 | RUO test claiming clinical use | Regulatory issue |
+| HCT test without del/dup analysis | May miss large rearrangements |
+| HCT VUS rate not disclosed | Data quality concern |
 
 ---
 
@@ -254,6 +370,7 @@ export const VENDOR_VERIFIED = {
 | ECD tests | ~2100 | `export const ecdTestData` |
 | TRM tests | ~3200 | `export const trmTestData` |
 | TDS tests | ~3550 | `export const tdsTestData` |
+| HCT tests | TBD | `export const hctTestData` |
 | DATABASE_CHANGELOG | ~6090 | `export const DATABASE_CHANGELOG` |
 
 ---
@@ -262,12 +379,12 @@ export const VENDOR_VERIFIED = {
 
 ```javascript
 {
-  date: 'Jan 6, 2026',
+  date: 'Jan 8, 2026',
   type: 'added' | 'updated' | 'verified' | 'removed',
   testId: '[test-id]',
   testName: '[Test Name]',
   vendor: '[Company]',
-  category: 'MRD' | 'ECD' | 'TRM' | 'TDS',
+  category: 'HCT' | 'ECD' | 'MRD' | 'TRM' | 'TDS',
   description: '[What changed]',
   contributor: '[Name]',
   affiliation: '[Company] (vendor)' | 'OpenOnco',
@@ -295,3 +412,57 @@ git add src/data.js && git commit -m "[type]: [Test] - [description]" && git pus
 # Deploy to production
 ./release
 ```
+
+---
+
+# HCT-Specific Guidance
+
+## What is HCT?
+
+**Hereditary Cancer Testing (HCT)** identifies inherited (germline) mutations that increase lifetime cancer risk. This is fundamentally different from other OpenOnco categories:
+
+| Aspect | HCT (Germline) | Other Categories (Somatic) |
+|--------|----------------|---------------------------|
+| **What's tested** | Inherited DNA mutations | Tumor/cancer cell mutations |
+| **Sample source** | Blood or saliva (any cells) | Tumor tissue or ctDNA |
+| **Who gets tested** | Healthy individuals at risk | Cancer patients |
+| **Purpose** | Risk assessment, prevention | Diagnosis, treatment selection |
+| **Result persistence** | Permanent (inherited) | Changes with disease |
+
+## Key HCT Syndromes
+
+| Syndrome | Key Genes | Associated Cancers |
+|----------|-----------|-------------------|
+| HBOC | BRCA1, BRCA2, PALB2 | Breast, ovarian, pancreatic, prostate |
+| Lynch Syndrome | MLH1, MSH2, MSH6, PMS2 | Colorectal, endometrial, ovarian |
+| Li-Fraumeni | TP53 | Breast, sarcoma, brain, adrenocortical |
+| Cowden | PTEN | Breast, thyroid, endometrial |
+| FAP | APC | Colorectal |
+
+## HCT Quality Indicators
+
+**Good signs:**
+- ✅ Del/dup analysis included for all genes
+- ✅ Low VUS rate disclosed (<5% ideal)
+- ✅ Genetic counseling available
+- ✅ Cascade testing for family members
+- ✅ VUS reclassification notifications
+- ✅ NY state approved (if serving NY patients)
+
+**Concerns:**
+- ⚠️ No del/dup analysis (misses ~10% of BRCA mutations)
+- ⚠️ VUS rate not disclosed
+- ⚠️ No genetic counseling support
+- ⚠️ DTC without physician involvement
+- ⚠️ Limited gene panel marketed as comprehensive
+
+## HCT vs Related Tests
+
+| If test does this... | Category |
+|---------------------|----------|
+| Detects inherited mutations in healthy people | **HCT** ✓ |
+| Detects somatic mutations in tumor tissue | TDS |
+| Detects ctDNA for treatment selection | TDS |
+| Screens for early cancer (not mutations) | ECD |
+| Monitors for cancer recurrence | MRD |
+| Tracks treatment response | TRM |
