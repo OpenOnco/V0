@@ -3,8 +3,8 @@ import { track } from '@vercel/analytics';
 import {
   mrdTestData,
   ecdTestData,
-  trmTestData,
   tdsTestData,
+  hctTestData,
   DOMAINS,
   getDomain,
   COMPANY_CONTRIBUTIONS,
@@ -43,8 +43,8 @@ const TestShowcase = ({
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
     TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 14,
-    TRM: typeof trmTestData !== 'undefined' ? trmTestData.length : 11,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
+    HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
 
@@ -57,8 +57,8 @@ const TestShowcase = ({
     return [
       ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
       ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
-      ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
-      ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' }))
+      ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' })),
+      ...hctTestData.map(t => ({ ...t, category: 'HCT', color: 'rose' }))
     ];
   }, [currentDomain]);
 
@@ -103,10 +103,9 @@ const TestShowcase = ({
         // MRD: LOD is THE key metric (all MRD tests report this)
         if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
         break;
-      case 'TRM':
-        // TRM: Sensitivity/specificity for mutation detection
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
+      case 'HCT':
+        // HCT: Gene count is key for hereditary testing
+        if (hasValue(test.genesAnalyzed)) score += 30;
         break;
       case 'TDS':
         // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
@@ -198,7 +197,7 @@ const TestShowcase = ({
     
     switch (sortBy) {
       case 'category':
-        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3, 'ALZ-BLOOD': 4 };
+        const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TDS': 2, 'HCT': 3, 'ALZ-BLOOD': 4 };
         return sorted.sort((a, b) => prioritySort(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
       case 'tat':
         return sorted.sort((a, b) => prioritySort(a, b) || getTat(a) - getTat(b));
@@ -488,9 +487,8 @@ const TestShowcase = ({
   const colorClasses = {
     orange: { bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-500', text: 'text-orange-600' },
     emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-500', text: 'text-emerald-600' },
-    red: { bg: 'bg-sky-100', border: 'border-sky-300', badge: 'bg-sky-500', text: 'text-sky-600' },
-    sky: { bg: 'bg-sky-50', border: 'border-sky-200', badge: 'bg-sky-500', text: 'text-sky-600' },
     violet: { bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-500', text: 'text-violet-600' },
+    rose: { bg: 'bg-rose-50', border: 'border-rose-200', badge: 'bg-rose-500', text: 'text-rose-600' },
     indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200', badge: 'bg-indigo-500', text: 'text-indigo-600' }
   };
 
@@ -498,15 +496,15 @@ const TestShowcase = ({
   const categoryButtons = [
     { id: 'ECD', name: 'Early Cancer Detection', phase: 'Healthy / Screening', icon: '🔬', color: 'emerald' },
     { id: 'TDS', name: 'Treatment Decision Support', phase: 'Newly Diagnosed', icon: '🧬', color: 'violet' },
-    { id: 'TRM', name: 'Treatment Response Monitoring', phase: 'Active Treatment', icon: '📊', color: 'sky' },
     { id: 'MRD', name: 'Minimal Residual Disease', phase: 'Surveillance', icon: '🎯', color: 'orange' },
+    { id: 'HCT', name: 'Hereditary Cancer Testing', phase: 'Risk Assessment', icon: '🧬', color: 'rose' },
   ];
 
   const categoryColorClasses = {
     emerald: { bg: 'bg-emerald-50', bgHover: 'hover:bg-emerald-100', border: 'border-emerald-200', borderHover: 'hover:border-emerald-400', text: 'text-emerald-700', iconBg: 'bg-emerald-500' },
     violet: { bg: 'bg-violet-50', bgHover: 'hover:bg-violet-100', border: 'border-violet-200', borderHover: 'hover:border-violet-400', text: 'text-violet-700', iconBg: 'bg-violet-500' },
-    sky: { bg: 'bg-sky-50', bgHover: 'hover:bg-sky-100', border: 'border-sky-200', borderHover: 'hover:border-sky-400', text: 'text-sky-700', iconBg: 'bg-sky-500' },
     orange: { bg: 'bg-orange-50', bgHover: 'hover:bg-orange-100', border: 'border-orange-200', borderHover: 'hover:border-orange-400', text: 'text-orange-700', iconBg: 'bg-orange-500' },
+    rose: { bg: 'bg-rose-50', bgHover: 'hover:bg-rose-100', border: 'border-rose-200', borderHover: 'hover:border-rose-400', text: 'text-rose-700', iconBg: 'bg-rose-500' },
   };
 
   // ========== PATIENT MODE: Simple search + grid only (same cards as R&D) ==========
@@ -727,12 +725,12 @@ const TestShowcase = ({
               <span className="text-slate-500">TDS</span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-              <span className="text-slate-500">TRM</span>
-            </span>
-            <span className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
               <span className="text-slate-500">MRD</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+              <span className="text-slate-500">HCT</span>
             </span>
           </div>
         </div>
@@ -957,12 +955,12 @@ const TestShowcase = ({
             <span className="text-slate-500">TDS</span>
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-            <span className="text-slate-500">TRM</span>
-          </span>
-          <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
             <span className="text-slate-500">MRD</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+            <span className="text-slate-500">HCT</span>
           </span>
         </div>
       </div>
@@ -976,8 +974,8 @@ const TestShowcase = ({
               const colorSchemes = {
                 MRD: { headerBg: 'bg-gradient-to-r from-orange-500 to-amber-500' },
                 ECD: { headerBg: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
-                TRM: { headerBg: 'bg-gradient-to-r from-sky-500 to-blue-500' },
-                TDS: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' }
+                TDS: { headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500' },
+                HCT: { headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500' }
               };
               const clrs = colorSchemes[category] || colorSchemes.MRD;
               const hasMedicare = selectedTest.reimbursement?.toLowerCase().includes('medicare') && !selectedTest.reimbursement?.toLowerCase().includes('not yet');

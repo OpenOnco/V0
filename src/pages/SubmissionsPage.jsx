@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { 
-  getSiteConfig, 
-  DATABASE_CHANGELOG, 
-  mrdTestData, 
-  ecdTestData, 
-  trmTestData, 
-  tdsTestData 
+import {
+  getSiteConfig,
+  DATABASE_CHANGELOG,
+  mrdTestData,
+  ecdTestData,
+  cgpTestData,
+  hctTestData
 } from '../data';
 
 // ALZ DISABLED placeholder
@@ -173,8 +173,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   const existingTests = {
     MRD: mrdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     ECD: ecdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    TRM: trmTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    TDS: tdsTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    CGP: cgpTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    HCT: hctTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     'ALZ-BLOOD': alzBloodTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
   };
 
@@ -218,23 +218,22 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
       { key: 'numPublications', label: 'Number of Publications' },
       { key: 'other', label: 'Other (specify in notes)' },
     ],
-    TRM: [
-      { key: 'sensitivity', label: 'Sensitivity (%)' },
-      { key: 'specificity', label: 'Specificity (%)' },
-      { key: 'lod', label: 'LOD (Detection Threshold)' },
-      { key: 'lod95', label: 'LOD95 (95% Confidence)' },
-      { key: 'leadTimeVsImaging', label: 'Lead Time vs Imaging (days)' },
-      { key: 'fdaStatus', label: 'FDA Status' },
-      { key: 'reimbursement', label: 'Reimbursement Status' },
-      { key: 'clinicalTrials', label: 'Clinical Trials' },
-      { key: 'totalParticipants', label: 'Total Trial Participants' },
-      { key: 'numPublications', label: 'Number of Publications' },
-      { key: 'other', label: 'Other (specify in notes)' },
-    ],
-    TDS: [
+    CGP: [
       { key: 'genesAnalyzed', label: 'Genes Analyzed' },
       { key: 'biomarkersReported', label: 'Biomarkers Reported' },
       { key: 'fdaCompanionDxCount', label: 'FDA CDx Indications' },
+      { key: 'tat', label: 'Turnaround Time' },
+      { key: 'sampleRequirements', label: 'Sample Requirements' },
+      { key: 'fdaStatus', label: 'FDA Status' },
+      { key: 'reimbursement', label: 'Reimbursement Status' },
+      { key: 'listPrice', label: 'List Price ($)' },
+      { key: 'numPublications', label: 'Number of Publications' },
+      { key: 'other', label: 'Other (specify in notes)' },
+    ],
+    HCT: [
+      { key: 'genesAnalyzed', label: 'Genes Analyzed' },
+      { key: 'sensitivity', label: 'Sensitivity (%)' },
+      { key: 'specificity', label: 'Specificity (%)' },
       { key: 'tat', label: 'Turnaround Time' },
       { key: 'sampleRequirements', label: 'Sample Requirements' },
       { key: 'fdaStatus', label: 'FDA Status' },
@@ -262,7 +261,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   // Get current value of selected parameter for the selected test
   const getCurrentValue = () => {
     if (!existingTest || !selectedParameter || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : category === 'TDS' ? tdsTestData : alzBloodTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'CGP' ? cgpTestData : category === 'HCT' ? hctTestData : alzBloodTestData;
     const test = testList.find(t => t.id === existingTest);
     if (!test || selectedParameter === 'other') return '';
     const value = test[selectedParameter];
@@ -272,7 +271,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   // Get vendor name for selected test (for email validation)
   const getSelectedTestVendor = () => {
     if (!existingTest || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'TRM' ? trmTestData : tdsTestData;
+    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'CGP' ? cgpTestData : hctTestData;
     const test = testList.find(t => t.id === existingTest);
     return test?.vendor || '';
   };
@@ -517,9 +516,9 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
       
       const categoryFullName = {
         'MRD': 'Minimal Residual Disease',
-        'ECD': 'Early Cancer Detection', 
-        'TRM': 'Treatment Response Monitoring',
-        'TDS': 'Treatment Decision Support'
+        'ECD': 'Early Cancer Detection',
+        'CGP': 'Comprehensive Genomic Profiling',
+        'HCT': 'Hereditary Cancer Testing'
       }[getValidationTestCategory()] || getValidationTestCategory();
       
       submission.submitterType = 'vendor';
@@ -701,7 +700,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     const domain = getVendorDomainFromEmail(contactEmail);
     if (!domain) return [];
     
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
     return allTests.filter(test => {
       const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
       const matchesVendor = vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
@@ -713,24 +712,24 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
       vendor: t.vendor,
       category: mrdTestData.find(m => m.id === t.id) ? 'MRD' :
                 ecdTestData.find(e => e.id === t.id) ? 'ECD' :
-                trmTestData.find(r => r.id === t.id) ? 'TRM' : 'TDS'
+                cgpTestData.find(c => c.id === t.id) ? 'CGP' : 'HCT'
     }));
   };
-  
+
   // Get the selected validation test data
   const getValidationTestData = () => {
     if (!validationTest) return null;
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
     return allTests.find(t => t.id === validationTest);
   };
-  
+
   // Get category for validation test
   const getValidationTestCategory = () => {
     if (!validationTest) return null;
     if (mrdTestData.find(t => t.id === validationTest)) return 'MRD';
     if (ecdTestData.find(t => t.id === validationTest)) return 'ECD';
-    if (trmTestData.find(t => t.id === validationTest)) return 'TRM';
-    if (tdsTestData.find(t => t.id === validationTest)) return 'TDS';
+    if (cgpTestData.find(t => t.id === validationTest)) return 'CGP';
+    if (hctTestData.find(t => t.id === validationTest)) return 'HCT';
     return null;
   };
 
@@ -1009,8 +1008,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
               ] : [
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
-                { key: 'TRM', label: 'TRM', desc: 'Treatment Response', color: 'sky' },
-                { key: 'TDS', label: 'TDS', desc: 'Treatment Decisions', color: 'violet' },
+                { key: 'TDS', label: 'TDS', desc: 'Comprehensive Genomic Profiling', color: 'violet' },
+                { key: 'HCT', label: 'HCT', desc: 'Hereditary Cancer Testing', color: 'sky' },
               ]).map(cat => (
                 <button
                   key={cat.key}
@@ -1831,7 +1830,8 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
                     {entry.category && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       entry.category === 'MRD' ? 'bg-orange-100 text-orange-700' :
                       entry.category === 'ECD' ? 'bg-emerald-100 text-emerald-700' :
-                      entry.category === 'TRM' ? 'bg-sky-100 text-sky-700' :
+                      entry.category === 'CGP' ? 'bg-violet-100 text-violet-700' :
+                      entry.category === 'HCT' ? 'bg-sky-100 text-sky-700' :
                       entry.category === 'ALZ-BLOOD' ? 'bg-indigo-100 text-indigo-700' :
                       'bg-violet-100 text-violet-700'
                     }`}>

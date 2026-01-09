@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import {
   mrdTestData,
   ecdTestData,
-  trmTestData,
   tdsTestData,
   hctTestData,
   getDomain,
@@ -23,9 +22,9 @@ const alzBloodTestData = [];
 export const getTestCount = (stageId) => {
   switch(stageId) {
     case 'ECD': return typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13;
-    case 'TDS': return 8; // Placeholder until TDS data exists
-    case 'TRM': return typeof trmTestData !== 'undefined' ? trmTestData.length : 9;
+    case 'TDS': return typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10;
     case 'MRD': return typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15;
+    case 'HCT': return typeof hctTestData !== 'undefined' ? hctTestData.length : 0;
     default: return 0;
   }
 };
@@ -173,12 +172,10 @@ export const LifecycleNavigator = ({ onNavigate }) => {
   }, [currentDomain]);
 
   // Get dynamic test counts
-  // MRD lifecycle stage combines MRD + TRM test categories
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
     TDS: typeof tdsTestData !== 'undefined' ? tdsTestData.length : 10,
-    MRD: (typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15) + 
-         (typeof trmTestData !== 'undefined' ? trmTestData.length : 9),
+    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
     HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
   };
@@ -213,8 +210,8 @@ export const RecentlyAddedBanner = ({ onNavigate }) => {
   const categoryColors = {
     MRD: 'bg-orange-500',
     ECD: 'bg-emerald-500',
-    TRM: 'bg-sky-500',
-    TDS: 'bg-violet-500'
+    TDS: 'bg-violet-500',
+    HCT: 'bg-rose-500'
   };
 
   const handleTestClick = (test) => {
@@ -266,8 +263,8 @@ export const CancerTypeNavigator = ({ onNavigate }) => {
   const allTests = useMemo(() => [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
     ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+    ...hctTestData.map(t => ({ ...t, category: 'HCT' })),
   ], []);
 
   // Normalize cancer type names and group tests

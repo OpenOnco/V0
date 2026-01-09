@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { PATIENT_INFO_CONTENT } from '../../config/patientContent';
 import Chat from '../Chat';
 import TestDetailModal from '../test/TestDetailModal';
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../../data';
+import { mrdTestData, ecdTestData, tdsTestData, hctTestData } from '../../data';
 
 /**
  * Journey card content configuration
@@ -191,8 +191,8 @@ const PatientIntakeFlow = ({ testData }) => {
   const allTestData = {
     MRD: mrdTestData,
     ECD: ecdTestData,
-    TRM: trmTestData,
-    TDS: tdsTestData
+    TDS: tdsTestData,
+    HCT: hctTestData
   };
   
   // Handle clicking a test link in chat - show detail modal
@@ -204,7 +204,7 @@ const PatientIntakeFlow = ({ testData }) => {
     const match = testId.match(/^([a-z]+)-/);
     if (!match) return;
     
-    const categoryMap = { mrd: 'MRD', ecd: 'ECD', trm: 'TRM', tds: 'TDS' };
+    const categoryMap = { mrd: 'MRD', ecd: 'ECD', cgp: 'TDS', hct: 'HCT', tds: 'TDS' };
     const category = categoryMap[match[1]];
     if (!category) return;
     

@@ -21,8 +21,8 @@ import { useState, useMemo } from 'react';
 export const createTestCardGrid = ({
   mrdTestData,
   ecdTestData,
-  trmTestData,
   tdsTestData,
+  hctTestData,
   alzBloodTestData,
   DOMAINS,
   getDomain,
@@ -48,8 +48,8 @@ export const createTestCardGrid = ({
       return [
         ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
         ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
-        ...trmTestData.map(t => ({ ...t, category: 'TRM', color: 'sky' })),
-        ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' }))
+        ...tdsTestData.map(t => ({ ...t, category: 'TDS', color: 'violet' })),
+        ...hctTestData.map(t => ({ ...t, category: 'HCT', color: 'rose' }))
       ];
     }, [currentDomain]);
 
@@ -90,9 +90,8 @@ export const createTestCardGrid = ({
         case 'MRD':
           if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
           break;
-        case 'TRM':
-          if (hasValue(test.sensitivity)) score += 15;
-          if (hasValue(test.specificity)) score += 15;
+        case 'HCT':
+          if (hasValue(test.genesAnalyzed)) score += 30;
           break;
         case 'TDS':
           if (hasValue(test.genesAnalyzed)) score += 15;
@@ -159,7 +158,7 @@ export const createTestCardGrid = ({
       
       switch (sortBy) {
         case 'category':
-          const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TRM': 2, 'TDS': 3, 'ALZ-BLOOD': 4 };
+          const categoryOrder = { 'MRD': 0, 'ECD': 1, 'TDS': 2, 'HCT': 3, 'ALZ-BLOOD': 4 };
           return sorted.sort((a, b) => prioritySort(a, b) || (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99) || a.vendor.localeCompare(b.vendor));
         case 'tat':
           return sorted.sort((a, b) => prioritySort(a, b) || getTat(a) - getTat(b));
@@ -423,8 +422,8 @@ export const createTestCardGrid = ({
             <span className="text-slate-300">|</span>
             <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span className="text-slate-500">ECD</span></span>
             <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-violet-500"></span><span className="text-slate-500">TDS</span></span>
-            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span><span className="text-slate-500">TRM</span></span>
             <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span><span className="text-slate-500">MRD</span></span>
+            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span className="text-slate-500">HCT</span></span>
           </div>
         </div>
       </div>

@@ -357,7 +357,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         
         
         {/* Quick resources bar - shown for cancer categories */}
-        {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
+        {['MRD', 'ECD', 'CGP', 'HCT'].includes(category) && (
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="text-xs text-gray-500 font-medium">Quick links:</span>
             <ExternalResourcesSection category={category} compact />
@@ -414,7 +414,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     </div>
                   </>
                 ) : (
-                  /* MRD, TRM, TDS use cancerTypes */
+                  /* MRD, CGP, HCT use cancerTypes */
                   <div className="max-h-48 overflow-y-auto space-y-1">
                     {config.cancerTypes?.map(t => (
                       <Checkbox 
@@ -523,7 +523,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   defaultOpen={false}
                   activeCount={selectedApproaches.length + (tumorTissueRequired !== 'any' ? 1 : 0)}
                 >
-                  {/* Approach - for MRD, TRM, TDS */}
+                  {/* Approach - for MRD, CGP, HCT */}
                   {category !== 'ECD' && config.approaches && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">Approach</label>
@@ -566,8 +566,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     {config.fdaStatuses.map(f => <Checkbox key={f} label={f} checked={selectedFdaStatus.includes(f)} onChange={() => toggle(setSelectedFdaStatus)(f)} />)}
                   </>
                 )}
-                {/* NCCN Named - MRD, TRM (not ECD, TDS), clinician only */}
-                {(category === 'MRD' || category === 'TRM') && (
+                {/* NCCN Named - MRD only, clinician only */}
+                {(category === 'MRD') && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Guidelines</label>
                     <Checkbox label="NCCN Named" checked={nccnOnly} onChange={() => setNccnOnly(!nccnOnly)} />
@@ -576,7 +576,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 {/* Coverage - all categories */}
                 <label className="text-xs text-gray-500 mb-1 mt-3 block">Coverage</label>
                 {config.reimbursements?.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare' : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
-                {/* Availability - MRD, ECD, TRM (not TDS) */}
+                {/* Availability - MRD, ECD, HCT (not CGP) */}
                 {config.regions && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 mt-3 block">Availability</label>
@@ -593,7 +593,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   activeCount={(minSensitivity > 0 ? 1 : 0) + (minSpecificity > 0 ? 1 : 0) + (maxTat < 30 ? 1 : 0) + (minGenes > 0 ? 1 : 0) + (minCdx > 0 ? 1 : 0)}
                 >
                   {/* Sensitivity - MRD, ECD, TRM (not TDS) */}
-                  {category !== 'TDS' && (
+                  {category !== 'CGP' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Sensitivity: {minSensitivity === 0 ? 'Any' : `${minSensitivity}%+`}
@@ -615,7 +615,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     </>
                   )}
                   {/* Specificity - MRD, ECD, TRM (not TDS) */}
-                  {category !== 'TDS' && (
+                  {category !== 'CGP' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Specificity: {minSpecificity === 0 ? 'Any' : `${minSpecificity}%+`}
@@ -659,7 +659,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     </>
                   )}
                   {/* Genes Analyzed - TDS only */}
-                  {category === 'TDS' && (
+                  {category === 'CGP' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min Genes Analyzed: {minGenes === 0 ? 'Any' : minGenes >= 500 ? '500+' : minGenes}
@@ -681,7 +681,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     </>
                   )}
                   {/* FDA Companion Dx Count - TDS only */}
-                  {category === 'TDS' && (
+                  {category === 'CGP' && (
                     <>
                       <label className="text-xs text-gray-500 mb-1 block">
                         Min FDA Companion Dx: {minCdx === 0 ? 'Any' : minCdx}
@@ -734,7 +734,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   </>
                 )}
                 {/* Trial Participants - MRD, ECD, TRM (not TDS), clinician only */}
-                {category !== 'TDS' && (
+                {category !== 'CGP' && (
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
                       Min Trial Participants: {minParticipants === 0 ? 'Any' : category === 'ECD' ? (minParticipants >= 100000 ? '100,000+' : minParticipants.toLocaleString()) : (minParticipants >= 1000 ? '1,000+' : minParticipants.toLocaleString())}
@@ -759,21 +759,21 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 {(
                   <>
                     <label className="text-xs text-gray-500 mb-1 block">
-                      Min Publications: {minPublications === 0 ? 'Any' : category === 'ECD' ? (minPublications >= 20 ? '20+' : minPublications) : category === 'TDS' ? (minPublications >= 1000 ? '1,000+' : minPublications) : (minPublications >= 100 ? '100+' : minPublications)}
+                      Min Publications: {minPublications === 0 ? 'Any' : category === 'ECD' ? (minPublications >= 20 ? '20+' : minPublications) : category === 'CGP' ? (minPublications >= 1000 ? '1,000+' : minPublications) : (minPublications >= 100 ? '100+' : minPublications)}
                     </label>
                     <input
                       type="range"
                       min="0"
-                      max={category === 'ECD' ? '20' : category === 'TDS' ? '1000' : '100'}
-                      step={category === 'ECD' ? '2' : category === 'TDS' ? '50' : '5'}
+                      max={category === 'ECD' ? '20' : category === 'CGP' ? '1000' : '100'}
+                      step={category === 'ECD' ? '2' : category === 'CGP' ? '50' : '5'}
                       value={minPublications}
                       onChange={updateSlider(setMinPublications)}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
                       <span>0</span>
-                      <span>{category === 'ECD' ? '10' : category === 'TDS' ? '500' : '50'}</span>
-                      <span>{category === 'ECD' ? '20+' : category === 'TDS' ? '1,000+' : '100+'}</span>
+                      <span>{category === 'ECD' ? '10' : category === 'CGP' ? '500' : '50'}</span>
+                      <span>{category === 'ECD' ? '20+' : category === 'CGP' ? '1,000+' : '100+'}</span>
                     </div>
                   </>
                 )}
@@ -860,7 +860,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       </section>
 
       {/* Full Resources Section - for cancer categories */}
-      {['MRD', 'ECD', 'TRM', 'TDS'].includes(category) && (
+      {['MRD', 'ECD', 'CGP', 'HCT'].includes(category) && (
         <section className="mt-10">
           <ExternalResourcesSection category={category} />
         </section>

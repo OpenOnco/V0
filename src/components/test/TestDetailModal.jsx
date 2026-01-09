@@ -204,17 +204,17 @@ const TestDetailModal = ({ test, category, onClose }) => {
       sectionBorder: 'border-emerald-200',
       sectionTitle: 'text-emerald-800'
     },
-    TRM: { 
-      headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500', 
-      sectionBg: 'bg-rose-50',
-      sectionBorder: 'border-rose-200',
-      sectionTitle: 'text-rose-800'
-    },
-    TDS: { 
-      headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500', 
+    CGP: {
+      headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500',
       sectionBg: 'bg-violet-50',
       sectionBorder: 'border-violet-200',
       sectionTitle: 'text-violet-800'
+    },
+    HCT: {
+      headerBg: 'bg-gradient-to-r from-sky-500 to-cyan-500',
+      sectionBg: 'bg-sky-50',
+      sectionBorder: 'border-sky-200',
+      sectionTitle: 'text-sky-800'
     }
   };
   const colors = colorSchemes[category] || colorSchemes.MRD;
@@ -386,7 +386,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                     <YesNo yes={hasMedicare} label="Medicare coverage (age 65+)" />
                     <YesNo yes={hasPrivate} label="Private insurance options" />
                     <YesNo yes={!requiresTissue} label="Blood draw only (no surgery needed)" />
-                    {category === 'TDS' && test.fdaCompanionDxCount && (
+                    {category === 'CGP' && test.fdaCompanionDxCount && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">✓</span>
                         <span className="text-sm text-gray-700">FDA-approved for {test.fdaCompanionDxCount} drug matches</span>
@@ -394,7 +394,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                     )}
                   </div>
                   <div>
-                    {category !== 'TDS' && (test.initialTat || test.tat) && (
+                    {category !== 'CGP' && (test.initialTat || test.tat) && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
                           {test.initialTat || test.tat}
@@ -402,13 +402,13 @@ const TestDetailModal = ({ test, category, onClose }) => {
                         <span className="text-sm text-gray-700">days for results</span>
                       </div>
                     )}
-                    {category === 'TDS' && test.tat && (
+                    {category === 'CGP' && test.tat && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">⏱</span>
                         <span className="text-sm text-gray-700">Results in {test.tat}</span>
                       </div>
                     )}
-                    {category === 'TDS' && test.genesAnalyzed && (
+                    {category === 'CGP' && test.genesAnalyzed && (
                       <div className="flex items-center gap-2 py-1">
                         <span className="w-5 h-5 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center text-xs font-bold">🧬</span>
                         <span className="text-sm text-gray-700">Tests {test.genesAnalyzed} genes</span>
@@ -428,15 +428,15 @@ const TestDetailModal = ({ test, category, onClose }) => {
                 <p className="text-gray-700">
                   {category === 'MRD' && "This test looks for tiny amounts of cancer DNA in your blood after treatment. It can help your doctor know if treatment worked and watch for cancer coming back earlier than traditional scans."}
                   {category === 'ECD' && "This test screens your blood for signs of cancer before you have symptoms. Finding cancer early often means better treatment options and outcomes."}
-                  {category === 'TRM' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood over time, potentially detecting changes before imaging can."}
-                  {category === 'TDS' && "This test analyzes hundreds of genes in your tumor to find specific mutations that can be targeted with specialized treatments. It helps your doctor match you with the most effective therapies and clinical trials for your cancer."}
+                  {category === 'HCT' && "This test tracks whether your cancer treatment is working by measuring cancer DNA in your blood over time, potentially detecting changes before imaging can."}
+                  {category === 'CGP' && "This test analyzes hundreds of genes in your tumor to find specific mutations that can be targeted with specialized treatments. It helps your doctor match you with the most effective therapies and clinical trials for your cancer."}
                 </p>
               </Section>
               
               {/* How It Works */}
               <Section title="How It Works">
                 <p className="text-gray-700">
-                  {category === 'TDS' 
+                  {category === 'CGP' 
                     ? (test.sampleCategory === 'Tissue' 
                         ? "Your doctor will send a sample of your tumor (from surgery or biopsy) to the lab. The test analyzes hundreds of genes to find specific mutations that can be matched to targeted treatments."
                         : "A simple blood draw is used to capture tumor DNA circulating in your bloodstream. The test analyzes this DNA to identify mutations that can guide treatment decisions.")
@@ -445,7 +445,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                         : "Just a simple blood draw at your doctor's office or lab - no tumor sample needed. The test looks for general cancer signals in your blood.")}
                 </p>
                 {test.bloodVolume && <p className="text-sm text-gray-500 mt-2">Blood sample: {test.bloodVolume} mL (about {Math.round(test.bloodVolume / 5)} teaspoons)</p>}
-                {category === 'TDS' && test.tat && <p className="text-sm text-gray-500 mt-2">Results typically available in: {test.tat}</p>}
+                {category === 'CGP' && test.tat && <p className="text-sm text-gray-500 mt-2">Results typically available in: {test.tat}</p>}
               </Section>
               
               {/* Insurance & Cost */}
@@ -456,7 +456,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                     <p className="text-sm"><span className="font-medium">Private insurers:</span> {test.commercialPayers.join(', ')}</p>
                   )}
                   {test.commercialPayersNotes && <p className="text-xs text-gray-500 mt-1">{test.commercialPayersNotes}</p>}
-                  {(category === 'ECD' || category === 'TDS') && (test.listPrice ? (
+                  {(category === 'ECD' || category === 'CGP') && (test.listPrice ? (
                     <p className="text-sm mt-2"><span className="font-medium">List price (without insurance):</span> ${test.listPrice.toLocaleString()}</p>
                   ) : test.medicareRate && (
                     <p className="text-sm mt-2"><span className="font-medium">Estimated price:</span> ~${test.medicareRate.toLocaleString()} <span className="text-xs text-gray-500">(Medicare rate - actual price may vary)</span></p>
@@ -472,7 +472,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                   <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How will the results change my treatment plan?</li>
                   {category === 'MRD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> How often should I be retested?</li>}
                   {category === 'ECD' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> What happens if the test finds something?</li>}
-                  {category === 'TDS' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Are there targeted therapies or clinical trials that match my results?</li>}
+                  {category === 'CGP' && <li className="flex items-start gap-2"><span className="text-blue-500">•</span> Are there targeted therapies or clinical trials that match my results?</li>}
                 </ul>
               </Section>
             </>
@@ -480,7 +480,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
             /* Clinician/Academic View */
             <>
               {/* TDS-specific content */}
-              {category === 'TDS' && (
+              {category === 'CGP' && (
                 <>
                   {/* Genomic Coverage */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -606,7 +606,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
 
               {/* Non-TDS content (MRD, ECD, TRM) */}
-              {category !== 'TDS' && (
+              {category !== 'CGP' && (
                 <>
               {/* Two-column layout for key metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -928,7 +928,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
               
               {/* TRM Standards Reference - ctMoniTR */}
-              {category === 'TRM' && (
+              {category === 'HCT' && (
                 <div className="mt-4 p-3 bg-gradient-to-r from-sky-50 to-cyan-50 rounded-lg border border-sky-200">
                   <div className="flex items-start gap-3">
                     <span className="text-lg">📊</span>
@@ -947,7 +947,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
               )}
               
               {/* TDS Standards Reference - NCCN */}
-              {category === 'TDS' && (
+              {category === 'CGP' && (
                 <div className="mt-4 p-3 bg-gradient-to-r from-violet-50 to-purple-50 rounded-lg border border-violet-200">
                   <div className="flex items-start gap-3">
                     <span className="text-lg">📋</span>
@@ -1115,23 +1115,23 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
       border: 'border-emerald-100',
       closeBtnHover: 'hover:bg-emerald-400/20'
     },
-    TRM: { 
-      headerBg: 'bg-gradient-to-r from-rose-500 to-pink-500', 
-      headerText: 'text-white',
-      accent: 'bg-rose-50 border-rose-200',
-      accentText: 'text-rose-700',
-      lightBg: 'bg-rose-50/50',
-      border: 'border-rose-100',
-      closeBtnHover: 'hover:bg-rose-400/20'
-    },
-    TDS: { 
-      headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500', 
+    CGP: {
+      headerBg: 'bg-gradient-to-r from-violet-500 to-purple-500',
       headerText: 'text-white',
       accent: 'bg-violet-50 border-violet-200',
       accentText: 'text-violet-700',
       lightBg: 'bg-violet-50/50',
       border: 'border-violet-100',
       closeBtnHover: 'hover:bg-violet-400/20'
+    },
+    HCT: {
+      headerBg: 'bg-gradient-to-r from-sky-500 to-cyan-500',
+      headerText: 'text-white',
+      accent: 'bg-sky-50 border-sky-200',
+      accentText: 'text-sky-700',
+      lightBg: 'bg-sky-50/50',
+      border: 'border-sky-100',
+      closeBtnHover: 'hover:bg-sky-400/20'
     }
   };
   const colors = colorSchemes[category] || colorSchemes.MRD;
@@ -1247,10 +1247,10 @@ const ComparisonModal = ({ tests, category, onClose, onRemoveTest }) => {
                   <td className={`p-4 text-sm font-medium text-gray-600 ${colors.border} border-b`}>
                     <span className="flex items-center gap-1">
                       {param.label}
-                      {category !== 'TDS' && (param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
-                      {category !== 'TDS' && param.key === 'lod' && <ExpertInsight topic="lod" />}
-                      {category !== 'TDS' && param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
-                      {category !== 'TDS' && (param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
+                      {category !== 'CGP' && (param.key === 'sensitivity' || param.key === 'specificity') && <ExpertInsight topic={param.key} />}
+                      {category !== 'CGP' && param.key === 'lod' && <ExpertInsight topic="lod" />}
+                      {category !== 'CGP' && param.key === 'lod95' && <ExpertInsight topic="lodVsLod95" />}
+                      {category !== 'CGP' && (param.key === 'sensitivityStagesReported' || param.key === 'stageIISensitivity' || param.key === 'stageIIISensitivity') && <ExpertInsight topic="stageSpecific" />}
                     </span>
                   </td>
                   {tests.map(test => {

@@ -22,8 +22,7 @@ import { track } from '@vercel/analytics';
 import {
   mrdTestData,
   ecdTestData,
-  trmTestData,
-  tdsTestData,
+  cgpTestData,
   hctTestData,
   // ALZ DISABLED: alzBloodTestData,
   DATABASE_CHANGELOG,
@@ -218,8 +217,7 @@ const compressTestForChat = (test) => {
 const chatTestData = {
   MRD: mrdTestData.map(compressTestForChat),
   ECD: ecdTestData.map(compressTestForChat),
-  TRM: trmTestData.map(compressTestForChat),
-  TDS: tdsTestData.map(compressTestForChat),
+  CGP: cgpTestData.map(compressTestForChat),
 };
 
 
@@ -242,8 +240,8 @@ const StatOfTheDay = ({ onNavigate }) => {
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD', numIndications: t.cancerTypes?.length || 0 })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD', numIndications: t.cancerTypes?.length || 0 })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM', numIndications: t.cancerTypes?.length || 0 })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS', numIndications: t.cancerTypes?.length || 0 }))
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP', numIndications: t.cancerTypes?.length || 0 })),
+    ...hctTestData.map(t => ({ ...t, category: 'HCT', numIndications: t.cancerTypes?.length || 0 }))
   ];
   
   // Get today's stat based on day of week
@@ -415,7 +413,7 @@ const HomePage = ({ onNavigate, persona }) => {
         {/* Banner */}
         <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-4">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 text-center">
-            {mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length + hctTestData.length} Advanced Molecular Tests: Collected, Curated, Explained
+            {mrdTestData.length + ecdTestData.length + cgpTestData.length + hctTestData.length} Advanced Molecular Tests: Collected, Curated, Explained
           </h1>
         </div>
 
@@ -500,28 +498,28 @@ const HomePage = ({ onNavigate, persona }) => {
 const DatabaseStatsSimple = () => {
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
   const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const cgpParams = tdsTestData.length > 0 ? Object.keys(tdsTestData[0]).length : 0;
-  
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
-  
+  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
+  const hctParams = hctTestData.length > 0 ? Object.keys(hctTestData[0]).length : 0;
+
+  const totalTests = mrdTestData.length + ecdTestData.length + cgpTestData.length + hctTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (cgpTestData.length * cgpParams) + (hctTestData.length * hctParams);
+
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
     ...ecdTestData.map(t => t.vendor),
-    ...trmTestData.map(t => t.vendor),
-    ...tdsTestData.map(t => t.vendor)
+    ...cgpTestData.map(t => t.vendor),
+    ...hctTestData.map(t => t.vendor)
   ]);
-  
+
   // Calculate Tier 1 citation metrics dynamically
-  const allTestData = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+  const allTestData = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
   const tier1Metrics = calculateTier1Metrics(allTestData);
 
   // Calculate minimum field completion for each category
   const mrdCompletion = calculateMinimumFieldStats(mrdTestData, 'MRD');
   const ecdCompletion = calculateMinimumFieldStats(ecdTestData, 'ECD');
-  const trmCompletion = calculateMinimumFieldStats(trmTestData, 'TRM');
-  const tdsCompletion = calculateMinimumFieldStats(tdsTestData, 'TDS');
+  const cgpCompletion = calculateMinimumFieldStats(cgpTestData, 'CGP');
+  const hctCompletion = calculateMinimumFieldStats(hctTestData, 'HCT');
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -581,35 +579,35 @@ const DatabaseStatsSimple = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2 p-2 bg-sky-50 rounded-lg border border-sky-100">
-          <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white text-xs font-bold">{trmTestData.length}</div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-gray-800">TRM</p>
-            <p className="text-[10px] text-gray-500">{trmParams} fields</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="flex-1 h-1 bg-sky-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-sky-500 rounded-full transition-all"
-                  style={{ width: `${trmCompletion.percentage}%` }}
-                />
-              </div>
-              <span className="text-[9px] text-sky-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{trmCompletion.complete}/{trmCompletion.total}</span>
-            </div>
-          </div>
-        </div>
         <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
-          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{tdsTestData.length}</div>
+          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{cgpTestData.length}</div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-gray-800">TDS</p>
+            <p className="text-xs font-medium text-gray-800">CGP</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
             <div className="flex items-center gap-1 mt-0.5">
               <div className="flex-1 h-1 bg-violet-100 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-violet-500 rounded-full transition-all"
-                  style={{ width: `${tdsCompletion.percentage}%` }}
+                  style={{ width: `${cgpCompletion.percentage}%` }}
                 />
               </div>
-              <span className="text-[9px] text-violet-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{tdsCompletion.complete}/{tdsCompletion.total}</span>
+              <span className="text-[9px] text-violet-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{cgpCompletion.complete}/{cgpCompletion.total}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 p-2 bg-purple-50 rounded-lg border border-purple-100">
+          <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">{hctTestData.length}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-gray-800">HCT</p>
+            <p className="text-[10px] text-gray-500">{hctParams} fields</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex-1 h-1 bg-purple-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-purple-500 rounded-full transition-all"
+                  style={{ width: `${hctCompletion.percentage}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-purple-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{hctCompletion.complete}/{hctCompletion.total}</span>
             </div>
           </div>
         </div>
@@ -663,13 +661,13 @@ const SourceDataPage = () => {
   const metrics = useMemo(() => ({
     MRD: calculateCategoryMetrics(mrdTestData, 'MRD'),
     ECD: calculateCategoryMetrics(ecdTestData, 'ECD'),
-    TRM: calculateCategoryMetrics(trmTestData, 'TRM'),
-    TDS: calculateCategoryMetrics(tdsTestData, 'TDS'),
+    CGP: calculateCategoryMetrics(cgpTestData, 'CGP'),
+    HCT: calculateCategoryMetrics(hctTestData, 'HCT'),
   }), []);
 
   // Calculate aggregate metrics
   const aggregate = useMemo(() => {
-    const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+    const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
     const allVendors = new Set(allTests.map(t => t.vendor));
     
     // Count tests with vendor contributions
@@ -722,8 +720,8 @@ const SourceDataPage = () => {
       categories: {
         MRD: { name: 'Molecular Residual Disease', testCount: mrdTestData.length, tests: mrdTestData, metrics: metrics.MRD },
         ECD: { name: 'Early Cancer Detection', testCount: ecdTestData.length, tests: ecdTestData, metrics: metrics.ECD },
-        TRM: { name: 'Treatment Response Monitoring', testCount: trmTestData.length, tests: trmTestData, metrics: metrics.TRM },
-        TDS: { name: 'Treatment Decision Support', testCount: tdsTestData.length, tests: tdsTestData, metrics: metrics.TDS },
+        CGP: { name: 'Comprehensive Genomic Profiling', testCount: cgpTestData.length, tests: cgpTestData, metrics: metrics.CGP },
+        HCT: { name: 'Hereditary Cancer Testing', testCount: hctTestData.length, tests: hctTestData, metrics: metrics.HCT },
       },
       totalTests: aggregate.totalTests
     };
@@ -825,7 +823,7 @@ const SourceDataPage = () => {
 
           {/* Category Cards */}
           <div className="grid sm:grid-cols-2 gap-4">
-            {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+            {['MRD', 'ECD', 'CGP', 'HCT'].map(category => {
               const m = metrics[category];
               const colors = CATEGORY_COLORS[category];
               if (!m) return null;
@@ -930,7 +928,7 @@ const SourceDataPage = () => {
             <p className="text-sm text-gray-600 mb-6">OpenOnco tracks data quality across multiple dimensions to ensure clinical reliability. Our Baseline Complete (BC) standard requires all minimum fields for each category to be filled.</p>
             
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+              {['MRD', 'ECD', 'CGP', 'HCT'].map(category => {
                 const m = metrics[category];
                 const colors = CATEGORY_COLORS[category];
                 if (!m) return null;
@@ -938,7 +936,7 @@ const SourceDataPage = () => {
                 return (
                   <div key={category} className="text-center">
                     <div className="relative inline-flex items-center justify-center mb-3">
-                      <CircularProgress value={m.minFieldCompletionRate} size={100} strokeWidth={10} color={category === 'MRD' ? 'orange' : category === 'ECD' ? 'emerald' : category === 'TRM' ? 'sky' : 'violet'} />
+                      <CircularProgress value={m.minFieldCompletionRate} size={100} strokeWidth={10} color={category === 'MRD' ? 'orange' : category === 'ECD' ? 'emerald' : category === 'CGP' ? 'violet' : 'purple'} />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-xl font-bold text-gray-800">{m.minFieldCompletionRate}%</span>
                       </div>
@@ -952,7 +950,7 @@ const SourceDataPage = () => {
           </div>
 
           {/* Per-Category Breakdown */}
-          {['MRD', 'ECD', 'TRM', 'TDS'].map(category => {
+          {['MRD', 'ECD', 'CGP', 'HCT'].map(category => {
             const m = metrics[category];
             const colors = CATEGORY_COLORS[category];
             if (!m) return null;
@@ -1027,7 +1025,7 @@ const SourceDataPage = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-lg">Complete Dataset (All Categories)</h3>
-                  <p className="text-sm text-gray-500">{aggregate.totalTests} tests • MRD + ECD + TRM + TDS • JSON format with quality metrics</p>
+                  <p className="text-sm text-gray-500">{aggregate.totalTests} tests • MRD + ECD + CGP + HCT • JSON format with quality metrics</p>
                 </div>
               </div>
               <button onClick={downloadJson} className="flex items-center gap-2 px-6 py-3 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium text-white shadow-sm">
@@ -1288,7 +1286,7 @@ export default function App() {
     // Valid format: lowercase letters followed by hyphen and digits (e.g., mrd-1, ecd-12, tds-5)
     const isValidTestId = (id) => /^[a-z]+-\d+$/.test(id);
 
-    if (category && ['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(category)) {
+    if (category && ['MRD', 'ECD', 'CGP', 'HCT', 'ALZ-BLOOD'].includes(category)) {
       setCurrentPage(category);
       if (testId && isValidTestId(testId)) {
         setInitialSelectedTestId(testId);
@@ -1375,7 +1373,7 @@ export default function App() {
     
     // Track navigation with feature flags (Vercel Analytics)
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
-    if (['MRD', 'ECD', 'TRM', 'TDS'].includes(page)) {
+    if (['MRD', 'ECD', 'CGP', 'HCT'].includes(page)) {
       track('category_viewed', { 
         category: page,
         from_test_link: testId !== null 
@@ -1399,7 +1397,7 @@ export default function App() {
     setInitialSelectedTestId(testId || null);
     trackPageVisit(page); // Track for feedback context
     // Clear compare IDs when navigating away from category pages
-    if (!['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(page)) {
+    if (!['MRD', 'ECD', 'CGP', 'HCT', 'ALZ-BLOOD'].includes(page)) {
       setInitialCompareIds(null);
     }
     // Update URL without page reload
@@ -1419,7 +1417,7 @@ export default function App() {
     // Add structured data based on page type
     if (currentPage === 'home') {
       structuredData = generateOrganizationSchema();
-    } else if (['MRD', 'ECD', 'TRM', 'TDS', 'ALZ-BLOOD'].includes(currentPage)) {
+    } else if (['MRD', 'ECD', 'CGP', 'HCT', 'ALZ-BLOOD'].includes(currentPage)) {
       const categoryMeta = createCategoryMeta();
       const tests = categoryMeta[currentPage]?.tests || [];
       structuredData = generateCategorySchema(currentPage, tests);
@@ -1433,7 +1431,7 @@ export default function App() {
       case 'home': return <HomePage onNavigate={handleNavigate} persona={persona} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
-      case 'MRD': case 'ECD': case 'TRM': case 'TDS': case 'CGP': case 'HCT': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
+      case 'MRD': case 'ECD': case 'CGP': case 'HCT': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;

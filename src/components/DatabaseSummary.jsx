@@ -1,31 +1,31 @@
 import { useState } from 'react';
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData, BUILD_INFO, DATABASE_CHANGELOG } from '../data';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData, BUILD_INFO, DATABASE_CHANGELOG } from '../data';
 
 const DatabaseSummary = () => {
   const [showFAQ, setShowFAQ] = useState(false);
-  
+
   // Dynamically count actual fields per test
   const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
   const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const trmParams = trmTestData.length > 0 ? Object.keys(trmTestData[0]).length : 0;
-  const cgpParams = tdsTestData.length > 0 ? Object.keys(tdsTestData[0]).length : 0;
-  
-  const totalTests = mrdTestData.length + ecdTestData.length + trmTestData.length + tdsTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (trmTestData.length * trmParams) + (tdsTestData.length * cgpParams);
-  
+  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
+  const hctParams = hctTestData.length > 0 ? Object.keys(hctTestData[0]).length : 0;
+
+  const totalTests = mrdTestData.length + ecdTestData.length + cgpTestData.length + hctTestData.length;
+  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (cgpTestData.length * cgpParams) + (hctTestData.length * hctParams);
+
   // Add category to each test for proper openness scoring
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
+    ...cgpTestData.map(t => ({ ...t, category: 'CGP' })),
+    ...hctTestData.map(t => ({ ...t, category: 'HCT' }))
   ];
-  
+
   const allVendors = new Set([
     ...mrdTestData.map(t => t.vendor),
     ...ecdTestData.map(t => t.vendor),
-    ...trmTestData.map(t => t.vendor),
-    ...tdsTestData.map(t => t.vendor)
+    ...cgpTestData.map(t => t.vendor),
+    ...hctTestData.map(t => t.vendor)
   ]);
 
   // Helper functions
@@ -68,13 +68,12 @@ const DatabaseSummary = () => {
         // MRD: LOD is THE key metric (all MRD tests report this)
         if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
         break;
-      case 'TRM':
-        // TRM: Sensitivity/specificity for mutation detection
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
+      case 'HCT':
+        // HCT: Gene count is key for hereditary testing
+        if (hasValue(test.genesAnalyzed)) score += 30;
         break;
-      case 'TDS':
-        // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
+      case 'CGP':
+        // CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these
         if (hasValue(test.genesAnalyzed)) score += 15;
         if (hasValue(test.tmb) || hasValue(test.msi)) score += 15;
         break;
@@ -233,7 +232,7 @@ const DatabaseSummary = () => {
                 The Openness Score measures vendor data disclosure using <strong>category-normalized</strong> metrics. 
                 Universal fields: <strong>Price (30%)</strong>, <strong>Publications (15%)</strong>, <strong>TAT (10%)</strong>, 
                 <strong> Sample Info (10%)</strong>, <strong>Trial Participants (5%)</strong>. 
-                Plus 30% for category-specific metrics (e.g., Sens/Spec for ECD/TRM, LOD for MRD, Genes/CDx for TDS). 
+                Plus 30% for category-specific metrics (e.g., Sens/Spec for ECD, LOD for MRD, Genes/CDx for CGP). 
                 Vendor scores are averaged across all their tests.
               </p>
             </div>

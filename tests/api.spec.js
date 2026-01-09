@@ -34,8 +34,8 @@ test.describe('API v1 - Stats Endpoint', () => {
     expect(data.data.byCategory).toBeDefined();
     expect(data.data.byCategory.MRD).toBeDefined();
     expect(data.data.byCategory.ECD).toBeDefined();
-    expect(data.data.byCategory.TRM).toBeDefined();
-    expect(data.data.byCategory.TDS).toBeDefined();
+    expect(data.data.byCategory.CGP).toBeDefined();
+    expect(data.data.byCategory.HCT).toBeDefined();
   });
 
   test('includes CORS headers', async ({ request }) => {
@@ -200,14 +200,14 @@ test.describe('API v1 - Categories Endpoint', () => {
     const data = await response.json();
     
     expect(data.success).toBe(true);
-    expect(data.meta.totalCategories).toBe(5);
-    expect(data.data.length).toBe(5);
-    
+    expect(data.meta.totalCategories).toBe(4);
+    expect(data.data.length).toBe(4);
+
+    // Final categories: MRD, ECD, CGP, HCT (TRM merged into MRD, TDS renamed to CGP)
     const categoryIds = data.data.map(c => c.id);
     expect(categoryIds).toContain('mrd');
     expect(categoryIds).toContain('ecd');
-    expect(categoryIds).toContain('trm');
-    expect(categoryIds).toContain('tds');
+    expect(categoryIds).toContain('cgp');
     expect(categoryIds).toContain('hct');
   });
 
@@ -249,6 +249,7 @@ test.describe('API v1 - Vendors Endpoint', () => {
     expect(firstVendor.totalTests).toBeGreaterThan(0);
     expect(firstVendor.tests.mrd).toBeDefined();
     expect(firstVendor.tests.ecd).toBeDefined();
+    expect(firstVendor.tests.cgp).toBeDefined();
     expect(firstVendor.tests.hct).toBeDefined();
   });
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../data';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../data';
 import { getStoredPersona } from '../utils/persona';
 import GlossaryTooltip from '../components/GlossaryTooltip';
 
@@ -18,7 +18,7 @@ const LearnPage = ({ onNavigate }) => {
   // Patient-friendly category content
   const patientCategories = [
     {
-      id: 'TDS',
+      id: 'CGP',
       phase: 'Diagnosis',
       name: 'Tests that help choose my treatment',
       color: 'violet',
@@ -32,24 +32,7 @@ const LearnPage = ({ onNavigate }) => {
         'Some tests are required before certain treatments can be prescribed',
         'Results help your oncologist create a personalized treatment plan'
       ],
-      testCount: tdsTestData.length
-    },
-    {
-      id: 'TRM',
-      phase: 'Treatment',
-      name: 'Tests that track my response to treatment',
-      color: 'sky',
-      image: '/images/journey-tracking.png',
-      imageAlt: 'Patient during treatment',
-      clinicalQuestion: 'Is my treatment working?',
-      description: 'Monitoring tests measure tumor DNA in your blood over time to see if your treatment is working. Decreasing levels usually mean the treatment is effective. Rising levels might mean the cancer is becoming resistant, often detectable weeks before changes show up on scans.',
-      keyPoints: [
-        'Tracks response through simple blood draws',
-        'Can detect changes earlier than imaging scans',
-        'Helps your doctor adjust treatment if needed',
-        'Less invasive than repeated biopsies'
-      ],
-      testCount: trmTestData.length
+      testCount: cgpTestData.length
     },
     {
       id: 'MRD',
@@ -96,14 +79,14 @@ const LearnPage = ({ onNavigate }) => {
       testCount: ecdTestData.length
     },
     {
-      id: 'TDS',
+      id: 'CGP',
       phase: 'Diagnosis',
-      name: 'Treatment Decision Support',
-      acronym: 'TDS',
+      name: 'Comprehensive Genomic Profiling',
+      acronym: 'CGP',
       color: 'violet',
       icon: '🧬',
       clinicalQuestion: 'What is the best treatment approach for this patient?',
-      description: 'TDS tests help guide treatment decisions by providing molecular or biomarker information. This includes genomic profiling tests that identify actionable mutations for targeted therapy selection, as well as risk stratification tests that help determine whether interventions like biopsies are needed.',
+      description: 'CGP tests help guide treatment decisions by providing molecular or biomarker information. This includes genomic profiling tests that identify actionable mutations for targeted therapy selection, as well as risk stratification tests that help determine whether interventions like biopsies are needed.',
       technology: 'Includes multiple technologies: NGS-based comprehensive genomic profiling (CGP) from tumor tissue or liquid biopsy to identify targetable alterations; protein structure analysis for risk stratification; and other biomarker assays. Some tests are FDA-approved as companion diagnostics.',
       keyMetrics: [
         'Sensitivity and specificity for intended use case',
@@ -117,31 +100,7 @@ const LearnPage = ({ onNavigate }) => {
         'Balancing sensitivity vs specificity for risk stratification',
         'Integration into clinical workflow'
       ],
-      testCount: tdsTestData.length
-    },
-    {
-      id: 'TRM',
-      phase: 'Treatment',
-      name: 'Treatment Response Monitoring',
-      acronym: 'TRM',
-      color: 'sky',
-      icon: '📊',
-      clinicalQuestion: 'Is the current therapy effective, and is resistance emerging?',
-      description: 'TRM uses serial liquid biopsies to quantify ctDNA dynamics during active therapy. Decreasing ctDNA levels correlate with treatment response; rising levels may indicate progression or resistance—often weeks before radiographic changes are detectable.',
-      technology: 'TRM approaches vary: some track specific mutations identified at baseline (tumor-informed), while others monitor a fixed panel of common cancer mutations (tumor-naïve). Quantification methods include variant allele frequency (VAF), absolute ctDNA concentration (copies/mL), or composite molecular response scores. Some platforms can detect emerging resistance mutations to guide therapy switching.',
-      keyMetrics: [
-        'Analytical sensitivity for quantification at low VAF',
-        'Coefficient of variation (CV) for serial measurements',
-        'Molecular response thresholds (fold-change or absolute cutoffs)',
-        'Correlation with clinical outcomes (PFS, OS)'
-      ],
-      challenges: [
-        'Standardization of "molecular response" definitions across platforms',
-        'Optimal sampling intervals during therapy',
-        'Integration with imaging-based response assessment',
-        'Cost of serial testing'
-      ],
-      testCount: trmTestData.length
+      testCount: cgpTestData.length
     },
     {
       id: 'MRD',
@@ -294,7 +253,7 @@ const LearnPage = ({ onNavigate }) => {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 <tr>
-                  <td className="py-2 px-3 text-gray-700">Advanced cancer (TDS)</td>
+                  <td className="py-2 px-3 text-gray-700">Advanced cancer (CGP)</td>
                   <td className="py-2 px-3 text-gray-600">1–10%+</td>
                   <td className="py-2 px-3 text-gray-600">0.5–5% <GlossaryTooltip termKey="vaf">VAF</GlossaryTooltip></td>
                 </tr>
@@ -307,11 +266,6 @@ const LearnPage = ({ onNavigate }) => {
                   <td className="py-2 px-3 text-gray-700">Post-surgery surveillance (<GlossaryTooltip termKey="mrd">MRD</GlossaryTooltip>)</td>
                   <td className="py-2 px-3 text-gray-600">0.001–0.01%</td>
                   <td className="py-2 px-3 text-gray-600">&lt;0.01% VAF</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-3 text-gray-700">Treatment monitoring (TRM)</td>
-                  <td className="py-2 px-3 text-gray-600">Variable (dynamic)</td>
-                  <td className="py-2 px-3 text-gray-600">Quantitative accuracy</td>
                 </tr>
               </tbody>
             </table>
@@ -450,15 +404,10 @@ const LearnPage = ({ onNavigate }) => {
                 <td className="py-3 px-4"><span className="text-emerald-600 font-medium">ECD →</span></td>
                 <td className="py-3 px-4 text-gray-600 text-sm">Cancer signal detected (Y/N), tissue of origin</td>
               </tr>
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TDS')}>
+              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('CGP')}>
                 <td className="py-3 px-4 text-gray-700">Newly diagnosed / therapy selection</td>
-                <td className="py-3 px-4"><span className="text-violet-600 font-medium">TDS →</span></td>
+                <td className="py-3 px-4"><span className="text-violet-600 font-medium">CGP →</span></td>
                 <td className="py-3 px-4 text-gray-600 text-sm">Actionable mutations, MSI, TMB, fusions</td>
-              </tr>
-              <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('TRM')}>
-                <td className="py-3 px-4 text-gray-700">On active systemic therapy</td>
-                <td className="py-3 px-4"><span className="text-sky-600 font-medium">TRM →</span></td>
-                <td className="py-3 px-4 text-gray-600 text-sm">ctDNA quantification, molecular response</td>
               </tr>
               <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => onNavigate('MRD')}>
                 <td className="py-3 px-4 text-gray-700">Post-curative treatment surveillance</td>

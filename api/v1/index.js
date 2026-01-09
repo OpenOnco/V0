@@ -11,17 +11,18 @@
  *   GET /api/v1/embed/test   - Embeddable test card
  */
 
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData, hctTestData } from '../_data.js';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../_data.js';
 
 // ============================================================================
 // SHARED CONSTANTS
 // ============================================================================
 
+// Final API categories: mrd, ecd, cgp, hct
+// Note: TRM tests merged into MRD, TDS renamed to CGP
 const CATEGORY_DATA = {
   mrd: { data: mrdTestData, name: 'Molecular Residual Disease', shortName: 'MRD', urlPath: 'monitor' },
   ecd: { data: ecdTestData, name: 'Early Cancer Detection', shortName: 'ECD', urlPath: 'screen' },
-  trm: { data: trmTestData, name: 'Treatment Response Monitoring', shortName: 'TRM', urlPath: 'monitor' },
-  tds: { data: tdsTestData, name: 'Treatment Decision Support', shortName: 'TDS', urlPath: 'treat' },
+  cgp: { data: cgpTestData, name: 'Comprehensive Genomic Profiling', shortName: 'CGP', urlPath: 'treat' },
   hct: { data: hctTestData, name: 'Hereditary Cancer Testing', shortName: 'HCT', urlPath: 'risk' },
 };
 
@@ -29,8 +30,7 @@ const TEST_LOOKUP = new Map();
 [
   { data: mrdTestData, category: 'mrd' },
   { data: ecdTestData, category: 'ecd' },
-  { data: trmTestData, category: 'trm' },
-  { data: tdsTestData, category: 'tds' },
+  { data: cgpTestData, category: 'cgp' },
   { data: hctTestData, category: 'hct' },
 ].forEach(({ data, category }) => {
   data.forEach(test => {
@@ -70,7 +70,7 @@ function handleDocs(req, res) {
       { method: 'GET', path: '/api/v1/stats', description: 'Database statistics' },
       { method: 'GET', path: '/api/v1/embed/test', description: 'Embeddable test card' },
     ],
-    categories: ['mrd', 'ecd', 'trm', 'tds', 'hct'],
+    categories: ['mrd', 'ecd', 'cgp', 'hct'],
   };
 
   if (format === 'json' || !accept.includes('text/html')) {
@@ -95,8 +95,7 @@ ${docs.endpoints.map(e => `<p><code>${e.method} ${e.path}</code> - ${e.descripti
 <ul>
 <li><code>mrd</code> - Molecular Residual Disease</li>
 <li><code>ecd</code> - Early Cancer Detection</li>
-<li><code>trm</code> - Treatment Response Monitoring</li>
-<li><code>tds</code> - Treatment Decision Support</li>
+<li><code>cgp</code> - Comprehensive Genomic Profiling</li>
 <li><code>hct</code> - Hereditary Cancer Testing</li>
 </ul>
 <h2>Examples</h2>
@@ -220,8 +219,7 @@ function getDescription(id) {
   const descriptions = {
     mrd: 'Post-treatment surveillance to detect cancer recurrence at the molecular level',
     ecd: 'Screening tests designed to detect cancer early, before symptoms appear',
-    trm: 'Monitor how well cancer treatment is working over time',
-    tds: 'Identify genetic alterations to guide therapy selection',
+    cgp: 'Comprehensive genomic profiling to identify genetic alterations and guide therapy selection',
     hct: 'Germline genetic testing to assess inherited cancer predisposition risk',
   };
   return descriptions[id] || '';
@@ -235,7 +233,7 @@ function handleVendors(req, res) {
     cat.data.forEach(test => {
       const vendor = test.vendor;
       if (!vendorMap.has(vendor)) {
-        vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, trm: 0, tds: 0, hct: 0 }, kits: { mrd: 0, ecd: 0, trm: 0, tds: 0, hct: 0 }, totalTests: 0 });
+        vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, cgp: 0, hct: 0 }, kits: { mrd: 0, ecd: 0, cgp: 0, hct: 0 }, totalTests: 0 });
       }
       const v = vendorMap.get(vendor);
       if (test.isKitProduct) v.kits[catId]++;
@@ -260,7 +258,7 @@ function handleVendors(req, res) {
 }
 
 function handleStats(req, res) {
-  const allTests = [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData, ...hctTestData];
+  const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
   const stats = {
     totals: {
       tests: allTests.length,
@@ -270,8 +268,7 @@ function handleStats(req, res) {
     byCategory: {
       MRD: { tests: mrdTestData.length, vendors: [...new Set(mrdTestData.map(t => t.vendor))].length },
       ECD: { tests: ecdTestData.length, vendors: [...new Set(ecdTestData.map(t => t.vendor))].length },
-      TRM: { tests: trmTestData.length, vendors: [...new Set(trmTestData.map(t => t.vendor))].length },
-      TDS: { tests: tdsTestData.length, vendors: [...new Set(tdsTestData.map(t => t.vendor))].length },
+      CGP: { tests: cgpTestData.length, vendors: [...new Set(cgpTestData.map(t => t.vendor))].length },
       HCT: { tests: hctTestData.length, vendors: [...new Set(hctTestData.map(t => t.vendor))].length },
     },
   };

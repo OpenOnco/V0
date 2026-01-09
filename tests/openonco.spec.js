@@ -1,7 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../src/data.js';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../src/data.js';
 
 /**
  * OpenOnco Regression Test Suite
@@ -29,27 +29,28 @@ test.beforeEach(async ({ page }) => {
 
 const EXPECTED = {
   testCounts: {
-    MRD: mrdTestData.length,
+    MRD: mrdTestData.length,  // Includes TRM tests (trm-* IDs merged in)
     ECD: ecdTestData.length,
-    TRM: trmTestData.length,
-    TDS: tdsTestData.length,
-    get total() { return this.MRD + this.ECD + this.TRM + this.TDS; }
+    CGP: cgpTestData.length,  // Renamed from TDS
+    HCT: hctTestData.length,
+    get total() { return this.MRD + this.ECD + this.CGP + this.HCT; }
   },
-  // New URL structure: /monitor (MRD+TRM), /screen (ECD), /treat (CGP/TDS)
-  // HCT (/risk) is new and empty for now
+  // URL structure: /monitor (MRD), /screen (ECD), /treat (CGP), /risk (HCT)
   categoryUrls: [
     { url: '/monitor', code: 'MRD', name: 'Monitor' },
     { url: '/screen', code: 'ECD', name: 'Screen' },
     { url: '/treat', code: 'CGP', name: 'Treat' },
+    { url: '/risk', code: 'HCT', name: 'Risk' },
   ],
   // Legacy URLs for backward compatibility testing
+  // Note: /cgp and /hct were never actual URLs (just category codes), so not included
   legacyCategoryUrls: [
     { url: '/mrd', code: 'MRD' },
     { url: '/ecd', code: 'ECD' },
     { url: '/trm', code: 'MRD' },  // TRM merged into MRD
     { url: '/tds', code: 'CGP' },  // TDS renamed to CGP
   ],
-  categories: ['MRD', 'ECD', 'TRM', 'TDS'],  // Keep for test count reference
+  categories: ['MRD', 'ECD', 'CGP', 'HCT'],  // Final 4 categories
 };
 
 // ===========================================
@@ -1156,10 +1157,10 @@ test.describe('Patient Assistance Programs', () => {
   });
 
   test('assistance programs cover major database vendors', async ({ page }) => {
-    const { VENDOR_ASSISTANCE_PROGRAMS, mrdTestData, tdsTestData } = await import('../src/data.js');
-    
+    const { VENDOR_ASSISTANCE_PROGRAMS, mrdTestData, cgpTestData } = await import('../src/data.js');
+
     // Get unique vendors from test data
-    const allTests = [...mrdTestData, ...tdsTestData];
+    const allTests = [...mrdTestData, ...cgpTestData];
     const uniqueVendors = [...new Set(allTests.map(t => t.vendor))];
     
     // Check that we have programs for major vendors

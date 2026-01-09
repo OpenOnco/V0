@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../data';
+import { mrdTestData, ecdTestData, tdsTestData, hctTestData } from '../data';
 
 const OpennessAward = () => {
   const [showFAQ, setShowFAQ] = useState(false);
-  
+
   // Add category to each test for proper openness scoring
   const allTests = [
     ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
     ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...trmTestData.map(t => ({ ...t, category: 'TRM' })),
-    ...tdsTestData.map(t => ({ ...t, category: 'TDS' }))
+    ...tdsTestData.map(t => ({ ...t, category: 'TDS' })),
+    ...hctTestData.map(t => ({ ...t, category: 'HCT' }))
   ];
   
   // Helper functions
@@ -38,10 +38,9 @@ const OpennessAward = () => {
         // MRD: LOD is THE key metric (all MRD tests report this)
         if (hasValue(test.lod) || hasValue(test.lod95)) score += 30;
         break;
-      case 'TRM':
-        // TRM: Sensitivity/specificity for mutation detection
-        if (hasValue(test.sensitivity)) score += 15;
-        if (hasValue(test.specificity)) score += 15;
+      case 'HCT':
+        // HCT: Gene count is key for hereditary testing
+        if (hasValue(test.genesAnalyzed)) score += 30;
         break;
       case 'TDS':
         // TDS/CGP: Panel size + biomarker reporting (TMB/MSI) - all CGP tests have these

@@ -136,7 +136,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
 
         {/* Key metrics grid */}
         <div className="grid grid-cols-4 gap-2 mb-3">
-          {category !== 'TDS' && test.sensitivity != null && (
+          {category !== 'CGP' && test.sensitivity != null && (
             <div>
               <p className={`text-lg font-bold ${(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : 'text-emerald-600'}`}>
                 {test.sensitivity}%
@@ -151,7 +151,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               <p className="text-xs text-gray-500">Reported Sens.</p>
             </div>
           )}
-          {category !== 'TDS' && test.specificity != null && (
+          {category !== 'CGP' && test.specificity != null && (
             <div>
               <p className={`text-lg font-bold ${(test.specificity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : 'text-emerald-600'}`}>
                 {test.specificity}%
@@ -167,7 +167,7 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
             </div>
           )}
           {/* LOD display - show both LOD and LOD95 when available */}
-          {category !== 'TDS' && (test.lod != null || test.lod95 != null) && (
+          {category !== 'CGP' && (test.lod != null || test.lod95 != null) && (
             <div>
               {test.lod != null && test.lod95 != null ? (
                 // Both values available - show stacked with monitoring indicator
@@ -195,12 +195,12 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
             </div>
           )}
           {category === 'MRD' && test.followUpTat && <div><p className="text-lg font-bold text-slate-600">{test.followUpTat}d</p><p className="text-xs text-gray-500">TAT</p></div>}
-          {category === 'TRM' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Early Warning</p></div>}
+          {category === 'HCT' && test.leadTimeVsImaging && <div><p className="text-lg font-bold text-emerald-600">{test.leadTimeVsImaging}d</p><p className="text-xs text-gray-500">Early Warning</p></div>}
           {category === 'ECD' && test.stageISensitivity && <div><p className="text-lg font-bold text-emerald-600">{test.stageISensitivity}%</p><p className="text-xs text-gray-500">Stage I</p></div>}
           {category === 'ECD' && test.ppv != null && <div><p className="text-lg font-bold text-emerald-600">{test.ppv}%</p><p className="text-xs text-gray-500">PPV</p></div>}
-          {category === 'TDS' && test.genesAnalyzed && <div><p className="text-lg font-bold text-violet-600">{test.genesAnalyzed}</p><p className="text-xs text-gray-500">Genes</p></div>}
-          {category === 'TDS' && test.fdaCompanionDxCount && <div><p className="text-lg font-bold text-emerald-600">{test.fdaCompanionDxCount}</p><p className="text-xs text-gray-500">CDx</p></div>}
-          {category === 'TDS' && test.tat && <div><p className="text-lg font-bold text-slate-600">{test.tat}</p><p className="text-xs text-gray-500">TAT</p></div>}
+          {category === 'CGP' && test.genesAnalyzed && <div><p className="text-lg font-bold text-violet-600">{test.genesAnalyzed}</p><p className="text-xs text-gray-500">Genes</p></div>}
+          {category === 'CGP' && test.fdaCompanionDxCount && <div><p className="text-lg font-bold text-emerald-600">{test.fdaCompanionDxCount}</p><p className="text-xs text-gray-500">CDx</p></div>}
+          {category === 'CGP' && test.tat && <div><p className="text-lg font-bold text-slate-600">{test.tat}</p><p className="text-xs text-gray-500">TAT</p></div>}
         </div>
 
         {/* Cancer types */}

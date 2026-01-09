@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { mrdTestData, ecdTestData, trmTestData, tdsTestData } from '../data';
+import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../data';
 
 // Comparison page definitions - add new comparisons here
 export const COMPARISON_PAGES = {
@@ -69,8 +69,8 @@ export const COMPARISON_PAGES = {
     description: 'Compare FoundationOne CDx (tissue) and Guardant360 (liquid biopsy) for comprehensive genomic profiling. FDA companion diagnostics, genes covered, turnaround time.',
     h1: 'FoundationOne CDx vs Guardant360',
     subtitle: 'Tissue vs Liquid Biopsy CGP',
-    testIds: ['tds-1', 'tds-3'], // FoundationOne CDx, Guardant360 CDx
-    category: 'TDS',
+    testIds: ['tds-1', 'tds-3'], // FoundationOne CDx, Guardant360 CDx - keep test IDs unchanged
+    category: 'CGP',
     keyTakeaways: [
       'FoundationOne CDx: 324 genes, 57 FDA companion diagnostics (tissue-based)',
       'Guardant360: 74-739 genes (expanded version), liquid biopsy convenience',
@@ -151,7 +151,7 @@ export const COMPARISON_PAGES = {
 };
 
 // Get all tests from all categories
-const getAllTests = () => [...mrdTestData, ...ecdTestData, ...trmTestData, ...tdsTestData];
+const getAllTests = () => [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
 
 const ComparePage = ({ comparisonSlug, onNavigate }) => {
   const comparison = COMPARISON_PAGES[comparisonSlug];
