@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { track } from '@vercel/analytics';
+import * as analytics from '../utils/analytics';
 import {
   filterConfigs,
   VENDOR_VERIFIED,
@@ -81,6 +82,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   // Handler to show test detail with tracking
   const handleShowDetail = (test) => {
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
+    // Vercel Analytics
     track('test_detail_viewed', { 
       category: category,
       test_id: test.id,
@@ -89,6 +91,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
     }, { 
       flags: [personaFlag, `category-${category.toLowerCase()}`] 
     });
+    // PostHog tracking
+    analytics.trackTestView(test, 'category_page');
     setDetailTest(test);
   };
   
@@ -796,7 +800,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
               {selectedTests.length >= 2 && (
                 <button 
                   onClick={() => {
-                  // Track comparison with feature flags
+                  // Track comparison with feature flags (Vercel Analytics)
                   const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
                   track('tests_compared', { 
                     category: category,
@@ -805,6 +809,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                   }, { 
                     flags: [personaFlag, `category-${category.toLowerCase()}`] 
                   });
+                  // PostHog tracking
+                  analytics.trackTestComparison(testsToCompare, 'category_page');
                   setShowComparison(true);
                 }} 
                   className="hidden md:flex bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium items-center gap-2"

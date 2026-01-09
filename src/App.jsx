@@ -65,6 +65,7 @@ import {
 // Component imports
 import { getStoredPersona, savePersona } from './utils/persona';
 import { trackPageVisit, trackTestView, trackPersona } from './utils/sessionTracking';
+import * as analytics from './utils/analytics';
 import PersonaGate from './components/PersonaGate';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -1248,6 +1249,7 @@ export default function App() {
     savePersona(newPersona);
     setShowPersonaGate(false);
     trackPersona(newPersona); // Track persona for feedback context
+    analytics.identifyPersona(newPersona); // PostHog persona tracking
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
   };
 
@@ -1371,7 +1373,7 @@ export default function App() {
       testId = testIdOrOptions;
     }
     
-    // Track navigation with feature flags
+    // Track navigation with feature flags (Vercel Analytics)
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
     if (['MRD', 'ECD', 'TRM', 'TDS'].includes(page)) {
       track('category_viewed', { 
@@ -1380,12 +1382,16 @@ export default function App() {
       }, { 
         flags: [personaFlag, `category-${page.toLowerCase()}`] 
       });
+      // PostHog tracking
+      analytics.trackCategoryView(page, categoryMeta[page]?.tests?.length || 0);
     } else if (page !== currentPage) {
       track('page_viewed', { 
         page: page 
       }, { 
         flags: [personaFlag] 
       });
+      // PostHog tracking
+      analytics.trackPageView(page, { persona });
     }
     
     // Always update state and scroll, even if already on the page

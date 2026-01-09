@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { getSuggestedQuestions, getWelcomeMessage } from '../chatPrompts';
 import { track } from '@vercel/analytics';
+import * as analytics from '../utils/analytics';
 
 // Chat model options - matches App.jsx
 const CHAT_MODELS = [
@@ -434,6 +435,12 @@ ${progress}
       is_suggested: !!suggestedQuestion,
       chat_mode: chatMode
     });
+
+    // PostHog tracking - chat started
+    const isFirstMessage = messages.length === 0;
+    if (isFirstMessage) {
+      analytics.trackChatStart(persona, chatMode);
+    }
 
     const newUserMessage = { role: 'user', content: question };
     const updatedMessages = [...messages, newUserMessage];

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   getTestUrl,
   COMPANY_CONTRIBUTIONS,
@@ -11,6 +11,7 @@ import { TIER1_FIELDS, MINIMUM_PARAMS } from '../../config/testFields';
 import { EXPERT_INSIGHTS } from '../../config/expertInsights';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
 import { formatLOD, detectLodUnit, getLodUnitBadge } from '../../utils/formatting';
+import * as analytics from '../../utils/analytics';
 import VendorBadge, { getVendorBadges } from '../badges/VendorBadge';
 import CompanyCommunicationBadge from '../badges/CompanyCommunicationBadge';
 import Markdown from '../markdown/Markdown';
@@ -111,6 +112,13 @@ const MinimumFieldsSection = ({ test, category }) => {
 // ============================================
 const TestDetailModal = ({ test, category, onClose }) => {
   const [linkCopied, setLinkCopied] = useState(false);
+  
+  // Track test view in PostHog when modal opens
+  useEffect(() => {
+    if (test) {
+      analytics.trackTestView(test, 'modal');
+    }
+  }, [test?.id]);
   
   if (!test) return null;
   
@@ -482,7 +490,13 @@ const TestDetailModal = ({ test, category, onClose }) => {
                         {test.geneListUrl && (
                           <div className="py-1.5 flex justify-between items-center">
                             <span className="text-xs text-gray-500">Gene List</span>
-                            <a href={test.geneListUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:underline" style={{ color: '#2A63A4' }}>View Full List →</a>
+                            <a 
+                              href={test.geneListUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-sm font-medium hover:underline" 
+                              style={{ color: '#2A63A4' }}
+                            >View Full List →</a>
                           </div>
                         )}
                         <DataRow label="Biomarkers" value={test.biomarkersReported?.join(', ')} citations={test.biomarkersReportedCitations} />
@@ -823,7 +837,13 @@ const TestDetailModal = ({ test, category, onClose }) => {
                               <div key={idx} className="flex items-start gap-1">
                                 <span className="text-gray-400">•</span>
                                 {nctMatch ? (
-                                  <a href={`https://clinicaltrials.gov/study/${nctMatch[0]}`} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#2A63A4' }}>
+                                  <a 
+                                    href={`https://clinicaltrials.gov/study/${nctMatch[0]}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="hover:underline" 
+                                    style={{ color: '#2A63A4' }}
+                                  >
                                     {trimmed.replace(/https?:\/\/[^\s]+/g, '').trim()}
                                   </a>
                                 ) : (
