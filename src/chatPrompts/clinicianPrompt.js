@@ -53,9 +53,7 @@ MRD EVIDENCE BY TUMOR TYPE:
   suggestedQuestions: [
     "Compare landmark sensitivity of Signatera, Guardant Reveal, and Oncodetect in CRC",
     "Which MRD tests have prospective interventional trial data?",
-    "What's the clinical lead time vs imaging for the major MRD assays?",
-    "Which tests are NCCN-referenced for treatment decision support?",
-    "What's the LOD difference between PCR-based and NGS-based MRD approaches?"
+    "What's the clinical lead time vs imaging for the major MRD assays?"
   ],
 
   welcomeMessage: "I can provide factual data on test specifications, validation, and guideline status. What would you like to look up?"

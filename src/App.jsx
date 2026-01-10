@@ -393,6 +393,20 @@ const PatientInfoModal = ({ type, onClose, onStartChat }) => {
   );
 };
 
+// ============================================
+// Sponsor Logo Bar Component
+// ============================================
+const SponsorBar = () => (
+  <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-col">
+    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-1">OpenOnco is Supported By</p>
+    <img 
+      src="/sponsorlogobar.png" 
+      alt="Our Sponsors: DeciBio, Streck, Wilson Sonsini" 
+      className="w-full flex-1 object-contain"
+    />
+  </div>
+);
+
 const HomePage = ({ onNavigate, persona }) => {
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
 
@@ -417,7 +431,7 @@ const HomePage = ({ onNavigate, persona }) => {
           </h1>
         </div>
 
-        {/* Two-column layout: Left (LifecycleNavigator + QuickSearch) | Right (Chat) */}
+        {/* Two-column layout: Left (LifecycleNavigator + QuickSearch) | Right (Chat + Sponsors) */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
           {/* Left column: LifecycleNavigator + Quick Search */}
           <div className="lg:w-1/2 flex flex-col gap-4">
@@ -456,17 +470,23 @@ const HomePage = ({ onNavigate, persona }) => {
             </div>
           </div>
           
-          {/* Right column: Chat - full height */}
-          <div className="lg:w-1/2">
-            <Chat 
-              persona={persona} 
-              testData={chatTestData} 
-              variant="sidebar"
-              showModeToggle={false}
-              resizable={false}
-              showTitle={true}
-              className="h-full"
-            />
+          {/* Right column: Chat + Sponsor logos */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
+            {/* Chat - flex-1 to take available space */}
+            <div className="flex-1">
+              <Chat 
+                persona={persona} 
+                testData={chatTestData} 
+                variant="sidebar"
+                showModeToggle={false}
+                resizable={false}
+                showTitle={true}
+                className="h-full"
+              />
+            </div>
+            
+            {/* Sponsor Logo Bar - below chat */}
+            <SponsorBar />
           </div>
         </div>
 

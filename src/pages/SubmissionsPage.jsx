@@ -892,7 +892,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
               onClick={() => { setSubmissionType('new'); setExistingTest(''); setSelectedParameter(''); setFeedbackDescription(''); setCompleteFieldEntries([]); setValidationTest(''); setValidationEdits([]); setValidationAttestation(false); }}
               className={`p-4 rounded-lg border-2 text-left transition-all ${submissionType === 'new' ? 'border-[#2A63A4] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
             >
-              <div className="font-semibold text-gray-800">Suggest a New Test</div>
+              <div className="font-semibold text-gray-800">Submit a New Test</div>
               <div className="text-sm text-gray-500">Notify us of a test not in our database</div>
             </button>
             <button
@@ -1333,7 +1333,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
                 ) : (
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-amber-800">
                     <p className="font-medium">No tests found for your company</p>
-                    <p className="text-sm mt-1">We couldn't find tests matching your email domain. Please use "Suggest a New Test" or contact us if you believe this is an error.</p>
+                    <p className="text-sm mt-1">We couldn't find tests matching your email domain. Please use "Submit a New Test" or contact us if you believe this is an error.</p>
                   </div>
                 )}
               </div>

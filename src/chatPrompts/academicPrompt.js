@@ -52,10 +52,8 @@ ctDNA MRD EVIDENCE LANDSCAPE:
 
   suggestedQuestions: [
     "Compare cfDNA input requirements and LOD95 across tumor-informed MRD assays",
-    "Which MRD tests have FDA breakthrough device designation and what's their regulatory status?",
-    "What's the total clinical trial enrollment across all Signatera studies?",
-    "How do methylation-based ECD tests differ in their cancer signal origin accuracy?",
-    "Which vendors offer both tumor-informed and tumor-naive MRD options?"
+    "Which MRD tests have FDA breakthrough device designation?",
+    "How do methylation-based ECD tests differ in their cancer signal origin accuracy?"
   ],
 
   welcomeMessage: "I have detailed specs on analytical validation, regulatory status, and clinical trial data. What would you like to look up?"
