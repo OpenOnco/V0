@@ -173,7 +173,7 @@ export const LifecycleNavigator = ({ onNavigate }) => {
   // Get dynamic test counts
   const testCounts = {
     ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10,
+    TDS: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10,
     MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
     HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
     'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
