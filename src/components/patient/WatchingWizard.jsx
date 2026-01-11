@@ -3,6 +3,7 @@ import { JOURNEY_CONFIG } from '../patient-v2/journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
 import { hasAssistanceProgram, VENDOR_ASSISTANCE_PROGRAMS } from '../../data';
+import TestDetailModal from '../test/TestDetailModal';
 
 // ============================================================================
 // Configuration
@@ -727,20 +728,33 @@ function TestSummaryModal({ test, wizardData, onClose }) {
     return type?.label || 'your cancer type';
   };
 
-  // Get financial assistance details for the vendor
-  const getAssistanceDetails = (vendor) => {
+  // Get full financial assistance program object for the vendor
+  const getAssistanceProgram = (vendor) => {
     const program = VENDOR_ASSISTANCE_PROGRAMS[vendor];
     if (program?.hasProgram) {
-      return program.details || 'Financial assistance available - contact vendor for details.';
+      return program;
     }
     // Check partial match
     for (const [key, value] of Object.entries(VENDOR_ASSISTANCE_PROGRAMS)) {
       if (vendor?.includes(key) && value?.hasProgram) {
-        return value.details || 'Financial assistance available - contact vendor for details.';
+        return value;
       }
     }
     return null;
   };
+
+  // Get financial assistance details text for the vendor
+  const getAssistanceDetails = (vendor) => {
+    const program = getAssistanceProgram(vendor);
+    if (program) {
+      return program.description || 'Financial assistance available - contact vendor for details.';
+    }
+    return null;
+  };
+
+  // Check if we should show financial assistance info
+  const showFinancialAssistance = (wizardData.costSensitivity === 'very-sensitive' || !wizardData.hasInsurance);
+  const assistanceProgram = getAssistanceProgram(test.vendor);
 
   // Fetch summary from Claude API
   useEffect(() => {
@@ -795,7 +809,7 @@ Write the summary with these sections (use plain language, no medical jargon):
 1. **What this test does** - Explain in simple terms what ${test.name} does and how it works
 2. **Why it matched your situation** - Connect specific test features to the patient's answers (tumor tissue availability, cancer type, etc.)
 3. **Key benefits** - Highlight the test's strengths${test.comparativeBadges?.length > 0 ? ' (it has these standout qualities: ' + test.comparativeBadges.map(b => b.label).join(', ') + ')' : ''}
-${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `4. **Financial help available** - ${assistanceDetails}` : ''}
+${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `4. **Financial help available** - Briefly mention that financial assistance is available (we will show a link separately)` : ''}
 
 End with a reminder that their oncologist can help them decide if this test is right for them.`;
 
@@ -885,30 +899,62 @@ End with a reminder that their oncologist can help them decide if this test is r
           )}
 
           {summary && !loading && (
-            <div className="prose prose-sm prose-slate max-w-none">
-              {/* Parse and render markdown-like content */}
-              {summary.split('\n\n').map((paragraph, idx) => {
-                // Check if it's a header (starts with **)
-                if (paragraph.startsWith('**') && paragraph.includes('**')) {
-                  const headerMatch = paragraph.match(/^\*\*(.+?)\*\*/);
-                  if (headerMatch) {
-                    const headerText = headerMatch[1];
-                    const restText = paragraph.replace(/^\*\*.+?\*\*\s*/, '');
-                    return (
-                      <div key={idx} className="mb-4">
-                        <h4 className={`font-semibold ${colors.textDark} mb-1`}>{headerText}</h4>
-                        {restText && <p className="text-slate-700 text-sm leading-relaxed">{restText}</p>}
-                      </div>
-                    );
+            <>
+              <div className="prose prose-sm prose-slate max-w-none">
+                {/* Parse and render markdown-like content */}
+                {summary.split('\n\n').map((paragraph, idx) => {
+                  // Check if it's a header (starts with **)
+                  if (paragraph.startsWith('**') && paragraph.includes('**')) {
+                    const headerMatch = paragraph.match(/^\*\*(.+?)\*\*/);
+                    if (headerMatch) {
+                      const headerText = headerMatch[1];
+                      const restText = paragraph.replace(/^\*\*.+?\*\*\s*/, '');
+                      return (
+                        <div key={idx} className="mb-4">
+                          <h4 className={`font-semibold ${colors.textDark} mb-1`}>{headerText}</h4>
+                          {restText && <p className="text-slate-700 text-sm leading-relaxed">{restText}</p>}
+                        </div>
+                      );
+                    }
                   }
-                }
-                return (
-                  <p key={idx} className="text-slate-700 text-sm leading-relaxed mb-3">
-                    {paragraph}
-                  </p>
-                );
-              })}
-            </div>
+                  return (
+                    <p key={idx} className="text-slate-700 text-sm leading-relaxed mb-3">
+                      {paragraph}
+                    </p>
+                  );
+                })}
+              </div>
+
+              {/* Financial Assistance Link - shown for cost-sensitive patients */}
+              {showFinancialAssistance && assistanceProgram?.applicationUrl && (
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">💵</span>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-blue-900 mb-1">
+                        {assistanceProgram.programName || 'Financial Assistance Program'}
+                      </h4>
+                      <p className="text-sm text-blue-800 mb-3">
+                        {assistanceProgram.maxOutOfPocket && `Qualifying patients may pay ${assistanceProgram.maxOutOfPocket}. `}
+                        {assistanceProgram.paymentPlans && `${assistanceProgram.paymentPlans}. `}
+                        {!assistanceProgram.maxOutOfPocket && !assistanceProgram.paymentPlans && 'Financial assistance available based on eligibility.'}
+                      </p>
+                      <a
+                        href={assistanceProgram.applicationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                      >
+                        Learn about financial assistance
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -933,6 +979,8 @@ End with a reminder that their oncologist can help them decide if this test is r
 function ResultsStep({ wizardData, testData, onNext, onBack }) {
   // State for test summary modal
   const [selectedTest, setSelectedTest] = useState(null);
+  // State for full test detail modal
+  const [detailTest, setDetailTest] = useState(null);
   const content = CONTENT.results;
 
   // Get cancer type label for display
@@ -1025,48 +1073,79 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         </div>
       )}
 
+      {/* Clickable hint header */}
+      <div className="max-w-lg mx-auto mb-4">
+        <div className={`flex items-center justify-center gap-2 text-sm ${colors.text} bg-emerald-50/50 rounded-lg py-2 px-4`}>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+          </svg>
+          <span>Click any test below for a personalized summary</span>
+        </div>
+      </div>
+
       {/* Test cards */}
       <div className="max-w-lg mx-auto space-y-4 mb-8">
         {matchingTests.map((test) => (
-          <button
+          <div
             key={test.id}
-            onClick={() => setSelectedTest(test)}
-            className="w-full text-left bg-white border-2 border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden hover:border-emerald-300 hover:shadow-md transition-all"
           >
-            {/* Comparative badges */}
-            <ComparativeBadgeRow badges={test.comparativeBadges} />
+            {/* Clickable main area */}
+            <button
+              onClick={() => setSelectedTest(test)}
+              className="w-full text-left p-5 cursor-pointer group"
+            >
+              {/* Comparative badges */}
+              <ComparativeBadgeRow badges={test.comparativeBadges} />
 
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{test.name}</h3>
-                <p className="text-sm text-slate-500">{test.vendor}</p>
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{test.name}</h3>
+                  <p className="text-sm text-slate-500">{test.vendor}</p>
+                </div>
+                {test.hasFinancialAssistance && (
+                  <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
+                    💵 Assistance available
+                  </span>
+                )}
               </div>
-              {test.hasFinancialAssistance && (
-                <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
-                  💵 Assistance available
-                </span>
+              {test.matchReason && (
+                <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
               )}
-            </div>
-            {test.matchReason && (
-              <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
-            )}
-            {test.keyBenefit && (
-              <div className="flex items-center gap-2 text-sm text-slate-600">
-                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              {test.keyBenefit && (
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  {test.keyBenefit}
+                </div>
+              )}
+              
+              {/* Tap hint */}
+              <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400 group-hover:text-emerald-600 transition-colors">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                {test.keyBenefit}
+                Tap for personalized summary
               </div>
-            )}
+            </button>
             
-            {/* Tap hint */}
-            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400 group-hover:text-emerald-600 transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Tap to learn more about this test
+            {/* View full details button */}
+            <div className="px-5 pb-4">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDetailTest(test);
+                }}
+                className="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                View full test details
+              </button>
             </div>
-          </button>
+          </div>
         ))}
       </div>
 
@@ -1100,6 +1179,15 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
           test={selectedTest}
           wizardData={wizardData}
           onClose={() => setSelectedTest(null)}
+        />
+      )}
+
+      {/* Full Test Detail Modal */}
+      {detailTest && (
+        <TestDetailModal
+          test={detailTest}
+          category="MRD"
+          onClose={() => setDetailTest(null)}
         />
       )}
     </div>
