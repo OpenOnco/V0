@@ -1883,6 +1883,8 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
 
   // Check if we're on landing page (don't show wizard chrome)
   const isLanding = WIZARD_STEPS[currentStep]?.id === 'landing';
+  // Check if we're on results page (needs wider layout)
+  const isResults = WIZARD_STEPS[currentStep]?.id === 'results';
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${colors.bgGradient}`}>
@@ -1922,7 +1924,13 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
       {/* Main content */}
       <main
         ref={containerRef}
-        className={isLanding ? "px-4 sm:px-6 py-8 overflow-y-auto" : "max-w-2xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"}
+        className={
+          isLanding 
+            ? "px-4 sm:px-6 py-8 overflow-y-auto" 
+            : isResults 
+              ? "max-w-6xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
+              : "max-w-2xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
+        }
       >
         {/* Progress indicator - hide on landing */}
         {!isLanding && <ProgressIndicator currentStep={currentStep} totalSteps={WIZARD_STEPS.length} />}
