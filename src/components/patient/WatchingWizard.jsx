@@ -13,6 +13,7 @@ import {
 } from '../../data';
 import { getVendorAvailabilityUS } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
+import WizardAIHelper from './WizardAIHelper';
 
 // ============================================================================
 // Configuration
@@ -1966,6 +1967,9 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
         </p>
         )}
       </main>
+
+      {/* AI Helper Bubble */}
+      <WizardAIHelper currentStep={WIZARD_STEPS[currentStep]?.id} wizardData={wizardData} />
     </div>
   );
 }

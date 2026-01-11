@@ -380,7 +380,8 @@ export default async function handler(req, res) {
       model: requestedModel,
       patientStateSummary,
       patientChatMode,
-      patientContext
+      patientContext,
+      wizardHelperPrompt  // Custom prompt for wizard AI helper bubble
     } = req.body;
 
     // Validate category
@@ -391,9 +392,11 @@ export default async function handler(req, res) {
     // Validate persona (default to Clinician if not provided)
     const validatedPersona = VALID_PERSONAS.includes(persona) ? persona : 'medical';
 
-    // Validate test data
-    if (!testData || typeof testData !== 'string') {
-      return res.status(400).json({ error: 'Test data required' });
+    // Validate test data - skip validation for wizard-helper mode since it doesn't need test data
+    if (patientChatMode !== 'wizard-helper') {
+      if (!testData || typeof testData !== 'string') {
+        return res.status(400).json({ error: 'Test data required' });
+      }
     }
 
     // Validate messages
@@ -402,8 +405,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: msgValidation.error });
     }
 
-    // Build system prompt server-side (pass patient state for patient persona)
-    const systemPrompt = buildSystemPrompt(category, validatedPersona, testData, patientStateSummary, patientChatMode, patientContext);
+    // Build system prompt
+    // If wizard-helper mode and wizardHelperPrompt provided, use that directly
+    // Otherwise build the standard system prompt
+    let systemPrompt;
+    if (patientChatMode === 'wizard-helper' && wizardHelperPrompt) {
+      systemPrompt = wizardHelperPrompt;
+    } else {
+      systemPrompt = buildSystemPrompt(category, validatedPersona, testData, patientStateSummary, patientChatMode, patientContext);
+    }
 
     // Sanitize model
     const model = ALLOWED_MODELS[requestedModel] ? requestedModel : DEFAULT_MODEL;
