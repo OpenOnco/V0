@@ -1034,10 +1034,10 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(1000);
     await expect(page.getByText('Collected, Curated, Explained')).toBeVisible({ timeout: 5000 });
     
-    // Verify patient via /patient URL
+    // Verify patient via /patient URL - now shows WatchingWizard landing
     await page.goto('/patient');
     await page.waitForTimeout(1000);
-    await expect(page.getByText('Find the Right Blood Test')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/finished cancer treatment/i)).toBeVisible({ timeout: 5000 });
   });
 
   test('patient can navigate to Learn page', async ({ page }) => {
