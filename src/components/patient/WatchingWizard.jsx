@@ -1471,7 +1471,7 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         };
         
         return (
-          <div className="max-w-3xl mx-auto mb-8">
+          <div className="max-w-5xl mx-auto mb-8 px-4">
             {/* Featured tests (with badges) - 2 column grid */}
             {featuredTests.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
