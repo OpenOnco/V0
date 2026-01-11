@@ -1385,7 +1385,7 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
           );
           
           // Get availability tier for US users - only show badge if widely available
-          const isUSUser = wizardData.country === 'United States';
+          const isUSUser = wizardData.country === 'US';
           const availabilityTier = isUSUser ? getVendorAvailabilityUS(test.vendor) : null;
           const isWidelyAvailable = availabilityTier === 'widespread';
           
