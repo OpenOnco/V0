@@ -984,15 +984,15 @@ test.describe('Persona System', () => {
   });
 
   test('patient homepage shows patient-specific elements', async ({ page }) => {
-    // Access patient view - now goes directly to MRD WatchingWizard
+    // Access patient view - now shows MRD landing page
     await page.goto('/patient');
     await page.waitForTimeout(2000);
     
-    // Should see WatchingWizard welcome page elements
-    await expect(page.getByText("Confirming You're Cancer-Free")).toBeVisible({ timeout: 10000 });
+    // Should see landing page headline
+    await expect(page.getByText("There's a New Way to Watch for Cancer Coming Back")).toBeVisible({ timeout: 10000 });
     
-    // Should see the Get Started button
-    await expect(page.getByRole('button', { name: /get started/i })).toBeVisible();
+    // Should see the CTA button
+    await expect(page.getByRole('button', { name: /find a test/i })).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -1009,15 +1009,15 @@ test.describe('Persona System', () => {
   });
 
   test('patient intake flow works end-to-end', async ({ page }) => {
-    // Access patient view - goes directly to MRD WatchingWizard
+    // Access patient view - shows MRD landing page first
     await page.goto('/patient');
     await page.waitForTimeout(1000);
     
-    // Should already be on the watching wizard welcome page
-    await expect(page.getByText("Confirming You're Cancer-Free")).toBeVisible({ timeout: 5000 });
+    // Should see landing page
+    await expect(page.getByText("There's a New Way to Watch for Cancer Coming Back")).toBeVisible({ timeout: 5000 });
     
-    // Click "Let's get started" button to proceed through wizard
-    await page.getByRole('button', { name: /get started/i }).click();
+    // Click CTA to start wizard
+    await page.getByRole('button', { name: /find a test/i }).click();
     await page.waitForTimeout(500);
     
     // Should see the treatment status question

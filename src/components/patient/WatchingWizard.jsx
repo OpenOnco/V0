@@ -21,9 +21,9 @@ import TestDetailModal from '../test/TestDetailModal';
 // Get MRD/Watching journey configuration for colors and label
 const watchingJourney = JOURNEY_CONFIG.mrd;
 
-// Wizard steps - treatment gate first to exit early if not a fit
+// Wizard steps - landing first, then treatment gate to exit early if not a fit
 const WIZARD_STEPS = [
-  { id: 'welcome', title: 'Welcome', description: 'Learn about MRD testing' },
+  { id: 'landing', title: 'Home', description: 'Learn about MRD testing', showInProgress: false },
   { id: 'treatment-gate', title: 'Treatment', description: 'Have you completed treatment?' },
   { id: 'location', title: 'Location', description: 'Where are you located?' },
   { id: 'cancer-type', title: 'Cancer Type', description: 'What cancer were you treated for?' },
@@ -67,6 +67,29 @@ const colors = {
 
 // Step content - all strings centralized for easy editing
 const CONTENT = {
+  landing: {
+    headline: "There's a New Way to Watch for Cancer Coming Back",
+    subheadline: "Blood tests that can detect recurrence months before a scan",
+    intro: "If you've finished cancer treatment, you probably know the anxiety of waiting for your next scan. Will it come back? Did we get it all?",
+    newTech: {
+      title: "New technology changes everything",
+      description: "MRD (Minimal Residual Disease) blood tests can now detect tiny traces of cancer DNA in your blood — often 6 to 15 months before a traditional CT or PET scan would show anything.",
+    },
+    goodNews: {
+      title: "Most of the time, it's good news",
+      description: "For many patients, these tests provide confirmation that treatment worked and you're cancer-free. That peace of mind, from a simple blood draw.",
+    },
+    problem: {
+      title: "But there's a catch",
+      description: "These tests are still new. Many oncologists don't know about them yet, insurance coverage varies, and there are multiple tests to choose from. It can be overwhelming.",
+    },
+    solution: {
+      title: "That's why we built OpenOnco",
+      description: "We've researched every MRD blood test on the market and created this guide to help you find one that might work for your situation — so you can have an informed conversation with your doctor.",
+    },
+    buttonText: "Find a test for my situation",
+    disclaimer: "This is an educational resource, not medical advice. Always discuss testing options with your oncologist.",
+  },
   welcome: {
     headline: "Confirming You're Cancer-Free",
     afterTreatment: {
@@ -334,65 +357,103 @@ function OptionButton({ selected, onClick, children, className = '' }) {
 // ============================================================================
 
 /**
- * Step 1: Welcome & Education
- * Warm introduction to MRD testing with key benefits
+ * Landing Page - First thing patients see
+ * Explains MRD testing for someone who's never heard of it
  */
-function WelcomeStep({ onNext }) {
-  const content = CONTENT.welcome;
+function LandingStep({ onNext }) {
+  const content = CONTENT.landing;
 
   return (
-    <div className="text-center py-6">
-      {/* Icon */}
-      <div className={`w-20 h-20 mx-auto mb-6 ${colors.accentLight} rounded-full flex items-center justify-center`}>
-        <svg className={`w-10 h-10 ${colors.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
-
-      {/* Headline */}
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6">
+    <div className="max-w-2xl mx-auto py-8 px-4">
+      {/* Main headline */}
+      <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 text-center leading-tight">
         {content.headline}
-      </h2>
+      </h1>
+      <p className={`text-lg ${colors.text} text-center mb-8`}>
+        {content.subheadline}
+      </p>
 
-      {/* Educational content */}
-      <div className="max-w-lg mx-auto space-y-4 text-left mb-8">
-        <InfoBox>
-          <p className="text-slate-700">
-            <span className={`font-semibold ${colors.textDark}`}>{content.afterTreatment.boldText}</span>{content.afterTreatment.text}
-          </p>
-        </InfoBox>
+      {/* Intro paragraph */}
+      <p className="text-slate-600 text-lg mb-8 text-center">
+        {content.intro}
+      </p>
 
-        <InfoBox>
-          <p className="text-slate-700">
-            {content.earlyDetection.text}{' '}
-            <span className={`font-semibold ${colors.textDark}`}>{content.earlyDetection.boldText}</span>{' '}
-            {content.earlyDetection.endText}
-          </p>
-        </InfoBox>
-
-        <div className={`${colors.accentLight} ${colors.border} border rounded-xl p-5 flex items-center gap-4`}>
-          <div className={`w-12 h-12 ${colors.accent} rounded-full flex items-center justify-center flex-shrink-0`}>
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+      {/* Content cards */}
+      <div className="space-y-4 mb-10">
+        {/* New technology */}
+        <div className={`${colors.accentLight} ${colors.border} border rounded-xl p-5`}>
+          <div className="flex items-start gap-4">
+            <div className={`w-10 h-10 ${colors.accent} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <p className={`font-semibold ${colors.textDark} mb-1`}>{content.newTech.title}</p>
+              <p className="text-slate-600">{content.newTech.description}</p>
+            </div>
           </div>
-          <div>
-            <p className={`font-semibold ${colors.textDark}`}>{content.leadTime.title}</p>
-            <p className="text-sm text-slate-600">
-              {content.leadTime.description}
-            </p>
+        </div>
+
+        {/* Good news */}
+        <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="font-semibold text-green-800 mb-1">{content.goodNews.title}</p>
+              <p className="text-slate-600">{content.goodNews.description}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* The problem */}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <p className="font-semibold text-amber-800 mb-1">{content.problem.title}</p>
+              <p className="text-slate-600">{content.problem.description}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Our solution */}
+        <div className="bg-slate-100 border border-slate-200 rounded-xl p-5">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="font-semibold text-slate-800 mb-1">{content.solution.title}</p>
+              <p className="text-slate-600">{content.solution.description}</p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* CTA */}
-      <button
-        onClick={onNext}
-        className={`px-8 py-4 ${colors.accent} ${colors.accentHover} text-white font-medium rounded-xl
-                   transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${colors.focus}`}
-      >
-        {content.buttonText}
-      </button>
+      <div className="text-center">
+        <button
+          onClick={onNext}
+          className={`px-8 py-4 ${colors.accent} ${colors.accentHover} text-white font-semibold rounded-xl text-lg
+                     transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${colors.focus}`}
+        >
+          {content.buttonText}
+        </button>
+        <p className="text-sm text-slate-500 mt-4 max-w-md mx-auto">
+          {content.disclaimer}
+        </p>
+      </div>
     </div>
   );
 }
@@ -1471,7 +1532,7 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         };
         
         return (
-          <div className="max-w-5xl mx-auto mb-8 px-4">
+          <div className="max-w-6xl mx-auto mb-8 px-4">
             {/* Featured tests (with badges) - 2 column grid */}
             {featuredTests.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -1761,8 +1822,8 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   // Render current step content
   const renderStepContent = () => {
     switch (WIZARD_STEPS[currentStep].id) {
-      case 'welcome':
-        return <WelcomeStep onNext={handleNext} />;
+      case 'landing':
+        return <LandingStep onNext={handleNext} />;
       case 'location':
         return (
           <LocationStep
@@ -1830,9 +1891,13 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
     }
   };
 
+  // Check if we're on landing page (don't show wizard chrome)
+  const isLanding = WIZARD_STEPS[currentStep]?.id === 'landing';
+
   return (
     <div className={`min-h-screen bg-gradient-to-b ${colors.bgGradient}`}>
-      {/* Header */}
+      {/* Header - hide on landing */}
+      {!isLanding && (
       <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-4 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           {/* Logo and title */}
@@ -1862,39 +1927,46 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
           </button>
         </div>
       </header>
+      )}
 
       {/* Main content */}
       <main
         ref={containerRef}
-        className="max-w-2xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
+        className={isLanding ? "px-4 sm:px-6 py-8 overflow-y-auto" : "max-w-2xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"}
       >
-        {/* Progress indicator */}
-        <ProgressIndicator currentStep={currentStep} totalSteps={WIZARD_STEPS.length} />
+        {/* Progress indicator - hide on landing */}
+        {!isLanding && <ProgressIndicator currentStep={currentStep} totalSteps={WIZARD_STEPS.length} />}
 
-        {/* Step dots navigation */}
+        {/* Step dots navigation - hide on landing */}
+        {!isLanding && (
         <StepDots
           steps={WIZARD_STEPS}
           currentStep={currentStep}
           onStepClick={handleStepClick}
         />
+        )}
 
-        {/* Current step badge */}
+        {/* Current step badge - hide on landing */}
+        {!isLanding && (
         <div className="text-center mb-6">
           <span className={`inline-block px-3 py-1 ${colors.accentLight} ${colors.text} rounded-full text-sm font-medium`}>
             {WIZARD_STEPS[currentStep].title}
           </span>
         </div>
+        )}
 
         {/* Step content */}
-        <div className="bg-slate-50 rounded-2xl p-4 sm:p-6 md:p-8">
+        <div className={isLanding ? "" : "bg-slate-50 rounded-2xl p-4 sm:p-6 md:p-8"}>
           {renderStepContent()}
         </div>
 
-        {/* Disclaimer */}
+        {/* Disclaimer - hide on landing (it has its own) */}
+        {!isLanding && (
         <p className="text-center text-xs text-slate-500 mt-8 px-4">
           This guide is for educational purposes only and does not constitute medical advice.
           Always consult with your healthcare team about your specific situation.
         </p>
+        )}
       </main>
     </div>
   );
