@@ -1389,19 +1389,16 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         {matchingTests.map((test) => (
           <div
             key={test.id}
-            className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden hover:border-emerald-300 hover:shadow-md transition-all"
+            className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden"
           >
-            {/* Clickable main area */}
-            <button
-              onClick={() => setSelectedTest(test)}
-              className="w-full text-left p-5 cursor-pointer group"
-            >
+            {/* Card content - non-clickable */}
+            <div className="p-5">
               {/* Comparative badges */}
               <ComparativeBadgeRow badges={test.comparativeBadges} />
 
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{test.name}</h3>
+                  <h3 className="font-semibold text-slate-900">{test.name}</h3>
                   <p className="text-sm text-slate-500">{test.vendor}</p>
                 </div>
                 {test.hasFinancialAssistance && (
@@ -1421,29 +1418,27 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                   {test.keyBenefit}
                 </div>
               )}
-              
-              {/* Tap hint */}
-              <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400 group-hover:text-emerald-600 transition-colors">
+            </div>
+            
+            {/* Two action buttons */}
+            <div className="px-5 pb-4 flex flex-col gap-2">
+              <button
+                onClick={() => setSelectedTest(test)}
+                className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+              >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Tap for personalized summary
-              </div>
-            </button>
-            
-            {/* View full details button */}
-            <div className="px-5 pb-4">
+                Get personalized summary
+              </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDetailTest(test);
-                }}
-                className="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                onClick={() => setDetailTest(test)}
+                className="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                 </svg>
-                View full test details
+                View technical details
               </button>
             </div>
           </div>
