@@ -1240,14 +1240,33 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
 
       // 3. Filter by tumor tissue availability
       if (wizardData.hasTumorTissue === 'no') {
-        // Only show tumor-naive tests
-        if (test.requiresTumorTissue === 'Yes' || test.approach?.toLowerCase().includes('tumor-informed')) {
-          // Check if test is strictly tumor-informed only
-          if (!test.approach?.toLowerCase().includes('tumor-naive')) {
-            return false;
-          }
+        // No tumor tissue: only show tumor-naive tests
+        const approach = test.approach?.toLowerCase() || '';
+        const isTumorInformed = approach.includes('tumor-informed');
+        // Handle both "naive" and "naïve" (with special i character)
+        const isTumorNaive = approach.includes('tumor-naive') || approach.includes('tumor-naïve');
+        
+        // Exclude if tumor-informed only (not also tumor-naive)
+        if (isTumorInformed && !isTumorNaive) {
+          return false;
+        }
+        // Also exclude if explicitly requires tumor tissue
+        if (test.requiresTumorTissue === 'Yes') {
+          return false;
+        }
+      } else if (wizardData.hasTumorTissue === 'yes') {
+        // Has tumor tissue: only show tumor-informed tests (they're more sensitive)
+        const approach = test.approach?.toLowerCase() || '';
+        const isTumorInformed = approach.includes('tumor-informed');
+        // Handle both "naive" and "naïve" (with special i character)
+        const isTumorNaive = approach.includes('tumor-naive') || approach.includes('tumor-naïve');
+        
+        // Exclude if tumor-naive only (not also tumor-informed)
+        if (isTumorNaive && !isTumorInformed) {
+          return false;
         }
       }
+      // If 'not-sure', show all tests
 
       // 4. Financial filtering logic
       if (wizardData.hasInsurance === true && wizardData.insuranceProvider) {

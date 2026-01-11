@@ -134,4 +134,72 @@ test.describe('Wizard Cancer Type Filtering', () => {
     const pageContent = await page.textContent('body');
     expect(pageContent.toLowerCase()).toContain('coverage');
   });
+
+  test('no tumor tissue excludes tumor-informed tests, shows tumor-naive', async ({ page }) => {
+    await page.getByRole('button', { name: /get started/i }).click();
+    await page.waitForTimeout(500);
+    
+    await page.getByRole('button', { name: /completed treatment/i }).click();
+    await page.waitForTimeout(700);
+    
+    await page.locator('select').first().selectOption('United States');
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.waitForTimeout(500);
+    
+    await page.getByRole('button', { name: 'Colorectal' }).click();
+    await page.waitForTimeout(500);
+    
+    // No tumor tissue - click the button containing "No / I don't think so"
+    await page.getByRole('button', { name: /No \/ I don't think so/i }).click();
+    await page.waitForTimeout(500);
+    
+    // Yes insurance + Medicare
+    await page.getByRole('button', { name: /^Yes$/i }).first().click();
+    await page.waitForTimeout(300);
+    await page.locator('select').selectOption('Medicare');
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.waitForTimeout(1500);
+    
+    const pageContent = await page.textContent('body');
+    
+    // Tumor-naive tests SHOULD appear
+    expect(pageContent).toContain('Reveal');
+    
+    // Tumor-informed only tests should NOT appear
+    expect(pageContent).not.toContain('Signatera');
+  });
+
+  test('has tumor tissue excludes tumor-naive tests, shows tumor-informed', async ({ page }) => {
+    await page.getByRole('button', { name: /get started/i }).click();
+    await page.waitForTimeout(500);
+    
+    await page.getByRole('button', { name: /completed treatment/i }).click();
+    await page.waitForTimeout(700);
+    
+    await page.locator('select').first().selectOption('United States');
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.waitForTimeout(500);
+    
+    await page.getByRole('button', { name: 'Colorectal' }).click();
+    await page.waitForTimeout(500);
+    
+    // Has tumor tissue - click the button containing "Yes, tissue was saved"
+    await page.getByRole('button', { name: /Yes, tissue was saved/i }).click();
+    await page.waitForTimeout(500);
+    
+    // Yes insurance + Medicare
+    await page.getByRole('button', { name: /^Yes$/i }).first().click();
+    await page.waitForTimeout(300);
+    await page.locator('select').selectOption('Medicare');
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.waitForTimeout(1500);
+    
+    const pageContent = await page.textContent('body');
+    
+    // Tumor-informed tests SHOULD appear
+    expect(pageContent).toContain('Signatera');
+    
+    // Tumor-naive only tests should NOT appear
+    expect(pageContent).not.toContain('Reveal');
+  });
 });
