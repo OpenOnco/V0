@@ -1377,8 +1377,15 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
 
       {/* Test cards - split into featured (with badges) and more tests (without badges) */}
       {(() => {
-        const featuredTests = matchingTests.filter(t => t.comparativeBadges?.length > 0);
-        const moreTests = matchingTests.filter(t => !t.comparativeBadges?.length);
+        // Only split into featured/more if we have more than 4 tests total
+        // Otherwise show all tests in the main grid
+        const shouldCollapse = matchingTests.length > 4;
+        const featuredTests = shouldCollapse 
+          ? matchingTests.filter(t => t.comparativeBadges?.length > 0)
+          : matchingTests;
+        const moreTests = shouldCollapse 
+          ? matchingTests.filter(t => !t.comparativeBadges?.length)
+          : [];
         
         // Helper to render a single test card
         const renderTestCard = (test) => {
