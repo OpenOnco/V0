@@ -6,15 +6,14 @@ import React, { useState, useRef, useEffect } from 'react';
  * Features:
  * - Floating bubble that expands into a chat panel
  * - Context-aware: knows what step the user is on
- * - Pre-loaded with MRD education, FAQ content, and wizard guidance
- * - Warm, patient-friendly tone
+ * - Brief, direct responses like a knowledgeable doctor
  */
 
 // Wizard step descriptions for AI context
 const STEP_CONTEXT = {
   'landing': {
     name: 'Introduction',
-    description: 'The patient is on the landing page learning about MRD testing for the first time.',
+    description: 'Learning about MRD testing',
     helpTopics: [
       'What is MRD testing?',
       'How does it detect cancer?',
@@ -23,16 +22,16 @@ const STEP_CONTEXT = {
   },
   'treatment-gate': {
     name: 'Treatment Status',
-    description: 'The patient is being asked if they have completed cancer treatment.',
+    description: 'Checking if treatment is complete',
     helpTopics: [
       'Why does treatment status matter?',
       'What if I\'m still in treatment?',
-      'What counts as "completed treatment"?'
+      'What counts as "completed"?'
     ]
   },
   'location': {
     name: 'Location',
-    description: 'The patient is selecting their country/region for test availability.',
+    description: 'Selecting region for test availability',
     helpTopics: [
       'Are tests available outside the US?',
       'Does location affect my options?'
@@ -40,43 +39,43 @@ const STEP_CONTEXT = {
   },
   'cancer-type': {
     name: 'Cancer Type',
-    description: 'The patient is selecting what type of cancer they were treated for.',
+    description: 'Selecting cancer type',
     helpTopics: [
-      'Does my cancer type affect which tests work?',
+      'Does my cancer type matter?',
       'What if I had multiple cancers?',
-      'What if I\'m not sure of my exact type?'
+      'Not sure of my exact type?'
     ]
   },
   'tumor-tissue': {
     name: 'Tumor Tissue',
-    description: 'The patient is being asked if tumor tissue was saved from their surgery/biopsy. This determines tumor-informed vs tumor-naive test eligibility.',
+    description: 'Checking if tumor tissue was saved',
     helpTopics: [
-      'What\'s the difference between tumor-informed and tumor-naive?',
+      'Tumor-informed vs tumor-naive?',
       'How do I find out if tissue was saved?',
       'What if I don\'t have tissue?'
     ]
   },
   'insurance': {
     name: 'Insurance & Coverage',
-    description: 'The patient is providing insurance information to help filter tests by coverage.',
+    description: 'Insurance information',
     helpTopics: [
-      'Will my insurance cover MRD testing?',
+      'Will insurance cover this?',
       'What if I don\'t have insurance?',
-      'Are there financial assistance programs?'
+      'Financial assistance programs?'
     ]
   },
   'results': {
     name: 'Test Results',
-    description: 'The patient is viewing MRD tests that match their situation.',
+    description: 'Viewing matching tests',
     helpTopics: [
-      'How do I choose between these tests?',
+      'How do I choose between tests?',
       'What do the badges mean?',
-      'What\'s sensitivity and specificity?'
+      'What\'s sensitivity?'
     ]
   },
   'next-steps': {
     name: 'Next Steps',
-    description: 'The patient has their results and is seeing how to talk to their oncologist.',
+    description: 'How to talk to your oncologist',
     helpTopics: [
       'How do I bring this up with my doctor?',
       'What questions should I ask?',
@@ -85,117 +84,47 @@ const STEP_CONTEXT = {
   }
 };
 
-// Build the comprehensive system prompt
+// Build concise system prompt - direct like a doctor
 function buildHelperSystemPrompt(currentStep, wizardData) {
   const stepInfo = STEP_CONTEXT[currentStep] || STEP_CONTEXT['landing'];
   
   // Build context about what the user has already selected
   const userSelections = [];
   if (wizardData.country) userSelections.push(`Location: ${wizardData.country}`);
-  if (wizardData.cancerType) userSelections.push(`Cancer type: ${wizardData.cancerType}`);
-  if (wizardData.hasTumorTissue) userSelections.push(`Tumor tissue available: ${wizardData.hasTumorTissue}`);
-  if (wizardData.completedTreatment) userSelections.push(`Completed treatment: ${wizardData.completedTreatment}`);
-  if (wizardData.hasInsurance !== undefined) userSelections.push(`Has insurance: ${wizardData.hasInsurance}`);
-  if (wizardData.insuranceProvider) userSelections.push(`Insurance provider: ${wizardData.insuranceProvider}`);
+  if (wizardData.cancerType) userSelections.push(`Cancer: ${wizardData.cancerType}`);
+  if (wizardData.hasTumorTissue) userSelections.push(`Tissue: ${wizardData.hasTumorTissue}`);
+  if (wizardData.completedTreatment) userSelections.push(`Treatment done: ${wizardData.completedTreatment}`);
+  if (wizardData.insuranceProvider) userSelections.push(`Insurance: ${wizardData.insuranceProvider}`);
   
-  return `You are a friendly, knowledgeable helper guiding a cancer patient through OpenOnco's MRD test finder wizard. You are warm, empathetic, and use simple language.
+  return `You help patients understand MRD testing. Be warm but BRIEF - 1-2 sentences max. Answer like a knowledgeable friend who happens to be a doctor: direct, clear, no fluff.
 
-**CURRENT WIZARD CONTEXT:**
-- Current step: ${stepInfo.name}
-- Step description: ${stepInfo.description}
-- Suggested help topics for this step: ${stepInfo.helpTopics.join(', ')}
-${userSelections.length > 0 ? `- User's selections so far: ${userSelections.join('; ')}` : '- User has not made any selections yet'}
+CONTEXT: Patient is on "${stepInfo.name}" step of the MRD test finder.
+${userSelections.length > 0 ? `Their info: ${userSelections.join(', ')}` : ''}
 
-**YOUR ROLE:**
-1. Answer questions about the current wizard step
-2. Explain MRD testing concepts in simple terms
-3. Help with decisions they're facing in the wizard
-4. Provide reassurance and emotional support
-5. Never give medical advice - always defer to their oncologist
+STYLE RULES:
+- 1-2 sentences. Period. No exceptions unless they ask for detail.
+- No bullet points, no lists, no headers
+- Don't repeat their question back
+- Don't say "Great question!" or similar filler
+- End with action or reassurance, not "let me know if you have questions"
 
-**MRD TESTING KNOWLEDGE BASE:**
+KEY FACTS (use when relevant):
+- MRD = blood test detecting cancer DNA, catches recurrence 6-15 months before scans
+- Tumor-informed (Signatera) = needs your tumor tissue, more sensitive
+- Tumor-naive (Guardant Reveal) = no tissue needed, still effective
+- Most tests covered by Medicare; all major vendors have financial assistance
+- Testing typically every 3-6 months; oncologist decides frequency
+- Positive result = early warning, not diagnosis; negative = reassuring but keep monitoring
 
-What is MRD Testing?
-MRD stands for "Minimal Residual Disease" or "Molecular Residual Disease." These are blood tests that can detect tiny traces of cancer DNA floating in your bloodstream - even when amounts are too small to see on a CT scan or PET scan. After cancer treatment, MRD tests help answer the question: "Did we get it all?"
+STEP-SPECIFIC:
+- Treatment step: MRD is for post-treatment surveillance. Still in treatment → different tests exist.
+- Tissue step: Ask your oncologist if tissue was saved. No tissue → tumor-naive tests work fine.
+- Insurance step: Financial assistance exists even without insurance. Cost shouldn't stop the conversation.
+- Results step: Your oncologist picks the final test. Badges show relative strengths.
 
-How MRD Tests Work:
-- Your blood contains tiny fragments of DNA from cells throughout your body
-- If cancer cells are present (even microscopic amounts), they release DNA fragments too
-- MRD tests look for these cancer-specific DNA fragments
-- They can detect cancer at levels 100-1000x smaller than imaging can see
+NEVER: recommend specific tests, give medical advice, interpret symptoms, make outcome claims.
 
-Why This Matters:
-- MRD tests can detect cancer recurrence 6-15 months BEFORE a CT or PET scan would show anything
-- A negative MRD result gives peace of mind that treatment worked
-- A positive result lets your oncologist act early, when options are best
-- It's just a simple blood draw - no radiation, no invasive procedures
-
-Tumor-Informed vs Tumor-Naive Tests:
-- **Tumor-informed tests** (like Signatera): First analyze your original tumor tissue to find YOUR cancer's unique DNA "fingerprint," then look for that exact fingerprint in your blood. More sensitive, but requires saved tumor tissue.
-- **Tumor-naive tests** (like Guardant Reveal): Look for common cancer signals without needing tumor tissue. Good option if tissue wasn't saved or isn't available.
-
-Common Patient Questions:
-
-Q: Is MRD testing right for me?
-A: MRD testing is designed for people who have completed curative-intent treatment (surgery, chemo, radiation) and are now in the surveillance/monitoring phase. If you're still in active treatment or have advanced/metastatic cancer, different tests may be more appropriate. Your oncologist can help determine if MRD testing fits your situation.
-
-Q: Will insurance cover this?
-A: Coverage varies by test and insurance plan. Medicare covers several MRD tests. Most major private insurers are starting to cover them too. Many test companies also have financial assistance programs - Natera offers payment plans from $25/month, Foundation Medicine has programs where qualifying patients pay $100 maximum, and others have similar programs.
-
-Q: What if I don't have tumor tissue saved?
-A: You can still get tested! Tumor-naive tests like Guardant Reveal don't require tissue. They're slightly less sensitive but still very effective. Also, your hospital may have saved tissue without you knowing - ask your oncologist to check.
-
-Q: How often should I test?
-A: This varies by cancer type and your doctor's recommendation. Common schedules are every 3-6 months during active surveillance. Your oncologist will determine the right frequency for your situation.
-
-Q: What does a positive result mean?
-A: A positive MRD result means the test detected some cancer DNA in your blood. This doesn't necessarily mean cancer is back or visible anywhere - it's an early warning that warrants closer monitoring and discussion with your oncologist about next steps.
-
-Q: What does a negative result mean?
-A: A negative result means no cancer DNA was detected. This is reassuring! However, no test is 100% perfect, so continued monitoring with your oncologist is still important.
-
-Q: How accurate are these tests?
-A: Modern MRD tests are very accurate - typically 90-100% specificity (meaning very few false positives) and sensitivity varies by test and tumor burden. The "Highest Sensitivity" badge indicates tests with the best detection capabilities.
-
-**WIZARD-SPECIFIC GUIDANCE:**
-
-For the Treatment Gate step:
-- MRD testing is specifically for post-treatment surveillance
-- If someone hasn't completed treatment, explain they may want to look at Treatment Response Monitoring (TRM) tests instead
-- "Completed treatment" includes surgery, chemotherapy, radiation, or combination - they should be in the monitoring/surveillance phase
-
-For the Tumor Tissue step:
-- This is about whether tissue was SAVED, not whether they had surgery
-- Tissue is typically saved during surgery or biopsy - they can ask their oncologist
-- If unsure, recommend they ask their medical team before deciding
-- Not having tissue doesn't disqualify them - there are tumor-naive options
-
-For the Insurance step:
-- Almost all tests have financial assistance programs
-- Even uninsured patients have options
-- Cost shouldn't prevent them from discussing MRD testing with their doctor
-
-For the Results step:
-- Help explain what the badges mean (Highest Sensitivity, Fastest Results, etc.)
-- Explain the difference between tests shown
-- Remind them their oncologist will help choose the right one
-
-**COMMUNICATION STYLE:**
-- Use "you" and speak directly to them
-- Keep responses to 2-4 sentences unless they ask for more detail
-- Use simple language, avoid medical jargon
-- Be warm and reassuring - this is an anxious time for patients
-- Always end by reinforcing that their oncologist can help with specific decisions
-- Use emoji sparingly (one per response max) to add warmth
-
-**THINGS TO NEVER DO:**
-- Never recommend a specific test over another
-- Never give dosing, treatment, or medical advice
-- Never diagnose or interpret symptoms
-- Never make claims about outcomes or survival
-- Never discourage them from talking to their doctor
-
-Remember: You're a guide and educator, not a medical advisor. Your job is to help them understand their options so they can have an informed conversation with their oncologist.`;
+Be direct. Be helpful. Be brief.`;
 }
 
 export default function WizardAIHelper({ currentStep, wizardData }) {
@@ -239,14 +168,13 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
         body: JSON.stringify({
           category: 'MRD',
           persona: 'patient',
-          testData: '[]', // Not needed for helper
+          testData: '[]',
           messages: [...messages, userMessage].map(m => ({
             role: m.role,
             content: m.content
           })),
           model: 'claude-haiku-4-5-20251001',
           patientChatMode: 'wizard-helper',
-          // Pass wizard context through a custom field that the API can use
           wizardHelperPrompt: buildHelperSystemPrompt(currentStep, wizardData)
         }),
       });
@@ -336,10 +264,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
                 {/* Welcome message */}
                 <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100">
                   <p className="text-slate-700 text-sm">
-                    Hi! 👋 I'm here to help you through this guide. You're on the <strong>{stepInfo.name}</strong> step.
-                  </p>
-                  <p className="text-slate-600 text-sm mt-2">
-                    Ask me anything about MRD testing, or tap a question below:
+                    👋 Quick questions about MRD testing? I'm here to help.
                   </p>
                 </div>
 
