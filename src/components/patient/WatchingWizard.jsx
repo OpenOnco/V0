@@ -724,8 +724,24 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
     return type?.label || 'your cancer type';
   };
 
+  // Check if a test has financial assistance programs
+  const checkFinancialAssistance = (test) => {
+    const reimbursement = (test.reimbursement || '').toLowerCase();
+    const reimbursementNote = (test.reimbursementNote || '').toLowerCase();
+    const combined = reimbursement + ' ' + reimbursementNote;
+    
+    return (
+      combined.includes('$0') ||
+      combined.includes('financial assist') ||
+      combined.includes('patient assist') ||
+      combined.includes('copay assist') ||
+      combined.includes('no out-of-pocket') ||
+      combined.includes('compassionate') ||
+      combined.includes('indigent')
+    );
+  };
+
   // Filter and match tests based on wizard data
-  // For now, show placeholder cards. In production, filter testData based on wizardData
   const getMatchingTests = () => {
     // If testData is provided and has items, filter it
     if (testData && testData.length > 0) {
@@ -742,7 +758,11 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
           // 'not-sure' shows all
           return true;
         })
-        .slice(0, 5); // Limit to 5 results
+        .slice(0, 5) // Limit to 5 results
+        .map(test => ({
+          ...test,
+          hasFinancialAssistance: checkFinancialAssistance(test),
+        }));
     }
 
     // Placeholder results when no testData provided
@@ -814,9 +834,9 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                 <h3 className="font-semibold text-slate-900">{test.name}</h3>
                 <p className="text-sm text-slate-500">{test.vendor}</p>
               </div>
-              {test.hasFinancialAssistance && showFinancialNote && (
+              {test.hasFinancialAssistance && (
                 <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
-                  💵 Financial aid
+                  💵 Assistance available
                 </span>
               )}
             </div>
