@@ -12,7 +12,7 @@ import {
   isTestCoveredByInsurance,
   isTestAvailableInRegion,
 } from '../../data';
-import { getVendorAvailabilityUS, getAvailabilityLabel } from '../../config/vendors';
+import { getVendorAvailabilityUS } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
 
 // ============================================================================
@@ -1319,8 +1319,13 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
     return reasons.length > 0 ? reasons.join(' • ') : null;
   };
 
-  // Apply comparative badges to the matching tests
-  const matchingTests = calculateComparativeBadges(getMatchingTests(), 'mrd');
+  // Apply comparative badges to the matching tests, then sort by badge count (more badges = higher)
+  const matchingTests = calculateComparativeBadges(getMatchingTests(), 'mrd')
+    .sort((a, b) => {
+      const aBadges = a.comparativeBadges?.length || 0;
+      const bBadges = b.comparativeBadges?.length || 0;
+      return bBadges - aBadges; // Higher badge count first
+    });
   const showFinancialNote = wizardData.costSensitivity === 'cost-sensitive' || wizardData.hasInsurance === false;
   const showInsuranceCoverageNote = wizardData.hasInsurance === true && wizardData.insuranceProvider && wizardData.insuranceProvider !== 'other';
 
@@ -1396,10 +1401,10 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
             wizardData.costSensitivity === 'cost-sensitive'
           );
           
-          // Get availability tier for US users
+          // Get availability tier for US users - only show badge if widely available
           const isUSUser = wizardData.country === 'United States';
           const availabilityTier = isUSUser ? getVendorAvailabilityUS(test.vendor) : null;
-          const availabilityLabel = availabilityTier ? getAvailabilityLabel(availabilityTier) : null;
+          const isWidelyAvailable = availabilityTier === 'widespread';
           
           return (
           <div
@@ -1422,15 +1427,9 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                       💵 Assistance available
                     </span>
                   )}
-                  {isUSUser && availabilityTier && availabilityTier !== 'unknown' && (
-                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                      availabilityTier === 'widespread' 
-                        ? 'bg-emerald-50 text-emerald-700' 
-                        : availabilityTier === 'moderate'
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'bg-amber-50 text-amber-700'
-                    }`}>
-                      {availabilityLabel}
+                  {isWidelyAvailable && (
+                    <span className="text-xs font-medium px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">
+                      Widely Available
                     </span>
                   )}
                 </div>
