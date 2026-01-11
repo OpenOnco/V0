@@ -92,9 +92,7 @@ import ProductTypeBadge from './components/badges/ProductTypeBadge';
 import Markdown from './components/markdown/Markdown';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
 import PatientIntakeFlow from './components/patient/PatientIntakeFlow';
-import PatientLanding from './components/patient/PatientLanding';
 import WatchingWizard from './components/patient/WatchingWizard';
-import ScreeningWizard from './components/patient/ScreeningWizard';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
 import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
@@ -1477,9 +1475,18 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        // Show PatientLanding when patient persona is active
+        // Patient persona goes directly to MRD WatchingWizard
         if (persona === 'patient') {
-          return <PatientLanding onNavigate={handleNavigate} />;
+          return (
+            <WatchingWizard
+              onNavigate={handleNavigate}
+              onBack={null}  // No back button on home
+              onComplete={(results) => {
+                console.log('WatchingWizard completed:', results);
+              }}
+              testData={mrdTestData}
+            />
+          );
         }
         return <HomePage onNavigate={handleNavigate} persona={persona} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
@@ -1490,30 +1497,16 @@ export default function App() {
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
-      // Patient landing page - simple 2-card navigation (Screening vs Watching)
-      case 'patient-landing': return (
-        <PatientLanding onNavigate={handleNavigate} />
-      );
-      // Patient journey routes
+      // Patient journey routes (keep for direct navigation)
+      case 'patient-landing': 
       case 'patient-watching': return (
         <WatchingWizard
           onNavigate={handleNavigate}
-          onBack={() => handleNavigate('patient-landing')}
+          onBack={null}
           onComplete={(results) => {
             console.log('WatchingWizard completed:', results);
-            handleNavigate('patient-landing');
           }}
           testData={mrdTestData}
-        />
-      );
-      case 'patient-screening': return (
-        <ScreeningWizard
-          onNavigate={handleNavigate}
-          onBack={() => handleNavigate('patient-landing')}
-          onComplete={(results) => {
-            console.log('ScreeningWizard completed:', results);
-            handleNavigate('patient-landing');
-          }}
         />
       );
       case 'patient-choosing': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Choosing Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;

@@ -984,16 +984,15 @@ test.describe('Persona System', () => {
   });
 
   test('patient homepage shows patient-specific elements', async ({ page }) => {
-    // Access patient view via new V2 landing page
+    // Access patient view - now goes directly to MRD WatchingWizard
     await page.goto('/patient');
     await page.waitForTimeout(2000);
     
-    // Should see patient landing page elements
-    await expect(page.getByText('Find the Right Blood Test')).toBeVisible({ timeout: 10000 });
+    // Should see WatchingWizard welcome page elements
+    await expect(page.getByText("Confirming You're Cancer-Free")).toBeVisible({ timeout: 10000 });
     
-    // Should see the two main pathway cards
-    await expect(page.getByText('Early Detection')).toBeVisible();
-    await expect(page.getByText('After Treatment')).toBeVisible();
+    // Should see the Get Started button
+    await expect(page.getByRole('button', { name: /get started/i })).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -1010,25 +1009,20 @@ test.describe('Persona System', () => {
   });
 
   test('patient intake flow works end-to-end', async ({ page }) => {
-    // Access patient view via new V2 landing - test the watching wizard flow
+    // Access patient view - goes directly to MRD WatchingWizard
     await page.goto('/patient');
     await page.waitForTimeout(1000);
     
-    // Click "After Treatment" card to go to MRD wizard
-    await page.getByText('After Treatment').click();
-    await page.waitForTimeout(1000);
-    
-    // Should be on the watching wizard
+    // Should already be on the watching wizard welcome page
     await expect(page.getByText("Confirming You're Cancer-Free")).toBeVisible({ timeout: 5000 });
     
     // Click "Let's get started" button to proceed through wizard
-    await page.getByRole('button', { name: "Let's get started" }).click();
+    await page.getByRole('button', { name: /get started/i }).click();
     await page.waitForTimeout(500);
     
-    // Should see cancer type selection step - look for the heading or cancer type options
-    const cancerTypeHeading = await page.getByText('What cancer were you treated for?').isVisible().catch(() => false);
-    const colorectalOption = await page.getByText('Colorectal').isVisible().catch(() => false);
-    expect(cancerTypeHeading || colorectalOption).toBeTruthy();
+    // Should see the treatment status question
+    const treatmentQuestion = await page.getByText(/completed treatment/i).isVisible().catch(() => false);
+    expect(treatmentQuestion).toBeTruthy();
   });
 
   test('persona switcher in header works', async ({ page }) => {
