@@ -934,6 +934,9 @@ function TestSummaryModal({ test, wizardData, onClose }) {
         comparativeBadges: test.comparativeBadges?.map(b => b.label),
       };
 
+      // Check if vendor is widely available
+      const isWidelyAvailable = getVendorAvailabilityUS(test.vendor) === 'widespread';
+
       const wizardContext = {
         cancerType: getCancerLabel(wizardData.cancerType),
         hasTumorTissue: wizardData.hasTumorTissue,
@@ -943,6 +946,15 @@ function TestSummaryModal({ test, wizardData, onClose }) {
       };
 
       const assistanceDetails = getAssistanceDetails(test.vendor);
+
+      // Build standout qualities list
+      const standoutQualities = [];
+      if (test.comparativeBadges?.length > 0) {
+        standoutQualities.push(...test.comparativeBadges.map(b => b.label));
+      }
+      if (isWidelyAvailable) {
+        standoutQualities.push('Widely Available (any oncologist can order through major lab networks)');
+      }
 
       const promptMessage = `You're helping a patient understand an MRD test that matched their situation. Write a clear, warm 3-4 paragraph summary.
 
@@ -957,10 +969,12 @@ ${JSON.stringify(testInfo, null, 2)}
 
 ${assistanceDetails ? `FINANCIAL ASSISTANCE: ${assistanceDetails}` : ''}
 
+${standoutQualities.length > 0 ? `STANDOUT QUALITIES (mention these as wins!): ${standoutQualities.join(', ')}` : ''}
+
 Write the summary with these sections (use plain language, no medical jargon):
 1. **What this test does** - Explain in simple terms what ${test.name} does and how it works
 2. **Why it matched your situation** - Connect specific test features to the patient's answers (tumor tissue availability, cancer type, etc.)
-3. **Key benefits** - Highlight the test's strengths${test.comparativeBadges?.length > 0 ? ' (it has these standout qualities: ' + test.comparativeBadges.map(b => b.label).join(', ') + ')' : ''}
+3. **Key benefits** - Highlight the test's strengths${standoutQualities.length > 0 ? '. IMPORTANT: Explicitly mention these standout qualities as wins: ' + standoutQualities.join(', ') : ''}
 ${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `4. **Financial help available** - Briefly mention that financial assistance is available (we will show a link separately)` : ''}
 
 End with a reminder that their oncologist can help them decide if this test is right for them.`;
