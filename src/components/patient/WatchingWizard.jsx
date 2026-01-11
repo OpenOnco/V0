@@ -468,39 +468,21 @@ function TumorTissueStep({ wizardData, setWizardData, onNext, onBack }) {
         {content.description}
       </p>
 
-      {/* Educational panel */}
+      {/* Educational panel - text only, no button-like elements */}
       <div className="max-w-lg mx-auto mb-8">
         <InfoBox>
           <h3 className={`font-semibold ${colors.textDark} mb-3`}>{content.educationHeading}</h3>
 
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <div className={`w-8 h-8 ${colors.accent} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-medium text-slate-900">{content.tumorInformed.title}</p>
-                <p className="text-sm text-slate-600">
-                  {content.tumorInformed.description}
-                </p>
-              </div>
-            </div>
+          <div className="space-y-3 text-sm">
+            <p className="text-slate-700">
+              <span className="font-semibold text-slate-900">{content.tumorInformed.title}:</span>{' '}
+              {content.tumorInformed.description}
+            </p>
 
-            <div className="flex gap-3">
-              <div className="w-8 h-8 bg-slate-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-medium text-slate-900">{content.tumorNaive.title}</p>
-                <p className="text-sm text-slate-600">
-                  {content.tumorNaive.description}
-                </p>
-              </div>
-            </div>
+            <p className="text-slate-700">
+              <span className="font-semibold text-slate-900">{content.tumorNaive.title}:</span>{' '}
+              {content.tumorNaive.description}
+            </p>
           </div>
         </InfoBox>
       </div>
