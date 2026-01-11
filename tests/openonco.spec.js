@@ -992,7 +992,7 @@ test.describe('Persona System', () => {
     await expect(page.getByText(/finished cancer treatment/i)).toBeVisible({ timeout: 10000 });
     
     // Should see the CTA button
-    await expect(page.getByRole('button', { name: /find tests to discuss/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /explore mrd testing/i })).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
