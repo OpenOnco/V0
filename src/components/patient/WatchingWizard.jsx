@@ -21,13 +21,13 @@ import TestDetailModal from '../test/TestDetailModal';
 // Get MRD/Watching journey configuration for colors and label
 const watchingJourney = JOURNEY_CONFIG.mrd;
 
-// Wizard steps - updated flow
+// Wizard steps - treatment gate first to exit early if not a fit
 const WIZARD_STEPS = [
   { id: 'welcome', title: 'Welcome', description: 'Learn about MRD testing' },
+  { id: 'treatment-gate', title: 'Treatment', description: 'Have you completed treatment?' },
   { id: 'location', title: 'Location', description: 'Where are you located?' },
   { id: 'cancer-type', title: 'Cancer Type', description: 'What cancer were you treated for?' },
   { id: 'tumor-tissue', title: 'Tumor Tissue', description: 'Was tumor tissue saved?' },
-  { id: 'treatment-gate', title: 'Treatment', description: 'Have you completed treatment?' },
   { id: 'insurance', title: 'Coverage', description: 'Insurance and costs' },
   { id: 'results', title: 'Results', description: 'Tests that match your situation' },
   { id: 'next-steps', title: 'Next Steps', description: 'What to do now' },
