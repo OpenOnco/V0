@@ -1147,10 +1147,14 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
 
   // Check if test matches cancer type
   const matchesCancerType = (test, cancerType) => {
+    // If user didn't select a cancer type or isn't sure, show all tests
     if (!cancerType || cancerType === 'not-sure') return true;
-    if (!test.cancerTypes || test.cancerTypes.length === 0) return true;
+    
+    // If test has no cancer types defined, we can't match - be conservative and exclude
+    if (!test.cancerTypes || test.cancerTypes.length === 0) return false;
     
     // Map wizard cancer types to data.js cancer type values
+    // Breast cancer is a SOLID TUMOR, not a blood cancer
     const cancerTypeMap = {
       'colorectal': ['Colorectal', 'CRC', 'Colon'],
       'breast': ['Breast'],
@@ -1160,20 +1164,53 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
       'prostate': ['Prostate'],
       'pancreatic': ['Pancreatic'],
       'melanoma': ['Melanoma'],
-      'multiple-myeloma': ['Multiple Myeloma', 'MM'],
-      'lymphoma': ['Lymphoma', 'DLBCL', 'B-cell'],
-      'other-solid': ['Multi-solid', 'Solid tumor', 'Pan-cancer'],
+      'multiple-myeloma': ['Multiple Myeloma', 'MM', 'Myeloma'],
+      'lymphoma': ['Lymphoma', 'DLBCL', 'B-cell', 'Hodgkin', 'NHL'],
+      'other-solid': [], // Will only match multi-solid tests
     };
     
-    const searchTerms = cancerTypeMap[cancerType] || [];
+    // Blood/hematologic cancers - these should NOT match solid tumors
+    const bloodCancers = ['multiple-myeloma', 'lymphoma'];
+    const solidTumorCancers = ['colorectal', 'breast', 'lung', 'bladder', 'ovarian', 'prostate', 'pancreatic', 'melanoma', 'other-solid'];
     
-    // Check if any cancer type matches, or if test is multi-cancer
+    const searchTerms = cancerTypeMap[cancerType] || [];
+    const isBloodCancer = bloodCancers.includes(cancerType);
+    const isSolidTumor = solidTumorCancers.includes(cancerType);
+    
+    // Check if any cancer type matches
     return test.cancerTypes.some(ct => {
       const ctLower = ct.toLowerCase();
-      // Multi-cancer tests match everything
-      if (ctLower.includes('multi') || ctLower.includes('pan-') || ctLower.includes('solid tumor')) {
+      
+      // Blood cancer indicators - tests for these should NOT match solid tumors
+      const isBloodTest = ctLower.includes('myeloma') || 
+                          ctLower.includes('leukemia') || 
+                          ctLower.includes('lymphoma') ||
+                          ctLower.includes('all') ||
+                          ctLower.includes('cll') ||
+                          ctLower.includes('b-all') ||
+                          ctLower.includes('aml') ||
+                          ctLower.includes('hematologic');
+      
+      // If user has a solid tumor but test is for blood cancers, don't match
+      if (isSolidTumor && isBloodTest) {
+        return false;
+      }
+      
+      // If user has blood cancer but test is specifically for solid tumors only, don't match
+      if (isBloodCancer && (ctLower === 'solid tumor' || ctLower === 'all solid tumors')) {
+        return false;
+      }
+      
+      // Multi-cancer/pan-cancer solid tumor tests match solid tumors
+      if (isSolidTumor && (ctLower.includes('multi-solid') || ctLower.includes('pan-cancer') || ctLower === 'solid tumor' || ctLower === 'all solid tumors')) {
         return true;
       }
+      
+      // Multi-solid specifically for 'other-solid' selection
+      if (cancerType === 'other-solid' && (ctLower.includes('multi') || ctLower.includes('pan-') || ctLower.includes('solid'))) {
+        return true;
+      }
+      
       // Check specific matches
       return searchTerms.some(term => ctLower.includes(term.toLowerCase()));
     });
