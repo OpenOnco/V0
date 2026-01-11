@@ -532,6 +532,152 @@ export const VENDOR_VERIFIED = {
 };
 
 // ============================================
+// INSURANCE PROVIDERS
+// Master list of insurance providers for wizard dropdowns
+// When adding a new test with commercialPayers, add any new providers here
+// Categories: government (Medicare, Medicaid, VA), major national, regional
+// ============================================
+export const INSURANCE_PROVIDERS = {
+  // Government programs
+  government: [
+    { id: 'medicare', label: 'Medicare', description: 'Federal program for 65+' },
+    { id: 'medicaid', label: 'Medicaid', description: 'State-based assistance program' },
+    { id: 'va', label: 'VA / TRICARE', description: 'Veterans and military' },
+  ],
+  // Major national commercial payers (alphabetical)
+  national: [
+    { id: 'aetna', label: 'Aetna' },
+    { id: 'anthem-bcbs', label: 'Anthem / BCBS' },
+    { id: 'cigna', label: 'Cigna' },
+    { id: 'humana', label: 'Humana' },
+    { id: 'kaiser', label: 'Kaiser Permanente' },
+    { id: 'united', label: 'UnitedHealthcare' },
+  ],
+  // Regional payers with known coverage (alphabetical)
+  regional: [
+    { id: 'bcbs-louisiana', label: 'BCBS Louisiana' },
+    { id: 'blue-shield-ca', label: 'Blue Shield of California' },
+    { id: 'geisinger', label: 'Geisinger Health Plan' },
+    { id: 'highmark', label: 'Highmark' },
+  ],
+};
+
+// Flat list of all insurance providers for easy lookup
+export const ALL_INSURANCE_PROVIDERS = [
+  ...INSURANCE_PROVIDERS.government,
+  ...INSURANCE_PROVIDERS.national,
+  ...INSURANCE_PROVIDERS.regional,
+  { id: 'other', label: 'Other insurance', description: 'Not listed above' },
+];
+
+// Map from commercialPayers array values to our provider IDs
+// Used to match test coverage to user's selected insurance
+export const PAYER_NAME_TO_ID = {
+  'Medicare': 'medicare',
+  'Medicaid': 'medicaid',
+  'VA': 'va',
+  'TRICARE': 'va',
+  'Aetna': 'aetna',
+  'Anthem BCBS': 'anthem-bcbs',
+  'BCBS': 'anthem-bcbs',
+  'Cigna': 'cigna',
+  'Humana': 'humana',
+  'Kaiser': 'kaiser',
+  'Kaiser Permanente': 'kaiser',
+  'UnitedHealthcare': 'united',
+  'BCBS Louisiana': 'bcbs-louisiana',
+  'Blue Shield of California': 'blue-shield-ca',
+  'Geisinger Health Plan': 'geisinger',
+  'Highmark': 'highmark',
+};
+
+// Helper: Check if a test is covered by a specific insurance provider ID
+export const isTestCoveredByInsurance = (test, insuranceId) => {
+  if (!insuranceId || insuranceId === 'other') return true; // Can't filter on "other"
+  
+  // Check Medicare in reimbursement field
+  if (insuranceId === 'medicare') {
+    return test.reimbursement?.toLowerCase().includes('medicare');
+  }
+  
+  // Check Medicaid in reimbursement field
+  if (insuranceId === 'medicaid') {
+    return test.reimbursement?.toLowerCase().includes('medicaid');
+  }
+  
+  // Check VA/TRICARE
+  if (insuranceId === 'va') {
+    return test.reimbursement?.toLowerCase().includes('va') || 
+           test.reimbursement?.toLowerCase().includes('tricare');
+  }
+  
+  // Check commercialPayers array for commercial insurance
+  if (test.commercialPayers && Array.isArray(test.commercialPayers)) {
+    return test.commercialPayers.some(payer => {
+      const payerId = PAYER_NAME_TO_ID[payer];
+      return payerId === insuranceId;
+    });
+  }
+  
+  return false;
+};
+
+// ============================================
+// AVAILABLE REGIONS
+// Master list of regions/countries for location filtering
+// ============================================
+export const AVAILABLE_REGIONS = [
+  { id: 'US', label: 'United States' },
+  { id: 'EU', label: 'European Union' },
+  { id: 'UK', label: 'United Kingdom' },
+  { id: 'Canada', label: 'Canada' },
+  { id: 'Australia', label: 'Australia' },
+  { id: 'Japan', label: 'Japan' },
+  { id: 'China', label: 'China' },
+  { id: 'South Korea', label: 'South Korea' },
+  { id: 'Singapore', label: 'Singapore' },
+  { id: 'Israel', label: 'Israel' },
+  { id: 'Germany', label: 'Germany' },
+  { id: 'International', label: 'Other / International' },
+];
+
+// US States for granular US location
+export const US_STATES = [
+  { id: 'AL', label: 'Alabama' }, { id: 'AK', label: 'Alaska' }, { id: 'AZ', label: 'Arizona' },
+  { id: 'AR', label: 'Arkansas' }, { id: 'CA', label: 'California' }, { id: 'CO', label: 'Colorado' },
+  { id: 'CT', label: 'Connecticut' }, { id: 'DE', label: 'Delaware' }, { id: 'FL', label: 'Florida' },
+  { id: 'GA', label: 'Georgia' }, { id: 'HI', label: 'Hawaii' }, { id: 'ID', label: 'Idaho' },
+  { id: 'IL', label: 'Illinois' }, { id: 'IN', label: 'Indiana' }, { id: 'IA', label: 'Iowa' },
+  { id: 'KS', label: 'Kansas' }, { id: 'KY', label: 'Kentucky' }, { id: 'LA', label: 'Louisiana' },
+  { id: 'ME', label: 'Maine' }, { id: 'MD', label: 'Maryland' }, { id: 'MA', label: 'Massachusetts' },
+  { id: 'MI', label: 'Michigan' }, { id: 'MN', label: 'Minnesota' }, { id: 'MS', label: 'Mississippi' },
+  { id: 'MO', label: 'Missouri' }, { id: 'MT', label: 'Montana' }, { id: 'NE', label: 'Nebraska' },
+  { id: 'NV', label: 'Nevada' }, { id: 'NH', label: 'New Hampshire' }, { id: 'NJ', label: 'New Jersey' },
+  { id: 'NM', label: 'New Mexico' }, { id: 'NY', label: 'New York' }, { id: 'NC', label: 'North Carolina' },
+  { id: 'ND', label: 'North Dakota' }, { id: 'OH', label: 'Ohio' }, { id: 'OK', label: 'Oklahoma' },
+  { id: 'OR', label: 'Oregon' }, { id: 'PA', label: 'Pennsylvania' }, { id: 'RI', label: 'Rhode Island' },
+  { id: 'SC', label: 'South Carolina' }, { id: 'SD', label: 'South Dakota' }, { id: 'TN', label: 'Tennessee' },
+  { id: 'TX', label: 'Texas' }, { id: 'UT', label: 'Utah' }, { id: 'VT', label: 'Vermont' },
+  { id: 'VA', label: 'Virginia' }, { id: 'WA', label: 'Washington' }, { id: 'WV', label: 'West Virginia' },
+  { id: 'WI', label: 'Wisconsin' }, { id: 'WY', label: 'Wyoming' }, { id: 'DC', label: 'Washington D.C.' },
+];
+
+// Helper: Check if a test is available in a region
+export const isTestAvailableInRegion = (test, regionId) => {
+  if (!regionId || regionId === 'International') return true;
+  if (!test.availableRegions || test.availableRegions.length === 0) return true; // Assume available if not specified
+  
+  // Check if region is in availableRegions array
+  return test.availableRegions.some(region => {
+    if (region === regionId) return true;
+    if (region === 'International') return true;
+    // Handle "EU" matching "Germany" etc.
+    if (regionId === 'Germany' && region === 'EU') return true;
+    return false;
+  });
+};
+
+// ============================================
 // VENDOR PATIENT ASSISTANCE PROGRAMS
 // Source: Web research, verified 2026-01-07
 // Programs change frequently - verify with vendor before relying on them
@@ -3568,17 +3714,17 @@ export const ecdTestData = [
     "targetPopulation": "Adults with cirrhosis; chronic HBV; high-risk for HCC requiring surveillance",
     "indicationGroup": "Liver",
     "sensitivity": 77.0,
-    "sensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
-    "sensitivityNotes": "ALTUS prospective study (n=3,000+): 77% early-stage (Milan criteria), 64% very early-stage. Earlier Phase II case-control data showed 88%/82% but prospective real-world performance is lower.",
+    "sensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553); https://exactsciences.com/press-releases/",
+    "sensitivityNotes": "ALTUS prospective study (n=3,000+): 77% early-stage HCC (Milan criteria), 64% very early-stage. Earlier Phase II case-control (PMID 34419598) reported 88%/82%; prospective real-world performance is lower but still ~2× ultrasound.",
     "stageISensitivity": 64.0,
     "stageISensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
-    "stageISensitivityNotes": "64% very early-stage sensitivity; 77% early-stage (Milan criteria). ALTUS: 64% very early vs 9% ultrasound; 77% early vs 36% ultrasound (2-7× improvement).",
+    "stageISensitivityNotes": "64% very early-stage HCC (vs 9% for ultrasround - 7× improvement); 77% for Milan criteria early-stage (vs 36% for ultrasound)",
     "specificity": 82.0,
     "specificityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
-    "specificityNotes": "ALTUS prospective: 82% specificity. Phase II case-control reported 87%.",
+    "specificityNotes": "82% specificity in ALTUS (vs 87% in Phase II case-control). Trade-off for higher real-world sensitivity. Ultrasound alone: 98.6% specificity.",
     "ppv": 37.5,
     "ppvCitations": "Oncoguard Liver FAQ; Exact Sciences clinical data",
-    "ppvNotes": "PPV ~35-40% estimated based on ALTUS sensitivity (77%) and specificity (82%) in high-risk HCC surveillance population.",
+    "ppvNotes": "PPV 35-40% in high-risk HCC surveillance population. Moderate PPV reflects balance of sensitivity (77%) with specificity (82%) in cirrhotic patients.",
     "ppvDefinition": "PPV for HCC in high-risk surveillance population (ALTUS / validation cohorts)",
     "npv": 98.5,
     "npvCitations": "Oncoguard Liver FAQ; Exact Sciences clinical data",
@@ -7385,32 +7531,29 @@ export const hctTestData = [
     "vendor": "Allelica",
     "productType": "Central Lab Service",
     "sampleCategory": "Saliva",
-    "sampleType": "Non-invasive saliva collection kit",
-    "method": "Clinical exome sequencing (NCCN v1.2026 + ACMG Secondary Findings v3.3 genes) plus multi-ancestry validated polygenic risk scores (PRS)",
-    "methodCitations": "https://www.allelica.com/absolutedx",
-    "sequencingPlatform": "Clinical exome sequencing",
-    "genesAnalyzed": "NCCN v1.2026 + ACMG SF v3.3 genes",
-    "genesAnalyzedCitations": "https://www.allelica.com/absolutedx",
+    "sampleType": "Saliva (non-invasive collection kit)",
+    "method": "Clinical exome sequencing (NCCN v1.2026 + ACMG Secondary Findings v3.3 genes) combined with multi-ancestry polygenic risk scores (PRS); integrates monogenic and polygenic risk to provide absolute risk assessment",
+    "methodCitations": "https://allelica.com/absolutedx",
+    "sequencingPlatform": "Illumina (Clinical Exome)",
     "keyGenes": ["BRCA1", "BRCA2", "PALB2", "ATM", "CHEK2", "TP53", "MLH1", "MSH2", "MSH6", "PMS2"],
     "syndromesDetected": ["HBOC", "Lynch Syndrome", "Li-Fraumeni", "Cowden"],
     "cancerTypesAssessed": ["Breast", "Prostate", "Colorectal", "Ovarian", "Pancreatic"],
+    "deletionDuplicationAnalysis": "Yes",
     "prsIncluded": true,
     "prsNotes": "Multi-ancestry polygenic risk scores modulate penetrance of monogenic variants; ~50% of CHEK2 carriers fall above/below guideline thresholds when PRS factored in. PRS identifies ~20% of breast cancer cases where high genetic risk caused disease beyond BRCA1/2/ATM/CHEK2/PALB2.",
-    "analyticalSensitivity": 99.0,
-    "analyticalSensitivityNotes": "Clinical exome sequencing with ACMG-compliant variant interpretation",
+    "prsCitations": "Nature Communications (multi-ancestry PRS validation); Baylor College of Medicine collaboration",
     "fdaStatus": "CLIA LDT",
     "fdaStatusNotes": "Launched October 2025",
-    "reimbursement": "Coverage Emerging",
-    "reimbursementNotes": "Contact Allelica for coverage details",
-    "tat": "2-3 weeks",
-    "tatNotes": "Estimated based on clinical exome sequencing turnaround",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNotes": "Emerging coverage; check with vendor",
     "availableRegions": ["US"],
-    "reportIncludes": ["Absolute risk estimates", "PRS-modulated penetrance", "Variant classification", "Guideline-based recommendations"],
-    "geneticCounselingIncluded": "Recommended",
-    "cascadeTestingOffered": "Contact vendor",
-    "variantReclassificationPolicy": true,
+    "reportIncludes": ["Monogenic variant classification", "Polygenic risk score", "Absolute risk calculation", "Management recommendations"],
+    "geneticCounselingIncluded": "Check with vendor",
     "uniqueFeatures": "First test integrating PRS to modulate penetrance of monogenic variants; provides absolute risk not just variant detection; multi-ancestry validated PRS. Note: Allelica also offers non-cancer tests (cardiovascular, metabolic, neurological) through AbsoluteDx platform - only cancer capabilities listed here.",
-    "limitations": "PRS interpretation requires understanding of polygenic vs monogenic risk interplay; absolute risk estimates are population-level probabilities",
+    "limitations": "PRS utility varies by ancestry; newer platform with less published validation than established competitors",
+    "numPublications": 1,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Nature Communications (multi-ancestry PRS); ASHG 2024 presentations",
     "vendorVerified": false,
     "vendorRequestedChanges": "2026-01-11: Added via vendor submission from Giordano Botta (CEO, Allelica). Cancer-focused subset of multi-disease AbsoluteDx platform."
   }
@@ -7421,27 +7564,27 @@ export const hctTestData = [
 export const DATABASE_CHANGELOG = [
   {
     date: 'Jan 11, 2026',
-    type: 'added',
-    testId: 'hct-33',
-    testName: 'AbsoluteDx',
-    vendor: 'Allelica',
-    category: 'HCT',
-    description: 'New HCT test integrating polygenic risk scores (PRS) with clinical exome sequencing. First test to modulate monogenic variant penetrance with multi-ancestry PRS. Launched October 2025.',
-    contributor: 'Giordano Botta',
-    affiliation: 'Allelica (CEO)',
-    citation: 'https://www.allelica.com/absolutedx'
-  },
-  {
-    date: 'Jan 11, 2026',
     type: 'updated',
     testId: 'ecd-8, ecd-9',
     testName: 'HelioLiver, Oncoguard Liver',
     vendor: 'Helio Genomics, Exact Sciences',
     category: 'ECD',
-    description: 'Updated HCC test performance metrics with prospective study data. HelioLiver: 85%→47.8% sensitivity per CLiMB (n=1,968). Oncoguard: 88%→77% sensitivity, 87%→82% specificity per ALTUS (n=3,000+). Case-control data overstated real-world performance.',
+    description: 'Updated HCC test performance data with prospective study results. HelioLiver: sensitivity updated from 85% to 47.8% (CLiMB study n=1,968 vs ENCORE case-control n=247). Oncoguard Liver: sensitivity updated from 88% to 77%, specificity from 87% to 82% (ALTUS study n=3,000+ vs Phase II case-control). Prospective real-world data is more reliable than case-control studies.',
     contributor: 'Pierre Arsene',
     affiliation: 'Mursla',
     citation: 'CLiMB EASL 2024; ALTUS AASLD November 2025'
+  },
+  {
+    date: 'Jan 11, 2026',
+    type: 'added',
+    testId: 'hct-33',
+    testName: 'AbsoluteDx',
+    vendor: 'Allelica',
+    category: 'HCT',
+    description: 'Added Allelica AbsoluteDx - first hereditary cancer test integrating clinical exome sequencing with multi-ancestry polygenic risk scores (PRS) to modulate penetrance of monogenic variants. Saliva-based. Cancer capabilities only (platform also offers cardiovascular, metabolic, neurological tests).',
+    contributor: 'Giordano Botta',
+    affiliation: 'Allelica (CEO)',
+    citation: 'https://allelica.com/absolutedx'
   },
   {
     date: 'Jan 9, 2026',
