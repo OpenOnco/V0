@@ -700,16 +700,28 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
   };
 
   const handleInsuranceProviderChange = (insuranceProvider) => {
-    setWizardData(prev => ({ ...prev, insuranceProvider }));
+    setWizardData(prev => ({ 
+      ...prev, 
+      insuranceProvider,
+      costSensitivity: insuranceProvider === 'other' ? null : prev.costSensitivity, // Reset cost sensitivity if changing to/from other
+    }));
   };
 
   const handleCostSensitivityChange = (costSensitivity) => {
     setWizardData(prev => ({ ...prev, costSensitivity }));
   };
 
-  // Complete when: has insurance + selected provider, OR no insurance + cost preference
+  // Need cost sensitivity question if: no insurance OR selected "other" insurance
+  const needsCostSensitivity = wizardData.hasInsurance === false || 
+    (wizardData.hasInsurance === true && wizardData.insuranceProvider === 'other');
+
+  // Complete when: 
+  // - has insurance + selected known provider (not other), OR
+  // - has insurance + selected "other" + cost preference, OR
+  // - no insurance + cost preference
   const isComplete = wizardData.hasInsurance === true 
-    ? wizardData.insuranceProvider 
+    ? (wizardData.insuranceProvider && wizardData.insuranceProvider !== 'other') || 
+      (wizardData.insuranceProvider === 'other' && wizardData.costSensitivity)
     : wizardData.hasInsurance === false && wizardData.costSensitivity;
 
   return (
@@ -780,8 +792,38 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
                     <option key={p.id} value={p.id}>{p.label}</option>
                   ))}
                 </optgroup>
-                <option value="other">Other insurance (not listed)</option>
+                <option value="other">Other (not listed)</option>
               </select>
+            </div>
+          )}
+
+          {/* "Other" insurance selected - explain and show cost question */}
+          {wizardData.hasInsurance === true && wizardData.insuranceProvider === 'other' && (
+            <div className="mt-6">
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+                <div className="flex gap-3">
+                  <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-sm text-amber-800">
+                    We don't have coverage data for your insurance provider, so these tests may require out-of-pocket payment. Many vendors offer financial assistance programs.
+                  </p>
+                </div>
+              </div>
+
+              <h3 className="font-semibold text-slate-900 mb-3">{content.costSensitivityQuestion}</h3>
+              <div className="space-y-2">
+                {content.costOptions.map((option) => (
+                  <OptionButton
+                    key={option.id}
+                    selected={wizardData.costSensitivity === option.id}
+                    onClick={() => handleCostSensitivityChange(option.id)}
+                  >
+                    <span className="font-medium text-slate-900">{option.label}</span>
+                    <p className="text-sm text-slate-500 mt-1">{option.description}</p>
+                  </OptionButton>
+                ))}
+              </div>
             </div>
           )}
 
