@@ -68,27 +68,25 @@ const colors = {
 // Step content - all strings centralized for easy editing
 const CONTENT = {
   landing: {
-    headline: "There's a New Way to Watch for Cancer Coming Back",
-    subheadline: "Blood tests that can detect recurrence months before a scan",
-    intro: "If you've finished cancer treatment, you probably know the anxiety of waiting for your next scan. Will it come back? Did we get it all?",
+    headline: "If you've finished cancer treatment, you probably know the anxiety of waiting for your next scan. Will it come back? Did we get it all?",
     newTech: {
-      title: "New technology changes everything",
-      description: "MRD (Minimal Residual Disease) blood tests can now detect tiny traces of cancer DNA in your blood — often 6 to 15 months before a traditional CT or PET scan would show anything.",
+      title: "There's a new option",
+      description: "MRD blood tests can now detect tiny traces of cancer DNA — often 6 to 15 months before a traditional CT or PET scan would show anything. Your oncologist can order one for you.",
     },
     goodNews: {
       title: "Most of the time, it's good news",
-      description: "For many patients, these tests provide confirmation that treatment worked and you're cancer-free. That peace of mind, from a simple blood draw.",
+      description: "For many patients, these tests confirm that treatment worked. Peace of mind from a simple blood draw, ordered by your doctor.",
     },
     problem: {
       title: "But there's a catch",
-      description: "These tests are still new. Many oncologists don't know about them yet, insurance coverage varies, and there are multiple tests to choose from. It can be overwhelming.",
+      description: "These tests are still new. Many oncologists don't know about them yet, insurance coverage varies, and there are multiple tests to choose from.",
     },
     solution: {
-      title: "That's why we built OpenOnco",
-      description: "We've researched every MRD blood test on the market and created this guide to help you find one that might work for your situation — so you can have an informed conversation with your doctor.",
+      title: "That's why we built this guide",
+      description: "We've researched every MRD blood test on the market to help you find options to discuss with your oncologist. Only they can determine if testing is right for you and order it.",
     },
-    buttonText: "Find a test for my situation",
-    disclaimer: "This is an educational resource, not medical advice. Always discuss testing options with your oncologist.",
+    buttonText: "Find tests to discuss with my doctor",
+    disclaimer: "This is an educational resource, not medical advice. Only your oncologist can order these tests.",
   },
   welcome: {
     headline: "Confirming You're Cancer-Free",
@@ -365,18 +363,10 @@ function LandingStep({ onNext }) {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
-      {/* Main headline */}
-      <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 text-center leading-tight">
+      {/* Hero headline - the emotional hook */}
+      <h1 className="text-xl sm:text-2xl font-medium text-slate-700 mb-10 text-center leading-relaxed">
         {content.headline}
       </h1>
-      <p className={`text-lg ${colors.text} text-center mb-8`}>
-        {content.subheadline}
-      </p>
-
-      {/* Intro paragraph */}
-      <p className="text-slate-600 text-lg mb-8 text-center">
-        {content.intro}
-      </p>
 
       {/* Content cards */}
       <div className="space-y-4 mb-10">
