@@ -92,6 +92,9 @@ import ProductTypeBadge from './components/badges/ProductTypeBadge';
 import Markdown from './components/markdown/Markdown';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
 import PatientIntakeFlow from './components/patient/PatientIntakeFlow';
+import PatientLanding from './components/patient/PatientLanding';
+import WatchingWizard from './components/patient/WatchingWizard';
+import ScreeningWizard from './components/patient/ScreeningWizard';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
 import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
@@ -410,9 +413,9 @@ const SponsorBar = () => (
 const HomePage = ({ onNavigate, persona }) => {
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
 
-  // PATIENT VIEW - New 3-step intake flow
+  // PATIENT VIEW - Simple 2-card landing (Screening vs Watching)
   if (persona === 'patient') {
-    return <PatientIntakeFlow testData={chatTestData} />;
+    return <PatientLanding onNavigate={onNavigate} />;
   }
 
   // R&D / MEDICAL VIEW - full technical view (current default)
@@ -1159,11 +1162,19 @@ export default function App() {
     '/alz-blood': 'ALZ-BLOOD',
     // Persona direct access routes
     '/patients': 'home',
-    '/patient': 'home',
+    '/patient': 'patient-landing',
     '/rnd': 'home',
     '/clinician': 'home',
     '/clinicians': 'home',
-    '/medical': 'home'
+    '/medical': 'home',
+    // Patient journey routes
+    '/patient/watching': 'patient-watching',
+    '/patient/mrd': 'patient-watching',  // Alias for watching (MRD = monitoring)
+    '/patient/screening': 'patient-screening',
+    '/patient/choosing': 'patient-choosing',
+    '/patient/measuring': 'patient-measuring',
+    '/patient/insurance-denied': 'patient-insurance-denied',
+    '/patient/financial-assistance': 'patient-financial-assistance'
   };
 
   // Map URL paths to personas (for direct persona access)
@@ -1173,7 +1184,15 @@ export default function App() {
     '/rnd': 'rnd',
     '/clinician': 'medical',
     '/clinicians': 'medical',
-    '/medical': 'medical'
+    '/medical': 'medical',
+    // Patient journey routes
+    '/patient/watching': 'patient',
+    '/patient/mrd': 'patient',  // Alias for watching
+    '/patient/screening': 'patient',
+    '/patient/choosing': 'patient',
+    '/patient/measuring': 'patient',
+    '/patient/insurance-denied': 'patient',
+    '/patient/financial-assistance': 'patient'
   };
 
   const pageToPath = {
@@ -1189,7 +1208,16 @@ export default function App() {
     'ECD': '/screen',
     'CGP': '/treat',
     'MRD': '/monitor',
-    'ALZ-BLOOD': '/alz-blood'
+    'ALZ-BLOOD': '/alz-blood',
+    // Patient routes
+    'patient-landing': '/patient',
+    // Patient journey routes
+    'patient-watching': '/patient/watching',
+    'patient-screening': '/patient/screening',
+    'patient-choosing': '/patient/choosing',
+    'patient-measuring': '/patient/measuring',
+    'patient-insurance-denied': '/patient/insurance-denied',
+    'patient-financial-assistance': '/patient/financial-assistance'
   };
 
   // Category URL prefixes for test routes (supports both old and new URLs)
@@ -1448,7 +1476,12 @@ export default function App() {
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'home': return <HomePage onNavigate={handleNavigate} persona={persona} />;
+      case 'home':
+        // Show PatientLanding when patient persona is active
+        if (persona === 'patient') {
+          return <PatientLanding onNavigate={handleNavigate} />;
+        }
+        return <HomePage onNavigate={handleNavigate} persona={persona} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'CGP': case 'HCT': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
@@ -1457,6 +1490,36 @@ export default function App() {
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
+      // Patient landing page - simple 2-card navigation (Screening vs Watching)
+      case 'patient-landing': return (
+        <PatientLanding onNavigate={handleNavigate} />
+      );
+      // Patient journey routes
+      case 'patient-watching': return (
+        <WatchingWizard
+          onNavigate={handleNavigate}
+          onBack={() => handleNavigate('patient-landing')}
+          onComplete={(results) => {
+            console.log('WatchingWizard completed:', results);
+            handleNavigate('patient-landing');
+          }}
+          testData={mrdTestData}
+        />
+      );
+      case 'patient-screening': return (
+        <ScreeningWizard
+          onNavigate={handleNavigate}
+          onBack={() => handleNavigate('patient-landing')}
+          onComplete={(results) => {
+            console.log('ScreeningWizard completed:', results);
+            handleNavigate('patient-landing');
+          }}
+        />
+      );
+      case 'patient-choosing': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Choosing Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
+      case 'patient-measuring': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Measuring Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
+      case 'patient-insurance-denied': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Insurance Denied</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
+      case 'patient-financial-assistance': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Financial Assistance</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
       default: return <HomePage onNavigate={handleNavigate} />;
     }
   };

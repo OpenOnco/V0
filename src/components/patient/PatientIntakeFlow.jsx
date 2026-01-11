@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { PATIENT_INFO_CONTENT } from '../../config/patientContent';
 import Chat from '../Chat';
 import TestDetailModal from '../test/TestDetailModal';
+import WatchingWizard from '../patient-v2/journeys/WatchingWizard';
+import ChoosingWizard from './wizards/ChoosingWizard';
 import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../../data';
 
 /**
@@ -536,18 +538,35 @@ const PatientIntakeFlow = ({ testData }) => {
         </div>
         
         {isStep2Complete && (
-          <Chat 
-            key={selectedJourney}
-            persona="patient"
-            testData={testData}
-            variant="full"
-            showModeToggle={false}
-            resizable={true}
-            showTitle={false}
-            initialHeight={600}
-            patientContext={getChatContext()}
-            onViewTests={handleTestClick}
-          />
+          selectedJourney === 'mrd' && chatMode === 'find' ? (
+            <WatchingWizard
+              testData={mrdTestData}
+              initialCancerType={selectedCancer}
+              onExit={handleChangeJourney}
+              onComplete={(wizardData) => {
+                // For now, just log completion - could add result handling later
+                console.log('WatchingWizard completed:', wizardData);
+              }}
+            />
+          ) : selectedJourney === 'tds' && chatMode === 'find' ? (
+            <ChoosingWizard
+              initialCancerType={selectedCancer}
+              onExit={handleChangeJourney}
+            />
+          ) : (
+            <Chat
+              key={selectedJourney}
+              persona="patient"
+              testData={testData}
+              variant="full"
+              showModeToggle={false}
+              resizable={true}
+              showTitle={false}
+              initialHeight={600}
+              patientContext={getChatContext()}
+              onViewTests={handleTestClick}
+            />
+          )
         )}
       </div>
       

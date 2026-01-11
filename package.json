@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "test": "playwright test",
+    "test:unit": "vitest run",
     "test:smoke": "playwright test -g 'Homepage|Category Pages' --reporter=list",
     "test:full": "playwright test --reporter=list",
     "test:api": "playwright test --config=playwright.api.config.js --reporter=list",
@@ -32,6 +33,7 @@
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "vite": "^5.1.4"
+    "vite": "^5.1.4",
+    "vitest": "^4.0.16"
   }
 }
