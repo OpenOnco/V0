@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { JOURNEY_CONFIG } from '../patient-v2/journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
-import { hasAssistanceProgram } from '../../data';
+import { hasAssistanceProgram, VENDOR_ASSISTANCE_PROGRAMS } from '../../data';
 
 // ============================================================================
 // Configuration
@@ -713,10 +713,226 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
+ * Test Summary Modal Component
+ * Shows Claude-generated plain-language summary of a test
+ */
+function TestSummaryModal({ test, wizardData, onClose }) {
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Get cancer type label for display
+  const getCancerLabel = (id) => {
+    const type = CANCER_TYPES.find(t => t.id === id);
+    return type?.label || 'your cancer type';
+  };
+
+  // Get financial assistance details for the vendor
+  const getAssistanceDetails = (vendor) => {
+    const program = VENDOR_ASSISTANCE_PROGRAMS[vendor];
+    if (program?.hasProgram) {
+      return program.details || 'Financial assistance available - contact vendor for details.';
+    }
+    // Check partial match
+    for (const [key, value] of Object.entries(VENDOR_ASSISTANCE_PROGRAMS)) {
+      if (vendor?.includes(key) && value?.hasProgram) {
+        return value.details || 'Financial assistance available - contact vendor for details.';
+      }
+    }
+    return null;
+  };
+
+  // Fetch summary from Claude API
+  useEffect(() => {
+    const fetchSummary = async () => {
+      setLoading(true);
+      setError(null);
+
+      // Build a compact test data string for Claude
+      const testInfo = {
+        name: test.name,
+        vendor: test.vendor,
+        approach: test.approach,
+        method: test.method,
+        sensitivity: test.sensitivity,
+        sensitivityNotes: test.sensitivityNotes,
+        specificity: test.specificity,
+        lod: test.lod,
+        tat: test.initialTat || test.tat,
+        followUpTat: test.followUpTat,
+        fdaStatus: test.fdaStatus,
+        reimbursement: test.reimbursement,
+        cancerTypes: test.cancerTypes,
+        earlyWarningDays: test.earlyWarningDays,
+        leadTime: test.leadTime,
+        comparativeBadges: test.comparativeBadges?.map(b => b.label),
+      };
+
+      const wizardContext = {
+        cancerType: getCancerLabel(wizardData.cancerType),
+        hasTumorTissue: wizardData.hasTumorTissue,
+        hasInsurance: wizardData.hasInsurance,
+        insuranceType: wizardData.insuranceType,
+        costSensitivity: wizardData.costSensitivity,
+      };
+
+      const assistanceDetails = getAssistanceDetails(test.vendor);
+
+      const promptMessage = `You're helping a patient understand an MRD test that matched their situation. Write a clear, warm 3-4 paragraph summary.
+
+PATIENT SITUATION:
+- Cancer type: ${wizardContext.cancerType}
+- Tumor tissue available: ${wizardContext.hasTumorTissue === 'yes' ? 'Yes' : wizardContext.hasTumorTissue === 'no' ? 'No' : 'Unsure'}
+- Insurance: ${wizardContext.hasInsurance ? `Yes (${wizardContext.insuranceType || 'type unknown'})` : 'No'}
+- Cost sensitivity: ${wizardContext.costSensitivity === 'very-sensitive' ? 'Very cost sensitive' : wizardContext.costSensitivity === 'somewhat-sensitive' ? 'Somewhat cost sensitive' : 'Cost not a major factor'}
+
+TEST DETAILS:
+${JSON.stringify(testInfo, null, 2)}
+
+${assistanceDetails ? `FINANCIAL ASSISTANCE: ${assistanceDetails}` : ''}
+
+Write the summary with these sections (use plain language, no medical jargon):
+1. **What this test does** - Explain in simple terms what ${test.name} does and how it works
+2. **Why it matched your situation** - Connect specific test features to the patient's answers (tumor tissue availability, cancer type, etc.)
+3. **Key benefits** - Highlight the test's strengths${test.comparativeBadges?.length > 0 ? ' (it has these standout qualities: ' + test.comparativeBadges.map(b => b.label).join(', ') + ')' : ''}
+${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `4. **Financial help available** - ${assistanceDetails}` : ''}
+
+End with a reminder that their oncologist can help them decide if this test is right for them.`;
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            category: 'MRD',
+            persona: 'patient',
+            testData: JSON.stringify([testInfo]),
+            messages: [{ role: 'user', content: promptMessage }],
+            model: 'claude-haiku-4-5-20251001',
+            patientChatMode: 'learn',
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to generate summary');
+        }
+
+        const data = await response.json();
+        const summaryText = data.content?.[0]?.text || 'Unable to generate summary.';
+        setSummary(summaryText);
+      } catch (err) {
+        console.error('Error fetching test summary:', err);
+        setError('Unable to load summary. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [test, wizardData]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      
+      {/* Modal */}
+      <div className="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
+        {/* Header */}
+        <div className={`${colors.bg} ${colors.border} border-b px-6 py-4 flex items-center justify-between`}>
+          <div>
+            <h3 className="font-semibold text-slate-900">{test.name}</h3>
+            <p className="text-sm text-slate-600">{test.vendor}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-slate-500 hover:text-slate-700 hover:bg-white/50 rounded-lg transition-colors"
+            aria-label="Close"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {loading && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className={`w-10 h-10 ${colors.accent} rounded-full flex items-center justify-center animate-pulse mb-4`}>
+                <svg className="w-5 h-5 text-white animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              </div>
+              <p className="text-slate-600 text-sm">Preparing your personalized summary...</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+              <p className="text-red-800 text-sm">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-3 text-sm text-red-700 underline hover:no-underline"
+              >
+                Try again
+              </button>
+            </div>
+          )}
+
+          {summary && !loading && (
+            <div className="prose prose-sm prose-slate max-w-none">
+              {/* Parse and render markdown-like content */}
+              {summary.split('\n\n').map((paragraph, idx) => {
+                // Check if it's a header (starts with **)
+                if (paragraph.startsWith('**') && paragraph.includes('**')) {
+                  const headerMatch = paragraph.match(/^\*\*(.+?)\*\*/);
+                  if (headerMatch) {
+                    const headerText = headerMatch[1];
+                    const restText = paragraph.replace(/^\*\*.+?\*\*\s*/, '');
+                    return (
+                      <div key={idx} className="mb-4">
+                        <h4 className={`font-semibold ${colors.textDark} mb-1`}>{headerText}</h4>
+                        {restText && <p className="text-slate-700 text-sm leading-relaxed">{restText}</p>}
+                      </div>
+                    );
+                  }
+                }
+                return (
+                  <p key={idx} className="text-slate-700 text-sm leading-relaxed mb-3">
+                    {paragraph}
+                  </p>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className={`${colors.bg} ${colors.border} border-t px-6 py-4`}>
+          <button
+            onClick={onClose}
+            className={`w-full py-3 ${colors.accent} ${colors.accentHover} text-white font-medium rounded-xl transition-colors`}
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Step 6: Results
  * Shows matching tests based on selections
  */
 function ResultsStep({ wizardData, testData, onNext, onBack }) {
+  // State for test summary modal
+  const [selectedTest, setSelectedTest] = useState(null);
   const content = CONTENT.results;
 
   // Get cancer type label for display
@@ -812,16 +1028,17 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
       {/* Test cards */}
       <div className="max-w-lg mx-auto space-y-4 mb-8">
         {matchingTests.map((test) => (
-          <div
+          <button
             key={test.id}
-            className="bg-white border-2 border-slate-200 rounded-xl p-5 hover:border-emerald-300 transition-colors"
+            onClick={() => setSelectedTest(test)}
+            className="w-full text-left bg-white border-2 border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group"
           >
             {/* Comparative badges */}
             <ComparativeBadgeRow badges={test.comparativeBadges} />
 
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h3 className="font-semibold text-slate-900">{test.name}</h3>
+                <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{test.name}</h3>
                 <p className="text-sm text-slate-500">{test.vendor}</p>
               </div>
               {test.hasFinancialAssistance && (
@@ -841,7 +1058,15 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                 {test.keyBenefit}
               </div>
             )}
-          </div>
+            
+            {/* Tap hint */}
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400 group-hover:text-emerald-600 transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Tap to learn more about this test
+            </div>
+          </button>
         ))}
       </div>
 
@@ -868,6 +1093,15 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
       </div>
 
       <NavigationButtons onBack={onBack} onNext={onNext} nextLabel={content.nextButtonLabel} />
+
+      {/* Test Summary Modal */}
+      {selectedTest && (
+        <TestSummaryModal
+          test={selectedTest}
+          wizardData={wizardData}
+          onClose={() => setSelectedTest(null)}
+        />
+      )}
     </div>
   );
 }
