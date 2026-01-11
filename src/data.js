@@ -19,7 +19,7 @@
 // │ TRM Tests                  │ ~3140       │ trm-15 next         │
 // │ TDS Tests                  │ ~3490       │ tds-28 next         │
 // │ TDS IVD Kits               │ ~4370       │ tds-kit-16 next     │
-// │ HCT Tests                  │ ~6670       │ hct-11 next         │
+// │ HCT Tests                  │ ~6670       │ hct-34 next         │
 // │ DATABASE_CHANGELOG         │ ~7070       │ --                  │
 // └─────────────────────────────────────────────────────────────────┘
 //
@@ -3511,12 +3511,15 @@ export const ecdTestData = [
     ],
     "targetPopulation": "Adults with cirrhosis; chronic HBV carriers; high-risk for HCC",
     "indicationGroup": "Liver",
-    "sensitivity": 85.0,
-    "sensitivityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9234637/",
-    "stageISensitivity": 76.0,
-    "stageISensitivityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9234637/",
+    "sensitivity": 47.8,
+    "sensitivityCitations": "CLiMB study EASL 2024 (NCT03694600); https://heliogenomics.com/climb-study/",
+    "sensitivityNotes": "CLiMB prospective study (n=1,968): 47.8% overall HCC, 37.8% for HCC ≤4cm, 28.6% for HCC <2cm. Earlier case-control ENCORE study (n=247) reported 85% sensitivity; prospective real-world performance is materially lower. CLiMB used contemporaneous MRI on all subjects.",
+    "stageISensitivity": 37.8,
+    "stageISensitivityCitations": "CLiMB study EASL 2024 (NCT03694600)",
+    "stageISensitivityNotes": "37.8% for HCC ≤4cm; 28.6% for HCC <2cm; 44.4% for T1 tumors (vs 11.1% for ultrasound)",
     "specificity": 91.0,
     "specificityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9234637/",
+    "specificityNotes": "Specificity from ENCORE study; CLiMB reported non-inferior specificity vs ultrasound but exact figure pending FDA submission data",
     "ppv": 76.0,
     "ppvCitations": "Helio Genomics Investor Data; high-risk cirrhotic surveillance population",
     "ppvNotes": "PPV 76% in high-risk (cirrhotic) surveillance population. Higher PPV than general screening tests due to elevated HCC prevalence in cirrhosis patients (~1-8%/year).",
@@ -3529,7 +3532,7 @@ export const ecdTestData = [
     "listPriceCitations": "Helio Genomics; estimated range $450-$600",
     "listPriceNotes": "Estimated price ~$450-$600 based on market positioning",
     "performanceCitations": "ENCORE Hepatology Communications 2022 (n=247); CLiMB EASL 2024 (n=1968); VICTORY (n=1100)",
-    "performanceNotes": "85% overall sensitivity with 76% early-stage; 91% specificity; AUC 0.944 vs AFP 0.851 and GALAD 0.899.",
+    "performanceNotes": "CLiMB prospective (n=1,968): 47.8% overall, 37.8% early-stage. Case-control ENCORE (n=247) showed higher 85%/76% but prospective real-world data is more reliable. Still outperforms ultrasound (11.1% T1 detection).",
     "leadTimeNotes": "Significantly outperforms ultrasound for early-stage HCC detection (44.4% vs 11.1% for T1 tumors); designed as surveillance tool",
     "fdaStatus": "PMA submitted Q2 2024 (Class III); currently LDT",
     "reimbursement": "Coverage Varies",
@@ -3546,7 +3549,8 @@ export const ecdTestData = [
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05059665 | https://clinicaltrials.gov/study/NCT03694600",
     "totalParticipants": 3315,
     "numPublications": 2,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 85% to 47.8% and stage I from 76% to 37.8% per CLiMB prospective study (n=1,968) data presented at EASL 2024. Previous ENCORE case-control data (n=247) overstated performance. Error report submitted by Pierre Arsene (Mursla)."
   },
   {
     "id": "ecd-9",
@@ -3563,15 +3567,18 @@ export const ecdTestData = [
     ],
     "targetPopulation": "Adults with cirrhosis; chronic HBV; high-risk for HCC requiring surveillance",
     "indicationGroup": "Liver",
-    "sensitivity": 88.0,
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34419598/",
-    "stageISensitivity": 82.0,
-    "stageISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34419598/",
-    "specificity": 87.0,
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/34419598/",
+    "sensitivity": 77.0,
+    "sensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
+    "sensitivityNotes": "ALTUS prospective study (n=3,000+): 77% early-stage (Milan criteria), 64% very early-stage. Earlier Phase II case-control data showed 88%/82% but prospective real-world performance is lower.",
+    "stageISensitivity": 64.0,
+    "stageISensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
+    "stageISensitivityNotes": "64% very early-stage sensitivity; 77% early-stage (Milan criteria). ALTUS: 64% very early vs 9% ultrasound; 77% early vs 36% ultrasound (2-7× improvement).",
+    "specificity": 82.0,
+    "specificityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
+    "specificityNotes": "ALTUS prospective: 82% specificity. Phase II case-control reported 87%.",
     "ppv": 37.5,
     "ppvCitations": "Oncoguard Liver FAQ; Exact Sciences clinical data",
-    "ppvNotes": "PPV 35-40% in high-risk HCC surveillance population. Moderate PPV reflects balance of high sensitivity (88%) with specificity (87%) in cirrhotic patients.",
+    "ppvNotes": "PPV ~35-40% estimated based on ALTUS sensitivity (77%) and specificity (82%) in high-risk HCC surveillance population.",
     "ppvDefinition": "PPV for HCC in high-risk surveillance population (ALTUS / validation cohorts)",
     "npv": 98.5,
     "npvCitations": "Oncoguard Liver FAQ; Exact Sciences clinical data",
@@ -3581,7 +3588,7 @@ export const ecdTestData = [
     "listPriceCitations": "Estimated based on market positioning; Medicare not covered",
     "listPriceNotes": "Estimated ~$500-$700. NOT covered by Medicare; financial assistance available.",
     "performanceCitations": "Phase II validation CGH 2021; ALTUS NCT05064553 (n>3000) November 2025",
-    "performanceNotes": "88% overall sensitivity; 82% early-stage (BCLC 0/A); 87% specificity; AUC 0.91 vs AFP 0.84 and GALAD 0.88.",
+    "performanceNotes": "ALTUS prospective (n=3,000+): 77% early-stage, 64% very early-stage, 82% specificity. Phase II case-control showed higher 88%/82%/87% but prospective real-world data is more reliable. Still 2-7× ultrasound detection rates.",
     "leadTimeNotes": "ALTUS study shows 77% early-stage vs 36% for ultrasound; 64% very early-stage vs 9% for ultrasound (6-7× improvement)",
     "fdaStatus": "LDT; Breakthrough Device Designation October 2019",
     "reimbursement": "Coverage Varies",
@@ -3597,7 +3604,8 @@ export const ecdTestData = [
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05064553",
     "totalParticipants": 3000,
     "numPublications": 3,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 88% to 77% (early-stage) and 82% to 64% (very early-stage), specificity from 87% to 82% per ALTUS prospective study (n=3,000+) presented at AASLD November 2025. Previous Phase II case-control data overstated performance. Error report submitted by Pierre Arsene (Mursla)."
   },
   {
     "id": "ecd-10",
@@ -7370,12 +7378,71 @@ export const hctTestData = [
     "limitations": "Tests only 3 specific variants common in Ashkenazi Jewish population; negative result does not rule out BRCA mutations",
     "vendorVerified": false,
     "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+  },
+  {
+    "id": "hct-33",
+    "name": "AbsoluteDx",
+    "vendor": "Allelica",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Saliva",
+    "sampleType": "Non-invasive saliva collection kit",
+    "method": "Clinical exome sequencing (NCCN v1.2026 + ACMG Secondary Findings v3.3 genes) plus multi-ancestry validated polygenic risk scores (PRS)",
+    "methodCitations": "https://www.allelica.com/absolutedx",
+    "sequencingPlatform": "Clinical exome sequencing",
+    "genesAnalyzed": "NCCN v1.2026 + ACMG SF v3.3 genes",
+    "genesAnalyzedCitations": "https://www.allelica.com/absolutedx",
+    "keyGenes": ["BRCA1", "BRCA2", "PALB2", "ATM", "CHEK2", "TP53", "MLH1", "MSH2", "MSH6", "PMS2"],
+    "syndromesDetected": ["HBOC", "Lynch Syndrome", "Li-Fraumeni", "Cowden"],
+    "cancerTypesAssessed": ["Breast", "Prostate", "Colorectal", "Ovarian", "Pancreatic"],
+    "prsIncluded": true,
+    "prsNotes": "Multi-ancestry polygenic risk scores modulate penetrance of monogenic variants; ~50% of CHEK2 carriers fall above/below guideline thresholds when PRS factored in. PRS identifies ~20% of breast cancer cases where high genetic risk caused disease beyond BRCA1/2/ATM/CHEK2/PALB2.",
+    "analyticalSensitivity": 99.0,
+    "analyticalSensitivityNotes": "Clinical exome sequencing with ACMG-compliant variant interpretation",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Launched October 2025",
+    "reimbursement": "Coverage Emerging",
+    "reimbursementNotes": "Contact Allelica for coverage details",
+    "tat": "2-3 weeks",
+    "tatNotes": "Estimated based on clinical exome sequencing turnaround",
+    "availableRegions": ["US"],
+    "reportIncludes": ["Absolute risk estimates", "PRS-modulated penetrance", "Variant classification", "Guideline-based recommendations"],
+    "geneticCounselingIncluded": "Recommended",
+    "cascadeTestingOffered": "Contact vendor",
+    "variantReclassificationPolicy": true,
+    "uniqueFeatures": "First test integrating PRS to modulate penetrance of monogenic variants; provides absolute risk not just variant detection; multi-ancestry validated PRS. Note: Allelica also offers non-cancer tests (cardiovascular, metabolic, neurological) through AbsoluteDx platform - only cancer capabilities listed here.",
+    "limitations": "PRS interpretation requires understanding of polygenic vs monogenic risk interplay; absolute risk estimates are population-level probabilities",
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2026-01-11: Added via vendor submission from Giordano Botta (CEO, Allelica). Cancer-focused subset of multi-disease AbsoluteDx platform."
   }
 ];
 
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 11, 2026',
+    type: 'added',
+    testId: 'hct-33',
+    testName: 'AbsoluteDx',
+    vendor: 'Allelica',
+    category: 'HCT',
+    description: 'New HCT test integrating polygenic risk scores (PRS) with clinical exome sequencing. First test to modulate monogenic variant penetrance with multi-ancestry PRS. Launched October 2025.',
+    contributor: 'Giordano Botta',
+    affiliation: 'Allelica (CEO)',
+    citation: 'https://www.allelica.com/absolutedx'
+  },
+  {
+    date: 'Jan 11, 2026',
+    type: 'updated',
+    testId: 'ecd-8, ecd-9',
+    testName: 'HelioLiver, Oncoguard Liver',
+    vendor: 'Helio Genomics, Exact Sciences',
+    category: 'ECD',
+    description: 'Updated HCC test performance metrics with prospective study data. HelioLiver: 85%→47.8% sensitivity per CLiMB (n=1,968). Oncoguard: 88%→77% sensitivity, 87%→82% specificity per ALTUS (n=3,000+). Case-control data overstated real-world performance.',
+    contributor: 'Pierre Arsene',
+    affiliation: 'Mursla',
+    citation: 'CLiMB EASL 2024; ALTUS AASLD November 2025'
+  },
   {
     date: 'Jan 9, 2026',
     type: 'added',
