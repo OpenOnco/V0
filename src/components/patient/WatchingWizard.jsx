@@ -2,7 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { JOURNEY_CONFIG } from '../patient-v2/journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
-import { hasAssistanceProgram, VENDOR_ASSISTANCE_PROGRAMS } from '../../data';
+import { 
+  hasAssistanceProgram, 
+  VENDOR_ASSISTANCE_PROGRAMS,
+  INSURANCE_PROVIDERS,
+  ALL_INSURANCE_PROVIDERS,
+  AVAILABLE_REGIONS,
+  US_STATES,
+  isTestCoveredByInsurance,
+  isTestAvailableInRegion,
+} from '../../data';
 import TestDetailModal from '../test/TestDetailModal';
 
 // ============================================================================
@@ -12,12 +21,13 @@ import TestDetailModal from '../test/TestDetailModal';
 // Get MRD/Watching journey configuration for colors and label
 const watchingJourney = JOURNEY_CONFIG.mrd;
 
-// Wizard steps
+// Wizard steps - updated flow
 const WIZARD_STEPS = [
   { id: 'welcome', title: 'Welcome', description: 'Learn about MRD testing' },
+  { id: 'location', title: 'Location', description: 'Where are you located?' },
   { id: 'cancer-type', title: 'Cancer Type', description: 'What cancer were you treated for?' },
   { id: 'tumor-tissue', title: 'Tumor Tissue', description: 'Was tumor tissue saved?' },
-  { id: 'treatment-status', title: 'Treatment Status', description: 'Where are you in treatment?' },
+  { id: 'treatment-gate', title: 'Treatment', description: 'Have you completed treatment?' },
   { id: 'insurance', title: 'Coverage', description: 'Insurance and costs' },
   { id: 'results', title: 'Results', description: 'Tests that match your situation' },
   { id: 'next-steps', title: 'Next Steps', description: 'What to do now' },
@@ -74,6 +84,13 @@ const CONTENT = {
     },
     buttonText: "Let's get started",
   },
+  location: {
+    heading: 'Where are you located?',
+    description: 'This helps us show tests available in your area',
+    countryQuestion: 'Select your country',
+    stateQuestion: 'Select your state',
+    stateDescription: 'Some tests have state-specific coverage',
+  },
   cancerType: {
     heading: 'What cancer were you treated for?',
     description: 'This helps us find the most relevant tests for you',
@@ -98,49 +115,50 @@ const CONTENT = {
       { id: 'not-sure', label: "I'm not sure", description: "We'll show you both options — ask your oncologist" },
     ],
   },
-  treatmentStatus: {
-    heading: 'Where are you in your treatment journey?',
-    description: 'This helps us understand the right timing for MRD testing',
-    options: [
-      { id: 'just-finished', label: 'I just finished treatment', description: 'Main use case for MRD testing', icon: '✓' },
-      { id: 'finished-while-ago', label: 'I finished treatment a while ago', description: 'Ongoing surveillance monitoring', icon: '📅' },
-      { id: 'between-treatments', label: "I'm between treatments", description: 'Monitoring during treatment gaps', icon: '🔄' },
-      { id: 'pre-treatment', label: "I haven't started treatment yet", description: 'MRD testing is typically for post-treatment', icon: '⏳' },
-    ],
-    preTreatmentWarning: {
+  treatmentGate: {
+    heading: 'Have you completed cancer treatment?',
+    description: 'MRD testing is designed for monitoring after treatment',
+    yesOption: {
+      label: 'Yes, I\'ve completed treatment',
+      description: 'Surgery, chemo, radiation, or other treatment',
+    },
+    noOption: {
+      label: 'No, not yet',
+      description: 'I\'m still in treatment or haven\'t started',
+    },
+    notYetWarning: {
       title: 'MRD testing is for post-treatment monitoring',
       get text() {
-        return `These tests detect residual cancer after treatment. If you're choosing a treatment path, you might want to explore the "${JOURNEY_CONFIG.tds.label}" journey instead.`;
+        return `These tests detect residual cancer after treatment completes. If you're exploring treatment options, you might want to check out the "${JOURNEY_CONFIG.tds.label}" journey instead.`;
       },
     },
     continueAnywayLabel: 'Continue anyway',
   },
   insurance: {
     heading: "Let's talk about coverage",
-    description: 'This helps us highlight financial assistance options',
+    description: 'This helps us find tests covered by your insurance',
     hasInsuranceQuestion: 'Do you have health insurance?',
-    insuranceTypeQuestion: 'What type of insurance?',
-    insuranceTypes: [
-      { id: 'private', label: 'Private' },
-      { id: 'medicare', label: 'Medicare' },
-      { id: 'medicaid', label: 'Medicaid' },
-      { id: 'va', label: 'VA/Military' },
-      { id: 'other', label: 'Other' },
-    ],
-    noInsuranceNote: "Many test providers offer financial assistance programs. We'll highlight those options in your results.",
-    costSensitivityQuestion: 'How sensitive are you to out-of-pocket costs?',
+    insuranceProviderQuestion: 'Select your insurance provider',
+    insuranceProviderDescription: 'We\'ll show tests covered by your plan',
+    noInsuranceNote: "No problem — we'll show you options with financial assistance programs.",
+    costSensitivityQuestion: 'Is cost a concern?',
     costOptions: [
-      { id: 'very-sensitive', label: 'Very sensitive', description: 'I need to minimize costs' },
-      { id: 'somewhat-sensitive', label: 'Somewhat sensitive', description: 'I want to understand options' },
-      { id: 'not-sensitive', label: 'Not sensitive', description: "Cost isn't a major factor" },
+      { id: 'cost-sensitive', label: 'Yes, I need to minimize costs', description: 'Show only tests with financial assistance' },
+      { id: 'not-sensitive', label: 'No, cost is not a major factor', description: 'Show all available tests' },
     ],
   },
   results: {
     heading: 'Tests That Match Your Situation',
     description: 'Based on your answers, here are MRD tests to discuss with your oncologist',
+    noResultsHeading: 'No Exact Matches Found',
+    noResultsDescription: 'We couldn\'t find tests that match all your criteria. Here are some options:',
     financialNote: {
       boldText: 'Financial assistance may be available.',
-      text: "We've highlighted tests with assistance programs based on your cost sensitivity.",
+      text: "We've highlighted tests with assistance programs.",
+    },
+    insuranceCoverageNote: {
+      boldText: 'Coverage confirmed.',
+      text: 'These tests are covered by your insurance provider.',
     },
     actions: {
       save: 'Save these results',
@@ -382,7 +400,79 @@ function WelcomeStep({ onNext }) {
 }
 
 /**
- * Step 2: Cancer Type Selection
+ * Step 2: Location
+ * Country selection, and US state if in USA
+ */
+function LocationStep({ wizardData, setWizardData, onNext, onBack }) {
+  const content = CONTENT.location;
+
+  const handleCountrySelect = (country) => {
+    setWizardData(prev => ({ 
+      ...prev, 
+      country,
+      usState: country === 'US' ? prev.usState : null // Clear state if not US
+    }));
+  };
+
+  const handleStateSelect = (usState) => {
+    setWizardData(prev => ({ ...prev, usState }));
+  };
+
+  const canProceed = wizardData.country && (wizardData.country !== 'US' || wizardData.usState);
+
+  return (
+    <div className="py-6">
+      <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+        {content.heading}
+      </h2>
+      <p className="text-slate-600 text-center mb-8">
+        {content.description}
+      </p>
+
+      {/* Country selection */}
+      <div className="max-w-md mx-auto mb-6">
+        <label className="block text-sm font-medium text-slate-700 mb-2">
+          {content.countryQuestion}
+        </label>
+        <select
+          value={wizardData.country || ''}
+          onChange={(e) => handleCountrySelect(e.target.value)}
+          className={`w-full p-3 border-2 rounded-xl bg-white text-slate-900 focus:outline-none focus:ring-2 ${colors.focus} ${colors.border}`}
+        >
+          <option value="">Select country...</option>
+          {AVAILABLE_REGIONS.map((region) => (
+            <option key={region.id} value={region.id}>{region.label}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* US State selection - only shown if US selected */}
+      {wizardData.country === 'US' && (
+        <div className="max-w-md mx-auto mb-6">
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            {content.stateQuestion}
+          </label>
+          <p className="text-sm text-slate-500 mb-2">{content.stateDescription}</p>
+          <select
+            value={wizardData.usState || ''}
+            onChange={(e) => handleStateSelect(e.target.value)}
+            className={`w-full p-3 border-2 rounded-xl bg-white text-slate-900 focus:outline-none focus:ring-2 ${colors.focus} ${colors.border}`}
+          >
+            <option value="">Select state...</option>
+            {US_STATES.map((state) => (
+              <option key={state.id} value={state.id}>{state.label}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      <NavigationButtons onBack={onBack} showBack={true} onNext={onNext} nextDisabled={!canProceed} />
+    </div>
+  );
+}
+
+/**
+ * Step 3: Cancer Type Selection
  * Grid of clickable cancer type buttons
  */
 function CancerTypeStep({ wizardData, setWizardData, onNext, onBack }) {
@@ -509,21 +599,20 @@ function TumorTissueStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
- * Step 4: Treatment Status
- * Where the user is in their treatment journey
+ * Step 5: Treatment Gate
+ * Simple yes/no: Have you completed treatment?
  */
-function TreatmentStatusStep({ wizardData, setWizardData, onNext, onBack }) {
-  const content = CONTENT.treatmentStatus;
-  const [showPreTreatmentNote, setShowPreTreatmentNote] = useState(false);
+function TreatmentGateStep({ wizardData, setWizardData, onNext, onBack }) {
+  const content = CONTENT.treatmentGate;
+  const [showNotYetNote, setShowNotYetNote] = useState(false);
 
-  const handleSelect = (treatmentStatus) => {
-    if (treatmentStatus === 'pre-treatment') {
-      setShowPreTreatmentNote(true);
-      setWizardData(prev => ({ ...prev, treatmentStatus }));
-    } else {
-      setShowPreTreatmentNote(false);
-      setWizardData(prev => ({ ...prev, treatmentStatus }));
+  const handleSelect = (completedTreatment) => {
+    setWizardData(prev => ({ ...prev, completedTreatment }));
+    if (completedTreatment === 'yes') {
+      setShowNotYetNote(false);
       setTimeout(() => onNext(), 300);
+    } else {
+      setShowNotYetNote(true);
     }
   };
 
@@ -536,27 +625,37 @@ function TreatmentStatusStep({ wizardData, setWizardData, onNext, onBack }) {
         {content.description}
       </p>
 
-      {/* Options */}
+      {/* Yes/No options */}
       <div className="max-w-lg mx-auto space-y-3">
-        {content.options.map((option) => (
-          <OptionButton
-            key={option.id}
-            selected={wizardData.treatmentStatus === option.id}
-            onClick={() => handleSelect(option.id)}
-          >
-            <div className="flex items-start gap-3">
-              <span className="text-xl">{option.icon}</span>
-              <div>
-                <span className="font-medium text-slate-900">{option.label}</span>
-                <p className="text-sm text-slate-500 mt-1">{option.description}</p>
-              </div>
+        <OptionButton
+          selected={wizardData.completedTreatment === 'yes'}
+          onClick={() => handleSelect('yes')}
+        >
+          <div className="flex items-start gap-3">
+            <span className="text-xl">✓</span>
+            <div>
+              <span className="font-medium text-slate-900">{content.yesOption.label}</span>
+              <p className="text-sm text-slate-500 mt-1">{content.yesOption.description}</p>
             </div>
-          </OptionButton>
-        ))}
+          </div>
+        </OptionButton>
+
+        <OptionButton
+          selected={wizardData.completedTreatment === 'no'}
+          onClick={() => handleSelect('no')}
+        >
+          <div className="flex items-start gap-3">
+            <span className="text-xl">⏳</span>
+            <div>
+              <span className="font-medium text-slate-900">{content.noOption.label}</span>
+              <p className="text-sm text-slate-500 mt-1">{content.noOption.description}</p>
+            </div>
+          </div>
+        </OptionButton>
       </div>
 
-      {/* Pre-treatment warning */}
-      {showPreTreatmentNote && (
+      {/* Not yet warning */}
+      {showNotYetNote && (
         <div className="max-w-lg mx-auto mt-6">
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <div className="flex gap-3">
@@ -564,9 +663,9 @@ function TreatmentStatusStep({ wizardData, setWizardData, onNext, onBack }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p className="font-medium text-amber-900">{content.preTreatmentWarning.title}</p>
+                <p className="font-medium text-amber-900">{content.notYetWarning.title}</p>
                 <p className="text-sm text-amber-800 mt-1">
-                  {content.preTreatmentWarning.text}
+                  {content.notYetWarning.text}
                 </p>
               </div>
             </div>
@@ -577,15 +676,15 @@ function TreatmentStatusStep({ wizardData, setWizardData, onNext, onBack }) {
       <NavigationButtons
         onBack={onBack}
         onNext={onNext}
-        nextDisabled={!wizardData.treatmentStatus}
-        nextLabel={wizardData.treatmentStatus === 'pre-treatment' ? content.continueAnywayLabel : 'Continue'}
+        nextDisabled={!wizardData.completedTreatment}
+        nextLabel={wizardData.completedTreatment === 'no' ? content.continueAnywayLabel : 'Continue'}
       />
     </div>
   );
 }
 
 /**
- * Step 5: Insurance & Cost Sensitivity
+ * Step 6: Insurance & Cost Sensitivity
  * Coverage and cost preferences
  */
 function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
@@ -595,21 +694,23 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
     setWizardData(prev => ({
       ...prev,
       hasInsurance,
-      insuranceType: hasInsurance ? prev.insuranceType : null
+      insuranceProvider: hasInsurance ? prev.insuranceProvider : null,
+      costSensitivity: null, // Reset cost sensitivity when insurance changes
     }));
   };
 
-  const handleInsuranceTypeChange = (insuranceType) => {
-    setWizardData(prev => ({ ...prev, insuranceType }));
+  const handleInsuranceProviderChange = (insuranceProvider) => {
+    setWizardData(prev => ({ ...prev, insuranceProvider }));
   };
 
   const handleCostSensitivityChange = (costSensitivity) => {
     setWizardData(prev => ({ ...prev, costSensitivity }));
   };
 
-  const isComplete = wizardData.hasInsurance !== undefined &&
-    (wizardData.hasInsurance === false || wizardData.insuranceType) &&
-    wizardData.costSensitivity;
+  // Complete when: has insurance + selected provider, OR no insurance + cost preference
+  const isComplete = wizardData.hasInsurance === true 
+    ? wizardData.insuranceProvider 
+    : wizardData.hasInsurance === false && wizardData.costSensitivity;
 
   return (
     <div className="py-6">
@@ -651,60 +752,68 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
             </button>
           </div>
 
-          {/* Insurance type follow-up */}
+          {/* Insurance provider dropdown - shown if has insurance */}
           {wizardData.hasInsurance === true && (
             <div className="mt-4">
-              <p className="text-sm text-slate-600 mb-2">{content.insuranceTypeQuestion}</p>
-              <div className="flex flex-wrap gap-2">
-                {content.insuranceTypes.map((type) => (
-                  <button
-                    key={type.id}
-                    onClick={() => handleInsuranceTypeChange(type.id)}
-                    className={`
-                      py-2 px-4 border-2 rounded-lg text-sm font-medium transition-all
-                      ${wizardData.insuranceType === type.id
-                        ? `${colors.border} ${colors.bg} ${colors.text}`
-                        : 'border-slate-200 hover:border-emerald-300'
-                      }
-                    `}
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                {content.insuranceProviderQuestion}
+              </label>
+              <p className="text-sm text-slate-500 mb-2">{content.insuranceProviderDescription}</p>
+              <select
+                value={wizardData.insuranceProvider || ''}
+                onChange={(e) => handleInsuranceProviderChange(e.target.value)}
+                className={`w-full p-3 border-2 rounded-xl bg-white text-slate-900 focus:outline-none focus:ring-2 ${colors.focus} ${colors.border}`}
+              >
+                <option value="">Select your insurance...</option>
+                <optgroup label="Government Programs">
+                  {INSURANCE_PROVIDERS.government.map((p) => (
+                    <option key={p.id} value={p.id}>{p.label}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="Major National Plans">
+                  {INSURANCE_PROVIDERS.national.map((p) => (
+                    <option key={p.id} value={p.id}>{p.label}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="Regional Plans">
+                  {INSURANCE_PROVIDERS.regional.map((p) => (
+                    <option key={p.id} value={p.id}>{p.label}</option>
+                  ))}
+                </optgroup>
+                <option value="other">Other insurance (not listed)</option>
+              </select>
+            </div>
+          )}
+
+          {/* No insurance - show cost sensitivity question */}
+          {wizardData.hasInsurance === false && (
+            <div className="mt-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+                <div className="flex gap-3">
+                  <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-sm text-blue-800">
+                    {content.noInsuranceNote}
+                  </p>
+                </div>
+              </div>
+
+              <h3 className="font-semibold text-slate-900 mb-3">{content.costSensitivityQuestion}</h3>
+              <div className="space-y-2">
+                {content.costOptions.map((option) => (
+                  <OptionButton
+                    key={option.id}
+                    selected={wizardData.costSensitivity === option.id}
+                    onClick={() => handleCostSensitivityChange(option.id)}
                   >
-                    {type.label}
-                  </button>
+                    <span className="font-medium text-slate-900">{option.label}</span>
+                    <p className="text-sm text-slate-500 mt-1">{option.description}</p>
+                  </OptionButton>
                 ))}
               </div>
             </div>
           )}
-
-          {/* No insurance note */}
-          {wizardData.hasInsurance === false && (
-            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <div className="flex gap-3">
-                <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p className="text-sm text-blue-800">
-                  {content.noInsuranceNote}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Cost sensitivity question */}
-        <div>
-          <h3 className="font-semibold text-slate-900 mb-3">{content.costSensitivityQuestion}</h3>
-          <div className="space-y-2">
-            {content.costOptions.map((option) => (
-              <OptionButton
-                key={option.id}
-                selected={wizardData.costSensitivity === option.id}
-                onClick={() => handleCostSensitivityChange(option.id)}
-              >
-                <span className="font-medium text-slate-900">{option.label}</span>
-                <span className="text-slate-500 ml-2">— {option.description}</span>
-              </OptionButton>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -991,78 +1100,173 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
 
   // Check if a test has financial assistance programs (via vendor lookup)
   const checkFinancialAssistance = (test) => {
-    // Use the centralized vendor assistance program lookup
     return hasAssistanceProgram(test.vendor);
   };
 
-  // Filter and match tests based on wizard data
+  // Check if test matches cancer type
+  const matchesCancerType = (test, cancerType) => {
+    if (!cancerType || cancerType === 'not-sure') return true;
+    if (!test.cancerTypes || test.cancerTypes.length === 0) return true;
+    
+    // Map wizard cancer types to data.js cancer type values
+    const cancerTypeMap = {
+      'colorectal': ['Colorectal', 'CRC', 'Colon'],
+      'breast': ['Breast'],
+      'lung': ['Lung', 'NSCLC', 'Non-small cell lung'],
+      'bladder': ['Bladder', 'Urothelial'],
+      'ovarian': ['Ovarian'],
+      'prostate': ['Prostate'],
+      'pancreatic': ['Pancreatic'],
+      'melanoma': ['Melanoma'],
+      'multiple-myeloma': ['Multiple Myeloma', 'MM'],
+      'lymphoma': ['Lymphoma', 'DLBCL', 'B-cell'],
+      'other-solid': ['Multi-solid', 'Solid tumor', 'Pan-cancer'],
+    };
+    
+    const searchTerms = cancerTypeMap[cancerType] || [];
+    
+    // Check if any cancer type matches, or if test is multi-cancer
+    return test.cancerTypes.some(ct => {
+      const ctLower = ct.toLowerCase();
+      // Multi-cancer tests match everything
+      if (ctLower.includes('multi') || ctLower.includes('pan-') || ctLower.includes('solid tumor')) {
+        return true;
+      }
+      // Check specific matches
+      return searchTerms.some(term => ctLower.includes(term.toLowerCase()));
+    });
+  };
+
+  // Filter and match tests based on wizard data with new logic
   const getMatchingTests = () => {
-    // If testData is provided and has items, filter it
-    if (testData && testData.length > 0) {
-      return testData
-        .filter(test => {
-          // Filter by tumor tissue requirement
-          if (wizardData.hasTumorTissue === 'yes') {
-            // Show all tests (tumor-informed preferred)
-            return true;
-          } else if (wizardData.hasTumorTissue === 'no') {
-            // Only show tumor-naive tests
-            return test.requiresTumorTissue !== 'Yes';
-          }
-          // 'not-sure' shows all
-          return true;
-        })
-        .slice(0, 5) // Limit to 5 results
-        .map(test => ({
-          ...test,
-          hasFinancialAssistance: checkFinancialAssistance(test),
-        }));
+    if (!testData || testData.length === 0) {
+      // Placeholder results when no testData provided
+      return [
+        {
+          id: 'signatera',
+          name: 'Signatera',
+          vendor: 'Natera',
+          matchReason: `Personalized tumor-informed test available for ${getCancerLabel(wizardData.cancerType)}`,
+          keyBenefit: 'Creates a custom assay from your tumor DNA',
+          hasFinancialAssistance: true,
+        },
+        {
+          id: 'guardant-reveal',
+          name: 'Guardant Reveal',
+          vendor: 'Guardant Health',
+          matchReason: "Tumor-naive option if tissue isn't available",
+          keyBenefit: 'No tumor tissue required',
+          hasFinancialAssistance: true,
+        },
+      ];
     }
 
-    // Placeholder results when no testData provided
-    return [
-      {
-        id: 'signatera',
-        name: 'Signatera',
-        vendor: 'Natera',
-        matchReason: `Personalized tumor-informed test available for ${getCancerLabel(wizardData.cancerType)}`,
-        keyBenefit: 'Creates a custom assay from your tumor DNA',
-        hasFinancialAssistance: true,
-      },
-      {
-        id: 'guardant-reveal',
-        name: 'Guardant Reveal',
-        vendor: 'Guardant Health',
-        matchReason: "Tumor-naive option if tissue isn't available",
-        keyBenefit: 'No tumor tissue required',
-        hasFinancialAssistance: true,
-      },
-      {
-        id: 'foundationone-tracker',
-        name: 'FoundationOne Tracker',
-        vendor: 'Foundation Medicine',
-        matchReason: 'Comprehensive tumor-informed MRD monitoring',
-        keyBenefit: 'Integrated with CGP testing',
-        hasFinancialAssistance: false,
-      },
-    ];
+    // Apply all filters
+    let filtered = testData.filter(test => {
+      // 1. Filter by region/location
+      if (wizardData.country && !isTestAvailableInRegion(test, wizardData.country)) {
+        return false;
+      }
+
+      // 2. Filter by cancer type
+      if (!matchesCancerType(test, wizardData.cancerType)) {
+        return false;
+      }
+
+      // 3. Filter by tumor tissue availability
+      if (wizardData.hasTumorTissue === 'no') {
+        // Only show tumor-naive tests
+        if (test.requiresTumorTissue === 'Yes' || test.approach?.toLowerCase().includes('tumor-informed')) {
+          // Check if test is strictly tumor-informed only
+          if (!test.approach?.toLowerCase().includes('tumor-naive')) {
+            return false;
+          }
+        }
+      }
+
+      // 4. Financial filtering logic
+      if (wizardData.hasInsurance === true && wizardData.insuranceProvider) {
+        // Has insurance: only show tests covered by their insurance
+        if (wizardData.insuranceProvider !== 'other') {
+          if (!isTestCoveredByInsurance(test, wizardData.insuranceProvider)) {
+            return false;
+          }
+        }
+        // If "other" insurance selected, show all tests (can't filter)
+      } else if (wizardData.hasInsurance === false) {
+        // No insurance
+        if (wizardData.costSensitivity === 'cost-sensitive') {
+          // Cost sensitive: only show tests with financial assistance
+          if (!checkFinancialAssistance(test)) {
+            return false;
+          }
+        }
+        // If not cost sensitive, show all tests
+      }
+
+      return true;
+    });
+
+    // Add financial assistance flag and match reasons
+    return filtered.map(test => ({
+      ...test,
+      hasFinancialAssistance: checkFinancialAssistance(test),
+      matchReason: generateMatchReason(test, wizardData),
+    }));
+  };
+
+  // Generate a match reason based on test and wizard data
+  const generateMatchReason = (test, data) => {
+    const reasons = [];
+    
+    if (data.hasInsurance && data.insuranceProvider && data.insuranceProvider !== 'other') {
+      const providerLabel = ALL_INSURANCE_PROVIDERS.find(p => p.id === data.insuranceProvider)?.label;
+      if (providerLabel && isTestCoveredByInsurance(test, data.insuranceProvider)) {
+        reasons.push(`Covered by ${providerLabel}`);
+      }
+    }
+    
+    if (test.approach?.toLowerCase().includes('tumor-informed') && data.hasTumorTissue === 'yes') {
+      reasons.push('Uses your saved tumor tissue for personalized detection');
+    } else if (test.approach?.toLowerCase().includes('tumor-naive') && data.hasTumorTissue === 'no') {
+      reasons.push('Works without tumor tissue');
+    }
+    
+    if (checkFinancialAssistance(test) && (!data.hasInsurance || data.costSensitivity === 'cost-sensitive')) {
+      reasons.push('Financial assistance available');
+    }
+    
+    return reasons.length > 0 ? reasons.join(' • ') : null;
   };
 
   // Apply comparative badges to the matching tests
   const matchingTests = calculateComparativeBadges(getMatchingTests(), 'mrd');
-  const showFinancialNote = wizardData.costSensitivity === 'very-sensitive' || wizardData.hasInsurance === false;
+  const showFinancialNote = wizardData.costSensitivity === 'cost-sensitive' || wizardData.hasInsurance === false;
+  const showInsuranceCoverageNote = wizardData.hasInsurance === true && wizardData.insuranceProvider && wizardData.insuranceProvider !== 'other';
 
   return (
     <div className="py-6">
       <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
-        {content.heading}
+        {matchingTests.length > 0 ? content.heading : content.noResultsHeading}
       </h2>
       <p className="text-slate-600 text-center mb-8">
-        {content.description}
+        {matchingTests.length > 0 ? content.description : content.noResultsDescription}
       </p>
 
-      {/* Financial note */}
-      {showFinancialNote && (
+      {/* Insurance coverage note */}
+      {showInsuranceCoverageNote && matchingTests.length > 0 && (
+        <div className={`max-w-lg mx-auto mb-6 bg-green-50 border-green-200 border rounded-xl p-4`}>
+          <div className="flex gap-3">
+            <span className="text-xl">✓</span>
+            <p className={`text-sm text-green-800`}>
+              <span className="font-semibold">{content.insuranceCoverageNote.boldText}</span> {content.insuranceCoverageNote.text}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Financial assistance note */}
+      {showFinancialNote && !showInsuranceCoverageNote && matchingTests.length > 0 && (
         <div className={`max-w-lg mx-auto mb-6 ${colors.bg} ${colors.border} border rounded-xl p-4`}>
           <div className="flex gap-3">
             <span className="text-xl">💰</span>
@@ -1073,15 +1277,33 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         </div>
       )}
 
-      {/* Clickable hint header */}
-      <div className="max-w-lg mx-auto mb-4">
-        <div className={`flex items-center justify-center gap-2 text-sm ${colors.text} bg-emerald-50/50 rounded-lg py-2 px-4`}>
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-          </svg>
-          <span>Click any test below for a personalized summary</span>
+      {/* No results message */}
+      {matchingTests.length === 0 && (
+        <div className="max-w-lg mx-auto mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <div className="flex gap-3">
+            <svg className="w-6 h-6 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <p className="text-amber-900 text-sm">
+                No tests matched all your criteria. Try selecting "Other insurance" or adjusting your answers. Your oncologist can help identify the best option for your situation.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Clickable hint header */}
+      {matchingTests.length > 0 && (
+        <div className="max-w-lg mx-auto mb-4">
+          <div className={`flex items-center justify-center gap-2 text-sm ${colors.text} bg-emerald-50/50 rounded-lg py-2 px-4`}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+            </svg>
+            <span>Click any test below for a personalized summary</span>
+          </div>
+        </div>
+      )}
 
       {/* Test cards */}
       <div className="max-w-lg mx-auto space-y-4 mb-8">
@@ -1334,20 +1556,22 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   // Map initialCancerType from label to ID if provided
   const mappedCancerType = initialCancerType ? (CANCER_TYPE_MAP[initialCancerType] || null) : null;
 
-  // Determine starting step: skip to step 2 (tumor-tissue) if cancer type is pre-filled
-  const initialStep = mappedCancerType ? 2 : 0;
+  // Determine starting step: skip to step 3 (cancer-type) if cancer type is pre-filled
+  const initialStep = mappedCancerType ? 3 : 0;
 
   // Current step in the wizard (0-indexed)
   const [currentStep, setCurrentStep] = useState(initialStep);
 
   // Wizard data collected from user
   const [wizardData, setWizardData] = useState({
+    country: null,              // Selected country/region
+    usState: null,              // US state if country is US
     cancerType: mappedCancerType,           // Selected cancer type or 'not-sure'
     hasTumorTissue: null,       // 'yes', 'no', or 'not-sure'
-    treatmentStatus: null,      // 'just-finished', 'finished-while-ago', 'between-treatments', 'pre-treatment'
+    completedTreatment: null,   // 'yes' or 'no'
     hasInsurance: undefined,    // true or false
-    insuranceType: null,        // 'private', 'medicare', 'medicaid', 'va', 'other'
-    costSensitivity: null,      // 'very-sensitive', 'somewhat-sensitive', 'not-sensitive'
+    insuranceProvider: null,    // Insurance provider ID from INSURANCE_PROVIDERS
+    costSensitivity: null,      // 'cost-sensitive' or 'not-sensitive'
   });
 
   // Ref for scrolling to top on step change
@@ -1403,6 +1627,15 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
     switch (WIZARD_STEPS[currentStep].id) {
       case 'welcome':
         return <WelcomeStep onNext={handleNext} />;
+      case 'location':
+        return (
+          <LocationStep
+            wizardData={wizardData}
+            setWizardData={setWizardData}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        );
       case 'cancer-type':
         return (
           <CancerTypeStep
@@ -1421,9 +1654,9 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
             onBack={handleBack}
           />
         );
-      case 'treatment-status':
+      case 'treatment-gate':
         return (
-          <TreatmentStatusStep
+          <TreatmentGateStep
             wizardData={wizardData}
             setWizardData={setWizardData}
             onNext={handleNext}
