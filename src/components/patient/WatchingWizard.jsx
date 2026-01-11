@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { JOURNEY_CONFIG } from '../patient-v2/journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
+import { hasAssistanceProgram } from '../../data';
 
 // ============================================================================
 // Configuration
@@ -724,21 +725,10 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
     return type?.label || 'your cancer type';
   };
 
-  // Check if a test has financial assistance programs
+  // Check if a test has financial assistance programs (via vendor lookup)
   const checkFinancialAssistance = (test) => {
-    const reimbursement = (test.reimbursement || '').toLowerCase();
-    const reimbursementNote = (test.reimbursementNote || '').toLowerCase();
-    const combined = reimbursement + ' ' + reimbursementNote;
-    
-    return (
-      combined.includes('$0') ||
-      combined.includes('financial assist') ||
-      combined.includes('patient assist') ||
-      combined.includes('copay assist') ||
-      combined.includes('no out-of-pocket') ||
-      combined.includes('compassionate') ||
-      combined.includes('indigent')
-    );
+    // Use the centralized vendor assistance program lookup
+    return hasAssistanceProgram(test.vendor);
   };
 
   // Filter and match tests based on wizard data
@@ -840,13 +830,17 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                 </span>
               )}
             </div>
-            <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              {test.keyBenefit}
-            </div>
+            {test.matchReason && (
+              <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
+            )}
+            {test.keyBenefit && (
+              <div className="flex items-center gap-2 text-sm text-slate-600">
+                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                {test.keyBenefit}
+              </div>
+            )}
           </div>
         ))}
       </div>
