@@ -12,6 +12,7 @@ import {
   isTestCoveredByInsurance,
   isTestAvailableInRegion,
 } from '../../data';
+import { getVendorAvailabilityUS, getAvailabilityLabel } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
 
 // ============================================================================
@@ -1386,7 +1387,21 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
 
       {/* Test cards */}
       <div className="max-w-lg mx-auto space-y-4 mb-8">
-        {matchingTests.map((test) => (
+        {matchingTests.map((test) => {
+          // Determine if we should show financial assistance badge
+          // Only relevant if user has no insurance, has "other" insurance, or is cost-sensitive
+          const showFinancialAssistance = test.hasFinancialAssistance && (
+            wizardData.hasInsurance === false ||
+            wizardData.insuranceProvider === 'other' ||
+            wizardData.costSensitivity === 'cost-sensitive'
+          );
+          
+          // Get availability tier for US users
+          const isUSUser = wizardData.country === 'United States';
+          const availabilityTier = isUSUser ? getVendorAvailabilityUS(test.vendor) : null;
+          const availabilityLabel = availabilityTier ? getAvailabilityLabel(availabilityTier) : null;
+          
+          return (
           <div
             key={test.id}
             className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden"
@@ -1401,11 +1416,24 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                   <h3 className="font-semibold text-slate-900">{test.name}</h3>
                   <p className="text-sm text-slate-500">{test.vendor}</p>
                 </div>
-                {test.hasFinancialAssistance && (
-                  <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
-                    💵 Assistance available
-                  </span>
-                )}
+                <div className="flex flex-col items-end gap-1">
+                  {showFinancialAssistance && (
+                    <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
+                      💵 Assistance available
+                    </span>
+                  )}
+                  {isUSUser && availabilityTier && availabilityTier !== 'unknown' && (
+                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      availabilityTier === 'widespread' 
+                        ? 'bg-emerald-50 text-emerald-700' 
+                        : availabilityTier === 'moderate'
+                        ? 'bg-blue-50 text-blue-700'
+                        : 'bg-amber-50 text-amber-700'
+                    }`}>
+                      {availabilityLabel}
+                    </span>
+                  )}
+                </div>
               </div>
               {test.matchReason && (
                 <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
@@ -1442,7 +1470,8 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
               </button>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Action buttons */}
