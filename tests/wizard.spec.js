@@ -18,10 +18,8 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /completed treatment/i }).click();
     await page.waitForTimeout(700);
     
-    // Step 3: Location
+    // Step 3: Location - just country, no state
     await page.locator('select').first().selectOption('United States');
-    await page.waitForTimeout(300);
-    await page.locator('select').nth(1).selectOption('CA');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
     
@@ -91,8 +89,6 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.waitForTimeout(700);
     
     await page.locator('select').first().selectOption('United States');
-    await page.waitForTimeout(300);
-    await page.locator('select').nth(1).selectOption('CA');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
     
@@ -118,8 +114,6 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.waitForTimeout(700);
     
     await page.locator('select').first().selectOption('United States');
-    await page.waitForTimeout(300);
-    await page.locator('select').nth(1).selectOption('CA');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
     

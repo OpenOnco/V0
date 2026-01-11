@@ -8,7 +8,6 @@ import {
   INSURANCE_PROVIDERS,
   ALL_INSURANCE_PROVIDERS,
   AVAILABLE_REGIONS,
-  US_STATES,
   isTestCoveredByInsurance,
   isTestAvailableInRegion,
 } from '../../data';
@@ -89,8 +88,6 @@ const CONTENT = {
     heading: 'Where are you located?',
     description: 'This helps us show tests available in your area',
     countryQuestion: 'Select your country',
-    stateQuestion: 'Select your state',
-    stateDescription: 'Some tests have state-specific coverage',
   },
   cancerType: {
     heading: 'What cancer were you treated for?',
@@ -408,18 +405,10 @@ function LocationStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.location;
 
   const handleCountrySelect = (country) => {
-    setWizardData(prev => ({ 
-      ...prev, 
-      country,
-      usState: country === 'US' ? prev.usState : null // Clear state if not US
-    }));
+    setWizardData(prev => ({ ...prev, country }));
   };
 
-  const handleStateSelect = (usState) => {
-    setWizardData(prev => ({ ...prev, usState }));
-  };
-
-  const canProceed = wizardData.country && (wizardData.country !== 'US' || wizardData.usState);
+  const canProceed = !!wizardData.country;
 
   return (
     <div className="py-6">
@@ -446,26 +435,6 @@ function LocationStep({ wizardData, setWizardData, onNext, onBack }) {
           ))}
         </select>
       </div>
-
-      {/* US State selection - only shown if US selected */}
-      {wizardData.country === 'US' && (
-        <div className="max-w-md mx-auto mb-6">
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            {content.stateQuestion}
-          </label>
-          <p className="text-sm text-slate-500 mb-2">{content.stateDescription}</p>
-          <select
-            value={wizardData.usState || ''}
-            onChange={(e) => handleStateSelect(e.target.value)}
-            className={`w-full p-3 border-2 rounded-xl bg-white text-slate-900 focus:outline-none focus:ring-2 ${colors.focus} ${colors.border}`}
-          >
-            <option value="">Select state...</option>
-            {US_STATES.map((state) => (
-              <option key={state.id} value={state.id}>{state.label}</option>
-            ))}
-          </select>
-        </div>
-      )}
 
       <NavigationButtons onBack={onBack} showBack={true} onNext={onNext} nextDisabled={!canProceed} />
     </div>
@@ -1681,7 +1650,6 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   // Wizard data collected from user
   const [wizardData, setWizardData] = useState({
     country: null,              // Selected country/region
-    usState: null,              // US state if country is US
     cancerType: mappedCancerType,           // Selected cancer type or 'not-sure'
     hasTumorTissue: null,       // 'yes', 'no', or 'not-sure'
     completedTreatment: null,   // 'yes' or 'no'
