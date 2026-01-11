@@ -1116,6 +1116,8 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
   const [selectedTest, setSelectedTest] = useState(null);
   // State for full test detail modal
   const [detailTest, setDetailTest] = useState(null);
+  // State for "More tests" expansion
+  const [showMoreTests, setShowMoreTests] = useState(false);
   const content = CONTENT.results;
 
   // Get cancer type label for display
@@ -1373,88 +1375,112 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         </div>
       )}
 
-      {/* Test cards */}
-      <div className="max-w-lg mx-auto space-y-4 mb-8">
-        {matchingTests.map((test) => {
-          // Determine if we should show financial assistance badge
-          // Only relevant if user has no insurance, has "other" insurance, or is cost-sensitive
+      {/* Test cards - split into featured (with badges) and more tests (without badges) */}
+      {(() => {
+        const featuredTests = matchingTests.filter(t => t.comparativeBadges?.length > 0);
+        const moreTests = matchingTests.filter(t => !t.comparativeBadges?.length);
+        
+        // Helper to render a single test card
+        const renderTestCard = (test) => {
           const showFinancialAssistance = test.hasFinancialAssistance && (
             wizardData.hasInsurance === false ||
             wizardData.insuranceProvider === 'other' ||
             wizardData.costSensitivity === 'cost-sensitive'
           );
-          
-          // Get availability tier for US users - only show badge if widely available
           const isUSUser = wizardData.country === 'US';
           const availabilityTier = isUSUser ? getVendorAvailabilityUS(test.vendor) : null;
           const isWidelyAvailable = availabilityTier === 'widespread';
           
           return (
-          <div
-            key={test.id}
-            className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden"
-          >
-            {/* Card content - non-clickable */}
-            <div className="p-5">
-              {/* Comparative badges */}
-              <ComparativeBadgeRow badges={test.comparativeBadges} />
-
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h3 className="font-semibold text-slate-900">{test.name}</h3>
-                  <p className="text-sm text-slate-500">{test.vendor}</p>
+            <div
+              key={test.id}
+              className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden"
+            >
+              <div className="p-4">
+                <ComparativeBadgeRow badges={test.comparativeBadges} />
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h3 className="font-semibold text-slate-900">{test.name}</h3>
+                    <p className="text-sm text-slate-500">{test.vendor}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-1">
+                    {showFinancialAssistance && (
+                      <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
+                        💵 Assistance
+                      </span>
+                    )}
+                    {isWidelyAvailable && (
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">
+                        Widely Available
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex flex-col items-end gap-1">
-                  {showFinancialAssistance && (
-                    <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
-                      💵 Assistance available
-                    </span>
-                  )}
-                  {isWidelyAvailable && (
-                    <span className="text-xs font-medium px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">
-                      Widely Available
-                    </span>
-                  )}
-                </div>
+                {test.matchReason && (
+                  <p className={`text-sm ${colors.text} mb-2 line-clamp-2`}>{test.matchReason}</p>
+                )}
               </div>
-              {test.matchReason && (
-                <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
-              )}
-              {test.keyBenefit && (
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-                  <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <div className="px-4 pb-4 flex flex-col gap-2">
+                <button
+                  onClick={() => setSelectedTest(test)}
+                  className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  {test.keyBenefit}
-                </div>
-              )}
+                  Personalized summary
+                </button>
+                <button
+                  onClick={() => setDetailTest(test)}
+                  className="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                  </svg>
+                  Technical details
+                </button>
+              </div>
             </div>
-            
-            {/* Two action buttons */}
-            <div className="px-5 pb-4 flex flex-col gap-2">
-              <button
-                onClick={() => setSelectedTest(test)}
-                className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Get personalized summary
-              </button>
-              <button
-                onClick={() => setDetailTest(test)}
-                className="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                </svg>
-                View technical details
-              </button>
-            </div>
-          </div>
           );
-        })}
-      </div>
+        };
+        
+        return (
+          <div className="max-w-3xl mx-auto mb-8">
+            {/* Featured tests (with badges) - 2 column grid */}
+            {featuredTests.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                {featuredTests.map(renderTestCard)}
+              </div>
+            )}
+            
+            {/* More tests section (without badges) - collapsible */}
+            {moreTests.length > 0 && (
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowMoreTests(!showMoreTests)}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 font-medium transition-colors"
+                >
+                  <span>More tests ({moreTests.length})</span>
+                  <svg 
+                    className={`w-5 h-5 transition-transform ${showMoreTests ? 'rotate-180' : ''}`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {showMoreTests && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {moreTests.map(renderTestCard)}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Action buttons */}
       <div className="max-w-lg mx-auto flex flex-wrap gap-3 justify-center mb-6">
