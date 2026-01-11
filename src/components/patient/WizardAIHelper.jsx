@@ -142,6 +142,12 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
     }
   }, [messages]);
 
+  // Reset chat when wizard step changes - show fresh questions for new step
+  useEffect(() => {
+    setMessages([]);
+    setInputValue('');
+  }, [currentStep]);
+
   // Focus input when opened
   useEffect(() => {
     if (isOpen && inputRef.current) {
