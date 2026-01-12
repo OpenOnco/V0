@@ -226,7 +226,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
         onClick={() => setIsOpen(!isOpen)}
         className={`
           fixed z-50
-          w-14 h-14 rounded-full shadow-lg
+          w-28 h-28 rounded-full shadow-lg
           flex items-center justify-center
           transition-all duration-300 ease-in-out
           bottom-8
@@ -239,11 +239,11 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
         aria-label={isOpen ? 'Close helper' : 'Open AI helper'}
       >
         {isOpen ? (
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <span className="text-2xl">🤔</span>
+          <span className="text-5xl">🤔</span>
         )}
       </button>
 
