@@ -1017,7 +1017,7 @@ test.describe('Persona System', () => {
     await expect(page.getByText(/finished cancer treatment/i)).toBeVisible({ timeout: 5000 });
     
     // Click CTA to start wizard
-    await page.getByRole('button', { name: /find tests to discuss/i }).click();
+    await page.getByRole('button', { name: /explore mrd testing/i }).click();
     await page.waitForTimeout(500);
     
     // Should see the treatment status question

@@ -116,9 +116,9 @@ const TestDetailModal = ({ test, category, onClose }) => {
   // Track test view in PostHog when modal opens
   useEffect(() => {
     if (test) {
-      analytics.trackTestView(test, 'modal');
+      analytics.trackTestView(test, 'modal', category);
     }
-  }, [test?.id]);
+  }, [test?.id, category]);
   
   if (!test) return null;
   

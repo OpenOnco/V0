@@ -92,7 +92,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       flags: [personaFlag, `category-${category.toLowerCase()}`] 
     });
     // PostHog tracking
-    analytics.trackTestView(test, 'category_page');
+    analytics.trackTestView(test, 'category_page', category);
     setDetailTest(test);
   };
   

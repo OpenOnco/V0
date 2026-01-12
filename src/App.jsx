@@ -1420,15 +1420,26 @@ export default function App() {
     // Track navigation with feature flags (Vercel Analytics)
     const personaFlag = `persona-${persona.toLowerCase().replace(/[^a-z]/g, '-')}`;
     if (['MRD', 'ECD', 'CGP', 'HCT'].includes(page)) {
-      track('category_viewed', { 
+      track('category_viewed', {
         category: page,
-        from_test_link: testId !== null 
-      }, { 
-        flags: [personaFlag, `category-${page.toLowerCase()}`] 
+        from_test_link: testId !== null
+      }, {
+        flags: [personaFlag, `category-${page.toLowerCase()}`]
       });
       // PostHog tracking
       analytics.trackCategoryView(page, categoryMeta[page]?.tests?.length || 0);
-    } else if (page !== currentPage) {
+    }
+
+    // Track individual test view when navigating directly to a test
+    if (testId && ['MRD', 'ECD', 'CGP', 'HCT', 'TDS', 'TRM'].includes(page)) {
+      const tests = categoryMeta[page]?.tests || [];
+      const test = tests.find(t => t.id === testId);
+      if (test) {
+        analytics.trackTestView(test, 'direct_navigation', page);
+      }
+    }
+
+    if (page !== currentPage && !['MRD', 'ECD', 'CGP', 'HCT'].includes(page)) {
       track('page_viewed', { 
         page: page 
       }, { 
