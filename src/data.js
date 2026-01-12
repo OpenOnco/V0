@@ -15,7 +15,7 @@
 // │ VENDOR_ASSISTANCE_PROGRAMS │ ~515        │ Patient assistance  │
 // │ MRD Tests                  │ ~750        │ mrd-27 next         │
 // │ MRD IVD Kits               │ ~1900       │ mrd-kit-4 next      │
-// │ ECD Tests                  │ ~2020       │ ecd-23 next         │
+// │ ECD Tests                  │ ~2020       │ ecd-24 next         │
 // │ TRM Tests                  │ ~3140       │ trm-15 next         │
 // │ TDS Tests                  │ ~3490       │ tds-28 next         │
 // │ TDS IVD Kits               │ ~4370       │ tds-kit-16 next     │
@@ -3663,9 +3663,9 @@ export const ecdTestData = [
     "stageISensitivity": 37.8,
     "stageISensitivityCitations": "CLiMB study EASL 2024 (NCT03694600)",
     "stageISensitivityNotes": "37.8% for HCC ≤4cm; 28.6% for HCC <2cm; 44.4% for T1 tumors (vs 11.1% for ultrasound)",
-    "specificity": 91.0,
-    "specificityCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9234637/",
-    "specificityNotes": "Specificity from ENCORE study; CLiMB reported non-inferior specificity vs ultrasound but exact figure pending FDA submission data",
+    "specificity": 88.0,
+    "specificityCitations": "CLiMB study EASL 2024; Helio Genomics investor deck",
+    "specificityNotes": "88% specificity (95% CI: 86-89) from CLiMB prospective study and Helio investor materials. Earlier ENCORE case-control reported 91%.",
     "ppv": 76.0,
     "ppvCitations": "Helio Genomics Investor Data; high-risk cirrhotic surveillance population",
     "ppvNotes": "PPV 76% in high-risk (cirrhotic) surveillance population. Higher PPV than general screening tests due to elevated HCC prevalence in cirrhosis patients (~1-8%/year).",
@@ -3696,7 +3696,7 @@ export const ecdTestData = [
     "totalParticipants": 3315,
     "numPublications": 2,
     "numPublicationsPlus": true,
-    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 85% to 47.8% and stage I from 76% to 37.8% per CLiMB prospective study (n=1,968) data presented at EASL 2024. Previous ENCORE case-control data (n=247) overstated performance. Error report submitted by Pierre Arsene (Mursla)."
+    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 85% to 47.8% and stage I from 76% to 37.8% per CLiMB prospective study (n=1,968) data presented at EASL 2024. Previous ENCORE case-control data (n=247) overstated performance. Error report submitted by Pierre Arsene (Mursla). 2026-01-12: Corrected specificity from 91% to 88% per CLiMB/Helio investor deck (Pierre Arsene follow-up)."
   },
   {
     "id": "ecd-9",
@@ -3713,15 +3713,15 @@ export const ecdTestData = [
     ],
     "targetPopulation": "Adults with cirrhosis; chronic HBV; high-risk for HCC requiring surveillance",
     "indicationGroup": "Liver",
-    "sensitivity": 77.0,
-    "sensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553); https://exactsciences.com/press-releases/",
-    "sensitivityNotes": "ALTUS prospective study (n=3,000+): 77% early-stage HCC (Milan criteria), 64% very early-stage. Earlier Phase II case-control (PMID 34419598) reported 88%/82%; prospective real-world performance is lower but still ~2× ultrasound.",
+    "sensitivity": 70.0,
+    "sensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553); Exact Sciences AASLD 2025 presentation",
+    "sensitivityNotes": "ALTUS prospective study (n=2,206): 70% overall sensitivity. Milan criteria sensitivity 66.7% (vs 22.2% ultrasound). By tumor size: 58.3% for <2cm, 78.3% for 2-5cm, 75% for 5+cm. Earlier press release cited 77% which may have been preliminary/typo per AASLD presentation data.",
     "stageISensitivity": 64.0,
     "stageISensitivityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
     "stageISensitivityNotes": "64% very early-stage HCC (vs 9% for ultrasround - 7× improvement); 77% for Milan criteria early-stage (vs 36% for ultrasound)",
-    "specificity": 82.0,
-    "specificityCitations": "ALTUS study AASLD November 2025 (NCT05064553)",
-    "specificityNotes": "82% specificity in ALTUS (vs 87% in Phase II case-control). Trade-off for higher real-world sensitivity. Ultrasound alone: 98.6% specificity.",
+    "specificity": 81.9,
+    "specificityCitations": "ALTUS study AASLD November 2025 (NCT05064553); Exact Sciences AASLD 2025 presentation",
+    "specificityNotes": "81.9% specificity in ALTUS (n=2,206) vs 87% in Phase II case-control. Ultrasound alone: 98.6% specificity; Ultrasound+AFP: 97.7%.",
     "ppv": 37.5,
     "ppvCitations": "Oncoguard Liver FAQ; Exact Sciences clinical data",
     "ppvNotes": "PPV 35-40% in high-risk HCC surveillance population. Moderate PPV reflects balance of sensitivity (77%) with specificity (82%) in cirrhotic patients.",
@@ -3751,7 +3751,7 @@ export const ecdTestData = [
     "totalParticipants": 3000,
     "numPublications": 3,
     "numPublicationsPlus": true,
-    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 88% to 77% (early-stage) and 82% to 64% (very early-stage), specificity from 87% to 82% per ALTUS prospective study (n=3,000+) presented at AASLD November 2025. Previous Phase II case-control data overstated performance. Error report submitted by Pierre Arsene (Mursla)."
+    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 88% to 77% (early-stage) and 82% to 64% (very early-stage), specificity from 87% to 82% per ALTUS prospective study (n=3,000+) presented at AASLD November 2025. Previous Phase II case-control data overstated performance. Error report submitted by Pierre Arsene (Mursla). 2026-01-12: Further corrected sensitivity from 77% to 70% overall per AASLD 2025 presentation charts; specificity refined to 81.9% (Pierre Arsene follow-up with screenshots)."
   },
   {
     "id": "ecd-10",
@@ -4866,6 +4866,73 @@ export const ecdTestData = [
       "submitterType": "vendor",
       "submittedDate": "2025-12-09",
       "clarificationDate": "2026-01-08"
+    }
+  },
+  // MethylScan HCC - Added January 2026 (Vendor Submission - Lara Baden, EarlyDx)
+  {
+    "id": "ecd-23",
+    "sampleCategory": "Blood/Plasma",
+    "sampleVolumeMl": 10,
+    "sampleCitations": "https://www.earlydx.com/",
+    "name": "MethylScan HCC",
+    "vendor": "EarlyDx",
+    "productType": "Central Lab Service",
+    "website": "https://www.earlydx.com/",
+    "approach": "Tumor-naïve",
+    "method": "DNA methylation biomarkers via targeted multiplexed NGS; 5 CpG sites (HCC-detect: CHFR, VASH2, CCNJ, GRID2IP + HCC-spec: F12)",
+    "methodCitations": "https://doi.org/10.1038/s41467-023-39055-7",
+    "methodNotes": "Bisulfite conversion followed by targeted NGS. HCC-detect panel (4 CpGs) identifies hepatocyte-derived cfDNA; HCC-spec marker (F12 gene) distinguishes HCC from benign liver disease. Combined test branded as 'epiLiver' in validation study.",
+    "cancerTypes": [
+      "Hepatocellular carcinoma (HCC)"
+    ],
+    "targetPopulation": "Adults at high risk for HCC including those with cirrhosis, chronic hepatitis B/C, or other liver disease",
+    "indicationGroup": "Liver",
+    "sensitivity": 84.5,
+    "sensitivityCitations": "https://doi.org/10.1038/s41467-023-39055-7",
+    "sensitivityNotes": "84.5% sensitivity at 95% specificity threshold (n=554 clinical validation in Dhaka). AUC 0.94. Performance maintained across all BCLC stages. Superior to AFP alone (85% vs 61% sensitivity).",
+    "stageISensitivity": 73,
+    "stageISensitivityCitations": "https://doi.org/10.1038/s41467-023-39055-7",
+    "stageISensitivityNotes": "73% sensitivity for BCLC Stage A (early-stage) HCC. Some sources cite 75%. Stage-independent detection due to categorical (not quantitative) methylation differences.",
+    "specificity": 92,
+    "specificityCitations": "https://doi.org/10.1038/s41467-023-39055-7",
+    "specificityNotes": "92% specificity in clinical validation. Study also reported 95% specificity at different threshold. High specificity for HCC vs other cancer types (tested against 31 cancer types in TCGA, n=8,754).",
+    "ppv": null,
+    "ppvCitations": "",
+    "ppvNotes": "PPV not reported in primary validation study",
+    "npv": null,
+    "npvCitations": "",
+    "npvNotes": "NPV not reported in primary validation study",
+    "testScope": "Single-cancer (HCC)",
+    "tat": 10,
+    "tatNotes": "Estimated turnaround time",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Available as laboratory-developed test through CLIA/CAP accredited laboratory",
+    "reimbursement": "Has PLA code and CMS pricing determination; working with MolDx for LCD reimbursement",
+    "reimbursementNote": "Coverage emerging through Medicare LCD pathway",
+    "clinicalAvailability": "Available via test requisition form or physician portal",
+    "availableRegions": ["US"],
+    "listPrice": null,
+    "listPriceNotes": "Contact vendor for pricing",
+    "clinicalTrials": "Clinical validation study (n=554) in Dhaka, Bangladesh",
+    "clinicalTrialsCitations": "https://doi.org/10.1038/s41467-023-39055-7",
+    "totalParticipants": 554,
+    "numPublications": 1,
+    "numPublicationsCitations": "https://doi.org/10.1038/s41467-023-39055-7",
+    "numPublicationsNotes": "Zhang et al. Nature Communications 2023 - 'A high-throughput test enables specific detection of hepatocellular carcinoma'",
+    "validationCohortSize": 554,
+    "validationCohortStudy": "Prospective clinical validation in high-HCC-burden population (Dhaka, Bangladesh): 302 HCC patients (BCLC A=34, B=86, C=106, D=76), 46 controls, 49 CHB, 102 non-HCC cancers, 50 healthy plasma",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "CLIA LDT with PLA code. Available for clinical ordering.",
+    "technologyDifferentiator": "Methylation-based approach detects HCC-specific epigenetic changes rather than mutations. Markers are categorically methylated in HCC (binary signal) vs unmethylated in normal tissue, providing robust detection even at low tumor burden. Unique specificity for HCC vs other liver conditions and other cancer types.",
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2026-01-12: Initial submission by Lara Baden (EarlyDx) with performance data from Nature Communications 2023. Commercial availability confirmed with PLA code.",
+    "submissionInfo": {
+      "submittedBy": "Lara Baden",
+      "submitterEmail": "lara.baden@earlydx.com",
+      "submitterType": "vendor",
+      "submittedDate": "2026-01-12"
     }
   }
 ];
@@ -7562,6 +7629,30 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 12, 2026',
+    type: 'added',
+    testId: 'ecd-23',
+    testName: 'MethylScan HCC',
+    vendor: 'EarlyDx',
+    category: 'ECD',
+    description: 'New HCC early detection test using DNA methylation biomarkers. 84.5% sensitivity at 92% specificity in clinical validation (n=554). 73% sensitivity for early-stage (BCLC Stage A). Uses 5 CpG methylation markers via targeted NGS. Available as CLIA LDT with PLA code.',
+    contributor: 'Lara Baden',
+    affiliation: 'EarlyDx',
+    citation: 'https://doi.org/10.1038/s41467-023-39055-7'
+  },
+  {
+    date: 'Jan 12, 2026',
+    type: 'updated',
+    testId: 'ecd-8, ecd-9',
+    testName: 'HelioLiver, Oncoguard Liver',
+    vendor: 'Helio Genomics, Exact Sciences',
+    category: 'ECD',
+    description: 'Follow-up corrections per AASLD 2025 presentation screenshots. HelioLiver: specificity corrected from 91% to 88% (95% CI: 86-89). Oncoguard Liver: sensitivity corrected from 77% to 70% overall, specificity refined to 81.9%. Both based on actual presentation charts vs press release summaries.',
+    contributor: 'Pierre Arsene',
+    affiliation: 'Mursla',
+    citation: 'Helio investor deck; Exact Sciences AASLD 2025 presentation'
+  },
   {
     date: 'Jan 11, 2026',
     type: 'updated',
