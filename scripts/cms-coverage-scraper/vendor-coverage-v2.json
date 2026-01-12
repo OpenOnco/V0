@@ -1,0 +1,541 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "scrapedAt": "2026-01-12T22:48:08.428Z",
+    "totalVendors": 67,
+    "vendorsScraped": 4,
+    "vendorsSkipped": [
+      "23andMe",
+      "Allelica",
+      "BD Biosciences",
+      "Burning Rock Dx (brbiotech)",
+      "Cancer Cell Dx",
+      "ClearNote Health",
+      "Cleveland Diagnostics",
+      "Color Health",
+      "DELFI Diagnostics",
+      "Datar Cancer Genetics",
+      "Epigenomics",
+      "Freenome",
+      "GeneDx",
+      "Geneoscopy",
+      "Geneseeq Technology",
+      "Genomic Testing Cooperative (GTC)",
+      "Hedera Dx",
+      "Helio Genomics",
+      "IMBdx",
+      "Inocras",
+      "Invitae (Labcorp)",
+      "Invivoscribe",
+      "LIQOMICS",
+      "Labcorp (Invitae)",
+      "Labcorp (Personal Genome Diagnostics)",
+      "Labcorp Oncology (OmniSeq)",
+      "Lucence",
+      "Memorial Sloan Kettering",
+      "Naveris",
+      "Nonacus",
+      "OncoDNA",
+      "PGDx",
+      "Precision Epigenomics",
+      "PreventionGenetics (Exact Sciences)",
+      "PrognomiQ",
+      "QIAGEN",
+      "SAGA Diagnostics",
+      "Strata Oncology",
+      "Sysmex Inostics",
+      "Thermo Fisher Scientific",
+      "Universal DX",
+      "Veracyte (C2i Genomics)",
+      "Viome",
+      "Wuhan Ammunition Life Technology"
+    ]
+  },
+  "vendors": [
+    {
+      "vendor": "Adaptive Biotechnologies",
+      "tests": [
+        "clonoSEQ"
+      ],
+      "coverage": {
+        "lcds": [],
+        "ncds": [],
+        "cptCodes": [],
+        "reimbursementAmounts": [],
+        "coveredIndications": [
+          "measurable residual disease"
+        ],
+        "rawMatches": []
+      },
+      "sources": [
+        "https://www.adaptivebiotech.com/clonoseq/",
+        "https://www.clonoseq.com/",
+        "https://www.adaptivebiotech.com/immunoseq/"
+      ],
+      "metadata": {
+        "scrapedAt": "2026-01-12T22:47:41.253Z",
+        "successfulUrls": 3,
+        "totalUrls": 9
+      }
+    },
+    {
+      "vendor": "BillionToOne",
+      "tests": [
+        "Unity",
+        "Unity Complete",
+        "Northstar"
+      ],
+      "coverage": {
+        "lcds": [],
+        "ncds": [],
+        "cptCodes": [],
+        "reimbursementAmounts": [],
+        "coveredIndications": [],
+        "rawMatches": [
+          {
+            "term": "Coverage",
+            "context": "sion, Vision, Values Leadership & Board Company Milestones News & Media Press Releases Events Media Coverage Social Media Investors Contact Our mission More intelligent healthcare for all with single molecule"
+          },
+          {
+            "term": "Coverage",
+            "context": "Offering and Full Exercise of Underwriters’ Option to Purchase Additional Shares Read Article Media Coverage November 6, 2025 Is the Drought in Life-Sciences IPOs Over? Two Startups Will Test Demand Read Arti"
+          },
+          {
+            "term": "Coverage",
+            "context": "6, 2025 Is the Drought in Life-Sciences IPOs Over? Two Startups Will Test Demand Read Article Media Coverage November 6, 2025 Is the Drought in Life-Sciences IPOs Over? Two Startups Will Test Demand Read Arti"
+          },
+          {
+            "term": "Coverage",
+            "context": "6, 2025 Is the Drought in Life-Sciences IPOs Over? Two Startups Will Test Demand Read Article Media Coverage November 6, 2025 BillionToOne IPO becomes $5 billion explosion as Bay Area medical test maker’s sto"
+          },
+          {
+            "term": "Coverage",
+            "context": "mes $5 billion explosion as Bay Area medical test maker’s stock doubles in debut Read Article Media Coverage November 6, 2025 BillionToOne IPO becomes $5 billion explosion as Bay Area medical test maker’s sto"
+          },
+          {
+            "term": "Coverage",
+            "context": "mes $5 billion explosion as Bay Area medical test maker’s stock doubles in debut Read Article Media Coverage November 6, 2025 BillionToOne valued at $4.4 billion as shares surge in blockbuster Nasdaq debut Re"
+          },
+          {
+            "term": "Coverage",
+            "context": "BillionToOne valued at $4.4 billion as shares surge in blockbuster Nasdaq debut Read Article Media Coverage November 6, 2025 BillionToOne valued at $4.4 billion as shares surge in blockbuster Nasdaq debut Re"
+          },
+          {
+            "term": "Coverage",
+            "context": "BillionToOne valued at $4.4 billion as shares surge in blockbuster Nasdaq debut Read Article Media Coverage November 6, 2025 BillionToOne Shares Surge Following Firm’s $273M IPO Read Article Media Coverage N"
+          },
+          {
+            "term": "Coverage",
+            "context": "a Coverage November 6, 2025 BillionToOne Shares Surge Following Firm’s $273M IPO Read Article Media Coverage November 6, 2025 BillionToOne Shares Surge Following Firm’s $273M IPO Read Article Media Coverage N"
+          },
+          {
+            "term": "Coverage",
+            "context": "a Coverage November 6, 2025 BillionToOne Shares Surge Following Firm’s $273M IPO Read Article Media Coverage November 6, 2025 How A Turkish Immigrant Engineered A Successful Diagnostics Startup IPO Read Artic"
+          },
+          {
+            "term": "Coverage",
+            "context": "6, 2025 How A Turkish Immigrant Engineered A Successful Diagnostics Startup IPO Read Article Media Coverage November 6, 2025 How A Turkish Immigrant Engineered A Successful Diagnostics Startup IPO Read Artic"
+          },
+          {
+            "term": "Coverage",
+            "context": "witter What We Offer Our Technology Publications Products Explore News & Media Press Releases Media Coverage Events Social Media About Us Careers Patient Portal IT Security Compliance Contact Contact Informat"
+          }
+        ]
+      },
+      "sources": [
+        "https://www.billiontoone.com/"
+      ],
+      "metadata": {
+        "scrapedAt": "2026-01-12T22:47:47.412Z",
+        "successfulUrls": 1,
+        "totalUrls": 8
+      }
+    },
+    {
+      "vendor": "Caris Life Sciences",
+      "tests": [
+        "MI Profile",
+        "MI Tumor Seek"
+      ],
+      "coverage": {
+        "lcds": [],
+        "ncds": [],
+        "cptCodes": [],
+        "reimbursementAmounts": [],
+        "coveredIndications": [],
+        "rawMatches": [
+          {
+            "term": "Billing",
+            "context": "ogram criteria are met. For patients based outside the United States, contact International Patient Billing support at InternationalSupport@CarisLS.com DOCUMENT DOWNLOADS Financial Assistance Program Financi"
+          },
+          {
+            "term": "Insurance",
+            "context": "ram Financial Assistance Request Form (EN) Financial Assistance Request Form (ES) Working with Your Insurance Caris testing is typically reimbursed by insurance providers, Medicare and state Medicaid providers"
+          },
+          {
+            "term": "reimbursed",
+            "context": "(EN) Financial Assistance Request Form (ES) Working with Your Insurance Caris testing is typically reimbursed by insurance providers, Medicare and state Medicaid providers. The cost will differ among the Caris"
+          },
+          {
+            "term": "insurance",
+            "context": "l Assistance Request Form (ES) Working with Your Insurance Caris testing is typically reimbursed by insurance providers, Medicare and state Medicaid providers. The cost will differ among the Caris offerings, d"
+          },
+          {
+            "term": "Medicare",
+            "context": "Form (ES) Working with Your Insurance Caris testing is typically reimbursed by insurance providers, Medicare and state Medicaid providers. The cost will differ among the Caris offerings, depending on the tumo"
+          },
+          {
+            "term": "Medicaid",
+            "context": "ith Your Insurance Caris testing is typically reimbursed by insurance providers, Medicare and state Medicaid providers. The cost will differ among the Caris offerings, depending on the tumor profile offered,"
+          },
+          {
+            "term": "insurance",
+            "context": "ian, regardless of our network status. A Test is Ordered At the time of order, all necessary health insurance information is required for every patient. Caris will file insurance claims for services provided o"
+          },
+          {
+            "term": "insurance",
+            "context": "of order, all necessary health insurance information is required for every patient. Caris will file insurance claims for services provided on the patient’s behalf. Caris Submits a Claim If coverage is denied,"
+          },
+          {
+            "term": "coverage",
+            "context": "will file insurance claims for services provided on the patient’s behalf. Caris Submits a Claim If coverage is denied, Caris billing specialists will work with the insurance provider to file appeals and purs"
+          },
+          {
+            "term": "billing",
+            "context": "s for services provided on the patient’s behalf. Caris Submits a Claim If coverage is denied, Caris billing specialists will work with the insurance provider to file appeals and pursue coverage on your behal"
+          },
+          {
+            "term": "insurance",
+            "context": "s behalf. Caris Submits a Claim If coverage is denied, Caris billing specialists will work with the insurance provider to file appeals and pursue coverage on your behalf. Billing Caris will bill your insurance"
+          },
+          {
+            "term": "coverage",
+            "context": "denied, Caris billing specialists will work with the insurance provider to file appeals and pursue coverage on your behalf. Billing Caris will bill your insurance company directly and work with them to proce"
+          },
+          {
+            "term": "Billing",
+            "context": "ecialists will work with the insurance provider to file appeals and pursue coverage on your behalf. Billing Caris will bill your insurance company directly and work with them to process claims. Depending on"
+          },
+          {
+            "term": "insurance",
+            "context": "insurance provider to file appeals and pursue coverage on your behalf. Billing Caris will bill your insurance company directly and work with them to process claims. Depending on the terms of your healthcare pl"
+          },
+          {
+            "term": "insurance",
+            "context": "aims. Depending on the terms of your healthcare plan, you may receive a bill for the deductible, co-insurance, or co-payment as determined by your plan. Patient Billing Support Financial Assistance ABN Require"
+          },
+          {
+            "term": "Billing",
+            "context": "receive a bill for the deductible, co-insurance, or co-payment as determined by your plan. Patient Billing Support Financial Assistance ABN Requirements Patient Billing Support Our Patient Billing team is d"
+          },
+          {
+            "term": "Billing",
+            "context": "t as determined by your plan. Patient Billing Support Financial Assistance ABN Requirements Patient Billing Support Our Patient Billing team is dedicated to educating patients and families affected by cancer"
+          },
+          {
+            "term": "Billing",
+            "context": ". Patient Billing Support Financial Assistance ABN Requirements Patient Billing Support Our Patient Billing team is dedicated to educating patients and families affected by cancer about their options with Ca"
+          },
+          {
+            "term": "covered",
+            "context": "(EOB) statements, and discussing financial options. Financial Assistance Caris molecular testing is covered by most insurance plans. Caris has additional financial assistance programs that provide added fina"
+          },
+          {
+            "term": "insurance",
+            "context": ", and discussing financial options. Financial Assistance Caris molecular testing is covered by most insurance plans. Caris has additional financial assistance programs that provide added financial flexibility"
+          },
+          {
+            "term": "Medicare",
+            "context": "rovide added financial flexibility for qualified patients. Apply ABN Requirements For patients with Medicare , an Advance Beneficiary Notice of Non-coverage (ABN) may be required if the patient does not meet"
+          },
+          {
+            "term": "coverage",
+            "context": "patients. Apply ABN Requirements For patients with Medicare , an Advance Beneficiary Notice of Non-coverage (ABN) may be required if the patient does not meet CMS coverage requirements for Caris testing. The"
+          },
+          {
+            "term": "CMS",
+            "context": ", an Advance Beneficiary Notice of Non-coverage (ABN) may be required if the patient does not meet CMS coverage requirements for Caris testing. The ABN is intended to help Medicare beneficiaries make in"
+          },
+          {
+            "term": "coverage",
+            "context": "n Advance Beneficiary Notice of Non-coverage (ABN) may be required if the patient does not meet CMS coverage requirements for Caris testing. The ABN is intended to help Medicare beneficiaries make informed de"
+          },
+          {
+            "term": "Medicare",
+            "context": "the patient does not meet CMS coverage requirements for Caris testing. The ABN is intended to help Medicare beneficiaries make informed decisions about services Medicare may not cover in specific situations."
+          },
+          {
+            "term": "Medicare",
+            "context": "testing. The ABN is intended to help Medicare beneficiaries make informed decisions about services Medicare may not cover in specific situations. Should a patient not meet the current CMS criteria for covera"
+          },
+          {
+            "term": "CMS",
+            "context": "about services Medicare may not cover in specific situations. Should a patient not meet the current CMS criteria for coverage, Caris will contact the patient and treating physician to obtain an ABN prior"
+          },
+          {
+            "term": "coverage",
+            "context": "dicare may not cover in specific situations. Should a patient not meet the current CMS criteria for coverage, Caris will contact the patient and treating physician to obtain an ABN prior to initiating the tes"
+          },
+          {
+            "term": "MEDICARE",
+            "context": "aris will contact the patient and treating physician to obtain an ABN prior to initiating the test. MEDICARE ABN ENGLISH MEDICARE ABN ESPAÑOL Do You Qualify for Financial Assistance? The Caris financial assis"
+          },
+          {
+            "term": "MEDICARE",
+            "context": "patient and treating physician to obtain an ABN prior to initiating the test. MEDICARE ABN ENGLISH MEDICARE ABN ESPAÑOL Do You Qualify for Financial Assistance? The Caris financial assistance program aims to"
+          },
+          {
+            "term": "Billing",
+            "context": "ehold Size: 1 2 3 4 5 6 7 8+ Annual Income: Calculate Discount Financial Assistance Request Patient Billing FAQs What is an Explanation of Benefits (EOB) and does it require further action on my part? Each t"
+          },
+          {
+            "term": "insurance",
+            "context": "and does it require further action on my part? Each time Caris submits a claim or an appeal to your insurance provider, the insurer will send an EOB that details the portion of the claim the insurer intends to"
+          },
+          {
+            "term": "insurance",
+            "context": "the insurer will send an EOB that details the portion of the claim the insurer intends to pay. Some insurance providers will split one claim into multiple sections, which may cause you to receive more than one"
+          },
+          {
+            "term": "Billing",
+            "context": "is invoice. If you have any questions about an EOB or an invoice from Caris, please contact Patient Billing at 1.888.979.8669 or PatientBilling@CarisLS.com . What am I responsible for paying? Patients are fi"
+          },
+          {
+            "term": "insurance",
+            "context": "esponsible for paying? Patients are financially responsible for deductibles, co-payments, and/or co-insurance according to the patient’s individual insurance plan and applicable federal and state regulations."
+          },
+          {
+            "term": "insurance",
+            "context": "responsible for deductibles, co-payments, and/or co-insurance according to the patient’s individual insurance plan and applicable federal and state regulations. Contact Patient Billing at 1.888.979.8669 or Pat"
+          },
+          {
+            "term": "Billing",
+            "context": "e patient’s individual insurance plan and applicable federal and state regulations. Contact Patient Billing at 1.888.979.8669 or PatientBilling@CarisLS.com to discuss your options. Is prior authorization req"
+          },
+          {
+            "term": "prior authorization",
+            "context": "Contact Patient Billing at 1.888.979.8669 or PatientBilling@CarisLS.com to discuss your options. Is prior authorization required and what happens if coverage is denied? Caris will conduct any prior authorizations requir"
+          },
+          {
+            "term": "coverage",
+            "context": "entBilling@CarisLS.com to discuss your options. Is prior authorization required and what happens if coverage is denied? Caris will conduct any prior authorizations required by the patient’s insurance plan, an"
+          },
+          {
+            "term": "insurance",
+            "context": "appens if coverage is denied? Caris will conduct any prior authorizations required by the patient’s insurance plan, and Caris will appeal all prior authorizations or claims that are denied. For questions, plea"
+          },
+          {
+            "term": "Billing",
+            "context": "ll appeal all prior authorizations or claims that are denied. For questions, please contact Patient Billing at 1.888.979.8669 or PatientBilling@CarisLS.com . How do I file a secondary or supplemental insuran"
+          },
+          {
+            "term": "insurance",
+            "context": "Billing at 1.888.979.8669 or PatientBilling@CarisLS.com . How do I file a secondary or supplemental insurance claim? Caris will file all secondary or supplemental insurance claims on your behalf. If you receiv"
+          },
+          {
+            "term": "insurance",
+            "context": "o I file a secondary or supplemental insurance claim? Caris will file all secondary or supplemental insurance claims on your behalf. If you receive a bill and believe that a secondary claim has not been filed,"
+          },
+          {
+            "term": "Billing",
+            "context": "ehalf. If you receive a bill and believe that a secondary claim has not been filed, contact Patient Billing at 1.888.979.8669 or PatientBilling@CarisLS.com . What happens if I cannot afford to pay for molecu"
+          },
+          {
+            "term": "Billing",
+            "context": "inancial assistance programs that provide added flexibility for qualified patients. Contact Patient Billing at 1.888.979.8669 or PatientBilling@CarisLS.com to learn more about these programs. Can I pay my bi"
+          },
+          {
+            "term": "billing",
+            "context": "an I pay my bill online? Yes, you may pay your bill online . Who can I contact if I have additional billing questions? Patient Billing specialists are available to answer any questions you might have, at 1.8"
+          },
+          {
+            "term": "Billing",
+            "context": "s, you may pay your bill online . Who can I contact if I have additional billing questions? Patient Billing specialists are available to answer any questions you might have, at 1.888.979.8669 or PatientBilli"
+          },
+          {
+            "term": "insurance",
+            "context": "8.979.8669 or PatientBilling@CarisLS.com . Please have your account number (found on your bill) and insurance policy number (located on your insurance card) available for all billing inquiries. For patients ba"
+          },
+          {
+            "term": "insurance",
+            "context": ". Please have your account number (found on your bill) and insurance policy number (located on your insurance card) available for all billing inquiries. For patients based outside the United States, contact In"
+          },
+          {
+            "term": "billing",
+            "context": "(found on your bill) and insurance policy number (located on your insurance card) available for all billing inquiries. For patients based outside the United States, contact International Patient Billing supp"
+          }
+        ]
+      },
+      "sources": [
+        "https://www.carislifesciences.com/patients/patient-services/financial-services/",
+        "https://www.carislifesciences.com/billing/",
+        "https://www.carislifesciences.com/patients/patient-services/",
+        "https://www.carislifesciences.com/products-and-services/molecular-profiling/",
+        "https://www.carismolecularintelligence.com/"
+      ],
+      "metadata": {
+        "scrapedAt": "2026-01-12T22:47:53.221Z",
+        "successfulUrls": 5,
+        "totalUrls": 7
+      }
+    },
+    {
+      "vendor": "Exact Sciences",
+      "tests": [
+        "Cologuard",
+        "Cologuard Plus",
+        "Oncotype DX",
+        "Oncotype DX Breast",
+        "Oncotype DX Colon",
+        "OncoExTra"
+      ],
+      "coverage": {
+        "lcds": [],
+        "ncds": [],
+        "cptCodes": [],
+        "reimbursementAmounts": [
+          "$0"
+        ],
+        "coveredIndications": [
+          "stage III colorectal cancer",
+          "breast cancer",
+          "colon cancer",
+          "Colorectal cancer",
+          "colorectal cancer",
+          "Colon Cancer",
+          "Breast Cancer",
+          "Colorectal Cancer",
+          "Prostate Cancer"
+        ],
+        "rawMatches": [
+          {
+            "term": "insurance",
+            "context": "e 1994. 5 HOW MUCH DOES COLOGUARD ® TEST COST? Most patients pay $0 * 96% of users pay nothing with insurance. Cologuard is covered by Medicare, most major plans, and an eligible expense for flexible spending"
+          },
+          {
+            "term": "covered",
+            "context": "COLOGUARD ® TEST COST? Most patients pay $0 * 96% of users pay nothing with insurance. Cologuard is covered by Medicare, most major plans, and an eligible expense for flexible spending accounts (HSA, HRA, FS"
+          },
+          {
+            "term": "Medicare",
+            "context": "TEST COST? Most patients pay $0 * 96% of users pay nothing with insurance. Cologuard is covered by Medicare, most major plans, and an eligible expense for flexible spending accounts (HSA, HRA, FSA). Learn mo"
+          },
+          {
+            "term": "Insurance",
+            "context": "or plans, and an eligible expense for flexible spending accounts (HSA, HRA, FSA). Learn more Search Insurance Providers Provider Not Found Congrats! Iowa Medicaid plan is in network for Cologuard Plus. Request"
+          },
+          {
+            "term": "Medicaid",
+            "context": "g accounts (HSA, HRA, FSA). Learn more Search Insurance Providers Provider Not Found Congrats! Iowa Medicaid plan is in network for Cologuard Plus. Request Cologuard Congrats! Bcbs Iowa Wellmark Msa Medicare"
+          },
+          {
+            "term": "Medicare",
+            "context": "Medicaid plan is in network for Cologuard Plus. Request Cologuard Congrats! Bcbs Iowa Wellmark Msa Medicare Advantage is in network for the Cologuard test. Request Cologuard WHY THE COLOGUARD TEST The leadin"
+          },
+          {
+            "term": "insurance",
+            "context": "get the Cologuard Plus test? You can request Cologuard Plus through your health care provider. Your insurance coverage will determine which version of the test you should receive. You can also request your tes"
+          },
+          {
+            "term": "coverage",
+            "context": "loguard Plus test? You can request Cologuard Plus through your health care provider. Your insurance coverage will determine which version of the test you should receive. You can also request your test by orde"
+          },
+          {
+            "term": "billing",
+            "context": "quest Cologuard Plus with self-pay References * Exact Sciences estimate based on historical patient billing. Rate of coverage varies by state and region. Exceptions for coverage may apply; only your patients"
+          },
+          {
+            "term": "coverage",
+            "context": "lus with self-pay References * Exact Sciences estimate based on historical patient billing. Rate of coverage varies by state and region. Exceptions for coverage may apply; only your patients' insurers can con"
+          },
+          {
+            "term": "coverage",
+            "context": "te based on historical patient billing. Rate of coverage varies by state and region. Exceptions for coverage may apply; only your patients' insurers can confirm how Cologuard would be covered. Stieber B, Gree"
+          },
+          {
+            "term": "covered",
+            "context": "Exceptions for coverage may apply; only your patients' insurers can confirm how Cologuard would be covered. Stieber B, Greene M, Ahn Le Q, et al. Trends in utilization of colorectal cancer screening modalit"
+          },
+          {
+            "term": "Billing",
+            "context": "occur. Rx only. Helpful Links Contact Us Give Us Feedback Check Your Results Behind the Screen Blog Billing & Insurance Pay A Bill Insurance Appeal A Claim About Exact Sciences HIPAA Notice Privacy Policy Te"
+          },
+          {
+            "term": "Insurance",
+            "context": "only. Helpful Links Contact Us Give Us Feedback Check Your Results Behind the Screen Blog Billing & Insurance Pay A Bill Insurance Appeal A Claim About Exact Sciences HIPAA Notice Privacy Policy Terms of Use D"
+          },
+          {
+            "term": "Insurance",
+            "context": "ontact Us Give Us Feedback Check Your Results Behind the Screen Blog Billing & Insurance Pay A Bill Insurance Appeal A Claim About Exact Sciences HIPAA Notice Privacy Policy Terms of Use Do Not Sell or Share M"
+          },
+          {
+            "term": "Coverage",
+            "context": "help to guide your individualized treatment options. Back Testing & Treatment Options Back Costs & Coverage Back Understanding Your Diagnosis Provide a genomic-based, comprehensive, individualized risk asses"
+          },
+          {
+            "term": "Insurance",
+            "context": "nce Score Back Advanced Solid Tumors Back OncoExTra Back Multiple Cancer Types Back Oncodetect Back Insurance Coverage & Billing Back Our Approach Back By Cancer Type Experience our comprehensive portfolio of"
+          },
+          {
+            "term": "Coverage",
+            "context": "Back Advanced Solid Tumors Back OncoExTra Back Multiple Cancer Types Back Oncodetect Back Insurance Coverage & Billing Back Our Approach Back By Cancer Type Experience our comprehensive portfolio of diagnosti"
+          },
+          {
+            "term": "Billing",
+            "context": "ed Solid Tumors Back OncoExTra Back Multiple Cancer Types Back Oncodetect Back Insurance Coverage & Billing Back Our Approach Back By Cancer Type Experience our comprehensive portfolio of diagnostic tests th"
+          },
+          {
+            "term": "Billing",
+            "context": "they would provide the best care available. I built my team through personal recommendations and…” Billing & Coverage Exact Sciences believes that everyone should have access to the information they need to"
+          },
+          {
+            "term": "Coverage",
+            "context": "d provide the best care available. I built my team through personal recommendations and…” Billing & Coverage Exact Sciences believes that everyone should have access to the information they need to make infor"
+          },
+          {
+            "term": "insurance",
+            "context": "ancer treatment. That’s why we offer the Genomic Access Program (GAP) to help patients navigate the insurance and billing process. Explore Billing & Coverage options We've set the Exact ations high Over 1 mill"
+          },
+          {
+            "term": "billing",
+            "context": "t. That’s why we offer the Genomic Access Program (GAP) to help patients navigate the insurance and billing process. Explore Billing & Coverage options We've set the Exact ations high Over 1 million patients"
+          },
+          {
+            "term": "Billing",
+            "context": "e Genomic Access Program (GAP) to help patients navigate the insurance and billing process. Explore Billing & Coverage options We've set the Exact ations high Over 1 million patients benefited from Oncotype"
+          },
+          {
+            "term": "Coverage",
+            "context": "Access Program (GAP) to help patients navigate the insurance and billing process. Explore Billing & Coverage options We've set the Exact ations high Over 1 million patients benefited from Oncotype DX &reg; te"
+          },
+          {
+            "term": "Billing",
+            "context": "719 Quick Links About Us Breast Cancer Colon Cancer Advanced Solid Tumors For Patients & Caregivers Billing & Coverage Publications Follow Us Twitter Facebook Youtube Licenses Medicare Billing Policy Privacy"
+          },
+          {
+            "term": "Coverage",
+            "context": "Links About Us Breast Cancer Colon Cancer Advanced Solid Tumors For Patients & Caregivers Billing & Coverage Publications Follow Us Twitter Facebook Youtube Licenses Medicare Billing Policy Privacy Policy HIP"
+          },
+          {
+            "term": "Medicare",
+            "context": "r Patients & Caregivers Billing & Coverage Publications Follow Us Twitter Facebook Youtube Licenses Medicare Billing Policy Privacy Policy HIPAA Notice Do Not Sell or Share My Personal Information Terms & Con"
+          },
+          {
+            "term": "Billing",
+            "context": "s & Caregivers Billing & Coverage Publications Follow Us Twitter Facebook Youtube Licenses Medicare Billing Policy Privacy Policy HIPAA Notice Do Not Sell or Share My Personal Information Terms & Conditions"
+          }
+        ]
+      },
+      "sources": [
+        "https://www.exactsciences.com/",
+        "https://www.cologuard.com/",
+        "https://www.oncotypeiq.com/"
+      ],
+      "metadata": {
+        "scrapedAt": "2026-01-12T22:48:07.427Z",
+        "successfulUrls": 3,
+        "totalUrls": 10
+      }
+    }
+  ]
+}
