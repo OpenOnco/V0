@@ -2,7 +2,12 @@
   "metadata": {
     "description": "Vendor-published Medicare coverage information for OpenOnco tests",
     "lastUpdated": "2026-01-12",
-    "sources": "Vendor websites, press releases, billing pages"
+    "sources": "Vendor websites, press releases, billing pages",
+    "summary": {
+      "totalVendors": 17,
+      "totalTests": 41,
+      "vendorsPendingResearch": 0
+    }
   },
   "vendors": {
     "Natera": {
@@ -283,6 +288,152 @@
           ]
         }
       }
+    },
+    "NeoGenomics": {
+      "billingPage": "https://neogenomics.com/pharma-services/testing-services/liquid-biopsy",
+      "tests": {
+        "RaDaR": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Minimal Residual Disease Testing for Cancer",
+          "fdaStatus": "FDA Breakthrough Device Designation",
+          "coveredIndications": [
+            "HR+/HER2- breast cancer (stage II/III, 5+ years post-diagnosis, NED)"
+          ],
+          "notes": "MolDX coverage announced July 2023, effective March 24, 2023. Tumor-informed, tracks up to 48 variants. LOD 0.001%. Coverage currently breast cancer only - CRC coverage in development.",
+          "pressReleases": [
+            {"date": "2023-07", "title": "Medicare coverage for HR+/HER2- breast cancer MRD"}
+          ]
+        },
+        "InVisionFirst-Lung": {
+          "lcd": "L37870",
+          "lcdName": "MolDX: InVisionFirst-Lung Liquid Biopsy",
+          "coveredIndications": ["Advanced NSCLC"],
+          "notes": "Liquid biopsy for NSCLC therapy selection. Built on InVision platform."
+        }
+      }
+    },
+    "Personalis": {
+      "billingPage": "https://www.personalis.com/",
+      "tests": {
+        "NeXT Dx": {
+          "lcd": "L38119",
+          "lcdName": "MolDX: Next-Generation Sequencing for Solid Tumors",
+          "cptCode": "81479",
+          "coveredIndications": [
+            "All solid tumors",
+            "WES/WTS comprehensive profiling"
+          ],
+          "notes": "Medicare coverage announced Oct 2024, effective Aug 29, 2023. Whole exome + transcriptome with tumor/normal paired analysis.",
+          "pressReleases": [
+            {"date": "2024-10", "title": "Medicare coverage for NeXT Dx comprehensive profiling"}
+          ]
+        },
+        "NeXT Personal Dx": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Minimal Residual Disease Testing for Cancer",
+          "coveredIndications": [
+            "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
+            "Post-treatment surveillance up to 6 years"
+          ],
+          "reimbursement": {
+            "breastMRDMonitoring": "$4,266 (once per diagnosis)",
+            "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
+          },
+          "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025. Ultrasensitive WGS-based MRD. Updated reimbursement rates effective Dec 1, 2025. Marketed through Tempus AI partnership.",
+          "pressReleases": [
+            {"date": "2025-11", "title": "Medicare coverage for breast cancer MRD surveillance"},
+            {"date": "2025-11", "title": "Revised reimbursement rates ($4,266/$1,164)"}
+          ]
+        }
+      }
+    },
+    "BillionToOne": {
+      "billingPage": "https://www.northstaronc.com/",
+      "tests": {
+        "Northstar Select": {
+          "lcd": "L38043",
+          "lcdName": "MolDX: Plasma-Based Genomic Profiling",
+          "coveredIndications": [
+            "Advanced solid tumors",
+            "Therapy selection"
+          ],
+          "notes": "Medicare coverage announced April 2025, effective Feb 14, 2025. 84-gene liquid biopsy panel with QCT technology. Head-to-head study showed 51% more actionable alterations vs competitors. LOD 0.15% VAF.",
+          "pressReleases": [
+            {"date": "2025-04", "title": "Medicare coverage via MolDX L38043"}
+          ]
+        },
+        "Northstar Response": {
+          "lcd": null,
+          "coveredIndications": ["Treatment response monitoring in advanced cancers"],
+          "notes": "NOT YET COVERED. Methylation-based tissue-free TRM test. Company targeting Medicare coverage before end of 2026 per Q3 2025 earnings call.",
+          "status": "PENDING_COVERAGE"
+        }
+      }
+    },
+    "Memorial Sloan Kettering": {
+      "billingPage": "https://www.mskcc.org/insurance-assistance",
+      "tests": {
+        "MSK-IMPACT": {
+          "ncd": "90.2",
+          "ncdName": "Next Generation Sequencing (NGS)",
+          "ncdSection": "Section D (non-CDx)",
+          "fdaStatus": "FDA De Novo Class II authorized (November 2017)",
+          "genesAnalyzed": 468,
+          "coveredIndications": [
+            "Solid malignant neoplasms",
+            "Detection of somatic mutations (point mutations, small indels)",
+            "Microsatellite instability (MSI)"
+          ],
+          "coverageNotes": "FDA authorized but NOT a companion diagnostic - covered under NCD 90.2 Section D as lab-developed test. First NGS tumor profiling test to receive FDA authorization through de novo pathway. MSK pursuing CDx status for specific biomarkers to achieve Section A/B coverage.",
+          "notes": "468-gene panel, tissue-based (FFPE), includes tumor/normal paired analysis. Available only at MSK. Used for clinical trial enrollment matching. MSK-IMPACT Heme also available for hematologic malignancies."
+        },
+        "MSK-ACCESS": {
+          "ncd": null,
+          "lcd": "L38043",
+          "lcdName": "MolDX: Plasma-Based Genomic Profiling",
+          "coveredIndications": ["Liquid biopsy CGP for solid tumors"],
+          "notes": "MSK's liquid biopsy companion to MSK-IMPACT. 129-gene ctDNA panel. Coverage via MolDX plasma genomic profiling LCD."
+        }
+      }
+    },
+    "Labcorp": {
+      "billingPage": "https://www.labcorp.com/patients/patient-billing",
+      "tests": {
+        "Invitae PCM (cfDNA MRD)": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Minimal Residual Disease Testing for Cancer",
+          "coveredIndications": [
+            "MRD monitoring",
+            "ctDNA-based surveillance"
+          ],
+          "notes": "Labcorp acquired Invitae's oncology business. Personalized cancer monitoring via cfDNA. Tumor-informed approach."
+        }
+      }
+    },
+    "Quest Diagnostics": {
+      "billingPage": "https://www.questdiagnostics.com/patients/billing",
+      "tests": {
+        "Haystack MRD": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Minimal Residual Disease Testing for Cancer",
+          "coveredIndications": [
+            "Multi-solid tumor MRD",
+            "Post-treatment surveillance"
+          ],
+          "notes": "Tumor-informed WGS-derived panel (~50 variants). LOD 6 ppm. Submitted for MolDX coverage. Coverage status: Pending formal announcement but expected covered under L38779."
+        }
+      }
+    },
+    "Strata Oncology": {
+      "billingPage": "https://strataoncology.com/",
+      "tests": {
+        "StrataNGS": {
+          "lcd": "L38043",
+          "lcdName": "MolDX: Plasma-Based Genomic Profiling",
+          "coveredIndications": ["Advanced solid tumors", "Therapy selection"],
+          "notes": "Liquid biopsy CGP panel. 55 genes for therapy selection. Coverage via MolDX plasma genomic profiling LCD."
+        }
+      }
     }
   },
   "coveragePolicies": {
@@ -338,13 +489,5 @@
       ]
     }
   },
-  "vendorsToResearch": [
-    "NeoGenomics",
-    "Personalis",
-    "Labcorp",
-    "Quest Diagnostics",
-    "BillionToOne",
-    "Memorial Sloan Kettering",
-    "Strata Oncology"
-  ]
+  "vendorsToResearch": []
 }
