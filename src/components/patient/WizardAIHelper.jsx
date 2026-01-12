@@ -7,6 +7,7 @@ import React, { useState, useRef, useEffect } from 'react';
  * - Floating bubble that expands into a chat panel
  * - Context-aware: knows what step the user is on
  * - Brief, direct responses like a knowledgeable doctor
+ * - Mobile responsive: bottom-right on mobile, right of wizard on desktop
  */
 
 // Wizard step descriptions for AI context
@@ -132,8 +133,22 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  );
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Track window width for responsive positioning
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Desktop threshold - when to switch from mobile to desktop positioning
+  // 1024px is when the wizard (max-w-2xl = 672px) + button offset (360px) fits on screen
+  const isDesktop = windowWidth >= 1024;
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -221,55 +236,75 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
 
   return (
     <>
-      {/* Floating Button - positioned to the right of the centered wizard, at bottom */}
+      {/* Floating Button - bottom-right on mobile, right of wizard center on desktop */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
           fixed z-50
-          w-20 h-20 rounded-full shadow-lg
+          w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 
+          rounded-full shadow-lg
           flex items-center justify-center
           transition-all duration-300 ease-in-out
-          bottom-8
+          bottom-4 sm:bottom-6 lg:bottom-8
           ${isOpen 
             ? 'bg-slate-600 hover:bg-slate-700 rotate-0' 
             : 'bg-emerald-500 hover:bg-emerald-600 animate-pulse hover:animate-none'
           }
         `}
-        style={{ left: 'calc(50% + 360px)' }}
+        style={isDesktop 
+          ? { left: 'calc(50% + 360px)' }
+          : { right: '16px' }
+        }
         aria-label={isOpen ? 'Close helper' : 'Open AI helper'}
       >
         {isOpen ? (
-          <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <span className="text-5xl">🤔</span>
+          <span className="text-3xl sm:text-4xl lg:text-5xl">🤔</span>
         )}
       </button>
 
-      {/* Chat Panel - positioned above the bubble */}
+      {/* Chat Panel - full width with margins on mobile, positioned on desktop */}
       {isOpen && (
         <div 
-          className="fixed z-50 w-80 sm:w-96 max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300 bottom-24"
-          style={{ left: 'calc(50% + 360px)' }}
+          className="fixed z-50 
+            max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-slate-200 
+            flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300
+            bottom-20 sm:bottom-24 lg:bottom-32"
+          style={isDesktop 
+            ? { left: 'calc(50% + 280px)', width: '384px' }
+            : { left: '16px', right: '16px' }
+          }
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-white">Need Help?</h3>
-              <p className="text-emerald-100 text-xs">Ask me anything about MRD testing</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-white text-sm sm:text-base">Need Help?</h3>
+              <p className="text-emerald-100 text-xs truncate">Ask me anything about MRD testing</p>
             </div>
+            {/* Close button in header for mobile */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="lg:hidden p-1 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              aria-label="Close"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[200px] max-h-[40vh] bg-slate-50">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 min-h-[180px] sm:min-h-[200px] max-h-[40vh] bg-slate-50">
             {messages.length === 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {/* Welcome message */}
                 <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100">
                   <p className="text-slate-700 text-sm">
@@ -283,7 +318,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
                     <button
                       key={idx}
                       onClick={() => handleQuickQuestion(topic)}
-                      className="w-full text-left px-3 py-2 bg-white border border-emerald-200 rounded-lg text-sm text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition-colors"
+                      className="w-full text-left px-3 py-2.5 bg-white border border-emerald-200 rounded-lg text-sm text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition-colors active:bg-emerald-100"
                     >
                       {topic}
                     </button>
@@ -334,13 +369,13 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your question..."
-                className="flex-1 px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                className="flex-1 px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 disabled={isLoading}
               />
               <button
                 onClick={() => handleSend()}
                 disabled={!inputValue.trim() || isLoading}
-                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl transition-colors"
+                className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl transition-colors active:bg-emerald-700"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
