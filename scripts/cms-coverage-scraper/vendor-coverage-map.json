@@ -1,0 +1,238 @@
+{
+  "metadata": {
+    "description": "Vendor-published Medicare coverage information for OpenOnco tests",
+    "lastUpdated": "2026-01-12",
+    "sources": "Vendor websites, press releases, billing pages"
+  },
+  "vendors": {
+    "Natera": {
+      "billingPage": "https://www.natera.com/oncology/billing/",
+      "tests": {
+        "Signatera": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Molecular Residual Disease Testing for Cancer",
+          "coveredIndications": [
+            "Stage II-IV colorectal cancer",
+            "Stage II-IV breast cancer",
+            "Stage II-IV bladder cancer",
+            "Stage II-IV ovarian cancer",
+            "Stage I-IV NSCLC",
+            "Pan-cancer immunotherapy monitoring"
+          ],
+          "reimbursement": null,
+          "pressReleases": [
+            { "date": "2025-06", "title": "Signatera Genome LCD coverage" },
+            { "date": "2023-05", "title": "Pan-cancer immunotherapy coverage" }
+          ]
+        },
+        "Signatera Genome": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Molecular Residual Disease Testing for Cancer",
+          "coveredIndications": ["Same as Signatera"],
+          "reimbursement": null
+        },
+        "Foresight CLARITY Lymphoma": {
+          "lcd": null,
+          "lcdName": null,
+          "coveredIndications": [],
+          "reimbursement": null,
+          "notes": "Need to verify coverage status"
+        }
+      }
+    },
+    "Guardant Health": {
+      "billingPage": "https://guardanthealth.com/billing-support/",
+      "tests": {
+        "Guardant360 CDx": {
+          "ncd": "90.2",
+          "ncdName": "Next Generation Sequencing (NGS)",
+          "article": "A56148",
+          "coveredIndications": [
+            "Recurrent, relapsed, refractory, metastatic, or advanced non-CNS solid tumors",
+            "When tissue insufficient or unavailable"
+          ],
+          "reimbursement": null
+        },
+        "Guardant360 Liquid": {
+          "ncd": "90.2",
+          "coveredIndications": ["Same as Guardant360 CDx"],
+          "reimbursement": null
+        },
+        "Guardant360 Response": {
+          "lcd": "Treatment Response Monitoring",
+          "coveredIndications": [
+            "Metastatic/inoperable solid tumors on immune checkpoint inhibitors",
+            "Baseline test + follow-up 4-10 weeks post-therapy"
+          ],
+          "reimbursement": "$3,500"
+        },
+        "Reveal MRD": {
+          "lcd": "L38779",
+          "coveredIndications": [
+            "Stage II-III colorectal cancer",
+            "Within 3 months post-curative intent therapy"
+          ],
+          "reimbursement": null
+        },
+        "Shield": {
+          "ncd": "210.3",
+          "ncdName": "Colorectal Cancer Screening Tests",
+          "ncdSection": "B.3 Blood-based Biomarker Tests",
+          "coveredIndications": [
+            "Age 45-85",
+            "Average risk, asymptomatic",
+            "Once every 3 years"
+          ],
+          "reimbursement": "$1,495",
+          "notes": "First FDA-approved blood test for CRC screening. ADLT status April 2025."
+        },
+        "Shield MCD": {
+          "lcd": null,
+          "coveredIndications": [],
+          "notes": "Multi-cancer detection - coverage TBD pending FDA approval"
+        }
+      }
+    },
+    "Foundation Medicine": {
+      "billingPage": "https://www.foundationmedicine.com/resource/billing-and-financial-assistance",
+      "tests": {
+        "FoundationOne CDx": {
+          "ncd": "90.2",
+          "ncdName": "Next Generation Sequencing (NGS)",
+          "ncdSection": "Section B (FDA CDx)",
+          "coveredIndications": [
+            "All solid tumors",
+            "Treatment selection",
+            "Clinical trial matching"
+          ],
+          "reimbursement": "97% of Medicare patients have $0 financial responsibility",
+          "notes": "First FDA-approved CGP meeting NCD 90.2 requirements"
+        },
+        "FoundationOne Liquid CDx": {
+          "ncd": "90.2",
+          "ncdName": "Next Generation Sequencing (NGS)",
+          "coveredIndications": [
+            "Advanced solid tumors when tissue insufficient"
+          ],
+          "reimbursement": null
+        },
+        "FoundationOne Heme": {
+          "ncd": "90.2",
+          "coveredIndications": [
+            "Hematologic malignancies",
+            "Sarcomas"
+          ],
+          "reimbursement": null
+        },
+        "FoundationOne Tracker (MRD)": {
+          "lcd": "L38779",
+          "coveredIndications": [],
+          "notes": "Partnership with Natera - uses Signatera platform"
+        }
+      }
+    },
+    "GRAIL": {
+      "billingPage": "https://grail.com/galleri-test/",
+      "tests": {
+        "Galleri": {
+          "ncd": null,
+          "lcd": null,
+          "coveredIndications": [],
+          "reimbursement": "$949 (self-pay)",
+          "notes": "NOT covered by Medicare. REACH study (IDE) provides coverage for 50,000 study participants only. Pending FDA approval and congressional action (H.R. 2407, S. 2085)."
+        }
+      }
+    },
+    "Exact Sciences": {
+      "billingPage": "https://www.exactsciences.com/",
+      "tests": {
+        "Cologuard Plus": {
+          "ncd": null,
+          "lcd": null,
+          "coveredIndications": [],
+          "notes": "Need to verify coverage - different from original Cologuard"
+        },
+        "Oncoguard Liver": {
+          "lcd": null,
+          "coveredIndications": [],
+          "notes": "Need to verify coverage status"
+        },
+        "Cancerguard": {
+          "lcd": null,
+          "coveredIndications": [],
+          "notes": "MCED - likely no current coverage"
+        },
+        "Oncodetect": {
+          "lcd": "L38779",
+          "coveredIndications": [],
+          "notes": "MRD test - likely covered under L38779"
+        },
+        "OncoExTra": {
+          "ncd": "90.2",
+          "coveredIndications": [],
+          "notes": "CGP test - likely covered under NCD 90.2"
+        },
+        "Oncotype DX Breast Recurrence Score": {
+          "lcd": null,
+          "coveredIndications": ["HR+, HER2-, node-negative early breast cancer"],
+          "reimbursement": "Covered",
+          "notes": "Well-established test with broad coverage"
+        }
+      }
+    }
+  },
+  "coveragePolicies": {
+    "L38779": {
+      "name": "MolDX: Molecular Residual Disease Testing for Cancer",
+      "type": "LCD",
+      "category": "MRD",
+      "mac": "Multiple (Palmetto GBA administered)",
+      "generalCriteria": [
+        "Stage II-IV solid tumors",
+        "Post-curative intent therapy",
+        "Serial monitoring for recurrence"
+      ]
+    },
+    "NCD90.2": {
+      "documentId": 372,
+      "name": "Next Generation Sequencing (NGS)",
+      "type": "NCD",
+      "category": "CGP/TDS",
+      "sections": {
+        "B": "FDA-approved companion diagnostics - nationally covered",
+        "D": "Laboratory developed tests - MAC discretion"
+      }
+    },
+    "NCD210.3": {
+      "name": "Colorectal Cancer Screening Tests",
+      "type": "NCD",
+      "category": "ECD",
+      "sections": {
+        "B.3": "Blood-based Biomarker Tests"
+      },
+      "criteria": [
+        "FDA market authorization required",
+        "Sensitivity ≥74%",
+        "Specificity ≥90%",
+        "Age 45-85, average risk"
+      ]
+    },
+    "L38043": {
+      "name": "MolDX: Plasma-Based Genomic Profiling",
+      "type": "LCD",
+      "category": "CGP liquid biopsy"
+    }
+  },
+  "vendorsToResearch": [
+    "Tempus AI",
+    "Caris Life Sciences",
+    "NeoGenomics",
+    "Personalis",
+    "Labcorp",
+    "Quest Diagnostics",
+    "Adaptive Biotechnologies",
+    "BillionToOne",
+    "Memorial Sloan Kettering",
+    "Strata Oncology"
+  ]
+}

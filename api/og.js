@@ -493,7 +493,7 @@ export default function handler(req, res) {
   const url = `${baseUrl}${path}`;
   
   // Pattern: /compare/[slug]
-  const compareMatch = path.match(/^\\/compare\\/([^\\/]+)\\/?$/i);
+  const compareMatch = path.match(/^\/compare\/([^\/]+)\/?$/i);
   if (compareMatch) {
     const slug = compareMatch[1].toLowerCase();
     const comparison = COMPARISON_PAGES[slug];
@@ -503,7 +503,7 @@ export default function handler(req, res) {
   }
   
   // Pattern: /test/[slug]
-  const testMatch = path.match(/^\\/test\\/([^\\/]+)\\/?$/i);
+  const testMatch = path.match(/^\/test\/([^\/]+)\/?$/i);
   if (!html && testMatch) {
     const slug = testMatch[1].toLowerCase();
     const test = TEST_INFO[slug];
@@ -513,7 +513,7 @@ export default function handler(req, res) {
   }
   
   // Pattern: /[category]/[slug] - supports both new and legacy URLs
-  const categoryTestMatch = path.match(/^\\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\\/([^\\/]+)\\/?$/i);
+  const categoryTestMatch = path.match(/^\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\/([^\/]+)\/?$/i);
   if (!html && categoryTestMatch) {
     const categoryPath = categoryTestMatch[1].toLowerCase();
     const slug = categoryTestMatch[2].toLowerCase();
@@ -527,7 +527,7 @@ export default function handler(req, res) {
   }
   
   // Pattern: /[category] (category page) - supports both new and legacy URLs
-  const categoryMatch = path.match(/^\\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\\/?$/i);
+  const categoryMatch = path.match(/^\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\/?$/i);
   if (!html && categoryMatch) {
     const categoryPath = categoryMatch[1].toLowerCase();
     // Map new paths to old category codes for lookup
