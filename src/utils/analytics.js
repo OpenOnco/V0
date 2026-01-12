@@ -116,14 +116,14 @@ export const trackCategoryView = (category, testCount) => {
 /**
  * Track when a user views a test detail
  */
-export const trackTestView = (test, source = 'unknown') => {
+export const trackTestView = (test, source = 'unknown', category = null) => {
   if (!initialized) return;
-  
+
   posthog.capture('test_viewed', {
     test_id: test.id,
     test_name: test.name || test.testName,
     vendor: test.vendor,
-    category: test.category,
+    category: category || test.category,
     source, // Where they came from: 'search', 'category', 'comparison', 'chat'
     has_vendor_badge: !!test.vendorVerified,
     fda_status: test.fdaStatus,

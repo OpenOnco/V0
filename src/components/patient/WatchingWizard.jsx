@@ -13,6 +13,7 @@ import {
 } from '../../data';
 import { getVendorAvailabilityUS } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
+import WizardAIHelper from './WizardAIHelper';
 
 // ============================================================================
 // Configuration
@@ -83,9 +84,9 @@ const CONTENT = {
     },
     solution: {
       title: "That's why we built this guide",
-      description: "We've researched every MRD blood test on the market to help you find options to discuss with your oncologist. Only they can determine if testing is right for you and order it.",
+      description: "We've researched every MRD blood test on the market. Answer a few quick questions about your location, medical situation, and insurance — and we'll show you a shortlist of tests to discuss with your oncologist.",
     },
-    buttonText: "Find tests to discuss with my doctor",
+    buttonText: "Explore MRD testing",
     disclaimer: "This is an educational resource, not medical advice. Only your oncologist can order these tests.",
   },
   welcome: {
@@ -1966,6 +1967,9 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
         </p>
         )}
       </main>
+
+      {/* AI Helper Bubble */}
+      <WizardAIHelper currentStep={WIZARD_STEPS[currentStep]?.id} wizardData={wizardData} />
     </div>
   );
 }

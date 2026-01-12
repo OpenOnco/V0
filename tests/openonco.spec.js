@@ -992,7 +992,7 @@ test.describe('Persona System', () => {
     await expect(page.getByText(/finished cancer treatment/i)).toBeVisible({ timeout: 10000 });
     
     // Should see the CTA button
-    await expect(page.getByRole('button', { name: /find tests to discuss/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /explore mrd testing/i })).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -1017,7 +1017,7 @@ test.describe('Persona System', () => {
     await expect(page.getByText(/finished cancer treatment/i)).toBeVisible({ timeout: 5000 });
     
     // Click CTA to start wizard
-    await page.getByRole('button', { name: /find tests to discuss/i }).click();
+    await page.getByRole('button', { name: /explore mrd testing/i }).click();
     await page.waitForTimeout(500);
     
     // Should see the treatment status question
