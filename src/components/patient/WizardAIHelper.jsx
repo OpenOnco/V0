@@ -226,7 +226,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
         onClick={() => setIsOpen(!isOpen)}
         className={`
           fixed z-50
-          w-28 h-28 rounded-full shadow-lg
+          w-20 h-20 rounded-full shadow-lg
           flex items-center justify-center
           transition-all duration-300 ease-in-out
           bottom-8
