@@ -179,6 +179,110 @@
           "notes": "Well-established test with broad coverage"
         }
       }
+    },
+    "Tempus AI": {
+      "billingPage": "https://www.tempus.com/",
+      "tests": {
+        "Tempus xT CDx": {
+          "ncd": "90.2",
+          "ncdName": "Next Generation Sequencing (NGS)",
+          "lcd": null,
+          "cptCode": "81479",
+          "coveredIndications": [
+            "Solid tumor profiling",
+            "Colorectal cancer (companion diagnostic for KRAS)",
+            "All solid malignant neoplasms"
+          ],
+          "reimbursement": null,
+          "notes": "FDA PMA approved May 2023. CMS added to NCD 90.2 coverage Nov 2023 (transmittal 13278). 648-gene panel."
+        },
+        "Tempus xT": {
+          "ncd": null,
+          "lcd": "MolDX",
+          "cptCode": "81479",
+          "coveredIndications": [
+            "All solid tumors (tumor-only or normal-matched)",
+            "Myeloid malignancies",
+            "Suspected myeloid malignancies"
+          ],
+          "reimbursement": null,
+          "notes": "LDT version. Medicare coverage announced Nov 2023 via MolDX/Palmetto GBA."
+        },
+        "Tempus xF": {
+          "ncd": null,
+          "lcd": "L38043",
+          "coveredIndications": ["Liquid biopsy CGP"],
+          "notes": "Liquid biopsy panel - likely covered under plasma genomic profiling LCD"
+        }
+      }
+    },
+    "Caris Life Sciences": {
+      "billingPage": "https://www.carislifesciences.com/patients/patient-services/financial-services/",
+      "tests": {
+        "MI Cancer Seek": {
+          "ncd": "90.2",
+          "ncdName": "Next Generation Sequencing (NGS)",
+          "cptCode": "0211U",
+          "coveredIndications": [
+            "All solid tumors",
+            "WES/WTS analysis"
+          ],
+          "reimbursement": "$8,455",
+          "notes": "FDA PMA approved Nov 2024. First WES/WTS CDx. PLA code 0211U."
+        },
+        "MI Profile": {
+          "lcd": "L38121",
+          "lcdName": "MolDX: NGS for Solid Tumors",
+          "cptCode": "81479",
+          "coveredIndications": [
+            "All solid tumors",
+            "Includes MI Cancer Seek + IHC + additional markers"
+          ],
+          "reimbursement": null,
+          "notes": "Full molecular profiling package. Uses MI Cancer Seek for NGS component if specimen qualifies, otherwise MI Tumor Seek Hybrid (LDT)."
+        },
+        "MI Tumor Seek Hybrid": {
+          "lcd": "L38121",
+          "lcdName": "MolDX: NGS for Solid Tumors",
+          "cptCode": "81479",
+          "coveredIndications": ["All solid tumors"],
+          "notes": "WES/WTS LDT - used when specimen doesn't meet MI Cancer Seek FDA CDx requirements"
+        },
+        "Caris Assure": {
+          "lcd": "MolDX",
+          "coveredIndications": ["Liquid biopsy therapy selection"],
+          "reimbursement": "$3,649",
+          "notes": "Liquid biopsy for treatment decision support. MolDX pricing per Caris IPO filing."
+        }
+      }
+    },
+    "Adaptive Biotechnologies": {
+      "billingPage": "https://www.clonoseq.com/",
+      "tests": {
+        "clonoSEQ": {
+          "lcd": "L38779",
+          "lcdName": "MolDX: Minimal Residual Disease Testing for Cancer",
+          "fdaStatus": "FDA De Novo cleared (first MRD IVD)",
+          "coveredIndications": [
+            "B-cell acute lymphoblastic leukemia (B-ALL) - bone marrow",
+            "Multiple myeloma (MM) - bone marrow",
+            "Chronic lymphocytic leukemia (CLL) - blood or bone marrow",
+            "Diffuse large B-cell lymphoma (DLBCL) - ctDNA/blood (July 2022)",
+            "Mantle cell lymphoma (MCL) - MRD monitoring (Nov 2024)",
+            "MCL surveillance - single timepoint every 6 months for 5 years (April 2025)"
+          ],
+          "reimbursement": "Episode payment structure for series of tests",
+          "notes": "First and only FDA-cleared MRD assay. Over 240 million covered lives. Coverage via MolDX LCD finalized Nov 2021.",
+          "pressReleases": [
+            {"date": "2019-01", "title": "Initial Medicare coverage for MM and ALL"},
+            {"date": "2020-02", "title": "Expanded coverage for CLL"},
+            {"date": "2021-11", "title": "LCD finalized for MRD testing"},
+            {"date": "2022-07", "title": "DLBCL coverage (first ctDNA-based)"},
+            {"date": "2024-11", "title": "MCL coverage"},
+            {"date": "2025-04", "title": "MCL surveillance coverage"}
+          ]
+        }
+      }
     }
   },
   "coveragePolicies": {
@@ -221,16 +325,24 @@
       "name": "MolDX: Plasma-Based Genomic Profiling",
       "type": "LCD",
       "category": "CGP liquid biopsy"
+    },
+    "L38121": {
+      "name": "MolDX: Next-Generation Sequencing for Solid Tumors",
+      "type": "LCD",
+      "category": "CGP/TDS",
+      "mac": "Noridian J-F (AK, ID, OR, WA, UT, AZ, MT, ND, SD, WY)",
+      "generalCriteria": [
+        "Advanced solid tumors",
+        "Treatment selection decisions",
+        "Must pass MolDX technical assessment"
+      ]
     }
   },
   "vendorsToResearch": [
-    "Tempus AI",
-    "Caris Life Sciences",
     "NeoGenomics",
     "Personalis",
     "Labcorp",
     "Quest Diagnostics",
-    "Adaptive Biotechnologies",
     "BillionToOne",
     "Memorial Sloan Kettering",
     "Strata Oncology"

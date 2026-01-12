@@ -514,7 +514,7 @@ export const VENDOR_VERIFIED = {
   'ecd-20': {  // Avantect Pancreatic Cancer Test
     name: 'Adrian Vilalta',
     company: 'ClearNote Health',
-    verifiedDate: '2026-01-07',
+    verifiedDate: '2026-01-05',
     editsSubmitted: 0
   },
   'mrd-23': {  // LymphoVista
@@ -4686,7 +4686,7 @@ export const ecdTestData = [
     "numPublicationsNotes": "2 peer-reviewed publications: Clin Gastroenterol Hepatol 2023 (clinical validation, PMID 36967102), J Mol Diagn 2024 (analytical validation, PMID 39230538). Both authored by ClearNote Health employees.",
     "technologyDifferentiator": "First commercially available single-cancer ECD test for pancreatic cancer in OpenOnco database. Uses 5-hydroxymethylcytosine (5hmC) profiling rather than standard 5-methylcytosine (5mC) methylation—5hmC is an oxidized derivative of 5mC with distinct tissue-specific patterns. Targets defined high-risk population (new-onset T2DM, genetic predisposition, family history) rather than general population screening. Strong specificity (96.9%) critical for screening context where false positives lead to unnecessary workup.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-16: Initial submission by Adrian Vilalta (ClearNote Health). 2026-01-07: Vendor verified data accuracy - no changes requested."
+    "vendorRequestedChanges": "2025-12-16: Initial submission by Adrian Vilalta (ClearNote Health). 2025-12-29: Alex requested clarification on sensitivity discrepancy. 2026-01-05: Vendor confirmed sensitivity 68.3% correct as stated; verified data accuracy."
   },
   {
     "id": "ecd-25",
