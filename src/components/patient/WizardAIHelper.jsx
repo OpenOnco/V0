@@ -221,19 +221,21 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - positioned to the right of the centered wizard */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          fixed bottom-6 right-6 z-50
+          fixed z-50
           w-14 h-14 rounded-full shadow-lg
           flex items-center justify-center
           transition-all duration-300 ease-in-out
+          top-1/2 -translate-y-1/2
           ${isOpen 
             ? 'bg-slate-600 hover:bg-slate-700 rotate-0' 
             : 'bg-emerald-500 hover:bg-emerald-600 animate-pulse hover:animate-none'
           }
         `}
+        style={{ left: 'calc(50% + 360px)' }}
         aria-label={isOpen ? 'Close helper' : 'Open AI helper'}
       >
         {isOpen ? (
@@ -247,9 +249,12 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
         )}
       </button>
 
-      {/* Chat Panel */}
+      {/* Chat Panel - positioned next to the bubble */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+        <div 
+          className="fixed z-50 w-80 sm:w-96 max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-left-4 duration-300 top-1/2 -translate-y-1/2"
+          style={{ left: 'calc(50% + 430px)' }}
+        >
           {/* Header */}
           <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
