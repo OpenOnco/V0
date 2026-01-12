@@ -221,7 +221,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
 
   return (
     <>
-      {/* Floating Button - positioned to the right of the centered wizard */}
+      {/* Floating Button - positioned to the right of the centered wizard, at bottom */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
@@ -229,7 +229,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
           w-14 h-14 rounded-full shadow-lg
           flex items-center justify-center
           transition-all duration-300 ease-in-out
-          top-1/2 -translate-y-1/2
+          bottom-8
           ${isOpen 
             ? 'bg-slate-600 hover:bg-slate-700 rotate-0' 
             : 'bg-emerald-500 hover:bg-emerald-600 animate-pulse hover:animate-none'
@@ -243,17 +243,15 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <span className="text-2xl">🤔</span>
         )}
       </button>
 
-      {/* Chat Panel - positioned next to the bubble */}
+      {/* Chat Panel - positioned above the bubble */}
       {isOpen && (
         <div 
-          className="fixed z-50 w-80 sm:w-96 max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-left-4 duration-300 top-1/2 -translate-y-1/2"
-          style={{ left: 'calc(50% + 430px)' }}
+          className="fixed z-50 w-80 sm:w-96 max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300 bottom-24"
+          style={{ left: 'calc(50% + 360px)' }}
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 flex items-center gap-3">
