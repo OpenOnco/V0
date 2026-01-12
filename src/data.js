@@ -6316,8 +6316,8 @@ export const cgpTestData = [
     "method": "Hybrid-capture NGS panel covering 425 cancer-related genes; detects SNVs, indels, CNAs, fusions; reports TMB and MSI",
     "genesAnalyzed": 425,
     "cancerTypes": ["Pan-solid tumor"],
-    "indicationsNotes": "FDA 510(k) cleared August 2025 (K-number pending publication). Also CE-IVDR and NMPA (China) approved. First Chinese CGP to receive FDA clearance.",
-    "fdaStatus": "FDA 510(k) cleared (Aug 2025); CE-IVDR; NMPA",
+    "indicationsNotes": "FDA 510(k) cleared August 2025 (K-number pending publication). Also CE-IVDD and NMPA (China) approved. First Chinese CGP to receive FDA clearance.",
+    "fdaStatus": "FDA 510(k) cleared (Aug 2025); CE-IVDD; NMPA",
     "tmb": "Yes",
     "msi": "Yes",
     "reimbursement": "Emerging - new FDA clearance",
@@ -6326,7 +6326,9 @@ export const cgpTestData = [
     "totalParticipants": 50000,
     "numPublications": 100,
     "numPublicationsPlus": true,
-    "technologyDifferentiator": "Global regulatory approvals (FDA, CE-IVDR, NMPA). Fresh FDA clearance (Sep 2025). Established in Asia market with US expansion. Competitive pricing expected."
+    "technologyDifferentiator": "Global regulatory approvals (FDA, CE-IVDD, NMPA). Fresh FDA clearance (Aug 2025). Established in Asia market with US expansion. Competitive pricing expected.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-01-12: Vendor verified by Ruoying Yu, Director Medical & Commercial Affairs, Geneseeq. Corrected CE-IVDR to CE-IVDD."
   },
   {
     "id": "tds-kit-3",
@@ -7629,6 +7631,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 12, 2026',
+    type: 'updated',
+    testId: 'tds-kit-2',
+    testName: 'GeneseeqPrime',
+    vendor: 'Geneseeq Technology',
+    category: 'TDS',
+    description: 'Vendor verification: Corrected CE marking from CE-IVDR to CE-IVDD per vendor. GeneseeqPrime is certified under the EU IVD Directive (98/79/EC), not the newer IVD Regulation (2017/746).',
+    contributor: 'Ruoying Yu',
+    affiliation: 'Geneseeq Technology',
+    citation: 'https://na.geneseeq.com/geneseeq-receives-nmpa-approval-for-pantrkare-chinas-first-ngs-based-pan-solid-tumor-companion-diagnostic-kit-for-ntrk-gene-fusions/'
+  },
   {
     date: 'Jan 12, 2026',
     type: 'added',
