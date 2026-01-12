@@ -486,7 +486,7 @@ export default function handler(req, res) {
   
   // Normalize path
   let path = Array.isArray(requestPath) ? requestPath.join('/') : requestPath;
-  path = '/' + path.replace(/^\\/+/, '');
+  path = '/' + path.replace(/^\/+/, '');
   
   let html = null;
   const baseUrl = 'https://www.openonco.org';
