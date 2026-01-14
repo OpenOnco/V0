@@ -12,6 +12,7 @@
 - [ ] `vendorRequestedChanges` field updated on test object
 - [ ] `DATABASE_CHANGELOG` entry added (top of array, ~line 6090)
 - [ ] `Last updated` comment at top of data.js updated
+- [ ] **Medicare coverage verified** (if `lastVerified` >90 days old) - see Section A4
 - [ ] Build passes: `npm run build`
 - [ ] Smoke tests pass: `npm run test:smoke`
 
@@ -233,7 +234,68 @@ fdaCompanionDxCount: [number],
 fdaCompanionDxCountCitations: "[URL]",
 ```
 
-## A4: After Adding
+## A4: Medicare Coverage Lookup
+
+**For US tests only.** Use CMS MCP tools to determine coverage status.
+
+### On-Demand Verification (When Editing Existing Tests)
+
+When processing ANY submission for an existing test:
+1. Check `medicareCoverage.lastVerified` date
+2. If >90 days old OR missing → verify coverage before committing
+3. Update `lastVerified` to today's date
+
+**Claude will automatically check this during submission processing.**
+
+### Quick Decision Tree (For New Tests)
+
+```
+Is test FDA-approved?
+├── YES → Check NCD 90.2 (NGS) or applicable NCD
+│   └── Is it a companion diagnostic? → Likely COVERED under Section B
+└── NO → Check applicable LCD
+    └── MRD test? → Check LCD L38779
+    └── CRC screening? → Check NCD 210.3
+    └── Liquid CGP? → Check LCD L38043
+```
+
+### Lookup Process
+
+1. **Search for existing LCD/NCD:**
+   ```javascript
+   CMS MCP:search_local_coverage({ keyword: "[test name or vendor]", document_type: "lcd" })
+   CMS MCP:search_national_coverage({ keyword: "[indication]", document_type: "ncd" })
+   ```
+
+2. **Check vendor billing page** for coverage claims
+
+3. **Set medicareCoverage object:**
+   ```javascript
+   medicareCoverage: {
+     status: "COVERED" | "NOT_COVERED" | "PENDING_COVERAGE" | "PENDING_FDA" | "UNKNOWN",
+     policyType: "LCD" | "NCD" | "CLFS" | null,
+     policyNumber: "L38779" | "90.2" | null,
+     policyName: "[Full policy name]",
+     coveredIndications: ["Stage II-IV CRC", ...],
+     reimbursementRate: "$3,500" | null,
+     cptCode: "0361U" | null,
+     notes: "[Additional context]",
+     lastVerified: "[YYYY-MM-DD]"
+   }
+   ```
+
+### Common Coverage Policies
+
+| Category | Policy | Tests |
+|----------|--------|-------|
+| MRD | L38779 | Signatera, clonoSEQ, Reveal, Haystack, NavDx |
+| CGP (FDA CDx) | NCD 90.2 | FoundationOne CDx, Guardant360 CDx, Tempus xT CDx |
+| CGP (Liquid) | L38043 | Northstar Select, MSK-ACCESS, LiquidHALLMARK |
+| CRC Screening | NCD 210.3 | Shield |
+
+**Full documentation:** See `docs/CMS_MEDICARE_COVERAGE.md`
+
+## A5: After Adding
 
 1. Update Quick Reference table (LAST ID / NEXT ID)
 2. Add to `DATABASE_CHANGELOG`

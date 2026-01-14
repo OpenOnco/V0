@@ -21,6 +21,7 @@ import GlossaryTooltip from '../GlossaryTooltip';
 import PerformanceMetricWithWarning from '../ui/PerformanceMetricWithWarning';
 import CircularProgress from '../ui/CircularProgress';
 import QualityGrade from '../ui/QualityGrade';
+import MedicareCoverageDisplay from '../coverage/MedicareCoverageDisplay';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
@@ -219,10 +220,11 @@ const TestDetailModal = ({ test, category, onClose }) => {
   };
   const colors = colorSchemes[category] || colorSchemes.MRD;
   
-  // Helper for coverage status
-  const hasMedicare = test.reimbursement?.toLowerCase().includes('medicare') && 
+  // Helper for coverage status - use structured data if available, fall back to legacy string
+  const hasMedicare = test.medicareCoverage?.status === 'COVERED' || 
+    (test.reimbursement?.toLowerCase().includes('medicare') && 
     !test.reimbursement?.toLowerCase().includes('not yet') &&
-    !test.reimbursement?.toLowerCase().includes('no established');
+    !test.reimbursement?.toLowerCase().includes('no established'));
   const hasPrivate = test.commercialPayers && test.commercialPayers.length > 0;
   const requiresTissue = test.approach === 'Tumor-informed' || test.requiresTumorTissue === 'Yes' || test.sampleCategory === 'Tissue';
   const isDiscontinued = test.isDiscontinued === true;
@@ -568,8 +570,12 @@ const TestDetailModal = ({ test, category, onClose }) => {
                             <span className="text-sm font-medium text-gray-400">Not specified</span>
                           </div>
                         )}
-                        <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
-                        {test.medicareRate && (
+                        <MedicareCoverageDisplay 
+                          medicareCoverage={test.medicareCoverage}
+                          fallbackReimbursement={test.reimbursement}
+                          fallbackNote={test.reimbursementNote}
+                        />
+                        {!test.medicareCoverage?.reimbursementRate && test.medicareRate && (
                           <div className="py-1.5 flex justify-between items-center">
                             <span className="text-xs text-gray-500 flex items-center gap-1">
                               Medicare CLFS Rate
@@ -785,8 +791,12 @@ const TestDetailModal = ({ test, category, onClose }) => {
                 <Section title="Regulatory & Coverage">
                   <div className="space-y-1">
                     <DataRow label="FDA Status" value={test.fdaStatus} citations={test.fdaStatusCitations} notes={test.fdaStatusNotes} />
-                    <DataRow label="Medicare" value={test.reimbursement} notes={test.reimbursementNote} citations={test.reimbursementCitations} />
-                    {test.medicareRate && (
+                    <MedicareCoverageDisplay 
+                      medicareCoverage={test.medicareCoverage}
+                      fallbackReimbursement={test.reimbursement}
+                      fallbackNote={test.reimbursementNote}
+                    />
+                    {!test.medicareCoverage?.reimbursementRate && test.medicareRate && (
                       <div className="py-1.5 flex justify-between items-center">
                         <span className="text-xs text-gray-500 flex items-center gap-1">
                           Medicare CLFS Rate

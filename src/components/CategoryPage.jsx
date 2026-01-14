@@ -53,6 +53,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const [minGenes, setMinGenes] = useState(0);
   const [minCdx, setMinCdx] = useState(0);
   const [selectedProductTypes, setSelectedProductTypes] = useState([]);
+  const [selectedBiomarkers, setSelectedBiomarkers] = useState([]); // For CGP biomarker filtering
   const [selectedTests, setSelectedTests] = useState(() => {
     // Initialize from either comparison IDs or single test ID
     if (initialCompareIds && initialCompareIds.length >= 2) {
@@ -173,13 +174,51 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const filteredTests = useMemo(() => {
     return tests.filter(test => {
       if (searchQuery) {
-        const terms = searchQuery.toLowerCase().split(/\s+/).filter(t => t.length > 0);
-        // Include productType in search - "kit" finds all IVD kits, "service" finds central lab services
+        // Build comprehensive searchable text from all relevant fields
+        const biomarkers = (test.biomarkersReported || []).join(' ');
+        const cancerTypes = (test.cancerTypes || []).join(' ');
+        const commercialPayers = (test.commercialPayers || []).join(' ');
+        const regions = (test.availableRegions || []).join(' ');
         const productTypeSearchable = test.productType === 'Laboratory IVD Kit' ? 'kit ivd laboratory' :
                                       test.productType === 'Self-Collection' ? 'self-collection home' :
                                       'service central lab';
-        const searchableText = `${test.name} ${test.vendor} ${category} ${productTypeSearchable}`.toLowerCase();
-        if (!terms.every(term => searchableText.includes(term))) return false;
+        
+        // Combine all searchable fields
+        const searchableText = [
+          test.name,
+          test.vendor,
+          category,
+          productTypeSearchable,
+          test.approach,
+          test.method,
+          test.methodNotes,
+          biomarkers,
+          cancerTypes,
+          test.fdaStatus,
+          test.sampleCategory,
+          test.reimbursement,
+          commercialPayers,
+          regions,
+          test.clinicalAvailability,
+          test.sensitivityNotes,
+          test.specificityNotes,
+          test.lodNotes,
+          test.biomarkersReportedNotes,
+        ].filter(Boolean).join(' ').toLowerCase();
+        
+        // Parse query: split by | for OR, spaces for AND
+        // Example: "HRD | TMB" = has HRD OR TMB
+        // Example: "natera mrd" = has natera AND mrd
+        const orGroups = searchQuery.toLowerCase().split(/\s*\|\s*/).filter(g => g.trim());
+        
+        // Each OR group must match (at least one OR group succeeds)
+        const matchesQuery = orGroups.some(group => {
+          // Within each OR group, all space-separated terms must match (AND)
+          const andTerms = group.split(/\s+/).filter(t => t.length > 0);
+          return andTerms.every(term => searchableText.includes(term));
+        });
+        
+        if (!matchesQuery) return false;
       }
       if (selectedApproaches.length > 0 && !selectedApproaches.includes(test.approach)) return false;
       if (selectedCancerTypes.length > 0 && !test.cancerTypes?.some(ct => selectedCancerTypes.includes(ct))) return false;
@@ -285,6 +324,19 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         const testProductType = test.productType || 'Central Lab Service'; // Default to service for existing tests
         if (!selectedProductTypes.includes(testProductType)) return false;
       }
+      // Biomarker filter (CGP only) - check biomarkersReported array
+      if (selectedBiomarkers.length > 0) {
+        const testBiomarkers = test.biomarkersReported || [];
+        const testBiomarkersNotes = (test.biomarkersReportedNotes || '').toLowerCase();
+        const hasAllBiomarkers = selectedBiomarkers.every(bm => {
+          // Direct match in biomarkersReported array
+          if (testBiomarkers.some(tb => tb.toLowerCase().includes(bm.toLowerCase()))) return true;
+          // Also check notes for add-on services (e.g., "HRD available as add-on")
+          if (testBiomarkersNotes.includes(bm.toLowerCase())) return true;
+          return false;
+        });
+        if (!hasAllBiomarkers) return false;
+      }
       return true;
     }).sort((a, b) => {
       // Priority: 1) VENDOR VERIFIED (newest first), 2) BC tests, 3) Non-BC tests
@@ -311,13 +363,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       // Within same status, sort by vendor then test name
       return a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name);
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, selectedBiomarkers, category]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);
   const toggle = (setter) => (val) => setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
-  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); setSelectedProductTypes([]); };
-  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedIndicationGroups.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0 || selectedProductTypes.length;
+  const clearFilters = () => { setSearchQuery(''); setSelectedApproaches([]); setSelectedCancerTypes([]); setSelectedReimbursement([]); setSelectedTestScopes([]); setSelectedSampleCategories([]); setSelectedFdaStatus([]); setSelectedRegions([]); setSelectedClinicalSettings([]); setMinParticipants(0); setMinPublications(0); setMaxPrice(1000); setMinSensitivity(0); setMinSpecificity(0); setMaxTat(30); setNccnOnly(false); setTumorTissueRequired('any'); setMinGenes(0); setMinCdx(0); setSelectedProductTypes([]); setSelectedBiomarkers([]); };
+  const hasFilters = searchQuery || selectedApproaches.length || selectedCancerTypes.length || selectedIndicationGroups.length || selectedReimbursement.length || selectedTestScopes.length || selectedSampleCategories.length || selectedFdaStatus.length || selectedRegions.length || selectedClinicalSettings.length || minParticipants > 0 || minPublications > 0 || maxPrice < 1000 || minSensitivity > 0 || minSpecificity > 0 || maxTat < 30 || nccnOnly || tumorTissueRequired !== 'any' || minGenes > 0 || minCdx > 0 || selectedProductTypes.length || selectedBiomarkers.length;
 
   const colorClasses = { orange: 'from-orange-500 to-orange-600', green: 'from-emerald-500 to-emerald-600', red: 'from-sky-500 to-sky-600', violet: 'from-violet-500 to-violet-600', indigo: 'from-indigo-500 to-indigo-600' };
 
@@ -385,7 +437,8 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 </div>
                 <div className="mb-5">
                   <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 block">Search</label>
-                  <input type="text" placeholder="Test or vendor..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                  <input type="text" placeholder="Search all fields... (use | for OR)" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                  <p className="text-xs text-gray-400 mt-1">e.g. "HRD" "natera colon" "TMB | MSI"</p>
                 </div>
               </div>
               <div ref={filterScrollRef} className="flex-1 overflow-y-auto px-5 pb-5 overscroll-contain">
@@ -553,11 +606,64 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                 </FilterSection>
               )}
 
+              {/* Biomarkers Section - CGP only */}
+              {category === 'CGP' && config.biomarkers && (
+                <FilterSection
+                  title="Biomarkers Reported"
+                  defaultOpen={false}
+                  activeCount={selectedBiomarkers.length}
+                >
+                  <div className="space-y-1">
+                    {config.biomarkers.map(bm => (
+                      <Checkbox 
+                        key={bm} 
+                        label={bm === 'TMB' ? 'TMB (Tumor Mutational Burden)' : 
+                               bm === 'MSI' ? 'MSI (Microsatellite Instability)' :
+                               bm === 'HRD' ? 'HRD (Homologous Recombination Deficiency)' :
+                               bm === 'gLOH' ? 'gLOH (Genomic Loss of Heterozygosity)' :
+                               bm === 'PD-L1' ? 'PD-L1 Expression' :
+                               bm}
+                        checked={selectedBiomarkers.includes(bm)} 
+                        onChange={() => toggle(setSelectedBiomarkers)(bm)} 
+                      />
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2 italic">
+                    Filter tests that report these biomarkers
+                  </p>
+                </FilterSection>
+              )}
+
+              {/* Coverage Section - Standalone for prominence */}
+              <FilterSection 
+                title="Coverage" 
+                defaultOpen={false}
+                activeCount={selectedReimbursement.length}
+              >
+                <div className="space-y-1">
+                  <Checkbox 
+                    key="Medicare" 
+                    label="Medicare" 
+                    checked={selectedReimbursement.includes('Medicare')} 
+                    onChange={() => toggle(setSelectedReimbursement)('Medicare')} 
+                  />
+                  <Checkbox 
+                    key="Commercial" 
+                    label="Private Insurance" 
+                    checked={selectedReimbursement.includes('Commercial')} 
+                    onChange={() => toggle(setSelectedReimbursement)('Commercial')} 
+                  />
+                </div>
+                <p className="text-xs text-gray-400 mt-2 italic">
+                  Filter by insurance coverage status
+                </p>
+              </FilterSection>
+
               {/* Regulatory & Access Section */}
               <FilterSection 
                 title="Regulatory & Access" 
                 defaultOpen={false}
-                activeCount={selectedFdaStatus.length + selectedReimbursement.length + selectedRegions.length + (nccnOnly ? 1 : 0)}
+                activeCount={selectedFdaStatus.length + selectedRegions.length + (nccnOnly ? 1 : 0)}
               >
                 {/* FDA Status - all categories, clinician only */}
                 {config.fdaStatuses && (
@@ -573,9 +679,6 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
                     <Checkbox label="NCCN Named" checked={nccnOnly} onChange={() => setNccnOnly(!nccnOnly)} />
                   </>
                 )}
-                {/* Coverage - all categories */}
-                <label className="text-xs text-gray-500 mb-1 mt-3 block">Coverage</label>
-                {config.reimbursements?.map(r => <Checkbox key={r} label={r === 'Medicare' ? 'Medicare' : r === 'Commercial' ? 'Private Insurance' : r} checked={selectedReimbursement.includes(r)} onChange={() => toggle(setSelectedReimbursement)(r)} />)}
                 {/* Availability - MRD, ECD, HCT (not CGP) */}
                 {config.regions && (
                   <>

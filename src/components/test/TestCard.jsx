@@ -86,13 +86,18 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
               {!isDiscontinued && test.productType && <ProductTypeBadge productType={test.productType} size="xs" />}
               {/* Financial Assistance Badge */}
               {!isDiscontinued && <AssistanceBadge vendor={test.vendor} size="sm" />}
-              {!isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare') && test.commercialPayers && test.commercialPayers.length > 0
+              {/* Medicare/Private Coverage badges - use structured data if available */}
+              {!isDiscontinued && (test.medicareCoverage?.status === 'COVERED' || test.reimbursement?.toLowerCase().includes('medicare')) && test.commercialPayers && test.commercialPayers.length > 0
                 ? <Badge variant="success">Medicare+Private</Badge>
-                : !isDiscontinued && test.reimbursement?.toLowerCase().includes('medicare')
+                : !isDiscontinued && (test.medicareCoverage?.status === 'COVERED' || test.reimbursement?.toLowerCase().includes('medicare'))
                   ? <Badge variant="success">Medicare</Badge>
-                  : !isDiscontinued && test.commercialPayers && test.commercialPayers.length > 0
-                    ? <Badge variant="blue">Private</Badge>
-                    : null}
+                  : !isDiscontinued && test.medicareCoverage?.status === 'NOT_COVERED'
+                    ? <Badge variant="slate" title="Not currently covered by Medicare">No Medicare</Badge>
+                    : !isDiscontinued && (test.medicareCoverage?.status === 'PENDING_COVERAGE' || test.medicareCoverage?.status === 'PENDING_FDA')
+                      ? <Badge variant="amber" title="Medicare coverage pending">Pending</Badge>
+                      : !isDiscontinued && test.commercialPayers && test.commercialPayers.length > 0
+                        ? <Badge variant="blue">Private</Badge>
+                        : null}
               {test.adltStatus && <Badge variant="amber" title="CMS Advanced Diagnostic Laboratory Test - annual rate updates based on private payer data">ADLT</Badge>}
               {test.codeType === 'PLA' && <Badge variant="slate" title="Proprietary Laboratory Analyses code - specific to this laboratory's test">PLA</Badge>}
               {category === 'ECD' && (test.listPrice ? (

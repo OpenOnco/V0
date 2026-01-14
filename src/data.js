@@ -989,7 +989,21 @@ export const mrdTestData = [
     "clinicalSettingsNotes": "Validated for post-surgical MRD assessment and longitudinal surveillance. Clinical trials focus on post-operative and surveillance settings in CRC and NSCLC.",
     "totalParticipants": 333,
     "numPublications": 17
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Multi-solid tumor MRD",
+        "Post-treatment surveillance"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Tumor-informed WGS-derived panel (~50 variants). LOD 6 ppm. Expected covered under L38779.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-2",
     "sampleCategory": "Blood/Plasma",
@@ -1067,7 +1081,25 @@ export const mrdTestData = [
     "totalParticipants": 493,
     "numPublications": 4,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
+        "Post-treatment surveillance up to 6 years"
+      ],
+      "reimbursementRate": "$4,266 (once per diagnosis); $1,164 (up to 6 years post-treatment)",
+      "cptCode": null,
+      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025.",
+      "lastVerified": "2026-01-13",
+      "reimbursementDetails": {
+        "breastMRDMonitoring": "$4,266 (once per diagnosis)",
+        "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
+      }
+    }},
   {
     "id": "mrd-3",
     "sampleCategory": "Blood/Plasma",
@@ -1146,7 +1178,20 @@ export const mrdTestData = [
     "totalParticipants": 540,
     "numPublications": 1,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": null,
+      "coveredIndications": [
+        "MRD monitoring"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "MRD test - covered under L38779",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-4",
     "sampleCategory": "Blood/Plasma",
@@ -1210,7 +1255,22 @@ export const mrdTestData = [
     "totalParticipantsNotes": "TRACER expanded cohort (SABCS 2025): 121 patients with TNBC, HER2+, or ER+/HER2- early breast cancer.",
     "numPublications": 8,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Molecular Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Breast cancer recurrence monitoring (all subtypes: HR+/HER2-, HER2+, TNBC)",
+        "Stage II-III breast cancer",
+        "Up to 6 years post-diagnosis"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Medicare covered via MolDX LCD since July 2025. Structural variant (SV)-based MRD platform.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-5",
     "sampleCategory": "Blood/Plasma",
@@ -1259,7 +1319,20 @@ export const mrdTestData = [
     "totalParticipants": 166,
     "numPublications": 10,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "HR+/HER2- breast cancer (stage II/III, 5+ years post-diagnosis, NED)"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "MolDX coverage announced July 2023. Tumor-informed, tracks up to 48 variants.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-6",
     "sampleCategory": "Blood/Plasma",
@@ -1343,7 +1416,21 @@ export const mrdTestData = [
     "numPublicationsPlus": true,
     "vendorVerified": true,
     "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated LOD from 0.01% VAF to 0.005% Tumor Fraction per guardantcomplete.com."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": null,
+      "coveredIndications": [
+        "Stage II-III colorectal cancer",
+        "Within 3 months post-curative intent therapy"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-7",
     "sampleCategory": "Blood/Plasma",
@@ -1448,7 +1535,25 @@ export const mrdTestData = [
     "nccnGuidelineReference": "NCCN Colon Cancer, Rectal Cancer, Merkel Cell Carcinoma V.2.2025",
     "nccnGuidelinesNotes": "NCCN V.2.2025 update specifically references Signatera publications. CRC: ctDNA included as high risk factor for recurrence. MCC: positive recommendation for ctDNA monitoring in surveillance, citing Signatera data.",
     "nccnGuidelinesCitations": "https://www.natera.com/company/news/nccn-strengthens-guidance-on-ctdna-in-colon-cancer-rectal-cancer-and-merkel-cell-carcinoma/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Molecular Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Stage II-IV colorectal cancer",
+        "Stage II-IV breast cancer",
+        "Stage II-IV bladder cancer",
+        "Stage II-IV ovarian cancer",
+        "Stage I-IV NSCLC",
+        "Pan-cancer immunotherapy monitoring"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-8",
     "sampleCategory": "Blood/Plasma",
@@ -1576,7 +1681,21 @@ export const mrdTestData = [
     "numPublicationsCitations": "Nature Medicine 2025 (mesothelioma); Clinical Cancer Research 2025 (head and neck).",
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Developed under PGDx quality management system and design control. Clinical use for stage III colon cancer; research use for other solid tumors. Expanding indications expected."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "MRD monitoring",
+        "ctDNA-based surveillance"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Labcorp acquired Invitae's oncology business. Tumor-informed approach.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-10",
     "sampleCategory": "Blood/Plasma",
@@ -1629,7 +1748,18 @@ export const mrdTestData = [
     "isInvestigational": true,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Holds FDA Breakthrough Device designation for MRD but is not yet FDA cleared. The underlying assay platform is a clinical LDT (same technology as FoundationOne Tracker TRM which has Medicare coverage), but MRD-specific applications remain investigational."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Partnership with Natera - uses Signatera platform",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-11",
     "sampleCategory": "Blood/Plasma",
@@ -1874,7 +2004,22 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "First MRD test with Medicare coverage for HPV-driven cancers. Clinical LDT with ADLT designation. Unique tumor-naïve approach detecting viral-derived ctDNA rather than somatic mutations. Proven clinical utility in 35+ peer-reviewed publications."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "MolDX",
+      "policyName": "MolDX LCD (via Palmetto GBA)",
+      "coveredIndications": [
+        "MRD surveillance for HPV-driven head and neck cancer (oropharyngeal)",
+        "Serial testing starting 3 months post-treatment",
+        "Patients with no evidence of disease after surgery/chemo/radiation/immunotherapy"
+      ],
+      "reimbursementRate": "ADLT status (April 2024)",
+      "cptCode": "0356U",
+      "notes": "Medicare covered via MolDX LCD since Nov 2023. First and only clinically validated circulating TTMV-HPV DNA test. Nearly 20 peer-reviewed publications. 1,000+ physicians, 400+ sites including all 31 NCCN cancer centers.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-15",
     "sampleCategory": "Blood/Plasma",
@@ -1949,7 +2094,20 @@ export const mrdTestData = [
       "upfrontValueUSD": 275000000,
       "earnoutPotentialUSD": 175000000
     }
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Molecular Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Lymphoma MRD monitoring"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Structural variant-based lymphoma MRD. 200-day lead time vs imaging.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-16",
     "sampleCategory": "Blood/Plasma",
@@ -2017,7 +2175,21 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CAP-accredited, CLIA-certified laboratory (Metro Park, NJ). Acquired by Labcorp Aug 2024 via Invitae bankruptcy sale ($239M)."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "MRD monitoring",
+        "ctDNA-based surveillance"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Labcorp acquired Invitae's oncology business. Tumor-informed approach.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-18",
     "sampleCategory": "Blood/Plasma",
@@ -2067,7 +2239,20 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Tumor-naïve MRD approach using AI/ML on WES/WTS data - no prior tissue profiling required. Only liquid biopsy sequencing both plasma and buffy coat for CHIP subtraction, improving accuracy over plasma-only assays."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "MolDX",
+      "policyName": null,
+      "coveredIndications": [
+        "Liquid biopsy therapy selection"
+      ],
+      "reimbursementRate": "$3,649",
+      "cptCode": null,
+      "notes": "Liquid biopsy for treatment decision support.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-19",
     "sampleCategory": "Bone Marrow/Blood",
@@ -2154,7 +2339,25 @@ export const mrdTestData = [
     "isClinicalLDT": false,
     "regulatoryStatusNotes": "FDA-cleared IVD for MM, B-ALL, CLL. Additionally available as CLIA-validated LDT for DLBCL, MCL, and other lymphoid malignancies. Only FDA-cleared MRD test for hematologic malignancies.",
     "technologyDifferentiator": "Hematologic MRD test using immunosequencing of B/T-cell receptor genes - fundamentally different from solid tumor ctDNA assays. First and only FDA-cleared MRD test. 10⁻⁶ sensitivity (100x more sensitive than flow cytometry). Quantitative results track disease burden over time, not just positive/negative. Blood-based testing available for CLL reduces need for bone marrow biopsies."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "B-cell acute lymphoblastic leukemia (B-ALL) - bone marrow",
+        "Multiple myeloma (MM) - bone marrow",
+        "Chronic lymphocytic leukemia (CLL) - blood or bone marrow",
+        "Diffuse large B-cell lymphoma (DLBCL) - ctDNA/blood (July 2022)",
+        "Mantle cell lymphoma (MCL) - MRD monitoring (Nov 2024)",
+        "MCL surveillance - single timepoint every 6 months for 5 years (April 2025)"
+      ],
+      "reimbursementRate": "Episode payment structure for series of tests",
+      "cptCode": "0364U",
+      "notes": "First and only FDA-cleared MRD assay. Over 240 million covered lives. LCD L38822/L38835 updated Jan 2025 adding 0364U and ICD-10 C83.1A for MCL.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-20",
     "sampleCategory": "Blood/Plasma",
@@ -2236,7 +2439,20 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT leveraging Natera's established Signatera infrastructure. Uses proven mPCR-NGS workflow with WGS-informed variant selection for enhanced sensitivity.",
     "technologyDifferentiator": "WGS-informed evolution of Signatera tracking 64 variants (vs 16) at 1 ppm LOD (vs ~100 ppm). Ultra-deep sequencing up to 350,000x coverage per variant. Designed for cases requiring maximum sensitivity and lead time. Same trusted mPCR workflow backed by >1M Signatera tests."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Molecular Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Same as Signatera"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-21",
     "sampleCategory": "Blood/Plasma",
@@ -2296,7 +2512,18 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT from Natera. Complements Signatera for cases where tumor tissue is unavailable.",
     "technologyDifferentiator": "Tissue-free MRD for CRC - no tumor tissue required. Uses methylation-based detection rather than somatic variant tracking. Enables MRD testing when tissue is unavailable, insufficient, or degraded. Part of Natera's comprehensive MRD portfolio alongside Signatera and Signatera Genome."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_YET_AVAILABLE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Tissue-free MRD test. Presented at ESMO GI 2025. Still in clinical validation, not yet commercially available.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-22",
     "sampleCategory": "Blood/Plasma",
@@ -2663,7 +2890,21 @@ export const mrdTestData = [
     "isDiscontinued": true,
     "discontinuedDate": "December 2024",
     "discontinuedReason": "Product consolidated into Reveal TRM for therapy response monitoring"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "Treatment Response Monitoring",
+      "policyName": null,
+      "coveredIndications": [
+        "Metastatic/inoperable solid tumors on immune checkpoint inhibitors",
+        "Baseline test + follow-up 4-10 weeks post-therapy"
+      ],
+      "reimbursementRate": "$3,500",
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "trm-2",
     "sampleCategory": "Blood/Plasma",
@@ -2731,7 +2972,25 @@ export const mrdTestData = [
     "tatNotes": "Subsequent monitoring blood draws typically 7-10 days. Initial WGS and panel design ~3-4 weeks.",
     "numPublications": 5,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
+        "Post-treatment surveillance up to 6 years"
+      ],
+      "reimbursementRate": "$4,266 (once per diagnosis); $1,164 (up to 6 years post-treatment)",
+      "cptCode": null,
+      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025.",
+      "lastVerified": "2026-01-13",
+      "reimbursementDetails": {
+        "breastMRDMonitoring": "$4,266 (once per diagnosis)",
+        "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
+      }
+    }},
   {
     "id": "trm-4",
     "sampleCategory": "Blood/Plasma",
@@ -2787,7 +3046,20 @@ export const mrdTestData = [
     "tatCitations": "https://neogenomics.com/test-menu/radarr",
     "numPublications": 15,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "HR+/HER2- breast cancer (stage II/III, 5+ years post-diagnosis, NED)"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "MolDX coverage announced July 2023. Tumor-informed, tracks up to 48 variants.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "trm-6",
     "sampleCategory": "Blood/Plasma",
@@ -2828,7 +3100,18 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Clinical LDT with Medicare coverage for TRM of ICI therapy. Broad clinical launch October 2023. MolDX coverage effective June 17, 2023. Uses the same personalized ctDNA technology as the MRD application but is commercially available for TRM while MRD remains investigational."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Partnership with Natera - uses Signatera platform",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "trm-7",
     "sampleCategory": "Blood/Plasma",
@@ -2901,7 +3184,18 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "technologyDifferentiator": "Methylation-based (not mutation/VAF-based) - measures epigenetic signal across >2200 loci rather than tracking somatic variants. Tissue-free with no tumor biopsy required. QCT technology enables single-molecule counting precision for absolute quantification. Version 2 (2025) expanded panel from >500 to >2200 loci for increased sensitivity.",
     "regulatoryStatusNotes": "CLIA-certified laboratory test. Methylation-based approach differentiates from SNV/VAF-based response monitoring assays. Measures 10x more informative loci (average 90 vs 9) compared to SNV-based ctDNA monitoring. Part of BillionToOne's Northstar oncology portfolio alongside Northstar Select (therapy selection)."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "PENDING_COVERAGE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "NOT YET COVERED. Methylation-based tissue-free TRM test. Company targeting Medicare coverage before end of 2026.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "trm-11",
     "sampleCategory": "Blood/Plasma",
@@ -2952,7 +3246,20 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Only commercially available liquid biopsy that sequences both plasma and buffy coat (WBC) to distinguish somatic tumor variants from clonal hematopoiesis (CH) and germline variants. CHIP subtraction prevents ~40% of samples from receiving potentially incorrect therapy recommendations based on non-tumor mutations."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "MolDX",
+      "policyName": null,
+      "coveredIndications": [
+        "Liquid biopsy therapy selection"
+      ],
+      "reimbursementRate": "$3,649",
+      "cptCode": null,
+      "notes": "Liquid biopsy for treatment decision support.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "trm-12",
     "sampleCategory": "Blood/Plasma",
@@ -3163,7 +3470,25 @@ export const mrdTestData = [
     "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
     "clinicalSettingsNotes": "Primarily used for post-treatment response assessment and ongoing surveillance in hematologic malignancies. Supported by NCCN guidelines for MM, ALL.",
     "technologyDifferentiator": "Only FDA-cleared MRD IVD kit. Unique immunosequencing approach tracks clonal Ig/TCR rearrangements rather than somatic mutations. Available as distributed IVD kit for labs with MiSeqDx, enabling in-house testing."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38779",
+      "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
+      "coveredIndications": [
+        "B-cell acute lymphoblastic leukemia (B-ALL) - bone marrow",
+        "Multiple myeloma (MM) - bone marrow",
+        "Chronic lymphocytic leukemia (CLL) - blood or bone marrow",
+        "Diffuse large B-cell lymphoma (DLBCL) - ctDNA/blood (July 2022)",
+        "Mantle cell lymphoma (MCL) - MRD monitoring (Nov 2024)",
+        "MCL surveillance - single timepoint every 6 months for 5 years (April 2025)"
+      ],
+      "reimbursementRate": "Episode payment structure for series of tests",
+      "cptCode": null,
+      "notes": "First and only FDA-cleared MRD assay. Over 240 million covered lives.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "mrd-kit-2",
     "sampleCategory": "Bone Marrow/Blood",
@@ -3292,7 +3617,18 @@ export const mrdTestData = [
       "vendorVerifiedDate": "2026-01-06",
       "vendorVerifiedBy": "Sandra Balladares"
     }
-  }
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "$3,000 (patient self-pay)",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare - currently applying for reimbursement. LDT launched Nov 2024.",
+      "lastVerified": "2026-01-13"
+    }}
 ];
 
 // ECD Tests
@@ -3371,7 +3707,22 @@ export const ecdTestData = [
     "nccnNamedInGuidelines": true,
     "nccnGuidelineReference": "NCCN Colorectal Cancer Screening V.1.2025 (June 2025)",
     "nccnGuidelinesNotes": "Added to NCCN CRC Screening Guidelines in June 2025 as an acceptable screening option for average-risk adults with 3-year screening interval recommendation. First blood-based test included in NCCN CRC screening guidelines."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "210.3",
+      "policyName": "Colorectal Cancer Screening Tests",
+      "coveredIndications": [
+        "Age 45-85",
+        "Average risk, asymptomatic",
+        "Once every 3 years"
+      ],
+      "reimbursementRate": "$1,495",
+      "cptCode": null,
+      "notes": "First FDA-approved blood test for CRC screening. ADLT status April 2025.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-2",
     "sampleCategory": "Blood/Plasma",
@@ -3437,7 +3788,18 @@ export const ecdTestData = [
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866",
     "numPublications": 20,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "$949 (self-pay)",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare. REACH study (IDE) provides coverage for 50,000 study participants only. Pending FDA approval and congressional action (H.R. 2407, S. 2085).",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-3",
     "sampleCategory": "Stool",
@@ -3498,7 +3860,18 @@ export const ecdTestData = [
     "nccnGuidelineReference": "NCCN Colorectal Cancer Screening Guidelines",
     "nccnGuidelinesNotes": "Multitarget stool DNA (mt-sDNA) testing is standard of care inclusion in NCCN CRC Screening guidelines. Cologuard Plus is the FDA-approved mt-sDNA test from Exact Sciences.",
     "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/guidelines-detail?category=2&id=1429"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "UNKNOWN",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Need to verify coverage - different from original Cologuard",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-4",
     "sampleCategory": "Stool",
@@ -3550,7 +3923,22 @@ export const ecdTestData = [
     "totalParticipants": 8920,
     "numPublications": 3,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "PENDING_COVERAGE",
+      "policyType": "NCD",
+      "policyNumber": "210.3",
+      "policyName": "Colorectal Cancer Screening Tests",
+      "coveredIndications": [
+        "CRC screening",
+        "Ages 45+",
+        "Average risk"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "PENDING Medicare coverage. First FDA-approved stool RNA test for CRC screening. 94% CRC sensitivity, 88% specificity.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-6",
     "name": "Freenome CRC Blood Test",
@@ -3605,7 +3993,18 @@ export const ecdTestData = [
     "totalParticipants": 48995,
     "numPublications": 2,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_YET_AVAILABLE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "NOT YET AVAILABLE - awaiting FDA approval (expected 2026). Upon approval, expected to qualify for NCD 210.3 coverage.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-7",
     "sampleCategory": "Blood/Plasma",
@@ -3659,7 +4058,18 @@ export const ecdTestData = [
     "totalParticipants": 15958,
     "numPublications": 3,
     "numPublicationsPlus": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "Several hundred dollars (self-pay)",
+      "cptCode": null,
+      "notes": "NOT COVERED by Medicare. CMS lacks statutory authority to cover new lung cancer screening tests. H.R. 6693 pending.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-8",
     "sampleCategory": "Blood/Plasma",
@@ -3715,7 +4125,21 @@ export const ecdTestData = [
     "numPublications": 2,
     "numPublicationsPlus": true,
     "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 85% to 47.8% and stage I from 76% to 37.8% per CLiMB prospective study (n=1,968) data presented at EASL 2024. Previous ENCORE case-control data (n=247) overstated performance. Error report submitted by Pierre Arsene (Mursla). 2026-01-12: Corrected specificity from 91% to 88% per CLiMB/Helio investor deck (Pierre Arsene follow-up)."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "EXPECTED_COVERAGE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [
+        "HCC surveillance",
+        "Patients with liver cirrhosis or Hepatitis B"
+      ],
+      "reimbursementRate": "Covered with prior authorization by most health plans (varies)",
+      "cptCode": "0333U",
+      "notes": "EXPECTED Medicare coverage pending FDA approval. 85% all-stage HCC sensitivity, 91% specificity.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-9",
     "sampleCategory": "Blood/Plasma",
@@ -3770,7 +4194,18 @@ export const ecdTestData = [
     "numPublications": 3,
     "numPublicationsPlus": true,
     "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 88% to 77% (early-stage) and 82% to 64% (very early-stage), specificity from 87% to 82% per ALTUS prospective study (n=3,000+) presented at AASLD November 2025. Previous Phase II case-control data overstated performance. Error report submitted by Pierre Arsene (Mursla). 2026-01-12: Further corrected sensitivity from 77% to 70% overall per AASLD 2025 presentation charts; specificity refined to 81.9% (Pierre Arsene follow-up with screenshots)."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "UNKNOWN",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Need to verify coverage status",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-10",
     "sampleCategory": "Blood/Plasma",
@@ -3825,7 +4260,18 @@ export const ecdTestData = [
     "clinicalTrials": "NCI Vanguard Study multi-cancer detection feasibility (24000 target); AACR 2025 presentations; ASCO 2025 presentations",
     "totalParticipants": 24000,
     "numPublications": 0
-  },
+  ,
+    "medicareCoverage": {
+      "status": "PENDING_FDA",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Multi-cancer detection - coverage TBD pending FDA approval",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-11",
     "sampleCategory": "Blood/Plasma",
@@ -3885,7 +4331,18 @@ export const ecdTestData = [
     "numPublications": 1,
     "numPublicationsPlus": false,
     "technologyDifferentiator": "PCR-based (not NGS) - enables faster TAT, lower cost, and global scalability vs sequencing-based MCED tests"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "$699 self-pay",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare or major insurance carriers. Multi-cancer early detection via methylation-specific PCR.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-12",
     "sampleCategory": "Blood/Plasma",
@@ -3945,7 +4402,18 @@ export const ecdTestData = [
     "numPublicationsPlus": false,
     "numPublicationsNotes": "Manuscript under preparation; data presented on company website",
     "technologyDifferentiator": "Proteomics-based (not ctDNA/methylation) - first protein-based liquid biopsy for lung cancer detection; measures protein biomarkers rather than genetic or epigenetic signals; simple blood draw with no specialized collection tubes"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "Not disclosed (early access only)",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare. LDT launched Nov 2025. Legislation pending H.R. 6693.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-13",
     "sampleCategory": "Blood/Plasma",
@@ -4017,7 +4485,18 @@ export const ecdTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Multiple conference presentations at DDW 2023, ASCO GI 2023, AACR 2022; peer-reviewed publications in preparation",
     "technologyDifferentiator": "Multi-omics approach combining methylation + fragmentation analysis with machine learning. Company claims to have identified specific cfDNA sequence regions that capture cancer's earliest signals. Spain-based biotech (Universal DX) with US office in Cambridge, MA. Platform technology (Signal-X) being extended to other GI cancers including pancreatic, liver, and gastric."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_YET_AVAILABLE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "NOT YET AVAILABLE - FDA approval pending trial completion. Upon approval, expected to qualify for NCD 210.3 coverage.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-14",
     "sampleCategory": "Stool",
@@ -4283,7 +4762,18 @@ export const ecdTestData = [
     "numPublicationsNotes": "Publications from CancerSEEK, DETECT-A, and ASCEND studies form evidence base. Additional publications expected from FALCON registry.",
     "technologyDifferentiator": "First MCED test from Exact Sciences, leveraging Thrive/CancerSEEK acquisition. Multi-analyte approach (cfDNA + protein) differs from methylation-only tests like Galleri. Competitive pricing ($689) vs Galleri ($949). Available through established Quest Diagnostics network (7,000 sites). Focuses on cancers lacking established screening tests.",
     "dataSourceNotes": "Added December 2025 via LLM Data Review. Verified via Exact Sciences press releases (Sept 10, 2025 launch)."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "MCED - no current Medicare coverage for multi-cancer screening",
+      "lastVerified": "2026-01-13"
+    }},
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
   {
@@ -4705,7 +5195,21 @@ export const ecdTestData = [
     "technologyDifferentiator": "First commercially available single-cancer ECD test for pancreatic cancer in OpenOnco database. Uses 5-hydroxymethylcytosine (5hmC) profiling rather than standard 5-methylcytosine (5mC) methylation—5hmC is an oxidized derivative of 5mC with distinct tissue-specific patterns. Targets defined high-risk population (new-onset T2DM, genetic predisposition, family history) rather than general population screening. Strong specificity (96.9%) critical for screening context where false positives lead to unnecessary workup.",
     "vendorVerified": true,
     "vendorRequestedChanges": "2025-12-16: Initial submission by Adrian Vilalta (ClearNote Health). 2025-12-29: Alex requested clarification on sensitivity discrepancy. 2026-01-05: Vendor confirmed sensitivity 68.3% correct as stated; verified data accuracy."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "CLFS",
+      "policyNumber": "0410U",
+      "policyName": null,
+      "coveredIndications": [
+        "Age 50+ with new-onset Type 2 diabetes (within 36 months)",
+        "Age 50+ with family history of pancreatic cancer"
+      ],
+      "reimbursementRate": "$1,160",
+      "cptCode": "0410U",
+      "notes": "Medicare covered via Clinical Laboratory Fee Schedule. Final CMS rate Jan 1, 2024. NY State DOH approved.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-25",
     "sampleCategory": "Saliva",
@@ -4754,7 +5258,18 @@ export const ecdTestData = [
     "regulatoryStatusNotes": "CLIA-certified LDT with FDA Breakthrough Device designation; not FDA-approved",
     "vendorVerified": true,
     "vendorRequestedChanges": "2025-01-01: Initial submission by Momchilo Vuyisich (Viome) with peer-reviewed publications. Vendor verified via email momo@viome.com."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "$599 (consumer price)",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare. Consumer product. Not intended to diagnose, treat, cure, or prevent disease.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "ecd-26",
     "sampleCategory": "Blood/Plasma",
@@ -4952,7 +5467,20 @@ export const ecdTestData = [
       "submitterType": "vendor",
       "submittedDate": "2026-01-12"
     }
-  }
+  ,
+    "medicareCoverage": {
+      "status": "PENDING_COVERAGE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [
+        "Adults at high risk for HCC (cirrhosis, chronic hepatitis B/C, liver disease)"
+      ],
+      "reimbursementRate": null,
+      "cptCode": "PLA code published April 2025",
+      "notes": "Has CPT PLA code, working with MolDx for LCD coverage. Published in Nature Communications 2023.",
+      "lastVerified": "2026-01-13"
+    }}
 ];
 
 
@@ -5019,7 +5547,22 @@ export const cgpTestData = [
     "numPublicationsNotes": "Foundation Medicine tests cited in >1,000 peer-reviewed publications (vendor estimate).",
     "numPublicationsCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
     "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1200/JCO.2017.75.3780"]
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "All solid tumors",
+        "Treatment selection",
+        "Clinical trial matching"
+      ],
+      "reimbursementRate": "97% of Medicare patients have $0 financial responsibility",
+      "cptCode": null,
+      "notes": "First FDA-approved CGP meeting NCD 90.2 requirements",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-2",
     "name": "FoundationOne Liquid CDx",
@@ -5080,7 +5623,20 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study PLoS One 2020 (Woodhouse et al.); multiple clinical validity studies for BRAF, HER2, MSI companion diagnostics",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/32976510/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "Advanced solid tumors when tissue insufficient"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-3",
     "name": "FoundationOne Heme",
@@ -5126,7 +5682,21 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study Blood 2016 (He et al.); 10+ studies at ASH 2013; part of Foundation Medicine ecosystem",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/27002118/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": null,
+      "coveredIndications": [
+        "Hematologic malignancies",
+        "Sarcomas"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-4",
     "name": "Guardant360 CDx",
@@ -5183,7 +5753,21 @@ export const cgpTestData = [
     "numPublicationsNotes": "Guardant360 cited in >150 peer-reviewed publications (vendor estimate).",
     "numPublicationsCitations": "https://www.cancernetwork.com/view/fda-approves-guardant360-cdx-for-comprehensive-genomic-profiling-in-all-solid-cancers",
     "publicationsExampleCitations": ["https://pubmed.ncbi.nlm.nih.gov/33619370/", "https://pubmed.ncbi.nlm.nih.gov/37256839/"]
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "Recurrent, relapsed, refractory, metastatic, or advanced non-CNS solid tumors",
+        "When tissue insufficient or unavailable"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-17",
     "name": "Guardant360 Liquid",
@@ -5240,7 +5824,20 @@ export const cgpTestData = [
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34838325/",
     "vendorVerified": true,
     "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated sampleRequirements with precise tube specifications per official IFU."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": null,
+      "coveredIndications": [
+        "Same as Guardant360 CDx"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": null,
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-5",
     "name": "Tempus xT CDx",
@@ -5297,7 +5894,22 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study Oncotarget 2019 (Beaubier et al.); FDA CDx designation; widely used in clinical trials",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/31040929/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "Solid tumor profiling",
+        "Colorectal cancer (companion diagnostic for KRAS)",
+        "All solid malignant neoplasms"
+      ],
+      "reimbursementRate": null,
+      "cptCode": "81479",
+      "notes": "FDA PMA approved May 2023. CMS added to NCD 90.2 coverage Nov 2023 (transmittal 13278). 648-gene panel.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-6",
     "name": "Tempus xF",
@@ -5342,7 +5954,20 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study NPJ Precision Oncology 2021 (Finkle et al.); liquid biopsy clinical applications",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34215841/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38043",
+      "policyName": null,
+      "coveredIndications": [
+        "Liquid biopsy CGP"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Liquid biopsy panel - covered under plasma genomic profiling LCD",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-7",
     "name": "Tempus xF+",
@@ -5383,7 +6008,20 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Expanded panel; analytical validation J Mol Diagn 2025 (Boulos et al.)",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/40287222/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38043",
+      "policyName": null,
+      "coveredIndications": [
+        "Liquid biopsy CGP"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Liquid biopsy panel - covered under plasma genomic profiling LCD",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-8",
     "name": "MSK-IMPACT",
@@ -5432,7 +6070,22 @@ export const cgpTestData = [
     "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1056/NEJMoa1610624"],
     "keyFindings": "37% of profiled patients have at least one actionable mutation; 11% enrolled in matched clinical trials.",
     "keyFindingsCitations": "https://www.mskcc.org/news/fda-authorizes-msk-impact-test-analyzing-patient-tumors | https://www.cancer.gov/news-events/cancer-currents-blog/2017/genomic-profiling-tests-cancer"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "Solid malignant neoplasms",
+        "Detection of somatic mutations",
+        "Microsatellite instability (MSI)"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "468-gene panel, tissue-based. Available only at MSK.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-9",
     "name": "MI Cancer Seek",
@@ -5446,8 +6099,9 @@ export const cgpTestData = [
     "genesAnalyzedNotes": "228 genes with reportable SNVs/indels in CDx subset; WES/WTS technically interrogates ~20,000 genes for research findings and signatures. This prevents confusion between '228 genes' and 'whole-exome' claims.",
     "genesAnalyzedCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html",
     "geneListUrl": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/",
-    "biomarkersReported": ["SNVs", "Indels", "MSI", "TMB", "ERBB2 CNA"],
-    "biomarkersReportedCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html",
+    "biomarkersReported": ["SNVs", "Indels", "MSI", "TMB", "ERBB2 CNA", "HRD", "gLOH"],
+    "biomarkersReportedNotes": "HRD status reported based on BRCA1/2 mutations and Genomic Scar Score (gLOH + LST). HRD assessment validated for ovarian cancer PARPi therapy selection.",
+    "biomarkersReportedCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-demonstrates-scientific-rigor-with-clinical-validation-of-fda-approved-mi-cancer-seek-302530610.html | https://www.carislifesciences.com/physicians/physician-tests/whole-exome-sequencing/homologous-recombination-deficiency-hrd/",
     "cancerTypes": ["All solid tumors"],
     "cancerTypesCitations": "https://www.carislifesciences.com/physicians/physician-tests/mi-cancer-seek/",
     "targetPopulation": "Adults and pediatric patients (ages 1-22) with previously diagnosed solid malignant neoplasms",
@@ -5481,7 +6135,21 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Part of Caris Molecular Intelligence platform (165+ total publications across platform)",
     "numPublicationsCitations": "https://www.carislifesciences.com/publications/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "All solid tumors",
+        "WES/WTS analysis"
+      ],
+      "reimbursementRate": "$8,455",
+      "cptCode": "0211U",
+      "notes": "FDA PMA approved Nov 2024. First WES/WTS CDx. PLA code 0211U.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-11",
     "name": "OncoExTra",
@@ -5522,7 +6190,20 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Exact Sciences comprehensive profiling; emerging publication portfolio",
     "numPublicationsCitations": "https://www.exactsciences.com/test/oncoextra"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": null,
+      "coveredIndications": [
+        "Comprehensive genomic profiling"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "CGP test - covered under NCD 90.2",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-12",
     "name": "OmniSeq INSIGHT",
@@ -5601,7 +6282,21 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Strata Oncology clinical validation and utility studies",
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34723565/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38043",
+      "policyName": "MolDX: Plasma-Based Genomic Profiling",
+      "coveredIndications": [
+        "Advanced solid tumors",
+        "Therapy selection"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Liquid biopsy CGP panel. 55 genes for therapy selection.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-14",
     "name": "MI Profile",
@@ -5615,9 +6310,9 @@ export const cgpTestData = [
     "genesAnalyzedNotes": "WES/WTS interrogates ~22,000 genes; protein analysis adds expression-level biomarkers.",
     "genesAnalyzedCitations": "https://www.carislifesciences.com/physicians/profiling/",
     "geneListUrl": "https://www.carislifesciences.com/physicians/profiling/",
-    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI", "Protein Expression"],
-    "biomarkersReportedNotes": "Multi-omic approach combines genomic, transcriptomic, and proteomic data.",
-    "biomarkersReportedCitations": "https://www.carislifesciences.com/physicians/profiling/",
+    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions", "TMB", "MSI", "HRD", "gLOH", "Protein Expression"],
+    "biomarkersReportedNotes": "Multi-omic approach combines genomic, transcriptomic, and proteomic data. HRD status reported based on BRCA1/2 mutations and Genomic Scar Score (gLOH + LST).",
+    "biomarkersReportedCitations": "https://www.carislifesciences.com/physicians/profiling/ | https://www.carislifesciences.com/physicians/physician-tests/whole-exome-sequencing/homologous-recombination-deficiency-hrd/",
     "cancerTypes": ["All solid tumors"],
     "cancerTypesCitations": "https://www.carislifesciences.com/physicians/profiling/",
     "targetPopulation": "Patients requiring comprehensive multi-omic tumor profiling",
@@ -5642,7 +6337,21 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Caris flagship test; 165+ publications across platform per vendor",
     "numPublicationsCitations": "https://www.carislifesciences.com/publications/"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38121",
+      "policyName": "MolDX: NGS for Solid Tumors",
+      "coveredIndications": [
+        "All solid tumors",
+        "Includes MI Cancer Seek + IHC + additional markers"
+      ],
+      "reimbursementRate": null,
+      "cptCode": "81479",
+      "notes": "Full molecular profiling package.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-15",
     "name": "NEO PanTracer Tissue",
@@ -5741,7 +6450,21 @@ export const cgpTestData = [
     "independentValidation": "Prospective head-to-head validation against 6 commercially available assays from 4 CLIA/CAP labs (n=182 patients, 17+ tumor types, 6 community clinics + 1 hospital). Orthogonal ddPCR validation showed 98% concordance.",
     "independentValidationCitations": "Bower X et al. J Liq Biopsy 2025;9:1003222",
     "vendorDataSource": "Rob Manor (BillionToOne) submission Dec 2025"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38043",
+      "policyName": "MolDX: Plasma-Based Genomic Profiling",
+      "coveredIndications": [
+        "Advanced solid tumors",
+        "Therapy selection"
+      ],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Medicare coverage announced April 2025, effective Feb 14, 2025. 84-gene liquid biopsy panel.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-18",
     "name": "IsoPSA",
@@ -5806,7 +6529,20 @@ export const cgpTestData = [
     "technologyDifferentiator": "Only FDA-approved protein structure-based cancer diagnostic. IsoClear platform measures structural differences in proteins rather than concentration. Deployable on standard clinical analyzers (Roche COBAS, Siemens, Abbott) enabling broad access from academic centers to community urology practices - not limited to centralized specialty labs.",
     "regulatoryStatusNotes": "FDA PMA approved December 2025. Breakthrough Device Designation 2019. In NCCN and AUA/SUO guidelines. First protein structure-based cancer blood test to receive FDA approval.",
     "vendorDataSource": "Sameer Rohatgi (Cleveland Diagnostics) communication Dec 2025"
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L39284",
+      "policyName": "Prostate Cancer Detection with IsoPSA",
+      "coveredIndications": [
+        "Aid in biopsy decision for men ≥50 with elevated PSA"
+      ],
+      "reimbursementRate": "Medicare covered",
+      "cptCode": "0359U",
+      "notes": "Medicare covered via L39284 (Oct 2022). FDA PMA Dec 2025.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-19",
     "name": "Oncotype DX Breast Recurrence Score",
@@ -5886,7 +6622,20 @@ export const cgpTestData = [
       "submissionDate": "2025-12-17",
       "submissionNotes": "Surprise you do not list this test, OncoType Dx, given the disruptive impact it has had since 2004. Please consider adding. This website is outstanding! Thank you."
     }
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [
+        "HR+, HER2-, node-negative early breast cancer"
+      ],
+      "reimbursementRate": "Covered",
+      "cptCode": null,
+      "notes": "Well-established test with broad coverage",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-20",
     "name": "Liquid Trace Solid Tumor",
@@ -5949,7 +6698,20 @@ export const cgpTestData = [
       "vendorUpdateDate": "2025-12-17",
       "vendorUpdateNotes": "Vendor clarified test is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Emphasized CSF leadership for CNS tumors and leptomeningeal disease."
     }
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "MolDX (Palmetto GBA)",
+      "policyName": null,
+      "coveredIndications": [
+        "Comprehensive genomic profiling for solid tumors"
+      ],
+      "reimbursementRate": "Medicare covered",
+      "cptCode": null,
+      "notes": "Can use CSF for CNS tumors.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-21",
     "name": "Liquid Trace Hematology",
@@ -6028,7 +6790,21 @@ export const cgpTestData = [
         "keyFinding": "cfDNA chimerism more reliable than cellular DNA chimerism for predicting early relapse post-HSCT"
       }
     ]
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "MolDX (Palmetto GBA)",
+      "policyName": null,
+      "coveredIndications": [
+        "All hematologic cancers",
+        "Alternative to bone marrow biopsy"
+      ],
+      "reimbursementRate": "Medicare covered",
+      "cptCode": null,
+      "notes": "First Palmetto GBA covered liquid biopsy for hematology. Co-op model for labs.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-22",
     "name": "LiquidHALLMARK",
@@ -6127,7 +6903,21 @@ export const cgpTestData = [
       "vendorVerifiedNotes": "Vendor verified via OpenOnco validation form. Updates: TAT changed from 8-12 days to 7 Business Days; biomarkersReported clarified to note cfDNA+cfRNA sources for fusion detection."
     },
     "vendorVerified": true
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38043",
+      "policyName": "MolDX: Plasma-Based Genomic Profiling",
+      "coveredIndications": [
+        "Advanced solid tumors (all stages)",
+        "Therapy selection"
+      ],
+      "reimbursementRate": "$2,919",
+      "cptCode": "0409U",
+      "notes": "Medicare covered via L38043. Only US company with Medicare-covered ctDNA/ctRNA combination test.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-23",
     "name": "Resolution ctDx FIRST",
@@ -6213,7 +7003,21 @@ export const cgpTestData = [
     ],
     "technologyDifferentiator": "First FDA-approved liquid biopsy NGS CDx for KRAS G12C inhibitor (adagrasib). Proprietary primer extension technology detects fusions without prior knowledge of gene partner. Quest Diagnostics distribution enables broad US access via 2,100+ patient service centers. Zero false positive rate for CDx biomarkers in FDA validation. Superior fusion detection vs competitors in head-to-head studies.",
     "vendorRequestedChanges": "Dec 24, 2025: Added via LLM review pipeline recommendation - test identified as missing from OpenOnco database despite FDA CDx approval in December 2022."
-  },
+  ,
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "NCD",
+      "policyNumber": "90.2",
+      "policyName": "Next Generation Sequencing (NGS)",
+      "coveredIndications": [
+        "NSCLC - companion diagnostic for KRAZATI (adagrasib) for KRAS G12C mutations",
+        "EGFR tumor profiling"
+      ],
+      "reimbursementRate": "Medicare covered",
+      "cptCode": null,
+      "notes": "First liquid biopsy NGS approved as CDx for KRAZATI. Performed at Resolution Bioscience CLIA lab (Kirkland, WA). Available through Quest Diagnostics network.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-24",
     "name": "OncoCompass Target",
@@ -6856,7 +7660,18 @@ export const cgpTestData = [
       "vendorVerifiedDate": "2026-01-07",
       "vendorVerifiedBy": "Kyle Dunn"
     }
-  },
+  ,
+    "medicareCoverage": {
+      "status": "UNKNOWN",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Unable to locate information. Vendor may not have US-available test or may be inactive.",
+      "lastVerified": "2026-01-13"
+    }},
   {
     "id": "tds-27",
     "sampleCategory": "Tissue",
@@ -6917,7 +7732,18 @@ export const cgpTestData = [
       "vendorVerifiedDate": "2026-01-05",
       "vendorVerifiedBy": "Sandra Balladares"
     }
-  }
+  ,
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "$4,000 (patient self-pay)",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare. Baseline tumor profiling component for MRDVision.",
+      "lastVerified": "2026-01-13"
+    }}
 ];
 
 // ============================================
@@ -9079,6 +9905,8 @@ export const filterConfigs = {
     approaches: [...new Set(tdsTestData.map(t => t.approach || 'Unknown'))].sort(),
     fdaStatuses: ['FDA Approved', 'FDA Cleared', 'FDA Breakthrough', 'CLIA LDT', 'CE-IVD', 'NMPA', 'RUO'],
     reimbursements: ['Medicare', 'Commercial', 'Coverage Varies', 'Coverage emerging', 'Not established'],
+    // Key biomarkers for CGP filtering
+    biomarkers: ['TMB', 'MSI', 'HRD', 'PD-L1', 'gLOH'],
   },
   // HCT - Hereditary Cancer Testing
   HCT: {
