@@ -28,6 +28,7 @@ const WIZARD_STEPS = [
   { id: 'treatment-gate', title: 'Treatment', description: 'Have you completed treatment?' },
   { id: 'location', title: 'Location', description: 'Where are you located?' },
   { id: 'cancer-type', title: 'Cancer Type', description: 'What cancer were you treated for?' },
+  { id: 'cancer-stage', title: 'Stage', description: 'What stage was your cancer?' },
   { id: 'tumor-tissue', title: 'Tumor Tissue', description: 'Was tumor tissue saved?' },
   { id: 'insurance', title: 'Coverage', description: 'Insurance and costs' },
   { id: 'results', title: 'Results', description: 'Tests that match your situation' },
@@ -48,6 +49,62 @@ const CANCER_TYPES = [
   { id: 'lymphoma', label: 'Lymphoma' },
   { id: 'other-solid', label: 'Other solid tumor' },
 ];
+
+// Cancer stage options
+const CANCER_STAGES = [
+  { id: 'stage-1', label: 'Stage I', description: 'Early-stage, localized' },
+  { id: 'stage-2', label: 'Stage II', description: 'Locally advanced' },
+  { id: 'stage-3', label: 'Stage III', description: 'Regional spread' },
+  { id: 'stage-4', label: 'Stage IV', description: 'Metastatic' },
+  { id: 'not-sure', label: "I'm not sure", description: 'Your oncologist can help clarify' },
+];
+
+// Medicare coverage data for MRD tests by cancer type and stage
+// Based on MolDX LCD policies (L38779 and related)
+const MEDICARE_COVERAGE = {
+  // Tests with Medicare coverage and their covered indications
+  tests: {
+    'Signatera': {
+      lcdPolicy: 'MolDX L38779',
+      coveredIndications: [
+        { cancerTypes: ['colorectal'], stages: ['stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Post-Adjuvant', 'Surveillance'] },
+        { cancerTypes: ['breast'], stages: ['stage-2', 'stage-3'], settings: ['Neoadjuvant', 'Post-Adjuvant', 'Surveillance'] },
+        { cancerTypes: ['bladder'], stages: ['stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
+        { cancerTypes: ['lung'], stages: ['stage-1', 'stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
+        { cancerTypes: ['ovarian'], stages: ['stage-2', 'stage-3', 'stage-4'], settings: ['Post-Adjuvant', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: 3500, followUp: 1164 },
+      cptCode: '0340U',
+    },
+    'Reveal MRD': {
+      lcdPolicy: 'MolDX',
+      coveredIndications: [
+        { cancerTypes: ['colorectal'], stages: ['stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: 3500, followUp: null },
+      cptCode: '0569U',
+    },
+    'clonoSEQ': {
+      lcdPolicy: 'FDA Cleared + Medicare',
+      coveredIndications: [
+        { cancerTypes: ['multiple-myeloma', 'lymphoma'], stages: ['stage-1', 'stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Post-Adjuvant', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: 2916, followUp: null },
+      cptCode: '0364U',
+    },
+    'NavDx': {
+      lcdPolicy: 'Medicare',
+      coveredIndications: [
+        { cancerTypes: ['other-solid'], stages: ['stage-1', 'stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: null, followUp: null },
+      cptCode: null,
+      note: 'Covered for HPV+ head & neck cancers',
+    },
+  },
+  // Cancer types with known Medicare coverage
+  coveredCancerTypes: ['colorectal', 'breast', 'bladder', 'lung', 'ovarian', 'multiple-myeloma', 'lymphoma'],
+};
 
 // Build color scheme from journey config (soft emerald theme)
 const colors = {
@@ -116,6 +173,12 @@ const CONTENT = {
     description: 'This helps us find the most relevant tests for you',
     notSureLabel: "I'm not sure",
     notSureDescription: "That's okay — your oncologist will know. We'll show you broader options.",
+  },
+  cancerStage: {
+    heading: 'What stage was your cancer at diagnosis?',
+    description: 'This helps us understand coverage options and the most appropriate tests',
+    educationHeading: 'Why this matters',
+    educationText: 'Cancer stage affects which MRD tests are covered by insurance and which have the best evidence for your situation.',
   },
   tumorTissue: {
     heading: 'Was tumor tissue saved from your surgery or biopsy?',
@@ -210,6 +273,70 @@ const CONTENT = {
     doneLabel: 'Done',
   },
 };
+
+// ============================================================================
+// Medicare Coverage Helpers
+// ============================================================================
+
+/**
+ * Get Medicare coverage information for a given cancer type and stage
+ * Used to show coverage eligibility in the insurance step and results
+ */
+function getMedicareCoverageInfo(cancerType, cancerStage) {
+  const coveredTests = [];
+  const hasCoverage = MEDICARE_COVERAGE.coveredCancerTypes.includes(cancerType);
+
+  if (!hasCoverage) {
+    return { hasCoverage: false, coveredTests: [] };
+  }
+
+  // Check each test to see if it covers this cancer type and stage
+  Object.entries(MEDICARE_COVERAGE.tests).forEach(([testName, testData]) => {
+    testData.coveredIndications.forEach(indication => {
+      if (indication.cancerTypes.includes(cancerType) &&
+          (indication.stages.includes(cancerStage) || cancerStage === 'not-sure')) {
+        // Avoid duplicates
+        if (!coveredTests.find(t => t.name === testName)) {
+          coveredTests.push({
+            name: testName,
+            lcdPolicy: testData.lcdPolicy,
+            reimbursementRate: testData.reimbursementRate,
+            cptCode: testData.cptCode,
+            coveredSettings: indication.settings,
+            note: testData.note,
+          });
+        }
+      }
+    });
+  });
+
+  return { hasCoverage: true, coveredTests };
+}
+
+/**
+ * Get specific Medicare coverage details for a test given user's cancer type and stage
+ * Used in TestSummaryModal to show detailed coverage info
+ */
+function getTestMedicareCoverage(testName, cancerType, cancerStage) {
+  const testData = MEDICARE_COVERAGE.tests[testName];
+  if (!testData) return null;
+
+  // Check if this test covers the user's cancer type and stage
+  const matchingIndication = testData.coveredIndications.find(indication =>
+    indication.cancerTypes.includes(cancerType) &&
+    (indication.stages.includes(cancerStage) || cancerStage === 'not-sure')
+  );
+
+  if (!matchingIndication) return null;
+
+  return {
+    lcdPolicy: testData.lcdPolicy,
+    reimbursementRate: testData.reimbursementRate,
+    cptCode: testData.cptCode,
+    coveredSettings: matchingIndication.settings,
+    note: testData.note,
+  };
+}
 
 // ============================================================================
 // Helper Components
@@ -562,7 +689,75 @@ function CancerTypeStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
- * Step 3: Tumor Tissue Question
+ * Step 4: Cancer Stage Selection
+ * Helps determine Medicare coverage eligibility
+ */
+function CancerStageStep({ wizardData, setWizardData, onNext, onBack }) {
+  const content = CONTENT.cancerStage;
+
+  // Check if user's cancer type has Medicare coverage potential
+  const hasMedicareCoverage = MEDICARE_COVERAGE.coveredCancerTypes.includes(wizardData.cancerType);
+
+  const handleSelect = (cancerStage) => {
+    setWizardData(prev => ({ ...prev, cancerStage }));
+    // Auto-advance after selection
+    setTimeout(() => onNext(), 300);
+  };
+
+  return (
+    <div className="py-6">
+      <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+        {content.heading}
+      </h2>
+      <p className="text-slate-600 text-center mb-8">
+        {content.description}
+      </p>
+
+      {/* Stage options */}
+      <div className="max-w-lg mx-auto space-y-3 mb-6">
+        {CANCER_STAGES.map((stage) => (
+          <OptionButton
+            key={stage.id}
+            selected={wizardData.cancerStage === stage.id}
+            onClick={() => handleSelect(stage.id)}
+          >
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="font-medium text-slate-900">{stage.label}</span>
+                <p className="text-sm text-slate-500 mt-1">{stage.description}</p>
+              </div>
+              {/* Show Medicare coverage indicator for covered cancer types and stages */}
+              {hasMedicareCoverage && stage.id !== 'not-sure' && stage.id !== 'stage-1' && (
+                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full ml-2 flex-shrink-0">
+                  Medicare eligible
+                </span>
+              )}
+            </div>
+          </OptionButton>
+        ))}
+      </div>
+
+      {/* Educational panel */}
+      <div className="max-w-lg mx-auto">
+        <InfoBox>
+          <h3 className={`font-semibold ${colors.textDark} mb-2`}>{content.educationHeading}</h3>
+          <p className="text-sm text-slate-600">{content.educationText}</p>
+          {hasMedicareCoverage && (
+            <p className="text-sm text-blue-700 mt-2">
+              <span className="font-medium">Good news:</span> Your cancer type ({CANCER_TYPES.find(t => t.id === wizardData.cancerType)?.label})
+              may have Medicare-covered MRD testing options, especially for Stage II-IV.
+            </p>
+          )}
+        </InfoBox>
+      </div>
+
+      <NavigationButtons onBack={onBack} showBack={true} onNext={onNext} nextDisabled={!wizardData.cancerStage} />
+    </div>
+  );
+}
+
+/**
+ * Step 5: Tumor Tissue Question
  * Explains tumor-informed vs tumor-naive tests
  */
 function TumorTissueStep({ wizardData, setWizardData, onNext, onBack }) {
@@ -1787,6 +1982,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   const [wizardData, setWizardData] = useState({
     country: null,              // Selected country/region
     cancerType: mappedCancerType,           // Selected cancer type or 'not-sure'
+    cancerStage: null,          // Selected cancer stage or 'not-sure'
     hasTumorTissue: null,       // 'yes', 'no', or 'not-sure'
     completedTreatment: null,   // 'yes' or 'no'
     hasInsurance: undefined,    // true or false
@@ -1859,6 +2055,15 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
       case 'cancer-type':
         return (
           <CancerTypeStep
+            wizardData={wizardData}
+            setWizardData={setWizardData}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        );
+      case 'cancer-stage':
+        return (
+          <CancerStageStep
             wizardData={wizardData}
             setWizardData={setWizardData}
             onNext={handleNext}
