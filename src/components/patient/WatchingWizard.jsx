@@ -953,6 +953,7 @@ function TestSummaryModal({ test, wizardData, onClose }) {
         earlyWarningDays: test.earlyWarningDays,
         leadTime: test.leadTime,
         comparativeBadges: test.comparativeBadges?.map(b => b.label),
+        medicareCoverage: test.medicareCoverage,
       };
 
       // Check if vendor is widely available
@@ -977,6 +978,34 @@ function TestSummaryModal({ test, wizardData, onClose }) {
         standoutQualities.push('Widely Available (any oncologist can order through major lab networks)');
       }
 
+      // Build Medicare coverage information for Medicare patients
+      const isMedicarePatient = wizardContext.insuranceType?.toLowerCase()?.includes('medicare');
+      const medicareCoverage = test.medicareCoverage;
+      let medicareCoverageInfo = '';
+      if (isMedicarePatient && medicareCoverage) {
+        const coverageStatus = medicareCoverage.status === 'COVERED' ? 'Covered by Medicare' :
+          medicareCoverage.status === 'NOT_COVERED' ? 'Not currently covered by Medicare' :
+          medicareCoverage.status === 'PENDING_COVERAGE' ? 'Medicare coverage pending' :
+          medicareCoverage.status === 'PENDING_FDA' ? 'Pending FDA approval (coverage expected after)' :
+          medicareCoverage.status === 'EXPECTED_COVERAGE' ? 'Medicare coverage expected soon' : 'Coverage status unknown';
+
+        medicareCoverageInfo = `MEDICARE COVERAGE DETAILS (IMPORTANT - patient has Medicare):
+- Coverage Status: ${coverageStatus}`;
+
+        if (medicareCoverage.policyType && medicareCoverage.policyNumber) {
+          medicareCoverageInfo += `\n- Policy: ${medicareCoverage.policyType} ${medicareCoverage.policyNumber}${medicareCoverage.policyName ? ` (${medicareCoverage.policyName})` : ''}`;
+        }
+        if (medicareCoverage.coveredIndications?.length > 0) {
+          medicareCoverageInfo += `\n- Covered Cancer Types/Stages: ${medicareCoverage.coveredIndications.join('; ')}`;
+        }
+        if (medicareCoverage.reimbursementRate) {
+          medicareCoverageInfo += `\n- Reimbursement Rate: ${medicareCoverage.reimbursementRate}`;
+        }
+        if (medicareCoverage.notes) {
+          medicareCoverageInfo += `\n- Notes: ${medicareCoverage.notes}`;
+        }
+      }
+
       const promptMessage = `You're helping a patient understand an MRD test that matched their situation. Write a clear, warm 3-4 paragraph summary.
 
 PATIENT SITUATION:
@@ -988,6 +1017,8 @@ PATIENT SITUATION:
 TEST DETAILS:
 ${JSON.stringify(testInfo, null, 2)}
 
+${medicareCoverageInfo}
+
 ${assistanceDetails ? `FINANCIAL ASSISTANCE: ${assistanceDetails}` : ''}
 
 ${standoutQualities.length > 0 ? `STANDOUT QUALITIES (mention these as wins!): ${standoutQualities.join(', ')}` : ''}
@@ -996,7 +1027,8 @@ Write the summary with these sections (use plain language, no medical jargon):
 1. **What this test does** - Explain in simple terms what ${test.name} does and how it works
 2. **Why it matched your situation** - Connect specific test features to the patient's answers (tumor tissue availability, cancer type, etc.)
 3. **Key benefits** - Highlight the test's strengths${standoutQualities.length > 0 ? '. IMPORTANT: Explicitly mention these standout qualities as wins: ' + standoutQualities.join(', ') : ''}
-${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `4. **Financial help available** - Briefly mention that financial assistance is available (we will show a link separately)` : ''}
+${isMedicarePatient && medicareCoverage ? `4. **Medicare coverage** - Summarize the Medicare coverage status in plain language. If covered, mention which cancer stages/indications are covered. If there's a reimbursement rate, mention that Medicare pays for this test. If not covered or pending, explain that clearly.` : ''}
+${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `${isMedicarePatient && medicareCoverage ? '5' : '4'}. **Financial help available** - Briefly mention that financial assistance is available (we will show a link separately)` : ''}
 
 End with a reminder that their oncologist can help them decide if this test is right for them.`;
 
@@ -1515,7 +1547,7 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                   </svg>
-                  Technical details
+                  Test details
                 </button>
               </div>
             </div>
