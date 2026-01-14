@@ -12,6 +12,7 @@ const watchingJourney = JOURNEY_CONFIG.mrd;
 const WIZARD_STEPS = [
   { id: 'welcome', title: 'Welcome', description: 'Learn about MRD testing' },
   { id: 'cancer-type', title: 'Cancer Type', description: 'What cancer were you treated for?' },
+  { id: 'cancer-stage', title: 'Stage', description: 'What stage was your cancer?' },
   { id: 'tumor-tissue', title: 'Tumor Tissue', description: 'Was tumor tissue saved?' },
   { id: 'treatment-status', title: 'Treatment Status', description: 'Where are you in treatment?' },
   { id: 'insurance', title: 'Coverage', description: 'Insurance and costs' },
@@ -33,6 +34,62 @@ const CANCER_TYPES = [
   { id: 'lymphoma', label: 'Lymphoma' },
   { id: 'other-solid', label: 'Other solid tumor' },
 ];
+
+// Cancer stage options
+const CANCER_STAGES = [
+  { id: 'stage-1', label: 'Stage I', description: 'Early-stage, localized' },
+  { id: 'stage-2', label: 'Stage II', description: 'Locally advanced' },
+  { id: 'stage-3', label: 'Stage III', description: 'Regional spread' },
+  { id: 'stage-4', label: 'Stage IV', description: 'Metastatic' },
+  { id: 'not-sure', label: "I'm not sure", description: 'Your oncologist can help clarify' },
+];
+
+// Medicare coverage data for MRD tests by cancer type and stage
+// Based on MolDX LCD policies (L38779 and related)
+const MEDICARE_COVERAGE = {
+  // Tests with Medicare coverage and their covered indications
+  tests: {
+    'Signatera': {
+      lcdPolicy: 'MolDX L38779',
+      coveredIndications: [
+        { cancerTypes: ['colorectal'], stages: ['stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Post-Adjuvant', 'Surveillance'] },
+        { cancerTypes: ['breast'], stages: ['stage-2', 'stage-3'], settings: ['Neoadjuvant', 'Post-Adjuvant', 'Surveillance'] },
+        { cancerTypes: ['bladder'], stages: ['stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
+        { cancerTypes: ['lung'], stages: ['stage-1', 'stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
+        { cancerTypes: ['ovarian'], stages: ['stage-2', 'stage-3', 'stage-4'], settings: ['Post-Adjuvant', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: 3500, followUp: 1164 },
+      cptCode: '0340U',
+    },
+    'Reveal MRD': {
+      lcdPolicy: 'MolDX',
+      coveredIndications: [
+        { cancerTypes: ['colorectal'], stages: ['stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: 3500, followUp: null },
+      cptCode: '0569U',
+    },
+    'clonoSEQ': {
+      lcdPolicy: 'FDA Cleared + Medicare',
+      coveredIndications: [
+        { cancerTypes: ['multiple-myeloma', 'lymphoma'], stages: ['stage-1', 'stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Post-Adjuvant', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: 2916, followUp: null },
+      cptCode: '0364U',
+    },
+    'NavDx': {
+      lcdPolicy: 'Medicare',
+      coveredIndications: [
+        { cancerTypes: ['other-solid'], stages: ['stage-1', 'stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Surveillance'] },
+      ],
+      reimbursementRate: { initial: null, followUp: null },
+      cptCode: null,
+      note: 'Covered for HPV+ head & neck cancers',
+    },
+  },
+  // Cancer types with known Medicare coverage
+  coveredCancerTypes: ['colorectal', 'breast', 'bladder', 'lung', 'ovarian', 'multiple-myeloma', 'lymphoma'],
+};
 
 // Build color scheme from journey config (soft emerald theme)
 const colors = {
@@ -76,6 +133,12 @@ const CONTENT = {
     notSureLabel: "I'm not sure",
     notSureDescription: "That's okay — your oncologist will know. We'll show you broader options.",
   },
+  cancerStage: {
+    heading: 'What stage was your cancer at diagnosis?',
+    description: 'This helps us understand coverage options and the most appropriate tests',
+    educationHeading: 'Why this matters',
+    educationText: 'Cancer stage affects which MRD tests are covered by insurance and which have the best evidence for your situation.',
+  },
   tumorTissue: {
     heading: 'Was tumor tissue saved from your surgery or biopsy?',
     description: 'This determines which types of tests are available to you',
@@ -113,7 +176,7 @@ const CONTENT = {
   },
   insurance: {
     heading: "Let's talk about coverage",
-    description: 'This helps us highlight financial assistance options',
+    description: 'This helps us highlight coverage and financial assistance options',
     hasInsuranceQuestion: 'Do you have health insurance?',
     insuranceTypeQuestion: 'What type of insurance?',
     insuranceTypes: [
@@ -124,6 +187,15 @@ const CONTENT = {
       { id: 'other', label: 'Other' },
     ],
     noInsuranceNote: "Many test providers offer financial assistance programs. We'll highlight those options in your results.",
+    medicareNote: {
+      headline: 'Good news for Medicare patients!',
+      text: 'Many MRD tests are covered by Medicare under MolDX policies. Based on your cancer type and stage, we\'ll show you which tests are covered and what the requirements are.',
+      coveredText: 'Your cancer type has Medicare-covered MRD tests available.',
+      notCoveredText: 'Medicare coverage for your cancer type is limited, but financial assistance programs may be available.',
+    },
+    privateNote: {
+      text: 'Private insurance coverage varies by plan. Many MRD tests have commercial coverage with major insurers like UnitedHealthcare, Cigna, and BCBS plans.',
+    },
     costSensitivityQuestion: 'How sensitive are you to out-of-pocket costs?',
     costOptions: [
       { id: 'very-sensitive', label: 'Very sensitive', description: 'I need to minimize costs' },
@@ -137,6 +209,10 @@ const CONTENT = {
     financialNote: {
       boldText: 'Financial assistance may be available.',
       text: "We've highlighted tests with assistance programs based on your cost sensitivity.",
+    },
+    medicareCoverageNote: {
+      boldText: 'Medicare coverage information shown.',
+      text: 'Tests with Medicare coverage for your specific situation are highlighted. Coverage is based on your cancer type and stage.',
     },
     actions: {
       save: 'Save these results',
@@ -446,7 +522,75 @@ function CancerTypeStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
- * Step 3: Tumor Tissue Question
+ * Step 3: Cancer Stage Selection
+ * Asks about cancer stage to determine coverage eligibility
+ */
+function CancerStageStep({ wizardData, setWizardData, onNext, onBack }) {
+  const content = CONTENT.cancerStage;
+
+  // Check if user's cancer type has Medicare coverage potential
+  const hasMedicareCoverage = MEDICARE_COVERAGE.coveredCancerTypes.includes(wizardData.cancerType);
+
+  const handleSelect = (cancerStage) => {
+    setWizardData(prev => ({ ...prev, cancerStage }));
+    // Auto-advance after selection
+    setTimeout(() => onNext(), 300);
+  };
+
+  return (
+    <div className="py-6">
+      <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+        {content.heading}
+      </h2>
+      <p className="text-slate-600 text-center mb-8">
+        {content.description}
+      </p>
+
+      {/* Stage options */}
+      <div className="max-w-lg mx-auto space-y-3 mb-6">
+        {CANCER_STAGES.map((stage) => (
+          <OptionButton
+            key={stage.id}
+            selected={wizardData.cancerStage === stage.id}
+            onClick={() => handleSelect(stage.id)}
+          >
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="font-medium text-slate-900">{stage.label}</span>
+                <p className="text-sm text-slate-500 mt-1">{stage.description}</p>
+              </div>
+              {/* Show Medicare coverage indicator for covered cancer types and stages */}
+              {hasMedicareCoverage && stage.id !== 'not-sure' && stage.id !== 'stage-1' && (
+                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full ml-2 flex-shrink-0">
+                  Medicare eligible
+                </span>
+              )}
+            </div>
+          </OptionButton>
+        ))}
+      </div>
+
+      {/* Educational panel */}
+      <div className="max-w-lg mx-auto">
+        <InfoBox>
+          <h3 className={`font-semibold ${colors.textDark} mb-2`}>{content.educationHeading}</h3>
+          <p className="text-sm text-slate-600">{content.educationText}</p>
+          {hasMedicareCoverage && (
+            <p className="text-sm text-blue-700 mt-2">
+              <span className="font-medium">Good news:</span> Your cancer type ({CANCER_TYPES.find(t => t.id === wizardData.cancerType)?.label}) 
+              may have Medicare-covered MRD testing options, especially for Stage II-IV.
+            </p>
+          )}
+        </InfoBox>
+      </div>
+
+      <NavigationButtons onBack={onBack} onNext={onNext} nextDisabled={!wizardData.cancerStage} />
+    </div>
+  );
+}
+
+/**
+ * Step 4: Tumor Tissue Question
  * Explains tumor-informed vs tumor-naive tests
  */
 function TumorTissueStep({ wizardData, setWizardData, onNext, onBack }) {
@@ -599,11 +743,49 @@ function TreatmentStatusStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
+ * Helper function to get Medicare coverage details for user's cancer type and stage
+ */
+function getMedicareCoverageInfo(cancerType, cancerStage) {
+  const coveredTests = [];
+  const hasCoverage = MEDICARE_COVERAGE.coveredCancerTypes.includes(cancerType);
+
+  if (!hasCoverage) {
+    return { hasCoverage: false, coveredTests: [] };
+  }
+
+  // Check each test to see if it covers this cancer type and stage
+  Object.entries(MEDICARE_COVERAGE.tests).forEach(([testName, testData]) => {
+    testData.coveredIndications.forEach(indication => {
+      if (indication.cancerTypes.includes(cancerType) &&
+          (indication.stages.includes(cancerStage) || cancerStage === 'not-sure')) {
+        // Avoid duplicates
+        if (!coveredTests.find(t => t.name === testName)) {
+          coveredTests.push({
+            name: testName,
+            lcdPolicy: testData.lcdPolicy,
+            reimbursementRate: testData.reimbursementRate,
+            cptCode: testData.cptCode,
+            coveredSettings: indication.settings,
+            note: testData.note,
+          });
+        }
+      }
+    });
+  });
+
+  return { hasCoverage: true, coveredTests };
+}
+
+/**
  * Step 5: Insurance & Cost Sensitivity
  * Coverage and cost preferences
  */
 function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.insurance;
+
+  // Get Medicare coverage info based on user's cancer type and stage
+  const medicareCoverageInfo = getMedicareCoverageInfo(wizardData.cancerType, wizardData.cancerStage);
+  const cancerTypeLabel = CANCER_TYPES.find(t => t.id === wizardData.cancerType)?.label || 'your cancer type';
 
   const handleInsuranceChange = (hasInsurance) => {
     setWizardData(prev => ({
@@ -689,6 +871,95 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
             </div>
           )}
 
+          {/* Medicare-specific coverage information */}
+          {wizardData.insuranceType === 'medicare' && (
+            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <div className="flex gap-3 mb-3">
+                <svg className="w-6 h-6 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <div>
+                  <h4 className="font-semibold text-blue-900">{content.medicareNote.headline}</h4>
+                </div>
+              </div>
+
+              {medicareCoverageInfo.hasCoverage ? (
+                <div className="space-y-4">
+                  <p className="text-sm text-blue-800">
+                    <span className="font-medium">Good news!</span> {cancerTypeLabel} has Medicare-covered MRD tests available under MolDX policies.
+                  </p>
+
+                  {medicareCoverageInfo.coveredTests.length > 0 && (
+                    <div className="bg-white/60 rounded-lg p-4">
+                      <h5 className="text-sm font-semibold text-blue-900 mb-3">
+                        Tests covered for your situation:
+                      </h5>
+                      <div className="space-y-3">
+                        {medicareCoverageInfo.coveredTests.map((test) => (
+                          <div key={test.name} className="flex flex-col gap-1">
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium text-slate-900">{test.name}</span>
+                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                                {test.lcdPolicy}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 text-xs text-slate-600">
+                              {test.cptCode && (
+                                <span className="bg-slate-100 px-2 py-0.5 rounded">
+                                  CPT: {test.cptCode}
+                                </span>
+                              )}
+                              {test.reimbursementRate?.initial && (
+                                <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                                  Initial: ${test.reimbursementRate.initial.toLocaleString()}
+                                </span>
+                              )}
+                              {test.reimbursementRate?.followUp && (
+                                <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                                  Follow-up: ${test.reimbursementRate.followUp.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                            {test.note && (
+                              <p className="text-xs text-slate-500 italic">{test.note}</p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <p className="text-xs text-blue-700">
+                    Coverage depends on specific clinical circumstances. We'll show detailed coverage info in your results.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-blue-800">
+                    {content.medicareNote.notCoveredText}
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    While Medicare coverage for {cancerTypeLabel} MRD testing may be limited, many test providers offer financial assistance programs that can significantly reduce costs.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Private insurance note */}
+          {wizardData.insuranceType === 'private' && (
+            <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+              <div className="flex gap-3">
+                <svg className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-sm text-slate-700">
+                  {content.privateNote.text}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* No insurance note */}
           {wizardData.hasInsurance === false && (
             <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
@@ -728,11 +999,38 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
+ * Helper function to get Medicare coverage info for a specific test
+ */
+function getTestMedicareCoverage(testName, cancerType, cancerStage) {
+  const testData = MEDICARE_COVERAGE.tests[testName];
+  if (!testData) return null;
+
+  // Check if this test covers the user's cancer type and stage
+  const matchingIndication = testData.coveredIndications.find(indication =>
+    indication.cancerTypes.includes(cancerType) &&
+    (indication.stages.includes(cancerStage) || cancerStage === 'not-sure')
+  );
+
+  if (!matchingIndication) return null;
+
+  return {
+    lcdPolicy: testData.lcdPolicy,
+    reimbursementRate: testData.reimbursementRate,
+    cptCode: testData.cptCode,
+    coveredSettings: matchingIndication.settings,
+    note: testData.note,
+  };
+}
+
+/**
  * Step 6: Results
  * Shows matching tests based on selections
  */
 function ResultsStep({ wizardData, testData, onNext, onBack }) {
   const content = CONTENT.results;
+
+  // Check if user has Medicare
+  const isMedicarePatient = wizardData.insuranceType === 'medicare';
 
   // Get cancer type label for display
   const getCancerLabel = (id) => {
@@ -793,6 +1091,11 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
   const matchingTests = getMatchingTests();
   const showFinancialNote = wizardData.costSensitivity === 'very-sensitive' || wizardData.hasInsurance === false;
 
+  // For Medicare patients, check how many tests have coverage
+  const testsWithMedicareCoverage = isMedicarePatient
+    ? matchingTests.filter(test => getTestMedicareCoverage(test.name, wizardData.cancerType, wizardData.cancerStage))
+    : [];
+
   return (
     <div className="py-6">
       <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
@@ -801,6 +1104,20 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
       <p className="text-slate-600 text-center mb-8">
         {content.description}
       </p>
+
+      {/* Medicare coverage note */}
+      {isMedicarePatient && testsWithMedicareCoverage.length > 0 && (
+        <div className="max-w-lg mx-auto mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="flex gap-3">
+            <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <p className="text-sm text-blue-800">
+              <span className="font-semibold">{content.medicareCoverageNote.boldText}</span> {content.medicareCoverageNote.text}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Financial note */}
       {showFinancialNote && (
@@ -816,31 +1133,112 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
 
       {/* Test cards */}
       <div className="max-w-lg mx-auto space-y-4 mb-8">
-        {matchingTests.map((test) => (
-          <div
-            key={test.id}
-            className="bg-white border-2 border-slate-200 rounded-xl p-5 hover:border-emerald-300 transition-colors"
-          >
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <h3 className="font-semibold text-slate-900">{test.name}</h3>
-                <p className="text-sm text-slate-500">{test.vendor}</p>
+        {matchingTests.map((test) => {
+          // Get Medicare coverage info for this specific test
+          const medicareCoverage = isMedicarePatient
+            ? getTestMedicareCoverage(test.name, wizardData.cancerType, wizardData.cancerStage)
+            : null;
+
+          return (
+            <div
+              key={test.id}
+              className={`bg-white border-2 rounded-xl p-5 hover:border-emerald-300 transition-colors ${
+                medicareCoverage ? 'border-blue-300' : 'border-slate-200'
+              }`}
+            >
+              {/* Header with badges */}
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="font-semibold text-slate-900">{test.name}</h3>
+                  <p className="text-sm text-slate-500">{test.vendor}</p>
+                </div>
+                <div className="flex flex-col gap-1 items-end">
+                  {medicareCoverage && (
+                    <span className="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      Medicare Covered
+                    </span>
+                  )}
+                  {test.hasFinancialAssistance && showFinancialNote && (
+                    <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
+                      💵 Financial aid
+                    </span>
+                  )}
+                </div>
               </div>
-              {test.hasFinancialAssistance && showFinancialNote && (
-                <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
-                  💵 Financial aid
-                </span>
+
+              {/* Match reason and key benefit */}
+              <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
+              <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
+                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                {test.keyBenefit}
+              </div>
+
+              {/* Medicare coverage details */}
+              {medicareCoverage && (
+                <div className="bg-blue-50 rounded-lg p-3 mt-3">
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">
+                      {medicareCoverage.lcdPolicy}
+                    </span>
+                    {medicareCoverage.cptCode && (
+                      <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded">
+                        CPT: {medicareCoverage.cptCode}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Reimbursement rates */}
+                  {(medicareCoverage.reimbursementRate?.initial || medicareCoverage.reimbursementRate?.followUp) && (
+                    <div className="flex flex-wrap gap-3 mt-2 text-xs">
+                      {medicareCoverage.reimbursementRate.initial && (
+                        <div className="flex items-center gap-1">
+                          <span className="text-slate-500">Initial test:</span>
+                          <span className="font-semibold text-green-700">
+                            ${medicareCoverage.reimbursementRate.initial.toLocaleString()}
+                          </span>
+                        </div>
+                      )}
+                      {medicareCoverage.reimbursementRate.followUp && (
+                        <div className="flex items-center gap-1">
+                          <span className="text-slate-500">Follow-up:</span>
+                          <span className="font-semibold text-green-700">
+                            ${medicareCoverage.reimbursementRate.followUp.toLocaleString()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Covered treatment settings */}
+                  {medicareCoverage.coveredSettings && medicareCoverage.coveredSettings.length > 0 && (
+                    <div className="mt-2 text-xs text-slate-600">
+                      <span className="font-medium">Covered settings:</span>{' '}
+                      {medicareCoverage.coveredSettings.join(', ')}
+                    </div>
+                  )}
+
+                  {medicareCoverage.note && (
+                    <p className="text-xs text-slate-500 mt-2 italic">{medicareCoverage.note}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Show "Coverage varies" for Medicare patients without coverage for this test */}
+              {isMedicarePatient && !medicareCoverage && (
+                <div className="bg-slate-50 rounded-lg p-3 mt-3">
+                  <p className="text-xs text-slate-500">
+                    <span className="font-medium">Medicare coverage:</span> Coverage may be limited for your specific indication. Financial assistance programs may be available.
+                  </p>
+                </div>
               )}
             </div>
-            <p className={`text-sm ${colors.text} mb-2`}>{test.matchReason}</p>
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              {test.keyBenefit}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Action buttons */}
@@ -1019,6 +1417,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   // Wizard data collected from user
   const [wizardData, setWizardData] = useState({
     cancerType: mappedCancerType,           // Selected cancer type or 'not-sure'
+    cancerStage: null,          // 'stage-1', 'stage-2', 'stage-3', 'stage-4', or 'not-sure'
     hasTumorTissue: null,       // 'yes', 'no', or 'not-sure'
     treatmentStatus: null,      // 'just-finished', 'finished-while-ago', 'between-treatments', 'pre-treatment'
     hasInsurance: undefined,    // true or false
@@ -1082,6 +1481,15 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
       case 'cancer-type':
         return (
           <CancerTypeStep
+            wizardData={wizardData}
+            setWizardData={setWizardData}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        );
+      case 'cancer-stage':
+        return (
+          <CancerStageStep
             wizardData={wizardData}
             setWizardData={setWizardData}
             onNext={handleNext}

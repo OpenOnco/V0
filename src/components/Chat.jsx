@@ -772,6 +772,9 @@ ${progress}
             Ask
           </button>
         </form>
+        <p className="text-xs text-gray-500 text-center mt-2">
+          Claude is AI and can make mistakes. Please double-check responses.
+        </p>
         {messages.length > 0 && (
           <button
             onClick={clearChat}
