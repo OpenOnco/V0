@@ -529,6 +529,24 @@ export const VENDOR_VERIFIED = {
     verifiedDate: '2026-01-08',
     editsSubmitted: 0
   },
+  'tds-24': {  // OncoCompass Target
+    name: 'Liankai Chi',
+    company: 'Burning Rock Dx',
+    verifiedDate: '2026-01-13',
+    editsSubmitted: 2
+  },
+  'tds-25': {  // OncoScreen Focus CDx
+    name: 'Liankai Chi',
+    company: 'Burning Rock Dx',
+    verifiedDate: '2026-01-13',
+    editsSubmitted: 4
+  },
+  'tds-kit-15': {  // OncoScreen Plus Cancer Mutation Profiling Tissue Kit
+    name: 'Liankai Chi',
+    company: 'Burning Rock Dx',
+    verifiedDate: '2026-01-13',
+    editsSubmitted: 5
+  },
 };
 
 // ============================================
@@ -6211,6 +6229,8 @@ export const cgpTestData = [
     "cancerTypes": ["NSCLC", "Pan-solid tumor"],
     "cancerTypesNotes": "Primary validation in metastatic NSCLC (BENEFIT trial); applicable to pan-solid tumors for CGP",
     "cancerTypesCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9",
+    "biomarkersReported": ["SNVs", "InDels", "CNVs", "Fusions", "MSI"],
+    "biomarkersReportedNotes": "Vendor confirmed: SNV, InDel, CNV, Fusion, and MSI detection",
     "sensitivity": 96,
     "sensitivityPlus": true,
     "sensitivityNotes": "Analytical sensitivity for variant detection. 101-gene validation: 97.5% by-variant sensitivity in 904-patient cohort (Fan et al. 2024)",
@@ -6240,8 +6260,10 @@ export const cgpTestData = [
     "numPublicationsCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9 | Vendor-provided publication list (Dec 2025)",
     "isRUO": false,
     "isClinicalLDT": true,
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Performance data and 129-paper publication list provided. Primary validation: BENEFIT trial (Lancet Respir Med 2018, PMID 30017884)."
+    "sampleRequirements": "FFPE Tissue; Fresh tissue fixed in neutral buffered formalin; 8 mL Pleural and ascitic fluids/Cerebrospinal fluid/Pericardial fluid (Streck Tube); 8 mL Blood (ctDNA + WBC, Streck Tube)",
+    "sampleRequirementsNotes": "Can test both tissue and blood samples. Multiple sample types supported per vendor.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Performance data and 129-paper publication list provided. Primary validation: BENEFIT trial (Lancet Respir Med 2018, PMID 30017884). 2026-01-13: Vendor verified by Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. 2 edits: (1) biomarkersReported updated to SNV, InDel, CNV, Fusion, MSI; (2) sampleRequirements added with multi-sample type capability."
   },
   {
     "id": "tds-25",
@@ -6254,12 +6276,15 @@ export const cgpTestData = [
     "methodCitations": "https://us.brbiotech.com/fixed-panels/",
     "genesAnalyzed": 13,
     "genesAnalyzedNotes": "13 genes: EGFR, ALK, ROS1, RET, MET, ERBB2, BRAF, PIK3CA, KRAS, NRAS, HRAS, KIT, PDGFRA",
-    "biomarkersReported": ["SNVs", "Indels", "CNAs", "Fusions"],
+    "biomarkersReported": ["SNVs", "Indels", "CNVs", "Fusions"],
+    "biomarkersReportedNotes": "Vendor confirmed: SNV, Indel, Fusion, and CNV detection",
+    "sampleRequirements": "FFPE Tissue; Fresh tissue fixed in neutral buffered formalin; 8 mL Pleural and ascitic fluids/Cerebrospinal fluid/Pericardial fluid (Streck Tube); 8 mL Blood (Streck Tube)",
+    "sampleRequirementsNotes": "Multiple sample types supported per vendor",
     "cancerTypes": ["NSCLC", "CRC", "GIST"],
     "cancerTypesNotes": "Focused panel for lung cancer therapy selection; covers key actionable genes for NSCLC, colorectal cancer, and gastrointestinal stromal tumors",
     "cancerTypesCitations": "https://us.brbiotech.com/fixed-panels/",
-    "fdaStatus": "CLIA LDT (US); CE-IVD kit version available",
-    "fdaStatusNotes": "Central lab service offered from Burning Rock laboratory. CE-marked IVD kit version (OncoScreen Focus CDx Tissue Kit) available separately.",
+    "fdaStatus": "CLIA LDT (US); CE-IVD kit; NMPA-IVD kit (9-gene version)",
+    "fdaStatusNotes": "Central lab service offered from Burning Rock laboratory. CE-marked IVD kit version available separately. NMPA-approved 9-gene IVD kit version in China.",
     "clinicalAvailability": "Commercially available via Burning Rock Dx laboratory",
     "clinicalAvailabilityNotes": "Burning Rock Biotech Limited (NASDAQ: BNR, LSE: BNR)",
     "isRUO": false,
@@ -6267,11 +6292,11 @@ export const cgpTestData = [
     "tat": "7-10 business days",
     "tatNotes": "Estimated TAT based on central lab NGS workflow. Burning Rock's Magnis BR automation system enables 3-day TAT in hospital settings.",
     "tatCitations": "https://www.prnewswire.com/news-releases/burning-rock-dx-launches-magnis-br-to-innovate-total-process-automation-for-ngs-testing-300960507.html",
-    "numPublications": 5,
-    "numPublicationsNotes": "Burning Rock has 62+ publications in PubMed mentioning their NGS panels broadly. OncoScreen Focus-specific publications estimated at 5+.",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Burning+Rock%22+NGS",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests."
+    "numPublications": 38,
+    "numPublicationsNotes": "38+ publications per vendor. Note: Product was previously labeled as 'Lungcure' in some publications.",
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Burning+Rock%22+NGS | Vendor data (Liankai Chi, Jan 2026)",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests. 2026-01-13: Vendor verified by Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. 4 edits: (1) biomarkersReported confirmed; (2) sampleRequirements added with multi-sample support; (3) fdaStatus updated with NMPA-IVD kit; (4) numPublications updated to 38 (includes Lungcure publications)."
   },
   // INSERT NEW TDS TEST HERE (above this line, before IVD KITS)
   // ============================================
@@ -6755,8 +6780,8 @@ export const cgpTestData = [
     "msi": "Yes",
     "msiNotes": "MSI status determined from NGS data. MSI-H detected in endometrial (28.6%), CRC (2.5%), ovarian (2.0%), gastric (1.5%), lung adenocarcinoma (0.2%).",
     "msiCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/",
-    "fdaStatus": "CE-IVD (June 2022); Japan MHLW CDx (Sept 2025)",
-    "fdaStatusNotes": "CE-marked June 2022. Japan MHLW approved Sept 2025 as CDx for capivasertib (AstraZeneca) - detects PIK3CA, AKT1, PTEN for HR+/HER2- breast cancer.",
+    "fdaStatus": "CLIA LDT; CE-IVD (June 2022, 518-gene version); PMDA-CDx (Sept 2025, 3-gene version)",
+    "fdaStatusNotes": "CE-marked June 2022 (518-gene version). Japan PMDA approved Sept 2025 as CDx for capivasertib (AstraZeneca) via 3-gene version detecting PIK3CA, AKT1, PTEN for HR+/HER2- breast cancer.",
     "fdaStatusCitations": "https://us.brbiotech.com/details.php?class_id=105107103&id=437 | https://www.globenewswire.com/news-release/2025/09/24/3155203/0/en/Burning-Rock-s-OncoGuide-OncoScreen-Plus-CDx-System-Now-Approved-in-Japan-as-a-Companion-Diagnostic-for-Capivasertib-in-Breast-Cancer.html",
     "fdaCompanionDxCount": 1,
     "fdaCompanionDxList": ["Capivasertib (Japan MHLW) - PIK3CA/AKT1/PTEN - HR+/HER2- breast cancer"],
@@ -6767,18 +6792,19 @@ export const cgpTestData = [
     "clinicalTrialsNotes": "Outstanding performance in AstraZeneca's L-MOCA study",
     "totalParticipants": 3005,
     "totalParticipantsNotes": "Concordance study: 3,005 patients across 20 solid tumor types (PMID 35305253)",
-    "numPublications": 10,
-    "numPublicationsPlus": true,
-    "numPublicationsNotes": "Multiple publications including J Pers Med 2022 (PMID 35305253) concordance study, TMB validation studies, and CDx development.",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/",
+    "numPublications": 187,
+    "numPublicationsNotes": "187 publications per vendor. Key publications include J Pers Med 2022 (PMID 35305253) concordance study, TMB validation studies, and CDx development.",
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/35305253/ | Vendor data (Liankai Chi, Jan 2026)",
     "validationCohortSize": 197,
     "validationCohortStudy": "197 clinical samples validated against TSO500, ddPCR, Fluorescent PCR-Capillary Electrophoresis, and WES",
     "isRUO": false,
-    "tat": "3-10 business days",
-    "tatNotes": "TAT depends on laboratory setup. With Magnis BR automation: 3 days. Manual workflow: 7-10 days. Japan CDx via Riken Genesis may have different TAT.",
-    "tatCitations": "https://www.prnewswire.com/news-releases/burning-rock-dx-launches-magnis-br-to-innovate-total-process-automation-for-ngs-testing-300960507.html",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests."
+    "tat": 10,
+    "tatNotes": "10 days per vendor. TAT depends on laboratory setup; with Magnis BR automation can be faster.",
+    "tatCitations": "Vendor data (Liankai Chi, Jan 2026)",
+    "sampleRequirements": "FFPE Tissue; Fresh tissue fixed in neutral buffered formalin; 8 mL Pleural and ascitic fluids/Cerebrospinal fluid/Pericardial fluid (Streck Tube) + 2 mL blood (Optional, for WBC, EDTA Tube); 8 mL Blood (ctDNA + WBC, Streck Tube)",
+    "sampleRequirementsNotes": "This panel can test both tissue and blood samples per vendor.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Originally rejected as tissue-only; scope expanded to include tissue tests. 2026-01-13: Vendor verified by Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. 5 edits: (1) numPublications updated to 187; (2) tat updated to 10 days; (3) sampleRequirements added with multi-sample support; (4) Vendor requested name change to 'OncoScreen Plus' (noted for marketing consistency); (5) fdaStatus updated with CLIA LDT and PMDA-CDx details."
   },
   {
     "id": "tds-26",
