@@ -1430,7 +1430,66 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://guardanthealth.com/products/tests-for-patients-with-early-stage-cancer/",
+        "medicareClaimed": ["Stage II-III CRC post-surgical", "Stage II-III CRC surveillance"],
+        "commercialClaimed": "In-network with major insurers including UnitedHealthcare, Aetna, Anthem, Humana",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Stage II-III CRC post-surgical (within 3 months)", "Stage II-III CRC surveillance"],
+        "rate": null,
+        "notes": "Coverage expanded January 2025 to include surveillance setting"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0352",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/300_399/0352.html",
+          "coveredIndications": [],
+          "notes": "Explicitly listed as experimental/investigational for MRD assessment in breast, colorectal, and lung cancers"
+        },
+        "cigna": {
+          "status": "LIMITED_EVIDENCE",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "No evidence of clinical utility for ctDNA in early-stage cancer, treatment monitoring, or residual disease detection"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Affiliate policies",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Excellus BCBS and Univera Healthcare (UHC affiliates) list as investigational for all indications"
+        },
+        "geisinger": {
+          "status": "COVERED",
+          "policy": "Medical Policy",
+          "policyUrl": null,
+          "coveredIndications": ["Stage II-III CRC initial (4-6 weeks post-surgery)", "Stage II-III CRC surveillance (q3-6mo x2yr, then q6-12mo x3yr)"],
+          "notes": "Coverage announced July 2023"
+        },
+        "bcbsLouisiana": {
+          "status": "COVERED",
+          "policy": "Medical Policy",
+          "policyUrl": null,
+          "coveredIndications": ["Stage II-III CRC"],
+          "notes": "First commercial payer to cover Guardant Reveal (July 2023)"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Significantly overstated",
+        "patientGuidance": "Medicare patients: covered for CRC only. Commercial insurance: expect denial from major payers (Aetna/Cigna/UHC classify as experimental). Exception: BCBS Louisiana and Geisinger cover CRC.",
+        "keyInsight": "Vendor 'in-network' claims are misleading. Most major commercial payers explicitly classify Guardant Reveal as experimental/investigational despite in-network status."
+      }
+    }
+  },
   {
     "id": "mrd-7",
     "sampleCategory": "Blood/Plasma",
@@ -1553,7 +1612,52 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.natera.com/oncology/billing/",
+        "medicareClaimed": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-solid tumor ICI monitoring"],
+        "commercialClaimed": "In-network with most major health plans including Cigna and UnitedHealthcare",
+        "cashPay": "$4,150"
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779", "L38822", "L38835", "L38816"],
+        "indications": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-cancer ICI monitoring"],
+        "rate": "$3,500",
+        "notes": "Full coverage for all vendor-claimed indications under MolDX MRD policies"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III adjuvant therapy guidance", "CRC Stage II-III recurrence monitoring"],
+          "notes": "All other solid tumors (breast, bladder, NSCLC, ovarian) classified as experimental/investigational"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "No evidence of clinical utility for ctDNA assays in early-stage cancer, treatment monitoring, or residual disease detection"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required. ctDNA tests generally not covered for early-stage cancer. May cover specific indications with strong evidence on case-by-case basis."
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: full coverage for all listed indications. Commercial insurance: Aetna covers CRC only; Cigna/UHC likely to deny. Expect prior auth and potential appeal process for non-CRC indications.",
+        "keyInsight": "Vendor 'in-network' status does not equal covered benefit. Private payer coverage significantly lags Medicare, with most limiting coverage to CRC or classifying as experimental."
+      }
+    }
+  },
   {
     "id": "mrd-8",
     "sampleCategory": "Blood/Plasma",
