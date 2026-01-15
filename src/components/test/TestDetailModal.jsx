@@ -22,6 +22,7 @@ import PerformanceMetricWithWarning from '../ui/PerformanceMetricWithWarning';
 import CircularProgress from '../ui/CircularProgress';
 import QualityGrade from '../ui/QualityGrade';
 import MedicareCoverageDisplay from '../coverage/MedicareCoverageDisplay';
+import CoverageRealityCheck from '../coverage/CoverageRealityCheck';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
@@ -868,7 +869,11 @@ const TestDetailModal = ({ test, category, onClose }) => {
                   </div>
                 </Section>
               </div>
-              
+
+              {test.coverageCrossReference && (
+                <CoverageRealityCheck test={test} />
+              )}
+
               {/* Requirements & Method */}
               <Section title="Test Requirements & Method">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
