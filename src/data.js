@@ -1003,6 +1003,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Tumor-informed WGS-derived panel (~50 variants). LOD 6 ppm. Expected covered under L38779.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.questdiagnostics.com/healthcare-professionals/clinical-education-center/faq/faq200",
+        "medicareClaimed": ["CRC Stage II-III"],
+        "commercialClaimed": "Coverage emerging; approximately 70% of tests reimbursed",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Stage II-III CRC post-curative intent therapy"],
+        "rate": null,
+        "notes": "Medicare pilot coverage for CRC; FDA Breakthrough Device designation (Aug 2025)"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "Coverage limited to CRC per MRD policy"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD testing classified as experimental"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required; coverage varies by plan"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Emerging",
+        "patientGuidance": "Medicare patients: CRC coverage available. Commercial insurance: expect variable coverage; approximately 70% reimbursement rate reported by vendor.",
+        "keyInsight": "Quest's Haystack is gaining traction with Medicare CRC coverage and FDA Breakthrough designation."
+      }
     }},
   {
     "id": "mrd-2",
@@ -1099,6 +1143,50 @@ export const mrdTestData = [
         "breastMRDMonitoring": "$4,266 (once per diagnosis)",
         "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
       }
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.personalis.com/next-personal/",
+        "medicareClaimed": ["Breast Stage II-III"],
+        "commercialClaimed": "Coverage expanding via Tempus collaboration",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38822"],
+        "indications": ["Stage II-III breast cancer MRD surveillance"],
+        "rate": null,
+        "notes": "Breast cancer coverage under MolDX MRD policy; expanding indications"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "Breast cancer MRD not specifically covered; CRC only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD classified as experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: breast cancer coverage confirmed. Commercial: expect denial for breast; CRC may be covered at Aetna only.",
+        "keyInsight": "Personalis has Medicare breast cancer coverage but commercial payers haven't adopted breast MRD indications."
+      }
     }},
   {
     "id": "mrd-3",
@@ -1191,6 +1279,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "MRD test - covered under L38779",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.exactsciences.com/",
+        "medicareClaimed": ["CRC"],
+        "commercialClaimed": "Coverage emerging",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Stage II-III CRC post-surgical MRD detection"],
+        "rate": null,
+        "notes": "CRC-only coverage under MolDX MRD policy"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "CRC coverage only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "Not specifically listed; general ctDNA experimental classification applies"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Limited",
+        "patientGuidance": "Medicare patients: CRC coverage confirmed. Commercial: expect prior auth and potential denial.",
+        "keyInsight": "Exact Sciences' CRC-focused MRD test has Medicare coverage but limited commercial payer adoption."
+      }
     }},
   {
     "id": "mrd-4",
@@ -1270,6 +1402,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Medicare covered via MolDX LCD since July 2025. Structural variant (SV)-based MRD platform.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://sagadiagnostics.com/pathlight/",
+        "medicareClaimed": ["Breast", "Multi-solid"],
+        "commercialClaimed": "Medicare coverage; international availability",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38822"],
+        "indications": ["Breast cancer MRD surveillance"],
+        "rate": null,
+        "notes": "Coverage under MolDX breast cancer MRD policy"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "Breast MRD not covered; CRC only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD experimental classification"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Limited",
+        "patientGuidance": "Medicare patients: breast cancer coverage available. Commercial insurance: expect denial - breast MRD not covered by major payers.",
+        "keyInsight": "SAGA's ultrasensitive SAGAsafe technology has Medicare coverage but limited US commercial adoption."
+      }
     }},
   {
     "id": "mrd-5",
@@ -1332,6 +1508,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "MolDX coverage announced July 2023. Tumor-informed, tracks up to 48 variants.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://neogenomics.com/test-menu/radar",
+        "medicareClaimed": ["Multiple solid tumors"],
+        "commercialClaimed": "Coverage emerging",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Solid tumor MRD detection post-treatment"],
+        "rate": null,
+        "notes": "MolDX framework coverage for selected indications"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "Only CRC covered; other tumors experimental"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD classified as experimental"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: coverage for selected solid tumor indications. Commercial: CRC only at Aetna; others likely denied.",
+        "keyInsight": "NeoGenomics RaDaR has MolDX coverage but private payer coverage remains limited to CRC."
+      }
     }},
   {
     "id": "mrd-6",
@@ -1713,7 +1933,51 @@ export const mrdTestData = [
     "clinicalSettingsNotes": "Validated for post-surgical landmark (61% sens, 94% spec) and longitudinal surveillance (83% sens, 90% spec) in CRC via GALAXY/CIRCULATE-Japan.",
     "totalParticipants": 80,
     "numPublications": 3,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.tempus.com/oncology/genomic-profiling/tempus-xm/",
+        "medicareClaimed": ["Colorectal"],
+        "commercialClaimed": "Coverage emerging; verify payer-specific policies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PARTIAL",
+        "policies": ["L38779"],
+        "indications": ["CRC MRD detection"],
+        "rate": null,
+        "notes": "CRC coverage emerging; broader indications in development"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "CRC only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD experimental"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Limited",
+        "patientGuidance": "Medicare patients: CRC coverage emerging. Commercial: CRC may be covered at Aetna; others likely denied.",
+        "keyInsight": "Tempus xM MRD is building coverage but currently limited to CRC indication."
+      }
+    }
   },
   {
     "id": "mrd-9",
@@ -1799,6 +2063,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Labcorp acquired Invitae's oncology business. Tumor-informed approach.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.labcorp.com/providers/oncology/plasma-detect",
+        "medicareClaimed": ["Colon Stage III"],
+        "commercialClaimed": "Coverage emerging",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PARTIAL",
+        "policies": ["L38779"],
+        "indications": ["Stage III colon cancer MRD"],
+        "rate": null,
+        "notes": "Coverage emerging for colon cancer; lung and bladder in validation"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "CRC coverage only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Emerging | Commercial: Limited",
+        "patientGuidance": "Medicare patients: Stage III colon coverage emerging. Commercial: expect prior auth and potential denial.",
+        "keyInsight": "Labcorp's MRD test is newer to market with coverage still being established."
+      }
     }},
   {
     "id": "mrd-10",
@@ -1863,6 +2171,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Partnership with Natera - uses Signatera platform",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.foundationmedicine.com/test/foundationone-tracker",
+        "medicareClaimed": [],
+        "commercialClaimed": "Investigational/early access only",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "FDA Breakthrough Device designation (Feb 2022) but not yet FDA cleared; investigational"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Investigational assay" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available for clinical use" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Investigational" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Investigational",
+        "patientGuidance": "This test is not yet available for clinical use. Early access/investigational only.",
+        "keyInsight": "FDA Breakthrough designation does not equal coverage - still in development pipeline."
+      }
     }},
   {
     "id": "mrd-11",
@@ -1916,7 +2250,33 @@ export const mrdTestData = [
     "isRUO": true,
     "isInvestigational": false,
     "isClinicalLDT": false,
-    "regulatoryStatusNotes": "Research Use Only assay launched September 2025 through FlexOMx Lab; offered for retrospective clinical trials and research studies, not for diagnostic use."
+    "regulatoryStatusNotes": "Research Use Only assay launched September 2025 through FlexOMx Lab; offered for retrospective clinical trials and research studies, not for diagnostic use.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.foundationmedicine.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Research Use Only",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "RUO - not for clinical diagnostic use"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Research Use Only",
+        "patientGuidance": "Research Use Only - not available for clinical diagnostic testing or insurance billing.",
+        "keyInsight": "RUO tests cannot be billed to insurance."
+      }
+    }
   },
   {
     "id": "mrd-12",
@@ -1971,7 +2331,33 @@ export const mrdTestData = [
     "isRUO": true,
     "isInvestigational": true,
     "isClinicalLDT": false,
-    "regulatoryStatusNotes": "Pre-commercial investigational WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. First clinical test for MIBC expected H1 2026."
+    "regulatoryStatusNotes": "Pre-commercial investigational WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. First clinical test for MIBC expected H1 2026.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.veracyte.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Pre-commercial; first test expected H1 2026",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Pre-commercial research platform"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Pre-commercial" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Pre-commercial" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Pre-commercial" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Pre-commercial",
+        "patientGuidance": "Not yet available for clinical use. First commercial test (MIBC) expected H1 2026.",
+        "keyInsight": "Veracyte acquired C2i Genomics platform; commercial launch pending."
+      }
+    }
   },
   {
     "id": "mrd-13",
@@ -2030,7 +2416,33 @@ export const mrdTestData = [
     "isRUO": true,
     "isInvestigational": false,
     "isClinicalLDT": false,
-    "regulatoryStatusNotes": "Research/development platform (originally LUNAR-1); the patient-facing MRD offering is Guardant Reveal (tracked separately as CLIA LDT). Demonstrated feasibility of tumor-uninformed plasma-only MRD detection."
+    "regulatoryStatusNotes": "Research/development platform (originally LUNAR-1); the patient-facing MRD offering is Guardant Reveal (tracked separately as CLIA LDT). Demonstrated feasibility of tumor-uninformed plasma-only MRD detection.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://guardanthealth.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Research Use Only - clinical transitioned to Guardant Reveal",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "RUO platform; clinical implementation via Guardant Reveal LDT"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO - see Guardant Reveal for clinical" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Research Use Only",
+        "patientGuidance": "For clinical MRD testing, see Guardant Reveal which has Medicare CRC coverage.",
+        "keyInsight": "LUNAR is the research platform; Reveal is the clinical product with coverage."
+      }
+    }
   },
   {
     "id": "mrd-14",
@@ -2123,6 +2535,50 @@ export const mrdTestData = [
       "cptCode": "0356U",
       "notes": "Medicare covered via MolDX LCD since Nov 2023. First and only clinically validated circulating TTMV-HPV DNA test. Nearly 20 peer-reviewed publications. 1,000+ physicians, 400+ sites including all 31 NCCN cancer centers.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.naveris.com/navdx",
+        "medicareClaimed": ["HPV-associated cancers"],
+        "commercialClaimed": "Medicare coverage; commercial emerging",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["HPV-associated oropharyngeal cancer surveillance", "HPV+ head and neck cancer MRD"],
+        "rate": null,
+        "notes": "Unique ctDNA test specific to HPV-driven tumors"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": [],
+          "notes": "HPV ctDNA not specifically addressed; likely experimental"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA for head and neck cancer classified as experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "HPV ctDNA surveillance not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: covered for HPV+ cancers. Commercial: expect denial - HPV ctDNA is a niche indication not addressed by most policies.",
+        "keyInsight": "NavDx fills a unique niche for HPV cancers with Medicare coverage, but commercial payers haven't caught up."
+      }
     }},
   {
     "id": "mrd-15",
@@ -2211,6 +2667,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Structural variant-based lymphoma MRD. 200-day lead time vs imaging.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.natera.com/oncology/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Coverage not established",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Lymphoma-specific test; coverage not yet established"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Coverage not established" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Coverage not established" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Coverage not established" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - No coverage claims",
+        "patientGuidance": "Coverage not established. For lymphoma MRD with coverage, consider clonoSEQ (FDA-cleared).",
+        "keyInsight": "Natera's lymphoma offering lacks the coverage of FDA-cleared clonoSEQ."
+      }
     }},
   {
     "id": "mrd-16",
@@ -2293,6 +2775,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Labcorp acquired Invitae's oncology business. Tumor-informed approach.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.labcorp.com/providers/oncology",
+        "medicareClaimed": ["Multi-solid tumors"],
+        "commercialClaimed": "Coverage emerging; FDA Breakthrough designation",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PARTIAL",
+        "policies": ["L38779"],
+        "indications": ["Selected solid tumor MRD"],
+        "rate": null,
+        "notes": "Coverage emerging under MolDX framework"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "CRC only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Emerging | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: coverage emerging for select tumors. Commercial: FDA Breakthrough designation doesn't guarantee coverage - expect denial.",
+        "keyInsight": "FDA Breakthrough Device designation is promising but doesn't translate to commercial coverage."
+      }
     }},
   {
     "id": "mrd-18",
@@ -2356,6 +2882,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Liquid biopsy for treatment decision support.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.carislifesciences.com/products-and-services/assure/",
+        "medicareClaimed": ["All solid tumors"],
+        "commercialClaimed": "Coverage varies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PARTIAL",
+        "policies": ["L38779"],
+        "indications": ["Selected solid tumor MRD"],
+        "rate": null,
+        "notes": "Coverage for specific indications under MolDX"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "CRC only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD experimental"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization; case-by-case review"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Partial | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: coverage for specific indications. Commercial: pan-solid claim overstated - only CRC at Aetna.",
+        "keyInsight": "Caris Assure's pan-solid positioning doesn't match current payer coverage reality."
+      }
     }},
   {
     "id": "mrd-19",
@@ -2461,6 +3031,50 @@ export const mrdTestData = [
       "cptCode": "0364U",
       "notes": "First and only FDA-cleared MRD assay. Over 240 million covered lives. LCD L38822/L38835 updated Jan 2025 adding 0364U and ICD-10 C83.1A for MCL.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.clonoseq.com/",
+        "medicareClaimed": ["Multiple myeloma", "B-ALL", "CLL", "MCL"],
+        "commercialClaimed": "Broad coverage for hematologic malignancies",
+        "cashPay": "$1,950"
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779", "L38822"],
+        "indications": ["Multiple myeloma MRD", "B-cell ALL MRD", "CLL MRD", "Mantle cell lymphoma MRD"],
+        "rate": "$1,950",
+        "notes": "First FDA-cleared NGS-based MRD test; broadest heme coverage"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "COVERED",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["Multiple myeloma", "B-ALL", "CLL"],
+          "notes": "Covered for FDA-cleared indications in hematologic malignancies"
+        },
+        "cigna": {
+          "status": "COVERED",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": ["Multiple myeloma", "B-ALL"],
+          "notes": "FDA-cleared MRD test covered for approved indications"
+        },
+        "united": {
+          "status": "COVERED",
+          "policy": "Medical Policy",
+          "policyUrl": null,
+          "coveredIndications": ["Multiple myeloma", "B-ALL", "CLL"],
+          "notes": "Generally covered for FDA-cleared hematologic indications"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Accurate",
+        "patientGuidance": "clonoSEQ has the broadest coverage of any MRD test due to FDA clearance. Both Medicare and major commercial payers cover for heme malignancies.",
+        "keyInsight": "FDA clearance translates to commercial coverage. clonoSEQ is the gold standard for heme MRD coverage."
+      }
     }},
   {
     "id": "mrd-20",
@@ -2556,6 +3170,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.natera.com/oncology/signatera-advanced-cancer-detection/",
+        "medicareClaimed": ["Multi-solid tumors"],
+        "commercialClaimed": "Medicare coverage; commercial contracts in place",
+        "cashPay": "$4,150"
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779", "L38822", "L38835", "L38816"],
+        "indications": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-cancer ICI monitoring"],
+        "rate": "$3,500",
+        "notes": "Same coverage as standard Signatera; WGS-enhanced version"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III adjuvant therapy guidance", "CRC Stage II-III recurrence monitoring"],
+          "notes": "All other solid tumors (breast, bladder, NSCLC, ovarian) classified as experimental/investigational"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA-based MRD testing considered experimental; insufficient clinical utility evidence"
+        },
+        "united": {
+          "status": "RESTRICTIVE",
+          "policy": "Affiliate medical policies",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Prior authorization required; case-by-case determination"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
+        "patientGuidance": "Medicare patients: full coverage for all listed indications. Commercial insurance: Aetna covers CRC only; Cigna/UHC likely to deny.",
+        "keyInsight": "WGS-enhanced Signatera inherits same coverage profile as standard Signatera - Medicare strong, commercial limited."
+      }
     }},
   {
     "id": "mrd-21",
@@ -2627,6 +3285,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Tissue-free MRD test. Presented at ESMO GI 2025. Still in clinical validation, not yet commercially available.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.natera.com/oncology/",
+        "medicareClaimed": ["Colorectal cancer"],
+        "commercialClaimed": "Coverage varies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PARTIAL",
+        "policies": ["L38779"],
+        "indications": ["CRC MRD detection"],
+        "rate": null,
+        "notes": "CRC-focused test; coverage under general MRD policy"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "CRC coverage only"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Limited",
+        "patientGuidance": "Medicare patients: CRC coverage available. Commercial: CRC may be covered at Aetna; others likely denied.",
+        "keyInsight": "Latitude is Natera's CRC-specific offering with narrower coverage than Signatera."
+      }
     }},
   {
     "id": "mrd-22",
@@ -2705,7 +3407,33 @@ export const mrdTestData = [
     "regulatoryStatusNotes": "Commercially available in South Korea with Innovative Medical Technology designation. Previously known as AlphaLiquid®Detect.",
     "technologyDifferentiator": "Large-scale mutation tracking (up to 300 variants vs typical 16-50) combined with tumor-agnostic hotspot panel. Korean-developed with strong regulatory pathway. Ultra-sensitive detection (0.001% LOD) through expanded variant coverage rather than deeper sequencing alone. Hybrid approach enables detection of both original tumor mutations and de novo resistance mutations.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-29: Vendor verified by Sunghoon Heo (sunghoon.heo@imbdx.com), IMBdx. Updated bloodVolume to 20 mL, added cfdnaInput 30 ng per vendor with citations."
+    "vendorRequestedChanges": "2025-12-29: Vendor verified by Sunghoon Heo (sunghoon.heo@imbdx.com), IMBdx. Updated bloodVolume to 20 mL, added cfdnaInput 30 ng per vendor with citations.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.imbdx.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Coverage varies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Not FDA cleared; limited US availability"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not FDA cleared" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not FDA cleared" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not FDA cleared" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Limited US availability",
+        "patientGuidance": "Limited US availability. Verify access and coverage before ordering.",
+        "keyInsight": "Korean-based company with limited US market presence."
+      }
+    }
   },
   {
     "id": "mrd-23",
@@ -2794,7 +3522,33 @@ export const mrdTestData = [
     "regulatoryStatusNotes": "European LDT offered from CLIA-equivalent laboratory in Germany. Strong academic validation via GHSG HD21 trial data. Not FDA-approved; no current US market presence.",
     "technologyDifferentiator": "Lymphoma-specific ctDNA MRD test addressing an underserved niche - most competitors focus on solid tumors or use immunosequencing (clonoSEQ) for heme malignancies. Uses duplex sequencing with disease-optimized gene panels for lymphoma genomics. Founded by Sven Borchmann MD/PhD, a leading Hodgkin lymphoma researcher at University of Cologne/GHSG. Dual utility: both interim assessment during treatment and post-treatment MRD surveillance. Positioned as ctDNA alternative to PET for molecular response assessment in lymphoma.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate."
+    "vendorRequestedChanges": "2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://liqomics.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Not established (EU/International)",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_APPLICABLE",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "EU/International LDT - not available in US"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - International only",
+        "patientGuidance": "This test is only available in EU/International markets. For US lymphoma MRD, consider clonoSEQ.",
+        "keyInsight": "LIQOMICS is a German company focused on EU market."
+      }
+    }
   },
   {
     "id": "mrd-24",
@@ -2871,7 +3625,33 @@ export const mrdTestData = [
     "totalParticipants": 150,
     "totalParticipantsNotes": "Technical validation conducted with 150 samples.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate. 2025-01-09: Added validation cohort size (150 samples) per Jens Winter email."
+    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate. 2025-01-09: Added validation cohort size (150 samples) per Jens Winter email.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://liqomics.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Not established (EU/International)",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_APPLICABLE",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "EU/International LDT - not available in US"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - International only",
+        "patientGuidance": "This test is only available in EU/International markets.",
+        "keyInsight": "LIQOMICS solid tumor offering for EU market."
+      }
+    }
   },
   {
     "id": "mrd-25",
@@ -2958,7 +3738,33 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Clinical LDT offered from Burning Rock laboratory in China. Not FDA-approved; primarily serves Chinese and international markets.",
     "technologyDifferentiator": "Personalized tumor-informed MRD assay from leading Chinese NGS company. 100,000x ultra-deep sequencing with LoD of 0.004%. Demonstrated 299-day median lead time vs imaging in NSCLC. Head-to-head comparisons show superior performance vs tumor-agnostic and tumor-informed fixed-panel assays.",
-    "vendorRequestedChanges": "2025-12-22: Initial entry created based on vendor submission from Liankai Chi (Burning Rock Dx). Performance metrics from submission and Cancer Cell 2023 publication (Chen et al., PMID 37683638). | 2025-12-24: Vendor validation with edits - updated clinicalTrials (+5 NCTs), numPublications (3→8), totalParticipants (181→871), added bloodVolume (>16ml)."
+    "vendorRequestedChanges": "2025-12-22: Initial entry created based on vendor submission from Liankai Chi (Burning Rock Dx). Performance metrics from submission and Cancer Cell 2023 publication (Chen et al., PMID 37683638). | 2025-12-24: Vendor validation with edits - updated clinicalTrials (+5 NCTs), numPublications (3→8), totalParticipants (181→871), added bloodVolume (>16ml).",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.brbiotech.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Not established (China/International)",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_APPLICABLE",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "China/International LDT - not available in US"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - International only",
+        "patientGuidance": "This test is only available in China/International markets.",
+        "keyInsight": "Burning Rock is a leading Chinese liquid biopsy company."
+      }
+    }
   },
   // ============================================
   // THERAPY RESPONSE MONITORING (TRM) TESTS
@@ -3008,6 +3814,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": null,
+        "medicareClaimed": ["N/A - Discontinued"],
+        "commercialClaimed": "N/A - Discontinued",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "DISCONTINUED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Product discontinued; no longer available"
+      },
+      "privatePayers": {
+        "aetna": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" },
+        "cigna": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" },
+        "united": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Discontinued",
+        "patientGuidance": "Product no longer available. Consider Guardant360 CDx or Reveal for current options.",
+        "keyInsight": "Deprecated product; Guardant has moved to other offerings."
+      }
     }},
   {
     "id": "trm-2",
@@ -3045,7 +3877,51 @@ export const mrdTestData = [
     "nccnNamedInGuidelines": true,
     "nccnGuidelineReference": "NCCN Merkel Cell Carcinoma V.2.2025",
     "nccnGuidelinesNotes": "NCCN includes positive recommendation for ctDNA monitoring in surveillance for MCC (where ICI is standard therapy), citing Signatera data.",
-    "nccnGuidelinesCitations": "https://www.natera.com/company/news/nccn-strengthens-guidance-on-ctdna-in-colon-cancer-rectal-cancer-and-merkel-cell-carcinoma/"
+    "nccnGuidelinesCitations": "https://www.natera.com/company/news/nccn-strengthens-guidance-on-ctdna-in-colon-cancer-rectal-cancer-and-merkel-cell-carcinoma/",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.natera.com/oncology/signatera-advanced-cancer-detection/ordering-signatera/io-response/",
+        "medicareClaimed": ["Pan-solid ICI monitoring"],
+        "commercialClaimed": "Medicare coverage for ICI response monitoring",
+        "cashPay": "$4,150"
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Any solid tumor on immune checkpoint inhibitor therapy - treatment response monitoring"],
+        "rate": "$3,500",
+        "notes": "Specific Medicare coverage for ICI response assessment"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": [],
+          "notes": "Treatment response monitoring not covered; only MRD indications"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA for therapy monitoring classified as experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "ICI monitoring not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Not Covered",
+        "patientGuidance": "Medicare patients: covered for ICI response monitoring. Commercial insurance: expect denial - treatment monitoring is distinct from MRD and not covered.",
+        "keyInsight": "IO Monitoring has unique Medicare coverage but commercial payers don't distinguish it from experimental MRD."
+      }
+    }
   },
   {
     "id": "trm-3",
@@ -3094,6 +3970,50 @@ export const mrdTestData = [
         "breastMRDMonitoring": "$4,266 (once per diagnosis)",
         "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
       }
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.personalis.com/next-personal/",
+        "medicareClaimed": ["Breast Stage II-III", "Select solid tumors"],
+        "commercialClaimed": "Medicare coverage for select indications",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38822"],
+        "indications": ["Stage II-III breast cancer surveillance", "Select solid tumor indications"],
+        "rate": null,
+        "notes": "Coverage expanding via Tempus collaboration"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "PARTIAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["CRC Stage II-III"],
+          "notes": "Treatment response monitoring not separately covered"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "Therapy monitoring experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Limited",
+        "patientGuidance": "Medicare patients: breast cancer coverage confirmed. Commercial: treatment monitoring not distinguished from MRD - expect denial.",
+        "keyInsight": "Personalis TRM leverages same Medicare coverage as MRD version but commercial adoption lags."
+      }
     }},
   {
     "id": "trm-4",
@@ -3116,7 +4036,33 @@ export const mrdTestData = [
     "numPublications": 3,
     "tat": "5-7 days",
     "tatNotes": "TAT similar to Tempus xF/xF+ liquid biopsy platform (5-7 days from sample receipt).",
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.tempus.com/",
+        "medicareClaimed": ["Coverage varies"],
+        "commercialClaimed": "Coverage varies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "LIMITED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "RUO component limits clinical coverage; clinical use case-by-case"
+      },
+      "privatePayers": {
+        "aetna": { "status": "EXPERIMENTAL", "policy": "CPB 0715", "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html", "coveredIndications": [], "notes": "RUO/experimental" },
+        "cigna": { "status": "EXPERIMENTAL", "policy": "mm_0520", "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf", "coveredIndications": [], "notes": "RUO/experimental" },
+        "united": { "status": "INVESTIGATIONAL", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Variable | Commercial: Limited",
+        "patientGuidance": "RUO status limits coverage. Verify before testing.",
+        "keyInsight": "RUO designation creates coverage barriers."
+      }
+    }
   },
   {
     "id": "trm-5",
@@ -3149,8 +4095,7 @@ export const mrdTestData = [
     "tatNotes": "RaDaR plasma cfDNA analysis: 7 days. Initial panel design and development: 4 weeks.",
     "tatCitations": "https://neogenomics.com/test-menu/radarr",
     "numPublications": 15,
-    "numPublicationsPlus": true
-  ,
+    "numPublicationsPlus": true,
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -3163,7 +4108,52 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "MolDX coverage announced July 2023. Tumor-informed, tracks up to 48 variants.",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://neogenomics.com/test-menu/radar",
+        "medicareClaimed": ["Coverage varies"],
+        "commercialClaimed": "Coverage varies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "LIMITED",
+        "policies": ["L38779"],
+        "indications": ["Solid tumor therapy monitoring (case-by-case)"],
+        "rate": null,
+        "notes": "Coverage varies by indication; MolDX framework"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": [],
+          "notes": "Therapy monitoring not covered"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "Treatment monitoring experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not established"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Variable | Commercial: Limited",
+        "patientGuidance": "Coverage varies. Verify with payer before testing.",
+        "keyInsight": "RaDaR TRM coverage is inconsistent; expect case-by-case determination."
+      }
+    }
+  },
   {
     "id": "trm-6",
     "sampleCategory": "Blood/Plasma",
@@ -3215,6 +4205,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Partnership with Natera - uses Signatera platform",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.foundationmedicine.com/test/foundationone-tracker",
+        "medicareClaimed": ["Advanced solid tumors"],
+        "commercialClaimed": "Medicare coverage",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Treatment response monitoring for solid tumors"],
+        "rate": null,
+        "notes": "Powered by Natera Signatera technology; Medicare coverage"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": [],
+          "notes": "Treatment monitoring not covered"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "ctDNA therapy monitoring experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Not Covered",
+        "patientGuidance": "Medicare patients: coverage for treatment response monitoring. Commercial: expect denial - therapy monitoring not covered.",
+        "keyInsight": "Foundation's partnership with Natera provides Medicare access but commercial payers don't cover TRM indication."
+      }
     }},
   {
     "id": "trm-7",
@@ -3251,7 +4285,33 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "Tissue-naïve ctDNA tumor-fraction assay for TRM and resistance detection. Available as clinical LDT built on FDA-approved FoundationOne Liquid CDx platform. No dedicated payer coverage pathway yet. Positioned as option when tumor tissue is not available."
+    "regulatoryStatusNotes": "Tissue-naïve ctDNA tumor-fraction assay for TRM and resistance detection. Available as clinical LDT built on FDA-approved FoundationOne Liquid CDx platform. No dedicated payer coverage pathway yet. Positioned as option when tumor tissue is not available.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.foundationmedicine.com/",
+        "medicareClaimed": ["No specific coverage"],
+        "commercialClaimed": "No specific coverage",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Built on FDA-approved Liquid CDx platform but not separately covered for monitoring"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "No specific coverage" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "No specific coverage" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "No specific coverage" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Accurate",
+        "patientGuidance": "No specific coverage for monitoring use. Consider alternatives with established coverage.",
+        "keyInsight": "FoundationOne Liquid CDx is covered for profiling but Monitor use case lacks coverage."
+      }
+    }
   },
   {
     "id": "trm-8",
@@ -3299,6 +4359,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "NOT YET COVERED. Methylation-based tissue-free TRM test. Company targeting Medicare coverage before end of 2026.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.billiontoone.com/",
+        "medicareClaimed": ["Self-pay"],
+        "commercialClaimed": "Self-pay",
+        "cashPay": "Self-pay model"
+      },
+      "medicare": {
+        "status": "NOT_COVERED",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Self-pay model; no Medicare coverage established"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Self-pay" },
+        "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Self-pay" },
+        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Self-pay" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: N/A | Commercial: N/A",
+        "patientGuidance": "Self-pay only. No insurance coverage available.",
+        "keyInsight": "BillionToOne operates on self-pay model; no coverage pathway."
+      }
     }},
   {
     "id": "trm-11",
@@ -3363,6 +4449,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "Liquid biopsy for treatment decision support.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.carislifesciences.com/products-and-services/assure/",
+        "medicareClaimed": ["Coverage varies"],
+        "commercialClaimed": "Coverage varies",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "LIMITED",
+        "policies": ["L38779"],
+        "indications": ["Pan-solid tumor monitoring (case-by-case)"],
+        "rate": null,
+        "notes": "Coverage varies; not broadly established"
+      },
+      "privatePayers": {
+        "aetna": { "status": "EXPERIMENTAL", "policy": "CPB 0715", "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html", "coveredIndications": [], "notes": "Not specifically covered" },
+        "cigna": { "status": "EXPERIMENTAL", "policy": "mm_0520", "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf", "coveredIndications": [], "notes": "Therapy monitoring experimental" },
+        "united": { "status": "INVESTIGATIONAL", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not established" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Variable | Commercial: Limited",
+        "patientGuidance": "Coverage inconsistent. Verify with payer before testing.",
+        "keyInsight": "Caris Assure TRM shares coverage challenges with MRD product."
+      }
     }},
   {
     "id": "trm-12",
@@ -3420,7 +4532,51 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Methylation-based tumor fraction quantification offers advantages over genomic VAF methods: (1) Tracks thousands of methylation loci vs handful of coding loci for higher sensitivity; (2) Not confounded by CNAs that affect genomic max-MAF estimates; (3) Excludes non-tumor noise (including CHIP) without requiring matched normal sequencing; (4) Validated precision down to 0.01% TF. Uses same Guardant Infinity platform as Reveal MRD, Shield, and Shield MCD.",
-    "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with epigenetic tumor fraction (epiTF) quantification."
+    "regulatoryStatusNotes": "CLIA-certified LDT. Represents Guardant's consolidated approach to therapy response monitoring, replacing genomic VAF-based Guardant360 Response with epigenetic tumor fraction (epiTF) quantification.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://guardanthealth.com/",
+        "medicareClaimed": ["Coverage emerging"],
+        "commercialClaimed": "Coverage emerging",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "LIMITED",
+        "policies": ["L38779"],
+        "indications": ["Pan-cancer therapy monitoring (emerging)"],
+        "rate": null,
+        "notes": "Coverage building; less established than MRD product"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": [],
+          "notes": "Treatment response monitoring not covered"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "Therapy monitoring experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not established"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Emerging | Commercial: Limited",
+        "patientGuidance": "Coverage not well established. Verify before testing.",
+        "keyInsight": "Guardant's TRM coverage trails behind their MRD product (Reveal)."
+      }
+    }
   },
   {
     "id": "trm-13",
@@ -3476,6 +4632,50 @@ export const mrdTestData = [
       "submitterType": "Vendor Representative",
       "submissionDate": "2025-12-17",
       "submissionNotes": "Vendor clarified that Liquid Trace is actively used for therapeutic monitoring with VAF and mutant molecules/mL tracking table in reports. Added TRM entry in addition to TDS entries for CGP use case."
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.genomictestingcooperative.com/liquid-trace",
+        "medicareClaimed": ["Pan-cancer solid and heme"],
+        "commercialClaimed": "Medicare coverage",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779"],
+        "indications": ["Treatment response monitoring for solid tumors and hematologic malignancies"],
+        "rate": null,
+        "notes": "Unique coverage for both solid and heme malignancies"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "EXPERIMENTAL",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": [],
+          "notes": "Treatment monitoring not covered"
+        },
+        "cigna": {
+          "status": "EXPERIMENTAL",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": [],
+          "notes": "Therapy monitoring experimental"
+        },
+        "united": {
+          "status": "INVESTIGATIONAL",
+          "policy": "Case-by-case",
+          "policyUrl": null,
+          "coveredIndications": [],
+          "notes": "Not specifically covered"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Not Covered",
+        "patientGuidance": "Medicare patients: covered for therapy monitoring. Commercial: expect denial.",
+        "keyInsight": "GTC's Liquid Trace has Medicare coverage for both solid and heme tumors but no commercial adoption."
+      }
     }
   },
   {
@@ -3522,7 +4722,33 @@ export const mrdTestData = [
     "isClinicalLDT": false,
     "technologyDifferentiator": "ICI-specific therapy response monitoring via longitudinal ctDNA tumor fraction quantification. Multi-parametric algorithm (CNVs + VAFs) for comprehensive tumor fraction estimation. Part of Tempus' growing portfolio alongside xM MRD. Positioned to address the ~57% of advanced/metastatic cancer patients eligible for ICIs, of whom only ~20% respond.",
     "regulatoryStatusNotes": "RUO - awaiting clinical availability. Announced June 2025 at ASCO with clinical launch expected later in 2025.",
-    "dataSourceNotes": "Added December 2025 via LLM Data Review. Note: RUO status - not yet available for clinical ordering."
+    "dataSourceNotes": "Added December 2025 via LLM Data Review. Note: RUO status - not yet available for clinical ordering.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.tempus.com/",
+        "medicareClaimed": ["Not applicable - RUO"],
+        "commercialClaimed": "Not applicable - RUO",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_APPLICABLE",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Research Use Only - not for clinical decision-making"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
+        "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
+        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Research Use Only",
+        "patientGuidance": "Not for clinical use. Research and biopharma applications only.",
+        "keyInsight": "RUO status means no coverage pathway exists."
+      }
+    }
   },
   // ============================================
   // INSERT NEW MRD TEST HERE (above this line, before IVD KITS)
@@ -3592,6 +4818,50 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "First and only FDA-cleared MRD assay. Over 240 million covered lives.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.clonoseq.com/",
+        "medicareClaimed": ["MM", "B-ALL", "CLL", "MCL"],
+        "commercialClaimed": "Broad coverage for heme malignancies",
+        "cashPay": "$1,950"
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": ["L38779", "L38822"],
+        "indications": ["Multiple myeloma MRD", "B-ALL MRD", "CLL MRD", "Mantle cell lymphoma MRD"],
+        "rate": "$1,950",
+        "notes": "FDA-cleared IVD; broadest heme MRD coverage"
+      },
+      "privatePayers": {
+        "aetna": {
+          "status": "COVERED",
+          "policy": "CPB 0715",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+          "coveredIndications": ["Multiple myeloma", "B-ALL", "CLL"],
+          "notes": "FDA-cleared indications covered"
+        },
+        "cigna": {
+          "status": "COVERED",
+          "policy": "mm_0520",
+          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+          "coveredIndications": ["Multiple myeloma", "B-ALL"],
+          "notes": "FDA-cleared MRD test covered"
+        },
+        "united": {
+          "status": "COVERED",
+          "policy": "Medical Policy",
+          "policyUrl": null,
+          "coveredIndications": ["Multiple myeloma", "B-ALL", "CLL"],
+          "notes": "Generally covered for FDA-cleared indications"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Accurate",
+        "patientGuidance": "Excellent coverage across Medicare and commercial payers due to FDA clearance.",
+        "keyInsight": "FDA clearance = commercial coverage. Gold standard for heme MRD."
+      }
     }},
   {
     "id": "mrd-kit-2",
@@ -3629,7 +4899,33 @@ export const mrdTestData = [
     "numPublications": 30,
     "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
     "clinicalSettingsNotes": "Used for both initial clonality assessment and longitudinal MRD monitoring in B-cell malignancies.",
-    "technologyDifferentiator": "CE-IVDR distributed kit enabling in-house NGS-based MRD. Works with MiSeq platform already common in molecular labs. Includes MyInformatics software for MRD trending."
+    "technologyDifferentiator": "CE-IVDR distributed kit enabling in-house NGS-based MRD. Works with MiSeq platform already common in molecular labs. Includes MyInformatics software for MRD trending.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.invivoscribe.com/",
+        "medicareClaimed": ["Coverage varies"],
+        "commercialClaimed": "Often reimbursed as clonality assay",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "LIMITED",
+        "policies": [],
+        "indications": ["B-cell clonality assessment"],
+        "rate": null,
+        "notes": "CE-IVDR marked; FDA clearance pending; reimbursed as clonality test"
+      },
+      "privatePayers": {
+        "aetna": { "status": "LIMITED", "policy": null, "policyUrl": null, "coveredIndications": ["Clonality testing"], "notes": "May be covered as clonality assay" },
+        "cigna": { "status": "LIMITED", "policy": null, "policyUrl": null, "coveredIndications": ["Clonality testing"], "notes": "May be covered as clonality assay" },
+        "united": { "status": "LIMITED", "policy": null, "policyUrl": null, "coveredIndications": ["Clonality testing"], "notes": "May be covered as clonality assay" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Variable | Commercial: Variable",
+        "patientGuidance": "Coverage as clonality assay; verify MRD-specific coverage with payer.",
+        "keyInsight": "Often reimbursed as clonality testing rather than MRD-specific."
+      }
+    }
   },
   {
     "id": "mrd-kit-3",
@@ -3666,7 +4962,33 @@ export const mrdTestData = [
     "numPublicationsPlus": true,
     "clinicalSettings": ["Post-Adjuvant", "Surveillance"],
     "clinicalSettingsNotes": "Same-day results enable rapid treatment decisions. Standard of care for MRD monitoring in many European centers.",
-    "technologyDifferentiator": "Flow cytometry provides same-day results vs. 5-7 days for NGS. Standardized EuroFlow panels ensure reproducibility across labs. No prior sample needed (tumor-naïve). Different modality than NGS - may be complementary."
+    "technologyDifferentiator": "Flow cytometry provides same-day results vs. 5-7 days for NGS. Standardized EuroFlow panels ensure reproducibility across labs. No prior sample needed (tumor-naïve). Different modality than NGS - may be complementary.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.bd.com/",
+        "medicareClaimed": ["Coverage as flow cytometry MRD"],
+        "commercialClaimed": "Coverage as flow cytometry MRD",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "COVERED",
+        "policies": [],
+        "indications": ["B-ALL MRD via flow cytometry"],
+        "rate": null,
+        "notes": "CE-IVDR marked; covered as flow cytometry MRD (not NGS-based)"
+      },
+      "privatePayers": {
+        "aetna": { "status": "COVERED", "policy": null, "policyUrl": null, "coveredIndications": ["B-ALL flow MRD"], "notes": "Flow cytometry MRD generally covered" },
+        "cigna": { "status": "COVERED", "policy": null, "policyUrl": null, "coveredIndications": ["B-ALL flow MRD"], "notes": "Flow cytometry MRD generally covered" },
+        "united": { "status": "COVERED", "policy": null, "policyUrl": null, "coveredIndications": ["B-ALL flow MRD"], "notes": "Flow cytometry MRD generally covered" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Accurate",
+        "patientGuidance": "Flow cytometry MRD generally well-covered; different from ctDNA MRD.",
+        "keyInsight": "Flow cytometry MRD has established coverage; different pathway than ctDNA."
+      }
+    }
   },
   {
     "id": "mrd-26",
@@ -3732,6 +5054,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "NOT covered by Medicare - currently applying for reimbursement. LDT launched Nov 2024.",
       "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-15",
+      "vendorClaims": {
+        "url": "https://www.inocras.com/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Coverage emerging",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PARTIAL",
+        "policies": ["L38779"],
+        "indications": ["Selected solid tumor MRD"],
+        "rate": null,
+        "notes": "CLIA LDT; coverage emerging under MolDX"
+      },
+      "privatePayers": {
+        "aetna": { "status": "EXPERIMENTAL", "policy": "CPB 0715", "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html", "coveredIndications": [], "notes": "ctDNA MRD experimental" },
+        "cigna": { "status": "EXPERIMENTAL", "policy": "mm_0520", "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf", "coveredIndications": [], "notes": "Experimental" },
+        "united": { "status": "INVESTIGATIONAL", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Case-by-case" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Emerging | Commercial: Not Covered",
+        "patientGuidance": "Medicare coverage emerging. Commercial: expect denial.",
+        "keyInsight": "Newer entrant building coverage through MolDX pathway."
+      }
     }},
   {
     "id": "mrd-27",
