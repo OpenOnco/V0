@@ -117,6 +117,8 @@ export function generateHtmlDocs() {
     <li><a href="#authentication">Authentication</a></li>
     <li><a href="#rate-limits">Rate Limits</a></li>
     <li><a href="#endpoints">Endpoints</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#search">Search</a></li>
     <li><a href="#categories">Categories</a></li>
     <li><a href="#schemas">Response Schemas</a></li>
     <li><a href="#errors">Error Handling</a></li>
@@ -188,6 +190,9 @@ export function generateHtmlDocs() {
       <tr><td><code>vendor</code></td><td><span class="badge badge-string">string</span></td><td>Filter by vendor name (partial match)</td></tr>
       <tr><td><code>cancer</code></td><td><span class="badge badge-string">string</span></td><td>Filter by cancer type (partial match)</td></tr>
       <tr><td><code>fda</code></td><td><span class="badge badge-string">string</span></td><td>Filter by FDA status: <code>approved</code>, <code>ldt</code>, <code>breakthrough</code>, <code>all</code></td></tr>
+      <tr><td><code>medicare</code></td><td><span class="badge badge-string">string</span></td><td>Filter by Medicare coverage status: <code>COVERED</code>, <code>NOT_COVERED</code>, <code>PENDING</code>, <code>PARTIAL</code>, <code>EXPERIMENTAL</code></td></tr>
+      <tr><td><code>payer</code></td><td><span class="badge badge-string">string</span></td><td>Filter by private payer: <code>aetna</code>, <code>cigna</code>, <code>united</code>, <code>anthem</code>, <code>humana</code></td></tr>
+      <tr><td><code>payerStatus</code></td><td><span class="badge badge-string">string</span></td><td>Filter by payer status (requires <code>payer</code>)</td></tr>
       <tr><td><code>fields</code></td><td><span class="badge badge-string">string</span></td><td>Comma-separated list of fields to return</td></tr>
       <tr><td><code>limit</code></td><td><span class="badge badge-number">number</span></td><td>Max results (1-500, default: 100)</td></tr>
       <tr><td><code>offset</code></td><td><span class="badge badge-number">number</span></td><td>Skip N results for pagination (default: 0)</td></tr>
@@ -284,7 +289,7 @@ export function generateHtmlDocs() {
       <span class="path">/api/v1/embed/test</span>
     </div>
     <p class="endpoint-desc">Get an embeddable HTML card for a test</p>
-    
+
     <h4>Query Parameters</h4>
     <table>
       <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
@@ -293,14 +298,147 @@ export function generateHtmlDocs() {
       <tr><td><code>width</code></td><td><span class="badge badge-number">number</span></td><td>Card width in pixels (default: 400)</td></tr>
       <tr><td><code>format</code></td><td><span class="badge badge-string">string</span></td><td>Set to <code>json</code> for embed code instead of HTML</td></tr>
     </table>
-    
+
     <h4>Embedding in Your App</h4>
-    <pre><code>&lt;iframe 
-  src="https://openonco.org/api/v1/embed/test?id=mrd-1&theme=light" 
-  width="400" 
-  height="200" 
+    <pre><code>&lt;iframe
+  src="https://openonco.org/api/v1/embed/test?id=mrd-1&theme=light"
+  width="400"
+  height="200"
   frameborder="0"&gt;
 &lt;/iframe&gt;</code></pre>
+  </div>
+</section>
+
+<section id="coverage">
+  <h2>Coverage Endpoints</h2>
+  <p>Access insurance coverage data for diagnostic tests, including Medicare and private payer information.</p>
+
+  <div class="endpoint" id="endpoint-coverage">
+    <div class="endpoint-header">
+      <span class="method">GET</span>
+      <span class="path">/api/v1/coverage</span>
+    </div>
+    <p class="endpoint-desc">List all tests with coverage data, with summary statistics</p>
+
+    <h4>Query Parameters</h4>
+    <table>
+      <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+      <tr><td><code>medicare</code></td><td><span class="badge badge-string">string</span></td><td>Filter by Medicare status: <code>COVERED</code>, <code>NOT_COVERED</code>, <code>PENDING</code>, <code>PARTIAL</code>, <code>EXPERIMENTAL</code></td></tr>
+      <tr><td><code>payer</code></td><td><span class="badge badge-string">string</span></td><td>Filter by private payer: <code>aetna</code>, <code>cigna</code>, <code>united</code>, <code>anthem</code>, <code>humana</code></td></tr>
+      <tr><td><code>payerStatus</code></td><td><span class="badge badge-string">string</span></td><td>Filter by payer status (requires <code>payer</code>)</td></tr>
+      <tr><td><code>limit</code></td><td><span class="badge badge-number">number</span></td><td>Max results (1-500, default: 100)</td></tr>
+      <tr><td><code>offset</code></td><td><span class="badge badge-number">number</span></td><td>Skip N results for pagination (default: 0)</td></tr>
+    </table>
+
+    <h4>Example Request</h4>
+    <pre><code>curl "https://openonco.org/api/v1/coverage?medicare=COVERED"</code></pre>
+
+    <div class="response">
+      <h4>Example Response</h4>
+      <pre><code>{
+  "success": true,
+  "meta": { "total": 25, "limit": 100, "offset": 0, ... },
+  "stats": {
+    "total": 25,
+    "byMedicareStatus": { "COVERED": 15, "PENDING": 8, "NOT_COVERED": 2 },
+    "byPayer": {
+      "aetna": { "COVERED": 10, "PARTIAL": 5 },
+      "cigna": { "EXPERIMENTAL": 12 }
+    }
+  },
+  "data": [...]
+}</code></pre>
+    </div>
+  </div>
+
+  <div class="endpoint" id="endpoint-coverage-test">
+    <div class="endpoint-header">
+      <span class="method">GET</span>
+      <span class="path">/api/v1/coverage/:testId</span>
+    </div>
+    <p class="endpoint-desc">Get coverage data for a specific test</p>
+
+    <h4>Path Parameters</h4>
+    <table>
+      <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+      <tr><td><code>testId</code></td><td><span class="badge badge-string">string</span> <span class="badge badge-required">required</span></td><td>Test ID (e.g., <code>mrd-1</code>)</td></tr>
+    </table>
+
+    <h4>Example Request</h4>
+    <pre><code>curl "https://openonco.org/api/v1/coverage/mrd-1"</code></pre>
+  </div>
+
+  <div class="endpoint" id="endpoint-coverage-payer">
+    <div class="endpoint-header">
+      <span class="method">GET</span>
+      <span class="path">/api/v1/coverage/payer/:payerName</span>
+    </div>
+    <p class="endpoint-desc">Get all tests with coverage data for a specific payer, grouped by status</p>
+
+    <h4>Path Parameters</h4>
+    <table>
+      <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+      <tr><td><code>payerName</code></td><td><span class="badge badge-string">string</span> <span class="badge badge-required">required</span></td><td>Payer name: <code>aetna</code>, <code>cigna</code>, <code>united</code>, <code>anthem</code>, <code>humana</code></td></tr>
+    </table>
+
+    <h4>Example Request</h4>
+    <pre><code>curl "https://openonco.org/api/v1/coverage/payer/aetna"</code></pre>
+
+    <div class="response">
+      <h4>Example Response</h4>
+      <pre><code>{
+  "success": true,
+  "meta": { "payer": "aetna", "totalTests": 25, ... },
+  "data": {
+    "COVERED": [{ "id": "mrd-1", "name": "...", "coverage": {...} }, ...],
+    "PARTIAL": [...],
+    "EXPERIMENTAL": [...]
+  }
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="search">
+  <h2>Search Endpoint</h2>
+
+  <div class="endpoint" id="endpoint-search">
+    <div class="endpoint-header">
+      <span class="method">GET</span>
+      <span class="path">/api/v1/search</span>
+    </div>
+    <p class="endpoint-desc">Full-text search across test fields</p>
+
+    <h4>Query Parameters</h4>
+    <table>
+      <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+      <tr><td><code>q</code></td><td><span class="badge badge-string">string</span> <span class="badge badge-required">required</span></td><td>Search term (case-insensitive, partial match)</td></tr>
+      <tr><td><code>category</code></td><td><span class="badge badge-string">string</span></td><td>Limit search to specific category</td></tr>
+      <tr><td><code>fields</code></td><td><span class="badge badge-string">string</span></td><td>Comma-separated fields to search (default: name, vendor, description, cancerTypes, biomarkers, clinicalSettings)</td></tr>
+      <tr><td><code>limit</code></td><td><span class="badge badge-number">number</span></td><td>Max results (1-500, default: 100)</td></tr>
+      <tr><td><code>offset</code></td><td><span class="badge badge-number">number</span></td><td>Skip N results for pagination (default: 0)</td></tr>
+    </table>
+
+    <h4>Example Request</h4>
+    <pre><code>curl "https://openonco.org/api/v1/search?q=colorectal&category=mrd"</code></pre>
+
+    <div class="response">
+      <h4>Example Response</h4>
+      <pre><code>{
+  "success": true,
+  "meta": {
+    "query": "colorectal",
+    "fieldsSearched": ["name", "vendor", "description", "cancerTypes", "biomarkers", "clinicalSettings"],
+    "total": 8,
+    "limit": 100,
+    "offset": 0,
+    "returned": 8,
+    "hasMore": false,
+    ...
+  },
+  "data": [...]
+}</code></pre>
+    </div>
   </div>
 </section>
 
@@ -563,6 +701,9 @@ export function generateJsonDocs() {
           { name: 'vendor', type: 'string', required: false, description: 'Filter by vendor name (partial match)' },
           { name: 'cancer', type: 'string', required: false, description: 'Filter by cancer type (partial match)' },
           { name: 'fda', type: 'string', required: false, description: 'Filter by FDA status (approved, ldt, breakthrough, all)' },
+          { name: 'medicare', type: 'string', required: false, description: 'Filter by Medicare coverage status (COVERED, NOT_COVERED, PENDING, PARTIAL, EXPERIMENTAL)' },
+          { name: 'payer', type: 'string', required: false, description: 'Filter by private payer (aetna, cigna, united, anthem, humana)' },
+          { name: 'payerStatus', type: 'string', required: false, description: 'Filter by payer status (requires payer param)' },
           { name: 'fields', type: 'string', required: false, description: 'Comma-separated fields to return' },
           { name: 'limit', type: 'number', required: false, description: 'Max results (1-500, default: 100)' },
           { name: 'offset', type: 'number', required: false, description: 'Skip N results (default: 0)' }
@@ -603,6 +744,46 @@ export function generateJsonDocs() {
           { name: 'theme', type: 'string', required: false, description: 'light or dark (default: light)' },
           { name: 'width', type: 'number', required: false, description: 'Card width in pixels (default: 400)' },
           { name: 'format', type: 'string', required: false, description: 'Set to json for embed code' }
+        ]
+      },
+      {
+        method: 'GET',
+        path: '/api/v1/coverage',
+        description: 'List all tests with coverage data and summary statistics',
+        parameters: [
+          { name: 'medicare', type: 'string', required: false, description: 'Filter by Medicare status (COVERED, NOT_COVERED, PENDING, PARTIAL, EXPERIMENTAL)' },
+          { name: 'payer', type: 'string', required: false, description: 'Filter by private payer (aetna, cigna, united, anthem, humana)' },
+          { name: 'payerStatus', type: 'string', required: false, description: 'Filter by payer status (requires payer param)' },
+          { name: 'limit', type: 'number', required: false, description: 'Max results (1-500, default: 100)' },
+          { name: 'offset', type: 'number', required: false, description: 'Skip N results (default: 0)' }
+        ]
+      },
+      {
+        method: 'GET',
+        path: '/api/v1/coverage/:testId',
+        description: 'Get coverage data for a specific test',
+        parameters: [
+          { name: 'testId', type: 'string', required: true, description: 'Test ID (e.g., mrd-1)' }
+        ]
+      },
+      {
+        method: 'GET',
+        path: '/api/v1/coverage/payer/:payerName',
+        description: 'Get all tests with coverage data for a specific payer, grouped by status',
+        parameters: [
+          { name: 'payerName', type: 'string', required: true, description: 'Payer name (aetna, cigna, united, anthem, humana)' }
+        ]
+      },
+      {
+        method: 'GET',
+        path: '/api/v1/search',
+        description: 'Full-text search across test fields',
+        parameters: [
+          { name: 'q', type: 'string', required: true, description: 'Search term (case-insensitive, partial match)' },
+          { name: 'category', type: 'string', required: false, description: 'Limit search to specific category' },
+          { name: 'fields', type: 'string', required: false, description: 'Comma-separated fields to search (default: name, vendor, description, cancerTypes, biomarkers, clinicalSettings)' },
+          { name: 'limit', type: 'number', required: false, description: 'Max results (1-500, default: 100)' },
+          { name: 'offset', type: 'number', required: false, description: 'Skip N results (default: 0)' }
         ]
       }
     ],
