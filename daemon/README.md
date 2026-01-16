@@ -9,9 +9,10 @@ The daemon runs on a schedule, crawling various sources for updates:
 | Source | Schedule | Description |
 |--------|----------|-------------|
 | PubMed | Daily 6:00 AM | Scientific publications on ctDNA, MRD, liquid biopsy |
-| CMS | Weekly Sunday 7:00 AM | Medicare coverage determinations and policy updates |
-| FDA | Weekly Sunday 8:00 AM | Drug approvals, device clearances, guidance |
-| Vendor | Weekly Sunday 9:00 AM | Test manufacturer website updates |
+| CMS | Weekly Sunday 6:00 AM | Medicare coverage determinations and policy updates |
+| FDA | Weekly Monday 6:00 AM | Drug approvals, device clearances, guidance |
+| Vendor | Weekly Tuesday 6:00 AM | Test manufacturer website updates |
+| Preprints | Weekly Wednesday 6:00 AM | medRxiv/bioRxiv preprints on oncology diagnostics |
 
 A **daily digest email** is sent at 10:00 AM with:
 - New discoveries grouped by source
@@ -49,7 +50,8 @@ daemon/
     │   ├── pubmed.js         # PubMed crawler (stub)
     │   ├── cms.js            # CMS crawler (stub)
     │   ├── fda.js            # FDA crawler (stub)
-    │   └── vendor.js         # Vendor crawler (stub)
+    │   ├── vendor.js         # Vendor crawler (stub)
+    │   └── preprints.js      # medRxiv/bioRxiv preprints crawler
     ├── email/
     │   ├── index.js          # Resend email service
     │   └── templates.js      # Digest templates
@@ -90,6 +92,11 @@ Optional variables:
 - `SCHEDULE_*` - Override default cron schedules
 - `CRAWLER_*_ENABLED` - Enable/disable specific crawlers
 - `RATE_LIMIT_*` - Requests per minute per source
+
+Preprints crawler variables:
+- `CRAWLER_PREPRINTS_ENABLED` - Enable/disable preprints crawler (default: true)
+- `SCHEDULE_PREPRINTS` - Cron schedule (default: `0 6 * * 3` - Wednesday 6:00 AM)
+- `RATE_LIMIT_PREPRINTS` - Requests per minute (default: 5)
 
 ### Running Locally
 
