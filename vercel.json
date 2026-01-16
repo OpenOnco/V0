@@ -28,6 +28,14 @@
       "destination": "/api/v1?route=embed&type=:type"
     },
     {
+      "source": "/api/v1/coverage/payer/:payerName",
+      "destination": "/api/v1?route=coverage&subRoute=payer&payer=:payerName"
+    },
+    {
+      "source": "/api/v1/coverage/:testId",
+      "destination": "/api/v1?route=coverage&id=:testId"
+    },
+    {
       "source": "/api/v1/:route",
       "destination": "/api/v1?route=:route"
     },

@@ -686,19 +686,17 @@ export default function handler(req, res) {
     }
 
     if (routeKey === 'coverage') {
-      // /coverage/payer/:payerName
+      // /coverage/payer/:payerName (via path or rewrite query params)
       if (segments[1] === 'payer' && segments[2]) {
         return handleCoverageByPayer(req, res, segments[2]);
       }
-      // Also support query param for payer route
-      if (req.query.payerRoute) {
-        return handleCoverageByPayer(req, res, req.query.payerRoute);
+      if (req.query.subRoute === 'payer' && req.query.payer) {
+        return handleCoverageByPayer(req, res, req.query.payer);
       }
-      // /coverage/:testId
+      // /coverage/:testId (via path or rewrite query params)
       if (segments[1] && segments[1] !== 'payer') {
         return handleCoverageById(req, res, segments[1]);
       }
-      // Also support query param for testId
       if (testId) {
         return handleCoverageById(req, res, testId);
       }

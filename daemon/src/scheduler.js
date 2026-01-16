@@ -182,7 +182,7 @@ export async function runAllCrawlersNow() {
   logger.info('Running all crawlers immediately');
 
   const results = {};
-  const sources = [SOURCES.PUBMED, SOURCES.CMS, SOURCES.FDA, SOURCES.VENDOR];
+  const sources = [SOURCES.PUBMED, SOURCES.CMS, SOURCES.FDA, SOURCES.VENDOR, SOURCES.PREPRINTS];
 
   for (const source of sources) {
     try {
