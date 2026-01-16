@@ -1,35 +1,34 @@
 /**
- * OpenOnco Chat V2 API Endpoint - Tool-Based Chatbot
+ * OpenOnco Chat API v2 - Tool-based Chatbot
  *
- * This endpoint uses Claude's tool use feature to make structured queries
- * to the test database, providing more accurate and focused responses.
+ * This endpoint implements an agentic chatbot that uses Claude's tool-use
+ * capabilities to query the test database dynamically, rather than passing
+ * all test data in the system prompt.
  *
- * Tools available:
- * - search_tests: Search tests by criteria (cancer type, vendor, approach, etc.)
- * - get_test_details: Get full details for a specific test by ID
+ * Tools mirror the OpenOnco MCP interface:
+ * - search_tests: Filter tests by category and criteria
+ * - get_test: Get complete details for a single test
  * - compare_tests: Compare multiple tests side-by-side
- * - get_financial_assistance: Get financial assistance info for a vendor
  * - list_vendors: List all vendors in a category
- * - list_cancer_types: List all cancer types covered by tests
+ * - list_cancer_types: List cancer types in a category
+ * - get_coverage: Get insurance coverage details
  */
 
 import Anthropic from "@anthropic-ai/sdk";
 import {
   mrdTestData,
   ecdTestData,
-  cgpTestData,
-  hctTestData,
+  trmTestData,
   tdsTestData,
-  VENDOR_ASSISTANCE_PROGRAMS,
-  getAssistanceProgramForVendor
-} from './_data.js';
+  hctTestData,
+} from "../src/data.js";
 
 // ============================================
-// RATE LIMITING
+// RATE LIMITING (same as chat.js)
 // ============================================
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000;
-const MAX_REQUESTS_PER_WINDOW = 15; // Slightly lower due to tool use overhead
+const MAX_REQUESTS_PER_WINDOW = 20;
 
 function getClientIP(req) {
   const forwarded = req.headers['x-forwarded-for'];
@@ -56,43 +55,20 @@ function checkRateLimit(clientIP) {
 }
 
 // ============================================
-// SECURITY CONFIGURATION
+// CONFIGURATION
 // ============================================
 const ALLOWED_MODELS = {
   'claude-haiku-4-5-20251001': true,
   'claude-sonnet-4-5-20250929': true
 };
-const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
-const MAX_TOKENS_LIMIT = 2048; // Higher for tool use conversations
+const DEFAULT_MODEL = 'claude-sonnet-4-5-20250929';
+const MAX_TOKENS_LIMIT = 4096;
 const MAX_MESSAGE_LENGTH = 4000;
-const MAX_MESSAGES = 20; // Higher for multi-turn tool use
+const MAX_MESSAGES = 20;
+const MAX_TOOL_ITERATIONS = 10;
 
-const VALID_CATEGORIES = ['MRD', 'ECD', 'TDS', 'HCT', 'all'];
+const VALID_CATEGORIES = ['mrd', 'ecd', 'trm', 'tds', 'hct', 'all'];
 const VALID_PERSONAS = ['patient', 'medical', 'rnd'];
-
-// ============================================
-// DATA ACCESS HELPERS
-// ============================================
-function getTestDataForCategory(category) {
-  switch (category) {
-    case 'MRD': return mrdTestData;
-    case 'ECD': return ecdTestData;
-    case 'TDS': return tdsTestData;
-    case 'HCT': return hctTestData;
-    case 'all': return [...mrdTestData, ...ecdTestData, ...tdsTestData, ...hctTestData];
-    default: return [];
-  }
-}
-
-function getCategoryFromTestId(testId) {
-  if (testId.startsWith('mrd-')) return 'MRD';
-  if (testId.startsWith('ecd-')) return 'ECD';
-  if (testId.startsWith('tds-')) return 'TDS';
-  if (testId.startsWith('hct-')) return 'HCT';
-  if (testId.startsWith('trm-')) return 'TRM';
-  if (testId.startsWith('cgp-')) return 'CGP';
-  return null;
-}
 
 // ============================================
 // TOOL DEFINITIONS
@@ -100,358 +76,400 @@ function getCategoryFromTestId(testId) {
 const tools = [
   {
     name: "search_tests",
-    description: "Search for tests matching specific criteria. Use this to find tests by cancer type, vendor, approach (tumor-informed vs tumor-naive), or other attributes. Returns a list of matching tests with key summary information.",
+    description: "Search and filter tests by category and criteria. Returns summary info for matching tests.",
     input_schema: {
       type: "object",
       properties: {
         category: {
           type: "string",
-          enum: ["MRD", "ECD", "TDS", "HCT", "all"],
-          description: "Test category to search. MRD = Minimal Residual Disease monitoring, ECD = Early Cancer Detection, TDS = Treatment Decision Support, HCT = Hereditary Cancer Testing"
-        },
-        cancer_type: {
-          type: "string",
-          description: "Cancer type to filter by (e.g., 'breast', 'colorectal', 'lung', 'multi-solid'). Partial matches supported."
+          enum: ["mrd", "ecd", "trm", "tds", "hct"],
+          description: "Test category"
         },
         vendor: {
           type: "string",
-          description: "Vendor/manufacturer name to filter by (e.g., 'Natera', 'Guardant', 'Foundation Medicine')"
+          description: "Filter by vendor name (partial match, case-insensitive)"
+        },
+        cancer_type: {
+          type: "string",
+          description: "Filter by cancer type (partial match)"
         },
         approach: {
           type: "string",
-          enum: ["Tumor-informed", "Tumor-naive"],
-          description: "Filter by testing approach. Tumor-informed requires prior tumor sample; tumor-naive does not."
+          description: "For MRD: 'Tumor-informed' or 'Tumor-naive'"
         },
-        requires_tumor_tissue: {
-          type: "boolean",
-          description: "Filter by whether solid tumor tissue biopsy is required"
+        min_sensitivity: {
+          type: "number",
+          description: "Minimum sensitivity %"
         },
-        has_medicare_coverage: {
-          type: "boolean",
-          description: "Filter to tests with Medicare coverage"
+        fda_status: {
+          type: "string",
+          description: "Filter by FDA status (partial match)"
         },
-        max_results: {
+        limit: {
           type: "integer",
-          description: "Maximum number of results to return (default 10)"
+          default: 10,
+          description: "Max results to return"
         }
       },
       required: ["category"]
     }
   },
   {
-    name: "get_test_details",
-    description: "Get complete details for a specific test by its ID (e.g., 'mrd-1', 'ecd-5'). Returns all available information including sensitivity, specificity, TAT, coverage, clinical trials, etc.",
+    name: "get_test",
+    description: "Get complete details for a single test by ID. Use this after search_tests to get full information.",
     input_schema: {
       type: "object",
       properties: {
-        test_id: {
+        id: {
           type: "string",
-          description: "The test ID (e.g., 'mrd-1', 'mrd-7', 'ecd-3')"
+          description: "Test ID like 'mrd-1', 'ecd-5', 'tds-3'"
         }
       },
-      required: ["test_id"]
+      required: ["id"]
     }
   },
   {
     name: "compare_tests",
-    description: "Compare multiple tests side by side on key attributes. Useful for helping users understand differences between options.",
+    description: "Compare multiple tests side-by-side on specific metrics. Returns a comparison table.",
     input_schema: {
       type: "object",
       properties: {
-        test_ids: {
+        ids: {
           type: "array",
           items: { type: "string" },
           description: "Array of test IDs to compare (e.g., ['mrd-1', 'mrd-7'])"
         },
-        attributes: {
+        metrics: {
           type: "array",
           items: { type: "string" },
-          description: "Specific attributes to compare. If not specified, compares key attributes: name, vendor, sensitivity, specificity, approach, TAT, price, medicare coverage"
+          description: "Metrics to compare: name, vendor, sensitivity, specificity, lod, fdaStatus, reimbursement, initialTat, followUpTat, price, approach, method, cancerTypes"
         }
       },
-      required: ["test_ids"]
-    }
-  },
-  {
-    name: "get_financial_assistance",
-    description: "Get financial assistance and patient support program information for a specific vendor.",
-    input_schema: {
-      type: "object",
-      properties: {
-        vendor: {
-          type: "string",
-          description: "Vendor name (e.g., 'Natera', 'Guardant Health', 'Foundation Medicine')"
-        }
-      },
-      required: ["vendor"]
+      required: ["ids"]
     }
   },
   {
     name: "list_vendors",
-    description: "List all unique vendors/manufacturers in a test category.",
+    description: "List all vendors offering tests in a category with test counts.",
     input_schema: {
       type: "object",
       properties: {
         category: {
           type: "string",
-          enum: ["MRD", "ECD", "TDS", "HCT", "all"],
+          enum: ["mrd", "ecd", "trm", "tds", "hct"],
           description: "Test category"
         }
-      },
-      required: ["category"]
+      }
     }
   },
   {
     name: "list_cancer_types",
-    description: "List all cancer types covered by tests in a category.",
+    description: "List cancer types covered by tests in a category.",
     input_schema: {
       type: "object",
       properties: {
         category: {
           type: "string",
-          enum: ["MRD", "ECD", "TDS", "HCT", "all"],
+          enum: ["mrd", "ecd", "trm", "tds", "hct"],
           description: "Test category"
         }
+      }
+    }
+  },
+  {
+    name: "get_coverage",
+    description: "Get insurance coverage details for a test including Medicare, private payers, and patient guidance.",
+    input_schema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Test ID"
+        }
       },
-      required: ["category"]
+      required: ["id"]
     }
   }
 ];
 
 // ============================================
-// TOOL EXECUTION
+// DATA ACCESS HELPERS
 // ============================================
-function executeSearchTests(params) {
-  const { category, cancer_type, vendor, approach, requires_tumor_tissue, has_medicare_coverage, max_results = 10 } = params;
 
-  let tests = getTestDataForCategory(category);
+/**
+ * Get tests array for a category
+ */
+function getTestsForCategory(category) {
+  const categoryMap = {
+    mrd: mrdTestData,
+    ecd: ecdTestData,
+    trm: trmTestData,
+    tds: tdsTestData,
+    hct: hctTestData,
+  };
+  return categoryMap[category?.toLowerCase()] || [];
+}
+
+/**
+ * Get all tests across all categories
+ */
+function getAllTests() {
+  return [
+    ...mrdTestData,
+    ...ecdTestData,
+    ...trmTestData,
+    ...tdsTestData,
+    ...hctTestData,
+  ];
+}
+
+/**
+ * Find a test by ID across all categories
+ */
+function findTestById(id) {
+  if (!id) return null;
+  const normalizedId = id.toLowerCase();
+  const allTests = getAllTests();
+  return allTests.find(t => t.id?.toLowerCase() === normalizedId) || null;
+}
+
+// ============================================
+// TOOL EXECUTION FUNCTIONS
+// ============================================
+
+/**
+ * Search and filter tests
+ */
+function executeSearchTests(args) {
+  const { category, vendor, cancer_type, approach, min_sensitivity, fda_status, limit = 10 } = args;
+
+  let tests = getTestsForCategory(category);
 
   // Apply filters
+  if (vendor) {
+    const vendorLower = vendor.toLowerCase();
+    tests = tests.filter(t => t.vendor?.toLowerCase().includes(vendorLower));
+  }
+
   if (cancer_type) {
-    const searchTerm = cancer_type.toLowerCase();
+    const cancerLower = cancer_type.toLowerCase();
     tests = tests.filter(t => {
-      const cancerTypes = t.cancerTypes || [];
-      return cancerTypes.some(ct => ct.toLowerCase().includes(searchTerm)) ||
-             (t.indicationsNotes && t.indicationsNotes.toLowerCase().includes(searchTerm));
+      const types = t.cancerTypes || [];
+      return types.some(ct => ct.toLowerCase().includes(cancerLower));
     });
   }
 
-  if (vendor) {
-    const searchTerm = vendor.toLowerCase();
-    tests = tests.filter(t => t.vendor && t.vendor.toLowerCase().includes(searchTerm));
-  }
-
   if (approach) {
-    tests = tests.filter(t => t.approach === approach);
+    const approachLower = approach.toLowerCase();
+    tests = tests.filter(t => t.approach?.toLowerCase().includes(approachLower));
   }
 
-  if (requires_tumor_tissue !== undefined) {
-    const required = requires_tumor_tissue ? "Yes" : "No";
-    tests = tests.filter(t => t.requiresTumorTissue === required);
-  }
-
-  if (has_medicare_coverage) {
+  if (min_sensitivity !== undefined && min_sensitivity !== null) {
     tests = tests.filter(t =>
-      t.medicareCoverage &&
-      (t.medicareCoverage.status === "COVERED" || t.medicareCoverage.status === "PARTIAL")
+      typeof t.sensitivity === 'number' && t.sensitivity >= min_sensitivity
     );
   }
 
-  // Limit results and return summary
-  const results = tests.slice(0, max_results).map(t => ({
-    id: t.id,
-    name: t.name,
-    vendor: t.vendor,
-    approach: t.approach || 'N/A',
-    cancerTypes: t.cancerTypes || [],
-    sensitivity: t.sensitivity ? `${t.sensitivity}%` : 'N/A',
-    specificity: t.specificity ? `${t.specificity}%` : 'N/A',
-    medicareCoverage: t.medicareCoverage?.status || 'Unknown',
-    price: t.price || 'Not published',
-    productType: t.productType || 'Central Lab Service'
-  }));
+  if (fda_status) {
+    const fdaLower = fda_status.toLowerCase();
+    tests = tests.filter(t => t.fdaStatus?.toLowerCase().includes(fdaLower));
+  }
 
+  // Limit results
+  const limitedTests = tests.slice(0, Math.min(limit, 25));
+
+  // Return summary info
   return {
-    total_found: tests.length,
-    showing: results.length,
-    results
+    totalMatches: tests.length,
+    returned: limitedTests.length,
+    tests: limitedTests.map(t => ({
+      id: t.id,
+      name: t.name,
+      vendor: t.vendor,
+      approach: t.approach,
+      sensitivity: t.sensitivity,
+      specificity: t.specificity,
+      fdaStatus: t.fdaStatus,
+      reimbursement: t.reimbursement,
+      cancerTypes: t.cancerTypes?.slice(0, 5),
+      price: t.price || t.listPrice || null,
+    }))
   };
 }
 
-function executeGetTestDetails(params) {
-  const { test_id } = params;
-
-  // Search all categories for the test
-  const allTests = [...mrdTestData, ...ecdTestData, ...tdsTestData, ...hctTestData];
-  const test = allTests.find(t => t.id === test_id);
+/**
+ * Get full test details
+ */
+function executeGetTest(args) {
+  const { id } = args;
+  const test = findTestById(id);
 
   if (!test) {
-    return { error: `Test with ID '${test_id}' not found` };
+    return { error: `Test not found: ${id}` };
   }
 
-  // Return relevant fields (exclude internal/citation fields for readability)
-  const {
-    id, name, vendor, approach, method, cancerTypes, indicationsNotes,
-    sensitivity, sensitivityNotes, specificity, specificityNotes,
-    stageISensitivity, stageIISensitivity, stageIIISensitivity, stageIVSensitivity,
-    lod, lod95, lodNotes,
-    requiresTumorTissue, requiresMatchedNormal, variantsTracked,
-    initialTat, followUpTat, bloodVolume,
-    fdaStatus, reimbursement, reimbursementNote, cptCodes,
-    clinicalAvailability, clinicalTrials, clinicalSettings,
-    totalParticipants, numPublications, price,
-    medicareCoverage, productType
-  } = test;
-
   return {
-    id, name, vendor, approach, method, cancerTypes, indicationsNotes,
-    sensitivity: sensitivity ? `${sensitivity}%` : null,
-    sensitivityNotes,
-    specificity: specificity ? `${specificity}%` : null,
-    specificityNotes,
-    stageSensitivity: {
-      stageI: stageISensitivity ? `${stageISensitivity}%` : null,
-      stageII: stageIISensitivity ? `${stageIISensitivity}%` : null,
-      stageIII: stageIIISensitivity ? `${stageIIISensitivity}%` : null,
-      stageIV: stageIVSensitivity ? `${stageIVSensitivity}%` : null
-    },
-    lod, lod95, lodNotes,
-    requiresTumorTissue, requiresMatchedNormal, variantsTracked,
-    turnaroundTime: {
-      initial: initialTat ? `${initialTat} days` : null,
-      followUp: followUpTat ? `${followUpTat} days` : null
-    },
-    bloodVolume: bloodVolume ? `${bloodVolume} mL` : null,
-    fdaStatus, reimbursement, reimbursementNote, cptCodes,
-    clinicalAvailability, clinicalTrials, clinicalSettings,
-    totalParticipants, numPublications,
-    price: price || 'Not published',
-    medicareCoverage: medicareCoverage || { status: 'Unknown' },
-    productType: productType || 'Central Lab Service',
-    category: getCategoryFromTestId(test_id)
+    found: true,
+    test: test
   };
 }
 
-function executeCompareTests(params) {
-  const { test_ids, attributes } = params;
+/**
+ * Compare multiple tests
+ */
+function executeCompareTests(args) {
+  const { ids, metrics } = args;
 
-  const allTests = [...mrdTestData, ...ecdTestData, ...tdsTestData, ...hctTestData];
+  if (!ids || !Array.isArray(ids)) {
+    return { error: 'ids array is required', tests: [] };
+  }
 
-  const defaultAttributes = [
-    'name', 'vendor', 'approach', 'sensitivity', 'specificity',
-    'initialTat', 'followUpTat', 'price', 'medicareCoverage', 'requiresTumorTissue'
+  if (ids.length === 0) {
+    return { error: "No test IDs provided" };
+  }
+
+  if (ids.length > 6) {
+    return { error: "Maximum 6 tests can be compared at once" };
+  }
+
+  // Default metrics if not specified
+  const compareMetrics = metrics && metrics.length > 0 ? metrics : [
+    'name', 'vendor', 'sensitivity', 'specificity', 'lod',
+    'fdaStatus', 'reimbursement', 'approach'
   ];
 
-  const compareAttrs = attributes || defaultAttributes;
-
-  const comparison = test_ids.map(testId => {
-    const test = allTests.find(t => t.id === testId);
+  const tests = ids.map(id => {
+    const test = findTestById(id);
     if (!test) {
-      return { id: testId, error: 'Test not found' };
+      return { id, error: `Not found` };
     }
 
-    const result = { id: testId };
-    for (const attr of compareAttrs) {
-      if (attr === 'sensitivity' || attr === 'specificity') {
-        result[attr] = test[attr] ? `${test[attr]}%` : 'N/A';
-      } else if (attr === 'initialTat' || attr === 'followUpTat') {
-        result[attr] = test[attr] ? `${test[attr]} days` : 'N/A';
-      } else if (attr === 'medicareCoverage') {
-        result[attr] = test.medicareCoverage?.status || 'Unknown';
-      } else if (attr === 'price') {
-        result[attr] = test.price || 'Not published';
+    const comparison = { id };
+    for (const metric of compareMetrics) {
+      if (metric === 'cancerTypes') {
+        comparison[metric] = test.cancerTypes?.join(', ') || 'N/A';
       } else {
-        result[attr] = test[attr] || 'N/A';
+        comparison[metric] = test[metric] ?? 'N/A';
       }
     }
-    return result;
+    return comparison;
   });
 
-  return { comparison, attributes_compared: compareAttrs };
+  return {
+    metrics: compareMetrics,
+    tests: tests
+  };
 }
 
-function executeGetFinancialAssistance(params) {
-  const { vendor } = params;
+/**
+ * List vendors in a category
+ */
+function executeListVendors(args) {
+  const { category } = args;
 
-  const program = getAssistanceProgramForVendor(vendor);
+  const tests = category ? getTestsForCategory(category) : getAllTests();
 
-  if (!program) {
-    // Check if vendor exists but has no program
-    const vendorList = Object.keys(VENDOR_ASSISTANCE_PROGRAMS);
-    const closestMatch = vendorList.find(v =>
-      v.toLowerCase().includes(vendor.toLowerCase()) ||
-      vendor.toLowerCase().includes(v.toLowerCase())
-    );
-
-    if (closestMatch) {
-      const matchedProgram = VENDOR_ASSISTANCE_PROGRAMS[closestMatch];
-      if (!matchedProgram.hasProgram) {
-        return {
-          vendor: closestMatch,
-          hasProgram: false,
-          message: `${closestMatch} does not have a documented patient assistance program.`
-        };
-      }
-      return { vendor: closestMatch, ...matchedProgram };
+  // Count tests per vendor
+  const vendorCounts = {};
+  for (const test of tests) {
+    if (test.vendor) {
+      vendorCounts[test.vendor] = (vendorCounts[test.vendor] || 0) + 1;
     }
-
-    return {
-      error: `No financial assistance information found for '${vendor}'`,
-      availableVendors: vendorList
-    };
   }
 
-  return { vendor, ...program };
-}
-
-function executeListVendors(params) {
-  const { category } = params;
-
-  const tests = getTestDataForCategory(category);
-  const vendors = [...new Set(tests.map(t => t.vendor).filter(Boolean))].sort();
+  // Sort by count descending
+  const vendors = Object.entries(vendorCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, testCount: count }));
 
   return {
-    category,
-    count: vendors.length,
-    vendors
+    category: category || 'all',
+    totalVendors: vendors.length,
+    vendors: vendors
   };
 }
 
-function executeListCancerTypes(params) {
-  const { category } = params;
+/**
+ * List cancer types in a category
+ */
+function executeListCancerTypes(args) {
+  const { category } = args;
 
-  const tests = getTestDataForCategory(category);
-  const cancerTypesSet = new Set();
+  const tests = category ? getTestsForCategory(category) : getAllTests();
 
-  tests.forEach(t => {
-    if (t.cancerTypes) {
-      t.cancerTypes.forEach(ct => cancerTypesSet.add(ct));
+  // Collect unique cancer types
+  const cancerTypeCounts = {};
+  for (const test of tests) {
+    const types = test.cancerTypes || [];
+    for (const ct of types) {
+      cancerTypeCounts[ct] = (cancerTypeCounts[ct] || 0) + 1;
     }
-  });
+  }
 
-  const cancerTypes = [...cancerTypesSet].sort();
+  // Sort alphabetically
+  const cancerTypes = Object.entries(cancerTypeCounts)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([name, count]) => ({ name, testCount: count }));
 
   return {
-    category,
-    count: cancerTypes.length,
-    cancerTypes
+    category: category || 'all',
+    totalTypes: cancerTypes.length,
+    cancerTypes: cancerTypes
   };
 }
 
-function executeTool(toolName, toolInput) {
+/**
+ * Get coverage information for a test
+ */
+function executeGetCoverage(args) {
+  const { id } = args;
+  const test = findTestById(id);
+
+  if (!test) {
+    return { error: `Test not found: ${id}` };
+  }
+
+  // Build coverage response
+  const coverage = {
+    testId: test.id,
+    testName: test.name,
+    vendor: test.vendor,
+    reimbursement: test.reimbursement || 'Unknown',
+    reimbursementNote: test.reimbursementNote || null,
+    fdaStatus: test.fdaStatus || 'Unknown',
+    cptCodes: test.cptCodes || null,
+  };
+
+  // Include detailed coverage cross-reference if available
+  if (test.coverageCrossReference) {
+    coverage.coverageCrossReference = test.coverageCrossReference;
+  }
+
+  // Include Medicare coverage if available
+  if (test.medicareCoverage) {
+    coverage.medicareCoverage = test.medicareCoverage;
+  }
+
+  return coverage;
+}
+
+/**
+ * Execute a tool call and return the result
+ */
+function executeToolCall(toolName, toolInput) {
   switch (toolName) {
     case 'search_tests':
       return executeSearchTests(toolInput);
-    case 'get_test_details':
-      return executeGetTestDetails(toolInput);
+    case 'get_test':
+      return executeGetTest(toolInput);
     case 'compare_tests':
       return executeCompareTests(toolInput);
-    case 'get_financial_assistance':
-      return executeGetFinancialAssistance(toolInput);
     case 'list_vendors':
       return executeListVendors(toolInput);
     case 'list_cancer_types':
       return executeListCancerTypes(toolInput);
+    case 'get_coverage':
+      return executeGetCoverage(toolInput);
     default:
       return { error: `Unknown tool: ${toolName}` };
   }
@@ -460,60 +478,47 @@ function executeTool(toolName, toolInput) {
 // ============================================
 // SYSTEM PROMPT
 // ============================================
-function buildSystemPrompt(category, persona) {
-  const categoryLabel = category === 'all' ? 'liquid biopsy' : category;
+const systemPrompt = `You are the OpenOnco assistant, helping users understand oncology diagnostic tests including MRD (Minimal Residual Disease), ECD (Early Cancer Detection), TRM (Treatment Response Monitoring), TDS (Treatment Decision Support), and HCT (Hereditary Cancer Testing).
 
-  const personaInstructions = {
-    patient: `You are a warm, supportive assistant helping patients understand ${categoryLabel} cancer tests.
+You have access to tools to search and retrieve test information from the OpenOnco database. Always use these tools to get current data rather than relying on memory.
 
-IMPORTANT GUIDELINES:
-- Use simple, non-technical language
-- Be empathetic and supportive
-- Never give medical advice or recommend specific tests
-- Always suggest discussing options with their oncologist
-- Focus on education and helping them understand their options
-- When showing test options, present them as possibilities (bullet points), not rankings`,
+## How to use your tools:
 
-    medical: `You are a clinical decision support assistant for healthcare professionals exploring ${categoryLabel} tests.
+1. **search_tests**: Start here when users ask about tests in a category. Filter by vendor, cancer type, approach, sensitivity, or FDA status.
 
-IMPORTANT GUIDELINES:
-- Use clinical terminology appropriate for healthcare providers
-- Provide factual, evidence-based information
-- Include relevant metrics: sensitivity, specificity, LOD, TAT
-- Reference clinical trials and validation studies when available
-- Do NOT recommend specific tests for patient scenarios
-- Present data objectively; clinical judgment is the provider's responsibility`,
+2. **get_test**: Use this to get complete details for a specific test after identifying it via search.
 
-    rnd: `You are a technical assistant for researchers and industry professionals exploring ${categoryLabel} tests.
+3. **compare_tests**: When users want to compare tests, use this to generate side-by-side comparisons.
 
-IMPORTANT GUIDELINES:
-- Provide detailed technical specifications
-- Include methodology details and analytical performance
-- Reference publications and clinical trial data
-- Discuss technological approaches (tumor-informed vs tumor-naive, WGS vs targeted panels)
-- Include regulatory status and reimbursement landscape`
-  };
+4. **list_vendors**: Show all vendors offering tests in a category.
 
-  return `${personaInstructions[persona] || personaInstructions.medical}
+5. **list_cancer_types**: Show what cancer types are covered in a category.
 
-You have access to tools that query a database of ${categoryLabel} tests. Use these tools to:
-1. Search for tests matching user criteria
-2. Get detailed information about specific tests
-3. Compare tests side by side
-4. Find financial assistance programs
+6. **get_coverage**: Get detailed insurance coverage information including Medicare, private payers, and patient assistance.
 
-RESPONSE GUIDELINES:
-- Keep responses concise (3-5 sentences when possible)
-- Use Markdown tables for comparisons
-- Include test IDs in double brackets like [[mrd-7]] so they become clickable links
-- When mentioning costs, note that prices vary by insurance and most vendors offer financial assistance
-- Distinguish between "Central Lab Service" (tests oncologists can order) and "Laboratory IVD Kit" (kits labs purchase internally)
+## Response guidelines:
 
-PRODUCT TYPE DISTINCTION:
-- "Central Lab Service" = Sendout test oncologists can order for patients
-- "Laboratory IVD Kit" = Kit purchased by pathology labs to run in-house (NOT orderable by clinicians)
-- When users ask about "ordering a test", focus on Central Lab Services`;
-}
+- Format test IDs as [[test-id]] so the frontend can render clickable links (e.g., "Signatera [[mrd-7]] is a tumor-informed test...")
+- Use markdown tables for comparisons
+- Be concise: 3-5 sentences for simple queries, more for detailed comparisons
+- If data is unavailable, acknowledge it honestly
+- For clinical questions, remind users to consult their healthcare provider
+- When discussing coverage, note that actual costs vary by insurance plan
+
+## Category quick reference:
+- **MRD**: Post-treatment monitoring for minimal residual disease (recurrence detection)
+- **ECD**: Early cancer detection/screening tests
+- **TRM**: Treatment response monitoring during active therapy
+- **TDS**: Treatment decision support (CGP/companion diagnostics for therapy selection)
+- **HCT**: Hereditary cancer testing (germline genetics)
+
+## Important distinctions:
+- **Tumor-informed** tests require a baseline tumor sample to identify patient-specific variants
+- **Tumor-naive** tests use fixed panels without requiring tumor tissue
+- **Central Lab Service** tests can be ordered by clinicians (send-out)
+- **Laboratory IVD Kit** products are purchased by labs to run internally
+
+Be helpful, accurate, and guide users to the information they need.`;
 
 // ============================================
 // VALIDATION
@@ -531,13 +536,13 @@ function validateMessages(messages) {
 
   for (let i = 0; i < messages.length; i++) {
     const msg = messages[i];
-    if (!msg.role || !msg.content) {
+    if (!msg.role || msg.content === undefined) {
       return { valid: false, error: `Message ${i} missing role or content` };
     }
     if (!['user', 'assistant'].includes(msg.role)) {
       return { valid: false, error: `Message ${i} has invalid role` };
     }
-    // Content can be string or array (for tool use)
+    // Content can be string or array (for tool results)
     if (typeof msg.content !== 'string' && !Array.isArray(msg.content)) {
       return { valid: false, error: `Message ${i} content must be string or array` };
     }
@@ -577,107 +582,140 @@ export default async function handler(req, res) {
     }
 
     const {
-      category = 'all',
-      persona = 'medical',
-      messages,
+      messages: inputMessages,
+      category,
+      persona,
       model: requestedModel,
-      max_tool_rounds = 3  // Limit tool use iterations
     } = req.body;
 
-    // Validate category
-    if (!VALID_CATEGORIES.includes(category)) {
-      return res.status(400).json({ error: 'Invalid category' });
-    }
-
-    // Validate persona
-    const validatedPersona = VALID_PERSONAS.includes(persona) ? persona : 'medical';
-
     // Validate messages
-    const msgValidation = validateMessages(messages);
+    const msgValidation = validateMessages(inputMessages);
     if (!msgValidation.valid) {
       return res.status(400).json({ error: msgValidation.error });
     }
 
-    // Build system prompt
-    const systemPrompt = buildSystemPrompt(category, validatedPersona);
+    // Validate category (optional, used for context)
+    const validatedCategory = VALID_CATEGORIES.includes(category?.toLowerCase())
+      ? category.toLowerCase()
+      : 'all';
+
+    // Validate persona (optional)
+    const validatedPersona = VALID_PERSONAS.includes(persona) ? persona : 'medical';
 
     // Sanitize model
     const model = ALLOWED_MODELS[requestedModel] ? requestedModel : DEFAULT_MODEL;
 
-    // Initialize client
+    // Build context-aware system prompt
+    let contextualSystemPrompt = systemPrompt;
+    if (validatedCategory !== 'all') {
+      contextualSystemPrompt += `\n\nThe user is currently browsing the ${validatedCategory.toUpperCase()} category.`;
+    }
+    if (validatedPersona === 'patient') {
+      contextualSystemPrompt += `\n\nThe user is a patient. Use accessible language, avoid jargon, and be empathetic.`;
+    } else if (validatedPersona === 'rnd') {
+      contextualSystemPrompt += `\n\nThe user is a researcher or industry professional. You can use technical terminology.`;
+    }
+
+    // Initialize Anthropic client
     const client = new Anthropic({ apiKey });
 
-    // Run agentic loop with tool use
-    let currentMessages = [...messages];
-    let toolRound = 0;
-    let finalResponse = null;
+    // Clone messages for the conversation
+    let messages = [...inputMessages];
 
-    while (toolRound < max_tool_rounds) {
-      const response = await client.messages.create({
+    // Tool use loop
+    let iterations = 0;
+    let response;
+
+    while (iterations < MAX_TOOL_ITERATIONS) {
+      iterations++;
+
+      // Make API call
+      response = await client.messages.create({
         model,
         max_tokens: MAX_TOKENS_LIMIT,
-        system: systemPrompt,
+        system: contextualSystemPrompt,
+        messages,
         tools,
-        messages: currentMessages
       });
 
       // Check if we need to handle tool use
-      if (response.stop_reason === 'tool_use') {
-        // Extract tool use blocks
-        const toolUseBlocks = response.content.filter(block => block.type === 'tool_use');
-
-        if (toolUseBlocks.length === 0) {
-          finalResponse = response;
-          break;
-        }
-
-        // Execute tools and build tool results
-        const toolResults = toolUseBlocks.map(toolUse => ({
-          type: 'tool_result',
-          tool_use_id: toolUse.id,
-          content: JSON.stringify(executeTool(toolUse.name, toolUse.input))
-        }));
-
-        // Add assistant message and tool results to conversation
-        currentMessages = [
-          ...currentMessages,
-          { role: 'assistant', content: response.content },
-          { role: 'user', content: toolResults }
-        ];
-
-        toolRound++;
-      } else {
-        // No more tool use, we have our final response
-        finalResponse = response;
+      if (response.stop_reason !== 'tool_use') {
         break;
       }
-    }
 
-    // If we hit the tool round limit, get one more response without tools
-    if (!finalResponse) {
-      finalResponse = await client.messages.create({
-        model,
-        max_tokens: MAX_TOKENS_LIMIT,
-        system: systemPrompt,
-        messages: currentMessages
+      // Extract tool use blocks
+      const toolUseBlocks = response.content.filter(block => block.type === 'tool_use');
+
+      if (toolUseBlocks.length === 0) {
+        break;
+      }
+
+      // Execute each tool call
+      const toolResults = [];
+      for (const toolUse of toolUseBlocks) {
+        try {
+          const result = executeToolCall(toolUse.name, toolUse.input);
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolUse.id,
+            content: JSON.stringify(result, null, 2),
+          });
+        } catch (toolError) {
+          console.error(`Tool execution error (${toolUse.name}):`, toolError);
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolUse.id,
+            content: JSON.stringify({ error: `Tool execution failed: ${toolError.message}` }),
+            is_error: true,
+          });
+        }
+      }
+
+      // Add assistant's response and tool results to messages
+      messages.push({
+        role: 'assistant',
+        content: response.content,
+      });
+      messages.push({
+        role: 'user',
+        content: toolResults,
       });
     }
 
-    // Return the response with metadata
+    // Check if we hit the iteration limit
+    if (iterations >= MAX_TOOL_ITERATIONS) {
+      console.warn('Hit maximum tool iterations');
+    }
+
+    // Extract text content from final response
+    const textContent = response.content
+      .filter(block => block.type === 'text')
+      .map(block => block.text)
+      .join('\n');
+
+    // Return response in format compatible with chat.js
     return res.status(200).json({
-      ...finalResponse,
-      _meta: {
-        tool_rounds_used: toolRound,
-        category,
-        persona: validatedPersona
-      }
+      id: response.id,
+      type: 'message',
+      role: 'assistant',
+      content: [{ type: 'text', text: textContent }],
+      model: response.model,
+      stop_reason: response.stop_reason,
+      usage: response.usage,
     });
 
   } catch (error) {
-    console.error('Chat V2 API error:', error.message);
+    console.error('Chat v2 API error:', error.message);
 
     if (error.status === 429) {
       return res.status(429).json({ error: 'Service temporarily unavailable' });
+    }
+
+    if (error.status === 400) {
+      return res.status(400).json({
+        error: 'Invalid request',
+        message: error.message,
+      });
     }
 
     return res.status(500).json({
