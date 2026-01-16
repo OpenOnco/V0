@@ -7387,7 +7387,7 @@ export const cgpTestData = [
     "targetPopulationCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/P210011C.pdf",
     "fdaStatus": "FDA-approved IVD (P210011) - National launch January 2025",
     "fdaStatusCitations": "https://www.biospace.com/press-releases/tempus-announces-the-national-launch-of-fda-approved-xt-cdx-test | https://investors.tempus.com/news-releases/news-release-details/tempus-announces-national-launch-fda-approved-xt-cdx-test",
-    "fdaApprovalDate": "2024-06-01",
+    "fdaApprovalDate": "2023-05-01",
     "fdaApprovalDateCitations": "https://www.360dx.com/business-news/tempus-nabs-cms-advanced-diagnostic-laboratory-test-status-tumor-mutation-profiling",
     "fdaCompanionDxCount": 2,
     "fdaCompanionDxCountNotes": "CDx claims for colorectal cancer (KRAS, NRAS, BRAF); positioned as one of the largest FDA-approved gene panels.",
