@@ -3,6 +3,9 @@
  * Wraps store with business logic
  */
 
+import { writeFileSync, renameSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import {
   loadDiscoveries,
   saveDiscovery,
@@ -11,6 +14,11 @@ import {
   loadHealth,
   saveHealth
 } from './store.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const DATA_DIR = join(__dirname, '../../data');
+const DISCOVERIES_FILE = join(DATA_DIR, 'discoveries.json');
 
 /**
  * Add a discovery to the queue
@@ -124,6 +132,50 @@ export function getHealth() {
   return loadHealth();
 }
 
+/**
+ * Get overall queue status (pending count, health, etc.)
+ * Used by API endpoints and email reports
+ */
+export function getQueueStatus() {
+  const discoveries = loadDiscoveries();
+  const health = loadHealth();
+  const unreviewed = discoveries.filter(d => d.status === 'pending' && !d.reviewedAt);
+
+  return {
+    total: discoveries.length,
+    pending: unreviewed.length,
+    reviewed: discoveries.length - unreviewed.length,
+    health
+  };
+}
+
+/**
+ * Cleanup old discoveries (older than specified days)
+ * Used by scheduler for maintenance
+ * @param {number} daysOld - Remove discoveries older than this many days (default: 30)
+ */
+export function cleanupOldDiscoveries(daysOld = 30) {
+  const discoveries = loadDiscoveries();
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+
+  const remaining = discoveries.filter(d => {
+    const discoveredDate = new Date(d.discoveredAt);
+    return discoveredDate > cutoffDate;
+  });
+
+  const removed = discoveries.length - remaining.length;
+
+  if (removed > 0) {
+    // Atomic write - write to temp file then rename
+    const tempPath = `${DISCOVERIES_FILE}.tmp`;
+    writeFileSync(tempPath, JSON.stringify(remaining, null, 2), 'utf-8');
+    renameSync(tempPath, DISCOVERIES_FILE);
+  }
+
+  return { removed, remaining: remaining.length };
+}
+
 export {
   markReviewed,
   getUnreviewed,
@@ -139,9 +191,11 @@ export default {
   markReviewed,
   getUnreviewed,
   loadDiscoveries,
+  cleanupOldDiscoveries,
 
   // Health tracking
   recordSuccess,
   recordError,
-  getHealth
+  getHealth,
+  getQueueStatus
 };

@@ -83,48 +83,93 @@ export class FDACrawler extends BaseCrawler {
 
   /**
    * Main crawl implementation
-   * STUB: Logs message and returns empty array
-   *
-   * When implemented, this should:
-   * 1. Query 510(k) database for recent clearances
-   * 2. Query PMA database for recent approvals
-   * 3. Check breakthrough device announcements
-   * 4. Search for relevant companion diagnostics
+   * Queries openFDA API for 510(k) clearances and PMA approvals
    */
   async crawl() {
-    this.log('info', 'FDA crawler not yet implemented');
-    this.log('info', `Would check 510(k), PMA, and breakthrough devices for ${MONITORED_MANUFACTURERS.length} manufacturers`);
-
-    // STUB: Return empty discoveries
-    // Implementation would:
-    //
-    // 1. Query 510(k) clearances from last 30 days:
-    //    const url = `${this.openFdaUrl}/device/510k.json?search=decision_date:[${dateFrom}+TO+${dateTo}]&limit=100`;
-    //    - Filter by product_code in RELEVANT_PRODUCT_CODES
-    //    - Filter by applicant in MONITORED_MANUFACTURERS
-    //    - Create fda_approval discoveries for matches
-    //
-    // 2. Query PMA approvals:
-    //    const url = `${this.openFdaUrl}/device/pma.json?search=decision_date:[${dateFrom}+TO+${dateTo}]&limit=100`;
-    //    - Filter for relevant advisory committees (clinical chemistry, radiology, pathology)
-    //    - Create fda_approval discoveries for oncology-related devices
-    //
-    // 3. Check breakthrough device designations:
-    //    - Scrape FDA breakthrough devices page
-    //    - Look for new designations in oncology/diagnostics
-    //    - Create fda_approval discoveries with "breakthrough" metadata
-    //
-    // 4. Check companion diagnostic approvals:
-    //    - Query drug approvals with companion diagnostic requirements
-    //    - Cross-reference with our monitored tests
-    //    - Create fda_approval discoveries
+    this.log('info', `Starting FDA crawl for ${MONITORED_MANUFACTURERS.length} manufacturers`);
 
     const discoveries = [];
+    const seenIds = new Set();
 
-    this.log('info', 'FDA crawl complete (stub mode)', {
+    // Calculate date range (last 90 days)
+    const dateTo = new Date();
+    const dateFrom = new Date();
+    dateFrom.setDate(dateFrom.getDate() - 90);
+    const dateFromStr = dateFrom.toISOString().split('T')[0].replace(/-/g, '');
+    const dateToStr = dateTo.toISOString().split('T')[0].replace(/-/g, '');
+
+    // Query 510(k) clearances for each manufacturer
+    for (const manufacturer of MONITORED_MANUFACTURERS) {
+      try {
+        const searchQuery = `applicant:"${manufacturer}"+AND+decision_date:[${dateFromStr}+TO+${dateToStr}]`;
+        const url = `${this.openFdaUrl}/device/510k.json?search=${encodeURIComponent(searchQuery)}&limit=100`;
+
+        this.log('debug', `Querying 510(k) for ${manufacturer}`);
+        const response = await this.http.getJson(url);
+
+        if (response?.results) {
+          for (const device of response.results) {
+            // Deduplicate by k_number
+            if (device.k_number && seenIds.has(device.k_number)) {
+              continue;
+            }
+            if (device.k_number) {
+              seenIds.add(device.k_number);
+            }
+
+            // Check relevance
+            if (this.isRelevant(device)) {
+              const discovery = this.create510kDiscovery(device);
+              discoveries.push(discovery);
+            }
+          }
+        }
+      } catch (error) {
+        this.log('warn', `Failed to fetch 510(k) for ${manufacturer}`, {
+          error: error.message,
+        });
+        // Continue with next manufacturer
+      }
+    }
+
+    // Query PMA approvals for each manufacturer
+    for (const manufacturer of MONITORED_MANUFACTURERS) {
+      try {
+        const searchQuery = `applicant:"${manufacturer}"+AND+decision_date:[${dateFromStr}+TO+${dateToStr}]`;
+        const url = `${this.openFdaUrl}/device/pma.json?search=${encodeURIComponent(searchQuery)}&limit=100`;
+
+        this.log('debug', `Querying PMA for ${manufacturer}`);
+        const response = await this.http.getJson(url);
+
+        if (response?.results) {
+          for (const device of response.results) {
+            // Deduplicate by pma_number
+            if (device.pma_number && seenIds.has(device.pma_number)) {
+              continue;
+            }
+            if (device.pma_number) {
+              seenIds.add(device.pma_number);
+            }
+
+            // Check relevance
+            if (this.isRelevant(device)) {
+              const discovery = this.createPMADiscovery(device);
+              discoveries.push(discovery);
+            }
+          }
+        }
+      } catch (error) {
+        this.log('warn', `Failed to fetch PMA for ${manufacturer}`, {
+          error: error.message,
+        });
+        // Continue with next manufacturer
+      }
+    }
+
+    this.log('info', 'FDA crawl complete', {
       manufacturers: MONITORED_MANUFACTURERS.length,
-      productCodes: RELEVANT_PRODUCT_CODES.length,
       discoveries: discoveries.length,
+      uniqueIds: seenIds.size,
     });
 
     return discoveries;
