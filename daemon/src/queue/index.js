@@ -38,6 +38,24 @@ export function addDiscovery(source, type, data) {
 }
 
 /**
+ * Add multiple discoveries to the queue (batch operation)
+ * Used by crawlers to add multiple discoveries at once
+ * @param {Array} items - Array of discovery objects with { source, type, ...data }
+ * @returns {Array} Results with { added: boolean } for each item
+ */
+export function addDiscoveries(items) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.map(item => {
+    const { source, type, ...data } = item;
+    const result = addDiscovery(source, type, data);
+    return { added: result !== null, discovery: result };
+  });
+}
+
+/**
  * Get count of pending discoveries
  */
 export function getPendingCount() {
@@ -115,6 +133,7 @@ export {
 export default {
   // Discovery management
   addDiscovery,
+  addDiscoveries,
   getPendingCount,
   getDiscoveriesBySource,
   markReviewed,
