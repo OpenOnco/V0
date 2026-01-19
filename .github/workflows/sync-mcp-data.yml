@@ -82,7 +82,7 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/openonco-mcp
           path: openonco-mcp
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MCP_REPO_TOKEN }}
 
       - name: Copy JSON files to MCP repo
         if: steps.check_changes.outputs.should_continue == 'true'
