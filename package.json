@@ -15,7 +15,9 @@
     "test:api": "playwright test --config=playwright.api.config.js --reporter=list",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "export:mcp": "node scripts/export-mcp-data.js",
+    "test:mcp": "node scripts/test-mcp-export.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
