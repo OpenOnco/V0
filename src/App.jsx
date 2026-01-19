@@ -75,6 +75,7 @@ import LearnPage from './pages/LearnPage';
 import AboutPage from './pages/AboutPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
+import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
 import Chat from './components/Chat';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
@@ -1168,6 +1169,8 @@ export default function App() {
     // Patient journey routes
     '/patient/watching': 'patient-watching',
     '/patient/mrd': 'patient-watching',  // Alias for watching (MRD = monitoring)
+    // Admin routes
+    '/admin/discoveries': 'admin-discoveries',
     '/patient/screening': 'patient-screening',
     '/patient/choosing': 'patient-choosing',
     '/patient/measuring': 'patient-measuring',
@@ -1211,6 +1214,7 @@ export default function App() {
     'patient-landing': '/patient',
     // Patient journey routes
     'patient-watching': '/patient/watching',
+    'admin-discoveries': '/admin/discoveries',
     'patient-screening': '/patient/screening',
     'patient-choosing': '/patient/choosing',
     'patient-measuring': '/patient/measuring',
@@ -1508,6 +1512,8 @@ export default function App() {
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
+      // Admin routes
+      case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
       case 'patient-landing': 
       case 'patient-watching': return (

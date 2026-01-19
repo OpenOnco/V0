@@ -200,6 +200,10 @@
       "destination": "/"
     },
     {
+      "source": "/admin/:path*",
+      "destination": "/"
+    },
+    {
       "source": "/submit",
       "destination": "/"
     },

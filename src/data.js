@@ -9285,6 +9285,7 @@ export const tdsTestData = cgpTestData;
 export const hctTestData = [
   {
     "id": "hct-1",
+    "category": "HCT",
     "name": "MyRisk Hereditary Cancer Test",
     "vendor": "Myriad Genetics",
     "productType": "Central Lab Service",
@@ -9329,6 +9330,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-2",
+    "category": "HCT",
     "name": "Invitae Multi-Cancer Panel",
     "vendor": "Invitae (Labcorp)",
     "productType": "Central Lab Service",
@@ -9370,6 +9372,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-3",
+    "category": "HCT",
     "name": "CancerNext-Expanded",
     "vendor": "Ambry Genetics",
     "productType": "Central Lab Service",
@@ -9410,6 +9413,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-4",
+    "category": "HCT",
     "name": "Empower Hereditary Cancer Test",
     "vendor": "Natera",
     "productType": "Central Lab Service",
@@ -9447,6 +9451,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-5",
+    "category": "HCT",
     "name": "Color Hereditary Cancer Test",
     "vendor": "Color Health",
     "productType": "Central Lab Service",
@@ -9486,6 +9491,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-6",
+    "category": "HCT",
     "name": "Comprehensive Hereditary Cancer Panel",
     "vendor": "Quest Diagnostics",
     "productType": "Central Lab Service",
@@ -9523,6 +9529,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-7",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9560,6 +9567,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-8",
+    "category": "HCT",
     "name": "xG / xG+ Hereditary Cancer",
     "vendor": "Tempus",
     "productType": "Central Lab Service",
@@ -9598,6 +9606,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-9",
+    "category": "HCT",
     "name": "Comprehensive Common Cancer Panel",
     "vendor": "GeneDx",
     "productType": "Central Lab Service",
@@ -9635,6 +9644,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-10",
+    "category": "HCT",
     "name": "Full Comprehensive Cancer Panel",
     "vendor": "Fulgent Genetics",
     "productType": "Central Lab Service",
@@ -9674,6 +9684,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-11",
+    "category": "HCT",
     "name": "Invitae Hereditary Breast Cancer Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
@@ -9691,6 +9702,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-12",
+    "category": "HCT",
     "name": "Invitae Hereditary Breast Cancer Guidelines-Based Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
@@ -9705,6 +9717,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-13",
+    "category": "HCT",
     "name": "Invitae BRCA1 and BRCA2 STAT Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
@@ -9723,6 +9736,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-14",
+    "category": "HCT",
     "name": "Invitae Hereditary Thyroid Cancer Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
@@ -9737,6 +9751,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-15",
+    "category": "HCT",
     "name": "Invitae Hereditary Pancreatic Cancer Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
@@ -9750,6 +9765,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-16",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Breast Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9763,6 +9779,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-17",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Colorectal Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9776,6 +9793,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-18",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Ovarian Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9789,6 +9807,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-19",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Endometrial Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9802,6 +9821,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-20",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Gastric Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9815,6 +9835,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-21",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Pancreatic Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9828,6 +9849,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-22",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Prostate Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9841,6 +9863,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-23",
+    "category": "HCT",
     "name": "VistaSeq Hereditary Melanoma Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9854,6 +9877,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-24",
+    "category": "HCT",
     "name": "BRCAssure: BRCA1 Targeted Analysis",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9867,6 +9891,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-25",
+    "category": "HCT",
     "name": "BRCAssure: BRCA2 Targeted Analysis",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
@@ -9880,6 +9905,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-26",
+    "category": "HCT",
     "name": "Full Comprehensive Cancer Panel (Pan-Cancer)",
     "vendor": "Fulgent Genetics",
     "productType": "Central Lab Service",
@@ -9894,6 +9920,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-27",
+    "category": "HCT",
     "name": "Gastric Cancer Panel",
     "vendor": "PreventionGenetics (Exact Sciences)",
     "productType": "Central Lab Service",
@@ -9909,6 +9936,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-28",
+    "category": "HCT",
     "name": "PTEN Hamartoma Tumor Syndrome via the PTEN Gene",
     "vendor": "PreventionGenetics (Exact Sciences)",
     "productType": "Central Lab Service",
@@ -9923,6 +9951,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-29",
+    "category": "HCT",
     "name": "FoundationOne Germline",
     "vendor": "Foundation Medicine",
     "productType": "Central Lab Service",
@@ -9935,6 +9964,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-30",
+    "category": "HCT",
     "name": "FoundationOne Germline More",
     "vendor": "Foundation Medicine",
     "productType": "Central Lab Service",
@@ -9947,6 +9977,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-31",
+    "category": "HCT",
     "name": "BRACAnalysis CDx",
     "vendor": "Myriad Genetics",
     "productType": "Central Lab Service",
@@ -9961,6 +9992,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-32",
+    "category": "HCT",
     "name": "23andMe Genetic Health Risk Report for BRCA1/BRCA2 (Selected Variants)",
     "vendor": "23andMe",
     "productType": "Direct-to-Consumer",
@@ -9976,6 +10008,7 @@ export const hctTestData = [
   },
   {
     "id": "hct-33",
+    "category": "HCT",
     "name": "AbsoluteDx",
     "vendor": "Allelica",
     "productType": "Central Lab Service",

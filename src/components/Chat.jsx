@@ -458,10 +458,16 @@ ${progress}
         messagesForApi = [welcomeAsAssistant, ...recentMessages];
       }
       
-      const response = await fetch('/api/chat', {
+      const useChatV2 = import.meta.env.VITE_USE_CHAT_V2 === 'true';
+
+      const response = await fetch(useChatV2 ? '/api/chat-v2' : '/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body: JSON.stringify(useChatV2 ? {
+          messages: messagesForApi,
+          category: category.toLowerCase(),
+          persona: persona
+        } : {
           category: 'all',
           persona: persona,
           testData: JSON.stringify(testData),
