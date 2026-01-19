@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/admin/
 
 Sitemap: https://openonco.org/sitemap.xml
