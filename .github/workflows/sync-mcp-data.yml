@@ -116,11 +116,7 @@ jobs:
             echo "Changes detected in JSON files:"
             git diff --staged --stat
 
-            git commit -m "chore: sync MCP data from OpenOnco
-
-Automated sync triggered by changes to src/data.js
-Source commit: ${{ github.sha }}
-Source repo: ${{ github.repository }}"
+            git commit -m "chore: sync MCP data from OpenOnco" -m "Automated sync from src/data.js" -m "Source: ${{ github.sha }}"
 
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
