@@ -398,14 +398,27 @@ const PatientInfoModal = ({ type, onClose, onStartChat }) => {
 // ============================================
 // Sponsor Logo Bar Component
 // ============================================
+// Add new sponsors by adding to this array:
+const SPONSORS = [
+  { name: 'NRichDX', logo: '/sponsors/nrichdx.png' },
+  { name: 'DeciBio', logo: '/sponsors/decibio.png' },
+  { name: 'Streck', logo: '/sponsors/streck.png' },
+  { name: 'Wilson Sonsini', logo: '/sponsors/wsgr.png' },
+];
+
 const SponsorBar = () => (
   <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-col">
-    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-1">OpenOnco is Supported By</p>
-    <img 
-      src="/sponsorlogobar.png" 
-      alt="Our Sponsors: DeciBio, Streck, Wilson Sonsini" 
-      className="w-full flex-1 object-contain"
-    />
+    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-2">OpenOnco is Supported By</p>
+    <div className="flex flex-wrap justify-center items-center gap-4">
+      {SPONSORS.map((sponsor) => (
+        <img
+          key={sponsor.name}
+          src={sponsor.logo}
+          alt={sponsor.name}
+          className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200"
+        />
+      ))}
+    </div>
   </div>
 );
 
