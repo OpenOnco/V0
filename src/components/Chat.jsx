@@ -634,9 +634,9 @@ ${progress}
       <div 
         ref={chatContainerRef}
         className={`overflow-y-auto ${isCompact ? '' : 'rounded-xl p-4 mb-1'} ${theme.messageArea}`}
-        style={{ 
+        style={{
           height: isCompact ? undefined : `${chatHeight}px`,
-          minHeight: isCompact ? '150px' : '200px',
+          minHeight: isCompact ? '220px' : '200px',
           maxHeight: isCompact ? undefined : '600px',
           flex: isCompact ? 1 : undefined
         }}

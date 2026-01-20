@@ -398,14 +398,17 @@ const PatientInfoModal = ({ type, onClose, onStartChat }) => {
 // ============================================
 // Sponsor Logo Bar Component
 // ============================================
-const SponsorBar = () => (
-  <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-col">
-    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-1">OpenOnco is Supported By</p>
-    <img 
-      src="/sponsorlogobar.png" 
-      alt="Our Sponsors: DeciBio, Streck, Wilson Sonsini" 
-      className="w-full flex-1 object-contain"
-    />
+const SponsorBar = ({ className = '' }) => (
+  <div className={`bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col ${className}`}>
+    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-2">OpenOnco is Supported By</p>
+    <div className="flex-1 flex items-center justify-center">
+      <img
+        src="/sponsorlogobar.png"
+        alt="Our Sponsors: DeciBio, Streck, Wilson Sonsini"
+        className="w-full max-h-full object-contain"
+        style={{ minHeight: '80px' }}
+      />
+    </div>
   </div>
 );
 
@@ -472,23 +475,21 @@ const HomePage = ({ onNavigate, persona }) => {
             </div>
           </div>
           
-          {/* Right column: Chat + Sponsor logos */}
+          {/* Right column: Chat + Sponsor logos - matches left column height */}
           <div className="lg:w-1/2 flex flex-col gap-4">
-            {/* Chat - flex-1 to take available space */}
-            <div className="flex-1">
-              <Chat 
-                persona={persona} 
-                testData={chatTestData} 
-                variant="sidebar"
-                showModeToggle={false}
-                resizable={false}
-                showTitle={true}
-                className="h-full"
-              />
-            </div>
-            
-            {/* Sponsor Logo Bar - below chat */}
-            <SponsorBar />
+            {/* Chat - fixed height to ensure consistent layout */}
+            <Chat
+              persona={persona}
+              testData={chatTestData}
+              variant="sidebar"
+              showModeToggle={false}
+              resizable={false}
+              showTitle={true}
+              className="min-h-[320px]"
+            />
+
+            {/* Sponsor Logo Bar - flex-1 to fill remaining space and align with bottom of Quick Search */}
+            <SponsorBar className="flex-1" />
           </div>
         </div>
 
