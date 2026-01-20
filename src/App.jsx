@@ -400,13 +400,12 @@ const PatientInfoModal = ({ type, onClose, onStartChat }) => {
 // ============================================
 const SponsorBar = ({ className = '' }) => (
   <div className={`bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col ${className}`}>
-    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-2">OpenOnco is Supported By</p>
-    <div className="flex-1 flex items-center justify-center">
+    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide text-center mb-2 flex-shrink-0">OpenOnco is Supported By</p>
+    <div className="flex-1 flex items-center justify-center min-h-0">
       <img
         src="/sponsorlogobar.png"
         alt="Our Sponsors: DeciBio, Streck, Wilson Sonsini"
-        className="w-full max-h-full object-contain"
-        style={{ minHeight: '80px' }}
+        className="w-full h-full object-contain"
       />
     </div>
   </div>
@@ -477,7 +476,7 @@ const HomePage = ({ onNavigate, persona }) => {
           
           {/* Right column: Chat + Sponsor logos - matches left column height */}
           <div className="lg:w-1/2 flex flex-col gap-4">
-            {/* Chat - fixed height to ensure consistent layout */}
+            {/* Chat - flex-1 to take up most of the available space */}
             <Chat
               persona={persona}
               testData={chatTestData}
@@ -485,11 +484,11 @@ const HomePage = ({ onNavigate, persona }) => {
               showModeToggle={false}
               resizable={false}
               showTitle={true}
-              className="min-h-[320px]"
+              className="flex-1 min-h-[400px]"
             />
 
-            {/* Sponsor Logo Bar - flex-1 to fill remaining space and align with bottom of Quick Search */}
-            <SponsorBar className="flex-1" />
+            {/* Sponsor Logo Bar - fills remaining space down to align with category cards on left */}
+            <SponsorBar className="flex-1 min-h-[120px]" />
           </div>
         </div>
 
