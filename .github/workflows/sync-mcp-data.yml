@@ -123,9 +123,10 @@ jobs:
 
       - name: Push changes to openonco-mcp
         if: steps.check_changes.outputs.should_continue == 'true' && steps.commit_changes.outputs.has_changes == 'true'
+        working-directory: openonco-mcp
         run: |
-          cd openonco-mcp
           echo "Pushing changes to openonco-mcp..."
+          git remote set-url origin https://x-access-token:${{ secrets.MCP_REPO_TOKEN }}@github.com/OpenOnco/openonco-mcp.git
           git push
           echo "Successfully pushed changes to openonco-mcp"
 
