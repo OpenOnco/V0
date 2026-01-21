@@ -137,6 +137,43 @@ Key policies: L38779 (MRD), NCD 90.2 (CGP), NCD 210.3 (CRC screening)
 
 ---
 
+## Troubleshooting
+
+### Build Fails
+```bash
+npm run build
+# Check error output - usually syntax or import issues in data.js
+```
+
+### Tests Fail
+```bash
+npm run test:smoke
+# Check which test - often snapshot or selector changes
+npx playwright test --headed  # Run with visible browser to debug
+```
+
+### Preview URL Not Updating
+```bash
+# Force push to develop
+git push origin develop --force-with-lease
+```
+
+### Local Dev Not Reflecting Changes
+```bash
+# Clear Vite cache
+rm -rf node_modules/.vite
+npm run dev
+```
+
+### Vercel Build Cache Issues
+```bash
+# Trigger fresh build via Vercel dashboard or:
+git commit --allow-empty -m "chore: trigger rebuild"
+git push
+```
+
+---
+
 ## Medicare Coverage Status Values
 
 | Status | Meaning |

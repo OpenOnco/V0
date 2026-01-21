@@ -379,6 +379,47 @@ export const VENDOR_VERIFIED = {
 2. Update `Last updated` comment
 3. **Run completion checklist above**
 
+## C5: Email Templates
+
+### Verification Invite
+```
+Subject: OpenOnco Database - [Test Name] Listing Verification
+
+Hi [Name],
+
+OpenOnco maintains a vendor-neutral database of cancer diagnostic tests.
+We have [Test Name] listed and would appreciate your verification of the data accuracy.
+
+Would you be willing to review the listing? Verified tests receive:
+- Priority placement in search results
+- Green verification badge
+- Contributor credit
+
+You can view the current listing at: https://openonco.org/test/[slug]
+
+Best regards,
+[Your name]
+OpenOnco
+```
+
+### Correction Confirmation
+```
+Subject: Re: OpenOnco - Changes Applied
+
+Hi [Name],
+
+I've applied the corrections you submitted for [Test Name].
+The changes will be live on openonco.org shortly.
+
+Changes made:
+- [List of changes]
+
+Your verification badge is now active. Thank you for contributing to OpenOnco!
+
+Best regards,
+[Your name]
+```
+
 ---
 
 # Section D: Deletion
