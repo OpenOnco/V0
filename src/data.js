@@ -9369,12 +9369,12 @@ export const cgpTestData = [
     "vendor": "Gene Solutions",
     "productType": "Central Lab Service",
     "approach": "Tissue CGP",
-    "method": "Comprehensive genomic and transcriptomic profiling using 473-gene panel (1.7 Mb) with deep sequencing (>150X) for SNVs, indels, fusions, amplifications, TMB, and MSI",
+    "method": "Comprehensive genomic and transcriptomic profiling using 504-gene panel (1.7 Mb) with deep sequencing (>150X) for SNVs, indels, fusions, amplifications, TMB, and MSI",
     "methodCitations": "https://pubmed.ncbi.nlm.nih.gov/38404964/",
     "cancerTypes": ["Pan-solid"],
     "cancerTypesNotes": "Validated on 10 cancer types; applicable to all solid tumors",
-    "genesAnalyzed": 473,
-    "genesAnalyzedNotes": "473 cancer-relevant genes covering entire exons, selected promoter and intron regions",
+    "genesAnalyzed": 504,
+    "genesAnalyzedNotes": "504 cancer-relevant genes covering entire exons, selected promoter and intron regions",
     "genesAnalyzedCitations": "https://pubmed.ncbi.nlm.nih.gov/38404964/",
     "biomarkersReported": ["SNVs", "Indels", "Gene fusions", "Amplifications", "TMB", "MSI", "Germline variants"],
     "biomarkersReportedNotes": "Provides actionable/resistant somatic mutations, germline variants for genetic risk assessment, TMB and MSI for immunotherapy decisions",
@@ -9403,8 +9403,8 @@ export const cgpTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CAP-accredited NGS laboratories",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test - also listed in MRD category for personalized ctDNA monitoring."
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test - also listed in MRD category for personalized ctDNA monitoring. 2026-01-23: Gene count corrected to 504 (commercial product vs. 473 in publication); verified by David Schlesinger (Gene Solutions)"
   }
 ];
 
