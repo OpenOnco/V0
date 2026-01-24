@@ -1117,22 +1117,7 @@ test.describe('Patient Assistance Programs', () => {
     expect(hasAssistanceProgram('')).toBe(false);
   });
 
-  test('VENDOR_ASSISTANCE_PROGRAMS has required fields', async ({ page }) => {
-    const { VENDOR_ASSISTANCE_PROGRAMS } = await import('../src/data.js');
-    
-    // Check that all programs have required fields
-    for (const [vendor, program] of Object.entries(VENDOR_ASSISTANCE_PROGRAMS)) {
-      expect(program).toHaveProperty('hasProgram');
-      expect(program).toHaveProperty('tests');
-      expect(program).toHaveProperty('lastVerified');
-      
-      if (program.hasProgram) {
-        expect(program).toHaveProperty('programName');
-        expect(program).toHaveProperty('description');
-        expect(program).toHaveProperty('eligibility');
-      }
-    }
-  });
+  // Note: Schema validation for VENDOR_ASSISTANCE_PROGRAMS is in tests/unit/data-schema.test.js
 
   test('getAssistanceProgramForVendor returns correct program data', async ({ page }) => {
     const { getAssistanceProgramForVendor } = await import('../src/data.js');
@@ -1158,19 +1143,18 @@ test.describe('Patient Assistance Programs', () => {
   });
 
   test('assistance programs cover major database vendors', async ({ page }) => {
-    const { VENDOR_ASSISTANCE_PROGRAMS, dal } = await import('../src/data.js');
+    const { dal } = await import('../src/data.js');
 
-    // Get unique vendors from test data via DAL
-    const { data: allTests } = await dal.tests.findAll();
-    const uniqueVendors = [...new Set(allTests.map(t => t.vendor))];
-    
-    // Check that we have programs for major vendors
-    const vendorsInPrograms = Object.keys(VENDOR_ASSISTANCE_PROGRAMS);
-    expect(vendorsInPrograms.length).toBeGreaterThanOrEqual(10);
-    
+    // Get vendors with assistance programs via DAL
+    const { data: vendorsWithPrograms } = await dal.vendors.findWithAssistanceProgram();
+
+    // Check that we have programs for at least 10 vendors
+    expect(vendorsWithPrograms.length).toBeGreaterThanOrEqual(10);
+
     // Check specific major vendors are covered
-    expect(vendorsInPrograms).toContain('Natera');
-    expect(vendorsInPrograms).toContain('Guardant Health');
-    expect(vendorsInPrograms).toContain('Foundation Medicine');
+    const vendorNames = vendorsWithPrograms.map(v => v.name);
+    expect(vendorNames).toContain('Natera');
+    expect(vendorNames).toContain('Guardant Health');
+    expect(vendorNames).toContain('Foundation Medicine');
   });
 });

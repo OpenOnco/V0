@@ -6,7 +6,19 @@
  */
 
 // Import data arrays for DAL initialization (internal use only)
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData, trmTestData } from '../src/data.js';
+import {
+  mrdTestData,
+  ecdTestData,
+  cgpTestData,
+  hctTestData,
+  trmTestData,
+  DATABASE_CHANGELOG,
+  VENDOR_VERIFIED,
+  COMPANY_CONTRIBUTIONS,
+  VENDOR_ASSISTANCE_PROGRAMS,
+  INSURANCE_PROVIDERS,
+  GLOSSARY,
+} from '../src/data.js';
 
 // Import and initialize the DAL
 import { initializeDAL } from '../src/dal/index.js';
@@ -33,4 +45,8 @@ export const dal = initializeDAL({
   trmTestData,
   cgpTestData,
   hctTestData,
+  changelogData: DATABASE_CHANGELOG,
+  vendorData: { VENDOR_VERIFIED, COMPANY_CONTRIBUTIONS, VENDOR_ASSISTANCE_PROGRAMS },
+  insuranceData: INSURANCE_PROVIDERS,
+  glossaryData: GLOSSARY,
 });

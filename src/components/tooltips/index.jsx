@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext, useMemo, createContext } from 'react';
 import ReactDOM from 'react-dom';
-import { COMPANY_CONTRIBUTIONS } from '../../data';
+import { useTestContribution } from '../../dal';
 import { PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG } from '../../config/testFields';
 import { EXPERT_INSIGHTS } from '../../config/expertInsights';
 
@@ -20,7 +20,7 @@ export const ParameterLabel = ({ label, expertTopic, useGroupHover = false }) =>
 
   // Get test info from context (if available)
   const test = useContext(TestContext);
-  const contribution = test?.id ? COMPANY_CONTRIBUTIONS[test.id] : null;
+  const { contribution } = useTestContribution(test?.id);
 
   const definition = PARAMETER_DEFINITIONS[label];
   const paramChangelog = PARAMETER_CHANGELOG[label] || [];

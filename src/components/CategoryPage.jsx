@@ -3,12 +3,11 @@ import { track } from '@vercel/analytics';
 import * as analytics from '../utils/analytics';
 import {
   filterConfigs,
-  VENDOR_VERIFIED,
   getProductTypeConfig,
   createCategoryMeta,
   BUILD_INFO,
 } from '../data';
-import { useTestsByCategory } from '../dal/hooks/useTests';
+import { useTestsByCategory, useVendors } from '../dal';
 import { getStoredPersona } from '../utils/persona';
 import { calculateTestCompleteness } from '../utils/testMetrics';
 import { getSuggestedTests } from '../utils/suggestions';
@@ -32,6 +31,30 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
   const config = filterConfigs[category];
   // Get tests via DAL hook instead of from meta.tests
   const { tests } = useTestsByCategory(category);
+
+  // Get vendor data via DAL for verification lookups
+  const { vendors } = useVendors();
+
+  // Build verification lookup map
+  const verificationLookup = useMemo(() => {
+    const map = new Map();
+    for (const vendor of vendors) {
+      for (const testId of vendor.verifiedTestIds || []) {
+        const contribution = vendor.contributions?.find(c => c.testId === testId && c.verifiedDate);
+        map.set(testId, {
+          name: contribution?.name || '',
+          company: vendor.name,
+          verifiedDate: contribution?.verifiedDate || '',
+        });
+      }
+    }
+    return map;
+  }, [vendors]);
+
+  // Helper function to get verification data
+  const getVerificationData = useCallback((testId) => {
+    return verificationLookup.get(testId) || null;
+  }, [verificationLookup]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedApproaches, setSelectedApproaches] = useState([]);
@@ -343,10 +366,10 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       return true;
     }).sort((a, b) => {
       // Priority: 1) VENDOR VERIFIED (newest first), 2) BC tests, 3) Non-BC tests
-      const aVerifiedData = VENDOR_VERIFIED[a.id];
-      const bVerifiedData = VENDOR_VERIFIED[b.id];
-      const aVerified = aVerifiedData !== undefined;
-      const bVerified = bVerifiedData !== undefined;
+      const aVerifiedData = getVerificationData(a.id);
+      const bVerifiedData = getVerificationData(b.id);
+      const aVerified = aVerifiedData !== null;
+      const bVerified = bVerifiedData !== null;
       
       if (aVerified && !bVerified) return -1;
       if (!aVerified && bVerified) return 1;
@@ -366,7 +389,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
       // Within same status, sort by vendor then test name
       return a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name);
     });
-  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, selectedBiomarkers, category]);
+  }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, selectedBiomarkers, category, getVerificationData]);
 
   const testsToCompare = useMemo(() => tests.filter(t => selectedTests.includes(t.id)), [tests, selectedTests]);
   const suggestedTests = useMemo(() => getSuggestedTests(selectedTests, tests), [selectedTests, tests]);

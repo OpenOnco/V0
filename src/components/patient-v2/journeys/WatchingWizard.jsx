@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { JOURNEY_CONFIG } from '../journeyConfig';
-import {
-  hasAssistanceProgram,
-  VENDOR_ASSISTANCE_PROGRAMS,
-} from '../../../data';
+import { useAssistanceProgram } from '../../../dal';
 import { getVendorAvailabilityUS } from '../../../config/vendors';
 import TestDetailModal from '../../test/TestDetailModal';
 
@@ -1037,39 +1034,25 @@ function TestSummaryModal({ test, wizardData, onClose }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // DAL hook for vendor assistance program
+  const { program: assistanceProgram } = useAssistanceProgram(test.vendor);
+
   // Get cancer type label for display
   const getCancerLabel = (id) => {
     const type = CANCER_TYPES.find(t => t.id === id);
     return type?.label || 'your cancer type';
   };
 
-  // Get full financial assistance program object for the vendor
-  const getAssistanceProgram = (vendor) => {
-    const program = VENDOR_ASSISTANCE_PROGRAMS[vendor];
-    if (program?.hasProgram) {
-      return program;
-    }
-    // Check partial match
-    for (const [key, value] of Object.entries(VENDOR_ASSISTANCE_PROGRAMS)) {
-      if (vendor?.includes(key) && value?.hasProgram) {
-        return value;
-      }
-    }
-    return null;
-  };
-
   // Get financial assistance details text for the vendor
   const getAssistanceDetails = (vendor) => {
-    const program = getAssistanceProgram(vendor);
-    if (program) {
-      return program.description || 'Financial assistance available - contact vendor for details.';
+    if (assistanceProgram) {
+      return assistanceProgram.description || 'Financial assistance available - contact vendor for details.';
     }
     return null;
   };
 
   // Check if we should show financial assistance info
   const showFinancialAssistance = (wizardData.costSensitivity === 'very-sensitive' || !wizardData.hasInsurance);
-  const assistanceProgram = getAssistanceProgram(test.vendor);
 
   // Get Medicare coverage info using the existing coverage data
   const medicareCoverage = getTestMedicareCoverage(test.name, wizardData.cancerType, wizardData.cancerStage);

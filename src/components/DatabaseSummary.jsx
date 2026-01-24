@@ -1,12 +1,13 @@
 import { useState, useMemo } from 'react';
-import { BUILD_INFO, DATABASE_CHANGELOG } from '../data';
-import { useAllTests, useTestStats, useTestCounts } from '../dal/hooks/useTests';
+import { BUILD_INFO } from '../data';
+import { useAllTests, useTestStats, useTestCounts, useChangelog } from '../dal';
 
 const DatabaseSummary = () => {
   const [showFAQ, setShowFAQ] = useState(false);
   const { tests: allTests, loading } = useAllTests();
   const { stats } = useTestStats();
   const { counts } = useTestCounts();
+  const { changelog } = useChangelog();
 
   // Calculate derived values from loaded tests
   const { totalTests, totalDataPoints, allVendors } = useMemo(() => {
@@ -233,7 +234,7 @@ const DatabaseSummary = () => {
             <div className="text-xs text-slate-500 flex items-center gap-3">
               <span>{qualifyingVendors.length} vendors with 2+ tests</span>
               <span>•</span>
-              <span>{DATABASE_CHANGELOG.length} changelog entries</span>
+              <span>{changelog.length} changelog entries</span>
             </div>
             <button 
               onClick={() => setShowFAQ(!showFAQ)}

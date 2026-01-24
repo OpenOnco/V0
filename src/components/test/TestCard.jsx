@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import {
-  COMPANY_CONTRIBUTIONS,
-  VENDOR_VERIFIED,
   createCategoryMeta,
   BUILD_INFO,
 } from '../../data';
+import { useTestVerification, useTestContribution } from '../../dal';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
 import Badge from '../ui/Badge';
 import VendorBadge from '../badges/VendorBadge';
@@ -22,8 +21,11 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const colorVariant = categoryMeta[category]?.color || 'amber';
   const isDiscontinued = test.isDiscontinued === true;
-  const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
-  const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
+
+  // DAL hooks for vendor verification and contributions
+  const { isVerified: hasVendorVerified, verification } = useTestVerification(test.id);
+  const { contribution } = useTestContribution(test.id);
+  const hasCompanyComm = contribution !== null;
 
   // Calculate BC status - automatic when 100% minimum fields complete
   const completeness = calculateTestCompleteness(test, category);
@@ -62,9 +64,9 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                   </span>
                   <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
-                    <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
-                    <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
-                    <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                    <p className="font-medium">{verification?.name}</p>
+                    <p className="text-gray-300">{verification?.company}</p>
+                    <p className="text-gray-400 text-[9px]">{verification?.verifiedDate}</p>
                   </div>
                 </div>
               )}
@@ -76,9 +78,9 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
                   </span>
                   <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
-                    <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
-                    <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
-                    <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                    <p className="font-medium">{contribution?.name}</p>
+                    <p className="text-gray-300">{contribution?.company}</p>
+                    <p className="text-gray-400 text-[9px]">{contribution?.date}</p>
                   </div>
                 </div>
               )}

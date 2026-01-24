@@ -1,13 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { track } from '@vercel/analytics';
 import {
   DOMAINS,
   getDomain,
-  COMPANY_CONTRIBUTIONS,
-  VENDOR_VERIFIED,
-  hasAssistanceProgram,
 } from '../../data';
-import { useAllTests, useTestCounts } from '../../dal/hooks/useTests';
+import { useAllTests, useTestCounts, useVendors } from '../../dal';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
 import VendorBadge from '../badges/VendorBadge';
 import { LifecycleNavigator } from '../navigation';
@@ -48,6 +45,76 @@ const TestShowcase = ({
   // Get tests and counts via DAL
   const { tests: allDalTests } = useAllTests();
   const { counts } = useTestCounts();
+
+  // Get vendor data via DAL for verification/contribution lookups
+  const { vendors } = useVendors();
+
+  // Build lookup maps from vendors data
+  const vendorLookups = useMemo(() => {
+    const verifiedTests = new Map();
+    const contributions = new Map();
+    const vendorsByName = new Map();
+
+    for (const vendor of vendors) {
+      vendorsByName.set(vendor.name.toLowerCase(), vendor);
+
+      // Map test IDs to verification data
+      for (const testId of vendor.verifiedTestIds || []) {
+        const contribution = vendor.contributions?.find(c => c.testId === testId && c.verifiedDate);
+        verifiedTests.set(testId, {
+          name: contribution?.name || '',
+          company: vendor.name,
+          verifiedDate: contribution?.verifiedDate || '',
+        });
+      }
+
+      // Map test IDs to contribution data
+      for (const contribution of vendor.contributions || []) {
+        contributions.set(contribution.testId, {
+          name: contribution.name,
+          company: vendor.name,
+          date: contribution.date,
+          verifiedDate: contribution.verifiedDate,
+        });
+      }
+    }
+
+    return { verifiedTests, contributions, vendorsByName };
+  }, [vendors]);
+
+  // Helper: Check if test is vendor verified
+  const isTestVerified = useCallback((testId) => {
+    return vendorLookups.verifiedTests.has(testId);
+  }, [vendorLookups]);
+
+  // Helper: Get verification data for test
+  const getVerificationData = useCallback((testId) => {
+    return vendorLookups.verifiedTests.get(testId) || null;
+  }, [vendorLookups]);
+
+  // Helper: Check if test has contribution
+  const hasContribution = useCallback((testId) => {
+    return vendorLookups.contributions.has(testId);
+  }, [vendorLookups]);
+
+  // Helper: Get contribution data for test
+  const getContributionData = useCallback((testId) => {
+    return vendorLookups.contributions.get(testId) || null;
+  }, [vendorLookups]);
+
+  // Helper: Check if vendor has assistance program
+  const hasAssistanceProgram = useCallback((vendorName) => {
+    if (!vendorName) return false;
+    const vendor = vendorLookups.vendorsByName.get(vendorName.toLowerCase());
+    if (vendor?.hasAssistanceProgram) return true;
+    // Partial match
+    for (const [name, v] of vendorLookups.vendorsByName) {
+      if (vendorName.toLowerCase().includes(name) && v.hasAssistanceProgram) {
+        return true;
+      }
+    }
+    return false;
+  }, [vendorLookups]);
 
   // Get dynamic test counts
   const testCounts = {
@@ -179,15 +246,15 @@ const TestShowcase = ({
     
     // Priority order: 1) VENDOR VERIFIED (newest first), 2) BC tests, 3) Non-BC tests
     const prioritySort = (a, b) => {
-      const aVerifiedData = VENDOR_VERIFIED[a.id];
-      const bVerifiedData = VENDOR_VERIFIED[b.id];
-      const aVerified = aVerifiedData !== undefined;
-      const bVerified = bVerifiedData !== undefined;
-      
+      const aVerifiedData = getVerificationData(a.id);
+      const bVerifiedData = getVerificationData(b.id);
+      const aVerified = aVerifiedData !== null;
+      const bVerified = bVerifiedData !== null;
+
       // VENDOR VERIFIED tests always come first
       if (aVerified && !bVerified) return -1;
       if (!aVerified && bVerified) return 1;
-      
+
       // Both verified: sort by date (newest first)
       if (aVerified && bVerified) {
         const aDate = aVerifiedData.verifiedDate || '1970-01-01';
@@ -230,7 +297,7 @@ const TestShowcase = ({
         // Sort alphabetically by vendor name, then by test name
         return sorted.sort((a, b) => prioritySort(a, b) || a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name));
     }
-  }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests]);
+  }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests, getVerificationData]);
 
   // Filter tests based on search query (supports multi-word: "exact ecd" matches Exact Sciences ECD tests)
   const filteredTests = useMemo(() => {
@@ -261,7 +328,7 @@ const TestShowcase = ({
     }
     
     return result;
-  }, [allTests, searchQuery, showOnlyWithAssistance]);
+  }, [allTests, searchQuery, showOnlyWithAssistance, hasAssistanceProgram]);
 
   // Get patient-friendly parameters
   const getPatientParams = (test) => {
@@ -593,10 +660,12 @@ const TestShowcase = ({
               const colors = colorClasses[test.color];
               const isDiscontinued = test.isDiscontinued === true;
               const isRUO = test.isRUO === true;
-              const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
-              const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
+              const testVerification = getVerificationData(test.id);
+              const testContribution = getContributionData(test.id);
+              const hasCompanyComm = testContribution !== null;
+              const hasVendorVerified = testVerification !== null;
               const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
-              
+
               return (
                 <div
                   key={test.id}
@@ -646,9 +715,9 @@ const TestShowcase = ({
                             </span>
                             <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                               <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
-                              <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
-                              <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
-                              <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                              <p className="font-medium">{testVerification.name}</p>
+                              <p className="text-gray-300">{testVerification.company}</p>
+                              <p className="text-gray-400 text-[9px]">{testVerification.verifiedDate}</p>
                             </div>
                           </div>
                         )}
@@ -660,9 +729,9 @@ const TestShowcase = ({
                             </span>
                             <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                               <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
-                              <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
-                              <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
-                              <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                              <p className="font-medium">{testContribution.name}</p>
+                              <p className="text-gray-300">{testContribution.company}</p>
+                              <p className="text-gray-400 text-[9px]">{testContribution.date}</p>
                             </div>
                           </div>
                         )}
@@ -823,10 +892,12 @@ const TestShowcase = ({
             const colors = colorClasses[test.color];
             const isDiscontinued = test.isDiscontinued === true;
             const isRUO = test.isRUO === true;
-            const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
-            const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
+            const testVerification = getVerificationData(test.id);
+            const testContribution = getContributionData(test.id);
+            const hasCompanyComm = testContribution !== null;
+            const hasVendorVerified = testVerification !== null;
             const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
-            
+
             return (
               <div
                 key={test.id}
@@ -876,9 +947,9 @@ const TestShowcase = ({
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
-                            <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
-                            <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
-                            <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                            <p className="font-medium">{testVerification.name}</p>
+                            <p className="text-gray-300">{testVerification.company}</p>
+                            <p className="text-gray-400 text-[9px]">{testVerification.verifiedDate}</p>
                           </div>
                         </div>
                       )}
@@ -890,9 +961,9 @@ const TestShowcase = ({
                           </span>
                           <div className="absolute right-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Input</p>
-                            <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
-                            <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
-                            <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                            <p className="font-medium">{testContribution.name}</p>
+                            <p className="text-gray-300">{testContribution.company}</p>
+                            <p className="text-gray-400 text-[9px]">{testContribution.date}</p>
                           </div>
                         </div>
                       )}

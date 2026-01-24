@@ -1,8 +1,8 @@
-import { COMPANY_CONTRIBUTIONS } from '../../data';
+import { useTestContribution } from '../../dal';
 
 // CompanyCommunicationBadge component - displays CC badge for company-submitted tests
 const CompanyCommunicationBadge = ({ testId, size = 'sm' }) => {
-  const contribution = COMPANY_CONTRIBUTIONS[testId];
+  const { contribution } = useTestContribution(testId);
   if (!contribution) return null;
 
   const sizeClasses = {

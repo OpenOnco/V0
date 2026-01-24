@@ -21,12 +21,8 @@ import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
 import {
   // ALZ DISABLED: alzBloodTestData,
-  DATABASE_CHANGELOG,
-  RECENTLY_ADDED_TESTS,
   // ALZ DISABLED: ALZ_DATABASE_CHANGELOG,
   // ALZ DISABLED: ALZ_RECENTLY_ADDED_TESTS,
-  getChangelog,
-  getRecentlyAddedTests,
   DOMAINS,
   getDomain,
   getSiteConfig,
@@ -49,11 +45,8 @@ import {
   generateCategorySchema,
   generateOrganizationSchema,
   EXTERNAL_RESOURCES,
-  GLOSSARY,
   CATEGORY_STANDARDS,
   STANDARDS_BODIES,
-  COMPANY_CONTRIBUTIONS,
-  VENDOR_VERIFIED,
   BUILD_INFO,
 } from './data';
 
@@ -95,7 +88,7 @@ import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
 import CategoryPage from './components/CategoryPage';
 import { ComparePage, COMPARISON_PAGES } from './pages/ComparePage';
-import { useAllTests, useTestCounts, useTestsByCategories } from './dal/hooks/useTests';
+import { useAllTests, useTestCounts, useTestsByCategories, useVendors, useChangelog } from './dal';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -723,6 +716,19 @@ const SourceDataPage = () => {
   const { tests: allTestsFromDal } = useAllTests();
   const { testsByCategory } = useTestsByCategories();
   const { counts } = useTestCounts();
+  const { vendors } = useVendors();
+  const { changelog } = useChangelog();
+
+  // Build contribution lookup from vendors
+  const contributionTestIds = useMemo(() => {
+    const ids = new Set();
+    for (const vendor of vendors) {
+      for (const contribution of vendor.contributions || []) {
+        ids.add(contribution.testId);
+      }
+    }
+    return ids;
+  }, [vendors]);
 
   // Calculate metrics for all categories
   const metrics = useMemo(() => ({
@@ -738,7 +744,7 @@ const SourceDataPage = () => {
     const allVendors = new Set(allTests.map(t => t.vendor));
     
     // Count tests with vendor contributions
-    const testsWithVendorContribution = allTests.filter(t => COMPANY_CONTRIBUTIONS[t.id] !== undefined).length;
+    const testsWithVendorContribution = allTests.filter(t => contributionTestIds.has(t.id)).length;
     
     let totalTier1 = 0, citedTier1 = 0;
     Object.values(metrics).forEach(m => {
@@ -760,7 +766,7 @@ const SourceDataPage = () => {
       testsWithVendorContribution,
       vendorContributionRate: allTests.length > 0 ? ((testsWithVendorContribution / allTests.length) * 100).toFixed(1) : 0,
     };
-  }, [metrics]);
+  }, [metrics, allTestsFromDal, contributionTestIds]);
 
   const downloadFile = (content, filename, type) => {
     const blob = new Blob([content], { type });
@@ -783,7 +789,7 @@ const SourceDataPage = () => {
         website: 'https://openonco.org',
         qualityMetrics: aggregate,
       },
-      changelog: DATABASE_CHANGELOG,
+      changelog: changelog,
       categories: {
         MRD: { name: 'Molecular Residual Disease', testCount: counts.MRD, tests: testsByCategory.MRD || [], metrics: metrics.MRD },
         ECD: { name: 'Early Cancer Detection', testCount: counts.ECD, tests: testsByCategory.ECD || [], metrics: metrics.ECD },

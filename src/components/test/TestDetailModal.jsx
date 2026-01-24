@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
   getTestUrl,
-  COMPANY_CONTRIBUTIONS,
-  VENDOR_VERIFIED,
   comparisonParams,
   createCategoryMeta,
   BUILD_INFO,
 } from '../../data';
+import { useTestVerification, useTestContribution } from '../../dal';
 import { TIER1_FIELDS, MINIMUM_PARAMS } from '../../config/testFields';
 import { EXPERT_INSIGHTS } from '../../config/expertInsights';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
@@ -114,14 +113,18 @@ const MinimumFieldsSection = ({ test, category }) => {
 // ============================================
 const TestDetailModal = ({ test, category, onClose }) => {
   const [linkCopied, setLinkCopied] = useState(false);
-  
+
+  // DAL hooks for vendor verification and contributions
+  const { isVerified, verification } = useTestVerification(test?.id);
+  const { contribution } = useTestContribution(test?.id);
+
   // Track test view in PostHog when modal opens
   useEffect(() => {
     if (test) {
       analytics.trackTestView(test, 'modal', category);
     }
   }, [test?.id, category]);
-  
+
   if (!test) return null;
   
   const meta = categoryMeta[category];
@@ -290,30 +293,30 @@ const TestDetailModal = ({ test, category, onClose }) => {
             <div className="flex-1 mr-4">
               <div className="flex flex-wrap gap-2 mb-2">
                 {/* VENDOR VERIFIED badge - green, pulsing */}
-                {VENDOR_VERIFIED[test.id] && (
+                {isVerified && verification && (
                   <div className="relative group flex items-center">
                     <span className="px-2 py-0.5 bg-emerald-500 text-white rounded text-xs font-bold cursor-help animate-pulse shadow-sm">
                       ✓ VERIFIED
                     </span>
                     <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                       <p className="text-emerald-400 font-bold text-[11px] mb-1">Vendor Verified</p>
-                      <p className="font-medium">{VENDOR_VERIFIED[test.id].name}</p>
-                      <p className="text-gray-300">{VENDOR_VERIFIED[test.id].company}</p>
-                      <p className="text-gray-400 text-[9px]">{VENDOR_VERIFIED[test.id].verifiedDate}</p>
+                      <p className="font-medium">{verification.verifierName}</p>
+                      <p className="text-gray-300">{verification.vendorName}</p>
+                      <p className="text-gray-400 text-[9px]">{verification.verifiedDate}</p>
                     </div>
                   </div>
                 )}
                 {/* VENDOR DATA badge - orange (only if not verified) */}
-                {COMPANY_CONTRIBUTIONS[test.id] && !VENDOR_VERIFIED[test.id] && (
+                {contribution && !isVerified && (
                   <div className="relative group flex items-center">
                     <span className="px-2 py-0.5 bg-orange-500 text-white rounded text-xs font-medium cursor-help">
                       VENDOR
                     </span>
                     <div className="absolute left-0 top-full mt-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                       <p className="text-orange-400 font-bold text-[11px] mb-1">Vendor Data</p>
-                      <p className="font-medium">{COMPANY_CONTRIBUTIONS[test.id].name}</p>
-                      <p className="text-gray-300">{COMPANY_CONTRIBUTIONS[test.id].company}</p>
-                      <p className="text-gray-400 text-[9px]">{COMPANY_CONTRIBUTIONS[test.id].date}</p>
+                      <p className="font-medium">{contribution.name}</p>
+                      <p className="text-gray-300">{contribution.vendorName}</p>
+                      <p className="text-gray-400 text-[9px]">{contribution.date}</p>
                     </div>
                   </div>
                 )}

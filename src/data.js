@@ -12522,7 +12522,7 @@ export const generateFAQSchema = (faqs) => ({
 // Data Access Layer (DAL)
 // ============================================
 // The DAL provides an abstraction layer for data access.
-// Use dal.tests.* methods for async queries that will work
+// Use dal.* repository methods for async queries that will work
 // unchanged when the backend migrates to a database.
 
 import { initializeDAL } from './dal/index.js';
@@ -12545,11 +12545,37 @@ import { initializeDAL } from './dal/index.js';
  *
  * // Get stats
  * const stats = await dal.tests.getStats();
+ *
+ * // Access changelog
+ * const { data: changelog } = await dal.changelog.findAll();
+ * const recentChanges = await dal.changelog.getRecentChanges(10);
+ *
+ * // Access vendors
+ * const vendor = await dal.vendors.findByName('Natera');
+ * const program = await dal.vendors.getAssistanceProgram('Natera');
+ *
+ * // Access insurance providers
+ * const { data: providers } = await dal.insurance.findAll();
+ *
+ * // Access glossary
+ * const term = await dal.glossary.findById('ctdna');
  */
 export const dal = initializeDAL({
+  // Test data
   mrdTestData,
   ecdTestData,
   trmTestData,
   cgpTestData,
   hctTestData,
+  // Changelog
+  changelogData: DATABASE_CHANGELOG,
+  // Vendor data
+  vendorVerified: VENDOR_VERIFIED,
+  companyContributions: COMPANY_CONTRIBUTIONS,
+  assistancePrograms: VENDOR_ASSISTANCE_PROGRAMS,
+  // Insurance
+  insuranceProviders: INSURANCE_PROVIDERS,
+  payerNameToId: PAYER_NAME_TO_ID,
+  // Glossary
+  glossary: GLOSSARY,
 });

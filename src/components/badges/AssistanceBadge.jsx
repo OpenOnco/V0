@@ -1,26 +1,26 @@
-import { hasAssistanceProgram, getAssistanceProgramForVendor } from '../../data';
+import { useAssistanceProgram } from '../../dal';
 
 /**
  * AssistanceBadge - displays a badge when vendor has financial assistance program
- * 
+ *
  * Props:
  * - vendor: string - the vendor name
  * - size: 'xs' | 'sm' | 'md' - badge size
  * - showTooltip: boolean - whether to show tooltip on hover (default true)
  */
 const AssistanceBadge = ({ vendor, size = 'sm', showTooltip = true }) => {
-  if (!hasAssistanceProgram(vendor)) return null;
-  
-  const program = getAssistanceProgramForVendor(vendor);
-  
+  const { program } = useAssistanceProgram(vendor);
+
+  if (!program?.hasProgram) return null;
+
   const sizeClasses = {
     xs: 'text-[9px] px-1 py-0.5',
     sm: 'text-xs px-1.5 py-0.5',
     md: 'text-sm px-2 py-1'
   };
-  
+
   const badge = (
-    <span 
+    <span
       className={`inline-flex items-center gap-0.5 ${sizeClasses[size]} rounded font-medium bg-rose-100 text-rose-700 border border-rose-200 cursor-help`}
       title={!showTooltip ? (program?.programName || 'Financial Assistance Available') : undefined}
     >
@@ -28,9 +28,9 @@ const AssistanceBadge = ({ vendor, size = 'sm', showTooltip = true }) => {
       <span>Assistance</span>
     </span>
   );
-  
+
   if (!showTooltip || !program) return badge;
-  
+
   return (
     <div className="relative group inline-flex">
       {badge}

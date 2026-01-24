@@ -1,16 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { JOURNEY_CONFIG } from '../patient-v2/journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
-import { 
-  hasAssistanceProgram, 
-  VENDOR_ASSISTANCE_PROGRAMS,
-  INSURANCE_PROVIDERS,
-  ALL_INSURANCE_PROVIDERS,
+import {
   AVAILABLE_REGIONS,
-  isTestCoveredByInsurance,
   isTestAvailableInRegion,
 } from '../../data';
+import {
+  useInsuranceGrouped,
+  useInsuranceProviders,
+  useVendors,
+  useAssistanceProgram,
+} from '../../dal';
 import { getVendorAvailabilityUS } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
 import WizardAIHelper from './WizardAIHelper';
@@ -907,6 +908,9 @@ function TreatmentGateStep({ wizardData, setWizardData, onNext, onBack }) {
 function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.insurance;
 
+  // DAL hooks for insurance providers
+  const { providersByCategory: insuranceByCategory } = useInsuranceGrouped();
+
   const handleInsuranceChange = (hasInsurance) => {
     setWizardData(prev => ({
       ...prev,
@@ -995,17 +999,17 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
               >
                 <option value="">Select your insurance...</option>
                 <optgroup label="Government Programs">
-                  {INSURANCE_PROVIDERS.government.map((p) => (
+                  {insuranceByCategory.government?.map((p) => (
                     <option key={p.id} value={p.id}>{p.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label="Major National Plans">
-                  {INSURANCE_PROVIDERS.national.map((p) => (
+                  {insuranceByCategory.national?.map((p) => (
                     <option key={p.id} value={p.id}>{p.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label="Regional Plans">
-                  {INSURANCE_PROVIDERS.regional.map((p) => (
+                  {insuranceByCategory.regional?.map((p) => (
                     <option key={p.id} value={p.id}>{p.label}</option>
                   ))}
                 </optgroup>
@@ -1090,39 +1094,25 @@ function TestSummaryModal({ test, wizardData, onClose }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // DAL hook for vendor assistance programs
+  const { program: assistanceProgram } = useAssistanceProgram(test.vendor);
+
   // Get cancer type label for display
   const getCancerLabel = (id) => {
     const type = CANCER_TYPES.find(t => t.id === id);
     return type?.label || 'your cancer type';
   };
 
-  // Get full financial assistance program object for the vendor
-  const getAssistanceProgram = (vendor) => {
-    const program = VENDOR_ASSISTANCE_PROGRAMS[vendor];
-    if (program?.hasProgram) {
-      return program;
-    }
-    // Check partial match
-    for (const [key, value] of Object.entries(VENDOR_ASSISTANCE_PROGRAMS)) {
-      if (vendor?.includes(key) && value?.hasProgram) {
-        return value;
-      }
-    }
-    return null;
-  };
-
   // Get financial assistance details text for the vendor
   const getAssistanceDetails = (vendor) => {
-    const program = getAssistanceProgram(vendor);
-    if (program) {
-      return program.description || 'Financial assistance available - contact vendor for details.';
+    if (assistanceProgram) {
+      return assistanceProgram.description || 'Financial assistance available - contact vendor for details.';
     }
     return null;
   };
 
   // Check if we should show financial assistance info
   const showFinancialAssistance = (wizardData.costSensitivity === 'very-sensitive' || !wizardData.hasInsurance);
-  const assistanceProgram = getAssistanceProgram(test.vendor);
 
   // Fetch summary from Claude API
   useEffect(() => {
@@ -1399,6 +1389,54 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
   const [showMoreTests, setShowMoreTests] = useState(false);
   const content = CONTENT.results;
 
+  // DAL hooks for vendor and insurance data
+  const { vendors } = useVendors();
+  const { providers: allInsuranceProviders } = useInsuranceProviders();
+
+  // Helper: Check if vendor has assistance program
+  const hasAssistanceProgram = useMemo(() => {
+    return (vendorName) => {
+      if (!vendorName || !vendors.length) return false;
+      const vendor = vendors.find(v =>
+        v.name.toLowerCase() === vendorName.toLowerCase() ||
+        vendorName.toLowerCase().includes(v.name.toLowerCase())
+      );
+      return vendor?.hasAssistanceProgram || false;
+    };
+  }, [vendors]);
+
+  // Helper: Check if test is covered by insurance
+  const isTestCoveredByInsurance = useMemo(() => {
+    return (test, insuranceId) => {
+      if (!insuranceId || insuranceId === 'other') return true;
+
+      // Check Medicare
+      if (insuranceId === 'medicare') {
+        return test.reimbursement?.toLowerCase().includes('medicare');
+      }
+
+      // Check Medicaid
+      if (insuranceId === 'medicaid') {
+        return test.reimbursement?.toLowerCase().includes('medicaid');
+      }
+
+      // Check VA/TRICARE
+      if (insuranceId === 'va') {
+        return test.reimbursement?.toLowerCase().includes('va') ||
+               test.reimbursement?.toLowerCase().includes('tricare');
+      }
+
+      // Check commercialPayers array
+      if (test.commercialPayers && Array.isArray(test.commercialPayers)) {
+        return test.commercialPayers.some(payer =>
+          payer.toLowerCase().includes(insuranceId.replace(/-/g, ' '))
+        );
+      }
+
+      return false;
+    };
+  }, []);
+
   // Get cancer type label for display
   const getCancerLabel = (id) => {
     const type = CANCER_TYPES.find(t => t.id === id);
@@ -1583,7 +1621,7 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
     const reasons = [];
     
     if (data.hasInsurance && data.insuranceProvider && data.insuranceProvider !== 'other') {
-      const providerLabel = ALL_INSURANCE_PROVIDERS.find(p => p.id === data.insuranceProvider)?.label;
+      const providerLabel = allInsuranceProviders.find(p => p.id === data.insuranceProvider)?.label;
       if (providerLabel && isTestCoveredByInsurance(test, data.insuranceProvider)) {
         reasons.push(`Covered by ${providerLabel}`);
       }
@@ -1974,6 +2012,69 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
 
   // Determine starting step: skip to step 3 (cancer-type) if cancer type is pre-filled
   const initialStep = mappedCancerType ? 3 : 0;
+
+  // DAL hooks for insurance and vendor data
+  const { providersByCategory: insuranceByCategory } = useInsuranceGrouped();
+  const { providers: allInsuranceProviders } = useInsuranceProviders();
+  const { vendors } = useVendors();
+
+  // Helper: Check if vendor has assistance program
+  const hasAssistanceProgram = useMemo(() => {
+    return (vendorName) => {
+      if (!vendorName || !vendors.length) return false;
+      const vendor = vendors.find(v =>
+        v.name.toLowerCase() === vendorName.toLowerCase() ||
+        vendorName.toLowerCase().includes(v.name.toLowerCase())
+      );
+      return vendor?.hasAssistanceProgram || false;
+    };
+  }, [vendors]);
+
+  // Helper: Get full assistance program details for vendor
+  const getAssistanceProgram = useMemo(() => {
+    return (vendorName) => {
+      if (!vendorName || !vendors.length) return null;
+      // Direct match
+      let vendor = vendors.find(v => v.name.toLowerCase() === vendorName.toLowerCase());
+      // Partial match
+      if (!vendor) {
+        vendor = vendors.find(v => vendorName.toLowerCase().includes(v.name.toLowerCase()));
+      }
+      return vendor?.assistanceProgram || null;
+    };
+  }, [vendors]);
+
+  // Helper: Check if test is covered by insurance
+  const isTestCoveredByInsurance = useMemo(() => {
+    return (test, insuranceId) => {
+      if (!insuranceId || insuranceId === 'other') return true;
+
+      // Check Medicare in reimbursement field
+      if (insuranceId === 'medicare') {
+        return test.reimbursement?.toLowerCase().includes('medicare');
+      }
+
+      // Check Medicaid
+      if (insuranceId === 'medicaid') {
+        return test.reimbursement?.toLowerCase().includes('medicaid');
+      }
+
+      // Check VA/TRICARE
+      if (insuranceId === 'va') {
+        return test.reimbursement?.toLowerCase().includes('va') ||
+               test.reimbursement?.toLowerCase().includes('tricare');
+      }
+
+      // Check commercialPayers array
+      if (test.commercialPayers && Array.isArray(test.commercialPayers)) {
+        return test.commercialPayers.some(payer =>
+          payer.toLowerCase().includes(insuranceId.replace(/-/g, ' '))
+        );
+      }
+
+      return false;
+    };
+  }, []);
 
   // Current step in the wizard (0-indexed)
   const [currentStep, setCurrentStep] = useState(initialStep);

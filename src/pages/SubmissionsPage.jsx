@@ -1,9 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import {
-  getSiteConfig,
-  DATABASE_CHANGELOG,
-} from '../data';
-import { useAllTests, useTestsByCategories } from '../dal/hooks/useTests';
+import { getSiteConfig } from '../data';
+import { useAllTests, useTestsByCategories, useChangelog } from '../dal';
 
 // ALZ DISABLED placeholder
 const ALZ_DATABASE_CHANGELOG = [];
@@ -12,11 +9,12 @@ const alzBloodTestData = [];
 const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorInvite }) => {
   const siteConfig = getSiteConfig();
   const isAlz = false; // ALZ DISABLED
-  const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
 
   // Get tests via DAL
   const { tests: allTests } = useAllTests();
   const { testsByCategory } = useTestsByCategories();
+  const { changelog } = useChangelog();
+  const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : changelog;
   
   const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'validation', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
