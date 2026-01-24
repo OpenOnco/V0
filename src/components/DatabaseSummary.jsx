@@ -1,32 +1,50 @@
-import { useState } from 'react';
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData, BUILD_INFO, DATABASE_CHANGELOG } from '../data';
+import { useState, useMemo } from 'react';
+import { BUILD_INFO, DATABASE_CHANGELOG } from '../data';
+import { useAllTests, useTestStats, useTestCounts } from '../dal/hooks/useTests';
 
 const DatabaseSummary = () => {
   const [showFAQ, setShowFAQ] = useState(false);
+  const { tests: allTests, loading } = useAllTests();
+  const { stats } = useTestStats();
+  const { counts } = useTestCounts();
 
-  // Dynamically count actual fields per test
-  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
-  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
-  const hctParams = hctTestData.length > 0 ? Object.keys(hctTestData[0]).length : 0;
+  // Calculate derived values from loaded tests
+  const { totalTests, totalDataPoints, allVendors } = useMemo(() => {
+    if (!allTests.length) {
+      return { totalTests: 0, totalDataPoints: 0, allVendors: new Set() };
+    }
 
-  const totalTests = mrdTestData.length + ecdTestData.length + cgpTestData.length + hctTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (cgpTestData.length * cgpParams) + (hctTestData.length * hctParams);
+    // Group tests by category to calculate per-category params
+    const byCategory = { MRD: [], ECD: [], CGP: [], HCT: [] };
+    const vendorSet = new Set();
 
-  // Add category to each test for proper openness scoring
-  const allTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP' })),
-    ...hctTestData.map(t => ({ ...t, category: 'HCT' }))
-  ];
+    for (const test of allTests) {
+      if (test.category && byCategory[test.category]) {
+        byCategory[test.category].push(test);
+      }
+      if (test.vendor) {
+        vendorSet.add(test.vendor);
+      }
+    }
 
-  const allVendors = new Set([
-    ...mrdTestData.map(t => t.vendor),
-    ...ecdTestData.map(t => t.vendor),
-    ...cgpTestData.map(t => t.vendor),
-    ...hctTestData.map(t => t.vendor)
-  ]);
+    // Calculate params (fields) per category
+    const catParams = {};
+    for (const [cat, tests] of Object.entries(byCategory)) {
+      catParams[cat] = tests.length > 0 ? Object.keys(tests[0]).length : 0;
+    }
+
+    // Calculate total data points
+    let dataPoints = 0;
+    for (const [cat, tests] of Object.entries(byCategory)) {
+      dataPoints += tests.length * catParams[cat];
+    }
+
+    return {
+      totalTests: allTests.length,
+      totalDataPoints: dataPoints,
+      allVendors: vendorSet,
+    };
+  }, [allTests]);
 
   // Helper functions
   const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
@@ -167,6 +185,9 @@ const DatabaseSummary = () => {
     { bg: 'bg-gradient-to-r from-emerald-50 to-green-50', border: 'border-emerald-400', text: 'text-emerald-700' },
     { bg: 'bg-gradient-to-r from-green-50 to-teal-50', border: 'border-emerald-300', text: 'text-emerald-600' }
   ];
+
+  // Don't render until data is loaded
+  if (loading || !allTests.length) return null;
 
   return (
     <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl p-6">

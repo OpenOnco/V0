@@ -1,14 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import {
-  mrdTestData,
-  ecdTestData,
-  cgpTestData,
-  hctTestData,
   getDomain,
   getStagesByDomain,
   lifecycleColorClasses,
   RECENTLY_ADDED_TESTS,
 } from '../../data';
+import { useTestCounts, useAllTests } from '../../dal/hooks/useTests';
 import VendorBadge from '../badges/VendorBadge';
 
 // Placeholder for ALZ data (disabled)
@@ -18,13 +15,16 @@ const alzBloodTestData = [];
 // Lifecycle Navigator Components
 // ============================================
 
-// Get test counts dynamically - will be populated after test data is defined
+// Get test counts dynamically - now uses counts from hook
+// Note: This is a legacy export - prefer using useTestCounts hook directly
 export const getTestCount = (stageId) => {
+  // Returns fallback values since this is called outside React context
+  // Components should use the useTestCounts hook instead
   switch(stageId) {
-    case 'ECD': return typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13;
-    case 'CGP': return typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10;
-    case 'MRD': return typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15;
-    case 'HCT': return typeof hctTestData !== 'undefined' ? hctTestData.length : 0;
+    case 'ECD': return 13; // Fallback
+    case 'CGP': return 10; // Fallback
+    case 'MRD': return 15; // Fallback
+    case 'HCT': return 0;  // Fallback
     default: return 0;
   }
 };
@@ -170,13 +170,14 @@ export const LifecycleNavigator = ({ onNavigate }) => {
     return getStagesByDomain(currentDomain).sort((a, b) => a.gridPosition - b.gridPosition);
   }, [currentDomain]);
 
-  // Get dynamic test counts
+  // Get dynamic test counts via DAL
+  const { counts } = useTestCounts();
   const testCounts = {
-    ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 10,
-    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 15,
-    HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
-    'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
+    ECD: counts.ECD || 0,
+    CGP: counts.CGP || 0,
+    MRD: counts.MRD || 0,
+    HCT: counts.HCT || 0,
+    'ALZ-BLOOD': alzBloodTestData.length,
   };
 
   const handleSelect = (stageId) => {
@@ -258,13 +259,8 @@ export const RecentlyAddedBanner = ({ onNavigate }) => {
 // Cancer Type Navigator - Browse tests by cancer type
 // ============================================
 export const CancerTypeNavigator = ({ onNavigate }) => {
-  // Combine all tests and extract cancer types
-  const allTests = useMemo(() => [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP' })),
-    ...hctTestData.map(t => ({ ...t, category: 'HCT' })),
-  ], []);
+  // Get all tests via DAL (already have category assigned)
+  const { tests: allTests } = useAllTests();
 
   // Normalize cancer type names and group tests
   const normalizeCancerType = (type) => {

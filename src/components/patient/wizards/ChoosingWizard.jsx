@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { cgpTestData } from '../../../data';
+import { useTestsByCategory } from '../../../dal/hooks/useTests';
 import { JOURNEY_CONFIG } from '../../patient-v2/journeyConfig';
 
 // ============================================================================
@@ -1051,8 +1051,10 @@ const CANCER_TYPE_MAP = {
  * @param {string} props.initialCancerType - Pre-fill cancer type (label from PatientIntakeFlow, e.g., "Breast Cancer")
  */
 export default function ChoosingWizard({ onComplete, onBack, onExit, onNavigate, testData, initialCancerType }) {
-  // Use provided testData or default to cgpTestData from data.js
-  const resolvedTestData = testData || cgpTestData;
+  // Get CGP tests via DAL
+  const { tests: cgpTests } = useTestsByCategory('CGP');
+  // Use provided testData or default to DAL data
+  const resolvedTestData = testData || cgpTests;
   // Map initialCancerType from label to ID if provided
   const mappedCancerType = initialCancerType ? (CANCER_TYPE_MAP[initialCancerType] || null) : null;
 

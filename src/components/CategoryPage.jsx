@@ -8,6 +8,7 @@ import {
   createCategoryMeta,
   BUILD_INFO,
 } from '../data';
+import { useTestsByCategory } from '../dal/hooks/useTests';
 import { getStoredPersona } from '../utils/persona';
 import { calculateTestCompleteness } from '../utils/testMetrics';
 import { getSuggestedTests } from '../utils/suggestions';
@@ -20,6 +21,7 @@ import TestCard from './test/TestCard';
 import ExternalResourcesSection from './markdown/ExternalResourcesSection';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
+// Note: tests are now loaded via DAL hook, meta is only used for static config
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
 
 // ============================================
@@ -28,7 +30,8 @@ const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
 const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onClearInitialTest }) => {
   const meta = categoryMeta[category];
   const config = filterConfigs[category];
-  const tests = meta.tests;
+  // Get tests via DAL hook instead of from meta.tests
+  const { tests } = useTestsByCategory(category);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedApproaches, setSelectedApproaches] = useState([]);
@@ -122,13 +125,13 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
 
   // Handle initial selected test - open detail modal if coming from direct link
   useEffect(() => {
-    if (initialSelectedTestId) {
+    if (initialSelectedTestId && tests.length > 0) {
       // Find the test and open its detail modal
       const test = tests.find(t => t.id === initialSelectedTestId);
       if (test) {
         setDetailTest(test);
+        onClearInitialTest?.();
       }
-      onClearInitialTest?.();
     }
   }, [initialSelectedTestId, tests]);
 

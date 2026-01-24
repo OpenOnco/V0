@@ -1,5 +1,8 @@
 #!/bin/bash
-# OpenOnco Preview: smoke tests + API tests → push to develop → Vercel preview URL
+# OpenOnco Preview: smoke tests + API tests → push to current branch → Vercel preview
+#
+# Usage: ./preview [commit message]
+# Example: ./preview "Add new test data"
 
 set -e
 cd "$(dirname "$0")"
@@ -12,20 +15,16 @@ echo "🔌 Running API tests..."
 npm run test:api
 
 echo ""
-echo "✅ Tests passed. Pushing to develop..."
+echo "✅ Tests passed. Pushing to remote..."
 git add -A
 git commit -m "${1:-wip: preview}" --allow-empty
 git push
 
-echo ""
-echo "⏳ Waiting for Vercel deployment..."
-sleep 15
-
-# Get commit hash for unique URL
-COMMIT_HASH=$(git rev-parse --short HEAD)
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 echo ""
-echo "🚀 Preview deployed!"
+echo "🚀 Pushed to '$BRANCH'!"
 echo ""
-echo "📎 https://v0-42kj-git-develop-alex-dickinsons-projects-2bee58ff.vercel.app"
+echo "📎 Vercel will automatically deploy a preview."
+echo "   Check your PR or the Vercel dashboard for the preview URL."
 echo ""

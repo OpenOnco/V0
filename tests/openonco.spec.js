@@ -1,7 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../src/data.js';
+import { dal } from '../src/data.js';
 
 /**
  * OpenOnco Regression Test Suite
@@ -11,6 +11,15 @@ import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../src/data.
 // ===========================================
 // GLOBAL SETUP - Set default persona for all tests
 // ===========================================
+
+// Get test counts from DAL
+const { data: allTests } = await dal.tests.findAll();
+const testCounts = {
+  MRD: allTests.filter(t => t.category === 'MRD').length,
+  ECD: allTests.filter(t => t.category === 'ECD').length,
+  CGP: allTests.filter(t => t.category === 'CGP').length,
+  HCT: allTests.filter(t => t.category === 'HCT').length,
+};
 
 // Set R&D persona by default so tests don't get blocked by PersonaGate modal
 test.beforeEach(async ({ page }) => {
@@ -29,10 +38,10 @@ test.beforeEach(async ({ page }) => {
 
 const EXPECTED = {
   testCounts: {
-    MRD: mrdTestData.length,  // Includes TRM tests (trm-* IDs merged in)
-    ECD: ecdTestData.length,
-    CGP: cgpTestData.length,  // Renamed from TDS
-    HCT: hctTestData.length,
+    MRD: testCounts.MRD,  // Includes TRM tests (trm-* IDs merged in)
+    ECD: testCounts.ECD,
+    CGP: testCounts.CGP,  // Renamed from TDS
+    HCT: testCounts.HCT,
     get total() { return this.MRD + this.ECD + this.CGP + this.HCT; }
   },
   // URL structure: /monitor (MRD), /screen (ECD), /treat (CGP), /risk (HCT)
@@ -1149,10 +1158,10 @@ test.describe('Patient Assistance Programs', () => {
   });
 
   test('assistance programs cover major database vendors', async ({ page }) => {
-    const { VENDOR_ASSISTANCE_PROGRAMS, mrdTestData, cgpTestData } = await import('../src/data.js');
+    const { VENDOR_ASSISTANCE_PROGRAMS, dal } = await import('../src/data.js');
 
-    // Get unique vendors from test data
-    const allTests = [...mrdTestData, ...cgpTestData];
+    // Get unique vendors from test data via DAL
+    const { data: allTests } = await dal.tests.findAll();
     const uniqueVendors = [...new Set(allTests.map(t => t.vendor))];
     
     // Check that we have programs for major vendors

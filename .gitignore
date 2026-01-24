@@ -161,6 +161,9 @@ daemon/test-screenshot-*.png
 # AI review outputs
 reviews/
 
+# AI context
+context/
+
 # Temp files
 kk
 restore*.sh

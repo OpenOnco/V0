@@ -4,7 +4,7 @@ import Chat from '../Chat';
 import TestDetailModal from '../test/TestDetailModal';
 import WatchingWizard from '../patient-v2/journeys/WatchingWizard';
 import ChoosingWizard from './wizards/ChoosingWizard';
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../../data';
+import { useTestsByCategories } from '../../dal/hooks/useTests';
 
 /**
  * Journey card content configuration
@@ -185,17 +185,12 @@ const PatientIntakeFlow = ({ testData }) => {
   const [showModal, setShowModal] = useState(false);
   const [pendingJourney, setPendingJourney] = useState(null);
   const [selectedTestForModal, setSelectedTestForModal] = useState(null); // For test detail popup
-  
+
   const step2Ref = useRef(null);
   const step3Ref = useRef(null);
-  
-  // All test data for lookup
-  const allTestData = {
-    MRD: mrdTestData,
-    ECD: ecdTestData,
-    CGP: cgpTestData,
-    HCT: hctTestData
-  };
+
+  // All test data for lookup (via DAL)
+  const { testsByCategory: allTestData } = useTestsByCategories();
 
   // Handle clicking a test link in chat - show detail modal
   const handleTestClick = (testIds) => {
@@ -540,7 +535,7 @@ const PatientIntakeFlow = ({ testData }) => {
         {isStep2Complete && (
           selectedJourney === 'mrd' && chatMode === 'find' ? (
             <WatchingWizard
-              testData={mrdTestData}
+              testData={allTestData.MRD}
               initialCancerType={selectedCancer}
               onExit={handleChangeJourney}
               onComplete={(wizardData) => {

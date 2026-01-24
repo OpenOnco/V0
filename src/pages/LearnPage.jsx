@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../data';
+import { useTestCounts } from '../dal/hooks/useTests';
 import { getStoredPersona } from '../utils/persona';
 import GlossaryTooltip from '../components/GlossaryTooltip';
 
 const LearnPage = ({ onNavigate }) => {
   const [persona, setPersona] = useState(getStoredPersona() || 'rnd');
-  
+  const { counts } = useTestCounts();
+
   // Listen for persona changes
   useEffect(() => {
     const handlePersonaChange = (e) => setPersona(e.detail);
@@ -32,7 +33,7 @@ const LearnPage = ({ onNavigate }) => {
         'Some tests are required before certain treatments can be prescribed',
         'Results help your oncologist create a personalized treatment plan'
       ],
-      testCount: cgpTestData.length
+      testCount: counts.CGP
     },
     {
       id: 'MRD',
@@ -49,7 +50,7 @@ const LearnPage = ({ onNavigate }) => {
         'Helps determine if additional treatment is needed',
         'Regular monitoring during surveillance period'
       ],
-      testCount: mrdTestData.length
+      testCount: counts.MRD
     }
   ];
 
@@ -76,7 +77,7 @@ const LearnPage = ({ onNavigate }) => {
         'Requires large validation cohorts across diverse cancer types',
         'Clinical utility studies (mortality reduction) still in progress'
       ],
-      testCount: ecdTestData.length
+      testCount: counts.ECD
     },
     {
       id: 'CGP',
@@ -100,7 +101,7 @@ const LearnPage = ({ onNavigate }) => {
         'Balancing sensitivity vs specificity for risk stratification',
         'Integration into clinical workflow'
       ],
-      testCount: cgpTestData.length
+      testCount: counts.CGP
     },
     {
       id: 'MRD',
@@ -124,7 +125,7 @@ const LearnPage = ({ onNavigate }) => {
         'Optimal surveillance testing intervals not established for all cancers',
         'Clinical utility data (does MRD-guided therapy improve outcomes?) still maturing'
       ],
-      testCount: mrdTestData.length
+      testCount: counts.MRD
     }
   ];
 

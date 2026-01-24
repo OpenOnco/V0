@@ -20,10 +20,6 @@ import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
 import {
-  mrdTestData,
-  ecdTestData,
-  cgpTestData,
-  hctTestData,
   // ALZ DISABLED: alzBloodTestData,
   DATABASE_CHANGELOG,
   RECENTLY_ADDED_TESTS,
@@ -99,6 +95,7 @@ import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
 import CategoryPage from './components/CategoryPage';
 import { ComparePage, COMPARISON_PAGES } from './pages/ComparePage';
+import { useAllTests, useTestCounts, useTestsByCategories } from './dal/hooks/useTests';
 
 // ALZ DISABLED: Placeholder constants to prevent errors
 const alzBloodTestData = [];
@@ -216,10 +213,14 @@ const compressTestForChat = (test) => {
   return compressed;
 };
 
-const chatTestData = {
-  MRD: mrdTestData.map(compressTestForChat),
-  ECD: ecdTestData.map(compressTestForChat),
-  CGP: cgpTestData.map(compressTestForChat),
+// Hook to get chat-compressed test data
+const useChatTestData = () => {
+  const { testsByCategory } = useTestsByCategories();
+  return useMemo(() => ({
+    MRD: (testsByCategory.MRD || []).map(compressTestForChat),
+    ECD: (testsByCategory.ECD || []).map(compressTestForChat),
+    CGP: (testsByCategory.CGP || []).map(compressTestForChat),
+  }), [testsByCategory]);
 };
 
 
@@ -227,6 +228,9 @@ const chatTestData = {
 // Stat of the Day Component
 // ============================================
 const StatOfTheDay = ({ onNavigate }) => {
+  // Get all tests via DAL
+  const { tests: dalTests } = useAllTests();
+
   // Day-based stat rotation (0=Sunday through 6=Saturday)
   const dayStats = [
     { key: 'totalParticipants', label: 'Trial Participants', unit: '', description: 'Most patients in clinical trials', higherIsBetter: true, format: (v) => v?.toLocaleString(), filter: (v) => v != null && v > 0 },
@@ -237,14 +241,12 @@ const StatOfTheDay = ({ onNavigate }) => {
     { key: 'numIndications', label: 'Cancer Indications', unit: '', description: 'Most cancer types covered', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0, getValue: (t) => t.cancerTypes?.length || 0 },
     { key: 'numPublications', label: 'Publications', unit: '', description: 'Most peer-reviewed publications', higherIsBetter: true, format: (v) => v, filter: (v) => v != null && v > 0 },
   ];
-  
-  // Combine all tests
-  const allTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD', numIndications: t.cancerTypes?.length || 0 })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD', numIndications: t.cancerTypes?.length || 0 })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP', numIndications: t.cancerTypes?.length || 0 })),
-    ...hctTestData.map(t => ({ ...t, category: 'HCT', numIndications: t.cancerTypes?.length || 0 }))
-  ];
+
+  // Add numIndications to tests (tests already have category from DAL)
+  const allTests = useMemo(() =>
+    dalTests.map(t => ({ ...t, numIndications: t.cancerTypes?.length || 0 })),
+    [dalTests]
+  );
   
   // Get today's stat based on day of week
   const dayOfWeek = new Date().getDay();
@@ -413,6 +415,8 @@ const SponsorBar = ({ className = '' }) => (
 
 const HomePage = ({ onNavigate, persona }) => {
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
+  const { tests: allTests } = useAllTests();
+  const chatTestData = useChatTestData();
 
   // PATIENT VIEW - Simple 2-card landing (Screening vs Watching)
   if (persona === 'patient') {
@@ -431,7 +435,7 @@ const HomePage = ({ onNavigate, persona }) => {
         {/* Banner */}
         <div className="bg-slate-50 rounded-2xl px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 border border-slate-200 mb-4">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 text-center">
-            {mrdTestData.length + ecdTestData.length + cgpTestData.length + hctTestData.length} Advanced Molecular Tests: Collected, Curated, Explained
+            {allTests.length} Advanced Molecular Tests: Collected, Curated, Explained
           </h1>
         </div>
 
@@ -518,30 +522,66 @@ const HomePage = ({ onNavigate, persona }) => {
 
 // Simple database stats for Data Download page
 const DatabaseStatsSimple = () => {
-  const mrdParams = mrdTestData.length > 0 ? Object.keys(mrdTestData[0]).length : 0;
-  const ecdParams = ecdTestData.length > 0 ? Object.keys(ecdTestData[0]).length : 0;
-  const cgpParams = cgpTestData.length > 0 ? Object.keys(cgpTestData[0]).length : 0;
-  const hctParams = hctTestData.length > 0 ? Object.keys(hctTestData[0]).length : 0;
+  // Get tests via DAL
+  const { tests: allTestData, loading } = useAllTests();
+  const { testsByCategory } = useTestsByCategories();
+  const { counts } = useTestCounts();
 
-  const totalTests = mrdTestData.length + ecdTestData.length + cgpTestData.length + hctTestData.length;
-  const totalDataPoints = (mrdTestData.length * mrdParams) + (ecdTestData.length * ecdParams) + (cgpTestData.length * cgpParams) + (hctTestData.length * hctParams);
+  // Derive stats from DAL data
+  const { totalTests, totalDataPoints, allVendors, categoryParams, completions } = useMemo(() => {
+    if (!allTestData.length) {
+      return {
+        totalTests: 0,
+        totalDataPoints: 0,
+        allVendors: new Set(),
+        categoryParams: { MRD: 0, ECD: 0, CGP: 0, HCT: 0 },
+        completions: { MRD: { completion: 0 }, ECD: { completion: 0 }, CGP: { completion: 0 }, HCT: { completion: 0 } },
+      };
+    }
 
-  const allVendors = new Set([
-    ...mrdTestData.map(t => t.vendor),
-    ...ecdTestData.map(t => t.vendor),
-    ...cgpTestData.map(t => t.vendor),
-    ...hctTestData.map(t => t.vendor)
-  ]);
+    // Calculate params per category
+    const catParams = {};
+    for (const cat of ['MRD', 'ECD', 'CGP', 'HCT']) {
+      const tests = testsByCategory[cat] || [];
+      catParams[cat] = tests.length > 0 ? Object.keys(tests[0]).length : 0;
+    }
 
-  // Calculate Tier 1 citation metrics dynamically
-  const allTestData = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
-  const tier1Metrics = calculateTier1Metrics(allTestData);
+    // Calculate data points
+    let dataPoints = 0;
+    for (const cat of ['MRD', 'ECD', 'CGP', 'HCT']) {
+      const tests = testsByCategory[cat] || [];
+      dataPoints += tests.length * catParams[cat];
+    }
 
-  // Calculate minimum field completion for each category
-  const mrdCompletion = calculateMinimumFieldStats(mrdTestData, 'MRD');
-  const ecdCompletion = calculateMinimumFieldStats(ecdTestData, 'ECD');
-  const cgpCompletion = calculateMinimumFieldStats(cgpTestData, 'CGP');
-  const hctCompletion = calculateMinimumFieldStats(hctTestData, 'HCT');
+    // Get vendors
+    const vendorSet = new Set(allTestData.map(t => t.vendor).filter(Boolean));
+
+    // Calculate completions
+    const comps = {};
+    for (const cat of ['MRD', 'ECD', 'CGP', 'HCT']) {
+      comps[cat] = calculateMinimumFieldStats(testsByCategory[cat] || [], cat);
+    }
+
+    return {
+      totalTests: allTestData.length,
+      totalDataPoints: dataPoints,
+      allVendors: vendorSet,
+      categoryParams: catParams,
+      completions: comps,
+    };
+  }, [allTestData, testsByCategory]);
+
+  const tier1Metrics = useMemo(() => calculateTier1Metrics(allTestData), [allTestData]);
+  const mrdCompletion = completions.MRD;
+  const ecdCompletion = completions.ECD;
+  const cgpCompletion = completions.CGP;
+  const hctCompletion = completions.HCT;
+  const mrdParams = categoryParams.MRD;
+  const ecdParams = categoryParams.ECD;
+  const cgpParams = categoryParams.CGP;
+  const hctParams = categoryParams.HCT;
+
+  if (loading) return null;
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -570,7 +610,7 @@ const DatabaseStatsSimple = () => {
       {/* Category breakdown with completion stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
-          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{mrdTestData.length}</div>
+          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{counts.MRD}</div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">MRD</p>
             <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
@@ -586,7 +626,7 @@ const DatabaseStatsSimple = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
-          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{ecdTestData.length}</div>
+          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">{counts.ECD}</div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">ECD</p>
             <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
@@ -602,7 +642,7 @@ const DatabaseStatsSimple = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
-          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{cgpTestData.length}</div>
+          <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-bold">{counts.CGP}</div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">CGP</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
@@ -618,7 +658,7 @@ const DatabaseStatsSimple = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-purple-50 rounded-lg border border-purple-100">
-          <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">{hctTestData.length}</div>
+          <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">{counts.HCT}</div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">HCT</p>
             <p className="text-[10px] text-gray-500">{hctParams} fields</p>
@@ -679,17 +719,22 @@ const SourceDataPage = () => {
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
 
+  // Get tests via DAL
+  const { tests: allTestsFromDal } = useAllTests();
+  const { testsByCategory } = useTestsByCategories();
+  const { counts } = useTestCounts();
+
   // Calculate metrics for all categories
   const metrics = useMemo(() => ({
-    MRD: calculateCategoryMetrics(mrdTestData, 'MRD'),
-    ECD: calculateCategoryMetrics(ecdTestData, 'ECD'),
-    CGP: calculateCategoryMetrics(cgpTestData, 'CGP'),
-    HCT: calculateCategoryMetrics(hctTestData, 'HCT'),
-  }), []);
+    MRD: calculateCategoryMetrics(testsByCategory.MRD || [], 'MRD'),
+    ECD: calculateCategoryMetrics(testsByCategory.ECD || [], 'ECD'),
+    CGP: calculateCategoryMetrics(testsByCategory.CGP || [], 'CGP'),
+    HCT: calculateCategoryMetrics(testsByCategory.HCT || [], 'HCT'),
+  }), [testsByCategory]);
 
   // Calculate aggregate metrics
   const aggregate = useMemo(() => {
-    const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
+    const allTests = allTestsFromDal;
     const allVendors = new Set(allTests.map(t => t.vendor));
     
     // Count tests with vendor contributions
@@ -740,10 +785,10 @@ const SourceDataPage = () => {
       },
       changelog: DATABASE_CHANGELOG,
       categories: {
-        MRD: { name: 'Molecular Residual Disease', testCount: mrdTestData.length, tests: mrdTestData, metrics: metrics.MRD },
-        ECD: { name: 'Early Cancer Detection', testCount: ecdTestData.length, tests: ecdTestData, metrics: metrics.ECD },
-        CGP: { name: 'Comprehensive Genomic Profiling', testCount: cgpTestData.length, tests: cgpTestData, metrics: metrics.CGP },
-        HCT: { name: 'Hereditary Cancer Testing', testCount: hctTestData.length, tests: hctTestData, metrics: metrics.HCT },
+        MRD: { name: 'Molecular Residual Disease', testCount: counts.MRD, tests: testsByCategory.MRD || [], metrics: metrics.MRD },
+        ECD: { name: 'Early Cancer Detection', testCount: counts.ECD, tests: testsByCategory.ECD || [], metrics: metrics.ECD },
+        CGP: { name: 'Comprehensive Genomic Profiling', testCount: counts.CGP, tests: testsByCategory.CGP || [], metrics: metrics.CGP },
+        HCT: { name: 'Hereditary Cancer Testing', testCount: counts.HCT, tests: testsByCategory.HCT || [], metrics: metrics.HCT },
       },
       totalTests: aggregate.totalTests
     };
@@ -1268,6 +1313,12 @@ export default function App() {
 
   const initialRoute = getInitialPage();
 
+  // Get MRD tests for WatchingWizard (via DAL)
+  const { testsByCategory: appTestsByCategory } = useTestsByCategories();
+  const mrdTestsForWizard = appTestsByCategory.MRD || [];
+  // Get chat test data
+  const chatTestData = useChatTestData();
+
   const [currentPage, setCurrentPage] = useState(initialRoute.page);
   const [initialSelectedTestId, setInitialSelectedTestId] = useState(initialRoute.testId);
   const [initialCompareIds, setInitialCompareIds] = useState(null);
@@ -1499,7 +1550,7 @@ export default function App() {
               onComplete={(results) => {
                 console.log('WatchingWizard completed:', results);
               }}
-              testData={mrdTestData}
+              testData={mrdTestsForWizard}
             />
           );
         }
@@ -1523,7 +1574,7 @@ export default function App() {
           onComplete={(results) => {
             console.log('WatchingWizard completed:', results);
           }}
-          testData={mrdTestData}
+          testData={mrdTestsForWizard}
         />
       );
       case 'patient-choosing': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Choosing Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;

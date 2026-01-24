@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../data';
+import { useAllTests } from '../dal/hooks/useTests';
 
 const OpennessAward = () => {
   const [showFAQ, setShowFAQ] = useState(false);
+  const { tests: allTests, loading } = useAllTests();
 
-  // Add category to each test for proper openness scoring
-  const allTests = [
-    ...mrdTestData.map(t => ({ ...t, category: 'MRD' })),
-    ...ecdTestData.map(t => ({ ...t, category: 'ECD' })),
-    ...cgpTestData.map(t => ({ ...t, category: 'CGP' })),
-    ...hctTestData.map(t => ({ ...t, category: 'HCT' }))
-  ];
+  // Tests from DAL already have category field assigned
   
   // Helper functions
   const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
@@ -96,7 +91,8 @@ const OpennessAward = () => {
     ? Math.round(qualifyingVendors.reduce((sum, v) => sum + v.avgScore, 0) / qualifyingVendors.length)
     : 0;
 
-  if (top3.length === 0) return null;
+  // Don't render until we have data
+  if (loading || top3.length === 0) return null;
 
   const rankStyles = [
     { bg: 'bg-amber-100', border: 'border-amber-300', text: 'text-amber-700', badge: 'bg-amber-500', icon: '🥇' },

@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../data';
+import { useAllTests } from '../dal/hooks/useTests';
 
 // Comparison page definitions - add new comparisons here
 export const COMPARISON_PAGES = {
@@ -150,19 +150,16 @@ export const COMPARISON_PAGES = {
   }
 };
 
-// Get all tests from all categories
-const getAllTests = () => [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
-
 const ComparePage = ({ comparisonSlug, onNavigate }) => {
+  const { tests: allTests } = useAllTests();
   const comparison = COMPARISON_PAGES[comparisonSlug];
-  
+
   const tests = useMemo(() => {
-    if (!comparison) return [];
-    const allTests = getAllTests();
+    if (!comparison || !allTests.length) return [];
     return comparison.testIds
       .map(id => allTests.find(t => t.id === id))
       .filter(Boolean);
-  }, [comparison]);
+  }, [comparison, allTests]);
 
   if (!comparison) {
     return (

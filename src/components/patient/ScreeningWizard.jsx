@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ecdTestData } from '../../data.js';
+import { useTestsByCategory } from '../../dal/hooks/useTests';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
 
@@ -488,12 +488,12 @@ function CostStep({ wizardData, setWizardData, onNext, onBack }) {
   );
 }
 
-function ResultsStep({ wizardData, onNext, onBack }) {
+function ResultsStep({ wizardData, testData, onNext, onBack }) {
   const content = CONTENT.results;
 
   // Filter ECD tests based on wizard data
   const getMatchingTests = () => {
-    let filteredTests = [...ecdTestData];
+    let filteredTests = [...testData];
 
     // Filter by goal (multi-cancer vs single-cancer)
     if (wizardData.goal === 'multi-cancer') {
@@ -749,6 +749,9 @@ function NextStepsStep({ wizardData, onBack, onComplete }) {
  * @param {Function} props.onNavigate - Alternative navigation handler (used by App.jsx)
  */
 export default function ScreeningWizard({ onComplete, onBack, onNavigate }) {
+  // Get ECD tests via DAL
+  const { tests: ecdTests } = useTestsByCategory('ECD');
+
   // Current step in the wizard (0-indexed)
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -863,6 +866,7 @@ export default function ScreeningWizard({ onComplete, onBack, onNavigate }) {
         return (
           <ResultsStep
             wizardData={wizardData}
+            testData={ecdTests}
             onNext={handleNext}
             onBack={handleBack}
           />

@@ -924,7 +924,8 @@ export const PATIENT_ASSISTANCE_RESOURCES = [
 // ============================================
 
 // MRD Tests
-export const mrdTestData = [
+// Test arrays are internal - access via dal.tests for external usage
+const mrdTestData = [
   {
     "id": "mrd-1",
     "sampleCategory": "Blood/Plasma",
@@ -5200,7 +5201,7 @@ export const mrdTestData = [
 ];
 
 // ECD Tests
-export const ecdTestData = [
+const ecdTestData = [
   {
     "id": "ecd-1",
     "sampleCategory": "Blood/Plasma",
@@ -7102,10 +7103,10 @@ export const ecdTestData = [
 
 
 // DEPRECATED: TRM tests merged into mrdTestData - empty alias for backwards compatibility
-export const trmTestData = [];
+const trmTestData = [];
 
 // CGP Tests (Comprehensive Genomic Profiling - formerly TDS)
-export const cgpTestData = [
+const cgpTestData = [
   {
     "id": "tds-1",
     "name": "FoundationOne CDx",
@@ -9411,12 +9412,12 @@ export const cgpTestData = [
 // ============================================
 
 // DEPRECATED: tdsTestData renamed to cgpTestData - alias for backwards compatibility
-export const tdsTestData = cgpTestData;
+const tdsTestData = cgpTestData;
 
 // HCT (Hereditary Cancer Testing) Tests
 // Germline genetic testing for inherited cancer predisposition
 // ============================================
-export const hctTestData = [
+const hctTestData = [
   {
     "id": "hct-1",
     "category": "HCT",
@@ -12515,4 +12516,40 @@ export const generateFAQSchema = (faqs) => ({
       text: faq.answer
     }
   }))
+});
+
+// ============================================
+// Data Access Layer (DAL)
+// ============================================
+// The DAL provides an abstraction layer for data access.
+// Use dal.tests.* methods for async queries that will work
+// unchanged when the backend migrates to a database.
+
+import { initializeDAL } from './dal/index.js';
+
+/**
+ * Initialized Data Access Layer instance
+ * Use this for all new code instead of directly accessing arrays
+ *
+ * @example
+ * import { dal } from './data';
+ *
+ * // Find tests by category
+ * const { data: mrdTests } = await dal.tests.findByCategory('MRD');
+ *
+ * // Find a test by ID
+ * const test = await dal.tests.findById('mrd-1');
+ *
+ * // Search tests
+ * const { data: results } = await dal.tests.search('signatera');
+ *
+ * // Get stats
+ * const stats = await dal.tests.getStats();
+ */
+export const dal = initializeDAL({
+  mrdTestData,
+  ecdTestData,
+  trmTestData,
+  cgpTestData,
+  hctTestData,
 });

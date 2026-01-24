@@ -1,16 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { track } from '@vercel/analytics';
 import {
-  mrdTestData,
-  ecdTestData,
-  cgpTestData,
-  hctTestData,
   DOMAINS,
   getDomain,
   COMPANY_CONTRIBUTIONS,
   VENDOR_VERIFIED,
   hasAssistanceProgram,
 } from '../../data';
+import { useAllTests, useTestCounts } from '../../dal/hooks/useTests';
 import { calculateTestCompleteness } from '../../utils/testMetrics';
 import VendorBadge from '../badges/VendorBadge';
 import { LifecycleNavigator } from '../navigation';
@@ -19,10 +16,19 @@ import PerformanceMetricWithWarning from '../ui/PerformanceMetricWithWarning';
 // Placeholder for ALZ data (disabled)
 const alzBloodTestData = [];
 
-const TestShowcase = ({ 
-  onNavigate, 
-  patientMode = false, 
-  hideNavigator = false, 
+// Color mapping for categories
+const CATEGORY_COLORS = {
+  MRD: 'orange',
+  ECD: 'emerald',
+  CGP: 'violet',
+  HCT: 'rose',
+  'ALZ-BLOOD': 'indigo',
+};
+
+const TestShowcase = ({
+  onNavigate,
+  patientMode = false,
+  hideNavigator = false,
   showQuickSearch = true,
   searchQuery: externalSearchQuery,
   setSearchQuery: externalSetSearchQuery
@@ -31,36 +37,38 @@ const TestShowcase = ({
   const [sortBy, setSortBy] = useState('vendor');
   const [internalSearchQuery, setInternalSearchQuery] = useState('');
   const [showOnlyWithAssistance, setShowOnlyWithAssistance] = useState(false);
-  
+
   // Use external state if provided, otherwise use internal state
   const searchQuery = externalSearchQuery !== undefined ? externalSearchQuery : internalSearchQuery;
   const setSearchQuery = externalSetSearchQuery || setInternalSearchQuery;
 
   // Get current domain for filtering
   const currentDomain = getDomain();
-  
+
+  // Get tests and counts via DAL
+  const { tests: allDalTests } = useAllTests();
+  const { counts } = useTestCounts();
+
   // Get dynamic test counts
   const testCounts = {
-    ECD: typeof ecdTestData !== 'undefined' ? ecdTestData.length : 13,
-    CGP: typeof cgpTestData !== 'undefined' ? cgpTestData.length : 14,
-    MRD: typeof mrdTestData !== 'undefined' ? mrdTestData.length : 18,
-    HCT: typeof hctTestData !== 'undefined' ? hctTestData.length : 0,
-    'ALZ-BLOOD': typeof alzBloodTestData !== 'undefined' ? alzBloodTestData.length : 9,
+    ECD: counts.ECD || 0,
+    CGP: counts.CGP || 0,
+    MRD: counts.MRD || 0,
+    HCT: counts.HCT || 0,
+    'ALZ-BLOOD': alzBloodTestData.length,
   };
 
-  // Combine tests with their category, filtered by domain
+  // Combine tests with their category color, filtered by domain
   const baseTests = useMemo(() => {
     if (currentDomain === DOMAINS.ALZ) {
       return alzBloodTestData.map(t => ({ ...t, category: 'ALZ-BLOOD', color: 'indigo' }));
     }
-    // Default: oncology domain
-    return [
-      ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
-      ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
-      ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' })),
-      ...hctTestData.map(t => ({ ...t, category: 'HCT', color: 'rose' }))
-    ];
-  }, [currentDomain]);
+    // Default: oncology domain - add color to tests from DAL
+    return allDalTests.map(t => ({
+      ...t,
+      color: CATEGORY_COLORS[t.category] || 'slate'
+    }));
+  }, [currentDomain, allDalTests]);
 
   // Helper to count reimbursement entities
   const countReimbursement = (test) => {

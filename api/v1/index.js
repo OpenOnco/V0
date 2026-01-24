@@ -15,36 +15,31 @@
  *   GET /api/v1/search                 - Full-text search across tests
  */
 
-import { mrdTestData, ecdTestData, cgpTestData, hctTestData } from '../_data.js';
+import { dal } from '../_data.js';
 import { generateHtmlDocs, generateJsonDocs } from './docs.js';
 
 // ============================================================================
 // SHARED CONSTANTS
 // ============================================================================
 
-// Final API categories: mrd, ecd, cgp, hct
-// Note: TRM tests merged into MRD, TDS renamed to CGP
 const VALID_PAYERS = ['aetna', 'cigna', 'united', 'anthem', 'humana'];
 const VALID_MEDICARE_STATUSES = ['COVERED', 'NOT_COVERED', 'PENDING', 'PARTIAL', 'EXPERIMENTAL'];
 
-const CATEGORY_DATA = {
-  mrd: { data: mrdTestData, name: 'Molecular Residual Disease', shortName: 'MRD', urlPath: 'monitor' },
-  ecd: { data: ecdTestData, name: 'Early Cancer Detection', shortName: 'ECD', urlPath: 'screen' },
-  cgp: { data: cgpTestData, name: 'Comprehensive Genomic Profiling', shortName: 'CGP', urlPath: 'treat' },
-  hct: { data: hctTestData, name: 'Hereditary Cancer Testing', shortName: 'HCT', urlPath: 'risk' },
+// Category metadata for API responses
+const CATEGORY_INFO = {
+  MRD: { name: 'Molecular Residual Disease', shortName: 'MRD', urlPath: 'monitor' },
+  ECD: { name: 'Early Cancer Detection', shortName: 'ECD', urlPath: 'screen' },
+  CGP: { name: 'Comprehensive Genomic Profiling', shortName: 'CGP', urlPath: 'treat' },
+  HCT: { name: 'Hereditary Cancer Testing', shortName: 'HCT', urlPath: 'risk' },
 };
 
-const TEST_LOOKUP = new Map();
-[
-  { data: mrdTestData, category: 'mrd' },
-  { data: ecdTestData, category: 'ecd' },
-  { data: cgpTestData, category: 'cgp' },
-  { data: hctTestData, category: 'hct' },
-].forEach(({ data, category }) => {
-  data.forEach(test => {
-    TEST_LOOKUP.set(test.id, { ...test, category: category.toUpperCase(), categoryName: CATEGORY_DATA[category].name });
-  });
-});
+// Map lowercase API category params to uppercase category codes
+const CATEGORY_PARAM_MAP = {
+  mrd: 'MRD',
+  ecd: 'ECD',
+  cgp: 'CGP',
+  hct: 'HCT',
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -69,42 +64,47 @@ function handleDocs(req, res) {
     return res.status(200).json(generateJsonDocs());
   }
 
-  // Return comprehensive HTML documentation
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 'public, max-age=3600');
   return res.status(200).send(generateHtmlDocs());
 }
 
-function handleTests(req, res) {
+async function handleTests(req, res) {
   const { category, vendor, cancer, fda = 'all', medicare, payer, payerStatus, fields, limit = '100', offset = '0' } = req.query;
 
   const limitNum = Math.min(Math.max(1, parseInt(limit) || 100), 500);
   const offsetNum = Math.max(0, parseInt(offset) || 0);
 
-  let tests = [];
-  const categories = category ? category.toLowerCase().split(',').map(c => c.trim()) : Object.keys(CATEGORY_DATA);
+  // Build where clause
+  const where = {};
 
-  for (const cat of categories) {
-    if (CATEGORY_DATA[cat]) {
-      const categoryTests = CATEGORY_DATA[cat].data.map(test => ({
-        ...test,
-        category: cat.toUpperCase(),
-        categoryName: CATEGORY_DATA[cat].name,
-      }));
-      tests.push(...categoryTests);
+  // Category filter
+  if (category) {
+    const categories = category.toLowerCase().split(',').map(c => c.trim());
+    const validCategories = categories
+      .filter(c => CATEGORY_PARAM_MAP[c])
+      .map(c => CATEGORY_PARAM_MAP[c]);
+    if (validCategories.length === 1) {
+      where.category = validCategories[0];
+    } else if (validCategories.length > 1) {
+      where.category = { in: validCategories };
     }
   }
 
+  // Vendor filter
   if (vendor) {
-    const vendorLower = vendor.toLowerCase();
-    tests = tests.filter(t => t.vendor && t.vendor.toLowerCase().includes(vendorLower));
+    where.vendor = { contains: vendor };
   }
 
+  // Cancer type filter
   if (cancer) {
-    const cancerLower = cancer.toLowerCase();
-    tests = tests.filter(t => t.cancerTypes && t.cancerTypes.some(ct => ct.toLowerCase().includes(cancerLower)));
+    where.cancerTypes = { arrayContains: cancer };
   }
 
+  // Get all matching tests first (before FDA/coverage filters that need custom logic)
+  let { data: tests } = await dal.tests.findAll({ where });
+
+  // FDA status filter
   if (fda && fda !== 'all') {
     tests = tests.filter(t => {
       if (!t.fdaStatus) return false;
@@ -116,13 +116,13 @@ function handleTests(req, res) {
     });
   }
 
-  // Filter by Medicare coverage status
+  // Medicare coverage filter
   if (medicare) {
     const medicareUpper = medicare.toUpperCase();
     tests = tests.filter(t => t.coverageCrossReference?.medicare?.status === medicareUpper);
   }
 
-  // Filter by private payer coverage status
+  // Private payer filter
   if (payer) {
     const payerLower = payer.toLowerCase();
     if (!VALID_PAYERS.includes(payerLower)) {
@@ -143,6 +143,7 @@ function handleTests(req, res) {
   const totalCount = tests.length;
   tests = tests.slice(offsetNum, offsetNum + limitNum);
 
+  // Field selection
   if (fields) {
     const fieldList = fields.split(',').map(f => f.trim());
     const requiredFields = ['id', 'name', 'vendor', 'category', 'categoryName'];
@@ -159,27 +160,35 @@ function handleTests(req, res) {
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
   return res.status(200).json({
     success: true,
-    meta: { total: totalCount, limit: limitNum, offset: offsetNum, returned: tests.length, hasMore: offsetNum + tests.length < totalCount, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
+    meta: {
+      total: totalCount,
+      limit: limitNum,
+      offset: offsetNum,
+      returned: tests.length,
+      hasMore: offsetNum + tests.length < totalCount,
+      generatedAt: new Date().toISOString(),
+      source: 'OpenOnco (openonco.org)',
+      license: 'CC BY 4.0',
+    },
     data: tests,
   });
 }
 
-function handleSingleTest(req, res, testId) {
-  let test = TEST_LOOKUP.get(testId);
+async function handleSingleTest(req, res, testId) {
+  let test = await dal.tests.findById(testId);
+
+  // Try case-insensitive lookup if not found
   if (!test) {
     const idLower = testId.toLowerCase();
-    for (const [key, value] of TEST_LOOKUP) {
-      if (key.toLowerCase() === idLower) { test = value; break; }
-    }
+    const { data: allTests } = await dal.tests.findAll();
+    test = allTests.find(t => t.id.toLowerCase() === idLower);
   }
 
   if (!test) {
     return res.status(404).json({ success: false, error: 'Test not found', message: `No test found with ID "${testId}"` });
   }
 
-  // Get the URL path for this category
-  const catKey = test.category.toLowerCase();
-  const urlPath = CATEGORY_DATA[catKey]?.urlPath || catKey;
+  const urlPath = CATEGORY_INFO[test.category]?.urlPath || test.category.toLowerCase();
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
   return res.status(200).json({
@@ -190,15 +199,23 @@ function handleSingleTest(req, res, testId) {
   });
 }
 
-function handleCategories(req, res) {
-  const categories = Object.entries(CATEGORY_DATA).map(([id, cat]) => ({
-    id,
-    name: cat.name,
-    shortName: cat.shortName,
-    urlPath: cat.urlPath,
-    description: getDescription(id),
-    stats: { totalTests: cat.data.length, vendors: [...new Set(cat.data.map(t => t.vendor))].length },
-    links: { tests: `https://openonco.org/api/v1/tests?category=${id}`, web: `https://openonco.org/${cat.urlPath}` },
+async function handleCategories(req, res) {
+  const stats = await dal.tests.getStats();
+
+  const categories = Object.entries(CATEGORY_INFO).map(([id, info]) => ({
+    id: id.toLowerCase(),
+    name: info.name,
+    shortName: info.shortName,
+    urlPath: info.urlPath,
+    description: getDescription(id.toLowerCase()),
+    stats: {
+      totalTests: stats.byCategory[id]?.tests || 0,
+      vendors: stats.byCategory[id]?.vendors || 0,
+    },
+    links: {
+      tests: `https://openonco.org/api/v1/tests?category=${id.toLowerCase()}`,
+      web: `https://openonco.org/${info.urlPath}`,
+    },
   }));
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
@@ -219,22 +236,25 @@ function getDescription(id) {
   return descriptions[id] || '';
 }
 
-function handleVendors(req, res) {
+async function handleVendors(req, res) {
   const { category } = req.query;
+
+  const { data: allTests } = await dal.tests.findAll();
+
   const vendorMap = new Map();
 
-  Object.entries(CATEGORY_DATA).forEach(([catId, cat]) => {
-    cat.data.forEach(test => {
-      const vendor = test.vendor;
-      if (!vendorMap.has(vendor)) {
-        vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, cgp: 0, hct: 0 }, kits: { mrd: 0, ecd: 0, cgp: 0, hct: 0 }, totalTests: 0 });
-      }
-      const v = vendorMap.get(vendor);
-      if (test.isKitProduct) v.kits[catId]++;
-      else v.tests[catId]++;
-      v.totalTests++;
-    });
-  });
+  for (const test of allTests) {
+    const vendor = test.vendor;
+    const catId = test.category.toLowerCase();
+
+    if (!vendorMap.has(vendor)) {
+      vendorMap.set(vendor, { name: vendor, tests: { mrd: 0, ecd: 0, cgp: 0, hct: 0 }, kits: { mrd: 0, ecd: 0, cgp: 0, hct: 0 }, totalTests: 0 });
+    }
+    const v = vendorMap.get(vendor);
+    if (test.isKitProduct) v.kits[catId]++;
+    else v.tests[catId]++;
+    v.totalTests++;
+  }
 
   let vendors = Array.from(vendorMap.values()).sort((a, b) => b.totalTests - a.totalTests);
 
@@ -251,21 +271,8 @@ function handleVendors(req, res) {
   });
 }
 
-function handleStats(req, res) {
-  const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
-  const stats = {
-    totals: {
-      tests: allTests.length,
-      vendors: [...new Set(allTests.map(t => t.vendor))].length,
-      cancerTypes: [...new Set(allTests.flatMap(t => t.cancerTypes || []))].length,
-    },
-    byCategory: {
-      MRD: { tests: mrdTestData.length, vendors: [...new Set(mrdTestData.map(t => t.vendor))].length },
-      ECD: { tests: ecdTestData.length, vendors: [...new Set(ecdTestData.map(t => t.vendor))].length },
-      CGP: { tests: cgpTestData.length, vendors: [...new Set(cgpTestData.map(t => t.vendor))].length },
-      HCT: { tests: hctTestData.length, vendors: [...new Set(hctTestData.map(t => t.vendor))].length },
-    },
-  };
+async function handleStats(req, res) {
+  const stats = await dal.tests.getStats();
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
   return res.status(200).json({
@@ -275,28 +282,25 @@ function handleStats(req, res) {
   });
 }
 
-function handleEmbed(req, res) {
+async function handleEmbed(req, res) {
   const { id, theme = 'light', width = '400', format } = req.query;
 
   if (!id) {
     return res.status(400).send('<!DOCTYPE html><html><body>Missing test ID</body></html>');
   }
 
-  let test = TEST_LOOKUP.get(id);
+  let test = await dal.tests.findById(id);
   if (!test) {
     const idLower = id.toLowerCase();
-    for (const [key, value] of TEST_LOOKUP) {
-      if (key.toLowerCase() === idLower) { test = value; break; }
-    }
+    const { data: allTests } = await dal.tests.findAll();
+    test = allTests.find(t => t.id.toLowerCase() === idLower);
   }
 
   if (!test) {
     return res.status(404).send('<!DOCTYPE html><html><body>Test not found</body></html>');
   }
 
-  // Get the URL path for this category
-  const catKey = test.category.toLowerCase();
-  const urlPath = CATEGORY_DATA[catKey]?.urlPath || catKey;
+  const urlPath = CATEGORY_INFO[test.category]?.urlPath || test.category.toLowerCase();
 
   if (format === 'json') {
     return res.status(200).json({
@@ -317,8 +321,7 @@ function handleEmbed(req, res) {
   res.setHeader('Content-Security-Policy', 'frame-ancestors *');
   res.setHeader('Cache-Control', 'public, max-age=300');
 
-  // HCT tests may have genesAnalyzed instead of sensitivity/specificity
-  const metric1 = test.sensitivity ? `<div class="metric"><div class="metric-label">Sensitivity</div><div class="metric-value">${test.sensitivity}%</div></div>` : 
+  const metric1 = test.sensitivity ? `<div class="metric"><div class="metric-label">Sensitivity</div><div class="metric-value">${test.sensitivity}%</div></div>` :
                   test.genesAnalyzed ? `<div class="metric"><div class="metric-label">Genes</div><div class="metric-value">${test.genesAnalyzed}</div></div>` : '';
   const metric2 = test.specificity ? `<div class="metric"><div class="metric-label">Specificity</div><div class="metric-value">${test.specificity}%</div></div>` : '';
 
@@ -351,28 +354,25 @@ ${metric2}
 // COVERAGE ENDPOINTS
 // ============================================================================
 
-function handleCoverage(req, res) {
+async function handleCoverage(req, res) {
   const { medicare, payer, payerStatus, limit = '100', offset = '0' } = req.query;
 
   const limitNum = Math.min(Math.max(1, parseInt(limit) || 100), 500);
   const offsetNum = Math.max(0, parseInt(offset) || 0);
 
   // Get all tests with coverageCrossReference
-  let tests = [];
-  for (const [catId, cat] of Object.entries(CATEGORY_DATA)) {
-    for (const test of cat.data) {
-      if (test.coverageCrossReference) {
-        tests.push({
-          id: test.id,
-          name: test.name,
-          vendor: test.vendor,
-          category: catId.toUpperCase(),
-          categoryName: cat.name,
-          coverageCrossReference: test.coverageCrossReference,
-        });
-      }
-    }
-  }
+  const { data: allTests } = await dal.tests.findAll();
+
+  let tests = allTests
+    .filter(test => test.coverageCrossReference)
+    .map(test => ({
+      id: test.id,
+      name: test.name,
+      vendor: test.vendor,
+      category: test.category,
+      categoryName: test.categoryName,
+      coverageCrossReference: test.coverageCrossReference,
+    }));
 
   // Filter by medicare status
   if (medicare) {
@@ -442,16 +442,12 @@ function handleCoverage(req, res) {
   });
 }
 
-function handleCoverageById(req, res, testId) {
-  let test = TEST_LOOKUP.get(testId);
+async function handleCoverageById(req, res, testId) {
+  let test = await dal.tests.findById(testId);
   if (!test) {
     const idLower = testId.toLowerCase();
-    for (const [key, value] of TEST_LOOKUP) {
-      if (key.toLowerCase() === idLower) {
-        test = value;
-        break;
-      }
-    }
+    const { data: allTests } = await dal.tests.findAll();
+    test = allTests.find(t => t.id.toLowerCase() === idLower);
   }
 
   if (!test) {
@@ -488,7 +484,7 @@ function handleCoverageById(req, res, testId) {
   });
 }
 
-function handleCoverageByPayer(req, res, payerName) {
+async function handleCoverageByPayer(req, res, payerName) {
   const payerLower = payerName.toLowerCase();
 
   if (!VALID_PAYERS.includes(payerLower)) {
@@ -499,30 +495,29 @@ function handleCoverageByPayer(req, res, payerName) {
     });
   }
 
+  const { data: allTests } = await dal.tests.findAll();
+
   // Collect tests with coverage data for this payer, grouped by status
   const grouped = {};
 
-  for (const [catId, cat] of Object.entries(CATEGORY_DATA)) {
-    for (const test of cat.data) {
-      const payerData = test.coverageCrossReference?.privatePayers?.[payerLower];
-      if (payerData) {
-        const status = payerData.status || 'UNKNOWN';
-        if (!grouped[status]) {
-          grouped[status] = [];
-        }
-        grouped[status].push({
-          id: test.id,
-          name: test.name,
-          vendor: test.vendor,
-          category: catId.toUpperCase(),
-          categoryName: cat.name,
-          coverage: payerData,
-        });
+  for (const test of allTests) {
+    const payerData = test.coverageCrossReference?.privatePayers?.[payerLower];
+    if (payerData) {
+      const status = payerData.status || 'UNKNOWN';
+      if (!grouped[status]) {
+        grouped[status] = [];
       }
+      grouped[status].push({
+        id: test.id,
+        name: test.name,
+        vendor: test.vendor,
+        category: test.category,
+        categoryName: test.categoryName,
+        coverage: payerData,
+      });
     }
   }
 
-  // Calculate totals
   const totalTests = Object.values(grouped).reduce((sum, arr) => sum + arr.length, 0);
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
@@ -543,7 +538,7 @@ function handleCoverageByPayer(req, res, payerName) {
 // SEARCH ENDPOINT
 // ============================================================================
 
-function handleSearch(req, res) {
+async function handleSearch(req, res) {
   const { q, category, fields, limit = '100', offset = '0' } = req.query;
 
   if (!q || q.trim() === '') {
@@ -557,70 +552,43 @@ function handleSearch(req, res) {
   const limitNum = Math.min(Math.max(1, parseInt(limit) || 100), 500);
   const offsetNum = Math.max(0, parseInt(offset) || 0);
 
-  const searchTerm = q.toLowerCase().trim();
+  const searchFields = fields ? fields.split(',').map(f => f.trim()) : undefined;
 
-  // Determine which fields to search
-  const defaultFields = ['name', 'vendor', 'description', 'cancerTypes', 'biomarkers', 'clinicalSettings'];
-  const searchFields = fields ? fields.split(',').map(f => f.trim()) : defaultFields;
-
-  // Get tests to search
-  let tests = [];
-  const categories = category ? category.toLowerCase().split(',').map(c => c.trim()) : Object.keys(CATEGORY_DATA);
-
-  for (const cat of categories) {
-    if (CATEGORY_DATA[cat]) {
-      const categoryTests = CATEGORY_DATA[cat].data.map(test => ({
-        ...test,
-        category: cat.toUpperCase(),
-        categoryName: CATEGORY_DATA[cat].name,
-      }));
-      tests.push(...categoryTests);
-    }
+  // Build category filter
+  let categories;
+  if (category) {
+    categories = category.toLowerCase().split(',').map(c => c.trim())
+      .filter(c => CATEGORY_PARAM_MAP[c])
+      .map(c => CATEGORY_PARAM_MAP[c]);
   }
 
-  // Search function - case-insensitive partial match
-  const matchesSearch = (test) => {
-    for (const field of searchFields) {
-      const value = test[field];
-      if (value === undefined || value === null) continue;
+  // Use DAL search
+  const where = categories && categories.length > 0
+    ? { category: categories.length === 1 ? categories[0] : { in: categories } }
+    : undefined;
 
-      if (Array.isArray(value)) {
-        // Search in arrays (cancerTypes, biomarkers, clinicalSettings)
-        if (value.some(item => String(item).toLowerCase().includes(searchTerm))) {
-          return true;
-        }
-      } else if (typeof value === 'string') {
-        if (value.toLowerCase().includes(searchTerm)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  // Filter by search
-  const matchedTests = tests.filter(matchesSearch);
-  const totalCount = matchedTests.length;
-
-  // Apply pagination
-  const paginatedTests = matchedTests.slice(offsetNum, offsetNum + limitNum);
+  const { data, meta } = await dal.tests.search(q, searchFields, {
+    where,
+    skip: offsetNum,
+    take: limitNum,
+  });
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
   return res.status(200).json({
     success: true,
     meta: {
       query: q,
-      fieldsSearched: searchFields,
-      total: totalCount,
+      fieldsSearched: meta.fieldsSearched,
+      total: meta.total,
       limit: limitNum,
       offset: offsetNum,
-      returned: paginatedTests.length,
-      hasMore: offsetNum + paginatedTests.length < totalCount,
+      returned: data.length,
+      hasMore: meta.hasMore,
       generatedAt: new Date().toISOString(),
       source: 'OpenOnco (openonco.org)',
       license: 'CC BY 4.0',
     },
-    data: paginatedTests,
+    data,
   });
 }
 
@@ -628,7 +596,7 @@ function handleSearch(req, res) {
 // MAIN HANDLER
 // ============================================================================
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   setCorsHeaders(res);
 
   if (req.method === 'OPTIONS') {
@@ -640,17 +608,14 @@ export default function handler(req, res) {
   }
 
   try {
-    // Route based on query param (set by vercel rewrites) or URL path
     const route = req.query.route || '';
     const testId = req.query.id;
     const embedType = req.query.type;
 
-    // Also support direct path parsing for local dev
     const url = new URL(req.url, 'http://localhost');
     const path = url.pathname.replace(/^\/api\/v1\/?/, '');
     const segments = path.split('/').filter(Boolean);
 
-    // Determine routing - prefer query params, fall back to path
     const routeKey = route || segments[0] || '';
 
     if (!routeKey) {
@@ -659,53 +624,50 @@ export default function handler(req, res) {
 
     if (routeKey === 'tests') {
       if (testId) {
-        return handleSingleTest(req, res, testId);
+        return await handleSingleTest(req, res, testId);
       }
       if (segments[1]) {
-        return handleSingleTest(req, res, segments[1]);
+        return await handleSingleTest(req, res, segments[1]);
       }
-      return handleTests(req, res);
+      return await handleTests(req, res);
     }
 
     if (routeKey === 'categories') {
-      return handleCategories(req, res);
+      return await handleCategories(req, res);
     }
 
     if (routeKey === 'vendors') {
-      return handleVendors(req, res);
+      return await handleVendors(req, res);
     }
 
     if (routeKey === 'stats') {
-      return handleStats(req, res);
+      return await handleStats(req, res);
     }
 
     if (routeKey === 'embed') {
       if (embedType === 'test' || segments[1] === 'test') {
-        return handleEmbed(req, res);
+        return await handleEmbed(req, res);
       }
     }
 
     if (routeKey === 'coverage') {
-      // /coverage/payer/:payerName (via path or rewrite query params)
       if (segments[1] === 'payer' && segments[2]) {
-        return handleCoverageByPayer(req, res, segments[2]);
+        return await handleCoverageByPayer(req, res, segments[2]);
       }
       if (req.query.subRoute === 'payer' && req.query.payer) {
-        return handleCoverageByPayer(req, res, req.query.payer);
+        return await handleCoverageByPayer(req, res, req.query.payer);
       }
-      // /coverage/:testId (via path or rewrite query params)
       if (segments[1] && segments[1] !== 'payer') {
-        return handleCoverageById(req, res, segments[1]);
+        return await handleCoverageById(req, res, segments[1]);
       }
       if (testId) {
-        return handleCoverageById(req, res, testId);
+        return await handleCoverageById(req, res, testId);
       }
-      // /coverage (list all)
-      return handleCoverage(req, res);
+      return await handleCoverage(req, res);
     }
 
     if (routeKey === 'search') {
-      return handleSearch(req, res);
+      return await handleSearch(req, res);
     }
 
     return res.status(404).json({ error: 'Not found', route: routeKey });

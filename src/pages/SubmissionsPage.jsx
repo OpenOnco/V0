@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   getSiteConfig,
   DATABASE_CHANGELOG,
-  mrdTestData,
-  ecdTestData,
-  cgpTestData,
-  hctTestData
 } from '../data';
+import { useAllTests, useTestsByCategories } from '../dal/hooks/useTests';
 
 // ALZ DISABLED placeholder
 const ALZ_DATABASE_CHANGELOG = [];
@@ -16,6 +13,10 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   const siteConfig = getSiteConfig();
   const isAlz = false; // ALZ DISABLED
   const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : DATABASE_CHANGELOG;
+
+  // Get tests via DAL
+  const { tests: allTests } = useAllTests();
+  const { testsByCategory } = useTestsByCategories();
   
   const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'validation', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
@@ -169,14 +170,14 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  // Get existing tests for correction dropdown
-  const existingTests = {
-    MRD: mrdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    ECD: ecdTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    CGP: cgpTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    HCT: hctTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+  // Get existing tests for correction dropdown (via DAL)
+  const existingTests = useMemo(() => ({
+    MRD: (testsByCategory.MRD || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    ECD: (testsByCategory.ECD || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    CGP: (testsByCategory.CGP || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
+    HCT: (testsByCategory.HCT || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     'ALZ-BLOOD': alzBloodTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-  };
+  }), [testsByCategory]);
 
   // Parameters available for correction by category
   const parameterOptions = {
@@ -261,7 +262,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   // Get current value of selected parameter for the selected test
   const getCurrentValue = () => {
     if (!existingTest || !selectedParameter || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'CGP' ? cgpTestData : category === 'HCT' ? hctTestData : alzBloodTestData;
+    const testList = testsByCategory[category] || (category === 'ALZ-BLOOD' ? alzBloodTestData : []);
     const test = testList.find(t => t.id === existingTest);
     if (!test || selectedParameter === 'other') return '';
     const value = test[selectedParameter];
@@ -271,7 +272,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   // Get vendor name for selected test (for email validation)
   const getSelectedTestVendor = () => {
     if (!existingTest || !category) return '';
-    const testList = category === 'MRD' ? mrdTestData : category === 'ECD' ? ecdTestData : category === 'CGP' ? cgpTestData : hctTestData;
+    const testList = testsByCategory[category] || [];
     const test = testList.find(t => t.id === existingTest);
     return test?.vendor || '';
   };
@@ -699,10 +700,9 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   const getVendorTests = (includeVerified = false) => {
     const domain = getVendorDomainFromEmail(contactEmail);
     if (!domain) return [];
-    
-    const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
+
     return allTests.filter(test => {
-      const vendorLower = test.vendor.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const vendorLower = (test.vendor || '').toLowerCase().replace(/[^a-z0-9]/g, '');
       const matchesVendor = vendorLower.includes(domain) || domain.includes(vendorLower.slice(0, 5));
       const notVerifiedYet = includeVerified || !verifiedTestsSession.includes(test.id);
       return matchesVendor && notVerifiedYet;
@@ -710,27 +710,21 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
       id: t.id,
       name: t.name,
       vendor: t.vendor,
-      category: mrdTestData.find(m => m.id === t.id) ? 'MRD' :
-                ecdTestData.find(e => e.id === t.id) ? 'ECD' :
-                cgpTestData.find(c => c.id === t.id) ? 'CGP' : 'HCT'
+      category: t.category // DAL tests already have category
     }));
   };
 
   // Get the selected validation test data
   const getValidationTestData = () => {
     if (!validationTest) return null;
-    const allTests = [...mrdTestData, ...ecdTestData, ...cgpTestData, ...hctTestData];
     return allTests.find(t => t.id === validationTest);
   };
 
   // Get category for validation test
   const getValidationTestCategory = () => {
     if (!validationTest) return null;
-    if (mrdTestData.find(t => t.id === validationTest)) return 'MRD';
-    if (ecdTestData.find(t => t.id === validationTest)) return 'ECD';
-    if (cgpTestData.find(t => t.id === validationTest)) return 'CGP';
-    if (hctTestData.find(t => t.id === validationTest)) return 'HCT';
-    return null;
+    const test = allTests.find(t => t.id === validationTest);
+    return test?.category || null;
   };
 
   if (submitted) {
