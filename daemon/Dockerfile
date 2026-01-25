@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies (--omit=dev is the modern replacement for --only=production)
-# Cache bust: 2026-01-25
+ARG CACHEBUST=1
 RUN npm ci --omit=dev
 
 # Copy source
