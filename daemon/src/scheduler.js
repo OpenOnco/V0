@@ -9,6 +9,7 @@ import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
 import { sendDailyDigest } from './email/index.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
+import { triageDiscoveries } from './triage/index.js';
 
 const logger = createLogger('scheduler');
 
@@ -91,6 +92,40 @@ function scheduleCleanup() {
 }
 
 /**
+ * Schedule AI triage (runs after crawlers finish)
+ */
+function scheduleTriage(schedule) {
+  const triageConfig = config.crawlers.triage;
+
+  if (!triageConfig?.enabled) {
+    logger.info('Triage is disabled, not scheduling');
+    return null;
+  }
+
+  logger.info('Scheduling AI triage', { schedule });
+
+  const job = cron.schedule(schedule, async () => {
+    logger.info('Running scheduled AI triage');
+
+    try {
+      const result = await triageDiscoveries(null, { loadFromQueue: true, verbose: true });
+      logger.info('Scheduled triage completed', {
+        highPriority: result.highPriority?.length || 0,
+        mediumPriority: result.mediumPriority?.length || 0,
+        lowPriority: result.lowPriority?.length || 0,
+        cost: result.metadata?.costs?.totalCost || '0',
+        duration: result.metadata?.durationMs,
+      });
+    } catch (error) {
+      logger.error('Scheduled triage failed', { error });
+    }
+  });
+
+  jobs.set('triage', job);
+  return job;
+}
+
+/**
  * Start all scheduled jobs
  */
 export function startScheduler() {
@@ -104,6 +139,9 @@ export function startScheduler() {
   scheduleCrawler(SOURCES.PREPRINTS, config.schedules.preprints);
   scheduleCrawler(SOURCES.CITATIONS, config.schedules.citations);
   scheduleCrawler(SOURCES.PAYERS, config.schedules.payers);
+
+  // Schedule triage (runs after crawlers)
+  scheduleTriage(config.schedules.triage);
 
   // Schedule digest
   scheduleDigest(config.schedules.digest);
@@ -121,6 +159,7 @@ export function startScheduler() {
       preprints: config.schedules.preprints,
       citations: config.schedules.citations,
       payers: config.schedules.payers,
+      triage: config.schedules.triage,
       digest: config.schedules.digest,
     },
   });
@@ -180,6 +219,14 @@ export async function triggerDigest() {
 }
 
 /**
+ * Manually trigger AI triage
+ */
+export async function triggerTriage() {
+  logger.info('Manually triggering triage');
+  return triageDiscoveries(null, { loadFromQueue: true, verbose: true });
+}
+
+/**
  * Run all crawlers immediately (useful for testing)
  */
 export async function runAllCrawlersNow() {
@@ -206,5 +253,6 @@ export default {
   getSchedulerStatus,
   triggerCrawler,
   triggerDigest,
+  triggerTriage,
   runAllCrawlersNow,
 };
