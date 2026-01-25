@@ -1,351 +1,693 @@
 # OpenOnco Intelligence Daemon
 
-Background daemon for automated intelligence gathering. Monitors external sources for updates relevant to OpenOnco's coverage intelligence platform.
+**Automated intelligence gathering for the world's most comprehensive cancer diagnostics database.**
 
-## Overview
+The OpenOnco Intelligence Daemon is a background service that continuously monitors the landscape of cancer diagnostics—tracking scientific publications, regulatory changes, and insurance coverage updates across dozens of sources. It transforms the overwhelming flood of industry information into a curated weekly digest, enabling the OpenOnco team to keep the database current without manually monitoring every source.
 
-The daemon runs on a schedule, crawling various sources for updates:
+> **Human-in-the-loop by design.** Every discovery is queued for review. Nothing auto-updates the database. The daemon surfaces intelligence; humans make decisions.
 
-| Source | Schedule | Description |
-|--------|----------|-------------|
-| PubMed | Daily 6:00 AM | Scientific publications on ctDNA, MRD, liquid biopsy |
-| CMS | Weekly Sunday 6:00 AM | Medicare coverage determinations and policy updates |
-| FDA | Weekly Monday 6:00 AM | Drug approvals, device clearances, guidance |
-| Vendor | Weekly Tuesday 6:00 AM | Test manufacturer website updates |
-| Preprints | Weekly Wednesday 6:00 AM | medRxiv/bioRxiv preprints on oncology diagnostics |
-| Citations | Weekly Thursday 6:00 AM | Database citation validation (missing/broken URLs) |
-| Payers | Weekly Friday 6:00 AM | Private payer coverage policies (UHC, Aetna, Cigna, etc.) |
+---
 
-A **daily digest email** is sent at 10:00 AM with:
-- New discoveries grouped by source
-- Crawler health status
-- Recent errors
-- **Structured XML for AI triage** (see workflow below)
+## Architecture
 
-## Key Principles
+```
+                              EXTERNAL SOURCES
+     ┌─────────────────────────────────────────────────────────────────┐
+     │                                                                 │
+     │   📚 PubMed        📋 medRxiv/bioRxiv      🏥 FDA/CMS          │
+     │   Scientific       Preprint research       Regulatory          │
+     │   publications     Early findings          approvals           │
+     │                                                                 │
+     │   💰 Private Payers                    🏢 Vendor Sites          │
+     │   UHC, Aetna, Cigna, BCBS             Natera, Guardant, GRAIL  │
+     │   coverage policy changes              product updates          │
+     │                                                                 │
+     └───────────────────────────┬─────────────────────────────────────┘
+                                 │
+                                 ▼
+     ┌─────────────────────────────────────────────────────────────────┐
+     │                        CRAWLER LAYER                            │
+     │                                                                 │
+     │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐          │
+     │   │ PubMed  │  │Preprints│  │ Payers  │  │Citations│          │
+     │   │  Daily  │  │  Wed    │  │  Fri    │  │  Thu    │          │
+     │   └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘          │
+     │        │            │            │            │                 │
+     │   ┌────┴────┐  ┌────┴────┐  ┌────┴────┐                        │
+     │   │   CMS   │  │   FDA   │  │ Vendor  │  (stub crawlers)      │
+     │   │  Sun    │  │  Mon    │  │  Tue    │                        │
+     │   └────┬────┘  └────┬────┘  └────┬────┘                        │
+     │        └────────────┴────────────┴──────────────────────────────┤
+     │                                                                 │
+     │   • Rate-limited requests  • Deduplication  • Relevance scoring │
+     └───────────────────────────┬─────────────────────────────────────┘
+                                 │
+                                 ▼
+     ┌─────────────────────────────────────────────────────────────────┐
+     │                     DISCOVERY QUEUE                             │
+     │                   data/discoveries.json                         │
+     │                                                                 │
+     │   Each discovery includes:                                      │
+     │   • Source (pubmed, payers, citations, etc.)                   │
+     │   • Type (publication, policy_change, missing_citation)        │
+     │   • Relevance score (high / medium / low)                      │
+     │   • Metadata (PMID, authors, policy URLs, etc.)                │
+     │   • Status (pending → reviewed → processed)                    │
+     └───────────────────────────┬─────────────────────────────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    ▼                         ▼
+     ┌──────────────────────────┐  ┌──────────────────────────┐
+     │      AI TRIAGE           │  │    MONDAY DIGEST         │
+     │     (Claude API)         │  │      (Resend)            │
+     │                          │  │                          │
+     │  • Classify priority     │  │  • Crawler health        │
+     │  • Extract metrics       │  │  • New discoveries       │
+     │  • Generate update cmds  │  │  • Triage XML payload    │
+     │  • Cost tracking         │  │  • Action items          │
+     └────────────┬─────────────┘  └────────────┬─────────────┘
+                  │                              │
+                  └──────────────┬───────────────┘
+                                 ▼
+     ┌─────────────────────────────────────────────────────────────────┐
+     │                       HUMAN REVIEW                              │
+     │                                                                 │
+     │   Reviewer receives Monday digest → Reviews discoveries →      │
+     │   Approves/discards items → Updates OpenOnco database          │
+     └─────────────────────────────────────────────────────────────────┘
+```
 
-1. **Human-in-the-loop**: All discoveries go to a queue file for review. Nothing is auto-updated in the main database.
-2. **Graceful degradation**: Individual crawler failures don't crash the daemon.
-3. **Rate limiting**: Built-in rate limiting per source to be respectful of external APIs.
-4. **Comprehensive logging**: Structured JSON logs for debugging and monitoring.
-5. **AI-assisted triage**: Weekly emails include structured XML for Claude-based triage workflow.
+---
 
 ## Crawlers
 
-### Citations Validator (`citations`)
+The daemon runs 7 specialized crawlers, each targeting a different segment of the cancer diagnostics landscape.
 
-Validates the test database for citation completeness and URL accessibility.
+| Crawler | Schedule | Sources | What It Finds | Why It Matters |
+|---------|----------|---------|---------------|----------------|
+| **PubMed** | Daily 6 AM | NCBI E-utilities | New publications on ctDNA, MRD, liquid biopsy, specific tests | Validation studies, clinical trials, and new evidence to update test performance data |
+| **Preprints** | Wed 6 AM | medRxiv, bioRxiv | Pre-publication oncology research | Early access to emerging research before peer review (6-12 month lead time) |
+| **Citations** | Thu 6 AM | OpenOnco database | Missing citations, broken URLs, invalid PMIDs | Database quality assurance—ensures every claim has supporting evidence |
+| **Payers** | Fri 6 AM | UHC, Aetna, Cigna, BCBS, Humana | Coverage policy changes for molecular oncology tests | Critical for patients—coverage determines test accessibility |
+| **CMS** | Sun 6 AM | Medicare LCDs/NCDs | National and local coverage determinations | Medicare coverage often sets the precedent for private payers |
+| **FDA** | Mon 6 AM | openFDA | 510(k) clearances, PMA approvals, new indications | Regulatory status affects clinical adoption and reimbursement |
+| **Vendor** | Tue 6 AM | Test manufacturer sites | Product updates, new test launches, performance claims | First-party data for database updates |
 
-**What it does:**
-- Scans all tests in `src/data.js` for performance fields (sensitivity, specificity, PPV, NPV, LOD)
-- Flags fields that have values but no supporting citation
-- Checks all citation URLs for accessibility (broken links, redirects)
-- Special handling for PubMed IDs via NCBI E-utilities API
-- Special handling for DOIs via doi.org resolution
+### Crawler Details
 
-**Discovery types:**
-- `missing_citation` - Performance field has value but no citation URL
-- `broken_citation` - Citation URL returns error or has moved
+**PubMed Crawler** (`src/crawlers/pubmed.js`)
+- Searches 10 specific tests (Signatera, Guardant360, FoundationOne, etc.)
+- Searches 6 topic areas (ctDNA detection, MRD monitoring, liquid biopsy)
+- Fetches last 7 days, max 20 results per search
+- HIGH relevance: test-specific mentions, validation studies, clinical trials
+- MEDIUM relevance: ctDNA/liquid biopsy terms, cancer types
+- LOW relevance: general oncology content
 
-**Schedule:** Weekly Thursday 6:00 AM
+**Payers Crawler** (`src/crawlers/payers.js`)
+- Uses Playwright browser automation (JavaScript-rendered pages)
+- Monitors 5 major payers + 6 vendor coverage pages
+- SHA256 content hashing for change detection
+- Tracks keywords: ctDNA, liquid biopsy, MRD, Signatera, Guardant, etc.
 
-### Private Payers (`payers`)
+**Citations Crawler** (`src/crawlers/citations.js`)
+- Audits 15 citation-required fields (sensitivity, specificity, PPV, NPV, LOD, etc.)
+- Validates PubMed URLs via NCBI API
+- Follows DOI redirects
+- Detects soft 404s on general URLs
+- Discovery types: `missing_citation`, `broken_citation`, `invalid_pmid`, `redirect_url`
 
-Monitors major private insurers for coverage policy updates related to ctDNA/liquid biopsy testing.
+**Preprints Crawler** (`src/crawlers/preprints.js`)
+- bioRxiv REST API for both medRxiv and bioRxiv
+- Filters to oncology-related preprints
+- Same relevance scoring as PubMed
 
-**What it does:**
-- Uses Playwright to crawl JS-heavy payer policy pages
-- Monitors UnitedHealthcare, Aetna, Cigna, Anthem (CA), and Humana
-- Hash-based change detection to identify updated policies
-- Searches for keywords: ctDNA, liquid biopsy, MRD, molecular residual disease, etc.
-- Matches policy changes against monitored test names
+**Stub Crawlers** (CMS, FDA, Vendor)
+- Implemented as placeholders with the full interface
+- Ready for activation when API access is configured
 
-**Discovery types:**
-- `payer_policy_new` - New policy published
-- `payer_policy_update` - Existing policy updated
+---
 
-**Schedule:** Weekly Friday 6:00 AM
+## AI Triage System
 
-## AI Triage Workflow
+The daemon integrates with Claude API to automatically classify, prioritize, and extract actionable data from discoveries.
 
-The daemon supports an AI-assisted triage workflow for processing discoveries.
+### How It Works
 
-### How it works
+```
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   Discovery   │────▶│ Classification│────▶│   Extraction  │────▶│   Commands    │
+│               │     │               │     │               │     │               │
+│ Raw finding   │     │ HIGH/MED/LOW  │     │ Metrics, data │     │ data.js       │
+│ from crawler  │     │ + confidence  │     │ from papers   │     │ update code   │
+└───────────────┘     └───────────────┘     └───────────────┘     └───────────────┘
+```
 
-1. **Weekly email arrives** with structured XML embedded at the bottom
-2. **Copy the XML section** from the email (starts with `<openonco_triage_request>`)
-3. **Paste into Claude** along with the triage instructions included in the email
-4. **Claude analyzes** and produces a prioritized action list:
-   - HIGH PRIORITY: Items requiring immediate database updates
-   - MEDIUM PRIORITY: Items requiring review before update
-   - LOW PRIORITY: Items for monitoring/future reference
-   - IGNORE: Items not relevant to OpenOnco database
-5. **Execute approved actions** using OpenOnco skills or manual edits
+### Triage Functions
 
-### XML Structure
+| Function | Purpose |
+|----------|---------|
+| `classifyDiscovery()` | Assigns priority level, confidence score, and identifies affected tests |
+| `extractDataFromPaper()` | Pulls performance metrics and citations from publications |
+| `generateUpdateCommand()` | Creates copy-paste JavaScript for database updates |
+| `triageDiscoveries()` | Batch processes all pending items efficiently |
 
-The triage XML includes:
+### Classification Output
+
+```javascript
+{
+  highPriority: [    // Urgent: new validation data, FDA approvals
+    { discovery, confidence: 0.95, affectedTests: ['signatera'], action: '...' }
+  ],
+  mediumPriority: [ // Review needed: coverage changes, new studies
+    { discovery, confidence: 0.80, affectedTests: ['guardant360'] }
+  ],
+  lowPriority: [    // Monitor: general research, tangential findings
+    { discovery, confidence: 0.60 }
+  ],
+  ignored: [        // Not relevant to OpenOnco
+    { discovery, reason: 'Out of scope' }
+  ],
+  metadata: {
+    inputCount: 42,
+    processedAt: '2025-01-25T05:00:00.000Z',
+    costs: { inputTokens: 15840, outputTokens: 4201, totalCost: '$0.11' }
+  }
+}
+```
+
+### Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ANTHROPIC_API_KEY` | — | Claude API key (required for triage) |
+| `TRIAGE_MODEL` | `claude-sonnet-4-20250514` | Model for classification |
+| `TRIAGE_MAX_TOKENS` | `4096` | Maximum response tokens |
+| `TRIAGE_TEMPERATURE` | `0.3` | Low for deterministic output |
+| `TRIAGE_BATCH_SIZE` | `20` | Discoveries per API call |
+
+### Manual Triage Workflow
+
+When automated triage is disabled, the Monday digest includes structured XML for manual Claude triage:
+
+1. **Receive digest** with XML payload at bottom
+2. **Copy XML** (starts with `<openonco_triage_request>`)
+3. **Paste into Claude** with triage instructions
+4. **Review analysis** and execute approved actions
+
+---
+
+## Monday Digest Email
+
+Every Monday at 6 AM, the daemon sends a comprehensive digest via Resend.
+
+### Email Structure
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  [OpenOnco] Weekly Intelligence Digest — January 27, 2025          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SUMMARY                                                            │
+│  ──────────────────────────────────────────────────────────────    │
+│  • 12 new discoveries (5 high, 4 medium, 3 low priority)          │
+│  • 47 items pending review                                         │
+│  • All crawlers healthy                                            │
+│                                                                     │
+│  CRAWLER STATUS                                                     │
+│  ──────────────────────────────────────────────────────────────    │
+│  ┌────────────┬─────────────────┬──────────┬───────────┐          │
+│  │ Crawler    │ Last Run        │ Status   │ Found     │          │
+│  ├────────────┼─────────────────┼──────────┼───────────┤          │
+│  │ PubMed     │ Jan 27, 6:00 AM │ ✓        │ 8 new     │          │
+│  │ Payers     │ Jan 24, 6:00 AM │ ✓        │ 2 changes │          │
+│  │ Citations  │ Jan 23, 6:00 AM │ ✓        │ 5 issues  │          │
+│  │ Preprints  │ Jan 22, 6:00 AM │ ✓        │ 3 new     │          │
+│  └────────────┴─────────────────┴──────────┴───────────┘          │
+│                                                                     │
+│  NEW DISCOVERIES                                                    │
+│  ──────────────────────────────────────────────────────────────    │
+│                                                                     │
+│  PubMed (8)                                                        │
+│  • [HIGH] Signatera Validation in Stage II CRC: 97% Sensitivity   │
+│  • [HIGH] Guardant360 CDx vs Tissue Biopsy Concordance Study      │
+│  • [MEDIUM] Liquid Biopsy for Treatment Response Assessment...    │
+│                                                                     │
+│  Citations (5)                                                      │
+│  • [HIGH] Missing citation: Signatera — sensitivity field         │
+│  • [HIGH] Broken URL: Guardant360 — specificity (404 error)       │
+│  • [MEDIUM] Invalid PMID: FoundationOne — LOD (PMID not found)    │
+│                                                                     │
+│  Payers (2)                                                        │
+│  • [HIGH] UnitedHealthcare: Molecular Oncology Testing Updated    │
+│  • [MEDIUM] Aetna: Liquid Biopsy CPB Policy Revision             │
+│                                                                     │
+│  ERRORS (if any)                                                   │
+│  ──────────────────────────────────────────────────────────────    │
+│  (none this week)                                                  │
+│                                                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  AI TRIAGE XML                                                      │
+│  Copy everything below and paste into Claude for analysis:        │
+│                                                                     │
+│  <openonco_triage_request week="2025-01-27">                      │
+│    <citation_audit>                                                │
+│      <missing count="3">...</missing>                              │
+│      <broken count="2">...</broken>                                │
+│    </citation_audit>                                               │
+│    <pubmed_papers count="8">...</pubmed_papers>                   │
+│    <payer_updates count="2">...</payer_updates>                   │
+│    ...                                                             │
+│  </openonco_triage_request>                                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Triage XML Schema
 
 ```xml
-<openonco_triage_request week="2024-01-15">
+<openonco_triage_request week="2025-01-27">
   <citation_audit>
-    <missing count="5">...</missing>
-    <broken count="2">...</broken>
+    <missing count="3">
+      <item test="Signatera" field="sensitivity" value="97.2%"/>
+    </missing>
+    <broken count="2">
+      <item test="Guardant360" field="specificity" url="..." error="404"/>
+    </broken>
   </citation_audit>
-  <vendor_changes count="3">...</vendor_changes>
-  <payer_updates count="1">...</payer_updates>
-  <pubmed_papers count="10">...</pubmed_papers>
-  <cms_updates count="0">...</cms_updates>
-  <fda_updates count="1">...</fda_updates>
-  <preprints count="4">...</preprints>
+
+  <pubmed_papers count="8">
+    <paper pmid="12345678" relevance="high">
+      <title>ctDNA Detection in Stage II Colorectal Cancer...</title>
+      <journal>J Clin Oncol</journal>
+    </paper>
+  </pubmed_papers>
+
+  <payer_updates count="2">
+    <update payer="UHC" policy="Molecular Oncology Testing">
+      <change_detected>2025-01-24T06:15:00Z</change_detected>
+    </update>
+  </payer_updates>
+
+  <preprints count="3">...</preprints>
+  <fda_updates count="0"/>
+  <cms_updates count="0"/>
 </openonco_triage_request>
 ```
 
-### Triage Actions by Type
+### What Claude Does With Each Source
 
-| Source | Claude Actions |
+| Source | Triage Actions |
 |--------|----------------|
-| Missing Citations | Search PubMed/Scholar for sources, suggest citation URLs |
-| Broken Citations | Find replacement URLs, flag for removal if unfixable |
-| Vendor Changes | Classify change type, extract performance metrics |
-| Payer Updates | Match to tests, summarize coverage change, extract criteria |
-| PubMed/Preprints | Extract metrics, identify affected tests, flag updates |
-| CMS Updates | Match LCD/NCD to tests, summarize coverage impact |
-| FDA Updates | Identify test, note new indications/labels |
+| **Missing Citations** | Search PubMed/Google Scholar, suggest citation URLs |
+| **Broken Citations** | Find replacement URLs, flag for removal if unfixable |
+| **PubMed/Preprints** | Extract performance metrics, identify affected tests, draft update |
+| **Payer Updates** | Classify change type, summarize coverage impact, match to tests |
+| **FDA Updates** | Identify test, note new indications/cleared uses |
+| **CMS Updates** | Match LCD/NCD to tests, summarize Medicare coverage change |
 
-## Project Structure
-
-```
-daemon/
-├── package.json              # Dependencies and scripts
-├── railway.json              # Railway deployment config
-├── .env.example              # Environment template
-├── run-test-email.js         # Test script for previewing/sending digest emails
-├── run-now.js                # Manual script to run all crawlers immediately
-├── data/                     # Runtime data (auto-created)
-│   ├── queue.json            # Discovery queue
-│   ├── health.json           # Health tracking
-│   └── payer-hashes.json     # Payer page content hashes for change detection
-└── src/
-    ├── index.js              # Main entry point
-    ├── config.js             # Configuration
-    ├── scheduler.js          # Cron job management
-    ├── health.js             # Health tracking
-    ├── queue/
-    │   ├── index.js          # Queue operations
-    │   └── store.js          # File-based storage
-    ├── crawlers/
-    │   ├── index.js          # Crawler registry
-    │   ├── base.js           # Base crawler class
-    │   ├── pubmed.js         # PubMed crawler (stub)
-    │   ├── cms.js            # CMS crawler (stub)
-    │   ├── fda.js            # FDA crawler (stub)
-    │   ├── vendor.js         # Vendor crawler (stub)
-    │   ├── preprints.js      # medRxiv/bioRxiv preprints crawler
-    │   ├── citations.js      # Database citation validator
-    │   └── payers.js         # Private payer coverage crawler
-    ├── email/
-    │   ├── index.js          # Resend email service
-    │   └── templates.js      # Digest templates
-    └── utils/
-        ├── logger.js         # Structured logging
-        └── http.js           # Rate-limited HTTP client
-```
+---
 
 ## Setup
 
 ### Prerequisites
 
 - Node.js 20+
-- Resend API key for email
+- npm 9+
+- Resend API key (for email)
+- Anthropic API key (optional, for AI triage)
 
 ### Installation
 
 ```bash
 cd daemon
 npm install
+
+# Install Playwright browsers (required for payers crawler)
+npx playwright install chromium
 ```
 
 ### Configuration
-
-Copy `.env.example` to `.env` and configure:
 
 ```bash
 cp .env.example .env
 ```
 
-Required variables:
-- `RESEND_API_KEY` - Your Resend API key
-- `DIGEST_RECIPIENT_EMAIL` - Where to send daily digests
-- `DIGEST_FROM_EMAIL` - Sender email (must be verified in Resend)
+**Required variables:**
 
-Optional variables:
-- `LOG_LEVEL` - debug, info, warn, error (default: info)
-- `SCHEDULE_*` - Override default cron schedules
-- `CRAWLER_*_ENABLED` - Enable/disable specific crawlers
-- `RATE_LIMIT_*` - Requests per minute per source
+| Variable | Description |
+|----------|-------------|
+| `RESEND_API_KEY` | Resend API key for email delivery |
+| `DIGEST_RECIPIENT_EMAIL` | Where to send weekly digests |
+| `DIGEST_FROM_EMAIL` | Sender email (verified in Resend) |
 
-Preprints crawler variables:
-- `CRAWLER_PREPRINTS_ENABLED` - Enable/disable preprints crawler (default: true)
-- `SCHEDULE_PREPRINTS` - Cron schedule (default: `0 6 * * 3` - Wednesday 6:00 AM)
-- `RATE_LIMIT_PREPRINTS` - Requests per minute (default: 5)
+**Optional variables:**
 
-Citations crawler variables:
-- `CRAWLER_CITATIONS_ENABLED` - Enable/disable citations crawler (default: true)
-- `SCHEDULE_CITATIONS` - Cron schedule (default: `0 6 * * 4` - Thursday 6:00 AM)
-- `RATE_LIMIT_CITATIONS` - Requests per minute (default: 2)
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ANTHROPIC_API_KEY` | — | Claude API key for AI triage |
+| `LOG_LEVEL` | `info` | Logging verbosity (debug/info/warn/error) |
+| `NODE_ENV` | `development` | Environment mode |
 
-Payers crawler variables:
-- `CRAWLER_PAYERS_ENABLED` - Enable/disable payers crawler (default: true)
-- `SCHEDULE_PAYERS` - Cron schedule (default: `0 6 * * 5` - Friday 6:00 AM)
-- `RATE_LIMIT_PAYERS` - Requests per minute (default: 2)
+**Crawler toggles** (all default to `true`):
 
-### Running Locally
+```bash
+CRAWLER_PUBMED_ENABLED=true
+CRAWLER_PREPRINTS_ENABLED=true
+CRAWLER_CITATIONS_ENABLED=true
+CRAWLER_PAYERS_ENABLED=true
+CRAWLER_CMS_ENABLED=true
+CRAWLER_FDA_ENABLED=true
+CRAWLER_VENDOR_ENABLED=true
+CRAWLER_TRIAGE_ENABLED=true
+```
+
+**Schedule overrides** (cron syntax):
+
+```bash
+SCHEDULE_PUBMED=0 6 * * *       # Daily 6 AM
+SCHEDULE_PREPRINTS=0 6 * * 3    # Wednesday 6 AM
+SCHEDULE_CITATIONS=0 6 * * 4    # Thursday 6 AM
+SCHEDULE_PAYERS=0 6 * * 5       # Friday 6 AM
+SCHEDULE_CMS=0 6 * * 0          # Sunday 6 AM
+SCHEDULE_FDA=0 6 * * 1          # Monday 6 AM
+SCHEDULE_VENDOR=0 6 * * 2       # Tuesday 6 AM
+SCHEDULE_TRIAGE=0 5 * * 0       # Sunday 5 AM
+SCHEDULE_DIGEST=0 6 * * 1       # Monday 6 AM
+```
+
+**Rate limits** (requests per minute):
+
+```bash
+RATE_LIMIT_PUBMED=10     # NCBI allows 10/sec with API key
+RATE_LIMIT_PREPRINTS=5   # bioRxiv API
+RATE_LIMIT_CITATIONS=2   # URL validation
+RATE_LIMIT_PAYERS=0.2    # Playwright (slow, respectful)
+RATE_LIMIT_CMS=5         # Government site
+RATE_LIMIT_FDA=5         # openFDA
+RATE_LIMIT_VENDOR=3      # Vendor sites
+```
+
+---
+
+## Local Development
+
+### Running
 
 ```bash
 # Development with auto-reload
 npm run dev
 
-# Production
+# Production mode
 npm start
 ```
 
 ### Testing
 
 ```bash
-# Preview digest email in console (includes AI triage XML)
+# Preview digest email (console output)
 node run-test-email.js
 
-# Actually send a test digest email
+# Send actual test email
 node run-test-email.js --send
 
-# Run all crawlers once (outputs discoveries to console)
+# Run all crawlers immediately
 node run-now.js
 
-# Check queue status
-npm run queue:status
+# Test individual crawlers
+node test-citations.js
+node test-payers.js
+node test-triage.js
+
+# Full E2E pipeline test
+node test-e2e-pipeline.js
+
+# Unit tests
+npm test              # Watch mode
+npm run test:run      # Single run
+npm run test:coverage # Coverage report
 ```
 
-**Test email script (`run-test-email.js`):**
-- Fetches current health summary and discoveries
-- Generates the full digest HTML including AI triage XML
-- Preview mode (default): prints HTML to console
-- Send mode (`--send`): sends actual email via Resend
-
-**Manual crawl script (`run-now.js`):**
-- Runs all crawlers immediately (bypasses schedule)
-- Outputs discoveries to console
-- Useful for testing crawler changes locally
-
-To run a specific crawler individually, use the scheduler's `triggerCrawler` function:
+### Triggering Crawlers Programmatically
 
 ```javascript
-// Example: Run only the citations crawler
 import { triggerCrawler } from './src/scheduler.js';
-await triggerCrawler('citations');
 
-// Example: Run only the payers crawler
+await triggerCrawler('pubmed');
+await triggerCrawler('citations');
 await triggerCrawler('payers');
 ```
 
-## Deployment (Railway)
+### Monitoring
 
-1. Connect this directory as a Railway service
-2. Set environment variables in Railway dashboard
-3. Deploy
+```bash
+# Discovery queue status
+cat data/discoveries.json | jq '.items | length'
 
-The `railway.json` configures:
-- Nixpacks builder
-- Auto-restart on failure
-- `npm start` as entry point
+# Health status
+cat data/health.json | jq '.crawlers'
 
-## Queue File Format
+# Live logs
+tail -f logs/daemon-$(date +%Y-%m-%d).log
+```
 
-Discoveries are stored in `data/queue.json`:
+---
+
+## Deployment
+
+The daemon is deployed to [Railway](https://railway.app).
+
+### Setup
+
+1. Connect repository in Railway dashboard
+2. Set root directory to `/daemon`
+3. Configure environment variables
+4. Deploy
+
+### railway.json
+
+```json
+{
+  "build": { "builder": "NIXPACKS" },
+  "deploy": {
+    "startCommand": "npm start",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  }
+}
+```
+
+### Required Environment Variables
+
+```bash
+NODE_ENV=production
+LOG_LEVEL=info
+RESEND_API_KEY=re_...
+ANTHROPIC_API_KEY=sk-ant-...
+DIGEST_RECIPIENT_EMAIL=team@openonco.org
+DIGEST_FROM_EMAIL=OpenOnco Daemon <daemon@openonco.org>
+```
+
+### Health Monitoring
+
+Railway provides:
+- Automatic restarts on failure
+- Log aggregation
+- Resource monitoring
+
+The daemon logs status hourly and includes health data in weekly digests.
+
+---
+
+## Data Storage
+
+All runtime data is stored in `data/` (auto-created on first run).
+
+### discoveries.json
 
 ```json
 {
   "version": 1,
-  "lastUpdated": "2024-01-15T10:00:00Z",
+  "lastUpdated": "2025-01-25T14:30:00.000Z",
   "items": [
     {
       "id": "pubmed-1705312800000-abc123",
       "source": "pubmed",
       "type": "publication",
       "title": "ctDNA Detection in Colorectal Cancer...",
-      "summary": "Abstract text...",
       "url": "https://pubmed.ncbi.nlm.nih.gov/12345678/",
       "relevance": "high",
-      "metadata": {
-        "pmid": "12345678",
-        "authors": ["Smith J", "Jones K"],
-        "journal": "J Clin Oncol"
-      },
-      "discoveredAt": "2024-01-15T06:00:00Z",
-      "status": "pending",
-      "reviewedAt": null,
-      "reviewedBy": null,
-      "notes": null
+      "metadata": { "pmid": "12345678", "journal": "J Clin Oncol" },
+      "discoveredAt": "2025-01-25T06:00:00.000Z",
+      "status": "pending"
     }
   ],
-  "stats": {
-    "totalAdded": 150,
-    "totalProcessed": 120,
-    "totalDiscarded": 30
-  }
+  "stats": { "totalAdded": 150, "totalProcessed": 120 }
 }
 ```
 
-## Implementing Crawlers
+### health.json
 
-The crawlers are currently stubs. To implement one:
+```json
+{
+  "version": 1,
+  "startedAt": "2025-01-15T08:00:00.000Z",
+  "crawlers": {
+    "pubmed": {
+      "lastRun": "2025-01-25T06:00:00.000Z",
+      "lastSuccess": "2025-01-25T06:00:00.000Z",
+      "discoveriesFound": 42,
+      "discoveriesAdded": 38,
+      "duration": 3245,
+      "status": "success"
+    }
+  },
+  "errors": [],
+  "digestsSent": 10
+}
+```
 
-1. Open the crawler file (e.g., `src/crawlers/pubmed.js`)
-2. Implement the `crawl()` method using `this.http` for rate-limited requests
-3. Return an array of discovery objects
+### payer-hashes.json
 
-Example:
+SHA256 hashes for content change detection:
+
+```json
+{
+  "uhc:policy:https://www.uhcprovider.com/.../molecular.html": "a1b2c3...",
+  "aetna:policy:https://www.aetna.com/cpb/...": "d4e5f6..."
+}
+```
+
+### logs/
+
+Winston daily rotation logs:
+- `daemon-YYYY-MM-DD.log` — All logs
+- `daemon-error-YYYY-MM-DD.log` — Errors only
+
+---
+
+## Extending the Daemon
+
+### Adding a New Crawler
+
+1. **Create crawler file** (`src/crawlers/mySource.js`):
 
 ```javascript
-async crawl() {
-  const discoveries = [];
+import BaseCrawler from './base.js';
+import { DISCOVERY_TYPES } from './index.js';
 
-  // Use rate-limited HTTP client
-  const results = await this.http.getJson('https://api.example.com/search');
-
-  for (const item of results) {
-    discoveries.push({
-      source: SOURCES.PUBMED,
-      type: DISCOVERY_TYPES.PUBLICATION,
-      title: item.title,
-      summary: item.abstract,
-      url: item.url,
-      relevance: this.calculateRelevance(item),
-      metadata: { ... }
-    });
+export default class MySourceCrawler extends BaseCrawler {
+  constructor() {
+    super('mySource', { rateLimit: 5, timeout: 30000 });
   }
 
-  return discoveries;
+  async crawl() {
+    const discoveries = [];
+    const results = await this.http.getJson('https://api.example.com/search');
+
+    for (const item of results) {
+      discoveries.push({
+        source: 'mySource',
+        type: DISCOVERY_TYPES.PUBLICATION,
+        title: item.title,
+        url: item.url,
+        relevance: this.calculateRelevance(item),
+        metadata: { /* source-specific */ }
+      });
+    }
+    return discoveries;
+  }
+
+  calculateRelevance(item) {
+    if (item.title.includes('validation')) return 'high';
+    if (item.title.includes('ctDNA')) return 'medium';
+    return 'low';
+  }
 }
 ```
 
-## Email Digest Format
+2. **Register** in `src/crawlers/index.js`
+3. **Add schedule** in `src/config.js`
+4. **Add env vars** to `.env.example`
 
-The daily digest includes:
+### Adding Discovery Types
 
-1. **Summary stats**: New discoveries, pending review count, health status
-2. **Crawler status**: Last successful run per source
-3. **New discoveries**: Grouped by source with relevance badges
-4. **Recent errors**: If any crawlers failed
-5. **AI Triage XML**: Structured XML block for pasting into Claude (see [AI Triage Workflow](#ai-triage-workflow))
+Update `src/crawlers/index.js`:
 
-## Monitoring
+```javascript
+export const DISCOVERY_TYPES = {
+  PUBLICATION: 'publication',
+  POLICY_CHANGE: 'policy_change',
+  MY_NEW_TYPE: 'my_new_type'
+};
+```
 
-- Logs are structured JSON for easy parsing
-- Health data persists to `data/health.json`
-- Status logged hourly
-- Errors are captured and included in digests
+### Customizing Email Templates
+
+Edit `src/email/templates.js`:
+- `generateDigestHTML()` — HTML email body
+- `generateDigestText()` — Plain text fallback
+- `generateTriageXML()` — Structured triage payload
+
+---
+
+## Project Structure
+
+```
+daemon/
+├── package.json
+├── railway.json
+├── .env.example
+├── README.md
+│
+├── run-test-email.js      # Test digest email
+├── run-now.js             # Run all crawlers
+├── test-*.js              # Individual test scripts
+│
+├── data/                  # Runtime data (auto-created)
+│   ├── discoveries.json
+│   ├── health.json
+│   └── payer-hashes.json
+│
+├── logs/                  # Log files (auto-created)
+│
+└── src/
+    ├── index.js           # Entry point
+    ├── config.js          # Configuration
+    ├── scheduler.js       # Cron management
+    ├── health.js          # Health tracking
+    │
+    ├── queue/
+    │   ├── index.js       # Queue operations
+    │   └── store.js       # File storage
+    │
+    ├── crawlers/
+    │   ├── index.js       # Registry
+    │   ├── base.js        # Base class
+    │   ├── pubmed.js      # ✅ Scientific publications
+    │   ├── preprints.js   # ✅ medRxiv/bioRxiv
+    │   ├── citations.js   # ✅ Database audit
+    │   ├── payers.js      # ✅ Insurance coverage
+    │   ├── cms.js         # ⏳ Medicare (stub)
+    │   ├── fda.js         # ⏳ FDA (stub)
+    │   └── vendor.js      # ⏳ Vendor sites (stub)
+    │
+    ├── triage/
+    │   ├── index.js       # Orchestrator
+    │   ├── client.js      # Claude API
+    │   └── prompts.js     # System prompts
+    │
+    ├── email/
+    │   ├── index.js       # Resend service
+    │   └── templates.js   # Email templates
+    │
+    └── utils/
+        ├── logger.js      # Winston logging
+        └── http.js        # Rate-limited HTTP
+```
+
+---
 
 ## License
 
-Proprietary - OpenOnco
+Proprietary — OpenOnco
