@@ -14,19 +14,27 @@ export const config = {
   email: {
     apiKey: process.env.RESEND_API_KEY,
     from: process.env.DIGEST_FROM_EMAIL || 'OpenOnco Daemon <daemon@openonco.com>',
-    to: process.env.ALERT_EMAIL || process.env.DIGEST_RECIPIENT_EMAIL || 'team@openonco.com',
-    alertRecipient: process.env.ALERT_EMAIL || 'team@openonco.com',
+    to: process.env.ALERT_EMAIL || process.env.DIGEST_RECIPIENT_EMAIL || 'alexgdickinson@gmail.com',
+    alertRecipient: process.env.ALERT_EMAIL || 'alexgdickinson@gmail.com',
+  },
+
+  // Anthropic API configuration
+  anthropic: {
+    apiKey: process.env.ANTHROPIC_API_KEY,
   },
 
   // Crawler schedules (cron syntax)
-  // PubMed: daily 6am, CMS: weekly Sunday, FDA: weekly Monday, Vendors: weekly Tuesday
+  // All crawlers run Sunday at 2 AM, triage at 5 AM Sunday, digest Monday 6 AM
   schedules: {
-    pubmed: process.env.SCHEDULE_PUBMED || '0 6 * * *',        // Daily at 6:00 AM
-    cms: process.env.SCHEDULE_CMS || '0 6 * * 0',              // Weekly Sunday 6:00 AM
-    fda: process.env.SCHEDULE_FDA || '0 6 * * 1',              // Weekly Monday 6:00 AM
-    vendor: process.env.SCHEDULE_VENDOR || '0 6 * * 2',        // Weekly Tuesday 6:00 AM
-    preprints: process.env.SCHEDULE_PREPRINTS || '0 6 * * 3',  // Weekly Wednesday 6:00 AM
-    digest: process.env.SCHEDULE_DIGEST || '0 10 * * *',       // Daily digest at 10:00 AM
+    pubmed: process.env.SCHEDULE_PUBMED || '0 2 * * 0',        // Sunday 2:00 AM
+    cms: process.env.SCHEDULE_CMS || '0 2 * * 0',              // Sunday 2:00 AM
+    fda: process.env.SCHEDULE_FDA || '0 2 * * 0',              // Sunday 2:00 AM
+    vendor: process.env.SCHEDULE_VENDOR || '0 2 * * 0',        // Sunday 2:00 AM
+    preprints: process.env.SCHEDULE_PREPRINTS || '0 2 * * 0',  // Sunday 2:00 AM
+    citations: process.env.SCHEDULE_CITATIONS || '0 2 * * 0',  // Sunday 2:00 AM
+    payers: process.env.SCHEDULE_PAYERS || '0 2 * * 0',        // Sunday 2:00 AM
+    triage: process.env.SCHEDULE_TRIAGE || '0 5 * * 0',        // Sunday 5:00 AM - after all crawlers finish
+    digest: process.env.SCHEDULE_DIGEST || '0 6 * * 1',        // Monday 6:00 AM - the final email
   },
 
   // Crawler enable flags
@@ -61,6 +69,33 @@ export const config = {
       description: 'medRxiv and bioRxiv preprint servers',
       rateLimit: parseInt(process.env.RATE_LIMIT_PREPRINTS || '5', 10),
     },
+    citations: {
+      enabled: process.env.CRAWLER_CITATIONS_ENABLED !== 'false',
+      name: 'Citations Validator',
+      description: 'Audits missing citations and checks URL liveness',
+      rateLimit: parseInt(process.env.RATE_LIMIT_CITATIONS || '2', 10),
+    },
+    payers: {
+      enabled: process.env.CRAWLER_PAYERS_ENABLED !== 'false',
+      name: 'Private Payers',
+      description: 'Monitors private insurance medical policies',
+      rateLimit: parseFloat(process.env.RATE_LIMIT_PAYERS || '0.2'),
+    },
+    triage: {
+      enabled: process.env.CRAWLER_TRIAGE_ENABLED !== 'false',
+      name: 'AI Triage',
+      description: 'Runs AI triage on accumulated discoveries to prioritize and categorize',
+      rateLimit: parseInt(process.env.RATE_LIMIT_TRIAGE || '5', 10),
+    },
+  },
+
+  // AI Triage configuration
+  triage: {
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+    model: process.env.TRIAGE_MODEL || 'claude-sonnet-4-20250514',
+    maxTokens: parseInt(process.env.TRIAGE_MAX_TOKENS || '4096', 10),
+    temperature: parseFloat(process.env.TRIAGE_TEMPERATURE || '0.3'),
+    batchSize: parseInt(process.env.TRIAGE_BATCH_SIZE || '20', 10),
   },
 
   // Queue configuration
@@ -203,6 +238,18 @@ export const DISCOVERY_TYPES = {
   FDA_GUIDANCE: 'fda_guidance',
   VENDOR_UPDATE: 'vendor_update',
   TEST_DOCUMENTATION: 'test_documentation',
+  PAYER_POLICY_UPDATE: 'payer_policy_update',
+  PAYER_POLICY_NEW: 'payer_policy_new',
+  NEW_POLICY: 'new_policy',
+  MISSING_CITATION: 'missing_citation',
+  BROKEN_CITATION: 'broken_citation',
+  BROKEN_URL: 'broken_url',
+  REDIRECT_URL: 'redirect_url',
+  INVALID_PMID: 'invalid_pmid',
+  NEW_PAYER_POLICY: 'new_payer_policy',
+  POLICY_CHANGE: 'policy_change',
+  COVERAGE_UPDATE: 'coverage_update',
+  PAYER_POLICY_CHANGED: 'payer_policy_changed',
 };
 
 export const SOURCES = {
@@ -211,6 +258,8 @@ export const SOURCES = {
   FDA: 'fda',
   VENDOR: 'vendor',
   PREPRINTS: 'preprints',
+  CITATIONS: 'citations',
+  PAYERS: 'payers',
 };
 
 // =============================================================================

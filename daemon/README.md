@@ -13,11 +13,14 @@ The daemon runs on a schedule, crawling various sources for updates:
 | FDA | Weekly Monday 6:00 AM | Drug approvals, device clearances, guidance |
 | Vendor | Weekly Tuesday 6:00 AM | Test manufacturer website updates |
 | Preprints | Weekly Wednesday 6:00 AM | medRxiv/bioRxiv preprints on oncology diagnostics |
+| Citations | Weekly Thursday 6:00 AM | Database citation validation (missing/broken URLs) |
+| Payers | Weekly Friday 6:00 AM | Private payer coverage policies (UHC, Aetna, Cigna, etc.) |
 
 A **daily digest email** is sent at 10:00 AM with:
 - New discoveries grouped by source
 - Crawler health status
 - Recent errors
+- **Structured XML for AI triage** (see workflow below)
 
 ## Key Principles
 
@@ -25,6 +28,90 @@ A **daily digest email** is sent at 10:00 AM with:
 2. **Graceful degradation**: Individual crawler failures don't crash the daemon.
 3. **Rate limiting**: Built-in rate limiting per source to be respectful of external APIs.
 4. **Comprehensive logging**: Structured JSON logs for debugging and monitoring.
+5. **AI-assisted triage**: Weekly emails include structured XML for Claude-based triage workflow.
+
+## Crawlers
+
+### Citations Validator (`citations`)
+
+Validates the test database for citation completeness and URL accessibility.
+
+**What it does:**
+- Scans all tests in `src/data.js` for performance fields (sensitivity, specificity, PPV, NPV, LOD)
+- Flags fields that have values but no supporting citation
+- Checks all citation URLs for accessibility (broken links, redirects)
+- Special handling for PubMed IDs via NCBI E-utilities API
+- Special handling for DOIs via doi.org resolution
+
+**Discovery types:**
+- `missing_citation` - Performance field has value but no citation URL
+- `broken_citation` - Citation URL returns error or has moved
+
+**Schedule:** Weekly Thursday 6:00 AM
+
+### Private Payers (`payers`)
+
+Monitors major private insurers for coverage policy updates related to ctDNA/liquid biopsy testing.
+
+**What it does:**
+- Uses Playwright to crawl JS-heavy payer policy pages
+- Monitors UnitedHealthcare, Aetna, Cigna, Anthem (CA), and Humana
+- Hash-based change detection to identify updated policies
+- Searches for keywords: ctDNA, liquid biopsy, MRD, molecular residual disease, etc.
+- Matches policy changes against monitored test names
+
+**Discovery types:**
+- `payer_policy_new` - New policy published
+- `payer_policy_update` - Existing policy updated
+
+**Schedule:** Weekly Friday 6:00 AM
+
+## AI Triage Workflow
+
+The daemon supports an AI-assisted triage workflow for processing discoveries.
+
+### How it works
+
+1. **Weekly email arrives** with structured XML embedded at the bottom
+2. **Copy the XML section** from the email (starts with `<openonco_triage_request>`)
+3. **Paste into Claude** along with the triage instructions included in the email
+4. **Claude analyzes** and produces a prioritized action list:
+   - HIGH PRIORITY: Items requiring immediate database updates
+   - MEDIUM PRIORITY: Items requiring review before update
+   - LOW PRIORITY: Items for monitoring/future reference
+   - IGNORE: Items not relevant to OpenOnco database
+5. **Execute approved actions** using OpenOnco skills or manual edits
+
+### XML Structure
+
+The triage XML includes:
+
+```xml
+<openonco_triage_request week="2024-01-15">
+  <citation_audit>
+    <missing count="5">...</missing>
+    <broken count="2">...</broken>
+  </citation_audit>
+  <vendor_changes count="3">...</vendor_changes>
+  <payer_updates count="1">...</payer_updates>
+  <pubmed_papers count="10">...</pubmed_papers>
+  <cms_updates count="0">...</cms_updates>
+  <fda_updates count="1">...</fda_updates>
+  <preprints count="4">...</preprints>
+</openonco_triage_request>
+```
+
+### Triage Actions by Type
+
+| Source | Claude Actions |
+|--------|----------------|
+| Missing Citations | Search PubMed/Scholar for sources, suggest citation URLs |
+| Broken Citations | Find replacement URLs, flag for removal if unfixable |
+| Vendor Changes | Classify change type, extract performance metrics |
+| Payer Updates | Match to tests, summarize coverage change, extract criteria |
+| PubMed/Preprints | Extract metrics, identify affected tests, flag updates |
+| CMS Updates | Match LCD/NCD to tests, summarize coverage impact |
+| FDA Updates | Identify test, note new indications/labels |
 
 ## Project Structure
 
@@ -33,9 +120,12 @@ daemon/
 ├── package.json              # Dependencies and scripts
 ├── railway.json              # Railway deployment config
 ├── .env.example              # Environment template
+├── run-test-email.js         # Test script for previewing/sending digest emails
+├── run-now.js                # Manual script to run all crawlers immediately
 ├── data/                     # Runtime data (auto-created)
 │   ├── queue.json            # Discovery queue
-│   └── health.json           # Health tracking
+│   ├── health.json           # Health tracking
+│   └── payer-hashes.json     # Payer page content hashes for change detection
 └── src/
     ├── index.js              # Main entry point
     ├── config.js             # Configuration
@@ -51,7 +141,9 @@ daemon/
     │   ├── cms.js            # CMS crawler (stub)
     │   ├── fda.js            # FDA crawler (stub)
     │   ├── vendor.js         # Vendor crawler (stub)
-    │   └── preprints.js      # medRxiv/bioRxiv preprints crawler
+    │   ├── preprints.js      # medRxiv/bioRxiv preprints crawler
+    │   ├── citations.js      # Database citation validator
+    │   └── payers.js         # Private payer coverage crawler
     ├── email/
     │   ├── index.js          # Resend email service
     │   └── templates.js      # Digest templates
@@ -98,6 +190,16 @@ Preprints crawler variables:
 - `SCHEDULE_PREPRINTS` - Cron schedule (default: `0 6 * * 3` - Wednesday 6:00 AM)
 - `RATE_LIMIT_PREPRINTS` - Requests per minute (default: 5)
 
+Citations crawler variables:
+- `CRAWLER_CITATIONS_ENABLED` - Enable/disable citations crawler (default: true)
+- `SCHEDULE_CITATIONS` - Cron schedule (default: `0 6 * * 4` - Thursday 6:00 AM)
+- `RATE_LIMIT_CITATIONS` - Requests per minute (default: 2)
+
+Payers crawler variables:
+- `CRAWLER_PAYERS_ENABLED` - Enable/disable payers crawler (default: true)
+- `SCHEDULE_PAYERS` - Cron schedule (default: `0 6 * * 5` - Friday 6:00 AM)
+- `RATE_LIMIT_PAYERS` - Requests per minute (default: 2)
+
 ### Running Locally
 
 ```bash
@@ -111,14 +213,39 @@ npm start
 ### Testing
 
 ```bash
-# Send a test email
-npm run test:email
+# Preview digest email in console (includes AI triage XML)
+node run-test-email.js
 
-# Run all crawlers once
-npm run test:crawlers
+# Actually send a test digest email
+node run-test-email.js --send
+
+# Run all crawlers once (outputs discoveries to console)
+node run-now.js
 
 # Check queue status
 npm run queue:status
+```
+
+**Test email script (`run-test-email.js`):**
+- Fetches current health summary and discoveries
+- Generates the full digest HTML including AI triage XML
+- Preview mode (default): prints HTML to console
+- Send mode (`--send`): sends actual email via Resend
+
+**Manual crawl script (`run-now.js`):**
+- Runs all crawlers immediately (bypasses schedule)
+- Outputs discoveries to console
+- Useful for testing crawler changes locally
+
+To run a specific crawler individually, use the scheduler's `triggerCrawler` function:
+
+```javascript
+// Example: Run only the citations crawler
+import { triggerCrawler } from './src/scheduler.js';
+await triggerCrawler('citations');
+
+// Example: Run only the payers crawler
+await triggerCrawler('payers');
 ```
 
 ## Deployment (Railway)
@@ -210,6 +337,7 @@ The daily digest includes:
 2. **Crawler status**: Last successful run per source
 3. **New discoveries**: Grouped by source with relevance badges
 4. **Recent errors**: If any crawlers failed
+5. **AI Triage XML**: Structured XML block for pasting into Claude (see [AI Triage Workflow](#ai-triage-workflow))
 
 ## Monitoring
 

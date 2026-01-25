@@ -102,6 +102,8 @@ export function startScheduler() {
   scheduleCrawler(SOURCES.FDA, config.schedules.fda);
   scheduleCrawler(SOURCES.VENDOR, config.schedules.vendor);
   scheduleCrawler(SOURCES.PREPRINTS, config.schedules.preprints);
+  scheduleCrawler(SOURCES.CITATIONS, config.schedules.citations);
+  scheduleCrawler(SOURCES.PAYERS, config.schedules.payers);
 
   // Schedule digest
   scheduleDigest(config.schedules.digest);
@@ -117,6 +119,8 @@ export function startScheduler() {
       fda: config.schedules.fda,
       vendor: config.schedules.vendor,
       preprints: config.schedules.preprints,
+      citations: config.schedules.citations,
+      payers: config.schedules.payers,
       digest: config.schedules.digest,
     },
   });
@@ -182,7 +186,7 @@ export async function runAllCrawlersNow() {
   logger.info('Running all crawlers immediately');
 
   const results = {};
-  const sources = [SOURCES.PUBMED, SOURCES.CMS, SOURCES.FDA, SOURCES.VENDOR, SOURCES.PREPRINTS];
+  const sources = [SOURCES.PUBMED, SOURCES.CMS, SOURCES.FDA, SOURCES.VENDOR, SOURCES.PREPRINTS, SOURCES.CITATIONS, SOURCES.PAYERS];
 
   for (const source of sources) {
     try {

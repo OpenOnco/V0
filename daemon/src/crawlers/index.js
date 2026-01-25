@@ -8,6 +8,8 @@ import { CMSCrawler } from './cms.js';
 import { FDACrawler } from './fda.js';
 import { VendorCrawler } from './vendor.js';
 import { PreprintsCrawler } from './preprints.js';
+import { CitationsCrawler } from './citations.js';
+import { PayerCrawler } from './payers.js';
 import { BaseCrawler } from './base.js';
 import { createLogger } from '../utils/logger.js';
 import { SOURCES } from '../config.js';
@@ -21,6 +23,8 @@ const crawlers = {
   [SOURCES.FDA]: new FDACrawler(),
   [SOURCES.VENDOR]: new VendorCrawler(),
   [SOURCES.PREPRINTS]: new PreprintsCrawler(),
+  [SOURCES.PAYERS]: new PayerCrawler(),
+  [SOURCES.CITATIONS]: new CitationsCrawler(),
 };
 
 /**
@@ -35,6 +39,8 @@ export function createAllCrawlers(queue = null) {
     [SOURCES.FDA]: new FDACrawler(),
     [SOURCES.VENDOR]: new VendorCrawler(),
     [SOURCES.PREPRINTS]: new PreprintsCrawler(),
+    [SOURCES.PAYERS]: new PayerCrawler(),
+    [SOURCES.CITATIONS]: new CitationsCrawler(),
   };
 
   // If queue is provided, attach it to each crawler for future use
@@ -136,7 +142,7 @@ export function getCrawlerStatuses() {
 }
 
 // Export crawler classes for direct instantiation
-export { BaseCrawler, PubMedCrawler, CMSCrawler, FDACrawler, VendorCrawler, PreprintsCrawler };
+export { BaseCrawler, PubMedCrawler, CMSCrawler, FDACrawler, VendorCrawler, PreprintsCrawler, CitationsCrawler, PayerCrawler };
 
 export default {
   // Factory
@@ -161,4 +167,6 @@ export default {
   FDACrawler,
   VendorCrawler,
   PreprintsCrawler,
+  CitationsCrawler,
+  PayerCrawler,
 };
