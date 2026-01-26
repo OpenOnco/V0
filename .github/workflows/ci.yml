@@ -34,7 +34,8 @@ jobs:
         run: npm run test:smoke
 
       - name: Run API tests
-        continue-on-error: true
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: npm run test:api
 
   build:
