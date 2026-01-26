@@ -3,5 +3,14 @@
   "aetna:policy:https://www.aetna.com/cpb/medical/data/100_199/0140.html": "50393fbf0e6a2ab49af943bd7eb5285596672b78692a3689a3e33b3b89133ee3",
   "aetna:policy:https://www.aetna.com/cpb/medical/data/400_499/0469.html": "31108b7d65dff0046c4a2665a1a129a4d207f1dc73a77e4a007320ef64e6f7c2",
   "aetna:policy:https://www.aetna.com/cpb/medical/data/700_799/0715.html": "b6a5fe924a15530c31490542677db28d05e464fcaeeec19adb156443bf817f3b",
-  "vendor:natera:https://www.natera.com/oncology/signatera-mrd-test/coverage/": "f3d72f5e927dd1745f6ed2dd47cd0ce89d4a552bbf31d2e6111ba07c27e1a09a"
+  "vendor:natera:https://www.natera.com/oncology/signatera-mrd-test/coverage/": "f3d72f5e927dd1745f6ed2dd47cd0ce89d4a552bbf31d2e6111ba07c27e1a09a",
+  "uhc:index:https://www.uhcprovider.com/en/policies-protocols/commercial-policies/commercial-medical-drug-policies.html": "0576d3fd5df2b4aceb83b2a0610c4e3fba2950db44840a36fed51f0720ef558d",
+  "uhc:policy:https://www.uhcprovider.com/content/provider/en/policies-protocols/commercial-policies/molecular-oncology-testing.html": "af9d412eff396c88b1bb0921df550de7da3bf3bfabab739e105d1e28bf79eb27",
+  "cigna:index:https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/": "7d04f7431bbfa41a04bcc7e6b98b9de0d919756c4c671c5785c99fff45f16402",
+  "humana:index:https://www.humana.com/provider/medical-resources/clinical-policies": "aa8b1c2ff2536e768e96535de9d514efb34b3a676b2a02ad57ac01553167572d",
+  "vendor:guardant:https://guardanthealth.com/coverage/": "1e0a29e757482cd825dae49ee95c830a777fc4a5c7c48b6e8b48768922857294",
+  "vendor:foundation:https://www.foundationmedicine.com/info/patient-coverage": "0f6ed484b4897f775f703b11016b7cf5902d4e5fd9dfaf7700e4f30a7c7d8442",
+  "vendor:grail:https://www.grail.com/galleri/coverage": "0a1e6757d413934aae21f132728e34954792ad95735a8932e798c0fbd69eb32a",
+  "vendor:exactsciences:https://www.exactsciences.com/providers/coverage-and-reimbursement": "1670997bb07d1c8e2a62c46406ecb00935cf78023234eed47afb7b01643ab713",
+  "vendor:tempus:https://www.tempus.com/coverage": "c855704addad9468aedd7c5f821f0a1e163cffaa85b2e2ea3d90ae532ed70cea"
 }

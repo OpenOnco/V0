@@ -1,55 +1,73 @@
 {
   "version": 1,
   "startedAt": "2026-01-16T20:09:21.344Z",
-  "lastUpdated": "2026-01-16T20:14:51.942Z",
+  "lastUpdated": "2026-01-26T16:47:35.329Z",
   "crawlers": {
     "pubmed": {
-      "lastRun": "2026-01-16T20:08:58.946Z",
-      "lastSuccess": "2026-01-16T20:09:21.342Z",
-      "discoveriesFound": 5,
-      "discoveriesAdded": 5,
-      "duration": 22396,
+      "lastRun": "2026-01-26T16:31:40.794Z",
+      "lastSuccess": "2026-01-26T16:32:03.091Z",
+      "discoveriesFound": 9,
+      "discoveriesAdded": 0,
+      "duration": 22297,
       "status": "success",
-      "updatedAt": "2026-01-16T20:09:21.344Z"
+      "updatedAt": "2026-01-26T16:32:03.093Z"
     },
     "cms": {
-      "lastRun": "2026-01-16T20:09:21.345Z",
-      "lastSuccess": "2026-01-16T20:09:27.734Z",
+      "lastRun": "2026-01-26T16:32:03.095Z",
+      "lastSuccess": "2026-01-26T16:32:09.318Z",
       "discoveriesFound": 0,
       "discoveriesAdded": 0,
-      "duration": 6389,
+      "duration": 6223,
       "status": "success",
-      "updatedAt": "2026-01-16T20:09:27.734Z"
+      "updatedAt": "2026-01-26T16:32:09.318Z"
     },
     "fda": {
-      "lastRun": "2026-01-16T20:09:27.737Z",
-      "lastSuccess": "2026-01-16T20:12:02.426Z",
+      "lastRun": "2026-01-26T16:32:09.319Z",
+      "lastSuccess": "2026-01-26T16:34:42.957Z",
       "discoveriesFound": 0,
       "discoveriesAdded": 0,
-      "duration": 154689,
+      "duration": 153638,
       "status": "success",
-      "updatedAt": "2026-01-16T20:12:02.426Z"
+      "updatedAt": "2026-01-26T16:34:42.957Z"
     },
     "vendor": {
-      "lastRun": "2026-01-16T20:12:02.427Z",
-      "lastSuccess": "2026-01-16T20:13:32.830Z",
+      "lastRun": "2026-01-26T16:34:42.959Z",
+      "lastSuccess": "2026-01-26T16:36:21.308Z",
       "discoveriesFound": 0,
       "discoveriesAdded": 0,
-      "duration": 90403,
+      "duration": 98349,
       "status": "success",
-      "updatedAt": "2026-01-16T20:13:32.830Z"
+      "updatedAt": "2026-01-26T16:36:21.308Z"
     },
     "preprints": {
-      "lastRun": "2026-01-16T20:13:32.830Z",
-      "lastSuccess": "2026-01-16T20:14:51.942Z",
-      "discoveriesFound": 51,
-      "discoveriesAdded": 51,
-      "duration": 79112,
+      "lastRun": "2026-01-26T16:36:21.309Z",
+      "lastSuccess": "2026-01-26T16:37:50.030Z",
+      "discoveriesFound": 38,
+      "discoveriesAdded": 0,
+      "duration": 88721,
       "status": "success",
-      "updatedAt": "2026-01-16T20:14:51.942Z"
+      "updatedAt": "2026-01-26T16:37:50.030Z"
+    },
+    "citations": {
+      "lastRun": "2026-01-26T16:37:50.032Z",
+      "lastSuccess": "2026-01-26T16:45:24.421Z",
+      "discoveriesFound": 305,
+      "discoveriesAdded": 154,
+      "duration": 454389,
+      "status": "success",
+      "updatedAt": "2026-01-26T16:45:24.421Z"
+    },
+    "payers": {
+      "lastRun": "2026-01-26T16:45:24.422Z",
+      "lastSuccess": "2026-01-26T16:47:35.329Z",
+      "discoveriesFound": 0,
+      "discoveriesAdded": 0,
+      "duration": 130907,
+      "status": "success",
+      "updatedAt": "2026-01-26T16:47:35.329Z"
     }
   },
   "errors": [],
-  "digestsSent": 0,
-  "lastDigestSent": null
+  "digestsSent": 1,
+  "lastDigestSent": "2026-01-26T05:00:27.330Z"
 }

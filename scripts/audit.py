@@ -72,11 +72,12 @@ def extract_js_arrays(content):
     }
     
     # Pattern to find array exports
+    # Note: tdsTestData is aliased from cgpTestData, so we look for that instead
     patterns = {
         'mrd': r'export\s+const\s+mrdTestData\s*=\s*(\[[\s\S]*?\]);',
         'ecd': r'export\s+const\s+ecdTestData\s*=\s*(\[[\s\S]*?\]);',
         'trm': r'export\s+const\s+trmTestData\s*=\s*(\[[\s\S]*?\]);',
-        'tds': r'export\s+const\s+tdsTestData\s*=\s*(\[[\s\S]*?\]);',
+        'tds': r'export\s+const\s+cgpTestData\s*=\s*(\[[\s\S]*?\]);',  # tdsTestData = cgpTestData
     }
     
     for category, pattern in patterns.items():
@@ -96,21 +97,47 @@ def extract_js_arrays(content):
 
 
 def js_to_json(js_str):
-    """Convert JavaScript object/array syntax to valid JSON."""
-    # Remove single-line comments
-    js_str = re.sub(r'//.*$', '', js_str, flags=re.MULTILINE)
-    # Remove multi-line comments
+    """Convert JavaScript object/array syntax to valid JSON.
+
+    The test data arrays in data.js already use JSON-style quoted keys,
+    so we mainly need to handle:
+    1. JavaScript comments (// and /* */)
+    2. Trailing commas
+    3. Single-quoted strings (rarely used)
+    """
+    # Remove multi-line comments first
     js_str = re.sub(r'/\*[\s\S]*?\*/', '', js_str)
-    # Add quotes around unquoted keys
-    js_str = re.sub(r'(\s*)(\w+)\s*:', r'\1"\2":', js_str)
-    # Replace single quotes with double quotes (but not in text)
-    # This is tricky - we'll handle common cases
-    js_str = re.sub(r":\s*'([^']*)'", r': "\1"', js_str)
-    # Remove trailing commas
+
+    # Remove single-line comments - process line by line to avoid matching // inside strings
+    lines = js_str.split('\n')
+    cleaned_lines = []
+    for line in lines:
+        if '//' in line:
+            # Track whether we're inside a string
+            result = []
+            in_string = False
+            i = 0
+            while i < len(line):
+                char = line[i]
+                if char == '"' and (i == 0 or line[i-1] != '\\'):
+                    in_string = not in_string
+                    result.append(char)
+                elif char == '/' and i + 1 < len(line) and line[i+1] == '/' and not in_string:
+                    # Found a comment outside of string - strip rest of line
+                    break
+                else:
+                    result.append(char)
+                i += 1
+            line = ''.join(result).rstrip()
+        cleaned_lines.append(line)
+    js_str = '\n'.join(cleaned_lines)
+
+    # Remove trailing commas before ] or }
     js_str = re.sub(r',(\s*[\]}])', r'\1', js_str)
-    # Handle undefined and null
-    js_str = re.sub(r':\s*undefined', ': null', js_str)
-    
+
+    # Handle undefined -> null
+    js_str = re.sub(r':\s*undefined\b', ': null', js_str)
+
     return js_str
 
 
