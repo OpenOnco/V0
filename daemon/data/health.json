@@ -1,7 +1,7 @@
 {
   "version": 1,
   "startedAt": "2026-01-16T20:09:21.344Z",
-  "lastUpdated": "2026-01-26T16:47:35.329Z",
+  "lastUpdated": "2026-01-26T23:43:11.717Z",
   "crawlers": {
     "pubmed": {
       "lastRun": "2026-01-26T16:31:40.794Z",
@@ -68,6 +68,6 @@
     }
   },
   "errors": [],
-  "digestsSent": 1,
-  "lastDigestSent": "2026-01-26T05:00:27.330Z"
+  "digestsSent": 3,
+  "lastDigestSent": "2026-01-26T23:43:11.716Z"
 }

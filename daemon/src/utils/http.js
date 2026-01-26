@@ -103,7 +103,7 @@ export function createHttpClient(source, options = {}) {
     rateLimitMs = DEFAULT_RATE_LIMIT_MS,
     retries = 3,
     timeout = 30000,
-    userAgent = 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.com/bot)',
+    userAgent = 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.org/bot)',
   } = options;
 
   const rateLimiter = getRateLimiter(source, rateLimitMs);
@@ -296,7 +296,7 @@ export function createHttpClient(source, options = {}) {
 export function createPubMedClient(apiKey) {
   return createHttpClient('pubmed', {
     rateLimitMs: apiKey ? 334 : 1000, // 3/sec with key, 1/sec without
-    userAgent: 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.com/bot; contact@openonco.com)',
+    userAgent: 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.org/bot; contact@openonco.org)',
     timeout: 60000, // PubMed can be slow
   });
 }
@@ -308,7 +308,7 @@ export function createPubMedClient(apiKey) {
 export function createGovClient(source) {
   return createHttpClient(source, {
     rateLimitMs: 2000, // 1 request per 2 seconds for .gov sites
-    userAgent: 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.com/bot)',
+    userAgent: 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.org/bot)',
     timeout: 45000,
   });
 }
@@ -320,7 +320,7 @@ export function createGovClient(source) {
 export function createVendorClient(vendorName) {
   return createHttpClient(`vendor:${vendorName}`, {
     rateLimitMs: 3000, // 1 request per 3 seconds for vendor sites
-    userAgent: 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.com/bot)',
+    userAgent: 'OpenOnco-Intelligence-Daemon/1.0 (+https://openonco.org/bot)',
     timeout: 30000,
   });
 }

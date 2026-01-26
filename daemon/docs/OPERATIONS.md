@@ -40,7 +40,7 @@ railway link
 
 # Set required environment variables
 railway variables set RESEND_API_KEY=re_your_api_key_here
-railway variables set DIGEST_RECIPIENT_EMAIL=team@openonco.com
+railway variables set DIGEST_RECIPIENT_EMAIL=team@openonco.org
 railway variables set NODE_ENV=production
 
 # Deploy
@@ -64,7 +64,7 @@ railway logs --tail
 | `NODE_ENV` | `development` | Set to `production` |
 | `LOG_LEVEL` | `info` | Logging verbosity |
 | `ALERT_EMAIL` | Same as digest | Critical alert recipient |
-| `DIGEST_FROM_EMAIL` | `daemon@openonco.com` | Sender address |
+| `DIGEST_FROM_EMAIL` | `daemon@openonco.org` | Sender address |
 
 See [CONFIGURATION.md](./CONFIGURATION.md) for all options.
 
@@ -127,9 +127,9 @@ Create `~/Library/LaunchAgents/com.openonco.daemon.plist`:
         <key>RESEND_API_KEY</key>
         <string>re_your_api_key_here</string>
         <key>DIGEST_RECIPIENT_EMAIL</key>
-        <string>team@openonco.com</string>
+        <string>team@openonco.org</string>
         <key>ALERT_EMAIL</key>
-        <string>alerts@openonco.com</string>
+        <string>alerts@openonco.org</string>
         <key>LOG_LEVEL</key>
         <string>info</string>
     </dict>

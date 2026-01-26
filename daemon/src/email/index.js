@@ -57,6 +57,10 @@ export async function sendDailyDigest() {
       text,
     });
 
+    if (result.error) {
+      throw new Error(result.error.message || JSON.stringify(result.error));
+    }
+
     logger.info('Daily digest sent successfully', {
       to: config.email.to,
       subject,

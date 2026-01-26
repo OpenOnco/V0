@@ -13,9 +13,9 @@ Create a `.env` file in the daemon root directory. See `.env.example` for a temp
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `RESEND_API_KEY` | Yes | - | Resend API key for sending emails |
-| `DIGEST_FROM_EMAIL` | No | `OpenOnco Daemon <daemon@openonco.com>` | Sender email address |
-| `DIGEST_RECIPIENT_EMAIL` | No | `team@openonco.com` | Primary digest recipient |
-| `ALERT_EMAIL` | No | `team@openonco.com` | Alert email recipient |
+| `DIGEST_FROM_EMAIL` | No | `OpenOnco Daemon <daemon@openonco.org>` | Sender email address |
+| `DIGEST_RECIPIENT_EMAIL` | No | `team@openonco.org` | Primary digest recipient |
+| `ALERT_EMAIL` | No | `team@openonco.org` | Alert email recipient |
 | `CRAWLER_PUBMED_ENABLED` | No | `true` | Enable PubMed crawler |
 | `CRAWLER_CMS_ENABLED` | No | `true` | Enable CMS crawler |
 | `CRAWLER_FDA_ENABLED` | No | `true` | Enable FDA crawler |
@@ -48,9 +48,9 @@ Create a `.env` file in the daemon root directory. See `.env.example` for a temp
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `RESEND_API_KEY` | Yes | - | API key from [Resend](https://resend.com) for sending email digests |
-| `DIGEST_FROM_EMAIL` | No | `OpenOnco Daemon <daemon@openonco.com>` | Sender email address |
-| `DIGEST_RECIPIENT_EMAIL` | No | `team@openonco.com` | Primary recipient for digests |
-| `ALERT_EMAIL` | No | `team@openonco.com` | Recipient for alert emails |
+| `DIGEST_FROM_EMAIL` | No | `OpenOnco Daemon <daemon@openonco.org>` | Sender email address |
+| `DIGEST_RECIPIENT_EMAIL` | No | `team@openonco.org` | Primary recipient for digests |
+| `ALERT_EMAIL` | No | `team@openonco.org` | Recipient for alert emails |
 
 **Note:** If `ALERT_EMAIL` is set, it takes precedence over `DIGEST_RECIPIENT_EMAIL` for alerts.
 
@@ -386,7 +386,7 @@ API_BASE_URL=http://localhost:3000
 API_SECRET_KEY=your-api-secret-key
 
 # Email (optional)
-DIGEST_FROM_EMAIL=OpenOnco Daemon <daemon@openonco.com>
+DIGEST_FROM_EMAIL=OpenOnco Daemon <daemon@openonco.org>
 DIGEST_RECIPIENT_EMAIL=team@yourdomain.com
 ALERT_EMAIL=alerts@yourdomain.com
 

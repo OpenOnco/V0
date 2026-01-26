@@ -13,7 +13,7 @@ export const config = {
   // Email configuration
   email: {
     apiKey: process.env.RESEND_API_KEY,
-    from: process.env.DIGEST_FROM_EMAIL || 'OpenOnco Daemon <daemon@openonco.com>',
+    from: process.env.DIGEST_FROM_EMAIL || 'OpenOnco Daemon <daemon@openonco.org>',
     to: process.env.ALERT_EMAIL || process.env.DIGEST_RECIPIENT_EMAIL || 'alexgdickinson@gmail.com',
     alertRecipient: process.env.ALERT_EMAIL || 'alexgdickinson@gmail.com',
   },
