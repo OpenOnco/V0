@@ -2332,7 +2332,7 @@ const mrdTestData = [
     "totalParticipants": 100,
     "numPublications": 5,
     "numPublicationsPlus": false,
-    "numPublicationsCitations": "Zviran A et al. Nat Med 2020;26:1114-1124 (PMID not indexed, DOI:10.1038/s41591-020-0915-3) | Nordentoft I et al. Eur Urol 2024;86(4):301-311 (PMID:38811314) | Frydendahl A et al. Eur J Cancer 2024;211:114314 (PMID:39316995) | Manca P et al. npj Precis Oncol 2025;10:8 (DOI:10.1038/s41698-025-01208-w) | Widman AJ et al. Nat Med 2024;30(6):1655-1666 (PMID:38877116)",
+    "numPublicationsCitations": "Zviran A et al. Nat Med 2020;26:1114-1124 (PMID:32483360, DOI:10.1038/s41591-020-0915-3) | Nordentoft I et al. Eur Urol 2024;86(4):301-311 (PMID:38811314) | Frydendahl A et al. Eur J Cancer 2024;211:114314 (PMID:39316995) | Manca P et al. npj Precis Oncol 2025;10:8 (DOI:10.1038/s41698-025-01208-w) | Widman AJ et al. Nat Med 2024;30(6):1655-1666 (PMID:38877116)",
     "numPublicationsNotes": "Foundational WGS-based MRD platform described in Zviran 2020 (Nature Medicine). Clinical validation includes MIBC (Nordentoft 2024), CRC (Frydendahl 2024), rectal cancer/organ preservation (Manca 2025). MRD-EDGE machine learning methodology in Widman 2024.",
     "isRUO": true,
     "isInvestigational": true,
