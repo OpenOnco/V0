@@ -13,7 +13,11 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "postinstall": "npx playwright install chromium"
+    "postinstall": "npx playwright install chromium",
+    "run:crawl": "node scripts/run-pipeline.js --crawl",
+    "run:triage": "node scripts/run-pipeline.js --triage",
+    "run:digest": "node scripts/run-pipeline.js --digest",
+    "run:all": "node scripts/run-pipeline.js --all"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
