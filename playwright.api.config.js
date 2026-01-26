@@ -29,7 +29,7 @@ export default defineConfig({
 
   /* Start vercel dev server for API routes */
   webServer: process.env.API_URL ? undefined : {
-    command: 'npx vercel dev --listen 3001 --token=$VERCEL_TOKEN',
+    command: 'npx vercel dev --listen 3001 --yes --token=$VERCEL_TOKEN',
     url: 'http://localhost:3001/api/v1/stats',
     reuseExistingServer: !process.env.CI,
     timeout: 60000,
