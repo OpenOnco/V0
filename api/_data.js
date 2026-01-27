@@ -17,6 +17,7 @@ import {
   COMPANY_CONTRIBUTIONS,
   VENDOR_ASSISTANCE_PROGRAMS,
   INSURANCE_PROVIDERS,
+  PAYER_NAME_TO_ID,
   GLOSSARY,
 } from '../src/data.js';
 
@@ -46,7 +47,10 @@ export const dal = initializeDAL({
   cgpTestData,
   hctTestData,
   changelogData: DATABASE_CHANGELOG,
-  vendorData: { VENDOR_VERIFIED, COMPANY_CONTRIBUTIONS, VENDOR_ASSISTANCE_PROGRAMS },
-  insuranceData: INSURANCE_PROVIDERS,
-  glossaryData: GLOSSARY,
+  vendorVerified: VENDOR_VERIFIED,
+  companyContributions: COMPANY_CONTRIBUTIONS,
+  assistancePrograms: VENDOR_ASSISTANCE_PROGRAMS,
+  insuranceProviders: INSURANCE_PROVIDERS,
+  payerNameToId: PAYER_NAME_TO_ID,
+  glossary: GLOSSARY,
 });

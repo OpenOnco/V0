@@ -924,8 +924,7 @@ export const PATIENT_ASSISTANCE_RESOURCES = [
 // ============================================
 
 // MRD Tests
-// Test arrays are internal - access via dal.tests for external usage
-const mrdTestData = [
+export const mrdTestData = [
   {
     "id": "mrd-1",
     "sampleCategory": "Blood/Plasma",
@@ -5206,7 +5205,7 @@ const mrdTestData = [
 ];
 
 // ECD Tests
-const ecdTestData = [
+export const ecdTestData = [
   {
     "id": "ecd-1",
     "sampleCategory": "Blood/Plasma",
@@ -7108,10 +7107,10 @@ const ecdTestData = [
 
 
 // DEPRECATED: TRM tests merged into mrdTestData - empty alias for backwards compatibility
-const trmTestData = [];
+export const trmTestData = [];
 
 // CGP Tests (Comprehensive Genomic Profiling - formerly TDS)
-const cgpTestData = [
+export const cgpTestData = [
   {
     "id": "tds-1",
     "name": "FoundationOne CDx",
@@ -9417,12 +9416,12 @@ const cgpTestData = [
 // ============================================
 
 // DEPRECATED: tdsTestData renamed to cgpTestData - alias for backwards compatibility
-const tdsTestData = cgpTestData;
+export const tdsTestData = cgpTestData;
 
 // HCT (Hereditary Cancer Testing) Tests
 // Germline genetic testing for inherited cancer predisposition
 // ============================================
-const hctTestData = [
+export const hctTestData = [
   {
     "id": "hct-1",
     "category": "HCT",
