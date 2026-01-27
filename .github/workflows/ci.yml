@@ -34,10 +34,9 @@ jobs:
         run: npm run test:smoke
 
       - name: Run API tests
-        continue-on-error: true # API not yet deployed to production
         run: npm run test:api
         env:
-          API_URL: https://openonco.org/api/v1
+          API_URL: ${{ github.ref == 'refs/heads/main' && 'https://openonco.org' || 'https://v0-42kj-git-develop-alex-dickinsons-projects-2bee58ff.vercel.app' }}
 
   build:
     name: Build
