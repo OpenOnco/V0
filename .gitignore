@@ -148,6 +148,7 @@ vite.config.ts.timestamp-*
 
 # Claude Code
 .claude/
+!.claude/tasks/
 
 # Playwright test artifacts
 playwright-report/
