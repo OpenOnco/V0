@@ -15,7 +15,6 @@ import {
   classifyVendorChanges,
   classifyPapers,
   classifyPayerUpdates,
-  prioritizeActions,
   generateUpdateCommands,
   generateDigestSummary,
   buildClassificationPrompt,
@@ -116,6 +115,68 @@ function batchItems(items, batchSize = 10) {
     batches.push(items.slice(i, i + batchSize));
   }
   return batches;
+}
+
+/**
+ * Prioritize classified discoveries using local heuristics instead of Claude API.
+ * Mirrors the inferPriority logic from markdown-export.js but operates on
+ * already-classified items from the batch processors.
+ *
+ * Rules:
+ *   HIGH:   FDA approvals, vendor updates with high relevance, high-relevance items
+ *   MEDIUM: CMS/payer policy changes, publications, vendor updates
+ *   LOW:    Citations audit, everything else
+ *   IGNORED: Items the classifiers already tagged as irrelevant (relevance_score === 0)
+ *
+ * @param {Object} allClassified - { vendor: [], papers: [], payer: [], other: [] }
+ * @returns {{ highPriority: Array, mediumPriority: Array, lowPriority: Array, ignored: Array }}
+ */
+function prioritizeLocally(allClassified) {
+  const highPriority = [];
+  const mediumPriority = [];
+  const lowPriority = [];
+  const ignored = [];
+
+  function bucketItem(item, sourceType) {
+    // Items the classifier already flagged as irrelevant
+    if (item.relevance_score === 0 || item.category === 'irrelevant' || item.priority === 'ignore') {
+      ignored.push({ ...item, _sourceType: sourceType, reason: item.reasoning || 'Classified as irrelevant' });
+      return;
+    }
+
+    // If the classifier already assigned a priority, trust it
+    const classifiedPriority = (item.priority || '').toLowerCase();
+    if (classifiedPriority === 'high') { highPriority.push({ ...item, _sourceType: sourceType }); return; }
+    if (classifiedPriority === 'medium') { mediumPriority.push({ ...item, _sourceType: sourceType }); return; }
+    if (classifiedPriority === 'low') { lowPriority.push({ ...item, _sourceType: sourceType }); return; }
+
+    // Fallback: infer from source type and signals
+    const type = (item.type || item.category || '').toLowerCase();
+    const relevance = (item.relevance || '').toLowerCase();
+
+    if (type === 'fda_approval' || type === 'regulatory') {
+      highPriority.push({ ...item, _sourceType: sourceType });
+    } else if (relevance === 'high') {
+      highPriority.push({ ...item, _sourceType: sourceType });
+    } else if (sourceType === 'vendor' && relevance !== 'low') {
+      highPriority.push({ ...item, _sourceType: sourceType });
+    } else if (sourceType === 'payer') {
+      mediumPriority.push({ ...item, _sourceType: sourceType });
+    } else if (sourceType === 'papers') {
+      mediumPriority.push({ ...item, _sourceType: sourceType });
+    } else if (sourceType === 'vendor') {
+      mediumPriority.push({ ...item, _sourceType: sourceType });
+    } else {
+      lowPriority.push({ ...item, _sourceType: sourceType });
+    }
+  }
+
+  for (const item of (allClassified.vendor || [])) bucketItem(item, 'vendor');
+  for (const item of (allClassified.papers || [])) bucketItem(item, 'papers');
+  for (const item of (allClassified.payer || []))  bucketItem(item, 'payer');
+  for (const item of (allClassified.other || []))  bucketItem(item, 'other');
+
+  return { highPriority, mediumPriority, lowPriority, ignored };
 }
 
 /**
@@ -483,19 +544,11 @@ export async function triageDiscoveries(discoveries, options = {}) {
     other: grouped.other
   };
 
-  // Prioritize all discoveries
-  let prioritized = { highPriority: [], mediumPriority: [], lowPriority: [], ignored: [] };
-
-  const priorityResult = await safeApiCall(async () => {
-    const { systemPrompt: prioritySystem, userPrompt: priorityUser } = prioritizeActions(allClassified);
-    const priorityResponse = await callClaude(prioritySystem, priorityUser);
-    costTracker.add(priorityResponse.usage);
-    return parseJsonResponse(priorityResponse.content);
-  }, 'Prioritization');
-
-  if (priorityResult) {
-    prioritized = priorityResult;
-  }
+  // Prioritize all discoveries using local heuristics (no API call).
+  // This avoids sending all 400+ discoveries to Claude in a single prompt,
+  // which was hitting token limits. The classifiers already assigned priorities
+  // per-batch; we just bucket them here.
+  const prioritized = prioritizeLocally(allClassified);
 
   // Generate update commands if requested and there are actionable items
   let actions = [];
