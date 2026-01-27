@@ -136,3 +136,11 @@ npm run test:smoke     # Quick smoke tests only
 4. **Blue gradient** for patient chat header
 5. **No bullet points** in chat unless user requests them
 6. **3-4 sentence max** for chat responses
+
+## Session Continuity
+
+**At session start:** Read `docs/SESSION_STATE.md` for context from previous work.
+
+**Before ending session:** Run `/handoff` to update `docs/SESSION_STATE.md` with current state.
+
+This maintains continuity across Claude Code sessions and prevents context loss.
