@@ -988,7 +988,8 @@ export const mrdTestData = [
     "clinicalSettings": ["Post-Surgery", "Surveillance"],
     "clinicalSettingsNotes": "Validated for post-surgical MRD assessment and longitudinal surveillance. Clinical trials focus on post-operative and surveillance settings in CRC and NSCLC.",
     "totalParticipants": 333,
-    "numPublications": 17
+    "numPublications": 17,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -1035,11 +1036,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD testing classified as experimental"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required; coverage varies by plan"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -1095,7 +1097,7 @@ export const mrdTestData = [
     "leadTimeVsImaging": 450.0,
     "leadTimeVsImagingCitations": "https://pubmed.ncbi.nlm.nih.gov/39848827/ | Garcia-Murillas et al. Ann Oncol 2025; TRACERx NSCLC data",
     "leadTimeVsImagingNotes": "450 days (15 months) is the median lead time from the Garcia-Murillas et al. Ann Oncol 2025 early-stage breast cancer cohort (range 0.9-61.5 months). This is the median from this specific study, not a universal NeXT median across all indications. NSCLC TRACERx data showed ~6 months.",
-    "vendorRequestedChanges": "2025-12-03: Personalis requested lead time update to 15 months (450 days) based on Ann Oncol 2025 breast cancer paper (Garcia-Murillas et al.). Verified against source and updated.",
+    "vendorRequestedChanges": "2025-12-03: Personalis requested lead time update to 15 months (450 days) based on Ann Oncol 2025 breast cancer paper (Garcia-Murillas et al.). Verified against source and updated. | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "requiresTumorTissue": "Yes",
     "requiresMatchedNormal": "Yes",
     "variantsTracked": "1800",
@@ -1175,11 +1177,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD classified as experimental"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -1265,7 +1268,8 @@ export const mrdTestData = [
     "clinicalSettingsNotes": "Validated for post-surgical MRD assessment (78% sensitivity) and longitudinal surveillance (91% sensitivity) in CRC per Alpha-CORRECT study.",
     "totalParticipants": 540,
     "numPublications": 1,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -1311,11 +1315,12 @@ export const mrdTestData = [
           "notes": "Not specifically listed; general ctDNA experimental classification applies"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -1386,7 +1391,8 @@ export const mrdTestData = [
     "totalParticipants": 121,
     "totalParticipantsNotes": "TRACER expanded cohort (SABCS 2025): 121 patients with TNBC, HER2+, or ER+/HER2- early breast cancer.",
     "numPublications": 8,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -1434,11 +1440,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD experimental classification"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Not specifically covered"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -1494,7 +1501,8 @@ export const mrdTestData = [
     "clinicalSettingsNotes": "Validated for post-surgical MRD, post-adjuvant, and surveillance monitoring. Medicare coverage for HR+/HER2- breast cancer (including late recurrence >5 years) and HPV-negative head and neck cancer.",
     "totalParticipants": 166,
     "numPublications": 10,
-    "numPublicationsPlus": true
+    "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -1540,11 +1548,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD classified as experimental"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -1635,7 +1644,7 @@ export const mrdTestData = [
     "numPublications": 10,
     "numPublicationsPlus": true,
     "vendorVerified": true,
-    "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated LOD from 0.01% VAF to 0.005% Tumor Fraction per guardantcomplete.com."
+    "vendorRequestedChanges": "2026-01-06: Vendor validation by Brandon Guida (Guardant Health) - updated LOD from 0.01% VAF to 0.005% Tumor Fraction per guardantcomplete.com. | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -1682,11 +1691,12 @@ export const mrdTestData = [
           "notes": "No evidence of clinical utility for ctDNA in early-stage cancer, treatment monitoring, or residual disease detection"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Affiliate policies",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Excellus BCBS and Univera Healthcare (UHC affiliates) list as investigational for all indications"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         },
         "geisinger": {
           "status": "COVERED",
@@ -1813,7 +1823,8 @@ export const mrdTestData = [
     "nccnNamedInGuidelines": true,
     "nccnGuidelineReference": "NCCN Colon Cancer, Rectal Cancer, Merkel Cell Carcinoma V.2.2025",
     "nccnGuidelinesNotes": "NCCN V.2.2025 update specifically references Signatera publications. CRC: ctDNA included as high risk factor for recurrence. MCC: positive recommendation for ctDNA monitoring in surveillance, citing Signatera data.",
-    "nccnGuidelinesCitations": "https://www.natera.com/company/news/nccn-strengthens-guidance-on-ctdna-in-colon-cancer-rectal-cancer-and-merkel-cell-carcinoma/"
+    "nccnGuidelinesCitations": "https://www.natera.com/company/news/nccn-strengthens-guidance-on-ctdna-in-colon-cancer-rectal-cancer-and-merkel-cell-carcinoma/",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -1864,11 +1875,12 @@ export const mrdTestData = [
           "notes": "No evidence of clinical utility for ctDNA assays in early-stage cancer, treatment monitoring, or residual disease detection"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required. ctDNA tests generally not covered for early-stage cancer. May cover specific indications with strong evidence on case-by-case basis."
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -1934,6 +1946,7 @@ export const mrdTestData = [
     "totalParticipants": 80,
     "numPublications": 3,
     "numPublicationsPlus": true,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -1965,11 +1978,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD experimental"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -2048,7 +2062,8 @@ export const mrdTestData = [
     "numPublications": 2,
     "numPublicationsCitations": "Nature Medicine 2025 (mesothelioma); Clinical Cancer Research 2025 (head and neck).",
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "Developed under PGDx quality management system and design control. Clinical use for stage III colon cancer; research use for other solid tumors. Expanding indications expected."
+    "regulatoryStatusNotes": "Developed under PGDx quality management system and design control. Clinical use for stage III colon cancer; research use for other solid tumors. Expanding indications expected.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -2095,11 +2110,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD experimental"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Not specifically covered"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -2159,7 +2175,8 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": true,
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "Holds FDA Breakthrough Device designation for MRD but is not yet FDA cleared. The underlying assay platform is a clinical LDT (same technology as FoundationOne Tracker TRM which has Medicare coverage), but MRD-specific applications remain investigational."
+    "regulatoryStatusNotes": "Holds FDA Breakthrough Device designation for MRD but is not yet FDA cleared. The underlying assay platform is a clinical LDT (same technology as FoundationOne Tracker TRM which has Medicare coverage), but MRD-specific applications remain investigational.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -2190,7 +2207,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Investigational assay" },
         "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available for clinical use" },
-        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Investigational" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - Investigational",
@@ -2251,6 +2268,7 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": false,
     "regulatoryStatusNotes": "Research Use Only assay launched September 2025 through FlexOMx Lab; offered for retrospective clinical trials and research studies, not for diagnostic use.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -2269,7 +2287,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
         "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
-        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - Research Use Only",
@@ -2337,6 +2355,7 @@ export const mrdTestData = [
     "isInvestigational": true,
     "isClinicalLDT": false,
     "regulatoryStatusNotes": "Pre-commercial investigational WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. First clinical test for MIBC expected H1 2026.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -2355,7 +2374,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Pre-commercial" },
         "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Pre-commercial" },
-        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Pre-commercial" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - Pre-commercial",
@@ -2422,6 +2441,7 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": false,
     "regulatoryStatusNotes": "Research/development platform (originally LUNAR-1); the patient-facing MRD offering is Guardant Reveal (tracked separately as CLIA LDT). Demonstrated feasibility of tumor-uninformed plasma-only MRD detection.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -2440,7 +2460,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO - see Guardant Reveal for clinical" },
         "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" },
-        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "RUO" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - Research Use Only",
@@ -2524,7 +2544,8 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "First MRD test with Medicare coverage for HPV-driven cancers. Clinical LDT with ADLT designation. Unique tumor-naïve approach detecting viral-derived ctDNA rather than somatic mutations. Proven clinical utility in 35+ peer-reviewed publications."
+    "regulatoryStatusNotes": "First MRD test with Medicare coverage for HPV-driven cancers. Clinical LDT with ADLT designation. Unique tumor-naïve approach detecting viral-derived ctDNA rather than somatic mutations. Proven clinical utility in 35+ peer-reviewed publications.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -2572,11 +2593,12 @@ export const mrdTestData = [
           "notes": "ctDNA for head and neck cancer classified as experimental"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "HPV ctDNA surveillance not specifically covered"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -2658,7 +2680,8 @@ export const mrdTestData = [
       "date": "2025-12-05",
       "upfrontValueUSD": 275000000,
       "earnoutPotentialUSD": 175000000
-    }
+    },
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -2691,7 +2714,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Coverage not established" },
         "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Coverage not established" },
-        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Coverage not established" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - No coverage claims",
@@ -2765,7 +2788,8 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "CAP-accredited, CLIA-certified laboratory (Metro Park, NJ). Acquired by Labcorp Aug 2024 via Invitae bankruptcy sale ($239M)."
+    "regulatoryStatusNotes": "CAP-accredited, CLIA-certified laboratory (Metro Park, NJ). Acquired by Labcorp Aug 2024 via Invitae bankruptcy sale ($239M).",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -2812,11 +2836,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD experimental"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -2873,7 +2898,8 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "technologyDifferentiator": "Tumor-naïve MRD approach using AI/ML on WES/WTS data - no prior tissue profiling required. Only liquid biopsy sequencing both plasma and buffy coat for CHIP subtraction, improving accuracy over plasma-only assays."
+    "technologyDifferentiator": "Tumor-naïve MRD approach using AI/ML on WES/WTS data - no prior tissue profiling required. Only liquid biopsy sequencing both plasma and buffy coat for CHIP subtraction, improving accuracy over plasma-only assays.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -2919,11 +2945,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD experimental"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization; case-by-case review"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -3161,7 +3188,8 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT leveraging Natera's established Signatera infrastructure. Uses proven mPCR-NGS workflow with WGS-informed variant selection for enhanced sensitivity.",
-    "technologyDifferentiator": "WGS-informed evolution of Signatera tracking 64 variants (vs 16) at 1 ppm LOD (vs ~100 ppm). Ultra-deep sequencing up to 350,000x coverage per variant. Designed for cases requiring maximum sensitivity and lead time. Same trusted mPCR workflow backed by >1M Signatera tests."
+    "technologyDifferentiator": "WGS-informed evolution of Signatera tracking 64 variants (vs 16) at 1 ppm LOD (vs ~100 ppm). Ultra-deep sequencing up to 350,000x coverage per variant. Designed for cases requiring maximum sensitivity and lead time. Same trusted mPCR workflow backed by >1M Signatera tests.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "COVERED",
@@ -3207,11 +3235,12 @@ export const mrdTestData = [
           "notes": "ctDNA-based MRD testing considered experimental; insufficient clinical utility evidence"
         },
         "united": {
-          "status": "RESTRICTIVE",
-          "policy": "Affiliate medical policies",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Prior authorization required; case-by-case determination"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -3278,7 +3307,8 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT from Natera. Complements Signatera for cases where tumor tissue is unavailable.",
-    "technologyDifferentiator": "Tissue-free MRD for CRC - no tumor tissue required. Uses methylation-based detection rather than somatic variant tracking. Enables MRD testing when tissue is unavailable, insufficient, or degraded. Part of Natera's comprehensive MRD portfolio alongside Signatera and Signatera Genome."
+    "technologyDifferentiator": "Tissue-free MRD for CRC - no tumor tissue required. Uses methylation-based detection rather than somatic variant tracking. Enables MRD testing when tissue is unavailable, insufficient, or degraded. Part of Natera's comprehensive MRD portfolio alongside Signatera and Signatera Genome.",
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "NOT_YET_AVAILABLE",
@@ -3322,11 +3352,12 @@ export const mrdTestData = [
           "notes": "ctDNA MRD experimental"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
-          "policyUrl": null,
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
+          "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
           "coveredIndications": [],
-          "notes": "Not specifically covered"
+          "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
+          "lastReviewed": "2026-01-27"
         }
       },
       "analysis": {
@@ -3412,7 +3443,7 @@ export const mrdTestData = [
     "regulatoryStatusNotes": "Commercially available in South Korea with Innovative Medical Technology designation. Previously known as AlphaLiquid®Detect.",
     "technologyDifferentiator": "Large-scale mutation tracking (up to 300 variants vs typical 16-50) combined with tumor-agnostic hotspot panel. Korean-developed with strong regulatory pathway. Ultra-sensitive detection (0.001% LOD) through expanded variant coverage rather than deeper sequencing alone. Hybrid approach enables detection of both original tumor mutations and de novo resistance mutations.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-29: Vendor verified by Sunghoon Heo (sunghoon.heo@imbdx.com), IMBdx. Updated bloodVolume to 20 mL, added cfdnaInput 30 ng per vendor with citations.",
+    "vendorRequestedChanges": "2025-12-29: Vendor verified by Sunghoon Heo (sunghoon.heo@imbdx.com), IMBdx. Updated bloodVolume to 20 mL, added cfdnaInput 30 ng per vendor with citations. | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -3431,7 +3462,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not FDA cleared" },
         "cigna": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not FDA cleared" },
-        "united": { "status": "NOT_COVERED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not FDA cleared" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - Limited US availability",
@@ -3527,7 +3558,7 @@ export const mrdTestData = [
     "regulatoryStatusNotes": "European LDT offered from CLIA-equivalent laboratory in Germany. Strong academic validation via GHSG HD21 trial data. Not FDA-approved; no current US market presence.",
     "technologyDifferentiator": "Lymphoma-specific ctDNA MRD test addressing an underserved niche - most competitors focus on solid tumors or use immunosequencing (clonoSEQ) for heme malignancies. Uses duplex sequencing with disease-optimized gene panels for lymphoma genomics. Founded by Sven Borchmann MD/PhD, a leading Hodgkin lymphoma researcher at University of Cologne/GHSG. Dual utility: both interim assessment during treatment and post-treatment MRD surveillance. Positioned as ctDNA alternative to PET for molecular response assessment in lymphoma.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate.",
+    "vendorRequestedChanges": "2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate. | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -3546,7 +3577,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
         "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
-        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" }
+        "united": { "status": "NOT_APPLICABLE", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary; test not available in US", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - International only",
@@ -3630,7 +3661,7 @@ export const mrdTestData = [
     "totalParticipants": 150,
     "totalParticipantsNotes": "Technical validation conducted with 150 samples.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate. 2025-01-09: Added validation cohort size (150 samples) per Jens Winter email.",
+    "vendorRequestedChanges": "2025-12-15: Initial entry created based on specifications provided by Jens Winter (LIQOMICS). Includes analytical validation data for variant detection and MRD detection performance. 2025-12-28: Vendor verified by Jens Winter (jens.winter@liqomics.com), LIQOMICS. No edits requested - all data confirmed accurate. 2025-01-09: Added validation cohort size (150 samples) per Jens Winter email. | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -3649,7 +3680,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
         "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
-        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" }
+        "united": { "status": "NOT_APPLICABLE", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary; test not available in US", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - International only",
@@ -3743,7 +3774,7 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Clinical LDT offered from Burning Rock laboratory in China. Not FDA-approved; primarily serves Chinese and international markets.",
     "technologyDifferentiator": "Personalized tumor-informed MRD assay from leading Chinese NGS company. 100,000x ultra-deep sequencing with LoD of 0.004%. Demonstrated 299-day median lead time vs imaging in NSCLC. Head-to-head comparisons show superior performance vs tumor-agnostic and tumor-informed fixed-panel assays.",
-    "vendorRequestedChanges": "2025-12-22: Initial entry created based on vendor submission from Liankai Chi (Burning Rock Dx). Performance metrics from submission and Cancer Cell 2023 publication (Chen et al., PMID 37683638). | 2025-12-24: Vendor validation with edits - updated clinicalTrials (+5 NCTs), numPublications (3→8), totalParticipants (181→871), added bloodVolume (>16ml).",
+    "vendorRequestedChanges": "2025-12-22: Initial entry created based on vendor submission from Liankai Chi (Burning Rock Dx). Performance metrics from submission and Cancer Cell 2023 publication (Chen et al., PMID 37683638). | 2025-12-24: Vendor validation with edits - updated clinicalTrials (+5 NCTs), numPublications (3→8), totalParticipants (181→871), added bloodVolume (>16ml). | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -3762,7 +3793,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
         "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
-        "united": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" }
+        "united": { "status": "NOT_APPLICABLE", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary; test not available in US", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "N/A - International only",
@@ -5047,7 +5078,8 @@ export const mrdTestData = [
       "submittedDate": "2026-01-06",
       "vendorVerifiedDate": "2026-01-06",
       "vendorVerifiedBy": "Sandra Balladares"
-    }
+    },
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
   ,
     "medicareCoverage": {
       "status": "NOT_COVERED",
@@ -5078,7 +5110,7 @@ export const mrdTestData = [
       "privatePayers": {
         "aetna": { "status": "EXPERIMENTAL", "policy": "CPB 0715", "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html", "coveredIndications": [], "notes": "ctDNA MRD experimental" },
         "cigna": { "status": "EXPERIMENTAL", "policy": "mm_0520", "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf", "coveredIndications": [], "notes": "Experimental" },
-        "united": { "status": "INVESTIGATIONAL", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Case-by-case" }
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
       },
       "analysis": {
         "vendorClaimAccuracy": "Medicare: Emerging | Commercial: Not Covered",
@@ -5160,6 +5192,32 @@ export const mrdTestData = [
       "cptCode": null,
       "notes": "MolDX LCD exists for bladder cancer molecular classifiers (L38576, L38647, L38649, L38684, L38586) but tests must complete MolDX technical assessment for coverage. Bladder EpiCheck not yet confirmed to have completed this process.",
       "lastVerified": "2026-01-14"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-27",
+      "vendorClaims": {
+        "url": "https://nucleix.com/bladder-epicheck-5/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Coverage emerging; Netherlands reimbursement achieved 2023",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "PENDING_LCD",
+        "policies": ["L38576"],
+        "indications": [],
+        "rate": null,
+        "notes": "MolDX LCD exists for bladder cancer molecular classifiers (L38576) but Bladder EpiCheck not yet confirmed to have completed MolDX technical assessment. FDA 510(k) cleared device."
+      },
+      "privatePayers": {
+        "aetna": { "status": "EXPERIMENTAL", "policy": "CPB 0715", "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html", "coveredIndications": [], "notes": "Methylation-based bladder cancer surveillance not specifically covered" },
+        "cigna": { "status": "EXPERIMENTAL", "policy": "mm_0520", "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf", "coveredIndications": [], "notes": "Bladder cancer molecular testing classified as experimental" },
+        "united": { "status": "NOT_COVERED", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary", "lastReviewed": "2026-01-27" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Medicare: Pending | Commercial: Not Covered",
+        "patientGuidance": "Medicare coverage pending MolDX technical assessment. Commercial insurance: expect denial. FDA 510(k) cleared but payer coverage not yet established in US. European coverage more mature.",
+        "keyInsight": "Bladder EpiCheck is FDA 510(k) cleared for NMIBC surveillance but US payer coverage lags behind European markets where the test has been available since 2016."
+      }
     }
   },
   // K-4CARE MRD - Added January 2026 (Vendor Submission - David Schlesinger, Gene Solutions)
@@ -5200,7 +5258,33 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CAP-accredited NGS laboratories",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test combining CGP with personalized MRD monitoring."
+    "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test combining CGP with personalized MRD monitoring.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-01-27",
+      "vendorClaims": {
+        "url": "https://genesolutions.vn/",
+        "medicareClaimed": [],
+        "commercialClaimed": "Not applicable - not available in US",
+        "cashPay": null
+      },
+      "medicare": {
+        "status": "NOT_APPLICABLE",
+        "policies": [],
+        "indications": [],
+        "rate": null,
+        "notes": "Vietnam-based test not currently available in US markets; US validation underway with Pangea Laboratory"
+      },
+      "privatePayers": {
+        "aetna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "cigna": { "status": "NOT_APPLICABLE", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Not available in US" },
+        "united": { "status": "NOT_APPLICABLE", "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)", "policyUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf", "coveredIndications": [], "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary; test not available in US", "lastReviewed": "2026-01-27" }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "N/A - Not available in US",
+        "patientGuidance": "This test is not currently available in US markets. K-4CARE is commercially available in Vietnam and Singapore. US launch is planned via Pangea Laboratory partnership but no timeline confirmed.",
+        "keyInsight": "Gene Solutions is a Vietnam-based company with CAP-accredited labs. US market entry is in progress but no FDA clearance or US payer coverage pathway established."
+      }
+    }
   }
 ];
 
@@ -9311,8 +9395,9 @@ export const cgpTestData = [
     "cancerTypes": ["Pan-solid tumor"],
     "cancerTypesNotes": "For patients with solid tumors at any stage - newly diagnosed, recurring, metastatic, or not responding to treatment",
     "sensitivity": 100,
-    "sensitivityNotes": "100% concordance with Illumina TSO500 in 498 variants from 49 patients",
+    "sensitivityNotes": "100% concordance with Illumina TSO500 in 498 variants from 49 patients. Note: small validation cohort (n=49); larger studies needed to confirm performance across diverse tumor types",
     "sensitivityCitations": "https://www.clinicaltrialsarena.com/news/inocras-cancervision-genome-sequencing-test-deemed-effective/",
+    "smallSampleWarning": true,
     "specificity": 99,
     "specificityNotes": "High specificity via tumor-normal paired analysis which reduces false positives from germline variants",
     "specificityCitations": "https://inocras.com/cancer-provider/",
