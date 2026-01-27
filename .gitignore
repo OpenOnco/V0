@@ -164,6 +164,14 @@ reviews/
 # AI context
 context/
 
+# Backup files
+*.bak
+
+# Generated data
+daemon/data/discoveries.json
+tools/discovery/data/candidates/
+scripts/cms-coverage-scraper/vendor-coverage-raw.json
+
 # Temp files
 kk
 restore*.sh
