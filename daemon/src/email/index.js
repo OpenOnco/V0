@@ -6,7 +6,7 @@ import { Resend } from 'resend';
 import { createLogger } from '../utils/logger.js';
 import { config } from '../config.js';
 import { getHealthSummary, recordDigestSent } from '../health.js';
-import { getDiscoveriesBySource, getQueueStatus } from '../queue/index.js';
+import { getAllDiscoveriesGroupedBySource, getQueueStatus } from '../queue/index.js';
 import { generateDigestHtml, generateDigestText, generateDigestSubject } from './templates.js';
 
 const logger = createLogger('email');
@@ -36,7 +36,7 @@ export async function sendDailyDigest() {
     // Gather all data for the digest
     const [healthSummary, discoveries, queueStatus] = await Promise.all([
       getHealthSummary(),
-      getDiscoveriesBySource(),
+      getAllDiscoveriesGroupedBySource(),
       getQueueStatus(),
     ]);
 
