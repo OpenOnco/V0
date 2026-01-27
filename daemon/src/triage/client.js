@@ -121,12 +121,20 @@ export async function callClaude(systemPrompt, userPrompt, options = {}) {
 }
 
 /**
+ * Strip markdown code fences from Claude's response
+ * Handles ```json, ```, and variations with whitespace
+ */
+function stripMarkdownCodeFences(text) {
+  return text.replace(/^```(?:json)?\n?/i, '').replace(/\n?```$/i, '').trim();
+}
+
+/**
  * Parse JSON from Claude's response, handling markdown code blocks
  */
 export function parseJsonResponse(content) {
   // Try to extract JSON from markdown code block
   const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-  const jsonStr = jsonMatch ? jsonMatch[1].trim() : content.trim();
+  const jsonStr = jsonMatch ? stripMarkdownCodeFences(jsonMatch[0]) : content.trim();
 
   try {
     return JSON.parse(jsonStr);
