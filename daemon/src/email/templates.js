@@ -386,17 +386,19 @@ export function generateDigestHtml({ healthSummary, discoveries, queueStatus }) 
           ${items
             .slice(0, 5)
             .map(
-              (item) => `
+              (item) => {
+                const relevance = item.relevance || item.data?.relevance || 'medium';
+                return `
             <div class="discovery-item">
               <div class="discovery-title">
-                <span class="badge badge-${item.relevance}">${item.relevance.toUpperCase()}</span>
+                <span class="badge badge-${relevance}">${relevance.toUpperCase()}</span>
                 <a href="${item.url}" target="_blank">${item.title}</a>
               </div>
               <div class="discovery-summary">${item.summary?.substring(0, 200)}${item.summary?.length > 200 ? '...' : ''}</div>
               <div class="discovery-meta">Found: ${formatDate(item.discoveredAt)}</div>
             </div>
-          `
-            )
+          `;
+              })
             .join('')}
           ${items.length > 5 ? `<div class="no-items">+ ${items.length - 5} more...</div>` : ''}
         </div>
@@ -1192,6 +1194,163 @@ export function generateMondayDigestSubject(triageResults, dbStats) {
   return `[OpenOnco Monday] ${parts.join(' · ')}`;
 }
 
+/**
+ * Generate a slim summary digest HTML email with processing instructions.
+ * Shows counts, a brief preview of high-priority items, and exact commands
+ * to export and process discoveries with Claude Code.
+ *
+ * @param {Object} opts
+ * @param {Object} opts.triageResults - AI triage results with priority arrays
+ * @param {Object} opts.healthSummary - Crawler health info
+ * @param {Object} opts.queueStatus - Queue counts
+ */
+export function generateSummaryDigestHtml({ triageResults, healthSummary, queueStatus }) {
+  const high = triageResults?.highPriority || [];
+  const medium = triageResults?.mediumPriority || [];
+  const low = triageResults?.lowPriority || [];
+  const total = high.length + medium.length + low.length;
+  const hasErrors = healthSummary?.recentErrorCount > 0;
+  const weekDate = getWeekDate();
+
+  // Count by source
+  const sourceCounts = {};
+  for (const item of [...high, ...medium, ...low]) {
+    const src = item.source || 'other';
+    sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+  }
+
+  const sourceList = Object.entries(sourceCounts)
+    .map(([src, count]) => `<tr><td style="padding:2px 12px 2px 0;color:#333;">${escapeHtml(src)}</td><td style="padding:2px 0;font-weight:600;color:#111;">${count}</td></tr>`)
+    .join('');
+
+  const highPreview = high.slice(0, 5)
+    .map((h, i) => `<div style="font-size:13px;color:#333;padding:3px 0;">${i + 1}. ${escapeHtml(truncate(h.title || h.action || 'Untitled', 70))} <span style="color:#888;font-size:11px;">${escapeHtml(h.source || '')}</span></div>`)
+    .join('');
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.5;color:#1a1a1a;max-width:560px;margin:0 auto;padding:20px;background:#f5f5f5;">
+<div style="background:white;border-radius:8px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.1);">
+
+  <h1 style="font-size:20px;margin:0 0 4px;color:#111;">OpenOnco Digest</h1>
+  <div style="color:#666;font-size:12px;margin-bottom:16px;">Week of ${weekDate}${hasErrors ? ' · <span style="color:#dc2626;">' + healthSummary.recentErrorCount + ' crawler errors</span>' : ' · <span style="color:#059669;">All healthy</span>'}</div>
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+    <tr>
+      <td width="33%" style="padding:8px;text-align:center;background:${high.length > 0 ? '#fef2f2' : '#f8f9fa'};border-radius:6px 0 0 6px;">
+        <div style="font-size:22px;font-weight:700;color:${high.length > 0 ? '#dc2626' : '#666'};">${high.length}</div>
+        <div style="font-size:10px;color:#666;text-transform:uppercase;">High</div>
+      </td>
+      <td width="33%" style="padding:8px;text-align:center;background:${medium.length > 0 ? '#fffbeb' : '#f8f9fa'};">
+        <div style="font-size:22px;font-weight:700;color:${medium.length > 0 ? '#d97706' : '#666'};">${medium.length}</div>
+        <div style="font-size:10px;color:#666;text-transform:uppercase;">Medium</div>
+      </td>
+      <td width="33%" style="padding:8px;text-align:center;background:#f8f9fa;border-radius:0 6px 6px 0;">
+        <div style="font-size:22px;font-weight:700;color:#666;">${low.length}</div>
+        <div style="font-size:10px;color:#666;text-transform:uppercase;">Low</div>
+      </td>
+    </tr>
+  </table>
+
+  ${sourceList ? `<table style="font-size:13px;margin-bottom:16px;">${sourceList}</table>` : ''}
+
+  ${high.length > 0 ? `
+  <div style="margin-bottom:16px;">
+    <div style="font-size:12px;font-weight:600;color:#dc2626;text-transform:uppercase;margin-bottom:6px;">Top High-Priority</div>
+    ${highPreview}
+    ${high.length > 5 ? `<div style="font-size:11px;color:#888;padding-top:2px;">+ ${high.length - 5} more</div>` : ''}
+  </div>` : ''}
+
+  <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-bottom:12px;">
+    <div style="font-size:13px;font-weight:600;color:#0369a1;margin-bottom:8px;">How to Process</div>
+    <div style="font-size:12px;color:#334155;margin-bottom:6px;">1. Export discoveries to a local file:</div>
+    <pre style="background:#1e293b;color:#e2e8f0;padding:10px;border-radius:4px;font-size:11px;margin:0 0 10px;overflow-x:auto;">cd /Users/adickinson/Documents/GitHub/V0/daemon\nnpm run run:export</pre>
+    <div style="font-size:12px;color:#334155;margin-bottom:6px;">2. Open Claude Code in the V0 repo and ask:</div>
+    <pre style="background:#1e293b;color:#e2e8f0;padding:10px;border-radius:4px;font-size:11px;margin:0;overflow-x:auto;">Read the latest file in daemon/data/exports/ and\nprocess the discoveries using the triage instructions.</pre>
+  </div>
+
+  <div style="font-size:11px;color:#888;border-top:1px solid #eee;padding-top:10px;text-align:center;">
+    ${total} total discoveries · ${queueStatus?.pendingCount || 0} pending review · OpenOnco Daemon
+  </div>
+
+</div>
+</body></html>`.trim();
+}
+
+/**
+ * Generate plain text version of summary digest
+ */
+export function generateSummaryDigestText({ triageResults, healthSummary, queueStatus }) {
+  const high = triageResults?.highPriority || [];
+  const medium = triageResults?.mediumPriority || [];
+  const low = triageResults?.lowPriority || [];
+  const total = high.length + medium.length + low.length;
+  const hasErrors = healthSummary?.recentErrorCount > 0;
+
+  const lines = [];
+  lines.push('OPENONCO DIGEST');
+  lines.push(`Week of ${getWeekDate()}`);
+  lines.push(hasErrors ? `Health: ${healthSummary.recentErrorCount} crawler errors` : 'Health: All healthy');
+  lines.push('');
+  lines.push(`Priorities: ${high.length} HIGH / ${medium.length} MEDIUM / ${low.length} LOW`);
+  lines.push('');
+
+  // Count by source
+  const sourceCounts = {};
+  for (const item of [...high, ...medium, ...low]) {
+    const src = item.source || 'other';
+    sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+  }
+  if (Object.keys(sourceCounts).length > 0) {
+    lines.push('By source:');
+    for (const [src, count] of Object.entries(sourceCounts)) {
+      lines.push(`  ${src}: ${count}`);
+    }
+    lines.push('');
+  }
+
+  if (high.length > 0) {
+    lines.push('TOP HIGH-PRIORITY:');
+    high.slice(0, 5).forEach((h, i) => {
+      const src = h.source ? ` [${h.source}]` : '';
+      lines.push(`  ${i + 1}. ${truncate(h.title || h.action || 'Untitled', 65)}${src}`);
+    });
+    if (high.length > 5) lines.push(`  + ${high.length - 5} more`);
+    lines.push('');
+  }
+
+  lines.push('HOW TO PROCESS:');
+  lines.push('  1. Export discoveries:');
+  lines.push('     cd /Users/adickinson/Documents/GitHub/V0/daemon');
+  lines.push('     npm run run:export');
+  lines.push('');
+  lines.push('  2. Open Claude Code in the V0 repo and ask:');
+  lines.push('     Read the latest file in daemon/data/exports/ and');
+  lines.push('     process the discoveries using the triage instructions.');
+  lines.push('');
+  lines.push(`${total} total · ${queueStatus?.pendingCount || 0} pending · OpenOnco Daemon`);
+
+  return lines.join('\n');
+}
+
+/**
+ * Generate subject line for summary digest
+ */
+export function generateSummaryDigestSubject(triageResults) {
+  const high = (triageResults?.highPriority || []).length;
+  const medium = (triageResults?.mediumPriority || []).length;
+  const low = (triageResults?.lowPriority || []).length;
+  const total = high + medium + low;
+
+  const parts = [];
+  if (high > 0) parts.push(`${high} high priority`);
+  if (medium > 0) parts.push(`${medium} medium`);
+  if (low > 0) parts.push(`${low} low`);
+  if (parts.length === 0) parts.push('No new discoveries');
+
+  return `[OpenOnco] ${total} discoveries — ${parts.join(', ')}`;
+}
+
 export default {
   generateDigestHtml,
   generateDigestText,
@@ -1201,4 +1360,7 @@ export default {
   generateMondayDigestText,
   generateMondayDigestSubject,
   generateCopyPasteBlock,
+  generateSummaryDigestHtml,
+  generateSummaryDigestText,
+  generateSummaryDigestSubject,
 };
