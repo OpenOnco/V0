@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   
   use: {
-    baseURL: process.env.TEST_URL || 'http://localhost:5173',
+    baseURL: process.env.TEST_URL || 'http://localhost:5174',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'retain-on-failure',
@@ -37,8 +37,8 @@ export default defineConfig({
 
   /* Auto-start dev server before running tests (only if testing locally) */
   webServer: process.env.TEST_URL ? undefined : {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
+    command: 'npm run dev -- --port 5174',
+    url: 'http://localhost:5174',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },

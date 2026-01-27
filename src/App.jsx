@@ -432,17 +432,30 @@ const HomePage = ({ onNavigate, persona }) => {
           </h1>
         </div>
 
-        {/* Two-column layout: Left (LifecycleNavigator + QuickSearch) | Right (Chat + Sponsors) */}
+        {/* Two-column layout: Left (LifecycleNavigator) | Right (Chat + QuickSearch) */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
-          {/* Left column: LifecycleNavigator + Quick Search */}
-          <div className="lg:w-1/2 flex flex-col gap-4">
-            {/* LifecycleNavigator (2x2 grid) */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+          {/* Left column: LifecycleNavigator */}
+          <div className="lg:w-1/2 flex flex-col">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex-1">
               <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
               <LifecycleNavigator onNavigate={onNavigate} />
             </div>
-            
-            {/* Quick Search - same width as 2x2 grid */}
+          </div>
+
+          {/* Right column: Chat + Quick Search */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
+            {/* Chat */}
+            <Chat
+              persona={persona}
+              testData={chatTestData}
+              variant="sidebar"
+              showModeToggle={false}
+              resizable={false}
+              showTitle={true}
+              className="flex-1 min-h-[400px]"
+            />
+
+            {/* Quick Search */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
               <div className="p-4">
                 <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 border-2 border-red-300 shadow-sm hover:border-red-400 hover:shadow-md transition-all cursor-pointer">
@@ -470,26 +483,14 @@ const HomePage = ({ onNavigate, persona }) => {
               </div>
             </div>
           </div>
-          
-          {/* Right column: Chat + Sponsor logos - matches left column height */}
-          <div className="lg:w-1/2 flex flex-col gap-4">
-            {/* Chat - flex-1 to take up most of the available space */}
-            <Chat
-              persona={persona}
-              testData={chatTestData}
-              variant="sidebar"
-              showModeToggle={false}
-              resizable={false}
-              showTitle={true}
-              className="flex-1 min-h-[400px]"
-            />
-
-            {/* Sponsor Logo Bar - fills remaining space down to align with category cards on left */}
-            <SponsorBar className="flex-1 min-h-[120px]" />
-          </div>
         </div>
 
-        {/* Row 2: Test Cards (full width) */}
+        {/* Full-width SponsorBar */}
+        <div className="mb-4">
+          <SponsorBar />
+        </div>
+
+        {/* Test Cards (full width) */}
         <div className="mb-4">
           <TestShowcase 
             onNavigate={onNavigate} 
