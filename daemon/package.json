@@ -17,6 +17,8 @@
     "run:crawl": "node scripts/run-pipeline.js --crawl",
     "run:triage": "node scripts/run-pipeline.js --triage",
     "run:digest": "node scripts/run-pipeline.js --digest",
+    "run:export": "node scripts/export-discoveries.js",
+    "run:export:github": "node scripts/run-pipeline.js --export",
     "run:all": "node scripts/run-pipeline.js --all"
   },
   "dependencies": {

@@ -169,6 +169,7 @@ context/
 
 # Generated data
 daemon/data/discoveries.json
+daemon/data/exports/
 tools/discovery/data/candidates/
 scripts/cms-coverage-scraper/vendor-coverage-raw.json
 
