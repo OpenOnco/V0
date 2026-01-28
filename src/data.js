@@ -9339,7 +9339,8 @@ export const cgpTestData = [
     "sampleRequirements": "50 ng FFPE DNA (min 10 ng); 50 ng WBC gDNA for matched normal",
     "technologyDifferentiator": "Decentralized version of MSK's flagship 505-gene CGP panel, enabling local labs to run the same assay with OncoKB integration for interpretation.",
     "citationPmids": [],
-    "citationUrls": ["https://www.sophiagenetics.com/msk-impact-powered-with-sophia-ddm/"]
+    "citationUrls": ["https://www.sophiagenetics.com/msk-impact-powered-with-sophia-ddm/"],
+    "vendorVerified": true
   },
   {
     "id": "tds-kit-17",
@@ -9362,7 +9363,8 @@ export const cgpTestData = [
     "sampleRequirements": "cfDNA from plasma; WBC gDNA for matched normal",
     "technologyDifferentiator": "Decentralized liquid biopsy version of MSK-ACCESS enabling local labs to perform deep ctDNA profiling with variant tracking across sequential tests.",
     "citationPmids": [],
-    "citationUrls": ["https://www.sophiagenetics.com/sophia-ddm-for-genomics/liquid-biopsy/msk-access/"]
+    "citationUrls": ["https://www.sophiagenetics.com/sophia-ddm-for-genomics/liquid-biopsy/msk-access/"],
+    "vendorVerified": true
   },
   {
     "id": "tds-kit-18",
@@ -9385,7 +9387,8 @@ export const cgpTestData = [
     "tat": null,
     "technologyDifferentiator": "Most comprehensive MSK panel variant - adds RNA biomarkers, HRD, and gene expression to the standard MSK-IMPACT backbone with modular flexibility.",
     "citationPmids": [],
-    "citationUrls": ["https://www.sophiagenetics.com/sophia-ddm-for-genomics/solid-tumors/cgp/msk-impact-flex-powered-by-sophia-ddm/"]
+    "citationUrls": ["https://www.sophiagenetics.com/sophia-ddm-for-genomics/solid-tumors/cgp/msk-impact-flex-powered-by-sophia-ddm/"],
+    "vendorVerified": true
   },
   {
     "id": "tds-26",
