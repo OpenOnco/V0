@@ -3,12 +3,8 @@
  * Central management and factory for all crawlers
  */
 
-import { PubMedCrawler } from './pubmed.js';
 import { CMSCrawler } from './cms.js';
-import { FDACrawler } from './fda.js';
 import { VendorCrawler } from './vendor.js';
-import { PreprintsCrawler } from './preprints.js';
-import { CitationsCrawler } from './citations.js';
 import { PayerCrawler } from './payers.js';
 import { BaseCrawler } from './base.js';
 import { createLogger } from '../utils/logger.js';
@@ -18,13 +14,9 @@ const logger = createLogger('crawlers');
 
 // Initialize all crawlers (singleton instances)
 const crawlers = {
-  [SOURCES.PUBMED]: new PubMedCrawler(),
   [SOURCES.CMS]: new CMSCrawler(),
-  [SOURCES.FDA]: new FDACrawler(),
   [SOURCES.VENDOR]: new VendorCrawler(),
-  [SOURCES.PREPRINTS]: new PreprintsCrawler(),
   [SOURCES.PAYERS]: new PayerCrawler(),
-  [SOURCES.CITATIONS]: new CitationsCrawler(),
 };
 
 /**
@@ -34,13 +26,9 @@ const crawlers = {
  */
 export function createAllCrawlers(queue = null) {
   const instances = {
-    [SOURCES.PUBMED]: new PubMedCrawler(),
     [SOURCES.CMS]: new CMSCrawler(),
-    [SOURCES.FDA]: new FDACrawler(),
     [SOURCES.VENDOR]: new VendorCrawler(),
-    [SOURCES.PREPRINTS]: new PreprintsCrawler(),
     [SOURCES.PAYERS]: new PayerCrawler(),
-    [SOURCES.CITATIONS]: new CitationsCrawler(),
   };
 
   // If queue is provided, attach it to each crawler for future use
@@ -142,7 +130,7 @@ export function getCrawlerStatuses() {
 }
 
 // Export crawler classes for direct instantiation
-export { BaseCrawler, PubMedCrawler, CMSCrawler, FDACrawler, VendorCrawler, PreprintsCrawler, CitationsCrawler, PayerCrawler };
+export { BaseCrawler, CMSCrawler, VendorCrawler, PayerCrawler };
 
 export default {
   // Factory
@@ -162,11 +150,7 @@ export default {
 
   // Classes
   BaseCrawler,
-  PubMedCrawler,
   CMSCrawler,
-  FDACrawler,
   VendorCrawler,
-  PreprintsCrawler,
-  CitationsCrawler,
   PayerCrawler,
 };

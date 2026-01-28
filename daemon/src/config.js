@@ -1,6 +1,6 @@
 /**
  * Configuration module for the OpenOnco Intelligence Daemon
- * Loads from .env and exports crawler schedules, test/vendor names, and email settings
+ * Focused on coverage intelligence: CMS, Payers, and Vendors
  */
 
 import 'dotenv/config';
@@ -24,78 +24,34 @@ export const config = {
   },
 
   // Crawler schedules (cron syntax)
-  // All crawlers run Sunday at 2 AM, triage at 5 AM Sunday, digest Monday 6 AM
+  // All crawlers run Sunday at 2 AM, digest Monday 6 AM
   schedules: {
-    pubmed: process.env.SCHEDULE_PUBMED || '0 2 * * 0',        // Sunday 2:00 AM
-    cms: process.env.SCHEDULE_CMS || '0 2 * * 0',              // Sunday 2:00 AM
-    fda: process.env.SCHEDULE_FDA || '0 2 * * 0',              // Sunday 2:00 AM
-    vendor: process.env.SCHEDULE_VENDOR || '0 2 * * 0',        // Sunday 2:00 AM
-    preprints: process.env.SCHEDULE_PREPRINTS || '0 2 * * 0',  // Sunday 2:00 AM
-    citations: process.env.SCHEDULE_CITATIONS || '0 2 * * 0',  // Sunday 2:00 AM
-    payers: process.env.SCHEDULE_PAYERS || '0 2 * * 0',        // Sunday 2:00 AM
-    triage: process.env.SCHEDULE_TRIAGE || '0 5 * * 0',        // Sunday 5:00 AM - after all crawlers finish
-    digest: process.env.SCHEDULE_DIGEST || '0 6 * * 1',        // Monday 6:00 AM - the final email
+    cms: process.env.SCHEDULE_CMS || '0 2 * * 0',           // Sunday 2:00 AM
+    payers: process.env.SCHEDULE_PAYERS || '0 2 * * 0',     // Sunday 2:00 AM
+    vendors: process.env.SCHEDULE_VENDORS || '0 2 * * 0',   // Sunday 2:00 AM
+    digest: process.env.SCHEDULE_DIGEST || '0 6 * * 1',     // Monday 6:00 AM
   },
 
   // Crawler enable flags
   crawlers: {
-    pubmed: {
-      enabled: process.env.CRAWLER_PUBMED_ENABLED !== 'false',
-      name: 'PubMed',
-      description: 'Scientific literature and clinical studies',
-      rateLimit: parseInt(process.env.RATE_LIMIT_PUBMED || '10', 10),
-    },
     cms: {
       enabled: process.env.CRAWLER_CMS_ENABLED !== 'false',
       name: 'CMS/Medicare',
-      description: 'Coverage determinations and policy updates',
+      description: 'Medicare coverage determinations (NCDs and LCDs)',
       rateLimit: parseInt(process.env.RATE_LIMIT_CMS || '5', 10),
-    },
-    fda: {
-      enabled: process.env.CRAWLER_FDA_ENABLED !== 'false',
-      name: 'FDA',
-      description: 'Drug approvals and regulatory updates',
-      rateLimit: parseInt(process.env.RATE_LIMIT_FDA || '5', 10),
-    },
-    vendor: {
-      enabled: process.env.CRAWLER_VENDOR_ENABLED !== 'false',
-      name: 'Vendor Websites',
-      description: 'Test manufacturer updates and documentation',
-      rateLimit: parseInt(process.env.RATE_LIMIT_VENDOR || '3', 10),
-    },
-    preprints: {
-      enabled: process.env.CRAWLER_PREPRINTS_ENABLED !== 'false',
-      name: 'Preprints',
-      description: 'medRxiv and bioRxiv preprint servers',
-      rateLimit: parseInt(process.env.RATE_LIMIT_PREPRINTS || '5', 10),
-    },
-    citations: {
-      enabled: process.env.CRAWLER_CITATIONS_ENABLED !== 'false',
-      name: 'Citations Validator',
-      description: 'Audits missing citations and checks URL liveness',
-      rateLimit: parseInt(process.env.RATE_LIMIT_CITATIONS || '2', 10),
     },
     payers: {
       enabled: process.env.CRAWLER_PAYERS_ENABLED !== 'false',
       name: 'Private Payers',
-      description: 'Monitors private insurance medical policies',
+      description: 'Commercial insurance and Medicare Advantage medical policies',
       rateLimit: parseFloat(process.env.RATE_LIMIT_PAYERS || '0.2'),
     },
-    triage: {
-      enabled: process.env.CRAWLER_TRIAGE_ENABLED !== 'false',
-      name: 'AI Triage',
-      description: 'Runs AI triage on accumulated discoveries to prioritize and categorize',
-      rateLimit: parseInt(process.env.RATE_LIMIT_TRIAGE || '5', 10),
+    vendors: {
+      enabled: process.env.CRAWLER_VENDORS_ENABLED !== 'false',
+      name: 'Vendors',
+      description: 'Test manufacturer coverage announcements and updates',
+      rateLimit: parseInt(process.env.RATE_LIMIT_VENDORS || '3', 10),
     },
-  },
-
-  // AI Triage configuration
-  triage: {
-    anthropicApiKey: process.env.ANTHROPIC_API_KEY,
-    model: process.env.TRIAGE_MODEL || 'claude-sonnet-4-20250514',
-    maxTokens: parseInt(process.env.TRIAGE_MAX_TOKENS || '4096', 10),
-    temperature: parseFloat(process.env.TRIAGE_TEMPERATURE || '0.3'),
-    batchSize: parseInt(process.env.TRIAGE_BATCH_SIZE || '20', 10),
   },
 
   // Queue configuration
@@ -111,6 +67,288 @@ export const config = {
   // Health tracking file
   healthFile: './data/health.json',
 };
+
+// =============================================================================
+// PAYER CONFIGURATION
+// Comprehensive list of payers organized by category
+// =============================================================================
+
+export const PAYERS = {
+  // National Commercial Payers
+  nationalCommercial: [
+    {
+      id: 'uhc',
+      name: 'UnitedHealthcare',
+      shortName: 'UHC',
+      policyPortal: 'https://www.uhcprovider.com/en/policies-protocols/commercial-policies.html',
+    },
+    {
+      id: 'anthem',
+      name: 'Anthem/Elevance',
+      shortName: 'Anthem',
+      policyPortal: 'https://www.anthem.com/provider/policies/',
+    },
+    {
+      id: 'cigna',
+      name: 'Cigna',
+      shortName: 'Cigna',
+      policyPortal: 'https://cignaforhcp.cigna.com/public/content/pdf/coveragePolicies/',
+    },
+    {
+      id: 'aetna',
+      name: 'Aetna',
+      shortName: 'Aetna',
+      policyPortal: 'https://www.aetna.com/health-care-professionals/clinical-policy-bulletins.html',
+    },
+    {
+      id: 'humana',
+      name: 'Humana',
+      shortName: 'Humana',
+      policyPortal: 'https://www.humana.com/provider/medical-resources/clinical-medical-policies',
+    },
+  ],
+
+  // Regional Blue Cross Blue Shield Plans (each has own molecular testing policies)
+  regionalBCBS: [
+    {
+      id: 'bcbs-ma',
+      name: 'Blue Cross Blue Shield of Massachusetts',
+      shortName: 'BCBS MA',
+      states: ['MA'],
+      policyPortal: 'https://www.bluecrossma.org/medical-policies',
+    },
+    {
+      id: 'bcbs-mi',
+      name: 'Blue Cross Blue Shield of Michigan',
+      shortName: 'BCBS MI',
+      states: ['MI'],
+      policyPortal: 'https://www.bcbsm.com/providers/clinical-resources/policies.html',
+      notes: 'Largest BCBS plan by enrollment',
+    },
+    {
+      id: 'bcbs-tx',
+      name: 'Blue Cross Blue Shield of Texas',
+      shortName: 'BCBS TX',
+      states: ['TX'],
+      policyPortal: 'https://www.bcbstx.com/provider/clinical/medical-policies.html',
+    },
+    {
+      id: 'bcbs-il',
+      name: 'Blue Cross Blue Shield of Illinois',
+      shortName: 'BCBS IL',
+      states: ['IL'],
+      policyPortal: 'https://www.bcbsil.com/provider/clinical/medical-policies.html',
+    },
+    {
+      id: 'florida-blue',
+      name: 'Florida Blue',
+      shortName: 'FL Blue',
+      states: ['FL'],
+      policyPortal: 'https://www.floridablue.com/providers/tools-resources/policies',
+    },
+    {
+      id: 'bcbs-nc',
+      name: 'Blue Cross Blue Shield of North Carolina',
+      shortName: 'BCBS NC',
+      states: ['NC'],
+      policyPortal: 'https://www.bluecrossnc.com/providers/clinical-resources/medical-policy',
+    },
+    {
+      id: 'highmark',
+      name: 'Highmark',
+      shortName: 'Highmark',
+      states: ['PA', 'WV', 'DE'],
+      policyPortal: 'https://www.highmark.com/provider/clinical/medical-policies.html',
+    },
+    {
+      id: 'carefirst',
+      name: 'CareFirst',
+      shortName: 'CareFirst',
+      states: ['MD', 'DC', 'VA'],
+      policyPortal: 'https://www.carefirst.com/provider/medical-policy-reference-manual',
+    },
+    {
+      id: 'excellus',
+      name: 'Excellus BlueCross BlueShield',
+      shortName: 'Excellus',
+      states: ['NY'],
+      policyPortal: 'https://www.excellusbcbs.com/providers/clinical/medical-policies',
+    },
+    {
+      id: 'ibx',
+      name: 'Independence Blue Cross',
+      shortName: 'IBX',
+      states: ['PA'],
+      policyPortal: 'https://www.ibx.com/providers/clinical-resources/medical-policies',
+    },
+    {
+      id: 'blue-shield-ca',
+      name: 'Blue Shield of California',
+      shortName: 'Blue Shield CA',
+      states: ['CA'],
+      policyPortal: 'https://www.blueshieldca.com/provider/policies-guidelines',
+    },
+    {
+      id: 'premera',
+      name: 'Premera Blue Cross',
+      shortName: 'Premera',
+      states: ['WA', 'AK'],
+      policyPortal: 'https://www.premera.com/provider/medical-policies',
+    },
+    {
+      id: 'regence',
+      name: 'Regence BlueCross BlueShield',
+      shortName: 'Regence',
+      states: ['OR', 'WA', 'UT', 'ID'],
+      policyPortal: 'https://www.regence.com/provider/medical-policies',
+    },
+    {
+      id: 'horizon',
+      name: 'Horizon Blue Cross Blue Shield of New Jersey',
+      shortName: 'Horizon BCBS',
+      states: ['NJ'],
+      policyPortal: 'https://www.horizonblue.com/providers/clinical-policies',
+    },
+    {
+      id: 'wellmark',
+      name: 'Wellmark Blue Cross Blue Shield',
+      shortName: 'Wellmark',
+      states: ['IA', 'SD'],
+      policyPortal: 'https://www.wellmark.com/provider/clinical/medical-policies',
+    },
+    {
+      id: 'bcbs-az',
+      name: 'Blue Cross Blue Shield of Arizona',
+      shortName: 'BCBS AZ',
+      states: ['AZ'],
+      policyPortal: 'https://www.azblue.com/providers/clinical-policies',
+    },
+    {
+      id: 'bcbs-mn',
+      name: 'Blue Cross Blue Shield of Minnesota',
+      shortName: 'BCBS MN',
+      states: ['MN'],
+      policyPortal: 'https://www.bluecrossmn.com/providers/clinical-policies',
+    },
+    {
+      id: 'bcbs-tn',
+      name: 'BlueCross BlueShield of Tennessee',
+      shortName: 'BCBS TN',
+      states: ['TN'],
+      policyPortal: 'https://www.bcbst.com/providers/clinical-policies',
+    },
+    {
+      id: 'bcbs-kc',
+      name: 'Blue Cross Blue Shield of Kansas City',
+      shortName: 'BCBS KC',
+      states: ['MO', 'KS'],
+      policyPortal: 'https://www.bluekc.com/providers/clinical-policies',
+    },
+    {
+      id: 'bcbs-la',
+      name: 'Blue Cross Blue Shield of Louisiana',
+      shortName: 'BCBS LA',
+      states: ['LA'],
+      policyPortal: 'https://www.bcbsla.com/providers/clinical-policies',
+    },
+  ],
+
+  // Medicare Advantage Plans (different from traditional Medicare)
+  medicareAdvantage: [
+    {
+      id: 'uhc-ma',
+      name: 'UnitedHealthcare Medicare Advantage',
+      shortName: 'UHC MA',
+      policyPortal: 'https://www.uhcprovider.com/en/policies-protocols/medicare-advantage-policies.html',
+      notes: 'Largest Medicare Advantage carrier',
+    },
+    {
+      id: 'humana-ma',
+      name: 'Humana Medicare Advantage',
+      shortName: 'Humana MA',
+      policyPortal: 'https://www.humana.com/provider/medicare-advantage-policies',
+    },
+    {
+      id: 'aetna-ma',
+      name: 'Aetna Medicare Advantage',
+      shortName: 'Aetna MA',
+      policyPortal: 'https://www.aetna.com/health-care-professionals/medicare-advantage-policies.html',
+    },
+    {
+      id: 'bcbs-ma-plans',
+      name: 'BCBS Medicare Advantage Plans',
+      shortName: 'BCBS MA',
+      policyPortal: null,
+      notes: 'Various regional BCBS MA plans - policies vary by region',
+    },
+  ],
+
+  // Lab Benefit Managers (often make actual coverage decisions)
+  labBenefitManagers: [
+    {
+      id: 'evicore',
+      name: 'Evicore',
+      shortName: 'Evicore',
+      policyPortal: 'https://www.evicore.com/provider/clinical-guidelines',
+      notes: 'Major LBM for molecular/genetic testing',
+    },
+    {
+      id: 'aim',
+      name: 'AIM Specialty Health',
+      shortName: 'AIM',
+      policyPortal: 'https://www.aimspecialtyhealth.com/clinical-guidelines',
+      notes: 'Owned by Anthem/Elevance',
+    },
+    {
+      id: 'avalon',
+      name: 'Avalon Healthcare Solutions',
+      shortName: 'Avalon',
+      policyPortal: 'https://www.avalonhcs.com/provider/clinical-guidelines',
+      notes: 'Lab benefits for BCBS plans',
+    },
+  ],
+
+  // Other Large Payers
+  otherLarge: [
+    {
+      id: 'kaiser',
+      name: 'Kaiser Permanente',
+      shortName: 'Kaiser',
+      policyPortal: 'https://healthy.kaiserpermanente.org/provider/clinical-policies',
+      notes: 'Integrated health system - policies may not be public',
+    },
+    {
+      id: 'molina',
+      name: 'Molina Healthcare',
+      shortName: 'Molina',
+      policyPortal: 'https://www.molinahealthcare.com/providers/clinical-policies',
+      notes: 'Focus on Medicaid managed care',
+    },
+    {
+      id: 'centene',
+      name: 'Centene',
+      shortName: 'Centene',
+      policyPortal: 'https://www.centene.com/provider/clinical-policies.html',
+      notes: 'Largest Medicaid managed care',
+    },
+    {
+      id: 'hcsc',
+      name: 'Health Care Service Corporation',
+      shortName: 'HCSC',
+      policyPortal: 'https://www.hcsc.com/provider/clinical-policies',
+      notes: 'Operates BCBS plans in IL, MT, NM, OK, TX',
+    },
+  ],
+};
+
+// Flattened list of all payers for easy iteration
+export const ALL_PAYERS = [
+  ...PAYERS.nationalCommercial,
+  ...PAYERS.regionalBCBS,
+  ...PAYERS.medicareAdvantage,
+  ...PAYERS.labBenefitManagers,
+  ...PAYERS.otherLarge,
+];
 
 // =============================================================================
 // MONITORED TEST NAMES
@@ -226,40 +464,31 @@ export const MONITORED_VENDORS = [
 ];
 
 // =============================================================================
-// DISCOVERY TYPES & SOURCES
+// DISCOVERY TYPES (Simplified for coverage focus)
 // =============================================================================
 
 export const DISCOVERY_TYPES = {
-  PUBLICATION: 'publication',
-  PREPRINT: 'preprint',
-  POLICY_UPDATE: 'policy_update',
-  COVERAGE_CHANGE: 'coverage_change',
-  FDA_APPROVAL: 'fda_approval',
-  FDA_GUIDANCE: 'fda_guidance',
-  VENDOR_UPDATE: 'vendor_update',
-  TEST_DOCUMENTATION: 'test_documentation',
+  // Medicare/CMS updates
+  MEDICARE_LCD_UPDATE: 'medicare_lcd_update',
+  MEDICARE_NCD_UPDATE: 'medicare_ncd_update',
+
+  // Private payer updates
   PAYER_POLICY_UPDATE: 'payer_policy_update',
   PAYER_POLICY_NEW: 'payer_policy_new',
-  NEW_POLICY: 'new_policy',
-  MISSING_CITATION: 'missing_citation',
-  BROKEN_CITATION: 'broken_citation',
-  BROKEN_URL: 'broken_url',
-  REDIRECT_URL: 'redirect_url',
-  INVALID_PMID: 'invalid_pmid',
-  NEW_PAYER_POLICY: 'new_payer_policy',
-  POLICY_CHANGE: 'policy_change',
-  COVERAGE_UPDATE: 'coverage_update',
-  PAYER_POLICY_CHANGED: 'payer_policy_changed',
+  COVERAGE_CHANGE: 'coverage_change',
+
+  // Vendor announcements
+  VENDOR_COVERAGE_ANNOUNCEMENT: 'vendor_coverage_announcement',
 };
 
+// =============================================================================
+// SOURCES
+// =============================================================================
+
 export const SOURCES = {
-  PUBMED: 'pubmed',
   CMS: 'cms',
-  FDA: 'fda',
-  VENDOR: 'vendor',
-  PREPRINTS: 'preprints',
-  CITATIONS: 'citations',
   PAYERS: 'payers',
+  VENDORS: 'vendors',
 };
 
 // =============================================================================
@@ -299,6 +528,34 @@ export function getTestCategory(testName) {
     }
   }
   return null;
+}
+
+/**
+ * Get payer by ID
+ * @param {string} payerId - The payer ID to look up
+ * @returns {object|null} - The payer object or null
+ */
+export function getPayerById(payerId) {
+  return ALL_PAYERS.find(p => p.id === payerId) || null;
+}
+
+/**
+ * Get payers by state
+ * @param {string} stateCode - Two-letter state code (e.g., 'CA')
+ * @returns {array} - Array of payers covering that state
+ */
+export function getPayersByState(stateCode) {
+  const state = stateCode.toUpperCase();
+  return PAYERS.regionalBCBS.filter(p => p.states && p.states.includes(state));
+}
+
+/**
+ * Get payers by category
+ * @param {string} category - Category name (e.g., 'nationalCommercial', 'regionalBCBS')
+ * @returns {array} - Array of payers in that category
+ */
+export function getPayersByCategory(category) {
+  return PAYERS[category] || [];
 }
 
 export default config;

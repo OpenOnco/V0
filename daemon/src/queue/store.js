@@ -81,7 +81,7 @@ export function saveDiscovery(discovery) {
 /**
  * Mark a discovery as reviewed
  */
-export function markReviewed(id) {
+export function markReviewed(id, notes) {
   const discoveries = loadDiscoveries();
   const index = discoveries.findIndex(d => d.id === id);
 
@@ -91,6 +91,9 @@ export function markReviewed(id) {
 
   discoveries[index].reviewedAt = new Date().toISOString();
   discoveries[index].status = 'reviewed';
+  if (notes) {
+    discoveries[index].reviewNotes = notes;
+  }
   atomicWrite(DISCOVERIES_FILE, discoveries);
 
   return discoveries[index];

@@ -1,16 +1,18 @@
 /**
  * Vendor Website Crawler
- * Monitors test manufacturer websites for product updates and announcements
+ * Monitors test manufacturer news/press release pages for coverage announcements
  *
- * Uses Playwright to render JS-heavy pages and detect content changes via hashing.
+ * Uses Playwright to render JS-heavy pages, hash-based change detection,
+ * and Claude API to identify coverage-related announcements.
  */
 
+import Anthropic from '@anthropic-ai/sdk';
 import { createHash } from 'crypto';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { chromium } from 'playwright';
 import { BaseCrawler } from './base.js';
-import { config, DISCOVERY_TYPES, SOURCES } from '../config.js';
+import { config, DISCOVERY_TYPES, SOURCES, MONITORED_VENDORS } from '../config.js';
 
 // Path to store content hashes for change detection
 const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'vendor-hashes.json');
@@ -21,79 +23,133 @@ const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/
 // Rate limit delay between requests (3 seconds)
 const RATE_LIMIT_MS = 3000;
 
-// Vendor websites to monitor with specific page configurations
+// Claude model for coverage analysis
+const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
+
+// Vendor news/press release pages to monitor
+// Focus ONLY on news pages - no product pages
 const VENDOR_SOURCES = [
+  // Major ctDNA/MRD vendors
   {
     name: 'Natera',
     id: 'natera',
-    baseUrl: 'https://www.natera.com',
-    pages: [
-      { path: '/oncology', description: 'Oncology landing page', type: 'product' },
-      { path: '/company/news', description: 'News and press releases', type: 'news' },
-    ],
+    newsUrl: 'https://www.natera.com/company/news',
   },
   {
     name: 'Guardant Health',
     id: 'guardant',
-    baseUrl: 'https://guardanthealth.com',
-    pages: [
-      { path: '/products/tests-for-cancer-screening', description: 'Shield Blood Test', type: 'product' },
-      { path: '/products/tests-for-patients-with-early-and-advanced-stage-cancer', description: 'Guardant Complete', type: 'product' },
-      { path: '/newsroom/press-releases', description: 'Press releases', type: 'news' },
-    ],
+    newsUrl: 'https://guardanthealth.com/newsroom/press-releases',
   },
   {
     name: 'Foundation Medicine',
     id: 'foundation',
-    baseUrl: 'https://www.foundationmedicine.com',
-    pages: [
-      { path: '/genomic-testing/foundation-one-cdx', description: 'FoundationOne CDx', type: 'product' },
-      { path: '/test/foundationone-liquid-cdx', description: 'FoundationOne Liquid CDx', type: 'product' },
-      { path: '/press-releases', description: 'Press releases', type: 'news' },
-    ],
+    newsUrl: 'https://www.foundationmedicine.com/press-releases',
   },
   {
     name: 'Tempus',
     id: 'tempus',
-    baseUrl: 'https://www.tempus.com',
-    pages: [
-      { path: '/oncology/genomic-profiling', description: 'Genomic profiling services', type: 'product' },
-      { path: '/news', description: 'News', type: 'news' },
-    ],
+    newsUrl: 'https://www.tempus.com/news',
   },
   {
     name: 'Caris Life Sciences',
     id: 'caris',
-    baseUrl: 'https://www.carislifesciences.com',
-    pages: [
-      { path: '/products-and-services/molecular-profiling', description: 'Molecular profiling', type: 'product' },
-      { path: '/news-and-events/news', description: 'News', type: 'news' },
-    ],
+    newsUrl: 'https://www.carislifesciences.com/news-and-events/news',
   },
   {
     name: 'GRAIL',
     id: 'grail',
-    baseUrl: 'https://www.grail.com',
-    pages: [
-      { path: '/galleri', description: 'Galleri test page', type: 'product' },
-      { path: '/press-releases', description: 'Press releases', type: 'news' },
-    ],
+    newsUrl: 'https://www.grail.com/press-releases',
+  },
+
+  // Large reference labs
+  {
+    name: 'Exact Sciences',
+    id: 'exact-sciences',
+    newsUrl: 'https://www.exactsciences.com/newsroom',
+  },
+  {
+    name: 'Labcorp',
+    id: 'labcorp',
+    newsUrl: 'https://www.labcorp.com/newsroom',
+  },
+  {
+    name: 'Quest Diagnostics',
+    id: 'quest',
+    newsUrl: 'https://newsroom.questdiagnostics.com/press-releases',
+  },
+
+  // Specialized vendors
+  {
+    name: 'Adaptive Biotechnologies',
+    id: 'adaptive',
+    newsUrl: 'https://investors.adaptivebiotech.com/news-releases',
+  },
+  {
+    name: 'NeoGenomics',
+    id: 'neogenomics',
+    newsUrl: 'https://neogenomics.com/newsroom',
+  },
+  {
+    name: 'Personalis',
+    id: 'personalis',
+    newsUrl: 'https://www.personalis.com/news',
+  },
+  {
+    name: 'Myriad Genetics',
+    id: 'myriad',
+    newsUrl: 'https://myriad.com/news-events/news',
+  },
+  {
+    name: 'Invitae',
+    id: 'invitae',
+    newsUrl: 'https://www.invitae.com/en/press',
+  },
+  {
+    name: 'Veracyte',
+    id: 'veracyte',
+    newsUrl: 'https://investor.veracyte.com/news-releases',
+  },
+  {
+    name: 'Freenome',
+    id: 'freenome',
+    newsUrl: 'https://www.freenome.com/news',
+  },
+  {
+    name: 'BillionToOne',
+    id: 'billiontoone',
+    newsUrl: 'https://billiontoone.com/news',
+  },
+  {
+    name: 'Resolution Bioscience',
+    id: 'resolution',
+    newsUrl: 'https://www.resolutionbio.com/news',
+  },
+  {
+    name: 'Burning Rock Dx',
+    id: 'burning-rock',
+    newsUrl: 'https://www.brbiotech.com/news',
+  },
+  {
+    name: 'Helio Genomics',
+    id: 'helio',
+    newsUrl: 'https://www.helio.health/news',
   },
 ];
 
 export class VendorCrawler extends BaseCrawler {
   constructor() {
     super({
-      name: config.crawlers.vendor.name,
+      name: config.crawlers.vendor?.name || 'Vendors',
       source: SOURCES.VENDOR,
-      description: config.crawlers.vendor.description,
-      rateLimit: config.crawlers.vendor.rateLimit,
-      enabled: config.crawlers.vendor.enabled,
+      description: config.crawlers.vendor?.description || 'Vendor coverage announcements',
+      rateLimit: config.crawlers.vendor?.rateLimit || 3,
+      enabled: config.crawlers.vendor?.enabled ?? true,
     });
 
     this.vendors = VENDOR_SOURCES;
     this.browser = null;
     this.hashes = {};
+    this.anthropic = config.anthropic?.apiKey ? new Anthropic({ apiKey: config.anthropic.apiKey }) : null;
   }
 
   /**
@@ -184,7 +240,7 @@ export class VendorCrawler extends BaseCrawler {
         timeout: 30000,
       });
 
-      // Extract text content and key elements
+      // Extract text content for hashing and analysis
       const content = await page.evaluate(() => {
         // Remove script and style elements for cleaner text
         const scripts = document.querySelectorAll('script, style, noscript');
@@ -192,57 +248,117 @@ export class VendorCrawler extends BaseCrawler {
         return document.body.innerText;
       });
 
-      // Extract structured data
-      const extractedData = await page.evaluate(() => {
-        const data = {
-          title: document.title,
-          headings: [],
-          productNames: [],
-          versions: [],
-          pricing: [],
-          features: [],
-        };
-
-        // Extract headings
-        document.querySelectorAll('h1, h2, h3').forEach((h) => {
-          const text = h.innerText.trim();
-          if (text) data.headings.push(text);
-        });
-
-        const bodyText = document.body.innerText;
-
-        // Look for version patterns (v1.0, Version 2.0, etc.)
-        const versionMatches = bodyText.match(/(?:v|version\s*)(\d+(?:\.\d+)*)/gi) || [];
-        data.versions = [...new Set(versionMatches)];
-
-        // Look for pricing mentions
-        const pricingPatterns = [
-          /\$[\d,]+(?:\.\d{2})?/g,
-          /(?:price|pricing|cost|fee)[:\s]+[^\n.]+/gi,
-          /(?:covered|reimbursement|medicare|insurance)[:\s]+[^\n.]+/gi,
+      // Extract headlines/article titles for targeted analysis
+      const headlines = await page.evaluate(() => {
+        const items = [];
+        // Common news item selectors
+        const selectors = [
+          'article h2', 'article h3',
+          '.news-item h2', '.news-item h3',
+          '.press-release-title', '.press-release h2',
+          '.newsroom-item h2', '.newsroom-item h3',
+          'h2 a', 'h3 a',
+          '[class*="news"] h2', '[class*="news"] h3',
+          '[class*="press"] h2', '[class*="press"] h3',
         ];
-        pricingPatterns.forEach((pattern) => {
-          const matches = bodyText.match(pattern) || [];
-          data.pricing.push(...matches.slice(0, 5)); // Limit to 5 per pattern
-        });
 
-        // Look for feature/capability mentions
-        const featurePatterns = [
-          /(?:new|introducing|announcing|launch)[:\s]+[^\n.]+/gi,
-          /(?:now available|now offering)[:\s]+[^\n.]+/gi,
-          /(?:fda approved|fda cleared|ce marked)[^\n.]*/gi,
-        ];
-        featurePatterns.forEach((pattern) => {
-          const matches = bodyText.match(pattern) || [];
-          data.features.push(...matches.slice(0, 5));
-        });
-
-        return data;
+        for (const selector of selectors) {
+          document.querySelectorAll(selector).forEach((el) => {
+            const text = el.innerText?.trim();
+            if (text && text.length > 10 && text.length < 300) {
+              items.push(text);
+            }
+          });
+        }
+        return [...new Set(items)].slice(0, 20); // Dedupe and limit
       });
 
-      return { content, extractedData, url };
+      return { content, headlines, url };
     } finally {
       await context.close();
+    }
+  }
+
+  /**
+   * Use Claude to analyze if content contains coverage announcements
+   * Returns extracted coverage info or null if not coverage-related
+   */
+  async analyzeCoverageContent(vendor, content, headlines) {
+    if (!this.anthropic) {
+      this.log('warn', 'Anthropic API key not configured, skipping Claude analysis');
+      return null;
+    }
+
+    // Prepare content for analysis - focus on headlines + recent content
+    const analysisContent = [
+      `VENDOR: ${vendor.name}`,
+      '',
+      'RECENT HEADLINES:',
+      ...headlines.slice(0, 10),
+      '',
+      'PAGE CONTENT (excerpt):',
+      content.slice(0, 4000), // Limit content size
+    ].join('\n');
+
+    try {
+      const response = await this.anthropic.messages.create({
+        model: CLAUDE_MODEL,
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: `Analyze this vendor news page for coverage or reimbursement announcements.
+
+${analysisContent}
+
+TASK: Identify any announcements about:
+- Insurance coverage (Medicare, Medicaid, commercial payers)
+- Reimbursement decisions or approvals
+- CMS coverage determinations
+- Payer partnerships or contracts
+- Prior authorization changes
+
+If you find coverage-related announcements, respond with JSON:
+{
+  "hasCoverageNews": true,
+  "announcements": [
+    {
+      "headline": "The announcement headline",
+      "payerName": "Name of payer if mentioned (or null)",
+      "testName": "Name of test if mentioned (or null)",
+      "coverageType": "One of: medicare, medicaid, commercial, medicare_advantage, or null",
+      "effectiveDate": "Date if mentioned (or null)",
+      "summary": "Brief summary of the coverage news"
+    }
+  ]
+}
+
+If NO coverage-related news found, respond with:
+{
+  "hasCoverageNews": false,
+  "announcements": []
+}
+
+Respond ONLY with valid JSON, no other text.`,
+          },
+        ],
+      });
+
+      const responseText = response.content[0]?.text?.trim();
+      if (!responseText) return null;
+
+      // Parse JSON response - handle potential markdown code fences
+      let jsonText = responseText;
+      const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (jsonMatch) {
+        jsonText = jsonMatch[1].trim();
+      }
+
+      const result = JSON.parse(jsonText);
+      return result;
+    } catch (error) {
+      this.log('warn', `Claude analysis failed for ${vendor.name}`, { error: error.message });
+      return null;
     }
   }
 
@@ -250,60 +366,63 @@ export class VendorCrawler extends BaseCrawler {
    * Main crawl implementation
    */
   async crawl() {
-    this.log('info', `Starting vendor crawl: ${this.vendors.length} vendors, ${this.getTotalPages()} pages`);
+    this.log('info', `Starting vendor coverage crawl: ${this.vendors.length} vendors`);
 
     await this.loadHashes();
     const discoveries = [];
     let pagesProcessed = 0;
     let pagesChanged = 0;
     let pagesFailed = 0;
+    let coverageFound = 0;
 
     try {
       for (const vendor of this.vendors) {
-        this.log('info', `Crawling vendor: ${vendor.name}`);
+        const url = vendor.newsUrl;
 
-        for (const page of vendor.pages) {
-          const url = `${vendor.baseUrl}${page.path}`;
+        try {
+          // Rate limit between requests
+          if (pagesProcessed > 0) {
+            await this.sleep(RATE_LIMIT_MS);
+          }
 
-          try {
-            // Rate limit: wait between requests for same vendor
-            if (pagesProcessed > 0) {
-              await this.sleep(RATE_LIMIT_MS);
-            }
+          this.log('debug', `Fetching: ${url}`);
+          const { content, headlines } = await this.fetchPage(url);
 
-            this.log('debug', `Fetching: ${url}`);
-            const { content, extractedData } = await this.fetchPage(url);
+          // Compute hash of page content
+          const newHash = this.computeHash(content);
+          const oldHash = this.hashes[url];
 
-            // Compute hash of page content
-            const newHash = this.computeHash(content);
-            const oldHash = this.hashes[url];
+          pagesProcessed++;
 
-            pagesProcessed++;
+          if (newHash !== oldHash) {
+            pagesChanged++;
+            const isFirstCrawl = !oldHash;
 
-            if (newHash !== oldHash) {
-              pagesChanged++;
-              const isFirstCrawl = !oldHash;
+            this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${vendor.name}`);
 
-              this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${url}`);
+            // Store new hash
+            this.hashes[url] = newHash;
 
-              // Store new hash
-              this.hashes[url] = newHash;
+            // Only analyze for coverage if content changed (not first crawl)
+            if (!isFirstCrawl) {
+              // Use Claude to check for coverage announcements
+              const analysis = await this.analyzeCoverageContent(vendor, content, headlines);
 
-              // Only create discoveries for actual changes (not first-time captures)
-              if (!isFirstCrawl) {
-                const discovery = this.createDiscoveryFromChange(vendor, page, url, extractedData);
-                if (discovery) {
+              if (analysis?.hasCoverageNews && analysis.announcements?.length > 0) {
+                coverageFound += analysis.announcements.length;
+
+                for (const announcement of analysis.announcements) {
+                  const discovery = this.createCoverageDiscovery(vendor, announcement, url);
                   discoveries.push(discovery);
                 }
               }
-            } else {
-              this.log('debug', `No changes: ${url}`);
             }
-          } catch (error) {
-            pagesFailed++;
-            this.log('warn', `Failed to fetch ${url}`, { error: error.message });
-            // Continue with other pages - don't let one failure stop the crawl
+          } else {
+            this.log('debug', `No changes: ${vendor.name}`);
           }
+        } catch (error) {
+          pagesFailed++;
+          this.log('warn', `Failed to fetch ${url}`, { error: error.message });
         }
       }
     } finally {
@@ -311,10 +430,11 @@ export class VendorCrawler extends BaseCrawler {
       await this.saveHashes();
     }
 
-    this.log('info', 'Vendor crawl complete', {
+    this.log('info', 'Vendor coverage crawl complete', {
       pagesProcessed,
       pagesChanged,
       pagesFailed,
+      coverageFound,
       discoveries: discoveries.length,
     });
 
@@ -322,121 +442,32 @@ export class VendorCrawler extends BaseCrawler {
   }
 
   /**
-   * Create discovery from detected page change
+   * Create discovery from coverage announcement
    */
-  createDiscoveryFromChange(vendor, page, url, extractedData) {
-    const changeDetails = {
-      title: extractedData.title,
-      summary: this.generateChangeSummary(vendor, page, extractedData),
-      versions: extractedData.versions,
-      pricing: extractedData.pricing,
-      features: extractedData.features,
-    };
+  createCoverageDiscovery(vendor, announcement, sourceUrl) {
+    const parts = [];
+    if (announcement.payerName) parts.push(announcement.payerName);
+    if (announcement.testName) parts.push(announcement.testName);
+    if (announcement.coverageType) parts.push(announcement.coverageType);
 
-    if (page.type === 'news') {
-      return this.createNewsDiscovery(vendor, {
-        title: `New content on ${page.description}`,
-        summary: changeDetails.summary,
-        url,
-      });
-    } else if (page.type === 'documentation') {
-      return this.createDocumentationDiscovery(vendor, {
-        title: page.description,
-        summary: changeDetails.summary,
-        url,
-        type: 'documentation',
-      });
-    } else {
-      return this.createProductUpdateDiscovery(vendor, page, changeDetails);
-    }
-  }
+    const title = announcement.headline ||
+      `${vendor.name}: Coverage Announcement${parts.length ? ` - ${parts.join(', ')}` : ''}`;
 
-  /**
-   * Generate a summary of detected changes
-   */
-  generateChangeSummary(vendor, page, extractedData) {
-    const parts = [`Changes detected on ${vendor.name} ${page.description}`];
-
-    if (extractedData.versions.length > 0) {
-      parts.push(`Version info: ${extractedData.versions.slice(0, 3).join(', ')}`);
-    }
-
-    if (extractedData.features.length > 0) {
-      parts.push(`Notable: ${extractedData.features[0].slice(0, 100)}`);
-    }
-
-    if (extractedData.pricing.length > 0) {
-      parts.push(`Pricing mentions detected`);
-    }
-
-    return parts.join('. ');
-  }
-
-  /**
-   * Get total number of pages across all vendors
-   */
-  getTotalPages() {
-    return this.vendors.reduce((sum, vendor) => sum + vendor.pages.length, 0);
-  }
-
-  /**
-   * Create discovery from product page change
-   */
-  createProductUpdateDiscovery(vendor, page, changeDetails = {}) {
     return {
       source: SOURCES.VENDOR,
-      type: DISCOVERY_TYPES.VENDOR_UPDATE,
-      title: `${vendor.name}: Product Page Updated - ${page.description}`,
-      summary: changeDetails.summary || `Changes detected on ${page.description}`,
-      url: `${vendor.baseUrl}${page.path}`,
-      relevance: this.calculateRelevance(changeDetails),
+      type: DISCOVERY_TYPES.VENDOR_COVERAGE_ANNOUNCEMENT,
+      title: title.slice(0, 200),
+      summary: announcement.summary || announcement.headline,
+      url: sourceUrl,
+      relevance: this.calculateRelevance(announcement),
       metadata: {
         vendorId: vendor.id,
         vendorName: vendor.name,
-        pageType: page.type,
-        pagePath: page.path,
-        changeType: 'product_update',
-      },
-    };
-  }
-
-  /**
-   * Create discovery from news/press release
-   */
-  createNewsDiscovery(vendor, newsItem) {
-    return {
-      source: SOURCES.VENDOR,
-      type: DISCOVERY_TYPES.VENDOR_UPDATE,
-      title: `${vendor.name}: ${newsItem.title}`,
-      summary: newsItem.summary || newsItem.title,
-      url: newsItem.url || `${vendor.baseUrl}/news`,
-      relevance: this.calculateRelevance(newsItem),
-      metadata: {
-        vendorId: vendor.id,
-        vendorName: vendor.name,
-        pageType: 'news',
-        publishDate: newsItem.date,
-        changeType: 'press_release',
-      },
-    };
-  }
-
-  /**
-   * Create discovery for documentation updates
-   */
-  createDocumentationDiscovery(vendor, doc) {
-    return {
-      source: SOURCES.VENDOR,
-      type: DISCOVERY_TYPES.TEST_DOCUMENTATION,
-      title: `${vendor.name}: Documentation Updated - ${doc.title}`,
-      summary: doc.summary || `Technical documentation updated`,
-      url: doc.url,
-      relevance: 'medium',
-      metadata: {
-        vendorId: vendor.id,
-        vendorName: vendor.name,
-        documentType: doc.type,
-        changeType: 'documentation_update',
+        payerName: announcement.payerName,
+        testName: announcement.testName,
+        coverageType: announcement.coverageType,
+        effectiveDate: announcement.effectiveDate,
+        changeType: 'coverage_announcement',
       },
     };
   }
@@ -444,32 +475,40 @@ export class VendorCrawler extends BaseCrawler {
   /**
    * Calculate relevance based on content
    */
-  calculateRelevance(item) {
-    const text = `${item.title || ''} ${item.summary || ''}`.toLowerCase();
+  calculateRelevance(announcement) {
+    const text = `${announcement.headline || ''} ${announcement.summary || ''}`.toLowerCase();
 
-    // High relevance terms - coverage, regulatory, clinical data
+    // High relevance: Major payers or Medicare
     const highTerms = [
-      'coverage',
       'medicare',
       'cms',
-      'fda',
-      'approval',
-      'cleared',
-      'clinical data',
-      'study results',
-      'trial results',
-      'guideline',
-      'nccn',
-      'indication',
-      'expanded',
+      'medicaid',
+      'unitedhealthcare',
+      'uhc',
+      'anthem',
+      'cigna',
+      'aetna',
+      'humana',
+      'blue cross',
+      'bcbs',
+      'national coverage',
+      'lcd',
+      'ncd',
     ];
 
     if (highTerms.some((term) => text.includes(term))) {
       return 'high';
     }
 
-    // Medium relevance - product updates, launches
-    const mediumTerms = ['update', 'launch', 'new', 'partnership', 'collaboration', 'pricing'];
+    // Medium relevance: Coverage-related terms
+    const mediumTerms = [
+      'coverage',
+      'reimbursement',
+      'payer',
+      'insurance',
+      'prior authorization',
+      'approved',
+    ];
 
     if (mediumTerms.some((term) => text.includes(term))) {
       return 'medium';

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "rec-1769583656353-bqs7hcb9j",
+    "discoveryId": "1769545575485-uv9bum1ao",
+    "testId": "mrd-3",
+    "testName": "Oncodetect",
+    "action": "update",
+    "confidence": 0.7,
+    "edits": [
+      {
+        "field": "tatCitations",
+        "oldValue": null,
+        "newValue": "https://pubmed.ncbi.nlm.nih.gov/39865324/",
+        "citation": "Diergaarde et al. 2025",
+        "citationUrl": "https://pubmed.ncbi.nlm.nih.gov/39865324/"
+      }
+    ],
+    "coverageUpdates": [],
+    "reasoning": "Found a recent peer-reviewed publication from the Alpha-CORRECT study (Diergaarde et al. 2025, PMID: 39865324) that validates the Oncodetect test. While this publication may not specifically detail the 28-day TAT, it represents the primary clinical validation study for Oncodetect and would be an appropriate citation for operational parameters like turnaround time that were part of the study protocol. The confidence is moderate (0.7) because the abstract doesn't explicitly mention TAT, but this is the most relevant peer-reviewed source available for the Oncodetect test validation.",
+    "sources": [
+      "https://pubmed.ncbi.nlm.nih.gov/39865324/"
+    ],
+    "status": "pending",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "reviewNotes": null,
+    "createdAt": "2026-01-28T07:00:56.353Z"
+  },
+  {
+    "id": "rec-1769583662374-iupjfsugn",
+    "discoveryId": "1769545575488-rpbe8dmck",
+    "testId": "mrd-3",
+    "testName": "Oncodetect",
+    "action": "update",
+    "confidence": 0.7,
+    "edits": [
+      {
+        "field": "initialTatCitations",
+        "oldValue": null,
+        "newValue": "Diergaarde B, Young G, Hall DW, et al. Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The α-CORRECT Study. J Surg Oncol. 2025. doi:10.1002/jso.27989",
+        "citation": "Diergaarde et al. 2025",
+        "citationUrl": "https://pubmed.ncbi.nlm.nih.gov/39865324/"
+      }
+    ],
+    "coverageUpdates": [],
+    "reasoning": "Found a peer-reviewed publication from the α-CORRECT study (PMID: 39865324) that validates the Oncodetect test. While this publication doesn't explicitly state the 28-day initial turnaround time, it provides the primary clinical validation study for the test. The α-CORRECT study is the foundational clinical evidence for Oncodetect's performance metrics already cited in the database for sensitivity and specificity. This publication represents the most appropriate citation for the initial TAT value, as it describes the clinical implementation and validation of the test workflow. The confidence is moderate (0.7) because while this is the primary validation study, it may not explicitly detail the 28-day TAT specification.",
+    "sources": [
+      "https://pubmed.ncbi.nlm.nih.gov/39865324/",
+      "https://pubmed.ncbi.nlm.nih.gov/39284954/",
+      "https://pubmed.ncbi.nlm.nih.gov/39513962/"
+    ],
+    "status": "pending",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "reviewNotes": null,
+    "createdAt": "2026-01-28T07:01:02.374Z"
+  }
+]

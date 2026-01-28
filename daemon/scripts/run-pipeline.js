@@ -11,7 +11,7 @@
  */
 
 import 'dotenv/config';
-import { runAllCrawlersNow, triggerTriage, triggerDigest } from '../src/scheduler.js';
+import { runAllCrawlersNow, triggerTriage, triggerDigest, triggerExport } from '../src/scheduler.js';
 
 // ── Formatting helpers ───────────────────────────────────────────────
 
@@ -124,6 +124,26 @@ async function runDigestStage() {
   return { success: result.success, duration: dt };
 }
 
+async function runExportStage() {
+  step('Exporting discoveries to GitHub...');
+  const t0 = Date.now();
+
+  const result = await triggerExport();
+  const dt = Date.now() - t0;
+
+  if (result.success) {
+    success('Export complete', result.url || '');
+    if (result.emailSent) {
+      success('Summary email sent', result.emailMessageId || '');
+    }
+  } else {
+    fail('Export failed', result.error || 'unknown error');
+  }
+
+  console.log(`  ${DIM}Duration: ${elapsed(dt)}${RESET}`);
+  return { success: result.success, url: result.url, duration: dt };
+}
+
 // ── Main ─────────────────────────────────────────────────────────────
 
 const USAGE = `
@@ -133,7 +153,8 @@ ${BOLD}Flags:${RESET}
   --crawl    Run all crawlers
   --triage   Run AI triage on queued discoveries
   --digest   Send the daily digest email
-  --all      Run full pipeline: crawl → triage → digest
+  --export   Export discoveries to GitHub + send summary email
+  --all      Run full pipeline: crawl → triage → export
   --help     Show this help message
 `;
 
@@ -148,9 +169,10 @@ async function main() {
 
   const runCrawl = flags.has('--crawl') || flags.has('--all');
   const runTriage = flags.has('--triage') || flags.has('--all');
-  const runDigest = flags.has('--digest') || flags.has('--all');
+  const runDigest = flags.has('--digest');
+  const runExport = flags.has('--export') || flags.has('--all');
 
-  if (!runCrawl && !runTriage && !runDigest) {
+  if (!runCrawl && !runTriage && !runDigest && !runExport) {
     console.error(`${RED}Unknown flag: ${args.join(' ')}${RESET}`);
     console.log(USAGE);
     process.exit(1);
@@ -160,6 +182,7 @@ async function main() {
     runCrawl && 'crawl',
     runTriage && 'triage',
     runDigest && 'digest',
+    runExport && 'export',
   ].filter(Boolean);
 
   banner(`OpenOnco Pipeline: ${stages.join(' → ')}`);
@@ -170,16 +193,21 @@ async function main() {
   try {
     if (runCrawl) {
       results.crawl = await runCrawlStage();
-      if (runTriage || runDigest) console.log();
+      if (runTriage || runDigest || runExport) console.log();
     }
 
     if (runTriage) {
       results.triage = await runTriageStage();
-      if (runDigest) console.log();
+      if (runDigest || runExport) console.log();
     }
 
     if (runDigest) {
       results.digest = await runDigestStage();
+      if (runExport) console.log();
+    }
+
+    if (runExport) {
+      results.export = await runExportStage();
     }
   } catch (error) {
     console.error(`\n${RED}${BOLD}Pipeline failed:${RESET} ${error.message}`);
