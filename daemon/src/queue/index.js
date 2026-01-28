@@ -79,6 +79,20 @@ export function getDiscoveriesBySource(source) {
 }
 
 /**
+ * Get all discoveries grouped by source
+ * Returns { pubmed: [...], cms: [...], etc }
+ */
+export function getAllDiscoveriesGroupedBySource() {
+  const discoveries = loadDiscoveries();
+  const grouped = {};
+  for (const d of discoveries) {
+    if (!grouped[d.source]) grouped[d.source] = [];
+    grouped[d.source].push(d);
+  }
+  return grouped;
+}
+
+/**
  * Record a successful operation for a source
  */
 export function recordSuccess(source) {
@@ -188,6 +202,7 @@ export default {
   addDiscoveries,
   getPendingCount,
   getDiscoveriesBySource,
+  getAllDiscoveriesGroupedBySource,
   markReviewed,
   getUnreviewed,
   loadDiscoveries,

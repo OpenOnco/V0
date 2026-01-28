@@ -148,6 +148,7 @@ vite.config.ts.timestamp-*
 
 # Claude Code
 .claude/
+!.claude/tasks/
 
 # Playwright test artifacts
 playwright-report/
@@ -169,6 +170,7 @@ context/
 
 # Generated data
 daemon/data/discoveries.json
+daemon/data/exports/
 tools/discovery/data/candidates/
 scripts/cms-coverage-scraper/vendor-coverage-raw.json
 

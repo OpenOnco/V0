@@ -7,9 +7,10 @@ import cron from 'node-cron';
 import { createLogger } from './utils/logger.js';
 import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
-import { sendDailyDigest } from './email/index.js';
+import { sendDailyDigest, sendSummaryDigest } from './email/index.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
 import { triageDiscoveries } from './triage/index.js';
+import { exportToGitHub } from './export/github-export.js';
 
 const logger = createLogger('scheduler');
 
@@ -247,6 +248,44 @@ export async function runAllCrawlersNow() {
   return results;
 }
 
+/**
+ * Manually trigger export: triage → export to GitHub → send summary email
+ */
+export async function triggerExport() {
+  logger.info('Manually triggering export to GitHub');
+
+  // Run triage first to get current results
+  const triageResults = await triageDiscoveries(null, { loadFromQueue: true, verbose: true });
+
+  // Export to GitHub
+  const exportResult = await exportToGitHub(triageResults);
+
+  // Send summary email
+  let emailResult = null;
+  try {
+    emailResult = await sendSummaryDigest({
+      triageResults,
+    });
+  } catch (error) {
+    logger.warn('Summary email failed (export still succeeded)', { error: error.message });
+  }
+
+  return {
+    success: true,
+    url: exportResult.url,
+    path: exportResult.path,
+    sha: exportResult.sha,
+    date: exportResult.date,
+    emailSent: emailResult?.success || false,
+    emailMessageId: emailResult?.messageId || null,
+    triage: {
+      high: triageResults.highPriority?.length || 0,
+      medium: triageResults.mediumPriority?.length || 0,
+      low: triageResults.lowPriority?.length || 0,
+    },
+  };
+}
+
 export default {
   startScheduler,
   stopScheduler,
@@ -254,5 +293,6 @@ export default {
   triggerCrawler,
   triggerDigest,
   triggerTriage,
+  triggerExport,
   runAllCrawlersNow,
 };
