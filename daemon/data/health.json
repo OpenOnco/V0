@@ -1,73 +1,43 @@
 {
   "version": 1,
-  "startedAt": "2026-01-16T20:09:21.344Z",
-  "lastUpdated": "2026-01-27T22:01:06.001Z",
+  "startedAt": "2026-01-28T23:00:00.000Z",
+  "lastUpdated": "2026-01-28T23:23:35.000Z",
   "crawlers": {
-    "pubmed": {
-      "lastRun": "2026-01-27T21:43:43.910Z",
-      "lastSuccess": "2026-01-27T21:44:06.094Z",
-      "discoveriesFound": 8,
-      "discoveriesAdded": 0,
-      "duration": 22184,
-      "status": "success",
-      "updatedAt": "2026-01-27T21:44:06.096Z"
-    },
     "cms": {
-      "lastRun": "2026-01-27T21:44:06.097Z",
-      "lastSuccess": "2026-01-27T21:44:12.334Z",
-      "discoveriesFound": 0,
-      "discoveriesAdded": 0,
-      "duration": 6237,
+      "lastRun": "2026-01-28T23:17:46.000Z",
+      "lastSuccess": "2026-01-28T23:18:27.000Z",
+      "discoveriesFound": 1,
+      "discoveriesAdded": 1,
+      "duration": 41000,
       "status": "success",
-      "updatedAt": "2026-01-27T21:44:12.334Z"
-    },
-    "fda": {
-      "lastRun": "2026-01-27T21:44:12.334Z",
-      "lastSuccess": "2026-01-27T21:46:54.943Z",
-      "discoveriesFound": 0,
-      "discoveriesAdded": 0,
-      "duration": 162609,
-      "status": "success",
-      "updatedAt": "2026-01-27T21:46:54.943Z"
+      "updatedAt": "2026-01-28T23:18:27.000Z"
     },
     "vendor": {
-      "lastRun": "2026-01-27T21:46:54.944Z",
-      "lastSuccess": "2026-01-27T21:48:43.452Z",
+      "lastRun": "2026-01-28T23:18:27.000Z",
+      "lastSuccess": "2026-01-28T23:19:47.000Z",
       "discoveriesFound": 0,
       "discoveriesAdded": 0,
-      "duration": 108508,
+      "duration": 80000,
       "status": "success",
-      "updatedAt": "2026-01-27T21:48:43.452Z"
-    },
-    "preprints": {
-      "lastRun": "2026-01-27T21:48:43.452Z",
-      "lastSuccess": "2026-01-27T21:50:04.894Z",
-      "discoveriesFound": 38,
-      "discoveriesAdded": 0,
-      "duration": 81442,
-      "status": "success",
-      "updatedAt": "2026-01-27T21:50:04.894Z"
-    },
-    "citations": {
-      "lastRun": "2026-01-27T20:23:36.900Z",
-      "lastSuccess": "2026-01-27T20:30:40.894Z",
-      "discoveriesFound": 306,
-      "discoveriesAdded": 154,
-      "duration": 423994,
-      "status": "success",
-      "updatedAt": "2026-01-27T20:30:40.894Z"
+      "updatedAt": "2026-01-28T23:19:47.000Z"
     },
     "payers": {
-      "lastRun": "2026-01-27T20:30:40.895Z",
-      "lastSuccess": "2026-01-27T20:32:48.851Z",
-      "discoveriesFound": 10,
+      "lastRun": "2026-01-28T23:19:47.000Z",
+      "lastSuccess": "2026-01-28T23:23:35.000Z",
+      "discoveriesFound": 0,
       "discoveriesAdded": 0,
-      "duration": 127956,
+      "duration": 228000,
       "status": "success",
-      "updatedAt": "2026-01-27T20:32:48.851Z"
+      "updatedAt": "2026-01-28T23:23:35.000Z"
     }
   },
-  "errors": [],
-  "digestsSent": 8,
-  "lastDigestSent": "2026-01-27T22:01:06.001Z"
+  "errors": [
+    {
+      "source": "payers",
+      "message": "HTTP2 protocol error from Anthem: net::ERR_HTTP2_PROTOCOL_ERROR",
+      "timestamp": "2026-01-28T23:20:15.000Z"
+    }
+  ],
+  "digestsSent": 0,
+  "lastDigestSent": null
 }

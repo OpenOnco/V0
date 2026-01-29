@@ -8,7 +8,6 @@ import { config } from '../config.js';
 import { getHealthSummary, recordDigestSent } from '../health.js';
 import { getQueueStatus } from '../queue/index.js';
 import { generateSummaryDigestHtml, generateSummaryDigestText, generateSummaryDigestSubject } from './templates.js';
-import { triageDiscoveries } from '../triage/index.js';
 
 const logger = createLogger('email');
 
@@ -34,8 +33,14 @@ export async function sendDailyDigest() {
   logger.info('Preparing daily digest email');
 
   try {
-    // Run triage to get priority-classified results
-    const triageResults = await triageDiscoveries(null, { loadFromQueue: true, verbose: false });
+    // Send summary digest with empty triage results (triage module removed)
+    const triageResults = {
+      highPriority: [],
+      mediumPriority: [],
+      lowPriority: [],
+      ignored: { not_relevant: 0, duplicate: 0, already_addressed: 0 },
+      metadata: { inputCount: 0, processedAt: new Date().toISOString() },
+    };
 
     return sendSummaryDigest({ triageResults });
   } catch (error) {

@@ -2,16 +2,20 @@
  * CMS/Medicare Crawler
  * Monitors for Local Coverage Determination (LCD) and National Coverage Determination (NCD) updates
  *
- * Uses the public CMS Coverage Database API:
+ * Uses the CMS Coverage Database API v1:
  * - Base URL: https://api.coverage.cms.gov
+ * - Requires license token from /v1/metadata/license-agreement (valid 1 hour)
  * - Endpoints:
- *   - GET /service/ncd - search NCDs
- *   - GET /service/lcd - search LCDs
- *   - GET /service/whats-new-report - get recent updates
+ *   - GET /v1/reports/national-coverage-ncd - search NCDs
+ *   - GET /v1/reports/local-coverage-final-lcds - search LCDs
+ *   - GET /v1/reports/local-coverage-whats-new - get recent updates
  */
 
+import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
-import { config, DISCOVERY_TYPES, SOURCES } from '../config.js';
+import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES } from '../config.js';
+
+const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
 
 // Keywords to search in CMS database
 const SEARCH_KEYWORDS = [
@@ -47,6 +51,49 @@ export class CMSCrawler extends BaseCrawler {
     this.baseUrl = 'https://api.coverage.cms.gov';
     // Track seen document IDs in format "lcdid:version" to avoid duplicates
     this.seenDocuments = new Set();
+    // License token for API v1 (valid 1 hour)
+    this.licenseToken = null;
+    // Anthropic client for AI analysis
+    this.anthropic = config.anthropic?.apiKey ? new Anthropic({ apiKey: config.anthropic.apiKey }) : null;
+  }
+
+  /**
+   * Fetch license token required for API v1
+   * Token is valid for 1 hour
+   * @returns {Promise<string>} - Bearer token
+   */
+  async fetchLicenseToken() {
+    if (this.licenseToken) {
+      return this.licenseToken;
+    }
+
+    const url = `${this.baseUrl}/v1/metadata/license-agreement`;
+    this.log('debug', 'Fetching CMS API license token');
+
+    const response = await this.http.getJson(url);
+    const token = response?.data?.[0]?.Token;
+
+    if (!token) {
+      throw new Error('Failed to obtain CMS API license token');
+    }
+
+    this.licenseToken = token;
+    this.log('debug', 'Obtained CMS API license token');
+    return token;
+  }
+
+  /**
+   * Make authenticated API request
+   * @param {string} url - API endpoint URL
+   * @returns {Promise<Object>} - JSON response
+   */
+  async authenticatedRequest(url) {
+    const token = await this.fetchLicenseToken();
+    return this.http.getJson(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   /**
@@ -97,11 +144,11 @@ export class CMSCrawler extends BaseCrawler {
    * @returns {Promise<Array>} - Array of discovery objects
    */
   async fetchWhatsNew() {
-    const url = `${this.baseUrl}/service/whats-new-report`;
+    const url = `${this.baseUrl}/v1/reports/whats-new/local`;
     this.log('debug', 'Fetching What\'s New report');
 
-    const response = await this.http.getJson(url);
-    const items = response?.data || response || [];
+    const response = await this.authenticatedRequest(url);
+    const items = response?.data || [];
     const discoveries = [];
 
     for (const item of items) {
@@ -116,7 +163,7 @@ export class CMSCrawler extends BaseCrawler {
       }
       this.seenDocuments.add(documentId);
 
-      const discovery = this.createDiscovery(item, 'Article');
+      const discovery = await this.createDiscovery(item, 'Article');
       if (discovery) {
         discoveries.push(discovery);
       }
@@ -131,15 +178,15 @@ export class CMSCrawler extends BaseCrawler {
    * @returns {Promise<Array>} - Array of discovery objects
    */
   async searchLCDs(keyword) {
-    const url = new URL(`${this.baseUrl}/service/lcd`);
+    const url = new URL(`${this.baseUrl}/v1/reports/local-coverage-final-lcds`);
     url.searchParams.set('keyword', keyword);
 
     this.log('debug', `Searching LCDs for: ${keyword}`);
 
-    const response = await this.http.getJson(url.toString());
-    const items = response?.data || response || [];
+    const response = await this.authenticatedRequest(url.toString());
+    const items = response?.data || [];
 
-    return this.processSearchResults(items, 'LCD');
+    return await this.processSearchResults(items, 'LCD');
   }
 
   /**
@@ -148,24 +195,24 @@ export class CMSCrawler extends BaseCrawler {
    * @returns {Promise<Array>} - Array of discovery objects
    */
   async searchNCDs(keyword) {
-    const url = new URL(`${this.baseUrl}/service/ncd`);
+    const url = new URL(`${this.baseUrl}/v1/reports/national-coverage-ncd`);
     url.searchParams.set('keyword', keyword);
 
     this.log('debug', `Searching NCDs for: ${keyword}`);
 
-    const response = await this.http.getJson(url.toString());
-    const items = response?.data || response || [];
+    const response = await this.authenticatedRequest(url.toString());
+    const items = response?.data || [];
 
-    return this.processSearchResults(items, 'NCD');
+    return await this.processSearchResults(items, 'NCD');
   }
 
   /**
    * Process search results and filter for oncology relevance
    * @param {Array} items - Array of search result items
    * @param {string} documentType - 'LCD' or 'NCD'
-   * @returns {Array} - Array of discovery objects
+   * @returns {Promise<Array>} - Array of discovery objects
    */
-  processSearchResults(items, documentType) {
+  async processSearchResults(items, documentType) {
     const discoveries = [];
 
     for (const item of items) {
@@ -182,7 +229,7 @@ export class CMSCrawler extends BaseCrawler {
       }
       this.seenDocuments.add(documentId);
 
-      const discovery = this.createDiscovery(item, documentType);
+      const discovery = await this.createDiscovery(item, documentType);
       if (discovery) {
         discoveries.push(discovery);
       }
@@ -216,9 +263,9 @@ export class CMSCrawler extends BaseCrawler {
    * Create a discovery object from a CMS item
    * @param {Object} item - The CMS item
    * @param {string} documentType - 'LCD', 'NCD', or 'Article'
-   * @returns {Object|null} - Discovery object or null if invalid
+   * @returns {Promise<Object|null>} - Discovery object or null if invalid
    */
-  createDiscovery(item, documentType) {
+  async createDiscovery(item, documentType) {
     const title = item.title || item.name || '';
     if (!title) {
       return null;
@@ -246,6 +293,9 @@ export class CMSCrawler extends BaseCrawler {
     if (effectiveDate) summaryParts.push(`Effective: ${effectiveDate}`);
     const summary = summaryParts.join(' | ') || `${documentType} coverage update`;
 
+    // Run AI analysis if Anthropic client is available
+    const aiAnalysis = await this.analyzeDiscovery(item, documentType);
+
     return {
       source: SOURCES.CMS,
       type: DISCOVERY_TYPES.COVERAGE_CHANGE,
@@ -259,6 +309,7 @@ export class CMSCrawler extends BaseCrawler {
         contractor,
         effectiveDate,
         version,
+        ...(aiAnalysis && { aiAnalysis }),
       },
     };
   }
@@ -297,6 +348,86 @@ export class CMSCrawler extends BaseCrawler {
     }
 
     return 'low';
+  }
+
+  /**
+   * Use Claude AI to analyze a CMS coverage determination item
+   * @param {Object} item - The CMS item data
+   * @param {string} documentType - 'LCD', 'NCD', or 'Article'
+   * @returns {Promise<Object|null>} - Analysis results or null if unavailable
+   */
+  async analyzeDiscovery(item, documentType) {
+    if (!this.anthropic) {
+      this.log('debug', 'Skipping AI analysis - Anthropic client not configured');
+      return null;
+    }
+
+    const title = item.title || item.name || '';
+    const summary = item.summary || item.description || '';
+    const contractor = item.contractor || item.mac || item.contractorName || '';
+    const effectiveDate = item.effectiveDate || item.revisionEffectiveDate || item.publishDate || '';
+
+    const prompt = `Analyze this CMS Medicare coverage determination and extract structured information about its relevance to molecular diagnostics testing.
+
+Document Type: ${documentType}
+Title: ${title}
+Summary: ${summary}
+Contractor/MAC: ${contractor}
+Effective Date: ${effectiveDate}
+Raw Data: ${JSON.stringify(item, null, 2)}
+
+Known molecular diagnostic tests to look for: ${ALL_TEST_NAMES.join(', ')}
+
+Please analyze this coverage determination and respond with ONLY a JSON object (no markdown, no explanation) containing:
+{
+  "coverageDecision": "covered" | "not_covered" | "conditional" | "unknown",
+  "affectedTests": ["array of specific test names mentioned or likely affected"],
+  "isMolDXRelevant": true | false,
+  "keyChanges": "Brief summary of important policy changes or coverage criteria",
+  "analysisNotes": "Your analysis notes about this coverage determination's significance for molecular diagnostics"
+}
+
+Focus on:
+- Whether this affects ctDNA, liquid biopsy, MRD, or tumor profiling tests
+- Specific coverage criteria or limitations mentioned
+- Any changes from previous policy versions
+- Impact on MolDX program tests`;
+
+    try {
+      this.log('debug', `Analyzing ${documentType} with Claude: ${title}`);
+
+      const response = await this.anthropic.messages.create({
+        model: CLAUDE_MODEL,
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      });
+
+      const content = response.content[0]?.text;
+      if (!content) {
+        this.log('warn', 'Empty response from Claude AI analysis');
+        return null;
+      }
+
+      // Parse the JSON response
+      const analysis = JSON.parse(content);
+      this.log('debug', `AI analysis complete for: ${title}`, { analysis });
+
+      return {
+        coverageDecision: analysis.coverageDecision || 'unknown',
+        affectedTests: analysis.affectedTests || [],
+        isMolDXRelevant: analysis.isMolDXRelevant || false,
+        keyChanges: analysis.keyChanges || '',
+        analysisNotes: analysis.analysisNotes || '',
+      };
+    } catch (error) {
+      this.log('warn', `AI analysis failed for ${documentType}: ${title}`, { error: error.message });
+      return null;
+    }
   }
 }
 

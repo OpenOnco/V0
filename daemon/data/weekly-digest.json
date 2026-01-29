@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-01-29T00:00:53.128Z",
+  "generatedAt": "2026-01-29T00:02:25.723Z",
   "weekOf": "2026-01-27",
   "summary": {
     "totalPending": 1,
@@ -11,31 +11,31 @@
   },
   "crawlerHealth": {
     "cms": {
-      "lastRun": "2026-01-28T23:32:21.035Z",
-      "lastSuccess": "2026-01-28T23:32:58.325Z",
+      "lastRun": "2026-01-28T23:17:46.000Z",
+      "lastSuccess": "2026-01-28T23:18:27.000Z",
       "discoveriesFound": 1,
       "discoveriesAdded": 1,
-      "duration": 37290,
+      "duration": 41000,
       "status": "success",
-      "updatedAt": "2026-01-28T23:32:58.327Z"
+      "updatedAt": "2026-01-28T23:18:27.000Z"
     },
     "payers": {
-      "lastRun": "2026-01-28T23:34:17.529Z",
-      "lastSuccess": "2026-01-28T23:38:09.263Z",
-      "discoveriesFound": 1,
-      "discoveriesAdded": 1,
-      "duration": 231734,
-      "status": "success",
-      "updatedAt": "2026-01-28T23:38:09.263Z"
-    },
-    "vendor": {
-      "lastRun": "2026-01-28T23:32:58.329Z",
-      "lastSuccess": "2026-01-28T23:34:17.529Z",
+      "lastRun": "2026-01-28T23:19:47.000Z",
+      "lastSuccess": "2026-01-28T23:23:35.000Z",
       "discoveriesFound": 0,
       "discoveriesAdded": 0,
-      "duration": 79200,
+      "duration": 228000,
       "status": "success",
-      "updatedAt": "2026-01-28T23:34:17.529Z"
+      "updatedAt": "2026-01-28T23:23:35.000Z"
+    },
+    "vendor": {
+      "lastRun": "2026-01-28T23:18:27.000Z",
+      "lastSuccess": "2026-01-28T23:19:47.000Z",
+      "discoveriesFound": 0,
+      "discoveriesAdded": 0,
+      "duration": 80000,
+      "status": "success",
+      "updatedAt": "2026-01-28T23:19:47.000Z"
     }
   },
   "discoveries": [

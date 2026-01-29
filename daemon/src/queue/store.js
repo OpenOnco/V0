@@ -7,9 +7,11 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, renameSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { createLogger } from '../utils/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const logger = createLogger('store');
 
 const DATA_DIR = join(__dirname, '../../data');
 const DISCOVERIES_FILE = join(DATA_DIR, 'discoveries.json');
@@ -46,7 +48,7 @@ export function loadDiscoveries() {
     const content = readFileSync(DISCOVERIES_FILE, 'utf-8');
     return JSON.parse(content);
   } catch (err) {
-    console.error('Error loading discoveries:', err.message);
+    logger.error('Error loading discoveries', { error: err.message });
     return [];
   }
 }
@@ -119,7 +121,7 @@ export function loadHealth() {
     const content = readFileSync(HEALTH_FILE, 'utf-8');
     return JSON.parse(content);
   } catch (err) {
-    console.error('Error loading health:', err.message);
+    logger.error('Error loading health', { error: err.message });
     return {};
   }
 }

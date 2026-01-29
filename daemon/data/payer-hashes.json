@@ -12,5 +12,16 @@
   "vendor:foundation:https://www.foundationmedicine.com/info/patient-coverage": "0f6ed484b4897f775f703b11016b7cf5902d4e5fd9dfaf7700e4f30a7c7d8442",
   "vendor:grail:https://www.grail.com/galleri/coverage": "0a1e6757d413934aae21f132728e34954792ad95735a8932e798c0fbd69eb32a",
   "vendor:exactsciences:https://www.exactsciences.com/providers/coverage-and-reimbursement": "1670997bb07d1c8e2a62c46406ecb00935cf78023234eed47afb7b01643ab713",
-  "vendor:tempus:https://www.tempus.com/coverage": "c855704addad9468aedd7c5f821f0a1e163cffaa85b2e2ea3d90ae532ed70cea"
+  "vendor:tempus:https://www.tempus.com/coverage": "c855704addad9468aedd7c5f821f0a1e163cffaa85b2e2ea3d90ae532ed70cea",
+  "bcbs-ma:index:https://www.bluecrossma.org/medical-policies/sites/g/files/csphws7476/files/acquiadam-assets/Medical_Policy_Manual.pdf": "6ecee6c33b4c8057c3b25a825a4412206bbe529afb5ba6db9304011460d2f781",
+  "bcbs-mi:index:https://www.bcbsm.com/providers/clinical-resources/policies.html": "0d3fa444840d639b2acfe320033d275658b0ed1eb9a5eed15bdef23089152d11",
+  "bcbs-tx:index:https://www.bcbstx.com/provider/clinical/medical-policies.html": "a0e54b5e60d39d85b0ca4da3a0d067c865e0b945f973a5ad1fec35ddb81f7c7c",
+  "bcbs-il:index:https://www.bcbsil.com/provider/clinical/medical-policies.html": "cefdfece2ce4680760d81ecf7a1a0769593f5c1b21e812aa02e24e6e3cd13df7",
+  "florida-blue:index:https://www.floridablue.com/providers/tools-resources/medical-policies": "48dec36055a81d67f8df6254216fa045b19ad5d8d2406e7df941156c467b84ac",
+  "bcbs-nc:index:https://www.bluecrossnc.com/providers/clinical-resources/medical-policy": "1aa2b329d84417043e2a788c9007f7695abcba6f346952771001da25e82daec9",
+  "carefirst:index:https://www.carefirst.com/provider/medical-policy-reference-manual": "1178510c259897e15572f140b5b89f7d8878c05e368bc441e1e6c8950c8a07de",
+  "blue-shield-ca:index:https://www.blueshieldca.com/provider/policies-guidelines/medical-policies": "36a8896878755952771db7fcbd74ba23f4d660f32f68998c071350c227f6bcf4",
+  "bcbs-az:index:https://www.azblue.com/providers/clinical-policies": "9b6175058c3e552a089d55c96ef23abdd8beaa877ab5fed02d28d6b6a0708098",
+  "uhc-ma:index:https://www.uhcprovider.com/content/provider/en/policies-protocols/medicare-advantage-policies.html": "30a21ef3f909e06e185f6686c9ceca5735ec47c14326ace0bd78a2851ff1db72",
+  "evicore:index:https://www.evicore.com/provider/clinical-guidelines": "dd29e77d7c6233de874404b6230e31acdd363349941bc488b917c78972300e29"
 }

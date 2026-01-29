@@ -82,7 +82,8 @@ const VENDOR_SOURCES = [
   {
     name: 'Adaptive Biotechnologies',
     id: 'adaptive',
-    newsUrl: 'https://investors.adaptivebiotech.com/news-releases',
+    newsUrl: 'https://investors.adaptivebiotech.com/news-events/news-releases',
+    rssUrl: 'https://investors.adaptivebiotech.com/rss/news-releases.xml',
   },
   {
     name: 'NeoGenomics',
@@ -107,7 +108,8 @@ const VENDOR_SOURCES = [
   {
     name: 'Veracyte',
     id: 'veracyte',
-    newsUrl: 'https://investor.veracyte.com/news-releases',
+    newsUrl: 'https://investor.veracyte.com/press-releases',
+    rssUrl: 'https://investor.veracyte.com/rss/news-releases.xml',
   },
   {
     name: 'Freenome',
@@ -236,7 +238,7 @@ export class VendorCrawler extends BaseCrawler {
 
     try {
       await page.goto(url, {
-        waitUntil: 'networkidle',
+        waitUntil: 'domcontentloaded',
         timeout: 30000,
       });
 
@@ -277,6 +279,61 @@ export class VendorCrawler extends BaseCrawler {
     } finally {
       await context.close();
     }
+  }
+
+  /**
+   * Fetch RSS feed content for vendors that block Playwright
+   * Returns { content, headlines, url } in same format as fetchPage
+   */
+  async fetchRSS(url) {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Accept': 'application/rss+xml, application/xml, text/xml',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`RSS fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    const xml = await response.text();
+
+    // Parse RSS XML to extract items
+    const headlines = [];
+    const descriptions = [];
+
+    // Extract all <item> blocks
+    const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
+    let itemMatch;
+
+    while ((itemMatch = itemRegex.exec(xml)) !== null) {
+      const itemContent = itemMatch[1];
+
+      // Extract title
+      const titleMatch = itemContent.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
+      if (titleMatch) {
+        const title = titleMatch[1].trim();
+        if (title && title.length > 10 && title.length < 300) {
+          headlines.push(title);
+        }
+      }
+
+      // Extract description
+      const descMatch = itemContent.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/i);
+      if (descMatch) {
+        // Strip HTML tags from description
+        const desc = descMatch[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        if (desc) {
+          descriptions.push(desc);
+        }
+      }
+    }
+
+    // Combine descriptions for content
+    const content = descriptions.join('\n\n');
+
+    return { content, headlines: [...new Set(headlines)].slice(0, 20), url };
   }
 
   /**
@@ -377,7 +434,7 @@ Respond ONLY with valid JSON, no other text.`,
 
     try {
       for (const vendor of this.vendors) {
-        const url = vendor.newsUrl;
+        const url = vendor.rssUrl || vendor.newsUrl;
 
         try {
           // Rate limit between requests
@@ -385,8 +442,15 @@ Respond ONLY with valid JSON, no other text.`,
             await this.sleep(RATE_LIMIT_MS);
           }
 
-          this.log('debug', `Fetching: ${url}`);
-          const { content, headlines } = await this.fetchPage(url);
+          // Use RSS feed if available, otherwise use Playwright
+          let content, headlines;
+          if (vendor.rssUrl) {
+            this.log('debug', `Fetching RSS: ${url}`);
+            ({ content, headlines } = await this.fetchRSS(url));
+          } else {
+            this.log('debug', `Fetching page: ${url}`);
+            ({ content, headlines } = await this.fetchPage(url));
+          }
 
           // Compute hash of page content
           const newHash = this.computeHash(content);

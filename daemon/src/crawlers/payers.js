@@ -10,6 +10,7 @@ import { createHash } from 'crypto';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { chromium } from 'playwright';
+import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES, MONITORED_VENDORS, PAYERS } from '../config.js';
 
@@ -31,6 +32,9 @@ const MAX_RETRIES = 3;
 
 // Retry delay base (exponential backoff)
 const RETRY_DELAY_BASE_MS = 2000;
+
+// Claude model for policy analysis
+const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
 
 // Keywords to search for in policy indexes
 const SEARCH_KEYWORDS = [
@@ -87,7 +91,7 @@ const NATIONAL_COMMERCIAL_URLS = {
     ],
   },
   anthem: {
-    indexUrl: 'https://www.anthem.com/provider/policies/medical-policies/',
+    indexUrl: 'https://www.anthem.com/provider/policies/clinical-guidelines/',
     policyPages: [],
   },
   cigna: {
@@ -257,9 +261,11 @@ const STANDARD_SEARCH_TERMS = ['molecular', 'genetic', 'oncology', 'tumor', 'gen
 /**
  * Build PAYER_SOURCES array from config PAYERS + crawler URLs
  * Only includes payers with non-null indexUrl
+ * Also returns list of skipped payers for logging
  */
 function buildPayerSources() {
   const sources = [];
+  const skipped = [];
   const allUrls = {
     ...NATIONAL_COMMERCIAL_URLS,
     ...REGIONAL_BCBS_URLS,
@@ -280,8 +286,9 @@ function buildPayerSources() {
   for (const payer of allPayers) {
     const urls = allUrls[payer.id];
 
-    // Skip payers without URL configuration or with null indexUrl
+    // Track payers without URL configuration
     if (!urls || urls.indexUrl === null) {
+      skipped.push(payer.name);
       continue;
     }
 
@@ -311,11 +318,11 @@ function buildPayerSources() {
     });
   }
 
-  return sources;
+  return { sources, skipped };
 }
 
 // Build the payer sources array
-const PAYER_SOURCES = buildPayerSources();
+const { sources: PAYER_SOURCES, skipped: SKIPPED_PAYERS } = buildPayerSources();
 
 // Vendor coverage/reimbursement pages to monitor (they track their own coverage status)
 const VENDOR_COVERAGE_SOURCES = [
@@ -413,6 +420,7 @@ export class PayerCrawler extends BaseCrawler {
     this.vendorCoverageSources = VENDOR_COVERAGE_SOURCES;
     this.browser = null;
     this.hashes = {};
+    this.anthropic = config.anthropic?.apiKey ? new Anthropic({ apiKey: config.anthropic.apiKey }) : null;
   }
 
   /**
@@ -482,6 +490,119 @@ export class PayerCrawler extends BaseCrawler {
       await this.browser.close();
       this.browser = null;
       this.log('debug', 'Browser closed');
+    }
+  }
+
+  /**
+   * Analyze payer policy change using Claude AI
+   * @param {Object} payer - Payer info object
+   * @param {string} url - URL of the changed page
+   * @param {string} content - New page content
+   * @param {Object} extractedData - Data extracted from the page
+   * @param {string|null} previousContent - Previous page content (if available)
+   * @returns {Object|null} Analysis results or null if unavailable
+   */
+  async analyzePayerChange(payer, url, content, extractedData, previousContent = null) {
+    if (!this.anthropic) {
+      this.log('debug', 'Claude analysis unavailable - no API key configured');
+      return null;
+    }
+
+    try {
+      // Truncate content to avoid token limits (keep first ~15k chars)
+      const maxContentLength = 15000;
+      const truncatedContent = content.length > maxContentLength
+        ? content.slice(0, maxContentLength) + '\n...[content truncated]...'
+        : content;
+
+      const truncatedPrevious = previousContent && previousContent.length > maxContentLength
+        ? previousContent.slice(0, maxContentLength) + '\n...[content truncated]...'
+        : previousContent;
+
+      const prompt = `You are analyzing a payer medical policy page for changes. Your job is to determine if the detected change represents a REAL policy change that affects coverage decisions, or if it's just a cosmetic/minor update.
+
+PAYER: ${payer.name}
+URL: ${url}
+PAGE TITLE: ${extractedData.title || 'Unknown'}
+DETECTED EFFECTIVE DATES: ${extractedData.effectiveDates?.join(', ') || 'None found'}
+DETECTED POLICY NUMBERS: ${extractedData.policyNumbers?.join(', ') || 'None found'}
+
+${truncatedPrevious ? `PREVIOUS CONTENT:
+${truncatedPrevious}
+
+CURRENT CONTENT:` : 'PAGE CONTENT:'}
+${truncatedContent}
+
+Analyze this content and determine:
+
+1. Is this a SIGNIFICANT policy change? (vs cosmetic updates like copyright year changes, CSS/layout changes, minor typo fixes, footer updates)
+
+2. What category best describes this change?
+   - policy_coverage_change: Actual coverage criteria changed (covered/not covered, medical necessity criteria)
+   - effective_date_update: Policy effective date was updated
+   - new_policy: This appears to be a newly published policy
+   - procedure_code_change: CPT/HCPCS codes were added, removed, or modified
+   - criteria_change: Medical necessity criteria or prior auth requirements changed
+   - formatting_only: Only formatting, layout, or cosmetic changes
+   - unknown: Cannot determine
+
+3. Which specific diagnostic tests or vendor names are mentioned? (e.g., Signatera, Guardant360, FoundationOne, Galleri, ctDNA tests, liquid biopsy tests)
+
+4. What is the coverage position if determinable?
+   - covered: Service/test is covered
+   - not_covered: Service/test is explicitly not covered
+   - conditional: Covered under specific conditions
+   - prior_auth_required: Requires prior authorization
+   - null: Cannot determine from content
+
+5. If an effective date is mentioned for policy changes, what is it?
+
+6. Brief summary of what changed (1-2 sentences)
+
+7. How confident are you in this analysis? (high/medium/low)
+
+Respond in JSON format:
+{
+  "isSignificantChange": boolean,
+  "changeCategory": "policy_coverage_change" | "effective_date_update" | "new_policy" | "procedure_code_change" | "criteria_change" | "formatting_only" | "unknown",
+  "affectedTests": ["array of test/vendor names mentioned"],
+  "coveragePosition": "covered" | "not_covered" | "conditional" | "prior_auth_required" | null,
+  "effectiveDateDetected": "date string or null",
+  "changeSummary": "brief description",
+  "confidenceLevel": "high" | "medium" | "low"
+}`;
+
+      const response = await this.anthropic.messages.create({
+        model: CLAUDE_MODEL,
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      });
+
+      // Extract JSON from response
+      const responseText = response.content[0]?.text || '';
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+
+      if (!jsonMatch) {
+        this.log('warn', 'Claude response did not contain valid JSON', { url });
+        return null;
+      }
+
+      const analysis = JSON.parse(jsonMatch[0]);
+      this.log('debug', `Claude analysis complete for ${url}`, {
+        isSignificant: analysis.isSignificantChange,
+        category: analysis.changeCategory,
+        confidence: analysis.confidenceLevel,
+      });
+
+      return analysis;
+    } catch (error) {
+      this.log('warn', 'Claude analysis failed', { url, error: error.message });
+      return null;
     }
   }
 
@@ -706,6 +827,11 @@ export class PayerCrawler extends BaseCrawler {
       `Starting payer crawl: ${this.payers.length} payers, ${this.vendorCoverageSources.length} vendors, ${totalPages} total pages`
     );
 
+    // Log skipped payers (no URL configured)
+    if (SKIPPED_PAYERS.length > 0) {
+      this.log('warn', `Skipping ${SKIPPED_PAYERS.length} payers with no URL configured: ${SKIPPED_PAYERS.join(', ')}`);
+    }
+
     await this.loadHashes();
     const discoveries = [];
     let pagesProcessed = 0;
@@ -746,13 +872,29 @@ export class PayerCrawler extends BaseCrawler {
               this.hashes[hashKey] = newHash;
 
               if (!isFirstCrawl) {
-                const indexDiscoveries = this.createDiscoveriesFromIndexChange(
+                // Use Claude to analyze if this is a significant change
+                const claudeAnalysis = await this.analyzePayerChange(
                   payer,
-                  indexPage,
-                  { matchedKeywords, relevantTests, changeType },
-                  extractedData
+                  indexPage.url,
+                  content,
+                  extractedData,
+                  null // No previous content stored for index pages
                 );
-                discoveries.push(...indexDiscoveries);
+
+                // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
+                const shouldCreateDiscovery = claudeAnalysis === null || claudeAnalysis.isSignificantChange;
+
+                if (shouldCreateDiscovery) {
+                  const indexDiscoveries = this.createDiscoveriesFromIndexChange(
+                    payer,
+                    indexPage,
+                    { matchedKeywords, relevantTests, changeType, claudeAnalysis },
+                    extractedData
+                  );
+                  discoveries.push(...indexDiscoveries);
+                } else {
+                  this.log('info', `Skipping non-significant change (${claudeAnalysis.changeCategory}): ${indexPage.url}`);
+                }
               }
             } else {
               this.log('debug', `No changes: ${indexPage.url}`);
@@ -793,16 +935,32 @@ export class PayerCrawler extends BaseCrawler {
               this.hashes[hashKey] = newHash;
 
               if (!isFirstCrawl) {
-                const discovery = this.createPolicyPageDiscovery(
+                // Use Claude to analyze if this is a significant change
+                const claudeAnalysis = await this.analyzePayerChange(
                   payer,
-                  policyPage,
                   url,
-                  { matchedKeywords, relevantTests, changeType },
+                  content,
                   extractedData,
-                  content
+                  null // No previous content stored
                 );
-                if (discovery) {
-                  discoveries.push(discovery);
+
+                // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
+                const shouldCreateDiscovery = claudeAnalysis === null || claudeAnalysis.isSignificantChange;
+
+                if (shouldCreateDiscovery) {
+                  const discovery = this.createPolicyPageDiscovery(
+                    payer,
+                    policyPage,
+                    url,
+                    { matchedKeywords, relevantTests, changeType, claudeAnalysis },
+                    extractedData,
+                    content
+                  );
+                  if (discovery) {
+                    discoveries.push(discovery);
+                  }
+                } else {
+                  this.log('info', `Skipping non-significant change (${claudeAnalysis.changeCategory}): ${url}`);
                 }
               }
             } else {
@@ -845,9 +1003,26 @@ export class PayerCrawler extends BaseCrawler {
               this.hashes[hashKey] = newHash;
 
               if (!isFirstCrawl) {
-                const discovery = this.createVendorCoverageDiscovery(vendor, page, url, extractedData, content);
-                if (discovery) {
-                  discoveries.push(discovery);
+                // Use Claude to analyze if this is a significant change
+                // For vendor pages, create a pseudo-payer object for the analysis
+                const claudeAnalysis = await this.analyzePayerChange(
+                  { name: vendor.name, id: vendor.id },
+                  url,
+                  content,
+                  extractedData,
+                  null // No previous content stored
+                );
+
+                // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
+                const shouldCreateDiscovery = claudeAnalysis === null || claudeAnalysis.isSignificantChange;
+
+                if (shouldCreateDiscovery) {
+                  const discovery = this.createVendorCoverageDiscovery(vendor, page, url, extractedData, content, claudeAnalysis);
+                  if (discovery) {
+                    discoveries.push(discovery);
+                  }
+                } else {
+                  this.log('info', `Skipping non-significant change (${claudeAnalysis.changeCategory}): ${url}`);
                 }
               }
             } else {
@@ -879,7 +1054,7 @@ export class PayerCrawler extends BaseCrawler {
    */
   createDiscoveriesFromIndexChange(payer, indexPage, analysisData, extractedData) {
     const discoveries = [];
-    const { matchedKeywords, relevantTests, changeType } = analysisData;
+    const { matchedKeywords, relevantTests, changeType, claudeAnalysis } = analysisData;
 
     // Check for relevant policy links
     const relevantLinks = extractedData.links.filter((link) => {
@@ -917,7 +1092,7 @@ export class PayerCrawler extends BaseCrawler {
         source: SOURCES.PAYERS,
         type: this.getDiscoveryType(changeType),
         title: `${payer.name}: ${indexPage.description} Updated`,
-        summary: this.generateChangeSummary(payer, indexPage, analysisData, extractedData),
+        summary: claudeAnalysis?.changeSummary || this.generateChangeSummary(payer, indexPage, analysisData, extractedData),
         url: indexPage.url,
         relevance: this.calculateRelevance(analysisData),
         metadata: {
@@ -925,14 +1100,21 @@ export class PayerCrawler extends BaseCrawler {
           payer: payer.name,
           policyId: extractedData.policyNumbers?.[0] || null,
           policyTitle: indexPage.description,
-          effectiveDate: extractedData.effectiveDates?.[0] || null,
+          effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
           changeType: specChangeType,
           snippet: null, // Index pages don't have meaningful snippets
           matchedKeywords,
           // Additional useful fields
           payerId: payer.id,
           lastUpdated: extractedData.lastUpdated || null,
-          relevantTests,
+          relevantTests: claudeAnalysis?.affectedTests?.length > 0 ? claudeAnalysis.affectedTests : relevantTests,
+          // Claude AI analysis
+          aiAnalysis: claudeAnalysis ? {
+            changeCategory: claudeAnalysis.changeCategory,
+            coveragePosition: claudeAnalysis.coveragePosition,
+            confidenceLevel: claudeAnalysis.confidenceLevel,
+            changeSummary: claudeAnalysis.changeSummary,
+          } : null,
         },
       });
     }
@@ -944,7 +1126,7 @@ export class PayerCrawler extends BaseCrawler {
    * Create discovery from a specific policy link
    */
   createPolicyLinkDiscovery(payer, link, analysisData, extractedData) {
-    const { matchedKeywords, relevantTests, changeType } = analysisData;
+    const { matchedKeywords, relevantTests, changeType, claudeAnalysis } = analysisData;
     const isNew = link.text.toLowerCase().includes('new');
     const type = isNew ? DISCOVERY_TYPES.PAYER_POLICY_NEW : this.getDiscoveryType(changeType);
 
@@ -959,7 +1141,7 @@ export class PayerCrawler extends BaseCrawler {
       source: SOURCES.PAYERS,
       type,
       title: `${payer.name}: ${link.text}`,
-      summary: `${payer.name} policy ${isNew ? 'published' : 'updated'}. ${
+      summary: claudeAnalysis?.changeSummary || `${payer.name} policy ${isNew ? 'published' : 'updated'}. ${
         extractedData.effectiveDates?.[0] ? `Effective: ${extractedData.effectiveDates[0]}` : ''
       }`.trim(),
       url: link.href,
@@ -969,13 +1151,20 @@ export class PayerCrawler extends BaseCrawler {
         payer: payer.name,
         policyId,
         policyTitle: link.text,
-        effectiveDate: extractedData.effectiveDates?.[0] || null,
+        effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
         changeType: specChangeType,
         snippet: null,
         matchedKeywords,
         // Additional useful fields
         payerId: payer.id,
-        relevantTests,
+        relevantTests: claudeAnalysis?.affectedTests?.length > 0 ? claudeAnalysis.affectedTests : relevantTests,
+        // Claude AI analysis
+        aiAnalysis: claudeAnalysis ? {
+          changeCategory: claudeAnalysis.changeCategory,
+          coveragePosition: claudeAnalysis.coveragePosition,
+          confidenceLevel: claudeAnalysis.confidenceLevel,
+          changeSummary: claudeAnalysis.changeSummary,
+        } : null,
       },
     };
   }
@@ -997,7 +1186,7 @@ export class PayerCrawler extends BaseCrawler {
    * }
    */
   createPolicyPageDiscovery(payer, policyPage, url, analysisData, extractedData, content = '') {
-    const { matchedKeywords, relevantTests, changeType } = analysisData;
+    const { matchedKeywords, relevantTests, changeType, claudeAnalysis } = analysisData;
     const snippet = this.extractSnippet(content, matchedKeywords.length > 0 ? matchedKeywords : SEARCH_KEYWORDS, 500);
 
     // Map internal changeType to spec format
@@ -1012,7 +1201,7 @@ export class PayerCrawler extends BaseCrawler {
       source: SOURCES.PAYERS,
       type: this.getDiscoveryType(changeType),
       title: `${payer.name}: ${policyPage.description} Updated`,
-      summary: this.generateChangeSummary(payer, policyPage, analysisData, extractedData),
+      summary: claudeAnalysis?.changeSummary || this.generateChangeSummary(payer, policyPage, analysisData, extractedData),
       url,
       relevance: this.calculateRelevance(analysisData),
       metadata: {
@@ -1020,14 +1209,21 @@ export class PayerCrawler extends BaseCrawler {
         payer: payer.name,
         policyId: extractedData.policyNumbers?.[0] || null,
         policyTitle: policyPage.description,
-        effectiveDate: extractedData.effectiveDates?.[0] || null,
+        effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
         changeType: specChangeType,
         snippet,
         matchedKeywords,
         // Additional useful fields
         payerId: payer.id,
         lastUpdated: extractedData.lastUpdated || null,
-        relevantTests,
+        relevantTests: claudeAnalysis?.affectedTests?.length > 0 ? claudeAnalysis.affectedTests : relevantTests,
+        // Claude AI analysis
+        aiAnalysis: claudeAnalysis ? {
+          changeCategory: claudeAnalysis.changeCategory,
+          coveragePosition: claudeAnalysis.coveragePosition,
+          confidenceLevel: claudeAnalysis.confidenceLevel,
+          changeSummary: claudeAnalysis.changeSummary,
+        } : null,
       },
     };
   }
@@ -1035,16 +1231,18 @@ export class PayerCrawler extends BaseCrawler {
   /**
    * Create discovery from vendor coverage page change
    */
-  createVendorCoverageDiscovery(vendor, page, url, extractedData, content = '') {
+  createVendorCoverageDiscovery(vendor, page, url, extractedData, content = '', claudeAnalysis = null) {
     // Use page-defined test names if available, otherwise try to find them
-    const relevantTests = page.testNames || this.findRelevantTests(extractedData.title || content);
+    const relevantTests = claudeAnalysis?.affectedTests?.length > 0
+      ? claudeAnalysis.affectedTests
+      : (page.testNames || this.findRelevantTests(extractedData.title || content));
     const snippet = this.extractSnippet(content, SEARCH_KEYWORDS, 500);
 
     return {
       source: SOURCES.PAYERS,
       type: DISCOVERY_TYPES.COVERAGE_CHANGE,
       title: `${vendor.name}: ${page.description} Updated`,
-      summary: `Coverage/reimbursement information updated on ${vendor.name} website. ${
+      summary: claudeAnalysis?.changeSummary || `Coverage/reimbursement information updated on ${vendor.name} website. ${
         relevantTests.length > 0 ? `Tests: ${relevantTests.join(', ')}` : ''
       }`.trim(),
       url,
@@ -1054,7 +1252,7 @@ export class PayerCrawler extends BaseCrawler {
         payer: vendor.name,
         policyId: null, // Vendor pages don't have policy IDs
         policyTitle: page.description,
-        effectiveDate: extractedData.effectiveDates?.[0] || null,
+        effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
         changeType: 'revision', // Vendor coverage pages are always revisions (we saw them before)
         snippet,
         matchedKeywords: this.findMatchedKeywords(content),
@@ -1063,6 +1261,13 @@ export class PayerCrawler extends BaseCrawler {
         lastUpdated: extractedData.lastUpdated || null,
         relevantTests,
         pageType: 'vendor_coverage',
+        // Claude AI analysis
+        aiAnalysis: claudeAnalysis ? {
+          changeCategory: claudeAnalysis.changeCategory,
+          coveragePosition: claudeAnalysis.coveragePosition,
+          confidenceLevel: claudeAnalysis.confidenceLevel,
+          changeSummary: claudeAnalysis.changeSummary,
+        } : null,
       },
     };
   }

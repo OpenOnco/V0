@@ -10,10 +10,11 @@ async function runAll() {
   for (const [name, crawler] of Object.entries(crawlers)) {
     console.log(`\n=== Running ${name} ===`);
     try {
-      const results = await crawler.crawl();
-      console.log(`${name}: ${results.length} discoveries`);
-      if (results.length > 0) {
-        results.forEach(r => console.log(`  - ${r.title}`));
+      // Use run() instead of crawl() to add discoveries to queue
+      const result = await crawler.run();
+      console.log(`${name}: ${result.discoveries?.length || 0} discoveries found, ${result.added || 0} added to queue`);
+      if (result.discoveries?.length > 0) {
+        result.discoveries.forEach(r => console.log(`  - ${r.title}`));
       }
     } catch (err) {
       console.log(`${name} error: ${err.message}`);

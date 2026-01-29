@@ -14,12 +14,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "postinstall": "npx playwright install chromium",
-    "run:crawl": "node scripts/run-pipeline.js --crawl",
-    "run:triage": "node scripts/run-pipeline.js --triage",
-    "run:digest": "node scripts/run-pipeline.js --digest",
-    "run:export": "node scripts/export-discoveries.js",
-    "run:export:github": "node scripts/run-pipeline.js --export",
-    "run:all": "node scripts/run-pipeline.js --all"
+    "run:crawl": "node run-now.js",
+    "run:digest": "node -e \"import('./src/email/monday-digest.js').then(m => m.sendMondayDigest())\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",

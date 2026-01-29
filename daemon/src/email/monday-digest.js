@@ -22,7 +22,12 @@ const logger = createLogger('monday-digest');
 function loadDiscoveries() {
   const path = join(DATA_DIR, 'discoveries.json');
   if (!existsSync(path)) return [];
-  return JSON.parse(readFileSync(path, 'utf-8'));
+  try {
+    return JSON.parse(readFileSync(path, 'utf-8'));
+  } catch (err) {
+    logger.error('Failed to load discoveries', { error: err.message });
+    return [];
+  }
 }
 
 /**
@@ -31,7 +36,12 @@ function loadDiscoveries() {
 function loadHealth() {
   const path = join(DATA_DIR, 'health.json');
   if (!existsSync(path)) return {};
-  return JSON.parse(readFileSync(path, 'utf-8'));
+  try {
+    return JSON.parse(readFileSync(path, 'utf-8'));
+  } catch (err) {
+    logger.error('Failed to load health data', { error: err.message });
+    return {};
+  }
 }
 
 /**
@@ -46,12 +56,26 @@ function getWeekDate() {
 }
 
 /**
+ * Get errors from the past week
+ */
+function getRecentErrors(health) {
+  if (!health.errors || !Array.isArray(health.errors)) return [];
+  
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  return health.errors.filter(e => {
+    const errorTime = new Date(e.timestamp).getTime();
+    return errorTime > weekAgo;
+  });
+}
+
+/**
  * Build the digest data object
  */
 function buildDigestData() {
   const discoveries = loadDiscoveries();
   const health = loadHealth();
   const pending = discoveries.filter(d => d.status === 'pending');
+  const recentErrors = getRecentErrors(health);
   
   return {
     generatedAt: new Date().toISOString(),
@@ -69,6 +93,7 @@ function buildDigestData() {
       payers: health.crawlers?.payers || null,
       vendor: health.crawlers?.vendor || null,
     },
+    errors: recentErrors,
     discoveries: pending.map(d => ({
       id: d.id,
       source: d.source,
@@ -88,7 +113,7 @@ function buildDigestData() {
  * This file contains instructions + data - just upload and send
  */
 function generateReviewAttachment(digest) {
-  const { discoveries, summary, crawlerHealth, weekOf } = digest;
+  const { discoveries, summary, weekOf } = digest;
   
   return `# OpenOnco Coverage Review - Week of ${weekOf}
 
@@ -158,10 +183,10 @@ function formatTime(isoString) {
 
 
 /**
- * Generate HTML email (summary + stats only)
+ * Generate HTML email (summary + stats + errors)
  */
 function generateEmailHtml(digest) {
-  const { summary, crawlerHealth, weekOf } = digest;
+  const { summary, crawlerHealth, errors, weekOf } = digest;
   
   const statusEmoji = (status) => {
     if (status === 'success') return '✅';
@@ -190,6 +215,27 @@ function generateEmailHtml(digest) {
     `;
   }).join('');
 
+  // Error section (only if errors exist)
+  const errorSection = errors.length > 0 ? `
+    <!-- Errors -->
+    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+      <div style="font-size: 12px; font-weight: 600; color: #dc2626; text-transform: uppercase; margin-bottom: 12px;">
+        ⚠️ ${errors.length} Error${errors.length > 1 ? 's' : ''} This Week
+      </div>
+      ${errors.slice(0, 5).map(e => `
+        <div style="background: white; border-radius: 4px; padding: 10px; margin-bottom: 8px; font-size: 13px;">
+          <div style="color: #666; font-size: 11px; margin-bottom: 4px;">
+            ${e.source.toUpperCase()} · ${formatTime(e.timestamp)}
+          </div>
+          <div style="color: #991b1b; font-family: monospace; font-size: 12px; word-break: break-word;">
+            ${e.message}
+          </div>
+        </div>
+      `).join('')}
+      ${errors.length > 5 ? `<div style="font-size: 12px; color: #666; margin-top: 8px;">...and ${errors.length - 5} more</div>` : ''}
+    </div>
+  ` : '';
+
   return `
 <!DOCTYPE html>
 <html>
@@ -211,6 +257,8 @@ function generateEmailHtml(digest) {
         CMS: ${summary.bySource.cms} · Payers: ${summary.bySource.payers} · Vendors: ${summary.bySource.vendor}
       </div>
     </div>
+
+    ${errorSection}
 
     <!-- Crawler Run Stats -->
     <div style="margin-bottom: 24px;">
@@ -252,7 +300,7 @@ function generateEmailHtml(digest) {
  * Generate plain text email
  */
 function generateEmailText(digest) {
-  const { summary, crawlerHealth, weekOf } = digest;
+  const { summary, crawlerHealth, errors, weekOf } = digest;
   
   let text = `
 OPENONCO COVERAGE DIGEST
@@ -261,7 +309,23 @@ Week of ${weekOf}
 
 ${summary.totalPending} DISCOVERIES PENDING REVIEW
 CMS: ${summary.bySource.cms} | Payers: ${summary.bySource.payers} | Vendors: ${summary.bySource.vendor}
+`;
 
+  // Add errors section if any
+  if (errors.length > 0) {
+    text += `
+⚠️ ${errors.length} ERROR${errors.length > 1 ? 'S' : ''} THIS WEEK
+───────────────────────────────────────
+`;
+    errors.slice(0, 5).forEach(e => {
+      text += `[${e.source.toUpperCase()}] ${formatTime(e.timestamp)}\n  ${e.message}\n\n`;
+    });
+    if (errors.length > 5) {
+      text += `...and ${errors.length - 5} more\n`;
+    }
+  }
+
+  text += `
 CRAWLER RUN STATS
 ───────────────────────────────────────
 `;
@@ -296,9 +360,15 @@ export async function sendMondayDigest() {
 
   const resend = new Resend(config.email.apiKey);
   
-  const subject = digest.summary.totalPending > 0
-    ? `[OpenOnco] ${digest.summary.totalPending} coverage updates to review`
-    : `[OpenOnco] Weekly digest - no new updates`;
+  // Subject includes error count if any
+  let subject;
+  if (digest.errors.length > 0) {
+    subject = `[OpenOnco] ⚠️ ${digest.errors.length} errors + ${digest.summary.totalPending} discoveries`;
+  } else if (digest.summary.totalPending > 0) {
+    subject = `[OpenOnco] ${digest.summary.totalPending} coverage updates to review`;
+  } else {
+    subject = `[OpenOnco] Weekly digest - no new updates`;
+  }
 
   // Generate the self-executing review file
   const reviewContent = generateReviewAttachment(digest);
@@ -326,7 +396,8 @@ export async function sendMondayDigest() {
     logger.info('Monday digest sent', { 
       to: config.email.to, 
       messageId: result.data?.id,
-      pendingCount: digest.summary.totalPending
+      pendingCount: digest.summary.totalPending,
+      errorCount: digest.errors.length
     });
 
     return {
