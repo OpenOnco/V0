@@ -1,93 +1,117 @@
-# Tests Missing CPT/PLA Codes
+# Tests CPT/PLA Code Status
 
-Generated: 2026-01-29
+**Last Updated:** 2026-01-29
+**Data Source:** BCBSM Medical Policy PLA Codes (Jan 2025), CMS CLFS Q4 2025
 
-**Status:** 99 tests need CPT/PLA codes for Medicare rate lookup
+## Summary
 
-## Priority Research Order
+| Metric | Count | % |
+|--------|-------|---|
+| Tests WITH CPT/PLA codes | 37 | 25% |
+| Tests WITHOUT codes | 111 | 75% |
+| **Total Tests** | **148** | 100% |
 
-### HIGH PRIORITY - Major Tests
-These are well-established tests that likely have PLA codes:
+## Tests WITH CPT/PLA Codes (37)
 
-| Test ID | Name | Vendor | Notes |
-|---------|------|--------|-------|
-| tds-3 | FoundationOne Heme | Foundation Medicine | Likely has PLA code |
-| tds-17 | Guardant360 Liquid | Guardant Health | Check vs CDx code |
-| mrd-10 | FoundationOne Tracker | Foundation Medicine | New MRD product |
-| hct-31 | BRACAnalysis CDx | Myriad | FDA CDx - likely has code |
-| ecd-kit-1 | Cologuard | Exact Sciences | Original version |
+### MRD Tests (14)
+| Test ID | Name | CPT/PLA | Medicare Rate |
+|---------|------|---------|---------------|
+| mrd-1 | Haystack MRD | 0561U | MAC-Priced |
+| mrd-2 | | | |
+| mrd-3 | | | |
+| mrd-4 | | | |
+| mrd-5 | | | |
+| mrd-6 | Reveal MRD | 0569U | MAC-Priced |
+| mrd-7 | Signatera | 0340U | $3,920 |
+| mrd-8 | | | |
+| mrd-14 | NavDx | 0356U | $1,800 |
+| mrd-16 | Invitae PCM | 0306U, 0307U | $3,878.45 |
+| mrd-18 | Caris Assure | 0485U | MAC-Priced |
+| mrd-19 | clonoSEQ | 0364U | $2,007.25 |
+| mrd-20 | Signatera Genome | 0239U | $3,500 |
 
-### MRD (18 tests)
-| Test ID | Name | Research Notes |
-|---------|------|----------------|
-| mrd-9 | Labcorp Plasma Detect | Check Labcorp billing |
-| mrd-10 | FoundationOne Tracker (MRD) | FMI billing |
-| mrd-11 | Foundation TI-WGS MRD (RUO) | RUO - may not have code |
-| mrd-12 | Veracyte MRD | Check Veracyte billing |
-| mrd-13 | Guardant LUNAR (RUO) | RUO - may not have code |
-| mrd-15 | Foresight CLARITY Lymphoma | Natera billing |
-| mrd-16 | Invitae PCM | Invitae billing |
-| mrd-18 | Caris Assure | Caris billing |
-| mrd-21 | Latitude | Natera - new test |
-| mrd-22 | CancerDetect | Check vendor |
-| mrd-23 | LymphoVista | Check vendor |
-| mrd-24 | CancerVista | Check vendor |
-| mrd-25 | CanCatch Custom | Check vendor |
-| mrd-kit-2 | LymphoTrack Dx IGH Assay | Invivoscribe |
-| mrd-kit-3 | BD OneFlow B-ALL MRD Kit | BD Biosciences |
-| mrd-26 | MRDVision | Check vendor |
-| mrd-27 | Bladder EpiCheck | Nucleix |
-| mrd-28 | K-4CARE | Check vendor |
+### TRM Tests (2)
+| Test ID | Name | CPT/PLA | Medicare Rate |
+|---------|------|---------|---------------|
+| trm-8 | Northstar Response | 0486U | MAC-Priced |
+| trm-11 | Caris Assure | 0485U | MAC-Priced |
 
-### TDS/CGP (36 tests)
-| Test ID | Name | Research Notes |
-|---------|------|----------------|
-| tds-3 | FoundationOne Heme | FMI - likely has code |
-| tds-17 | Guardant360 Liquid | Guardant |
-| tds-6 | Tempus xF | Tempus |
-| tds-7 | Tempus xF+ | Tempus |
-| tds-8 | MSK-IMPACT | Academic - may bill differently |
-| tds-11 | OncoExTra | Check vendor |
-| tds-12 | OmniSeq INSIGHT | OmniSeq |
-| tds-13 | StrataNGS | Strata Oncology |
-| tds-15 | NEO PanTracer Tissue | NEO |
-| tds-16 | Northstar Select | Check vendor |
-| tds-20 | Liquid Trace Solid Tumor | Check vendor |
-| tds-21 | Liquid Trace Hematology | Check vendor |
-| tds-22 | LiquidHALLMARK | Lucence - 0571U (MAC-priced) |
-| tds-23 | Resolution ctDx FIRST | Resolution Bio |
-| tds-24 | OncoCompass Target | Exact Sciences |
-| tds-25 | OncoScreen Focus CDx | Check vendor |
-| (+ IVD kits - typically use manufacturer codes) |
+### ECD Tests (6)
+| Test ID | Name | CPT/PLA | Medicare Rate |
+|---------|------|---------|---------------|
+| ecd-1 | Shield | 0537U | $1,495 |
+| ecd-3 | Cologuard Plus | 0464U | $591.92 |
+| ecd-4 | ColoSense | 0421U | $508.87 |
+| ecd-8 | HelioLiver | 0333U | $662.32 |
+| ecd-20 | Avantect Pancreatic | 0410U | $1,160 |
+| ecd-kit-2 | Epi proColon | 81327 | $192 |
 
-### ECD (8 tests)
-| Test ID | Name | Research Notes |
-|---------|------|----------------|
-| ecd-21 | OverC MCED | Burning Rock - new |
-| ecd-22 | Cancerguard | Check vendor |
-| ecd-kit-1 | Cologuard | Exact Sciences - original |
-| ecd-kit-2 | Epi proColon | Epigenomics |
-| ecd-25 | CancerDetect Oral & Throat | Check vendor |
-| ecd-26 | Trucheck Intelli | Check vendor |
-| ecd-27 | OncoXPLORE+ | Check vendor |
-| ecd-28 | SPOT-MAS | Check vendor |
+### TDS/CGP Tests (10)
+| Test ID | Name | CPT/PLA | Medicare Rate |
+|---------|------|---------|---------------|
+| tds-1 | FoundationOne CDx | 0037U | $3,500 |
+| tds-2 | FoundationOne Liquid CDx | 0239U | $3,500 |
+| tds-3 | FoundationOne Heme | 0111U | $682.29 |
+| tds-4 | Guardant360 CDx | 0242U | $5,000 |
+| tds-5 | Tempus xT CDx | 0473U | $4,500 |
+| tds-8 | MSK-IMPACT | 0048U | $2,919.60 |
+| tds-13 | StrataNGS | 0391U | $3,600 |
+| tds-16 | Northstar Select | 0487U | $2,919.60 |
+| tds-19 | Oncotype DX Breast | 81519 | $3,873 |
+| tds-22 | LiquidHALLMARK | 0571U | MAC-Priced |
+| tds-kit-3 | PGDx elio tissue complete | 0250U | $2,919.60 |
 
-### HCT (25 tests)
-Many HCT panels use stacked 81432 codes or other hereditary panel codes.
+### HCT Tests (8)
+| Test ID | Name | CPT/PLA | Medicare Rate |
+|---------|------|---------|---------------|
+| hct-1 | MyRisk | 81162 | $1,824.88 |
+| hct-2 | Invitae Multi-Cancer | 81432 | $1,303.95 |
+| hct-3 | CancerNext-Expanded | 81432 | $1,303.95 |
+| hct-6 | Comprehensive Hereditary Cancer | 81432 | $1,303.95 |
+| hct-7 | VistaSeq Hereditary Cancer | 81432 | $1,303.95 |
+| hct-9 | Comprehensive Common Cancer | 81432 | $1,303.95 |
+| hct-10 | Full Comprehensive Cancer | 81432 | $1,303.95 |
+| hct-31 | BRACAnalysis CDx | 0137U | $282.88 |
 
-### TRM (12 tests)  
-TRM tests often share codes with their parent MRD tests.
+### Kit Tests (2)
+| Test ID | Name | CPT/PLA | Medicare Rate |
+|---------|------|---------|---------------|
+| mrd-kit-1 | clonoSEQ Assay | 0364U | $2,007.25 |
 
-## Research Sources
+---
 
-1. **CMS PLA Code Database**: https://www.cms.gov/medicare/coding-billing/healthcare-common-procedure-system-hcpcs/proprietary-lab-analyses-codes
-2. **AMA CPT PLA Codes**: Updated quarterly
-3. **Vendor billing pages**: Most vendors list billing codes
-4. **MolDX LCDs**: Sometimes list applicable codes
+## Tests NOT in CLFS (1)
+| Test ID | Name | CPT Code | Notes |
+|---------|------|----------|-------|
+| ecd-9 | Oncoguard Liver | 81599 | Code exists but not in CLFS |
 
-## Notes
+---
 
-- Many newer tests (2024-2025) may not have PLA codes yet
-- RUO tests typically don't have billing codes
-- IVD kits often use manufacturer-specific or stacked codes
-- Some tests bill using generic CPT codes (81455, 81432, etc.)
+## Tests WITHOUT CPT/PLA Codes (111)
+
+### Why Some Tests Lack Codes
+
+1. **RUO (Research Use Only)** - Not for clinical billing
+2. **New Tests** - PLA code application pending
+3. **Academic/Single-site** - May use institutional billing
+4. **International** - Non-US tests
+5. **Stacked Codes** - Use multiple existing CPT codes vs single PLA
+
+### Data Sources for Future Updates
+
+1. **CMS CLFS** - Quarterly updates with national rates
+   - URL: https://www.cms.gov/medicare/payment/fee-schedules/clinical-laboratory-fee-schedule-clfs/files
+   
+2. **BCBSM PLA Policy** - Comprehensive PLA code mapping
+   - URL: https://www.bcbsm.com/amslibs/content/dam/public/mpr/mprsearch/pdf/2158372.pdf
+   
+3. **AMA PLA Long Descriptors** - Quarterly updates (proprietary names)
+   - URL: https://www.ama-assn.org/system/files/cpt-pla-codes-long.pdf
+   - Note: Only contains quarterly deltas, not full database
+
+### Automation
+
+Run `scripts/update-medicare-rates.js` to:
+1. Download latest CMS CLFS data
+2. Match tests by cptCodes field
+3. Update medicareRate, medicareStatus, medicareEffective, adltStatus
