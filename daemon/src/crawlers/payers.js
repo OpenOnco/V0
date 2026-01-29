@@ -13,6 +13,8 @@ import { chromium } from 'playwright';
 import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES, MONITORED_VENDORS, PAYERS } from '../config.js';
+import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
+import { computeDiff, truncateDiff } from '../utils/diff.js';
 
 // Path to store content hashes for change detection
 const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'payer-hashes.json');
@@ -35,6 +37,9 @@ const RETRY_DELAY_BASE_MS = 2000;
 
 // Claude model for policy analysis
 const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
+
+// Maximum content size to store for diffing (50KB)
+const MAX_STORED_CONTENT_SIZE = 50000;
 
 // Keywords to search for in policy indexes
 const SEARCH_KEYWORDS = [
@@ -425,11 +430,29 @@ export class PayerCrawler extends BaseCrawler {
 
   /**
    * Load stored content hashes from disk
+   * Handles both old format (string hash) and new format (object with hash, content, fetchedAt)
    */
   async loadHashes() {
     try {
       const data = await readFile(HASH_FILE_PATH, 'utf-8');
-      this.hashes = JSON.parse(data);
+      const rawHashes = JSON.parse(data);
+
+      // Normalize to new format, handling backward compatibility
+      this.hashes = {};
+      for (const [key, value] of Object.entries(rawHashes)) {
+        if (typeof value === 'string') {
+          // Old format: just the hash string
+          this.hashes[key] = {
+            hash: value,
+            content: null, // No previous content available
+            fetchedAt: null,
+          };
+        } else {
+          // New format: object with hash, content, fetchedAt
+          this.hashes[key] = value;
+        }
+      }
+
       this.log('debug', `Loaded ${Object.keys(this.hashes).length} stored hashes`);
     } catch (error) {
       if (error.code === 'ENOENT') {
@@ -453,6 +476,62 @@ export class PayerCrawler extends BaseCrawler {
     } catch (error) {
       this.log('error', 'Failed to save hash file', { error: error.message });
     }
+  }
+
+  /**
+   * Canonicalize content for consistent hash comparison.
+   * Removes dynamic elements that change without policy changes while
+   * preserving policy-relevant content.
+   * @param {string} text - Raw page content
+   * @returns {string} Canonicalized content for hashing
+   */
+  canonicalizeContent(text) {
+    if (!text) return '';
+
+    let content = text;
+
+    // 1. Remove dynamic date patterns (non-policy dates)
+    // "Last updated: Jan 28, 2026" or similar
+    content = content.replace(/last\s+updated[:\s]+[A-Z][a-z]+\s+\d{1,2},?\s+\d{4}/gi, '');
+    content = content.replace(/last\s+updated[:\s]+\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/gi, '');
+    // "Last reviewed: ..."
+    content = content.replace(/last\s+reviewed[:\s]+[A-Z][a-z]+\s+\d{1,2},?\s+\d{4}/gi, '');
+    content = content.replace(/last\s+reviewed[:\s]+\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/gi, '');
+    // "Page generated at ..."
+    content = content.replace(/page\s+generated\s+at[:\s]+[^\n]+/gi, '');
+    // "Copyright © 2026" or "Copyright 2026"
+    content = content.replace(/copyright\s*©?\s*\d{4}/gi, '');
+    // "Retrieved on ..."
+    content = content.replace(/retrieved\s+on[:\s]+[A-Z][a-z]+\s+\d{1,2},?\s+\d{4}/gi, '');
+    content = content.replace(/retrieved\s+on[:\s]+\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/gi, '');
+    // Timestamps like "10:30 AM EST" or "10:30:45 PM"
+    content = content.replace(/\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM)?\s*(?:[A-Z]{2,4})?/gi, '');
+
+    // 2. Keep policy-relevant dates (don't remove these):
+    // "Effective: 01/01/2026" or "Effective date:" - these are preserved by not matching them above
+
+    // 3. Remove common boilerplate
+    content = content.replace(/skip\s+to\s+main\s+content/gi, '');
+    content = content.replace(/skip\s+to\s+navigation/gi, '');
+    content = content.replace(/print\s+this\s+page/gi, '');
+    content = content.replace(/back\s+to\s+top/gi, '');
+    // Cookie consent patterns
+    content = content.replace(/accept\s+cookies?/gi, '');
+    content = content.replace(/cookie\s+preferences?/gi, '');
+    content = content.replace(/we\s+use\s+cookies[^.]*\./gi, '');
+    content = content.replace(/this\s+site\s+uses\s+cookies[^.]*\./gi, '');
+    content = content.replace(/by\s+continuing\s+to\s+use\s+this\s+site[^.]*\./gi, '');
+
+    // 4. Normalize whitespace
+    // Collapse multiple spaces/newlines/tabs to single space
+    content = content.replace(/[\s\n\r\t]+/g, ' ');
+    // Trim leading/trailing whitespace
+    content = content.trim();
+
+    // 5. Lowercase for consistent comparison
+    content = content.toLowerCase();
+
+    return content;
   }
 
   /**
@@ -495,29 +574,67 @@ export class PayerCrawler extends BaseCrawler {
 
   /**
    * Analyze payer policy change using Claude AI
+   * Uses deterministic test matching first, then Claude for additional analysis
    * @param {Object} payer - Payer info object
    * @param {string} url - URL of the changed page
    * @param {string} content - New page content
    * @param {Object} extractedData - Data extracted from the page
-   * @param {string|null} previousContent - Previous page content (if available)
+   * @param {Object|null} diff - Diff object from computeDiff (if available)
    * @returns {Object|null} Analysis results or null if unavailable
    */
-  async analyzePayerChange(payer, url, content, extractedData, previousContent = null) {
+  async analyzePayerChange(payer, url, content, extractedData, diff = null) {
+    // Run deterministic test matching FIRST (before Claude)
+    const deterministicMatches = matchTests(content);
+    const formattedMatches = formatMatchesForPrompt(deterministicMatches);
+
+    this.log('debug', `Deterministic matches for ${url}`, {
+      matchCount: deterministicMatches.length,
+      highConfidence: deterministicMatches.filter(m => m.confidence >= 0.75).length,
+    });
+
     if (!this.anthropic) {
       this.log('debug', 'Claude analysis unavailable - no API key configured');
-      return null;
+      // Return partial analysis with just deterministic matches
+      return {
+        isSignificantChange: deterministicMatches.length > 0,
+        changeCategory: 'unknown',
+        affectedTests: deterministicMatches.map(m => m.test.name),
+        coveragePosition: null,
+        effectiveDateDetected: extractedData.effectiveDates?.[0] || null,
+        changeSummary: deterministicMatches.length > 0
+          ? `Tests identified: ${deterministicMatches.map(m => m.test.name).join(', ')}`
+          : 'Unable to analyze - no API key configured',
+        confidenceLevel: 'low',
+        deterministicMatches: deterministicMatches.map(m => ({
+          testId: m.test.id,
+          testName: m.test.name,
+          matchType: m.matchType,
+          confidence: m.confidence,
+          matchedOn: m.matchedOn,
+        })),
+      };
     }
 
     try {
-      // Truncate content to avoid token limits (keep first ~15k chars)
-      const maxContentLength = 15000;
-      const truncatedContent = content.length > maxContentLength
-        ? content.slice(0, maxContentLength) + '\n...[content truncated]...'
-        : content;
+      // Format diff or fall back to truncated content
+      let contentSection;
+      if (diff) {
+        // Use diff for more precise analysis
+        const formattedDiff = truncateDiff(diff, 8000);
+        contentSection = `=== WHAT CHANGED ON THIS PAGE ===
+${formattedDiff}
 
-      const truncatedPrevious = previousContent && previousContent.length > maxContentLength
-        ? previousContent.slice(0, maxContentLength) + '\n...[content truncated]...'
-        : previousContent;
+=== CURRENT PAGE CONTENT (for context) ===
+${content.slice(0, 5000)}${content.length > 5000 ? '\n...[content truncated]...' : ''}`;
+      } else {
+        // Fall back to full content if no diff available
+        const maxContentLength = 15000;
+        const truncatedContent = content.length > maxContentLength
+          ? content.slice(0, maxContentLength) + '\n...[content truncated]...'
+          : content;
+        contentSection = `PAGE CONTENT:
+${truncatedContent}`;
+      }
 
       const prompt = `You are analyzing a payer medical policy page for changes. Your job is to determine if the detected change represents a REAL policy change that affects coverage decisions, or if it's just a cosmetic/minor update.
 
@@ -527,11 +644,13 @@ PAGE TITLE: ${extractedData.title || 'Unknown'}
 DETECTED EFFECTIVE DATES: ${extractedData.effectiveDates?.join(', ') || 'None found'}
 DETECTED POLICY NUMBERS: ${extractedData.policyNumbers?.join(', ') || 'None found'}
 
-${truncatedPrevious ? `PREVIOUS CONTENT:
-${truncatedPrevious}
+=== DETERMINISTIC TEST MATCHES (pre-identified with high confidence) ===
+${formattedMatches}
 
-CURRENT CONTENT:` : 'PAGE CONTENT:'}
-${truncatedContent}
+Please CONFIRM the tests listed above and identify any ADDITIONAL tests not already listed.
+================================================================================
+
+${contentSection}
 
 Analyze this content and determine:
 
@@ -546,7 +665,7 @@ Analyze this content and determine:
    - formatting_only: Only formatting, layout, or cosmetic changes
    - unknown: Cannot determine
 
-3. Which specific diagnostic tests or vendor names are mentioned? (e.g., Signatera, Guardant360, FoundationOne, Galleri, ctDNA tests, liquid biopsy tests)
+3. Which specific diagnostic tests or vendor names are mentioned? Include the pre-identified tests above PLUS any additional ones you find. (e.g., Signatera, Guardant360, FoundationOne, Galleri, ctDNA tests, liquid biopsy tests)
 
 4. What is the coverage position if determinable?
    - covered: Service/test is covered
@@ -565,7 +684,8 @@ Respond in JSON format:
 {
   "isSignificantChange": boolean,
   "changeCategory": "policy_coverage_change" | "effective_date_update" | "new_policy" | "procedure_code_change" | "criteria_change" | "formatting_only" | "unknown",
-  "affectedTests": ["array of test/vendor names mentioned"],
+  "affectedTests": ["array of test/vendor names mentioned - include pre-identified tests plus any additional"],
+  "additionalTestsFound": ["only tests YOU found that were NOT in the pre-identified list"],
   "coveragePosition": "covered" | "not_covered" | "conditional" | "prior_auth_required" | null,
   "effectiveDateDetected": "date string or null",
   "changeSummary": "brief description",
@@ -589,21 +709,231 @@ Respond in JSON format:
 
       if (!jsonMatch) {
         this.log('warn', 'Claude response did not contain valid JSON', { url });
-        return null;
+        // Return deterministic matches only
+        return {
+          isSignificantChange: deterministicMatches.length > 0,
+          changeCategory: 'unknown',
+          affectedTests: deterministicMatches.map(m => m.test.name),
+          coveragePosition: null,
+          effectiveDateDetected: extractedData.effectiveDates?.[0] || null,
+          changeSummary: 'Claude analysis failed - using deterministic matches only',
+          confidenceLevel: 'low',
+          deterministicMatches: deterministicMatches.map(m => ({
+            testId: m.test.id,
+            testName: m.test.name,
+            matchType: m.matchType,
+            confidence: m.confidence,
+            matchedOn: m.matchedOn,
+          })),
+        };
       }
 
       const analysis = JSON.parse(jsonMatch[0]);
+
+      // Merge deterministic matches with Claude's analysis
+      // Deterministic matches are stored separately for transparency
+      analysis.deterministicMatches = deterministicMatches.map(m => ({
+        testId: m.test.id,
+        testName: m.test.name,
+        matchType: m.matchType,
+        confidence: m.confidence,
+        matchedOn: m.matchedOn,
+      }));
+
+      // Ensure affectedTests includes all deterministic matches
+      const deterministicTestNames = deterministicMatches.map(m => m.test.name);
+      const allTests = [...new Set([...deterministicTestNames, ...(analysis.affectedTests || [])])];
+      analysis.affectedTests = allTests;
+
       this.log('debug', `Claude analysis complete for ${url}`, {
         isSignificant: analysis.isSignificantChange,
         category: analysis.changeCategory,
         confidence: analysis.confidenceLevel,
+        deterministicMatchCount: deterministicMatches.length,
+        totalTestsFound: allTests.length,
       });
 
       return analysis;
     } catch (error) {
       this.log('warn', 'Claude analysis failed', { url, error: error.message });
-      return null;
+      // Return deterministic matches on error
+      return {
+        isSignificantChange: deterministicMatches.length > 0,
+        changeCategory: 'unknown',
+        affectedTests: deterministicMatches.map(m => m.test.name),
+        coveragePosition: null,
+        effectiveDateDetected: extractedData.effectiveDates?.[0] || null,
+        changeSummary: `Claude analysis error: ${error.message}`,
+        confidenceLevel: 'low',
+        deterministicMatches: deterministicMatches.map(m => ({
+          testId: m.test.id,
+          testName: m.test.name,
+          matchType: m.matchType,
+          confidence: m.confidence,
+          matchedOn: m.matchedOn,
+        })),
+      };
     }
+  }
+
+  /**
+   * Check if URL is an Anthem domain (requires HTTP/1.1)
+   */
+  isAnthemDomain(url) {
+    try {
+      const hostname = new URL(url).hostname.toLowerCase();
+      return hostname.includes('anthem.com') || hostname.includes('anthem.');
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Fallback fetch using Node.js https module with HTTP/1.1
+   * Used for domains that have HTTP/2 protocol issues (e.g., Anthem)
+   */
+  async fetchWithHttp1(url) {
+    const https = await import('https');
+    const http = await import('http');
+
+    return new Promise((resolve, reject) => {
+      const parsedUrl = new URL(url);
+      const isHttps = parsedUrl.protocol === 'https:';
+      const client = isHttps ? https.default : http.default;
+
+      const options = {
+        hostname: parsedUrl.hostname,
+        port: parsedUrl.port || (isHttps ? 443 : 80),
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: 'GET',
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+        },
+        // Force HTTP/1.1 by disabling ALPN negotiation for HTTP/2
+        ALPNProtocols: ['http/1.1'],
+      };
+
+      const req = client.request(options, (res) => {
+        // Handle redirects
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          const redirectUrl = new URL(res.headers.location, url).href;
+          this.fetchWithHttp1(redirectUrl).then(resolve).catch(reject);
+          return;
+        }
+
+        let data = '';
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => resolve(data));
+      });
+
+      req.on('error', reject);
+      req.setTimeout(PAGE_TIMEOUT_MS, () => {
+        req.destroy();
+        reject(new Error(`Request timeout for ${url}`));
+      });
+      req.end();
+    });
+  }
+
+  /**
+   * Parse HTML content and extract data (for HTTP/1.1 fallback)
+   */
+  parseHtmlContent(html, url) {
+    // Simple HTML text extraction (without browser)
+    // Remove script and style tags
+    let content = html
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+      .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, '');
+
+    // Extract text from HTML
+    content = content
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // Extract title
+    const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+    const title = titleMatch ? titleMatch[1].trim() : '';
+
+    // Extract headings
+    const headings = [];
+    const headingMatches = html.matchAll(/<h[1-4][^>]*>([^<]*)<\/h[1-4]>/gi);
+    for (const match of headingMatches) {
+      const text = match[1].trim();
+      if (text && text.length > 5 && text.length < 200) {
+        headings.push(text);
+      }
+    }
+
+    // Extract links
+    const links = [];
+    const linkMatches = html.matchAll(/<a[^>]+href=["']([^"']+)["'][^>]*>([^<]*)<\/a>/gi);
+    for (const match of linkMatches) {
+      const href = match[1];
+      const text = match[2].trim();
+      if (
+        (href.includes('policy') ||
+          href.includes('bulletin') ||
+          href.includes('coverage') ||
+          href.includes('cpb') ||
+          href.includes('.pdf')) &&
+        text &&
+        text.length > 5
+      ) {
+        links.push({
+          text,
+          href: href.startsWith('http') ? href : new URL(href, url).href,
+        });
+      }
+    }
+
+    // Look for effective dates
+    const effectiveDates = [];
+    const effectiveDatePatterns = [
+      /effective\s*(?:date)?[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/gi,
+      /effective\s*(?:date)?[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/gi,
+    ];
+    effectiveDatePatterns.forEach((pattern) => {
+      const matches = content.match(pattern) || [];
+      effectiveDates.push(...matches.slice(0, 5));
+    });
+
+    // Look for policy numbers
+    const policyNumbers = [];
+    const policyPatterns = [
+      /policy\s*(?:number|#|no\.?)?\s*[:\s]*([A-Z0-9\-]+)/gi,
+      /CPB\s*#?\s*(\d+)/gi,
+    ];
+    policyPatterns.forEach((pattern) => {
+      const matches = content.match(pattern) || [];
+      policyNumbers.push(...matches.slice(0, 5));
+    });
+
+    return {
+      content,
+      extractedData: {
+        title,
+        headings,
+        policies: headings,
+        links,
+        effectiveDates,
+        lastUpdated: null,
+        policyNumbers,
+      },
+      url,
+    };
   }
 
   /**
@@ -612,13 +942,37 @@ Respond in JSON format:
   async fetchPage(url, options = {}) {
     const { retries = MAX_RETRIES } = options;
     let lastError = null;
+    const isAnthem = this.isAnthemDomain(url);
+
+    // For Anthem domains, try HTTP/1.1 fallback first to avoid HTTP/2 protocol errors
+    if (isAnthem) {
+      this.log('debug', `Using HTTP/1.1 fallback for Anthem domain: ${url}`);
+      try {
+        const html = await this.fetchWithHttp1(url);
+        const result = this.parseHtmlContent(html, url);
+        this.log('debug', `HTTP/1.1 fallback successful for ${url}`);
+        return result;
+      } catch (http1Error) {
+        this.log('warn', `HTTP/1.1 fallback failed for ${url}, trying Playwright`, { error: http1Error.message });
+        // Fall through to Playwright attempt
+      }
+    }
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       const browser = await this.launchBrowser();
-      const context = await browser.newContext({
+
+      // Configure context options
+      const contextOptions = {
         userAgent: USER_AGENT,
         viewport: { width: 1920, height: 1080 },
-      });
+      };
+
+      // For Anthem, add extra options to help with potential issues
+      if (isAnthem) {
+        contextOptions.ignoreHTTPSErrors = true;
+      }
+
+      const context = await browser.newContext(contextOptions);
 
       const page = await context.newPage();
 
@@ -853,7 +1207,10 @@ Respond in JSON format:
             this.log('debug', `Fetching index: ${indexPage.url}`);
             const { content, extractedData } = await this.fetchPage(indexPage.url);
 
-            const newHash = this.computeHash(content);
+            // Canonicalize content for hash comparison (removes dynamic elements)
+            // Raw content is still used for Claude analysis
+            const canonicalizedContent = this.canonicalizeContent(content);
+            const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `${payer.id}:index:${indexPage.url}`;
             const oldHash = this.hashes[hashKey];
 
@@ -861,24 +1218,35 @@ Respond in JSON format:
 
             const matchedKeywords = this.findMatchedKeywords(content);
             const relevantTests = this.findRelevantTests(content);
-            const changeType = this.detectChangeType(content, extractedData, oldHash);
+            const oldHashData = this.hashes[hashKey];
+            const oldHashValue = oldHashData?.hash || null;
+            const changeType = this.detectChangeType(content, extractedData, oldHashValue);
 
-            if (newHash !== oldHash) {
+            if (newHash !== oldHashValue) {
               pagesChanged++;
-              const isFirstCrawl = !oldHash;
+              const isFirstCrawl = !oldHashValue;
 
               this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${indexPage.url}`);
 
-              this.hashes[hashKey] = newHash;
+              // Compute diff (returns isFirstCrawl: true if no previous content)
+              const previousContent = oldHashData?.content || null;
+              const diff = computeDiff(previousContent, content);
 
-              if (!isFirstCrawl) {
+              // Store new hash with content snapshot
+              this.hashes[hashKey] = {
+                hash: newHash,
+                content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+                fetchedAt: new Date().toISOString(),
+              };
+
+              if (!isFirstCrawl && !diff.isFirstCrawl) {
                 // Use Claude to analyze if this is a significant change
                 const claudeAnalysis = await this.analyzePayerChange(
                   payer,
                   indexPage.url,
                   content,
                   extractedData,
-                  null // No previous content stored for index pages
+                  diff
                 );
 
                 // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
@@ -916,32 +1284,45 @@ Respond in JSON format:
             this.log('debug', `Fetching policy: ${url}`);
             const { content, extractedData } = await this.fetchPage(url);
 
-            const newHash = this.computeHash(content);
+            // Canonicalize content for hash comparison (removes dynamic elements)
+            // Raw content is still used for Claude analysis
+            const canonicalizedContent = this.canonicalizeContent(content);
+            const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `${payer.id}:policy:${url}`;
-            const oldHash = this.hashes[hashKey];
+            const oldHashData = this.hashes[hashKey];
+            const oldHashValue = oldHashData?.hash || null;
 
             pagesProcessed++;
 
             const matchedKeywords = this.findMatchedKeywords(content);
             const relevantTests = this.findRelevantTests(content);
-            const changeType = this.detectChangeType(content, extractedData, oldHash);
+            const changeType = this.detectChangeType(content, extractedData, oldHashValue);
 
-            if (newHash !== oldHash) {
+            if (newHash !== oldHashValue) {
               pagesChanged++;
-              const isFirstCrawl = !oldHash;
+              const isFirstCrawl = !oldHashValue;
 
               this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${url}`);
 
-              this.hashes[hashKey] = newHash;
+              // Compute diff (returns isFirstCrawl: true if no previous content)
+              const previousContent = oldHashData?.content || null;
+              const diff = computeDiff(previousContent, content);
 
-              if (!isFirstCrawl) {
+              // Store new hash with content snapshot
+              this.hashes[hashKey] = {
+                hash: newHash,
+                content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+                fetchedAt: new Date().toISOString(),
+              };
+
+              if (!isFirstCrawl && !diff.isFirstCrawl) {
                 // Use Claude to analyze if this is a significant change
                 const claudeAnalysis = await this.analyzePayerChange(
                   payer,
                   url,
                   content,
                   extractedData,
-                  null // No previous content stored
+                  diff
                 );
 
                 // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
@@ -988,21 +1369,34 @@ Respond in JSON format:
             this.log('debug', `Fetching vendor coverage: ${url}`);
             const { content, extractedData } = await this.fetchPage(url);
 
-            const newHash = this.computeHash(content);
+            // Canonicalize content for hash comparison (removes dynamic elements)
+            // Raw content is still used for Claude analysis
+            const canonicalizedContent = this.canonicalizeContent(content);
+            const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `vendor:${vendor.id}:${url}`;
-            const oldHash = this.hashes[hashKey];
+            const oldHashData = this.hashes[hashKey];
+            const oldHashValue = oldHashData?.hash || null;
 
             pagesProcessed++;
 
-            if (newHash !== oldHash) {
+            if (newHash !== oldHashValue) {
               pagesChanged++;
-              const isFirstCrawl = !oldHash;
+              const isFirstCrawl = !oldHashValue;
 
               this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${url}`);
 
-              this.hashes[hashKey] = newHash;
+              // Compute diff (returns isFirstCrawl: true if no previous content)
+              const previousContent = oldHashData?.content || null;
+              const diff = computeDiff(previousContent, content);
 
-              if (!isFirstCrawl) {
+              // Store new hash with content snapshot
+              this.hashes[hashKey] = {
+                hash: newHash,
+                content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+                fetchedAt: new Date().toISOString(),
+              };
+
+              if (!isFirstCrawl && !diff.isFirstCrawl) {
                 // Use Claude to analyze if this is a significant change
                 // For vendor pages, create a pseudo-payer object for the analysis
                 const claudeAnalysis = await this.analyzePayerChange(
@@ -1010,7 +1404,7 @@ Respond in JSON format:
                   url,
                   content,
                   extractedData,
-                  null // No previous content stored
+                  diff
                 );
 
                 // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
@@ -1115,6 +1509,10 @@ Respond in JSON format:
             confidenceLevel: claudeAnalysis.confidenceLevel,
             changeSummary: claudeAnalysis.changeSummary,
           } : null,
+          // Deterministic test matches (high confidence, rule-based)
+          deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+          // Tests found by LLM that weren't in deterministic matches
+          llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
         },
       });
     }
@@ -1165,6 +1563,10 @@ Respond in JSON format:
           confidenceLevel: claudeAnalysis.confidenceLevel,
           changeSummary: claudeAnalysis.changeSummary,
         } : null,
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
       },
     };
   }
@@ -1224,6 +1626,10 @@ Respond in JSON format:
           confidenceLevel: claudeAnalysis.confidenceLevel,
           changeSummary: claudeAnalysis.changeSummary,
         } : null,
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
       },
     };
   }
@@ -1268,6 +1674,10 @@ Respond in JSON format:
           confidenceLevel: claudeAnalysis.confidenceLevel,
           changeSummary: claudeAnalysis.changeSummary,
         } : null,
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
       },
     };
   }

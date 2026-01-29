@@ -13,6 +13,8 @@ import { dirname, resolve } from 'path';
 import { chromium } from 'playwright';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, MONITORED_VENDORS } from '../config.js';
+import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
+import { computeDiff, truncateDiff } from '../utils/diff.js';
 
 // Path to store content hashes for change detection
 const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'vendor-hashes.json');
@@ -25,6 +27,9 @@ const RATE_LIMIT_MS = 3000;
 
 // Claude model for coverage analysis
 const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
+
+// Maximum content size to store for diffing (50KB)
+const MAX_STORED_CONTENT_SIZE = 50000;
 
 // Vendor news/press release pages to monitor
 // Focus ONLY on news pages - no product pages
@@ -156,11 +161,29 @@ export class VendorCrawler extends BaseCrawler {
 
   /**
    * Load stored content hashes from disk
+   * Handles both old format (string hash) and new format (object with hash, content, fetchedAt)
    */
   async loadHashes() {
     try {
       const data = await readFile(HASH_FILE_PATH, 'utf-8');
-      this.hashes = JSON.parse(data);
+      const rawHashes = JSON.parse(data);
+
+      // Normalize to new format, handling backward compatibility
+      this.hashes = {};
+      for (const [key, value] of Object.entries(rawHashes)) {
+        if (typeof value === 'string') {
+          // Old format: just the hash string
+          this.hashes[key] = {
+            hash: value,
+            content: null, // No previous content available
+            fetchedAt: null,
+          };
+        } else {
+          // New format: object with hash, content, fetchedAt
+          this.hashes[key] = value;
+        }
+      }
+
       this.log('debug', `Loaded ${Object.keys(this.hashes).length} stored hashes`);
     } catch (error) {
       if (error.code === 'ENOENT') {
@@ -184,6 +207,53 @@ export class VendorCrawler extends BaseCrawler {
     } catch (error) {
       this.log('error', 'Failed to save hash file', { error: error.message });
     }
+  }
+
+  /**
+   * Canonicalize content before hashing to reduce false positives
+   * Removes dynamic content that changes without policy changes
+   * @param {string} text - Raw page content
+   * @returns {string} Canonicalized content for hashing
+   */
+  canonicalizeContent(text) {
+    if (!text) return '';
+
+    let canonical = text;
+
+    // 1. Remove common date patterns that aren't policy-relevant
+    // "Last updated: Jan 28, 2026" or "Last reviewed: 01/28/2026"
+    canonical = canonical.replace(/last (updated|reviewed|modified|revised)[\s:]+[\w\s,]+\d{4}/gi, '');
+
+    // "Page generated at..." or "Retrieved on..."
+    canonical = canonical.replace(/(page generated|retrieved|accessed|printed)[\s:]+[\w\s,]+\d{4}/gi, '');
+
+    // Copyright years: "© 2026" or "Copyright 2024-2026"
+    canonical = canonical.replace(/©?\s*(copyright\s*)?\d{4}(-\d{4})?/gi, '');
+
+    // 2. Remove common boilerplate
+    const boilerplate = [
+      /skip to (main )?content/gi,
+      /print this page/gi,
+      /cookie (policy|consent|preferences)/gi,
+      /accept all cookies/gi,
+      /we use cookies/gi,
+      /privacy policy/gi,
+      /terms (of use|and conditions)/gi,
+      /all rights reserved/gi,
+      /breadcrumb/gi,
+      /back to top/gi,
+    ];
+    for (const pattern of boilerplate) {
+      canonical = canonical.replace(pattern, '');
+    }
+
+    // 3. Normalize whitespace
+    canonical = canonical.replace(/\s+/g, ' ').trim();
+
+    // 4. Lowercase for consistent comparison
+    canonical = canonical.toLowerCase();
+
+    return canonical;
   }
 
   /**
@@ -338,23 +408,72 @@ export class VendorCrawler extends BaseCrawler {
 
   /**
    * Use Claude to analyze if content contains coverage announcements
+   * Uses deterministic test matching first, then Claude for additional analysis
+   * @param {Object} vendor - Vendor info object
+   * @param {string} content - Page content
+   * @param {string[]} headlines - Extracted headlines
+   * @param {Object|null} diff - Diff object from computeDiff (if available)
    * Returns extracted coverage info or null if not coverage-related
    */
-  async analyzeCoverageContent(vendor, content, headlines) {
+  async analyzeCoverageContent(vendor, content, headlines, diff = null) {
+    // Run deterministic test matching FIRST (before Claude)
+    const fullContent = `${headlines.join('\n')}\n${content}`;
+    const deterministicMatches = matchTests(fullContent);
+    const formattedMatches = formatMatchesForPrompt(deterministicMatches);
+
+    this.log('debug', `Deterministic matches for ${vendor.name}`, {
+      matchCount: deterministicMatches.length,
+      highConfidence: deterministicMatches.filter(m => m.confidence >= 0.75).length,
+    });
+
     if (!this.anthropic) {
       this.log('warn', 'Anthropic API key not configured, skipping Claude analysis');
+      // Return partial analysis with just deterministic matches if any found
+      if (deterministicMatches.length > 0) {
+        return {
+          hasCoverageNews: false, // Can't determine without Claude
+          announcements: [],
+          deterministicMatches: deterministicMatches.map(m => ({
+            testId: m.test.id,
+            testName: m.test.name,
+            matchType: m.matchType,
+            confidence: m.confidence,
+            matchedOn: m.matchedOn,
+          })),
+        };
+      }
       return null;
     }
 
-    // Prepare content for analysis - focus on headlines + recent content
+    // Format content section - use diff if available for more precise analysis
+    let contentSection;
+    if (diff) {
+      const formattedDiff = truncateDiff(diff, 5000);
+      contentSection = `=== WHAT CHANGED ON THIS PAGE ===
+${formattedDiff}
+
+=== CURRENT HEADLINES ===
+${headlines.slice(0, 10).join('\n')}
+
+=== CURRENT PAGE CONTENT (for context) ===
+${content.slice(0, 2000)}${content.length > 2000 ? '\n...[content truncated]...' : ''}`;
+    } else {
+      contentSection = `RECENT HEADLINES:
+${headlines.slice(0, 10).join('\n')}
+
+PAGE CONTENT (excerpt):
+${content.slice(0, 4000)}`;
+    }
+
+    // Prepare content for analysis
     const analysisContent = [
       `VENDOR: ${vendor.name}`,
       '',
-      'RECENT HEADLINES:',
-      ...headlines.slice(0, 10),
+      '=== DETERMINISTIC TEST MATCHES (pre-identified with high confidence) ===',
+      formattedMatches,
+      '================================================================================',
       '',
-      'PAGE CONTENT (excerpt):',
-      content.slice(0, 4000), // Limit content size
+      contentSection,
     ].join('\n');
 
     try {
@@ -368,12 +487,14 @@ export class VendorCrawler extends BaseCrawler {
 
 ${analysisContent}
 
-TASK: Identify any announcements about:
+TASK: ${diff ? 'Based on the changes detected, identify' : 'Identify'} any announcements about:
 - Insurance coverage (Medicare, Medicaid, commercial payers)
 - Reimbursement decisions or approvals
 - CMS coverage determinations
 - Payer partnerships or contracts
 - Prior authorization changes
+
+Note: Tests have been pre-identified above using deterministic matching. Please CONFIRM these and identify any ADDITIONAL tests mentioned.
 
 If you find coverage-related announcements, respond with JSON:
 {
@@ -382,18 +503,20 @@ If you find coverage-related announcements, respond with JSON:
     {
       "headline": "The announcement headline",
       "payerName": "Name of payer if mentioned (or null)",
-      "testName": "Name of test if mentioned (or null)",
+      "testName": "Name of test if mentioned - include pre-identified tests (or null)",
       "coverageType": "One of: medicare, medicaid, commercial, medicare_advantage, or null",
       "effectiveDate": "Date if mentioned (or null)",
       "summary": "Brief summary of the coverage news"
     }
-  ]
+  ],
+  "additionalTestsFound": ["only tests YOU found that were NOT in the pre-identified list"]
 }
 
 If NO coverage-related news found, respond with:
 {
   "hasCoverageNews": false,
-  "announcements": []
+  "announcements": [],
+  "additionalTestsFound": []
 }
 
 Respond ONLY with valid JSON, no other text.`,
@@ -402,7 +525,20 @@ Respond ONLY with valid JSON, no other text.`,
       });
 
       const responseText = response.content[0]?.text?.trim();
-      if (!responseText) return null;
+      if (!responseText) {
+        // Return deterministic matches only
+        return {
+          hasCoverageNews: false,
+          announcements: [],
+          deterministicMatches: deterministicMatches.map(m => ({
+            testId: m.test.id,
+            testName: m.test.name,
+            matchType: m.matchType,
+            confidence: m.confidence,
+            matchedOn: m.matchedOn,
+          })),
+        };
+      }
 
       // Parse JSON response - handle potential markdown code fences
       let jsonText = responseText;
@@ -412,10 +548,31 @@ Respond ONLY with valid JSON, no other text.`,
       }
 
       const result = JSON.parse(jsonText);
+
+      // Add deterministic matches to result
+      result.deterministicMatches = deterministicMatches.map(m => ({
+        testId: m.test.id,
+        testName: m.test.name,
+        matchType: m.matchType,
+        confidence: m.confidence,
+        matchedOn: m.matchedOn,
+      }));
+
       return result;
     } catch (error) {
       this.log('warn', `Claude analysis failed for ${vendor.name}`, { error: error.message });
-      return null;
+      // Return deterministic matches on error
+      return {
+        hasCoverageNews: false,
+        announcements: [],
+        deterministicMatches: deterministicMatches.map(m => ({
+          testId: m.test.id,
+          testName: m.test.name,
+          matchType: m.matchType,
+          confidence: m.confidence,
+          matchedOn: m.matchedOn,
+        })),
+      };
     }
   }
 
@@ -452,31 +609,42 @@ Respond ONLY with valid JSON, no other text.`,
             ({ content, headlines } = await this.fetchPage(url));
           }
 
-          // Compute hash of page content
-          const newHash = this.computeHash(content);
-          const oldHash = this.hashes[url];
+          // Canonicalize content for hash comparison (removes dynamic elements)
+          // Raw content is still used for Claude analysis
+          const canonicalizedContent = this.canonicalizeContent(content);
+          const newHash = this.computeHash(canonicalizedContent);
+          const oldHashData = this.hashes[url];
+          const oldHashValue = oldHashData?.hash || null;
 
           pagesProcessed++;
 
-          if (newHash !== oldHash) {
+          if (newHash !== oldHashValue) {
             pagesChanged++;
-            const isFirstCrawl = !oldHash;
+            const isFirstCrawl = !oldHashValue;
 
             this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${vendor.name}`);
 
-            // Store new hash
-            this.hashes[url] = newHash;
+            // Compute diff (returns isFirstCrawl: true if no previous content)
+            const previousContent = oldHashData?.content || null;
+            const diff = computeDiff(previousContent, content);
+
+            // Store new hash with content snapshot
+            this.hashes[url] = {
+              hash: newHash,
+              content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+              fetchedAt: new Date().toISOString(),
+            };
 
             // Only analyze for coverage if content changed (not first crawl)
-            if (!isFirstCrawl) {
-              // Use Claude to check for coverage announcements
-              const analysis = await this.analyzeCoverageContent(vendor, content, headlines);
+            if (!isFirstCrawl && !diff.isFirstCrawl) {
+              // Use Claude to check for coverage announcements, passing diff for more precise analysis
+              const analysis = await this.analyzeCoverageContent(vendor, content, headlines, diff);
 
               if (analysis?.hasCoverageNews && analysis.announcements?.length > 0) {
                 coverageFound += analysis.announcements.length;
 
                 for (const announcement of analysis.announcements) {
-                  const discovery = this.createCoverageDiscovery(vendor, announcement, url);
+                  const discovery = this.createCoverageDiscovery(vendor, announcement, url, analysis);
                   discoveries.push(discovery);
                 }
               }
@@ -507,8 +675,12 @@ Respond ONLY with valid JSON, no other text.`,
 
   /**
    * Create discovery from coverage announcement
+   * @param {Object} vendor - Vendor info
+   * @param {Object} announcement - Coverage announcement from Claude
+   * @param {string} sourceUrl - Source URL
+   * @param {Object} analysis - Full analysis object including deterministicMatches
    */
-  createCoverageDiscovery(vendor, announcement, sourceUrl) {
+  createCoverageDiscovery(vendor, announcement, sourceUrl, analysis = null) {
     const parts = [];
     if (announcement.payerName) parts.push(announcement.payerName);
     if (announcement.testName) parts.push(announcement.testName);
@@ -532,6 +704,10 @@ Respond ONLY with valid JSON, no other text.`,
         coverageType: announcement.coverageType,
         effectiveDate: announcement.effectiveDate,
         changeType: 'coverage_announcement',
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: analysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: analysis?.additionalTestsFound || [],
       },
     };
   }
