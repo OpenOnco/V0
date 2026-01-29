@@ -15,6 +15,7 @@ import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES, MONITORED_VENDORS, PAYERS } from '../config.js';
 import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
 import { computeDiff, truncateDiff } from '../utils/diff.js';
+import { canonicalizeContent } from '../utils/canonicalize.js';
 
 // Path to store content hashes for change detection
 const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'payer-hashes.json');
@@ -476,62 +477,6 @@ export class PayerCrawler extends BaseCrawler {
     } catch (error) {
       this.log('error', 'Failed to save hash file', { error: error.message });
     }
-  }
-
-  /**
-   * Canonicalize content for consistent hash comparison.
-   * Removes dynamic elements that change without policy changes while
-   * preserving policy-relevant content.
-   * @param {string} text - Raw page content
-   * @returns {string} Canonicalized content for hashing
-   */
-  canonicalizeContent(text) {
-    if (!text) return '';
-
-    let content = text;
-
-    // 1. Remove dynamic date patterns (non-policy dates)
-    // "Last updated: Jan 28, 2026" or similar
-    content = content.replace(/last\s+updated[:\s]+[A-Z][a-z]+\s+\d{1,2},?\s+\d{4}/gi, '');
-    content = content.replace(/last\s+updated[:\s]+\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/gi, '');
-    // "Last reviewed: ..."
-    content = content.replace(/last\s+reviewed[:\s]+[A-Z][a-z]+\s+\d{1,2},?\s+\d{4}/gi, '');
-    content = content.replace(/last\s+reviewed[:\s]+\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/gi, '');
-    // "Page generated at ..."
-    content = content.replace(/page\s+generated\s+at[:\s]+[^\n]+/gi, '');
-    // "Copyright © 2026" or "Copyright 2026"
-    content = content.replace(/copyright\s*©?\s*\d{4}/gi, '');
-    // "Retrieved on ..."
-    content = content.replace(/retrieved\s+on[:\s]+[A-Z][a-z]+\s+\d{1,2},?\s+\d{4}/gi, '');
-    content = content.replace(/retrieved\s+on[:\s]+\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/gi, '');
-    // Timestamps like "10:30 AM EST" or "10:30:45 PM"
-    content = content.replace(/\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM)?\s*(?:[A-Z]{2,4})?/gi, '');
-
-    // 2. Keep policy-relevant dates (don't remove these):
-    // "Effective: 01/01/2026" or "Effective date:" - these are preserved by not matching them above
-
-    // 3. Remove common boilerplate
-    content = content.replace(/skip\s+to\s+main\s+content/gi, '');
-    content = content.replace(/skip\s+to\s+navigation/gi, '');
-    content = content.replace(/print\s+this\s+page/gi, '');
-    content = content.replace(/back\s+to\s+top/gi, '');
-    // Cookie consent patterns
-    content = content.replace(/accept\s+cookies?/gi, '');
-    content = content.replace(/cookie\s+preferences?/gi, '');
-    content = content.replace(/we\s+use\s+cookies[^.]*\./gi, '');
-    content = content.replace(/this\s+site\s+uses\s+cookies[^.]*\./gi, '');
-    content = content.replace(/by\s+continuing\s+to\s+use\s+this\s+site[^.]*\./gi, '');
-
-    // 4. Normalize whitespace
-    // Collapse multiple spaces/newlines/tabs to single space
-    content = content.replace(/[\s\n\r\t]+/g, ' ');
-    // Trim leading/trailing whitespace
-    content = content.trim();
-
-    // 5. Lowercase for consistent comparison
-    content = content.toLowerCase();
-
-    return content;
   }
 
   /**
@@ -1209,7 +1154,7 @@ Respond in JSON format:
 
             // Canonicalize content for hash comparison (removes dynamic elements)
             // Raw content is still used for Claude analysis
-            const canonicalizedContent = this.canonicalizeContent(content);
+            const canonicalizedContent = canonicalizeContent(content);
             const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `${payer.id}:index:${indexPage.url}`;
             const oldHash = this.hashes[hashKey];
@@ -1286,7 +1231,7 @@ Respond in JSON format:
 
             // Canonicalize content for hash comparison (removes dynamic elements)
             // Raw content is still used for Claude analysis
-            const canonicalizedContent = this.canonicalizeContent(content);
+            const canonicalizedContent = canonicalizeContent(content);
             const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `${payer.id}:policy:${url}`;
             const oldHashData = this.hashes[hashKey];
@@ -1371,7 +1316,7 @@ Respond in JSON format:
 
             // Canonicalize content for hash comparison (removes dynamic elements)
             // Raw content is still used for Claude analysis
-            const canonicalizedContent = this.canonicalizeContent(content);
+            const canonicalizedContent = canonicalizeContent(content);
             const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `vendor:${vendor.id}:${url}`;
             const oldHashData = this.hashes[hashKey];
