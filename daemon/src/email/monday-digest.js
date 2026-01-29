@@ -100,6 +100,48 @@ function generateEmailHtml(digest) {
     return '⏸️';
   };
 
+  const formatDuration = (ms) => {
+    if (!ms) return '-';
+    const seconds = Math.round(ms / 1000);
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
+  };
+
+  const formatTime = (isoString) => {
+    if (!isoString) return '-';
+    return new Date(isoString).toLocaleString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  const crawlerRows = ['cms', 'payers', 'vendor'].map(source => {
+    const health = crawlerHealth[source] || {};
+    const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Private Payers' : 'Vendors';
+    return `
+      <tr>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
+          ${statusEmoji(health.status)} <strong>${name}</strong>
+        </td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 13px; color: #666;">
+          ${formatTime(health.lastRun)}
+        </td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 13px; text-align: center;">
+          ${formatDuration(health.duration)}
+        </td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 13px; text-align: center;">
+          ${health.discoveriesFound || 0} found / ${health.discoveriesAdded || 0} new
+        </td>
+      </tr>
+    `;
+  }).join('');
+
   const discoveryRows = discoveries.slice(0, 10).map(d => `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #eee; vertical-align: top;">
@@ -154,12 +196,22 @@ function generateEmailHtml(digest) {
       </div>
     </div>
 
-    <!-- Crawler Health -->
-    <div style="margin-bottom: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; font-size: 13px;">
-      <strong>Crawler Status:</strong>
-      ${statusEmoji(crawlerHealth.cms?.status)} CMS · 
-      ${statusEmoji(crawlerHealth.payers?.status)} Payers · 
-      ${statusEmoji(crawlerHealth.vendor?.status)} Vendors
+    <!-- Crawler Run Stats -->
+    <div style="margin-bottom: 24px;">
+      <div style="font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 8px;">Crawler Run Stats</div>
+      <table style="width: 100%; border-collapse: collapse; background: #f8f9fa; border-radius: 6px; overflow: hidden;">
+        <thead>
+          <tr style="background: #e5e7eb;">
+            <th style="padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; color: #666;">Source</th>
+            <th style="padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; color: #666;">Last Run</th>
+            <th style="padding: 8px 12px; text-align: center; font-size: 11px; text-transform: uppercase; color: #666;">Duration</th>
+            <th style="padding: 8px 12px; text-align: center; font-size: 11px; text-transform: uppercase; color: #666;">Discoveries</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${crawlerRows}
+        </tbody>
+      </table>
     </div>
 
     ${discoveries.length > 0 ? `
@@ -201,7 +253,28 @@ function generateEmailHtml(digest) {
  * Generate plain text version
  */
 function generateEmailText(digest) {
-  const { summary, discoveries, weekOf } = digest;
+  const { summary, discoveries, weekOf, crawlerHealth } = digest;
+  
+  const formatDuration = (ms) => {
+    if (!ms) return '-';
+    const seconds = Math.round(ms / 1000);
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
+  };
+
+  const formatTime = (isoString) => {
+    if (!isoString) return '-';
+    return new Date(isoString).toLocaleString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
   
   let text = `
 OPENONCO COVERAGE DIGEST
@@ -212,13 +285,28 @@ SUMMARY
 • ${summary.totalPending} discoveries pending review
 • CMS: ${summary.bySource.cms} | Payers: ${summary.bySource.payers} | Vendors: ${summary.bySource.vendor}
 
+CRAWLER RUN STATS
+───────────────────────────────────────
 `;
+
+  ['cms', 'payers', 'vendor'].forEach(source => {
+    const health = crawlerHealth[source] || {};
+    const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Private Payers' : 'Vendors';
+    const status = health.status === 'success' ? '✓' : health.status === 'error' ? '✗' : '?';
+    text += `${status} ${name}\n`;
+    text += `  Last run: ${formatTime(health.lastRun)}\n`;
+    text += `  Duration: ${formatDuration(health.duration)} | Found: ${health.discoveriesFound || 0} | New: ${health.discoveriesAdded || 0}\n\n`;
+  });
 
   if (discoveries.length > 0) {
     text += `DISCOVERIES\n───────────────────────────────────────\n`;
     discoveries.slice(0, 10).forEach((d, i) => {
       text += `${i + 1}. [${d.source.toUpperCase()}] ${d.title}\n`;
-      text += `   ${d.url}\n\n`;
+      text += `   ${d.url}\n`;
+      if (d.summary) {
+        text += `   ${d.summary}\n`;
+      }
+      text += `\n`;
     });
     if (discoveries.length > 10) {
       text += `... and ${discoveries.length - 10} more\n`;
@@ -229,8 +317,8 @@ SUMMARY
 
   text += `
 ───────────────────────────────────────
-To review: Open Claude and say:
-"Review this week's coverage discoveries and prepare database updates"
+To review, open Claude and paste:
+"Review coverage discoveries. Read daemon/data/weekly-digest.json, walk me through each pending item for approve/skip, then apply approved changes to the database."
 `;
 
   return text.trim();
