@@ -6,12 +6,10 @@
  * Usage:
  *   node scripts/run-pipeline.js --crawl     Run all crawlers
  *   node scripts/run-pipeline.js --digest    Send the daily digest email
- *   node scripts/run-pipeline.js --export    Export discoveries to GitHub + send summary email
- *   node scripts/run-pipeline.js --all       Run full pipeline: crawl → export
  */
 
 import 'dotenv/config';
-import { runAllCrawlersNow, triggerDigest, triggerExport } from '../src/scheduler.js';
+import { runAllCrawlersNow, triggerDigest } from '../src/scheduler.js';
 
 // ── Formatting helpers ───────────────────────────────────────────────
 
@@ -101,26 +99,6 @@ async function runDigestStage() {
   return { success: result.success, duration: dt };
 }
 
-async function runExportStage() {
-  step('Exporting discoveries to GitHub...');
-  const t0 = Date.now();
-
-  const result = await triggerExport();
-  const dt = Date.now() - t0;
-
-  if (result.success) {
-    success('Export complete', result.url || '');
-    if (result.emailSent) {
-      success('Summary email sent', result.emailMessageId || '');
-    }
-  } else {
-    fail('Export failed', result.error || 'unknown error');
-  }
-
-  console.log(`  ${DIM}Duration: ${elapsed(dt)}${RESET}`);
-  return { success: result.success, url: result.url, duration: dt };
-}
-
 // ── Main ─────────────────────────────────────────────────────────────
 
 const USAGE = `
@@ -129,8 +107,6 @@ ${BOLD}Usage:${RESET}  node scripts/run-pipeline.js <flag>
 ${BOLD}Flags:${RESET}
   --crawl    Run all crawlers
   --digest   Send the daily digest email
-  --export   Export discoveries to GitHub + send summary email
-  --all      Run full pipeline: crawl → export
   --help     Show this help message
 `;
 
@@ -143,11 +119,10 @@ async function main() {
     process.exit(0);
   }
 
-  const runCrawl = flags.has('--crawl') || flags.has('--all');
+  const runCrawl = flags.has('--crawl');
   const runDigest = flags.has('--digest');
-  const runExport = flags.has('--export') || flags.has('--all');
 
-  if (!runCrawl && !runDigest && !runExport) {
+  if (!runCrawl && !runDigest) {
     console.error(`${RED}Unknown flag: ${args.join(' ')}${RESET}`);
     console.log(USAGE);
     process.exit(1);
@@ -156,7 +131,6 @@ async function main() {
   const stages = [
     runCrawl && 'crawl',
     runDigest && 'digest',
-    runExport && 'export',
   ].filter(Boolean);
 
   banner(`OpenOnco Pipeline: ${stages.join(' → ')}`);
@@ -167,16 +141,11 @@ async function main() {
   try {
     if (runCrawl) {
       results.crawl = await runCrawlStage();
-      if (runDigest || runExport) console.log();
+      if (runDigest) console.log();
     }
 
     if (runDigest) {
       results.digest = await runDigestStage();
-      if (runExport) console.log();
-    }
-
-    if (runExport) {
-      results.export = await runExportStage();
     }
   } catch (error) {
     console.error(`\n${RED}${BOLD}Pipeline failed:${RESET} ${error.message}`);

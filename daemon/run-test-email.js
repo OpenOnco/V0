@@ -10,7 +10,6 @@
 import { getHealthSummary } from './src/health.js';
 import { loadDiscoveries, getQueueStatus } from './src/queue/index.js';
 import { generateDigestHtml, generateDigestSubject } from './src/email/templates.js';
-import { sendDailyDigest } from './src/email/index.js';
 import { config, SOURCES } from './src/config.js';
 
 async function main() {
@@ -72,12 +71,9 @@ async function main() {
     console.log(`  ✓ Total in queue: ${queueStatus.total}\n`);
 
     if (shouldSend) {
-      // Actually send the email
-      console.log('Sending email...');
-      const result = await sendDailyDigest();
-      console.log(`\n✅ Email sent successfully!`);
-      console.log(`   Message ID: ${result.messageId}`);
-      console.log(`   Subject: ${result.subject}`);
+      // Note: sendDailyDigest was removed - use npm run test:email for Monday digest
+      console.log('⚠️  The --send flag is no longer supported.');
+      console.log('   Use "npm run test:email" to test the Monday digest instead.\n');
     } else {
       // Generate and display the email HTML
       const digestData = { healthSummary, discoveries, queueStatus };

@@ -7,7 +7,6 @@ import cron from 'node-cron';
 import { createLogger } from './utils/logger.js';
 import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
-import { sendDailyDigest, sendSummaryDigest } from './email/index.js';
 import { sendMondayDigest } from './email/monday-digest.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
 
@@ -196,40 +195,11 @@ export async function runAllCrawlersNow() {
   return results;
 }
 
-/**
- * Manually trigger summary email (export functionality removed)
- */
-export async function triggerExport() {
-  logger.info('Manually triggering summary email');
-
-  // Send summary email with empty triage results
-  let emailResult = null;
-  try {
-    const triageResults = {
-      highPriority: [],
-      mediumPriority: [],
-      lowPriority: [],
-      ignored: { not_relevant: 0, duplicate: 0, already_addressed: 0 },
-      metadata: { inputCount: 0, processedAt: new Date().toISOString() },
-    };
-    emailResult = await sendSummaryDigest({ triageResults });
-  } catch (error) {
-    logger.warn('Summary email failed', { error: error.message });
-  }
-
-  return {
-    success: true,
-    emailSent: emailResult?.success || false,
-    emailMessageId: emailResult?.messageId || null,
-  };
-}
-
 export default {
   startScheduler,
   stopScheduler,
   getSchedulerStatus,
   triggerCrawler,
   triggerDigest,
-  triggerExport,
   runAllCrawlersNow,
 };

@@ -5,9 +5,6 @@
 import { Resend } from 'resend';
 import { createLogger } from '../utils/logger.js';
 import { config } from '../config.js';
-import { getHealthSummary, recordDigestSent } from '../health.js';
-import { getQueueStatus } from '../queue/index.js';
-import { generateSummaryDigestHtml, generateSummaryDigestText, generateSummaryDigestSubject } from './templates.js';
 
 const logger = createLogger('email');
 
@@ -24,29 +21,6 @@ function getClient() {
     resendClient = new Resend(config.email.apiKey);
   }
   return resendClient;
-}
-
-/**
- * Send the daily digest email (slim summary with processing instructions)
- */
-export async function sendDailyDigest() {
-  logger.info('Preparing daily digest email');
-
-  try {
-    // Send summary digest with empty triage results (triage module removed)
-    const triageResults = {
-      highPriority: [],
-      mediumPriority: [],
-      lowPriority: [],
-      ignored: { not_relevant: 0, duplicate: 0, already_addressed: 0 },
-      metadata: { inputCount: 0, processedAt: new Date().toISOString() },
-    };
-
-    return sendSummaryDigest({ triageResults });
-  } catch (error) {
-    logger.error('Failed to send daily digest', { error });
-    throw error;
-  }
 }
 
 /**
@@ -135,61 +109,7 @@ Time: ${new Date().toISOString()}
   }
 }
 
-/**
- * Send a slim summary digest email with processing instructions
- * @param {Object} opts
- * @param {Object} opts.triageResults - AI triage results
- */
-export async function sendSummaryDigest({ triageResults }) {
-  logger.info('Preparing summary digest email');
-
-  try {
-    const [healthSummary, queueStatus] = await Promise.all([
-      getHealthSummary(),
-      getQueueStatus(),
-    ]);
-
-    const templateData = { triageResults, healthSummary, queueStatus };
-
-    const subject = generateSummaryDigestSubject(triageResults);
-    const html = generateSummaryDigestHtml(templateData);
-    const text = generateSummaryDigestText(templateData);
-
-    const client = getClient();
-    const result = await client.emails.send({
-      from: config.email.from,
-      to: config.email.to,
-      subject,
-      html,
-      text,
-    });
-
-    if (result.error) {
-      throw new Error(result.error.message || JSON.stringify(result.error));
-    }
-
-    logger.info('Summary digest sent successfully', {
-      to: config.email.to,
-      subject,
-      messageId: result.data?.id,
-    });
-
-    await recordDigestSent();
-
-    return {
-      success: true,
-      messageId: result.data?.id,
-      subject,
-    };
-  } catch (error) {
-    logger.error('Failed to send summary digest', { error });
-    throw error;
-  }
-}
-
 export default {
-  sendDailyDigest,
-  sendSummaryDigest,
   sendTestEmail,
   sendAlertEmail,
 };

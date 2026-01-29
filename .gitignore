@@ -155,9 +155,10 @@ playwright-report/
 test-results/
 .playwright-mcp/
 
-# Daemon logs and test screenshots
+# Daemon logs and test artifacts
 daemon/logs/
 daemon/test-screenshot-*.png
+daemon/test-output/
 
 # AI review outputs
 reviews/

@@ -91,8 +91,8 @@ Three crawlers monitor coverage policy sources weekly. Claude AI analyzes each d
 |------|---------|
 | `discoveries.json` | Pending coverage changes for review |
 | `health.json` | Crawler run stats and status |
-| `payer-hashes.json` | Content hashes for change detection |
-| `vendor-hashes.json` | Content hashes for change detection |
+| `payer-hashes.json` | Content hashes + snapshots for change detection and diff generation |
+| `vendor-hashes.json` | Content hashes + snapshots for change detection and diff generation |
 
 ## Environment Variables
 
@@ -107,7 +107,7 @@ DIGEST_FROM_EMAIL=daemon@openonco.org
 
 Previous system had 6 crawlers and complex batch triage. Removed:
 - PubMed crawler (research publications)
-- FDA crawler (regulatory approvals)  
+- FDA crawler (regulatory approvals)
 - Preprints crawler (bioRxiv/medRxiv)
 - Citations crawler
 - Batch AI triage system
@@ -115,3 +115,30 @@ Previous system had 6 crawlers and complex batch triage. Removed:
 - Local file dependencies for review
 
 Now: 3 crawlers, inline Claude analysis, self-contained email attachment.
+
+## Detection Improvements (Jan 2026)
+
+Reduced false positives and improved Claude's analysis accuracy:
+
+**Canonicalization** (`src/utils/canonicalize.js`)
+- Strips dates, copyright notices, and boilerplate before hashing
+- Prevents false positives from timestamp/footer changes
+- Content normalized to lowercase, whitespace collapsed
+
+**Test Dictionary** (`src/data/test-dictionary.js`)
+- 24 tests with PLA codes, names, and aliases
+- Deterministic test matching runs BEFORE Claude analysis
+- Matches by PLA code (e.g., 0239U), test name, or alias
+- Reduces Claude token usage for obvious test mentions
+
+**Diff-Based Analysis** (`src/utils/diff.js`)
+- Stores previous content snapshots (max 50KB per page)
+- Passes line-based diff to Claude instead of full page content
+- Claude sees exactly what changed, improving analysis accuracy
+- Format: `+added lines` / `-removed lines`
+
+**Hash Storage Format**
+- Previously: stored hash string only
+- Now: stores `{ hash, content, fetchedAt }` object
+- Enables diff generation between crawl runs
+- Content truncated at 50KB to limit storage size

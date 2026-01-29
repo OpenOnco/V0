@@ -105,18 +105,23 @@ Runs on [Railway](https://railway.app). Auto-deploys from `develop` branch.
 daemon/
 ├── src/
 │   ├── config.js           # Payers, tests, vendors, schedules
-│   ├── scheduler.js        # Cron jobs  
+│   ├── scheduler.js        # Cron jobs
 │   ├── crawlers/
 │   │   ├── cms.js          # Medicare coverage (Claude: analyze impact)
 │   │   ├── payers.js       # Private insurance (Claude: filter noise)
 │   │   └── vendor.js       # Press releases (Claude: detect coverage news)
+│   ├── data/
+│   │   └── test-dictionary.js  # 24 tests with PLA codes, aliases for deterministic matching
+│   ├── utils/
+│   │   ├── canonicalize.js # Content normalization before hashing
+│   │   └── diff.js         # Line-based diff for Claude analysis
 │   ├── email/
 │   │   └── monday-digest.js # Weekly email + attachment
 │   └── queue/
 │       └── store.js        # File-based storage
 ├── data/
 │   ├── discoveries.json    # Pending coverage changes
-│   ├── payer-hashes.json   # Change detection baseline
-│   └── vendor-hashes.json  # Change detection baseline
+│   ├── payer-hashes.json   # Change detection baseline + content snapshots
+│   └── vendor-hashes.json  # Change detection baseline + content snapshots
 └── run-now.js              # Manual crawler trigger
 ```
