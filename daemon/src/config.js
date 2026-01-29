@@ -24,12 +24,12 @@ export const config = {
   },
 
   // Crawler schedules (cron syntax)
-  // All crawlers run Sunday at 2 AM, digest Monday 6 AM
+  // Crawlers run Sunday 11 PM, digest Monday 1 AM
   schedules: {
-    cms: process.env.SCHEDULE_CMS || '0 2 * * 0',           // Sunday 2:00 AM
-    payers: process.env.SCHEDULE_PAYERS || '0 2 * * 0',     // Sunday 2:00 AM
-    vendors: process.env.SCHEDULE_VENDORS || '0 2 * * 0',   // Sunday 2:00 AM
-    digest: process.env.SCHEDULE_DIGEST || '0 6 * * 1',     // Monday 6:00 AM
+    cms: process.env.SCHEDULE_CMS || '0 23 * * 0',           // Sunday 11:00 PM
+    payers: process.env.SCHEDULE_PAYERS || '0 23 * * 0',     // Sunday 11:00 PM
+    vendor: process.env.SCHEDULE_VENDORS || '0 23 * * 0',    // Sunday 11:00 PM
+    digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
   },
 
   // Crawler enable flags
@@ -389,6 +389,67 @@ export const PAYERS = {
       notes: 'Operates BCBS plans in IL, MT, NM, OK, TX',
     },
   ],
+
+  // Health Systems with Own Health Plans
+  healthSystems: [
+    {
+      id: 'upmc',
+      name: 'UPMC Health Plan',
+      shortName: 'UPMC',
+      states: ['PA'],
+      policyPortal: 'https://www.upmchealthplan.com/providers/clinical-policies',
+      notes: 'Large integrated system',
+    },
+    {
+      id: 'geisinger',
+      name: 'Geisinger Health Plan',
+      shortName: 'Geisinger',
+      states: ['PA'],
+      policyPortal: 'https://www.geisinger.org/health-plan/providers/clinical-policies',
+    },
+    {
+      id: 'point32',
+      name: 'Point32Health',
+      shortName: 'Point32',
+      states: ['MA', 'NH'],
+      policyPortal: 'https://www.point32health.org/providers/clinical-policies',
+      notes: 'Harvard Pilgrim + Tufts',
+    },
+    {
+      id: 'priority-health',
+      name: 'Priority Health',
+      shortName: 'Priority',
+      states: ['MI'],
+      policyPortal: 'https://www.priorityhealth.com/providers/clinical-policies',
+    },
+    {
+      id: 'selecthealth',
+      name: 'SelectHealth',
+      shortName: 'SelectHealth',
+      states: ['UT'],
+      policyPortal: 'https://www.selecthealth.org/providers/clinical-policies',
+      notes: 'Intermountain Healthcare',
+    },
+    {
+      id: 'healthpartners',
+      name: 'HealthPartners',
+      shortName: 'HealthPartners',
+      states: ['MN', 'WI'],
+      policyPortal: 'https://www.healthpartners.com/providers/clinical-policies',
+    },
+  ],
+
+  // Government Programs
+  government: [
+    {
+      id: 'tricare',
+      name: 'TRICARE',
+      shortName: 'TRICARE',
+      states: ['ALL'],
+      policyPortal: 'https://www.tricare.mil/CoveredServices/IsItCovered',
+      notes: 'Military health system',
+    },
+  ],
 };
 
 // Flattened list of all payers for easy iteration
@@ -398,6 +459,8 @@ export const ALL_PAYERS = [
   ...PAYERS.medicareAdvantage,
   ...PAYERS.labBenefitManagers,
   ...PAYERS.otherLarge,
+  ...PAYERS.healthSystems,
+  ...PAYERS.government,
 ];
 
 // =============================================================================
@@ -538,7 +601,7 @@ export const DISCOVERY_TYPES = {
 export const SOURCES = {
   CMS: 'cms',
   PAYERS: 'payers',
-  VENDORS: 'vendors',
+  VENDOR: 'vendor',
 };
 
 // =============================================================================

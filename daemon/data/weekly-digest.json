@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-01-29T00:00:53.128Z",
+  "weekOf": "2026-01-27",
+  "summary": {
+    "totalPending": 1,
+    "bySource": {
+      "cms": 1,
+      "payers": 0,
+      "vendor": 0
+    }
+  },
+  "crawlerHealth": {
+    "cms": {
+      "lastRun": "2026-01-28T23:32:21.035Z",
+      "lastSuccess": "2026-01-28T23:32:58.325Z",
+      "discoveriesFound": 1,
+      "discoveriesAdded": 1,
+      "duration": 37290,
+      "status": "success",
+      "updatedAt": "2026-01-28T23:32:58.327Z"
+    },
+    "payers": {
+      "lastRun": "2026-01-28T23:34:17.529Z",
+      "lastSuccess": "2026-01-28T23:38:09.263Z",
+      "discoveriesFound": 1,
+      "discoveriesAdded": 1,
+      "duration": 231734,
+      "status": "success",
+      "updatedAt": "2026-01-28T23:38:09.263Z"
+    },
+    "vendor": {
+      "lastRun": "2026-01-28T23:32:58.329Z",
+      "lastSuccess": "2026-01-28T23:34:17.529Z",
+      "discoveriesFound": 0,
+      "discoveriesAdded": 0,
+      "duration": 79200,
+      "status": "success",
+      "updatedAt": "2026-01-28T23:34:17.529Z"
+    }
+  },
+  "discoveries": [
+    {
+      "id": "disc_test_001",
+      "source": "cms",
+      "type": "medicare_lcd_update",
+      "title": "Billing and Coding: MolDX: Next-Generation Sequencing Lab-Developed Tests for Myeloid Malignancies",
+      "summary": "Updated billing article for MolDX NGS LDTs covering myeloid malignancies. Claude analysis: This is a billing/coding article (not coverage policy). It updates CPT code guidance for NGS testing in myeloid cancers. No direct coverage changes but clarifies billing requirements.",
+      "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59879",
+      "discoveredAt": "2026-01-28T23:18:27.000Z",
+      "data": {
+        "documentType": "Article",
+        "documentId": "A59879",
+        "contractor": "Palmetto GBA (MolDX)",
+        "affectedTests": [
+          "NGS LDTs for myeloid malignancies"
+        ],
+        "moldxRelevant": true,
+        "coverageDecision": "billing_guidance",
+        "keyChanges": "Updated billing codes and documentation requirements for NGS-based myeloid testing"
+      }
+    }
+  ]
+}

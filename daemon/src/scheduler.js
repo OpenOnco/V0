@@ -8,9 +8,8 @@ import { createLogger } from './utils/logger.js';
 import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
 import { sendDailyDigest, sendSummaryDigest } from './email/index.js';
+import { sendMondayDigest } from './email/monday-digest.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
-import { triageDiscoveries } from './triage/index.js';
-import { exportToGitHub } from './export/github-export.js';
 
 const logger = createLogger('scheduler');
 
@@ -50,19 +49,22 @@ function scheduleCrawler(source, schedule) {
 }
 
 /**
- * Schedule the daily digest email
+ * Schedule the Monday digest email
  */
 function scheduleDigest(schedule) {
-  logger.info('Scheduling daily digest', { schedule });
+  logger.info('Scheduling Monday digest', { schedule });
 
   const job = cron.schedule(schedule, async () => {
-    logger.info('Sending scheduled daily digest');
+    logger.info('Sending scheduled Monday digest');
 
     try {
-      const result = await sendDailyDigest();
-      logger.info('Daily digest sent', { messageId: result.messageId });
+      const result = await sendMondayDigest();
+      logger.info('Monday digest sent', { 
+        messageId: result.messageId,
+        pendingCount: result.digest?.summary?.totalPending || 0
+      });
     } catch (error) {
-      logger.error('Failed to send daily digest', { error });
+      logger.error('Failed to send Monday digest', { error });
     }
   });
 
@@ -93,56 +95,15 @@ function scheduleCleanup() {
 }
 
 /**
- * Schedule AI triage (runs after crawlers finish)
- */
-function scheduleTriage(schedule) {
-  const triageConfig = config.crawlers.triage;
-
-  if (!triageConfig?.enabled) {
-    logger.info('Triage is disabled, not scheduling');
-    return null;
-  }
-
-  logger.info('Scheduling AI triage', { schedule });
-
-  const job = cron.schedule(schedule, async () => {
-    logger.info('Running scheduled AI triage');
-
-    try {
-      const result = await triageDiscoveries(null, { loadFromQueue: true, verbose: true });
-      logger.info('Scheduled triage completed', {
-        highPriority: result.highPriority?.length || 0,
-        mediumPriority: result.mediumPriority?.length || 0,
-        lowPriority: result.lowPriority?.length || 0,
-        cost: result.metadata?.costs?.totalCost || '0',
-        duration: result.metadata?.durationMs,
-      });
-    } catch (error) {
-      logger.error('Scheduled triage failed', { error });
-    }
-  });
-
-  jobs.set('triage', job);
-  return job;
-}
-
-/**
  * Start all scheduled jobs
  */
 export function startScheduler() {
   logger.info('Starting scheduler');
 
   // Schedule crawlers
-  scheduleCrawler(SOURCES.PUBMED, config.schedules.pubmed);
   scheduleCrawler(SOURCES.CMS, config.schedules.cms);
-  scheduleCrawler(SOURCES.FDA, config.schedules.fda);
   scheduleCrawler(SOURCES.VENDOR, config.schedules.vendor);
-  scheduleCrawler(SOURCES.PREPRINTS, config.schedules.preprints);
-  scheduleCrawler(SOURCES.CITATIONS, config.schedules.citations);
   scheduleCrawler(SOURCES.PAYERS, config.schedules.payers);
-
-  // Schedule triage (runs after crawlers)
-  scheduleTriage(config.schedules.triage);
 
   // Schedule digest
   scheduleDigest(config.schedules.digest);
@@ -153,14 +114,9 @@ export function startScheduler() {
   logger.info('Scheduler started', {
     jobs: Array.from(jobs.keys()),
     schedules: {
-      pubmed: config.schedules.pubmed,
       cms: config.schedules.cms,
-      fda: config.schedules.fda,
       vendor: config.schedules.vendor,
-      preprints: config.schedules.preprints,
-      citations: config.schedules.citations,
       payers: config.schedules.payers,
-      triage: config.schedules.triage,
       digest: config.schedules.digest,
     },
   });
@@ -215,16 +171,8 @@ export async function triggerCrawler(source) {
  * Manually trigger the digest
  */
 export async function triggerDigest() {
-  logger.info('Manually triggering digest');
-  return sendDailyDigest();
-}
-
-/**
- * Manually trigger AI triage
- */
-export async function triggerTriage() {
-  logger.info('Manually triggering triage');
-  return triageDiscoveries(null, { loadFromQueue: true, verbose: true });
+  logger.info('Manually triggering Monday digest');
+  return sendMondayDigest();
 }
 
 /**
@@ -234,7 +182,7 @@ export async function runAllCrawlersNow() {
   logger.info('Running all crawlers immediately');
 
   const results = {};
-  const sources = [SOURCES.PUBMED, SOURCES.CMS, SOURCES.FDA, SOURCES.VENDOR, SOURCES.PREPRINTS, SOURCES.CITATIONS, SOURCES.PAYERS];
+  const sources = [SOURCES.CMS, SOURCES.VENDOR, SOURCES.PAYERS];
 
   for (const source of sources) {
     try {
@@ -249,40 +197,30 @@ export async function runAllCrawlersNow() {
 }
 
 /**
- * Manually trigger export: triage → export to GitHub → send summary email
+ * Manually trigger summary email (export functionality removed)
  */
 export async function triggerExport() {
-  logger.info('Manually triggering export to GitHub');
+  logger.info('Manually triggering summary email');
 
-  // Run triage first to get current results
-  const triageResults = await triageDiscoveries(null, { loadFromQueue: true, verbose: true });
-
-  // Export to GitHub
-  const exportResult = await exportToGitHub(triageResults);
-
-  // Send summary email
+  // Send summary email with empty triage results
   let emailResult = null;
   try {
-    emailResult = await sendSummaryDigest({
-      triageResults,
-    });
+    const triageResults = {
+      highPriority: [],
+      mediumPriority: [],
+      lowPriority: [],
+      ignored: { not_relevant: 0, duplicate: 0, already_addressed: 0 },
+      metadata: { inputCount: 0, processedAt: new Date().toISOString() },
+    };
+    emailResult = await sendSummaryDigest({ triageResults });
   } catch (error) {
-    logger.warn('Summary email failed (export still succeeded)', { error: error.message });
+    logger.warn('Summary email failed', { error: error.message });
   }
 
   return {
     success: true,
-    url: exportResult.url,
-    path: exportResult.path,
-    sha: exportResult.sha,
-    date: exportResult.date,
     emailSent: emailResult?.success || false,
     emailMessageId: emailResult?.messageId || null,
-    triage: {
-      high: triageResults.highPriority?.length || 0,
-      medium: triageResults.mediumPriority?.length || 0,
-      low: triageResults.lowPriority?.length || 0,
-    },
   };
 }
 
@@ -292,7 +230,6 @@ export default {
   getSchedulerStatus,
   triggerCrawler,
   triggerDigest,
-  triggerTriage,
   triggerExport,
   runAllCrawlersNow,
 };
