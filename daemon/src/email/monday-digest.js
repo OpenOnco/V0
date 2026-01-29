@@ -1,10 +1,10 @@
 /**
- * Simplified Monday Digest for Insurance Coverage Monitoring
- * Sends a brief summary email and writes a digest file for Claude to read
+ * Monday Digest for Insurance Coverage Monitoring
+ * Sends summary email with attached self-executing review file for Claude
  */
 
 import { Resend } from 'resend';
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from '../config.js';
@@ -35,14 +35,25 @@ function loadHealth() {
 }
 
 /**
- * Generate the weekly digest file for Claude to read
+ * Get Monday of current week as YYYY-MM-DD
  */
-export function generateDigestFile() {
+function getWeekDate() {
+  const now = new Date();
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  const monday = new Date(now.setDate(diff));
+  return monday.toISOString().split('T')[0];
+}
+
+/**
+ * Build the digest data object
+ */
+function buildDigestData() {
   const discoveries = loadDiscoveries();
   const health = loadHealth();
   const pending = discoveries.filter(d => d.status === 'pending');
   
-  const digest = {
+  return {
     generatedAt: new Date().toISOString(),
     weekOf: getWeekDate(),
     summary: {
@@ -69,56 +80,93 @@ export function generateDigestFile() {
       data: d.data
     }))
   };
-
-  const digestPath = join(DATA_DIR, 'weekly-digest.json');
-  writeFileSync(digestPath, JSON.stringify(digest, null, 2), 'utf-8');
-  logger.info('Generated weekly digest file', { path: digestPath, count: pending.length });
-  
-  return digest;
 }
 
+
 /**
- * Get Monday of current week as YYYY-MM-DD
+ * Generate self-executing review file for Claude
+ * This file contains instructions + data - just upload and send
  */
-function getWeekDate() {
-  const now = new Date();
-  const day = now.getDay();
-  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(now.setDate(diff));
-  return monday.toISOString().split('T')[0];
+function generateReviewAttachment(digest) {
+  const { discoveries, summary, crawlerHealth, weekOf } = digest;
+  
+  return `# OpenOnco Coverage Review - Week of ${weekOf}
+
+## Instructions
+Review the coverage discoveries below. For each item:
+1. I'll present the discovery with Claude's analysis
+2. You respond: **approve**, **skip**, or ask questions
+3. For approved items, I'll prepare the database update using the openonco-submission skill
+
+## Summary
+- **${summary.totalPending} discoveries** pending review
+- CMS: ${summary.bySource.cms} | Payers: ${summary.bySource.payers} | Vendors: ${summary.bySource.vendor}
+
+---
+
+## Discoveries to Review
+
+${discoveries.map((d, i) => `
+### ${i + 1}. [${d.source.toUpperCase()}] ${d.title}
+
+**URL:** ${d.url}
+**Discovered:** ${new Date(d.discoveredAt).toLocaleDateString()}
+**Type:** ${d.type}
+
+**Claude Analysis:**
+${d.summary || 'No analysis available'}
+
+${d.data ? `**Details:**
+\`\`\`json
+${JSON.stringify(d.data, null, 2)}
+\`\`\`` : ''}
+
+---
+`).join('\n')}
+
+## Ready to Start
+Let's begin! I'll present discovery #1. Reply with **approve**, **skip**, or ask questions.
+`;
 }
 
 /**
- * Generate brief HTML email
+ * Format duration in human readable form
+ */
+function formatDuration(ms) {
+  if (!ms) return '-';
+  const seconds = Math.round(ms / 1000);
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}m ${remainingSeconds}s`;
+}
+
+/**
+ * Format ISO time to readable string
+ */
+function formatTime(isoString) {
+  if (!isoString) return '-';
+  return new Date(isoString).toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+}
+
+
+/**
+ * Generate HTML email (summary + stats only)
  */
 function generateEmailHtml(digest) {
-  const { summary, discoveries, crawlerHealth } = digest;
+  const { summary, crawlerHealth, weekOf } = digest;
   
   const statusEmoji = (status) => {
     if (status === 'success') return '✅';
     if (status === 'error') return '❌';
     return '⏸️';
-  };
-
-  const formatDuration = (ms) => {
-    if (!ms) return '-';
-    const seconds = Math.round(ms / 1000);
-    if (seconds < 60) return `${seconds}s`;
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  };
-
-  const formatTime = (isoString) => {
-    if (!isoString) return '-';
-    return new Date(isoString).toLocaleString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
   };
 
   const crawlerRows = ['cms', 'payers', 'vendor'].map(source => {
@@ -142,31 +190,6 @@ function generateEmailHtml(digest) {
     `;
   }).join('');
 
-  const discoveryRows = discoveries.slice(0, 10).map(d => `
-    <tr>
-      <td style="padding: 12px; border-bottom: 1px solid #eee; vertical-align: top;">
-        <span style="display: inline-block; background: ${d.source === 'cms' ? '#dbeafe' : d.source === 'payers' ? '#fef3c7' : '#d1fae5'}; color: ${d.source === 'cms' ? '#1e40af' : d.source === 'payers' ? '#92400e' : '#065f46'}; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">
-          ${d.source}
-        </span>
-      </td>
-      <td style="padding: 12px; border-bottom: 1px solid #eee;">
-        <a href="${d.url}" style="color: #2563eb; text-decoration: none; font-size: 14px; font-weight: 500;">
-          ${d.title}
-        </a>
-        ${d.summary ? `
-        <div style="font-size: 13px; color: #374151; margin-top: 8px; line-height: 1.5; background: #f9fafb; padding: 10px; border-radius: 4px; border-left: 3px solid #d1d5db;">
-          ${d.summary}
-        </div>
-        ` : ''}
-        ${d.data?.affectedTests ? `
-        <div style="font-size: 12px; color: #6b7280; margin-top: 6px;">
-          <strong>Affected tests:</strong> ${Array.isArray(d.data.affectedTests) ? d.data.affectedTests.join(', ') : d.data.affectedTests}
-        </div>
-        ` : ''}
-      </td>
-    </tr>
-  `).join('');
-
   return `
 <!DOCTYPE html>
 <html>
@@ -178,21 +201,14 @@ function generateEmailHtml(digest) {
   <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
     
     <h1 style="font-size: 20px; margin: 0 0 4px 0;">🔬 OpenOnco Coverage Digest</h1>
-    <p style="color: #666; font-size: 13px; margin: 0 0 20px 0;">Week of ${digest.weekOf}</p>
+    <p style="color: #666; font-size: 13px; margin: 0 0 20px 0;">Week of ${weekOf}</p>
 
-    <!-- Summary Stats -->
-    <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-      <div style="flex: 1; background: #f0fdf4; padding: 16px; border-radius: 8px; text-align: center;">
-        <div style="font-size: 28px; font-weight: 700; color: #166534;">${summary.totalPending}</div>
-        <div style="font-size: 12px; color: #666; text-transform: uppercase;">Pending Review</div>
-      </div>
-      <div style="flex: 1; background: #f8f9fa; padding: 16px; border-radius: 8px;">
-        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">By Source:</div>
-        <div style="font-size: 13px;">
-          CMS: <strong>${summary.bySource.cms}</strong> · 
-          Payers: <strong>${summary.bySource.payers}</strong> · 
-          Vendors: <strong>${summary.bySource.vendor}</strong>
-        </div>
+    <!-- Summary -->
+    <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 24px;">
+      <div style="font-size: 36px; font-weight: 700; color: #166534;">${summary.totalPending}</div>
+      <div style="font-size: 14px; color: #666;">discoveries pending review</div>
+      <div style="font-size: 13px; color: #888; margin-top: 8px;">
+        CMS: ${summary.bySource.cms} · Payers: ${summary.bySource.payers} · Vendors: ${summary.bySource.vendor}
       </div>
     </div>
 
@@ -214,34 +230,16 @@ function generateEmailHtml(digest) {
       </table>
     </div>
 
-    ${discoveries.length > 0 ? `
-    <!-- Discoveries Table -->
-    <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin: 0 0 12px 0;">
-      Pending Discoveries
-    </h2>
-    <table style="width: 100%; border-collapse: collapse;">
-      ${discoveryRows}
-    </table>
-    ${discoveries.length > 10 ? `<p style="font-size: 12px; color: #888; margin-top: 8px;">+ ${discoveries.length - 10} more...</p>` : ''}
-    ` : `
-    <p style="color: #888; font-style: italic; text-align: center; padding: 20px;">
-      No new discoveries this week
-    </p>
-    `}
-
-    <!-- Action Box -->
-    <div style="margin-top: 24px; padding: 16px; background: #eff6ff; border: 1px dashed #3b82f6; border-radius: 8px;">
-      <div style="font-size: 12px; font-weight: 600; color: #1d4ed8; text-transform: uppercase; margin-bottom: 8px;">
-        To Review
-      </div>
-      <p style="font-size: 13px; color: #374151; margin: 0 0 12px 0;">
-        Open Claude and paste this prompt:
+    <!-- Instructions -->
+    <div style="background: #eff6ff; border: 1px dashed #3b82f6; border-radius: 8px; padding: 16px;">
+      <div style="font-size: 12px; font-weight: 600; color: #1d4ed8; text-transform: uppercase; margin-bottom: 8px;">📎 Review Attachment</div>
+      <p style="font-size: 13px; color: #374151; margin: 0;">
+        Upload the attached <strong>coverage-review.md</strong> file to Claude and hit send to start the review.
       </p>
-      <code style="display: block; background: #1e293b; color: #e2e8f0; padding: 12px; border-radius: 4px; font-size: 13px; line-height: 1.5;">Review coverage discoveries. Read daemon/data/weekly-digest.json, walk me through each pending item for approve/skip, then apply approved changes to the database.</code>
     </div>
 
     <p style="font-size: 11px; color: #999; margin-top: 24px; text-align: center;">
-      OpenOnco Coverage Intelligence · Digest generated ${new Date().toLocaleString()}
+      OpenOnco Coverage Intelligence · ${new Date().toLocaleString()}
     </p>
   </div>
 </body>
@@ -249,41 +247,20 @@ function generateEmailHtml(digest) {
   `.trim();
 }
 
+
 /**
- * Generate plain text version
+ * Generate plain text email
  */
 function generateEmailText(digest) {
-  const { summary, discoveries, weekOf, crawlerHealth } = digest;
-  
-  const formatDuration = (ms) => {
-    if (!ms) return '-';
-    const seconds = Math.round(ms / 1000);
-    if (seconds < 60) return `${seconds}s`;
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  };
-
-  const formatTime = (isoString) => {
-    if (!isoString) return '-';
-    return new Date(isoString).toLocaleString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
+  const { summary, crawlerHealth, weekOf } = digest;
   
   let text = `
 OPENONCO COVERAGE DIGEST
 Week of ${weekOf}
 ═══════════════════════════════════════
 
-SUMMARY
-• ${summary.totalPending} discoveries pending review
-• CMS: ${summary.bySource.cms} | Payers: ${summary.bySource.payers} | Vendors: ${summary.bySource.vendor}
+${summary.totalPending} DISCOVERIES PENDING REVIEW
+CMS: ${summary.bySource.cms} | Payers: ${summary.bySource.payers} | Vendors: ${summary.bySource.vendor}
 
 CRAWLER RUN STATS
 ───────────────────────────────────────
@@ -293,47 +270,25 @@ CRAWLER RUN STATS
     const health = crawlerHealth[source] || {};
     const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Private Payers' : 'Vendors';
     const status = health.status === 'success' ? '✓' : health.status === 'error' ? '✗' : '?';
-    text += `${status} ${name}\n`;
-    text += `  Last run: ${formatTime(health.lastRun)}\n`;
-    text += `  Duration: ${formatDuration(health.duration)} | Found: ${health.discoveriesFound || 0} | New: ${health.discoveriesAdded || 0}\n\n`;
+    text += `${status} ${name}: ${formatTime(health.lastRun)} (${formatDuration(health.duration)}) - ${health.discoveriesFound || 0} found, ${health.discoveriesAdded || 0} new\n`;
   });
-
-  if (discoveries.length > 0) {
-    text += `DISCOVERIES\n───────────────────────────────────────\n`;
-    discoveries.slice(0, 10).forEach((d, i) => {
-      text += `${i + 1}. [${d.source.toUpperCase()}] ${d.title}\n`;
-      text += `   ${d.url}\n`;
-      if (d.summary) {
-        text += `   ${d.summary}\n`;
-      }
-      text += `\n`;
-    });
-    if (discoveries.length > 10) {
-      text += `... and ${discoveries.length - 10} more\n`;
-    }
-  } else {
-    text += `No new discoveries this week.\n`;
-  }
 
   text += `
 ───────────────────────────────────────
-To review, open Claude and paste:
-"Review coverage discoveries. Read daemon/data/weekly-digest.json, walk me through each pending item for approve/skip, then apply approved changes to the database."
+Upload the attached coverage-review.md file to Claude and hit send to start the review.
 `;
 
   return text.trim();
 }
 
 /**
- * Send the Monday digest email
+ * Send the Monday digest email with attachment
  */
 export async function sendMondayDigest() {
   logger.info('Preparing Monday digest email');
 
-  // Generate digest file first
-  const digest = generateDigestFile();
+  const digest = buildDigestData();
 
-  // Send email
   if (!config.email.apiKey) {
     logger.warn('RESEND_API_KEY not configured, skipping email');
     return { success: false, reason: 'no_api_key', digest };
@@ -345,6 +300,10 @@ export async function sendMondayDigest() {
     ? `[OpenOnco] ${digest.summary.totalPending} coverage updates to review`
     : `[OpenOnco] Weekly digest - no new updates`;
 
+  // Generate the self-executing review file
+  const reviewContent = generateReviewAttachment(digest);
+  const attachmentContent = Buffer.from(reviewContent).toString('base64');
+
   try {
     const result = await resend.emails.send({
       from: config.email.from,
@@ -352,6 +311,12 @@ export async function sendMondayDigest() {
       subject,
       html: generateEmailHtml(digest),
       text: generateEmailText(digest),
+      attachments: [
+        {
+          filename: 'coverage-review.md',
+          content: attachmentContent,
+        }
+      ]
     });
 
     if (result.error) {
@@ -375,4 +340,4 @@ export async function sendMondayDigest() {
   }
 }
 
-export default { sendMondayDigest, generateDigestFile };
+export default { sendMondayDigest };
