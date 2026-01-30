@@ -5,13 +5,11 @@
  *
  * Usage:
  *   node scripts/run-pipeline.js --crawl     Run all crawlers
- *   node scripts/run-pipeline.js --triage    Run AI triage on queued discoveries
  *   node scripts/run-pipeline.js --digest    Send the daily digest email
- *   node scripts/run-pipeline.js --all       Run full pipeline: crawl → triage → digest
  */
 
 import 'dotenv/config';
-import { runAllCrawlersNow, triggerTriage, triggerDigest } from '../src/scheduler.js';
+import { runAllCrawlersNow, triggerDigest } from '../src/scheduler.js';
 
 // ── Formatting helpers ───────────────────────────────────────────────
 
@@ -84,29 +82,6 @@ async function runCrawlStage() {
   return { totalDiscoveries, totalAdded, failures, duration: dt };
 }
 
-async function runTriageStage() {
-  step('Running AI triage...');
-  const t0 = Date.now();
-
-  const result = await triggerTriage();
-  const dt = Date.now() - t0;
-
-  const high = result.highPriority?.length ?? 0;
-  const medium = result.mediumPriority?.length ?? 0;
-  const low = result.lowPriority?.length ?? 0;
-  const ignored = result.ignored?.length ?? 0;
-  const cost = result.metadata?.costs?.totalCost;
-  const calls = result.metadata?.costs?.apiCalls;
-
-  success('Classification complete', `high=${high} medium=${medium} low=${low} ignored=${ignored}`);
-  if (cost != null) {
-    success('API usage', `${calls} calls, $${Number(cost).toFixed(4)}`);
-  }
-  console.log(`  ${DIM}Duration: ${elapsed(dt)}${RESET}`);
-
-  return { high, medium, low, ignored, cost, duration: dt };
-}
-
 async function runDigestStage() {
   step('Sending daily digest email...');
   const t0 = Date.now();
@@ -131,9 +106,7 @@ ${BOLD}Usage:${RESET}  node scripts/run-pipeline.js <flag>
 
 ${BOLD}Flags:${RESET}
   --crawl    Run all crawlers
-  --triage   Run AI triage on queued discoveries
   --digest   Send the daily digest email
-  --all      Run full pipeline: crawl → triage → digest
   --help     Show this help message
 `;
 
@@ -146,11 +119,10 @@ async function main() {
     process.exit(0);
   }
 
-  const runCrawl = flags.has('--crawl') || flags.has('--all');
-  const runTriage = flags.has('--triage') || flags.has('--all');
-  const runDigest = flags.has('--digest') || flags.has('--all');
+  const runCrawl = flags.has('--crawl');
+  const runDigest = flags.has('--digest');
 
-  if (!runCrawl && !runTriage && !runDigest) {
+  if (!runCrawl && !runDigest) {
     console.error(`${RED}Unknown flag: ${args.join(' ')}${RESET}`);
     console.log(USAGE);
     process.exit(1);
@@ -158,7 +130,6 @@ async function main() {
 
   const stages = [
     runCrawl && 'crawl',
-    runTriage && 'triage',
     runDigest && 'digest',
   ].filter(Boolean);
 
@@ -170,11 +141,6 @@ async function main() {
   try {
     if (runCrawl) {
       results.crawl = await runCrawlStage();
-      if (runTriage || runDigest) console.log();
-    }
-
-    if (runTriage) {
-      results.triage = await runTriageStage();
       if (runDigest) console.log();
     }
 

@@ -10,8 +10,12 @@ import { createHash } from 'crypto';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { chromium } from 'playwright';
+import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
-import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES, MONITORED_VENDORS } from '../config.js';
+import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES, MONITORED_VENDORS, PAYERS } from '../config.js';
+import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
+import { computeDiff, truncateDiff } from '../utils/diff.js';
+import { canonicalizeContent } from '../utils/canonicalize.js';
 
 // Path to store content hashes for change detection
 const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'payer-hashes.json');
@@ -31,6 +35,12 @@ const MAX_RETRIES = 3;
 
 // Retry delay base (exponential backoff)
 const RETRY_DELAY_BASE_MS = 2000;
+
+// Claude model for policy analysis
+const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
+
+// Maximum content size to store for diffing (50KB)
+const MAX_STORED_CONTENT_SIZE = 50000;
 
 // Keywords to search for in policy indexes
 const SEARCH_KEYWORDS = [
@@ -70,105 +80,255 @@ const SEARCH_KEYWORDS = [
   'VAF',
 ];
 
-// Tier 1: Major private payers with direct policy pages
-const PAYER_SOURCES = [
-  {
-    name: 'UnitedHealthcare',
-    id: 'uhc',
-    baseUrl: 'https://www.uhcprovider.com',
-    policyIndexPages: [
-      {
-        url: 'https://www.uhcprovider.com/en/policies-protocols/commercial-policies/commercial-medical-drug-policies.html',
-        description: 'Commercial Medical & Drug Policies',
-        type: 'index',
-        // Search/filter for: molecular, genomic, liquid biopsy, ctDNA, oncology
-      },
-    ],
-    // Direct policy pages to monitor for changes
+// =============================================================================
+// PAYER CRAWL CONFIGURATION
+// Extends config.js PAYERS with crawler-specific URLs and settings
+// =============================================================================
+
+// Crawl URLs for national commercial payers
+const NATIONAL_COMMERCIAL_URLS = {
+  uhc: {
+    indexUrl: 'https://www.uhcprovider.com/en/policies-protocols/commercial-policies/commercial-medical-drug-policies.html',
     policyPages: [
       {
         path: '/content/provider/en/policies-protocols/commercial-policies/molecular-oncology-testing.html',
         description: 'Molecular Oncology Testing Policy',
-        type: 'policy',
       },
     ],
-    searchTerms: ['molecular', 'genomic', 'liquid biopsy', 'ctDNA', 'oncology'],
   },
-  {
-    name: 'Aetna',
-    id: 'aetna',
-    baseUrl: 'https://www.aetna.com',
-    policyIndexPages: [
-      {
-        url: 'https://www.aetna.com/health-care-professionals/clinical-policy-bulletins.html',
-        description: 'Clinical Policy Bulletins',
-        type: 'index',
-        // Look for policy numbers related to genetic/molecular testing
-      },
-    ],
+  anthem: {
+    indexUrl: 'https://www.anthem.com/provider/policies/clinical-guidelines/',
+    policyPages: [],
+  },
+  cigna: {
+    indexUrl: 'https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/',
+    indexType: 'pdf_index',
+    policyPages: [],
+  },
+  aetna: {
+    indexUrl: 'https://www.aetna.com/health-care-professionals/clinical-policy-bulletins.html',
     policyPages: [
-      {
-        path: '/cpb/medical/data/100_199/0140.html',
-        description: 'Genetic Testing CPB 0140',
-        type: 'policy',
-      },
-      {
-        path: '/cpb/medical/data/400_499/0469.html',
-        description: 'Tumor Markers CPB 0469',
-        type: 'policy',
-      },
-      {
-        path: '/cpb/medical/data/700_799/0715.html',
-        description: 'Liquid Biopsy CPB 0715',
-        type: 'policy',
-      },
+      { path: '/cpb/medical/data/100_199/0140.html', description: 'Genetic Testing CPB 0140' },
+      { path: '/cpb/medical/data/400_499/0469.html', description: 'Tumor Markers CPB 0469' },
+      { path: '/cpb/medical/data/700_799/0715.html', description: 'Liquid Biopsy CPB 0715' },
     ],
-    searchTerms: ['molecular', 'genetic', 'oncology', 'tumor', 'liquid biopsy', 'ctDNA'],
   },
-  {
-    name: 'Cigna',
-    id: 'cigna',
-    baseUrl: 'https://static.cigna.com',
-    policyIndexPages: [
-      {
-        url: 'https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/',
-        description: 'Medical Coverage Policies (PDF Index)',
-        type: 'pdf_index',
-        // They have PDFs, look for molecular diagnostics policies
-      },
-    ],
+  humana: {
+    indexUrl: 'https://www.humana.com/provider/medical-resources/clinical-policies',
     policyPages: [],
-    searchTerms: ['molecular', 'genetic', 'oncology', 'tumor', 'sequencing', 'genomic', 'ctDNA'],
   },
-  {
-    name: 'Anthem/BCBS',
-    id: 'anthem',
-    baseUrl: 'https://www.anthem.com',
-    policyIndexPages: [
-      {
-        url: 'https://www.anthem.com/provider/policies/medical-policies/',
-        description: 'Medical Policies',
-        type: 'index',
-      },
-    ],
+};
+
+// Crawl URLs for regional BCBS plans
+// TODO: Research and verify these URLs - many are placeholders based on common patterns
+const REGIONAL_BCBS_URLS = {
+  'bcbs-ma': {
+    indexUrl: 'https://www.bluecrossma.org/medical-policies/sites/g/files/csphws7476/files/acquiadam-assets/Medical_Policy_Manual.pdf',
+    // TODO: Find actual policy index page
     policyPages: [],
-    searchTerms: ['molecular', 'genetic', 'oncology', 'tumor', 'genomic', 'liquid biopsy'],
   },
-  {
-    name: 'Humana',
-    id: 'humana',
-    baseUrl: 'https://www.humana.com',
-    policyIndexPages: [
-      {
-        url: 'https://www.humana.com/provider/medical-resources/clinical-policies',
-        description: 'Clinical Policies',
-        type: 'index',
-      },
-    ],
+  'bcbs-mi': {
+    indexUrl: 'https://www.bcbsm.com/providers/clinical-resources/policies.html',
     policyPages: [],
-    searchTerms: ['molecular', 'genetic', 'oncology', 'tumor', 'genomic', 'laboratory', 'ctDNA'],
   },
-];
+  'bcbs-tx': {
+    indexUrl: 'https://www.bcbstx.com/provider/clinical/medical-policies.html',
+    policyPages: [],
+  },
+  'bcbs-il': {
+    indexUrl: 'https://www.bcbsil.com/provider/clinical/medical-policies.html',
+    policyPages: [],
+  },
+  'florida-blue': {
+    indexUrl: 'https://www.floridablue.com/providers/tools-resources/medical-policies',
+    policyPages: [],
+  },
+  'bcbs-nc': {
+    indexUrl: 'https://www.bluecrossnc.com/providers/clinical-resources/medical-policy',
+    policyPages: [],
+  },
+  'highmark': {
+    indexUrl: null, // TODO: Find Highmark policy index URL
+    policyPages: [],
+  },
+  'carefirst': {
+    indexUrl: 'https://www.carefirst.com/provider/medical-policy-reference-manual',
+    policyPages: [],
+  },
+  'excellus': {
+    indexUrl: null, // TODO: Find Excellus policy index URL
+    policyPages: [],
+  },
+  'ibx': {
+    indexUrl: null, // TODO: Find Independence Blue Cross policy index URL
+    policyPages: [],
+  },
+  'blue-shield-ca': {
+    indexUrl: 'https://www.blueshieldca.com/provider/policies-guidelines/medical-policies',
+    policyPages: [],
+  },
+  'premera': {
+    indexUrl: null, // TODO: Find Premera policy index URL
+    policyPages: [],
+  },
+  'regence': {
+    indexUrl: null, // TODO: Find Regence policy index URL
+    policyPages: [],
+  },
+  'horizon': {
+    indexUrl: null, // TODO: Find Horizon BCBS NJ policy index URL
+    policyPages: [],
+  },
+  'wellmark': {
+    indexUrl: null, // TODO: Find Wellmark policy index URL
+    policyPages: [],
+  },
+  'bcbs-az': {
+    indexUrl: 'https://www.azblue.com/providers/clinical-policies',
+    policyPages: [],
+  },
+  'bcbs-mn': {
+    indexUrl: null, // TODO: Find BCBS Minnesota policy index URL
+    policyPages: [],
+  },
+  'bcbs-tn': {
+    indexUrl: null, // TODO: Find BCBS Tennessee policy index URL
+    policyPages: [],
+  },
+  'bcbs-kc': {
+    indexUrl: null, // TODO: Find Blue KC policy index URL
+    policyPages: [],
+  },
+  'bcbs-la': {
+    indexUrl: null, // TODO: Find BCBS Louisiana policy index URL
+    policyPages: [],
+  },
+};
+
+// Crawl URLs for Medicare Advantage plans
+const MEDICARE_ADVANTAGE_URLS = {
+  'uhc-ma': {
+    indexUrl: 'https://www.uhcprovider.com/content/provider/en/policies-protocols/medicare-advantage-policies.html',
+    policyPages: [],
+  },
+  'humana-ma': {
+    indexUrl: null, // TODO: Find Humana MA policy index URL
+    policyPages: [],
+  },
+  'aetna-ma': {
+    indexUrl: null, // TODO: Find Aetna MA policy index URL
+    policyPages: [],
+  },
+  'bcbs-ma-plans': {
+    indexUrl: null, // Regional - varies by BCBS plan
+    policyPages: [],
+  },
+};
+
+// Crawl URLs for Lab Benefit Managers
+const LBM_URLS = {
+  'evicore': {
+    indexUrl: 'https://www.evicore.com/provider/clinical-guidelines',
+    policyPages: [],
+  },
+  'aim': {
+    indexUrl: null, // TODO: Find AIM Specialty Health policy index URL
+    policyPages: [],
+  },
+  'avalon': {
+    indexUrl: null, // TODO: Find Avalon HCS policy index URL
+    policyPages: [],
+  },
+};
+
+// Crawl URLs for other large payers
+const OTHER_LARGE_URLS = {
+  'kaiser': {
+    indexUrl: null, // Kaiser policies often not publicly available
+    policyPages: [],
+  },
+  'molina': {
+    indexUrl: null, // TODO: Find Molina policy index URL
+    policyPages: [],
+  },
+  'centene': {
+    indexUrl: null, // TODO: Find Centene policy index URL
+    policyPages: [],
+  },
+  'hcsc': {
+    indexUrl: null, // TODO: Find HCSC policy index URL
+    policyPages: [],
+  },
+};
+
+// Standard search terms for all payers
+const STANDARD_SEARCH_TERMS = ['molecular', 'genetic', 'oncology', 'tumor', 'genomic', 'liquid biopsy', 'ctDNA', 'NGS'];
+
+/**
+ * Build PAYER_SOURCES array from config PAYERS + crawler URLs
+ * Only includes payers with non-null indexUrl
+ * Also returns list of skipped payers for logging
+ */
+function buildPayerSources() {
+  const sources = [];
+  const skipped = [];
+  const allUrls = {
+    ...NATIONAL_COMMERCIAL_URLS,
+    ...REGIONAL_BCBS_URLS,
+    ...MEDICARE_ADVANTAGE_URLS,
+    ...LBM_URLS,
+    ...OTHER_LARGE_URLS,
+  };
+
+  // Process all payer categories
+  const allPayers = [
+    ...PAYERS.nationalCommercial,
+    ...PAYERS.regionalBCBS,
+    ...PAYERS.medicareAdvantage,
+    ...PAYERS.labBenefitManagers,
+    ...PAYERS.otherLarge,
+  ];
+
+  for (const payer of allPayers) {
+    const urls = allUrls[payer.id];
+
+    // Track payers without URL configuration
+    if (!urls || urls.indexUrl === null) {
+      skipped.push(payer.name);
+      continue;
+    }
+
+    // Extract base URL from index URL
+    const urlObj = new URL(urls.indexUrl);
+    const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+
+    sources.push({
+      name: payer.name,
+      id: payer.id,
+      shortName: payer.shortName,
+      baseUrl,
+      policyIndexPages: [
+        {
+          url: urls.indexUrl,
+          description: `${payer.shortName || payer.name} Medical Policies`,
+          type: urls.indexType || 'index',
+        },
+      ],
+      policyPages: (urls.policyPages || []).map(p => ({
+        ...p,
+        type: 'policy',
+      })),
+      searchTerms: STANDARD_SEARCH_TERMS,
+      states: payer.states || null,
+      notes: payer.notes || null,
+    });
+  }
+
+  return { sources, skipped };
+}
+
+// Build the payer sources array
+const { sources: PAYER_SOURCES, skipped: SKIPPED_PAYERS } = buildPayerSources();
 
 // Vendor coverage/reimbursement pages to monitor (they track their own coverage status)
 const VENDOR_COVERAGE_SOURCES = [
@@ -266,15 +426,34 @@ export class PayerCrawler extends BaseCrawler {
     this.vendorCoverageSources = VENDOR_COVERAGE_SOURCES;
     this.browser = null;
     this.hashes = {};
+    this.anthropic = config.anthropic?.apiKey ? new Anthropic({ apiKey: config.anthropic.apiKey }) : null;
   }
 
   /**
    * Load stored content hashes from disk
+   * Handles both old format (string hash) and new format (object with hash, content, fetchedAt)
    */
   async loadHashes() {
     try {
       const data = await readFile(HASH_FILE_PATH, 'utf-8');
-      this.hashes = JSON.parse(data);
+      const rawHashes = JSON.parse(data);
+
+      // Normalize to new format, handling backward compatibility
+      this.hashes = {};
+      for (const [key, value] of Object.entries(rawHashes)) {
+        if (typeof value === 'string') {
+          // Old format: just the hash string
+          this.hashes[key] = {
+            hash: value,
+            content: null, // No previous content available
+            fetchedAt: null,
+          };
+        } else {
+          // New format: object with hash, content, fetchedAt
+          this.hashes[key] = value;
+        }
+      }
+
       this.log('debug', `Loaded ${Object.keys(this.hashes).length} stored hashes`);
     } catch (error) {
       if (error.code === 'ENOENT') {
@@ -339,18 +518,406 @@ export class PayerCrawler extends BaseCrawler {
   }
 
   /**
+   * Analyze payer policy change using Claude AI
+   * Uses deterministic test matching first, then Claude for additional analysis
+   * @param {Object} payer - Payer info object
+   * @param {string} url - URL of the changed page
+   * @param {string} content - New page content
+   * @param {Object} extractedData - Data extracted from the page
+   * @param {Object|null} diff - Diff object from computeDiff (if available)
+   * @returns {Object|null} Analysis results or null if unavailable
+   */
+  async analyzePayerChange(payer, url, content, extractedData, diff = null) {
+    // Run deterministic test matching FIRST (before Claude)
+    const deterministicMatches = matchTests(content);
+    const formattedMatches = formatMatchesForPrompt(deterministicMatches);
+
+    this.log('debug', `Deterministic matches for ${url}`, {
+      matchCount: deterministicMatches.length,
+      highConfidence: deterministicMatches.filter(m => m.confidence >= 0.75).length,
+    });
+
+    if (!this.anthropic) {
+      this.log('debug', 'Claude analysis unavailable - no API key configured');
+      // Return partial analysis with just deterministic matches
+      return {
+        isSignificantChange: deterministicMatches.length > 0,
+        changeCategory: 'unknown',
+        affectedTests: deterministicMatches.map(m => m.test.name),
+        coveragePosition: null,
+        effectiveDateDetected: extractedData.effectiveDates?.[0] || null,
+        changeSummary: deterministicMatches.length > 0
+          ? `Tests identified: ${deterministicMatches.map(m => m.test.name).join(', ')}`
+          : 'Unable to analyze - no API key configured',
+        confidenceLevel: 'low',
+        deterministicMatches: deterministicMatches.map(m => ({
+          testId: m.test.id,
+          testName: m.test.name,
+          matchType: m.matchType,
+          confidence: m.confidence,
+          matchedOn: m.matchedOn,
+        })),
+      };
+    }
+
+    try {
+      // Format diff or fall back to truncated content
+      let contentSection;
+      if (diff) {
+        // Use diff for more precise analysis
+        const formattedDiff = truncateDiff(diff, 8000);
+        contentSection = `=== WHAT CHANGED ON THIS PAGE ===
+${formattedDiff}
+
+=== CURRENT PAGE CONTENT (for context) ===
+${content.slice(0, 5000)}${content.length > 5000 ? '\n...[content truncated]...' : ''}`;
+      } else {
+        // Fall back to full content if no diff available
+        const maxContentLength = 15000;
+        const truncatedContent = content.length > maxContentLength
+          ? content.slice(0, maxContentLength) + '\n...[content truncated]...'
+          : content;
+        contentSection = `PAGE CONTENT:
+${truncatedContent}`;
+      }
+
+      const prompt = `You are analyzing a payer medical policy page for changes. Your job is to determine if the detected change represents a REAL policy change that affects coverage decisions, or if it's just a cosmetic/minor update.
+
+PAYER: ${payer.name}
+URL: ${url}
+PAGE TITLE: ${extractedData.title || 'Unknown'}
+DETECTED EFFECTIVE DATES: ${extractedData.effectiveDates?.join(', ') || 'None found'}
+DETECTED POLICY NUMBERS: ${extractedData.policyNumbers?.join(', ') || 'None found'}
+
+=== DETERMINISTIC TEST MATCHES (pre-identified with high confidence) ===
+${formattedMatches}
+
+Please CONFIRM the tests listed above and identify any ADDITIONAL tests not already listed.
+================================================================================
+
+${contentSection}
+
+Analyze this content and determine:
+
+1. Is this a SIGNIFICANT policy change? (vs cosmetic updates like copyright year changes, CSS/layout changes, minor typo fixes, footer updates)
+
+2. What category best describes this change?
+   - policy_coverage_change: Actual coverage criteria changed (covered/not covered, medical necessity criteria)
+   - effective_date_update: Policy effective date was updated
+   - new_policy: This appears to be a newly published policy
+   - procedure_code_change: CPT/HCPCS codes were added, removed, or modified
+   - criteria_change: Medical necessity criteria or prior auth requirements changed
+   - formatting_only: Only formatting, layout, or cosmetic changes
+   - unknown: Cannot determine
+
+3. Which specific diagnostic tests or vendor names are mentioned? Include the pre-identified tests above PLUS any additional ones you find. (e.g., Signatera, Guardant360, FoundationOne, Galleri, ctDNA tests, liquid biopsy tests)
+
+4. What is the coverage position if determinable?
+   - covered: Service/test is covered
+   - not_covered: Service/test is explicitly not covered
+   - conditional: Covered under specific conditions
+   - prior_auth_required: Requires prior authorization
+   - null: Cannot determine from content
+
+5. If an effective date is mentioned for policy changes, what is it?
+
+6. Brief summary of what changed (1-2 sentences)
+
+7. How confident are you in this analysis? (high/medium/low)
+
+Respond in JSON format:
+{
+  "isSignificantChange": boolean,
+  "changeCategory": "policy_coverage_change" | "effective_date_update" | "new_policy" | "procedure_code_change" | "criteria_change" | "formatting_only" | "unknown",
+  "affectedTests": ["array of test/vendor names mentioned - include pre-identified tests plus any additional"],
+  "additionalTestsFound": ["only tests YOU found that were NOT in the pre-identified list"],
+  "coveragePosition": "covered" | "not_covered" | "conditional" | "prior_auth_required" | null,
+  "effectiveDateDetected": "date string or null",
+  "changeSummary": "brief description",
+  "confidenceLevel": "high" | "medium" | "low"
+}`;
+
+      const response = await this.anthropic.messages.create({
+        model: CLAUDE_MODEL,
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      });
+
+      // Extract JSON from response
+      const responseText = response.content[0]?.text || '';
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+
+      if (!jsonMatch) {
+        this.log('warn', 'Claude response did not contain valid JSON', { url });
+        // Return deterministic matches only
+        return {
+          isSignificantChange: deterministicMatches.length > 0,
+          changeCategory: 'unknown',
+          affectedTests: deterministicMatches.map(m => m.test.name),
+          coveragePosition: null,
+          effectiveDateDetected: extractedData.effectiveDates?.[0] || null,
+          changeSummary: 'Claude analysis failed - using deterministic matches only',
+          confidenceLevel: 'low',
+          deterministicMatches: deterministicMatches.map(m => ({
+            testId: m.test.id,
+            testName: m.test.name,
+            matchType: m.matchType,
+            confidence: m.confidence,
+            matchedOn: m.matchedOn,
+          })),
+        };
+      }
+
+      const analysis = JSON.parse(jsonMatch[0]);
+
+      // Merge deterministic matches with Claude's analysis
+      // Deterministic matches are stored separately for transparency
+      analysis.deterministicMatches = deterministicMatches.map(m => ({
+        testId: m.test.id,
+        testName: m.test.name,
+        matchType: m.matchType,
+        confidence: m.confidence,
+        matchedOn: m.matchedOn,
+      }));
+
+      // Ensure affectedTests includes all deterministic matches
+      const deterministicTestNames = deterministicMatches.map(m => m.test.name);
+      const allTests = [...new Set([...deterministicTestNames, ...(analysis.affectedTests || [])])];
+      analysis.affectedTests = allTests;
+
+      this.log('debug', `Claude analysis complete for ${url}`, {
+        isSignificant: analysis.isSignificantChange,
+        category: analysis.changeCategory,
+        confidence: analysis.confidenceLevel,
+        deterministicMatchCount: deterministicMatches.length,
+        totalTestsFound: allTests.length,
+      });
+
+      return analysis;
+    } catch (error) {
+      this.log('warn', 'Claude analysis failed', { url, error: error.message });
+      // Return deterministic matches on error
+      return {
+        isSignificantChange: deterministicMatches.length > 0,
+        changeCategory: 'unknown',
+        affectedTests: deterministicMatches.map(m => m.test.name),
+        coveragePosition: null,
+        effectiveDateDetected: extractedData.effectiveDates?.[0] || null,
+        changeSummary: `Claude analysis error: ${error.message}`,
+        confidenceLevel: 'low',
+        deterministicMatches: deterministicMatches.map(m => ({
+          testId: m.test.id,
+          testName: m.test.name,
+          matchType: m.matchType,
+          confidence: m.confidence,
+          matchedOn: m.matchedOn,
+        })),
+      };
+    }
+  }
+
+  /**
+   * Check if URL is an Anthem domain (requires HTTP/1.1)
+   */
+  isAnthemDomain(url) {
+    try {
+      const hostname = new URL(url).hostname.toLowerCase();
+      return hostname.includes('anthem.com') || hostname.includes('anthem.');
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Fallback fetch using Node.js https module with HTTP/1.1
+   * Used for domains that have HTTP/2 protocol issues (e.g., Anthem)
+   */
+  async fetchWithHttp1(url) {
+    const https = await import('https');
+    const http = await import('http');
+
+    return new Promise((resolve, reject) => {
+      const parsedUrl = new URL(url);
+      const isHttps = parsedUrl.protocol === 'https:';
+      const client = isHttps ? https.default : http.default;
+
+      const options = {
+        hostname: parsedUrl.hostname,
+        port: parsedUrl.port || (isHttps ? 443 : 80),
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: 'GET',
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+        },
+        // Force HTTP/1.1 by disabling ALPN negotiation for HTTP/2
+        ALPNProtocols: ['http/1.1'],
+      };
+
+      const req = client.request(options, (res) => {
+        // Handle redirects
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          const redirectUrl = new URL(res.headers.location, url).href;
+          this.fetchWithHttp1(redirectUrl).then(resolve).catch(reject);
+          return;
+        }
+
+        let data = '';
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => resolve(data));
+      });
+
+      req.on('error', reject);
+      req.setTimeout(PAGE_TIMEOUT_MS, () => {
+        req.destroy();
+        reject(new Error(`Request timeout for ${url}`));
+      });
+      req.end();
+    });
+  }
+
+  /**
+   * Parse HTML content and extract data (for HTTP/1.1 fallback)
+   */
+  parseHtmlContent(html, url) {
+    // Simple HTML text extraction (without browser)
+    // Remove script and style tags
+    let content = html
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+      .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, '');
+
+    // Extract text from HTML
+    content = content
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // Extract title
+    const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+    const title = titleMatch ? titleMatch[1].trim() : '';
+
+    // Extract headings
+    const headings = [];
+    const headingMatches = html.matchAll(/<h[1-4][^>]*>([^<]*)<\/h[1-4]>/gi);
+    for (const match of headingMatches) {
+      const text = match[1].trim();
+      if (text && text.length > 5 && text.length < 200) {
+        headings.push(text);
+      }
+    }
+
+    // Extract links
+    const links = [];
+    const linkMatches = html.matchAll(/<a[^>]+href=["']([^"']+)["'][^>]*>([^<]*)<\/a>/gi);
+    for (const match of linkMatches) {
+      const href = match[1];
+      const text = match[2].trim();
+      if (
+        (href.includes('policy') ||
+          href.includes('bulletin') ||
+          href.includes('coverage') ||
+          href.includes('cpb') ||
+          href.includes('.pdf')) &&
+        text &&
+        text.length > 5
+      ) {
+        links.push({
+          text,
+          href: href.startsWith('http') ? href : new URL(href, url).href,
+        });
+      }
+    }
+
+    // Look for effective dates
+    const effectiveDates = [];
+    const effectiveDatePatterns = [
+      /effective\s*(?:date)?[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/gi,
+      /effective\s*(?:date)?[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/gi,
+    ];
+    effectiveDatePatterns.forEach((pattern) => {
+      const matches = content.match(pattern) || [];
+      effectiveDates.push(...matches.slice(0, 5));
+    });
+
+    // Look for policy numbers
+    const policyNumbers = [];
+    const policyPatterns = [
+      /policy\s*(?:number|#|no\.?)?\s*[:\s]*([A-Z0-9\-]+)/gi,
+      /CPB\s*#?\s*(\d+)/gi,
+    ];
+    policyPatterns.forEach((pattern) => {
+      const matches = content.match(pattern) || [];
+      policyNumbers.push(...matches.slice(0, 5));
+    });
+
+    return {
+      content,
+      extractedData: {
+        title,
+        headings,
+        policies: headings,
+        links,
+        effectiveDates,
+        lastUpdated: null,
+        policyNumbers,
+      },
+      url,
+    };
+  }
+
+  /**
    * Fetch page content using Playwright with retry logic
    */
   async fetchPage(url, options = {}) {
     const { retries = MAX_RETRIES } = options;
     let lastError = null;
+    const isAnthem = this.isAnthemDomain(url);
+
+    // For Anthem domains, try HTTP/1.1 fallback first to avoid HTTP/2 protocol errors
+    if (isAnthem) {
+      this.log('debug', `Using HTTP/1.1 fallback for Anthem domain: ${url}`);
+      try {
+        const html = await this.fetchWithHttp1(url);
+        const result = this.parseHtmlContent(html, url);
+        this.log('debug', `HTTP/1.1 fallback successful for ${url}`);
+        return result;
+      } catch (http1Error) {
+        this.log('warn', `HTTP/1.1 fallback failed for ${url}, trying Playwright`, { error: http1Error.message });
+        // Fall through to Playwright attempt
+      }
+    }
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       const browser = await this.launchBrowser();
-      const context = await browser.newContext({
+
+      // Configure context options
+      const contextOptions = {
         userAgent: USER_AGENT,
         viewport: { width: 1920, height: 1080 },
-      });
+      };
+
+      // For Anthem, add extra options to help with potential issues
+      if (isAnthem) {
+        contextOptions.ignoreHTTPSErrors = true;
+      }
+
+      const context = await browser.newContext(contextOptions);
 
       const page = await context.newPage();
 
@@ -559,6 +1126,11 @@ export class PayerCrawler extends BaseCrawler {
       `Starting payer crawl: ${this.payers.length} payers, ${this.vendorCoverageSources.length} vendors, ${totalPages} total pages`
     );
 
+    // Log skipped payers (no URL configured)
+    if (SKIPPED_PAYERS.length > 0) {
+      this.log('warn', `Skipping ${SKIPPED_PAYERS.length} payers with no URL configured: ${SKIPPED_PAYERS.join(', ')}`);
+    }
+
     await this.loadHashes();
     const discoveries = [];
     let pagesProcessed = 0;
@@ -580,7 +1152,10 @@ export class PayerCrawler extends BaseCrawler {
             this.log('debug', `Fetching index: ${indexPage.url}`);
             const { content, extractedData } = await this.fetchPage(indexPage.url);
 
-            const newHash = this.computeHash(content);
+            // Canonicalize content for hash comparison (removes dynamic elements)
+            // Raw content is still used for Claude analysis
+            const canonicalizedContent = canonicalizeContent(content);
+            const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `${payer.id}:index:${indexPage.url}`;
             const oldHash = this.hashes[hashKey];
 
@@ -588,24 +1163,51 @@ export class PayerCrawler extends BaseCrawler {
 
             const matchedKeywords = this.findMatchedKeywords(content);
             const relevantTests = this.findRelevantTests(content);
-            const changeType = this.detectChangeType(content, extractedData, oldHash);
+            const oldHashData = this.hashes[hashKey];
+            const oldHashValue = oldHashData?.hash || null;
+            const changeType = this.detectChangeType(content, extractedData, oldHashValue);
 
-            if (newHash !== oldHash) {
+            if (newHash !== oldHashValue) {
               pagesChanged++;
-              const isFirstCrawl = !oldHash;
+              const isFirstCrawl = !oldHashValue;
 
               this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${indexPage.url}`);
 
-              this.hashes[hashKey] = newHash;
+              // Compute diff (returns isFirstCrawl: true if no previous content)
+              const previousContent = oldHashData?.content || null;
+              const diff = computeDiff(previousContent, content);
 
-              if (!isFirstCrawl) {
-                const indexDiscoveries = this.createDiscoveriesFromIndexChange(
+              // Store new hash with content snapshot
+              this.hashes[hashKey] = {
+                hash: newHash,
+                content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+                fetchedAt: new Date().toISOString(),
+              };
+
+              if (!isFirstCrawl && !diff.isFirstCrawl) {
+                // Use Claude to analyze if this is a significant change
+                const claudeAnalysis = await this.analyzePayerChange(
                   payer,
-                  indexPage,
-                  { matchedKeywords, relevantTests, changeType },
-                  extractedData
+                  indexPage.url,
+                  content,
+                  extractedData,
+                  diff
                 );
-                discoveries.push(...indexDiscoveries);
+
+                // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
+                const shouldCreateDiscovery = claudeAnalysis === null || claudeAnalysis.isSignificantChange;
+
+                if (shouldCreateDiscovery) {
+                  const indexDiscoveries = this.createDiscoveriesFromIndexChange(
+                    payer,
+                    indexPage,
+                    { matchedKeywords, relevantTests, changeType, claudeAnalysis },
+                    extractedData
+                  );
+                  discoveries.push(...indexDiscoveries);
+                } else {
+                  this.log('info', `Skipping non-significant change (${claudeAnalysis.changeCategory}): ${indexPage.url}`);
+                }
               }
             } else {
               this.log('debug', `No changes: ${indexPage.url}`);
@@ -627,35 +1229,64 @@ export class PayerCrawler extends BaseCrawler {
             this.log('debug', `Fetching policy: ${url}`);
             const { content, extractedData } = await this.fetchPage(url);
 
-            const newHash = this.computeHash(content);
+            // Canonicalize content for hash comparison (removes dynamic elements)
+            // Raw content is still used for Claude analysis
+            const canonicalizedContent = canonicalizeContent(content);
+            const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `${payer.id}:policy:${url}`;
-            const oldHash = this.hashes[hashKey];
+            const oldHashData = this.hashes[hashKey];
+            const oldHashValue = oldHashData?.hash || null;
 
             pagesProcessed++;
 
             const matchedKeywords = this.findMatchedKeywords(content);
             const relevantTests = this.findRelevantTests(content);
-            const changeType = this.detectChangeType(content, extractedData, oldHash);
+            const changeType = this.detectChangeType(content, extractedData, oldHashValue);
 
-            if (newHash !== oldHash) {
+            if (newHash !== oldHashValue) {
               pagesChanged++;
-              const isFirstCrawl = !oldHash;
+              const isFirstCrawl = !oldHashValue;
 
               this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${url}`);
 
-              this.hashes[hashKey] = newHash;
+              // Compute diff (returns isFirstCrawl: true if no previous content)
+              const previousContent = oldHashData?.content || null;
+              const diff = computeDiff(previousContent, content);
 
-              if (!isFirstCrawl) {
-                const discovery = this.createPolicyPageDiscovery(
+              // Store new hash with content snapshot
+              this.hashes[hashKey] = {
+                hash: newHash,
+                content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+                fetchedAt: new Date().toISOString(),
+              };
+
+              if (!isFirstCrawl && !diff.isFirstCrawl) {
+                // Use Claude to analyze if this is a significant change
+                const claudeAnalysis = await this.analyzePayerChange(
                   payer,
-                  policyPage,
                   url,
-                  { matchedKeywords, relevantTests, changeType },
+                  content,
                   extractedData,
-                  content
+                  diff
                 );
-                if (discovery) {
-                  discoveries.push(discovery);
+
+                // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
+                const shouldCreateDiscovery = claudeAnalysis === null || claudeAnalysis.isSignificantChange;
+
+                if (shouldCreateDiscovery) {
+                  const discovery = this.createPolicyPageDiscovery(
+                    payer,
+                    policyPage,
+                    url,
+                    { matchedKeywords, relevantTests, changeType, claudeAnalysis },
+                    extractedData,
+                    content
+                  );
+                  if (discovery) {
+                    discoveries.push(discovery);
+                  }
+                } else {
+                  this.log('info', `Skipping non-significant change (${claudeAnalysis.changeCategory}): ${url}`);
                 }
               }
             } else {
@@ -683,24 +1314,54 @@ export class PayerCrawler extends BaseCrawler {
             this.log('debug', `Fetching vendor coverage: ${url}`);
             const { content, extractedData } = await this.fetchPage(url);
 
-            const newHash = this.computeHash(content);
+            // Canonicalize content for hash comparison (removes dynamic elements)
+            // Raw content is still used for Claude analysis
+            const canonicalizedContent = canonicalizeContent(content);
+            const newHash = this.computeHash(canonicalizedContent);
             const hashKey = `vendor:${vendor.id}:${url}`;
-            const oldHash = this.hashes[hashKey];
+            const oldHashData = this.hashes[hashKey];
+            const oldHashValue = oldHashData?.hash || null;
 
             pagesProcessed++;
 
-            if (newHash !== oldHash) {
+            if (newHash !== oldHashValue) {
               pagesChanged++;
-              const isFirstCrawl = !oldHash;
+              const isFirstCrawl = !oldHashValue;
 
               this.log('info', `Content ${isFirstCrawl ? 'captured' : 'changed'}: ${url}`);
 
-              this.hashes[hashKey] = newHash;
+              // Compute diff (returns isFirstCrawl: true if no previous content)
+              const previousContent = oldHashData?.content || null;
+              const diff = computeDiff(previousContent, content);
 
-              if (!isFirstCrawl) {
-                const discovery = this.createVendorCoverageDiscovery(vendor, page, url, extractedData, content);
-                if (discovery) {
-                  discoveries.push(discovery);
+              // Store new hash with content snapshot
+              this.hashes[hashKey] = {
+                hash: newHash,
+                content: content.slice(0, MAX_STORED_CONTENT_SIZE),
+                fetchedAt: new Date().toISOString(),
+              };
+
+              if (!isFirstCrawl && !diff.isFirstCrawl) {
+                // Use Claude to analyze if this is a significant change
+                // For vendor pages, create a pseudo-payer object for the analysis
+                const claudeAnalysis = await this.analyzePayerChange(
+                  { name: vendor.name, id: vendor.id },
+                  url,
+                  content,
+                  extractedData,
+                  diff
+                );
+
+                // Only create discoveries if Claude says significant, or if Claude unavailable (fallback)
+                const shouldCreateDiscovery = claudeAnalysis === null || claudeAnalysis.isSignificantChange;
+
+                if (shouldCreateDiscovery) {
+                  const discovery = this.createVendorCoverageDiscovery(vendor, page, url, extractedData, content, claudeAnalysis);
+                  if (discovery) {
+                    discoveries.push(discovery);
+                  }
+                } else {
+                  this.log('info', `Skipping non-significant change (${claudeAnalysis.changeCategory}): ${url}`);
                 }
               }
             } else {
@@ -732,7 +1393,7 @@ export class PayerCrawler extends BaseCrawler {
    */
   createDiscoveriesFromIndexChange(payer, indexPage, analysisData, extractedData) {
     const discoveries = [];
-    const { matchedKeywords, relevantTests, changeType } = analysisData;
+    const { matchedKeywords, relevantTests, changeType, claudeAnalysis } = analysisData;
 
     // Check for relevant policy links
     const relevantLinks = extractedData.links.filter((link) => {
@@ -770,7 +1431,7 @@ export class PayerCrawler extends BaseCrawler {
         source: SOURCES.PAYERS,
         type: this.getDiscoveryType(changeType),
         title: `${payer.name}: ${indexPage.description} Updated`,
-        summary: this.generateChangeSummary(payer, indexPage, analysisData, extractedData),
+        summary: claudeAnalysis?.changeSummary || this.generateChangeSummary(payer, indexPage, analysisData, extractedData),
         url: indexPage.url,
         relevance: this.calculateRelevance(analysisData),
         metadata: {
@@ -778,14 +1439,25 @@ export class PayerCrawler extends BaseCrawler {
           payer: payer.name,
           policyId: extractedData.policyNumbers?.[0] || null,
           policyTitle: indexPage.description,
-          effectiveDate: extractedData.effectiveDates?.[0] || null,
+          effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
           changeType: specChangeType,
           snippet: null, // Index pages don't have meaningful snippets
           matchedKeywords,
           // Additional useful fields
           payerId: payer.id,
           lastUpdated: extractedData.lastUpdated || null,
-          relevantTests,
+          relevantTests: claudeAnalysis?.affectedTests?.length > 0 ? claudeAnalysis.affectedTests : relevantTests,
+          // Claude AI analysis
+          aiAnalysis: claudeAnalysis ? {
+            changeCategory: claudeAnalysis.changeCategory,
+            coveragePosition: claudeAnalysis.coveragePosition,
+            confidenceLevel: claudeAnalysis.confidenceLevel,
+            changeSummary: claudeAnalysis.changeSummary,
+          } : null,
+          // Deterministic test matches (high confidence, rule-based)
+          deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+          // Tests found by LLM that weren't in deterministic matches
+          llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
         },
       });
     }
@@ -797,7 +1469,7 @@ export class PayerCrawler extends BaseCrawler {
    * Create discovery from a specific policy link
    */
   createPolicyLinkDiscovery(payer, link, analysisData, extractedData) {
-    const { matchedKeywords, relevantTests, changeType } = analysisData;
+    const { matchedKeywords, relevantTests, changeType, claudeAnalysis } = analysisData;
     const isNew = link.text.toLowerCase().includes('new');
     const type = isNew ? DISCOVERY_TYPES.PAYER_POLICY_NEW : this.getDiscoveryType(changeType);
 
@@ -812,7 +1484,7 @@ export class PayerCrawler extends BaseCrawler {
       source: SOURCES.PAYERS,
       type,
       title: `${payer.name}: ${link.text}`,
-      summary: `${payer.name} policy ${isNew ? 'published' : 'updated'}. ${
+      summary: claudeAnalysis?.changeSummary || `${payer.name} policy ${isNew ? 'published' : 'updated'}. ${
         extractedData.effectiveDates?.[0] ? `Effective: ${extractedData.effectiveDates[0]}` : ''
       }`.trim(),
       url: link.href,
@@ -822,13 +1494,24 @@ export class PayerCrawler extends BaseCrawler {
         payer: payer.name,
         policyId,
         policyTitle: link.text,
-        effectiveDate: extractedData.effectiveDates?.[0] || null,
+        effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
         changeType: specChangeType,
         snippet: null,
         matchedKeywords,
         // Additional useful fields
         payerId: payer.id,
-        relevantTests,
+        relevantTests: claudeAnalysis?.affectedTests?.length > 0 ? claudeAnalysis.affectedTests : relevantTests,
+        // Claude AI analysis
+        aiAnalysis: claudeAnalysis ? {
+          changeCategory: claudeAnalysis.changeCategory,
+          coveragePosition: claudeAnalysis.coveragePosition,
+          confidenceLevel: claudeAnalysis.confidenceLevel,
+          changeSummary: claudeAnalysis.changeSummary,
+        } : null,
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
       },
     };
   }
@@ -850,7 +1533,7 @@ export class PayerCrawler extends BaseCrawler {
    * }
    */
   createPolicyPageDiscovery(payer, policyPage, url, analysisData, extractedData, content = '') {
-    const { matchedKeywords, relevantTests, changeType } = analysisData;
+    const { matchedKeywords, relevantTests, changeType, claudeAnalysis } = analysisData;
     const snippet = this.extractSnippet(content, matchedKeywords.length > 0 ? matchedKeywords : SEARCH_KEYWORDS, 500);
 
     // Map internal changeType to spec format
@@ -865,7 +1548,7 @@ export class PayerCrawler extends BaseCrawler {
       source: SOURCES.PAYERS,
       type: this.getDiscoveryType(changeType),
       title: `${payer.name}: ${policyPage.description} Updated`,
-      summary: this.generateChangeSummary(payer, policyPage, analysisData, extractedData),
+      summary: claudeAnalysis?.changeSummary || this.generateChangeSummary(payer, policyPage, analysisData, extractedData),
       url,
       relevance: this.calculateRelevance(analysisData),
       metadata: {
@@ -873,14 +1556,25 @@ export class PayerCrawler extends BaseCrawler {
         payer: payer.name,
         policyId: extractedData.policyNumbers?.[0] || null,
         policyTitle: policyPage.description,
-        effectiveDate: extractedData.effectiveDates?.[0] || null,
+        effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
         changeType: specChangeType,
         snippet,
         matchedKeywords,
         // Additional useful fields
         payerId: payer.id,
         lastUpdated: extractedData.lastUpdated || null,
-        relevantTests,
+        relevantTests: claudeAnalysis?.affectedTests?.length > 0 ? claudeAnalysis.affectedTests : relevantTests,
+        // Claude AI analysis
+        aiAnalysis: claudeAnalysis ? {
+          changeCategory: claudeAnalysis.changeCategory,
+          coveragePosition: claudeAnalysis.coveragePosition,
+          confidenceLevel: claudeAnalysis.confidenceLevel,
+          changeSummary: claudeAnalysis.changeSummary,
+        } : null,
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
       },
     };
   }
@@ -888,16 +1582,18 @@ export class PayerCrawler extends BaseCrawler {
   /**
    * Create discovery from vendor coverage page change
    */
-  createVendorCoverageDiscovery(vendor, page, url, extractedData, content = '') {
+  createVendorCoverageDiscovery(vendor, page, url, extractedData, content = '', claudeAnalysis = null) {
     // Use page-defined test names if available, otherwise try to find them
-    const relevantTests = page.testNames || this.findRelevantTests(extractedData.title || content);
+    const relevantTests = claudeAnalysis?.affectedTests?.length > 0
+      ? claudeAnalysis.affectedTests
+      : (page.testNames || this.findRelevantTests(extractedData.title || content));
     const snippet = this.extractSnippet(content, SEARCH_KEYWORDS, 500);
 
     return {
       source: SOURCES.PAYERS,
       type: DISCOVERY_TYPES.COVERAGE_CHANGE,
       title: `${vendor.name}: ${page.description} Updated`,
-      summary: `Coverage/reimbursement information updated on ${vendor.name} website. ${
+      summary: claudeAnalysis?.changeSummary || `Coverage/reimbursement information updated on ${vendor.name} website. ${
         relevantTests.length > 0 ? `Tests: ${relevantTests.join(', ')}` : ''
       }`.trim(),
       url,
@@ -907,7 +1603,7 @@ export class PayerCrawler extends BaseCrawler {
         payer: vendor.name,
         policyId: null, // Vendor pages don't have policy IDs
         policyTitle: page.description,
-        effectiveDate: extractedData.effectiveDates?.[0] || null,
+        effectiveDate: claudeAnalysis?.effectiveDateDetected || extractedData.effectiveDates?.[0] || null,
         changeType: 'revision', // Vendor coverage pages are always revisions (we saw them before)
         snippet,
         matchedKeywords: this.findMatchedKeywords(content),
@@ -916,6 +1612,17 @@ export class PayerCrawler extends BaseCrawler {
         lastUpdated: extractedData.lastUpdated || null,
         relevantTests,
         pageType: 'vendor_coverage',
+        // Claude AI analysis
+        aiAnalysis: claudeAnalysis ? {
+          changeCategory: claudeAnalysis.changeCategory,
+          coveragePosition: claudeAnalysis.coveragePosition,
+          confidenceLevel: claudeAnalysis.confidenceLevel,
+          changeSummary: claudeAnalysis.changeSummary,
+        } : null,
+        // Deterministic test matches (high confidence, rule-based)
+        deterministicMatches: claudeAnalysis?.deterministicMatches || [],
+        // Tests found by LLM that weren't in deterministic matches
+        llmSuggestedTests: claudeAnalysis?.additionalTestsFound || [],
       },
     };
   }

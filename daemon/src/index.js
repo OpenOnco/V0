@@ -16,6 +16,8 @@ import { createLogger } from './utils/logger.js';
 import { startScheduler, stopScheduler, getSchedulerStatus } from './scheduler.js';
 import { getQueueStatus } from './queue/index.js';
 import { getHealthSummary } from './health.js';
+import { initializeTestDictionary } from './data/test-dictionary.js';
+import { initializeCLFS } from './utils/medicare-rates.js';
 
 const logger = createLogger('main');
 
@@ -88,6 +90,26 @@ async function main() {
   });
 
   try {
+    // Initialize test dictionary (fetch from API)
+    logger.info('Initializing test dictionary...');
+    try {
+      await initializeTestDictionary();
+      logger.info('Test dictionary initialized successfully');
+    } catch (error) {
+      logger.error('Failed to initialize test dictionary', { error: error.message });
+      logger.warn('Daemon will continue with degraded functionality (no test matching)');
+    }
+
+    // Initialize CLFS Medicare rates
+    logger.info('Initializing CLFS Medicare rates...');
+    try {
+      await initializeCLFS();
+      logger.info('CLFS Medicare rates initialized successfully');
+    } catch (error) {
+      logger.error('Failed to initialize CLFS rates', { error: error.message });
+      logger.warn('Daemon will continue with degraded functionality (no rate lookups)');
+    }
+
     // Start the scheduler
     startScheduler();
 

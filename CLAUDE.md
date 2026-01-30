@@ -23,12 +23,12 @@ npm run test:smoke       # Quick validation
 **End of session:** Run `/handoff` to update session state.
 
 **Slash commands available:**
-- `/start` - Read SESSION_STATE.md and summarize context
-- `/handoff` - Write current state to SESSION_STATE.md
+- `/recall` - Read SESSION_STATE.md and summarize context
+- `/store` - Write current state to SESSION_STATE.md
 
 ## Project Overview
 
-OpenOnco is a non-profit database of cancer diagnostic tests (liquid biopsy, molecular diagnostics, hereditary testing). Built in memory of Alex's sister Ingrid.
+OpenOnco is a non-profit database of cancer diagnostic tests (liquid biopsy, molecular diagnostics, hereditary testing). 
 
 **Live site:** https://openonco.org  
 **Preview:** https://v0-42kj-git-develop-alex-dickinsons-projects-2bee58ff.vercel.app

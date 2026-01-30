@@ -25,19 +25,17 @@ describe('config', () => {
 
   it('has schedules configuration', () => {
     expect(config.schedules).toBeDefined();
-    expect(config.schedules.pubmed).toBeDefined();
     expect(config.schedules.cms).toBeDefined();
-    expect(config.schedules.fda).toBeDefined();
     expect(config.schedules.vendor).toBeDefined();
+    expect(config.schedules.payers).toBeDefined();
     expect(config.schedules.digest).toBeDefined();
   });
 
   it('has crawlers configuration', () => {
     expect(config.crawlers).toBeDefined();
-    expect(config.crawlers.pubmed).toBeDefined();
     expect(config.crawlers.cms).toBeDefined();
-    expect(config.crawlers.fda).toBeDefined();
     expect(config.crawlers.vendor).toBeDefined();
+    expect(config.crawlers.payers).toBeDefined();
   });
 
   it('has queue configuration', () => {
@@ -72,18 +70,17 @@ describe('MONITORED_VENDORS', () => {
 
 describe('DISCOVERY_TYPES', () => {
   it('has expected discovery types', () => {
-    expect(DISCOVERY_TYPES.PUBLICATION).toBe('publication');
-    expect(DISCOVERY_TYPES.FDA_APPROVAL).toBe('fda_approval');
     expect(DISCOVERY_TYPES.VENDOR_UPDATE).toBe('vendor_update');
+    expect(DISCOVERY_TYPES.PAYER_UPDATE).toBe('payer_update');
+    expect(DISCOVERY_TYPES.CMS_UPDATE).toBe('cms_update');
   });
 });
 
 describe('SOURCES', () => {
   it('has expected sources', () => {
-    expect(SOURCES.PUBMED).toBe('pubmed');
     expect(SOURCES.CMS).toBe('cms');
-    expect(SOURCES.FDA).toBe('fda');
     expect(SOURCES.VENDOR).toBe('vendor');
+    expect(SOURCES.PAYERS).toBe('payers');
   });
 });
 
