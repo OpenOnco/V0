@@ -1,0 +1,140 @@
+[
+  {
+    "vendor": "Foundation Medicine",
+    "pdfName": "Foundation Medicine Patient Financial Assistance Application",
+    "fplThresholds": null,
+    "incomeBasedTiers": null,
+    "maxOutOfPocket": null,
+    "requiredDocumentation": [
+      "Total Gross Annual Household Income",
+      "Number of family members in household"
+    ],
+    "householdSizeConsidered": true,
+    "householdSizeChart": null,
+    "uninsuredEligible": true,
+    "medicareEligible": null,
+    "medicaidEligible": null,
+    "medicalDebtConsidered": true,
+    "processingTime": null,
+    "retroactiveAllowed": null,
+    "restrictions": [
+      "Only available to domestic residents of the US"
+    ],
+    "paymentPlanTerms": null,
+    "additionalNotes": "Application can be completed online at aid.foundationmedicine.com. For patients with health insurance, the insurance provider will be billed first and qualified financial assistance amount will be applied to any unpaid balance remaining after billing insurance. Form includes extenuating circumstances checklist including: retired/fixed income, disability, significant credit card debt, significant medical expenses, supporting family members outside household, alimony/child support, loss of income due to diagnosis/treatment, unforeseen expenses, non-local travel expenses for treatment, and college expenses.",
+    "extractionConfidence": "low",
+    "sourceUrl": "https://www.foundationmedicine.com/sites/default/files/media/documents/2023-10/Patient_Financial_Assistance_Application_072020.pdf"
+  },
+  {
+    "vendor": "Exact Sciences",
+    "pdfName": "Exact Sciences Patient Assistance Program Application",
+    "fplThresholds": null,
+    "incomeBasedTiers": null,
+    "maxOutOfPocket": null,
+    "requiredDocumentation": [
+      "W2 tax form from last year",
+      "Federal or State tax return showing gross income",
+      "Latest payroll statement or Social Security check",
+      "Unemployment earnings documentation",
+      "Proof of county/state/federal assistance program qualification (Medicaid, SNAP, SSI, Home Energy Assistance Program, etc.)"
+    ],
+    "householdSizeConsidered": true,
+    "householdSizeChart": null,
+    "uninsuredEligible": null,
+    "medicareEligible": null,
+    "medicaidEligible": null,
+    "medicalDebtConsidered": null,
+    "processingTime": null,
+    "retroactiveAllowed": null,
+    "restrictions": [
+      "Various restrictions apply but not specifically listed",
+      "Availability of assistance is limited",
+      "Some restrictions may limit whether assistance can be offered"
+    ],
+    "paymentPlanTerms": "Payment options available by calling 866-267-2322",
+    "additionalNotes": "Application requires annual gross household income estimation and household size. If patient cannot provide required documents, they may describe financial need and still qualify. Application does not guarantee assistance. Payments will not be refunded if made before requesting assistance. Patient must demonstrate economic hardship from testing service bills.",
+    "extractionConfidence": "medium",
+    "sourceUrl": "https://www.exactsciences.com/-/media/project/precisiononcology/precisiononcology/files/pdf/exact-sciences_financial-assistance-application.pdf"
+  },
+  {
+    "vendor": "Tempus",
+    "pdfName": "Tempus Financial Assistance Form",
+    "fplThresholds": null,
+    "incomeBasedTiers": null,
+    "maxOutOfPocket": null,
+    "requiredDocumentation": null,
+    "householdSizeConsidered": true,
+    "householdSizeChart": "Form requires number of family members in household supported by gross annual household income, including the patient",
+    "uninsuredEligible": true,
+    "medicareEligible": null,
+    "medicaidEligible": null,
+    "medicalDebtConsidered": true,
+    "processingTime": "5-7 business days",
+    "retroactiveAllowed": null,
+    "restrictions": [
+      "Information must be truthful and complete or assistance may be withdrawn"
+    ],
+    "paymentPlanTerms": null,
+    "additionalNotes": "Form considers extenuating circumstances including: alimony/child support >$1000/month, non-local travel costs >$1000, supporting family outside household, qualified for charity care, disability enrollment, credit card debt >$5000, medical expenses >$5000, permanent income loss due to diagnosis/treatment. Specific insurance plans listed that may have different consideration: BCBSNC, BCBSSC, BCBSVT, CBC, CareSource OH/WV/KY/NC. Immediate application results available at access.tempus.com or 800.739.4137.",
+    "extractionConfidence": "low",
+    "sourceUrl": "https://www.tempus.com/wp-content/uploads/2025/04/Tempus-Onco_Financial-Assistance-Form.pdf"
+  },
+  {
+    "vendor": "Caris Life Sciences",
+    "pdfName": "Tumor Profiling Financial Assistance Application",
+    "fplThresholds": null,
+    "incomeBasedTiers": true,
+    "maxOutOfPocket": null,
+    "requiredDocumentation": null,
+    "householdSizeConsidered": true,
+    "householdSizeChart": "Income ranges from $0-$9,999 up to >$150,000 with household size field included",
+    "uninsuredEligible": null,
+    "medicareEligible": null,
+    "medicaidEligible": null,
+    "medicalDebtConsidered": null,
+    "processingTime": null,
+    "retroactiveAllowed": null,
+    "restrictions": [
+      "Guidelines for hardship assistance may change or program may be discontinued without notice",
+      "Submission does not constitute approval or guarantee eligibility"
+    ],
+    "paymentPlanTerms": "Prompt pay discounts and discounted payment plans are available - contact Patient Navigator for details",
+    "additionalNotes": "Application requires reason for financial assistance request. Contact Patient Navigator at (888) 979-8669 or PatientNavigator@CarisLS.com for more information on discounts and payment plans. Form can be emailed or faxed to 866-479-4925.",
+    "extractionConfidence": "low",
+    "sourceUrl": "https://www.carislifesciences.com/wp-content/uploads/2022/06/TN0235-v6_Tumor-Financial-Assistance-Application_eForm.pdf"
+  },
+  {
+    "vendor": "Adaptive Biotechnologies",
+    "pdfName": "Patient Support Program Enrollment Form",
+    "fplThresholds": null,
+    "incomeBasedTiers": true,
+    "maxOutOfPocket": null,
+    "requiredDocumentation": [
+      "tax return",
+      "W-2",
+      "recent pay stub",
+      "or comparable document demonstrating financial need"
+    ],
+    "householdSizeConsidered": true,
+    "householdSizeChart": null,
+    "uninsuredEligible": true,
+    "medicareEligible": null,
+    "medicaidEligible": null,
+    "medicalDebtConsidered": true,
+    "processingTime": "10 working days",
+    "retroactiveAllowed": null,
+    "restrictions": [
+      "Must be US citizen or legal resident",
+      "Must be age 18 or older (under 18 requires parent/guardian signature)",
+      "Must have insurance that does not cover full cost of clonoSEQ testing OR be uninsured"
+    ],
+    "paymentPlanTerms": null,
+    "additionalNotes": "Financial need determined by patient's income and household size OR sum of medical expenses as percentage of household income. Documentation must be provided within 45 days if requested. Patient cannot seek reimbursement from HSA/FSA for services covered by financial assistance. Test cannot be stopped once in process based on out-of-pocket estimate.",
+    "extractionConfidence": "medium",
+    "sourceUrl": "https://www.clonoseq.com/wp-content/uploads/2022/02/Adaptive_Assist_PSP_Application_Form-1.pdf"
+  },
+  {
+    "vendor": "NeoGenomics",
+    "error": "Failed to fetch PDF"
+  }
+]

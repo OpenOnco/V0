@@ -721,7 +721,18 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://compassion.natera.com/s/',
       'https://eastcascadewomensgroup.com/wp-content/uploads/2023/02/Compassionate-Care-QR-Code-Postcard.pdf'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Based on FPL guidelines' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Income verification required'],
+      uninsuredEligible: true,
+      paymentPlanTerms: 'Interest-free payment plans starting at $25/month',
+      applicationUrl: 'https://compassion.natera.com/s/',
+      rulesSource: 'https://www.natera.com/oncology/billing/'
+    }
   },
   'Guardant Health': {
     programName: 'Guardant Access Program',
@@ -743,7 +754,16 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://guardanthealth.com/precision-oncology/for-patients/',
       'https://guardanthealth.com/contact/'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Medical and financial need assessment' }
+      ],
+      uninsuredEligible: true,
+      applicationUrl: 'https://www.guardantcomplete.com/hcp/support/access-resources/',
+      enrollmentMethod: 'Via testing requisition or Client Services contact',
+      rulesSource: 'https://guardanthealth.com/precision-oncology/for-patients/'
+    }
   },
   'Foundation Medicine': {
     programName: 'FoundationAccess Financial Assistance Program',
@@ -763,7 +783,30 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.foundationmedicine.com/patient/financial-support-resources',
       'https://aid.foundationmedicine.com/'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: '$100', notes: 'Max $100 lifetime for qualifying patients' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: [
+        'Total gross annual household income',
+        'Number of family members in household'
+      ],
+      extenuatingCircumstances: [
+        'Retired/fixed income', 'Disability', 'Significant credit card debt',
+        'Significant medical expenses', 'Supporting family outside household',
+        'Alimony/child support', 'Loss of income due to diagnosis/treatment',
+        'Non-local travel expenses for treatment'
+      ],
+      uninsuredEligible: true,
+      medicareEligible: true,
+      medicaidEligible: true,
+      medicaidZeroCost: true,
+      medicalDebtConsidered: true,
+      applicationUrl: 'https://aid.foundationmedicine.com/',
+      rulesSource: 'https://www.foundationmedicine.com/sites/default/files/media/documents/2023-10/Patient_Financial_Assistance_Application_072020.pdf'
+    }
   },
   'GRAIL': {
     programName: 'Financial Assistance Program',
@@ -778,7 +821,16 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
     contactPhone: '833-694-2553',
     contactEmail: 'patient-advocate@grailbio.com',
     patientAdvocate: true,
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'FPL-based criteria' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Income verification'],
+      uninsuredEligible: true,
+      rulesSource: 'https://www.galleri.com/patient/cost-coverage'
+    }
   },
   'Exact Sciences': {
     programName: 'Patient Assistance Program / Genomic Access Program (GAP)',
@@ -800,7 +852,25 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.exactsciences.com/cancer-testing/oncodetect-mrd-patients',
       'https://www.exactsciences.com/-/media/project/precisiononcology/precisiononcology/files/pdf/gap--billing-statements-ghi100460121.pdf'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: 400, discount: 'Needs-based', maxOOP: null, notes: 'At or below 400% FPL may qualify' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: [
+        'W2 tax form from last year',
+        'Federal/State tax return showing gross income',
+        'Latest payroll statement or Social Security check',
+        'Unemployment earnings documentation',
+        'Proof of government assistance (Medicaid, SNAP, SSI, etc.)'
+      ],
+      alternativeDocumentation: 'Written description of financial need if documents unavailable',
+      uninsuredEligible: true,
+      medicalDebtConsidered: true,
+      paymentPlanTerms: 'Payment options available (call 866-267-2322)',
+      rulesSource: 'https://www.exactsciences.com/-/media/project/precisiononcology/precisiononcology/files/pdf/exact-sciences_financial-assistance-application.pdf'
+    }
   },
   'Tempus': {
     programName: 'Tempus Financial Assistance Program',
@@ -820,7 +890,23 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.tempus.com/wp-content/uploads/2025/04/Tempus-Onco_Financial-Assistance-Form.pdf',
       'https://www.tempus.com/life-sciences/sequencing/xm/'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Based on household income assessment' }
+      ],
+      householdSizeConsidered: true,
+      extenuatingCircumstances: [
+        'Alimony/child support >$1,000/month', 'Non-local travel costs >$1,000',
+        'Credit card debt >$5,000', 'Medical expenses >$5,000',
+        'Permanent income loss due to diagnosis/treatment', 'Qualified for charity care'
+      ],
+      uninsuredEligible: true,
+      medicalDebtConsidered: true,
+      processingTime: '5-7 business days',
+      applicationUrl: 'https://access.tempus.com',
+      rulesSource: 'https://www.tempus.com/wp-content/uploads/2025/04/Tempus-Onco_Financial-Assistance-Form.pdf'
+    }
   },
   'Caris Life Sciences': {
     programName: 'Caris Financial Assistance Programs',
@@ -841,7 +927,18 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.carislifesciences.com/about/contact/',
       'https://www.carislifesciences.com/physicians/physician-tests/caris-assure/'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Sliding scale', maxOOP: null, notes: 'Income-based sliding fee discounts' }
+      ],
+      incomeRanges: '$0-$9,999 up to >$150,000 (sliding scale)',
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Reason for financial assistance request'],
+      uninsuredEligible: true,
+      paymentPlanTerms: 'Prompt pay discounts and discounted payment plans available',
+      rulesSource: 'https://www.carislifesciences.com/wp-content/uploads/2022/06/TN0235-v6_Tumor-Financial-Assistance-Application_eForm.pdf'
+    }
   },
   'Myriad Genetics': {
     programName: 'Myriad Financial Assistance Program',
@@ -853,7 +950,24 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
     applicationUrl: 'https://myriad.com/affordability/financial-assistance/',
     contactPhone: '800-469-7423',
     restrictions: 'Not available for federally funded insurance (Medicare, Medicaid, TRICARE, Medicare Advantage)',
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: 100, discount: '100%', maxOOP: '$0', notes: 'Free testing' },
+        { maxFPL: 200, discount: '100%', maxOOP: '$0', notes: 'Free testing' },
+        { maxFPL: 300, discount: 'Tiered', maxOOP: '$100', notes: 'Reduced cost' },
+        { maxFPL: 400, discount: 'Tiered', maxOOP: '$249', notes: 'GeneSight $200, others $249' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Income verification', 'Household size attestation'],
+      uninsuredEligible: true,
+      medicareEligible: false,
+      medicaidEligible: false,
+      tricareEligible: false,
+      medicaidException: 'Limited state-funded plans (emergency-only, non-coverage states) may qualify',
+      paymentPlanTerms: 'Interest-free payment plans available',
+      rulesSource: 'https://myriad-library.s3.amazonaws.com/mfap/MFAP+2022+Financial+Criteria+05-22.pdf'
+    }
   },
   'Labcorp': {
     programName: 'Financial Assistance Program / Patient Assistance Program',
@@ -868,7 +982,16 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
     contactPhone: '833-941-0828',
     contactEmail: 'LcGeneticsBilling@labcorp.com',
     uninsuredCeilingPrices: { 'Cancer': '$250', 'Rare Disease': '$299' },
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Income and circumstances based' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Income verification', 'Circumstances documentation'],
+      uninsuredEligible: true,
+      rulesSource: 'https://www.labcorp.com/billing'
+    }
   },
   'Quest Diagnostics': {
     programName: 'Patient Financial Assistance Program',
@@ -882,7 +1005,22 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
     applicationUrl: 'https://www.questdiagnostics.com/patients/billing-insurance/financial-assistance',
     contactPhone: '866-436-3463 (866-GENE-INFO)',
     processingTime: 'Approximately 2 weeks to process applications',
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: 100, discount: '100%', maxOOP: '$0', notes: 'Free testing' },
+        { maxFPL: 200, discount: 'Capped', maxOOP: '$100', notes: 'Max $100 per bill' },
+        { maxFPL: 400, discount: 'Capped', maxOOP: '$200', notes: 'Hereditary cancer tests max $200' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Income verification', 'Household size attestation'],
+      uninsuredEligible: true,
+      medicareEligible: true,
+      medicaidEligible: true,
+      paymentPlanTerms: '0% financing for 12-month period',
+      processingTime: '~2 weeks',
+      rulesSource: 'https://www.questdiagnostics.com/patients/billing-insurance/financial-assistance'
+    }
   },
   'Adaptive Biotechnologies': {
     programName: 'Adaptive Assist Patient Support Program',
@@ -903,7 +1041,21 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.clonoseq.com/patient/other-blood-cancers/adaptive-assist/',
       'https://www.clonoseq.com/wp-content/uploads/2022/02/Adaptive_Assist_PSP_Application_Form-1.pdf'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Based on income and/or medical expenses' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Tax return', 'W-2', 'Recent pay stub', 'Or comparable document'],
+      documentationDeadline: '45 days if documentation requested',
+      uninsuredEligible: true,
+      medicalDebtConsidered: true,
+      processingTime: '10 working days',
+      citizenshipRequired: true,
+      ageRequirement: '18+ (under 18 requires parent/guardian)',
+      rulesSource: 'https://www.clonoseq.com/wp-content/uploads/2022/02/Adaptive_Assist_PSP_Application_Form-1.pdf'
+    }
   },
   'NeoGenomics': {
     programName: 'Patient Financial Assistance (FAA) Program',
@@ -921,7 +1073,17 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.neogenomics.com/patients/',
       'https://ir.neogenomics.com/news-events/press-releases/detail/246/neogenomics-radar-assay-for-minimal-residual-disease-receives-first-commercial-coverage'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Financial hardship assessment' }
+      ],
+      householdSizeConsidered: true,
+      requiredDocumentation: ['Income documentation', 'Financial hardship certification'],
+      uninsuredEligible: true,
+      applicationUrl: 'https://www.neogenomics.com/billing/',
+      rulesSource: 'https://www.neogenomics.com/patients/'
+    }
   },
   'Personalis': {
     programName: 'NeXT Access Financial Assistance',
@@ -938,7 +1100,16 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.personalis.com/contact-us/',
       'https://www.personalis.com/for-patients/financial-assistance-next-access/'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: [
+        { maxFPL: null, discount: 'Needs-based', maxOOP: null, notes: 'Contact billing for eligibility' }
+      ],
+      requiredDocumentation: ['Financial assistance application'],
+      uninsuredEligible: true,
+      applicationUrl: 'https://www.personalis.com/for-patients/financial-assistance-next-access/',
+      rulesSource: 'https://www.personalis.com/wp-content/uploads/2022/10/5.22.23_NeXT-Dx_Patient-FAQs.pdf'
+    }
   },
   'BillionToOne': {
     programName: 'Client Services Support',
@@ -955,7 +1126,13 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
       'https://www.northstaronc.com/support',
       'https://www.northstaronc.com/contact'
     ],
-    lastVerified: '2026-01-30'
+    lastVerified: '2026-01-30',
+    eligibilityRules: {
+      fplThresholds: null,
+      notes: 'No formal financial assistance program publicly identified',
+      applicationUrl: 'https://www.northstaronc.com/support',
+      rulesSource: 'https://www.northstaronc.com/support'
+    }
   },
   'Burning Rock Dx': {
     programName: null,
