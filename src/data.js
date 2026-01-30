@@ -852,7 +852,9 @@ export const VENDOR_ASSISTANCE_PROGRAMS = {
     description: 'Financial assistance application for patients who certify that testing would cause financial hardship.',
     eligibility: 'Assessed via application; approval not guaranteed.',
     applicationPdf: 'https://cms.neogenomics.com/sites/default/files/2025-01/FAA_Form_English_010925_Final_FF.pdf',
-    lastVerified: '2026-01-07'
+    contactPhone: '866-776-5907 (Option 9)',
+    contactEmail: 'patients@neogenomics.com',
+    lastVerified: '2026-01-30'
   },
   'Burning Rock Dx': {
     programName: null,
@@ -1505,8 +1507,8 @@ export const mrdTestData = [
     "totalParticipants": 166,
     "numPublications": 10,
     "numPublicationsPlus": true,
-    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
-  ,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
+    "financialAssistance": "Patient billing support and appeals assistance. Contact: 866.776.5907 (Option 9)",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -1830,8 +1832,8 @@ export const mrdTestData = [
     "nccnGuidelineReference": "NCCN Colon Cancer, Rectal Cancer, Merkel Cell Carcinoma V.2.2025",
     "nccnGuidelinesNotes": "NCCN V.2.2025 update specifically references Signatera publications. CRC: ctDNA included as high risk factor for recurrence. MCC: positive recommendation for ctDNA monitoring in surveillance, citing Signatera data.",
     "nccnGuidelinesCitations": "https://www.natera.com/company/news/nccn-strengthens-guidance-on-ctdna-in-colon-cancer-rectal-cancer-and-merkel-cell-carcinoma/",
-    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
-  ,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
+    "financialAssistance": "Financial Assistance Program available. Contact: 650-489-9050 or oncologybilling@natera.com",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -1953,6 +1955,7 @@ export const mrdTestData = [
     "numPublications": 3,
     "numPublicationsPlus": true,
     "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
+    "financialAssistance": "Financial assistance available. Contact: 800.739.4137",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -2182,8 +2185,8 @@ export const mrdTestData = [
     "isInvestigational": true,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "Holds FDA Breakthrough Device designation for MRD but is not yet FDA cleared. The underlying assay platform is a clinical LDT (same technology as FoundationOne Tracker TRM which has Medicare coverage), but MRD-specific applications remain investigational.",
-    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
-  ,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
+    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -2915,8 +2918,8 @@ export const mrdTestData = [
     "isInvestigational": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Tumor-naïve MRD approach using AI/ML on WES/WTS data - no prior tissue profiling required. Only liquid biopsy sequencing both plasma and buffy coat for CHIP subtraction, improving accuracy over plasma-only assays.",
-    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
-  ,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
+    "financialAssistance": "Financial Assistance Program available",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -3205,8 +3208,8 @@ export const mrdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT leveraging Natera's established Signatera infrastructure. Uses proven mPCR-NGS workflow with WGS-informed variant selection for enhanced sensitivity.",
     "technologyDifferentiator": "WGS-informed evolution of Signatera tracking 64 variants (vs 16) at 1 ppm LOD (vs ~100 ppm). Ultra-deep sequencing up to 350,000x coverage per variant. Designed for cases requiring maximum sensitivity and lead time. Same trusted mPCR workflow backed by >1M Signatera tests.",
-    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary."
-  ,
+    "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
+    "financialAssistance": "Financial Assistance Program available. Contact: 650-489-9050 or oncologybilling@natera.com",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -3973,7 +3976,8 @@ export const mrdTestData = [
         "patientGuidance": "Medicare patients: covered for ICI response monitoring. Commercial insurance: expect denial - treatment monitoring is distinct from MRD and not covered.",
         "keyInsight": "IO Monitoring has unique Medicare coverage but commercial payers don't distinguish it from experimental MRD."
       }
-    }
+    },
+    "financialAssistance": "Financial Assistance Program available. Contact: 650-489-9050 or oncologybilling@natera.com"
   },
   {
     "id": "trm-3",
@@ -4089,6 +4093,7 @@ export const mrdTestData = [
     "tat": "5-7 days",
     "tatNotes": "TAT similar to Tempus xF/xF+ liquid biopsy platform (5-7 days from sample receipt).",
     "numPublicationsPlus": true,
+    "financialAssistance": "Financial assistance available. Contact: 800.739.4137",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
@@ -4148,6 +4153,7 @@ export const mrdTestData = [
     "tatCitations": "https://neogenomics.com/test-menu/radarr",
     "numPublications": 15,
     "numPublicationsPlus": true,
+    "financialAssistance": "Patient billing support and appeals assistance. Contact: 866.776.5907 (Option 9)",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -4245,8 +4251,8 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "Clinical LDT with Medicare coverage for TRM of ICI therapy. Broad clinical launch October 2023. MolDX coverage effective June 17, 2023. Uses the same personalized ctDNA technology as the MRD application but is commercially available for TRM while MRD remains investigational."
-  ,
+    "regulatoryStatusNotes": "Clinical LDT with Medicare coverage for TRM of ICI therapy. Broad clinical launch October 2023. MolDX coverage effective June 17, 2023. Uses the same personalized ctDNA technology as the MRD application but is commercially available for TRM while MRD remains investigational.",
+    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -4499,8 +4505,8 @@ export const mrdTestData = [
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "technologyDifferentiator": "Only commercially available liquid biopsy that sequences both plasma and buffy coat (WBC) to distinguish somatic tumor variants from clonal hematopoiesis (CH) and germline variants. CHIP subtraction prevents ~40% of samples from receiving potentially incorrect therapy recommendations based on non-tumor mutations."
-  ,
+    "technologyDifferentiator": "Only commercially available liquid biopsy that sequences both plasma and buffy coat (WBC) to distinguish somatic tumor variants from clonal hematopoiesis (CH) and germline variants. CHIP subtraction prevents ~40% of samples from receiving potentially incorrect therapy recommendations based on non-tumor mutations.",
+    "financialAssistance": "Financial Assistance Program available",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -5476,8 +5482,8 @@ export const ecdTestData = [
     "totalParticipants": 188535,
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866",
     "numPublications": 20,
-    "numPublicationsPlus": true
-  ,
+    "numPublicationsPlus": true,
+    "financialAssistance": "Billing support available. Contact: (833) 694-2553",
     "medicareCoverage": {
       "status": "NOT_COVERED",
       "policyType": null,
@@ -7301,8 +7307,8 @@ export const cgpTestData = [
     "numPublicationsSource": "vendor-estimate",
     "numPublicationsNotes": "Foundation Medicine tests cited in >1,000 peer-reviewed publications (vendor estimate).",
     "numPublicationsCitations": "https://www.foundationmedicine.com/test/foundationone-cdx",
-    "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1200/JCO.2017.75.3780"]
-  ,
+    "publicationsExampleCitations": ["https://doi.org/10.1038/nm.4333", "https://doi.org/10.1200/JCO.2017.75.3780"],
+    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -7377,8 +7383,8 @@ export const cgpTestData = [
     "numPublications": 50,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study PLoS One 2020 (Woodhouse et al.); multiple clinical validity studies for BRAF, HER2, MSI companion diagnostics",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/32976510/"
-  ,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/32976510/",
+    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -7442,8 +7448,8 @@ export const cgpTestData = [
     "numPublications": 100,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study Blood 2016 (He et al.); 10+ studies at ASH 2013; part of Foundation Medicine ecosystem",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/27002118/"
-  ,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/27002118/",
+    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -7654,8 +7660,8 @@ export const cgpTestData = [
     "numPublications": 50,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study Oncotarget 2019 (Beaubier et al.); FDA CDx designation; widely used in clinical trials",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/31040929/"
-  ,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/31040929/",
+    "financialAssistance": "Financial assistance available. Contact: 800.739.4137",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -7714,8 +7720,8 @@ export const cgpTestData = [
     "numPublications": 20,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Validation study NPJ Precision Oncology 2021 (Finkle et al.); liquid biopsy clinical applications",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34215841/"
-  ,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34215841/",
+    "financialAssistance": "Financial assistance available. Contact: 800.739.4137",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -7768,8 +7774,8 @@ export const cgpTestData = [
     "numPublications": 5,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Expanded panel; analytical validation J Mol Diagn 2025 (Boulos et al.)",
-    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/40287222/"
-  ,
+    "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/40287222/",
+    "financialAssistance": "Financial assistance available. Contact: 800.739.4137",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -7901,8 +7907,8 @@ export const cgpTestData = [
     "numPublications": 30,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Part of Caris Molecular Intelligence platform (165+ total publications across platform)",
-    "numPublicationsCitations": "https://www.carislifesciences.com/publications/"
-  ,
+    "numPublicationsCitations": "https://www.carislifesciences.com/publications/",
+    "financialAssistance": "Financial Assistance Program available",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -8109,8 +8115,8 @@ export const cgpTestData = [
     "numPublications": 100,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Caris flagship test; 165+ publications across platform per vendor",
-    "numPublicationsCitations": "https://www.carislifesciences.com/publications/"
-  ,
+    "numPublicationsCitations": "https://www.carislifesciences.com/publications/",
+    "financialAssistance": "Financial Assistance Program available",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "LCD",
@@ -8167,7 +8173,8 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "NeoGenomics tissue profiling panel; newer product (launched March 2023)",
     "numPublicationsCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/235/neogenomics-expands-ngs-portfolio-with-launch-of-neo",
-    "regulatoryStatusNotes": "CAP-accredited and CLIA-certified laboratories in Fort Myers and Tampa, FL; Aliso Viejo and San Diego, CA; Research Triangle Park, NC; and Houston, TX. New York State approved January 2024."
+    "regulatoryStatusNotes": "CAP-accredited and CLIA-certified laboratories in Fort Myers and Tampa, FL; Aliso Viejo and San Diego, CA; Research Triangle Park, NC; and Houston, TX. New York State approved January 2024.",
+    "financialAssistance": "Patient billing support and appeals assistance. Contact: 866.776.5907 (Option 9)"
   },
   {
     "id": "tds-16",
@@ -10361,7 +10368,8 @@ export const hctTestData = [
     "methodCitations": "https://www.foundationmedicine.com/test/germline-testing",
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639"
   },
   {
     "id": "hct-30",
