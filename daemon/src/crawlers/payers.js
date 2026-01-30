@@ -148,7 +148,7 @@ const REGIONAL_BCBS_URLS = {
     policyPages: [],
   },
   'highmark': {
-    indexUrl: null, // TODO: Find Highmark policy index URL
+    indexUrl: 'https://securecms.highmark.com/content/medpolicy/en/highmark/',
     policyPages: [],
   },
   'carefirst': {
@@ -156,11 +156,11 @@ const REGIONAL_BCBS_URLS = {
     policyPages: [],
   },
   'excellus': {
-    indexUrl: null, // TODO: Find Excellus policy index URL
+    indexUrl: 'https://www.excellusbcbs.com/wps/portal/xl/provider/medicalpolicies',
     policyPages: [],
   },
   'ibx': {
-    indexUrl: null, // TODO: Find Independence Blue Cross policy index URL
+    indexUrl: 'https://medpolicy.ibx.com/ibc/Commercial/',
     policyPages: [],
   },
   'blue-shield-ca': {
@@ -168,19 +168,19 @@ const REGIONAL_BCBS_URLS = {
     policyPages: [],
   },
   'premera': {
-    indexUrl: null, // TODO: Find Premera policy index URL
+    indexUrl: 'https://www.premera.com/medicalpolicies/',
     policyPages: [],
   },
   'regence': {
-    indexUrl: null, // TODO: Find Regence policy index URL
+    indexUrl: 'https://www.regence.com/provider/library/medical-policies',
     policyPages: [],
   },
   'horizon': {
-    indexUrl: null, // TODO: Find Horizon BCBS NJ policy index URL
+    indexUrl: 'https://www.horizonblue.com/providers/policies-procedures/policies/medical-policies',
     policyPages: [],
   },
   'wellmark': {
-    indexUrl: null, // TODO: Find Wellmark policy index URL
+    indexUrl: 'https://www.wellmark.com/Provider/MedicalPolicies',
     policyPages: [],
   },
   'bcbs-az': {
@@ -188,11 +188,11 @@ const REGIONAL_BCBS_URLS = {
     policyPages: [],
   },
   'bcbs-mn': {
-    indexUrl: null, // TODO: Find BCBS Minnesota policy index URL
+    indexUrl: 'https://www.bluecrossmn.com/providers/policies-and-guidelines/medical-policies',
     policyPages: [],
   },
   'bcbs-tn': {
-    indexUrl: null, // TODO: Find BCBS Tennessee policy index URL
+    indexUrl: 'https://www.bcbst.com/providers/medical-policy',
     policyPages: [],
   },
   'bcbs-kc': {
