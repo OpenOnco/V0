@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Runtime data (persisted on Railway volume)
+data/discoveries.json
+data/health.json
+data/vendor-hashes.json
+data/payer-hashes.json
+data/clfs-cache.json
+data/recommendations.json
+
+# Keep the data directory structure
+!data/.gitkeep
+
+# Environment
+.env
+.env.local
+
+# OS files
+.DS_Store
+
+# Session state (temporary)
+SESSION_STATE_*.md
