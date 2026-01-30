@@ -85,10 +85,11 @@ const SEARCH_KEYWORDS = [
 // Extends config.js PAYERS with crawler-specific URLs and settings
 // =============================================================================
 
-// Crawl URLs for national commercial payers
+// Crawl URLs for national commercial payers (Tier 1)
+// URLs derived from reference data: domain + policyPath
 const NATIONAL_COMMERCIAL_URLS = {
   uhc: {
-    indexUrl: 'https://www.uhcprovider.com/en/policies-protocols/commercial-policies/commercial-medical-drug-policies.html',
+    indexUrl: 'https://www.uhc.com/resources/policies',
     policyPages: [
       {
         path: '/content/provider/en/policies-protocols/commercial-policies/molecular-oncology-testing.html',
@@ -97,12 +98,27 @@ const NATIONAL_COMMERCIAL_URLS = {
     ],
   },
   anthem: {
-    indexUrl: 'https://www.anthem.com/provider/policies/clinical-guidelines/',
+    indexUrl: 'https://www.anthem.com/provider/policies',
+    policyPages: [],
+  },
+  centene: {
+    indexUrl: 'https://www.ambetterhealth.com/provider',
     policyPages: [],
   },
   cigna: {
-    indexUrl: 'https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/',
-    indexType: 'pdf_index',
+    indexUrl: 'https://www.cigna.com/health-care-providers/coverage-and-claims',
+    policyPages: [],
+  },
+  humana: {
+    indexUrl: 'https://www.humana.com/provider',
+    policyPages: [],
+  },
+  molina: {
+    indexUrl: 'https://www.molinahealthcare.com/providers',
+    policyPages: [],
+  },
+  kaiser: {
+    indexUrl: 'https://healthy.kaiserpermanente.org/',
     policyPages: [],
   },
   aetna: {
@@ -113,94 +129,150 @@ const NATIONAL_COMMERCIAL_URLS = {
       { path: '/cpb/medical/data/700_799/0715.html', description: 'Liquid Biopsy CPB 0715' },
     ],
   },
-  humana: {
-    indexUrl: 'https://www.humana.com/provider/medical-resources/clinical-policies',
+};
+
+// Crawl URLs for HCSC-operated BCBS plans
+const HCSC_BCBS_URLS = {
+  'hcsc-tx': {
+    indexUrl: 'https://www.bcbstx.com/provider/medical-policies',
+    policyPages: [],
+  },
+  'hcsc-il': {
+    indexUrl: 'https://www.bcbsil.com/provider/medical-policies',
+    policyPages: [],
+  },
+  'hcsc-mt': {
+    indexUrl: 'https://www.bcbsmt.com/provider/medical-policies',
+    policyPages: [],
+  },
+  'hcsc-ok': {
+    indexUrl: 'https://www.bcbsok.com/provider/medical-policies',
+    policyPages: [],
+  },
+  'hcsc-nm': {
+    indexUrl: 'https://www.bcbsnm.com/provider/medical-policies',
     policyPages: [],
   },
 };
 
 // Crawl URLs for regional BCBS plans
-// TODO: Research and verify these URLs - many are placeholders based on common patterns
 const REGIONAL_BCBS_URLS = {
-  'bcbs-ma': {
-    indexUrl: 'https://www.bluecrossma.org/medical-policies/sites/g/files/csphws7476/files/acquiadam-assets/Medical_Policy_Manual.pdf',
-    // TODO: Find actual policy index page
+  // Tier 1 - Large regional
+  highmark: {
+    indexUrl: 'https://www.highmark.com/provider/medical-policy',
     policyPages: [],
   },
-  'bcbs-mi': {
-    indexUrl: 'https://www.bcbsm.com/providers/clinical-resources/policies.html',
+  floridablue: {
+    indexUrl: 'https://www.floridablue.com/providers/medical-policies',
     policyPages: [],
   },
-  'bcbs-tx': {
-    indexUrl: 'https://www.bcbstx.com/provider/clinical/medical-policies.html',
+  // Tier 2 - Mid-sized regional
+  bcbsm: {
+    indexUrl: 'https://www.bcbsm.com/providers/medical-policies',
     policyPages: [],
   },
-  'bcbs-il': {
-    indexUrl: 'https://www.bcbsil.com/provider/clinical/medical-policies.html',
+  bcbsnc: {
+    indexUrl: 'https://www.bcbsnc.com/provider/medical-policies',
     policyPages: [],
   },
-  'florida-blue': {
-    indexUrl: 'https://www.floridablue.com/providers/tools-resources/medical-policies',
+  bcbssc: {
+    indexUrl: 'https://www.southcarolinablues.com/providers',
     policyPages: [],
   },
-  'bcbs-nc': {
-    indexUrl: 'https://www.bluecrossnc.com/providers/clinical-resources/medical-policy',
+  bcbstn: {
+    indexUrl: 'https://www.bcbst.com/providers/medical-policies',
     policyPages: [],
   },
-  'highmark': {
-    indexUrl: 'https://securecms.highmark.com/content/medpolicy/en/highmark/',
+  bcbsal: {
+    indexUrl: 'https://www.bcbsal.org/providers/policies',
     policyPages: [],
   },
-  'carefirst': {
-    indexUrl: 'https://www.carefirst.com/provider/medical-policy-reference-manual',
+  bcbsla: {
+    indexUrl: 'https://lablue.com/providers',
     policyPages: [],
   },
-  'excellus': {
-    indexUrl: 'https://www.excellusbcbs.com/wps/portal/xl/provider/medicalpolicies',
+  bcbsaz: {
+    indexUrl: 'https://www.azblue.com/providers/medical-policies',
     policyPages: [],
   },
-  'ibx': {
-    indexUrl: 'https://medpolicy.ibx.com/ibc/Commercial/',
+  bcbsks: {
+    indexUrl: 'https://www.bcbsks.com/providers',
     policyPages: [],
   },
-  'blue-shield-ca': {
-    indexUrl: 'https://www.blueshieldca.com/provider/policies-guidelines/medical-policies',
+  bcbskc: {
+    indexUrl: 'https://www.bluekc.com/providers',
     policyPages: [],
   },
-  'premera': {
-    indexUrl: 'https://www.premera.com/medicalpolicies/',
+  bcbsne: {
+    indexUrl: 'https://www.nebraskablue.com/providers',
     policyPages: [],
   },
-  'regence': {
-    indexUrl: 'https://www.regence.com/provider/library/medical-policies',
+  bcbsnd: {
+    indexUrl: 'https://www.bcbsnd.com/providers',
     policyPages: [],
   },
-  'horizon': {
-    indexUrl: 'https://www.horizonblue.com/providers/policies-procedures/policies/medical-policies',
+  bcbswy: {
+    indexUrl: 'https://www.bcbswy.com/providers',
     policyPages: [],
   },
-  'wellmark': {
-    indexUrl: 'https://www.wellmark.com/Provider/MedicalPolicies',
+  bcbsma: {
+    indexUrl: 'https://www.bluecrossma.com/providers/medical-policies',
     policyPages: [],
   },
-  'bcbs-az': {
-    indexUrl: 'https://www.azblue.com/providers/clinical-policies',
+  bcbsri: {
+    indexUrl: 'https://www.bcbsri.com/providers',
     policyPages: [],
   },
-  'bcbs-mn': {
-    indexUrl: 'https://www.bluecrossmn.com/providers/policies-and-guidelines/medical-policies',
+  bcbsvt: {
+    indexUrl: 'https://www.bcbsvt.com/providers',
     policyPages: [],
   },
-  'bcbs-tn': {
-    indexUrl: 'https://www.bcbst.com/providers/medical-policy',
+  bcbsmn: {
+    indexUrl: 'https://www.bluecrossmn.com/providers',
     policyPages: [],
   },
-  'bcbs-kc': {
-    indexUrl: 'https://www.bluekc.com/providers/medical-policies',
+  carefirst: {
+    indexUrl: 'https://www.carefirst.com/providers/medical-policies',
     policyPages: [],
   },
-  'bcbs-la': {
-    indexUrl: 'https://www.bcbsla.com/providers/resources/medical-policies',
+  blueshieldca: {
+    indexUrl: 'https://www.blueshieldca.com/provider/medical-policy',
+    policyPages: [],
+  },
+  horizon: {
+    indexUrl: 'https://www.horizonblue.com/providers/policies',
+    policyPages: [],
+  },
+  excellus: {
+    indexUrl: 'https://www.excellusbcbs.com/providers',
+    policyPages: [],
+  },
+  empire: {
+    indexUrl: 'https://www.empireblue.com/provider/policies',
+    policyPages: [],
+  },
+  ibx: {
+    indexUrl: 'https://www.ibx.com/providers/medical-policy',
+    policyPages: [],
+  },
+  premera: {
+    indexUrl: 'https://www.premera.com/provider/medical-policies',
+    policyPages: [],
+  },
+  regence: {
+    indexUrl: 'https://www.regence.com/provider/medical-policies',
+    policyPages: [],
+  },
+  wellmark: {
+    indexUrl: 'https://www.wellmark.com/providers/medical-policies',
+    policyPages: [],
+  },
+  bcidaho: {
+    indexUrl: 'https://www.bcidaho.com/providers',
+    policyPages: [],
+  },
+  arkbcbs: {
+    indexUrl: 'https://www.arkansasbluecross.com/providers',
     policyPages: [],
   },
 };
@@ -241,22 +313,148 @@ const LBM_URLS = {
   },
 };
 
-// Crawl URLs for other large payers
+// Crawl URLs for other large regional/specialty payers (Tier 2)
 const OTHER_LARGE_URLS = {
-  'kaiser': {
-    indexUrl: null, // Kaiser policies often not publicly available
+  oscar: {
+    indexUrl: 'https://www.hioscar.com/providers',
     policyPages: [],
   },
-  'molina': {
-    indexUrl: null, // TODO: Find Molina policy index URL
+  caresource: {
+    indexUrl: 'https://www.caresource.com/providers',
     policyPages: [],
   },
-  'centene': {
-    indexUrl: null, // TODO: Find Centene policy index URL
+  healthnet: {
+    indexUrl: 'https://www.healthnet.com/providers',
     policyPages: [],
   },
-  'hcsc': {
-    indexUrl: null, // TODO: Find HCSC policy index URL
+  fidelis: {
+    indexUrl: 'https://www.fideliscare.org/providers',
+    policyPages: [],
+  },
+};
+
+// Crawl URLs for regional/specialty plans (Tier 3)
+const REGIONAL_URLS = {
+  // Midwest
+  medica: {
+    indexUrl: 'https://www.medica.com/providers',
+    policyPages: [],
+  },
+  healthpartners: {
+    indexUrl: 'https://www.healthpartners.com/providers',
+    policyPages: [],
+  },
+  ucare: {
+    indexUrl: 'https://www.ucare.org/providers',
+    policyPages: [],
+  },
+  priority: {
+    indexUrl: 'https://www.priorityhealth.com/providers',
+    policyPages: [],
+  },
+  mclaren: {
+    indexUrl: 'https://www.mclarenhealthplan.org/providers',
+    policyPages: [],
+  },
+  quartz: {
+    indexUrl: 'https://quartzbenefits.com/providers',
+    policyPages: [],
+  },
+  sanford: {
+    indexUrl: 'https://www.sanfordhealthplan.com/providers',
+    policyPages: [],
+  },
+  avera: {
+    indexUrl: 'https://www.avera.org/health-plans',
+    policyPages: [],
+  },
+  // Pennsylvania region
+  geisinger: {
+    indexUrl: 'https://www.geisinger.org/health-plan/providers',
+    policyPages: [],
+  },
+  upmc: {
+    indexUrl: 'https://www.upmchealthplan.com/providers',
+    policyPages: [],
+  },
+  // New England
+  tufts: {
+    indexUrl: 'https://tuftshealthplan.com/providers',
+    policyPages: [],
+  },
+  harvard: {
+    indexUrl: 'https://www.harvardpilgrim.org/providers',
+    policyPages: [],
+  },
+  fallon: {
+    indexUrl: 'https://www.fallonhealth.org/providers',
+    policyPages: [],
+  },
+  connecticare: {
+    indexUrl: 'https://www.connecticare.com/providers',
+    policyPages: [],
+  },
+  // New York region
+  healthfirst: {
+    indexUrl: 'https://healthfirst.org/providers',
+    policyPages: [],
+  },
+  metroplus: {
+    indexUrl: 'https://www.metroplus.org/providers',
+    policyPages: [],
+  },
+  mvp: {
+    indexUrl: 'https://www.mvphealthcare.com/providers',
+    policyPages: [],
+  },
+  // California
+  lacare: {
+    indexUrl: 'https://www.lacare.org/providers',
+    policyPages: [],
+  },
+  // Pacific Northwest
+  selecthealth: {
+    indexUrl: 'https://selecthealth.org/providers',
+    policyPages: [],
+  },
+  providence: {
+    indexUrl: 'https://providencehealthplan.com/providers',
+    policyPages: [],
+  },
+  pacificsource: {
+    indexUrl: 'https://www.pacificsource.com/providers',
+    policyPages: [],
+  },
+  moda: {
+    indexUrl: 'https://www.modahealth.com/providers',
+    policyPages: [],
+  },
+  bridgespan: {
+    indexUrl: 'https://bridgespanhealth.com/providers',
+    policyPages: [],
+  },
+  // Hawaii
+  hmsa: {
+    indexUrl: 'https://hmsa.com/providers',
+    policyPages: [],
+  },
+  // Southeast
+  optima: {
+    indexUrl: 'https://www.optimahealth.com/providers',
+    policyPages: [],
+  },
+  sentara: {
+    indexUrl: 'https://www.sentarahealthplans.com/providers',
+    policyPages: [],
+  },
+  // Ohio
+  medmutual: {
+    indexUrl: 'https://www.medmutual.com/providers',
+    policyPages: [],
+  },
+  // Multi-state
+  amerihealth: {
+    indexUrl: 'https://www.amerihealth.com/providers',
     policyPages: [],
   },
 };
@@ -274,19 +472,23 @@ function buildPayerSources() {
   const skipped = [];
   const allUrls = {
     ...NATIONAL_COMMERCIAL_URLS,
+    ...HCSC_BCBS_URLS,
     ...REGIONAL_BCBS_URLS,
     ...MEDICARE_ADVANTAGE_URLS,
     ...LBM_URLS,
     ...OTHER_LARGE_URLS,
+    ...REGIONAL_URLS,
   };
 
   // Process all payer categories
   const allPayers = [
     ...PAYERS.nationalCommercial,
+    ...(PAYERS.hcscBCBS || []),
     ...PAYERS.regionalBCBS,
     ...PAYERS.medicareAdvantage,
     ...PAYERS.labBenefitManagers,
     ...PAYERS.otherLarge,
+    ...(PAYERS.regional || []),
   ];
 
   for (const payer of allPayers) {
