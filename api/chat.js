@@ -156,15 +156,24 @@ If journey is "tracking response" or "watching after treatment" AND user hasn't 
 - After 2 user messages, ALWAYS give recommendations (but can ask stage clarification as part of giving recommendations)
 
 **PAYMENT-BASED RECOMMENDATIONS:**
-- Medicare/Medicaid: Focus on tests with Medicare coverage
+- Medicare/Medicaid: Focus on tests with Medicare coverage. NOTE: Myriad's FAP excludes Medicare/Medicaid/TRICARE patients due to regulations.
 - Private insurance: Most major tests covered; mention vendor patient assistance programs exist
 - No insurance/cash: PRIORITIZE tests with financial assistance programs. Key vendors with programs:
-  • Natera (Signatera) - interest-free payment plans from $25/month
-  • Guardant Health - minimizes surprise bills, financial assistance based on need
-  • Foundation Medicine - qualifying patients may pay $100 lifetime max, or $3,500 self-pay
-  • Quest Diagnostics - $0 for patients at Federal Poverty Level, payment plans available
-  • Tempus, Exact Sciences, Adaptive Biotechnologies - all have assistance programs
-- Not sure: Mention that most vendors offer financial assistance programs
+  • Myriad - BEST DOCUMENTED: ≤200% FPL = $0, ≤300% FPL = $100, ≤400% FPL = $249. Not available for Medicare/Medicaid.
+  • Quest - ≤100% FPL = $0, ≤200% FPL = $100 cap, ≤400% FPL = $200 cap. Processing ~2 weeks. DOES cover Medicare/Medicaid patients.
+  • Foundation Medicine - Needs-based, qualifying patients pay $100 lifetime max. Medicaid patients pay $0. Apply at aid.foundationmedicine.com
+  • Natera (Signatera) - Interest-free payment plans from $25/month. Apply at compassion.natera.com
+  • Guardant Health - Minimizes surprise bills, financial assistance based on need.
+  • Tempus - 5-7 business days processing. Considers medical debt >$5,000 and other hardships.
+  • Exact Sciences - ≤400% FPL may qualify. Accepts W-2, tax return, or description of need.
+  • Adaptive Biotechnologies - 10 working days processing. Considers income AND medical expenses.
+- Not sure: Mention that most vendors offer financial assistance programs. Patients should call the vendor's billing line.
+
+**KEY ELIGIBILITY RULES TO SHARE:**
+- Federal Poverty Level (FPL) thresholds vary by household size. For 1 person: 100% FPL ≈ $15,000, 400% FPL ≈ $60,000.
+- Most programs require: tax return OR 2 recent pay stubs OR proof of government assistance.
+- Processing times: Tempus (5-7 days), Quest (~2 weeks), Adaptive (10 days). Most others don't publish times.
+- Medicare/Medicaid patients: Quest and Foundation Medicine programs ARE available to you. Myriad's is NOT.
 
 ${patientContext?.journeyCode === 'mrd' ? `**MRD RECOMMENDATIONS (after Q2):**
 If tissue available: Recommend tumor-informed tests like **Signatera** [[mrd-7]] (Natera has payment plans from $25/mo), **FoundationOne Tracker** [[mrd-10]] (qualifying patients may pay $100 max), **RaDaR** [[mrd-5]] (NeoGenomics has financial assistance)

@@ -1304,11 +1304,39 @@ End with a reminder that their oncologist can help them decide if this test is r
                       <h4 className="font-semibold text-blue-900 mb-1">
                         {assistanceProgram.programName || 'Financial Assistance Program'}
                       </h4>
-                      <p className="text-sm text-blue-800 mb-3">
+                      <p className="text-sm text-blue-800 mb-2">
                         {assistanceProgram.maxOutOfPocket && `Qualifying patients may pay ${assistanceProgram.maxOutOfPocket}. `}
                         {assistanceProgram.paymentPlans && `${assistanceProgram.paymentPlans}. `}
                         {!assistanceProgram.maxOutOfPocket && !assistanceProgram.paymentPlans && 'Financial assistance available based on eligibility.'}
                       </p>
+                      {/* Detailed eligibility rules */}
+                      {assistanceProgram.eligibilityRules && (
+                        <div className="text-xs text-blue-700 mb-3 space-y-1">
+                          {assistanceProgram.eligibilityRules.fplThresholds?.length > 0 && (
+                            <p>
+                              <span className="font-medium">By income level:</span>{' '}
+                              {assistanceProgram.eligibilityRules.fplThresholds.map((t, i) => (
+                                <span key={i}>
+                                  {i > 0 && ', '}
+                                  ≤{t.maxFPL}% = {t.maxOOP}
+                                </span>
+                              ))}
+                            </p>
+                          )}
+                          {(assistanceProgram.eligibilityRules.medicareEligible !== null ||
+                            assistanceProgram.eligibilityRules.medicaidEligible !== null) && (
+                            <p>
+                              {assistanceProgram.eligibilityRules.medicareEligible === true && 'Medicare patients eligible. '}
+                              {assistanceProgram.eligibilityRules.medicareEligible === false && 'Medicare patients not eligible. '}
+                              {assistanceProgram.eligibilityRules.medicaidEligible === true && 'Medicaid patients eligible.'}
+                              {assistanceProgram.eligibilityRules.medicaidEligible === false && 'Medicaid patients not eligible.'}
+                            </p>
+                          )}
+                          {assistanceProgram.eligibilityRules.processingTime && (
+                            <p>Processing: {assistanceProgram.eligibilityRules.processingTime}</p>
+                          )}
+                        </div>
+                      )}
                       <a
                         href={assistanceProgram.applicationUrl}
                         target="_blank"
