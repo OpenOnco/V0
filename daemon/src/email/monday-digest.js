@@ -23,21 +23,21 @@ const logger = createLogger('monday-digest');
 const DISCOVERY_SECTIONS = [
   {
     id: 'financial',
-    emoji: '💰',
+    emoji: '[$$]',
     title: 'Patient Financial Assistance Updates',
     types: ['VENDOR_PAP_UPDATE', 'VENDOR_PRICE_CHANGE'],
     description: 'Cash prices, patient assistance programs, and financial help'
   },
   {
     id: 'pla_codes',
-    emoji: '📋',
+    emoji: '[#]',
     title: 'PLA Code Updates',
     types: ['VENDOR_PLA_CODE', 'CMS_PLA_REFERENCE'],
     description: 'Proprietary Laboratory Analyses codes and Medicare rates'
   },
   {
     id: 'medicare',
-    emoji: '🏥',
+    emoji: '[+]',
     title: 'Medicare Coverage',
     types: ['MEDICARE_LCD_UPDATE', 'MEDICARE_NCD_UPDATE', 'COVERAGE_CHANGE'],
     description: 'CMS coverage determinations and policy changes'
@@ -58,7 +58,7 @@ const DISCOVERY_SECTIONS = [
   },
   {
     id: 'clinical',
-    emoji: '📊',
+    emoji: '[i]',
     title: 'Clinical Evidence & Performance',
     types: ['VENDOR_CLINICAL_EVIDENCE', 'VENDOR_PERFORMANCE_DATA'],
     description: 'New studies and performance data'
@@ -389,7 +389,7 @@ ${typeSummary || '- No discoveries this week'}
 
   // Handle uncategorized discoveries
   if (uncategorized.length > 0) {
-    content += `\n## 📌 Other Updates (${uncategorized.length})\n\n`;
+    content += `\n## Other Updates (${uncategorized.length})\n\n`;
     content += `> Discoveries that don't fit into standard categories\n\n`;
 
     uncategorized.forEach(d => {
@@ -416,10 +416,10 @@ ${typeSummary || '- No discoveries this week'}
   content += `## Ready to Start
 
 Let's begin reviewing! I'll present the discoveries in priority order:
-1. 💰 **Financial assistance first** - most impactful for patients
-2. 📋 **PLA codes** - billing and reimbursement
-3. 🏥 **Coverage updates** - Medicare and private payers
-4. 📊 **Clinical & regulatory** - evidence and approvals
+1. **Financial assistance first** - most impactful for patients
+2. **PLA codes** - billing and reimbursement
+3. **Coverage updates** - Medicare and private payers
+4. **Clinical & regulatory** - evidence and approvals
 
 Reply with **approve**, **skip**, or ask questions for each item.
 `;
@@ -681,7 +681,7 @@ function generateEmailHtml(digest) {
           <div style="margin-bottom: 20px;">
             <div style="background: #f1f5f9; border-left: 4px solid #94a3b8; padding: 12px 16px; border-radius: 0 8px 8px 0;">
               <div style="font-size: 14px; font-weight: 600; color: #475569;">
-                📌 Other Updates <span style="font-weight: normal; color: #666;">(${uncategorized.length})</span>
+                Other Updates <span style="font-weight: normal; color: #666;">(${uncategorized.length})</span>
               </div>
             </div>
           </div>
@@ -828,7 +828,7 @@ export async function sendMondayDigest() {
 
   // Generate the self-executing review file
   const reviewContent = generateReviewAttachment(digest);
-  const attachmentContent = Buffer.from(reviewContent).toString('base64');
+  const attachmentContent = Buffer.from(reviewContent, 'utf-8').toString('base64');
 
   try {
     const result = await resend.emails.send({
