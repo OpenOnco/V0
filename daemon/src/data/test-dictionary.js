@@ -1,268 +1,214 @@
 /**
  * Test Dictionary for OpenOnco
  *
- * Provides deterministic test matching based on PLA codes, names, aliases, and keywords.
- * Used by crawlers to identify tests before LLM analysis for higher accuracy.
+ * Fetches test metadata from the API and provides lookup functions
+ * for matching tests by PLA codes, names, and vendors.
  */
 
-const TEST_DICTIONARY = [
-  // =============================================================================
-  // MRD (Molecular Residual Disease) Tests
-  // =============================================================================
-  {
-    id: 'mrd-7',
-    name: 'Signatera',
-    vendor: 'Natera',
-    category: 'mrd',
-    aliases: ['Signatera MRD', 'Natera Signatera', 'Natera MRD', 'Signatera ctDNA'],
-    plaCodes: ['0179U'],
-    keywords: ['signatera', 'natera', 'tumor-informed', 'personalized', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-1',
-    name: 'Guardant Reveal',
-    vendor: 'Guardant Health',
-    category: 'mrd',
-    aliases: ['Reveal MRD', 'Guardant Reveal MRD', 'Reveal', 'Guardant MRD'],
-    plaCodes: ['0298U'],
-    keywords: ['reveal', 'guardant', 'tumor-naive', 'epigenomic', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-8',
-    name: 'FoundationOne Tracker',
-    vendor: 'Foundation Medicine',
-    category: 'mrd',
-    aliases: ['F1 Tracker', 'FMI Tracker', 'Foundation Tracker', 'FOne Tracker'],
-    plaCodes: [],
-    keywords: ['foundationone', 'tracker', 'foundation medicine', 'natera', 'tumor-informed', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-4',
-    name: 'clonoSEQ',
-    vendor: 'Adaptive Biotechnologies',
-    category: 'mrd',
-    aliases: ['clonoSEQ Assay', 'Adaptive clonoSEQ', 'clonoseq'],
-    plaCodes: ['0016U', '0017U', '0358U'],
-    keywords: ['clonoseq', 'adaptive', 'hematologic', 'lymphoid', 'myeloma', 'leukemia', 'lymphoma', 'immunosequencing', 'fda']
-  },
-  {
-    id: 'mrd-5',
-    name: 'RaDaR',
-    vendor: 'NeoGenomics',
-    category: 'mrd',
-    aliases: ['NeoGenomics RaDaR', 'RaDaR MRD', 'Radar MRD', 'RaDaR ST'],
-    plaCodes: [],
-    keywords: ['radar', 'neogenomics', 'tumor-informed', 'personalized', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-10',
-    name: 'Tempus xM MRD',
-    vendor: 'Tempus',
-    category: 'mrd',
-    aliases: ['xM MRD', 'Tempus MRD', 'Tempus xM'],
-    plaCodes: [],
-    keywords: ['tempus', 'xm', 'tumor-informed', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-6',
-    name: 'NeXT Personal',
-    vendor: 'Personalis',
-    category: 'mrd',
-    aliases: ['Personalis NeXT Personal', 'NeXT Personal MRD', 'NeXT Personal Dx', 'NeXT Dx'],
-    plaCodes: [],
-    keywords: ['next personal', 'personalis', 'tumor-informed', 'whole-genome', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-9',
-    name: 'Oncodetect',
-    vendor: 'Exact Sciences',
-    category: 'mrd',
-    aliases: ['Exact Sciences Oncodetect', 'Oncodetect MRD', 'OncoDetect MRD'],
-    plaCodes: [],
-    keywords: ['oncodetect', 'exact sciences', 'tumor-informed', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-3',
-    name: 'Invitae PCM',
-    vendor: 'Labcorp',
-    category: 'mrd',
-    aliases: ['Invitae Personalized Cancer Monitoring', 'PCM', 'Labcorp Invitae PCM'],
-    plaCodes: [],
-    keywords: ['invitae', 'pcm', 'personalized cancer monitoring', 'labcorp', 'tumor-informed', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-2',
-    name: 'Caris Assure',
-    vendor: 'Caris Life Sciences',
-    category: 'mrd',
-    aliases: ['Assure MRD', 'Caris MRD', 'Caris Assure MRD'],
-    plaCodes: [],
-    keywords: ['caris', 'assure', 'tumor-informed', 'ctdna', 'mrd']
-  },
-  {
-    id: 'mrd-11',
-    name: 'NavDx',
-    vendor: 'Naveris',
-    category: 'mrd',
-    aliases: ['Naveris NavDx', 'NavDx HPV', 'Nav Dx'],
-    plaCodes: [],
-    keywords: ['navdx', 'naveris', 'hpv', 'hpv-related', 'ctdna', 'mrd', 'oropharyngeal', 'head and neck']
-  },
+import { logger } from '../utils/logger.js';
 
-  // =============================================================================
-  // TDS (Treatment Decision Support) / CGP Tests
-  // =============================================================================
-  {
-    id: 'tds-1',
-    name: 'FoundationOne CDx',
-    vendor: 'Foundation Medicine',
-    category: 'tds',
-    aliases: ['F1CDx', 'FMI CDx', 'Foundation CDx', 'FoundationOne', 'F1 CDx', 'FOne CDx'],
-    plaCodes: ['0037U'],
-    keywords: ['foundationone', 'foundation medicine', 'cdx', 'cgp', 'comprehensive genomic profiling', 'fda', 'tissue']
-  },
-  {
-    id: 'tds-2',
-    name: 'FoundationOne Liquid CDx',
-    vendor: 'Foundation Medicine',
-    category: 'tds',
-    aliases: ['F1LCDx', 'F1L CDx', 'FOne Liquid', 'Foundation Liquid', 'FoundationOne Liquid', 'FMI Liquid'],
-    plaCodes: [],
-    keywords: ['foundationone', 'liquid', 'foundation medicine', 'ctdna', 'liquid biopsy', 'cgp', 'fda', 'cdx']
-  },
-  {
-    id: 'tds-3',
-    name: 'Guardant360 CDx',
-    vendor: 'Guardant Health',
-    category: 'tds',
-    aliases: ['Guardant360', 'G360 CDx', 'Guardant 360', 'G360'],
-    plaCodes: ['0239U'],
-    keywords: ['guardant360', 'guardant', 'cgp', 'liquid biopsy', 'ctdna', 'fda', 'cdx']
-  },
-  {
-    id: 'tds-7',
-    name: 'Tempus xT CDx',
-    vendor: 'Tempus',
-    category: 'tds',
-    aliases: ['xT CDx', 'Tempus xT', 'Tempus CDx'],
-    plaCodes: [],
-    keywords: ['tempus', 'xt', 'cdx', 'cgp', 'comprehensive genomic profiling', 'fda', 'tissue']
-  },
-  {
-    id: 'tds-8',
-    name: 'Tempus xF',
-    vendor: 'Tempus',
-    category: 'tds',
-    aliases: ['xF', 'Tempus Liquid', 'Tempus xF+', 'xF+'],
-    plaCodes: [],
-    keywords: ['tempus', 'xf', 'cgp', 'liquid biopsy', 'ctdna']
-  },
-  {
-    id: 'tds-5',
-    name: 'MSK-IMPACT',
-    vendor: 'Memorial Sloan Kettering',
-    category: 'tds',
-    aliases: ['MSK IMPACT', 'MSKCC IMPACT', 'IMPACT'],
-    plaCodes: [],
-    keywords: ['msk', 'impact', 'memorial sloan kettering', 'cgp', 'comprehensive genomic profiling', 'fda', 'tissue']
-  },
-  {
-    id: 'tds-4',
-    name: 'Caris MI Profile',
-    vendor: 'Caris Life Sciences',
-    category: 'tds',
-    aliases: ['MI Profile', 'Caris Molecular Intelligence', 'Caris CGP', 'MI Cancer Seek'],
-    plaCodes: [],
-    keywords: ['caris', 'mi profile', 'molecular intelligence', 'cgp', 'comprehensive genomic profiling', 'tissue']
-  },
-  {
-    id: 'tds-6',
-    name: 'OmniSeq INSIGHT',
-    vendor: 'Labcorp',
-    category: 'tds',
-    aliases: ['OmniSeq', 'INSIGHT', 'Labcorp OmniSeq'],
-    plaCodes: [],
-    keywords: ['omniseq', 'insight', 'labcorp', 'cgp', 'comprehensive genomic profiling', 'tissue']
-  },
+// Configuration
+const API_URL = 'https://openonco.org/api/v1/tests-meta';
+const FALLBACK_SNAPSHOT = [];
 
-  // =============================================================================
-  // ECD (Early Cancer Detection) Tests
-  // =============================================================================
-  {
-    id: 'ecd-1',
-    name: 'Galleri',
-    vendor: 'GRAIL',
-    category: 'ecd',
-    aliases: ['GRAIL Galleri', 'Galleri MCED', 'Galleri Test', 'Multi-Cancer Early Detection'],
-    plaCodes: ['0239U'],
-    keywords: ['galleri', 'grail', 'mced', 'multi-cancer', 'early detection', 'methylation', 'cfdna']
-  },
-  {
-    id: 'ecd-2',
-    name: 'Shield',
-    vendor: 'Guardant Health',
-    category: 'ecd',
-    aliases: ['Guardant Shield', 'Shield CRC', 'Guardant CRC', 'Shield Blood Test'],
-    plaCodes: [],
-    keywords: ['shield', 'guardant', 'colorectal', 'crc', 'screening', 'blood-based']
-  },
-  {
-    id: 'ecd-3',
-    name: 'Cologuard',
-    vendor: 'Exact Sciences',
-    category: 'ecd',
-    aliases: ['Cologuard Plus', 'Exact Sciences Cologuard', 'Cologuard+', 'Cologuard 2.0'],
-    plaCodes: [],
-    keywords: ['cologuard', 'exact sciences', 'colorectal', 'crc', 'screening', 'stool', 'fda', 'sdna']
-  },
-  {
-    id: 'ecd-4',
-    name: 'FirstLook Lung',
-    vendor: 'DELFI Diagnostics',
-    category: 'ecd',
-    aliases: ['DELFI FirstLook', 'FirstLook', 'DELFI Lung'],
-    plaCodes: [],
-    keywords: ['firstlook', 'delfi', 'lung', 'lung cancer', 'screening', 'fragmentomics', 'cfdna']
-  },
-  {
-    id: 'ecd-5',
-    name: 'Freenome CRC',
-    vendor: 'Freenome',
-    category: 'ecd',
-    aliases: ['Freenome', 'Freenome Colorectal', 'Freenome CRC Blood Test'],
-    plaCodes: [],
-    keywords: ['freenome', 'colorectal', 'crc', 'screening', 'blood-based', 'multiomics']
-  }
-];
+// Module-level state
+let dictionary = null;
+const lookupByName = new Map();
+const lookupByPLA = new Map();
+const lookupByVendor = new Map();
 
 /**
- * Escape special regex characters in a string
- * @param {string} str - String to escape
- * @returns {string} Escaped string
+ * Initialize the test dictionary by fetching from API
+ * @returns {Promise<void>}
  */
-function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+export async function initializeTestDictionary() {
+  if (dictionary !== null) {
+    return;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(API_URL, {
+      signal: controller.signal,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    dictionary = data.tests || [];
+    logger.info(`Test dictionary loaded: ${dictionary.length} tests from API`);
+  } catch (error) {
+    logger.warn(`Failed to fetch test dictionary from API: ${error.message}. Using fallback snapshot.`);
+    dictionary = FALLBACK_SNAPSHOT;
+  }
+
+  buildLookupTables();
 }
 
 /**
- * Match tests mentioned in text content using deterministic rules
- * @param {string} text - Text content to search
- * @returns {Array<{test: Object, matchType: string, confidence: number, matchedOn: string}>}
+ * Build lookup tables for fast matching
  */
-function matchTests(text) {
-  if (!text || typeof text !== 'string') {
+function buildLookupTables() {
+  lookupByName.clear();
+  lookupByPLA.clear();
+  lookupByVendor.clear();
+
+  for (const test of dictionary) {
+    // Index by lowercase name
+    if (test.name) {
+      lookupByName.set(test.name.toLowerCase(), test);
+    }
+
+    // Index by PLA codes
+    const plaCodes = extractPLACodes(test.cptCodes);
+    for (const code of plaCodes) {
+      lookupByPLA.set(code, test);
+    }
+
+    // Index by vendor (multiple tests per vendor)
+    if (test.vendor) {
+      const vendorKey = test.vendor.toLowerCase();
+      if (!lookupByVendor.has(vendorKey)) {
+        lookupByVendor.set(vendorKey, []);
+      }
+      lookupByVendor.get(vendorKey).push(test);
+    }
+  }
+}
+
+/**
+ * Extract PLA codes from a cptCodes string
+ * PLA codes match pattern 0###U (4 digits starting with 0, ending with U)
+ * @param {string|null} cptCodes - CPT codes string
+ * @returns {string[]} Array of unique uppercase PLA codes
+ */
+function extractPLACodes(cptCodes) {
+  if (!cptCodes) {
     return [];
   }
 
-  const normalizedText = text.toLowerCase();
-  const matches = new Map(); // Use Map to dedupe by test ID
+  const matches = cptCodes.match(/\b(0\d{3}U)\b/gi);
+  if (!matches) {
+    return [];
+  }
 
-  for (const test of TEST_DICTIONARY) {
+  // Return unique uppercase codes
+  return [...new Set(matches.map(code => code.toUpperCase()))];
+}
+
+/**
+ * Match a test based on text content
+ * @param {string} text - Text to search for test references
+ * @param {string|null} vendor - Optional vendor name to narrow search
+ * @returns {{ test: Object, confidence: number, matchType: string }|null}
+ */
+export function matchTest(text, vendor = null) {
+  if (dictionary === null) {
+    return null;
+  }
+
+  const textLower = text.toLowerCase();
+
+  // Check PLA codes first (95% confidence)
+  const plaCodes = extractPLACodes(text);
+  for (const code of plaCodes) {
+    const test = lookupByPLA.get(code);
+    if (test) {
+      return {
+        test,
+        confidence: 0.95,
+        matchType: 'pla_code'
+      };
+    }
+  }
+
+  // Check exact name match (90% confidence)
+  for (const [name, test] of lookupByName) {
+    if (textLower.includes(name)) {
+      return {
+        test,
+        confidence: 0.90,
+        matchType: 'exact_name'
+      };
+    }
+  }
+
+  // Check vendor + partial name match (70% confidence)
+  if (vendor) {
+    const vendorKey = vendor.toLowerCase();
+    const vendorTests = lookupByVendor.get(vendorKey);
+    if (vendorTests) {
+      for (const test of vendorTests) {
+        // Check if any significant part of the test name appears in text
+        const nameParts = test.name.toLowerCase().split(/\s+/);
+        for (const part of nameParts) {
+          if (part.length > 3 && textLower.includes(part)) {
+            return {
+              test,
+              confidence: 0.70,
+              matchType: 'vendor_partial'
+            };
+          }
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Get all tests in the dictionary
+ * @returns {Array} Array of test objects
+ */
+export function getAllTests() {
+  return dictionary || [];
+}
+
+/**
+ * Find a test by its ID
+ * @param {string} id - Test ID
+ * @returns {Object|undefined} Test object or undefined
+ */
+export function findTestById(id) {
+  if (!dictionary) {
+    return undefined;
+  }
+  return dictionary.find(test => test.id === id);
+}
+
+// =============================================================================
+// Backwards-compatible exports (legacy API)
+// These match the original API used by crawlers
+// =============================================================================
+
+/**
+ * Match all tests mentioned in text content
+ * @param {string} text - Text content to search
+ * @returns {Array<{test: Object, matchType: string, confidence: number, matchedOn: string}>}
+ */
+export function matchTests(text) {
+  if (!text || typeof text !== 'string' || dictionary === null) {
+    return [];
+  }
+
+  const textLower = text.toLowerCase();
+  const matches = new Map();
+
+  for (const test of dictionary) {
     let bestMatch = null;
 
     // Priority 1: PLA code match (confidence 0.95)
-    for (const code of test.plaCodes) {
-      // Match code with various formats: 0037U, 0037u, CPT 0037U, PLA 0037U
+    const plaCodes = extractPLACodes(test.cptCodes);
+    for (const code of plaCodes) {
       const codePatterns = [
         new RegExp(`\\b${code}\\b`, 'i'),
         new RegExp(`cpt[:\\s]*${code}`, 'i'),
@@ -284,7 +230,7 @@ function matchTests(text) {
     }
 
     // Priority 2: Exact test name match (confidence 0.90)
-    if (!bestMatch) {
+    if (!bestMatch && test.name) {
       const namePattern = new RegExp(`\\b${escapeRegex(test.name)}\\b`, 'i');
       if (namePattern.test(text)) {
         bestMatch = {
@@ -296,38 +242,23 @@ function matchTests(text) {
       }
     }
 
-    // Priority 3: Alias match (confidence 0.85)
-    if (!bestMatch) {
-      for (const alias of test.aliases) {
-        const aliasPattern = new RegExp(`\\b${escapeRegex(alias)}\\b`, 'i');
-        if (aliasPattern.test(text)) {
-          bestMatch = {
-            test,
-            matchType: 'alias_match',
-            confidence: 0.85,
-            matchedOn: alias
-          };
-          break;
-        }
-      }
-    }
-
-    // Priority 4: Vendor + category keyword match (confidence 0.70)
-    if (!bestMatch) {
+    // Priority 3: Vendor + category keyword match (confidence 0.70)
+    if (!bestMatch && test.vendor) {
       const vendorPattern = new RegExp(`\\b${escapeRegex(test.vendor.split('/')[0])}\\b`, 'i');
       const vendorMatch = vendorPattern.test(text);
 
       if (vendorMatch) {
-        // Check for category-relevant terms
         const categoryTerms = {
-          mrd: ['mrd', 'minimal residual disease', 'residual disease', 'monitoring', 'recurrence', 'ctdna'],
-          tds: ['cgp', 'comprehensive genomic', 'tumor profiling', 'companion diagnostic', 'cdx', 'treatment', 'therapy selection'],
-          ecd: ['screening', 'early detection', 'multi-cancer', 'mced']
+          MRD: ['mrd', 'minimal residual disease', 'residual disease', 'monitoring', 'recurrence', 'ctdna'],
+          TDS: ['cgp', 'comprehensive genomic', 'tumor profiling', 'companion diagnostic', 'cdx', 'treatment', 'therapy selection'],
+          ECD: ['screening', 'early detection', 'multi-cancer', 'mced'],
+          HCT: ['hereditary', 'germline', 'genetic testing', 'cancer risk'],
+          TRM: ['response monitoring', 'treatment response', 'therapy monitoring']
         };
 
         const relevantTerms = categoryTerms[test.category] || [];
         for (const term of relevantTerms) {
-          if (normalizedText.includes(term)) {
+          if (textLower.includes(term)) {
             bestMatch = {
               test,
               matchType: 'vendor_keyword_match',
@@ -340,7 +271,6 @@ function matchTests(text) {
       }
     }
 
-    // Store the best match for this test
     if (bestMatch) {
       const existing = matches.get(test.id);
       if (!existing || bestMatch.confidence > existing.confidence) {
@@ -349,7 +279,6 @@ function matchTests(text) {
     }
   }
 
-  // Convert to array and sort by confidence (highest first), then by test name for determinism
   return Array.from(matches.values())
     .sort((a, b) => {
       if (b.confidence !== a.confidence) {
@@ -360,11 +289,20 @@ function matchTests(text) {
 }
 
 /**
+ * Escape special regex characters in a string
+ * @param {string} str - String to escape
+ * @returns {string} Escaped string
+ */
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
  * Format deterministic matches for inclusion in Claude prompts
  * @param {Array} matches - Array of match objects from matchTests()
  * @returns {string} Formatted string for prompt inclusion
  */
-function formatMatchesForPrompt(matches) {
+export function formatMatchesForPrompt(matches) {
   if (!matches || matches.length === 0) {
     return 'No tests were identified by deterministic matching.';
   }
@@ -377,8 +315,11 @@ function formatMatchesForPrompt(matches) {
   return `The following tests were identified by deterministic code/name matching:\n${lines.join('\n')}`;
 }
 
-export {
-  TEST_DICTIONARY,
+export default {
+  initializeTestDictionary,
+  matchTest,
   matchTests,
-  formatMatchesForPrompt
+  formatMatchesForPrompt,
+  getAllTests,
+  findTestById
 };
