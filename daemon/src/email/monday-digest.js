@@ -718,14 +718,15 @@ function generateEmailHtml(digest) {
 
     <!-- Crawler Run Stats -->
     <div style="margin-bottom: 24px;">
-      <div style="font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 8px;">Crawler Run Stats</div>
+      <div style="font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 4px;">Last Crawler Run</div>
+      <div style="font-size: 11px; color: #999; margin-bottom: 8px;">Stats from most recent scheduled run (not cumulative)</div>
       <table style="width: 100%; border-collapse: collapse; background: #f8f9fa; border-radius: 6px; overflow: hidden;">
         <thead>
           <tr style="background: #e5e7eb;">
             <th style="padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; color: #666;">Source</th>
-            <th style="padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; color: #666;">Last Run</th>
+            <th style="padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; color: #666;">When</th>
             <th style="padding: 8px 12px; text-align: center; font-size: 11px; text-transform: uppercase; color: #666;">Duration</th>
-            <th style="padding: 8px 12px; text-align: center; font-size: 11px; text-transform: uppercase; color: #666;">Discoveries</th>
+            <th style="padding: 8px 12px; text-align: center; font-size: 11px; text-transform: uppercase; color: #666;">Found / Added</th>
           </tr>
         </thead>
         <tbody>
