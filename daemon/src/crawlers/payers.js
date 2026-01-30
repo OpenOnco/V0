@@ -196,11 +196,11 @@ const REGIONAL_BCBS_URLS = {
     policyPages: [],
   },
   'bcbs-kc': {
-    indexUrl: null, // TODO: Find Blue KC policy index URL
+    indexUrl: 'https://www.bluekc.com/providers/medical-policies',
     policyPages: [],
   },
   'bcbs-la': {
-    indexUrl: null, // TODO: Find BCBS Louisiana policy index URL
+    indexUrl: 'https://www.bcbsla.com/providers/resources/medical-policies',
     policyPages: [],
   },
 };
@@ -232,7 +232,7 @@ const LBM_URLS = {
     policyPages: [],
   },
   'aim': {
-    indexUrl: null, // TODO: Find AIM Specialty Health policy index URL
+    indexUrl: 'https://aimspecialtyhealth.com/resources/clinical-guidelines/genetic-testing/',
     policyPages: [],
   },
   'avalon': {
