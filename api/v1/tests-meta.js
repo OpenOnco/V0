@@ -21,15 +21,6 @@ function setCorsHeaders(res) {
   Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
 }
 
-// Map internal category codes to lowercase API category names
-const CATEGORY_OUTPUT_MAP = {
-  MRD: 'mrd',
-  ECD: 'ecd',
-  CGP: 'tds', // CGP is stored internally but exposed as TDS
-  TRM: 'trm',
-  HCT: 'hct',
-};
-
 export default async function handler(req, res) {
   setCorsHeaders(res);
 
@@ -43,23 +34,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Fetch all tests from all categories
-    const categories = ['MRD', 'ECD', 'CGP', 'TRM', 'HCT'];
-    const allTests = [];
-
-    for (const category of categories) {
-      const { data: tests } = await dal.tests.findByCategory(category);
-      allTests.push(...tests);
-    }
+    // Fetch all tests using findAll() to ensure we get all tests
+    // regardless of internal category structure
+    const { data: allTests } = await dal.tests.findAll();
 
     // Extract only the required fields
-    const tests = allTests.map(test => ({
-      id: test.id,
-      name: test.name,
-      vendor: test.vendor,
-      category: CATEGORY_OUTPUT_MAP[test.category] || test.category.toLowerCase(),
-      cptCodes: test.cptCodes || [],
-    }));
+    // Category is derived from ID prefix (mrd-*, ecd-*, tds-*, trm-*, hct-*)
+    const tests = allTests.map(test => {
+      const idPrefix = test.id.split('-')[0];
+      return {
+        id: test.id,
+        name: test.name,
+        vendor: test.vendor,
+        category: idPrefix, // Use ID prefix as category
+        cptCodes: test.cptCodes || null,
+      };
+    });
 
     // Set cache header for CDN (1 hour)
     res.setHeader('Cache-Control', 'public, s-maxage=3600');
