@@ -577,21 +577,37 @@ export const MONITORED_VENDORS = [
 ];
 
 // =============================================================================
-// DISCOVERY TYPES (Simplified for coverage focus)
+// DISCOVERY TYPES
 // =============================================================================
 
 export const DISCOVERY_TYPES = {
-  // Medicare/CMS updates
+  // Medicare/CMS updates (existing)
   MEDICARE_LCD_UPDATE: 'medicare_lcd_update',
   MEDICARE_NCD_UPDATE: 'medicare_ncd_update',
 
-  // Private payer updates
+  // Private payer updates (existing)
   PAYER_POLICY_UPDATE: 'payer_policy_update',
   PAYER_POLICY_NEW: 'payer_policy_new',
   COVERAGE_CHANGE: 'coverage_change',
 
-  // Vendor announcements
+  // Vendor coverage (existing)
   VENDOR_COVERAGE_ANNOUNCEMENT: 'vendor_coverage_announcement',
+
+  // Financial/PAP types (NEW - HIGH PRIORITY)
+  VENDOR_PAP_UPDATE: 'vendor_pap_update',           // PAP eligibility or program changes
+  VENDOR_PRICE_CHANGE: 'vendor_price_change',       // Cash pay or list price changes
+  VENDOR_PAYMENT_PLAN: 'vendor_payment_plan',       // Payment plan availability or changes
+
+  // PLA/Medicare rate types (NEW)
+  VENDOR_PLA_CODE: 'vendor_pla_code',               // New PLA code announced by vendor
+  CMS_PLA_REFERENCE: 'cms_pla_reference',           // PLA code referenced in LCD/NCD
+
+  // Other vendor intelligence (NEW - nice to have)
+  VENDOR_CLINICAL_EVIDENCE: 'vendor_clinical_evidence',
+  VENDOR_PERFORMANCE_DATA: 'vendor_performance_data',
+  VENDOR_REGULATORY: 'vendor_regulatory',
+  VENDOR_NEW_INDICATION: 'vendor_new_indication',
+  VENDOR_NEW_TEST: 'vendor_new_test',
 };
 
 // =============================================================================

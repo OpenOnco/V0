@@ -14,6 +14,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES } from '../config.js';
+import { initializeCLFS, lookupPLARate, lookupMultiplePLARates, extractPLACodes } from '../utils/medicare-rates.js';
 
 const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
 
@@ -104,6 +105,7 @@ export class CMSCrawler extends BaseCrawler {
    */
   async crawl() {
     this.log('info', 'Starting CMS crawler');
+    await initializeCLFS();  // Initialize CLFS rate data at start
     const discoveries = [];
 
     // Strategy 1: Check What's New report for recent changes
@@ -130,9 +132,20 @@ export class CMSCrawler extends BaseCrawler {
       }
     }
 
+    // Create separate PLA reference discoveries for each main discovery
+    const plaDiscoveries = [];
+    for (const discovery of discoveries) {
+      const plas = this.createPLADiscoveries(discovery);
+      plaDiscoveries.push(...plas);
+    }
+
+    // Add PLA discoveries to main list
+    discoveries.push(...plaDiscoveries);
+
     this.log('info', 'CMS crawl complete', {
       keywordsSearched: SEARCH_KEYWORDS.length,
       discoveries: discoveries.length,
+      plaDiscoveries: plaDiscoveries.length,
       seenDocuments: this.seenDocuments.size,
     });
 
@@ -352,18 +365,50 @@ export class CMSCrawler extends BaseCrawler {
 
   /**
    * Use Claude AI to analyze a CMS coverage determination item
+   * Extracts coverage decision, affected tests, and PLA codes with Medicare rates.
    * @param {Object} item - The CMS item data
    * @param {string} documentType - 'LCD', 'NCD', or 'Article'
    * @returns {Promise<Object|null>} - Analysis results or null if unavailable
    */
   async analyzeDiscovery(item, documentType) {
+    const title = item.title || item.name || '';
+    const summary = item.summary || item.description || '';
+    const rawContent = JSON.stringify(item, null, 2);
+
+    // Extract PLA codes from the item data
+    const foundPLACodes = extractPLACodes(`${title} ${summary} ${rawContent}`);
+
+    // Look up rates for found PLA codes
+    const plaRates = [];
+    for (const code of foundPLACodes) {
+      try {
+        const rateInfo = await lookupPLARate(code);
+        plaRates.push({
+          code,
+          ...rateInfo,
+        });
+      } catch (e) {
+        this.log('debug', `Failed to lookup rate for ${code}: ${e.message}`);
+        plaRates.push({ code, rate: null, status: 'Lookup Failed' });
+      }
+    }
+
     if (!this.anthropic) {
       this.log('debug', 'Skipping AI analysis - Anthropic client not configured');
+      // Return just PLA code info if found
+      if (plaRates.length > 0) {
+        return {
+          coverageDecision: 'unknown',
+          affectedTests: [],
+          isMolDXRelevant: false,
+          keyChanges: '',
+          analysisNotes: '',
+          plaCodes: plaRates,
+        };
+      }
       return null;
     }
 
-    const title = item.title || item.name || '';
-    const summary = item.summary || item.description || '';
     const contractor = item.contractor || item.mac || item.contractorName || '';
     const effectiveDate = item.effectiveDate || item.revisionEffectiveDate || item.publishDate || '';
 
@@ -374,9 +419,11 @@ Title: ${title}
 Summary: ${summary}
 Contractor/MAC: ${contractor}
 Effective Date: ${effectiveDate}
-Raw Data: ${JSON.stringify(item, null, 2)}
+Raw Data: ${rawContent}
 
 Known molecular diagnostic tests to look for: ${ALL_TEST_NAMES.join(', ')}
+
+${foundPLACodes.length > 0 ? `PLA codes already found in document: ${foundPLACodes.join(', ')}` : ''}
 
 Please analyze this coverage determination and respond with ONLY a JSON object (no markdown, no explanation) containing:
 {
@@ -384,21 +431,30 @@ Please analyze this coverage determination and respond with ONLY a JSON object (
   "affectedTests": ["array of specific test names mentioned or likely affected"],
   "isMolDXRelevant": true | false,
   "keyChanges": "Brief summary of important policy changes or coverage criteria",
-  "analysisNotes": "Your analysis notes about this coverage determination's significance for molecular diagnostics"
+  "analysisNotes": "Your analysis notes about this coverage determination's significance for molecular diagnostics",
+  "plaCodes": [
+    {
+      "code": "0XXXU",
+      "testName": "Associated test name if identifiable (or null)",
+      "coverageStatus": "covered | not_covered | conditional | null",
+      "notes": "Any specific notes about this code's coverage"
+    }
+  ]
 }
 
 Focus on:
 - Whether this affects ctDNA, liquid biopsy, MRD, or tumor profiling tests
 - Specific coverage criteria or limitations mentioned
 - Any changes from previous policy versions
-- Impact on MolDX program tests`;
+- Impact on MolDX program tests
+- All PLA codes mentioned and their coverage status`;
 
     try {
       this.log('debug', `Analyzing ${documentType} with Claude: ${title}`);
 
       const response = await this.anthropic.messages.create({
         model: CLAUDE_MODEL,
-        max_tokens: 1024,
+        max_tokens: 1536,
         messages: [
           {
             role: 'user',
@@ -410,12 +466,54 @@ Focus on:
       const content = response.content[0]?.text;
       if (!content) {
         this.log('warn', 'Empty response from Claude AI analysis');
-        return null;
+        return {
+          coverageDecision: 'unknown',
+          affectedTests: [],
+          isMolDXRelevant: false,
+          keyChanges: '',
+          analysisNotes: '',
+          plaCodes: plaRates,
+        };
       }
 
-      // Parse the JSON response
-      const analysis = JSON.parse(content);
+      // Parse the JSON response - handle potential markdown code fences
+      let jsonText = content.trim();
+      const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (jsonMatch) {
+        jsonText = jsonMatch[1].trim();
+      }
+
+      const analysis = JSON.parse(jsonText);
       this.log('debug', `AI analysis complete for: ${title}`, { analysis });
+
+      // Merge LLM-found PLA codes with rate lookups
+      const mergedPlaCodes = [...plaRates];
+      if (analysis.plaCodes && analysis.plaCodes.length > 0) {
+        for (const llmPla of analysis.plaCodes) {
+          const existing = mergedPlaCodes.find(p => p.code === llmPla.code);
+          if (existing) {
+            // Add LLM context to existing rate info
+            existing.testName = llmPla.testName || existing.testName;
+            existing.coverageStatus = llmPla.coverageStatus;
+            existing.notes = llmPla.notes;
+          } else {
+            // New code from LLM - look up rate
+            try {
+              const rateInfo = await lookupPLARate(llmPla.code);
+              mergedPlaCodes.push({
+                ...llmPla,
+                ...rateInfo,
+              });
+            } catch (e) {
+              mergedPlaCodes.push({
+                ...llmPla,
+                rate: null,
+                status: 'Lookup Failed',
+              });
+            }
+          }
+        }
+      }
 
       return {
         coverageDecision: analysis.coverageDecision || 'unknown',
@@ -423,11 +521,62 @@ Focus on:
         isMolDXRelevant: analysis.isMolDXRelevant || false,
         keyChanges: analysis.keyChanges || '',
         analysisNotes: analysis.analysisNotes || '',
+        plaCodes: mergedPlaCodes,
       };
     } catch (error) {
       this.log('warn', `AI analysis failed for ${documentType}: ${title}`, { error: error.message });
-      return null;
+      return {
+        coverageDecision: 'unknown',
+        affectedTests: [],
+        isMolDXRelevant: false,
+        keyChanges: '',
+        analysisNotes: '',
+        plaCodes: plaRates,
+      };
     }
+  }
+
+  /**
+   * Create PLA reference discoveries from analysis
+   * Called after main crawl to create separate discoveries for PLA codes
+   * @param {Object} discovery - The main discovery object
+   * @returns {Array} Array of PLA reference discoveries
+   */
+  createPLADiscoveries(discovery) {
+    const plaDiscoveries = [];
+
+    if (!discovery.metadata?.aiAnalysis?.plaCodes) {
+      return plaDiscoveries;
+    }
+
+    for (const pla of discovery.metadata.aiAnalysis.plaCodes) {
+      if (!pla.code) continue;
+
+      plaDiscoveries.push({
+        source: SOURCES.CMS,
+        type: DISCOVERY_TYPES.CMS_PLA_REFERENCE,
+        title: `${discovery.metadata.documentType}: PLA ${pla.code} referenced`,
+        summary: pla.notes || `PLA code ${pla.code} mentioned in ${discovery.title}`,
+        url: discovery.url,
+        relevance: pla.coverageStatus === 'covered' ? 'high' : 'medium',
+        metadata: {
+          documentId: discovery.metadata.documentId,
+          documentType: discovery.metadata.documentType,
+          contractor: discovery.metadata.contractor,
+          effectiveDate: discovery.metadata.effectiveDate,
+          plaCode: pla.code,
+          testName: pla.testName,
+          coverageStatus: pla.coverageStatus,
+          medicareRate: pla.rate,
+          medicareStatus: pla.status,
+          medicareEffective: pla.effective,
+          adltStatus: pla.adltStatus,
+          parentDiscoveryTitle: discovery.title,
+        },
+      });
+    }
+
+    return plaDiscoveries;
   }
 }
 
