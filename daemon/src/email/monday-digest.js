@@ -841,6 +841,7 @@ export async function sendMondayDigest() {
         {
           filename: 'coverage-review.md',
           content: attachmentContent,
+          type: 'text/markdown; charset=utf-8'
         }
       ]
     });

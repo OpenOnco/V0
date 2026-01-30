@@ -54,11 +54,27 @@ export function loadDiscoveries() {
 }
 
 /**
- * Save a new discovery
+ * Save a new discovery (with deduplication)
  * Discovery schema: { id, source, type, title, summary, url, data, discoveredAt, reviewedAt, status }
+ * Deduplication: Skip if same source+title exists and is still pending
  */
 export function saveDiscovery(discovery) {
   const discoveries = loadDiscoveries();
+
+  // Deduplicate: Check if same source+title already exists as pending
+  const isDuplicate = discoveries.some(d => 
+    d.source === discovery.source && 
+    d.title === discovery.title && 
+    d.status === 'pending'
+  );
+  
+  if (isDuplicate) {
+    logger.debug('Skipping duplicate discovery', { 
+      source: discovery.source, 
+      title: discovery.title 
+    });
+    return null;
+  }
 
   const now = new Date().toISOString();
   const newDiscovery = {

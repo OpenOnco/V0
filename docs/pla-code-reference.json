@@ -1,0 +1,494 @@
+{
+  "_metadata": {
+    "title": "PLA Code Reference for OpenOnco Tests",
+    "description": "Mapping of Proprietary Laboratory Analyses (PLA) codes to diagnostic tests",
+    "sources": [
+      "BCBSM Medical Policy - PLA Codes (Jan 2025)",
+      "CMS CLFS Q4 2025",
+      "AMA PLA Long Descriptors"
+    ],
+    "lastUpdated": "2026-01-29",
+    "notes": "EST = Established (evidence meets criteria), EI = Experimental/Investigational"
+  },
+  "plaCodeMappings": {
+    "0037U": {
+      "testName": "FoundationOne CDx (F1CDx)",
+      "vendor": "Foundation Medicine, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-1",
+      "bcbsmStatus": "EST",
+      "medicareRate": 3500,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0048U": {
+      "testName": "MSK-IMPACT (Integrated Mutation Profiling of Actionable Cancer Targets)",
+      "vendor": "Memorial Sloan Kettering Cancer Center",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-8",
+      "bcbsmStatus": "EI",
+      "medicareRate": 2919.60,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0111U": {
+      "testName": "FoundationOne Heme",
+      "vendor": "Foundation Medicine, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-3",
+      "bcbsmStatus": "EST",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true
+    },
+    "0171U": {
+      "testName": "FoundationOne RNA",
+      "vendor": "Foundation Medicine, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": null,
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false
+    },
+    "0172U": {
+      "testName": "myChoice CDx",
+      "vendor": "Myriad Genetics",
+      "category": "TDS/CDx",
+      "openoncoId": null,
+      "bcbsmStatus": "EST",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false,
+      "notes": "HRD companion diagnostic for PARP inhibitors"
+    },
+    "0239U": {
+      "testName": "FoundationOne Liquid CDx",
+      "vendor": "Foundation Medicine, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-2",
+      "bcbsmStatus": "EST",
+      "medicareRate": 3500,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0242U": {
+      "testName": "Guardant360 CDx",
+      "vendor": "Guardant Health Inc",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-4",
+      "bcbsmStatus": "EST",
+      "medicareRate": 5000,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0306U": {
+      "testName": "Invitae PCM Tissue Profiling and MRD Baseline Assay",
+      "vendor": "Invitae (now Labcorp)",
+      "category": "MRD",
+      "openoncoId": "mrd-16",
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true
+    },
+    "0307U": {
+      "testName": "Invitae PCM MRD Monitoring",
+      "vendor": "Invitae (now Labcorp)",
+      "category": "MRD",
+      "openoncoId": "mrd-16",
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true,
+      "notes": "Monitoring test, paired with 0306U baseline"
+    },
+    "0326U": {
+      "testName": "Guardant360 (original 74-gene)",
+      "vendor": "Guardant Health, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": null,
+      "bcbsmStatus": "EST",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false,
+      "notes": "Original 74-gene panel; superseded by Guardant360 Liquid (744 genes) Dec 2024. NOT the same as tds-17."
+    },
+    "0334U": {
+      "testName": "Guardant360 TissueNext",
+      "vendor": "Guardant Health, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": null,
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false
+    },
+    "0340U": {
+      "testName": "Signatera",
+      "vendor": "Natera, Inc",
+      "category": "MRD",
+      "openoncoId": "mrd-7",
+      "bcbsmStatus": "EST",
+      "medicareRate": 3920,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0356U": {
+      "testName": "NavDx",
+      "vendor": "Biodesix, Inc",
+      "category": "MRD",
+      "openoncoId": "mrd-14",
+      "bcbsmStatus": "EI",
+      "medicareRate": 1800,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0364U": {
+      "testName": "clonoSEQ Assay",
+      "vendor": "Adaptive Biotechnologies",
+      "category": "MRD",
+      "openoncoId": "mrd-19",
+      "bcbsmStatus": "EST",
+      "medicareRate": 2007.25,
+      "adlt": true,
+      "inDatabase": true,
+      "notes": "Heme MRD - ALL, CLL, MM"
+    },
+    "0379U": {
+      "testName": "Solid Tumor Expanded Panel",
+      "vendor": "Quest Diagnostics",
+      "category": "TDS/CGP",
+      "openoncoId": null,
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false
+    },
+    "0391U": {
+      "testName": "StrataNGS",
+      "vendor": "Strata Oncology",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-13",
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true
+    },
+    "0409U": {
+      "testName": "LiquidHALLMARK",
+      "vendor": "Lucence Health (acquired by Konica Minolta)",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-22",
+      "bcbsmStatus": "EI",
+      "medicareRate": "MAC-Priced",
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0410U": {
+      "testName": "Avantect Pancreatic Cancer Test",
+      "vendor": "ClearNote Health",
+      "category": "ECD",
+      "openoncoId": "ecd-20",
+      "bcbsmStatus": "EI",
+      "medicareRate": 1160,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0421U": {
+      "testName": "ColoSense",
+      "vendor": "Geneoscopy",
+      "category": "ECD",
+      "openoncoId": "ecd-4",
+      "bcbsmStatus": "EI",
+      "medicareRate": 508.87,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0422U": {
+      "testName": "Guardant360 Response",
+      "vendor": "Guardant Health, Inc",
+      "category": "TRM",
+      "openoncoId": "trm-1",
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true,
+      "notes": "DISCONTINUED - superseded by Reveal TRM Dec 2025"
+    },
+    "0464U": {
+      "testName": "Cologuard Plus",
+      "vendor": "Exact Sciences",
+      "category": "ECD",
+      "openoncoId": "ecd-3",
+      "bcbsmStatus": "EST",
+      "medicareRate": 591.92,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0473U": {
+      "testName": "Tempus xT CDx",
+      "vendor": "Tempus AI, Inc",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-5",
+      "bcbsmStatus": "EST",
+      "medicareRate": 4500,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0485U": {
+      "testName": "Caris Assure",
+      "vendor": "Caris Life Sciences",
+      "category": "MRD/TRM",
+      "openoncoId": ["mrd-18", "trm-11"],
+      "bcbsmStatus": "EI",
+      "medicareRate": "MAC-Priced",
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0486U": {
+      "testName": "Northstar Response",
+      "vendor": "BillionToOne",
+      "category": "TRM",
+      "openoncoId": "trm-8",
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true
+    },
+    "0487U": {
+      "testName": "Northstar Select",
+      "vendor": "BillionToOne",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-16",
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": true,
+      "needsUpdate": true
+    },
+    "0510U": {
+      "testName": "PurIST",
+      "vendor": "Tempus AI",
+      "category": "TDS",
+      "openoncoId": null,
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false,
+      "notes": "PDAC subtyping"
+    },
+    "0512U": {
+      "testName": "Tempus p-MSI",
+      "vendor": "Tempus AI",
+      "category": "Biomarker",
+      "openoncoId": null,
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false
+    },
+    "0513U": {
+      "testName": "Tempus p-Prostate",
+      "vendor": "Tempus AI",
+      "category": "TDS",
+      "openoncoId": null,
+      "bcbsmStatus": "EI",
+      "medicareRate": null,
+      "adlt": true,
+      "inDatabase": false
+    },
+    "0537U": {
+      "testName": "Shield",
+      "vendor": "Guardant Health",
+      "category": "ECD",
+      "openoncoId": "ecd-1",
+      "bcbsmStatus": "EST",
+      "medicareRate": 1495,
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0561U": {
+      "testName": "Haystack MRD",
+      "vendor": "Quest Diagnostics (Haystack Oncology)",
+      "category": "MRD",
+      "openoncoId": "mrd-1",
+      "bcbsmStatus": "EI",
+      "medicareRate": "MAC-Priced",
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0569U": {
+      "testName": "Guardant Reveal (MRD)",
+      "vendor": "Guardant Health",
+      "category": "MRD",
+      "openoncoId": "mrd-6",
+      "bcbsmStatus": "EI",
+      "medicareRate": "MAC-Priced",
+      "adlt": true,
+      "inDatabase": true
+    },
+    "0571U": {
+      "testName": "LiquidHALLMARK",
+      "vendor": "Lucence Health",
+      "category": "TDS/CGP",
+      "openoncoId": "tds-22",
+      "bcbsmStatus": "EI",
+      "medicareRate": "MAC-Priced",
+      "adlt": true,
+      "inDatabase": true,
+      "notes": "Duplicate? Check if 0409U and 0571U are same test"
+    },
+    "0333U": {
+      "testName": "HelioLiver",
+      "vendor": "Helio Genomics (Fulgent)",
+      "category": "ECD",
+      "openoncoId": "ecd-8",
+      "bcbsmStatus": "EI",
+      "medicareRate": 662.32,
+      "adlt": true,
+      "inDatabase": true
+    }
+  },
+  "cptCodeMappings": {
+    "81519": {
+      "testName": "Oncotype DX Breast Recurrence Score",
+      "vendor": "Exact Sciences",
+      "category": "TDS/Prognostic",
+      "openoncoId": "tds-19",
+      "medicareRate": 3873,
+      "inDatabase": true
+    },
+    "81162": {
+      "testName": "BRCA1/BRCA2 full sequencing",
+      "vendor": "Multiple",
+      "category": "HCT",
+      "openoncoId": "hct-1",
+      "medicareRate": 1824.88,
+      "inDatabase": true,
+      "notes": "Used by MyRisk and other comprehensive panels"
+    },
+    "81432": {
+      "testName": "Hereditary breast cancer-related disorders panel",
+      "vendor": "Multiple",
+      "category": "HCT",
+      "openoncoId": ["hct-2", "hct-3", "hct-6", "hct-7", "hct-9", "hct-10"],
+      "medicareRate": 1303.95,
+      "inDatabase": true,
+      "notes": "5-50 gene panel; stacked with 81433 for larger panels"
+    },
+    "81433": {
+      "testName": "Hereditary breast cancer dup/del analysis",
+      "vendor": "Multiple",
+      "category": "HCT",
+      "openoncoId": ["hct-2", "hct-3", "hct-6", "hct-7", "hct-9", "hct-10"],
+      "medicareRate": null,
+      "inDatabase": true,
+      "notes": "Add-on to 81432"
+    },
+    "81327": {
+      "testName": "Epi proColon (SEPT9 methylation)",
+      "vendor": "Epigenomics",
+      "category": "ECD",
+      "openoncoId": "ecd-kit-2",
+      "medicareRate": null,
+      "inDatabase": true,
+      "needsUpdate": true
+    }
+  },
+  "testsNeedingPLACodes": [
+    {
+      "openoncoId": "tds-3",
+      "testName": "FoundationOne Heme",
+      "vendor": "Foundation Medicine",
+      "suggestedCode": "0111U",
+      "priority": "HIGH"
+    },
+    {
+      "openoncoId": "tds-13",
+      "testName": "StrataNGS",
+      "vendor": "Strata Oncology",
+      "suggestedCode": "0391U",
+      "priority": "HIGH"
+    },
+    {
+      "openoncoId": "tds-16",
+      "testName": "Northstar Select",
+      "vendor": "BillionToOne",
+      "suggestedCode": "0487U",
+      "priority": "HIGH"
+    },
+    {
+      "openoncoId": "trm-8",
+      "testName": "Northstar Response",
+      "vendor": "BillionToOne",
+      "suggestedCode": "0486U",
+      "priority": "HIGH"
+    },
+    {
+      "openoncoId": "mrd-16",
+      "testName": "Invitae PCM",
+      "vendor": "Labcorp (Invitae)",
+      "suggestedCode": "0306U/0307U",
+      "priority": "HIGH"
+    },
+    {
+      "openoncoId": "trm-1",
+      "testName": "Guardant360 Response",
+      "vendor": "Guardant Health",
+      "suggestedCode": "0422U",
+      "priority": "MEDIUM",
+      "notes": "DISCONTINUED product"
+    },
+    {
+      "openoncoId": "ecd-kit-2",
+      "testName": "Epi proColon",
+      "vendor": "Epigenomics",
+      "suggestedCode": "81327",
+      "priority": "HIGH"
+    },
+    {
+      "openoncoId": "ecd-2",
+      "testName": "Galleri",
+      "vendor": "GRAIL",
+      "suggestedCode": "0239U (shared) or pending dedicated PLA",
+      "priority": "MEDIUM",
+      "notes": "Galleri uses unique MCED technology; may have dedicated PLA"
+    },
+    {
+      "openoncoId": "tds-17",
+      "testName": "Guardant360 Liquid (744 genes)",
+      "vendor": "Guardant Health",
+      "suggestedCode": "PENDING - new Dec 2024 product",
+      "priority": "HIGH",
+      "notes": "NOT 0326U (that's old 74-gene). May need new PLA or use 0242U CDx code"
+    },
+    {
+      "openoncoId": "tds-6",
+      "testName": "Tempus xF",
+      "vendor": "Tempus AI",
+      "suggestedCode": "RESEARCH NEEDED",
+      "priority": "MEDIUM"
+    },
+    {
+      "openoncoId": "tds-7",
+      "testName": "Tempus xF+",
+      "vendor": "Tempus AI",
+      "suggestedCode": "RESEARCH NEEDED",
+      "priority": "MEDIUM"
+    }
+  ],
+  "recentPLAUpdates": {
+    "Q4_2025": [
+      "0614U-0630U: New codes effective Oct 2025",
+      "Revisions: 0256U, 0580U",
+      "Deletions: 0033U, 0131U, 0132U, 0135U, 0361U, 0508U, 0509U, 0544U, 0550U, 0551U"
+    ]
+  }
+}
