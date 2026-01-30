@@ -197,7 +197,7 @@ function buildDigestData() {
     crawlerHealth: {
       cms: health.crawlers?.cms || null,
       payers: health.crawlers?.payers || null,
-      vendor: health.crawlers?.vendor || null,
+      vendor: health.crawlers?.vendors || null,
     },
     errors: recentErrors,
     discoveries: pending.map(d => ({
@@ -841,7 +841,7 @@ export async function sendMondayDigest() {
         {
           filename: 'coverage-review.md',
           content: attachmentContent,
-          type: 'text/markdown; charset=utf-8'
+          contentType: 'text/markdown; charset=utf-8'
         }
       ]
     });
