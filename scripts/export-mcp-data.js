@@ -19,6 +19,7 @@ import {
   ecdTestData,
   hctTestData,
   tdsTestData,
+  VENDOR_ASSISTANCE_PROGRAMS,
 } from '../src/data.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,12 +34,20 @@ const outputDir = process.argv[2]
 // Ensure output directory exists
 mkdirSync(outputDir, { recursive: true });
 
+// Transform PAP data to array format for DuckDB
+const papData = Object.entries(VENDOR_ASSISTANCE_PROGRAMS).map(([vendorName, program]) => ({
+  id: vendorName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+  vendorName,
+  ...program,
+}));
+
 // Define the exports
 const exports = [
   { name: 'mrd', data: mrdTestData },
   { name: 'ecd', data: ecdTestData },
   { name: 'hct', data: hctTestData },
   { name: 'tds', data: tdsTestData },
+  { name: 'pap', data: papData },
 ];
 
 console.log(`Exporting OpenOnco data to: ${outputDir}\n`);

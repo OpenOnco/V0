@@ -7,6 +7,8 @@
  *   GET /api/v1/tests/:id              - Get single test
  *   GET /api/v1/categories             - List categories
  *   GET /api/v1/vendors                - List vendors
+ *   GET /api/v1/assistance             - List vendor assistance programs
+ *   GET /api/v1/assistance/:vendor     - Get assistance program for vendor
  *   GET /api/v1/stats                  - Database statistics
  *   GET /api/v1/embed/test             - Embeddable test card
  *   GET /api/v1/coverage               - List tests with coverage data
@@ -268,6 +270,103 @@ async function handleVendors(req, res) {
     success: true,
     meta: { totalVendors: vendors.length, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
     data: vendors,
+  });
+}
+
+async function handleAssistance(req, res) {
+  const { medicare, medicaid, hasFpl } = req.query;
+
+  // Get all vendors with assistance programs
+  const { data: vendors } = await dal.vendors.findWithAssistanceProgram();
+
+  let programs = vendors
+    .filter(v => v.assistanceProgram)
+    .map(v => ({
+      vendorId: v.id,
+      vendorName: v.name,
+      ...v.assistanceProgram,
+    }));
+
+  // Filter by Medicare eligibility
+  if (medicare !== undefined) {
+    const wantMedicare = medicare === 'true';
+    programs = programs.filter(p => {
+      const eligible = p.eligibilityRules?.medicareEligible;
+      return wantMedicare ? eligible === true : eligible !== true;
+    });
+  }
+
+  // Filter by Medicaid eligibility
+  if (medicaid !== undefined) {
+    const wantMedicaid = medicaid === 'true';
+    programs = programs.filter(p => {
+      const eligible = p.eligibilityRules?.medicaidEligible;
+      return wantMedicaid ? eligible === true : eligible !== true;
+    });
+  }
+
+  // Filter by FPL threshold availability
+  if (hasFpl !== undefined) {
+    const wantFpl = hasFpl === 'true';
+    programs = programs.filter(p => {
+      const hasFplThresholds = p.eligibilityRules?.fplThresholds?.length > 0;
+      return wantFpl ? hasFplThresholds : !hasFplThresholds;
+    });
+  }
+
+  res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  return res.status(200).json({
+    success: true,
+    meta: {
+      totalPrograms: programs.length,
+      generatedAt: new Date().toISOString(),
+      source: 'OpenOnco (openonco.org)',
+      license: 'CC BY 4.0',
+    },
+    data: programs,
+  });
+}
+
+async function handleAssistanceByVendor(req, res, vendorName) {
+  // Find vendor by name (case-insensitive, partial match)
+  const { data: vendors } = await dal.vendors.findAll();
+  
+  const vendorLower = vendorName.toLowerCase().replace(/-/g, ' ');
+  const vendor = vendors.find(v => 
+    v.name.toLowerCase() === vendorLower ||
+    v.id === vendorName.toLowerCase() ||
+    v.name.toLowerCase().includes(vendorLower)
+  );
+
+  if (!vendor) {
+    return res.status(404).json({
+      success: false,
+      error: 'Vendor not found',
+      message: `No vendor found matching "${vendorName}"`,
+    });
+  }
+
+  if (!vendor.assistanceProgram) {
+    return res.status(404).json({
+      success: false,
+      error: 'No assistance program',
+      message: `Vendor "${vendor.name}" does not have a patient assistance program on record`,
+    });
+  }
+
+  res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  return res.status(200).json({
+    success: true,
+    meta: {
+      generatedAt: new Date().toISOString(),
+      source: 'OpenOnco (openonco.org)',
+      license: 'CC BY 4.0',
+    },
+    data: {
+      vendorId: vendor.id,
+      vendorName: vendor.name,
+      ...vendor.assistanceProgram,
+    },
   });
 }
 
@@ -638,6 +737,16 @@ export default async function handler(req, res) {
 
     if (routeKey === 'vendors') {
       return await handleVendors(req, res);
+    }
+
+    if (routeKey === 'assistance') {
+      if (segments[1]) {
+        return await handleAssistanceByVendor(req, res, segments[1]);
+      }
+      if (req.query.vendor) {
+        return await handleAssistanceByVendor(req, res, req.query.vendor);
+      }
+      return await handleAssistance(req, res);
     }
 
     if (routeKey === 'stats') {
