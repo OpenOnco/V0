@@ -21,6 +21,7 @@
     "@anthropic-ai/sdk": "^0.52.0",
     "axios": "^1.6.0",
     "axios-retry": "^4.0.0",
+    "better-sqlite3": "^12.6.2",
     "dotenv": "^16.3.1",
     "node-cron": "^3.0.3",
     "playwright": "^1.57.0",

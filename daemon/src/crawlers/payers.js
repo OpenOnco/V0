@@ -13,9 +13,21 @@ import { chromium } from 'playwright';
 import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES, MONITORED_VENDORS, PAYERS } from '../config.js';
-import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
+import { matchTests, formatMatchesForPrompt, getAllTests } from '../data/test-dictionary.js';
+import { extractTestsWithAI } from '../utils/ai-test-matcher.js';
 import { computeDiff, truncateDiff } from '../utils/diff.js';
 import { canonicalizeContent } from '../utils/canonicalize.js';
+import {
+  initHashStore,
+  getHash,
+  setHash,
+  getAllHashes,
+  saveAllHashes,
+  recordSuccess,
+  recordFailure,
+  shouldSkipUrl,
+  closeHashStore,
+} from '../utils/hash-store.js';
 
 // Path to store content hashes for change detection
 const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'payer-hashes.json');
@@ -632,52 +644,63 @@ export class PayerCrawler extends BaseCrawler {
   }
 
   /**
-   * Load stored content hashes from disk
-   * Handles both old format (string hash) and new format (object with hash, content, fetchedAt)
+   * Load stored content hashes from SQLite database
+   * Migrates from JSON automatically on first run
    */
   async loadHashes() {
     try {
-      const data = await readFile(HASH_FILE_PATH, 'utf-8');
-      const rawHashes = JSON.parse(data);
-
-      // Normalize to new format, handling backward compatibility
-      this.hashes = {};
-      for (const [key, value] of Object.entries(rawHashes)) {
-        if (typeof value === 'string') {
-          // Old format: just the hash string
-          this.hashes[key] = {
-            hash: value,
-            content: null, // No previous content available
-            fetchedAt: null,
-          };
-        } else {
-          // New format: object with hash, content, fetchedAt
-          this.hashes[key] = value;
-        }
-      }
-
-      this.log('debug', `Loaded ${Object.keys(this.hashes).length} stored hashes`);
+      await initHashStore();
+      this.hashes = getAllHashes();
+      this.log('debug', `Loaded ${Object.keys(this.hashes).length} stored hashes from SQLite`);
     } catch (error) {
-      if (error.code === 'ENOENT') {
-        this.log('info', 'No existing hash file, starting fresh');
-        this.hashes = {};
-      } else {
-        this.log('warn', 'Failed to load hash file', { error: error.message });
-        this.hashes = {};
-      }
+      this.log('warn', 'Failed to load hash store', { error: error.message });
+      this.hashes = {};
     }
   }
 
   /**
-   * Save content hashes to disk
+   * Save content hashes to SQLite database
+   * Uses atomic transactions for durability
    */
   async saveHashes() {
     try {
-      await mkdir(dirname(HASH_FILE_PATH), { recursive: true });
-      await writeFile(HASH_FILE_PATH, JSON.stringify(this.hashes, null, 2));
-      this.log('debug', `Saved ${Object.keys(this.hashes).length} hashes`);
+      saveAllHashes(this.hashes);
+      this.log('debug', `Saved ${Object.keys(this.hashes).length} hashes to SQLite`);
     } catch (error) {
-      this.log('error', 'Failed to save hash file', { error: error.message });
+      this.log('error', 'Failed to save hash store', { error: error.message });
+    }
+  }
+
+  /**
+   * Record successful page fetch for health tracking
+   */
+  recordPageSuccess(url, payerId) {
+    try {
+      recordSuccess(url, payerId);
+    } catch (error) {
+      this.log('debug', `Failed to record success: ${error.message}`);
+    }
+  }
+
+  /**
+   * Record failed page fetch for health tracking
+   */
+  recordPageFailure(url, payerId, error) {
+    try {
+      recordFailure(url, payerId, error?.message || 'Unknown error');
+    } catch (err) {
+      this.log('debug', `Failed to record failure: ${err.message}`);
+    }
+  }
+
+  /**
+   * Check if URL should be skipped due to repeated failures
+   */
+  shouldSkipUrl(url) {
+    try {
+      return shouldSkipUrl(url, 5); // Skip after 5 consecutive failures
+    } catch (error) {
+      return false; // Don't skip if health check fails
     }
   }
 
@@ -1242,7 +1265,44 @@ Respond in JSON format:
   /**
    * Find relevant tests mentioned in content
    */
-  findRelevantTests(content) {
+  /**
+   * Find relevant tests mentioned in content using AI-based extraction
+   * Falls back to simple string matching if AI is unavailable
+   * @param {string} content - Page content to analyze
+   * @param {boolean} useAI - Whether to use AI extraction (default: true)
+   * @returns {Promise<string[]>} Array of test names found
+   */
+  async findRelevantTests(content, useAI = true) {
+    // Try AI-based extraction first (more accurate, handles disambiguation)
+    if (useAI && config.anthropic?.apiKey) {
+      try {
+        const testList = getAllTests();
+        if (testList.length > 0) {
+          const result = await extractTestsWithAI(content, testList, { filterUSOnly: true });
+          if (!result.error && (result.tests.length > 0 || result.uncertain.length > 0)) {
+            this.log('debug', `AI test extraction found ${result.tests.length} tests, ${result.uncertain.length} uncertain`);
+            // Include both confirmed and uncertain matches
+            return [...result.tests, ...result.uncertain];
+          }
+          if (result.error) {
+            this.log('debug', `AI test extraction failed: ${result.error}, falling back to simple matching`);
+          }
+        }
+      } catch (error) {
+        this.log('debug', `AI test extraction error: ${error.message}, falling back to simple matching`);
+      }
+    }
+
+    // Fallback: Simple string matching
+    return this.findRelevantTestsSimple(content);
+  }
+
+  /**
+   * Simple string-based test matching (fallback when AI unavailable)
+   * @param {string} content - Page content to analyze
+   * @returns {string[]} Array of test names found
+   */
+  findRelevantTestsSimple(content) {
     const contentLower = content.toLowerCase();
     const foundTests = new Set();
 
@@ -1346,6 +1406,12 @@ Respond in JSON format:
 
         // Crawl index pages
         for (const indexPage of payer.policyIndexPages) {
+          // Skip URLs that have failed too many times
+          if (this.shouldSkipUrl(indexPage.url)) {
+            this.log('debug', `Skipping unhealthy URL: ${indexPage.url}`);
+            continue;
+          }
+
           try {
             if (pagesProcessed > 0) {
               await this.sleep(RATE_LIMIT_MS);
@@ -1353,6 +1419,9 @@ Respond in JSON format:
 
             this.log('debug', `Fetching index: ${indexPage.url}`);
             const { content, extractedData } = await this.fetchPage(indexPage.url);
+
+            // Record successful fetch
+            this.recordPageSuccess(indexPage.url, payer.id);
 
             // Canonicalize content for hash comparison (removes dynamic elements)
             // Raw content is still used for Claude analysis
@@ -1364,7 +1433,7 @@ Respond in JSON format:
             pagesProcessed++;
 
             const matchedKeywords = this.findMatchedKeywords(content);
-            const relevantTests = this.findRelevantTests(content);
+            const relevantTests = await this.findRelevantTests(content);
             const oldHashData = this.hashes[hashKey];
             const oldHashValue = oldHashData?.hash || null;
             const changeType = this.detectChangeType(content, extractedData, oldHashValue);
@@ -1416,6 +1485,7 @@ Respond in JSON format:
             }
           } catch (error) {
             pagesFailed++;
+            this.recordPageFailure(indexPage.url, payer.id, error);
             this.log('warn', `Failed to fetch ${indexPage.url}`, { error: error.message });
           }
         }
@@ -1423,6 +1493,13 @@ Respond in JSON format:
         // Crawl direct policy pages
         for (const policyPage of payer.policyPages || []) {
           const url = `${payer.baseUrl}${policyPage.path}`;
+
+          // Skip URLs that have failed too many times
+          if (this.shouldSkipUrl(url)) {
+            this.log('debug', `Skipping unhealthy URL: ${url}`);
+            continue;
+          }
+
           try {
             if (pagesProcessed > 0) {
               await this.sleep(RATE_LIMIT_MS);
@@ -1430,6 +1507,9 @@ Respond in JSON format:
 
             this.log('debug', `Fetching policy: ${url}`);
             const { content, extractedData } = await this.fetchPage(url);
+
+            // Record successful fetch
+            this.recordPageSuccess(url, payer.id);
 
             // Canonicalize content for hash comparison (removes dynamic elements)
             // Raw content is still used for Claude analysis
@@ -1442,7 +1522,7 @@ Respond in JSON format:
             pagesProcessed++;
 
             const matchedKeywords = this.findMatchedKeywords(content);
-            const relevantTests = this.findRelevantTests(content);
+            const relevantTests = await this.findRelevantTests(content);
             const changeType = this.detectChangeType(content, extractedData, oldHashValue);
 
             if (newHash !== oldHashValue) {
@@ -1496,6 +1576,7 @@ Respond in JSON format:
             }
           } catch (error) {
             pagesFailed++;
+            this.recordPageFailure(url, payer.id, error);
             this.log('warn', `Failed to fetch ${url}`, { error: error.message });
           }
         }
@@ -1508,6 +1589,12 @@ Respond in JSON format:
         for (const page of vendor.pages) {
           const url = `${vendor.baseUrl}${page.path}`;
 
+          // Skip URLs that have failed too many times
+          if (this.shouldSkipUrl(url)) {
+            this.log('debug', `Skipping unhealthy URL: ${url}`);
+            continue;
+          }
+
           try {
             if (pagesProcessed > 0) {
               await this.sleep(RATE_LIMIT_MS);
@@ -1515,6 +1602,9 @@ Respond in JSON format:
 
             this.log('debug', `Fetching vendor coverage: ${url}`);
             const { content, extractedData } = await this.fetchPage(url);
+
+            // Record successful fetch
+            this.recordPageSuccess(url, vendor.id);
 
             // Canonicalize content for hash comparison (removes dynamic elements)
             // Raw content is still used for Claude analysis
@@ -1571,6 +1661,7 @@ Respond in JSON format:
             }
           } catch (error) {
             pagesFailed++;
+            this.recordPageFailure(url, vendor.id, error);
             this.log('warn', `Failed to fetch ${url}`, { error: error.message });
           }
         }
@@ -1578,6 +1669,7 @@ Respond in JSON format:
     } finally {
       await this.closeBrowser();
       await this.saveHashes();
+      closeHashStore();
     }
 
     this.log('info', 'Payer crawl complete', {
@@ -1786,9 +1878,10 @@ Respond in JSON format:
    */
   createVendorCoverageDiscovery(vendor, page, url, extractedData, content = '', claudeAnalysis = null) {
     // Use page-defined test names if available, otherwise try to find them
+    // Note: Using sync fallback here since this is called after Claude analysis
     const relevantTests = claudeAnalysis?.affectedTests?.length > 0
       ? claudeAnalysis.affectedTests
-      : (page.testNames || this.findRelevantTests(extractedData.title || content));
+      : (page.testNames || this.findRelevantTestsSimple(extractedData.title || content));
     const snippet = this.extractSnippet(content, SEARCH_KEYWORDS, 500);
 
     return {
