@@ -1,0 +1,1075 @@
+{
+  "collectedAt": "2026-01-31T19:00:29.573Z",
+  "payerCount": 77,
+  "payersWithTestMentions": 0,
+  "stats": {
+    "total": 77,
+    "success": 73,
+    "failed": 3,
+    "timeout": 1,
+    "withTests": 0
+  },
+  "results": [
+    {
+      "payerId": "uhc",
+      "payerName": "UnitedHealthcare",
+      "tier": 1,
+      "url": "https://www.uhc.com/resources/policies",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "4cb46cf375081d0eccb4dcfb56f76cd71fa8ee8da4caa5e983f19269fd400fd5",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "anthem",
+      "payerName": "Anthem/Elevance Health",
+      "tier": 1,
+      "url": "https://www.anthem.com/provider/policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "cb9724397372cbab694e1b5aa6e84c0833607a2f995db130a8d119cb57b026c5",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "centene",
+      "payerName": "Centene/Ambetter",
+      "tier": 1,
+      "url": "https://www.ambetterhealth.com/provider",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "3071913fea9472649f77454f7c4f02da3702b33302496a082dd2899066680472",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "cigna",
+      "payerName": "Cigna",
+      "tier": 1,
+      "url": "https://www.cigna.com/health-care-providers/coverage-and-claims",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "90ef88ffccf0e015b2a7ff5fb721857e76dd101ac323419fe21a107f954653c7",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "humana",
+      "payerName": "Humana",
+      "tier": 1,
+      "url": "https://www.humana.com/provider",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "ab27bb120911a0e8bb786bb720c591294ea7b629d05681d63707784b35b0694f",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "molina",
+      "payerName": "Molina Healthcare",
+      "tier": 1,
+      "url": "https://www.molinahealthcare.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "55a5c879ea684de19b03921a8135230d803fb603463dd23004d767e1b59fea3c",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "kaiser",
+      "payerName": "Kaiser Permanente",
+      "tier": 1,
+      "url": "https://healthy.kaiserpermanente.org/",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "d30afd1f4900306ac87c6bf6205fd2a0e30b81f6d7fd152b2dd80bee761e81ec",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "aetna",
+      "payerName": "Aetna",
+      "tier": 1,
+      "url": "https://www.aetna.com/health-care-professionals/clinical-policy-bulletins.html",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "3a60417a1ae652710d58b7d5df20e84e82a5fe37517aa18899c104e3e0a52865",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "hcsc-tx",
+      "payerName": "BCBS Texas (HCSC)",
+      "tier": 1,
+      "url": "https://www.bcbstx.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "b5be523caace0f0b7c4c962dbe99eb17282430766f8f8ae5d7ee633284e1ea26",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "hcsc-il",
+      "payerName": "BCBS Illinois (HCSC)",
+      "tier": 1,
+      "url": "https://www.bcbsil.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "f416c972803cc2661c4582665a06b885624942d42e70bb282acd9e5ab685a81d",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "highmark",
+      "payerName": "Highmark BCBS",
+      "tier": 1,
+      "url": "https://www.highmark.com/provider/medical-policy",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "55efa1dfccd40b464b94382d30a1058b2ac50363212a7a6c021a9b4b8c2dbf5a",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "uhc-ma",
+      "payerName": "UnitedHealthcare Medicare Advantage",
+      "tier": 1,
+      "url": "https://www.uhcprovider.com/content/provider/en/policies-protocols/medicare-advantage-policies.html",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "5cc17c4823b5412a6b5f9e3e628671f8f123f64c96f688cd918e91d1a0052ea8",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "evicore",
+      "payerName": "Evicore",
+      "tier": 1,
+      "url": "https://www.evicore.com/provider/clinical-guidelines",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "7df3c7ec0e9958117774c52eefb73a06b32583f0d8ede50dd77b54d4d8bbe908",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "aim",
+      "payerName": "AIM Specialty Health",
+      "tier": 1,
+      "url": "https://aimspecialtyhealth.com/resources/clinical-guidelines/genetic-testing/",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "a5e945ac8340ae470bb37c5dcc5baa6799b2c1daa9fb18aac60c9a99806b6c90",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "hcsc-mt",
+      "payerName": "BCBS Montana (HCSC)",
+      "tier": 2,
+      "url": "https://www.bcbsmt.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "2c59477517e1768aa6a26e0e2a941674dac1e12c777c04ae4eeac409a07bbd49",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "hcsc-ok",
+      "payerName": "BCBS Oklahoma (HCSC)",
+      "tier": 2,
+      "url": "https://www.bcbsok.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "1d27fb9b6a264030a69a9ea5fb02e4d2f9aa0099cd5ab7f7dea65e1e595c4e5d",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "hcsc-nm",
+      "payerName": "BCBS New Mexico (HCSC)",
+      "tier": 2,
+      "url": "https://www.bcbsnm.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "235a55e1651309c883b51373034a9b0d1970659e37a3f02845646f9a58f6842c",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "floridablue",
+      "payerName": "Florida Blue",
+      "tier": 2,
+      "url": "https://www.floridablue.com/providers/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "4305d9df87448fd40b0f1a019dcbe6761b6a7e90dd0752648d5c994ccf8ca868",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsm",
+      "payerName": "BCBS Michigan",
+      "tier": 2,
+      "url": "https://www.bcbsm.com/providers/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "4d2838cb2323dbb9a772989f30a0976ad7842c5a7535152a55da4bd0f943c01d",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsnc",
+      "payerName": "BCBS North Carolina",
+      "tier": 2,
+      "url": "https://www.bcbsnc.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "1bada16961bfa9d5a80c865b38453e6eb8c5ba9c5b1ca1427cb534fb988489c4",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbssc",
+      "payerName": "BCBS South Carolina",
+      "tier": 2,
+      "url": "https://www.southcarolinablues.com/providers",
+      "status": "failed",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": null,
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": "Empty or minimal content"
+    },
+    {
+      "payerId": "bcbstn",
+      "payerName": "BCBS Tennessee",
+      "tier": 2,
+      "url": "https://www.bcbst.com/providers/medical-policies",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "73496a7947a7b518b8c4a8c7e2879531aa35da51ca1e5978dca065e5bb7a4ade",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsal",
+      "payerName": "BCBS Alabama",
+      "tier": 2,
+      "url": "https://www.bcbsal.org/providers/policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "6d48e821d3ae9d18b0ce27e10c1a00643dd12fa5f9bebb929496a6e9beed663c",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsla",
+      "payerName": "BCBS Louisiana",
+      "tier": 2,
+      "url": "https://lablue.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "ae3286b4fa0c711c4ee7a503d422e164d67bb3a17929d7e6191fba647b317682",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsaz",
+      "payerName": "BCBS Arizona",
+      "tier": 2,
+      "url": "https://www.azblue.com/providers/medical-policies",
+      "status": "failed",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": null,
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": "Empty or minimal content"
+    },
+    {
+      "payerId": "bcbsks",
+      "payerName": "BCBS Kansas",
+      "tier": 2,
+      "url": "https://www.bcbsks.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "61eb0724b02add4430d7d3bf496b1205f96f6085dad234d94383a85c447ce6d8",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbskc",
+      "payerName": "BCBS Kansas City",
+      "tier": 2,
+      "url": "https://www.bluekc.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "7cad9658808fdc9e34c4b410eef4ea8e79473c313a060830d30dca1eb1ce10f9",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsne",
+      "payerName": "BCBS Nebraska",
+      "tier": 2,
+      "url": "https://www.nebraskablue.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "8336099deb51883be46adb6ea89f82469dad286ec76ea63e3f36972b0a7d3df3",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsnd",
+      "payerName": "BCBS North Dakota",
+      "tier": 2,
+      "url": "https://www.bcbsnd.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "2bb51d0ff3e344e46577b7714b459ccf0c4c03c48b3f2adfa8ac7e4c9d1daf4b",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbswy",
+      "payerName": "BCBS Wyoming",
+      "tier": 2,
+      "url": "https://www.bcbswy.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "773ab1378ab2d9ffbdcc56b8e75c759c2243b29c7a2eecb048bde11535125204",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsma",
+      "payerName": "BCBS Massachusetts",
+      "tier": 2,
+      "url": "https://www.bluecrossma.com/providers/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "a512617266403eaced70829ea69c47830f133415c5256798a78054ae3f2a13ad",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsri",
+      "payerName": "BCBS Rhode Island",
+      "tier": 2,
+      "url": "https://www.bcbsri.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "14d1bb53e2d021e36ed59f8b39253c0778808ffd34a3db97724acc369b17212a",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsvt",
+      "payerName": "BCBS Vermont",
+      "tier": 2,
+      "url": "https://www.bcbsvt.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "deb842de1ea882cc1873752d2f38fcfa1fe59f21f015213b0399034ee032b488",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcbsmn",
+      "payerName": "BCBS Minnesota",
+      "tier": 2,
+      "url": "https://www.bluecrossmn.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "35fb2e4d5bad490c2d78b6da8f838a97e766b11e7877622722a1ce861ca09136",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "carefirst",
+      "payerName": "CareFirst BCBS",
+      "tier": 2,
+      "url": "https://www.carefirst.com/providers/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "779bf7931730c9bc41591bf26d6ce1619e8cc76dfb71e82c471c52a045630d65",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "blueshieldca",
+      "payerName": "Blue Shield of California",
+      "tier": 2,
+      "url": "https://www.blueshieldca.com/provider/medical-policy",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "8ddffbeefad334e5c6ca159de0c986c87b6b235d3d34e04fe1d3268f031bfee8",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "horizon",
+      "payerName": "Horizon BCBS NJ",
+      "tier": 2,
+      "url": "https://www.horizonblue.com/providers/policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "9b7dbec92d1d8da11483638a4a33ea103d059b950b6378050fc11e27041ec5cd",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "excellus",
+      "payerName": "Excellus BCBS",
+      "tier": 2,
+      "url": "https://www.excellusbcbs.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "1dfb4914ae72379033d7509007f46602230eca440984e8b0520af39b54edffa9",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "empire",
+      "payerName": "Empire BCBS",
+      "tier": 2,
+      "url": "https://www.empireblue.com/provider/policies",
+      "status": "timeout",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": null,
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": "page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.empireblue.com/provider/policies\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "payerId": "ibx",
+      "payerName": "Independence Blue Cross",
+      "tier": 2,
+      "url": "https://www.ibx.com/providers/medical-policy",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "aa1448589179411aa5c7b426f688fe99e2e96bb0512030cd0369fab7587223c5",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "premera",
+      "payerName": "Premera Blue Cross",
+      "tier": 2,
+      "url": "https://www.premera.com/provider/medical-policies",
+      "status": "failed",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": null,
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": "page.goto: Download is starting\nCall log:\n  - navigating to \"https://www.premera.com/provider/medical-policies\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "payerId": "regence",
+      "payerName": "Regence BlueCross BlueShield",
+      "tier": 2,
+      "url": "https://www.regence.com/provider/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "32cd1638acea004dfa9b8903b14f94e091aa7d5db2547f01a61c8e66a81850fd",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "wellmark",
+      "payerName": "Wellmark BCBS",
+      "tier": 2,
+      "url": "https://www.wellmark.com/providers/medical-policies",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "91d871cd552bbe3cb016629402a6631799d3af3dea270d54597ae4376ca2294e",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bcidaho",
+      "payerName": "Blue Cross of Idaho",
+      "tier": 2,
+      "url": "https://www.bcidaho.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "bf36c759a7200fbad0493f0569c575a569d7e632151552f13fc205b2b7d6f5e3",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "arkbcbs",
+      "payerName": "Arkansas BCBS",
+      "tier": 2,
+      "url": "https://www.arkansasbluecross.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "b9f02c8aba6bf1150ebb846e0b54ddef349acd9167c300389ab6b6f431187d6a",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "oscar",
+      "payerName": "Oscar Health",
+      "tier": 2,
+      "url": "https://www.hioscar.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "7c65962da7e330edc2809946cbe2b6fb96ba584779bd0f1783ef185109e0cc70",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "caresource",
+      "payerName": "CareSource",
+      "tier": 2,
+      "url": "https://www.caresource.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "f7417125b53a87db4e5fc5f46f86196eeeb834c815d2ff5dd0e2c4c13e9715b0",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "healthnet",
+      "payerName": "Health Net",
+      "tier": 2,
+      "url": "https://www.healthnet.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "b7cd67a9d8d5eca1e70809d9d030c4369565a4bbf0eca86088dd2a9e916b2b5a",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "fidelis",
+      "payerName": "Fidelis Care",
+      "tier": 2,
+      "url": "https://www.fideliscare.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "70939004a5645b0480f3290066060321a9f9bc4a1104b3bbf03f3ca215377e3f",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "medica",
+      "payerName": "Medica",
+      "tier": 3,
+      "url": "https://www.medica.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "2f35a6a3db9f38c9538aadc574b1db1a7904abf473742069ef701c4dfb8b8b8c",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "healthpartners",
+      "payerName": "HealthPartners",
+      "tier": 3,
+      "url": "https://www.healthpartners.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "67068da92c99d69edf874c4cd01a8d09f6bd68655bcd2fbd3c7e15327abf6bd9",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "ucare",
+      "payerName": "UCare",
+      "tier": 3,
+      "url": "https://www.ucare.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "10333d33a06789ce9b4d026009f63c2b8c0ac116eef9b50304e9604f30594af4",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "priority",
+      "payerName": "Priority Health",
+      "tier": 3,
+      "url": "https://www.priorityhealth.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "c804d4038b2247fd3be8abcbd5ef67ec672b6293fa56d686f5033e0f1c7951ee",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "mclaren",
+      "payerName": "McLaren Health Plan",
+      "tier": 3,
+      "url": "https://www.mclarenhealthplan.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "73a51fc3b3503d3cbbfaf5d6b60bb6b1d4a7647de6acdbc459e7f9fc3e8f9774",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "quartz",
+      "payerName": "Quartz",
+      "tier": 3,
+      "url": "https://quartzbenefits.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "53d997f8959c2592f4f3279d4e2fa2984dc4a9b0dc0018ecdeee9c6306634d22",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "sanford",
+      "payerName": "Sanford Health Plan",
+      "tier": 3,
+      "url": "https://www.sanfordhealthplan.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "7c7729f62b54a48d6528f83118bf27da066e8e0234149600610035123c290312",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "avera",
+      "payerName": "Avera Health Plans",
+      "tier": 3,
+      "url": "https://www.avera.org/health-plans",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "e4479e235cf4e9b15c15f4cce7d82aa5f1288311a5dcdd78fa111bbb6c744169",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "geisinger",
+      "payerName": "Geisinger Health Plan",
+      "tier": 3,
+      "url": "https://www.geisinger.org/health-plan/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "945aa0dd733f426d5690d03d3ed39f26414325a7404a6c491ea27c3ae1d07f73",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "upmc",
+      "payerName": "UPMC Health Plan",
+      "tier": 3,
+      "url": "https://www.upmchealthplan.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "e8973b780542bfc6c82b7a95f7711305b7931b79ee263227f937f4c2459ebb4d",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "tufts",
+      "payerName": "Tufts Health Plan",
+      "tier": 3,
+      "url": "https://tuftshealthplan.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "e8f93866efa8f727ad293b1bc2e9b2a64a263c603c7f0259b4a07d828ccdc989",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "harvard",
+      "payerName": "Harvard Pilgrim Health Care",
+      "tier": 3,
+      "url": "https://www.harvardpilgrim.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "e8f93866efa8f727ad293b1bc2e9b2a64a263c603c7f0259b4a07d828ccdc989",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "fallon",
+      "payerName": "Fallon Health",
+      "tier": 3,
+      "url": "https://www.fallonhealth.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "4d5665e1748229585561ff6f435ac7cdeecf5064de7d38665fc82a93c7deba8c",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "connecticare",
+      "payerName": "ConnectiCare",
+      "tier": 3,
+      "url": "https://www.connecticare.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "6776acfe990c1fa9299460a50382d77ad0f05646188af405a176f2ffd42cbe83",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "healthfirst",
+      "payerName": "Healthfirst",
+      "tier": 3,
+      "url": "https://healthfirst.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "752c463e07d78b0c703ef0023ae575d412cd13a43a5398cea95a54a5202ecd3b",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "metroplus",
+      "payerName": "MetroPlus Health",
+      "tier": 3,
+      "url": "https://www.metroplus.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "bb151e9561632d5eb583bd0a085cd2fd510eac286a7831e2b8afbf9c7b054d43",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "mvp",
+      "payerName": "MVP Health Care",
+      "tier": 3,
+      "url": "https://www.mvphealthcare.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "4ebe9c2c78ba928da937fdee09f9ed8f5a8bca365aff75f760dc7168970ed7cd",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "lacare",
+      "payerName": "LA Care Health Plan",
+      "tier": 3,
+      "url": "https://www.lacare.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "8cabafbb0749b412c59e9947bbb58c29cbe99e7f194898a6c0e604604a8f4455",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "selecthealth",
+      "payerName": "Select Health",
+      "tier": 3,
+      "url": "https://selecthealth.org/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "89aa42f39289050929154b19dc7f25d20eae9c4251a8b88e0683ba561562ce8f",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "providence",
+      "payerName": "Providence Health Plan",
+      "tier": 3,
+      "url": "https://providencehealthplan.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "69956d2da9153c690bcc0f1d26e2f86921e1d75e7349ad1121168fb6539c11af",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "pacificsource",
+      "payerName": "PacificSource",
+      "tier": 3,
+      "url": "https://www.pacificsource.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "71744c4fbd449b0430095057604dcd8ea787138d9f411a9d475e73654d02129e",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "moda",
+      "payerName": "Moda Health",
+      "tier": 3,
+      "url": "https://www.modahealth.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "dc2db391b6c0a9cd946fed4fae840ac54357e7eb76ea9ad5c86663b77f07e461",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "bridgespan",
+      "payerName": "BridgeSpan Health",
+      "tier": 3,
+      "url": "https://bridgespanhealth.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "a9a56940814abd9d985720b30ebd56299f392644fc386613825d7aa30fca34c7",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "hmsa",
+      "payerName": "HMSA Hawaii",
+      "tier": 3,
+      "url": "https://hmsa.com/providers",
+      "status": "success",
+      "testsFound": [
+        "Shield"
+      ],
+      "coveragePositions": {},
+      "contentHash": "f159f854b8191ea078a2f97a7fc46113e00c73702d2ce19c1991874dd942e377",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "optima",
+      "payerName": "Optima Health",
+      "tier": 3,
+      "url": "https://www.optimahealth.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "799f0bf605de25495ac16612e35741c5e7ff529fc844c76e010eb88dde722602",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "sentara",
+      "payerName": "Sentara Health Plans",
+      "tier": 3,
+      "url": "https://www.sentarahealthplans.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "799f0bf605de25495ac16612e35741c5e7ff529fc844c76e010eb88dde722602",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "medmutual",
+      "payerName": "Medical Mutual",
+      "tier": 3,
+      "url": "https://www.medmutual.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "8a26a4b85f87df91af33f6fc66704adc7f4c95d906e559a4b92a6f10ad390729",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    },
+    {
+      "payerId": "amerihealth",
+      "payerName": "AmeriHealth",
+      "tier": 3,
+      "url": "https://www.amerihealth.com/providers",
+      "status": "success",
+      "testsFound": [],
+      "coveragePositions": {},
+      "contentHash": "faf84c5f86a60ee61532ba50bda2c5fdb9b2d365eed57fa25316d796611d283a",
+      "analysisConfidence": null,
+      "rawAnalysis": null,
+      "error": null
+    }
+  ]
+}
