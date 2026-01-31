@@ -62,6 +62,7 @@ import OpennessAward from './components/OpennessAward';
 import FAQPage from './pages/FAQPage';
 import LearnPage from './pages/LearnPage';
 import AboutPage from './pages/AboutPage';
+import PrivacyPage from './pages/PrivacyPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
@@ -1200,6 +1201,7 @@ export default function App() {
     '/faq': 'faq',
     '/learn': 'learn',
     '/about': 'about',
+    '/privacy': 'privacy',
     // New plain-language category URLs
     '/risk': 'HCT',
     '/screen': 'ECD',
@@ -1256,6 +1258,7 @@ export default function App() {
     'faq': '/faq',
     'learn': '/learn',
     'about': '/about',
+    'privacy': '/privacy',
     // Primary URLs (new plain-language)
     'HCT': '/risk',
     'ECD': '/screen',
@@ -1570,6 +1573,7 @@ export default function App() {
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
+      case 'privacy': return <PrivacyPage />;
       // Admin routes
       case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
