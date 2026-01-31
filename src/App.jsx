@@ -63,6 +63,7 @@ import FAQPage from './pages/FAQPage';
 import LearnPage from './pages/LearnPage';
 import AboutPage from './pages/AboutPage';
 import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
@@ -1202,6 +1203,7 @@ export default function App() {
     '/learn': 'learn',
     '/about': 'about',
     '/privacy': 'privacy',
+    '/terms': 'terms',
     // New plain-language category URLs
     '/risk': 'HCT',
     '/screen': 'ECD',
@@ -1259,6 +1261,7 @@ export default function App() {
     'learn': '/learn',
     'about': '/about',
     'privacy': '/privacy',
+    'terms': '/terms',
     // Primary URLs (new plain-language)
     'HCT': '/risk',
     'ECD': '/screen',
@@ -1574,6 +1577,7 @@ export default function App() {
       case 'faq': return <FAQPage />;
       case 'about': return <AboutPage />;
       case 'privacy': return <PrivacyPage />;
+      case 'terms': return <TermsPage />;
       // Admin routes
       case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
