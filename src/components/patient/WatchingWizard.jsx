@@ -485,94 +485,186 @@ function OptionButton({ selected, onClick, children, className = '' }) {
 
 /**
  * Landing Page - First thing patients see
- * Explains MRD testing for someone who's never heard of it
+ * Three prominent action paths visible without scrolling
  */
-function LandingStep({ onNext }) {
+function LandingStep({ onNext, onNavigate }) {
   const content = CONTENT.landing;
+  const [showLearnMore, setShowLearnMore] = useState(false);
+
+  // Path handlers
+  const handlePath1 = () => {
+    // "My doctor recommended a test" - go to TestLookupWizard
+    if (onNavigate) {
+      onNavigate('patient-lookup');
+    }
+  };
+
+  const handlePath2 = () => {
+    // "I'm exploring my options" - continue to current wizard
+    onNext();
+  };
+
+  const handlePath3 = () => {
+    // "My insurance denied coverage" - go to AppealWizard
+    if (onNavigate) {
+      onNavigate('patient-appeal');
+    }
+  };
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4">
-      {/* Hero headline - the emotional hook */}
-      <h1 className="text-xl sm:text-2xl font-medium text-slate-700 mb-10 text-center leading-relaxed">
-        {content.headline}
+    <div className="max-w-3xl mx-auto py-8 px-4">
+      {/* Hero headline - empathetic hook */}
+      <h1 className="text-xl sm:text-2xl font-medium text-slate-700 mb-3 text-center leading-relaxed">
+        Watching for cancer's return?
       </h1>
+      <p className="text-lg text-slate-500 mb-10 text-center">
+        We'll help you navigate MRD testing.
+      </p>
 
-      {/* Content cards */}
-      <div className="space-y-4 mb-10">
-        {/* New technology */}
-        <div className={`${colors.accentLight} ${colors.border} border rounded-xl p-5`}>
-          <div className="flex items-start gap-4">
-            <div className={`w-10 h-10 ${colors.accent} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <div>
-              <p className={`font-semibold ${colors.textDark} mb-1`}>{content.newTech.title}</p>
-              <p className="text-slate-600">{content.newTech.description}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Good news */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-5">
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <p className="font-semibold text-green-800 mb-1">{content.goodNews.title}</p>
-              <p className="text-slate-600">{content.goodNews.description}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* The problem */}
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div>
-              <p className="font-semibold text-amber-800 mb-1">{content.problem.title}</p>
-              <p className="text-slate-600">{content.problem.description}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Our solution */}
-        <div className="bg-slate-100 border border-slate-200 rounded-xl p-5">
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            <div>
-              <p className="font-semibold text-slate-800 mb-1">{content.solution.title}</p>
-              <p className="text-slate-600">{content.solution.description}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="text-center">
+      {/* Three action paths - visible without scrolling */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* Path 1: Doctor recommended */}
         <button
-          onClick={onNext}
-          className={`px-8 py-4 ${colors.accent} ${colors.accentHover} text-white font-semibold rounded-xl text-lg
-                     transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${colors.focus}`}
+          onClick={handlePath1}
+          className="group p-6 bg-white border-2 border-rose-200 rounded-2xl text-left
+                     hover:border-rose-400 hover:shadow-lg transition-all duration-200
+                     focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
         >
-          {content.buttonText}
+          <div className="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-rose-200 transition-colors">
+            <svg className="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 className="font-semibold text-slate-900 mb-2">"My doctor recommended a test"</h3>
+          <p className="text-sm text-slate-600">
+            Learn about your test, costs & coverage
+          </p>
         </button>
-        <p className="text-sm text-slate-500 mt-4 max-w-md mx-auto">
-          {content.disclaimer}
-        </p>
+
+        {/* Path 2: Exploring options */}
+        <button
+          onClick={handlePath2}
+          className="group p-6 bg-white border-2 border-emerald-200 rounded-2xl text-left
+                     hover:border-emerald-400 hover:shadow-lg transition-all duration-200
+                     focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+        >
+          <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
+            <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <h3 className="font-semibold text-slate-900 mb-2">"I'm exploring my options"</h3>
+          <p className="text-sm text-slate-600">
+            Find tests that fit your situation & budget
+          </p>
+        </button>
+
+        {/* Path 3: Insurance denied */}
+        <button
+          onClick={handlePath3}
+          className="group p-6 bg-white border-2 border-amber-200 rounded-2xl text-left
+                     hover:border-amber-400 hover:shadow-lg transition-all duration-200
+                     focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+        >
+          <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-200 transition-colors">
+            <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="font-semibold text-slate-900 mb-2">"My insurance denied coverage"</h3>
+          <p className="text-sm text-slate-600">
+            Get help with your appeal
+          </p>
+        </button>
       </div>
+
+      {/* Learn more toggle */}
+      <div className="text-center mb-6">
+        <button
+          onClick={() => setShowLearnMore(!showLearnMore)}
+          className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors text-sm"
+        >
+          Learn more about MRD testing
+          <svg
+            className={`w-4 h-4 transition-transform ${showLearnMore ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Expandable info cards - below the fold */}
+      {showLearnMore && (
+        <div className="space-y-4 mb-10 animate-in slide-in-from-top-4 duration-300">
+          {/* New technology */}
+          <div className={`${colors.accentLight} ${colors.border} border rounded-xl p-5`}>
+            <div className="flex items-start gap-4">
+              <div className={`w-10 h-10 ${colors.accent} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <p className={`font-semibold ${colors.textDark} mb-1`}>{content.newTech.title}</p>
+                <p className="text-slate-600">{content.newTech.description}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Good news */}
+          <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-semibold text-green-800 mb-1">{content.goodNews.title}</p>
+                <p className="text-slate-600">{content.goodNews.description}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* The problem */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-semibold text-amber-800 mb-1">{content.problem.title}</p>
+                <p className="text-slate-600">{content.problem.description}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Our solution */}
+          <div className="bg-slate-100 border border-slate-200 rounded-xl p-5">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-semibold text-slate-800 mb-1">{content.solution.title}</p>
+                <p className="text-slate-600">{content.solution.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Disclaimer */}
+      <p className="text-center text-xs text-slate-500 mt-8 max-w-md mx-auto">
+        {content.disclaimer}
+      </p>
     </div>
   );
 }
@@ -2171,7 +2263,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   const renderStepContent = () => {
     switch (WIZARD_STEPS[currentStep].id) {
       case 'landing':
-        return <LandingStep onNext={handleNext} />;
+        return <LandingStep onNext={handleNext} onNavigate={onNavigate} />;
       case 'location':
         return (
           <LocationStep

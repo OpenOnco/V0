@@ -7,7 +7,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { PlaywrightCrawler } from './playwright-base.js';
+import { PlaywrightCrawler, USER_AGENT } from './playwright-base.js';
 import { config, DISCOVERY_TYPES, SOURCES, MONITORED_VENDORS } from '../config.js';
 import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
 import { computeDiff, truncateDiff } from '../utils/diff.js';

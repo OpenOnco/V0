@@ -81,6 +81,8 @@ import ProductTypeBadge from './components/badges/ProductTypeBadge';
 import Markdown from './components/markdown/Markdown';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
 import WatchingWizard from './components/patient/WatchingWizard';
+import TestLookupWizard from './components/patient/TestLookupWizard';
+import AppealWizard from './components/patient/AppealWizard';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
 import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
@@ -1210,6 +1212,8 @@ export default function App() {
     // Patient journey routes
     '/patient/watching': 'patient-watching',
     '/patient/mrd': 'patient-watching',  // Alias for watching (MRD = monitoring)
+    '/patient/lookup': 'patient-lookup',  // Path 1: Test lookup
+    '/patient/appeal': 'patient-appeal',  // Path 3: Appeal help
     // Admin routes
     '/admin/discoveries': 'admin-discoveries',
     '/patient/screening': 'patient-screening',
@@ -1230,6 +1234,8 @@ export default function App() {
     // Patient journey routes
     '/patient/watching': 'patient',
     '/patient/mrd': 'patient',  // Alias for watching
+    '/patient/lookup': 'patient',  // Path 1: Test lookup
+    '/patient/appeal': 'patient',  // Path 3: Appeal help
     '/patient/screening': 'patient',
     '/patient/choosing': 'patient',
     '/patient/measuring': 'patient',
@@ -1257,6 +1263,8 @@ export default function App() {
     'patient-landing': '/patient',
     // Patient journey routes
     'patient-watching': '/patient/watching',
+    'patient-lookup': '/patient/lookup',  // Path 1: Test lookup
+    'patient-appeal': '/patient/appeal',  // Path 3: Appeal help
     'admin-discoveries': '/admin/discoveries',
     'patient-screening': '/patient/screening',
     'patient-choosing': '/patient/choosing',
@@ -1577,9 +1585,29 @@ export default function App() {
           testData={mrdTestsForWizard}
         />
       );
+      case 'patient-lookup': return (
+        <TestLookupWizard
+          testData={mrdTestsForWizard}
+          onNavigate={handleNavigate}
+          onBack={() => handleNavigate('patient-landing')}
+        />
+      );
+      case 'patient-appeal': return (
+        <AppealWizard
+          testData={mrdTestsForWizard}
+          onNavigate={handleNavigate}
+          onBack={() => handleNavigate('patient-landing')}
+        />
+      );
       case 'patient-choosing': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Choosing Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
       case 'patient-measuring': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Measuring Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
-      case 'patient-insurance-denied': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Insurance Denied</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
+      case 'patient-insurance-denied': return (
+        <AppealWizard
+          testData={mrdTestsForWizard}
+          onNavigate={handleNavigate}
+          onBack={() => handleNavigate('patient-landing')}
+        />
+      );
       case 'patient-financial-assistance': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Financial Assistance</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
       default: return <HomePage onNavigate={handleNavigate} />;
     }

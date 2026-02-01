@@ -25,6 +25,7 @@ import {
   createProposal,
 } from './queue.js';
 import { PROPOSAL_TYPES, PROPOSAL_STATES } from './schema.js';
+import { generatePatch, markProposalsApplied } from './apply.js';
 
 // ANSI colors for terminal output
 const colors = {
@@ -176,25 +177,50 @@ async function cmdReject(args) {
 
 /**
  * Apply approved proposals command
+ * Generates a patch document with instructions for manual application
  */
-async function cmdApply() {
-  const approved = await listApproved();
-
-  if (approved.length === 0) {
-    console.log('No approved proposals to apply.');
-    return;
+async function cmdApply(args) {
+  // Parse args
+  let outputPath = null;
+  for (const arg of args) {
+    if (arg.startsWith('--output=')) {
+      outputPath = arg.split('=')[1];
+    }
   }
 
-  console.log(`\n${colors.bold}Found ${approved.length} approved proposal(s) to apply:${colors.reset}\n`);
+  console.log(`\n${colors.bold}Generating patch document...${colors.reset}\n`);
 
-  for (const proposal of approved) {
-    console.log(formatProposal(proposal));
+  try {
+    const result = await generatePatch({ outputPath });
+
+    if (!result.patchPath) {
+      console.log('No approved proposals to apply.');
+      return;
+    }
+
+    console.log(`${colors.green}Patch document generated:${colors.reset} ${result.patchPath}\n`);
+    console.log(`${colors.bold}Included ${result.proposals.length} proposal(s):${colors.reset}\n`);
+
+    for (const proposal of result.proposals) {
+      console.log(formatProposal(proposal));
+    }
+
+    console.log(`\n${colors.cyan}Next Steps:${colors.reset}`);
+    console.log('1. Review the patch document for accuracy');
+    console.log('2. Apply changes to src/data.js manually following the instructions');
+    console.log('3. Run: npm run test:smoke');
+    console.log('4. Mark proposals as applied:');
+    for (const proposal of result.proposals) {
+      console.log(`   npm run proposals mark-applied ${proposal.id}`);
+    }
+    console.log('5. Commit with: git commit -m "feat(data): Apply daemon proposals"');
+  } catch (error) {
+    console.error(`${colors.red}Error generating patch:${colors.reset} ${error.message}`);
+    if (process.env.DEBUG) {
+      console.error(error.stack);
+    }
+    process.exit(1);
   }
-
-  console.log(`\n${colors.yellow}Note:${colors.reset} Proposal application to data.js is not yet implemented.`);
-  console.log('This will be added in a future update to handle AST-based code modification.');
-  console.log('\nFor now, please apply changes manually and then run:');
-  console.log(`  proposals mark-applied <id>`);
 }
 
 /**
@@ -283,7 +309,8 @@ Commands:
 
   reject <id> <reason>        Reject a proposal with reason
 
-  apply                       Apply all approved proposals to data.js
+  apply [options]             Generate patch document from approved proposals
+    --output=<filename>       Custom output filename
 
   mark-applied <id> [hash]    Mark a proposal as applied (with optional commit hash)
 
@@ -320,7 +347,7 @@ async function main() {
         await cmdReject(args);
         break;
       case 'apply':
-        await cmdApply();
+        await cmdApply(args);
         break;
       case 'mark-applied':
         await cmdMarkApplied(args);

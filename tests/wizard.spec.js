@@ -10,8 +10,8 @@ test.describe('Wizard Cancer Type Filtering', () => {
 
   // Helper to navigate through wizard to results
   async function navigateToResults(page, { cancerType, insuranceProvider = 'Medicare', stage = 'Stage II' }) {
-    // Step 1: Landing page - click CTA
-    await page.getByRole('button', { name: /explore mrd testing/i }).click();
+    // Step 1: Landing page - click "I'm exploring my options" (Path 2)
+    await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
 
     // Step 2: Treatment - completed treatment
@@ -86,7 +86,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   test('no insurance shows cost question', async ({ page }) => {
-    await page.getByRole('button', { name: /explore mrd testing/i }).click();
+    await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
 
     await page.getByRole('button', { name: /completed treatment/i }).click();
@@ -115,7 +115,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   test('Other insurance shows coverage warning', async ({ page }) => {
-    await page.getByRole('button', { name: /explore mrd testing/i }).click();
+    await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
 
     await page.getByRole('button', { name: /completed treatment/i }).click();
@@ -148,7 +148,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   test('no tumor tissue excludes tumor-informed tests, shows tumor-naive', async ({ page }) => {
-    await page.getByRole('button', { name: /explore mrd testing/i }).click();
+    await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
 
     await page.getByRole('button', { name: /completed treatment/i }).click();
@@ -186,7 +186,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   test('has tumor tissue excludes tumor-naive tests, shows tumor-informed', async ({ page }) => {
-    await page.getByRole('button', { name: /explore mrd testing/i }).click();
+    await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
 
     await page.getByRole('button', { name: /completed treatment/i }).click();

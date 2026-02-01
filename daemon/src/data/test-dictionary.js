@@ -185,6 +185,82 @@ export function findTestById(id) {
   return dictionary.find(test => test.id === id);
 }
 
+/**
+ * Look up a test by name (case-insensitive, fuzzy matching)
+ * @param {string} name - Test name to search for
+ * @returns {Object|null} Test object with id, name, vendor, category or null if not found
+ */
+export function lookupTestByName(name) {
+  if (!name || typeof name !== 'string' || dictionary === null) {
+    return null;
+  }
+
+  const nameLower = name.toLowerCase().trim();
+
+  // 1. Exact match (case-insensitive)
+  const exactMatch = lookupByName.get(nameLower);
+  if (exactMatch) {
+    return {
+      id: exactMatch.id,
+      name: exactMatch.name,
+      vendor: exactMatch.vendor,
+      category: exactMatch.category,
+      confidence: 1.0,
+      matchType: 'exact',
+    };
+  }
+
+  // 2. Partial match - test name contains search or search contains test name
+  for (const [testName, test] of lookupByName) {
+    if (nameLower.includes(testName) || testName.includes(nameLower)) {
+      return {
+        id: test.id,
+        name: test.name,
+        vendor: test.vendor,
+        category: test.category,
+        confidence: 0.85,
+        matchType: 'partial',
+      };
+    }
+  }
+
+  // 3. Word-based fuzzy match - significant words overlap
+  const searchWords = nameLower.split(/\s+/).filter(w => w.length > 2);
+  let bestMatch = null;
+  let bestScore = 0;
+
+  for (const test of dictionary) {
+    if (!test.name) continue;
+    const testWords = test.name.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+
+    // Count matching words
+    let matchCount = 0;
+    for (const searchWord of searchWords) {
+      for (const testWord of testWords) {
+        if (testWord.includes(searchWord) || searchWord.includes(testWord)) {
+          matchCount++;
+          break;
+        }
+      }
+    }
+
+    const score = matchCount / Math.max(searchWords.length, testWords.length);
+    if (score > bestScore && score >= 0.5) {
+      bestScore = score;
+      bestMatch = {
+        id: test.id,
+        name: test.name,
+        vendor: test.vendor,
+        category: test.category,
+        confidence: 0.5 + (score * 0.3), // 0.5-0.8 range
+        matchType: 'fuzzy',
+      };
+    }
+  }
+
+  return bestMatch;
+}
+
 // =============================================================================
 // Backwards-compatible exports (legacy API)
 // These match the original API used by crawlers
@@ -321,5 +397,6 @@ export default {
   matchTests,
   formatMatchesForPrompt,
   getAllTests,
-  findTestById
+  findTestById,
+  lookupTestByName,
 };
