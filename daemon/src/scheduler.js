@@ -46,6 +46,8 @@ function scheduleCrawler(source, schedule) {
         success: result.success,
         duration: result.duration,
         discoveredCount: result.discoveries?.length || 0,
+        addedCount: result.added || 0,
+        duplicateCount: result.duplicates || 0,
         newProposalsCount: result.proposalsCreated || 0,
         errors: result.errors || [],
       });
@@ -163,6 +165,8 @@ export async function triggerCrawler(source) {
     success: result.success,
     duration: result.duration,
     discoveredCount: result.discoveries?.length || 0,
+    addedCount: result.added || 0,
+    duplicateCount: result.duplicates || 0,
     newProposalsCount: result.proposalsCreated || 0,
     errors: result.errors || [],
   });

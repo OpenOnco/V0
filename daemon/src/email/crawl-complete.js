@@ -25,6 +25,8 @@ const logger = createLogger('crawl-complete-email');
  * @param {number} options.duration - Crawl duration in ms
  * @param {number} options.discoveredCount - Items discovered
  * @param {number} options.newProposalsCount - New proposals created
+ * @param {number} options.addedCount - New items added to queue
+ * @param {number} options.duplicateCount - Duplicate items skipped
  * @param {string[]} options.errors - Any errors that occurred
  */
 export async function sendCrawlCompleteEmail(options = {}) {
@@ -34,6 +36,8 @@ export async function sendCrawlCompleteEmail(options = {}) {
     duration = 0,
     discoveredCount = 0,
     newProposalsCount = 0,
+    addedCount = 0,
+    duplicateCount = 0,
     errors = [],
   } = options;
 
@@ -56,11 +60,7 @@ export async function sendCrawlCompleteEmail(options = {}) {
     logger.warn('Failed to get proposal stats', { error: e.message });
   }
 
-  // Don't send if nothing to report
-  if (proposalStats.pending === 0 && errors.length === 0 && newProposalsCount === 0) {
-    logger.info('No pending proposals or errors, skipping email');
-    return { success: true, skipped: true };
-  }
+  // Always send - user wants to know crawl completed
 
   const resend = new Resend(config.email.apiKey);
 
@@ -75,8 +75,8 @@ export async function sendCrawlCompleteEmail(options = {}) {
     subject = `[OpenOnco] ${sourceName} crawl complete`;
   }
 
-  const html = generateHtml({ source, sourceName, success, duration, discoveredCount, newProposalsCount, errors, proposalStats });
-  const text = generateText({ source, sourceName, success, duration, discoveredCount, newProposalsCount, errors, proposalStats });
+  const html = generateHtml({ source, sourceName, success, duration, discoveredCount, newProposalsCount, addedCount, duplicateCount, errors, proposalStats });
+  const text = generateText({ source, sourceName, success, duration, discoveredCount, newProposalsCount, addedCount, duplicateCount, errors, proposalStats });
 
   try {
     const result = await resend.emails.send({
@@ -113,7 +113,7 @@ function formatDuration(ms) {
   return `${minutes}m ${seconds % 60}s`;
 }
 
-function generateHtml({ sourceName, success, duration, discoveredCount, newProposalsCount, errors, proposalStats }) {
+function generateHtml({ sourceName, success, duration, discoveredCount, newProposalsCount, addedCount, duplicateCount, errors, proposalStats }) {
   const statusColor = success && errors.length === 0 ? '#166534' : '#dc2626';
   const statusBg = success && errors.length === 0 ? '#dcfce7' : '#fef2f2';
   const statusIcon = success && errors.length === 0 ? '✓' : '⚠️';
@@ -134,7 +134,29 @@ function generateHtml({ sourceName, success, duration, discoveredCount, newPropo
       </div>
       <div>
         <h1 style="font-size: 18px; margin: 0; color: #1f2937;">${sourceName} Crawl Complete</h1>
-        <p style="font-size: 13px; color: #666; margin: 0;">${formatDuration(duration)} · ${discoveredCount} discovered · ${newProposalsCount} new proposals</p>
+        <p style="font-size: 13px; color: #666; margin: 0;">${formatDuration(duration)}</p>
+      </div>
+    </div>
+
+    <!-- Crawl Stats -->
+    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; text-align: center;">
+        <div>
+          <div style="font-size: 20px; font-weight: bold; color: #334155;">${discoveredCount}</div>
+          <div style="font-size: 11px; color: #64748b;">items found</div>
+        </div>
+        <div>
+          <div style="font-size: 20px; font-weight: bold; color: ${addedCount > 0 ? '#166534' : '#334155'};">${addedCount}</div>
+          <div style="font-size: 11px; color: #64748b;">new (${duplicateCount} dupes)</div>
+        </div>
+        <div>
+          <div style="font-size: 20px; font-weight: bold; color: ${newProposalsCount > 0 ? '#0369a1' : '#334155'};">${newProposalsCount}</div>
+          <div style="font-size: 11px; color: #64748b;">proposals created</div>
+        </div>
+        <div>
+          <div style="font-size: 20px; font-weight: bold; color: ${proposalStats.pending > 0 ? '#d97706' : '#334155'};">${proposalStats.pending}</div>
+          <div style="font-size: 11px; color: #64748b;">pending review</div>
+        </div>
       </div>
     </div>
 
@@ -179,10 +201,14 @@ function generateHtml({ sourceName, success, duration, discoveredCount, newPropo
   `.trim();
 }
 
-function generateText({ sourceName, success, duration, discoveredCount, newProposalsCount, errors, proposalStats }) {
+function generateText({ sourceName, success, duration, discoveredCount, newProposalsCount, addedCount, duplicateCount, errors, proposalStats }) {
   let text = `${sourceName.toUpperCase()} CRAWL COMPLETE
-${success && errors.length === 0 ? '✓' : '⚠️'} ${formatDuration(duration)} · ${discoveredCount} discovered · ${newProposalsCount} new proposals
+${success && errors.length === 0 ? '✓' : '⚠️'} ${formatDuration(duration)}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Items found: ${discoveredCount} (${addedCount} new, ${duplicateCount} dupes)
+Proposals created: ${newProposalsCount}
+Pending review: ${proposalStats.pending}
 
 `;
 
