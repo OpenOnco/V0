@@ -15,7 +15,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES } from '../config.js';
 import { initializeCLFS, lookupPLARate, lookupMultiplePLARates, extractPLACodes } from '../utils/medicare-rates.js';
-import { createProposal, PROPOSAL_TYPES } from '../proposals/queue.js';
+import { createProposal } from '../proposals/queue.js';
+import { PROPOSAL_TYPES } from '../proposals/schema.js';
 
 const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
 

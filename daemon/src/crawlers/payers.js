@@ -20,11 +20,12 @@ import { getAllPolicies } from '../data/policy-registry.js';
 import { initializeTestDictionary, matchTests } from '../data/test-dictionary.js';
 import { addDiscoveries } from '../queue/index.js';
 import { updateCrawlerHealth, recordCrawlerError } from '../health.js';
-import { createProposal, PROPOSAL_TYPES } from '../proposals/queue.js';
+import { createProposal } from '../proposals/queue.js';
+import { PROPOSAL_TYPES } from '../proposals/schema.js';
 import {
   initHashStore,
   getHash,
-  upsertHash,
+  setHash,
   recordSuccess,
   recordFailure,
 } from '../utils/hash-store.js';
@@ -157,9 +158,10 @@ export class PayerCrawler extends PlaywrightCrawler {
     // Compute hash
     const newHash = createHash('sha256').update(content).digest('hex');
 
-    // Get previous hash
+    // Get previous hash data
     const hashKey = `${policy.payerId}:policy:${policy.url}`;
-    const previousHash = await getHash(hashKey);
+    const previousData = getHash(hashKey);
+    const previousHash = previousData?.hash || null;
 
     if (previousHash === newHash) {
       logger.debug(`No change: ${policy.id}`);
@@ -168,7 +170,7 @@ export class PayerCrawler extends PlaywrightCrawler {
     }
 
     // Content changed - store new hash
-    await upsertHash(hashKey, newHash, content.substring(0, 50000));
+    setHash(hashKey, { hash: newHash, content: content.substring(0, 50000) });
     await recordSuccess(policy.url, policy.payerId);
 
     logger.info(`Policy changed: ${policy.id}`, { payerId: policy.payerId });
@@ -186,14 +188,15 @@ export class PayerCrawler extends PlaywrightCrawler {
    * Fetch policy content (HTML or PDF)
    */
   async fetchPolicyContent(policy) {
-    const page = await this.browser.newPage();
+    // PDFs use direct HTTP fetch (no Playwright needed)
+    if (policy.contentType === 'pdf') {
+      return await this.fetchPdfContent(policy.url);
+    }
 
+    // HTML pages use Playwright for JS rendering
+    const page = await this.browser.newPage();
     try {
-      if (policy.contentType === 'pdf') {
-        return await this.fetchPdfContent(page, policy.url);
-      } else {
-        return await this.fetchHtmlContent(page, policy.url);
-      }
+      return await this.fetchHtmlContent(page, policy.url);
     } finally {
       await page.close();
     }
@@ -227,21 +230,24 @@ export class PayerCrawler extends PlaywrightCrawler {
   }
 
   /**
-   * Fetch PDF content
+   * Fetch PDF content using direct HTTP (Playwright triggers downloads for PDFs)
    */
-  async fetchPdfContent(page, url) {
+  async fetchPdfContent(url) {
     try {
-      // Navigate and get PDF as buffer
-      const response = await page.goto(url, {
-        waitUntil: 'load',
+      // Use fetch() directly - Playwright page.goto() triggers downloads for PDFs
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'application/pdf,*/*',
+        },
         timeout: PAGE_TIMEOUT_MS,
       });
 
-      if (!response) {
-        throw new Error('No response from PDF URL');
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const buffer = await response.body();
+      const buffer = Buffer.from(await response.arrayBuffer());
 
       // Parse PDF (dynamic import to handle optional dependency)
       const pdfParse = (await import('pdf-parse')).default;
@@ -373,8 +379,9 @@ Provide a JSON response:
     // Also include tests found in content
     const testsFound = metadata?.testsFound || [];
 
-    // Combine and dedupe
-    const allTests = [...new Set([...testsWithCoverage, ...testsFound])];
+    // Combine, dedupe, and filter out undefined/null/empty values
+    const allTests = [...new Set([...testsWithCoverage, ...testsFound])]
+      .filter(name => name && typeof name === 'string' && name.trim().length > 0);
 
     if (allTests.length === 0) {
       return null; // No specific tests to create proposals for
