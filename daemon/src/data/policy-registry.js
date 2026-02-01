@@ -326,16 +326,190 @@ export const POLICY_REGISTRY = {
     ],
   },
 
+  bcbst: {
+    name: 'BCBS Tennessee',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbst-ctdna-liquid-biopsy',
+        name: 'Circulating Tumor DNA (Liquid Biopsy)',
+        url: 'https://www.bcbst.com/mpmanual/!ssl!/webhelp/Circulating_Tumor_DNA_Liquid_Biopsy.htm',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Primary ctDNA/liquid biopsy policy. Covers NSCLC, breast, prostate indications.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcbsnc: {
+    name: 'Blue Cross NC',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbsnc-liquid-biopsy-g2054',
+        name: 'Liquid Biopsy (AHS-G2054)',
+        url: 'https://www.bluecrossnc.com/providers/policies-guidelines-codes/commercial/laboratory/updates/liquid-biopsy',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Covers NSCLC, breast (PIK3CA), prostate. MCED considered investigational.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcbsma: {
+    name: 'Blue Cross MA',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbsma-ctdna-797',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells for Cancer',
+        url: 'https://www.bluecrossma.org/medical-policies/sites/g/files/csphws2091/files/acquiadam-assets/797Circulating_Tumor_DNA_For_Cancer.pdf',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Comprehensive liquid biopsy policy with detailed coverage criteria.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcbsks: {
+    name: 'BCBS Kansas',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbsks-ctdna-liquid-biopsy',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsy)',
+        url: 'https://www.bcbsks.com/medical-policies/circulating-tumor-dna-and-circulating-tumor-cells-cancer-management-liquid-biopsy',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'BCBS Kansas liquid biopsy medical policy.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  excellus: {
+    name: 'Excellus BCBS (NY)',
+    tier: 2,
+    policies: [
+      {
+        id: 'excellus-ctdna-liquid-biopsy',
+        name: 'Circulating Tumor DNA for Management of Cancer (Liquid Biopsy)',
+        url: 'https://www.excellusbcbs.com/documents/20152/127121/Circulating+Tumor+DNA+for+Management+of+Cancer+(Liquid+Biopsy).pdf/',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'New York regional BCBS liquid biopsy policy.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcbsri: {
+    name: 'BCBS Rhode Island',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbsri-ctdna-2026',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsy)',
+        url: 'https://www.bcbsri.com/providers/sites/providers/files/policies/2026/01/2026%20Circulating%20Tumor%20DNA%20and%20Circulating%20Tumor%20Cells%20for%20Cancer%20Management%20(Liquid%20Biopsy)_0.pdf',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: '2026 policy update for Rhode Island.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  floridablue: {
+    name: 'Florida Blue',
+    tier: 2,
+    policies: [
+      {
+        id: 'floridablue-tumor-markers',
+        name: 'Tumor/Genetic Markers (MCG 05-86000-22)',
+        url: 'https://mcgs.bcbsfl.com/MCG?mcgId=05-86000-22',
+        contentType: 'html',
+        policyType: 'tumor_markers',
+        discoveryMethod: 'google_search',
+        notes: 'Florida Blue medical coverage guideline for tumor markers including ctDNA.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
   // ============================================================================
-  // TIER 2: Other Large Regional
+  // TIER 1: Federal / Multi-State Programs
   // ============================================================================
 
-  // TODO: Add more regional BCBS plans as discovered
-  // - BCBS Texas (HCSC)
-  // - BCBS Illinois (HCSC)
-  // - Florida Blue
-  // - BCBS North Carolina
-  // - BCBS Tennessee
+  fepblue: {
+    name: 'FEP Blue (Federal Employee Program)',
+    tier: 1,
+    policies: [
+      {
+        id: 'fep-ctdna-204141',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells (2.04.141)',
+        url: 'https://www.fepblue.org/-/media/PDFs/Medical-Policies/2025/January/Medical-Policies/Remove-and-Replace/204141-Circulating-Tumor-DNA-and.pdf',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Federal Employee Program policy. Generally considers ctDNA investigational for many indications.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  // ============================================================================
+  // TIER 2: Medicaid Managed Care / Other National
+  // ============================================================================
+
+  centene: {
+    name: 'Centene (Superior, Ambetter, etc.)',
+    tier: 2,
+    policies: [
+      {
+        id: 'centene-ctdna-mp239',
+        name: 'Oncology Circulating Tumor DNA and Circulating Tumor Cells (CP.MP.239)',
+        url: 'https://www.superiorhealthplan.com/content/dam/centene/Superior/policies/clinical-policies/CP.MP.239.pdf',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Centene policy used by Superior, Ambetter, and other Centene affiliates. Covers NSCLC, colorectal, pancreatic.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  molina: {
+    name: 'Molina Healthcare',
+    tier: 2,
+    policies: [
+      {
+        id: 'molina-genetic-testing-051',
+        name: 'Genetic Testing (Policy No. 051)',
+        url: 'https://www.molinaclinicalpolicy.com/molinaclinicalpolicy/-/media/Molina/PublicWebsite/PDF/Common/Molina-Clinical-Policy/Genetic-Testing_R.pdf',
+        contentType: 'pdf',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'Molina genetic testing policy includes tumor marker genotyping and ctDNA.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  // ============================================================================
+  // TODO: Additional payers to research
+  // ============================================================================
+  // - BCBS Texas (HCSC) - has portal but need specific policy URL
+  // - BCBS Illinois (HCSC) - has portal but need specific policy URL
+  // - Kaiser Permanente - regional variations
 
   // ============================================================================
   // Medicare / CMS
