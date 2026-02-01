@@ -973,6 +973,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <button
+                    type="button"
                     onClick={() => setShowSummaryModal(true)}
                     className="text-base text-rose-600 hover:text-rose-700 font-semibold flex items-center gap-1"
                   >
@@ -982,6 +983,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
                     </svg>
                   </button>
                   <button
+                    type="button"
                     onClick={() => setShowDetailModal(true)}
                     className="text-base text-rose-600 hover:text-rose-700 font-semibold flex items-center gap-1"
                   >
