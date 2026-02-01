@@ -249,8 +249,8 @@ export class PayerCrawler extends PlaywrightCrawler {
 
       const buffer = Buffer.from(await response.arrayBuffer());
 
-      // Parse PDF (dynamic import to handle optional dependency)
-      const pdfParse = (await import('pdf-parse')).default;
+      // Parse PDF - import inner module to avoid test code that runs on module load
+      const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
       const pdf = await pdfParse(buffer);
 
       return pdf.text;
