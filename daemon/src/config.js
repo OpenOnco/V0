@@ -27,7 +27,6 @@ export const config = {
   // Crawlers run Sunday 11 PM, digest Monday 1 AM
   schedules: {
     cms: process.env.SCHEDULE_CMS || '0 23 * * 0',           // Sunday 11:00 PM
-    payers: process.env.SCHEDULE_PAYERS || '0 23 * * 0',     // Sunday 11:00 PM
     vendor: process.env.SCHEDULE_VENDORS || '0 23 * * 0',    // Sunday 11:00 PM
     digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
   },
@@ -40,13 +39,7 @@ export const config = {
       description: 'Medicare coverage determinations (NCDs and LCDs)',
       rateLimit: parseInt(process.env.RATE_LIMIT_CMS || '5', 10),
     },
-    payers: {
-      enabled: process.env.CRAWLER_PAYERS_ENABLED !== 'false',
-      name: 'Private Payers',
-      description: 'Commercial insurance and Medicare Advantage medical policies',
-      rateLimit: parseFloat(process.env.RATE_LIMIT_PAYERS || '0.2'),
-    },
-    vendors: {
+    vendor: {
       enabled: process.env.CRAWLER_VENDORS_ENABLED !== 'false',
       name: 'Vendors',
       description: 'Test manufacturer coverage announcements and updates',

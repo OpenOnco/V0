@@ -15,7 +15,15 @@
     "test:coverage": "vitest run --coverage",
     "postinstall": "npx playwright install chromium",
     "run:crawl": "node run-now.js",
-    "run:digest": "node -e \"import('./src/email/monday-digest.js').then(m => m.sendMondayDigest())\""
+    "run:digest": "node -e \"import('./src/email/monday-digest.js').then(m => m.sendMondayDigest())\"",
+    "proposals": "node src/proposals/cli.js",
+    "proposals:list": "node src/proposals/cli.js list",
+    "proposals:pending": "node src/proposals/cli.js list --status=pending",
+    "proposals:approve": "node src/proposals/cli.js approve",
+    "proposals:reject": "node src/proposals/cli.js reject",
+    "proposals:apply": "node src/proposals/cli.js apply",
+    "proposals:stats": "node src/proposals/cli.js stats",
+    "proposals:create-test": "node src/proposals/cli.js create-test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
@@ -24,6 +32,7 @@
     "better-sqlite3": "^12.6.2",
     "dotenv": "^16.3.1",
     "node-cron": "^3.0.3",
+    "pdf-parse": "^1.1.1",
     "playwright": "^1.57.0",
     "resend": "^2.1.0",
     "winston": "^3.11.0",

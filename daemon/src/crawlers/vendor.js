@@ -7,25 +7,15 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { createHash } from 'crypto';
-import { readFile, writeFile, mkdir } from 'fs/promises';
-import { dirname, resolve } from 'path';
-import { chromium } from 'playwright';
-import { BaseCrawler } from './base.js';
+import { PlaywrightCrawler } from './playwright-base.js';
 import { config, DISCOVERY_TYPES, SOURCES, MONITORED_VENDORS } from '../config.js';
 import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
 import { computeDiff, truncateDiff } from '../utils/diff.js';
 import { canonicalizeContent } from '../utils/canonicalize.js';
 import { initializeCLFS, lookupPLARate, extractPLACodes } from '../utils/medicare-rates.js';
-
-// Path to store content hashes for change detection
-const HASH_FILE_PATH = resolve(process.cwd(), 'data', 'vendor-hashes.json');
-
-// Realistic user agent to avoid bot detection
-const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-
-// Rate limit delay between requests (3 seconds)
-const RATE_LIMIT_MS = 3000;
+import { isRelevantContent, getMatchingCategories } from '../utils/extraction-patterns.js';
+import { createProposal } from '../proposals/queue.js';
+import { PROPOSAL_TYPES } from '../proposals/schema.js';
 
 // Claude model for coverage analysis
 const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
@@ -213,9 +203,41 @@ const VENDOR_SOURCES = [
     id: 'helio',
     newsUrl: 'https://www.helio.health/news',
   },
+
+  // Additional high-priority vendors
+  {
+    name: 'SOPHiA GENETICS',
+    id: 'sophia',
+    newsUrl: 'https://www.sophiagenetics.com/news-room/',
+  },
+  {
+    name: 'Genomic Testing Cooperative',
+    id: 'gtc',
+    newsUrl: 'https://genomictestingcooperative.com/category/press-release/',
+  },
+  {
+    name: 'Roche Diagnostics',
+    id: 'roche',
+    newsUrl: 'https://www.roche.com/media/releases',
+  },
+  {
+    name: 'Illumina',
+    id: 'illumina',
+    newsUrl: 'https://www.illumina.com/company/news-center/press-releases.html',
+  },
+  {
+    name: 'QIAGEN',
+    id: 'qiagen',
+    newsUrl: 'https://corporate.qiagen.com/newsroom/press-releases/default.aspx',
+  },
+  {
+    name: 'Thermo Fisher Scientific',
+    id: 'thermofisher',
+    newsUrl: 'https://newsroom.thermofisher.com/newsroom/press-releases/default.aspx',
+  },
 ];
 
-export class VendorCrawler extends BaseCrawler {
+export class VendorCrawler extends PlaywrightCrawler {
   constructor() {
     super({
       name: config.crawlers.vendor?.name || 'Vendors',
@@ -223,157 +245,11 @@ export class VendorCrawler extends BaseCrawler {
       description: config.crawlers.vendor?.description || 'Vendor coverage announcements',
       rateLimit: config.crawlers.vendor?.rateLimit || 3,
       enabled: config.crawlers.vendor?.enabled ?? true,
+      // Vendor sites are faster than payer sites
+      rateLimitMs: 3000,
     });
 
     this.vendors = VENDOR_SOURCES;
-    this.browser = null;
-    this.hashes = {};
-    this.anthropic = config.anthropic?.apiKey ? new Anthropic({ apiKey: config.anthropic.apiKey }) : null;
-  }
-
-  /**
-   * Load stored content hashes from disk
-   * Handles both old format (string hash) and new format (object with hash, content, fetchedAt)
-   */
-  async loadHashes() {
-    try {
-      const data = await readFile(HASH_FILE_PATH, 'utf-8');
-      const rawHashes = JSON.parse(data);
-
-      // Normalize to new format, handling backward compatibility
-      this.hashes = {};
-      for (const [key, value] of Object.entries(rawHashes)) {
-        if (typeof value === 'string') {
-          // Old format: just the hash string
-          this.hashes[key] = {
-            hash: value,
-            content: null, // No previous content available
-            fetchedAt: null,
-          };
-        } else {
-          // New format: object with hash, content, fetchedAt
-          this.hashes[key] = value;
-        }
-      }
-
-      this.log('debug', `Loaded ${Object.keys(this.hashes).length} stored hashes`);
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        this.log('info', 'No existing hash file, starting fresh');
-        this.hashes = {};
-      } else {
-        this.log('warn', 'Failed to load hash file', { error: error.message });
-        this.hashes = {};
-      }
-    }
-  }
-
-  /**
-   * Save content hashes to disk
-   */
-  async saveHashes() {
-    try {
-      await mkdir(dirname(HASH_FILE_PATH), { recursive: true });
-      await writeFile(HASH_FILE_PATH, JSON.stringify(this.hashes, null, 2));
-      this.log('debug', `Saved ${Object.keys(this.hashes).length} hashes`);
-    } catch (error) {
-      this.log('error', 'Failed to save hash file', { error: error.message });
-    }
-  }
-
-  /**
-   * Compute hash of page content
-   */
-  computeHash(content) {
-    return createHash('sha256').update(content).digest('hex');
-  }
-
-  /**
-   * Sleep for specified milliseconds
-   */
-  async sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  /**
-   * Launch browser instance
-   */
-  async launchBrowser() {
-    if (!this.browser) {
-      this.browser = await chromium.launch({
-        headless: true,
-      });
-      this.log('debug', 'Browser launched');
-    }
-    return this.browser;
-  }
-
-  /**
-   * Close browser instance
-   */
-  async closeBrowser() {
-    if (this.browser) {
-      await this.browser.close();
-      this.browser = null;
-      this.log('debug', 'Browser closed');
-    }
-  }
-
-  /**
-   * Fetch page content using Playwright
-   */
-  async fetchPage(url) {
-    const browser = await this.launchBrowser();
-    const context = await browser.newContext({
-      userAgent: USER_AGENT,
-      viewport: { width: 1920, height: 1080 },
-    });
-
-    const page = await context.newPage();
-
-    try {
-      await page.goto(url, {
-        waitUntil: 'domcontentloaded',
-        timeout: 30000,
-      });
-
-      // Extract text content for hashing and analysis
-      const content = await page.evaluate(() => {
-        // Remove script and style elements for cleaner text
-        const scripts = document.querySelectorAll('script, style, noscript');
-        scripts.forEach((el) => el.remove());
-        return document.body.innerText;
-      });
-
-      // Extract headlines/article titles for targeted analysis
-      const headlines = await page.evaluate(() => {
-        const items = [];
-        // Common news item selectors
-        const selectors = [
-          'article h2', 'article h3',
-          '.news-item h2', '.news-item h3',
-          '.press-release-title', '.press-release h2',
-          '.newsroom-item h2', '.newsroom-item h3',
-          'h2 a', 'h3 a',
-          '[class*="news"] h2', '[class*="news"] h3',
-          '[class*="press"] h2', '[class*="press"] h3',
-        ];
-
-        for (const selector of selectors) {
-          document.querySelectorAll(selector).forEach((el) => {
-            const text = el.innerText?.trim();
-            if (text && text.length > 10 && text.length < 300) {
-              items.push(text);
-            }
-          });
-        }
-        return [...new Set(items)].slice(0, 20); // Dedupe and limit
-      });
-
-      return { content, headlines, url };
-    } finally {
-      await context.close();
-    }
   }
 
   /**
@@ -874,7 +750,7 @@ Respond ONLY with valid JSON.`,
         try {
           // Rate limit between requests
           if (pagesProcessed > 0) {
-            await this.sleep(RATE_LIMIT_MS);
+            await this.sleep(this.rateLimitMs);
           }
 
           this.log('debug', `Fetching PAP page: ${url}`);
@@ -944,7 +820,7 @@ Respond ONLY with valid JSON.`,
         try {
           // Rate limit between requests
           if (pagesProcessed > 0) {
-            await this.sleep(RATE_LIMIT_MS);
+            await this.sleep(this.rateLimitMs);
           }
 
           // Use RSS feed if available, otherwise use Playwright
@@ -954,7 +830,7 @@ Respond ONLY with valid JSON.`,
             ({ content, headlines } = await this.fetchRSS(url));
           } else {
             this.log('debug', `Fetching page: ${url}`);
-            ({ content, headlines } = await this.fetchPage(url));
+            ({ content, headlines } = await this.fetchPage(url, { extractHeadlines: true }));
           }
 
           // Canonicalize content for hash comparison (removes dynamic elements)
@@ -1016,11 +892,24 @@ Respond ONLY with valid JSON.`,
       await this.saveHashes();
     }
 
+    // Create proposals for high-confidence discoveries (requires human review)
+    let proposalsCreated = 0;
+    if (discoveries.length > 0) {
+      try {
+        const proposals = await this.createProposalsFromDiscoveries(discoveries);
+        proposalsCreated = proposals.length;
+        this.log('info', `Created ${proposalsCreated} proposals for human review`);
+      } catch (error) {
+        this.log('error', 'Failed to create proposals', { error: error.message });
+      }
+    }
+
     this.log('info', 'Vendor intelligence crawl complete', {
       pagesProcessed,
       pagesChanged,
       pagesFailed,
       discoveries: discoveries.length,
+      proposalsCreated,
       stats,
     });
 
@@ -1417,6 +1306,216 @@ Respond ONLY with valid JSON.`,
         launchDate: newTest.launchDate,
       },
     };
+  }
+
+  /**
+   * Create proposals from discoveries for human review
+   * Only creates proposals for high-confidence, actionable discoveries
+   *
+   * @param {Array} discoveries - Array of discovery objects from createAllDiscoveries
+   * @returns {Promise<Array>} Array of created proposal objects
+   */
+  async createProposalsFromDiscoveries(discoveries) {
+    const proposals = [];
+
+    for (const discovery of discoveries) {
+      try {
+        // Only create proposals for high-relevance discoveries
+        if (discovery.relevance !== 'high') {
+          continue;
+        }
+
+        const proposal = await this.createProposalFromDiscovery(discovery);
+        if (proposal) {
+          proposals.push(proposal);
+          this.log('info', `Created proposal: ${proposal.id}`, {
+            type: proposal.type,
+            testName: discovery.metadata?.testName,
+          });
+        }
+      } catch (error) {
+        this.log('warn', `Failed to create proposal for discovery`, {
+          title: discovery.title,
+          error: error.message,
+        });
+      }
+    }
+
+    return proposals;
+  }
+
+  /**
+   * Create a proposal from a single discovery
+   * Maps discovery types to proposal types
+   *
+   * @param {Object} discovery - Discovery object
+   * @returns {Promise<Object|null>} Created proposal or null
+   */
+  async createProposalFromDiscovery(discovery) {
+    const { type, metadata, url, title, summary } = discovery;
+
+    switch (type) {
+      case DISCOVERY_TYPES.VENDOR_COVERAGE_ANNOUNCEMENT:
+        return this.createCoverageProposalFromDiscovery(discovery);
+
+      case DISCOVERY_TYPES.VENDOR_PERFORMANCE_DATA:
+      case DISCOVERY_TYPES.VENDOR_CLINICAL_EVIDENCE:
+      case DISCOVERY_TYPES.VENDOR_REGULATORY:
+      case DISCOVERY_TYPES.VENDOR_NEW_INDICATION:
+        return this.createUpdateProposalFromDiscovery(discovery);
+
+      case DISCOVERY_TYPES.VENDOR_NEW_TEST:
+        return this.createNewTestProposalFromDiscovery(discovery);
+
+      // Skip proposal creation for these types (informational only)
+      case DISCOVERY_TYPES.VENDOR_PLA_CODE:
+      case DISCOVERY_TYPES.VENDOR_PRICE_CHANGE:
+      case DISCOVERY_TYPES.VENDOR_PAP_UPDATE:
+      case DISCOVERY_TYPES.VENDOR_PAYMENT_PLAN:
+        this.log('debug', `Skipping proposal for informational discovery type: ${type}`);
+        return null;
+
+      default:
+        this.log('debug', `Unknown discovery type for proposal: ${type}`);
+        return null;
+    }
+  }
+
+  /**
+   * Create a coverage proposal from a coverage announcement discovery
+   */
+  async createCoverageProposalFromDiscovery(discovery) {
+    const { metadata, url, title, summary } = discovery;
+
+    // Skip if no test name identified
+    if (!metadata.testName && (!metadata.deterministicMatches || metadata.deterministicMatches.length === 0)) {
+      this.log('debug', 'Skipping coverage proposal: no test identified');
+      return null;
+    }
+
+    // Use deterministic match if available, otherwise use LLM-identified test
+    const testName = metadata.testName ||
+      metadata.deterministicMatches?.[0]?.testName ||
+      metadata.llmSuggestedTests?.[0];
+
+    const testId = metadata.deterministicMatches?.[0]?.testId || null;
+
+    // Calculate confidence based on match type
+    let confidence = 0.7; // Base confidence
+    if (metadata.deterministicMatches?.length > 0) {
+      const bestMatch = metadata.deterministicMatches[0];
+      confidence = bestMatch.confidence || 0.85;
+    }
+
+    return createProposal(PROPOSAL_TYPES.COVERAGE, {
+      testName,
+      testId,
+      payer: metadata.payerName || 'Unknown Payer',
+      payerId: null, // Would need payer matching logic
+      coverageStatus: 'covered', // Default assumption from announcement
+      conditions: summary,
+      effectiveDate: metadata.effectiveDate || null,
+      source: url,
+      sourceTitle: title,
+      confidence,
+      snippet: summary?.slice(0, 500),
+    });
+  }
+
+  /**
+   * Create an update proposal from performance/clinical/regulatory discoveries
+   */
+  async createUpdateProposalFromDiscovery(discovery) {
+    const { type, metadata, url, title, summary } = discovery;
+
+    // Skip if no test name identified
+    if (!metadata.testName) {
+      this.log('debug', 'Skipping update proposal: no test identified');
+      return null;
+    }
+
+    // Build changes object based on discovery type
+    const changes = {};
+
+    if (type === DISCOVERY_TYPES.VENDOR_PERFORMANCE_DATA) {
+      changes.performance = {
+        [metadata.metric]: metadata.value,
+        cancerType: metadata.cancerType,
+        stage: metadata.stage,
+        population: metadata.population,
+      };
+    }
+
+    if (type === DISCOVERY_TYPES.VENDOR_CLINICAL_EVIDENCE) {
+      changes.clinicalEvidence = {
+        trialName: metadata.trialName,
+        nctId: metadata.nctId,
+        publication: metadata.publication,
+        findings: metadata.findings,
+        date: metadata.date,
+      };
+    }
+
+    if (type === DISCOVERY_TYPES.VENDOR_REGULATORY) {
+      changes.regulatory = {
+        action: metadata.action,
+        indication: metadata.indication,
+        date: metadata.date,
+      };
+    }
+
+    if (type === DISCOVERY_TYPES.VENDOR_NEW_INDICATION) {
+      changes.newIndication = {
+        indication: metadata.indication,
+        date: metadata.date,
+      };
+    }
+
+    return createProposal(PROPOSAL_TYPES.UPDATE, {
+      testName: metadata.testName,
+      testId: null, // Would need test matching logic
+      changes,
+      source: url,
+      sourceTitle: title,
+      confidence: 0.75,
+      snippet: summary?.slice(0, 500),
+    });
+  }
+
+  /**
+   * Create a new test proposal from a new test discovery
+   */
+  async createNewTestProposalFromDiscovery(discovery) {
+    const { metadata, url, title, summary } = discovery;
+
+    if (!metadata.testName) {
+      this.log('debug', 'Skipping new test proposal: no test name');
+      return null;
+    }
+
+    // Map category codes to full category names
+    const categoryMap = {
+      'mrd': 'Molecular Residual Disease',
+      'tds': 'Treatment Decision Support',
+      'ecd': 'Early Cancer Detection',
+      'hct': 'Hereditary Cancer Testing',
+      'trm': 'Treatment Response Monitoring',
+      'cgp': 'Comprehensive Genomic Profiling',
+    };
+
+    return createProposal(PROPOSAL_TYPES.NEW_TEST, {
+      testData: {
+        name: metadata.testName,
+        vendor: metadata.vendorName,
+        category: categoryMap[metadata.category] || metadata.category || 'Unknown',
+        description: metadata.description || summary,
+        launchDate: metadata.launchDate,
+      },
+      source: url,
+      sourceTitle: title,
+      confidence: 0.7, // New test proposals need careful review
+      snippet: summary?.slice(0, 500),
+    });
   }
 
   /**

@@ -9,6 +9,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from '../config.js';
 import { createLogger } from '../utils/logger.js';
+import { listPending, getStats } from '../proposals/queue.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -175,14 +176,41 @@ function getRecentErrors(health) {
 }
 
 /**
+ * Load proposal stats
+ */
+async function loadProposalStats() {
+  try {
+    const stats = await getStats();
+    const pending = await listPending();
+    return {
+      total: stats.total,
+      pending: stats.byStatus.pending || 0,
+      approved: stats.byStatus.approved || 0,
+      byType: stats.byType,
+      recentPending: pending.slice(0, 5).map(p => ({
+        id: p.id,
+        type: p.type,
+        testName: p.testName || p.testData?.name,
+        payer: p.payer,
+        createdAt: p.createdAt,
+      })),
+    };
+  } catch (error) {
+    logger.warn('Failed to load proposal stats', { error: error.message });
+    return { total: 0, pending: 0, approved: 0, byType: {}, recentPending: [] };
+  }
+}
+
+/**
  * Build the digest data object
  */
-function buildDigestData() {
+async function buildDigestData() {
   const discoveries = loadDiscoveries();
   const health = loadHealth();
   const pending = discoveries.filter(d => d.status === 'pending');
   const recentErrors = getRecentErrors(health);
-  
+  const proposalStats = await loadProposalStats();
+
   return {
     generatedAt: new Date().toISOString(),
     weekOf: getWeekDate(),
@@ -194,6 +222,7 @@ function buildDigestData() {
         vendor: pending.filter(d => d.source === 'vendor').length,
       }
     },
+    proposals: proposalStats,
     crawlerHealth: {
       cms: health.crawlers?.cms || null,
       payers: health.crawlers?.payers || null,
@@ -428,6 +457,112 @@ Reply with **approve**, **skip**, or ask questions for each item.
 }
 
 /**
+ * Generate Claude Desktop-ready proposals file
+ * This file is designed to be uploaded to Claude Desktop with Desktop Commander
+ */
+async function generateProposalsAttachment(proposals) {
+  if (!proposals || proposals.pending === 0) {
+    return null;
+  }
+
+  // Fetch full proposal data
+  const pendingProposals = await listPending();
+
+  let content = `# OpenOnco Proposals Review
+
+## Instructions for Claude Desktop
+
+You have access to Desktop Commander. For each proposal below:
+1. I'll present the proposal details
+2. Ask me: "approve" or "skip"
+3. If approved, edit the appropriate file in src/data.js
+
+**Important paths:**
+- Test database: \`/Users/adickinson/Documents/GitHub/V0/src/data.js\`
+- MRD tests: search for \`export const mrdTestData\`
+- TDS tests: search for \`export const tdsTestData\`
+- ECD tests: search for \`export const ecdTestData\`
+- HCT tests: search for \`export const hctTestData\`
+
+---
+
+## Pending Proposals (${pendingProposals.length})
+
+`;
+
+  for (let i = 0; i < pendingProposals.length; i++) {
+    const p = pendingProposals[i];
+    content += `### Proposal ${i + 1}: ${p.type.toUpperCase()}\n\n`;
+    content += `**ID:** \`${p.id}\`\n`;
+    content += `**Created:** ${new Date(p.createdAt).toLocaleDateString()}\n`;
+    content += `**Confidence:** ${Math.round((p.confidence || 0.7) * 100)}%\n\n`;
+
+    if (p.type === 'coverage') {
+      content += `**Test:** ${p.testName}\n`;
+      content += `**Payer:** ${p.payer}\n`;
+      content += `**Status:** ${p.coverageStatus}\n`;
+      if (p.conditions) content += `**Conditions:** ${p.conditions}\n`;
+      if (p.effectiveDate) content += `**Effective Date:** ${p.effectiveDate}\n`;
+      content += `**Source:** ${p.source}\n`;
+      if (p.snippet) content += `\n> ${p.snippet}\n`;
+
+      content += `\n**Action if approved:** Find the test "${p.testName}" in data.js and add/update payer coverage:\n`;
+      content += `\`\`\`javascript
+// Add to the test's ppiData.payers array:
+{
+  name: "${p.payer}",
+  status: "${p.coverageStatus}",
+  ${p.conditions ? `conditions: "${p.conditions}",` : ''}
+  ${p.effectiveDate ? `effectiveDate: "${p.effectiveDate}",` : ''}
+  source: "${p.source}"
+}
+\`\`\`\n`;
+
+    } else if (p.type === 'update') {
+      content += `**Test:** ${p.testName}\n`;
+      content += `**Changes:** ${JSON.stringify(p.changes, null, 2)}\n`;
+      content += `**Source:** ${p.source}\n`;
+      if (p.snippet) content += `\n> ${p.snippet}\n`;
+
+      content += `\n**Action if approved:** Find the test "${p.testName}" in data.js and apply the changes above.\n`;
+
+    } else if (p.type === 'new-test') {
+      const testData = p.testData || {};
+      content += `**New Test:** ${testData.name}\n`;
+      content += `**Vendor:** ${testData.vendor}\n`;
+      content += `**Category:** ${testData.category}\n`;
+      if (testData.description) content += `**Description:** ${testData.description}\n`;
+      content += `**Source:** ${p.source}\n`;
+
+      content += `\n**Action if approved:** Add new test entry to the appropriate array in data.js.\n`;
+      content += `\`\`\`javascript
+{
+  id: "${(testData.name || '').toLowerCase().replace(/\\s+/g, '-')}",
+  name: "${testData.name}",
+  vendor: "${testData.vendor}",
+  category: "${testData.category}",
+  // ... fill in other required fields
+  vendorVerified: false,
+}
+\`\`\`\n`;
+    }
+
+    content += `\n---\n\n`;
+  }
+
+  content += `## After Review
+
+Once all proposals are reviewed:
+1. Run tests: \`npm run test:smoke\`
+2. Commit: \`git add -A && git commit -m "Apply proposals from ${new Date().toISOString().split('T')[0]}"\`
+3. Deploy: \`./preview\`
+
+`;
+
+  return content;
+}
+
+/**
  * Format duration in human readable form
  */
 function formatDuration(ms) {
@@ -610,10 +745,56 @@ function generateDiscoverySectionHtml(section, discoveries) {
 }
 
 /**
+ * Generate proposals section HTML
+ */
+function generateProposalsSectionHtml(proposals) {
+  if (!proposals || proposals.pending === 0) return '';
+
+  const typeLabels = {
+    'coverage': '📋 Coverage',
+    'update': '📊 Update',
+    'new-test': '🆕 New Test',
+  };
+
+  return `
+    <!-- Proposals Section -->
+    <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+      <div style="font-size: 14px; font-weight: 600; color: #92400e; margin-bottom: 12px;">
+        📝 ${proposals.pending} Proposal${proposals.pending !== 1 ? 's' : ''} Awaiting Review
+      </div>
+      <div style="font-size: 12px; color: #78350f; margin-bottom: 12px;">
+        ${proposals.approved > 0 ? `${proposals.approved} approved and ready to apply · ` : ''}
+        Run <code style="background: #fef9c3; padding: 2px 6px; border-radius: 3px;">npm run proposals:list</code> to review
+      </div>
+      ${proposals.recentPending.length > 0 ? `
+        <div style="background: white; border-radius: 6px; padding: 12px;">
+          ${proposals.recentPending.map(p => `
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #fef3c7; font-size: 12px;">
+              <span style="color: #1f2937;">
+                ${typeLabels[p.type] || p.type}: <strong>${p.testName || 'Unknown'}</strong>
+                ${p.payer ? `@ ${p.payer}` : ''}
+              </span>
+              <span style="color: #888; font-size: 11px;">
+                ${new Date(p.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          `).join('')}
+          ${proposals.pending > 5 ? `
+            <div style="font-size: 11px; color: #666; padding-top: 8px;">
+              +${proposals.pending - 5} more proposals
+            </div>
+          ` : ''}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+/**
  * Generate HTML email (summary + stats + errors + discovery sections)
  */
 function generateEmailHtml(digest) {
-  const { summary, crawlerHealth, errors, weekOf, discoveries } = digest;
+  const { summary, crawlerHealth, errors, weekOf, discoveries, proposals } = digest;
 
   const statusEmoji = (status) => {
     if (status === 'success') return '✅';
@@ -714,6 +895,8 @@ function generateEmailHtml(digest) {
 
     ${errorSection}
 
+    ${generateProposalsSectionHtml(proposals)}
+
     ${discoverySectionsHtml}
 
     <!-- Crawler Run Stats -->
@@ -737,9 +920,9 @@ function generateEmailHtml(digest) {
 
     <!-- Instructions -->
     <div style="background: #eff6ff; border: 1px dashed #3b82f6; border-radius: 8px; padding: 16px;">
-      <div style="font-size: 12px; font-weight: 600; color: #1d4ed8; text-transform: uppercase; margin-bottom: 8px;">📎 Review Attachment</div>
+      <div style="font-size: 12px; font-weight: 600; color: #1d4ed8; text-transform: uppercase; margin-bottom: 8px;">📎 Review Proposals</div>
       <p style="font-size: 13px; color: #374151; margin: 0;">
-        Upload the attached <strong>coverage-review.md</strong> file to Claude and hit send to start the review.
+        Upload the attached <strong>proposals.md</strong> file to Claude Desktop to review and apply database updates.
       </p>
     </div>
 
@@ -757,8 +940,8 @@ function generateEmailHtml(digest) {
  * Generate plain text email
  */
 function generateEmailText(digest) {
-  const { summary, crawlerHealth, errors, weekOf } = digest;
-  
+  const { summary, crawlerHealth, errors, weekOf, proposals } = digest;
+
   let text = `
 OPENONCO COVERAGE DIGEST
 Week of ${weekOf}
@@ -767,6 +950,24 @@ Week of ${weekOf}
 ${summary.totalPending} DISCOVERIES PENDING REVIEW
 CMS: ${summary.bySource.cms} | Payers: ${summary.bySource.payers} | Vendors: ${summary.bySource.vendor}
 `;
+
+  // Add proposals section if any
+  if (proposals && proposals.pending > 0) {
+    text += `
+📝 ${proposals.pending} PROPOSAL${proposals.pending !== 1 ? 'S' : ''} AWAITING REVIEW
+───────────────────────────────────────
+`;
+    if (proposals.approved > 0) {
+      text += `${proposals.approved} approved and ready to apply\n`;
+    }
+    text += `Run: npm run proposals:list\n`;
+    if (proposals.recentPending.length > 0) {
+      text += `\nRecent proposals:\n`;
+      proposals.recentPending.forEach(p => {
+        text += `  - ${p.type}: ${p.testName || 'Unknown'}${p.payer ? ` @ ${p.payer}` : ''}\n`;
+      });
+    }
+  }
 
   // Add errors section if any
   if (errors.length > 0) {
@@ -796,7 +997,7 @@ CRAWLER RUN STATS
 
   text += `
 ───────────────────────────────────────
-Upload the attached coverage-review.md file to Claude and hit send to start the review.
+Upload the attached proposals.md file to Claude Desktop to review and apply database updates.
 `;
 
   return text.trim();
@@ -808,7 +1009,7 @@ Upload the attached coverage-review.md file to Claude and hit send to start the 
 export async function sendMondayDigest() {
   logger.info('Preparing Monday digest email');
 
-  const digest = buildDigestData();
+  const digest = await buildDigestData();
 
   if (!config.email.apiKey) {
     logger.warn('RESEND_API_KEY not configured, skipping email');
@@ -817,26 +1018,34 @@ export async function sendMondayDigest() {
 
   const resend = new Resend(config.email.apiKey);
   
-  // Subject includes error count if any
+  // Subject includes error count and proposals if any
   let subject;
+  const proposalCount = digest.proposals?.pending || 0;
   if (digest.errors.length > 0) {
     subject = `[OpenOnco] ⚠️ ${digest.errors.length} errors + ${digest.summary.totalPending} discoveries`;
+  } else if (proposalCount > 0 && digest.summary.totalPending > 0) {
+    subject = `[OpenOnco] ${proposalCount} proposals + ${digest.summary.totalPending} discoveries to review`;
+  } else if (proposalCount > 0) {
+    subject = `[OpenOnco] ${proposalCount} proposal${proposalCount !== 1 ? 's' : ''} awaiting review`;
   } else if (digest.summary.totalPending > 0) {
     subject = `[OpenOnco] ${digest.summary.totalPending} coverage updates to review`;
   } else {
     subject = `[OpenOnco] Weekly digest - no new updates`;
   }
 
-  // Generate the self-executing review file
-  const reviewContent = generateReviewAttachment(digest);
-  // Strip emojis from attachment (they cause encoding issues in downloaded .md files)
-  const cleanContent = reviewContent
-    .replace(/💰/g, '[$]')
-    .replace(/📋/g, '[#]')
-    .replace(/🏥/g, '[+]')
-    .replace(/📊/g, '[i]')
-    .replace(/📌/g, '[*]');
-  const attachmentContent = Buffer.from(cleanContent, 'utf-8').toString('base64');
+  // Generate proposals file for Claude Desktop (only attachment needed)
+  const attachments = [];
+  try {
+    const proposalsContent = await generateProposalsAttachment(digest.proposals);
+    if (proposalsContent) {
+      attachments.push({
+        filename: 'proposals.md',
+        content: Buffer.from(proposalsContent, 'utf-8').toString('base64')
+      });
+    }
+  } catch (err) {
+    logger.error('Failed to generate proposals attachment', { error: err.message });
+  }
 
   try {
     const result = await resend.emails.send({
@@ -845,13 +1054,7 @@ export async function sendMondayDigest() {
       subject,
       html: generateEmailHtml(digest),
       text: generateEmailText(digest),
-      attachments: [
-        {
-          filename: 'coverage-review.md',
-          content: attachmentContent,
-          contentType: 'text/markdown; charset=utf-8'
-        }
-      ]
+      attachments
     });
 
     if (result.error) {

@@ -16,7 +16,7 @@ export function canonicalizeContent(text) {
   
   // 1. Remove common date patterns that aren't policy-relevant
   // "Last updated: Jan 28, 2026" or "Last reviewed: 01/28/2026"
-  canonical = canonical.replace(/last (updated|reviewed|modified|revised)[\s:]+[\w\s,]+\d{4}/gi, '');
+  canonical = canonical.replace(/last (updated|reviewed|modified|revised)[\s:]+[\w\s,/\-]+\d{4}/gi, '');
   
   // "Page generated at..." or "Retrieved on..."
   canonical = canonical.replace(/(page generated|retrieved|accessed|printed)[\s:]+[\w\s,]+\d{4}/gi, '');

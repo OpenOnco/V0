@@ -102,7 +102,6 @@ export function startScheduler() {
   // Schedule crawlers
   scheduleCrawler(SOURCES.CMS, config.schedules.cms);
   scheduleCrawler(SOURCES.VENDOR, config.schedules.vendor);
-  scheduleCrawler(SOURCES.PAYERS, config.schedules.payers);
 
   // Schedule digest
   scheduleDigest(config.schedules.digest);
@@ -115,7 +114,6 @@ export function startScheduler() {
     schedules: {
       cms: config.schedules.cms,
       vendor: config.schedules.vendor,
-      payers: config.schedules.payers,
       digest: config.schedules.digest,
     },
   });
@@ -181,7 +179,7 @@ export async function runAllCrawlersNow() {
   logger.info('Running all crawlers immediately');
 
   const results = {};
-  const sources = [SOURCES.CMS, SOURCES.VENDOR, SOURCES.PAYERS];
+  const sources = [SOURCES.CMS, SOURCES.VENDOR];
 
   for (const source of sources) {
     try {

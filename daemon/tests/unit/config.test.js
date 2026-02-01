@@ -27,7 +27,6 @@ describe('config', () => {
     expect(config.schedules).toBeDefined();
     expect(config.schedules.cms).toBeDefined();
     expect(config.schedules.vendor).toBeDefined();
-    expect(config.schedules.payers).toBeDefined();
     expect(config.schedules.digest).toBeDefined();
   });
 
@@ -35,7 +34,6 @@ describe('config', () => {
     expect(config.crawlers).toBeDefined();
     expect(config.crawlers.cms).toBeDefined();
     expect(config.crawlers.vendor).toBeDefined();
-    expect(config.crawlers.payers).toBeDefined();
   });
 
   it('has queue configuration', () => {
@@ -70,16 +68,22 @@ describe('MONITORED_VENDORS', () => {
 
 describe('DISCOVERY_TYPES', () => {
   it('has expected discovery types', () => {
-    expect(DISCOVERY_TYPES.VENDOR_UPDATE).toBe('vendor_update');
-    expect(DISCOVERY_TYPES.PAYER_UPDATE).toBe('payer_update');
-    expect(DISCOVERY_TYPES.CMS_UPDATE).toBe('cms_update');
+    // CMS types
+    expect(DISCOVERY_TYPES.MEDICARE_LCD_UPDATE).toBe('medicare_lcd_update');
+    expect(DISCOVERY_TYPES.MEDICARE_NCD_UPDATE).toBe('medicare_ncd_update');
+    // Payer types
+    expect(DISCOVERY_TYPES.PAYER_POLICY_UPDATE).toBe('payer_policy_update');
+    expect(DISCOVERY_TYPES.COVERAGE_CHANGE).toBe('coverage_change');
+    // Vendor types
+    expect(DISCOVERY_TYPES.VENDOR_COVERAGE_ANNOUNCEMENT).toBe('vendor_coverage_announcement');
+    expect(DISCOVERY_TYPES.VENDOR_NEW_TEST).toBe('vendor_new_test');
   });
 });
 
 describe('SOURCES', () => {
   it('has expected sources', () => {
     expect(SOURCES.CMS).toBe('cms');
-    expect(SOURCES.VENDOR).toBe('vendor');
+    expect(SOURCES.VENDOR).toBe('vendors'); // Note: plural
     expect(SOURCES.PAYERS).toBe('payers');
   });
 });
