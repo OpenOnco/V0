@@ -52,6 +52,7 @@ import { getStoredPersona, savePersona } from './utils/persona';
 import { trackPageVisit, trackTestView, trackPersona } from './utils/sessionTracking';
 import * as analytics from './utils/analytics';
 import PersonaGate from './components/PersonaGate';
+import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DatabaseSummary from './components/DatabaseSummary';
@@ -1624,20 +1625,22 @@ export default function App() {
   const seoConfig = getSEOForPage();
 
   return (
-    <HelmetProvider>
-      <SEO
-        title={seoConfig.title}
-        description={seoConfig.description}
-        path={seoConfig.path}
-        structuredData={seoConfig.structuredData}
-      />
-      {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />
-        <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
-        <Footer />
-        <Analytics />
-      </div>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <SEO
+          title={seoConfig.title}
+          description={seoConfig.description}
+          path={seoConfig.path}
+          structuredData={seoConfig.structuredData}
+        />
+        {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+          <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />
+          <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
+          <Footer />
+          <Analytics />
+        </div>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }

@@ -25,10 +25,36 @@ const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 20;
 
+// Validate IP address format (IPv4 or IPv6)
+function isValidIP(ip) {
+  if (!ip || typeof ip !== 'string') return false;
+  // IPv4: x.x.x.x where x is 0-255
+  const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  // IPv6: simplified check for valid hex segments
+  const ipv6Regex = /^(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}$|^::(?:[a-fA-F0-9]{1,4}:){0,6}[a-fA-F0-9]{1,4}$|^(?:[a-fA-F0-9]{1,4}:){1,7}:$|^(?:[a-fA-F0-9]{1,4}:){1,6}:[a-fA-F0-9]{1,4}$/;
+  return ipv4Regex.test(ip) || ipv6Regex.test(ip);
+}
+
 function getClientIP(req) {
   const forwarded = req.headers['x-forwarded-for'];
   const realIP = req.headers['x-real-ip'];
-  return (forwarded ? forwarded.split(',')[0].trim() : null) || realIP || 'unknown';
+
+  // Extract first IP from x-forwarded-for and validate
+  if (forwarded) {
+    const firstIP = forwarded.split(',')[0].trim();
+    if (isValidIP(firstIP)) {
+      return firstIP;
+    }
+  }
+
+  // Validate x-real-ip
+  if (realIP && isValidIP(realIP)) {
+    return realIP;
+  }
+
+  // Fallback to a hash of the request to still provide some rate limiting
+  // even if headers are invalid/missing
+  return 'unknown';
 }
 
 function checkRateLimit(clientIP) {
@@ -63,6 +89,77 @@ const MAX_MESSAGES = 10;
 
 const VALID_CATEGORIES = ['MRD', 'ECD', 'TRM', 'CGP', 'all'];
 const VALID_PERSONAS = ['patient', 'medical', 'rnd'];
+
+// Valid wizard steps for wizard-helper mode (prevents arbitrary input)
+const VALID_WIZARD_STEPS = [
+  'landing', 'test-lookup', 'treatment-gate', 'location',
+  'cancer-type', 'cancer-stage', 'tumor-tissue', 'insurance',
+  'results', 'next-steps'
+];
+
+// ============================================
+// WIZARD HELPER PROMPT (server-side construction)
+// ============================================
+const WIZARD_STEP_CONTEXT = {
+  'landing': { name: 'Introduction', description: 'Learning about MRD testing' },
+  'test-lookup': { name: 'Test Details', description: 'Learning about a specific MRD test' },
+  'treatment-gate': { name: 'Treatment Status', description: 'Checking if treatment is complete' },
+  'location': { name: 'Location', description: 'Selecting region for test availability' },
+  'cancer-type': { name: 'Cancer Type', description: 'Selecting cancer type' },
+  'cancer-stage': { name: 'Cancer Stage', description: 'Selecting cancer stage' },
+  'tumor-tissue': { name: 'Tumor Tissue', description: 'Checking if tumor tissue was saved' },
+  'insurance': { name: 'Insurance & Coverage', description: 'Insurance information' },
+  'results': { name: 'Test Results', description: 'Viewing matching tests' },
+  'next-steps': { name: 'Next Steps', description: 'How to talk to your oncologist' }
+};
+
+function buildWizardHelperPrompt(wizardHelperContext) {
+  if (!wizardHelperContext) return null;
+
+  const { currentStep, wizardData } = wizardHelperContext;
+
+  // Validate step is in allowed list
+  if (!currentStep || !VALID_WIZARD_STEPS.includes(currentStep)) {
+    return null;
+  }
+
+  const stepInfo = WIZARD_STEP_CONTEXT[currentStep] || WIZARD_STEP_CONTEXT['landing'];
+
+  // Build context from validated wizardData fields only
+  const userSelections = [];
+  if (wizardData?.country && typeof wizardData.country === 'string') {
+    userSelections.push(`Location: ${wizardData.country.slice(0, 50)}`);
+  }
+  if (wizardData?.cancerType && typeof wizardData.cancerType === 'string') {
+    userSelections.push(`Cancer: ${wizardData.cancerType.slice(0, 50)}`);
+  }
+  if (wizardData?.hasTumorTissue !== undefined) {
+    userSelections.push(`Tissue: ${wizardData.hasTumorTissue ? 'Yes' : 'No'}`);
+  }
+  if (wizardData?.completedTreatment !== undefined) {
+    userSelections.push(`Treatment done: ${wizardData.completedTreatment ? 'Yes' : 'No'}`);
+  }
+  if (wizardData?.insuranceType && typeof wizardData.insuranceType === 'string') {
+    userSelections.push(`Insurance: ${wizardData.insuranceType.slice(0, 30)}`);
+  }
+  if (wizardData?.selectedTest && typeof wizardData.selectedTest === 'string') {
+    userSelections.push(`Test: ${wizardData.selectedTest.slice(0, 50)}`);
+  }
+
+  return `You help patients understand MRD testing. Be warm but BRIEF - 1-2 sentences max. Answer like a knowledgeable friend who happens to be a doctor: direct, clear, no fluff.
+
+CONTEXT: Patient is on "${stepInfo.name}" step of the MRD test finder.
+${userSelections.length > 0 ? `Their info: ${userSelections.join(', ')}` : ''}
+
+STYLE RULES:
+- 1-2 sentences. Period. No exceptions unless they ask for detail.
+- If they ask for more detail, give 3-4 sentences max.
+- Never say "That's a great question!" or similar filler.
+- Never list things with dashes or bullets unless they specifically ask.
+- Use simple language a worried family member would understand.
+- Be reassuring but honest. MRD testing is generally helpful.
+- If you don't know, say so briefly. Don't make things up.`;
+}
 
 // ============================================
 // SERVER-SIDE SYSTEM PROMPT CONSTRUCTION
@@ -395,16 +492,16 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
-    const { 
-      category, 
-      persona, 
-      testData, 
-      messages, 
+    const {
+      category,
+      persona,
+      testData,
+      messages,
       model: requestedModel,
       patientStateSummary,
       patientChatMode,
       patientContext,
-      wizardHelperPrompt  // Custom prompt for wizard AI helper bubble
+      wizardHelperContext  // Structured context for wizard helper (NOT raw prompts)
     } = req.body;
 
     // Validate category
@@ -429,11 +526,14 @@ export default async function handler(req, res) {
     }
 
     // Build system prompt
-    // If wizard-helper mode and wizardHelperPrompt provided, use that directly
+    // If wizard-helper mode, build prompt server-side from structured context (security)
     // Otherwise build the standard system prompt
     let systemPrompt;
-    if (patientChatMode === 'wizard-helper' && wizardHelperPrompt) {
-      systemPrompt = wizardHelperPrompt;
+    if (patientChatMode === 'wizard-helper' && wizardHelperContext) {
+      systemPrompt = buildWizardHelperPrompt(wizardHelperContext);
+      if (!systemPrompt) {
+        return res.status(400).json({ error: 'Invalid wizard helper context' });
+      }
     } else {
       systemPrompt = buildSystemPrompt(category, validatedPersona, testData, patientStateSummary, patientChatMode, patientContext);
     }

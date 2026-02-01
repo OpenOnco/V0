@@ -1,6 +1,55 @@
 import { Resend } from 'resend';
+import crypto from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Escape HTML to prevent XSS in email templates
+function escapeHtml(str) {
+  if (!str || typeof str !== 'string') return str || '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// ============================================
+// DUPLICATE SUBMISSION PROTECTION
+// ============================================
+const recentSubmissions = new Map();
+const DEDUP_WINDOW = 60 * 1000; // 1 minute window
+
+function generateSubmissionHash(submission) {
+  // Create a hash from key submission fields to detect duplicates
+  const key = JSON.stringify({
+    type: submission.submissionType,
+    email: submission.submitter?.email,
+    // Include content fingerprint based on submission type
+    content: submission.submissionType === 'vendor-confirmation'
+      ? submission.vendorConfirmation?.testName
+      : submission.feedback?.description?.substring(0, 100)
+  });
+  return crypto.createHash('sha256').update(key).digest('hex').substring(0, 16);
+}
+
+function isDuplicateSubmission(hash) {
+  const now = Date.now();
+
+  // Clean up old entries
+  for (const [key, timestamp] of recentSubmissions.entries()) {
+    if (now - timestamp > DEDUP_WINDOW) {
+      recentSubmissions.delete(key);
+    }
+  }
+
+  if (recentSubmissions.has(hash)) {
+    return true;
+  }
+
+  recentSubmissions.set(hash, now);
+  return false;
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,41 +62,52 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Submission data required' });
   }
 
+  // Check for duplicate submissions
+  const submissionHash = generateSubmissionHash(submission);
+  if (isDuplicateSubmission(submissionHash)) {
+    // Return success to avoid confusing the user, but don't send duplicate email
+    return res.status(200).json({
+      success: true,
+      message: 'Submission already received',
+      duplicate: true
+    });
+  }
+
   const jsonString = JSON.stringify(submission, null, 2);
-  const submitterName = `${submission.submitter?.firstName || ''} ${submission.submitter?.lastName || ''}`.trim() || 'Unknown';
-  const submitterEmail = submission.submitter?.email || 'Not provided';
+  const submitterName = escapeHtml(`${submission.submitter?.firstName || ''} ${submission.submitter?.lastName || ''}`.trim()) || 'Unknown';
+  const submitterEmail = escapeHtml(submission.submitter?.email) || 'Not provided';
   const submissionType = submission.submissionType;
-  
+
   let subject, detailsHtml, headerColor;
-  
+
   if (submissionType === 'bug') {
     subject = `OpenOnco Bug Report from ${submitterName}`;
     headerColor = '#dc2626';
     detailsHtml = `
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Type</td><td style="padding: 8px; border: 1px solid #ddd;">Bug Report</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold; vertical-align: top;">Description</td><td style="padding: 8px; border: 1px solid #ddd; white-space: pre-wrap;">${submission.feedback?.description || 'No description provided'}</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold; vertical-align: top;">Description</td><td style="padding: 8px; border: 1px solid #ddd; white-space: pre-wrap;">${escapeHtml(submission.feedback?.description) || 'No description provided'}</td></tr>
     `;
   } else if (submissionType === 'feature') {
     subject = `OpenOnco Feature Request from ${submitterName}`;
     headerColor = '#9333ea';
     detailsHtml = `
       <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold;">Type</td><td style="padding: 8px; border: 1px solid #ddd;">Feature Request</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold; vertical-align: top;">Description</td><td style="padding: 8px; border: 1px solid #ddd; white-space: pre-wrap;">${submission.feedback?.description || 'No description provided'}</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid #ddd; background: #f9fafb; font-weight: bold; vertical-align: top;">Description</td><td style="padding: 8px; border: 1px solid #ddd; white-space: pre-wrap;">${escapeHtml(submission.feedback?.description) || 'No description provided'}</td></tr>
     `;
   } else if (submissionType === 'vendor-confirmation') {
     // Vendor Confirmation submission
     const vc = submission.vendorConfirmation || {};
-    const testName = vc.testName || 'Unknown Test';
-    const vendor = vc.vendor || 'Unknown Vendor';
-    const category = submission.category || 'Unknown';
+    const testName = escapeHtml(vc.testName) || 'Unknown Test';
+    const vendor = escapeHtml(vc.vendor) || 'Unknown Vendor';
+    const category = escapeHtml(submission.category) || 'Unknown';
     const confirmed = vc.confirmed || [];
     const changes = vc.changes || [];
     const totalRecommended = vc.totalRecommendedFields || 0;
     const reviewedCount = confirmed.length + changes.length;
-    
+
     subject = `OpenOnco Vendor Confirmation: ${testName} (${category}) - ${vendor}`;
     headerColor = '#059669'; // Emerald green
-    
+
     // Build confirmed fields list
     let confirmedHtml = '';
     if (confirmed.length > 0) {
@@ -60,14 +120,14 @@ export default async function handler(req, res) {
           </tr>
           ${confirmed.map(c => `
             <tr style="background: #ecfdf5;">
-              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${c.label || c.field}</td>
-              <td style="padding: 8px; border: 1px solid #ddd; color: #059669;">${c.value || '—'}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${escapeHtml(c.label || c.field)}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #059669;">${escapeHtml(c.value) || '—'}</td>
             </tr>
           `).join('')}
         </table>
       `;
     }
-    
+
     // Build changes table rows
     let changesHtml = '';
     if (changes.length > 0) {
@@ -82,10 +142,10 @@ export default async function handler(req, res) {
           </tr>
           ${changes.map(c => `
             <tr>
-              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${c.label || c.field}</td>
-              <td style="padding: 8px; border: 1px solid #ddd; color: #6b7280;">${c.currentValue || '—'}</td>
-              <td style="padding: 8px; border: 1px solid #ddd; color: #059669; font-weight: bold;">${c.newValue}</td>
-              <td style="padding: 8px; border: 1px solid #ddd;">${c.citation ? `<a href="${c.citation}" style="color: #2563eb;">${c.citation}</a>` : 'None'}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${escapeHtml(c.label || c.field)}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #6b7280;">${escapeHtml(c.currentValue) || '—'}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; color: #059669; font-weight: bold;">${escapeHtml(c.newValue)}</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${c.citation ? `<a href="${escapeHtml(c.citation)}" style="color: #2563eb;">${escapeHtml(c.citation)}</a>` : 'None'}</td>
             </tr>
           `).join('')}
         </table>

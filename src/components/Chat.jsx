@@ -252,6 +252,10 @@ const Chat = ({
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
   const scrollPositionBeforeSubmit = useRef(null);
+  // Track resize handlers for cleanup on unmount
+  const resizeCleanupRef = useRef(null);
+  // AbortController for cancelling in-flight requests
+  const abortControllerRef = useRef(null);
 
   // Sync chatMode when patientContext.chatMode changes (from parent toggle)
   useEffect(() => {
@@ -447,17 +451,23 @@ ${progress}
     setMessages(updatedMessages);
     setIsLoading(true);
 
+    // Cancel any in-flight request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     try {
       // Limit history to last 6 messages to reduce token usage
       const recentMessages = updatedMessages.slice(-6);
-      
+
       // For patient chat, prepend the welcome message so Claude knows what Q1 was
       let messagesForApi = recentMessages;
       if (persona === 'patient' && chatMode === 'find' && patientContext?.cancerType) {
         const welcomeAsAssistant = { role: 'assistant', content: welcomeMessage };
         messagesForApi = [welcomeAsAssistant, ...recentMessages];
       }
-      
+
       const useChatV2 = import.meta.env.VITE_USE_CHAT_V2 === 'true';
 
       const response = await fetch(useChatV2 ? '/api/chat-v2' : '/api/chat', {
@@ -475,19 +485,24 @@ ${progress}
           model: selectedModel,
           patientChatMode: persona === 'patient' ? chatMode : null,
           patientContext: persona === 'patient' ? patientContext : null
-        })
+        }),
+        signal: abortControllerRef.current.signal
       });
 
       if (!response.ok) throw new Error('Chat request failed');
 
       const data = await response.json();
-      
+
       if (data?.content?.[0]?.text) {
         setMessages([...updatedMessages, { role: 'assistant', content: data.content[0].text }]);
       } else {
         setMessages([...updatedMessages, { role: 'assistant', content: "I received an unexpected response. Please try again." }]);
       }
     } catch (error) {
+      // Ignore aborted requests
+      if (error.name === 'AbortError') {
+        return;
+      }
       console.error('Chat error:', error);
       setMessages([
         ...updatedMessages,
@@ -495,6 +510,7 @@ ${progress}
       ]);
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -539,22 +555,43 @@ ${progress}
     printWindow.print();
   };
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Cancel any in-flight requests
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      // Cleanup resize handlers
+      if (resizeCleanupRef.current) {
+        resizeCleanupRef.current();
+      }
+    };
+  }, []);
+
   // Resize handlers
   const handleResizeStart = (startY, isTouchEvent = false) => {
     const startHeight = chatHeight;
-    
+
     const handleMove = (moveEvent) => {
       const currentY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
       const delta = currentY - startY;
       const newHeight = Math.min(600, Math.max(200, startHeight + delta));
       setChatHeight(newHeight);
     };
-    
+
     const handleEnd = () => {
       document.removeEventListener(isTouchEvent ? 'touchmove' : 'mousemove', handleMove);
       document.removeEventListener(isTouchEvent ? 'touchend' : 'mouseup', handleEnd);
+      resizeCleanupRef.current = null;
     };
-    
+
+    // Store cleanup function in case component unmounts during resize
+    resizeCleanupRef.current = () => {
+      document.removeEventListener(isTouchEvent ? 'touchmove' : 'mousemove', handleMove);
+      document.removeEventListener(isTouchEvent ? 'touchend' : 'mouseup', handleEnd);
+    };
+
     document.addEventListener(isTouchEvent ? 'touchmove' : 'mousemove', handleMove, isTouchEvent ? { passive: false } : undefined);
     document.addEventListener(isTouchEvent ? 'touchend' : 'mouseup', handleEnd);
   };

@@ -210,7 +210,8 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
           })),
           model: 'claude-haiku-4-5-20251001',
           patientChatMode: 'wizard-helper',
-          wizardHelperPrompt: buildHelperSystemPrompt(currentStep, wizardData)
+          // Send structured context, not raw prompt (server builds prompt securely)
+          wizardHelperContext: { currentStep, wizardData }
         }),
       });
 
