@@ -127,7 +127,7 @@ function getNextSteps(insuranceType, coverageResult, test, assistanceProgram, ca
     // Build options step with assistance info
     let optionsDetail;
     if (assistanceProgram) {
-      optionsDetail = `If covered: Medicare Part B pays 80% after deductible. If not covered: ${programName} may help.`;
+      optionsDetail = `If covered: Medicare Part B pays 80% after deductible. If not covered: ${vendorName}'s ${programName} may help.`;
       if (contactPhone) {
         optionsDetail += ` 📞 ${contactPhone}`;
       }
@@ -214,7 +214,7 @@ function getNextSteps(insuranceType, coverageResult, test, assistanceProgram, ca
     // Build actionable financial assistance detail
     let assistanceDetail;
     if (assistanceProgram) {
-      const parts = [`${programName} may help cover costs if insurance doesn't.`];
+      const parts = [`${vendorName}'s ${programName} may help cover costs if insurance doesn't.`];
       if (contactPhone) {
         parts.push(`📞 ${contactPhone}`);
       }
@@ -1521,7 +1521,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
                               className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700
                                          text-white text-sm font-medium rounded-lg transition-colors"
                             >
-                              Apply for assistance
+                              Apply for {selectedTest.vendor} assistance
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                               </svg>
@@ -1633,25 +1633,37 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
             )}
 
             {/* Action buttons - hide when printing */}
-            <div className="flex gap-3 print:hidden">
-              <button
-                onClick={() => setSelectedTest(null)}
-                className="flex-1 py-3 px-4 border border-slate-300 text-slate-700 font-medium rounded-xl
-                           hover:bg-slate-50 transition-colors"
-              >
-                Search another test
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="flex-1 py-3 px-4 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-xl
-                           transition-colors flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-                Print this information
-              </button>
-            </div>
+            {(() => {
+              // Determine if user has completed the flow (has something to print)
+              const hasCompletedFlow =
+                insuranceType === 'none' ||
+                (insuranceType === 'medicare' && cancerType && cancerStage && medicareCoverageResult) ||
+                (insuranceType === 'private' && selectedPayer && cancerType && cancerStage && payerCoverageResult);
+
+              return (
+                <div className="flex gap-3 print:hidden">
+                  <button
+                    onClick={() => setSelectedTest(null)}
+                    className="flex-1 py-3 px-4 border border-slate-300 text-slate-700 font-medium rounded-xl
+                               hover:bg-slate-50 transition-colors"
+                  >
+                    Search another test
+                  </button>
+                  {hasCompletedFlow && (
+                    <button
+                      onClick={() => window.print()}
+                      className="flex-1 py-3 px-4 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-xl
+                                 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                      </svg>
+                      Print this information
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Contextual Next Steps - only show when we have a coverage conclusion */}
             {(() => {
@@ -1696,7 +1708,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
                               onClick={() => handleExternalLink(assistanceProgram.applicationUrl, selectedTest.vendor)}
                               className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium mt-2 print:hidden"
                             >
-                              Apply for assistance →
+                              Apply for {selectedTest.vendor} assistance →
                             </button>
                           )}
                         </div>
