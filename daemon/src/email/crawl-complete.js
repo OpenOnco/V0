@@ -265,9 +265,15 @@ function generateHtml({ sourceName, success, duration, proposals, skippedDiscove
     ${skippedHtml}
     ${pendingHtml}
 
-    <div style="background: #1e293b; border-radius: 6px; padding: 12px 16px;">
+    <div style="background: #1e293b; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;">
       <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">In Claude Code (V0 project):</div>
       <code style="font-size: 14px; color: #e2e8f0;">/proposals</code>
+    </div>
+
+    <div style="background: #374151; border-radius: 6px; padding: 10px 16px;">
+      <div style="font-size: 11px; color: #9ca3af;">
+        💡 Occasionally run <code style="color: #e2e8f0;">/policy-research</code> to verify payer URLs and find new policies
+      </div>
     </div>
 
     <p style="font-size: 11px; color: #999; margin-top: 20px; text-align: center;">
@@ -321,6 +327,8 @@ ${success && errors.length === 0 ? '✓' : '⚠️'} ${formatDuration(duration)}
   text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 In Claude Code (V0 project): /proposals
+
+💡 Occasionally run /policy-research to verify payer URLs and find new policies
 
 OpenOnco · ${new Date().toLocaleString()}
 `;
