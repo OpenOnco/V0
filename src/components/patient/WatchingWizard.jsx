@@ -15,6 +15,14 @@ import {
 import { getVendorAvailabilityUS } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
 import WizardAIHelper from './WizardAIHelper';
+import {
+  PAYER_LABELS,
+  checkMedicareCoverage,
+  getPayerCoverage,
+  getAllPayersFromTests,
+  getNextSteps,
+  getCoverageBadge,
+} from './coverageHelpers';
 
 // ============================================================================
 // Configuration
@@ -60,52 +68,6 @@ const CANCER_STAGES = [
   { id: 'not-sure', label: "I'm not sure", description: 'Your oncologist can help clarify' },
 ];
 
-// Medicare coverage data for MRD tests by cancer type and stage
-// Based on MolDX LCD policies (L38779 and related)
-const MEDICARE_COVERAGE = {
-  // Tests with Medicare coverage and their covered indications
-  tests: {
-    'Signatera': {
-      lcdPolicy: 'MolDX L38779',
-      coveredIndications: [
-        { cancerTypes: ['colorectal'], stages: ['stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Post-Adjuvant', 'Surveillance'] },
-        { cancerTypes: ['breast'], stages: ['stage-2', 'stage-3'], settings: ['Neoadjuvant', 'Post-Adjuvant', 'Surveillance'] },
-        { cancerTypes: ['bladder'], stages: ['stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
-        { cancerTypes: ['lung'], stages: ['stage-1', 'stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
-        { cancerTypes: ['ovarian'], stages: ['stage-2', 'stage-3', 'stage-4'], settings: ['Post-Adjuvant', 'Surveillance'] },
-      ],
-      reimbursementRate: { initial: 3500, followUp: 1164 },
-      cptCode: '0340U',
-    },
-    'Reveal MRD': {
-      lcdPolicy: 'MolDX',
-      coveredIndications: [
-        { cancerTypes: ['colorectal'], stages: ['stage-2', 'stage-3'], settings: ['Post-Surgery', 'Surveillance'] },
-      ],
-      reimbursementRate: { initial: 3500, followUp: null },
-      cptCode: '0569U',
-    },
-    'clonoSEQ': {
-      lcdPolicy: 'FDA Cleared + Medicare',
-      coveredIndications: [
-        { cancerTypes: ['multiple-myeloma', 'lymphoma'], stages: ['stage-1', 'stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Post-Adjuvant', 'Surveillance'] },
-      ],
-      reimbursementRate: { initial: 2916, followUp: null },
-      cptCode: '0364U',
-    },
-    'NavDx': {
-      lcdPolicy: 'Medicare',
-      coveredIndications: [
-        { cancerTypes: ['other-solid'], stages: ['stage-1', 'stage-2', 'stage-3', 'stage-4'], settings: ['Post-Surgery', 'Surveillance'] },
-      ],
-      reimbursementRate: { initial: null, followUp: null },
-      cptCode: null,
-      note: 'Covered for HPV+ head & neck cancers',
-    },
-  },
-  // Cancer types with known Medicare coverage
-  coveredCancerTypes: ['colorectal', 'breast', 'bladder', 'lung', 'ovarian', 'multiple-myeloma', 'lymphoma'],
-};
 
 // Build color scheme from journey config (soft emerald theme)
 const colors = {
@@ -244,11 +206,6 @@ const CONTENT = {
       boldText: 'Coverage confirmed.',
       text: 'These tests are covered by your insurance provider.',
     },
-    actions: {
-      save: 'Save these results',
-      email: 'Email this list',
-      print: 'Print for my doctor',
-    },
     nextButtonLabel: 'See next steps',
   },
   nextSteps: {
@@ -275,69 +232,6 @@ const CONTENT = {
   },
 };
 
-// ============================================================================
-// Medicare Coverage Helpers
-// ============================================================================
-
-/**
- * Get Medicare coverage information for a given cancer type and stage
- * Used to show coverage eligibility in the insurance step and results
- */
-function getMedicareCoverageInfo(cancerType, cancerStage) {
-  const coveredTests = [];
-  const hasCoverage = MEDICARE_COVERAGE.coveredCancerTypes.includes(cancerType);
-
-  if (!hasCoverage) {
-    return { hasCoverage: false, coveredTests: [] };
-  }
-
-  // Check each test to see if it covers this cancer type and stage
-  Object.entries(MEDICARE_COVERAGE.tests).forEach(([testName, testData]) => {
-    testData.coveredIndications.forEach(indication => {
-      if (indication.cancerTypes.includes(cancerType) &&
-          (indication.stages.includes(cancerStage) || cancerStage === 'not-sure')) {
-        // Avoid duplicates
-        if (!coveredTests.find(t => t.name === testName)) {
-          coveredTests.push({
-            name: testName,
-            lcdPolicy: testData.lcdPolicy,
-            reimbursementRate: testData.reimbursementRate,
-            cptCode: testData.cptCode,
-            coveredSettings: indication.settings,
-            note: testData.note,
-          });
-        }
-      }
-    });
-  });
-
-  return { hasCoverage: true, coveredTests };
-}
-
-/**
- * Get specific Medicare coverage details for a test given user's cancer type and stage
- * Used in TestSummaryModal to show detailed coverage info
- */
-function getTestMedicareCoverage(testName, cancerType, cancerStage) {
-  const testData = MEDICARE_COVERAGE.tests[testName];
-  if (!testData) return null;
-
-  // Check if this test covers the user's cancer type and stage
-  const matchingIndication = testData.coveredIndications.find(indication =>
-    indication.cancerTypes.includes(cancerType) &&
-    (indication.stages.includes(cancerStage) || cancerStage === 'not-sure')
-  );
-
-  if (!matchingIndication) return null;
-
-  return {
-    lcdPolicy: testData.lcdPolicy,
-    reimbursementRate: testData.reimbursementRate,
-    cptCode: testData.cptCode,
-    coveredSettings: matchingIndication.settings,
-    note: testData.note,
-  };
-}
 
 // ============================================================================
 // Helper Components
@@ -421,7 +315,7 @@ function StepDots({ steps, currentStep, onStepClick }) {
  */
 function NavigationButtons({ onBack, onNext, showBack = true, nextLabel = 'Continue', nextDisabled = false }) {
   return (
-    <div className="flex justify-center gap-4 mt-8">
+    <div className="flex justify-center gap-4 mt-8 print:hidden">
       {showBack && (
         <button
           onClick={onBack}
@@ -719,16 +613,24 @@ function LocationStep({ wizardData, setWizardData, onNext, onBack }) {
  */
 function CancerTypeStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.cancerType;
+  const timeoutRef = useRef(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleSelect = (cancerType) => {
     setWizardData(prev => ({ ...prev, cancerType }));
     // Auto-advance after selection
-    setTimeout(() => onNext(), 300);
+    timeoutRef.current = setTimeout(() => onNext(), 300);
   };
 
   const handleNotSure = () => {
     setWizardData(prev => ({ ...prev, cancerType: 'not-sure' }));
-    setTimeout(() => onNext(), 300);
+    timeoutRef.current = setTimeout(() => onNext(), 300);
   };
 
   return (
@@ -781,20 +683,31 @@ function CancerTypeStep({ wizardData, setWizardData, onNext, onBack }) {
   );
 }
 
+// Cancer types with known Medicare coverage potential (based on MolDX LCD policies)
+const MEDICARE_COVERED_CANCER_TYPES = ['colorectal', 'breast', 'bladder', 'lung', 'ovarian', 'multiple-myeloma', 'lymphoma'];
+
 /**
  * Step 4: Cancer Stage Selection
  * Helps determine Medicare coverage eligibility
  */
 function CancerStageStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.cancerStage;
+  const timeoutRef = useRef(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   // Check if user's cancer type has Medicare coverage potential
-  const hasMedicareCoverage = MEDICARE_COVERAGE.coveredCancerTypes.includes(wizardData.cancerType);
+  const hasMedicareCoverage = MEDICARE_COVERED_CANCER_TYPES.includes(wizardData.cancerType);
 
   const handleSelect = (cancerStage) => {
     setWizardData(prev => ({ ...prev, cancerStage }));
     // Auto-advance after selection
-    setTimeout(() => onNext(), 300);
+    timeoutRef.current = setTimeout(() => onNext(), 300);
   };
 
   return (
@@ -855,10 +768,18 @@ function CancerStageStep({ wizardData, setWizardData, onNext, onBack }) {
  */
 function TumorTissueStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.tumorTissue;
+  const timeoutRef = useRef(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleSelect = (hasTumorTissue) => {
     setWizardData(prev => ({ ...prev, hasTumorTissue }));
-    setTimeout(() => onNext(), 300);
+    timeoutRef.current = setTimeout(() => onNext(), 300);
   };
 
   return (
@@ -915,12 +836,20 @@ function TumorTissueStep({ wizardData, setWizardData, onNext, onBack }) {
 function TreatmentGateStep({ wizardData, setWizardData, onNext, onBack }) {
   const content = CONTENT.treatmentGate;
   const [showNotYetNote, setShowNotYetNote] = useState(false);
+  const timeoutRef = useRef(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleSelect = (completedTreatment) => {
     setWizardData(prev => ({ ...prev, completedTreatment }));
     if (completedTreatment === 'yes') {
       setShowNotYetNote(false);
-      setTimeout(() => onNext(), 300);
+      timeoutRef.current = setTimeout(() => onNext(), 300);
     } else {
       setShowNotYetNote(true);
     }
@@ -995,47 +924,84 @@ function TreatmentGateStep({ wizardData, setWizardData, onNext, onBack }) {
 
 /**
  * Step 6: Insurance & Cost Sensitivity
- * Coverage and cost preferences
+ * Three explicit paths: Medicare, Private Insurance, No Insurance
  */
-function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
+function InsuranceStep({ wizardData, setWizardData, onNext, onBack, testData = [] }) {
   const content = CONTENT.insurance;
 
-  // DAL hooks for insurance providers
-  const { providersByCategory: insuranceByCategory } = useInsuranceGrouped();
+  // State for payer autocomplete
+  const [payerSearchQuery, setPayerSearchQuery] = useState('');
+  const [showPayerDropdown, setShowPayerDropdown] = useState(false);
 
-  const handleInsuranceChange = (hasInsurance) => {
+  // Get ALL payers we have data for across ALL tests (for autocomplete)
+  const allKnownPayers = useMemo(() => {
+    return getAllPayersFromTests(testData);
+  }, [testData]);
+
+  // Filter payers for autocomplete based on search query
+  const filteredPayers = useMemo(() => {
+    if (!payerSearchQuery.trim()) return allKnownPayers;
+    const query = payerSearchQuery.toLowerCase();
+    return allKnownPayers.filter(payer =>
+      payer.label.toLowerCase().includes(query)
+    );
+  }, [payerSearchQuery, allKnownPayers]);
+
+  // Handle insurance type selection (three paths)
+  const handleInsuranceTypeSelect = (type) => {
     setWizardData(prev => ({
       ...prev,
-      hasInsurance,
-      insuranceProvider: hasInsurance ? prev.insuranceProvider : null,
-      costSensitivity: null, // Reset cost sensitivity when insurance changes
+      insuranceType: type,
+      hasInsurance: type !== 'none',
+      insuranceProvider: type === 'medicare' ? 'medicare' : null,
+      selectedPayer: null,
+      costSensitivity: null,
     }));
+    setPayerSearchQuery('');
+    setShowPayerDropdown(false);
   };
 
-  const handleInsuranceProviderChange = (insuranceProvider) => {
-    setWizardData(prev => ({ 
-      ...prev, 
-      insuranceProvider,
-      costSensitivity: insuranceProvider === 'other' ? null : prev.costSensitivity, // Reset cost sensitivity if changing to/from other
+  // Handle payer selection from autocomplete
+  const handlePayerSelect = (payerId) => {
+    setWizardData(prev => ({
+      ...prev,
+      selectedPayer: payerId,
+      insuranceProvider: payerId,
     }));
+    const payer = allKnownPayers.find(p => p.id === payerId);
+    setPayerSearchQuery(payer?.label || '');
+    setShowPayerDropdown(false);
   };
 
+  // Handle "Other" payer selection
+  const handleOtherPayerSelect = () => {
+    setWizardData(prev => ({
+      ...prev,
+      selectedPayer: 'other',
+      insuranceProvider: 'other',
+    }));
+    setPayerSearchQuery('Other (not listed)');
+    setShowPayerDropdown(false);
+  };
+
+  // Handle cost sensitivity selection
   const handleCostSensitivityChange = (costSensitivity) => {
     setWizardData(prev => ({ ...prev, costSensitivity }));
   };
 
-  // Need cost sensitivity question if: no insurance OR selected "other" insurance
-  const needsCostSensitivity = wizardData.hasInsurance === false || 
-    (wizardData.hasInsurance === true && wizardData.insuranceProvider === 'other');
-
-  // Complete when: 
-  // - has insurance + selected known provider (not other), OR
-  // - has insurance + selected "other" + cost preference, OR
-  // - no insurance + cost preference
-  const isComplete = wizardData.hasInsurance === true 
-    ? (wizardData.insuranceProvider && wizardData.insuranceProvider !== 'other') || 
-      (wizardData.insuranceProvider === 'other' && wizardData.costSensitivity)
-    : wizardData.hasInsurance === false && wizardData.costSensitivity;
+  // Determine if step is complete
+  const isComplete = (() => {
+    if (!wizardData.insuranceType) return false;
+    if (wizardData.insuranceType === 'medicare') return true;
+    if (wizardData.insuranceType === 'private') {
+      // Need payer selected, and if "other" also need cost sensitivity
+      if (!wizardData.selectedPayer) return false;
+      if (wizardData.selectedPayer === 'other') return !!wizardData.costSensitivity;
+      return true;
+    }
+    if (wizardData.insuranceType === 'none') return !!wizardData.costSensitivity;
+    return false;
+  })();
 
   return (
     <div className="py-6">
@@ -1046,114 +1012,231 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
         {content.description}
       </p>
 
-      <div className="max-w-lg mx-auto space-y-8">
-        {/* Insurance question */}
-        <div>
-          <h3 className="font-semibold text-slate-900 mb-3">{content.hasInsuranceQuestion}</h3>
-          <div className="flex gap-3">
-            <button
-              onClick={() => handleInsuranceChange(true)}
-              className={`
-                flex-1 py-3 px-4 border-2 rounded-xl font-medium transition-all
-                ${wizardData.hasInsurance === true
-                  ? `${colors.border} ${colors.bg} ${colors.text}`
-                  : 'border-slate-200 hover:border-emerald-300'
-                }
-              `}
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => handleInsuranceChange(false)}
-              className={`
-                flex-1 py-3 px-4 border-2 rounded-xl font-medium transition-all
-                ${wizardData.hasInsurance === false
-                  ? `${colors.border} ${colors.bg} ${colors.text}`
-                  : 'border-slate-200 hover:border-emerald-300'
-                }
-              `}
-            >
-              No
-            </button>
-          </div>
+      <div className="max-w-lg mx-auto space-y-6">
+        {/* Three insurance type cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Medicare */}
+          <button
+            onClick={() => handleInsuranceTypeSelect('medicare')}
+            className={`
+              p-4 border-2 rounded-xl text-center transition-all duration-200
+              ${wizardData.insuranceType === 'medicare'
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-slate-200 hover:border-blue-300 hover:bg-blue-50/50'
+              }
+            `}
+          >
+            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center mb-2 ${
+              wizardData.insuranceType === 'medicare' ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-600'
+            }`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span className={`font-medium ${wizardData.insuranceType === 'medicare' ? 'text-blue-900' : 'text-slate-900'}`}>
+              Medicare
+            </span>
+          </button>
 
-          {/* Insurance provider dropdown - shown if has insurance */}
-          {wizardData.hasInsurance === true && (
-            <div className="mt-4">
+          {/* Private Insurance */}
+          <button
+            onClick={() => handleInsuranceTypeSelect('private')}
+            className={`
+              p-4 border-2 rounded-xl text-center transition-all duration-200
+              ${wizardData.insuranceType === 'private'
+                ? `${colors.border} ${colors.bg}`
+                : 'border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50'
+              }
+            `}
+          >
+            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center mb-2 ${
+              wizardData.insuranceType === 'private' ? `${colors.accent} text-white` : `${colors.accentLight} ${colors.text}`
+            }`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <span className={`font-medium ${wizardData.insuranceType === 'private' ? colors.textDark : 'text-slate-900'}`}>
+              Private Insurance
+            </span>
+          </button>
+
+          {/* No Insurance */}
+          <button
+            onClick={() => handleInsuranceTypeSelect('none')}
+            className={`
+              p-4 border-2 rounded-xl text-center transition-all duration-200
+              ${wizardData.insuranceType === 'none'
+                ? 'border-amber-500 bg-amber-50'
+                : 'border-slate-200 hover:border-amber-300 hover:bg-amber-50/50'
+              }
+            `}
+          >
+            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center mb-2 ${
+              wizardData.insuranceType === 'none' ? 'bg-amber-500 text-white' : 'bg-amber-100 text-amber-600'
+            }`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <span className={`font-medium ${wizardData.insuranceType === 'none' ? 'text-amber-900' : 'text-slate-900'}`}>
+              No Insurance
+            </span>
+          </button>
+        </div>
+
+        {/* Medicare selected - show confirmation */}
+        {wizardData.insuranceType === 'medicare' && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <div className="flex gap-3">
+              <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p className="font-medium text-blue-900">Medicare coverage check enabled</p>
+                <p className="text-sm text-blue-800 mt-1">
+                  We'll show which tests are covered under Medicare for your cancer type and stage.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Private insurance selected - show payer autocomplete */}
+        {wizardData.insuranceType === 'private' && (
+          <div className="space-y-4">
+            <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 {content.insuranceProviderQuestion}
               </label>
               <p className="text-sm text-slate-500 mb-2">{content.insuranceProviderDescription}</p>
-              <select
-                value={wizardData.insuranceProvider || ''}
-                onChange={(e) => handleInsuranceProviderChange(e.target.value)}
-                className={`w-full p-3 border-2 rounded-xl bg-white text-slate-900 focus:outline-none focus:ring-2 ${colors.focus} ${colors.border}`}
-              >
-                <option value="">Select your insurance...</option>
-                <optgroup label="Government Programs">
-                  {insuranceByCategory.government?.map((p) => (
-                    <option key={p.id} value={p.id}>{p.label}</option>
-                  ))}
-                </optgroup>
-                <optgroup label="Major National Plans">
-                  {insuranceByCategory.national?.map((p) => (
-                    <option key={p.id} value={p.id}>{p.label}</option>
-                  ))}
-                </optgroup>
-                <optgroup label="Regional Plans">
-                  {insuranceByCategory.regional?.map((p) => (
-                    <option key={p.id} value={p.id}>{p.label}</option>
-                  ))}
-                </optgroup>
-                <option value="other">Other (not listed)</option>
-              </select>
-            </div>
-          )}
 
-          {/* "Other" insurance selected - explain and show cost question */}
-          {wizardData.hasInsurance === true && wizardData.insuranceProvider === 'other' && (
-            <div className="mt-6">
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+              {/* Payer search input with autocomplete */}
+              <div className="relative">
+                <input
+                  type="text"
+                  value={payerSearchQuery}
+                  onChange={(e) => {
+                    setPayerSearchQuery(e.target.value);
+                    setShowPayerDropdown(true);
+                    // Clear selection if user is typing
+                    if (wizardData.selectedPayer && wizardData.selectedPayer !== 'other') {
+                      setWizardData(prev => ({ ...prev, selectedPayer: null, insuranceProvider: null }));
+                    }
+                  }}
+                  onFocus={() => setShowPayerDropdown(true)}
+                  placeholder="Search for your insurance..."
+                  className={`w-full p-3 border-2 rounded-xl bg-white text-slate-900 focus:outline-none focus:ring-2 ${colors.focus} ${colors.border}`}
+                />
+
+                {/* Dropdown */}
+                {showPayerDropdown && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                    {filteredPayers.length > 0 ? (
+                      <>
+                        {filteredPayers.map(payer => (
+                          <button
+                            key={payer.id}
+                            type="button"
+                            onClick={() => handlePayerSelect(payer.id)}
+                            className={`w-full px-4 py-3 text-left hover:bg-emerald-50 border-b border-slate-100 last:border-0 ${
+                              wizardData.selectedPayer === payer.id ? `${colors.bg} ${colors.text}` : ''
+                            }`}
+                          >
+                            <span className="font-medium">{payer.label}</span>
+                          </button>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={handleOtherPayerSelect}
+                          className="w-full px-4 py-3 text-left hover:bg-slate-50 text-slate-600"
+                        >
+                          <span className="font-medium">Other (not listed)</span>
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleOtherPayerSelect}
+                        className="w-full px-4 py-3 text-left hover:bg-slate-50 text-slate-600"
+                      >
+                        <span className="font-medium">Other (not listed)</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Selected payer confirmation or "other" path */}
+            {wizardData.selectedPayer && wizardData.selectedPayer !== 'other' && (
+              <div className={`${colors.bg} ${colors.border} border rounded-xl p-4`}>
                 <div className="flex gap-3">
-                  <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg className={`w-5 h-5 ${colors.text} flex-shrink-0 mt-0.5`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <p className="text-sm text-amber-800">
-                    We don't have coverage data for your insurance provider, so these tests may require out-of-pocket payment. Many vendors offer financial assistance programs.
-                  </p>
+                  <div>
+                    <p className={`font-medium ${colors.textDark}`}>
+                      {PAYER_LABELS[wizardData.selectedPayer] || wizardData.selectedPayer} selected
+                    </p>
+                    <p className={`text-sm ${colors.text} mt-1`}>
+                      We'll show coverage information for tests where we have data from this insurer.
+                    </p>
+                  </div>
                 </div>
               </div>
+            )}
 
-              <h3 className="font-semibold text-slate-900 mb-3">{content.costSensitivityQuestion}</h3>
-              <div className="space-y-2">
-                {content.costOptions.map((option) => (
-                  <OptionButton
-                    key={option.id}
-                    selected={wizardData.costSensitivity === option.id}
-                    onClick={() => handleCostSensitivityChange(option.id)}
-                  >
-                    <span className="font-medium text-slate-900">{option.label}</span>
-                    <p className="text-sm text-slate-500 mt-1">{option.description}</p>
-                  </OptionButton>
-                ))}
+            {/* "Other" selected - show cost question */}
+            {wizardData.selectedPayer === 'other' && (
+              <div className="space-y-4">
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                  <div className="flex gap-3">
+                    <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-sm text-amber-800">
+                      We don't have coverage data for your insurance provider. We'll highlight tests with financial assistance programs.
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-3">{content.costSensitivityQuestion}</h3>
+                  <div className="space-y-2">
+                    {content.costOptions.map((option) => (
+                      <OptionButton
+                        key={option.id}
+                        selected={wizardData.costSensitivity === option.id}
+                        onClick={() => handleCostSensitivityChange(option.id)}
+                      >
+                        <span className="font-medium text-slate-900">{option.label}</span>
+                        <p className="text-sm text-slate-500 mt-1">{option.description}</p>
+                      </OptionButton>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+        )}
 
-          {/* No insurance - show cost sensitivity question */}
-          {wizardData.hasInsurance === false && (
-            <div className="mt-6">
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
-                <div className="flex gap-3">
-                  <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p className="text-sm text-blue-800">
+        {/* No insurance selected - show assistance info and cost question */}
+        {wizardData.insuranceType === 'none' && (
+          <div className="space-y-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <div className="flex gap-3">
+                <span className="text-xl">💵</span>
+                <div>
+                  <p className="font-medium text-amber-900">Financial assistance available</p>
+                  <p className="text-sm text-amber-800 mt-1">
                     {content.noInsuranceNote}
                   </p>
                 </div>
               </div>
+            </div>
 
+            <div>
               <h3 className="font-semibold text-slate-900 mb-3">{content.costSensitivityQuestion}</h3>
               <div className="space-y-2">
                 {content.costOptions.map((option) => (
@@ -1168,8 +1251,8 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
                 ))}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       <NavigationButtons onBack={onBack} onNext={onNext} nextDisabled={!isComplete} />
@@ -1178,13 +1261,16 @@ function InsuranceStep({ wizardData, setWizardData, onNext, onBack }) {
 }
 
 /**
- * Test Summary Modal Component
- * Shows Claude-generated plain-language summary of a test
+ * Test Summary Modal Component with Chat
+ * Shows Claude-generated plain-language summary of a test with interactive follow-up
  */
 function TestSummaryModal({ test, wizardData, onClose }) {
-  const [summary, setSummary] = useState(null);
+  const [messages, setMessages] = useState([]); // Chat history
   const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const contentRef = useRef(null);
 
   // DAL hook for vendor assistance programs
   const { program: assistanceProgram } = useAssistanceProgram(test.vendor);
@@ -1195,56 +1281,96 @@ function TestSummaryModal({ test, wizardData, onClose }) {
     return type?.label || 'your cancer type';
   };
 
+  // Build test info for all requests
+  const testInfo = useMemo(() => ({
+    name: test.name,
+    vendor: test.vendor,
+    approach: test.approach,
+    method: test.method,
+    sensitivity: test.sensitivity,
+    sensitivityNotes: test.sensitivityNotes,
+    specificity: test.specificity,
+    lod: test.lod,
+    tat: test.initialTat || test.tat,
+    followUpTat: test.followUpTat,
+    fdaStatus: test.fdaStatus,
+    reimbursement: test.reimbursement,
+    cancerTypes: test.cancerTypes,
+    earlyWarningDays: test.earlyWarningDays,
+    leadTime: test.leadTime,
+    comparativeBadges: test.comparativeBadges?.map(b => b.label),
+    medicareCoverage: test.medicareCoverage,
+  }), [test]);
+
   // Get financial assistance details text for the vendor
-  const getAssistanceDetails = (vendor) => {
+  const getAssistanceDetails = () => {
     if (assistanceProgram) {
       return assistanceProgram.description || 'Financial assistance available - contact vendor for details.';
     }
     return null;
   };
 
-  // Check if we should show financial assistance info
-  const showFinancialAssistance = (wizardData.costSensitivity === 'very-sensitive' || !wizardData.hasInsurance);
+  // Calculate coverage result based on insurance type
+  const coverageResult = useMemo(() => {
+    if (wizardData.insuranceType === 'medicare') {
+      return checkMedicareCoverage(test, wizardData.cancerType, wizardData.cancerStage);
+    }
+    if (wizardData.insuranceType === 'private' && wizardData.selectedPayer) {
+      if (wizardData.selectedPayer === 'other') {
+        return { isOther: true };
+      }
+      return getPayerCoverage(test, wizardData.selectedPayer, wizardData.cancerType, wizardData.cancerStage);
+    }
+    return null;
+  }, [test, wizardData]);
 
-  // Fetch summary from Claude API
+  // Get contextual next steps
+  const nextStepsData = useMemo(() => {
+    return getNextSteps(
+      wizardData.insuranceType,
+      coverageResult,
+      test,
+      assistanceProgram,
+      wizardData.cancerType,
+      wizardData.cancerStage
+    );
+  }, [wizardData.insuranceType, coverageResult, test, assistanceProgram, wizardData.cancerType, wizardData.cancerStage]);
+
+  // Check if we should show financial assistance info
+  const showFinancialAssistance = (wizardData.costSensitivity === 'cost-sensitive' || wizardData.insuranceType === 'none');
+
+  // System context for chat
+  const systemContext = useMemo(() => {
+    const assistanceDetails = getAssistanceDetails();
+    const isMedicare = wizardData.insuranceType === 'medicare';
+
+    return `You are a helpful assistant explaining the MRD test "${test.name}" by ${test.vendor} to a patient.
+Use simple, warm language. Avoid medical jargon. Keep responses concise (2-4 sentences unless more detail is needed).
+Only answer questions about this specific test, MRD testing in general, coverage, costs, or what to expect.
+If asked about other tests or unrelated topics, gently redirect to ${test.name}.
+
+PATIENT SITUATION:
+- Cancer type: ${getCancerLabel(wizardData.cancerType)}
+- Stage: ${wizardData.cancerStage || 'not specified'}
+- Tumor tissue available: ${wizardData.hasTumorTissue === 'yes' ? 'Yes' : wizardData.hasTumorTissue === 'no' ? 'No' : 'Unsure'}
+- Insurance type: ${wizardData.insuranceType || 'not specified'}
+${wizardData.insuranceType === 'private' && wizardData.selectedPayer ? `- Payer: ${PAYER_LABELS[wizardData.selectedPayer] || wizardData.selectedPayer}` : ''}
+
+TEST DETAILS:
+${JSON.stringify(testInfo, null, 2)}
+
+${assistanceDetails ? `FINANCIAL ASSISTANCE: ${assistanceDetails}` : ''}
+${isMedicare && coverageResult ? `MEDICARE COVERAGE: ${coverageResult.hasCoverage ? 'Covered' : 'Not confirmed'}, Policy: ${coverageResult.policy || 'unknown'}` : ''}`;
+  }, [test, wizardData, testInfo, coverageResult]);
+
+  // Fetch initial summary on mount
   useEffect(() => {
     const fetchSummary = async () => {
       setLoading(true);
       setError(null);
 
-      // Build a compact test data string for Claude
-      const testInfo = {
-        name: test.name,
-        vendor: test.vendor,
-        approach: test.approach,
-        method: test.method,
-        sensitivity: test.sensitivity,
-        sensitivityNotes: test.sensitivityNotes,
-        specificity: test.specificity,
-        lod: test.lod,
-        tat: test.initialTat || test.tat,
-        followUpTat: test.followUpTat,
-        fdaStatus: test.fdaStatus,
-        reimbursement: test.reimbursement,
-        cancerTypes: test.cancerTypes,
-        earlyWarningDays: test.earlyWarningDays,
-        leadTime: test.leadTime,
-        comparativeBadges: test.comparativeBadges?.map(b => b.label),
-        medicareCoverage: test.medicareCoverage,
-      };
-
-      // Check if vendor is widely available
+      const assistanceDetails = getAssistanceDetails();
       const isWidelyAvailable = getVendorAvailabilityUS(test.vendor) === 'widespread';
-
-      const wizardContext = {
-        cancerType: getCancerLabel(wizardData.cancerType),
-        hasTumorTissue: wizardData.hasTumorTissue,
-        hasInsurance: wizardData.hasInsurance,
-        insuranceType: wizardData.insuranceType,
-        costSensitivity: wizardData.costSensitivity,
-      };
-
-      const assistanceDetails = getAssistanceDetails(test.vendor);
 
       // Build standout qualities list
       const standoutQualities = [];
@@ -1252,62 +1378,24 @@ function TestSummaryModal({ test, wizardData, onClose }) {
         standoutQualities.push(...test.comparativeBadges.map(b => b.label));
       }
       if (isWidelyAvailable) {
-        standoutQualities.push('Widely Available (any oncologist can order through major lab networks)');
+        standoutQualities.push('Widely Available');
       }
 
-      // Build Medicare coverage information for Medicare patients
-      const isMedicarePatient = wizardContext.insuranceType?.toLowerCase()?.includes('medicare');
-      const medicareCoverage = test.medicareCoverage;
-      let medicareCoverageInfo = '';
-      if (isMedicarePatient && medicareCoverage) {
-        const coverageStatus = medicareCoverage.status === 'COVERED' ? 'Covered by Medicare' :
-          medicareCoverage.status === 'NOT_COVERED' ? 'Not currently covered by Medicare' :
-          medicareCoverage.status === 'PENDING_COVERAGE' ? 'Medicare coverage pending' :
-          medicareCoverage.status === 'PENDING_FDA' ? 'Pending FDA approval (coverage expected after)' :
-          medicareCoverage.status === 'EXPECTED_COVERAGE' ? 'Medicare coverage expected soon' : 'Coverage status unknown';
+      const promptMessage = `Write a clear, warm explanation of this MRD test in plain language. Use these sections:
 
-        medicareCoverageInfo = `MEDICARE COVERAGE DETAILS (IMPORTANT - patient has Medicare):
-- Coverage Status: ${coverageStatus}`;
+**What is MRD testing?**
+Explain in 2-3 sentences what MRD testing is and why it matters. Use an analogy if helpful.
 
-        if (medicareCoverage.policyType && medicareCoverage.policyNumber) {
-          medicareCoverageInfo += `\n- Policy: ${medicareCoverage.policyType} ${medicareCoverage.policyNumber}${medicareCoverage.policyName ? ` (${medicareCoverage.policyName})` : ''}`;
-        }
-        if (medicareCoverage.coveredIndications?.length > 0) {
-          medicareCoverageInfo += `\n- Covered Cancer Types/Stages: ${medicareCoverage.coveredIndications.join('; ')}`;
-        }
-        if (medicareCoverage.reimbursementRate) {
-          medicareCoverageInfo += `\n- Reimbursement Rate: ${medicareCoverage.reimbursementRate}`;
-        }
-        if (medicareCoverage.notes) {
-          medicareCoverageInfo += `\n- Notes: ${medicareCoverage.notes}`;
-        }
-      }
+**How ${test.name} works**
+Explain in simple terms how this test detects cancer traces. Keep it to 2-3 sentences.
 
-      const promptMessage = `You're helping a patient understand an MRD test that matched their situation. Write a clear, warm 3-4 paragraph summary.
+**What makes this test useful**
+Highlight 2-3 key benefits in plain language.${standoutQualities.length > 0 ? ' Mention these qualities: ' + standoutQualities.join(', ') : ''}
 
-PATIENT SITUATION:
-- Cancer type: ${wizardContext.cancerType}
-- Tumor tissue available: ${wizardContext.hasTumorTissue === 'yes' ? 'Yes' : wizardContext.hasTumorTissue === 'no' ? 'No' : 'Unsure'}
-- Insurance: ${wizardContext.hasInsurance ? `Yes (${wizardContext.insuranceType || 'type unknown'})` : 'No'}
-- Cost sensitivity: ${wizardContext.costSensitivity === 'very-sensitive' ? 'Very cost sensitive' : wizardContext.costSensitivity === 'somewhat-sensitive' ? 'Somewhat cost sensitive' : 'Cost not a major factor'}
+**What to expect**
+Briefly explain what the patient can expect - blood draw, turnaround time, etc.
 
-TEST DETAILS:
-${JSON.stringify(testInfo, null, 2)}
-
-${medicareCoverageInfo}
-
-${assistanceDetails ? `FINANCIAL ASSISTANCE: ${assistanceDetails}` : ''}
-
-${standoutQualities.length > 0 ? `STANDOUT QUALITIES (mention these as wins!): ${standoutQualities.join(', ')}` : ''}
-
-Write the summary with these sections (use plain language, no medical jargon):
-1. **What this test does** - Explain in simple terms what ${test.name} does and how it works
-2. **Why it matched your situation** - Connect specific test features to the patient's answers (tumor tissue availability, cancer type, etc.)
-3. **Key benefits** - Highlight the test's strengths${standoutQualities.length > 0 ? '. IMPORTANT: Explicitly mention these standout qualities as wins: ' + standoutQualities.join(', ') : ''}
-${isMedicarePatient && medicareCoverage ? `4. **Medicare coverage** - Summarize the Medicare coverage status in plain language. If covered, mention which cancer stages/indications are covered. If there's a reimbursement rate, mention that Medicare pays for this test. If not covered or pending, explain that clearly.` : ''}
-${(wizardContext.costSensitivity === 'very-sensitive' || !wizardContext.hasInsurance) && assistanceDetails ? `${isMedicarePatient && medicareCoverage ? '5' : '4'}. **Financial help available** - Briefly mention that financial assistance is available (we will show a link separately)` : ''}
-
-End with a reminder that their oncologist can help them decide if this test is right for them.`;
+Do NOT ask if they have questions - there's a chat input for that.`;
 
       try {
         const response = await fetch('/api/chat', {
@@ -1323,39 +1411,127 @@ End with a reminder that their oncologist can help them decide if this test is r
           }),
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to generate summary');
-        }
+        if (!response.ok) throw new Error('Failed to generate summary');
 
         const data = await response.json();
         const summaryText = data.content?.[0]?.text || 'Unable to generate summary.';
-        setSummary(summaryText);
+        setMessages([{ role: 'assistant', content: summaryText }]);
       } catch (err) {
         console.error('Error fetching test summary:', err);
-        setError('Unable to load summary. Please try again.');
+        // Fallback summary
+        const fallbackSummary = `**What is MRD testing?**
+MRD stands for Molecular Residual Disease. Think of it like a super-sensitive radar for cancer. After treatment, scans might show no visible tumors, but tiny traces of cancer cells can still be hiding. MRD tests detect these microscopic traces through a simple blood draw.
+
+**How ${test.name} works**
+${test.name} is a blood test by ${test.vendor} that looks for tiny fragments of cancer DNA in your bloodstream. ${test.approach === 'tumor-informed' ? 'It\'s personalized to your tumor - first analyzing your tumor tissue to know exactly what to look for.' : 'It looks for cancer-related mutations in your blood.'}
+
+**What makes this test useful**
+${test.sensitivity ? `Very sensitive - detects cancer at levels as low as ${test.sensitivity}. ` : ''}${test.tat || test.initialTat ? `Results in ${test.tat || test.initialTat}. ` : ''}${test.cancerTypes?.length > 0 ? `Works for ${test.cancerTypes.slice(0, 3).join(', ')}.` : ''}
+
+**What to expect**
+Simple blood draw, just like routine blood work. Results typically take ${test.tat || test.initialTat || '1-2 weeks'}. Your doctor will explain what they mean for your care.`;
+        setMessages([{ role: 'assistant', content: fallbackSummary }]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchSummary();
-  }, [test, wizardData]);
+  }, [test, testInfo]);
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  // Send a follow-up question
+  const handleSendQuestion = async () => {
+    if (!inputValue.trim() || sending) return;
+
+    const userMessage = inputValue.trim();
+    setInputValue('');
+    setSending(true);
+
+    // Add user message to chat
+    const newMessages = [...messages, { role: 'user', content: userMessage }];
+    setMessages(newMessages);
+
+    try {
+      // Build message history for API (include system context)
+      const apiMessages = [
+        { role: 'user', content: systemContext },
+        ...newMessages.map(m => ({ role: m.role, content: m.content })),
+      ];
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          category: 'MRD',
+          persona: 'patient',
+          testData: JSON.stringify([testInfo]),
+          messages: apiMessages,
+          model: 'claude-haiku-4-5-20251001',
+          patientChatMode: 'learn',
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to get response');
+
+      const data = await response.json();
+      const assistantResponse = data.content?.[0]?.text || "I'm sorry, I couldn't generate a response. Please try again.";
+      setMessages([...newMessages, { role: 'assistant', content: assistantResponse }]);
+    } catch (err) {
+      console.error('Error sending question:', err);
+      setMessages([...newMessages, { role: 'assistant', content: "I'm sorry, I couldn't connect right now. Please try again." }]);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  // Handle Enter key
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendQuestion();
+    }
+  };
+
+  // Render markdown-like text
+  const renderContent = (text) => {
+    if (!text) return null;
+    const parts = text.split(/\*\*([^*]+)\*\*/g);
+    return parts.map((part, i) => {
+      if (i % 2 === 1) {
+        return <h4 key={i} className={`font-semibold ${colors.textDark} mt-4 mb-2 first:mt-0`}>{part}</h4>;
+      }
+      return part.split('\n').map((line, j) => (
+        line.trim() ? <p key={`${i}-${j}`} className="text-slate-600 text-sm leading-relaxed mb-2">{line}</p> : null
+      ));
+    });
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className={`${colors.bg} ${colors.border} border-b px-6 py-4 flex items-center justify-between`}>
-          <div>
-            <h3 className="font-semibold text-slate-900">{test.name}</h3>
-            <p className="text-sm text-slate-600">{test.vendor}</p>
+        <div className={`${colors.bg} ${colors.border} border-b px-6 py-4 flex items-center justify-between flex-shrink-0`}>
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 ${colors.accentLight} rounded-full flex items-center justify-center`}>
+              <svg className={`w-5 h-5 ${colors.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-slate-900">{test.name}</h3>
+              <p className="text-sm text-slate-600">Ask me anything about this test</p>
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -1368,8 +1544,8 @@ End with a reminder that their oncologist can help them decide if this test is r
           </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        {/* Content - scrollable */}
+        <div ref={contentRef} className="flex-1 overflow-y-auto p-6 space-y-4">
           {loading && (
             <div className="flex flex-col items-center justify-center py-12">
               <div className={`w-10 h-10 ${colors.accent} rounded-full flex items-center justify-center animate-pulse mb-4`}>
@@ -1378,118 +1554,138 @@ End with a reminder that their oncologist can help them decide if this test is r
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
               </div>
-              <p className="text-slate-600 text-sm">Preparing your personalized summary...</p>
+              <p className="text-slate-600 text-sm">Creating your personalized guide...</p>
             </div>
           )}
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-              <p className="text-red-800 text-sm">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-3 text-sm text-red-700 underline hover:no-underline"
-              >
-                Try again
-              </button>
+            <div className="text-center py-8">
+              <p className="text-red-600 mb-4">{error}</p>
             </div>
           )}
 
-          {summary && !loading && (
-            <>
-              <div className="prose prose-sm prose-slate max-w-none">
-                {/* Parse and render markdown-like content */}
-                {summary.split('\n\n').map((paragraph, idx) => {
-                  // Check if it's a header (starts with **)
-                  if (paragraph.startsWith('**') && paragraph.includes('**')) {
-                    const headerMatch = paragraph.match(/^\*\*(.+?)\*\*/);
-                    if (headerMatch) {
-                      const headerText = headerMatch[1];
-                      const restText = paragraph.replace(/^\*\*.+?\*\*\s*/, '');
-                      return (
-                        <div key={idx} className="mb-4">
-                          <h4 className={`font-semibold ${colors.textDark} mb-1`}>{headerText}</h4>
-                          {restText && <p className="text-slate-700 text-sm leading-relaxed">{restText}</p>}
-                        </div>
-                      );
-                    }
-                  }
-                  return (
-                    <p key={idx} className="text-slate-700 text-sm leading-relaxed mb-3">
-                      {paragraph}
-                    </p>
-                  );
-                })}
-              </div>
-
-              {/* Financial Assistance Link - shown for cost-sensitive patients */}
-              {showFinancialAssistance && assistanceProgram?.applicationUrl && (
-                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl">💵</span>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-blue-900 mb-1">
-                        {assistanceProgram.programName || 'Financial Assistance Program'}
-                      </h4>
-                      <p className="text-sm text-blue-800 mb-2">
-                        {assistanceProgram.maxOutOfPocket && `Qualifying patients may pay ${assistanceProgram.maxOutOfPocket}. `}
-                        {assistanceProgram.paymentPlans && `${assistanceProgram.paymentPlans}. `}
-                        {!assistanceProgram.maxOutOfPocket && !assistanceProgram.paymentPlans && 'Financial assistance available based on eligibility.'}
-                      </p>
-                      {/* Detailed eligibility rules */}
-                      {assistanceProgram.eligibilityRules && (
-                        <div className="text-xs text-blue-700 mb-3 space-y-1">
-                          {assistanceProgram.eligibilityRules.fplThresholds?.length > 0 && (
-                            <p>
-                              <span className="font-medium">By income level:</span>{' '}
-                              {assistanceProgram.eligibilityRules.fplThresholds.map((t, i) => (
-                                <span key={i}>
-                                  {i > 0 && ', '}
-                                  ≤{t.maxFPL}% = {t.maxOOP}
-                                </span>
-                              ))}
-                            </p>
-                          )}
-                          {(assistanceProgram.eligibilityRules.medicareEligible !== null ||
-                            assistanceProgram.eligibilityRules.medicaidEligible !== null) && (
-                            <p>
-                              {assistanceProgram.eligibilityRules.medicareEligible === true && 'Medicare patients eligible. '}
-                              {assistanceProgram.eligibilityRules.medicareEligible === false && 'Medicare patients not eligible. '}
-                              {assistanceProgram.eligibilityRules.medicaidEligible === true && 'Medicaid patients eligible.'}
-                              {assistanceProgram.eligibilityRules.medicaidEligible === false && 'Medicaid patients not eligible.'}
-                            </p>
-                          )}
-                          {assistanceProgram.eligibilityRules.processingTime && (
-                            <p>Processing: {assistanceProgram.eligibilityRules.processingTime}</p>
-                          )}
-                        </div>
-                      )}
-                      <a
-                        href={assistanceProgram.applicationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
-                      >
-                        Learn about financial assistance
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
+          {/* Messages */}
+          {messages.map((msg, idx) => (
+            <div key={idx} className={msg.role === 'user' ? 'flex justify-end' : ''}>
+              {msg.role === 'user' ? (
+                <div className={`${colors.accentLight} ${colors.textDark} rounded-2xl rounded-tr-sm px-4 py-2 max-w-[85%]`}>
+                  <p className="text-sm">{msg.content}</p>
+                </div>
+              ) : (
+                <div className="prose prose-sm max-w-none">
+                  {renderContent(msg.content)}
                 </div>
               )}
-            </>
+            </div>
+          ))}
+
+          {/* Sending indicator */}
+          {sending && (
+            <div className="flex items-center gap-2 text-slate-500 text-sm">
+              <div className={`w-2 h-2 ${colors.accent} rounded-full animate-bounce`} />
+              <div className={`w-2 h-2 ${colors.accent} rounded-full animate-bounce`} style={{ animationDelay: '0.1s' }} />
+              <div className={`w-2 h-2 ${colors.accent} rounded-full animate-bounce`} style={{ animationDelay: '0.2s' }} />
+            </div>
+          )}
+
+          {/* Next Steps Section - shown after initial load */}
+          {!loading && nextStepsData && messages.length > 0 && (
+            <div className={`mt-6 p-4 ${colors.bg} ${colors.border} border rounded-xl`}>
+              <h4 className={`font-semibold ${colors.textDark} mb-3 flex items-center gap-2`}>
+                {nextStepsData.icon === 'check' && <span className="text-green-500">✓</span>}
+                {nextStepsData.icon === 'clipboard' && <span>📋</span>}
+                {nextStepsData.icon === 'phone' && <span>📞</span>}
+                {nextStepsData.icon === 'heart' && <span>💝</span>}
+                {nextStepsData.title}
+              </h4>
+              <div className="space-y-3">
+                {nextStepsData.steps.map((step, idx) => (
+                  <div key={idx} className="flex gap-3">
+                    <div className={`w-6 h-6 ${colors.accentLight} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                      <span className={`text-xs font-medium ${colors.text}`}>{idx + 1}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900 text-sm">{step.heading}</p>
+                      <p className="text-slate-600 text-sm mt-0.5">{step.detail}</p>
+                      {step.hasAssistanceLink && assistanceProgram?.applicationUrl && (
+                        <a
+                          href={assistanceProgram.applicationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex items-center gap-1 mt-2 text-sm ${colors.text} hover:underline`}
+                        >
+                          Learn about {test.vendor}'s assistance program
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Financial Assistance Link - shown for cost-sensitive patients */}
+          {!loading && showFinancialAssistance && assistanceProgram?.applicationUrl && !nextStepsData && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+              <div className="flex items-start gap-3">
+                <span className="text-xl">💵</span>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-blue-900 mb-1">
+                    {assistanceProgram.programName || 'Financial Assistance Program'}
+                  </h4>
+                  <p className="text-sm text-blue-800 mb-2">
+                    {assistanceProgram.maxOutOfPocket && `Qualifying patients may pay ${assistanceProgram.maxOutOfPocket}. `}
+                    {assistanceProgram.paymentPlans && `${assistanceProgram.paymentPlans}. `}
+                    {!assistanceProgram.maxOutOfPocket && !assistanceProgram.paymentPlans && 'Financial assistance available based on eligibility.'}
+                  </p>
+                  <a
+                    href={assistanceProgram.applicationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                  >
+                    Learn about financial assistance
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div className={`${colors.bg} ${colors.border} border-t px-6 py-4`}>
-          <button
-            onClick={onClose}
-            className={`w-full py-3 ${colors.accent} ${colors.accentHover} text-white font-medium rounded-xl transition-colors`}
-          >
-            Got it
-          </button>
+        {/* Chat input */}
+        <div className={`${colors.border} border-t px-4 py-3 bg-slate-50 flex-shrink-0`}>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask a question about this test..."
+              disabled={loading || sending}
+              className={`flex-1 px-4 py-2 border ${colors.border} rounded-full text-sm
+                         focus:outline-none focus:ring-2 ${colors.focus} focus:border-emerald-500
+                         disabled:bg-slate-100 disabled:text-slate-400`}
+            />
+            <button
+              onClick={handleSendQuestion}
+              disabled={!inputValue.trim() || loading || sending}
+              className={`px-4 py-2 ${colors.accent} ${colors.accentHover} disabled:bg-slate-300
+                         text-white rounded-full transition-colors`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
+          </div>
+          <p className="text-xs text-slate-400 mt-2 text-center">
+            Ask about {test.name}, coverage, costs, or what to expect
+          </p>
         </div>
       </div>
     </div>
@@ -1760,15 +1956,56 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
     return reasons.length > 0 ? reasons.join(' • ') : null;
   };
 
-  // Apply comparative badges to the matching tests, then sort by badge count (more badges = higher)
-  const matchingTests = calculateComparativeBadges(getMatchingTests(), 'mrd')
-    .sort((a, b) => {
-      const aBadges = a.comparativeBadges?.length || 0;
-      const bBadges = b.comparativeBadges?.length || 0;
-      return bBadges - aBadges; // Higher badge count first
-    });
-  const showFinancialNote = wizardData.costSensitivity === 'cost-sensitive' || wizardData.hasInsurance === false;
-  const showInsuranceCoverageNote = wizardData.hasInsurance === true && wizardData.insuranceProvider && wizardData.insuranceProvider !== 'other';
+  // Helper: Calculate coverage badge for a test
+  const getTestCoverageBadge = (test) => {
+    if (wizardData.insuranceType === 'medicare') {
+      const result = checkMedicareCoverage(test, wizardData.cancerType, wizardData.cancerStage);
+      return getCoverageBadge('medicare', result, null);
+    }
+    if (wizardData.insuranceType === 'private' && wizardData.selectedPayer) {
+      if (wizardData.selectedPayer === 'other') {
+        return null; // No badge for "other" - we don't have data
+      }
+      const result = getPayerCoverage(test, wizardData.selectedPayer, wizardData.cancerType, wizardData.cancerStage);
+      return getCoverageBadge('private', result, null);
+    }
+    if (wizardData.insuranceType === 'none') {
+      return getCoverageBadge('none', null, checkFinancialAssistance(test) ? { hasProgram: true } : null);
+    }
+    return null;
+  };
+
+  // Apply comparative badges to the matching tests
+  const testsWithBadges = calculateComparativeBadges(getMatchingTests(), 'mrd')
+    .map(test => ({
+      ...test,
+      coverageBadge: getTestCoverageBadge(test),
+    }));
+
+  // Sort: covered tests first, then by badge count
+  const matchingTests = testsWithBadges.sort((a, b) => {
+    // Coverage priority: covered > uncertain > null
+    const coveragePriority = (badge) => {
+      if (!badge) return 0;
+      if (badge.variant === 'covered') return 3;
+      if (badge.variant === 'partial') return 2;
+      if (badge.variant === 'assistance') return 2;
+      if (badge.variant === 'uncertain') return 1;
+      return 0;
+    };
+    const aCoverage = coveragePriority(a.coverageBadge);
+    const bCoverage = coveragePriority(b.coverageBadge);
+    if (aCoverage !== bCoverage) return bCoverage - aCoverage;
+
+    // Then by comparative badge count
+    const aBadges = a.comparativeBadges?.length || 0;
+    const bBadges = b.comparativeBadges?.length || 0;
+    return bBadges - aBadges;
+  });
+
+  const showFinancialNote = wizardData.costSensitivity === 'cost-sensitive' || wizardData.insuranceType === 'none';
+  const showInsuranceCoverageNote = wizardData.insuranceType === 'medicare' ||
+    (wizardData.insuranceType === 'private' && wizardData.selectedPayer && wizardData.selectedPayer !== 'other');
 
   return (
     <div className="py-6">
@@ -1845,29 +2082,59 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
         
         // Helper to render a single test card
         const renderTestCard = (test) => {
-          const showFinancialAssistance = test.hasFinancialAssistance && (
-            wizardData.hasInsurance === false ||
-            wizardData.insuranceProvider === 'other' ||
+          const showFinancialAssistanceBadge = test.hasFinancialAssistance && (
+            wizardData.insuranceType === 'none' ||
+            wizardData.selectedPayer === 'other' ||
             wizardData.costSensitivity === 'cost-sensitive'
           );
           const isUSUser = wizardData.country === 'US';
           const availabilityTier = isUSUser ? getVendorAvailabilityUS(test.vendor) : null;
           const isWidelyAvailable = availabilityTier === 'widespread';
-          
+
+          // Coverage badge styling based on variant
+          const getCoverageBadgeStyle = (badge) => {
+            if (!badge) return null;
+            switch (badge.variant) {
+              case 'covered':
+                return { bg: 'bg-green-100', text: 'text-green-700', icon: '✓' };
+              case 'partial':
+                return { bg: 'bg-amber-100', text: 'text-amber-700', icon: '~' };
+              case 'uncertain':
+                return { bg: 'bg-slate-100', text: 'text-slate-600', icon: '?' };
+              case 'assistance':
+                return { bg: 'bg-blue-100', text: 'text-blue-700', icon: '💵' };
+              default:
+                return null;
+            }
+          };
+
+          const badgeStyle = getCoverageBadgeStyle(test.coverageBadge);
+
           return (
             <div
               key={test.id}
               className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden"
             >
               <div className="p-4">
-                <ComparativeBadgeRow badges={test.comparativeBadges} />
+                {/* Coverage badge row - above test name */}
+                {(test.coverageBadge || test.comparativeBadges?.length > 0) && (
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    {test.coverageBadge && badgeStyle && (
+                      <span className={`${badgeStyle.bg} ${badgeStyle.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
+                        <span>{badgeStyle.icon}</span>
+                        {test.coverageBadge.label}
+                      </span>
+                    )}
+                    <ComparativeBadgeRow badges={test.comparativeBadges} />
+                  </div>
+                )}
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="font-semibold text-slate-900">{test.name}</h3>
                     <p className="text-sm text-slate-500">{test.vendor}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    {showFinancialAssistance && (
+                    {showFinancialAssistanceBadge && !test.coverageBadge?.variant?.includes('assistance') && (
                       <span className={`${colors.accentLight} ${colors.text} text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1`}>
                         💵 Assistance
                       </span>
@@ -1944,28 +2211,6 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
           </div>
         );
       })()}
-
-      {/* Action buttons */}
-      <div className="max-w-lg mx-auto flex flex-wrap gap-3 justify-center mb-6">
-        <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-          </svg>
-          {content.actions.save}
-        </button>
-        <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          {content.actions.email}
-        </button>
-        <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          {content.actions.print}
-        </button>
-      </div>
 
       <NavigationButtons onBack={onBack} onNext={onNext} nextLabel={content.nextButtonLabel} />
 
@@ -2206,8 +2451,10 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
     cancerStage: null,          // Selected cancer stage or 'not-sure'
     hasTumorTissue: null,       // 'yes', 'no', or 'not-sure'
     completedTreatment: null,   // 'yes' or 'no'
-    hasInsurance: undefined,    // true or false
-    insuranceProvider: null,    // Insurance provider ID from INSURANCE_PROVIDERS
+    insuranceType: null,        // 'medicare' | 'private' | 'none'
+    hasInsurance: undefined,    // Derived from insuranceType (backwards compat)
+    insuranceProvider: null,    // Insurance provider ID (backwards compat)
+    selectedPayer: null,        // Selected payer ID for private insurance
     costSensitivity: null,      // 'cost-sensitive' or 'not-sensitive'
   });
 
@@ -2314,6 +2561,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
           <InsuranceStep
             wizardData={wizardData}
             setWizardData={setWizardData}
+            testData={testData}
             onNext={handleNext}
             onBack={handleBack}
           />
