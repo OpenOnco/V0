@@ -220,3 +220,58 @@ payerCoverage: [
   { payer: "...", status: "covered", conditions: "...", source: "...", updatedAt: "YYYY-MM-DD" }
 ]
 ```
+
+### Policy URL Research
+
+When asked to research payer policy URLs, use parallel agents to search for and verify URLs in `daemon/src/data/policy-registry.js`.
+
+**Registry location:** `daemon/src/data/policy-registry.js`
+
+**What to do:**
+1. Spawn parallel agents to search for policy URLs at target payers
+2. Verify existing URLs still work
+3. Find new/updated policies for existing payers
+4. Add new payers with their ctDNA/liquid biopsy policies
+
+**Search queries to use:**
+- `"[Payer Name]" liquid biopsy ctDNA medical policy 2025 2026`
+- `"[Payer Name]" circulating tumor DNA coverage policy PDF`
+
+**URL Verification with Browser:**
+WebFetch often fails on policy URLs due to:
+- Bot protection (Aetna, some BCBS sites)
+- PDF binary content
+- JavaScript-required pages
+
+**Use Playwright browser for verification:**
+```
+1. mcp__playwright__browser_navigate to the URL
+2. mcp__playwright__browser_evaluate to check:
+   () => ({ url: window.location.href, type: document.contentType })
+3. If contentType is "application/pdf" or "text/html" → URL is working
+4. For HTML pages, use browser_snapshot to verify content loaded
+```
+
+**Policy entry format:**
+```javascript
+payerId: {
+  name: 'Full Payer Name',
+  tier: 1|2,  // 1=national, 2=regional
+  policies: [{
+    id: 'unique-policy-id',
+    name: 'Policy Title',
+    url: 'https://direct-link.pdf',
+    contentType: 'pdf'|'html',
+    policyType: 'liquid_biopsy'|'ctdna'|'molecular_oncology',
+    discoveryMethod: 'google_search',
+    notes: 'Brief description',
+    lastVerified: 'YYYY-MM-DD',
+  }],
+},
+```
+
+**Target payers without URLs:**
+- BCBS Colorado, Ohio, Indiana (use Anthem policies)
+- CareFirst BCBS (portal auth required)
+- Independence Blue Cross (uses eviCore)
+- VA (no traditional policies - clinical guidelines only)
