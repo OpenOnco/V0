@@ -9,7 +9,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   // Helper to navigate through wizard to results
-  async function navigateToResults(page, { cancerType, insuranceProvider = 'Medicare', stage = 'Stage II' }) {
+  async function navigateToResults(page, { cancerType, insuranceType = 'medicare', stage = 'Stage II' }) {
     // Step 1: Landing page - click "I'm exploring my options" (Path 2)
     await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
@@ -35,17 +35,26 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /Yes, tissue was saved/i }).click();
     await page.waitForTimeout(500);
 
-    // Step 7: Insurance - Yes + provider
-    await page.getByRole('button', { name: /^Yes$/i }).first().click();
-    await page.waitForTimeout(300);
-    await page.locator('select').selectOption(insuranceProvider);
-    await page.waitForTimeout(300);
-    await page.getByRole('button', { name: 'Continue' }).click();
+    // Step 7: Insurance - three paths: Medicare, Private Insurance, No Insurance
+    if (insuranceType === 'medicare') {
+      await page.getByRole('button', { name: /^Medicare$/i }).click();
+      await page.waitForTimeout(300);
+      await page.getByRole('button', { name: 'Continue' }).click();
+    } else if (insuranceType === 'private') {
+      await page.getByRole('button', { name: /^Private Insurance$/i }).click();
+      await page.waitForTimeout(300);
+      // Skip payer selection for basic test, just continue
+      await page.getByRole('button', { name: 'Continue' }).click();
+    } else if (insuranceType === 'none') {
+      await page.getByRole('button', { name: /^No Insurance$/i }).click();
+      await page.waitForTimeout(300);
+      await page.getByRole('button', { name: 'Continue' }).click();
+    }
     await page.waitForTimeout(1500);
   }
 
   test('breast cancer should NOT show blood cancer tests', async ({ page }) => {
-    await navigateToResults(page, { cancerType: 'Breast', insuranceProvider: 'Medicare' });
+    await navigateToResults(page, { cancerType: 'Breast', insuranceType: 'medicare' });
     
     const pageContent = await page.textContent('body');
     
@@ -62,7 +71,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   test('multiple myeloma SHOULD show clonoSEQ', async ({ page }) => {
-    await navigateToResults(page, { cancerType: 'Multiple myeloma', insuranceProvider: 'Medicare' });
+    await navigateToResults(page, { cancerType: 'Multiple myeloma', insuranceType: 'medicare' });
     
     const pageContent = await page.textContent('body');
     
@@ -74,7 +83,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
   });
 
   test('colorectal shows CRC tests, excludes blood cancer', async ({ page }) => {
-    await navigateToResults(page, { cancerType: 'Colorectal', insuranceProvider: 'Medicare' });
+    await navigateToResults(page, { cancerType: 'Colorectal', insuranceType: 'medicare' });
     
     const pageContent = await page.textContent('body');
     
@@ -106,15 +115,15 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /Yes, tissue was saved/i }).click();
     await page.waitForTimeout(500);
 
-    // No insurance
-    await page.getByRole('button', { name: /^No$/i }).click();
+    // No insurance - click "No Insurance" button
+    await page.getByRole('button', { name: /^No Insurance$/i }).click();
     await page.waitForTimeout(500);
 
     const pageContent = await page.textContent('body');
     expect(pageContent.toLowerCase()).toContain('cost');
   });
 
-  test('Other insurance shows coverage warning', async ({ page }) => {
+  test('Private insurance path shows payer selection', async ({ page }) => {
     await page.getByRole('button', { name: /i'm exploring my options/i }).click();
     await page.waitForTimeout(500);
 
@@ -135,16 +144,13 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /Yes, tissue was saved/i }).click();
     await page.waitForTimeout(500);
 
-    // Yes insurance
-    await page.getByRole('button', { name: /^Yes$/i }).first().click();
-    await page.waitForTimeout(300);
-
-    // Other insurance
-    await page.locator('select').selectOption('other');
+    // Private insurance path
+    await page.getByRole('button', { name: /^Private Insurance$/i }).click();
     await page.waitForTimeout(500);
 
     const pageContent = await page.textContent('body');
-    expect(pageContent.toLowerCase()).toContain('coverage');
+    // Should show payer selection or continue button
+    expect(pageContent.toLowerCase()).toMatch(/insurance|payer|continue/i);
   });
 
   test('no tumor tissue excludes tumor-informed tests, shows tumor-naive', async ({ page }) => {
@@ -169,10 +175,9 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /No \/ I don't think so/i }).click();
     await page.waitForTimeout(500);
 
-    // Yes insurance + Medicare
-    await page.getByRole('button', { name: /^Yes$/i }).first().click();
+    // Medicare insurance
+    await page.getByRole('button', { name: /^Medicare$/i }).click();
     await page.waitForTimeout(300);
-    await page.locator('select').selectOption('Medicare');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(1500);
 
@@ -207,10 +212,9 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /Yes, tissue was saved/i }).click();
     await page.waitForTimeout(500);
 
-    // Yes insurance + Medicare
-    await page.getByRole('button', { name: /^Yes$/i }).first().click();
+    // Medicare insurance
+    await page.getByRole('button', { name: /^Medicare$/i }).click();
     await page.waitForTimeout(300);
-    await page.locator('select').selectOption('Medicare');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(1500);
 

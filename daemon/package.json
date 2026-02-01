@@ -22,7 +22,10 @@
     "proposals:reject": "node src/proposals/cli.js reject",
     "proposals:apply": "node src/proposals/cli.js apply",
     "proposals:stats": "node src/proposals/cli.js stats",
-    "proposals:create-test": "node src/proposals/cli.js create-test"
+    "proposals:create-test": "node src/proposals/cli.js create-test",
+    "db:migrate": "node src/db/migrate.js migrate",
+    "db:status": "node src/db/migrate.js status",
+    "mrd:crawl": "node src/crawlers/mrd/cli.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
@@ -31,7 +34,9 @@
     "better-sqlite3": "^12.6.2",
     "dotenv": "^16.3.1",
     "node-cron": "^3.0.3",
+    "openai": "^4.0.0",
     "pdf-parse": "^1.1.1",
+    "pg": "^8.11.0",
     "playwright": "^1.57.0",
     "resend": "^2.1.0",
     "winston": "^3.11.0",
