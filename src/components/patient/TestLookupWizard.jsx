@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { JOURNEY_CONFIG } from './journeyConfig';
 import { useAssistanceProgram } from '../../dal';
 import TestDetailModal from '../test/TestDetailModal';
