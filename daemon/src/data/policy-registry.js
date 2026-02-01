@@ -133,6 +133,16 @@ export const POLICY_REGISTRY = {
         lastVerified: '2026-02-01',
       },
       {
+        id: 'anthem-gene-49',
+        name: 'Circulating Tumor DNA Panel Testing (GENE.00049)',
+        url: 'https://files.providernews.anthem.com/2372/GENE.00049.pdf',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Panel ctDNA testing (5+ genes). Generally investigational. Also applies to Anthem OH, GA, IN.',
+        lastVerified: '2026-02-01',
+      },
+      {
         id: 'anthem-lab-00015',
         name: 'Detection of Circulating Tumor Cells (LAB.00015)',
         url: 'https://anthem.com/dam/medpolicies/abc/active/policies/mp_pw_a049885.html',
@@ -421,11 +431,11 @@ export const POLICY_REGISTRY = {
       {
         id: 'excellus-ctdna-liquid-biopsy',
         name: 'Circulating Tumor DNA for Management of Cancer (Liquid Biopsy)',
-        url: 'https://www.excellusbcbs.com/documents/20152/127121/Circulating+Tumor+DNA+for+Management+of+Cancer+(Liquid+Biopsy).pdf/',
+        url: 'https://www.excellusbcbs.com/documents/d/global/exc-prv-circulating-tumor-dna-for-management-of-cancer-liquid-biopsy-',
         contentType: 'pdf',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'New York regional BCBS liquid biopsy policy.',
+        notes: 'New York regional BCBS liquid biopsy policy. URL updated 2026-02-01.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -538,13 +548,13 @@ export const POLICY_REGISTRY = {
     tier: 2,
     policies: [
       {
-        id: 'regence-policy-46',
-        name: 'Circulating Tumor DNA and Circulating Tumor Cells for Management (Liquid Biopsy) of Solid Tumor Cancers (#46)',
-        url: 'https://www.regence.com/provider/library/policies-guidelines/medical-policy',
-        contentType: 'html',
+        id: 'regence-lab46',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells (LAB46)',
+        url: 'http://blue.regence.com/trgmedpol/lab/lab46.pdf',
+        contentType: 'pdf',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Policy #46. Updated Feb 2023. Search for policy on portal.',
+        notes: 'Policy LAB46. Updated Feb 2023. Direct PDF link.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -621,6 +631,74 @@ export const POLICY_REGISTRY = {
         policyType: 'molecular_oncology',
         discoveryMethod: 'google_search',
         notes: 'Molina genetic testing policy includes tumor marker genotyping and ctDNA.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  wellcare: {
+    name: 'WellCare (Centene)',
+    tier: 2,
+    policies: [
+      {
+        id: 'wellcare-ctdna-liquid-biopsy',
+        name: 'Oncology: Circulating Tumor DNA and Circulating Tumor Cells (Liquid Biopsy)',
+        url: 'https://www.policies-wellcare.com/content/dam/centene/wellcare/Medicare/clinicalpolicies/CG_Oncology_Circulating_Tumor_DNA_Tumor_Cells_Liquid_Biopsy.pdf',
+        contentType: 'pdf',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Concert Genetics platform. V1.2025. Applies across WellCare state programs.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  amerigroup: {
+    name: 'Amerigroup (Anthem Medicaid)',
+    tier: 2,
+    policies: [
+      {
+        id: 'amerigroup-gene49-ctdna',
+        name: 'Circulating Tumor DNA Panel Testing (GENE.00049)',
+        url: 'https://provider.healthybluenc.com/dam/medpolicies/healthybluenc/active/policies/mp_pw_d082650.html',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Healthy Blue NC (Amerigroup affiliate). Uses Anthem policy framework.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  tricare: {
+    name: 'TRICARE (Defense Health Agency)',
+    tier: 1,
+    policies: [
+      {
+        id: 'tricare-genetic-testing',
+        name: 'Genetic Testing and Counseling (TPM Chapter 6, Section 3.1)',
+        url: 'https://manuals.health.mil/pages/DisplayManualHtmlFile/TP15/48/AsOf/TP15/C6S3_1.html',
+        contentType: 'html',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'No dedicated ctDNA policy. Coverage based on FDA approval + medical necessity.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  kaiser: {
+    name: 'Kaiser Permanente',
+    tier: 1,
+    policies: [
+      {
+        id: 'kaiser-wa-genetic-screening',
+        name: 'Genetic Screening and Testing Clinical Review Criteria',
+        url: 'https://wa-provider.kaiserpermanente.org/static/pdf/hosting/clinical/criteria/pdf/genetic_screening.pdf',
+        contentType: 'pdf',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'KP Washington regional policy. No national ctDNA-specific policy published.',
         lastVerified: '2026-02-01',
       },
     ],
