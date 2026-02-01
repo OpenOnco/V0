@@ -1,0 +1,26 @@
+{
+  "id": "upd-2026-ml44kbfl",
+  "type": "update",
+  "status": "applied",
+  "createdAt": "2026-02-01T19:19:30.273Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-01T19:30:00.000Z",
+  "reviewedBy": "alex",
+  "appliedAt": "2026-02-01T19:35:00.000Z",
+  "rejectionReason": null,
+  "testName": "Multi-Cancer Early Detection test",
+  "testId": null,
+  "changes": {
+    "clinicalEvidence": {
+      "trialName": "CRANE Study",
+      "nctId": null,
+      "publication": null,
+      "findings": "First participant enrolled in multi-cancer early detection clinical evaluation in Japan",
+      "date": "December 18, 2025"
+    }
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: CRANE Study",
+  "confidence": 0.75,
+  "snippet": "First participant enrolled in multi-cancer early detection clinical evaluation in Japan"
+}

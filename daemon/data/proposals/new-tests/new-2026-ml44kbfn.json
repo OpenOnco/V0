@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-ml44kbfn",
+  "type": "new-test",
+  "status": "applied",
+  "createdAt": "2026-02-01T19:19:30.275Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-01T19:30:00.000Z",
+  "reviewedBy": "alex",
+  "appliedAt": "2026-02-01T19:35:00.000Z",
+  "rejectionReason": null,
+  "testData": {
+    "name": "Freenome's Blood-Based Colorectal Cancer Screening Tests",
+    "vendor": "Exact Sciences",
+    "category": "Early Cancer Detection",
+    "description": "Blood-based colorectal cancer screening tests acquired through exclusive license from Freenome",
+    "launchDate": null
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: Launches Freenome's Blood-Based Colorectal Cancer Screening Tests",
+  "confidence": 0.7,
+  "snippet": "Blood-based colorectal cancer screening tests acquired through exclusive license from Freenome"
+}

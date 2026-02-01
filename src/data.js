@@ -6248,7 +6248,7 @@ export const ecdTestData = [
     "totalParticipants": 3000,
     "numPublications": 3,
     "numPublicationsPlus": true,
-    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 88% to 77% (early-stage) and 82% to 64% (very early-stage), specificity from 87% to 82% per ALTUS prospective study (n=3,000+) presented at AASLD November 2025. Previous Phase II case-control data overstated performance. Error report submitted by Pierre Arsene (Mursla). 2026-01-12: Further corrected sensitivity from 77% to 70% overall per AASLD 2025 presentation charts; specificity refined to 81.9% (Pierre Arsene follow-up with screenshots)."
+    "vendorRequestedChanges": "2026-01-11: Updated sensitivity from 88% to 77% (early-stage) and 82% to 64% (very early-stage), specificity from 87% to 82% per ALTUS prospective study (n=3,000+) presented at AASLD November 2025. Previous Phase II case-control data overstated performance. Error report submitted by Pierre Arsene (Mursla). 2026-01-12: Further corrected sensitivity from 77% to 70% overall per AASLD 2025 presentation charts; specificity refined to 81.9% (Pierre Arsene follow-up with screenshots). 2025-11-07: Landmark liver cancer surveillance study results demonstrate superior early detection."
   ,
     "medicareCoverage": {
       "status": "UNKNOWN",
@@ -6808,10 +6808,10 @@ export const ecdTestData = [
     "listPriceCitations": "https://www.exactsciences.com/newsroom/press-releases/exact-sciences-launches-cancerguard-first-of-its-kind-multi-cancer-early-detection-blood-test",
     "listPriceNotes": "$689 self-pay through Quest Diagnostics.",
     "screeningInterval": "Annual (recommended)",
-    "clinicalTrials": "NCT06589310 (FALCON registry, ~25,000 participants); DETECT-A (10,000); ASCEND-2",
-    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06589310",
+    "clinicalTrials": "NCT06589310 (FALCON registry, ~25,000 participants); DETECT-A (10,000); ASCEND-2; CRANE Study (Japan, first participant Dec 2025)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06589310 | https://www.exactsciences.com/newsroom",
     "totalParticipants": 35000,
-    "totalParticipantsNotes": "FALCON enrolling ~25,000; DETECT-A ~10,000 participants.",
+    "totalParticipantsNotes": "FALCON enrolling ~25,000; DETECT-A ~10,000 participants. CRANE Study initiated in Japan (Dec 2025) for multi-cancer early detection validation in Japanese population.",
     "numPublications": 10,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Publications from CancerSEEK, DETECT-A, and ASCEND studies form evidence base. Additional publications expected from FALCON registry.",
@@ -6829,6 +6829,34 @@ export const ecdTestData = [
       "notes": "MCED - no current Medicare coverage for multi-cancer screening",
       "lastVerified": "2026-01-13"
     }},
+  // Freenome Blood-Based CRC Screening - Added February 2026 (Daemon Crawl)
+  {
+    "id": "ecd-23",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Freenome Blood-Based CRC Screening",
+    "vendor": "Exact Sciences",
+    "testScope": "Single-cancer (CRC)",
+    "approach": "Blood-based cfDNA methylation",
+    "method": "Blood-based colorectal cancer screening test acquired through exclusive license from Freenome",
+    "cancerTypes": ["Colorectal cancer"],
+    "targetPopulation": "Adults eligible for CRC screening",
+    "indicationGroup": "CRC",
+    "fdaStatus": "In Development",
+    "fdaStatusNotes": "Acquired via exclusive license from Freenome. Development timeline TBD.",
+    "clinicalAvailability": "Not yet available",
+    "dataSourceNotes": "Added February 2026 via daemon crawl. Exact Sciences acquired exclusive license for Freenome blood-based CRC screening technology.",
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Not yet commercially available",
+      "lastVerified": "2026-02-01"
+    }
+  },
   // IVD KITS - Self-Collection and Laboratory Kits
   // ============================================
   {
@@ -10977,6 +11005,30 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Feb 1, 2026',
+    type: 'added',
+    testId: 'ecd-23',
+    testName: 'Freenome Blood-Based CRC Screening',
+    vendor: 'Exact Sciences',
+    category: 'ECD',
+    description: 'Added Freenome blood-based CRC screening test acquired by Exact Sciences through exclusive license.',
+    contributor: null,
+    affiliation: 'OpenOnco (Daemon Crawl)',
+    citation: 'https://www.exactsciences.com/newsroom'
+  },
+  {
+    date: 'Feb 1, 2026',
+    type: 'updated',
+    testId: 'ecd-22, ecd-9',
+    testName: 'Cancerguard, Oncoguard Liver',
+    vendor: 'Exact Sciences',
+    category: 'ECD',
+    description: 'Cancerguard: Added CRANE Study (Japan) clinical trial info. Oncoguard Liver: Added landmark liver surveillance study results from Nov 2025.',
+    contributor: null,
+    affiliation: 'OpenOnco (Daemon Crawl)',
+    citation: 'https://www.exactsciences.com/newsroom'
+  },
   {
     date: 'Jan 31, 2026',
     type: 'updated',

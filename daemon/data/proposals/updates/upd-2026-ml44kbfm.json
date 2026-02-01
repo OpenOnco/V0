@@ -1,0 +1,26 @@
+{
+  "id": "upd-2026-ml44kbfm",
+  "type": "update",
+  "status": "applied",
+  "createdAt": "2026-02-01T19:19:30.274Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-01T19:30:00.000Z",
+  "reviewedBy": "alex",
+  "appliedAt": "2026-02-01T19:35:00.000Z",
+  "rejectionReason": null,
+  "testName": "Blood-Based Liver Cancer Surveillance Test",
+  "testId": null,
+  "changes": {
+    "clinicalEvidence": {
+      "trialName": "Landmark liver cancer study",
+      "nctId": null,
+      "publication": null,
+      "findings": "Breakthrough results demonstrating superior early detection of liver cancer with blood-based surveillance test",
+      "date": "November 7, 2025"
+    }
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: Landmark liver cancer study",
+  "confidence": 0.75,
+  "snippet": "Breakthrough results demonstrating superior early detection of liver cancer with blood-based surveillance test"
+}

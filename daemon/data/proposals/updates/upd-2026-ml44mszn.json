@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml44mszn",
+  "type": "update",
+  "status": "applied",
+  "createdAt": "2026-02-01T19:21:26.339Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-01T19:30:00.000Z",
+  "reviewedBy": "alex",
+  "appliedAt": "2026-02-01T19:35:00.000Z",
+  "rejectionReason": null,
+  "testName": "Multi-Cancer Early Detection test",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "Multi-cancer early detection in Japanese population",
+      "date": "December 18, 2025"
+    }
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: Multi-Cancer Early Detection test expands to Multi-cancer early detection in Japanese population",
+  "confidence": 0.75,
+  "snippet": "New indication: Multi-cancer early detection in Japanese population"
+}

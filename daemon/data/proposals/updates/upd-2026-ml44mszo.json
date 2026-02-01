@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml44mszo",
+  "type": "update",
+  "status": "applied",
+  "createdAt": "2026-02-01T19:21:26.340Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-01T19:30:00.000Z",
+  "reviewedBy": "alex",
+  "appliedAt": "2026-02-01T19:35:00.000Z",
+  "rejectionReason": null,
+  "testName": "Blood-Based Surveillance Test",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "Liver cancer early detection",
+      "date": "November 7, 2025"
+    }
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: Blood-Based Surveillance Test expands to Liver cancer early detection",
+  "confidence": 0.75,
+  "snippet": "New indication: Liver cancer early detection"
+}

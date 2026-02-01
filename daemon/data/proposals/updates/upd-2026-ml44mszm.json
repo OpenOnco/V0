@@ -1,0 +1,26 @@
+{
+  "id": "upd-2026-ml44mszm",
+  "type": "update",
+  "status": "rejected",
+  "createdAt": "2026-02-01T19:21:26.338Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-01T19:30:00.000Z",
+  "reviewedBy": "alex",
+  "appliedAt": null,
+  "rejectionReason": "Redundant - PATHFINDER-2 data already in database",
+  "testName": "Galleri",
+  "testId": null,
+  "changes": {
+    "clinicalEvidence": {
+      "trialName": "PATHFINDER 2",
+      "nctId": null,
+      "publication": null,
+      "findings": "Galleri Multi-Cancer Early Detection Blood Test increased cancer detection more than seven-fold when added to USPSTF A and B recommended screenings. More than half of cancers detected by Galleri were early stage. Approximately three-quarters of Galleri-detected cancers do not have recommended screenings.",
+      "date": "2025-10-17"
+    }
+  },
+  "source": "https://www.grail.com/press-releases",
+  "sourceTitle": "GRAIL: PATHFINDER 2",
+  "confidence": 0.75,
+  "snippet": "Galleri Multi-Cancer Early Detection Blood Test increased cancer detection more than seven-fold when added to USPSTF A and B recommended screenings. More than half of cancers detected by Galleri were early stage. Approximately three-quarters of Galleri-detected cancers do not have recommended screenings."
+}
