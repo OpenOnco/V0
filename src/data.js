@@ -7775,7 +7775,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": "First FDA-approved CGP meeting NCD 90.2 requirements",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Aetna", "Anthem BCBS", "Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Aetna CPB 0715, Anthem CG-GENE-14, Blue Shield CA Oncology Algorithmic Testing",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors. 87% of commercially insured patients pay $0 per vendor. 80+ commercial health plans cover Foundation Medicine tests."
+  },
   {
     "id": "tds-2",
     "name": "FoundationOne Liquid CDx",
@@ -7849,7 +7853,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Liquid Biopsy Policy, EviCore MOL.TS.194.A",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. EviCore (lab benefit manager) also covers. Aetna CPB 0715 lists ctDNA CGP as experimental/not covered."
+  },
   {
     "id": "tds-3",
     "name": "FoundationOne Heme",
@@ -7915,7 +7923,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy",
+    "commercialPayersNotes": "Conditional coverage for hematologic malignancies and sarcomas requiring CGP."
+  },
   {
     "id": "tds-4",
     "name": "Guardant360 CDx",
@@ -7986,7 +7998,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": null,
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology Algorithmic Testing",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. EviCore (lab benefit manager for multiple plans) also covers per MOL.TS.194.A guidelines. Aetna CPB 0715 lists as not covered for general CGP."
+  },
   {
     "id": "tds-17",
     "name": "Guardant360 Liquid",
@@ -8128,7 +8144,11 @@ export const cgpTestData = [
       "cptCode": "81479",
       "notes": "FDA PMA approved May 2023. CMS added to NCD 90.2 coverage Nov 2023 (transmittal 13278). 648-gene panel.",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy",
+    "commercialPayersNotes": "Conditional coverage for solid tumors requiring CGP."
+  },
   {
     "id": "tds-6",
     "name": "Tempus xF",
@@ -8186,7 +8206,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": "Liquid biopsy panel - covered under plasma genomic profiling LCD",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors requiring liquid biopsy CGP."
+  },
   {
     "id": "tds-7",
     "name": "Tempus xF+",
@@ -8240,7 +8264,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": "Liquid biopsy panel - covered under plasma genomic profiling LCD",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Blue Shield of California"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors requiring expanded liquid biopsy CGP."
+  },
   {
     "id": "tds-8",
     "name": "MSK-IMPACT",
@@ -10941,6 +10969,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Jan 31, 2026',
+    type: 'updated',
+    testId: 'tds-1, tds-2, tds-3, tds-4, tds-5, tds-6, tds-7',
+    testName: 'FoundationOne CDx/Liquid/Heme, Guardant360 CDx, Tempus xT/xF/xF+',
+    vendor: 'Multiple',
+    category: 'TDS',
+    description: 'Added commercial payer coverage from policy crawl: Anthem BCBS, Humana, Blue Shield of California, Aetna. Based on automated policy document analysis of 15 payer policies (Jan 2026).',
+    contributor: 'OpenOnco',
+    affiliation: 'OpenOnco',
+    citation: 'Automated policy crawl 2026-01-31'
+  },
   {
     date: 'Jan 31, 2026',
     type: 'added',

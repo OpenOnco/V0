@@ -27,6 +27,7 @@ describe('config', () => {
     expect(config.schedules).toBeDefined();
     expect(config.schedules.cms).toBeDefined();
     expect(config.schedules.vendor).toBeDefined();
+    expect(config.schedules.payers).toBeDefined();
     expect(config.schedules.digest).toBeDefined();
   });
 
@@ -34,6 +35,7 @@ describe('config', () => {
     expect(config.crawlers).toBeDefined();
     expect(config.crawlers.cms).toBeDefined();
     expect(config.crawlers.vendor).toBeDefined();
+    expect(config.crawlers.payers).toBeDefined();
   });
 
   it('has queue configuration', () => {

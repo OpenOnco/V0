@@ -225,8 +225,8 @@ async function buildDigestData() {
     proposals: proposalStats,
     crawlerHealth: {
       cms: health.crawlers?.cms || null,
-      payers: health.crawlers?.payers || null,
       vendor: health.crawlers?.vendors || null,
+      payers: health.crawlers?.payers || null,
     },
     errors: recentErrors,
     discoveries: pending.map(d => ({
@@ -802,9 +802,9 @@ function generateEmailHtml(digest) {
     return '⏸️';
   };
 
-  const crawlerRows = ['cms', 'payers', 'vendor'].map(source => {
+  const crawlerRows = ['cms', 'vendor', 'payers'].map(source => {
     const health = crawlerHealth[source] || {};
-    const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Private Payers' : 'Vendors';
+    const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Payer Policies' : 'Vendors';
     return `
       <tr>
         <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
@@ -988,9 +988,9 @@ CRAWLER RUN STATS
 ───────────────────────────────────────
 `;
 
-  ['cms', 'payers', 'vendor'].forEach(source => {
+  ['cms', 'vendor', 'payers'].forEach(source => {
     const health = crawlerHealth[source] || {};
-    const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Private Payers' : 'Vendors';
+    const name = source === 'cms' ? 'CMS/Medicare' : source === 'payers' ? 'Payer Policies' : 'Vendors';
     const status = health.status === 'success' ? '✓' : health.status === 'error' ? '✗' : '?';
     text += `${status} ${name}: ${formatTime(health.lastRun)} (${formatDuration(health.duration)}) - ${health.discoveriesFound || 0} found, ${health.discoveriesAdded || 0} new\n`;
   });

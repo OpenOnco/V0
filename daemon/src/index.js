@@ -125,11 +125,11 @@ async function main() {
 
     logger.info('Daemon started successfully');
     logger.info('Schedules:', {
-      pubmed: 'Daily at 6:00 AM',
-      cms: 'Weekly on Sunday at 7:00 AM',
-      fda: 'Weekly on Sunday at 8:00 AM',
-      vendor: 'Weekly on Sunday at 9:00 AM',
-      digest: 'Daily at 10:00 AM',
+      cms: 'Sunday 11:00 PM',
+      vendor: 'Sunday 11:00 PM',
+      payers: 'Sunday 11:30 PM',
+      digest: 'Monday 1:00 AM',
+      cleanup: 'Daily midnight',
     });
 
   } catch (error) {

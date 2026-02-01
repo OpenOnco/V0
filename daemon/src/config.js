@@ -28,6 +28,7 @@ export const config = {
   schedules: {
     cms: process.env.SCHEDULE_CMS || '0 23 * * 0',           // Sunday 11:00 PM
     vendor: process.env.SCHEDULE_VENDORS || '0 23 * * 0',    // Sunday 11:00 PM
+    payers: process.env.SCHEDULE_PAYERS || '30 23 * * 0',    // Sunday 11:30 PM
     digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
   },
 
@@ -44,6 +45,12 @@ export const config = {
       name: 'Vendors',
       description: 'Test manufacturer coverage announcements and updates',
       rateLimit: parseInt(process.env.RATE_LIMIT_VENDORS || '3', 10),
+    },
+    payers: {
+      enabled: process.env.CRAWLER_PAYERS_ENABLED !== 'false',
+      name: 'Payer Policies',
+      description: 'Payer ctDNA/MRD policy documents from policy registry',
+      rateLimit: parseInt(process.env.RATE_LIMIT_PAYERS || '3', 10),
     },
   },
 

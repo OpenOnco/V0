@@ -1,13 +1,15 @@
 {
-  "collectedAt": "2026-01-31T19:00:29.573Z",
+  "collectedAt": "2026-01-31T23:17:53.185Z",
   "payerCount": 77,
   "payersWithTestMentions": 0,
   "stats": {
     "total": 77,
     "success": 73,
-    "failed": 3,
-    "timeout": 1,
-    "withTests": 0
+    "failed": 4,
+    "timeout": 0,
+    "withTests": 0,
+    "aiMatches": 73,
+    "regexMatches": 0
   },
   "results": [
     {
@@ -21,7 +23,9 @@
       "contentHash": "4cb46cf375081d0eccb4dcfb56f76cd71fa8ee8da4caa5e983f19269fd400fd5",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The provided document appears to be a generic UnitedHealthcare website page with navigation elements and footer text. No specific diagnostic tests from the provided list are mentioned in this content."
     },
     {
       "payerId": "anthem",
@@ -29,14 +33,14 @@
       "tier": 1,
       "url": "https://www.anthem.com/provider/policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "cb9724397372cbab694e1b5aa6e84c0833607a2f995db130a8d119cb57b026c5",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This appears to be a generic Anthem insurance webpage with no specific diagnostic test mentions. The document contains website navigation, legal disclaimers, and language accessibility information, but no references to any medical diagnostic tests from the provided list."
     },
     {
       "payerId": "centene",
@@ -49,7 +53,9 @@
       "contentHash": "3071913fea9472649f77454f7c4f02da3702b33302496a082dd2899066680472",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website for Ambetter Health insurance, containing no references to any specific medical diagnostic tests. The content is primarily about provider resources, website navigation, and company information."
     },
     {
       "payerId": "cigna",
@@ -59,10 +65,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "90ef88ffccf0e015b2a7ff5fb721857e76dd101ac323419fe21a107f954653c7",
+      "contentHash": "f962ba21ef0424ef142d7e2a1d8011b625e223f54ba1ca6da497e42ad1bea24a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a generic Cigna Healthcare provider website with navigation and general information. No specific diagnostic tests are mentioned in the content. The text is primarily about provider resources, claims, and website navigation."
     },
     {
       "payerId": "humana",
@@ -72,10 +80,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "ab27bb120911a0e8bb786bb720c591294ea7b629d05681d63707784b35b0694f",
+      "contentHash": "06f221d54212298c9b0bb2e5e9d4190b349c3c471520ef51e20b1f3ad7d199b0",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No specific diagnostic tests from the provided list are mentioned in this Humana provider portal document. The text appears to be a general overview of Humana's services and portal features, with no references to specific medical diagnostic tests."
     },
     {
       "payerId": "molina",
@@ -85,10 +95,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "55a5c879ea684de19b03921a8135230d803fb603463dd23004d767e1b59fea3c",
+      "contentHash": "404ea6c00edf050c364b3ec9318da9a00d7d284565ac8b688129507f561bcc32",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be an error page or access denial message with no mention of any medical diagnostic tests. There are no test names, vendor references, or diagnostic context present."
     },
     {
       "payerId": "kaiser",
@@ -101,7 +113,9 @@
       "contentHash": "d30afd1f4900306ac87c6bf6205fd2a0e30b81f6d7fd152b2dd80bee761e81ec",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "After carefully reviewing the entire Kaiser Permanente webpage document, no specific diagnostic tests from the provided list were mentioned. The document appears to be a general website content page about Kaiser Permanente's healthcare services, with no references to specific medical diagnostic tests."
     },
     {
       "payerId": "aetna",
@@ -114,7 +128,9 @@
       "contentHash": "3a60417a1ae652710d58b7d5df20e84e82a5fe37517aa18899c104e3e0a52865",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Aetna website page with legal and privacy information. No specific diagnostic tests are mentioned in the content. The text is primarily about website cookies, privacy preferences, and general Aetna corporate information."
     },
     {
       "payerId": "hcsc-tx",
@@ -122,14 +138,14 @@
       "tier": 1,
       "url": "https://www.bcbstx.com/provider/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "b5be523caace0f0b7c4c962dbe99eb17282430766f8f8ae5d7ee633284e1ea26",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website template with navigation links and footer text from Blue Cross Blue Shield of Texas. No specific diagnostic tests are mentioned in the content. The text is primarily about insurance website navigation and legal information."
     },
     {
       "payerId": "hcsc-il",
@@ -137,14 +153,14 @@
       "tier": 1,
       "url": "https://www.bcbsil.com/provider/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "f416c972803cc2661c4582665a06b885624942d42e70bb282acd9e5ab685a81d",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic webpage template with no specific diagnostic test references. The content is primarily navigation links, copyright information, and site metadata for Blue Cross Blue Shield of Illinois. No medical diagnostic tests from the provided list are mentioned."
     },
     {
       "payerId": "highmark",
@@ -152,14 +168,14 @@
       "tier": 1,
       "url": "https://www.highmark.com/provider/medical-policy",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "55efa1dfccd40b464b94382d30a1058b2ac50363212a7a6c021a9b4b8c2dbf5a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list are mentioned in this document. The text appears to be a generic Highmark Blue Cross Blue Shield insurance webpage with standard legal and contact information, with no specific references to any medical diagnostic tests."
     },
     {
       "payerId": "uhc-ma",
@@ -169,10 +185,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "5cc17c4823b5412a6b5f9e3e628671f8f123f64c96f688cd918e91d1a0052ea8",
+      "contentHash": "aa9b1abf43b39745173d4d576b9fd898c6e0a4afc85b2dc37d59508872c6c22a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic UnitedHealthcare Medicare Advantage policy navigation page with no specific mentions of any diagnostic tests from the provided list. The content is primarily site navigation and legal boilerplate text."
     },
     {
       "payerId": "evicore",
@@ -182,10 +200,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "7df3c7ec0e9958117774c52eefb73a06b32583f0d8ede50dd77b54d4d8bbe908",
+      "contentHash": "8898aad1fd5ef734fda4059de6d86d57a76aabb4cd33dd6032c9ee16f9228236",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website footer and privacy policy page for EviCore healthcare. Despite mentioning several medical/healthcare sections like Laboratory Management and Medical Oncology, no specific diagnostic tests from the provided list are explicitly mentioned in the text."
     },
     {
       "payerId": "aim",
@@ -198,7 +218,9 @@
       "contentHash": "a5e945ac8340ae470bb37c5dcc5baa6799b2c1daa9fb18aac60c9a99806b6c90",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a general clinical guidelines access page for Carelon Medical Benefits Management. While it mentions 'Genetic Testing' and 'Cancer Treatment Pathways' broadly, no specific diagnostic tests from the provided list are directly referenced. The text is a legal and informational disclaimer about clinical guidelines, without mentioning any particular medical diagnostic tests."
     },
     {
       "payerId": "hcsc-mt",
@@ -206,14 +228,14 @@
       "tier": 2,
       "url": "https://www.bcbsmt.com/provider/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "2c59477517e1768aa6a26e0e2a941674dac1e12c777c04ae4eeac409a07bbd49",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The provided document appears to be a generic insurance website page with standard navigation elements and legal footer. No specific medical diagnostic tests were mentioned in the content. The text is primarily about website navigation, insurance basics, and company information for Blue Cross Blue Shield of Montana."
     },
     {
       "payerId": "hcsc-ok",
@@ -221,14 +243,14 @@
       "tier": 2,
       "url": "https://www.bcbsok.com/provider/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "1d27fb9b6a264030a69a9ea5fb02e4d2f9aa0099cd5ab7f7dea65e1e595c4e5d",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic webpage template for Blue Cross Blue Shield insurance, containing no specific mentions of medical diagnostic tests. The content is primarily navigation links, legal notices, and website boilerplate text."
     },
     {
       "payerId": "hcsc-nm",
@@ -236,14 +258,14 @@
       "tier": 2,
       "url": "https://www.bcbsnm.com/provider/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "235a55e1651309c883b51373034a9b0d1970659e37a3f02845646f9a58f6842c",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website template for Blue Cross Blue Shield insurance, containing no specific references to any medical diagnostic tests. The content is primarily navigation menu items, legal notices, and standard website boilerplate text."
     },
     {
       "payerId": "floridablue",
@@ -251,14 +273,14 @@
       "tier": 2,
       "url": "https://www.floridablue.com/providers/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "4305d9df87448fd40b0f1a019dcbe6761b6a7e90dd0752648d5c994ccf8ca868",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This is a Florida Blue insurance company webpage with generic website content. No specific medical diagnostic tests are mentioned in the document. The content is primarily navigation links, disclaimers, and website footer information."
     },
     {
       "payerId": "bcbsm",
@@ -266,14 +288,14 @@
       "tier": 2,
       "url": "https://www.bcbsm.com/providers/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "4d2838cb2323dbb9a772989f30a0976ad7842c5a7535152a55da4bd0f943c01d",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Blue Cross Blue Shield of Michigan website page with no specific medical diagnostic test mentions. The content is mostly site navigation and legal boilerplate text."
     },
     {
       "payerId": "bcbsnc",
@@ -286,7 +308,9 @@
       "contentHash": "1bada16961bfa9d5a80c865b38453e6eb8c5ba9c5b1ca1427cb534fb988489c4",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic error page or cookie consent page with no specific medical diagnostic test mentions. The content is primarily website navigation links and privacy policy text, with no references to any medical tests from the provided list."
     },
     {
       "payerId": "bcbssc",
@@ -309,10 +333,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "73496a7947a7b518b8c4a8c7e2879531aa35da51ca1e5978dca065e5bb7a4ade",
+      "contentHash": "11cde889e996785ff14b6ef25f460ac0851f8606e6a53aa24c262302c910995e",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This is an HTTP 404 error page with no specific diagnostic test mentions. The document contains a generic error message about a missing web page resource, with no reference to any medical diagnostic tests."
     },
     {
       "payerId": "bcbsal",
@@ -320,14 +346,14 @@
       "tier": 2,
       "url": "https://www.bcbsal.org/providers/policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "6d48e821d3ae9d18b0ce27e10c1a00643dd12fa5f9bebb929496a6e9beed663c",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a general medical policy navigation page with administrative information about Blue Cross and Blue Shield's policies. No specific diagnostic tests from the provided list are mentioned in the content. The document contains generic references to medical policies and technology evaluation criteria, but no specific diagnostic test names."
     },
     {
       "payerId": "bcbsla",
@@ -335,14 +361,14 @@
       "tier": 2,
       "url": "https://lablue.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "ae3286b4fa0c711c4ee7a503d422e164d67bb3a17929d7e6191fba647b317682",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document is a Blue Cross and Blue Shield of Louisiana provider website homepage. It contains no mentions of specific medical diagnostic tests. The only medical references are generic administrative and insurance-related content."
     },
     {
       "payerId": "bcbsaz",
@@ -363,14 +389,14 @@
       "tier": 2,
       "url": "https://www.bcbsks.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "61eb0724b02add4430d7d3bf496b1205f96f6085dad234d94383a85c447ce6d8",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a generic Blue Cross Blue Shield of Kansas website landing page with no specific mentions of any diagnostic tests. The content includes standard website navigation elements, company information, and disclaimers."
     },
     {
       "payerId": "bcbskc",
@@ -378,14 +404,14 @@
       "tier": 2,
       "url": "https://www.bluekc.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "7cad9658808fdc9e34c4b410eef4ea8e79473c313a060830d30dca1eb1ce10f9",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document is a website homepage for Blue Cross and Blue Shield of Kansas City (Blue KC), which contains no specific references to medical diagnostic tests. The content is entirely about provider resources, website navigation, and company information."
     },
     {
       "payerId": "bcbsne",
@@ -393,14 +419,14 @@
       "tier": 2,
       "url": "https://www.nebraskablue.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "8336099deb51883be46adb6ea89f82469dad286ec76ea63e3f36972b0a7d3df3",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a website navigation page for Blue Cross Blue Shield of Nebraska (BCBSNE). It contains no specific references to any medical diagnostic tests from the provided list. The content is primarily about provider services, member resources, and company information."
     },
     {
       "payerId": "bcbsnd",
@@ -408,14 +434,14 @@
       "tier": 2,
       "url": "https://www.bcbsnd.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "2bb51d0ff3e344e46577b7714b459ccf0c4c03c48b3f2adfa8ac7e4c9d1daf4b",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Blue Cross Blue Shield of North Dakota provider portal webpage with administrative information. No specific diagnostic tests from the provided list are mentioned in the content."
     },
     {
       "payerId": "bcbswy",
@@ -423,14 +449,14 @@
       "tier": 2,
       "url": "https://www.bcbswy.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "773ab1378ab2d9ffbdcc56b8e75c759c2243b29c7a2eecb048bde11535125204",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a Blue Cross Blue Shield of Wyoming website with general provider and member information. No specific diagnostic tests from the provided list are mentioned in the content. The document focuses on insurance services, provider portal, and company information."
     },
     {
       "payerId": "bcbsma",
@@ -438,14 +464,14 @@
       "tier": 2,
       "url": "https://www.bluecrossma.com/providers/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "a512617266403eaced70829ea69c47830f133415c5256798a78054ae3f2a13ad",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Blue Cross Blue Shield of Massachusetts website page with no specific mentions of any diagnostic tests. The content is primarily administrative and navigational in nature, with no references to medical diagnostic tests from the provided list."
     },
     {
       "payerId": "bcbsri",
@@ -453,14 +479,14 @@
       "tier": 2,
       "url": "https://www.bcbsri.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "14d1bb53e2d021e36ed59f8b39253c0778808ffd34a3db97724acc369b17212a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list were mentioned in this Blue Cross Blue Shield of Rhode Island website document. The text appears to be a standard website template with navigation menus, copyright information, and general site content."
     },
     {
       "payerId": "bcbsvt",
@@ -468,14 +494,14 @@
       "tier": 2,
       "url": "https://www.bcbsvt.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "deb842de1ea882cc1873752d2f38fcfa1fe59f21f015213b0399034ee032b488",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document is a Blue Cross and Blue Shield of Vermont provider website with administrative and network information. No specific diagnostic tests from the provided list are mentioned. The document contains general information about provider services, laboratory services, and health plan details."
     },
     {
       "payerId": "bcbsmn",
@@ -483,14 +509,14 @@
       "tier": 2,
       "url": "https://www.bluecrossmn.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "35fb2e4d5bad490c2d78b6da8f838a97e766b11e7877622722a1ce861ca09136",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Blue Cross and Blue Shield website navigation menu and footer. No specific diagnostic tests are mentioned in this content. The text is primarily about provider resources, insurance plans, and website navigation."
     },
     {
       "payerId": "carefirst",
@@ -498,14 +524,14 @@
       "tier": 2,
       "url": "https://www.carefirst.com/providers/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "779bf7931730c9bc41591bf26d6ce1619e8cc76dfb71e82c471c52a045630d65",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a CareFirst BlueCross BlueShield insurance webpage with no mentions of any medical diagnostic tests. The text is primarily legal/corporate boilerplate about the insurance company's branding and service areas."
     },
     {
       "payerId": "blueshieldca",
@@ -513,14 +539,14 @@
       "tier": 2,
       "url": "https://www.blueshieldca.com/provider/medical-policy",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "8ddffbeefad334e5c6ca159de0c986c87b6b235d3d34e04fe1d3268f031bfee8",
+      "contentHash": "01963d6e35cb21a07b2505f23fa50ce900e7d1ade430ffaa5ea73ba0fdde2712",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list are mentioned in this document. The text is a Blue Shield of California website homepage with insurance and administrative information. References to 'Blue Shield' are about the insurance company, not any diagnostic test. No specific medical diagnostic tests are discussed."
     },
     {
       "payerId": "horizon",
@@ -528,14 +554,14 @@
       "tier": 2,
       "url": "https://www.horizonblue.com/providers/policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "9b7dbec92d1d8da11483638a4a33ea103d059b950b6378050fc11e27041ec5cd",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a 404 error page for the Horizon Blue Cross Blue Shield of New Jersey website. It contains no mention of any specific diagnostic tests from the provided list. The content is primarily website navigation elements and legal disclaimers."
     },
     {
       "payerId": "excellus",
@@ -543,27 +569,27 @@
       "tier": 2,
       "url": "https://www.excellusbcbs.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "1dfb4914ae72379033d7509007f46602230eca440984e8b0520af39b54edffa9",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic webpage template from Excellus BlueCross BlueShield with no specific mention of any diagnostic tests. The content is a standard website navigation and error page with no medical test references."
     },
     {
       "payerId": "empire",
       "payerName": "Empire BCBS",
       "tier": 2,
       "url": "https://www.empireblue.com/provider/policies",
-      "status": "timeout",
+      "status": "failed",
       "testsFound": [],
       "coveragePositions": {},
       "contentHash": null,
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": "page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.empireblue.com/provider/policies\", waiting until \"domcontentloaded\"\n"
+      "error": "page.goto: net::ERR_TIMED_OUT at https://www.empireblue.com/provider/policies\nCall log:\n\u001b[2m  - navigating to \"https://www.empireblue.com/provider/policies\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "payerId": "ibx",
@@ -571,14 +597,14 @@
       "tier": 2,
       "url": "https://www.ibx.com/providers/medical-policy",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "aa1448589179411aa5c7b426f688fe99e2e96bb0512030cd0369fab7587223c5",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This is a standard website template/404 error page for Independence Blue Cross. It contains no references to any specific medical diagnostic tests from the provided list. The content is generic website navigation and legal boilerplate text."
     },
     {
       "payerId": "premera",
@@ -591,7 +617,7 @@
       "contentHash": null,
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": "page.goto: Download is starting\nCall log:\n  - navigating to \"https://www.premera.com/provider/medical-policies\", waiting until \"domcontentloaded\"\n"
+      "error": "page.goto: Download is starting\nCall log:\n\u001b[2m  - navigating to \"https://www.premera.com/provider/medical-policies\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "payerId": "regence",
@@ -599,14 +625,14 @@
       "tier": 2,
       "url": "https://www.regence.com/provider/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "32cd1638acea004dfa9b8903b14f94e091aa7d5db2547f01a61c8e66a81850fd",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This appears to be a standard website navigation page for Regence Blue Cross Blue Shield insurance company. No specific diagnostic tests are mentioned in the document content. The text is primarily about website navigation, insurance plans, and site structure."
     },
     {
       "payerId": "wellmark",
@@ -614,14 +640,14 @@
       "tier": 2,
       "url": "https://www.wellmark.com/providers/medical-policies",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "91d871cd552bbe3cb016629402a6631799d3af3dea270d54597ae4376ca2294e",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website footer from Wellmark Blue Cross and Blue Shield insurance, with no mention of any specific medical diagnostic tests. The text contains primarily website navigation elements, legal disclaimers, and language options."
     },
     {
       "payerId": "bcidaho",
@@ -629,14 +655,14 @@
       "tier": 2,
       "url": "https://www.bcidaho.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "bf36c759a7200fbad0493f0569c575a569d7e632151552f13fc205b2b7d6f5e3",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document is a Blue Cross of Idaho provider portal webpage with administrative and policy information. No specific medical diagnostic tests are mentioned in the content. The text is primarily about provider services, claims, and administrative procedures."
     },
     {
       "payerId": "arkbcbs",
@@ -644,14 +670,14 @@
       "tier": 2,
       "url": "https://www.arkansasbluecross.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "b9f02c8aba6bf1150ebb846e0b54ddef349acd9167c300389ab6b6f431187d6a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic insurance provider webpage about coverage policies and provider services. No specific diagnostic tests from the provided list are mentioned in the text. The document contains generic insurance and healthcare administrative language without referencing any specific medical diagnostic tests."
     },
     {
       "payerId": "oscar",
@@ -664,7 +690,9 @@
       "contentHash": "7c65962da7e330edc2809946cbe2b6fb96ba584779bd0f1783ef185109e0cc70",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No specific diagnostic tests were mentioned in this document. The text appears to be an insurance company (Oscar Insurance) website with general information about provider services, with no references to specific medical diagnostic tests."
     },
     {
       "payerId": "caresource",
@@ -674,10 +702,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "f7417125b53a87db4e5fc5f46f86196eeeb834c815d2ff5dd0e2c4c13e9715b0",
+      "contentHash": "a4d10b4568c63559fe7ee0a113cf04e7a1a5a882f9ea001a78713fb7cf40a3ed",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No specific diagnostic tests were mentioned in this CareSource website content. The document appears to be a generic provider portal page with general information about CareSource health plans and provider resources, without referencing any specific medical diagnostic tests."
     },
     {
       "payerId": "healthnet",
@@ -690,7 +720,9 @@
       "contentHash": "b7cd67a9d8d5eca1e70809d9d030c4369565a4bbf0eca86088dd2a9e916b2b5a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be an error page with only generic Health Net portal links. No diagnostic tests from the provided list are mentioned in this content."
     },
     {
       "payerId": "fidelis",
@@ -703,7 +735,9 @@
       "contentHash": "70939004a5645b0480f3290066060321a9f9bc4a1104b3bbf03f3ca215377e3f",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a website for Fidelis Care, an insurance provider. It contains provider-related news and administrative information, but does not mention any specific medical diagnostic tests from the provided list. The text is generic website content with no references to genetic or diagnostic testing."
     },
     {
       "payerId": "medica",
@@ -716,7 +750,9 @@
       "contentHash": "2f35a6a3db9f38c9538aadc574b1db1a7904abf473742069ef701c4dfb8b8b8c",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a provider website for Medica insurance, containing administrative information and contact details. No diagnostic tests from the provided list are mentioned in the content."
     },
     {
       "payerId": "healthpartners",
@@ -729,7 +765,9 @@
       "contentHash": "67068da92c99d69edf874c4cd01a8d09f6bd68655bcd2fbd3c7e15327abf6bd9",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "After carefully reviewing the document, no specific diagnostic tests from the provided list are mentioned. The content appears to be a generic provider resources webpage for HealthPartners, with no references to any medical diagnostic tests."
     },
     {
       "payerId": "ucare",
@@ -742,7 +780,9 @@
       "contentHash": "10333d33a06789ce9b4d026009f63c2b8c0ac116eef9b50304e9604f30594af4",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No specific diagnostic tests from the provided list are mentioned in this document. The content appears to be a provider portal webpage for UCare, discussing administrative changes and provider communications. No medical diagnostic tests are referenced."
     },
     {
       "payerId": "priority",
@@ -755,7 +795,9 @@
       "contentHash": "c804d4038b2247fd3be8abcbd5ef67ec672b6293fa56d686f5033e0f1c7951ee",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website template/footer with no specific mention of any medical diagnostic tests. The content is primarily about Priority Health's website navigation, contact information, and general policy details."
     },
     {
       "payerId": "mclaren",
@@ -768,7 +810,9 @@
       "contentHash": "73a51fc3b3503d3cbbfaf5d6b60bb6b1d4a7647de6acdbc459e7f9fc3e8f9774",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be an administrative notice from MDwise about plan closure and member/provider transitions. No diagnostic tests from the provided list are mentioned in the content."
     },
     {
       "payerId": "quartz",
@@ -781,7 +825,9 @@
       "contentHash": "53d997f8959c2592f4f3279d4e2fa2984dc4a9b0dc0018ecdeee9c6306634d22",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a provider portal page for Quartz Health, containing general information about accessing their system. No specific medical diagnostic tests are mentioned in the content. The text is primarily about user access, customer service, and portal functionality."
     },
     {
       "payerId": "sanford",
@@ -794,7 +840,9 @@
       "contentHash": "7c7729f62b54a48d6528f83118bf27da066e8e0234149600610035123c290312",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website for Sanford Health Plan with provider and plan information. No specific diagnostic tests from the provided list are mentioned in the content. The text contains general healthcare website language with no references to specific medical diagnostic tests."
     },
     {
       "payerId": "avera",
@@ -804,10 +852,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "e4479e235cf4e9b15c15f4cce7d82aa5f1288311a5dcdd78fa111bbb6c744169",
+      "contentHash": "d6c5865870d22075cfc742806356dfefa7c780eeec8b6b1fac6270b1e24cdf10",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document is an access denied error page with no substantive content. No diagnostic tests from the provided list are mentioned in this text."
     },
     {
       "payerId": "geisinger",
@@ -817,10 +867,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "945aa0dd733f426d5690d03d3ed39f26414325a7404a6c491ea27c3ae1d07f73",
+      "contentHash": "97c681626a434fa2fafcb7dc2d4dcf89e67c0c237c322c24746b2d8e6d85c43b",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a CAPTCHA/access blocked page with no mention of any specific medical diagnostic tests. The content is entirely about website access restrictions and does not reference any of the diagnostic tests from the provided list."
     },
     {
       "payerId": "upmc",
@@ -833,7 +885,9 @@
       "contentHash": "e8973b780542bfc6c82b7a95f7711305b7931b79ee263227f937f4c2459ebb4d",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a generic website homepage for UPMC Health Plan with no specific mentions of any medical diagnostic tests. The content is primarily about provider resources, website navigation, and general health plan information."
     },
     {
       "payerId": "tufts",
@@ -846,7 +900,9 @@
       "contentHash": "e8f93866efa8f727ad293b1bc2e9b2a64a263c603c7f0259b4a07d828ccdc989",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a provider resources webpage for Point32Health (parent company of Harvard Pilgrim Health Care and Tufts Health Plan). It contains general healthcare administrative information but no specific mentions of medical diagnostic tests from the provided list."
     },
     {
       "payerId": "harvard",
@@ -859,7 +915,9 @@
       "contentHash": "e8f93866efa8f727ad293b1bc2e9b2a64a263c603c7f0259b4a07d828ccdc989",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list were mentioned in this document. The text appears to be an administrative webpage for Point32Health, discussing provider services, portal updates, and company information, with no specific medical diagnostic test references."
     },
     {
       "payerId": "fallon",
@@ -872,7 +930,9 @@
       "contentHash": "4d5665e1748229585561ff6f435ac7cdeecf5064de7d38665fc82a93c7deba8c",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list are mentioned in this document. The text appears to be a provider resources webpage for Fallon Health insurance, containing administrative and navigation information, but no specific medical diagnostic test references."
     },
     {
       "payerId": "connecticare",
@@ -882,10 +942,12 @@
       "status": "success",
       "testsFound": [],
       "coveragePositions": {},
-      "contentHash": "6776acfe990c1fa9299460a50382d77ad0f05646188af405a176f2ffd42cbe83",
+      "contentHash": "d64a99b479f52f0f5bd7c2af72e4c520723cc53147c56de9c50fb3d533a926e0",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document is an access denied error page with no medical diagnostic test mentions. There is no readable content that references any specific diagnostic tests from the provided list."
     },
     {
       "payerId": "healthfirst",
@@ -898,7 +960,9 @@
       "contentHash": "752c463e07d78b0c703ef0023ae575d412cd13a43a5398cea95a54a5202ecd3b",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No specific diagnostic tests from the provided list are mentioned in this Healthfirst provider portal document. The text appears to be general information about the provider portal, insurance plans, and administrative updates with no references to specific medical diagnostic tests."
     },
     {
       "payerId": "metroplus",
@@ -911,7 +975,9 @@
       "contentHash": "bb151e9561632d5eb583bd0a085cd2fd510eac286a7831e2b8afbf9c7b054d43",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This is a MetroPlusHealth provider website with general information about their network and services. No specific diagnostic tests from the provided list are mentioned in the document content."
     },
     {
       "payerId": "mvp",
@@ -924,7 +990,9 @@
       "contentHash": "4ebe9c2c78ba928da937fdee09f9ed8f5a8bca365aff75f760dc7168970ed7cd",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list were mentioned in this document. The text appears to be a generic MVP Health Care website page about provider online accounts and site navigation, with no references to specific medical diagnostic tests."
     },
     {
       "payerId": "lacare",
@@ -937,7 +1005,9 @@
       "contentHash": "8cabafbb0749b412c59e9947bbb58c29cbe99e7f194898a6c0e604604a8f4455",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document is about L.A. Care's Provider Portal and contains no references to any diagnostic medical tests from the provided list. The text is purely about portal access and provider resources, with no mention of specific diagnostic tests."
     },
     {
       "payerId": "selecthealth",
@@ -950,7 +1020,9 @@
       "contentHash": "89aa42f39289050929154b19dc7f25d20eae9c4251a8b88e0683ba561562ce8f",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Select Health insurance company website with navigation menus and footer content. No specific diagnostic tests are mentioned in this text. The content is primarily about insurance services, provider resources, and company information."
     },
     {
       "payerId": "providence",
@@ -963,7 +1035,9 @@
       "contentHash": "69956d2da9153c690bcc0f1d26e2f86921e1d75e7349ad1121168fb6539c11af",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Providence Health Plan website with provider and member resources. No specific diagnostic tests from the provided list are mentioned in the content. The text is mostly navigation menus, general healthcare information, and website boilerplate text."
     },
     {
       "payerId": "pacificsource",
@@ -976,7 +1050,9 @@
       "contentHash": "71744c4fbd449b0430095057604dcd8ea787138d9f411a9d475e73654d02129e",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a generic provider services webpage for PacificSource Health Plans. It contains no specific mentions of medical diagnostic tests from the provided list. The content is focused on provider resources, contact information, and general healthcare services."
     },
     {
       "payerId": "moda",
@@ -989,7 +1065,9 @@
       "contentHash": "dc2db391b6c0a9cd946fed4fae840ac54357e7eb76ea9ad5c86663b77f07e461",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list were mentioned in this document. The text appears to be a generic website error page and privacy notice for Moda Health, with no specific medical diagnostic test references."
     },
     {
       "payerId": "bridgespan",
@@ -1002,7 +1080,9 @@
       "contentHash": "a9a56940814abd9d985720b30ebd56299f392644fc386613825d7aa30fca34c7",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This appears to be a generic insurance website landing page with no specific mention of any medical diagnostic tests. The document contains website navigation elements and a 'page moved' message, but no diagnostic test references."
     },
     {
       "payerId": "hmsa",
@@ -1010,14 +1090,14 @@
       "tier": 3,
       "url": "https://hmsa.com/providers",
       "status": "success",
-      "testsFound": [
-        "Shield"
-      ],
+      "testsFound": [],
       "coveragePositions": {},
       "contentHash": "f159f854b8191ea078a2f97a7fc46113e00c73702d2ce19c1991874dd942e377",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "This document appears to be a generic webpage for Hawaii Medical Service Association (HMSA) with no specific mentions of any diagnostic medical tests. The content is primarily site navigation, footer information, and language translation options."
     },
     {
       "payerId": "optima",
@@ -1030,7 +1110,9 @@
       "contentHash": "799f0bf605de25495ac16612e35741c5e7ff529fc844c76e010eb88dde722602",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic Sentara Health Plans website footer and provider information page. No specific diagnostic tests from the provided list are mentioned in the text. The content is primarily administrative information about health plan services and provider resources."
     },
     {
       "payerId": "sentara",
@@ -1043,7 +1125,9 @@
       "contentHash": "799f0bf605de25495ac16612e35741c5e7ff529fc844c76e010eb88dde722602",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "No diagnostic tests from the provided list were mentioned in this document. The text appears to be a generic health plan website footer with administrative information about Sentara Health Plans, containing no specific diagnostic test references."
     },
     {
       "payerId": "medmutual",
@@ -1056,7 +1140,9 @@
       "contentHash": "8a26a4b85f87df91af33f6fc66704adc7f4c95d906e559a4b92a6f10ad390729",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be a generic website page for Medical Mutual of Ohio's provider portal. No specific diagnostic tests from the provided list are mentioned in the text. The content is primarily about provider services, website navigation, and general insurance information."
     },
     {
       "payerId": "amerihealth",
@@ -1069,7 +1155,9 @@
       "contentHash": "faf84c5f86a60ee61532ba50bda2c5fdb9b2d365eed57fa25316d796611d283a",
       "analysisConfidence": null,
       "rawAnalysis": null,
-      "error": null
+      "error": null,
+      "matchMethod": "ai",
+      "aiReasoning": "The document appears to be an AmeriHealth insurance provider website with generic information about healthcare services, provider resources, and company information. No specific diagnostic tests from the provided list are mentioned in the text."
     }
   ]
 }

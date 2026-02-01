@@ -15,6 +15,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES } from '../config.js';
 import { initializeCLFS, lookupPLARate, lookupMultiplePLARates, extractPLACodes } from '../utils/medicare-rates.js';
+import { createProposal, PROPOSAL_TYPES } from '../proposals/queue.js';
 
 const CLAUDE_MODEL = 'claude-sonnet-4-20250514';
 
@@ -142,10 +143,24 @@ export class CMSCrawler extends BaseCrawler {
     // Add PLA discoveries to main list
     discoveries.push(...plaDiscoveries);
 
+    // Create proposals for high-relevance discoveries
+    let proposalsCreated = 0;
+    for (const discovery of discoveries) {
+      if (discovery.relevance === 'high' || discovery.relevance === 'medium') {
+        try {
+          const proposal = await this.createProposalFromDiscovery(discovery);
+          if (proposal) proposalsCreated++;
+        } catch (error) {
+          this.log('warn', 'Failed to create proposal', { error: error.message });
+        }
+      }
+    }
+
     this.log('info', 'CMS crawl complete', {
       keywordsSearched: SEARCH_KEYWORDS.length,
       discoveries: discoveries.length,
       plaDiscoveries: plaDiscoveries.length,
+      proposalsCreated,
       seenDocuments: this.seenDocuments.size,
     });
 
@@ -577,6 +592,48 @@ Focus on:
     }
 
     return plaDiscoveries;
+  }
+
+  /**
+   * Create a proposal from a CMS discovery
+   * CMS discoveries typically indicate coverage changes that may need data.js updates
+   */
+  async createProposalFromDiscovery(discovery) {
+    const { type, metadata, url, title, summary } = discovery;
+
+    // Skip PLA reference discoveries - they're informational
+    if (type === DISCOVERY_TYPES.CMS_PLA_REFERENCE) {
+      return null;
+    }
+
+    // Get affected tests from metadata
+    const affectedTests = metadata?.affectedTests || [];
+    if (affectedTests.length === 0) {
+      return null; // No specific tests affected
+    }
+
+    // Create a coverage proposal for each affected test
+    for (const testName of affectedTests) {
+      try {
+        await createProposal(PROPOSAL_TYPES.COVERAGE, {
+          testName,
+          testId: testName.toLowerCase().replace(/\s+/g, '-'),
+          payer: 'Medicare',
+          payerId: 'cms',
+          coverageStatus: metadata?.coverageDecision || 'conditional',
+          conditions: metadata?.keyChanges || summary,
+          effectiveDate: metadata?.effectiveDate || null,
+          source: url,
+          sourceTitle: title,
+          confidence: metadata?.isMolDXRelevant ? 0.9 : 0.7,
+          snippet: summary,
+        });
+      } catch (error) {
+        this.log('warn', `Failed to create proposal for ${testName}`, { error: error.message });
+      }
+    }
+
+    return { created: affectedTests.length };
   }
 }
 

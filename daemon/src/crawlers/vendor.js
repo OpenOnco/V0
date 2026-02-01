@@ -1320,8 +1320,8 @@ Respond ONLY with valid JSON.`,
 
     for (const discovery of discoveries) {
       try {
-        // Only create proposals for high-relevance discoveries
-        if (discovery.relevance !== 'high') {
+        // Only create proposals for high or medium relevance discoveries
+        if (discovery.relevance !== 'high' && discovery.relevance !== 'medium') {
           continue;
         }
 

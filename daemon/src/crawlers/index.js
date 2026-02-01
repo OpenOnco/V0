@@ -5,6 +5,7 @@
 
 import { CMSCrawler } from './cms.js';
 import { VendorCrawler } from './vendor.js';
+import { PayerCrawler } from './payers.js';
 import { BaseCrawler } from './base.js';
 import { PlaywrightCrawler } from './playwright-base.js';
 import { createLogger } from '../utils/logger.js';
@@ -16,6 +17,7 @@ const logger = createLogger('crawlers');
 const crawlers = {
   [SOURCES.CMS]: new CMSCrawler(),
   [SOURCES.VENDOR]: new VendorCrawler(),
+  [SOURCES.PAYERS]: new PayerCrawler(),
 };
 
 /**
@@ -27,6 +29,7 @@ export function createAllCrawlers(queue = null) {
   const instances = {
     [SOURCES.CMS]: new CMSCrawler(),
     [SOURCES.VENDOR]: new VendorCrawler(),
+    [SOURCES.PAYERS]: new PayerCrawler(),
   };
 
   // If queue is provided, attach it to each crawler for future use
@@ -128,7 +131,7 @@ export function getCrawlerStatuses() {
 }
 
 // Export crawler classes for direct instantiation
-export { BaseCrawler, PlaywrightCrawler, CMSCrawler, VendorCrawler };
+export { BaseCrawler, PlaywrightCrawler, CMSCrawler, VendorCrawler, PayerCrawler };
 
 export default {
   // Factory
@@ -151,4 +154,5 @@ export default {
   PlaywrightCrawler,
   CMSCrawler,
   VendorCrawler,
+  PayerCrawler,
 };

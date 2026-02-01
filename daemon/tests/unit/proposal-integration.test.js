@@ -152,7 +152,7 @@ describe('Proposal Integration', () => {
       expect(proposals).toHaveLength(0);
     });
 
-    it('skips medium-relevance discoveries', async () => {
+    it('includes medium-relevance discoveries', async () => {
       const discoveries = [
         {
           source: SOURCES.VENDOR,
@@ -160,18 +160,19 @@ describe('Proposal Integration', () => {
           title: 'Coverage Update',
           summary: 'Coverage expanded.',
           url: 'https://example.com/update',
-          relevance: 'medium', // Should be skipped
+          relevance: 'medium', // Now included (high + medium create proposals)
           metadata: {
             vendorId: 'test',
             vendorName: 'Test Vendor',
             testName: 'Test Product',
+            payerName: 'Test Payer',
           },
         },
       ];
 
       const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(0);
+      expect(proposals).toHaveLength(1);
     });
 
     it('skips informational discovery types (PLA codes, price changes)', async () => {
