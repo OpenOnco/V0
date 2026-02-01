@@ -1,0 +1,24 @@
+{
+  "id": "upd-2026-ml3g4t0y",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-02-01T07:55:35.794Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Galleri",
+  "testId": null,
+  "changes": {
+    "regulatory": {
+      "action": "FDA premarket approval application submission",
+      "indication": "Multi-cancer early detection",
+      "date": "2026-01-29"
+    }
+  },
+  "source": "https://www.grail.com/press-releases",
+  "sourceTitle": "GRAIL: Galleri FDA premarket approval application submission",
+  "confidence": 0.75,
+  "snippet": "FDA premarket approval application submission for Multi-cancer early detection"
+}

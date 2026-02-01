@@ -1,7 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
+import { getSiteConfig } from '../data';
 import { useAllTests, useTestsByCategories, useChangelog } from '../dal';
 
 const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorInvite }) => {
+  const siteConfig = getSiteConfig();
+
   // Get tests via DAL
   const { tests: allTests } = useAllTests();
   const { testsByCategory } = useTestsByCategories();
@@ -1783,14 +1786,14 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
         
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="max-h-96 overflow-y-auto">
-            {domainChangelog.map((entry, idx) => (
+            {changelog.map((entry, idx) => (
               <div 
                 key={`${entry.testId}-${idx}`} 
-                className={`p-4 flex items-start gap-4 ${idx !== domainChangelog.length - 1 ? 'border-b border-gray-100' : ''}`}
+                className={`p-4 flex items-start gap-4 ${idx !== changelog.length - 1 ? 'border-b border-gray-100' : ''}`}
               >
                 {/* Entry number */}
                 <div className="flex-shrink-0 w-8 text-right">
-                  <span className="text-sm font-mono text-gray-400">#{domainChangelog.length - idx}</span>
+                  <span className="text-sm font-mono text-gray-400">#{changelog.length - idx}</span>
                 </div>
                 
                 {/* Type indicator */}

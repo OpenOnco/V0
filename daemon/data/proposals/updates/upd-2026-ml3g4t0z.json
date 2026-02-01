@@ -1,0 +1,26 @@
+{
+  "id": "upd-2026-ml3g4t0z",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-02-01T07:55:35.795Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Blood-Based Surveillance Test",
+  "testId": null,
+  "changes": {
+    "clinicalEvidence": {
+      "trialName": "Landmark Study",
+      "nctId": null,
+      "publication": null,
+      "findings": "Breakthrough results demonstrating superior early detection of liver cancer",
+      "date": "November 7, 2025"
+    }
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: Landmark Study",
+  "confidence": 0.75,
+  "snippet": "Breakthrough results demonstrating superior early detection of liver cancer"
+}

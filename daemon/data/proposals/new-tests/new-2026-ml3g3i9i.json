@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-ml3g3i9i",
+  "type": "new-test",
+  "status": "pending",
+  "createdAt": "2026-02-01T07:54:35.190Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testData": {
+    "name": "Blood-based liver cancer surveillance test",
+    "vendor": "Exact Sciences",
+    "category": "Early Cancer Detection",
+    "description": "Blood-based test for superior early detection of liver cancer",
+    "launchDate": null
+  },
+  "source": "https://www.exactsciences.com/newsroom",
+  "sourceTitle": "Exact Sciences: Launches Blood-based liver cancer surveillance test",
+  "confidence": 0.7,
+  "snippet": "Blood-based test for superior early detection of liver cancer"
+}
