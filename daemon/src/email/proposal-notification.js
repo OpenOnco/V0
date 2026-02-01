@@ -134,8 +134,8 @@ function generateHtml({ coverage, updates, newTests, totalPending, crawlSource }
     </div>
 
     <div style="background: #1e293b; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px;">
-      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Paste in terminal:</div>
-      <code style="font-size: 13px; color: #e2e8f0; word-break: break-all;">~/Documents/GitHub/V0/scripts/review-proposals.sh</code>
+      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">In Claude Code (V0 project):</div>
+      <code style="font-size: 13px; color: #e2e8f0;">/proposals</code>
     </div>
 
     <p style="font-size: 11px; color: #999; margin-top: 20px; text-align: center;">
@@ -167,8 +167,7 @@ From: ${crawlSource.toUpperCase()} crawler
   text += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Paste in terminal:
-~/Documents/GitHub/V0/scripts/review-proposals.sh
+In Claude Code (V0 project): /proposals
 
 OpenOnco Coverage Intelligence · ${new Date().toLocaleString()}
 `;

@@ -25,6 +25,7 @@ npm run test:smoke       # Quick validation
 **Slash commands available:**
 - `/recall` - Read SESSION_STATE.md and summarize context
 - `/store` - Write current state to SESSION_STATE.md
+- `/proposals` - Review pending proposals from daemon crawls
 
 ## Project Overview
 
@@ -178,3 +179,44 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 1. Set `vendorVerified: true` on test object in `src/data.js`
 2. Add entry to `VENDOR_VERIFIED` object with date and contact
 3. Add entry to `DATABASE_CHANGELOG`
+
+### Review proposals (`/proposals`)
+
+The daemon crawls vendor/payer sites and creates proposal JSON files in `daemon/data/proposals/`.
+
+**Proposal types:**
+- `coverage/` - New payer coverage info to add to a test's `payerCoverage` array
+- `updates/` - Field updates for existing tests
+- `new-tests/` - Entirely new tests to add
+
+**Workflow:**
+1. Read all pending proposals from `daemon/data/proposals/*/`
+2. Present each proposal to user with relevant context
+3. For each: user approves or rejects
+4. Apply approved changes directly to `src/data.js`
+5. Run `npm run test:smoke` to validate
+6. If tests pass, commit and push to main
+7. Mark applied proposals with `status: "applied"` and `appliedAt` timestamp
+
+**Coverage proposal format:**
+```json
+{
+  "id": "...",
+  "type": "coverage",
+  "status": "pending",
+  "testName": "Signatera",
+  "testId": "signatera",
+  "payer": "Aetna",
+  "coverageStatus": "covered",
+  "conditions": "For colorectal cancer MRD",
+  "source": "https://...",
+  "confidence": 0.85
+}
+```
+
+**Applying coverage:** Add entry to test's `payerCoverage` array:
+```js
+payerCoverage: [
+  { payer: "...", status: "covered", conditions: "...", source: "...", updatedAt: "YYYY-MM-DD" }
+]
+```
