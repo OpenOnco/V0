@@ -2239,30 +2239,126 @@ function ResultsStep({ wizardData, testData, onNext, onBack }) {
  * Step 7: Next Steps
  * Guidance on talking to oncologist, questions to ask
  */
-function NextStepsStep({ wizardData, onBack, onComplete }) {
+function NextStepsStep({ wizardData, testData, onBack, onComplete }) {
   const content = CONTENT.nextSteps;
+
+  // Get cancer type and stage labels for display
+  const getCancerLabel = (id) => CANCER_TYPES.find(t => t.id === id)?.label || id;
+  const getStageLabel = (id) => CANCER_STAGES.find(s => s.id === id)?.label || id;
+
+  // Calculate matching tests (same logic as ResultsStep)
+  const matchingTests = useMemo(() => {
+    if (!testData || testData.length === 0) return [];
+
+    return testData
+      .filter(test => {
+        // Filter by cancer type
+        if (wizardData.cancerType && wizardData.cancerType !== 'not-sure') {
+          if (!test.cancerTypes || test.cancerTypes.length === 0) return false;
+          const cancerMatch = test.cancerTypes.some(ct =>
+            ct.toLowerCase().includes(wizardData.cancerType.toLowerCase()) ||
+            wizardData.cancerType.toLowerCase().includes(ct.toLowerCase().split(' ')[0])
+          );
+          if (!cancerMatch) return false;
+        }
+        // Filter by tumor tissue requirement
+        if (wizardData.hasTumorTissue === false && test.requiresTumorTissue) {
+          return false;
+        }
+        return true;
+      })
+      .slice(0, 5) // Top 5 for print
+      .map(test => {
+        // Add coverage badge
+        let coverageBadge = null;
+        if (wizardData.insuranceType === 'medicare') {
+          const result = checkMedicareCoverage(test, wizardData.cancerType, wizardData.cancerStage);
+          coverageBadge = getCoverageBadge('medicare', result, null);
+        } else if (wizardData.insuranceType === 'private' && wizardData.selectedPayer && wizardData.selectedPayer !== 'other') {
+          const result = getPayerCoverage(test, wizardData.selectedPayer, wizardData.cancerType, wizardData.cancerStage);
+          coverageBadge = getCoverageBadge('private', result, null);
+        }
+        return { ...test, coverageBadge };
+      });
+  }, [testData, wizardData]);
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Get insurance label for print
+  const getInsuranceLabel = () => {
+    if (wizardData.insuranceType === 'medicare') return 'Medicare';
+    if (wizardData.insuranceType === 'private') {
+      return PAYER_LABELS[wizardData.selectedPayer] || wizardData.selectedPayer || 'Private Insurance';
+    }
+    if (wizardData.insuranceType === 'none') return 'No Insurance';
+    return 'Not specified';
+  };
 
   return (
     <div className="py-6">
-      {/* Success icon */}
-      <div className={`w-16 h-16 mx-auto mb-6 ${colors.accent} rounded-full flex items-center justify-center`}>
+      {/* Print-only header */}
+      <div className="hidden print:block print:mb-8">
+        <div className="flex items-center gap-3 mb-4">
+          <img src="/OO_logo_2.png" alt="OpenOnco" className="h-10" />
+          <div>
+            <h1 className="text-xl font-bold text-slate-900">MRD Testing Guide</h1>
+            <p className="text-sm text-slate-500">openonco.org</p>
+          </div>
+        </div>
+        <div className="border-b border-slate-200 pb-4 mb-6">
+          <h2 className="font-semibold text-slate-800 mb-2">Your Information</h2>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div><span className="text-slate-500">Cancer Type:</span> <span className="font-medium">{getCancerLabel(wizardData.cancerType)}</span></div>
+            <div><span className="text-slate-500">Stage:</span> <span className="font-medium">{getStageLabel(wizardData.cancerStage)}</span></div>
+            <div><span className="text-slate-500">Tumor Tissue:</span> <span className="font-medium">{wizardData.hasTumorTissue ? 'Available' : wizardData.hasTumorTissue === false ? 'Not available' : 'Unknown'}</span></div>
+            <div><span className="text-slate-500">Insurance:</span> <span className="font-medium">{getInsuranceLabel()}</span></div>
+          </div>
+        </div>
+
+        {/* Print-only: Recommended tests */}
+        {matchingTests.length > 0 && (
+          <div className="mb-6">
+            <h2 className="font-semibold text-slate-800 mb-3">Recommended Tests</h2>
+            <div className="space-y-2">
+              {matchingTests.map((test, index) => (
+                <div key={test.id} className="flex items-center justify-between py-2 border-b border-slate-100">
+                  <div>
+                    <span className="font-medium text-slate-900">{test.name}</span>
+                    <span className="text-slate-500 text-sm ml-2">by {test.vendor}</span>
+                  </div>
+                  {test.coverageBadge && (
+                    <span className="text-sm text-emerald-700 font-medium">
+                      {test.coverageBadge.label}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Screen-only success icon */}
+      <div className={`w-16 h-16 mx-auto mb-6 ${colors.accent} rounded-full flex items-center justify-center print:hidden`}>
         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
       </div>
 
-      <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+      <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center print:text-left print:text-lg print:mb-1">
         {content.heading}
       </h2>
-      <p className="text-slate-600 text-center mb-8">
+      <p className="text-slate-600 text-center mb-8 print:text-left print:text-sm print:mb-4">
         {content.description}
       </p>
 
-      <div className="max-w-lg mx-auto space-y-6">
+      <div className="max-w-lg mx-auto space-y-6 print:max-w-none">
         {/* Talk to oncologist section */}
         <InfoBox>
-          <h3 className={`font-semibold ${colors.textDark} mb-3 flex items-center gap-2`}>
-            <span className="text-xl">👩‍⚕️</span>
+          <h3 className={`font-semibold ${colors.textDark} mb-3 flex items-center gap-2 print:text-base`}>
+            <span className="text-xl print:hidden">👩‍⚕️</span>
             {content.talkToOncologist.title}
           </h3>
           <p className="text-slate-700 text-sm">
@@ -2272,17 +2368,17 @@ function NextStepsStep({ wizardData, onBack, onComplete }) {
 
         {/* Questions to ask */}
         <div>
-          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-            <span className="text-xl">❓</span>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2 print:text-base">
+            <span className="text-xl print:hidden">❓</span>
             {content.questionsTitle}
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-2 print:space-y-1">
             {content.questionsList.map((question, index) => (
               <div
                 key={index}
-                className="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-lg"
+                className="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-lg print:p-2 print:border-0 print:border-b print:rounded-none"
               >
-                <div className={`w-6 h-6 ${colors.accentLight} rounded-full flex items-center justify-center flex-shrink-0`}>
+                <div className={`w-6 h-6 ${colors.accentLight} rounded-full flex items-center justify-center flex-shrink-0 print:w-5 print:h-5`}>
                   <span className={`text-xs font-medium ${colors.text}`}>{index + 1}</span>
                 </div>
                 <span className="text-sm text-slate-700">{question}</span>
@@ -2293,8 +2389,9 @@ function NextStepsStep({ wizardData, onBack, onComplete }) {
 
         {/* Print button */}
         <button
+          onClick={handlePrint}
           className={`w-full py-3 ${colors.accentLight} ${colors.text} font-medium rounded-xl
-                     hover:bg-emerald-200 transition-colors flex items-center justify-center gap-2`}
+                     hover:bg-emerald-200 transition-colors flex items-center justify-center gap-2 print:hidden`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -2302,8 +2399,8 @@ function NextStepsStep({ wizardData, onBack, onComplete }) {
           {content.printQuestionsLabel}
         </button>
 
-        {/* Save/account option (placeholder) */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-center">
+        {/* Save/account option (placeholder) - hide on print */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-center print:hidden">
           <p className="text-slate-600 text-sm mb-3">
             {content.savePrompt}
           </p>
@@ -2314,7 +2411,14 @@ function NextStepsStep({ wizardData, onBack, onComplete }) {
         </div>
       </div>
 
-      <div className="flex justify-center gap-4 mt-8">
+      {/* Print-only footer */}
+      <div className="hidden print:block print:mt-8 print:pt-4 print:border-t print:border-slate-200">
+        <p className="text-xs text-slate-500 text-center">
+          Generated by OpenOnco.org • {new Date().toLocaleDateString()} • This is educational information, not medical advice.
+        </p>
+      </div>
+
+      <div className="flex justify-center gap-4 mt-8 print:hidden">
         <button
           onClick={onBack}
           className="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl
@@ -2579,6 +2683,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
         return (
           <NextStepsStep
             wizardData={wizardData}
+            testData={testData}
             onBack={handleBack}
             onComplete={handleComplete}
           />

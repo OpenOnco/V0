@@ -1331,6 +1331,8 @@ export default function App() {
   const [currentCompareSlug, setCurrentCompareSlug] = useState(initialRoute.compareSlug || null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
+  // Key to force wizard remount when navigating home
+  const [wizardResetKey, setWizardResetKey] = useState(0);
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
   // Persona determined by URL only: /patients = patient, everything else = rnd
   const [persona, setPersona] = useState(() => initialRoute.persona || 'rnd');
@@ -1514,6 +1516,10 @@ export default function App() {
     setCurrentPage(page);
     setInitialSelectedTestId(testId || null);
     trackPageVisit(page); // Track for feedback context
+    // Reset wizard when navigating to home/patient-landing (forces remount)
+    if (page === 'home' || page === 'patient-landing') {
+      setWizardResetKey(k => k + 1);
+    }
     // Clear compare IDs when navigating away from category pages
     if (!['MRD', 'ECD', 'CGP', 'HCT', 'ALZ-BLOOD'].includes(page)) {
       setInitialCompareIds(null);
@@ -1551,6 +1557,7 @@ export default function App() {
         if (persona === 'patient') {
           return (
             <WatchingWizard
+              key={wizardResetKey}
               onNavigate={handleNavigate}
               onBack={null}  // No back button on home
               onComplete={(results) => {
@@ -1574,9 +1581,10 @@ export default function App() {
       // Admin routes
       case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
-      case 'patient-landing': 
+      case 'patient-landing':
       case 'patient-watching': return (
         <WatchingWizard
+          key={wizardResetKey}
           onNavigate={handleNavigate}
           onBack={null}
           onComplete={(results) => {
