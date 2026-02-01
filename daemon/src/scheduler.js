@@ -40,15 +40,13 @@ function scheduleCrawler(source, schedule) {
         duration: result.duration,
       });
 
-      // Send crawl complete email
+      // Send crawl complete email with proposals and skipped details
       await sendCrawlCompleteEmail({
         source,
         success: result.success,
         duration: result.duration,
-        discoveredCount: result.discoveries?.length || 0,
-        addedCount: result.added || 0,
-        duplicateCount: result.duplicates || 0,
-        newProposalsCount: result.proposalsCreated || 0,
+        proposals: result.proposals || [],
+        skippedDiscoveries: result.skippedDiscoveries || [],
         errors: result.errors || [],
       });
     } catch (error) {
@@ -59,6 +57,8 @@ function scheduleCrawler(source, schedule) {
       await sendCrawlCompleteEmail({
         source,
         success: false,
+        proposals: [],
+        skippedDiscoveries: [],
         errors,
       });
     }
@@ -159,15 +159,13 @@ export async function triggerCrawler(source) {
   logger.info(`Manually triggering crawler: ${source}`);
   const result = await runCrawler(source);
 
-  // Send crawl complete email
+  // Send crawl complete email with proposals and skipped details
   await sendCrawlCompleteEmail({
     source,
     success: result.success,
     duration: result.duration,
-    discoveredCount: result.discoveries?.length || 0,
-    addedCount: result.added || 0,
-    duplicateCount: result.duplicates || 0,
-    newProposalsCount: result.proposalsCreated || 0,
+    proposals: result.proposals || [],
+    skippedDiscoveries: result.skippedDiscoveries || [],
     errors: result.errors || [],
   });
 

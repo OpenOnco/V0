@@ -66,7 +66,13 @@ export class BaseCrawler {
 
     try {
       // Run the actual crawl implementation
-      const discoveries = await this.crawl();
+      const crawlResult = await this.crawl();
+
+      // Handle both array (old format) and object (new format with proposals)
+      const isEnhancedResult = crawlResult && !Array.isArray(crawlResult) && crawlResult.discoveries;
+      const discoveries = isEnhancedResult ? crawlResult.discoveries : (crawlResult || []);
+      const proposals = isEnhancedResult ? crawlResult.proposals : [];
+      const skippedDiscoveries = isEnhancedResult ? crawlResult.skippedDiscoveries : [];
 
       // Add discoveries to queue
       if (discoveries && discoveries.length > 0) {
@@ -78,6 +84,8 @@ export class BaseCrawler {
           totalFound: discoveries.length,
           added: addedCount,
           duplicates: duplicateCount,
+          proposals: proposals.length,
+          skipped: skippedDiscoveries.length,
           duration: Date.now() - startTime,
         });
 
@@ -97,6 +105,8 @@ export class BaseCrawler {
         return {
           success: true,
           discoveries,
+          proposals,
+          skippedDiscoveries,
           added: addedCount,
           duplicates: duplicateCount,
           duration: Date.now() - startTime,
@@ -121,6 +131,8 @@ export class BaseCrawler {
       return {
         success: true,
         discoveries: [],
+        proposals: [],
+        skippedDiscoveries: [],
         added: 0,
         duplicates: 0,
         duration: Date.now() - startTime,
@@ -143,6 +155,8 @@ export class BaseCrawler {
         success: false,
         error: error.message,
         discoveries: [],
+        proposals: [],
+        skippedDiscoveries: [],
         duration: Date.now() - startTime,
       };
     } finally {

@@ -893,12 +893,14 @@ Respond ONLY with valid JSON.`,
     }
 
     // Create proposals for high-confidence discoveries (requires human review)
-    let proposalsCreated = 0;
+    let proposals = [];
+    let skippedDiscoveries = [];
     if (discoveries.length > 0) {
       try {
-        const proposals = await this.createProposalsFromDiscoveries(discoveries);
-        proposalsCreated = proposals.length;
-        this.log('info', `Created ${proposalsCreated} proposals for human review`);
+        const result = await this.createProposalsFromDiscoveries(discoveries);
+        proposals = result.proposals;
+        skippedDiscoveries = result.skipped;
+        this.log('info', `Created ${proposals.length} proposals for human review, skipped ${skippedDiscoveries.length}`);
       } catch (error) {
         this.log('error', 'Failed to create proposals', { error: error.message });
       }
@@ -909,11 +911,17 @@ Respond ONLY with valid JSON.`,
       pagesChanged,
       pagesFailed,
       discoveries: discoveries.length,
-      proposalsCreated,
+      proposalsCreated: proposals.length,
+      skipped: skippedDiscoveries.length,
       stats,
     });
 
-    return discoveries;
+    // Return enhanced result with proposals and skipped for email
+    return {
+      discoveries,
+      proposals,
+      skippedDiscoveries,
+    };
   }
 
   /**
@@ -1311,17 +1319,23 @@ Respond ONLY with valid JSON.`,
   /**
    * Create proposals from discoveries for human review
    * Only creates proposals for high-confidence, actionable discoveries
+   * Also tracks which discoveries were skipped and why
    *
    * @param {Array} discoveries - Array of discovery objects from createAllDiscoveries
-   * @returns {Promise<Array>} Array of created proposal objects
+   * @returns {Promise<{proposals: Array, skipped: Array}>} Proposals and skipped discoveries
    */
   async createProposalsFromDiscoveries(discoveries) {
     const proposals = [];
+    const skipped = [];
 
     for (const discovery of discoveries) {
       try {
-        // Only create proposals for high or medium relevance discoveries
+        // Check relevance first
         if (discovery.relevance !== 'high' && discovery.relevance !== 'medium') {
+          skipped.push({
+            ...discovery,
+            skipReason: `Low relevance (${discovery.relevance || 'unknown'})`,
+          });
           continue;
         }
 
@@ -1332,16 +1346,65 @@ Respond ONLY with valid JSON.`,
             type: proposal.type,
             testName: discovery.metadata?.testName,
           });
+        } else {
+          // Proposal creation returned null - determine why
+          const skipReason = this.getSkipReason(discovery);
+          skipped.push({
+            ...discovery,
+            skipReason,
+          });
         }
       } catch (error) {
         this.log('warn', `Failed to create proposal for discovery`, {
           title: discovery.title,
           error: error.message,
         });
+        skipped.push({
+          ...discovery,
+          skipReason: `Error: ${error.message}`,
+        });
       }
     }
 
-    return proposals;
+    return { proposals, skipped };
+  }
+
+  /**
+   * Get reason why a discovery was skipped
+   */
+  getSkipReason(discovery) {
+    const { type, metadata } = discovery;
+
+    // Informational types
+    const infoTypes = {
+      [DISCOVERY_TYPES.VENDOR_PLA_CODE]: 'PLA code (informational)',
+      [DISCOVERY_TYPES.VENDOR_PRICE_CHANGE]: 'Price change (informational)',
+      [DISCOVERY_TYPES.VENDOR_PAP_UPDATE]: 'PAP update (informational)',
+      [DISCOVERY_TYPES.VENDOR_PAYMENT_PLAN]: 'Payment plan (informational)',
+    };
+    if (infoTypes[type]) return infoTypes[type];
+
+    // Coverage without test name
+    if (type === DISCOVERY_TYPES.VENDOR_COVERAGE_ANNOUNCEMENT) {
+      if (!metadata?.testName && (!metadata?.deterministicMatches || metadata.deterministicMatches.length === 0)) {
+        return 'Coverage: No test identified';
+      }
+    }
+
+    // Updates without test name
+    if ([DISCOVERY_TYPES.VENDOR_PERFORMANCE_DATA, DISCOVERY_TYPES.VENDOR_CLINICAL_EVIDENCE,
+         DISCOVERY_TYPES.VENDOR_REGULATORY, DISCOVERY_TYPES.VENDOR_NEW_INDICATION].includes(type)) {
+      if (!metadata?.testName) {
+        return 'Update: No test identified';
+      }
+    }
+
+    // New test without name
+    if (type === DISCOVERY_TYPES.VENDOR_NEW_TEST && !metadata?.testName) {
+      return 'New test: No name identified';
+    }
+
+    return 'Unknown reason';
   }
 
   /**
