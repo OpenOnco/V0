@@ -104,13 +104,33 @@ export const POLICY_REGISTRY = {
     policies: [
       {
         id: 'anthem-gene-14',
-        name: 'Molecular Oncology (CG-GENE-14)',
+        name: 'Circulating Tumor DNA Panel Testing (CG-GENE-14)',
         url: 'https://files.providernews.anthem.com/2003/CG-GENE-14.pdf',
         contentType: 'pdf',
-        policyType: 'molecular_oncology',
+        policyType: 'liquid_biopsy',
         discoveryMethod: 'manual',
-        notes: 'Clinical UM guideline for ctDNA/liquid biopsy solid tumors.',
-        lastVerified: '2026-01-31',
+        notes: 'Primary ctDNA liquid biopsy guideline. Covers when FFPET inadequate or unavailable.',
+        lastVerified: '2026-02-01',
+      },
+      {
+        id: 'anthem-gene-13',
+        name: 'Molecular Profiling for Solid Tumors (CG-GENE-13)',
+        url: 'https://files.providernews.anthem.com/2002/CG-GENE-13.pdf',
+        contentType: 'pdf',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'Broader molecular profiling guideline including TMB assessment.',
+        lastVerified: '2026-02-01',
+      },
+      {
+        id: 'anthem-gene-52',
+        name: 'Molecular Profiling Policy (GENE.00052)',
+        url: 'https://files.providernews.anthem.com/2354/GENE.00052_Pub-05-25-2023.pdf',
+        contentType: 'pdf',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'Published May 2023. Covers ctDNA for TMB and checkpoint inhibitor candidacy.',
+        lastVerified: '2026-02-01',
       },
       {
         id: 'anthem-lab-00015',
@@ -445,6 +465,108 @@ export const POLICY_REGISTRY = {
     ],
   },
 
+  bcbsmn: {
+    name: 'BCBS Minnesota',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbsmn-vi49-liquid-biopsy',
+        name: 'Circulating Tumor DNA (Liquid Biopsy) (VI-49)',
+        url: 'https://securecms.bluecrossmnonline.com/content/medpolicy/en/minnesota/core/all/policies/Laboratory/VI-49/VI-49-007.html',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Primary liquid biopsy policy. Covers Guardant360, CancerIntercept Detect, NeoLAB.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcidaho: {
+    name: 'Blue Cross of Idaho',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcidaho-mp204141',
+        name: 'Circulating Tumor DNA and Cells for Cancer Management (MP 2.04.141)',
+        url: 'https://providers.bcidaho.com/medical-management/medical-policies/med/mp_204141.page',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Effective 08/29/2024. Transitioning to Carelon Jan 2026.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcbssc: {
+    name: 'BlueCross BlueShield South Carolina',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbssc-liquid-biopsy',
+        name: 'Liquid Biopsy',
+        url: 'https://www.southcarolinablues.com/web/public/brands/medicalpolicy/external/external-policies/liquid-biopsy/',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Covers NSCLC, HR+/HER2- breast (PIK3CA), CRPC (AR-V7, BRCA1/2).',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  wellmark: {
+    name: 'Wellmark BCBS (Iowa/South Dakota)',
+    tier: 2,
+    policies: [
+      {
+        id: 'wellmark-ctdna-liquid-biopsy',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsies)',
+        url: 'https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Uses eviCore for molecular testing. Separate NSCLC policy (02.04.79).',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  regence: {
+    name: 'Regence BCBS (OR/WA/UT/ID)',
+    tier: 2,
+    policies: [
+      {
+        id: 'regence-policy-46',
+        name: 'Circulating Tumor DNA and Circulating Tumor Cells for Management (Liquid Biopsy) of Solid Tumor Cancers (#46)',
+        url: 'https://www.regence.com/provider/library/policies-guidelines/medical-policy',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Policy #46. Updated Feb 2023. Search for policy on portal.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  horizonnj: {
+    name: 'Horizon BCBS New Jersey',
+    tier: 2,
+    policies: [
+      {
+        id: 'horizonnj-evicore-molecular',
+        name: 'Molecular and Genomic Testing Program (via eviCore)',
+        url: 'https://www.horizonblue.com/providers/products-programs/evicore-health-care/molecular-and-genomic-testing-program',
+        contentType: 'html',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'Horizon uses eviCore for molecular/genomic testing authorizations.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
   // ============================================================================
   // TIER 1: Federal / Multi-State Programs
   // ============================================================================
@@ -504,12 +626,39 @@ export const POLICY_REGISTRY = {
     ],
   },
 
-  // ============================================================================
-  // TODO: Additional payers to research
-  // ============================================================================
-  // - BCBS Texas (HCSC) - has portal but need specific policy URL
-  // - BCBS Illinois (HCSC) - has portal but need specific policy URL
-  // - Kaiser Permanente - regional variations
+  hcsc: {
+    name: 'HCSC (IL, MT, NM, OK, TX)',
+    tier: 1,
+    policies: [
+      {
+        id: 'hcsc-liquid-biopsy',
+        name: 'Circulating Tumor DNA (Liquid Biopsy)',
+        url: 'https://medicalpolicy.hcsc.com/home.html?corpEntCd=HCSC',
+        contentType: 'html',
+        policyType: 'liquid_biopsy',
+        discoveryMethod: 'google_search',
+        notes: 'Policy portal for all HCSC plans (IL, MT, NM, OK, TX). Search for liquid biopsy.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
+
+  bcbsal: {
+    name: 'BCBS Alabama',
+    tier: 2,
+    policies: [
+      {
+        id: 'bcbsal-policy-portal',
+        name: 'Medical Policies Portal',
+        url: 'https://al-policies.exploremyplan.com/portal/web/al-policies/home/-/categories/150513503',
+        contentType: 'html',
+        policyType: 'molecular_oncology',
+        discoveryMethod: 'google_search',
+        notes: 'Search for liquid biopsy or ctDNA in policy portal.',
+        lastVerified: '2026-02-01',
+      },
+    ],
+  },
 
   // ============================================================================
   // Medicare / CMS
