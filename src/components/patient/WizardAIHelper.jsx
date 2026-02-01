@@ -21,6 +21,15 @@ const STEP_CONTEXT = {
       'Is this right for me?'
     ]
   },
+  'test-lookup': {
+    name: 'Test Details',
+    description: 'Learning about a specific MRD test',
+    helpTopics: [
+      'How does this test work?',
+      'Is it covered by my insurance?',
+      'Are there payment plans?'
+    ]
+  },
   'treatment-gate': {
     name: 'Treatment Status',
     description: 'Checking if treatment is complete',
@@ -88,7 +97,7 @@ const STEP_CONTEXT = {
 // Build concise system prompt - direct like a doctor
 function buildHelperSystemPrompt(currentStep, wizardData) {
   const stepInfo = STEP_CONTEXT[currentStep] || STEP_CONTEXT['landing'];
-  
+
   // Build context about what the user has already selected
   const userSelections = [];
   if (wizardData.country) userSelections.push(`Location: ${wizardData.country}`);
@@ -96,6 +105,11 @@ function buildHelperSystemPrompt(currentStep, wizardData) {
   if (wizardData.hasTumorTissue) userSelections.push(`Tissue: ${wizardData.hasTumorTissue}`);
   if (wizardData.completedTreatment) userSelections.push(`Treatment done: ${wizardData.completedTreatment}`);
   if (wizardData.insuranceProvider) userSelections.push(`Insurance: ${wizardData.insuranceProvider}`);
+  // Test-lookup specific context
+  if (wizardData.selectedTest) userSelections.push(`Test: ${wizardData.selectedTest}`);
+  if (wizardData.testVendor) userSelections.push(`Vendor: ${wizardData.testVendor}`);
+  if (wizardData.testApproach) userSelections.push(`Approach: ${wizardData.testApproach}`);
+  if (wizardData.hasMedicareCoverage !== undefined) userSelections.push(`Medicare covered: ${wizardData.hasMedicareCoverage ? 'Yes' : 'Varies'}`);
   
   return `You help patients understand MRD testing. Be warm but BRIEF - 1-2 sentences max. Answer like a knowledgeable friend who happens to be a doctor: direct, clear, no fluff.
 

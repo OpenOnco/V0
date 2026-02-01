@@ -22,7 +22,6 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
     "@vercel/analytics": "^1.4.1",
-    "@vercel/kv": "^3.0.0",
     "@vercel/og": "^0.8.6",
     "posthog-js": "^1.316.0",
     "react": "^18.2.0",

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { JOURNEY_CONFIG } from './journeyConfig';
 import { useAssistanceProgram } from '../../dal';
-import { getVendorAvailabilityUS } from '../../config/vendors';
 import TestDetailModal from '../test/TestDetailModal';
+import WizardAIHelper from './WizardAIHelper';
 
 // Get MRD journey configuration for colors
 const mrdJourney = JOURNEY_CONFIG.mrd;
@@ -29,6 +29,7 @@ const DOCTOR_QUESTIONS = [
   'Are there financial assistance programs available?',
 ];
 
+
 /**
  * TestLookupWizard - Path 1: "My doctor recommended a test"
  *
@@ -39,10 +40,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTest, setSelectedTest] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
-  const [summary, setSummary] = useState(null);
-  const [summaryLoading, setSummaryLoading] = useState(false);
-  const [summaryError, setSummaryError] = useState(null);
-  const [hasInsurance, setHasInsurance] = useState(null);
+  const [insuranceType, setInsuranceType] = useState(null); // 'medicare' | 'private' | 'none' | null
 
   // Get assistance program for selected test's vendor
   const { program: assistanceProgram } = useAssistanceProgram(selectedTest?.vendor);
@@ -59,80 +57,11 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
       .slice(0, 8); // Limit to 8 results for typeahead
   }, [searchQuery, testData]);
 
-  // Fetch AI summary when test is selected
-  useEffect(() => {
-    if (!selectedTest) {
-      setSummary(null);
-      return;
-    }
-
-    const fetchSummary = async () => {
-      setSummaryLoading(true);
-      setSummaryError(null);
-
-      const testInfo = {
-        name: selectedTest.name,
-        vendor: selectedTest.vendor,
-        approach: selectedTest.approach,
-        method: selectedTest.method,
-        sensitivity: selectedTest.sensitivity,
-        specificity: selectedTest.specificity,
-        tat: selectedTest.initialTat || selectedTest.tat,
-        fdaStatus: selectedTest.fdaStatus,
-        reimbursement: selectedTest.reimbursement,
-        cancerTypes: selectedTest.cancerTypes,
-        medicareCoverage: selectedTest.medicareCoverage,
-      };
-
-      const isWidelyAvailable = getVendorAvailabilityUS(selectedTest.vendor) === 'widespread';
-
-      const promptMessage = `You're helping a patient understand an MRD test their doctor recommended. Write a clear, warm 3-paragraph summary.
-
-TEST DETAILS:
-${JSON.stringify(testInfo, null, 2)}
-
-${isWidelyAvailable ? 'Note: This test is widely available (any oncologist can order through major lab networks).' : ''}
-
-Write the summary with these sections (use plain language, no medical jargon):
-1. **What this test does** - Explain in simple terms what ${selectedTest.name} does and how it works
-2. **How it works** - Brief explanation of the testing process (blood draw, turnaround time, etc.)
-3. **What makes it unique** - Key benefits or differentiators of this specific test
-
-Keep it reassuring and informative. End by noting they should discuss any questions with their oncologist.`;
-
-      try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            category: 'MRD',
-            persona: 'patient',
-            testData: JSON.stringify([testInfo]),
-            messages: [{ role: 'user', content: promptMessage }],
-            model: 'claude-haiku-4-5-20251001',
-            patientChatMode: 'learn',
-          }),
-        });
-
-        if (!response.ok) throw new Error('Failed to generate summary');
-
-        const data = await response.json();
-        setSummary(data.content?.[0]?.text || 'Unable to generate summary.');
-      } catch (err) {
-        console.error('Error fetching test summary:', err);
-        setSummaryError('Unable to load summary. Please try again.');
-      } finally {
-        setSummaryLoading(false);
-      }
-    };
-
-    fetchSummary();
-  }, [selectedTest]);
-
   // Handle test selection from search
   const handleSelectTest = (test) => {
     setSelectedTest(test);
     setSearchQuery('');
+    setInsuranceType(null);
   };
 
   // Handle back navigation
@@ -273,7 +202,7 @@ Keep it reassuring and informative. End by noting they should discuss any questi
           <div className="space-y-6">
             {/* Test header */}
             <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex justify-between items-start">
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900">{selectedTest.name}</h2>
                   <p className="text-slate-600">{selectedTest.vendor}</p>
@@ -288,175 +217,177 @@ Keep it reassuring and informative. End by noting they should discuss any questi
                   </svg>
                 </button>
               </div>
-
-              {/* AI Summary */}
-              {summaryLoading && (
-                <div className="flex items-center justify-center py-8">
-                  <div className="w-8 h-8 border-2 border-rose-200 border-t-rose-600 rounded-full animate-spin" />
-                  <span className="ml-3 text-slate-600">Preparing your summary...</span>
-                </div>
-              )}
-
-              {summaryError && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-800 text-sm">
-                  {summaryError}
-                </div>
-              )}
-
-              {summary && !summaryLoading && (
-                <div className="prose prose-sm prose-slate max-w-none">
-                  {summary.split('\n\n').map((paragraph, idx) => {
-                    if (paragraph.startsWith('**') && paragraph.includes('**')) {
-                      const headerMatch = paragraph.match(/^\*\*(.+?)\*\*/);
-                      if (headerMatch) {
-                        const headerText = headerMatch[1];
-                        const restText = paragraph.replace(/^\*\*.+?\*\*\s*/, '');
-                        return (
-                          <div key={idx} className="mb-4">
-                            <h4 className="font-semibold text-slate-900 mb-1">{headerText}</h4>
-                            {restText && <p className="text-slate-700 text-sm leading-relaxed">{restText}</p>}
-                          </div>
-                        );
-                      }
-                    }
-                    return (
-                      <p key={idx} className="text-slate-700 text-sm leading-relaxed mb-3">
-                        {paragraph}
-                      </p>
-                    );
-                  })}
-                </div>
-              )}
             </div>
 
-            {/* Insurance question */}
+            {/* Insurance type selection - 3 buttons */}
             <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <h3 className="font-semibold text-slate-900 mb-4">Do you have health insurance?</h3>
-              <div className="flex gap-3">
+              <h3 className="font-semibold text-slate-900 mb-4">What type of coverage do you have?</h3>
+              <div className="grid grid-cols-3 gap-3">
                 <button
-                  onClick={() => setHasInsurance(true)}
-                  className={`flex-1 py-3 px-4 border-2 rounded-xl font-medium transition-all
-                    ${hasInsurance === true
+                  onClick={() => setInsuranceType('medicare')}
+                  className={`py-3 px-3 border-2 rounded-xl font-medium transition-all text-center
+                    ${insuranceType === 'medicare'
                       ? 'border-rose-500 bg-rose-50 text-rose-700'
                       : 'border-slate-200 hover:border-rose-300'
                     }`}
                 >
-                  Yes
+                  Medicare
                 </button>
                 <button
-                  onClick={() => setHasInsurance(false)}
-                  className={`flex-1 py-3 px-4 border-2 rounded-xl font-medium transition-all
-                    ${hasInsurance === false
+                  onClick={() => setInsuranceType('private')}
+                  className={`py-3 px-3 border-2 rounded-xl font-medium transition-all text-center
+                    ${insuranceType === 'private'
                       ? 'border-rose-500 bg-rose-50 text-rose-700'
                       : 'border-slate-200 hover:border-rose-300'
                     }`}
                 >
-                  No
+                  Private Insurance
+                </button>
+                <button
+                  onClick={() => setInsuranceType('none')}
+                  className={`py-3 px-3 border-2 rounded-xl font-medium transition-all text-center
+                    ${insuranceType === 'none'
+                      ? 'border-rose-500 bg-rose-50 text-rose-700'
+                      : 'border-slate-200 hover:border-rose-300'
+                    }`}
+                >
+                  No Insurance
                 </button>
               </div>
             </div>
 
-            {/* Cost & Coverage section - shown after insurance question */}
-            {hasInsurance !== null && (
+            {/* Cost & Coverage section - tailored by insurance type */}
+            {insuranceType !== null && (
               <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
                 <h3 className="font-semibold text-slate-900">Cost & Coverage</h3>
 
-                {/* Typical cost */}
-                {costInfo?.typicalCost && (
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl">💰</span>
-                    <div>
-                      <p className="font-medium text-slate-900">
-                        Typical cost: ~${costInfo.typicalCost.toLocaleString()}
-                      </p>
-                      <p className="text-sm text-slate-500">
-                        {costInfo.hasMedicareCoverage ? 'Based on Medicare reimbursement rate' : 'Based on list price'}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Medicare coverage */}
-                {hasInsurance && costInfo?.hasMedicareCoverage && (
-                  <div className="flex items-start gap-3 bg-green-50 rounded-lg p-3">
-                    <span className="text-xl">✓</span>
-                    <div>
-                      <p className="font-medium text-green-800">Medicare covered</p>
-                      {costInfo.medicarePolicy && (
-                        <p className="text-sm text-green-700">Policy: {costInfo.medicarePolicy}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Financial assistance - for uninsured or when relevant */}
-                {(!hasInsurance || !costInfo?.hasMedicareCoverage) && assistanceProgram && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                    <div className="flex items-start gap-3">
-                      <span className="text-xl">💝</span>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-blue-900 mb-1">
-                          {assistanceProgram.programName || 'Financial assistance available'}
-                        </h4>
-                        <p className="text-sm text-blue-800 mb-2">
-                          {assistanceProgram.maxOutOfPocket
-                            ? `Qualifying patients may pay ${assistanceProgram.maxOutOfPocket}`
-                            : 'Income-based assistance available'}
-                        </p>
-                        {assistanceProgram.eligibilityRules?.fplThresholds?.[0] && (
-                          <p className="text-xs text-blue-700 mb-3">
-                            Income limit: Based on Federal Poverty Level guidelines
+                {/* Medicare-specific content */}
+                {insuranceType === 'medicare' && (
+                  <>
+                    {costInfo?.hasMedicareCoverage ? (
+                      <div className="flex items-start gap-3 bg-green-50 rounded-lg p-4">
+                        <span className="text-xl">✓</span>
+                        <div>
+                          <p className="font-medium text-green-800">Medicare covered</p>
+                          {costInfo.medicarePolicy && (
+                            <p className="text-sm text-green-700 mt-1">Policy: {costInfo.medicarePolicy}</p>
+                          )}
+                          {costInfo.typicalCost && (
+                            <p className="text-sm text-green-700 mt-1">
+                              Medicare reimbursement: ~${costInfo.typicalCost.toLocaleString()}
+                            </p>
+                          )}
+                          {selectedTest.medicareCoverage?.coveredIndications && (
+                            <p className="text-sm text-green-700 mt-2">
+                              Covered for: {selectedTest.medicareCoverage.coveredIndications.slice(0, 3).join(', ')}
+                              {selectedTest.medicareCoverage.coveredIndications.length > 3 && ' and more'}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-start gap-3 bg-amber-50 rounded-lg p-4">
+                        <span className="text-xl">⚠️</span>
+                        <div>
+                          <p className="font-medium text-amber-800">Medicare coverage varies</p>
+                          <p className="text-sm text-amber-700 mt-1">
+                            Coverage may depend on your specific diagnosis and medical necessity.
+                            Your oncologist can help determine if you qualify.
                           </p>
-                        )}
-                        {assistanceProgram.applicationUrl && (
-                          <a
-                            href={assistanceProgram.applicationUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700
-                                       text-white text-sm font-medium rounded-lg transition-colors"
-                          >
-                            Apply for assistance
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Private insurance content */}
+                {insuranceType === 'private' && (
+                  <>
+                    <div className="flex items-start gap-3 bg-blue-50 rounded-lg p-4">
+                      <span className="text-xl">ℹ️</span>
+                      <div>
+                        <p className="font-medium text-blue-800">Coverage varies by plan</p>
+                        <p className="text-sm text-blue-700 mt-1">
+                          Many private insurers cover MRD testing. Contact your insurance provider
+                          or ask your oncologist's office to verify coverage before ordering.
+                        </p>
+                        {costInfo?.typicalCost && (
+                          <p className="text-sm text-blue-700 mt-2">
+                            List price if not covered: ~${costInfo.typicalCost.toLocaleString()}
+                          </p>
                         )}
                       </div>
                     </div>
-                  </div>
+                    {assistanceProgram && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                        <p className="text-sm text-slate-700">
+                          <strong>Backup option:</strong> If your insurance denies coverage,
+                          {selectedTest.vendor} offers a patient assistance program.
+                        </p>
+                      </div>
+                    )}
+                  </>
                 )}
 
-                {/* No cost data fallback */}
-                {!costInfo?.typicalCost && !assistanceProgram && (
-                  <div className="text-slate-600 text-sm">
-                    <p>Contact {selectedTest.vendor} for pricing information.</p>
-                    <p className="mt-1">Financial assistance may be available.</p>
-                  </div>
+                {/* No insurance content - lead with financial assistance */}
+                {insuranceType === 'none' && (
+                  <>
+                    {assistanceProgram ? (
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div className="flex items-start gap-3">
+                          <span className="text-xl">💝</span>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-blue-900 mb-1">
+                              {assistanceProgram.programName || 'Financial assistance available'}
+                            </h4>
+                            <p className="text-sm text-blue-800 mb-2">
+                              {assistanceProgram.maxOutOfPocket
+                                ? `Qualifying patients may pay ${assistanceProgram.maxOutOfPocket}`
+                                : 'Income-based assistance available'}
+                            </p>
+                            {assistanceProgram.eligibilityRules?.fplThresholds?.[0] && (
+                              <p className="text-xs text-blue-700 mb-3">
+                                Income limit: Based on Federal Poverty Level guidelines
+                              </p>
+                            )}
+                            {assistanceProgram.applicationUrl && (
+                              <a
+                                href={assistanceProgram.applicationUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700
+                                           text-white text-sm font-medium rounded-lg transition-colors"
+                              >
+                                Apply for assistance
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-start gap-3 bg-slate-50 rounded-lg p-4">
+                        <span className="text-xl">💰</span>
+                        <div>
+                          <p className="font-medium text-slate-800">Contact {selectedTest.vendor} directly</p>
+                          <p className="text-sm text-slate-600 mt-1">
+                            Most vendors offer patient assistance programs for uninsured patients.
+                            Ask about financial assistance options when scheduling your test.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {costInfo?.typicalCost && (
+                      <div className="text-sm text-slate-600 mt-2">
+                        <p>Typical cost without assistance: ~${costInfo.typicalCost.toLocaleString()}</p>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             )}
-
-            {/* Questions to ask your doctor */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                <span className="text-xl">❓</span>
-                Questions to ask your doctor
-              </h3>
-              <div className="space-y-2">
-                {DOCTOR_QUESTIONS.map((question, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg"
-                  >
-                    <div className="w-6 h-6 bg-rose-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-xs font-medium text-rose-600">{index + 1}</span>
-                    </div>
-                    <span className="text-sm text-slate-700">{question}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* Action buttons */}
             <div className="flex gap-3">
@@ -478,6 +409,27 @@ Keep it reassuring and informative. End by noting they should discuss any questi
                 Print for your visit
               </button>
             </div>
+
+            {/* Questions to ask your doctor - MOVED TO END */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <span className="text-xl">❓</span>
+                Questions to ask your doctor
+              </h3>
+              <div className="space-y-2">
+                {DOCTOR_QUESTIONS.map((question, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg"
+                  >
+                    <div className="w-6 h-6 bg-rose-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-medium text-rose-600">{index + 1}</span>
+                    </div>
+                    <span className="text-sm text-slate-700">{question}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -494,6 +446,19 @@ Keep it reassuring and informative. End by noting they should discuss any questi
           test={selectedTest}
           category="MRD"
           onClose={() => setShowDetailModal(false)}
+        />
+      )}
+
+      {/* Floating AI Helper - only show when test is selected */}
+      {selectedTest && (
+        <WizardAIHelper
+          currentStep="test-lookup"
+          wizardData={{
+            selectedTest: selectedTest?.name,
+            testVendor: selectedTest?.vendor,
+            testApproach: selectedTest?.approach,
+            hasMedicareCoverage: costInfo?.hasMedicareCoverage,
+          }}
         />
       )}
     </div>

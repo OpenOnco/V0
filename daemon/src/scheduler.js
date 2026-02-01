@@ -9,6 +9,8 @@ import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
 import { sendMondayDigest } from './email/monday-digest.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
+import { sendProposalNotification } from './email/proposal-notification.js';
+import { getStats } from './proposals/queue.js';
 
 const logger = createLogger('scheduler');
 
@@ -38,6 +40,9 @@ function scheduleCrawler(source, schedule) {
         discoveries: result.discoveries?.length || 0,
         duration: result.duration,
       });
+
+      // After crawl, send notification if there are pending proposals
+      await notifyIfPending(source);
     } catch (error) {
       logger.error(`Scheduled crawl failed: ${crawlerConfig.name}`, { error });
     }
@@ -159,11 +164,45 @@ export function getSchedulerStatus() {
 }
 
 /**
+ * Send notification if there are pending proposals
+ */
+async function notifyIfPending(crawlSource) {
+  try {
+    // Get current stats
+    const stats = await getStats();
+
+    // Count proposals by type
+    const coverage = stats.byType?.coverage || 0;
+    const updates = stats.byType?.update || 0;
+    const newTests = stats.byType?.['new-test'] || 0;
+    const totalPending = stats.byStatus?.pending || 0;
+
+    // Only send notification if there are pending proposals
+    if (totalPending > 0) {
+      await sendProposalNotification({
+        coverage,
+        updates,
+        newTests,
+        totalPending,
+        crawlSource,
+      });
+    }
+  } catch (error) {
+    logger.error('notifyIfPending failed', { error: error.message });
+  }
+}
+
+/**
  * Manually trigger a crawler run
  */
 export async function triggerCrawler(source) {
   logger.info(`Manually triggering crawler: ${source}`);
-  return runCrawler(source);
+  const result = await runCrawler(source);
+
+  // Also notify for manual triggers
+  await notifyIfPending(source);
+
+  return result;
 }
 
 /**

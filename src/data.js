@@ -2177,6 +2177,10 @@ export const mrdTestData = [
         "keyInsight": "Vendor 'in-network' status does not equal covered benefit. Private payer coverage significantly lags Medicare, with most limiting coverage to CRC or classifying as experimental."
       }
     }
+  ,
+    payerCoverage: [
+      { payer: "Fake Payer Alpha", status: "covered", conditions: "For colorectal cancer MRD monitoring post-surgery", source: "https://example.com/fake-policy-alpha", updatedAt: "2026-02-01" }
+    ]
   },
   {
     "id": "mrd-8",
