@@ -1,12 +1,12 @@
 {
   "id": "upd-2026-ml3g3i9h",
   "type": "update",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-02-01T07:54:35.189Z",
   "createdBy": "daemon",
-  "reviewedAt": null,
-  "reviewedBy": null,
-  "appliedAt": null,
+  "reviewedAt": "2026-02-01T17:15:51.984Z",
+  "reviewedBy": "adickinson",
+  "appliedAt": "2026-02-01T17:18:31.075Z",
   "rejectionReason": null,
   "testName": "Oncodetect® MRD Test",
   "testId": null,
@@ -22,5 +22,7 @@
   "source": "https://www.exactsciences.com/newsroom",
   "sourceTitle": "Exact Sciences: NSABP Foundation and German Breast Group study",
   "confidence": 0.75,
-  "snippet": "Results presented for early triple-negative breast cancer"
+  "snippet": "Results presented for early triple-negative breast cancer",
+  "updatedAt": "2026-02-01T17:18:31.075Z",
+  "commitHash": "manual-review-2026-02-01"
 }

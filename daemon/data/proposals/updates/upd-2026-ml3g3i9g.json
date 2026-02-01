@@ -1,12 +1,12 @@
 {
   "id": "upd-2026-ml3g3i9g",
   "type": "update",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-02-01T07:54:35.188Z",
   "createdBy": "daemon",
-  "reviewedAt": null,
-  "reviewedBy": null,
-  "appliedAt": null,
+  "reviewedAt": "2026-02-01T17:15:52.043Z",
+  "reviewedBy": "adickinson",
+  "appliedAt": "2026-02-01T17:18:31.075Z",
   "rejectionReason": null,
   "testName": "Multi-Cancer Early Detection test",
   "testId": null,
@@ -22,5 +22,7 @@
   "source": "https://www.exactsciences.com/newsroom",
   "sourceTitle": "Exact Sciences: CRANE Study",
   "confidence": 0.75,
-  "snippet": "First participant enrolled in multi-cancer early detection clinical evaluation in Japan"
+  "snippet": "First participant enrolled in multi-cancer early detection clinical evaluation in Japan",
+  "updatedAt": "2026-02-01T17:18:31.075Z",
+  "commitHash": "manual-review-2026-02-01"
 }

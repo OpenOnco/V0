@@ -1486,7 +1486,7 @@ export const mrdTestData = [
     "cancerTypes": [
       "Multi-solid"
     ],
-    "indicationsNotes": "Exact Sciences Oncodetect tumor-informed circulating tumor DNA (ctDNA) MRD test, marketed for use across solid tumors; designed for post-surgical and surveillance use cases.",
+    "indicationsNotes": "Exact Sciences Oncodetect tumor-informed circulating tumor DNA (ctDNA) MRD test, marketed for use across solid tumors; designed for post-surgical and surveillance use cases. SABCS 2025: NSABP Foundation and German Breast Group presented results for early triple-negative breast cancer (TNBC) cohort (December 2025).",
     "sensitivity": 91.0,
     "sensitivityCitations": "https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2025/New-Evidence-Validates-Oncodetects-Ability-to-Detect-Molecular-Residual-Disease-and-Predict-Recurrence-in-Colorectal-Cancer-Patients/default.aspx",
     "sensitivityNotes": "In CRC, results from Alpha-CORRECT, a study with one of the longest MRD surveillance monitoring periods to date, showed the Oncodetect test achieved 78% sensitivity at the post-surgical timepoint and 91% sensitivity during the surveillance monitoring period, with specificities of 80% and 94%, respectively.",
@@ -1912,9 +1912,11 @@ export const mrdTestData = [
     "fdaStatus": "CLIA LDT; not FDA cleared/approved as of 2025.",
     "reimbursement": "Medicare (CRC only)",
     "reimbursementNote": "Medicare MolDX coverage for colorectal cancer MRD only - post-surgical and surveillance settings after curative-intent treatment. Not covered for other cancer types. Commercial coverage expanding via select BCBS plans.",
-    "commercialPayers": ["BCBS Louisiana", "Geisinger Health Plan"],
-    "commercialPayersCitations": "https://www.businesswire.com/news/home/20230720806084/en/Guardant-Health-receives-first-commercial-payor-coverage-for-Guardant-Reveal%E2%84%A2-test-from-Blue-Cross-and-Blue-Shield-of-Louisiana/",
-    "commercialPayersNotes": "Blue Cross Blue Shield of Louisiana became first commercial payer to cover Guardant Reveal in July 2023. Geisinger Health Plan added coverage later in 2023. Additional BCBS plans (including BCBS Massachusetts) appear to have medical policies; verify with specific plan.",
+    "commercialPayers": ["BCBS Louisiana", "Geisinger Health Plan", "Blue Shield of California"],
+    "commercialPayersCitations": "https://www.businesswire.com/news/home/20230720806084/en/Guardant-Health-receives-first-commercial-payor-coverage-for-Guardant-Reveal%E2%84%A2-test-from-Blue-Cross-and-Blue-Shield-of-Louisiana/ | Blue Shield CA Oncology Molecular Analysis Policy (2026-02-01)",
+    "commercialPayersNotes": "BCBS Louisiana: first commercial payer (July 2023). Geisinger: added 2023. Blue Shield CA: conditional coverage for stage III/IV solid tumors seeking treatment (2026). UnitedHealthcare: explicitly NOT covered per Molecular Oncology Testing policy - all MRD tests listed as unproven.",
+    "commercialPayersNonCoverage": ["UnitedHealthcare"],
+    "commercialPayersNonCoverageNotes": "UHC Molecular Oncology Testing policy lists Guardant Reveal as unproven/not medically necessary.",
     "cptCodes": "0569U (Guardant Reveal PLA code from mid-2025).",
     "medicareStatus": "MAC-Priced",
     "medicareEffective": "2025-Q4",
@@ -3388,8 +3390,9 @@ export const mrdTestData = [
           "status": "COVERED",
           "policy": "mm_0520",
           "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
-          "coveredIndications": ["Multiple myeloma", "B-ALL"],
-          "notes": "FDA-cleared MRD test covered for approved indications"
+          "coveredIndications": ["Multiple myeloma", "B-cell ALL", "CLL", "Peripheral/cutaneous T-cell lymphoma"],
+          "notes": "FDA-cleared MRD test covered using high-throughput immunosequencing for hematologic malignancies. Policy crawl 2026-02-01 confirmed coverage.",
+          "lastReviewed": "2026-02-01"
         },
         "united": {
           "status": "COVERED",
@@ -5802,13 +5805,14 @@ export const ecdTestData = [
     "performanceCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://pmc.ncbi.nlm.nih.gov/articles/PMC11024170/ | https://grail.com/press-releases/final-results-from-pathfinder-study-of-grails-multi-cancer-early-detection-blood-test-published-in-the-lancet/ | PATHFINDER-2 ESMO 2025",
     "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%. PATHFINDER-2 (Oct 2025, n=23,000+): Galleri detected cancers ~7× more often than USPSTF A/B standard screening; ~62% of positive tests (Cancer Signal Detected) confirmed as cancer in follow-up, substantially higher PPV than earlier versions.",
     "leadTimeNotes": "PATHFINDER and PATHFINDER 2 show ~7-fold increase in cancers detected when added to USPSTF A/B screening; median diagnostic resolution ~1.5 months",
-    "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; not FDA-approved; Breakthrough Device designation; PMA submission expected H1 2026",
+    "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; Breakthrough Device designation; PMA submission filed January 29, 2026 for multi-cancer early detection indication",
+    "fdaStatusNotes": "GRAIL submitted premarket approval (PMA) application to FDA on January 29, 2026. This is a major regulatory milestone for the MCED category.",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk. REACH study: Medicare covers Galleri test and related workup for enrolled REACH participants (coverage of research, not general NCD).",
     "reimbursementCitations": "https://grail.com/press-releases/grail-announces-first-participant-enrolled-in-reach-study-evaluating-clinical-impact-of-galleri-multi-cancer-early-detection-mced-test-in-the-medicare-population/",
     "commercialPayers": ["Curative Insurance", "Fountain Health", "Alignment Health Plan"],
     "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
-    "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational.",
+    "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational. EviCore (MOL.TS.396.A): ctDNA assays not covered for screening outside clinical trials; liquid biopsy for early cancer detection considered experimental/investigational.",
     "availableRegions": ["US", "UK"],
     "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
@@ -7854,9 +7858,9 @@ export const cgpTestData = [
       "notes": null,
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California"],
-    "commercialPayersCitations": "Policy crawl 2026-01-31: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Liquid Biopsy Policy, EviCore MOL.TS.194.A",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. EviCore (lab benefit manager) also covers. Aetna CPB 0715 lists ctDNA CGP as experimental/not covered."
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA ctDNA/Liquid Biopsy Policy, Aetna CPB 0352, EviCore MOL.TS.194.A",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. Aetna CPB 0352: covered for NSCLC and prostate cancer when tissue insufficient (up to 50 genes). Blue Shield CA: covered for stage IV lung, metastatic CRC/pancreatic/prostate. EviCore (lab benefit manager) also covers."
   },
   {
     "id": "tds-3",
@@ -7999,9 +8003,9 @@ export const cgpTestData = [
       "notes": null,
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California"],
-    "commercialPayersCitations": "Policy crawl 2026-01-31: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology Algorithmic Testing",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. EviCore (lab benefit manager for multiple plans) also covers per MOL.TS.194.A guidelines. Aetna CPB 0715 lists as not covered for general CGP."
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology ctDNA Policy, Aetna CPB 0715",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. Humana: strict conditions (0242U code, advanced cancer, tissue infeasible). Blue Shield CA: stage IV lung, metastatic CRC/pancreatic/prostate. Aetna CPB 0715: conditionally covered for ESR1 mutations only (breast cancer). EviCore also covers per MOL.TS.194.A guidelines."
   },
   {
     "id": "tds-17",
@@ -9286,7 +9290,11 @@ export const cgpTestData = [
       "cptCode": null,
       "notes": "First liquid biopsy NGS approved as CDx for KRAZATI. Performed at Resolution Bioscience CLIA lab (Kirkland, WA). Available through Quest Diagnostics network.",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "commercialPayers": ["Blue Shield of California", "Aetna"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Blue Shield CA Oncology ctDNA/Liquid Biopsy Policy, Aetna CPB 0352",
+    "commercialPayersNotes": "Blue Shield CA: covered for stage IV/metastatic lung cancers. Aetna CPB 0352: covered for NSCLC when tissue insufficient (up to 50 genes)."
+  },
   {
     "id": "tds-24",
     "name": "OncoCompass Target",
