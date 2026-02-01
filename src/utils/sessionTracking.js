@@ -140,23 +140,10 @@ export const getSessionContext = () => {
   };
 };
 
-// Report incorrect info URL builder
-export const getReportErrorUrl = (testId, testName, fieldName = '') => {
-  const baseUrl = 'https://forms.gle/YOUR_GOOGLE_FORM_ID'; // TODO: Replace with actual form
-  
-  const params = new URLSearchParams({
-    'entry.test': `${testName} (${testId})`,
-    'entry.field': fieldName,
-  });
-  
-  return `${baseUrl}?${params.toString()}`;
-};
-
 export default {
   trackPageVisit,
   trackTestView,
   trackPersona,
   getFeedbackUrl,
   getSessionContext,
-  getReportErrorUrl
 };

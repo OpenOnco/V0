@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTestsByCategory } from '../../../dal/hooks/useTests';
-import { JOURNEY_CONFIG } from '../../patient-v2/journeyConfig';
+import { JOURNEY_CONFIG } from '../journeyConfig';
 
 // ============================================================================
 // Configuration

@@ -1,20 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getSiteConfig } from '../data';
 import { useAllTests, useTestsByCategories, useChangelog } from '../dal';
 
-// ALZ DISABLED placeholder
-const ALZ_DATABASE_CHANGELOG = [];
-const alzBloodTestData = [];
-
 const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorInvite }) => {
-  const siteConfig = getSiteConfig();
-  const isAlz = false; // ALZ DISABLED
-
   // Get tests via DAL
   const { tests: allTests } = useAllTests();
   const { testsByCategory } = useTestsByCategories();
   const { changelog } = useChangelog();
-  const domainChangelog = isAlz ? ALZ_DATABASE_CHANGELOG : changelog;
   
   const [submissionType, setSubmissionType] = useState(''); // 'new', 'correction', 'validation', 'bug', 'feature'
   const [submitterType, setSubmitterType] = useState(''); // 'vendor' or 'expert'
@@ -174,7 +165,6 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
     ECD: (testsByCategory.ECD || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     CGP: (testsByCategory.CGP || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
     HCT: (testsByCategory.HCT || []).map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
-    'ALZ-BLOOD': alzBloodTestData.map(t => ({ id: t.id, name: t.name, vendor: t.vendor })),
   }), [testsByCategory]);
 
   // Parameters available for correction by category
@@ -260,7 +250,7 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
   // Get current value of selected parameter for the selected test
   const getCurrentValue = () => {
     if (!existingTest || !selectedParameter || !category) return '';
-    const testList = testsByCategory[category] || (category === 'ALZ-BLOOD' ? alzBloodTestData : []);
+    const testList = testsByCategory[category] || [];
     const test = testList.find(t => t.id === existingTest);
     if (!test || selectedParameter === 'other') return '';
     const value = test[selectedParameter];
@@ -994,15 +984,13 @@ const SubmissionsPage = ({ prefill, onClearPrefill, vendorInvite, onClearVendorI
         {submitterType && submissionType !== 'validation' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">Test Category</label>
-            <div className={`grid gap-3 ${isAlz ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
-              {(isAlz ? [
-                { key: 'ALZ-BLOOD', label: 'ALZ-BLOOD', desc: 'Blood Biomarkers', color: 'indigo' },
-              ] : [
+            <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+              {[
                 { key: 'MRD', label: 'MRD', desc: 'Minimal Residual Disease', color: 'orange' },
                 { key: 'ECD', label: 'ECD', desc: 'Early Cancer Detection', color: 'emerald' },
                 { key: 'CGP', label: 'CGP', desc: 'Comprehensive Genomic Profiling', color: 'violet' },
                 { key: 'HCT', label: 'HCT', desc: 'Hereditary Cancer Testing', color: 'sky' },
-              ]).map(cat => (
+              ].map(cat => (
                 <button
                   key={cat.key}
                   type="button"

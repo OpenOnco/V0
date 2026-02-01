@@ -8,8 +8,6 @@ import {
 import { useTestCounts, useAllTests } from '../../dal/hooks/useTests';
 import VendorBadge from '../badges/VendorBadge';
 
-// Placeholder for ALZ data (disabled)
-const alzBloodTestData = [];
 
 // ============================================
 // Lifecycle Navigator Components
@@ -177,7 +175,6 @@ export const LifecycleNavigator = ({ onNavigate }) => {
     CGP: counts.CGP || 0,
     MRD: counts.MRD || 0,
     HCT: counts.HCT || 0,
-    'ALZ-BLOOD': alzBloodTestData.length,
   };
 
   const handleSelect = (stageId) => {

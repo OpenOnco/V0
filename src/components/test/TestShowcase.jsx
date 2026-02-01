@@ -10,16 +10,12 @@ import VendorBadge from '../badges/VendorBadge';
 import { LifecycleNavigator } from '../navigation';
 import PerformanceMetricWithWarning from '../ui/PerformanceMetricWithWarning';
 
-// Placeholder for ALZ data (disabled)
-const alzBloodTestData = [];
-
 // Color mapping for categories
 const CATEGORY_COLORS = {
   MRD: 'orange',
   ECD: 'emerald',
   CGP: 'violet',
   HCT: 'rose',
-  'ALZ-BLOOD': 'indigo',
 };
 
 const TestShowcase = ({
@@ -122,20 +118,15 @@ const TestShowcase = ({
     CGP: counts.CGP || 0,
     MRD: counts.MRD || 0,
     HCT: counts.HCT || 0,
-    'ALZ-BLOOD': alzBloodTestData.length,
   };
 
-  // Combine tests with their category color, filtered by domain
+  // Combine tests with their category color
   const baseTests = useMemo(() => {
-    if (currentDomain === DOMAINS.ALZ) {
-      return alzBloodTestData.map(t => ({ ...t, category: 'ALZ-BLOOD', color: 'indigo' }));
-    }
-    // Default: oncology domain - add color to tests from DAL
     return allDalTests.map(t => ({
       ...t,
       color: CATEGORY_COLORS[t.category] || 'slate'
     }));
-  }, [currentDomain, allDalTests]);
+  }, [allDalTests]);
 
   // Helper to count reimbursement entities
   const countReimbursement = (test) => {

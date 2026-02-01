@@ -23,9 +23,6 @@ export const createTestCardGrid = ({
   ecdTestData,
   cgpTestData,
   hctTestData,
-  alzBloodTestData,
-  DOMAINS,
-  getDomain,
   COMPANY_CONTRIBUTIONS,
   VENDOR_VERIFIED,
   MINIMUM_PARAMS,
@@ -38,20 +35,15 @@ export const createTestCardGrid = ({
     const [sortBy, setSortBy] = useState('vendor');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const currentDomain = getDomain();
-
-    // Combine tests with their category, filtered by domain
+    // Combine tests with their category
     const baseTests = useMemo(() => {
-      if (currentDomain === DOMAINS.ALZ) {
-        return alzBloodTestData.map(t => ({ ...t, category: 'ALZ-BLOOD', color: 'indigo' }));
-      }
       return [
         ...mrdTestData.map(t => ({ ...t, category: 'MRD', color: 'orange' })),
         ...ecdTestData.map(t => ({ ...t, category: 'ECD', color: 'emerald' })),
         ...cgpTestData.map(t => ({ ...t, category: 'CGP', color: 'violet' })),
         ...hctTestData.map(t => ({ ...t, category: 'HCT', color: 'rose' }))
       ];
-    }, [currentDomain]);
+    }, []);
 
     // Helper to count reimbursement entities
     const countReimbursement = (test) => {

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { getSiteConfig } from '../data';
 import { getStoredPersona } from '../utils/persona';
 import DatabaseSummary from '../components/DatabaseSummary';
 import OpennessAward from '../components/OpennessAward';
@@ -31,8 +30,6 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [persona, setPersona] = useState(getStoredPersona() || 'rnd');
-  const siteConfig = getSiteConfig();
-  const isAlz = false; // ALZ DISABLED
 
   // Listen for persona changes
   useEffect(() => {
@@ -372,143 +369,15 @@ const FAQPage = () => {
     }
   ];
 
-  // OpenAlz FAQs
-  const alzFaqs = [
-    {
-      question: "What types of tests does OpenAlz cover?",
-      answer: (
-        <p>
-          OpenAlz focuses on blood-based biomarker tests for Alzheimer's disease evaluation. We currently cover tests measuring pTau217, pTau181, and amyloid-beta ratios (Abeta42/40)—the leading plasma biomarkers for detecting Alzheimer's pathology. We include tests using various technologies including mass spectrometry and immunoassays, as long as they're clinically available or in late-stage development.
-        </p>
-      )
-    },
-    {
-      question: "Why blood tests for Alzheimer's?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Traditionally, diagnosing Alzheimer's disease required expensive PET scans (~$5,000-8,000) or invasive lumbar punctures for CSF analysis. Blood-based biomarkers are transforming the field by offering:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>Accessibility</strong>—a simple blood draw vs. specialized imaging or spinal tap</li>
-            <li><strong>Cost</strong>—typically $500-1,500 vs. thousands for PET imaging</li>
-            <li><strong>Scalability</strong>—can be performed at any clinical laboratory</li>
-            <li><strong>Early detection</strong>—can identify pathology years before symptoms</li>
-          </ul>
-          <p>
-            The 2024 Alzheimer's Association appropriate use recommendations now support blood biomarkers as a first-line tool for evaluating patients with cognitive symptoms.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "What's the difference between pTau217 and Abeta42/40 tests?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            <strong>Abeta42/40 ratio</strong> measures amyloid-beta peptides in blood. A low ratio suggests amyloid plaque accumulation in the brain—one of the hallmarks of Alzheimer's pathology.
-          </p>
-          <p>
-            <strong>pTau217</strong> (phosphorylated tau at position 217) is currently considered the most specific blood biomarker for Alzheimer's. It detects tau pathology and shows changes early in the disease process.
-          </p>
-          <p>
-            Tests combining both biomarkers (like PrecivityAD2) generally show higher accuracy than single-biomarker tests.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How accurate are blood tests compared to PET scans?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            The best blood biomarker tests show 88-93% concordance with amyloid PET imaging. This means they agree with PET results approximately 9 out of 10 times. For context:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>PrecivityAD2</strong> (pTau217 + Abeta42/40): ~88% concordance with amyloid PET</li>
-            <li><strong>Lumipulse pTau217</strong>: ~91% concordance with amyloid PET</li>
-            <li><strong>ALZpath pTau217</strong>: ~92% concordance with amyloid PET</li>
-          </ul>
-          <p>
-            While not as definitive as PET imaging, blood tests can effectively screen patients to determine who would benefit from confirmatory PET scans, reducing unnecessary procedures and costs.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "Are these tests covered by insurance?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Coverage varies significantly by test and payer:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>PrecivityAD2</strong>—Medicare coverage via LCD (first Alzheimer's blood test with Medicare coverage)</li>
-            <li><strong>AD-Detect</strong>—Limited coverage, ~$500 out-of-pocket</li>
-            <li><strong>Other tests</strong>—Coverage varies; many are primarily research use</li>
-          </ul>
-          <p>
-            We're tracking reimbursement status for each test in our database to help patients and clinicians understand costs.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "Who should get tested?",
-      answer: (
-        <p>
-          According to the 2024 Alzheimer's Association appropriate use recommendations, blood biomarker tests are most appropriate for adults 55+ with mild cognitive impairment (MCI) or mild dementia who are being evaluated for possible Alzheimer's disease. These tests help determine whether amyloid pathology may be contributing to cognitive symptoms, guiding further workup and treatment decisions. They are not currently recommended for asymptomatic screening in the general population.
-        </p>
-      )
-    },
-    {
-      question: "Is OpenAlz affiliated with any test vendors?",
-      answer: (
-        <p>
-          No. OpenAlz is an independent resource with no financial relationships with test vendors. We don't accept advertising or sponsorship. Our goal is to provide unbiased, transparent information to help patients and clinicians navigate the rapidly evolving landscape of Alzheimer's blood testing.
-        </p>
-      )
-    },
-    {
-      question: "How does the AI chat feature work?",
-      answer: (
-        <div className="space-y-3">
-          <p>
-            Our chat feature is powered by Anthropic's Claude AI, designed to <strong>only reference information from our test database</strong>. This means answers are grounded in the same curated, cited data you see throughout OpenAlz.
-          </p>
-          <p>
-            However, <strong>AI can make mistakes</strong>. We recommend cross-checking important information with test vendors and discussing options with your healthcare provider before making decisions about testing.
-          </p>
-        </div>
-      )
-    },
-    {
-      question: "How can I report an error or suggest a test to add?",
-      answer: (
-        <p>
-          Please use the Submissions tab. We take data accuracy seriously and welcome corrections, new test suggestions, and general feedback.
-        </p>
-      )
-    },
-    {
-      question: "How do I contact OpenAlz?",
-      answer: (
-        <p>
-          The best way to reach us is through the Submissions tab. Select the appropriate category for your inquiry. We review all submissions and will respond if needed.
-        </p>
-      )
-    },
-  ];
-
-  const faqs = isAlz ? alzFaqs : (persona === 'patient' ? patientFaqs : oncoFaqs);
+  const faqs = persona === 'patient' ? patientFaqs : oncoFaqs;
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
       <p className="text-gray-600 mb-8">
-        {persona === 'patient' 
+        {persona === 'patient'
           ? "Answers to common questions about cancer blood tests and how OpenOnco can help you."
-          : `Common questions about ${siteConfig.name}, our data, and how to use the platform.`}
+          : "Common questions about OpenOnco, our data, and how to use the platform."}
       </p>
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-200">
         {faqs.map((faq, index) => (
@@ -522,8 +391,8 @@ const FAQPage = () => {
         ))}
       </div>
 
-      {/* Openness Ranking - Hidden on mobile, only show for OpenOnco R&D/Medical */}
-      {!isAlz && persona !== 'patient' && (
+      {/* Openness Ranking - Hidden on mobile, only show for R&D/Medical */}
+      {persona !== 'patient' && (
         <div className="hidden md:block mt-8">
           <OpennessAward />
         </div>

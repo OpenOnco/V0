@@ -20,9 +20,6 @@ import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Analytics } from '@vercel/analytics/react';
 import { track } from '@vercel/analytics';
 import {
-  // ALZ DISABLED: alzBloodTestData,
-  // ALZ DISABLED: ALZ_DATABASE_CHANGELOG,
-  // ALZ DISABLED: ALZ_RECENTLY_ADDED_TESTS,
   DOMAINS,
   getDomain,
   getSiteConfig,
@@ -83,7 +80,6 @@ import CompanyCommunicationBadge from './components/badges/CompanyCommunicationB
 import ProductTypeBadge from './components/badges/ProductTypeBadge';
 import Markdown from './components/markdown/Markdown';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
-import PatientIntakeFlow from './components/patient/PatientIntakeFlow';
 import WatchingWizard from './components/patient/WatchingWizard';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
 import TestShowcase from './components/test/TestShowcase';
@@ -91,11 +87,6 @@ import TestDetailModal, { ComparisonModal } from './components/test/TestDetailMo
 import CategoryPage from './components/CategoryPage';
 import { ComparePage, COMPARISON_PAGES } from './pages/ComparePage';
 import { useAllTests, useTestCounts, useTestsByCategories, useVendors, useChangelog } from './dal';
-
-// ALZ DISABLED: Placeholder constants to prevent errors
-const alzBloodTestData = [];
-const ALZ_DATABASE_CHANGELOG = [];
-const ALZ_RECENTLY_ADDED_TESTS = [];
 
 // ╔════════════════════════════════════════════════════════════════════════════╗
 // ║  CLAUDE: READ THIS FIRST WHEN EDITING TEST DATA                            ║
@@ -413,12 +404,6 @@ const HomePage = ({ onNavigate, persona }) => {
   const { tests: allTests } = useAllTests();
   const chatTestData = useChatTestData();
 
-  // PATIENT VIEW - Simple 2-card landing (Screening vs Watching)
-  if (persona === 'patient') {
-    return <PatientLanding onNavigate={onNavigate} />;
-  }
-
-  // R&D / MEDICAL VIEW - full technical view (current default)
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative">

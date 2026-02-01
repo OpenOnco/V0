@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { JOURNEY_CONFIG } from '../patient-v2/journeyConfig';
+import { JOURNEY_CONFIG } from './journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
 import {
