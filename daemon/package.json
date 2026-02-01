@@ -15,7 +15,6 @@
     "test:coverage": "vitest run --coverage",
     "postinstall": "npx playwright install chromium",
     "run:crawl": "node run-now.js",
-    "run:digest": "node -e \"import('./src/email/monday-digest.js').then(m => m.sendMondayDigest())\"",
     "proposals": "node src/proposals/cli.js",
     "proposals:list": "node src/proposals/cli.js list",
     "proposals:pending": "node src/proposals/cli.js list --status=pending",

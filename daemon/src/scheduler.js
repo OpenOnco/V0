@@ -7,10 +7,8 @@ import cron from 'node-cron';
 import { createLogger } from './utils/logger.js';
 import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
-import { sendMondayDigest } from './email/monday-digest.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
-import { sendProposalNotification } from './email/proposal-notification.js';
-import { getStats } from './proposals/queue.js';
+import { sendCrawlCompleteEmail } from './email/crawl-complete.js';
 
 const logger = createLogger('scheduler');
 
@@ -32,6 +30,7 @@ function scheduleCrawler(source, schedule) {
 
   const job = cron.schedule(schedule, async () => {
     logger.info(`Running scheduled crawl: ${crawlerConfig.name}`);
+    const errors = [];
 
     try {
       const result = await runCrawler(source);
@@ -41,10 +40,25 @@ function scheduleCrawler(source, schedule) {
         duration: result.duration,
       });
 
-      // After crawl, send notification if there are pending proposals
-      await notifyIfPending(source);
+      // Send crawl complete email
+      await sendCrawlCompleteEmail({
+        source,
+        success: result.success,
+        duration: result.duration,
+        discoveredCount: result.discoveries?.length || 0,
+        newProposalsCount: result.proposalsCreated || 0,
+        errors: result.errors || [],
+      });
     } catch (error) {
       logger.error(`Scheduled crawl failed: ${crawlerConfig.name}`, { error });
+      errors.push(error.message);
+
+      // Still send email on failure
+      await sendCrawlCompleteEmail({
+        source,
+        success: false,
+        errors,
+      });
     }
   });
 
@@ -52,29 +66,6 @@ function scheduleCrawler(source, schedule) {
   return job;
 }
 
-/**
- * Schedule the Monday digest email
- */
-function scheduleDigest(schedule) {
-  logger.info('Scheduling Monday digest', { schedule });
-
-  const job = cron.schedule(schedule, async () => {
-    logger.info('Sending scheduled Monday digest');
-
-    try {
-      const result = await sendMondayDigest();
-      logger.info('Monday digest sent', { 
-        messageId: result.messageId,
-        pendingCount: result.digest?.summary?.totalPending || 0
-      });
-    } catch (error) {
-      logger.error('Failed to send Monday digest', { error });
-    }
-  });
-
-  jobs.set('digest', job);
-  return job;
-}
 
 /**
  * Schedule queue cleanup (runs daily at midnight)
@@ -109,9 +100,6 @@ export function startScheduler() {
   scheduleCrawler(SOURCES.VENDOR, config.schedules.vendor);
   scheduleCrawler(SOURCES.PAYERS, config.schedules.payers);
 
-  // Schedule digest
-  scheduleDigest(config.schedules.digest);
-
   // Schedule cleanup
   scheduleCleanup();
 
@@ -121,7 +109,6 @@ export function startScheduler() {
       cms: config.schedules.cms,
       vendor: config.schedules.vendor,
       payers: config.schedules.payers,
-      digest: config.schedules.digest,
     },
   });
 
@@ -164,53 +151,23 @@ export function getSchedulerStatus() {
 }
 
 /**
- * Send notification if there are pending proposals
- */
-async function notifyIfPending(crawlSource) {
-  try {
-    // Get current stats
-    const stats = await getStats();
-
-    // Count proposals by type
-    const coverage = stats.byType?.coverage || 0;
-    const updates = stats.byType?.update || 0;
-    const newTests = stats.byType?.['new-test'] || 0;
-    const totalPending = stats.byStatus?.pending || 0;
-
-    // Only send notification if there are pending proposals
-    if (totalPending > 0) {
-      await sendProposalNotification({
-        coverage,
-        updates,
-        newTests,
-        totalPending,
-        crawlSource,
-      });
-    }
-  } catch (error) {
-    logger.error('notifyIfPending failed', { error: error.message });
-  }
-}
-
-/**
  * Manually trigger a crawler run
  */
 export async function triggerCrawler(source) {
   logger.info(`Manually triggering crawler: ${source}`);
   const result = await runCrawler(source);
 
-  // Also notify for manual triggers
-  await notifyIfPending(source);
+  // Send crawl complete email
+  await sendCrawlCompleteEmail({
+    source,
+    success: result.success,
+    duration: result.duration,
+    discoveredCount: result.discoveries?.length || 0,
+    newProposalsCount: result.proposalsCreated || 0,
+    errors: result.errors || [],
+  });
 
   return result;
-}
-
-/**
- * Manually trigger the digest
- */
-export async function triggerDigest() {
-  logger.info('Manually triggering Monday digest');
-  return sendMondayDigest();
 }
 
 /**
@@ -239,6 +196,5 @@ export default {
   stopScheduler,
   getSchedulerStatus,
   triggerCrawler,
-  triggerDigest,
   runAllCrawlersNow,
 };
