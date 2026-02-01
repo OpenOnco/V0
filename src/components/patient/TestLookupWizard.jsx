@@ -460,51 +460,60 @@ function ExternalLinkConfirm({ url, siteName, onClose }) {
 }
 
 // Plain language summary modal - uses Claude API to explain MRD and the test
+// Includes chat interface for follow-up questions
 function PlainLanguageSummaryModal({ test, onClose }) {
-  const [summary, setSummary] = useState(null);
+  const [messages, setMessages] = useState([]); // Chat history
   const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const contentRef = React.useRef(null);
 
+  // Build test info for Claude (used in all requests)
+  const testInfo = useMemo(() => ({
+    name: test.name,
+    vendor: test.vendor,
+    approach: test.approach,
+    method: test.method,
+    sensitivity: test.sensitivity,
+    specificity: test.specificity,
+    tat: test.initialTat || test.tat,
+    fdaStatus: test.fdaStatus,
+    cancerTypes: test.cancerTypes,
+    earlyWarningDays: test.earlyWarningDays,
+    leadTime: test.leadTime,
+  }), [test]);
+
+  // System prompt for the chat
+  const systemContext = `You are a helpful assistant explaining the MRD test "${test.name}" by ${test.vendor} to a patient.
+Use simple, warm language. Avoid medical jargon. Keep responses concise (2-4 sentences unless more detail is needed).
+Only answer questions about this specific test, MRD testing in general, or related topics like what to expect.
+If asked about other tests or unrelated topics, gently redirect to ${test.name}.
+
+TEST DETAILS:
+${JSON.stringify(testInfo, null, 2)}`;
+
+  // Fetch initial summary on mount
   useEffect(() => {
     const fetchSummary = async () => {
       setLoading(true);
       setError(null);
 
-      // Build test info for Claude
-      const testInfo = {
-        name: test.name,
-        vendor: test.vendor,
-        approach: test.approach,
-        method: test.method,
-        sensitivity: test.sensitivity,
-        specificity: test.specificity,
-        tat: test.initialTat || test.tat,
-        fdaStatus: test.fdaStatus,
-        cancerTypes: test.cancerTypes,
-        earlyWarningDays: test.earlyWarningDays,
-        leadTime: test.leadTime,
-      };
-
-      const promptMessage = `You're helping a patient understand an MRD (Molecular Residual Disease) test that their doctor recommended. Write a clear, warm explanation in plain language.
-
-TEST DETAILS:
-${JSON.stringify(testInfo, null, 2)}
-
-Write your response with these sections (use simple language a patient can understand, avoid medical jargon):
+      const promptMessage = `Write a clear, warm explanation of this MRD test in plain language. Use these sections:
 
 **What is MRD testing?**
-Explain in 2-3 sentences what MRD (Molecular Residual Disease) testing is and why it matters. Use an analogy if helpful. Explain that it looks for tiny traces of cancer that can't be seen on scans.
+Explain in 2-3 sentences what MRD testing is and why it matters. Use an analogy if helpful.
 
 **How ${test.name} works**
-Explain in simple terms how this specific test detects cancer traces. Mention if it's a blood test. Keep it to 2-3 sentences.
+Explain in simple terms how this test detects cancer traces. Keep it to 2-3 sentences.
 
 **What makes this test useful**
-Highlight 2-3 key benefits in plain language. For example: how sensitive it is, how fast results come back, what cancers it works for.
+Highlight 2-3 key benefits in plain language.
 
 **What to expect**
-Briefly explain what the patient can expect - it's a simple blood draw, results typically take X days, your doctor will explain results.
+Briefly explain what the patient can expect - blood draw, turnaround time, etc.
 
-End with a reassuring note that their doctor recommended this test because it can provide valuable information about their care.`;
+End with a single reassuring sentence. Do NOT ask if they have questions - there's a chat input for that.`;
 
       try {
         const response = await fetch('/api/chat', {
@@ -520,56 +529,108 @@ End with a reassuring note that their doctor recommended this test because it ca
           }),
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to generate summary');
-        }
+        if (!response.ok) throw new Error('Failed to generate summary');
 
         const data = await response.json();
         const summaryText = data.content?.[0]?.text || 'Unable to generate summary.';
-        setSummary(summaryText);
+        setMessages([{ role: 'assistant', content: summaryText }]);
       } catch (err) {
         console.error('Error fetching test summary:', err);
-        // Fallback to static summary when API isn't available (e.g., local dev)
+        // Fallback summary
         const fallbackSummary = `**What is MRD testing?**
-MRD stands for Molecular Residual Disease. Think of it like a super-sensitive radar for cancer. After treatment, scans might show no visible tumors, but tiny traces of cancer cells can still be hiding in your body. MRD tests can detect these microscopic traces through a simple blood draw.
+MRD stands for Molecular Residual Disease. Think of it like a super-sensitive radar for cancer. After treatment, scans might show no visible tumors, but tiny traces of cancer cells can still be hiding. MRD tests detect these microscopic traces through a simple blood draw.
 
 **How ${test.name} works**
-${test.name} is a blood test made by ${test.vendor}. It looks for tiny fragments of cancer DNA circulating in your bloodstream. ${test.approach === 'tumor-informed' ? 'This test is personalized to your specific tumor - it first analyzes your tumor tissue to know exactly what to look for in your blood.' : 'This test looks for common cancer-related mutations in your blood sample.'}
+${test.name} is a blood test by ${test.vendor} that looks for tiny fragments of cancer DNA in your bloodstream. ${test.approach === 'tumor-informed' ? 'It\'s personalized to your tumor - first analyzing your tumor tissue to know exactly what to look for.' : 'It looks for cancer-related mutations in your blood.'}
 
 **What makes this test useful**
-${test.sensitivity ? `• Very sensitive - can detect cancer at levels as low as ${test.sensitivity}` : '• Highly sensitive detection of cancer traces'}
-${test.tat || test.initialTat ? `• Results typically come back in ${test.tat || test.initialTat}` : ''}
-${test.cancerTypes?.length > 0 ? `• Works for multiple cancer types including ${test.cancerTypes.slice(0, 3).join(', ')}` : ''}
+${test.sensitivity ? `• Very sensitive - detects cancer at levels as low as ${test.sensitivity}` : '• Highly sensitive detection'}
+${test.tat || test.initialTat ? `• Results in ${test.tat || test.initialTat}` : ''}
+${test.cancerTypes?.length > 0 ? `• Works for ${test.cancerTypes.slice(0, 3).join(', ')}` : ''}
 
 **What to expect**
-The test requires a simple blood draw - no different from routine blood work. Your doctor's office will send the sample to the lab, and results typically take ${test.tat || test.initialTat || '1-2 weeks'}. Your doctor will explain what the results mean for your specific situation.
+Simple blood draw, just like routine blood work. Results typically take ${test.tat || test.initialTat || '1-2 weeks'}. Your doctor will explain what they mean for your care.
 
-Your doctor recommended this test because it can provide valuable information about your treatment response and help guide your ongoing care.`;
-        setSummary(fallbackSummary);
+Your doctor recommended this test because it provides valuable information about your treatment response.`;
+        setMessages([{ role: 'assistant', content: fallbackSummary }]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchSummary();
-  }, [test]);
+  }, [test, testInfo]);
 
-  // Simple markdown-like rendering for bold headers
-  const renderSummary = (text) => {
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  // Send a follow-up question
+  const handleSendQuestion = async () => {
+    if (!inputValue.trim() || sending) return;
+
+    const userMessage = inputValue.trim();
+    setInputValue('');
+    setSending(true);
+
+    // Add user message to chat
+    const newMessages = [...messages, { role: 'user', content: userMessage }];
+    setMessages(newMessages);
+
+    try {
+      // Build message history for API (include system context)
+      const apiMessages = [
+        { role: 'user', content: systemContext },
+        ...newMessages.map(m => ({ role: m.role, content: m.content })),
+      ];
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          category: 'MRD',
+          persona: 'patient',
+          testData: JSON.stringify([testInfo]),
+          messages: apiMessages,
+          model: 'claude-haiku-4-5-20251001',
+          patientChatMode: 'learn',
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to get response');
+
+      const data = await response.json();
+      const assistantResponse = data.content?.[0]?.text || "I'm sorry, I couldn't generate a response. Please try again.";
+      setMessages([...newMessages, { role: 'assistant', content: assistantResponse }]);
+    } catch (err) {
+      console.error('Error sending question:', err);
+      setMessages([...newMessages, { role: 'assistant', content: "I'm sorry, I couldn't connect right now. Please try again." }]);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  // Handle Enter key
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendQuestion();
+    }
+  };
+
+  // Render markdown-like text
+  const renderContent = (text) => {
     if (!text) return null;
-
-    // Split by ** markers and render
     const parts = text.split(/\*\*([^*]+)\*\*/g);
     return parts.map((part, i) => {
       if (i % 2 === 1) {
-        // This is text that was between ** markers - render as heading
         return <h4 key={i} className="font-semibold text-slate-900 mt-4 mb-2 first:mt-0">{part}</h4>;
       }
-      // Regular text - preserve line breaks
       return part.split('\n').map((line, j) => (
-        <p key={`${i}-${j}`} className="text-slate-600 text-sm leading-relaxed mb-2 last:mb-0">
-          {line}
-        </p>
+        line.trim() ? <p key={`${i}-${j}`} className="text-slate-600 text-sm leading-relaxed mb-2">{line}</p> : null
       ));
     });
   };
@@ -577,15 +638,12 @@ Your doctor recommended this test because it can provide valuable information ab
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="bg-rose-50 border-b border-rose-100 px-6 py-4 flex items-center justify-between">
+        <div className="bg-rose-50 border-b border-rose-100 px-6 py-4 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -594,7 +652,7 @@ Your doctor recommended this test because it can provide valuable information ab
             </div>
             <div>
               <h3 className="font-semibold text-slate-900">Understanding {test.name}</h3>
-              <p className="text-sm text-slate-600">Plain language guide</p>
+              <p className="text-sm text-slate-600">Ask me anything about this test</p>
             </div>
           </div>
           <button
@@ -608,8 +666,8 @@ Your doctor recommended this test because it can provide valuable information ab
           </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        {/* Content - scrollable */}
+        <div ref={contentRef} className="flex-1 overflow-y-auto p-6 space-y-4">
           {loading && (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="w-10 h-10 bg-rose-500 rounded-full flex items-center justify-center animate-pulse mb-4">
@@ -625,30 +683,62 @@ Your doctor recommended this test because it can provide valuable information ab
           {error && (
             <div className="text-center py-8">
               <p className="text-red-600 mb-4">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="text-rose-600 hover:text-rose-700 font-medium"
-              >
-                Try again
-              </button>
             </div>
           )}
 
-          {summary && (
-            <div className="prose prose-sm max-w-none">
-              {renderSummary(summary)}
+          {/* Messages */}
+          {messages.map((msg, idx) => (
+            <div key={idx} className={msg.role === 'user' ? 'flex justify-end' : ''}>
+              {msg.role === 'user' ? (
+                <div className="bg-rose-100 text-rose-900 rounded-2xl rounded-tr-sm px-4 py-2 max-w-[85%]">
+                  <p className="text-sm">{msg.content}</p>
+                </div>
+              ) : (
+                <div className="prose prose-sm max-w-none">
+                  {renderContent(msg.content)}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* Sending indicator */}
+          {sending && (
+            <div className="flex items-center gap-2 text-slate-500 text-sm">
+              <div className="w-2 h-2 bg-rose-400 rounded-full animate-bounce" />
+              <div className="w-2 h-2 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+              <div className="w-2 h-2 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div className="border-t border-slate-200 px-6 py-4 bg-slate-50">
-          <button
-            onClick={onClose}
-            className="w-full py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg transition-colors"
-          >
-            Got it
-          </button>
+        {/* Chat input */}
+        <div className="border-t border-slate-200 px-4 py-3 bg-slate-50 flex-shrink-0">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask a question about this test..."
+              disabled={loading || sending}
+              className="flex-1 px-4 py-2 border border-slate-300 rounded-full text-sm
+                         focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500
+                         disabled:bg-slate-100 disabled:text-slate-400"
+            />
+            <button
+              onClick={handleSendQuestion}
+              disabled={!inputValue.trim() || loading || sending}
+              className="px-4 py-2 bg-rose-600 hover:bg-rose-700 disabled:bg-slate-300
+                         text-white rounded-full transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
+          </div>
+          <p className="text-xs text-slate-400 mt-2 text-center">
+            Ask about {test.name}, MRD testing, or what to expect
+          </p>
         </div>
       </div>
     </div>
