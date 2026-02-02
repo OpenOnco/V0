@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 const SONNET_MODEL = 'claude-sonnet-4-20250514';
 const EMBEDDING_MODEL = 'text-embedding-ada-002';
 const MAX_SOURCES = 10;
-const MIN_SIMILARITY = 0.7;
+const MIN_SIMILARITY = 0.6;  // Lowered to include NCCN guidelines with shorter text
 
 // Rate limiting (in-memory)
 const rateLimitMap = new Map();
