@@ -18,6 +18,7 @@ import 'dotenv/config';
 import { runPubMedCrawler, fillGaps } from './index.js';
 import { crawlClinicalTrials, seedPriorityTrials } from './clinicaltrials.js';
 import { crawlFDA } from './fda.js';
+import { processNccnPdf, processNccnDirectory } from './nccn-processor.js';
 import { embedAllMissing } from '../../embeddings/mrd-embedder.js';
 import { linkAllTrials } from '../../embeddings/cross-link.js';
 import { close } from '../../db/mrd-client.js';
@@ -56,6 +57,7 @@ Commands:
   pubmed          Run PubMed crawler
   clinicaltrials  Run ClinicalTrials.gov crawler
   fda             Run FDA RSS feed crawler
+  nccn            Process NCCN guideline PDFs
   gaps            Detect and fill crawler gaps
   embed           Generate embeddings for items without them
   link            Link trials to publications
@@ -79,6 +81,10 @@ Options for 'clinicaltrials':
 
 Options for 'fda':
   --dry-run       Don't write to database
+
+Options for 'nccn':
+  --dir           Process all PDFs in directory
+  <path>          Path to PDF file or directory (with --dir)
 
 Options for 'embed':
   --limit=<n>     Max items to embed (default: 100)
@@ -184,6 +190,32 @@ async function main() {
         console.log(`  Items found: ${result.stats.items}`);
         console.log(`  MRD-relevant: ${result.stats.relevant}`);
         console.log(`  Added to queue: ${result.stats.added}`);
+        break;
+      }
+
+      case 'nccn': {
+        // Get the path from remaining args
+        const pathArg = process.argv.slice(3).find(a => !a.startsWith('-'));
+
+        if (!pathArg) {
+          console.log('Error: Please provide a PDF path or directory');
+          console.log('Usage:');
+          console.log('  node src/crawlers/mrd/cli.js nccn /path/to/guideline.pdf');
+          console.log('  node src/crawlers/mrd/cli.js nccn --dir /path/to/nccn-pdfs/');
+          break;
+        }
+
+        let result;
+        if (options.dir) {
+          console.log(`Processing all PDFs in: ${pathArg}`);
+          result = await processNccnDirectory(pathArg);
+        } else {
+          console.log(`Processing PDF: ${pathArg}`);
+          result = await processNccnPdf(pathArg);
+        }
+
+        console.log('\n=== NCCN Processing Results ===');
+        console.log(JSON.stringify(result, null, 2));
         break;
       }
 
