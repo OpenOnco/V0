@@ -44,6 +44,8 @@ import { extractStructuredData, quickRelevanceCheck, buildLLMContext, prepareFor
 import { computeMultiHash, compareMultiHash, shouldAnalyze, getChangeSummary } from '../utils/multi-hash.js';
 import { detectDelegation, buildDelegationProposal } from '../extractors/delegation.js';
 import { getDelegation } from '../data/delegation-map.js';
+// v2.1.1: Artifact storage for audit trail
+import { storeArtifact, createAnchor } from '../utils/artifact-store.js';
 
 const logger = createLogger('payer-crawler');
 
@@ -170,6 +172,21 @@ export class PayerCrawler extends PlaywrightCrawler {
       return { changed: false, error: 'Failed to fetch content' };
     }
 
+    // v2.1.1: Store raw artifact for audit trail
+    let artifactId = null;
+    try {
+      artifactId = await storeArtifact(policy.payerId, policy.id, content, {
+        contentType: policy.contentType || 'html',
+        sourceUrl: policy.url,
+        policyName: policy.name,
+        fetchedAt: new Date().toISOString(),
+      });
+      logger.debug(`Stored artifact: ${artifactId}`);
+    } catch (error) {
+      logger.warn(`Failed to store artifact for ${policy.id}`, { error: error.message });
+      // Continue even if artifact storage fails - not critical
+    }
+
     // v2: Extract structured data BEFORE hashing
     const extraction = await extractStructuredData(content, {
       docType: policy.docType,
@@ -237,6 +254,8 @@ export class PayerCrawler extends PlaywrightCrawler {
       changeSummary,
       shouldAnalyze: shouldAnalyzeChange,
       isNew: !previousHashes,
+      // v2.1.1: Include artifact ID for anchor linking
+      artifactId,
     };
   }
 
@@ -320,7 +339,7 @@ export class PayerCrawler extends PlaywrightCrawler {
    * Create a discovery from a policy change (v2: uses extraction data)
    */
   async createDiscovery(policy, result) {
-    const { extraction, comparison, changeSummary, shouldAnalyze: shouldDoAnalysis } = result;
+    const { extraction, comparison, changeSummary, shouldAnalyze: shouldDoAnalysis, artifactId } = result;
 
     // v2: Use pre-extracted test matches
     const testMatches = extraction?.namedTests || matchTests(result.content);
@@ -375,6 +394,8 @@ export class PayerCrawler extends PlaywrightCrawler {
           summary: changeSummary,
         },
         delegationDetected: delegationDetection.detected,
+        // v2.1.1: Artifact ID for audit trail
+        artifactId,
       },
     };
 
@@ -545,6 +566,7 @@ Provide a JSON response:
 
   /**
    * Create a proposal from a payer policy discovery
+   * v2.1.1: Now includes anchor generation from artifact
    */
   async createProposalFromDiscovery(discovery) {
     const { metadata, url, title, summary } = discovery;
@@ -564,6 +586,23 @@ Provide a JSON response:
       return null; // No specific tests to create proposals for
     }
 
+    // v2.1.1: Create anchor from artifact if available
+    let anchor = null;
+    if (metadata?.artifactId) {
+      // Extract a quote from the criteria section or summary
+      const quote = metadata?.extraction?.criteriaSection?.substring(0, 200) ||
+                    analysis?.keyConditions?.[0] ||
+                    summary?.substring(0, 150);
+
+      if (quote) {
+        anchor = createAnchor({
+          artifactId: metadata.artifactId,
+          quote: quote.trim(),
+          section: 'Coverage Criteria',
+        });
+      }
+    }
+
     // Create a proposal for each test
     let created = 0;
     for (const testName of allTests) {
@@ -580,6 +619,8 @@ Provide a JSON response:
           sourceTitle: title,
           confidence: analysis?.confidence || 0.7,
           snippet: summary,
+          // v2.1.1: Include anchor for evidence linking
+          anchor,
         });
         created++;
       } catch (error) {

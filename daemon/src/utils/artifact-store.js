@@ -128,16 +128,20 @@ export async function storeArtifact(payerId, policyId, content, metadata = {}) {
  * Create an anchor for evidence linkage
  *
  * @param {Object} options - Anchor options
+ * @param {string} [options.artifactId] - ID of the artifact this anchor references
  * @param {number} [options.page] - Page number (for PDFs)
  * @param {string} [options.heading] - Section heading
+ * @param {string} [options.section] - Section name (alias for heading)
  * @param {string} options.quote - Quoted text
  * @param {number} [options.offset] - Character offset in document
  * @returns {Object} Anchor object
  */
 export function createAnchor(options = {}) {
   return {
+    artifactId: options.artifactId || null,
     page: options.page || null,
-    heading: options.heading || null,
+    heading: options.heading || options.section || null,
+    section: options.section || options.heading || null,
     quote: options.quote || '',
     offset: options.offset || null,
     createdAt: new Date().toISOString(),

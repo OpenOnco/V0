@@ -216,6 +216,384 @@ export const PAYER_DELEGATIONS = {
     lastVerified: '2026-02-01',
     notes: 'eviCore is owned by Cigna parent company Evernorth. Not all Cigna plans delegate. No explicit document evidence.',
   },
+
+  // ============================================================================
+  // INDEPENDENCE BLUE CROSS - eviCore
+  // ============================================================================
+
+  'independence-blue-cross': {
+    payerId: 'ibx',
+    payerName: 'Independence Blue Cross',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2019-01-01',
+    effectiveEndDate: null,
+    scope: 'genetic_testing',
+    scopeDescription: 'All genetic/genomic tests, molecular analyses, and cytogenetic tests',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL],
+    lobNotes: 'Commercial members only. Medicare Advantage may have different requirements.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.evicore.com/resources/healthplan/independence-blue-cross',
+      quotes: ['Precertification has been delegated to eviCore healthcare for genetic/genomic tests, certain molecular analyses, and cytogenetic tests.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Labs must ensure precertification is on file before rendering services.',
+  },
+
+  // ============================================================================
+  // CAPITAL BLUE CROSS - eviCore
+  // ============================================================================
+
+  'capital-blue-cross': {
+    payerId: 'capitalbcbs',
+    payerName: 'Capital Blue Cross',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2020-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Molecular Lab Management including genetic and genomic testing',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL, LINE_OF_BUSINESS.MEDICARE_ADVANTAGE],
+    lobNotes: 'Commercial, CHIP, and Medicare plans require prior authorization from eviCore.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.evicore.com/resources/healthplan/Capital_Blue_Cross',
+      quotes: ['Capital Blue Cross members with Commercial, CHIP, and Medicare plans that require prior authorization from EviCore must submit requests via the CareCore National portal.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Submit via CareCore National portal for Molecular Lab Management.',
+  },
+
+  // ============================================================================
+  // BCBS MICHIGAN - eviCore (Medicare) + Joint Venture Labs (BCN)
+  // ============================================================================
+
+  'bcbs-michigan-medicare': {
+    payerId: 'bcbsm-ma',
+    payerName: 'BCBS Michigan Medicare Plus Blue',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2023-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Prior authorization for molecular and genetic testing',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.MEDICARE_ADVANTAGE],
+    lobNotes: 'Medicare Plus Blue PPO members. Commercial PPO nationally also uses eviCore.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.evicore.com/resources/healthplan/blue-cross-blue-shield/michigan',
+      quotes: ['EviCore by Evernorth provides prior authorization services for Blue Cross Blue Shield of Michigan Medicare Plus Blue PPO members.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Quick Reference Guide updated May 2025.',
+  },
+
+  // ============================================================================
+  // BCBS MONTANA - Carelon (Commercial) / eviCore (Government)
+  // ============================================================================
+
+  'bcbs-montana-commercial': {
+    payerId: 'bcbsmt-comm',
+    payerName: 'BCBS Montana (Commercial)',
+    delegatesTo: 'carelon',
+    delegatedToName: 'Carelon Medical Benefits Management',
+    effectiveDate: '2026-01-01',
+    effectiveEndDate: null,
+    scope: 'genetic_testing',
+    scopeDescription: 'Genetic testing prior authorization for commercial members',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL],
+    lobNotes: 'Medicare Advantage and Medicaid use eviCore instead.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.bcbsmt.com/provider/education-and-reference/education/news-and-updates/2025/10-01-2025-prior-authorization-changes',
+      quotes: ['Changes include addition of Genetic Testing codes to be reviewed by Carelon for commercial members.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Effective Jan 1, 2026. Part of Elevance/Anthem family.',
+  },
+
+  'bcbs-montana-government': {
+    payerId: 'bcbsmt-gov',
+    payerName: 'BCBS Montana (Medicare/Medicaid)',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2026-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Molecular Genetic Lab Testing for government program members',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.MEDICARE_ADVANTAGE, LINE_OF_BUSINESS.MEDICAID],
+    lobNotes: 'Commercial members use Carelon instead.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.bcbsmt.com/provider/education-and-reference/education/news-and-updates/2025/10-01-2025-prior-authorization-changes',
+      quotes: ['Addition of Molecular Genetic Lab Testing codes to be reviewed by EviCore for government programs.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Effective Jan 1, 2026.',
+  },
+
+  // ============================================================================
+  // BCBS ILLINOIS - eviCore (Medicare Advantage)
+  // ============================================================================
+
+  'bcbs-illinois-ma': {
+    payerId: 'bcbsil-ma',
+    payerName: 'BCBS Illinois (Medicare Advantage)',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2026-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Molecular Genetic Lab Testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.MEDICARE_ADVANTAGE],
+    lobNotes: 'Medicare Advantage members only.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.bcbsil.com/provider/education/education-reference/news/2025/10-01-2025-prior-authorization-changes',
+      quotes: ['Addition of Molecular Genetic Lab Testing codes to be reviewed by EviCore (MA).'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Effective Jan 1, 2026. Part of HCSC family.',
+  },
+
+  // ============================================================================
+  // BCBS TEXAS - eviCore (Medicare Advantage)
+  // ============================================================================
+
+  'bcbs-texas-ma': {
+    payerId: 'bcbstx-ma',
+    payerName: 'BCBS Texas (Medicare Advantage)',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2026-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Molecular Genetic Lab Testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.MEDICARE_ADVANTAGE],
+    lobNotes: 'Government program members only.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.bcbstx.com/provider/education/education/news/2025/10-01-2025-prior-authorization-changes',
+      quotes: ['Addition of Molecular Genetic Lab Testing codes to be reviewed by EviCore for government programs.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Effective Jan 1, 2026. Part of HCSC family.',
+  },
+
+  // ============================================================================
+  // BCBS OKLAHOMA - eviCore (Medicare)
+  // ============================================================================
+
+  'bcbs-oklahoma-medicare': {
+    payerId: 'bcbsok-ma',
+    payerName: 'BCBS Oklahoma (Medicare)',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2023-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Molecular and genetic lab testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.MEDICARE_ADVANTAGE],
+    lobNotes: 'Medicare plans only.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.evicore.com/resources/healthplan/blue-cross-blue-shield/oklahoma/medicare',
+      quotes: ['eviCore healthcare provides prior authorization services for BCBS Oklahoma Medicare plans.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Part of HCSC family.',
+  },
+
+  // ============================================================================
+  // BCBS NEW MEXICO - eviCore (Medicare)
+  // ============================================================================
+
+  'bcbs-new-mexico-medicare': {
+    payerId: 'bcbsnm-ma',
+    payerName: 'BCBS New Mexico (Medicare)',
+    delegatesTo: 'evicore',
+    delegatedToName: 'eviCore Healthcare',
+    effectiveDate: '2023-01-01',
+    effectiveEndDate: null,
+    scope: 'molecular_testing',
+    scopeDescription: 'Molecular and genetic lab testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.MEDICARE_ADVANTAGE],
+    lobNotes: 'Medicare plans only.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.evicore.com/resources/healthplan/blue-cross-blue-shield/new-mexico/medicare',
+      quotes: ['eviCore healthcare provides prior authorization services for BCBS New Mexico Medicare plans.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Part of HCSC family.',
+  },
+
+  // ============================================================================
+  // ANTHEM/ELEVANCE PLANS - Carelon
+  // ============================================================================
+
+  'anthem-virginia': {
+    payerId: 'anthem-va',
+    payerName: 'Anthem Blue Cross Blue Shield Virginia',
+    delegatesTo: 'carelon',
+    delegatedToName: 'Carelon Medical Benefits Management',
+    effectiveDate: '2019-01-01',
+    effectiveEndDate: null,
+    scope: 'genetic_testing',
+    scopeDescription: 'All genetic testing including hereditary cancer susceptibility and molecular profiling',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL, LINE_OF_BUSINESS.EXCHANGE],
+    lobNotes: 'Does not apply to BlueCard, FEP, California HMO, Hospital Only plans, or Anthem as secondary payor.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://providernews.anthem.com/virginia/articles/transition-to-genetic-testing-guidelines-for-carelon-medical-16-16857',
+      quotes: ['Carelon Medical Benefits Management performs the medical necessity review of all genetic testing services.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Elevance Health subsidiary. Monitor Carelon guidelines for Anthem VA coverage.',
+  },
+
+  'anthem-indiana': {
+    payerId: 'anthem-in',
+    payerName: 'Anthem Blue Cross Blue Shield Indiana',
+    delegatesTo: 'carelon',
+    delegatedToName: 'Carelon Medical Benefits Management',
+    effectiveDate: '2019-01-01',
+    effectiveEndDate: null,
+    scope: 'genetic_testing',
+    scopeDescription: 'Genetic testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL, LINE_OF_BUSINESS.EXCHANGE],
+    lobNotes: 'Exclusions apply for certain plan types.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://providernews.anthem.com/indiana/articles/carelon-genetic-testing-cpt-code-list-update',
+      quotes: ['Carelon genetic testing CPT code list update for Anthem Indiana.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Elevance Health subsidiary.',
+  },
+
+  'anthem-new-york': {
+    payerId: 'anthem-ny',
+    payerName: 'Anthem Blue Cross Blue Shield New York',
+    delegatesTo: 'carelon',
+    delegatedToName: 'Carelon Medical Benefits Management',
+    effectiveDate: '2019-01-01',
+    effectiveEndDate: null,
+    scope: 'genetic_testing',
+    scopeDescription: 'Genetic testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL],
+    lobNotes: 'Commercial plans. Medicaid may have separate requirements.',
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://providernews.anthem.com/new-york/articles/carelon-medical-benefits-management-inc-genetic-testing-code-2-17956',
+      quotes: ['Carelon Medical Benefits Management genetic testing code updates for Anthem New York.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Elevance Health subsidiary.',
+  },
+
+  // ============================================================================
+  // BLUE CROSS MA - Carelon
+  // ============================================================================
+
+  'blue-cross-ma': {
+    payerId: 'bcbsma',
+    payerName: 'Blue Cross Blue Shield Massachusetts',
+    delegatesTo: 'carelon',
+    delegatedToName: 'Carelon Medical Benefits Management',
+    effectiveDate: '2020-01-01',
+    effectiveEndDate: null,
+    scope: 'genetic_testing',
+    scopeDescription: 'Genetic testing prior authorization',
+
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL],
+    lobNotes: null,
+
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://provider.bluecrossma.com/ProviderHome/portal/home/clinical-resources/prior-authorization/genetic-testing',
+      quotes: ['Blue Cross Blue Shield Massachusetts uses Carelon for genetic testing prior authorization.'],
+      detectedAt: '2026-02-02',
+      verificationMethod: 'web_search',
+    },
+    lastVerified: '2026-02-02',
+    notes: 'Independent BCBS plan (not Anthem/Elevance).',
+  },
 };
 
 /**
