@@ -270,6 +270,228 @@ function cleanText(text) {
     .trim();
 }
 
+// ============================================
+// PMC FULL TEXT FETCHING (P2.3)
+// ============================================
+
+/**
+ * Check if an article has PMC full text available
+ * @param {string} pmid - PubMed ID
+ * @returns {Promise<{hasPMC: boolean, pmcId: string|null}>}
+ */
+export async function checkPMCAvailability(pmid) {
+  const params = new URLSearchParams({
+    dbfrom: 'pubmed',
+    db: 'pmc',
+    id: pmid,
+    retmode: 'json',
+  });
+
+  if (process.env.NCBI_API_KEY) {
+    params.append('api_key', process.env.NCBI_API_KEY);
+  }
+
+  const url = `${BASE_URL}/elink.fcgi?${params}`;
+
+  try {
+    const response = await http.getJson(url);
+    const linksets = response?.linksets?.[0]?.linksetdbs;
+
+    if (!linksets) {
+      return { hasPMC: false, pmcId: null };
+    }
+
+    const pmcDb = linksets.find(db => db.dbto === 'pmc');
+    const pmcId = pmcDb?.links?.[0];
+
+    return {
+      hasPMC: !!pmcId,
+      pmcId: pmcId ? `PMC${pmcId}` : null,
+    };
+  } catch (error) {
+    logger.debug('PMC availability check failed', { pmid, error: error.message });
+    return { hasPMC: false, pmcId: null };
+  }
+}
+
+/**
+ * Fetch PMC full text for an article
+ * @param {string} pmcId - PMC ID (e.g., "PMC1234567")
+ * @returns {Promise<{fullText: string, isOpenAccess: boolean}|null>}
+ */
+export async function fetchPMCFullText(pmcId) {
+  // Strip 'PMC' prefix if present
+  const numericId = pmcId.replace(/^PMC/i, '');
+
+  // Use PMC OAI service for open access articles
+  const oaiUrl = `https://www.ncbi.nlm.nih.gov/pmc/oai/oai.cgi?verb=GetRecord&identifier=oai:pubmedcentral.nih.gov:${numericId}&metadataPrefix=pmc`;
+
+  try {
+    const response = await http.getText(oaiUrl);
+
+    // Check for error responses
+    if (response.includes('<error code=')) {
+      logger.debug('PMC article not available via OAI', { pmcId });
+      return null;
+    }
+
+    // Extract body text from XML
+    const bodyMatch = response.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+    if (!bodyMatch) {
+      // Try alternative: extract from full article content
+      const articleMatch = response.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+      if (!articleMatch) {
+        return null;
+      }
+
+      // Extract just the sections
+      const sections = [];
+      const sectionMatches = articleMatch[1].matchAll(/<sec[^>]*>([\s\S]*?)<\/sec>/gi);
+      for (const match of sectionMatches) {
+        sections.push(stripXmlTags(match[1]));
+      }
+
+      if (sections.length === 0) {
+        return null;
+      }
+
+      return {
+        fullText: sections.join('\n\n').substring(0, 100000), // Limit to 100k chars
+        isOpenAccess: true,
+      };
+    }
+
+    // Strip XML tags and clean up
+    const fullText = stripXmlTags(bodyMatch[1]);
+
+    return {
+      fullText: fullText.substring(0, 100000), // Limit to 100k chars
+      isOpenAccess: true,
+    };
+
+  } catch (error) {
+    logger.debug('PMC full text fetch failed', { pmcId, error: error.message });
+    return null;
+  }
+}
+
+/**
+ * Strip XML tags from text
+ * @param {string} xml - XML content
+ * @returns {string} - Plain text
+ */
+function stripXmlTags(xml) {
+  return xml
+    .replace(/<xref[^>]*>.*?<\/xref>/gi, '') // Remove citations
+    .replace(/<ext-link[^>]*>.*?<\/ext-link>/gi, '') // Remove external links
+    .replace(/<[^>]+>/g, ' ') // Remove all other tags
+    .replace(/\s+/g, ' ') // Collapse whitespace
+    .trim();
+}
+
+/**
+ * Enrich article with PMC full text if available
+ * @param {Object} article - Article object with pmid
+ * @returns {Promise<Object>} - Enriched article
+ */
+export async function enrichWithFullText(article) {
+  if (!article.pmid) {
+    return article;
+  }
+
+  try {
+    // Check PMC availability
+    const { hasPMC, pmcId } = await checkPMCAvailability(article.pmid);
+
+    if (!hasPMC || !pmcId) {
+      return article;
+    }
+
+    // Fetch full text
+    const result = await fetchPMCFullText(pmcId);
+
+    if (!result) {
+      return { ...article, pmcId };
+    }
+
+    logger.debug('Enriched with full text', {
+      pmid: article.pmid,
+      pmcId,
+      textLength: result.fullText.length,
+    });
+
+    return {
+      ...article,
+      pmcId,
+      fullTextExcerpt: result.fullText,
+      isOpenAccess: result.isOpenAccess,
+    };
+
+  } catch (error) {
+    logger.warn('Full text enrichment failed', {
+      pmid: article.pmid,
+      error: error.message,
+    });
+    return article;
+  }
+}
+
+/**
+ * Batch enrich articles with PMC full text
+ * @param {Object[]} articles - Array of articles
+ * @param {Object} options - Options
+ * @returns {Promise<Object[]>} - Enriched articles
+ */
+export async function batchEnrichWithFullText(articles, options = {}) {
+  const { concurrency = 3, limit = 50 } = options;
+
+  // Only enrich articles that don't already have full text
+  const needsEnrichment = articles.filter(a => !a.fullTextExcerpt);
+
+  if (needsEnrichment.length === 0) {
+    return articles;
+  }
+
+  logger.info('Enriching articles with PMC full text', {
+    total: articles.length,
+    needsEnrichment: needsEnrichment.length,
+    limit,
+  });
+
+  // Limit how many we enrich per batch to avoid rate limiting
+  const toEnrich = needsEnrichment.slice(0, limit);
+  const enriched = new Map();
+
+  // Process in batches for rate limiting
+  for (let i = 0; i < toEnrich.length; i += concurrency) {
+    const batch = toEnrich.slice(i, i + concurrency);
+
+    const results = await Promise.all(
+      batch.map(async (article) => {
+        const result = await enrichWithFullText(article);
+        return { pmid: article.pmid, result };
+      })
+    );
+
+    for (const { pmid, result } of results) {
+      enriched.set(pmid, result);
+    }
+
+    // Small delay between batches
+    if (i + concurrency < toEnrich.length) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+  }
+
+  // Merge enriched results back
+  return articles.map(article => {
+    if (enriched.has(article.pmid)) {
+      return enriched.get(article.pmid);
+    }
+    return article;
+  });
+}
+
 /**
  * Search and fetch MRD-related articles
  * Main entry point for the crawler

@@ -14,6 +14,7 @@ import { processNccnPdf } from '../crawlers/processors/nccn.js';
 import { embedAllMissing } from '../embeddings/mrd-embedder.js';
 import { ensureCitationCompliance } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
+import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
 
 const logger = createLogger('server');
 
@@ -51,12 +52,7 @@ CRITICAL RULES - FOLLOW EXACTLY:
 
 You provide INFORMATION to support clinical judgment, not ADVICE.
 
-When answering:
-- Start with the most directly relevant evidence
-- Include guideline recommendations with their evidence levels
-- Mention key trial results with study names
-- Note if evidence is limited or emerging
-- End with a note about clinical trial options if applicable
+${RESPONSE_TEMPLATE_PROMPT}
 
 Format citations as [1], [2], etc. The system will append the full citation list.`;
 

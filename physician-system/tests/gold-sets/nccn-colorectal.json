@@ -1,0 +1,63 @@
+{
+  "source": "nccn-colorectal",
+  "version": "2.2025",
+  "description": "Gold set for NCCN Colorectal Cancer Guidelines ctDNA/MRD recommendations",
+  "expectedExtractions": [
+    {
+      "id": "nccn-crc-surveillance-1",
+      "type": "recommendation",
+      "cancerType": "colorectal",
+      "clinicalSetting": "surveillance",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "ctDNA testing may be considered for surveillance",
+      "mustContain": ["ctDNA", "surveillance", "Category 2A"],
+      "mustNotContain": ["treatment decision"]
+    },
+    {
+      "id": "nccn-crc-adjuvant-1",
+      "type": "recommendation",
+      "cancerType": "colorectal",
+      "clinicalSetting": "adjuvant",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "ctDNA may be used to identify patients who may benefit from adjuvant therapy",
+      "mustContain": ["adjuvant", "therapy", "ctDNA"],
+      "mustNotContain": []
+    },
+    {
+      "id": "nccn-crc-risk-stratification-1",
+      "type": "recommendation",
+      "cancerType": "colorectal",
+      "clinicalSetting": "risk_stratification",
+      "evidenceLevel": "Category 2B",
+      "keyQuote": "ctDNA testing can inform risk stratification after curative-intent therapy",
+      "mustContain": ["risk", "curative", "ctDNA"],
+      "mustNotContain": []
+    },
+    {
+      "id": "nccn-crc-mrd-detection-1",
+      "type": "recommendation",
+      "cancerType": "colorectal",
+      "clinicalSetting": "post_resection",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "MRD detection post-resection",
+      "mustContain": ["MRD", "resection"],
+      "mustNotContain": ["metastatic"]
+    },
+    {
+      "id": "nccn-crc-trial-enrollment-1",
+      "type": "recommendation",
+      "cancerType": "colorectal",
+      "clinicalSetting": "clinical_trials",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "clinical trial enrollment",
+      "mustContain": ["trial", "ctDNA"],
+      "mustNotContain": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2025-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 5,
+    "targetAccuracy": 0.9
+  }
+}
