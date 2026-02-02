@@ -1,0 +1,342 @@
+[
+  {
+    "source_type": "nccn",
+    "cancer_type": "bladder",
+    "filename": "bladder.pdf",
+    "recommendation": "The Panel recognizes that some ultrasensitive ctDNA assays may have prognostic value after cystectomy, but there are insufficient data for ctDNA results to determine surveillance or therapy after complete surgical resection.",
+    "evidence_category": "2A",
+    "clinical_setting": "post-cystectomy surveillance",
+    "key_quote": "insufficient data for ctDNA results to determine the course of surveillance or therapy",
+    "extracted_at": "2026-02-02T06:50:34.805Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "bladder",
+    "filename": "bladder.pdf",
+    "recommendation": "Studies demonstrate that ultrasensitive ctDNA assays may track therapy response and progression in advanced disease, but there are insufficient data that changes in therapy based on ctDNA significantly improve outcomes.",
+    "evidence_category": "2A",
+    "clinical_setting": "advanced/metastatic disease monitoring",
+    "key_quote": "insufficient data that changes in therapy based on ctDNA significantly improve outcomes",
+    "extracted_at": "2026-02-02T06:50:34.807Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "bladder",
+    "filename": "bladder.pdf",
+    "recommendation": "There are no data that ctDNA clearance should be used to make decisions to alter or discontinue therapy in advanced disease.",
+    "evidence_category": "2A",
+    "clinical_setting": "advanced disease treatment decisions",
+    "key_quote": "no data to date that ctDNA clearance should be used to make decisions",
+    "extracted_at": "2026-02-02T06:50:34.807Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "breast",
+    "filename": "breast.pdf",
+    "recommendation": "Assess for ESR1 mutations at progression following prior lines of endocrine therapy (ctDNA preferred).",
+    "evidence_category": "2A",
+    "clinical_setting": "metastatic disease progression on endocrine therapy",
+    "key_quote": "Assess for ESR1 mutations at progression following prior lines of endocrine therapy (ctDNA preferred)",
+    "extracted_at": "2026-02-02T06:50:44.252Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "breast",
+    "filename": "breast.pdf",
+    "recommendation": "If ESR1 negative and tumor fraction is low, consider reflex testing with tissue-based NGS assay.",
+    "evidence_category": "2A",
+    "clinical_setting": "metastatic disease when ctDNA shows ESR1 negative with low tumor fraction",
+    "key_quote": "If ESR1 negative and TF is low, consider reflex testing with tissue-based NGS assay",
+    "extracted_at": "2026-02-02T06:50:44.252Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "breast",
+    "filename": "breast.pdf",
+    "recommendation": "Tissue biopsy is preferred to ctDNA for detecting homozygous copy loss of PTEN or TMB.",
+    "evidence_category": "2A",
+    "clinical_setting": "metastatic disease biomarker testing",
+    "key_quote": "Tissue biopsy is preferred to ctDNA at detecting homozygous copy loss of PTEN or TMB",
+    "extracted_at": "2026-02-02T06:50:44.252Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "breast",
+    "filename": "breast.pdf",
+    "recommendation": "Samples with low tumor fraction, especially <1% or negative, should be interpreted with caution.",
+    "evidence_category": "2A",
+    "clinical_setting": "ctDNA testing interpretation",
+    "key_quote": "Samples with low TF, especially <1% or negative, should be interpreted with caution",
+    "extracted_at": "2026-02-02T06:50:44.252Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "breast",
+    "filename": "breast.pdf",
+    "recommendation": "Additional sampling from current tumor sample or future plasma can be considered when tumor fraction is low.",
+    "evidence_category": "2A",
+    "clinical_setting": "ctDNA testing with low tumor fraction",
+    "key_quote": "Additional sampling from current tumor sample or future plasma can be considered",
+    "extracted_at": "2026-02-02T06:50:44.252Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "colon.pdf",
+    "recommendation": "ctDNA is not recommended for surveillance in colon cancer patients.",
+    "evidence_category": null,
+    "clinical_setting": "surveillance",
+    "key_quote": "ctDNA is not recommended for surveillance",
+    "extracted_at": "2026-02-02T06:50:50.123Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "colon.pdf",
+    "recommendation": "There is currently insufficient evidence to recommend routine use of ctDNA assays outside of a clinical trial.",
+    "evidence_category": null,
+    "clinical_setting": "adjuvant therapy and surveillance",
+    "key_quote": "insufficient evidence to recommend routine use of ctDNA assays outside of clinical trial",
+    "extracted_at": "2026-02-02T06:50:50.123Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "colon.pdf",
+    "recommendation": "De-escalation of care and treatment decision-making are not recommended based on ctDNA results.",
+    "evidence_category": null,
+    "clinical_setting": "adjuvant therapy and surveillance",
+    "key_quote": "De-escalation of care not recommended based on ctDNA results",
+    "extracted_at": "2026-02-02T06:50:50.123Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "colon.pdf",
+    "recommendation": "ctDNA is prognostic, but not predictive for selection of chemotherapy in high-risk stage II disease.",
+    "evidence_category": null,
+    "clinical_setting": "adjuvant therapy",
+    "key_quote": "ctDNA is prognostic, but not predictive",
+    "extracted_at": "2026-02-02T06:50:50.123Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "melanoma",
+    "filename": "cutaneous_melanoma.pdf",
+    "recommendation": "Molecular testing may be performed on tumor tissue, or if not available, on peripheral blood (liquid biopsy).",
+    "evidence_category": "2A",
+    "clinical_setting": "molecular testing for targetable mutations",
+    "key_quote": "Molecular testing may be performed on tumor tissue, or if not available, on peripheral blood (liquid biopsy).",
+    "extracted_at": "2026-02-02T06:50:54.906Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "melanoma",
+    "filename": "cutaneous_melanoma.pdf",
+    "recommendation": "Given the possibility of a false negative, a negative liquid biopsy should prompt tissue testing.",
+    "evidence_category": "2A",
+    "clinical_setting": "molecular testing when liquid biopsy is negative",
+    "key_quote": "Given the possibility of a false negative, a negative liquid biopsy should prompt tissue testing.",
+    "extracted_at": "2026-02-02T06:50:54.906Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "esophageal",
+    "filename": "esophageal.pdf",
+    "recommendation": "ctDNA testing using validated NGS-based comprehensive genomic profiling assay may be considered when limited tissue is available or for patients with metastatic/advanced disease unable to undergo traditional biopsy.",
+    "evidence_category": "2A",
+    "clinical_setting": "metastatic or advanced disease",
+    "key_quote": "multigene panel testing (MGPT) performed in a CLIA-approved laboratory may be considered",
+    "extracted_at": "2026-02-02T06:51:00.073Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "esophageal",
+    "filename": "esophageal.pdf",
+    "recommendation": "ctDNA testing may be considered for disease progression monitoring in patients with advanced or metastatic esophageal/EGJ cancers.",
+    "evidence_category": "2A",
+    "clinical_setting": "surveillance/monitoring",
+    "key_quote": "for disease progression monitoring, testing using a validated NGS-based comprehensive genomic profiling assay",
+    "extracted_at": "2026-02-02T06:51:00.073Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "esophageal",
+    "filename": "esophageal.pdf",
+    "recommendation": "Negative ctDNA results should be interpreted with caution as this does not exclude the presence of tumor.",
+    "evidence_category": "2A",
+    "clinical_setting": "general interpretation",
+    "key_quote": "A negative result should be interpreted with caution, as this does not exclude the presence of tumor",
+    "extracted_at": "2026-02-02T06:51:00.073Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "gastric",
+    "filename": "gastric.pdf",
+    "recommendation": "ctDNA testing using multigene panel testing (MGPT) performed in a CLIA-approved laboratory may be considered when limited tissue is available or for patients with metastatic or advanced gastric cancer who cannot undergo traditional biopsy.",
+    "evidence_category": "2A",
+    "clinical_setting": "metastatic or advanced gastric cancer",
+    "key_quote": "when limited tissue is available or for patients who have metastatic or advanced gastric cancer who are not able to undergo a traditional biopsy, multigene panel testing (MGPT) performed in a CLIA-approved laboratory may be considered",
+    "extracted_at": "2026-02-02T06:51:04.833Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "gastric",
+    "filename": "gastric.pdf",
+    "recommendation": "Patients who achieved pathologic complete response were negative for ctDNA prior to surgery, suggesting ctDNA may be useful for monitoring treatment response.",
+    "evidence_category": "2A",
+    "clinical_setting": "preoperative therapy monitoring",
+    "key_quote": "those who had pathologic CR were negative for ctDNA prior to surgery",
+    "extracted_at": "2026-02-02T06:51:04.833Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "head_neck",
+    "filename": "head-and-neck.pdf",
+    "recommendation": "Epstein-Barr virus DNA analysis can be used for management of nasopharyngeal carcinoma patients.",
+    "evidence_category": "Not specified",
+    "clinical_setting": "nasopharyngeal carcinoma management",
+    "key_quote": "Clinical utility of circulating Epstein-Barr virus DNA analysis for the management of nasopharyngeal carcinoma",
+    "extracted_at": "2026-02-02T06:51:12.913Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "head_neck",
+    "filename": "head-and-neck.pdf",
+    "recommendation": "Plasma Epstein-Barr virus DNA load can be used for improving risk stratification of nasopharyngeal cancer patients.",
+    "evidence_category": "Not specified",
+    "clinical_setting": "post-treatment surveillance",
+    "key_quote": "Improved risk stratification of nasopharyngeal cancer by targeted sequencing of Epstein-Barr virus DNA in post-treatment plasma",
+    "extracted_at": "2026-02-02T06:51:12.913Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "head_neck",
+    "filename": "head-and-neck.pdf",
+    "recommendation": "Plasma Epstein-Barr viral DNA load after two cycles of induction chemotherapy can predict outcomes in advanced-stage nasopharyngeal carcinoma.",
+    "evidence_category": "Not specified",
+    "clinical_setting": "induction chemotherapy monitoring",
+    "key_quote": "Plasma Epstein-Barr viral DNA load after completion of two cycles of induction chemotherapy predicts outcomes",
+    "extracted_at": "2026-02-02T06:51:12.913Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "head_neck",
+    "filename": "head-and-neck.pdf",
+    "recommendation": "Quantification of plasma Epstein-Barr virus DNA can be used in patients with advanced nasopharyngeal carcinoma for prognostic assessment.",
+    "evidence_category": "Not specified",
+    "clinical_setting": "advanced nasopharyngeal carcinoma",
+    "key_quote": "Quantification of plasma Epstein-Barr virus DNA in patients with advanced nasopharyngeal carcinoma",
+    "extracted_at": "2026-02-02T06:51:12.913Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "lung_nsclc",
+    "filename": "nscl.pdf",
+    "recommendation": "ctDNA testing should not be used in lieu of a histologic tissue diagnosis.",
+    "evidence_category": "2A",
+    "clinical_setting": "general testing principles",
+    "key_quote": "ctDNA testing should not be used in lieu of a histologic tissue diagnosis.",
+    "extracted_at": "2026-02-02T06:51:19.660Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "lung_nsclc",
+    "filename": "nscl.pdf",
+    "recommendation": "ctDNA is not routinely recommended in settings other than advanced/metastatic disease. For stages I–III, tissue-based testing is preferred.",
+    "evidence_category": "2A",
+    "clinical_setting": "early stage disease",
+    "key_quote": "ctDNA is not routinely recommended in settings other than advanced/metastatic disease. For stages I–III, tissue-based testing is preferred.",
+    "extracted_at": "2026-02-02T06:51:19.660Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "lung_nsclc",
+    "filename": "nscl.pdf",
+    "recommendation": "Molecular testing of tissue may have a higher yield in the setting of metastatic disease confined to the thorax.",
+    "evidence_category": "2A",
+    "clinical_setting": "thoracic metastatic disease",
+    "key_quote": "Molecular testing of tissue may have a higher yield in the setting of metastatic disease confined to the thorax.",
+    "extracted_at": "2026-02-02T06:51:19.660Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "lung_nsclc",
+    "filename": "nscl.pdf",
+    "recommendation": "Data support complementary ctDNA and tissue testing to reduce turnaround time and increase yield of targetable alteration detection.",
+    "evidence_category": "2A",
+    "clinical_setting": "advanced/metastatic disease",
+    "key_quote": "data support complementary testing to reduce turnaround time and increase yield of targetable alteration detection.",
+    "extracted_at": "2026-02-02T06:51:19.660Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "lung_nsclc",
+    "filename": "nscl.pdf",
+    "recommendation": "At time of progression, consider ctDNA and tissue-based testing in parallel to identify resistance mechanisms.",
+    "evidence_category": "2A",
+    "clinical_setting": "progression on targeted therapy",
+    "key_quote": "At time of progression, consider ctDNA and tissue-based testing in parallel to identify resistance mechanisms.",
+    "extracted_at": "2026-02-02T06:51:19.660Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "lung_nsclc",
+    "filename": "nscl.pdf",
+    "recommendation": "Peripheral blood (plasma ctDNA) can be a surrogate sample when tissue is minimal.",
+    "evidence_category": "2A",
+    "clinical_setting": "insufficient tissue specimen",
+    "key_quote": "Peripheral blood (plasma ctDNA) can be a surrogate sample",
+    "extracted_at": "2026-02-02T06:51:19.660Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "ovarian",
+    "filename": "ovarian.pdf",
+    "recommendation": "Molecular analyses may be performed on circulating tumor DNA (ctDNA or liquid biopsy) when tissue-based analysis is not clinically feasible.",
+    "evidence_category": "2A",
+    "clinical_setting": "recurrence setting for molecular testing",
+    "key_quote": "Molecular analyses may be performed on circulating tumor DNA (ctDNA or liquid biopsy) when tissue-based analysis is not clinically feasible.",
+    "extracted_at": "2026-02-02T06:51:23.247Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "pancreatic",
+    "filename": "pancreatic.pdf",
+    "recommendation": "Cell-free DNA testing can be considered if tumor tissue testing is not feasible for molecular profiling in locally advanced/metastatic pancreatic cancer patients who are candidates for anti-cancer therapy.",
+    "evidence_category": "2A",
+    "clinical_setting": "locally advanced/metastatic disease",
+    "key_quote": "Testing on tumor tissue is preferred; however, cell-free DNA testing can be considered if tumor tissue testing is not feasible",
+    "extracted_at": "2026-02-02T06:51:26.920Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "rectal.pdf",
+    "recommendation": "ctDNA is emerging as a prognostic marker; however, there is currently insufficient evidence to recommend routine use of ctDNA assays outside of a clinical trial. De-escalation of care and treatment decision-making are not recommended based on ctDNA results.",
+    "evidence_category": null,
+    "clinical_setting": "adjuvant therapy",
+    "key_quote": "insufficient evidence to recommend routine use of ctDNA assays outside of clinical trial",
+    "extracted_at": "2026-02-02T06:51:31.855Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "rectal.pdf",
+    "recommendation": "ctDNA is not recommended for surveillance.",
+    "evidence_category": null,
+    "clinical_setting": "surveillance",
+    "key_quote": "ctDNA is not recommended for surveillance",
+    "extracted_at": "2026-02-02T06:51:31.855Z"
+  },
+  {
+    "source_type": "nccn",
+    "cancer_type": "colorectal",
+    "filename": "rectal.pdf",
+    "recommendation": "Circulating tumor DNA (ctDNA) has no proven role in the NOM (nonoperative management) of patients.",
+    "evidence_category": null,
+    "clinical_setting": "nonoperative management",
+    "key_quote": "ctDNA has no proven role in the NOM of patients",
+    "extracted_at": "2026-02-02T06:51:31.855Z"
+  }
+]
