@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "description": "Tracks processed files in watched-files/ directory",
+  "last_scan": null,
+  "files": {},
+  "processors": {
+    "nccn": {
+      "module": "../src/crawlers/mrd/nccn-processor.js",
+      "function": "processNccnPdf",
+      "description": "NCCN Clinical Practice Guidelines",
+      "requires_license": true,
+      "file_extensions": [".pdf"],
+      "enabled": true
+    },
+    "asco": {
+      "module": "../src/crawlers/mrd/society-processor.js",
+      "function": "processSocietyGuideline",
+      "description": "ASCO Practice Guidelines and Consensus",
+      "requires_license": false,
+      "file_extensions": [".pdf"],
+      "enabled": true
+    },
+    "esmo": {
+      "module": "../src/crawlers/mrd/society-processor.js",
+      "function": "processSocietyGuideline",
+      "description": "ESMO Clinical Practice Guidelines and Consensus",
+      "requires_license": false,
+      "file_extensions": [".pdf"],
+      "enabled": true
+    },
+    "sitc": {
+      "module": "../src/crawlers/mrd/society-processor.js",
+      "function": "processSocietyGuideline",
+      "description": "SITC Consensus Statements",
+      "requires_license": false,
+      "file_extensions": [".pdf"],
+      "enabled": true
+    },
+    "cap-amp": {
+      "module": "../src/crawlers/mrd/society-processor.js",
+      "function": "processSocietyGuideline",
+      "description": "CAP/AMP Laboratory Guidelines",
+      "requires_license": false,
+      "file_extensions": [".pdf"],
+      "enabled": true
+    },
+    "payer-criteria": {
+      "module": "../src/crawlers/mrd/payer-processor.js",
+      "function": "processPayerCriteria",
+      "description": "Payer UM Criteria and Coverage Policies",
+      "requires_license": false,
+      "file_extensions": [".pdf"],
+      "enabled": true
+    }
+  },
+  "statistics": {
+    "total_files": 0,
+    "total_processed": 0,
+    "by_source": {}
+  }
+}
