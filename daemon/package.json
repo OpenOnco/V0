@@ -25,7 +25,8 @@
     "proposals:create-test": "node src/proposals/cli.js create-test",
     "db:migrate": "node src/db/migrate.js migrate",
     "db:status": "node src/db/migrate.js status",
-    "mrd:crawl": "node src/crawlers/mrd/cli.js"
+    "mrd:crawl": "node src/crawlers/mrd/cli.js",
+    "mrd:files": "node src/crawlers/mrd/file-cli.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
