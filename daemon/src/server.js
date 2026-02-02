@@ -20,9 +20,11 @@ const logger = createLogger('server');
 
 const PORT = process.env.PORT || 3000;
 const SONNET_MODEL = 'claude-sonnet-4-20250514';
+const HAIKU_MODEL = 'claude-3-5-haiku-20241022';
 const EMBEDDING_MODEL = 'text-embedding-ada-002';
 const MAX_SOURCES = 10;
-const MIN_SIMILARITY = 0.6;  // Lowered to include NCCN guidelines with shorter text
+const MIN_SIMILARITY = 0.55;  // Lowered to include more relevant results
+const KEYWORD_BOOST = 0.1;   // Bonus for keyword matches in hybrid search
 
 // Rate limiting (in-memory)
 const rateLimitMap = new Map();
@@ -80,6 +82,236 @@ function getAnthropic() {
     anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   }
   return anthropic;
+}
+
+// ============================================
+// QUERY INTENT EXTRACTION (Phase 5)
+// ============================================
+
+const INTENT_EXTRACTION_PROMPT = `Analyze this clinical question about MRD/ctDNA testing and extract structured intent.
+
+Return JSON with:
+- query_type: "clinical_guidance" | "coverage_policy" | "trial_evidence" | "test_comparison" | "general"
+- cancer_types: Array of cancer types mentioned (colorectal, breast, lung, etc.)
+- clinical_settings: Array like "surveillance", "treatment_decision", "adjuvant_therapy"
+- test_names: Specific test names mentioned (Signatera, Guardant, etc.)
+- payers: Specific payers mentioned (Medicare, Aetna, etc.)
+- time_context: "current" | "recent" | "any"
+- evidence_focus: "guidelines" | "trials" | "payer_coverage" | "all"
+- keywords: Array of key medical terms for text search
+
+Be concise. If uncertain, use empty arrays or "general".`;
+
+async function extractQueryIntent(queryText) {
+  try {
+    const claude = getAnthropic();
+    const response = await claude.messages.create({
+      model: HAIKU_MODEL,
+      max_tokens: 500,
+      messages: [
+        {
+          role: 'user',
+          content: `${INTENT_EXTRACTION_PROMPT}\n\nQuery: "${queryText}"`,
+        },
+      ],
+    });
+
+    const text = response.content[0]?.text || '{}';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const intent = JSON.parse(jsonMatch[0]);
+      logger.info('Extracted query intent', {
+        type: intent.query_type,
+        cancers: intent.cancer_types?.length || 0,
+        keywords: intent.keywords?.length || 0,
+      });
+      return intent;
+    }
+  } catch (error) {
+    logger.warn('Intent extraction failed, using defaults', { error: error.message });
+  }
+
+  // Default intent
+  return {
+    query_type: 'general',
+    cancer_types: [],
+    clinical_settings: [],
+    test_names: [],
+    payers: [],
+    time_context: 'any',
+    evidence_focus: 'all',
+    keywords: queryText.toLowerCase().split(/\s+/).filter(w => w.length > 3),
+  };
+}
+
+// Map query intent to source type filters
+function intentToSourceTypes(intent) {
+  const sourceTypes = [];
+
+  switch (intent.evidence_focus) {
+    case 'guidelines':
+      sourceTypes.push('nccn', 'asco', 'esmo', 'sitc', 'cap-amp');
+      break;
+    case 'trials':
+      sourceTypes.push('clinicaltrials', 'pubmed');
+      break;
+    case 'payer_coverage':
+      sourceTypes.push('payer-carelon', 'payer-moldx', 'payer-aetna', 'payer-cigna', 'payer-uhc');
+      break;
+    default:
+      // All sources
+      break;
+  }
+
+  // Add payer-specific if mentioned
+  if (intent.payers?.length > 0) {
+    for (const payer of intent.payers) {
+      const lowerPayer = payer.toLowerCase();
+      if (lowerPayer.includes('medicare') || lowerPayer.includes('moldx')) {
+        sourceTypes.push('payer-moldx');
+      } else if (lowerPayer.includes('carelon') || lowerPayer.includes('evicore')) {
+        sourceTypes.push('payer-carelon');
+      } else if (lowerPayer.includes('aetna')) {
+        sourceTypes.push('payer-aetna');
+      }
+    }
+  }
+
+  return [...new Set(sourceTypes)];
+}
+
+// ============================================
+// KEYWORD SEARCH (Phase 5)
+// ============================================
+
+async function keywordSearch(keywords, filters = {}, limit = 20) {
+  if (!keywords || keywords.length === 0) return [];
+
+  // Build tsquery from keywords
+  const tsQuery = keywords
+    .map(k => k.replace(/[^a-zA-Z0-9]/g, ''))
+    .filter(k => k.length > 2)
+    .join(' | ');
+
+  if (!tsQuery) return [];
+
+  let sql = `
+    SELECT
+      g.id,
+      g.title,
+      g.summary,
+      g.source_type,
+      g.source_id,
+      g.source_url,
+      g.evidence_type,
+      g.evidence_level,
+      g.publication_date,
+      g.decision_context,
+      g.direct_quotes,
+      ts_rank(
+        to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, '')),
+        to_tsquery('english', $1)
+      ) as text_rank
+    FROM mrd_guidance_items g
+    WHERE g.is_superseded = FALSE
+      AND to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, ''))
+          @@ to_tsquery('english', $1)
+  `;
+
+  const params = [tsQuery];
+  let paramIndex = 2;
+
+  if (filters.sourceTypes?.length > 0) {
+    sql += ` AND g.source_type = ANY($${paramIndex})`;
+    params.push(filters.sourceTypes);
+    paramIndex++;
+  }
+
+  if (filters.cancerType) {
+    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
+    params.push(filters.cancerType);
+    paramIndex++;
+  }
+
+  sql += ` ORDER BY text_rank DESC LIMIT $${paramIndex}`;
+  params.push(limit);
+
+  try {
+    const result = await query(sql, params);
+    return result.rows;
+  } catch (error) {
+    logger.warn('Keyword search failed', { error: error.message });
+    return [];
+  }
+}
+
+// ============================================
+// HYBRID SEARCH (Phase 5)
+// ============================================
+
+async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
+  // Get source type filters from intent
+  const sourceTypes = intentToSourceTypes(intent);
+  const enhancedFilters = {
+    ...filters,
+    sourceTypes: sourceTypes.length > 0 ? sourceTypes : undefined,
+    cancerType: intent.cancer_types?.[0] || filters.cancerType,
+  };
+
+  // Run both searches in parallel
+  const [vectorResults, keywordResults] = await Promise.all([
+    searchSimilarItems(queryEmbedding, enhancedFilters),
+    keywordSearch(intent.keywords, enhancedFilters),
+  ]);
+
+  // Merge results with boosting for items that appear in both
+  const resultMap = new Map();
+
+  // Add vector results
+  for (const item of vectorResults) {
+    resultMap.set(item.id, {
+      ...item,
+      vectorScore: parseFloat(item.similarity) || 0,
+      keywordScore: 0,
+    });
+  }
+
+  // Merge keyword results
+  for (const item of keywordResults) {
+    if (resultMap.has(item.id)) {
+      // Boost items found in both searches
+      const existing = resultMap.get(item.id);
+      existing.keywordScore = item.text_rank || 0;
+      existing.hybridScore = existing.vectorScore + KEYWORD_BOOST;
+      // Inherit decision_context and direct_quotes if available
+      if (item.decision_context) existing.decision_context = item.decision_context;
+      if (item.direct_quotes) existing.direct_quotes = item.direct_quotes;
+    } else {
+      resultMap.set(item.id, {
+        ...item,
+        vectorScore: 0,
+        keywordScore: item.text_rank || 0,
+        hybridScore: (item.text_rank || 0) * 0.5, // Lower weight for keyword-only
+      });
+    }
+  }
+
+  // Sort by hybrid score
+  const results = Array.from(resultMap.values())
+    .map(r => ({
+      ...r,
+      similarity: r.hybridScore || r.vectorScore || r.keywordScore * 0.5,
+    }))
+    .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore))
+    .slice(0, MAX_SOURCES);
+
+  logger.info('Hybrid search complete', {
+    vectorResults: vectorResults.length,
+    keywordResults: keywordResults.length,
+    merged: results.length,
+  });
+
+  return results;
 }
 
 // ============================================
@@ -312,11 +544,35 @@ function formatCitation(source, index) {
 
 function buildSourcesContext(sources) {
   return sources.map((s, i) => {
-    return `Source [${i + 1}]:
+    let context = `Source [${i + 1}]:
 Title: ${s.title}
 Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}
-Summary: ${s.summary || s.chunk_text}
----`;
+Summary: ${s.summary || s.chunk_text}`;
+
+    // Include direct quotes if available (Phase 5)
+    if (s.direct_quotes && Array.isArray(s.direct_quotes) && s.direct_quotes.length > 0) {
+      const quotes = typeof s.direct_quotes === 'string'
+        ? JSON.parse(s.direct_quotes)
+        : s.direct_quotes;
+      if (quotes.length > 0) {
+        context += `\nDirect Quote: "${quotes[0].text}"`;
+      }
+    }
+
+    // Include decision context if available (Phase 5)
+    if (s.decision_context) {
+      const dc = typeof s.decision_context === 'string'
+        ? JSON.parse(s.decision_context)
+        : s.decision_context;
+      if (dc.decision_point) {
+        context += `\nDecision Point: ${dc.decision_point}`;
+      }
+      if (dc.limitations_noted?.length > 0) {
+        context += `\nLimitations: ${dc.limitations_noted.join('; ')}`;
+      }
+    }
+
+    return context + '\n---';
   }).join('\n\n');
 }
 
@@ -419,11 +675,14 @@ async function handleMRDChat(req, res) {
       }));
     }
 
-    // Step 1: Embed the query
+    // Step 1: Extract query intent (Phase 5)
+    const intent = await extractQueryIntent(queryText);
+
+    // Step 2: Embed the query
     const queryEmbedding = await embedQuery(queryText);
 
-    // Step 2: Vector search
-    const sources = await searchSimilarItems(queryEmbedding, filters);
+    // Step 3: Hybrid search (Phase 5)
+    const sources = await hybridSearch(queryText, queryEmbedding, intent, filters);
 
     if (sources.length === 0) {
       res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -467,17 +726,32 @@ Remember:
 
     const answer = response.content[0]?.text || 'Unable to generate response.';
 
-    // Step 5: Format sources
-    const formattedSources = sources.map((s, i) => ({
-      index: i + 1,
-      id: s.id,
-      title: s.title,
-      citation: formatCitation(s, i + 1),
-      url: s.source_url,
-      evidenceType: s.evidence_type,
-      evidenceLevel: s.evidence_level,
-      similarity: parseFloat(s.similarity).toFixed(3),
-    }));
+    // Step 5: Format sources with quotes (Phase 5)
+    const formattedSources = sources.map((s, i) => {
+      const source = {
+        index: i + 1,
+        id: s.id,
+        title: s.title,
+        citation: formatCitation(s, i + 1),
+        url: s.source_url,
+        sourceType: s.source_type,
+        evidenceType: s.evidence_type,
+        evidenceLevel: s.evidence_level,
+        similarity: parseFloat(s.similarity || 0).toFixed(3),
+      };
+
+      // Include direct quote if available
+      if (s.direct_quotes) {
+        const quotes = typeof s.direct_quotes === 'string'
+          ? JSON.parse(s.direct_quotes)
+          : s.direct_quotes;
+        if (quotes && quotes.length > 0) {
+          source.directQuote = quotes[0].text;
+        }
+      }
+
+      return source;
+    });
 
     // Step 6: Get related items
     const citedIds = sources.map(s => s.id);
@@ -499,6 +773,11 @@ Remember:
         model: SONNET_MODEL,
         sourcesRetrieved: sources.length,
         queryLength: queryText.length,
+        intent: {
+          type: intent.query_type,
+          cancerTypes: intent.cancer_types,
+          evidenceFocus: intent.evidence_focus,
+        },
       },
     }));
 
