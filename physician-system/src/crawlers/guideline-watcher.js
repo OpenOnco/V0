@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { query } from '../db/client.js';
-import { processSocietyGuideline } from './society-processor.js';
+import { processSocietyGuideline } from './processors/society.js';
 import { createLogger } from '../utils/logger.js';
 
 const logger = createLogger('guideline-watcher');
