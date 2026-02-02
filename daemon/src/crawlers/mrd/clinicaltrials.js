@@ -71,6 +71,35 @@ const PRIORITY_TRIALS = [
 ];
 
 /**
+ * Filter for solid tumor interventional trials
+ * @param {Object} study - Study object from API
+ * @returns {boolean} - True if study should be included
+ */
+function isRelevantTrial(study) {
+  const protocol = study.protocolSection || {};
+  const conditions = protocol.conditionsModule?.conditions || [];
+  const conditionText = conditions.join(' ').toLowerCase();
+  const title = (protocol.identificationModule?.briefTitle || '').toLowerCase();
+  const fullText = conditionText + ' ' + title;
+  const studyType = protocol.designModule?.studyType;
+
+  // Only include interventional studies
+  if (studyType && studyType !== 'INTERVENTIONAL') {
+    return false;
+  }
+
+  // Exclude hematologic malignancies
+  const hemeTerms = ['leukemia', 'lymphoma', 'myeloma', 'myeloid', 'myelodysplastic'];
+  for (const term of hemeTerms) {
+    if (fullText.includes(term)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Search ClinicalTrials.gov for MRD trials
  * @param {Object} options - Search options
  * @returns {Promise<Object[]>}
@@ -81,21 +110,18 @@ export async function searchTrials(options = {}) {
     maxResults = 500,
   } = options;
 
-  // Build query for MRD/ctDNA in solid tumors
-  const queryParts = MRD_CONDITIONS.map((c) => `"${c}"`).join(' OR ');
-  const cancerFilter = SOLID_TUMOR_TERMS.map((c) => `"${c}"`).join(' OR ');
+  // Use simpler search - ctDNA + cancer
+  // The ClinicalTrials.gov v2 API has limited filter support
+  const searchQuery = 'ctDNA cancer';
 
   const params = new URLSearchParams({
     format: 'json',
-    'query.cond': `(${queryParts}) AND (${cancerFilter})`,
-    'query.term': 'NOT leukemia NOT lymphoma NOT myeloma', // Exclude heme
-    'filter.overallStatus': 'RECRUITING,ACTIVE_NOT_RECRUITING,ENROLLING_BY_INVITATION,NOT_YET_RECRUITING,COMPLETED',
-    'filter.studyType': 'INTERVENTIONAL',
+    'query.cond': searchQuery,
     pageSize: pageSize.toString(),
     countTotal: 'true',
   });
 
-  logger.info('Searching ClinicalTrials.gov', { queryParts: queryParts.substring(0, 100) });
+  logger.info('Searching ClinicalTrials.gov', { query: searchQuery });
 
   const url = `${BASE_URL}/studies?${params}`;
   let response;
@@ -126,9 +152,15 @@ export async function searchTrials(options = {}) {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
-  logger.info('Fetched all pages', { total: studies.length });
+  // Post-filter to exclude non-interventional and hematologic malignancies
+  const relevantStudies = studies.filter(isRelevantTrial);
+  logger.info('Filtered results', {
+    total: studies.length,
+    relevant: relevantStudies.length,
+    excluded: studies.length - relevantStudies.length,
+  });
 
-  return studies.slice(0, maxResults);
+  return relevantStudies.slice(0, maxResults);
 }
 
 /**
