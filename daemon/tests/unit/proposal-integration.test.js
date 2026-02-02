@@ -4,15 +4,40 @@
  * Tests the full pipeline from discovery → proposal creation
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
+import { mkdir, rm } from 'fs/promises';
 import { VendorCrawler } from '../../src/crawlers/vendor.js';
 import { DISCOVERY_TYPES, SOURCES } from '../../src/config.js';
-import { listProposals, deleteProposal } from '../../src/proposals/queue.js';
+import {
+  listProposals,
+  deleteProposal,
+  setProposalDir,
+  resetProposalDir,
+} from '../../src/proposals/queue.js';
 import { PROPOSAL_TYPES, PROPOSAL_STATES } from '../../src/proposals/schema.js';
+
+// Use temp directory for test proposals to avoid polluting production data
+const TEST_PROPOSAL_DIR = 'tests/temp/proposals';
 
 describe('Proposal Integration', () => {
   let crawler;
   let createdProposalIds = [];
+
+  beforeAll(async () => {
+    // Redirect proposals to temp directory
+    setProposalDir(TEST_PROPOSAL_DIR);
+    await mkdir(TEST_PROPOSAL_DIR, { recursive: true });
+  });
+
+  afterAll(async () => {
+    // Reset to default and clean up temp directory
+    resetProposalDir();
+    try {
+      await rm(TEST_PROPOSAL_DIR, { recursive: true, force: true });
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+  });
 
   beforeEach(() => {
     crawler = new VendorCrawler();

@@ -21,8 +21,32 @@ import {
 
 const logger = createLogger('proposals');
 
-// Base path for proposal storage
-const PROPOSALS_DIR = resolve(process.cwd(), 'data', 'proposals');
+// Base path for proposal storage (configurable for testing)
+const DEFAULT_PROPOSALS_DIR = resolve(process.cwd(), 'data', 'proposals');
+let proposalsDir = DEFAULT_PROPOSALS_DIR;
+
+/**
+ * Set custom proposal directory (for testing)
+ * @param {string} dir - Directory path
+ */
+export function setProposalDir(dir) {
+  proposalsDir = dir;
+}
+
+/**
+ * Get current proposal directory
+ * @returns {string}
+ */
+export function getProposalDir() {
+  return proposalsDir;
+}
+
+/**
+ * Reset proposal directory to default
+ */
+export function resetProposalDir() {
+  proposalsDir = DEFAULT_PROPOSALS_DIR;
+}
 
 // Subdirectories by type
 const TYPE_DIRS = {
@@ -36,7 +60,7 @@ const TYPE_DIRS = {
  */
 async function ensureDirectories() {
   for (const dir of Object.values(TYPE_DIRS)) {
-    const path = join(PROPOSALS_DIR, dir);
+    const path = join(proposalsDir, dir);
     if (!existsSync(path)) {
       await mkdir(path, { recursive: true });
     }
@@ -53,7 +77,7 @@ function getTypeDir(type) {
   if (!subdir) {
     throw new Error(`Unknown proposal type: ${type}`);
   }
-  return join(PROPOSALS_DIR, subdir);
+  return join(proposalsDir, subdir);
 }
 
 /**
@@ -109,7 +133,7 @@ export async function getProposal(id) {
   if (!type) {
     // Search all directories
     for (const dir of Object.values(TYPE_DIRS)) {
-      const filePath = join(PROPOSALS_DIR, dir, `${id}.json`);
+      const filePath = join(proposalsDir, dir, `${id}.json`);
       if (existsSync(filePath)) {
         const content = await readFile(filePath, 'utf-8');
         return JSON.parse(content);
@@ -167,7 +191,7 @@ export async function listProposals(options = {}) {
   const proposals = [];
 
   // Determine which directories to search
-  const dirsToSearch = type ? [getTypeDir(type)] : Object.values(TYPE_DIRS).map(d => join(PROPOSALS_DIR, d));
+  const dirsToSearch = type ? [getTypeDir(type)] : Object.values(TYPE_DIRS).map(d => join(proposalsDir, d));
 
   for (const dir of dirsToSearch) {
     if (!existsSync(dir)) continue;
