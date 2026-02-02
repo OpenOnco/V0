@@ -400,8 +400,28 @@ Remember:
 }
 
 async function handleHealth(req, res) {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ status: 'ok', service: 'mrd-chat-api' }));
+  try {
+    // Get database stats
+    const [guidanceResult, trialsResult, embeddingsResult] = await Promise.all([
+      query('SELECT COUNT(*) as count FROM mrd_guidance_items'),
+      query('SELECT COUNT(*) as count FROM mrd_clinical_trials'),
+      query('SELECT COUNT(*) as count FROM mrd_item_embeddings'),
+    ]);
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      status: 'ok',
+      service: 'mrd-chat-api',
+      database: {
+        guidanceItems: parseInt(guidanceResult.rows[0].count),
+        clinicalTrials: parseInt(trialsResult.rows[0].count),
+        embeddings: parseInt(embeddingsResult.rows[0].count),
+      },
+    }));
+  } catch (error) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ status: 'ok', service: 'mrd-chat-api', database: 'error' }));
+  }
 }
 
 async function handleTriggerCrawl(req, res) {
