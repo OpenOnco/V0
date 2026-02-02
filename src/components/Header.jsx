@@ -33,16 +33,26 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreview
   <>
   <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-      <div className="cursor-pointer hidden sm:flex items-center flex-shrink-0 gap-2" onClick={() => handleNavigate('home')}>
+      <button
+        type="button"
+        className="cursor-pointer hidden sm:flex items-center flex-shrink-0 gap-2 bg-transparent border-none p-0"
+        onClick={() => handleNavigate('home')}
+        aria-label="Go to home page"
+      >
         <img src="/OO_logo_2.png" alt="OpenOnco" className="h-14" />
         {persona === 'patient' && showPreviewBanner && (
           <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full border border-amber-300">
             Preview
           </span>
         )}
-      </div>
+      </button>
       <div className="sm:hidden flex items-center gap-2">
-        <span className="text-xl font-bold text-[#2A63A4] cursor-pointer" onClick={() => handleNavigate('home')}>OpenOnco</span>
+        <button
+          type="button"
+          className="text-xl font-bold text-[#2A63A4] cursor-pointer bg-transparent border-none p-0"
+          onClick={() => handleNavigate('home')}
+          aria-label="Go to home page"
+        >OpenOnco</button>
         {persona === 'patient' && showPreviewBanner && (
           <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-semibold rounded-full border border-amber-300">
             Preview

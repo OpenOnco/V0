@@ -233,6 +233,7 @@ const SimpleMarkdown = ({ text, className = '', onTestClick }) => {
 const Chat = ({
   persona = 'patient',
   testData = {},
+  category = 'all',
   variant = 'full',
   showModeToggle = false,
   resizable = true,

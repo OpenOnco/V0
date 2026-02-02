@@ -51,7 +51,15 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         </div>
       )}
       {/* Header - clickable to show detail modal */}
-      <div className="cursor-pointer flex-1" data-testid="test-card-clickable" onClick={() => onShowDetail && onShowDetail(test)}>
+      <div
+        className="cursor-pointer flex-1"
+        data-testid="test-card-clickable"
+        onClick={() => onShowDetail && onShowDetail(test)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onShowDetail && onShowDetail(test); } }}
+        role="button"
+        tabIndex={0}
+        aria-label={`View details for ${test.name}`}
+      >
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1 flex-wrap">

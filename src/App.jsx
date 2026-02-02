@@ -1561,9 +1561,7 @@ export default function App() {
               key={wizardResetKey}
               onNavigate={handleNavigate}
               onBack={null}  // No back button on home
-              onComplete={(results) => {
-                console.log('WatchingWizard completed:', results);
-              }}
+              onComplete={() => {}}
               testData={mrdTestsForWizard}
             />
           );
@@ -1588,9 +1586,7 @@ export default function App() {
           key={wizardResetKey}
           onNavigate={handleNavigate}
           onBack={null}
-          onComplete={(results) => {
-            console.log('WatchingWizard completed:', results);
-          }}
+          onComplete={() => {}}
           testData={mrdTestsForWizard}
         />
       );

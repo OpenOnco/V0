@@ -3,6 +3,9 @@ import crypto from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Admin email for form submissions - use env var in production
+const ADMIN_EMAIL = process.env.OPENONCO_ADMIN_EMAIL || 'alexgdickinson@gmail.com';
+
 // Escape HTML to prevent XSS in email templates
 function escapeHtml(str) {
   if (!str || typeof str !== 'string') return str || '';
@@ -179,7 +182,7 @@ export default async function handler(req, res) {
     try {
       await resend.emails.send({
         from: 'OpenOnco <noreply@openonco.org>',
-        to: 'alexgdickinson@gmail.com',
+        to: ADMIN_EMAIL,
         replyTo: submitterEmail,
         subject: subject,
         html: `
@@ -291,7 +294,7 @@ export default async function handler(req, res) {
   try {
     await resend.emails.send({
       from: 'OpenOnco <noreply@openonco.org>',
-      to: 'alexgdickinson@gmail.com',
+      to: ADMIN_EMAIL,
       replyTo: submitterEmail,
       subject: subject,
       html: `
