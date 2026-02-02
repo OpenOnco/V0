@@ -18,6 +18,7 @@ import { getQueueStatus } from './queue/index.js';
 import { getHealthSummary } from './health.js';
 import { initializeTestDictionary } from './data/test-dictionary.js';
 import { initializeCLFS } from './utils/medicare-rates.js';
+import { startServer, stopServer } from './server.js';
 
 const logger = createLogger('main');
 
@@ -33,6 +34,9 @@ async function shutdown(signal) {
   try {
     stopScheduler();
     logger.info('Scheduler stopped');
+
+    await stopServer();
+    logger.info('HTTP server stopped');
 
     // Give time for any in-flight operations
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -112,6 +116,9 @@ async function main() {
 
     // Start the scheduler
     startScheduler();
+
+    // Start the HTTP server for MRD Chat API
+    startServer();
 
     // Log initial status
     const queueStatus = await getQueueStatus();
