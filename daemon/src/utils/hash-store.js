@@ -6,6 +6,11 @@
  * - Query by URL, payer, date
  * - Automatic migration from JSON
  * - Content snapshots for diffing
+ *
+ * v2 additions:
+ * - Multi-hash storage (content, metadata, criteria, codes)
+ * - Change priority tracking
+ * - Document type classification
  */
 
 import Database from 'better-sqlite3';
@@ -13,6 +18,7 @@ import { readFile, mkdir } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { existsSync } from 'fs';
 import { logger } from './logger.js';
+import { computeMultiHash, compareMultiHash, getChangeSummary } from './multi-hash.js';
 
 // Database path
 const DB_PATH = resolve(process.cwd(), 'data', 'payer-hashes.db');
@@ -126,6 +132,101 @@ export async function initHashStore() {
     CREATE INDEX IF NOT EXISTS idx_discovered_payer ON discovered_policies(payer_id);
     CREATE INDEX IF NOT EXISTS idx_discovered_status ON discovered_policies(status);
     CREATE INDEX IF NOT EXISTS idx_discovered_url ON discovered_policies(url);
+
+    -- =========================================================================
+    -- v2: Multi-hash storage for granular change detection
+    -- =========================================================================
+    CREATE TABLE IF NOT EXISTS policy_hashes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      policy_id TEXT UNIQUE NOT NULL,
+      payer_id TEXT NOT NULL,
+      url TEXT NOT NULL,
+      doc_type TEXT,
+
+      -- Four hashes for granular change detection
+      content_hash TEXT,
+      metadata_hash TEXT,
+      criteria_hash TEXT,
+      codes_hash TEXT,
+
+      -- Extracted metadata (for quick access without re-parsing)
+      effective_date TEXT,
+      revision_date TEXT,
+      policy_number TEXT,
+      version TEXT,
+
+      -- Extracted codes (JSON array)
+      codes_cpt TEXT,
+      codes_pla TEXT,
+      codes_hcpcs TEXT,
+
+      -- Named tests found in document (JSON array)
+      named_tests TEXT,
+
+      -- Coverage stance from last analysis
+      stance TEXT,
+
+      -- Change tracking
+      last_fetched TEXT,
+      last_changed TEXT,
+      last_change_priority TEXT,
+      last_change_summary TEXT,
+
+      -- Content snapshot (truncated)
+      content_snippet TEXT,
+      criteria_section TEXT,
+
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_policy_hashes_payer ON policy_hashes(payer_id);
+    CREATE INDEX IF NOT EXISTS idx_policy_hashes_doc_type ON policy_hashes(doc_type);
+    CREATE INDEX IF NOT EXISTS idx_policy_hashes_stance ON policy_hashes(stance);
+    CREATE INDEX IF NOT EXISTS idx_policy_hashes_changed ON policy_hashes(last_changed);
+
+    -- =========================================================================
+    -- v2: Coverage assertions (layered coverage model)
+    -- =========================================================================
+    CREATE TABLE IF NOT EXISTS coverage_assertions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      assertion_id TEXT UNIQUE NOT NULL,
+      payer_id TEXT NOT NULL,
+      test_id TEXT NOT NULL,
+
+      -- Layer: policy_stance | um_criteria | delegation | overlay
+      layer TEXT NOT NULL,
+
+      -- Status: supports | restricts | denies | unclear
+      status TEXT NOT NULL,
+
+      -- Criteria details (JSON)
+      criteria TEXT,
+
+      -- Source document reference
+      source_policy_id TEXT,
+      source_url TEXT,
+      source_citation TEXT,
+      source_quote TEXT,
+
+      -- Validity
+      effective_date TEXT,
+      expiration_date TEXT,
+      confidence REAL,
+
+      -- Review status
+      review_status TEXT DEFAULT 'pending',
+      reviewed_at TEXT,
+      reviewed_by TEXT,
+
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_assertions_payer ON coverage_assertions(payer_id);
+    CREATE INDEX IF NOT EXISTS idx_assertions_test ON coverage_assertions(test_id);
+    CREATE INDEX IF NOT EXISTS idx_assertions_layer ON coverage_assertions(layer);
+    CREATE INDEX IF NOT EXISTS idx_assertions_status ON coverage_assertions(status);
   `);
 
   // Migrate from JSON if exists
@@ -575,6 +676,424 @@ export function getChangedPolicies(since) {
 }
 
 // =============================================================================
+// v2: MULTI-HASH STORAGE
+// =============================================================================
+
+/**
+ * Get multi-hash record for a policy
+ * @param {string} policyId - Policy ID
+ * @returns {Object|null} Hash record or null
+ */
+export function getPolicyHashes(policyId) {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const row = db.prepare(`
+    SELECT * FROM policy_hashes WHERE policy_id = ?
+  `).get(policyId);
+
+  if (!row) return null;
+
+  return {
+    policyId: row.policy_id,
+    payerId: row.payer_id,
+    url: row.url,
+    docType: row.doc_type,
+    hashes: {
+      contentHash: row.content_hash,
+      metadataHash: row.metadata_hash,
+      criteriaHash: row.criteria_hash,
+      codesHash: row.codes_hash,
+    },
+    metadata: {
+      effectiveDate: row.effective_date,
+      revisionDate: row.revision_date,
+      policyNumber: row.policy_number,
+      version: row.version,
+    },
+    codes: {
+      cpt: JSON.parse(row.codes_cpt || '[]'),
+      pla: JSON.parse(row.codes_pla || '[]'),
+      hcpcs: JSON.parse(row.codes_hcpcs || '[]'),
+    },
+    namedTests: JSON.parse(row.named_tests || '[]'),
+    stance: row.stance,
+    lastFetched: row.last_fetched,
+    lastChanged: row.last_changed,
+    lastChangePriority: row.last_change_priority,
+    lastChangeSummary: row.last_change_summary,
+    contentSnippet: row.content_snippet,
+    criteriaSection: row.criteria_section,
+  };
+}
+
+/**
+ * Upsert multi-hash record for a policy
+ * @param {Object} data - Policy hash data
+ * @returns {Object} { changed, priority, changedHashes }
+ */
+export function upsertPolicyHashes(data) {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const now = new Date().toISOString();
+
+  // Get existing record to compare
+  const existing = getPolicyHashes(data.policyId);
+
+  // Compare hashes
+  const comparison = existing
+    ? compareMultiHash(existing.hashes, data.hashes)
+    : { changed: true, priority: 'high', changedHashes: ['new_document'], analysis: 'New document' };
+
+  const changeSummary = getChangeSummary(comparison);
+
+  db.prepare(`
+    INSERT INTO policy_hashes (
+      policy_id, payer_id, url, doc_type,
+      content_hash, metadata_hash, criteria_hash, codes_hash,
+      effective_date, revision_date, policy_number, version,
+      codes_cpt, codes_pla, codes_hcpcs,
+      named_tests, stance,
+      last_fetched, last_changed, last_change_priority, last_change_summary,
+      content_snippet, criteria_section,
+      updated_at
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(policy_id) DO UPDATE SET
+      url = excluded.url,
+      doc_type = excluded.doc_type,
+      content_hash = excluded.content_hash,
+      metadata_hash = excluded.metadata_hash,
+      criteria_hash = excluded.criteria_hash,
+      codes_hash = excluded.codes_hash,
+      effective_date = excluded.effective_date,
+      revision_date = excluded.revision_date,
+      policy_number = excluded.policy_number,
+      version = excluded.version,
+      codes_cpt = excluded.codes_cpt,
+      codes_pla = excluded.codes_pla,
+      codes_hcpcs = excluded.codes_hcpcs,
+      named_tests = excluded.named_tests,
+      stance = excluded.stance,
+      last_fetched = excluded.last_fetched,
+      last_changed = CASE
+        WHEN policy_hashes.content_hash != excluded.content_hash
+          OR policy_hashes.criteria_hash != excluded.criteria_hash
+          OR policy_hashes.codes_hash != excluded.codes_hash
+          OR policy_hashes.metadata_hash != excluded.metadata_hash
+        THEN excluded.last_fetched
+        ELSE policy_hashes.last_changed
+      END,
+      last_change_priority = CASE
+        WHEN policy_hashes.content_hash != excluded.content_hash
+          OR policy_hashes.criteria_hash != excluded.criteria_hash
+          OR policy_hashes.codes_hash != excluded.codes_hash
+          OR policy_hashes.metadata_hash != excluded.metadata_hash
+        THEN excluded.last_change_priority
+        ELSE policy_hashes.last_change_priority
+      END,
+      last_change_summary = CASE
+        WHEN policy_hashes.content_hash != excluded.content_hash
+          OR policy_hashes.criteria_hash != excluded.criteria_hash
+          OR policy_hashes.codes_hash != excluded.codes_hash
+          OR policy_hashes.metadata_hash != excluded.metadata_hash
+        THEN excluded.last_change_summary
+        ELSE policy_hashes.last_change_summary
+      END,
+      content_snippet = excluded.content_snippet,
+      criteria_section = excluded.criteria_section,
+      updated_at = CURRENT_TIMESTAMP
+  `).run(
+    data.policyId,
+    data.payerId,
+    data.url,
+    data.docType || null,
+    data.hashes?.contentHash || null,
+    data.hashes?.metadataHash || null,
+    data.hashes?.criteriaHash || null,
+    data.hashes?.codesHash || null,
+    data.metadata?.effectiveDate || null,
+    data.metadata?.revisionDate || null,
+    data.metadata?.policyNumber || null,
+    data.metadata?.version || null,
+    JSON.stringify(data.codes?.cpt || []),
+    JSON.stringify(data.codes?.pla || []),
+    JSON.stringify(data.codes?.hcpcs || []),
+    JSON.stringify(data.namedTests || []),
+    data.stance || null,
+    now,
+    comparison.changed ? now : (existing?.lastChanged || now),
+    comparison.priority,
+    changeSummary,
+    data.contentSnippet?.slice(0, MAX_CONTENT_SIZE) || null,
+    data.criteriaSection?.slice(0, MAX_CONTENT_SIZE) || null,
+    now
+  );
+
+  return comparison;
+}
+
+/**
+ * Get all policy hashes with high-priority recent changes
+ * @param {string} since - ISO date string
+ * @param {string} minPriority - 'high', 'medium', or 'low'
+ * @returns {Array} Changed policies
+ */
+export function getRecentChanges(since, minPriority = 'medium') {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const priorities = minPriority === 'high' ? ['high']
+    : minPriority === 'medium' ? ['high', 'medium']
+    : ['high', 'medium', 'low'];
+
+  const placeholders = priorities.map(() => '?').join(',');
+
+  return db.prepare(`
+    SELECT policy_id, payer_id, url, doc_type, stance,
+           last_changed, last_change_priority, last_change_summary
+    FROM policy_hashes
+    WHERE last_changed >= ?
+      AND last_change_priority IN (${placeholders})
+    ORDER BY
+      CASE last_change_priority
+        WHEN 'high' THEN 1
+        WHEN 'medium' THEN 2
+        WHEN 'low' THEN 3
+      END,
+      last_changed DESC
+  `).all(since, ...priorities);
+}
+
+/**
+ * Get multi-hash summary statistics
+ * @returns {Object} Statistics
+ */
+export function getPolicyHashStats() {
+  if (!db) throw new Error('Hash store not initialized');
+
+  return db.prepare(`
+    SELECT
+      COUNT(*) as total_policies,
+      COUNT(DISTINCT payer_id) as total_payers,
+      SUM(CASE WHEN doc_type = 'medical_policy' THEN 1 ELSE 0 END) as medical_policies,
+      SUM(CASE WHEN doc_type = 'um_criteria' THEN 1 ELSE 0 END) as um_criteria,
+      SUM(CASE WHEN doc_type = 'lbm_guideline' THEN 1 ELSE 0 END) as lbm_guidelines,
+      SUM(CASE WHEN stance = 'supports' THEN 1 ELSE 0 END) as supports,
+      SUM(CASE WHEN stance = 'denies' THEN 1 ELSE 0 END) as denies,
+      SUM(CASE WHEN stance = 'restricts' THEN 1 ELSE 0 END) as restricts,
+      SUM(CASE WHEN last_change_priority = 'high' AND last_changed >= date('now', '-7 days') THEN 1 ELSE 0 END) as high_priority_week
+    FROM policy_hashes
+  `).get();
+}
+
+// =============================================================================
+// v2: COVERAGE ASSERTIONS
+// =============================================================================
+
+/**
+ * Generate a coverage assertion ID
+ * @param {string} payerId - Payer ID
+ * @param {string} testId - Test ID
+ * @param {string} layer - Coverage layer
+ * @returns {string} Unique assertion ID
+ */
+function generateAssertionId(payerId, testId, layer) {
+  const timestamp = Date.now().toString(36);
+  return `ca_${payerId}_${testId}_${layer}_${timestamp}`;
+}
+
+/**
+ * Upsert a coverage assertion
+ * @param {Object} assertion - Coverage assertion data
+ * @returns {string} Assertion ID
+ */
+export function upsertCoverageAssertion(assertion) {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const assertionId = assertion.assertionId ||
+    generateAssertionId(assertion.payerId, assertion.testId, assertion.layer);
+
+  const now = new Date().toISOString();
+
+  db.prepare(`
+    INSERT INTO coverage_assertions (
+      assertion_id, payer_id, test_id, layer, status,
+      criteria, source_policy_id, source_url, source_citation, source_quote,
+      effective_date, expiration_date, confidence,
+      review_status, updated_at
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
+    ON CONFLICT(assertion_id) DO UPDATE SET
+      status = excluded.status,
+      criteria = excluded.criteria,
+      source_policy_id = excluded.source_policy_id,
+      source_url = excluded.source_url,
+      source_citation = excluded.source_citation,
+      source_quote = excluded.source_quote,
+      effective_date = excluded.effective_date,
+      expiration_date = excluded.expiration_date,
+      confidence = excluded.confidence,
+      updated_at = CURRENT_TIMESTAMP
+  `).run(
+    assertionId,
+    assertion.payerId,
+    assertion.testId,
+    assertion.layer,
+    assertion.status,
+    JSON.stringify(assertion.criteria || {}),
+    assertion.sourcePolicyId || null,
+    assertion.sourceUrl || null,
+    assertion.sourceCitation || null,
+    assertion.sourceQuote || null,
+    assertion.effectiveDate || null,
+    assertion.expirationDate || null,
+    assertion.confidence || null,
+    now
+  );
+
+  return assertionId;
+}
+
+/**
+ * Get coverage assertions for a test
+ * @param {string} testId - Test ID
+ * @returns {Array} Coverage assertions by layer
+ */
+export function getAssertionsForTest(testId) {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const rows = db.prepare(`
+    SELECT * FROM coverage_assertions
+    WHERE test_id = ?
+    ORDER BY
+      CASE layer
+        WHEN 'um_criteria' THEN 1
+        WHEN 'lbm_guideline' THEN 2
+        WHEN 'delegation' THEN 3
+        WHEN 'policy_stance' THEN 4
+        WHEN 'overlay' THEN 5
+      END,
+      confidence DESC
+  `).all(testId);
+
+  return rows.map(row => ({
+    assertionId: row.assertion_id,
+    payerId: row.payer_id,
+    testId: row.test_id,
+    layer: row.layer,
+    status: row.status,
+    criteria: JSON.parse(row.criteria || '{}'),
+    sourcePolicyId: row.source_policy_id,
+    sourceUrl: row.source_url,
+    sourceCitation: row.source_citation,
+    sourceQuote: row.source_quote,
+    effectiveDate: row.effective_date,
+    expirationDate: row.expiration_date,
+    confidence: row.confidence,
+    reviewStatus: row.review_status,
+    reviewedAt: row.reviewed_at,
+    reviewedBy: row.reviewed_by,
+  }));
+}
+
+/**
+ * Get coverage assertions for a payer
+ * @param {string} payerId - Payer ID
+ * @returns {Array} Coverage assertions
+ */
+export function getAssertionsForPayer(payerId) {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const rows = db.prepare(`
+    SELECT * FROM coverage_assertions
+    WHERE payer_id = ?
+    ORDER BY test_id, layer
+  `).all(payerId);
+
+  return rows.map(row => ({
+    assertionId: row.assertion_id,
+    payerId: row.payer_id,
+    testId: row.test_id,
+    layer: row.layer,
+    status: row.status,
+    criteria: JSON.parse(row.criteria || '{}'),
+    confidence: row.confidence,
+    reviewStatus: row.review_status,
+  }));
+}
+
+/**
+ * Get conflicting assertions (same test+payer with different statuses)
+ * @returns {Array} Conflicting assertion groups
+ */
+export function getConflictingAssertions() {
+  if (!db) throw new Error('Hash store not initialized');
+
+  // Find test+payer combinations with conflicting statuses
+  const conflicts = db.prepare(`
+    SELECT payer_id, test_id, GROUP_CONCAT(DISTINCT status) as statuses,
+           COUNT(DISTINCT status) as status_count
+    FROM coverage_assertions
+    WHERE review_status = 'pending'
+    GROUP BY payer_id, test_id
+    HAVING COUNT(DISTINCT status) > 1
+      AND (statuses LIKE '%supports%' AND (statuses LIKE '%denies%' OR statuses LIKE '%restricts%'))
+  `).all();
+
+  // For each conflict, get all assertions
+  return conflicts.map(conflict => ({
+    payerId: conflict.payer_id,
+    testId: conflict.test_id,
+    statuses: conflict.statuses.split(','),
+    assertions: getAssertionsForTest(conflict.test_id)
+      .filter(a => a.payerId === conflict.payer_id),
+  }));
+}
+
+/**
+ * Update assertion review status
+ * @param {string} assertionId - Assertion ID
+ * @param {string} status - 'approved' | 'rejected' | 'needs_review'
+ * @param {string} reviewedBy - Reviewer name
+ * @returns {boolean} Success
+ */
+export function reviewAssertion(assertionId, status, reviewedBy = null) {
+  if (!db) throw new Error('Hash store not initialized');
+
+  const now = new Date().toISOString();
+
+  const result = db.prepare(`
+    UPDATE coverage_assertions
+    SET review_status = ?, reviewed_at = ?, reviewed_by = ?, updated_at = ?
+    WHERE assertion_id = ?
+  `).run(status, now, reviewedBy, now, assertionId);
+
+  return result.changes > 0;
+}
+
+/**
+ * Get assertion statistics
+ * @returns {Object} Statistics
+ */
+export function getAssertionStats() {
+  if (!db) throw new Error('Hash store not initialized');
+
+  return db.prepare(`
+    SELECT
+      COUNT(*) as total,
+      COUNT(DISTINCT test_id) as tests,
+      COUNT(DISTINCT payer_id) as payers,
+      SUM(CASE WHEN status = 'supports' THEN 1 ELSE 0 END) as supports,
+      SUM(CASE WHEN status = 'denies' THEN 1 ELSE 0 END) as denies,
+      SUM(CASE WHEN status = 'restricts' THEN 1 ELSE 0 END) as restricts,
+      SUM(CASE WHEN status = 'unclear' THEN 1 ELSE 0 END) as unclear,
+      SUM(CASE WHEN review_status = 'pending' THEN 1 ELSE 0 END) as pending_review,
+      SUM(CASE WHEN layer = 'um_criteria' THEN 1 ELSE 0 END) as um_criteria,
+      SUM(CASE WHEN layer = 'lbm_guideline' THEN 1 ELSE 0 END) as lbm_guidelines
+    FROM coverage_assertions
+  `).get();
+}
+
+// =============================================================================
 // DISCOVERED POLICIES (Staging for automated discovery)
 // =============================================================================
 
@@ -770,5 +1289,17 @@ export default {
   updateDiscoveryStatus,
   getDiscovery,
   getDiscoveryStats,
+  // v2: Multi-hash functions
+  getPolicyHashes,
+  upsertPolicyHashes,
+  getRecentChanges,
+  getPolicyHashStats,
+  // v2: Coverage assertion functions
+  upsertCoverageAssertion,
+  getAssertionsForTest,
+  getAssertionsForPayer,
+  getConflictingAssertions,
+  reviewAssertion,
+  getAssertionStats,
   closeHashStore,
 };
