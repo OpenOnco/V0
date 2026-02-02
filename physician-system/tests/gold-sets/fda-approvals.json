@@ -1,0 +1,40 @@
+{
+  "source": "fda-approvals",
+  "version": "2026-02",
+  "description": "Gold set for FDA ctDNA/liquid biopsy device and drug approvals",
+  "expectedExtractions": [
+    {
+      "id": "fda-signatera-1",
+      "type": "device_approval",
+      "cancerType": "colorectal",
+      "clinicalSetting": "surveillance",
+      "keyQuote": "Signatera FDA breakthrough device designation",
+      "mustContain": ["Signatera", "FDA"],
+      "mustNotContain": []
+    },
+    {
+      "id": "fda-guardant-1",
+      "type": "device_approval",
+      "cancerType": "pan-cancer",
+      "clinicalSetting": "treatment_selection",
+      "keyQuote": "Guardant360 CDx FDA approval",
+      "mustContain": ["Guardant", "FDA", "CDx"],
+      "mustNotContain": []
+    },
+    {
+      "id": "fda-foundation-1",
+      "type": "device_approval",
+      "cancerType": "pan-cancer",
+      "clinicalSetting": "treatment_selection",
+      "keyQuote": "FoundationOne Liquid CDx approval",
+      "mustContain": ["FoundationOne", "Liquid", "FDA"],
+      "mustNotContain": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 3,
+    "targetAccuracy": 0.8
+  }
+}

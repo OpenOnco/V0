@@ -1,0 +1,43 @@
+{
+  "source": "nccn-bladder",
+  "version": "1.2025",
+  "description": "Gold set for NCCN Bladder Cancer Guidelines ctDNA/MRD recommendations",
+  "expectedExtractions": [
+    {
+      "id": "nccn-bladder-surveillance-1",
+      "type": "recommendation",
+      "cancerType": "bladder",
+      "clinicalSetting": "surveillance",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "ctDNA monitoring after radical cystectomy",
+      "mustContain": ["ctDNA", "surveillance", "bladder"],
+      "mustNotContain": []
+    },
+    {
+      "id": "nccn-bladder-mibc-1",
+      "type": "recommendation",
+      "cancerType": "bladder",
+      "clinicalSetting": "adjuvant",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "MRD detection in muscle-invasive bladder cancer",
+      "mustContain": ["MRD", "muscle-invasive"],
+      "mustNotContain": []
+    },
+    {
+      "id": "nccn-bladder-immuno-1",
+      "type": "recommendation",
+      "cancerType": "bladder",
+      "clinicalSetting": "treatment_response",
+      "evidenceLevel": "Category 2B",
+      "keyQuote": "ctDNA for immunotherapy response assessment",
+      "mustContain": ["ctDNA", "immunotherapy", "response"],
+      "mustNotContain": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 3,
+    "targetAccuracy": 0.8
+  }
+}

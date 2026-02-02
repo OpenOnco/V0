@@ -1,0 +1,43 @@
+{
+  "source": "nccn-breast",
+  "version": "1.2025",
+  "description": "Gold set for NCCN Breast Cancer Guidelines ctDNA/MRD recommendations",
+  "expectedExtractions": [
+    {
+      "id": "nccn-breast-surveillance-1",
+      "type": "recommendation",
+      "cancerType": "breast",
+      "clinicalSetting": "surveillance",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "ctDNA testing for surveillance after curative therapy",
+      "mustContain": ["ctDNA", "surveillance", "breast"],
+      "mustNotContain": ["treatment selection"]
+    },
+    {
+      "id": "nccn-breast-mrd-1",
+      "type": "recommendation",
+      "cancerType": "breast",
+      "clinicalSetting": "post_treatment",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "MRD detection after neoadjuvant therapy",
+      "mustContain": ["MRD", "neoadjuvant", "breast"],
+      "mustNotContain": []
+    },
+    {
+      "id": "nccn-breast-tnbc-1",
+      "type": "recommendation",
+      "cancerType": "breast",
+      "clinicalSetting": "adjuvant",
+      "evidenceLevel": "Category 2B",
+      "keyQuote": "triple-negative breast cancer adjuvant decisions",
+      "mustContain": ["triple-negative", "adjuvant"],
+      "mustNotContain": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 3,
+    "targetAccuracy": 0.8
+  }
+}

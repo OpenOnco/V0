@@ -1,0 +1,43 @@
+{
+  "source": "nccn-lung",
+  "version": "1.2025",
+  "description": "Gold set for NCCN Non-Small Cell Lung Cancer Guidelines ctDNA/MRD recommendations",
+  "expectedExtractions": [
+    {
+      "id": "nccn-lung-surveillance-1",
+      "type": "recommendation",
+      "cancerType": "lung",
+      "clinicalSetting": "surveillance",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "ctDNA for surveillance after definitive therapy",
+      "mustContain": ["ctDNA", "surveillance", "lung"],
+      "mustNotContain": ["small cell"]
+    },
+    {
+      "id": "nccn-lung-adjuvant-1",
+      "type": "recommendation",
+      "cancerType": "lung",
+      "clinicalSetting": "adjuvant",
+      "evidenceLevel": "Category 2A",
+      "keyQuote": "MRD status may inform adjuvant therapy decisions",
+      "mustContain": ["MRD", "adjuvant"],
+      "mustNotContain": []
+    },
+    {
+      "id": "nccn-lung-stage-1",
+      "type": "recommendation",
+      "cancerType": "lung",
+      "clinicalSetting": "risk_stratification",
+      "evidenceLevel": "Category 2B",
+      "keyQuote": "ctDNA for risk stratification in early-stage NSCLC",
+      "mustContain": ["ctDNA", "risk", "stage"],
+      "mustNotContain": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 3,
+    "targetAccuracy": 0.8
+  }
+}

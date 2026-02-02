@@ -1,0 +1,58 @@
+{
+  "source": "pubmed-mrd",
+  "version": "2026-02",
+  "description": "Gold set for PubMed MRD/ctDNA literature extraction",
+  "expectedExtractions": [
+    {
+      "id": "pubmed-circulate-1",
+      "type": "clinical_trial",
+      "cancerType": "colorectal",
+      "clinicalSetting": "adjuvant",
+      "keyQuote": "CIRCULATE trial ctDNA-guided adjuvant therapy",
+      "mustContain": ["CIRCULATE", "ctDNA", "adjuvant"],
+      "mustNotContain": []
+    },
+    {
+      "id": "pubmed-dynamic-1",
+      "type": "clinical_trial",
+      "cancerType": "colorectal",
+      "clinicalSetting": "surveillance",
+      "keyQuote": "DYNAMIC trial recurrence prediction",
+      "mustContain": ["DYNAMIC", "ctDNA", "recurrence"],
+      "mustNotContain": []
+    },
+    {
+      "id": "pubmed-galaxy-1",
+      "type": "clinical_trial",
+      "cancerType": "colorectal",
+      "clinicalSetting": "adjuvant",
+      "keyQuote": "GALAXY trial ctDNA clearance",
+      "mustContain": ["GALAXY", "ctDNA"],
+      "mustNotContain": []
+    },
+    {
+      "id": "pubmed-imvigor-1",
+      "type": "clinical_trial",
+      "cancerType": "bladder",
+      "clinicalSetting": "treatment_response",
+      "keyQuote": "IMvigor ctDNA and immunotherapy response",
+      "mustContain": ["IMvigor", "ctDNA"],
+      "mustNotContain": []
+    },
+    {
+      "id": "pubmed-mermaid-1",
+      "type": "clinical_trial",
+      "cancerType": "lung",
+      "clinicalSetting": "adjuvant",
+      "keyQuote": "MERMAID trial ctDNA-guided treatment",
+      "mustContain": ["MERMAID", "ctDNA", "lung"],
+      "mustNotContain": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 5,
+    "targetAccuracy": 0.7
+  }
+}

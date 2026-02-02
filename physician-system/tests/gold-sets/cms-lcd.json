@@ -1,0 +1,40 @@
+{
+  "source": "cms-lcd",
+  "version": "2026-02",
+  "description": "Gold set for CMS LCD MolDX coverage determinations",
+  "expectedExtractions": [
+    {
+      "id": "cms-moldx-mrd-1",
+      "type": "coverage_determination",
+      "cancerType": "colorectal",
+      "clinicalSetting": "surveillance",
+      "keyQuote": "MolDX coverage for MRD testing in colorectal cancer",
+      "mustContain": ["MolDX", "MRD", "coverage"],
+      "mustNotContain": []
+    },
+    {
+      "id": "cms-moldx-ctdna-1",
+      "type": "coverage_determination",
+      "cancerType": "pan-cancer",
+      "clinicalSetting": "treatment_selection",
+      "keyQuote": "ctDNA testing for therapy selection",
+      "mustContain": ["ctDNA", "Medicare", "coverage"],
+      "mustNotContain": []
+    },
+    {
+      "id": "cms-lcd-criteria-1",
+      "type": "coverage_criteria",
+      "cancerType": "solid_tumor",
+      "clinicalSetting": "adjuvant",
+      "keyQuote": "LCD coverage criteria for solid tumor MRD",
+      "mustContain": ["LCD", "solid tumor", "criteria"],
+      "mustNotContain": ["hematologic"]
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-02-02",
+    "createdBy": "claude",
+    "totalExpectedItems": 3,
+    "targetAccuracy": 0.7
+  }
+}
