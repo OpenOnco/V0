@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MRD Evidence Chat - OpenOnco</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              850: '#1a2332',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .chat-container {
+      height: calc(100vh - 200px);
+    }
+    .typing-indicator span {
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+    .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+    .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100">
+  <div class="max-w-4xl mx-auto p-6">
+    <!-- Header -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-white">MRD Evidence Chat</h1>
+          <p class="text-slate-400 text-sm">Clinical decision support for MRD testing in solid tumors</p>
+        </div>
+      </div>
+      <div class="bg-amber-900/30 border border-amber-700/50 rounded-lg p-3 text-amber-200 text-sm">
+        <strong>Research Tool:</strong> This is for informational purposes only. Always consult primary sources and clinical guidelines.
+      </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chat-container" class="chat-container bg-slate-800 rounded-lg p-4 overflow-y-auto mb-4 space-y-4">
+      <!-- Welcome message -->
+      <div class="flex gap-3">
+        <div class="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <div class="bg-slate-700 rounded-lg p-4 max-w-[85%]">
+          <p class="text-slate-200">Welcome! I can help you find evidence about <strong>MRD (Molecular Residual Disease)</strong> and <strong>ctDNA testing</strong> in solid tumors.</p>
+          <p class="text-slate-300 mt-2">Try asking:</p>
+          <ul class="text-slate-400 text-sm mt-1 space-y-1">
+            <li>"What does NCCN recommend for ctDNA testing in colorectal cancer?"</li>
+            <li>"When should Signatera be used for surveillance?"</li>
+            <li>"What is the evidence for MRD-guided adjuvant therapy?"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="flex gap-3">
+      <input
+        type="text"
+        id="query-input"
+        placeholder="Ask about MRD testing evidence..."
+        class="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+        onkeypress="if(event.key === 'Enter') sendQuery()"
+      >
+      <button
+        onclick="sendQuery()"
+        id="send-button"
+        class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Send
+      </button>
+    </div>
+
+    <!-- Status -->
+    <div id="status" class="mt-2 text-sm text-slate-500"></div>
+  </div>
+
+  <script>
+    const API_URL = 'https://daemon-production-5ed1.up.railway.app/api/mrd-chat';
+    const chatContainer = document.getElementById('chat-container');
+    const queryInput = document.getElementById('query-input');
+    const sendButton = document.getElementById('send-button');
+    const statusEl = document.getElementById('status');
+
+    function scrollToBottom() {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Extract citation numbers actually used in the text
+    function extractUsedCitations(text) {
+      const matches = text.match(/\[(\d+)\]/g) || [];
+      const used = new Set(matches.map(m => parseInt(m.replace(/[\[\]]/g, ''))));
+      return used;
+    }
+
+    function addMessage(content, isUser = false, sources = null) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'flex gap-3' + (isUser ? ' justify-end' : '');
+
+      if (isUser) {
+        messageDiv.innerHTML = `
+          <div class="bg-emerald-600 rounded-lg p-4 max-w-[85%]">
+            <p class="text-white">${escapeHtml(content)}</p>
+          </div>
+          <div class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+        `;
+      } else {
+        // Format citations in the response
+        let formattedContent = formatCitations(content);
+
+        // Only show sources that were actually cited
+        let sourcesHtml = '';
+        if (sources && sources.length > 0) {
+          const usedCitations = extractUsedCitations(content);
+          const citedSources = sources.filter(s => usedCitations.has(s.index));
+
+          if (citedSources.length > 0) {
+            sourcesHtml = `
+              <div class="mt-4 pt-3 border-t border-slate-600">
+                <p class="text-slate-400 text-xs font-medium mb-2">Sources:</p>
+                <div class="space-y-2">
+                  ${citedSources.map(s => {
+                    // Get excerpt text (prefer directQuote, then excerpt/summary)
+                    const excerptText = s.directQuote || s.excerpt || null;
+                    const truncatedExcerpt = excerptText
+                      ? (excerptText.length > 200 ? excerptText.substring(0, 200) + '...' : excerptText)
+                      : null;
+
+                    // Don't link NCCN sources (requires login)
+                    const hasValidUrl = s.url && !s.url.includes('nccn.org/guidelines/category') && s.sourceType !== 'nccn';
+
+                    return `
+                      <div class="text-xs bg-slate-800 rounded p-2">
+                        <div class="flex items-start gap-2">
+                          <span class="text-emerald-400 font-medium">[${s.index}]</span>
+                          <div class="flex-1">
+                            <div class="text-slate-300 font-medium">${escapeHtml(s.title)}</div>
+                            ${s.evidenceLevel ? `<div class="text-emerald-500 text-xs mt-0.5">${s.evidenceLevel}</div>` : ''}
+                            ${truncatedExcerpt ? `<div class="text-slate-400 mt-1 italic">"${escapeHtml(truncatedExcerpt)}"</div>` : ''}
+                            ${hasValidUrl ? `<a href="${s.url}" target="_blank" class="text-blue-400 hover:underline mt-1 inline-block">View source →</a>` : ''}
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            `;
+          }
+        }
+
+        messageDiv.innerHTML = `
+          <div class="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <div class="bg-slate-700 rounded-lg p-4 max-w-[85%]">
+            <div class="text-slate-200 whitespace-pre-wrap">${formattedContent}</div>
+            ${sourcesHtml}
+          </div>
+        `;
+      }
+
+      chatContainer.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    function addTypingIndicator() {
+      const indicator = document.createElement('div');
+      indicator.id = 'typing-indicator';
+      indicator.className = 'flex gap-3';
+      indicator.innerHTML = `
+        <div class="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <div class="bg-slate-700 rounded-lg p-4">
+          <div class="typing-indicator flex gap-1">
+            <span class="w-2 h-2 bg-slate-400 rounded-full"></span>
+            <span class="w-2 h-2 bg-slate-400 rounded-full"></span>
+            <span class="w-2 h-2 bg-slate-400 rounded-full"></span>
+          </div>
+        </div>
+      `;
+      chatContainer.appendChild(indicator);
+      scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const indicator = document.getElementById('typing-indicator');
+      if (indicator) indicator.remove();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatCitations(text) {
+      // Convert [1], [2], etc. to styled spans
+      return escapeHtml(text).replace(/\[(\d+)\]/g, '<span class="text-emerald-400 font-medium">[$1]</span>');
+    }
+
+    function setLoading(loading) {
+      sendButton.disabled = loading;
+      queryInput.disabled = loading;
+      if (loading) {
+        addTypingIndicator();
+        statusEl.textContent = 'Searching evidence database...';
+      } else {
+        removeTypingIndicator();
+        statusEl.textContent = '';
+      }
+    }
+
+    async function sendQuery() {
+      const query = queryInput.value.trim();
+      if (!query) return;
+
+      // Add user message
+      addMessage(query, true);
+      queryInput.value = '';
+      setLoading(true);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          addMessage(data.answer, false, data.sources);
+
+          // Show related items if available
+          if (data.relatedItems && data.relatedItems.length > 0) {
+            statusEl.innerHTML = `<span class="text-slate-400">Related: ${data.relatedItems.map(r =>
+              `<a href="${r.url || '#'}" target="_blank" class="text-emerald-500 hover:underline">${r.title.substring(0, 40)}...</a>`
+            ).join(', ')}</span>`;
+          }
+        } else {
+          addMessage(`Error: ${data.error || 'Unknown error'}`, false);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage(`Connection error: ${error.message}. Make sure the API is running.`, false);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Focus input on load
+    queryInput.focus();
+  </script>
+</body>
+</html>

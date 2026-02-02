@@ -1,0 +1,35 @@
+{
+  "name": "openonco-physician-system",
+  "version": "1.0.0",
+  "description": "OpenOnco Physician System - Clinical decision support for MRD testing in solid tumors",
+  "main": "src/index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "crawl": "node src/cli.js",
+    "db:migrate": "node src/db/migrate.js migrate",
+    "db:status": "node src/db/migrate.js status"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "axios": "^1.6.0",
+    "axios-retry": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "node-cron": "^4.2.1",
+    "openai": "^4.0.0",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.18.0",
+    "resend": "^6.9.1",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.17"
+  }
+}
