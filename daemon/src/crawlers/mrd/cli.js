@@ -19,6 +19,7 @@ import { runPubMedCrawler, fillGaps } from './index.js';
 import { crawlClinicalTrials, seedPriorityTrials } from './clinicaltrials.js';
 import { crawlFDA } from './fda.js';
 import { processNccnPdf, processNccnDirectory } from './nccn-processor.js';
+import { ingestCMSData, listCMSData } from './cms-ingest.js';
 import { embedAllMissing } from '../../embeddings/mrd-embedder.js';
 import { linkAllTrials } from '../../embeddings/cross-link.js';
 import { close } from '../../db/mrd-client.js';
@@ -58,6 +59,7 @@ Commands:
   clinicaltrials  Run ClinicalTrials.gov crawler
   fda             Run FDA RSS feed crawler
   nccn            Process NCCN guideline PDFs
+  cms             Ingest CMS MolDX LCDs for ctDNA/MRD
   gaps            Detect and fill crawler gaps
   embed           Generate embeddings for items without them
   link            Link trials to publications
@@ -85,6 +87,10 @@ Options for 'fda':
 Options for 'nccn':
   --dir           Process all PDFs in directory
   <path>          Path to PDF file or directory (with --dir)
+
+Options for 'cms':
+  --list          List available LCDs without ingesting
+  --dry-run       Show what would be ingested without writing
 
 Options for 'embed':
   --limit=<n>     Max items to embed (default: 100)
@@ -216,6 +222,30 @@ async function main() {
 
         console.log('\n=== NCCN Processing Results ===');
         console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+
+      case 'cms': {
+        if (options.list) {
+          await listCMSData();
+        } else {
+          const result = await ingestCMSData({
+            dryRun: options['dry-run'],
+          });
+
+          console.log('\n=== CMS LCD Ingestion Results ===');
+          console.log(`Status: ${result.success ? 'Success' : 'Failed'}`);
+          if (result.error) {
+            console.log(`Error: ${result.error}`);
+          } else {
+            console.log(`\nStats:`);
+            console.log(`  Total found: ${result.totalFound}`);
+            console.log(`  After dedup: ${result.deduplicated}`);
+            console.log(`  Saved: ${result.saved}`);
+            console.log(`  Skipped: ${result.skipped}`);
+            console.log(`  Updated: ${result.updated}`);
+          }
+        }
         break;
       }
 
