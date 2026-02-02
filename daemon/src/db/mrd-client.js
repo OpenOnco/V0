@@ -23,9 +23,12 @@ export function getPool() {
       throw new Error('MRD_DATABASE_URL or DATABASE_URL environment variable is required');
     }
 
+    // SSL configuration: disable if MRD_DATABASE_SSL=false (for Railway internal networking)
+    const useSSL = process.env.MRD_DATABASE_SSL !== 'false' && process.env.NODE_ENV === 'production';
+
     pool = new Pool({
       connectionString,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl: useSSL ? { rejectUnauthorized: false } : false,
       max: 10,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000,
