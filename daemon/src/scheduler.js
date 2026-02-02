@@ -1,6 +1,8 @@
 /**
  * Cron job scheduler for the daemon
  * Manages all scheduled tasks with proper error handling
+ *
+ * v2: Added discovery job for automatic policy discovery
  */
 
 import cron from 'node-cron';
@@ -9,6 +11,12 @@ import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
 import { sendCrawlCompleteEmail } from './email/crawl-complete.js';
+
+// v2: Import discovery crawler
+import { runDiscovery, createDocumentCandidateProposal } from './crawlers/discovery.js';
+import { initHashStore, getPendingDiscoveries } from './utils/hash-store.js';
+import { createProposal } from './proposals/queue.js';
+import { PROPOSAL_TYPES } from './proposals/schema.js';
 
 const logger = createLogger('scheduler');
 
@@ -92,6 +100,79 @@ function scheduleCleanup() {
 }
 
 /**
+ * v2: Schedule discovery job (runs weekly on Sunday at 10 PM)
+ */
+function scheduleDiscovery() {
+  const schedule = config.schedules.discovery || '0 22 * * 0'; // Sunday 10:00 PM
+  logger.info('Scheduling discovery job', { schedule });
+
+  const job = cron.schedule(schedule, async () => {
+    logger.info('Running scheduled policy discovery');
+
+    try {
+      await initHashStore();
+      const result = await runDiscovery();
+
+      logger.info('Discovery completed', {
+        candidates: result.candidates.length,
+        errors: result.errors.length,
+      });
+
+      // Create proposals for high-relevance discoveries
+      let proposalsCreated = 0;
+      for (const candidate of result.candidates) {
+        if (candidate.relevanceScore >= 0.5) {
+          try {
+            const proposalData = createDocumentCandidateProposal(candidate);
+            await createProposal(PROPOSAL_TYPES.DOCUMENT_CANDIDATE, proposalData);
+            proposalsCreated++;
+          } catch (error) {
+            logger.warn('Failed to create discovery proposal', { error: error.message });
+          }
+        }
+      }
+
+      logger.info('Discovery proposals created', { count: proposalsCreated });
+
+    } catch (error) {
+      logger.error('Discovery job failed', { error });
+    }
+  });
+
+  jobs.set('discovery', job);
+  return job;
+}
+
+/**
+ * v2: Run discovery manually
+ */
+export async function triggerDiscovery(options = {}) {
+  logger.info('Manually triggering discovery');
+
+  await initHashStore();
+  const result = await runDiscovery(options);
+
+  // Create proposals for high-relevance discoveries
+  let proposalsCreated = 0;
+  for (const candidate of result.candidates) {
+    if (candidate.relevanceScore >= 0.5) {
+      try {
+        const proposalData = createDocumentCandidateProposal(candidate);
+        await createProposal(PROPOSAL_TYPES.DOCUMENT_CANDIDATE, proposalData);
+        proposalsCreated++;
+      } catch (error) {
+        logger.warn('Failed to create discovery proposal', { error: error.message });
+      }
+    }
+  }
+
+  return {
+    ...result,
+    proposalsCreated,
+  };
+}
+
+/**
  * Start all scheduled jobs
  */
 export function startScheduler() {
@@ -105,12 +186,16 @@ export function startScheduler() {
   // Schedule cleanup
   scheduleCleanup();
 
+  // v2: Schedule discovery
+  scheduleDiscovery();
+
   logger.info('Scheduler started', {
     jobs: Array.from(jobs.keys()),
     schedules: {
       cms: config.schedules.cms,
       vendor: config.schedules.vendor,
       payers: config.schedules.payers,
+      discovery: config.schedules.discovery || '0 22 * * 0',
     },
   });
 
@@ -198,5 +283,6 @@ export default {
   stopScheduler,
   getSchedulerStatus,
   triggerCrawler,
+  triggerDiscovery,
   runAllCrawlersNow,
 };

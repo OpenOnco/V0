@@ -1,13 +1,19 @@
 /**
- * Payer Policy Crawler
+ * Payer Policy Crawler (v2)
  *
  * Monitors specific ctDNA/MRD policy URLs from the policy registry.
  * These are manually researched policy document URLs, not generic payer sites.
  *
+ * v2 enhancements:
+ * - Multi-hash change detection (content, metadata, criteria, codes)
+ * - Deterministic extraction before LLM analysis
+ * - Delegation detection (payer→LBM)
+ * - Layered coverage assertions
+ *
  * Architecture:
  * - POLICY_REGISTRY contains known policy URLs (manually curated)
  * - This crawler checks those URLs for content changes
- * - Changes are analyzed by Claude and turned into discoveries
+ * - Changes are analyzed by Claude and turned into discoveries/proposals
  */
 
 import { createHash } from 'crypto';
@@ -21,14 +27,23 @@ import { initializeTestDictionary, matchTests } from '../data/test-dictionary.js
 import { addDiscoveries } from '../queue/index.js';
 import { updateCrawlerHealth, recordCrawlerError } from '../health.js';
 import { createProposal } from '../proposals/queue.js';
-import { PROPOSAL_TYPES } from '../proposals/schema.js';
+import { PROPOSAL_TYPES, COVERAGE_LAYERS, ASSERTION_STATUS } from '../proposals/schema.js';
 import {
   initHashStore,
   getHash,
   setHash,
   recordSuccess,
   recordFailure,
+  upsertPolicyHashes,
+  getPolicyHashes,
+  upsertCoverageAssertion,
 } from '../utils/hash-store.js';
+
+// v2: Import extraction and analysis modules
+import { extractStructuredData, quickRelevanceCheck, buildLLMContext, prepareForMultiHash } from '../extractors/index.js';
+import { computeMultiHash, compareMultiHash, shouldAnalyze, getChangeSummary } from '../utils/multi-hash.js';
+import { detectDelegation, buildDelegationProposal } from '../extractors/delegation.js';
+import { getDelegation } from '../data/delegation-map.js';
 
 const logger = createLogger('payer-crawler');
 
@@ -144,7 +159,7 @@ export class PayerCrawler extends PlaywrightCrawler {
   }
 
   /**
-   * Check a single policy for changes
+   * Check a single policy for changes (v2: multi-hash)
    */
   async checkPolicy(policy) {
     logger.debug(`Checking policy: ${policy.id}`);
@@ -155,32 +170,73 @@ export class PayerCrawler extends PlaywrightCrawler {
       return { changed: false, error: 'Failed to fetch content' };
     }
 
-    // Compute hash
-    const newHash = createHash('sha256').update(content).digest('hex');
+    // v2: Extract structured data BEFORE hashing
+    const extraction = await extractStructuredData(content, {
+      docType: policy.docType,
+      payerId: policy.payerId,
+    });
 
-    // Get previous hash data
-    const hashKey = `${policy.payerId}:policy:${policy.url}`;
-    const previousData = getHash(hashKey);
-    const previousHash = previousData?.hash || null;
+    // v2: Compute multi-hash
+    const hashData = prepareForMultiHash(extraction);
+    const newHashes = computeMultiHash(content, hashData);
 
-    if (previousHash === newHash) {
+    // Get previous hash data (v2: multi-hash)
+    const previousRecord = getPolicyHashes(policy.id);
+    const previousHashes = previousRecord?.hashes || null;
+
+    // v2: Compare multi-hashes
+    const comparison = compareMultiHash(previousHashes, newHashes);
+
+    // v2: Check if change warrants analysis
+    if (!comparison.changed) {
       logger.debug(`No change: ${policy.id}`);
       await recordSuccess(policy.url, policy.payerId);
       return { changed: false };
     }
 
-    // Content changed - store new hash
-    setHash(hashKey, { hash: newHash, content: content.substring(0, 50000) });
+    // v2: Store multi-hash record
+    upsertPolicyHashes({
+      policyId: policy.id,
+      payerId: policy.payerId,
+      url: policy.url,
+      docType: policy.docType,
+      hashes: newHashes,
+      metadata: {
+        effectiveDate: extraction.effectiveDate,
+        revisionDate: extraction.revisionDate,
+        policyNumber: null,
+        version: null,
+      },
+      codes: extraction.codes,
+      namedTests: extraction.testIds,
+      stance: extraction.stance,
+      contentSnippet: content.substring(0, 5000),
+      criteriaSection: extraction.criteriaSection,
+    });
+
+    // Also update legacy hash for backwards compatibility
+    const hashKey = `${policy.payerId}:policy:${policy.url}`;
+    setHash(hashKey, { hash: newHashes.contentHash, content: content.substring(0, 50000) });
     await recordSuccess(policy.url, policy.payerId);
 
-    logger.info(`Policy changed: ${policy.id}`, { payerId: policy.payerId });
+    const changeSummary = getChangeSummary(comparison);
+    logger.info(`Policy changed: ${policy.id}`, {
+      payerId: policy.payerId,
+      priority: comparison.priority,
+      changedHashes: comparison.changedHashes,
+    });
+
+    // v2: Check if change is significant enough to analyze
+    const shouldAnalyzeChange = shouldAnalyze(comparison, 'medium');
 
     return {
       changed: true,
       content,
-      previousHash,
-      newHash,
-      isNew: !previousHash,
+      extraction,
+      comparison,
+      changeSummary,
+      shouldAnalyze: shouldAnalyzeChange,
+      isNew: !previousHashes,
     };
   }
 
@@ -261,16 +317,29 @@ export class PayerCrawler extends PlaywrightCrawler {
   }
 
   /**
-   * Create a discovery from a policy change
+   * Create a discovery from a policy change (v2: uses extraction data)
    */
   async createDiscovery(policy, result) {
-    // Match tests mentioned in the content
-    const testMatches = matchTests(result.content);
+    const { extraction, comparison, changeSummary, shouldAnalyze: shouldDoAnalysis } = result;
 
-    // Analyze with Claude if there are relevant tests
+    // v2: Use pre-extracted test matches
+    const testMatches = extraction?.namedTests || matchTests(result.content);
+
+    // v2: Detect delegation announcements
+    const delegationDetection = detectDelegation(result.content);
+    if (delegationDetection.detected) {
+      await this.handleDelegationDetection(policy, delegationDetection);
+    }
+
+    // v2: Skip LLM analysis for low-priority changes
     let analysis = null;
-    if (testMatches.length > 0 || result.isNew) {
-      analysis = await this.analyzeChange(policy, result.content, testMatches);
+    if (shouldDoAnalysis && (testMatches.length > 0 || result.isNew)) {
+      analysis = await this.analyzeChange(policy, result.content, testMatches, extraction);
+    }
+
+    // v2: Create coverage assertions for each test
+    if (analysis?.testsExplicitlyMentioned?.length > 0 || extraction?.testIds?.length > 0) {
+      await this.createCoverageAssertions(policy, extraction, analysis);
     }
 
     const discovery = {
@@ -287,10 +356,25 @@ export class PayerCrawler extends PlaywrightCrawler {
         policyId: policy.id,
         policyName: policy.name,
         policyType: policy.policyType,
+        docType: policy.docType,
         contentType: policy.contentType,
-        testsFound: testMatches.map(t => t.name),
+        testsFound: testMatches.map(t => t.id || t.name),
         isNewPolicy: result.isNew,
         analysis: analysis,
+        // v2: Include extraction and change data
+        extraction: {
+          stance: extraction?.stance,
+          stanceConfidence: extraction?.stanceConfidence,
+          cancerTypes: extraction?.cancerTypes,
+          priorAuth: extraction?.priorAuth,
+          effectiveDate: extraction?.effectiveDate,
+        },
+        change: {
+          priority: comparison?.priority,
+          changedHashes: comparison?.changedHashes,
+          summary: changeSummary,
+        },
+        delegationDetected: delegationDetection.detected,
       },
     };
 
@@ -298,23 +382,116 @@ export class PayerCrawler extends PlaywrightCrawler {
   }
 
   /**
-   * Analyze policy change with Claude
+   * v2: Handle detected delegation announcement
    */
-  async analyzeChange(policy, content, testMatches) {
+  async handleDelegationDetection(policy, detection) {
+    logger.info(`Delegation detected: ${policy.payerName} → ${detection.delegatedTo}`, {
+      policyId: policy.id,
+      confidence: detection.confidence,
+    });
+
+    // Check if already known
+    const knownDelegation = getDelegation(policy.payerId);
+    if (knownDelegation && knownDelegation.delegatedTo === detection.delegatedTo) {
+      logger.debug('Delegation already known, skipping proposal');
+      return;
+    }
+
+    // Create delegation change proposal
+    const proposalData = buildDelegationProposal(detection, {
+      payerId: policy.payerId,
+      payerName: policy.payerName,
+      url: policy.url,
+    });
+
     try {
+      await createProposal(PROPOSAL_TYPES.DELEGATION_CHANGE, {
+        ...proposalData,
+        source: policy.url,
+      });
+      logger.info('Created delegation change proposal');
+    } catch (error) {
+      logger.warn('Failed to create delegation proposal', { error: error.message });
+    }
+  }
+
+  /**
+   * v2: Create coverage assertions from analysis
+   */
+  async createCoverageAssertions(policy, extraction, analysis) {
+    const testIds = [
+      ...(extraction?.testIds || []),
+      ...(analysis?.testsExplicitlyMentioned || []).map(t => t.toLowerCase().replace(/\s+/g, '-')),
+    ];
+    const uniqueTestIds = [...new Set(testIds)];
+
+    // Determine layer based on docType
+    const layerMap = {
+      medical_policy: COVERAGE_LAYERS.POLICY_STANCE,
+      um_criteria: COVERAGE_LAYERS.UM_CRITERIA,
+      lbm_guideline: COVERAGE_LAYERS.LBM_GUIDELINE,
+      provider_bulletin: COVERAGE_LAYERS.OVERLAY,
+    };
+    const layer = layerMap[policy.docType] || COVERAGE_LAYERS.POLICY_STANCE;
+
+    // Determine status from extraction/analysis
+    const statusMap = {
+      supports: ASSERTION_STATUS.SUPPORTS,
+      restricts: ASSERTION_STATUS.RESTRICTS,
+      denies: ASSERTION_STATUS.DENIES,
+      unclear: ASSERTION_STATUS.UNCLEAR,
+    };
+    const status = statusMap[extraction?.stance] || statusMap[analysis?.coverageStatus] || ASSERTION_STATUS.UNCLEAR;
+
+    for (const testId of uniqueTestIds) {
+      try {
+        upsertCoverageAssertion({
+          payerId: policy.payerId,
+          testId,
+          layer,
+          status,
+          criteria: {
+            cancerTypes: extraction?.cancerTypes || [],
+            stages: extraction?.stages || [],
+            settings: extraction?.settings || [],
+            priorAuth: extraction?.priorAuth,
+          },
+          sourcePolicyId: policy.id,
+          sourceUrl: policy.url,
+          sourceQuote: extraction?.criteriaSection?.substring(0, 500),
+          effectiveDate: extraction?.effectiveDate,
+          confidence: extraction?.stanceConfidence || analysis?.confidence || 0.5,
+        });
+      } catch (error) {
+        logger.warn(`Failed to create assertion for ${testId}`, { error: error.message });
+      }
+    }
+  }
+
+  /**
+   * Analyze policy change with Claude (v2: includes extraction context)
+   */
+  async analyzeChange(policy, content, testMatches, extraction = null) {
+    try {
+      // v2: Build context from extraction
+      const extractionContext = extraction ? buildLLMContext(extraction) : '';
+
       const prompt = `Analyze this insurance policy document for coverage changes related to ctDNA, liquid biopsy, and MRD testing.
 
 Policy: ${policy.name}
 Payer: ${policy.payerName}
-Tests found: ${testMatches.map(t => t.name).join(', ') || 'None from our watchlist'}
+Document Type: ${policy.docType || 'unknown'}
+Tests found: ${testMatches.map(t => t.id || t.name).join(', ') || 'None from our watchlist'}
+
+${extractionContext}
 
 Content (truncated):
-${content.substring(0, 15000)}
+${content.substring(0, 12000)}
 
 Provide a JSON response:
 {
   "summary": "2-3 sentence summary of coverage position for ctDNA/liquid biopsy tests",
-  "coverageStatus": "covered | not_covered | conditional | unclear",
+  "coverageStatus": "supports | restricts | denies | unclear",
   "keyConditions": ["list of key coverage conditions or criteria"],
   "testsExplicitlyMentioned": ["tests from our list explicitly mentioned with coverage decision"],
   "significantChanges": ["any notable changes if this appears to be an update"],

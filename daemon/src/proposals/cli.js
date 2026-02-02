@@ -66,13 +66,23 @@ function formatProposal(proposal, verbose = false) {
   } else if (proposal.type === PROPOSAL_TYPES.NEW_TEST) {
     output += `  ${colors.cyan}New Test:${colors.reset} ${proposal.testData?.name}\n`;
     output += `  Vendor: ${proposal.testData?.vendor}, Category: ${proposal.testData?.category}\n`;
+  // v2: Handle new proposal types
+  } else if (proposal.type === PROPOSAL_TYPES.COVERAGE_ASSERTION) {
+    output += `  ${colors.cyan}Coverage Assertion:${colors.reset} ${proposal.testName || proposal.testId} @ ${proposal.payerName}\n`;
+    output += `  Layer: ${proposal.layer}, Status: ${proposal.assertionStatus}\n`;
+  } else if (proposal.type === PROPOSAL_TYPES.DOCUMENT_CANDIDATE) {
+    output += `  ${colors.cyan}Document Candidate:${colors.reset} ${proposal.payerName}\n`;
+    output += `  Type: ${proposal.docTypeGuess}, URL: ${proposal.url?.slice(0, 50)}...\n`;
+  } else if (proposal.type === PROPOSAL_TYPES.DELEGATION_CHANGE) {
+    output += `  ${colors.cyan}Delegation Change:${colors.reset} ${proposal.payerName} → ${proposal.delegatedTo}\n`;
+    output += `  Effective: ${proposal.effectiveDate || 'unknown'}, Scope: ${proposal.scope}\n`;
   }
 
   if (verbose) {
-    output += `  Source: ${proposal.source}\n`;
-    output += `  Confidence: ${(proposal.confidence * 100).toFixed(0)}%\n`;
-    if (proposal.snippet) {
-      output += `  Snippet: ${proposal.snippet.slice(0, 100)}...\n`;
+    output += `  Source: ${proposal.source || proposal.sourceUrl}\n`;
+    output += `  Confidence: ${((proposal.confidence || 0) * 100).toFixed(0)}%\n`;
+    if (proposal.snippet || proposal.sourceQuote) {
+      output += `  Snippet: ${(proposal.snippet || proposal.sourceQuote || '').slice(0, 100)}...\n`;
     }
     if (proposal.rejectionReason) {
       output += `  ${colors.red}Rejection:${colors.reset} ${proposal.rejectionReason}\n`;
@@ -232,14 +242,18 @@ async function cmdStats() {
   console.log(`\n${colors.bold}Proposal Statistics${colors.reset}\n`);
   console.log(`Total: ${stats.total}`);
   console.log(`\nBy Status:`);
-  console.log(`  ${colors.yellow}Pending:${colors.reset}  ${stats.byStatus[PROPOSAL_STATES.PENDING]}`);
-  console.log(`  ${colors.green}Approved:${colors.reset} ${stats.byStatus[PROPOSAL_STATES.APPROVED]}`);
-  console.log(`  ${colors.blue}Applied:${colors.reset}  ${stats.byStatus[PROPOSAL_STATES.APPLIED]}`);
-  console.log(`  ${colors.red}Rejected:${colors.reset} ${stats.byStatus[PROPOSAL_STATES.REJECTED]}`);
-  console.log(`\nBy Type:`);
-  console.log(`  Coverage:  ${stats.byType[PROPOSAL_TYPES.COVERAGE]}`);
-  console.log(`  Updates:   ${stats.byType[PROPOSAL_TYPES.UPDATE]}`);
-  console.log(`  New Tests: ${stats.byType[PROPOSAL_TYPES.NEW_TEST]}`);
+  console.log(`  ${colors.yellow}Pending:${colors.reset}  ${stats.byStatus[PROPOSAL_STATES.PENDING] || 0}`);
+  console.log(`  ${colors.green}Approved:${colors.reset} ${stats.byStatus[PROPOSAL_STATES.APPROVED] || 0}`);
+  console.log(`  ${colors.blue}Applied:${colors.reset}  ${stats.byStatus[PROPOSAL_STATES.APPLIED] || 0}`);
+  console.log(`  ${colors.red}Rejected:${colors.reset} ${stats.byStatus[PROPOSAL_STATES.REJECTED] || 0}`);
+  console.log(`\nBy Type (v1):`);
+  console.log(`  Coverage:  ${stats.byType[PROPOSAL_TYPES.COVERAGE] || 0}`);
+  console.log(`  Updates:   ${stats.byType[PROPOSAL_TYPES.UPDATE] || 0}`);
+  console.log(`  New Tests: ${stats.byType[PROPOSAL_TYPES.NEW_TEST] || 0}`);
+  console.log(`\nBy Type (v2):`);
+  console.log(`  Coverage Assertions: ${stats.byType[PROPOSAL_TYPES.COVERAGE_ASSERTION] || 0}`);
+  console.log(`  Document Candidates: ${stats.byType[PROPOSAL_TYPES.DOCUMENT_CANDIDATE] || 0}`);
+  console.log(`  Delegation Changes:  ${stats.byType[PROPOSAL_TYPES.DELEGATION_CHANGE] || 0}`);
 }
 
 /**

@@ -29,6 +29,7 @@ export const config = {
     cms: process.env.SCHEDULE_CMS || '0 23 * * 0',           // Sunday 11:00 PM
     vendor: process.env.SCHEDULE_VENDORS || '0 23 * * 0',    // Sunday 11:00 PM
     payers: process.env.SCHEDULE_PAYERS || '30 23 * * 0',    // Sunday 11:30 PM
+    discovery: process.env.SCHEDULE_DISCOVERY || '0 22 * * 0', // Sunday 10:00 PM (v2)
     digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
   },
 
