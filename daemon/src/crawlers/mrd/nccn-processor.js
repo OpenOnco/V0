@@ -316,9 +316,11 @@ export async function processNccnDirectory(dirPath) {
   return results;
 }
 
-// CLI execution
-const args = process.argv.slice(2);
-if (args.length > 0) {
+// CLI execution - only run when this file is executed directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}` ||
+                     process.argv[1]?.endsWith('nccn-processor.js');
+if (isMainModule && process.argv.slice(2).length > 0) {
+  const args = process.argv.slice(2);
   const isDir = args[0] === '--dir';
   const targetPath = isDir ? args[1] : args[0];
 

@@ -108,6 +108,7 @@ export function buildMRDSearchQuery(options = {}) {
     toDate,
     publicationTypes = 'all',
     includeReviews = false,
+    requireHumansMesh = false, // Disabled by default - newly indexed articles often lack MeSH terms
   } = options;
 
   const parts = [];
@@ -175,8 +176,10 @@ export function buildMRDSearchQuery(options = {}) {
   // English language only
   parts.push('English[la]');
 
-  // Humans only
-  parts.push('Humans[Mesh]');
+  // Humans only - optional as newly indexed articles often lack MeSH terms
+  if (requireHumansMesh) {
+    parts.push('Humans[Mesh]');
+  }
 
   return parts.join(' AND ');
 }

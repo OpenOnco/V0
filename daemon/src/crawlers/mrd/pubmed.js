@@ -286,11 +286,12 @@ export async function crawlMRDArticles(options = {}) {
 
   logger.info('Starting PubMed MRD crawl', { fromDate, toDate, maxResults });
 
-  // Build search query
+  // Build search query - use 'all' to cast a wider net, AI triage will filter
   const query = buildMRDSearchQuery({
     fromDate,
     toDate,
-    publicationTypes: 'clinical', // Focus on clinical evidence
+    publicationTypes: 'all',
+    includeReviews: true, // Include reviews - they often have important synthesis
   });
 
   // Initial search to get count and first batch of IDs
