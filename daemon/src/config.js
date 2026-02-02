@@ -950,7 +950,7 @@ export const DISCOVERY_TYPES = {
 export const SOURCES = {
   CMS: 'cms',
   PAYERS: 'payers',
-  VENDOR: 'vendors',
+  VENDOR: 'vendor',
 };
 
 // =============================================================================
