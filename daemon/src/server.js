@@ -8,6 +8,7 @@ import { createLogger } from './utils/logger.js';
 import { query } from './db/mrd-client.js';
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
+import { crawlClinicalTrials, seedPriorityTrials } from './crawlers/mrd/clinicaltrials.js';
 
 const logger = createLogger('server');
 
@@ -403,6 +404,45 @@ async function handleHealth(req, res) {
   res.end(JSON.stringify({ status: 'ok', service: 'mrd-chat-api' }));
 }
 
+async function handleTriggerCrawl(req, res) {
+  // Simple auth check - require a secret header
+  const authHeader = req.headers['x-crawl-secret'];
+  const expectedSecret = process.env.CRAWL_SECRET || 'mrd-crawl-2024';
+
+  if (authHeader !== expectedSecret) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ error: 'Unauthorized' }));
+  }
+
+  try {
+    let body = '';
+    for await (const chunk of req) {
+      body += chunk;
+    }
+    const { action = 'trials', maxResults = 100 } = body ? JSON.parse(body) : {};
+
+    logger.info('Triggering crawl', { action, maxResults });
+
+    let result;
+    if (action === 'seed') {
+      result = await seedPriorityTrials();
+    } else if (action === 'trials') {
+      result = await crawlClinicalTrials({ maxResults });
+    } else {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Invalid action' }));
+    }
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ success: true, result }));
+
+  } catch (error) {
+    logger.error('Crawl trigger error', { error: error.message });
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ error: error.message }));
+  }
+}
+
 // ============================================
 // SERVER
 // ============================================
@@ -426,6 +466,10 @@ const server = createServer(async (req, res) => {
 
   if (url.pathname === '/api/mrd-chat' && req.method === 'POST') {
     return handleMRDChat(req, res);
+  }
+
+  if (url.pathname === '/api/trigger-crawl' && req.method === 'POST') {
+    return handleTriggerCrawl(req, res);
   }
 
   res.writeHead(404, { 'Content-Type': 'application/json' });
