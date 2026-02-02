@@ -86,6 +86,24 @@ function getAnthropic() {
 // EMBEDDING & SEARCH
 // ============================================
 
+// Cache pgvector availability status
+let hasPgVector = null;
+
+async function checkPgVectorAvailable() {
+  if (hasPgVector === null) {
+    try {
+      const result = await query(
+        "SELECT value FROM mrd_system_config WHERE key = 'pgvector_available'"
+      );
+      hasPgVector = result.rows.length > 0 && result.rows[0].value === true;
+    } catch (e) {
+      hasPgVector = false;
+    }
+    logger.info('pgvector availability', { available: hasPgVector });
+  }
+  return hasPgVector;
+}
+
 async function embedQuery(queryText) {
   const client = getOpenAI();
   const response = await client.embeddings.create({
@@ -95,9 +113,31 @@ async function embedQuery(queryText) {
   return response.data[0].embedding;
 }
 
+// Compute cosine similarity between two vectors
+function cosineSimilarity(a, b) {
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  for (let i = 0; i < a.length; i++) {
+    dotProduct += a[i] * b[i];
+    normA += a[i] * a[i];
+    normB += b[i] * b[i];
+  }
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
 async function searchSimilarItems(queryEmbedding, filters = {}) {
-  // Boost factor for guideline sources (NCCN) which have shorter text
-  // This compensates for their lower raw similarity scores
+  const pgVectorAvailable = await checkPgVectorAvailable();
+
+  if (pgVectorAvailable) {
+    return searchWithPgVector(queryEmbedding, filters);
+  } else {
+    return searchWithJSONB(queryEmbedding, filters);
+  }
+}
+
+// Search using pgvector extension (efficient)
+async function searchWithPgVector(queryEmbedding, filters = {}) {
   const NCCN_BOOST = 1.15;
 
   let sql = `
@@ -129,23 +169,13 @@ async function searchSimilarItems(queryEmbedding, filters = {}) {
   let paramIndex = 3;
 
   if (filters.cancerType) {
-    sql += `
-      AND EXISTS (
-        SELECT 1 FROM mrd_guidance_cancer_types ct
-        WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex}
-      )
-    `;
+    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
     params.push(filters.cancerType);
     paramIndex++;
   }
 
   if (filters.clinicalSetting) {
-    sql += `
-      AND EXISTS (
-        SELECT 1 FROM mrd_guidance_clinical_settings cs
-        WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex}
-      )
-    `;
+    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_clinical_settings cs WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex})`;
     params.push(filters.clinicalSetting);
     paramIndex++;
   }
@@ -156,14 +186,87 @@ async function searchSimilarItems(queryEmbedding, filters = {}) {
     paramIndex++;
   }
 
-  sql += `
-    ORDER BY g.id, similarity DESC
-    LIMIT $${paramIndex}
-  `;
+  sql += ` ORDER BY g.id, similarity DESC LIMIT $${paramIndex}`;
   params.push(MAX_SOURCES);
 
   const result = await query(sql, params);
   return result.rows;
+}
+
+// Fallback search using JSONB embeddings (less efficient, computes similarity in JS)
+async function searchWithJSONB(queryEmbedding, filters = {}) {
+  const NCCN_BOOST = 1.15;
+
+  // Fetch all items with embeddings (limited to avoid memory issues)
+  let sql = `
+    SELECT
+      g.id,
+      g.title,
+      g.summary,
+      g.source_type,
+      g.source_id,
+      g.source_url,
+      g.evidence_type,
+      g.evidence_level,
+      g.publication_date,
+      g.journal,
+      g.authors,
+      e.chunk_text,
+      e.embedding
+    FROM mrd_item_embeddings e
+    JOIN mrd_guidance_items g ON e.guidance_id = g.id
+    WHERE g.is_superseded = FALSE
+  `;
+
+  const params = [];
+  let paramIndex = 1;
+
+  if (filters.cancerType) {
+    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
+    params.push(filters.cancerType);
+    paramIndex++;
+  }
+
+  if (filters.clinicalSetting) {
+    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_clinical_settings cs WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex})`;
+    params.push(filters.clinicalSetting);
+    paramIndex++;
+  }
+
+  if (filters.evidenceType) {
+    sql += ` AND g.evidence_type = $${paramIndex}`;
+    params.push(filters.evidenceType);
+    paramIndex++;
+  }
+
+  sql += ` LIMIT 500`; // Limit for memory safety
+
+  const result = await query(sql, params);
+
+  // Compute similarities in JS
+  const scored = result.rows
+    .map(row => {
+      const embedding = Array.isArray(row.embedding) ? row.embedding : [];
+      if (embedding.length === 0) return null;
+
+      const rawSimilarity = cosineSimilarity(queryEmbedding, embedding);
+      const similarity = row.source_type === 'nccn'
+        ? rawSimilarity * NCCN_BOOST
+        : rawSimilarity;
+
+      return { ...row, similarity, raw_similarity: rawSimilarity };
+    })
+    .filter(row => row !== null && row.similarity >= MIN_SIMILARITY)
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, MAX_SOURCES);
+
+  // Dedupe by id
+  const seen = new Set();
+  return scored.filter(row => {
+    if (seen.has(row.id)) return false;
+    seen.add(row.id);
+    return true;
+  });
 }
 
 // ============================================
