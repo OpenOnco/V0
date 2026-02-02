@@ -9,6 +9,7 @@ import { query } from './db/mrd-client.js';
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { crawlClinicalTrials, seedPriorityTrials } from './crawlers/mrd/clinicaltrials.js';
+import { processNccnPdf } from './crawlers/mrd/nccn-processor.js';
 
 const logger = createLogger('server');
 
@@ -424,6 +425,87 @@ async function handleHealth(req, res) {
   }
 }
 
+async function handleImportNccn(req, res) {
+  const authHeader = req.headers['x-crawl-secret'];
+  const expectedSecret = process.env.CRAWL_SECRET || 'mrd-crawl-2024';
+
+  if (authHeader !== expectedSecret) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ error: 'Unauthorized' }));
+  }
+
+  try {
+    let body = '';
+    for await (const chunk of req) {
+      body += chunk;
+    }
+    const { recommendations } = JSON.parse(body);
+
+    if (!recommendations || !Array.isArray(recommendations)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Invalid recommendations array' }));
+    }
+
+    logger.info('Importing NCCN recommendations', { count: recommendations.length });
+
+    let saved = 0, skipped = 0;
+
+    for (const rec of recommendations) {
+      try {
+        // Check for duplicates
+        const existing = await query(
+          `SELECT id FROM mrd_guidance_items
+           WHERE source_type = 'nccn' AND summary = $1`,
+          [rec.recommendation]
+        );
+
+        if (existing.rows.length > 0) {
+          skipped++;
+          continue;
+        }
+
+        const title = `NCCN ${rec.cancer_type.charAt(0).toUpperCase() + rec.cancer_type.slice(1)} Cancer: ${rec.clinical_setting || 'ctDNA Recommendation'}`;
+
+        await query(
+          `INSERT INTO mrd_guidance_items (
+            source_type, source_id, source_url,
+            title, summary, evidence_type, evidence_level,
+            key_findings, publication_date
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+          [
+            'nccn',
+            `nccn-${rec.cancer_type}-${Date.now()}-${saved}`,
+            'https://www.nccn.org/guidelines/category_1',
+            title,
+            rec.recommendation,
+            'guideline',
+            rec.evidence_category ? `NCCN Category ${rec.evidence_category}` : null,
+            JSON.stringify([{
+              finding: rec.recommendation,
+              quote: rec.key_quote,
+              setting: rec.clinical_setting,
+            }]),
+            new Date(),
+          ]
+        );
+        saved++;
+      } catch (err) {
+        logger.warn('Failed to save NCCN rec', { error: err.message });
+      }
+    }
+
+    logger.info('NCCN import complete', { saved, skipped });
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ success: true, saved, skipped }));
+
+  } catch (error) {
+    logger.error('NCCN import error', { error: error.message });
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ error: error.message }));
+  }
+}
+
 async function handleTriggerCrawl(req, res) {
   // Simple auth check - require a secret header
   const authHeader = req.headers['x-crawl-secret'];
@@ -490,6 +572,10 @@ const server = createServer(async (req, res) => {
 
   if (url.pathname === '/api/trigger-crawl' && req.method === 'POST') {
     return handleTriggerCrawl(req, res);
+  }
+
+  if (url.pathname === '/api/import-nccn' && req.method === 'POST') {
+    return handleImportNccn(req, res);
   }
 
   res.writeHead(404, { 'Content-Type': 'application/json' });
