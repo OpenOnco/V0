@@ -96,6 +96,13 @@ export const DELEGATION_PATTERNS = [
     extractLBM: (match) => normalizeLBMName(match[1]),
   },
 
+  // v2.1: Handled/managed by (passive voice)
+  {
+    pattern: /(?:is\s+)?(?:now\s+)?(?:handled|managed|administered)\s+by\s+(carelon|evicore|aim\s*(?:specialty)?(?:\s*health)?)/i,
+    type: 'passive_delegation',
+    extractLBM: (match) => normalizeLBMName(match[1]),
+  },
+
   // Genetic testing management services
   {
     pattern: /(carelon|evicore|aim\s*(?:specialty)?(?:\s*health)?)\s+(?:will\s+)?(?:provide|offers?)\s+genetic\s+testing\s+management/i,

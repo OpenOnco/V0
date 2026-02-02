@@ -13,7 +13,32 @@
  * - Know to monitor LBM guidelines for delegated payers
  * - Detect when a payer announces new delegation
  * - Reconcile coverage assertions from multiple sources
+ *
+ * v2.1: EVIDENCE-GATED DELEGATION
+ * Static map entries are now ADVISORY only. Delegation status is:
+ * - 'suspected': In static map but no recent document evidence
+ * - 'active': Document evidence detected within verification window
+ * - 'confirmed': Manually verified by human reviewer
+ * - 'expired': Was active but evidence is stale (>90 days without verification)
+ *
+ * The reconciliation engine uses status to decide how much to boost LBM layer weight.
  */
+
+/**
+ * Delegation status types
+ */
+export const DELEGATION_STATUS = {
+  SUSPECTED: 'suspected',   // In static map, no recent evidence
+  ACTIVE: 'active',         // Document evidence detected recently
+  CONFIRMED: 'confirmed',   // Manually verified by human
+  EXPIRED: 'expired',       // Was active but evidence is stale
+};
+
+/**
+ * Evidence verification window (days)
+ * Delegations without evidence within this window become 'suspected'
+ */
+export const EVIDENCE_WINDOW_DAYS = 90;
 
 export const PAYER_DELEGATIONS = {
   // ============================================================================
@@ -24,13 +49,21 @@ export const PAYER_DELEGATIONS = {
   'bcbs-louisiana': {
     payerId: 'bcbsla',
     payerName: 'BCBS Louisiana',
-    delegatedTo: 'carelon',
+    delegatesTo: 'carelon',
     delegatedToName: 'Carelon Medical Benefits Management',
     effectiveDate: '2024-07-01',
     scope: 'genetic_testing',
     scopeDescription: 'All genetic testing including ctDNA, MRD, and molecular profiling',
-    sourceUrl: 'https://www.lablue.com/-/media/Medical%20Policies/2022/07/11/17/15/Tumor%20Informed%20Circulating%20Tumor%20DNA%20Testing%20for%20Cancer%20Management%2000792%2020220711_accessibile%20pdf.pdf',
-    sourceQuote: 'This policy is being retired as part of partnership with Carelon. Carelon will provide genetic testing management services effective 07/01/2024.',
+
+    // v2.1: Evidence-gating fields
+    status: DELEGATION_STATUS.ACTIVE,  // Has document evidence
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.lablue.com/-/media/Medical%20Policies/2022/07/11/17/15/Tumor%20Informed%20Circulating%20Tumor%20DNA%20Testing%20for%20Cancer%20Management%2000792%2020220711_accessibile%20pdf.pdf',
+      quotes: ['This policy is being retired as part of partnership with Carelon. Carelon will provide genetic testing management services effective 07/01/2024.'],
+      detectedAt: '2026-02-01',
+      verificationMethod: 'document_detection',
+    },
     lastVerified: '2026-02-01',
     notes: 'Monitor carelon-liquid-biopsy-2025 guideline for BCBSLA coverage.',
   },
@@ -38,13 +71,21 @@ export const PAYER_DELEGATIONS = {
   'blue-cross-idaho': {
     payerId: 'bcidaho',
     payerName: 'Blue Cross of Idaho',
-    delegatedTo: 'carelon',
+    delegatesTo: 'carelon',
     delegatedToName: 'Carelon Medical Benefits Management',
     effectiveDate: '2026-01-01',
     scope: 'genetic_testing',
     scopeDescription: 'Genetic and molecular testing benefit management',
-    sourceUrl: 'https://providers.bcidaho.com/medical-management/medical-policies/med/mp_204141.page',
-    sourceQuote: 'Transitioning to Carelon Jan 2026.',
+
+    // v2.1: Evidence-gating fields
+    status: DELEGATION_STATUS.ACTIVE,
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://providers.bcidaho.com/medical-management/medical-policies/med/mp_204141.page',
+      quotes: ['Transitioning to Carelon Jan 2026.'],
+      detectedAt: '2026-02-01',
+      verificationMethod: 'document_detection',
+    },
     lastVerified: '2026-02-01',
     notes: 'Transition announced in policy MP 2.04.141.',
   },
@@ -57,13 +98,21 @@ export const PAYER_DELEGATIONS = {
   'horizon-bcbs-nj': {
     payerId: 'horizonnj',
     payerName: 'Horizon BCBS New Jersey',
-    delegatedTo: 'evicore',
+    delegatesTo: 'evicore',
     delegatedToName: 'eviCore Healthcare',
     effectiveDate: '2023-01-01',
     scope: 'molecular_genomic_testing',
     scopeDescription: 'Molecular and genomic testing prior authorization',
-    sourceUrl: 'https://www.horizonblue.com/providers/products-programs/evicore-health-care/molecular-and-genomic-testing-program',
-    sourceQuote: 'Horizon uses eviCore for molecular/genomic testing authorizations.',
+
+    // v2.1: Evidence-gating fields
+    status: DELEGATION_STATUS.ACTIVE,
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.horizonblue.com/providers/products-programs/evicore-health-care/molecular-and-genomic-testing-program',
+      quotes: ['Horizon uses eviCore for molecular/genomic testing authorizations.'],
+      detectedAt: '2026-02-01',
+      verificationMethod: 'document_detection',
+    },
     lastVerified: '2026-02-01',
     notes: 'Monitor evicore-liquid-biopsy-2026 guideline for Horizon NJ coverage.',
   },
@@ -71,35 +120,53 @@ export const PAYER_DELEGATIONS = {
   'wellmark-bcbs': {
     payerId: 'wellmark',
     payerName: 'Wellmark BCBS (Iowa/South Dakota)',
-    delegatedTo: 'evicore',
+    delegatesTo: 'evicore',
     delegatedToName: 'eviCore Healthcare',
     effectiveDate: '2022-01-01',
     scope: 'molecular_testing',
     scopeDescription: 'Molecular testing including liquid biopsy',
-    sourceUrl: 'https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx',
-    sourceQuote: 'Uses eviCore for molecular testing.',
+
+    // v2.1: Evidence-gating fields
+    status: DELEGATION_STATUS.ACTIVE,
+    staticSource: true,
+    evidence: {
+      sourceUrl: 'https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx',
+      quotes: ['Uses eviCore for molecular testing.'],
+      detectedAt: '2026-02-01',
+      verificationMethod: 'document_detection',
+    },
     lastVerified: '2026-02-01',
     notes: 'Policy notes eviCore delegation.',
   },
 
   // Cigna's own plans often route through eviCore internally
+  // NOTE: No document evidence - marked as SUSPECTED
   'cigna-internal': {
     payerId: 'cigna',
     payerName: 'Cigna',
-    delegatedTo: 'evicore',
+    delegatesTo: 'evicore',
     delegatedToName: 'eviCore Healthcare (internal)',
     effectiveDate: '2020-01-01',
     scope: 'lab_benefits',
     scopeDescription: 'Lab benefit management including molecular testing (select plans)',
-    sourceUrl: null,
-    sourceQuote: null,
+
+    // v2.1: Evidence-gating fields
+    status: DELEGATION_STATUS.SUSPECTED,  // No document evidence
+    staticSource: true,
+    evidence: null,  // No document evidence available
     lastVerified: '2026-02-01',
-    notes: 'eviCore is owned by Cigna parent company Evernorth. Not all Cigna plans delegate.',
+    notes: 'eviCore is owned by Cigna parent company Evernorth. Not all Cigna plans delegate. No explicit document evidence.',
   },
 };
 
 /**
- * Get the authoritative guideline source for a payer
+ * Runtime evidence store for detected delegations
+ * Populated by crawler when delegation patterns are detected
+ */
+const detectedDelegations = new Map();
+
+/**
+ * Get the authoritative guideline source for a payer (basic lookup)
  * @param {string} payerId - The payer ID
  * @returns {object|null} Delegation info if delegated, null if payer manages internally
  */
@@ -117,6 +184,80 @@ export function getDelegation(payerId) {
   }
 
   return null;
+}
+
+/**
+ * Store detected delegation evidence from crawler
+ * @param {string} payerId - Payer ID
+ * @param {Object} evidence - Evidence object
+ */
+export function storeDetectedDelegation(payerId, evidence) {
+  detectedDelegations.set(payerId, {
+    ...evidence,
+    detectedAt: new Date().toISOString(),
+  });
+}
+
+/**
+ * Get detected delegation evidence
+ * @param {string} payerId - Payer ID
+ * @returns {Object|null} Detected evidence or null
+ */
+export function getDetectedDelegation(payerId) {
+  return detectedDelegations.get(payerId) || null;
+}
+
+/**
+ * Get delegation status with evidence gating
+ * v2.1: Returns status based on both static map and detected evidence
+ *
+ * @param {string} payerId - Payer ID
+ * @returns {Object|null} Delegation with computed status
+ */
+export function getDelegationStatus(payerId) {
+  const staticDelegation = getDelegation(payerId);
+  const detected = getDetectedDelegation(payerId);
+
+  // No delegation known
+  if (!staticDelegation && !detected) {
+    return null;
+  }
+
+  // Only detected (new delegation not in static map)
+  if (!staticDelegation && detected) {
+    return {
+      payerId,
+      delegatesTo: detected.delegatesTo,
+      status: detected.confidence > 0.8 ? DELEGATION_STATUS.ACTIVE : DELEGATION_STATUS.SUSPECTED,
+      staticSource: false,
+      evidence: detected,
+      lastVerified: detected.detectedAt,
+    };
+  }
+
+  // Static delegation exists - check if evidence is fresh
+  const base = { ...staticDelegation };
+
+  // If we have recent detected evidence, promote to active
+  if (detected && detected.confidence > 0.8) {
+    base.status = DELEGATION_STATUS.ACTIVE;
+    base.evidence = detected;
+    base.lastVerified = detected.detectedAt;
+    return base;
+  }
+
+  // Check if static evidence is within window
+  if (staticDelegation.lastVerified) {
+    const verifiedDate = new Date(staticDelegation.lastVerified);
+    const daysSinceVerified = (Date.now() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (daysSinceVerified > EVIDENCE_WINDOW_DAYS) {
+      // Evidence is stale
+      base.status = staticDelegation.evidence ? DELEGATION_STATUS.EXPIRED : DELEGATION_STATUS.SUSPECTED;
+    }
+  }
+
+  return base;
 }
 
 /**
@@ -167,4 +308,15 @@ export const DELEGATION_PATTERNS = [
   /(?:carelon|evicore)\s+(?:portal|system)\s+for\s+(?:prior\s+auth|authorization)/i,
 ];
 
-export default PAYER_DELEGATIONS;
+export default {
+  PAYER_DELEGATIONS,
+  DELEGATION_STATUS,
+  EVIDENCE_WINDOW_DAYS,
+  getDelegation,
+  getDelegationStatus,
+  storeDetectedDelegation,
+  getDetectedDelegation,
+  getPayersByLBM,
+  isDelegated,
+  DELEGATION_PATTERNS,
+};

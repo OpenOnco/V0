@@ -54,16 +54,16 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(1);
-      expect(proposals[0].type).toBe(PROPOSAL_TYPES.COVERAGE);
-      expect(proposals[0].status).toBe(PROPOSAL_STATES.PENDING);
-      expect(proposals[0].testName).toBe('Signatera');
-      expect(proposals[0].payer).toBe('UnitedHealthcare');
-      expect(proposals[0].source).toBe('https://www.natera.com/news/uhc-coverage');
+      expect(result.proposals).toHaveLength(1);
+      expect(result.proposals[0].type).toBe(PROPOSAL_TYPES.COVERAGE);
+      expect(result.proposals[0].status).toBe(PROPOSAL_STATES.PENDING);
+      expect(result.proposals[0].testName).toBe('Signatera');
+      expect(result.proposals[0].payer).toBe('UnitedHealthcare');
+      expect(result.proposals[0].source).toBe('https://www.natera.com/news/uhc-coverage');
 
-      createdProposalIds.push(proposals[0].id);
+      createdProposalIds.push(result.proposals[0].id);
     });
 
     it('creates update proposal from high-relevance performance data', async () => {
@@ -88,15 +88,15 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(1);
-      expect(proposals[0].type).toBe(PROPOSAL_TYPES.UPDATE);
-      expect(proposals[0].testName).toBe('Guardant360 CDx');
-      expect(proposals[0].changes).toHaveProperty('performance');
-      expect(proposals[0].changes.performance.sensitivity).toBe('95%');
+      expect(result.proposals).toHaveLength(1);
+      expect(result.proposals[0].type).toBe(PROPOSAL_TYPES.UPDATE);
+      expect(result.proposals[0].testName).toBe('Guardant360 CDx');
+      expect(result.proposals[0].changes).toHaveProperty('performance');
+      expect(result.proposals[0].changes.performance.sensitivity).toBe('95%');
 
-      createdProposalIds.push(proposals[0].id);
+      createdProposalIds.push(result.proposals[0].id);
     });
 
     it('creates new test proposal from high-relevance new test announcement', async () => {
@@ -119,15 +119,15 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(1);
-      expect(proposals[0].type).toBe(PROPOSAL_TYPES.NEW_TEST);
-      expect(proposals[0].testData.name).toBe('FoundationOne Tracker');
-      expect(proposals[0].testData.vendor).toBe('Foundation Medicine');
-      expect(proposals[0].testData.category).toBe('Molecular Residual Disease');
+      expect(result.proposals).toHaveLength(1);
+      expect(result.proposals[0].type).toBe(PROPOSAL_TYPES.NEW_TEST);
+      expect(result.proposals[0].testData.name).toBe('FoundationOne Tracker');
+      expect(result.proposals[0].testData.vendor).toBe('Foundation Medicine');
+      expect(result.proposals[0].testData.category).toBe('Molecular Residual Disease');
 
-      createdProposalIds.push(proposals[0].id);
+      createdProposalIds.push(result.proposals[0].id);
     });
 
     it('skips low-relevance discoveries', async () => {
@@ -147,9 +147,9 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(0);
+      expect(result.proposals).toHaveLength(0);
     });
 
     it('includes medium-relevance discoveries', async () => {
@@ -170,9 +170,9 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(1);
+      expect(result.proposals).toHaveLength(1);
     });
 
     it('skips informational discovery types (PLA codes, price changes)', async () => {
@@ -197,9 +197,9 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(0);
+      expect(result.proposals).toHaveLength(0);
     });
 
     it('skips coverage proposal when no test name identified', async () => {
@@ -219,9 +219,9 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
-      expect(proposals).toHaveLength(0);
+      expect(result.proposals).toHaveLength(0);
     });
 
     it('handles multiple discoveries in one batch', async () => {
@@ -266,14 +266,14 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
 
       // Should create 2 proposals (coverage + regulatory update), skip PLA code
-      expect(proposals).toHaveLength(2);
-      expect(proposals.map(p => p.type)).toContain(PROPOSAL_TYPES.COVERAGE);
-      expect(proposals.map(p => p.type)).toContain(PROPOSAL_TYPES.UPDATE);
+      expect(result.proposals).toHaveLength(2);
+      expect(result.proposals.map(p => p.type)).toContain(PROPOSAL_TYPES.COVERAGE);
+      expect(result.proposals.map(p => p.type)).toContain(PROPOSAL_TYPES.UPDATE);
 
-      createdProposalIds.push(...proposals.map(p => p.id));
+      createdProposalIds.push(...result.proposals.map(p => p.id));
     });
   });
 
@@ -296,13 +296,13 @@ describe('Proposal Integration', () => {
         },
       ];
 
-      const proposals = await crawler.createProposalsFromDiscoveries(discoveries);
-      expect(proposals).toHaveLength(1);
-      createdProposalIds.push(proposals[0].id);
+      const result = await crawler.createProposalsFromDiscoveries(discoveries);
+      expect(result.proposals).toHaveLength(1);
+      createdProposalIds.push(result.proposals[0].id);
 
       // Verify it's in the queue
       const allProposals = await listProposals();
-      const found = allProposals.find(p => p.id === proposals[0].id);
+      const found = allProposals.find(p => p.id === result.proposals[0].id);
 
       expect(found).toBeDefined();
       expect(found.testData.name).toBe('New Test Product');

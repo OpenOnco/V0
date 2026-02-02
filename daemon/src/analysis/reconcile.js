@@ -7,28 +7,73 @@
  * Layer priority (highest to lowest authority):
  * 1. um_criteria - Operational UM rules are authoritative
  * 2. lbm_guideline - Delegated LBM overrides payer policy
- * 3. delegation - Delegation status affects which source is authoritative
- * 4. policy_stance - Medical policy evidence review
- * 5. overlay - State mandates, Medicare references
+ * 3. policy_stance - Medical policy evidence review
+ * 4. overlay - State mandates, Medicare references
+ *
+ * v2.1: Delegation is now ROUTING METADATA, not a stance layer.
+ * Delegation tells us WHICH documents apply, not WHAT the coverage is.
+ * When a payer delegates to an LBM, we route to LBM assertions,
+ * but delegation itself does not contribute a coverage stance.
  */
 
 import { COVERAGE_LAYERS, ASSERTION_STATUS } from '../proposals/schema.js';
-import { getDelegation } from '../data/delegation-map.js';
-import { logger } from '../utils/logger.js';
+import { getDelegation, getDelegationStatus } from '../data/delegation-map.js';
+import { createLogger } from '../utils/logger.js';
+
+const logger = createLogger('reconcile');
 
 /**
  * Layer weights for reconciliation
  * Higher = more authoritative
+ *
+ * NOTE: Delegation is NOT a layer weight - it's routing metadata.
+ * See getDelegationRouting() for how delegation affects which assertions apply.
  */
 export const LAYER_WEIGHTS = {
   [COVERAGE_LAYERS.UM_CRITERIA]: 1.0,
   [COVERAGE_LAYERS.LBM_GUIDELINE]: 0.95,
-  [COVERAGE_LAYERS.DELEGATION]: 0.9,
   [COVERAGE_LAYERS.POLICY_STANCE]: 0.7,
   [COVERAGE_LAYERS.OVERLAY]: 0.5,
   // Additional internal weights
   vendor_claim: 0.3, // Vendor in-network claims (lowest)
 };
+
+/**
+ * Get delegation routing info for a payer
+ * This determines which assertions are "applicable" based on delegation
+ *
+ * @param {string} payerId - Payer ID
+ * @returns {Object} { active, delegatedTo, applicableDocuments, boostLBM }
+ */
+export function getDelegationRouting(payerId) {
+  const delegation = getDelegationStatus ? getDelegationStatus(payerId) : getDelegation(payerId);
+
+  if (!delegation) {
+    return {
+      active: false,
+      delegatedTo: null,
+      status: null,
+      boostLBM: false,
+    };
+  }
+
+  // v2.1: Check if delegation is confirmed with evidence
+  const isActive = delegation.status === 'active' || delegation.status === 'confirmed';
+  const isSuspected = delegation.status === 'suspected';
+
+  return {
+    active: isActive,
+    suspected: isSuspected,
+    delegatedTo: delegation.delegatesTo || delegation.delegatedTo,
+    program: delegation.program,
+    effectiveDate: delegation.effectiveDate,
+    // When delegation is active, boost LBM guideline layer
+    boostLBM: isActive,
+    // Evidence for audit trail
+    evidence: delegation.evidence || null,
+    lastVerified: delegation.lastVerified || null,
+  };
+}
 
 /**
  * Status conflict definitions
@@ -53,6 +98,11 @@ export const STATUS_CONFLICTS = {
 
 /**
  * Reconcile coverage assertions for a test+payer combination
+ *
+ * v2.1: Delegation is now routing metadata, not a stance layer.
+ * When delegation is active, we boost LBM layer weight but delegation
+ * itself doesn't contribute a coverage stance.
+ *
  * @param {Object[]} assertions - Array of coverage assertions
  * @param {Object} options - { payerId, testId }
  * @returns {Object} Reconciliation result
@@ -64,24 +114,40 @@ export function reconcileCoverage(assertions, options = {}) {
       confidence: 0,
       authoritative: null,
       conflicts: [],
+      hasConflict: false,
       message: 'No coverage assertions available',
+      delegation: null,
     };
   }
 
   const { payerId, testId } = options;
 
-  // Check for delegation - if delegated, LBM layer becomes authoritative
-  const delegation = payerId ? getDelegation(payerId) : null;
+  // v2.1: Get delegation routing (metadata, not stance)
+  const delegationRouting = payerId ? getDelegationRouting(payerId) : { active: false };
+
+  // Build adjusted weights based on delegation routing
   const adjustedWeights = { ...LAYER_WEIGHTS };
 
-  if (delegation) {
-    // Boost LBM layer, reduce policy_stance
+  if (delegationRouting.active && delegationRouting.boostLBM) {
+    // When delegation is ACTIVE with evidence, LBM layer is most authoritative
     adjustedWeights[COVERAGE_LAYERS.LBM_GUIDELINE] = 1.0;
     adjustedWeights[COVERAGE_LAYERS.POLICY_STANCE] = 0.4;
+
+    logger.debug('Delegation active, boosting LBM layer', {
+      payerId,
+      delegatedTo: delegationRouting.delegatedTo,
+    });
+  } else if (delegationRouting.suspected) {
+    // When delegation is suspected but unconfirmed, slight LBM boost
+    adjustedWeights[COVERAGE_LAYERS.LBM_GUIDELINE] = 0.98;
   }
 
+  // Filter assertions to only those from applicable layers
+  // (delegation routing may exclude certain sources)
+  const applicableAssertions = filterByDelegationRouting(assertions, delegationRouting);
+
   // Sort by layer weight (highest first)
-  const sorted = [...assertions].sort((a, b) => {
+  const sorted = [...applicableAssertions].sort((a, b) => {
     const weightA = adjustedWeights[a.layer] || 0;
     const weightB = adjustedWeights[b.layer] || 0;
     if (weightB !== weightA) return weightB - weightA;
@@ -89,14 +155,32 @@ export function reconcileCoverage(assertions, options = {}) {
     return (b.confidence || 0) - (a.confidence || 0);
   });
 
+  if (sorted.length === 0) {
+    return {
+      status: 'unknown',
+      confidence: 0,
+      authoritative: null,
+      conflicts: [],
+      hasConflict: false,
+      message: 'No applicable coverage assertions (delegation may apply)',
+      delegation: delegationRouting.active ? {
+        active: true,
+        delegatedTo: delegationRouting.delegatedTo,
+        program: delegationRouting.program,
+        status: 'awaiting_lbm_assertion',
+      } : null,
+    };
+  }
+
   // Detect conflicts
   const conflicts = detectConflicts(sorted);
+  const hasConflict = conflicts.some(c => c.severity === 'high' || c.severity === 'medium');
 
   // Determine authoritative assertion
   const authoritative = sorted[0];
 
   // Calculate reconciled status
-  const reconciledStatus = determineReconciledStatus(sorted, conflicts, delegation);
+  const reconciledStatus = determineReconciledStatus(sorted, conflicts, delegationRouting);
 
   // Calculate confidence in reconciliation
   const confidence = calculateReconciliationConfidence(sorted, conflicts);
@@ -116,12 +200,47 @@ export function reconcileCoverage(assertions, options = {}) {
       status: a.status,
     })),
     conflicts,
-    delegation: delegation ? {
-      delegatedTo: delegation.delegatedTo,
-      effectiveDate: delegation.effectiveDate,
+    hasConflict,
+    conflictDetails: hasConflict ? {
+      layers: [...new Set(conflicts.flatMap(c => c.layers))],
+      description: conflicts.map(c => c.message).join('; '),
     } : null,
-    message: buildReconciliationMessage(reconciledStatus, conflicts, delegation),
+    // v2.1: Delegation as metadata, not stance
+    delegation: delegationRouting.active || delegationRouting.suspected ? {
+      active: delegationRouting.active,
+      suspected: delegationRouting.suspected,
+      delegatedTo: delegationRouting.delegatedTo,
+      program: delegationRouting.program,
+      effectiveDate: delegationRouting.effectiveDate,
+      evidence: delegationRouting.evidence,
+    } : null,
+    message: buildReconciliationMessage(reconciledStatus, conflicts, delegationRouting),
   };
+}
+
+/**
+ * Filter assertions based on delegation routing
+ * When delegation is active, prioritize LBM assertions
+ *
+ * @param {Object[]} assertions - All assertions
+ * @param {Object} delegationRouting - Delegation routing info
+ * @returns {Object[]} Applicable assertions
+ */
+function filterByDelegationRouting(assertions, delegationRouting) {
+  if (!delegationRouting.active) {
+    // No active delegation - all assertions apply
+    return assertions;
+  }
+
+  // When delegation is active:
+  // 1. Always include UM_CRITERIA (payer-specific ops rules)
+  // 2. Always include LBM_GUIDELINE (from the delegated LBM)
+  // 3. Include OVERLAY (state mandates still apply)
+  // 4. Reduce weight of POLICY_STANCE (payer policy may be superseded)
+
+  // For now, include all but let weights handle priority
+  // In future, could filter out stale policy_stance assertions
+  return assertions;
 }
 
 /**
@@ -164,10 +283,10 @@ export function detectConflicts(sortedAssertions) {
  * Determine the reconciled status
  * @param {Object[]} sortedAssertions - Sorted assertions
  * @param {Object[]} conflicts - Detected conflicts
- * @param {Object|null} delegation - Delegation info
+ * @param {Object} delegationRouting - Delegation routing info
  * @returns {string} Reconciled status
  */
-function determineReconciledStatus(sortedAssertions, conflicts, delegation) {
+function determineReconciledStatus(sortedAssertions, conflicts, delegationRouting) {
   const hasHighConflict = conflicts.some(c => c.severity === 'high');
 
   // If high-severity conflict, flag for review
@@ -228,10 +347,10 @@ function calculateReconciliationConfidence(sortedAssertions, conflicts) {
  * Build human-readable reconciliation message
  * @param {string} status - Reconciled status
  * @param {Object[]} conflicts - Conflicts
- * @param {Object|null} delegation - Delegation info
+ * @param {Object} delegationRouting - Delegation routing info
  * @returns {string} Message
  */
-function buildReconciliationMessage(status, conflicts, delegation) {
+function buildReconciliationMessage(status, conflicts, delegationRouting) {
   const parts = [];
 
   if (status === 'conflict_review_required') {
@@ -247,8 +366,11 @@ function buildReconciliationMessage(status, conflicts, delegation) {
     parts.push(`Status: ${statusLabels[status] || status}`);
   }
 
-  if (delegation) {
-    parts.push(`Note: Payer delegates to ${delegation.delegatedTo}. LBM guidelines are authoritative.`);
+  // v2.1: Delegation as routing metadata
+  if (delegationRouting.active) {
+    parts.push(`Note: Payer delegates to ${delegationRouting.delegatedTo}. LBM guidelines are authoritative.`);
+  } else if (delegationRouting.suspected) {
+    parts.push(`Note: Payer may delegate to ${delegationRouting.delegatedTo} (unconfirmed).`);
   }
 
   if (conflicts.length > 0 && status !== 'conflict_review_required') {
@@ -360,6 +482,7 @@ export function exportForFrontend(result) {
 export default {
   LAYER_WEIGHTS,
   STATUS_CONFLICTS,
+  getDelegationRouting,
   reconcileCoverage,
   detectConflicts,
   reconcileAllForTest,

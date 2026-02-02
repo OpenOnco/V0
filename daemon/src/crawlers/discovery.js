@@ -2,12 +2,21 @@
  * Discovery Crawler
  *
  * Automatically discovers new policy documents on payer websites.
- * Crawls index pages and uses site search to find relevant policies.
+ *
+ * v2.1: DOES NOT use Google search (ToS/reliability concerns)
+ *
+ * Discovery methods (in priority order):
+ * 1. Index page crawling - Most reliable, follows known policy portals
+ * 2. Payer internal search - Uses payer's own search endpoint
+ * 3. Sitemap parsing - Finds policy URLs from XML sitemaps
+ * 4. URL pattern harvesting - Tests known URL patterns for each payer
  *
  * Outputs DOCUMENT_CANDIDATE proposals for human review.
  */
 
-import { logger } from '../utils/logger.js';
+import { createLogger } from '../utils/logger.js';
+
+const logger = createLogger('discovery');
 import { POLICY_REGISTRY } from '../data/policy-registry.js';
 import {
   buildSearchQueries,
@@ -27,6 +36,8 @@ import { quickRelevanceCheck } from '../extractors/index.js';
 
 /**
  * Payers with known index pages for discovery
+ *
+ * NOTE: No Google search - only payer-owned endpoints
  */
 export const DISCOVERY_SOURCES = {
   // Tier 1 - National payers
@@ -38,6 +49,8 @@ export const DISCOVERY_SOURCES = {
     ],
     searchUrl: 'https://www.uhcprovider.com/search.html?q=',
     searchTerms: ['liquid biopsy', 'ctDNA', 'molecular oncology'],
+    sitemapUrl: null,
+    urlPatterns: [],
   },
   aetna: {
     id: 'aetna',
@@ -45,8 +58,13 @@ export const DISCOVERY_SOURCES = {
     indexPages: [
       'https://www.aetna.com/health-care-professionals/clinical-policy-bulletins.html',
     ],
-    searchUrl: null, // No public search
+    searchUrl: null, // No public search (bot protection)
     searchTerms: [],
+    sitemapUrl: null,
+    urlPatterns: [
+      // Aetna CPB URLs follow predictable pattern
+      'https://www.aetna.com/cpb/medical/data/{number}_{title}.html',
+    ],
   },
   cigna: {
     id: 'cigna',
@@ -56,6 +74,8 @@ export const DISCOVERY_SOURCES = {
     ],
     searchUrl: null,
     searchTerms: [],
+    sitemapUrl: null,
+    urlPatterns: [],
   },
   anthem: {
     id: 'anthem',
@@ -65,6 +85,8 @@ export const DISCOVERY_SOURCES = {
     ],
     searchUrl: null,
     searchTerms: [],
+    sitemapUrl: null,
+    urlPatterns: [],
   },
   humana: {
     id: 'humana',
@@ -74,6 +96,8 @@ export const DISCOVERY_SOURCES = {
     ],
     searchUrl: null,
     searchTerms: [],
+    sitemapUrl: null,
+    urlPatterns: [],
   },
 
   // LBMs
@@ -85,6 +109,8 @@ export const DISCOVERY_SOURCES = {
     ],
     searchUrl: 'https://guidelines.carelonmedicalbenefitsmanagement.com/?s=',
     searchTerms: ['liquid biopsy', 'genetic testing', 'MRD'],
+    sitemapUrl: 'https://guidelines.carelonmedicalbenefitsmanagement.com/sitemap.xml',
+    urlPatterns: [],
   },
   evicore: {
     id: 'evicore',
@@ -94,6 +120,8 @@ export const DISCOVERY_SOURCES = {
     ],
     searchUrl: null,
     searchTerms: [],
+    sitemapUrl: null,
+    urlPatterns: [],
   },
 };
 
@@ -149,7 +177,7 @@ export class DiscoveryCrawler {
   async discoverForPayer(source) {
     const candidates = [];
 
-    // 1. Crawl index pages
+    // 1. Crawl index pages (most reliable)
     for (const indexUrl of source.indexPages || []) {
       try {
         const indexCandidates = await this.crawlIndexPage(indexUrl, source);
@@ -162,7 +190,8 @@ export class DiscoveryCrawler {
       }
     }
 
-    // 2. Search site if available
+    // 2. Search payer's own site search (if available)
+    // NOTE: This is the payer's internal search, NOT Google
     if (source.searchUrl && source.searchTerms.length > 0) {
       for (const term of source.searchTerms) {
         try {
@@ -177,11 +206,24 @@ export class DiscoveryCrawler {
       }
     }
 
-    // 3. Deduplicate and filter
+    // 3. Parse sitemap if available
+    if (source.sitemapUrl) {
+      try {
+        const sitemapCandidates = await this.parseSitemap(source.sitemapUrl, source);
+        candidates.push(...sitemapCandidates);
+      } catch (error) {
+        logger.warn(`Sitemap parsing failed for ${source.name}`, {
+          url: source.sitemapUrl,
+          error: error.message,
+        });
+      }
+    }
+
+    // 4. Deduplicate and filter
     const uniqueCandidates = this.deduplicateCandidates(candidates);
     const filteredCandidates = filterByRelevance(uniqueCandidates, this.minRelevanceScore);
 
-    // 4. Filter out already known URLs
+    // 5. Filter out already known URLs
     const newCandidates = [];
     for (const candidate of filteredCandidates) {
       if (!this.isUrlKnown(candidate.url)) {
@@ -189,7 +231,7 @@ export class DiscoveryCrawler {
       }
     }
 
-    // 5. Stage discoveries
+    // 6. Stage discoveries
     if (!this.dryRun) {
       for (const candidate of newCandidates.slice(0, this.maxPagesPerPayer)) {
         await this.stageCandidate(candidate, source);
@@ -197,6 +239,94 @@ export class DiscoveryCrawler {
     }
 
     return newCandidates.slice(0, this.maxPagesPerPayer);
+  }
+
+  /**
+   * Parse XML sitemap for policy URLs
+   * @param {string} sitemapUrl - Sitemap URL
+   * @param {Object} source - Payer source config
+   * @returns {Object[]} Candidate documents
+   */
+  async parseSitemap(sitemapUrl, source) {
+    logger.debug(`Parsing sitemap: ${sitemapUrl}`);
+
+    try {
+      const response = await this.fetchFn(sitemapUrl, {
+        headers: {
+          'User-Agent': 'OpenOnco-Daemon/1.0 (Research; contact@openonco.org)',
+          'Accept': 'application/xml, text/xml',
+        },
+        timeout: 30000,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const xml = await response.text();
+      const urls = this.extractUrlsFromSitemap(xml);
+
+      // Filter to policy-like URLs
+      const policyUrls = urls.filter(url => this.isPolicyLikeUrl(url));
+
+      logger.info(`Found ${policyUrls.length} policy-like URLs in sitemap`, {
+        total: urls.length,
+        payerId: source.id,
+      });
+
+      return policyUrls.map(url => ({
+        url,
+        title: this.extractTitleFromUrl(url),
+        snippet: '',
+        sourcePageUrl: sitemapUrl,
+        payerId: source.id,
+        payerName: source.name,
+        discoveryMethod: 'sitemap',
+      }));
+    } catch (error) {
+      logger.warn(`Sitemap fetch failed: ${sitemapUrl}`, { error: error.message });
+      return [];
+    }
+  }
+
+  /**
+   * Extract URLs from XML sitemap content
+   * @param {string} xml - Sitemap XML
+   * @returns {string[]} URLs
+   */
+  extractUrlsFromSitemap(xml) {
+    const urls = [];
+    const locPattern = /<loc>([^<]+)<\/loc>/gi;
+
+    let match;
+    while ((match = locPattern.exec(xml)) !== null) {
+      const url = match[1].trim();
+      if (url && url.startsWith('http')) {
+        urls.push(url);
+      }
+    }
+
+    return urls;
+  }
+
+  /**
+   * Extract a title guess from URL path
+   * @param {string} url - URL
+   * @returns {string} Guessed title
+   */
+  extractTitleFromUrl(url) {
+    try {
+      const pathname = new URL(url).pathname;
+      const filename = pathname.split('/').pop() || '';
+      // Remove extension and convert dashes/underscores to spaces
+      return filename
+        .replace(/\.(pdf|html|htm)$/i, '')
+        .replace(/[-_]/g, ' ')
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase
+        .trim() || 'Unknown Policy';
+    } catch {
+      return 'Unknown Policy';
+    }
   }
 
   /**

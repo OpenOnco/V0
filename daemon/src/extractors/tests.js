@@ -3,6 +3,8 @@
  *
  * Deterministic extraction of named diagnostic tests from policy documents.
  * Maps test mentions to our database test IDs.
+ *
+ * v2.1: Added context-aware scoring to avoid bibliography/historical mentions
  */
 
 /**
@@ -185,6 +187,48 @@ export const TEST_NAME_PATTERNS = {
 };
 
 /**
+ * v2.1: Contexts that REDUCE weight of test mentions
+ * These indicate the test is mentioned in passing, not as covered
+ */
+export const DOWNWEIGHT_CONTEXTS = [
+  /references?\s*:?/i,
+  /bibliography/i,
+  /citation/i,
+  /examples?\s+include/i,
+  /such\s+as/i,
+  /e\.?g\.?,?\s/i,
+  /i\.?e\.?,?\s/i,
+  /see\s+also/i,
+  /compare\s+to/i,
+  /similar\s+to/i,
+  /alternatives?\s+(?:include|are)/i,
+  /vendor\s+list/i,
+  /market(?:ed)?\s+(?:by|as)/i,
+  /brand\s+names?/i,
+  /proprietary\s+names?/i,
+  /footnote/i,
+  /\[\d+\]/,  // Citation brackets like [1], [23]
+];
+
+/**
+ * v2.1: Contexts that INCREASE weight of test mentions
+ * These indicate the test is being discussed for coverage
+ */
+export const UPWEIGHT_CONTEXTS = [
+  /covered\s+(?:when|if|for)/i,
+  /medically\s+necessary/i,
+  /meets?\s+criteria/i,
+  /approved\s+for/i,
+  /indicated\s+for/i,
+  /this\s+(?:test|assay)\s+is/i,
+  /coverage\s+(?:for|of)\s+/i,
+  /considered\s+(?:medically|investigational)/i,
+  /not\s+covered/i,
+  /experimental/i,
+  /prior\s+auth(?:orization)?/i,
+];
+
+/**
  * Generic test category patterns
  */
 export const CATEGORY_PATTERNS = {
@@ -209,6 +253,48 @@ export const CATEGORY_PATTERNS = {
     /\btumor-?agnostic\b/gi,
   ],
 };
+
+/**
+ * Get context window around a match
+ * @param {string} content - Full content
+ * @param {number} index - Match start index
+ * @param {number} windowSize - Characters before and after
+ * @returns {string} Context window
+ */
+function getContextWindow(content, index, windowSize = 150) {
+  const start = Math.max(0, index - windowSize);
+  const end = Math.min(content.length, index + windowSize);
+  return content.slice(start, end);
+}
+
+/**
+ * Calculate context weight for a match
+ * v2.1: Adjusts weight based on surrounding context
+ *
+ * @param {string} context - Text around the match
+ * @returns {number} Weight multiplier (0.3 to 1.5)
+ */
+function calculateContextWeight(context) {
+  let weight = 1.0;
+
+  // Check for downweighting contexts (bibliography, examples, etc.)
+  for (const pattern of DOWNWEIGHT_CONTEXTS) {
+    if (pattern.test(context)) {
+      weight *= 0.3;  // Significant reduction
+      break;  // Only apply once
+    }
+  }
+
+  // Check for upweighting contexts (coverage language)
+  for (const pattern of UPWEIGHT_CONTEXTS) {
+    if (pattern.test(context)) {
+      weight *= 1.5;  // Boost
+      break;  // Only apply once
+    }
+  }
+
+  return Math.max(0.1, Math.min(2.0, weight));
+}
 
 /**
  * Extract named tests from content
@@ -243,6 +329,63 @@ export function extractNamedTests(content) {
       });
     }
   }
+
+  return found;
+}
+
+/**
+ * Extract named tests with context-aware weighting
+ * v2.1: Down-weights bibliography/example mentions
+ *
+ * @param {string} content - Document content
+ * @returns {Object[]} Array of { id, name, vendor, weight, context, ... }
+ */
+export function extractTestsWithContext(content) {
+  const found = [];
+
+  for (const [testId, testInfo] of Object.entries(TEST_NAME_PATTERNS)) {
+    const matches = [];
+    let totalWeight = 0;
+
+    for (const pattern of testInfo.patterns) {
+      pattern.lastIndex = 0;
+      let match;
+      while ((match = pattern.exec(content)) !== null) {
+        const context = getContextWindow(content, match.index);
+        const weight = calculateContextWeight(context);
+        totalWeight += weight;
+
+        matches.push({
+          text: match[0],
+          index: match.index,
+          context,
+          weight,
+        });
+      }
+    }
+
+    if (matches.length > 0) {
+      // Average weight across all mentions
+      const avgWeight = totalWeight / matches.length;
+
+      found.push({
+        id: testInfo.id,
+        name: testId,
+        vendor: testInfo.vendor,
+        matchCount: matches.length,
+        plaCode: testInfo.plaCode,
+        firstMatch: matches[0].text,
+        weight: avgWeight,
+        weightedScore: matches.length * avgWeight,
+        // Flag if mostly bibliography/example mentions
+        likelyBibliography: avgWeight < 0.5,
+        matches,
+      });
+    }
+  }
+
+  // Sort by weighted score (most relevant first)
+  found.sort((a, b) => b.weightedScore - a.weightedScore);
 
   return found;
 }
@@ -382,7 +525,10 @@ export function getTestMentionContext(content, testId, contextChars = 200) {
 export default {
   TEST_NAME_PATTERNS,
   CATEGORY_PATTERNS,
+  DOWNWEIGHT_CONTEXTS,
+  UPWEIGHT_CONTEXTS,
   extractNamedTests,
+  extractTestsWithContext,
   detectMRDContent,
   getTestId,
   getTestByPLACode,

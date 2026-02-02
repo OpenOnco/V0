@@ -13,9 +13,12 @@
  * - codesHash change → HIGH priority, always analyze
  * - metadataHash change → MEDIUM priority, analyze for effective date changes
  * - contentHash only change → LOW priority, may skip (boilerplate changes)
+ *
+ * v2.1: criteriaHash now uses section slicer as fallback when extraction fails
  */
 
 import crypto from 'crypto';
+import { getHashableContent, sliceCriteriaSections } from '../extractors/section-slicer.js';
 
 /**
  * Compute SHA256 hash of a string
@@ -42,7 +45,8 @@ export function computeMultiHash(canonicalizedContent, extractedData = {}) {
     metadataHash: computeMetadataHash(extractedData),
 
     // Criteria section hash (coverage position, medical necessity language)
-    criteriaHash: computeCriteriaHash(extractedData),
+    // v2.1: Now uses section slicer as fallback for robustness
+    criteriaHash: computeCriteriaHash(canonicalizedContent, extractedData),
 
     // Code table hash (CPT, PLA, HCPCS codes)
     codesHash: computeCodesHash(extractedData),
@@ -75,18 +79,32 @@ export function computeMetadataHash(data) {
 
 /**
  * Compute hash of criteria section
+ * v2.1: Uses section slicer as fallback when extraction fails
+ *
+ * @param {string} rawContent - Raw document content for section slicing
  * @param {Object} data - Extracted data
- * @returns {string|null} Hash or null if no criteria
+ * @returns {string|null} Hash or null if no criteria found anywhere
  */
-export function computeCriteriaHash(data) {
-  // If we have a pre-extracted criteria section, use it
-  if (data.criteriaSection) {
-    return sha256(data.criteriaSection);
+export function computeCriteriaHash(rawContent, data = {}) {
+  const hashParts = [];
+
+  // Layer 1: Section-sliced content (robust fallback)
+  // This works even when structured extraction fails
+  if (rawContent) {
+    const hashableContent = getHashableContent(rawContent);
+    if (hashableContent) {
+      hashParts.push(`section:${hashableContent}`);
+    }
   }
 
-  // Otherwise, build from structured criteria
+  // Layer 2: Pre-extracted criteria section (if available)
+  if (data.criteriaSection) {
+    hashParts.push(`extracted_section:${data.criteriaSection}`);
+  }
+
+  // Layer 3: Structured criteria from extraction
   const criteria = {
-    stance: data.stance || null, // proven, investigational, unproven, etc.
+    stance: data.stance || null,
     indications: data.indications || [],
     limitations: data.limitations || [],
     requirements: data.requirements || [],
@@ -94,16 +112,24 @@ export function computeCriteriaHash(data) {
     namedTests: data.namedTests || [],
   };
 
-  // Only hash if we have meaningful criteria
-  const hasData = criteria.stance ||
+  const hasStructuredData = criteria.stance ||
     criteria.indications.length > 0 ||
     criteria.limitations.length > 0 ||
     criteria.namedTests.length > 0;
 
-  if (!hasData) return null;
+  if (hasStructuredData) {
+    const normalized = JSON.stringify(criteria, Object.keys(criteria).sort());
+    hashParts.push(`structured:${normalized}`);
+  }
 
-  const normalized = JSON.stringify(criteria, Object.keys(criteria).sort());
-  return sha256(normalized);
+  // Return null only if we have NO data from any layer
+  if (hashParts.length === 0) {
+    return null;
+  }
+
+  // Combine all layers for hash
+  // This ensures changes in ANY layer trigger hash change
+  return sha256(hashParts.join('||'));
 }
 
 /**

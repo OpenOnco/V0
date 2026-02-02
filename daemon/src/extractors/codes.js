@@ -3,7 +3,16 @@
  *
  * Deterministic extraction of CPT, PLA, HCPCS, and ICD-10 codes from policy documents.
  * These codes are critical for matching policies to tests and detecting billing changes.
+ *
+ * v2.1: Added versioned code dictionary and ambiguous code handling
  */
+
+/**
+ * Code dictionary version
+ * Update this when codes change (new PLA codes, retired codes, etc.)
+ */
+export const CODE_DICTIONARY_VERSION = '2026-02';
+export const CODE_DICTIONARY_EFFECTIVE = '2026-02-01';
 
 /**
  * Code patterns
@@ -55,30 +64,58 @@ const ICD10_PATTERNS = [
 
 /**
  * Known MRD/liquid biopsy related PLA codes
+ * v2.1: Now includes status and effective dates
  */
 export const MRD_PLA_CODES = {
-  '0239U': 'Signatera',
-  '0306U': 'Guardant Reveal',
-  '0340U': 'RaDaR',
-  '0356U': 'NeXT Personal',
-  '0364U': 'NavDx',
-  '0421U': 'Oncodetect',
-  '0464U': 'Haystack MRD',
-  '0569U': 'clonoSEQ',
-  '0378U': 'Invitae Personalized Cancer Monitoring',
-  '0372U': 'PredicineATLAS',
-  '0425U': 'Foresight (Predicine)',
+  '0239U': { test: 'Signatera', vendor: 'Natera', status: 'active', effectiveDate: '2020-01-01' },
+  '0306U': { test: 'Guardant Reveal', vendor: 'Guardant Health', status: 'active', effectiveDate: '2021-04-01' },
+  '0340U': { test: 'RaDaR', vendor: 'Invitae', status: 'active', effectiveDate: '2021-10-01' },
+  '0356U': { test: 'NeXT Personal', vendor: 'Tempus', status: 'active', effectiveDate: '2022-01-01' },
+  '0364U': { test: 'NavDx', vendor: 'Biodesix', status: 'active', effectiveDate: '2022-04-01' },
+  '0421U': { test: 'Oncodetect', vendor: 'C2i Genomics', status: 'active', effectiveDate: '2023-01-01' },
+  '0464U': { test: 'Haystack MRD', vendor: 'NeoGenomics', status: 'active', effectiveDate: '2023-07-01' },
+  '0569U': { test: 'clonoSEQ', vendor: 'Adaptive Biotechnologies', status: 'active', effectiveDate: '2024-01-01' },
+  '0378U': { test: 'Invitae Personalized Cancer Monitoring', vendor: 'Invitae', status: 'active', effectiveDate: '2022-07-01' },
+  '0372U': { test: 'PredicineATLAS', vendor: 'Predicine', status: 'active', effectiveDate: '2022-07-01' },
+  '0425U': { test: 'Foresight', vendor: 'Predicine', status: 'active', effectiveDate: '2023-01-01' },
 };
 
 /**
  * Known liquid biopsy CPT codes
+ * v2.1: Now includes status and notes
  */
 export const LIQUID_BIOPSY_CPT = {
-  '81479': 'Unlisted molecular pathology procedure',
-  '81599': 'Unlisted multianalyte assay with algorithmic analysis',
-  '0037U': 'Guardant360 (older code)',
-  '0048U': 'FoundationOne Liquid',
+  '81479': { description: 'Unlisted molecular pathology procedure', status: 'active', notes: 'Used for tests without specific code' },
+  '81599': { description: 'Unlisted multianalyte assay with algorithmic analysis', status: 'active', notes: 'Used for algorithm-based tests' },
+  '0037U': { description: 'Guardant360', vendor: 'Guardant Health', status: 'retired', retiredDate: '2022-01-01' },
+  '0048U': { description: 'FoundationOne Liquid', vendor: 'Foundation Medicine', status: 'active' },
 };
+
+/**
+ * Ambiguous codes that map to multiple tests or require caution
+ * v2.1: New - helps avoid over-assertion
+ */
+export const AMBIGUOUS_CODES = {
+  '81479': {
+    description: 'Unlisted molecular pathology procedure',
+    handling: 'flag_for_review',
+    reason: 'Used for many different tests without specific PLA code',
+    possibleTests: ['various'],
+    confidence: 0.3,
+  },
+  '81599': {
+    description: 'Unlisted multianalyte assay',
+    handling: 'flag_for_review',
+    reason: 'Used for algorithm-based tests without specific code',
+    possibleTests: ['various'],
+    confidence: 0.3,
+  },
+};
+
+/**
+ * Unknown code handling setting
+ */
+export const UNKNOWN_CODE_HANDLING = 'log_and_continue'; // 'log_and_continue' | 'warn' | 'error'
 
 /**
  * Extract all codes of a specific type from content
@@ -226,7 +263,68 @@ export function extractCodeTable(content) {
  * @returns {string|null} Test name or null
  */
 export function getTestForPLACode(plaCode) {
-  return MRD_PLA_CODES[plaCode.toUpperCase()] || null;
+  const entry = MRD_PLA_CODES[plaCode.toUpperCase()];
+  return entry ? entry.test : null;
+}
+
+/**
+ * Map a code to a test with confidence
+ * v2.1: Returns structured result with confidence and ambiguity flag
+ *
+ * @param {string} code - Any billing code
+ * @returns {Object} { testId, testName, confidence, ambiguous, handling }
+ */
+export function mapCodeToTest(code) {
+  const upperCode = code.toUpperCase();
+
+  // Check ambiguous codes first
+  if (AMBIGUOUS_CODES[upperCode]) {
+    const ambig = AMBIGUOUS_CODES[upperCode];
+    return {
+      testId: null,
+      testName: null,
+      confidence: ambig.confidence,
+      ambiguous: true,
+      handling: ambig.handling,
+      reason: ambig.reason,
+    };
+  }
+
+  // Check PLA codes
+  const plaEntry = MRD_PLA_CODES[upperCode];
+  if (plaEntry) {
+    return {
+      testId: plaEntry.test.toLowerCase().replace(/\s+/g, '-'),
+      testName: plaEntry.test,
+      vendor: plaEntry.vendor,
+      confidence: plaEntry.status === 'active' ? 0.95 : 0.5,
+      ambiguous: false,
+      status: plaEntry.status,
+    };
+  }
+
+  // Check CPT codes
+  const cptEntry = LIQUID_BIOPSY_CPT[upperCode];
+  if (cptEntry && cptEntry.vendor) {
+    return {
+      testId: cptEntry.description.toLowerCase().replace(/\s+/g, '-'),
+      testName: cptEntry.description,
+      vendor: cptEntry.vendor,
+      confidence: cptEntry.status === 'active' ? 0.9 : 0.4,
+      ambiguous: false,
+      status: cptEntry.status,
+    };
+  }
+
+  // Unknown code
+  return {
+    testId: null,
+    testName: null,
+    confidence: 0,
+    ambiguous: false,
+    handling: UNKNOWN_CODE_HANDLING,
+    unknown: true,
+  };
 }
 
 /**
