@@ -10,6 +10,7 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { crawlClinicalTrials, seedPriorityTrials } from './crawlers/mrd/clinicaltrials.js';
 import { processNccnPdf } from './crawlers/mrd/nccn-processor.js';
+import { embedAllMissing } from './embeddings/mrd-embedder.js';
 
 const logger = createLogger('server');
 
@@ -530,6 +531,8 @@ async function handleTriggerCrawl(req, res) {
       result = await seedPriorityTrials();
     } else if (action === 'trials') {
       result = await crawlClinicalTrials({ maxResults });
+    } else if (action === 'embed') {
+      result = await embedAllMissing({ limit: maxResults });
     } else {
       res.writeHead(400, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ error: 'Invalid action' }));
