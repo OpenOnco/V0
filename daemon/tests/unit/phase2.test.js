@@ -139,39 +139,39 @@ describe('Artifact Storage', () => {
 });
 
 describe('Evidence-Gated Delegation', () => {
-  it('DELEGATION_STATUS constants are defined', () => {
+  it('DELEGATION_STATUS constants are defined (legacy)', () => {
     expect(DELEGATION_STATUS.SUSPECTED).toBe('suspected');
     expect(DELEGATION_STATUS.ACTIVE).toBe('active');
     expect(DELEGATION_STATUS.CONFIRMED).toBe('confirmed');
     expect(DELEGATION_STATUS.EXPIRED).toBe('expired');
   });
 
-  it('static delegations have status field', () => {
-    // All entries should have a status
+  it('static delegations have evidenceLevel and effectiveness fields', () => {
+    // v2.1.1: All entries should have separated axes
     for (const [key, delegation] of Object.entries(PAYER_DELEGATIONS)) {
-      expect(delegation.status).toBeDefined();
-      expect([
-        DELEGATION_STATUS.SUSPECTED,
-        DELEGATION_STATUS.ACTIVE,
-        DELEGATION_STATUS.CONFIRMED,
-        DELEGATION_STATUS.EXPIRED,
-      ]).toContain(delegation.status);
+      expect(delegation.evidenceLevel).toBeDefined();
+      expect(delegation.effectiveness).toBeDefined();
+      expect(['suspected', 'confirmed']).toContain(delegation.evidenceLevel);
+      expect(['pending', 'effective', 'expired']).toContain(delegation.effectiveness);
     }
   });
 
-  it('delegation with evidence has status=active', () => {
+  it('delegation with evidence has evidenceLevel=confirmed', () => {
     const bcbsla = PAYER_DELEGATIONS['bcbs-louisiana'];
 
-    expect(bcbsla.status).toBe(DELEGATION_STATUS.ACTIVE);
+    // v2.1.1: Use new separated axes
+    expect(bcbsla.evidenceLevel).toBe('confirmed');
+    expect(bcbsla.effectiveness).toBe('effective');
     expect(bcbsla.evidence).not.toBeNull();
     expect(bcbsla.evidence.sourceUrl).toBeTruthy();
     expect(bcbsla.evidence.quotes).toBeDefined();
   });
 
-  it('delegation without evidence has status=suspected', () => {
+  it('delegation without evidence has evidenceLevel=suspected', () => {
     const cigna = PAYER_DELEGATIONS['cigna-internal'];
 
-    expect(cigna.status).toBe(DELEGATION_STATUS.SUSPECTED);
+    // v2.1.1: Use new separated axes
+    expect(cigna.evidenceLevel).toBe('suspected');
     expect(cigna.evidence).toBeNull();
   });
 

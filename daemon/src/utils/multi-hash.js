@@ -31,12 +31,19 @@ export function sha256(content) {
 }
 
 /**
+ * Current parser version for tracking
+ * v2.1.1: Track parser version to detect system changes
+ */
+export const PARSER_VERSION = '2.1.1';
+
+/**
  * Compute all 4 hashes for a policy document
  * @param {string} canonicalizedContent - Full canonicalized content
  * @param {Object} extractedData - Pre-extracted structured data
- * @returns {Object} { contentHash, metadataHash, criteriaHash, codesHash }
+ * @param {Object} options - { sourceUrl?: string }
+ * @returns {Object} { contentHash, metadataHash, criteriaHash, codesHash, metadata }
  */
-export function computeMultiHash(canonicalizedContent, extractedData = {}) {
+export function computeMultiHash(canonicalizedContent, extractedData = {}, options = {}) {
   return {
     // Full content hash (for catch-all change detection)
     contentHash: sha256(canonicalizedContent),
@@ -50,6 +57,13 @@ export function computeMultiHash(canonicalizedContent, extractedData = {}) {
 
     // Code table hash (CPT, PLA, HCPCS codes)
     codesHash: computeCodesHash(extractedData),
+
+    // v2.1.1: Metadata for tracking (not hashed)
+    metadata: {
+      parserVersion: PARSER_VERSION,
+      sourceUrl: options.sourceUrl || null,
+      computedAt: new Date().toISOString(),
+    },
   };
 }
 
@@ -159,9 +173,11 @@ export function computeCodesHash(data) {
 
 /**
  * Compare two multi-hash objects and determine change priority
- * @param {Object} oldHashes - Previous hashes { contentHash, metadataHash, criteriaHash, codesHash }
+ * v2.1.1: Added possibleSystemChange detection for parser version changes
+ *
+ * @param {Object} oldHashes - Previous hashes { contentHash, metadataHash, criteriaHash, codesHash, metadata }
  * @param {Object} newHashes - Current hashes
- * @returns {Object} { changed, priority, changedHashes, analysis }
+ * @returns {Object} { changed, priority, changedHashes, analysis, possibleSystemChange }
  */
 export function compareMultiHash(oldHashes, newHashes) {
   if (!oldHashes) {
@@ -170,6 +186,7 @@ export function compareMultiHash(oldHashes, newHashes) {
       priority: 'high',
       changedHashes: ['new_document'],
       analysis: 'New document (no previous hash)',
+      possibleSystemChange: false,
     };
   }
 
@@ -212,11 +229,31 @@ export function compareMultiHash(oldHashes, newHashes) {
     priority = 'low';
   }
 
+  // v2.1.1: Detect possible system change (parser behavior change)
+  // If content hash is SAME but criteria hash DIFFERS, this suggests
+  // the parser extracted differently from identical content
+  const possibleSystemChange =
+    oldHashes.contentHash === newHashes.contentHash &&
+    oldHashes.criteriaHash !== newHashes.criteriaHash;
+
+  // Also flag if parser version changed
+  const parserVersionChanged =
+    oldHashes.metadata?.parserVersion !== newHashes.metadata?.parserVersion;
+
+  if (possibleSystemChange || parserVersionChanged) {
+    reasons.push('Possible system change (parser behavior may have changed)');
+  }
+
   return {
     changed: changedHashes.length > 0,
     priority,
     changedHashes,
     analysis: reasons.join('; ') || 'No changes detected',
+    // v2.1.1: System change detection
+    possibleSystemChange: possibleSystemChange || (parserVersionChanged && changedHashes.length > 0),
+    parserVersionChanged,
+    oldParserVersion: oldHashes.metadata?.parserVersion,
+    newParserVersion: newHashes.metadata?.parserVersion,
   };
 }
 
@@ -263,6 +300,7 @@ export function getChangeSummary(comparison) {
 
 export default {
   sha256,
+  PARSER_VERSION,
   computeMultiHash,
   computeMetadataHash,
   computeCriteriaHash,

@@ -42,11 +42,21 @@ export const LAYER_WEIGHTS = {
  * Get delegation routing info for a payer
  * This determines which assertions are "applicable" based on delegation
  *
+ * v2.1.1: Now LOB-aware and explicitly separates routing from stance suppression
+ *
+ * IMPORTANT: boostLBM changes WEIGHTS, not APPLICABILITY.
+ * All documents remain applicable - we never suppress conflicting um_criteria
+ * documents that may still be effective for some plan types.
+ *
  * @param {string} payerId - Payer ID
- * @returns {Object} { active, delegatedTo, applicableDocuments, boostLBM }
+ * @param {Object} options - { lineOfBusiness?: string }
+ * @returns {Object} Routing info
  */
-export function getDelegationRouting(payerId) {
-  const delegation = getDelegationStatus ? getDelegationStatus(payerId) : getDelegation(payerId);
+export function getDelegationRouting(payerId, options = {}) {
+  const { lineOfBusiness } = options;
+  const delegation = getDelegationStatus
+    ? getDelegationStatus(payerId, { lineOfBusiness })
+    : getDelegation(payerId);
 
   if (!delegation) {
     return {
@@ -54,21 +64,64 @@ export function getDelegationRouting(payerId) {
       delegatedTo: null,
       status: null,
       boostLBM: false,
+      lobApplicable: true,  // No delegation = payer's own docs apply
     };
   }
 
-  // v2.1: Check if delegation is confirmed with evidence
-  const isActive = delegation.status === 'active' || delegation.status === 'confirmed';
-  const isSuspected = delegation.status === 'suspected';
+  // v2.1.1: Check LOB applicability first
+  if (delegation.lobApplicable === false) {
+    // Delegation exists but NOT for this line of business
+    return {
+      active: false,
+      delegatedTo: delegation.delegatesTo,
+      status: 'not_applicable_for_lob',
+      boostLBM: false,
+      lobApplicable: false,
+      routingNote: delegation.routingNote,
+      // Include delegation info for transparency
+      delegationExistsForOtherLOB: true,
+      applicableLOBs: delegation.linesOfBusiness,
+    };
+  }
+
+  // v2.1.1: Use new separated axes
+  const evidenceLevel = delegation.evidenceLevel || null;
+  const effectiveness = delegation.effectiveness || null;
+
+  // Compute active status from new axes (or fall back to legacy)
+  const isConfirmed = evidenceLevel === 'confirmed';
+  const isEffective = effectiveness === 'effective';
+  const isActive = isConfirmed && isEffective;
+
+  // Legacy compatibility
+  const legacyActive = delegation.status === 'active' || delegation.status === 'confirmed';
+  const isSuspected = delegation.status === 'suspected' || evidenceLevel === 'suspected';
 
   return {
-    active: isActive,
-    suspected: isSuspected,
+    active: isActive || legacyActive,
+    suspected: isSuspected && !isActive,
     delegatedTo: delegation.delegatesTo || delegation.delegatedTo,
     program: delegation.program,
     effectiveDate: delegation.effectiveDate,
-    // When delegation is active, boost LBM guideline layer
-    boostLBM: isActive,
+    effectiveEndDate: delegation.effectiveEndDate,
+    // v2.1.1: New separated axes
+    evidenceLevel,
+    effectiveness,
+    // v2.1.1: LOB info
+    lobApplicable: true,
+    linesOfBusiness: delegation.linesOfBusiness,
+    lobNotes: delegation.lobNotes,
+    /**
+     * boostLBM: When true, LBM_GUIDELINE layer gets higher weight
+     *
+     * IMPORTANT: This is a WEIGHT adjustment, NOT document suppression.
+     * Payer's own um_criteria and policy_stance documents remain in the
+     * assertion pool. They may still be authoritative for:
+     * - Plan types not covered by delegation
+     * - Services outside delegation scope
+     * - Override/exception scenarios
+     */
+    boostLBM: isActive || legacyActive,
     // Evidence for audit trail
     evidence: delegation.evidence || null,
     lastVerified: delegation.lastVerified || null,
@@ -120,10 +173,12 @@ export function reconcileCoverage(assertions, options = {}) {
     };
   }
 
-  const { payerId, testId } = options;
+  const { payerId, testId, lineOfBusiness } = options;
 
-  // v2.1: Get delegation routing (metadata, not stance)
-  const delegationRouting = payerId ? getDelegationRouting(payerId) : { active: false };
+  // v2.1.1: Get delegation routing with LOB awareness (metadata, not stance)
+  const delegationRouting = payerId
+    ? getDelegationRouting(payerId, { lineOfBusiness })
+    : { active: false, lobApplicable: true };
 
   // Build adjusted weights based on delegation routing
   const adjustedWeights = { ...LAYER_WEIGHTS };
@@ -205,14 +260,20 @@ export function reconcileCoverage(assertions, options = {}) {
       layers: [...new Set(conflicts.flatMap(c => c.layers))],
       description: conflicts.map(c => c.message).join('; '),
     } : null,
-    // v2.1: Delegation as metadata, not stance
-    delegation: delegationRouting.active || delegationRouting.suspected ? {
+    // v2.1.1: Delegation as metadata, not stance - includes LOB info
+    delegation: (delegationRouting.active || delegationRouting.suspected ||
+                 delegationRouting.delegationExistsForOtherLOB) ? {
       active: delegationRouting.active,
       suspected: delegationRouting.suspected,
       delegatedTo: delegationRouting.delegatedTo,
       program: delegationRouting.program,
       effectiveDate: delegationRouting.effectiveDate,
       evidence: delegationRouting.evidence,
+      // v2.1.1: LOB applicability
+      lobApplicable: delegationRouting.lobApplicable,
+      linesOfBusiness: delegationRouting.linesOfBusiness,
+      lobNotes: delegationRouting.lobNotes,
+      routingNote: delegationRouting.routingNote,
     } : null,
     message: buildReconciliationMessage(reconciledStatus, conflicts, delegationRouting),
   };
@@ -220,27 +281,41 @@ export function reconcileCoverage(assertions, options = {}) {
 
 /**
  * Filter assertions based on delegation routing
- * When delegation is active, prioritize LBM assertions
+ *
+ * v2.1.1 CRITICAL DESIGN DECISION:
+ * We NEVER suppress assertions based on delegation status alone.
+ *
+ * Rationale:
+ * - Delegation is often not universal (varies by LOB, plan type, service)
+ * - Payer's own UM criteria may still apply for some members
+ * - Suppressing documents can cause false negatives
+ * - Weights handle priority; filtering handles applicability
+ *
+ * We DO annotate assertions with delegation context so reconciliation
+ * can flag potential conflicts for human review.
  *
  * @param {Object[]} assertions - All assertions
  * @param {Object} delegationRouting - Delegation routing info
- * @returns {Object[]} Applicable assertions
+ * @returns {Object[]} Applicable assertions (never fewer than input)
  */
 function filterByDelegationRouting(assertions, delegationRouting) {
-  if (!delegationRouting.active) {
-    // No active delegation - all assertions apply
-    return assertions;
-  }
+  // NEVER suppress assertions - always return all
+  // The weight adjustment in adjustedWeights handles priority
 
-  // When delegation is active:
-  // 1. Always include UM_CRITERIA (payer-specific ops rules)
-  // 2. Always include LBM_GUIDELINE (from the delegated LBM)
-  // 3. Include OVERLAY (state mandates still apply)
-  // 4. Reduce weight of POLICY_STANCE (payer policy may be superseded)
-
-  // For now, include all but let weights handle priority
-  // In future, could filter out stale policy_stance assertions
-  return assertions;
+  // Annotate assertions with delegation context for transparency
+  return assertions.map(assertion => ({
+    ...assertion,
+    _delegationContext: {
+      delegationActive: delegationRouting.active,
+      delegatedTo: delegationRouting.delegatedTo,
+      lobApplicable: delegationRouting.lobApplicable,
+      // Flag if this assertion might be superseded by delegation
+      // but DON'T exclude it - let human reviewer decide
+      potentiallySuperseded: delegationRouting.active &&
+        assertion.layer === COVERAGE_LAYERS.POLICY_STANCE &&
+        !assertion.sourceUrl?.includes(delegationRouting.delegatedTo),
+    },
+  }));
 }
 
 /**

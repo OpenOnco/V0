@@ -25,13 +25,45 @@
  */
 
 /**
- * Delegation status types
+ * Delegation evidence levels (how confident are we this delegation exists?)
+ * v2.1.1: Separated from effectiveness to avoid "active vs confirmed" confusion
+ */
+export const DELEGATION_EVIDENCE = {
+  SUSPECTED: 'suspected',   // In static map or single weak signal, needs verification
+  CONFIRMED: 'confirmed',   // Multiple sources or manual verification
+};
+
+/**
+ * Delegation effectiveness (is it currently in force?)
+ * v2.1.1: Separated from evidence level
+ */
+export const DELEGATION_EFFECTIVENESS = {
+  PENDING: 'pending',       // Future effective date not yet reached
+  EFFECTIVE: 'effective',   // Currently in force
+  EXPIRED: 'expired',       // Past end date or superseded
+};
+
+/**
+ * Line of business types for delegation scope
+ * v2.1.1: Delegation often varies by product line
+ */
+export const LINE_OF_BUSINESS = {
+  COMMERCIAL: 'commercial',
+  MEDICARE_ADVANTAGE: 'medicare_advantage',
+  MEDICAID: 'medicaid',
+  EXCHANGE: 'exchange',
+  ALL: 'all',
+};
+
+/**
+ * @deprecated Use DELEGATION_EVIDENCE and DELEGATION_EFFECTIVENESS instead
+ * Kept for backwards compatibility during transition
  */
 export const DELEGATION_STATUS = {
-  SUSPECTED: 'suspected',   // In static map, no recent evidence
-  ACTIVE: 'active',         // Document evidence detected recently
-  CONFIRMED: 'confirmed',   // Manually verified by human
-  EXPIRED: 'expired',       // Was active but evidence is stale
+  SUSPECTED: 'suspected',
+  ACTIVE: 'active',         // Maps to: confirmed + effective
+  CONFIRMED: 'confirmed',   // Maps to: confirmed (any effectiveness)
+  EXPIRED: 'expired',       // Maps to: any evidence + expired
 };
 
 /**
@@ -52,11 +84,17 @@ export const PAYER_DELEGATIONS = {
     delegatesTo: 'carelon',
     delegatedToName: 'Carelon Medical Benefits Management',
     effectiveDate: '2024-07-01',
+    effectiveEndDate: null,  // v2.1.1: null = no known end date
     scope: 'genetic_testing',
     scopeDescription: 'All genetic testing including ctDNA, MRD, and molecular profiling',
 
-    // v2.1: Evidence-gating fields
-    status: DELEGATION_STATUS.ACTIVE,  // Has document evidence
+    // v2.1.1: Separated evidence and effectiveness
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    // v2.1.1: Line of business applicability
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL, LINE_OF_BUSINESS.EXCHANGE],
+    lobNotes: 'Medicare Advantage follows CMS LCD; Medicaid follows state guidelines',
+
     staticSource: true,
     evidence: {
       sourceUrl: 'https://www.lablue.com/-/media/Medical%20Policies/2022/07/11/17/15/Tumor%20Informed%20Circulating%20Tumor%20DNA%20Testing%20for%20Cancer%20Management%2000792%2020220711_accessibile%20pdf.pdf',
@@ -74,11 +112,16 @@ export const PAYER_DELEGATIONS = {
     delegatesTo: 'carelon',
     delegatedToName: 'Carelon Medical Benefits Management',
     effectiveDate: '2026-01-01',
+    effectiveEndDate: null,
     scope: 'genetic_testing',
     scopeDescription: 'Genetic and molecular testing benefit management',
 
-    // v2.1: Evidence-gating fields
-    status: DELEGATION_STATUS.ACTIVE,
+    // v2.1.1: Separated evidence and effectiveness
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.ALL],
+    lobNotes: null,
+
     staticSource: true,
     evidence: {
       sourceUrl: 'https://providers.bcidaho.com/medical-management/medical-policies/med/mp_204141.page',
@@ -101,11 +144,17 @@ export const PAYER_DELEGATIONS = {
     delegatesTo: 'evicore',
     delegatedToName: 'eviCore Healthcare',
     effectiveDate: '2023-01-01',
+    effectiveEndDate: null,
     scope: 'molecular_genomic_testing',
     scopeDescription: 'Molecular and genomic testing prior authorization',
 
-    // v2.1: Evidence-gating fields
-    status: DELEGATION_STATUS.ACTIVE,
+    // v2.1.1: Separated evidence and effectiveness
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    // v2.1.1: LOB-specific delegation
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL],
+    lobNotes: 'Medicare Advantage NOT delegated - uses internal Horizon policies',
+
     staticSource: true,
     evidence: {
       sourceUrl: 'https://www.horizonblue.com/providers/products-programs/evicore-health-care/molecular-and-genomic-testing-program',
@@ -123,11 +172,16 @@ export const PAYER_DELEGATIONS = {
     delegatesTo: 'evicore',
     delegatedToName: 'eviCore Healthcare',
     effectiveDate: '2022-01-01',
+    effectiveEndDate: null,
     scope: 'molecular_testing',
     scopeDescription: 'Molecular testing including liquid biopsy',
 
-    // v2.1: Evidence-gating fields
-    status: DELEGATION_STATUS.ACTIVE,
+    // v2.1.1: Separated evidence and effectiveness
+    evidenceLevel: DELEGATION_EVIDENCE.CONFIRMED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL, LINE_OF_BUSINESS.EXCHANGE],
+    lobNotes: null,
+
     staticSource: true,
     evidence: {
       sourceUrl: 'https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx',
@@ -147,11 +201,16 @@ export const PAYER_DELEGATIONS = {
     delegatesTo: 'evicore',
     delegatedToName: 'eviCore Healthcare (internal)',
     effectiveDate: '2020-01-01',
+    effectiveEndDate: null,
     scope: 'lab_benefits',
     scopeDescription: 'Lab benefit management including molecular testing (select plans)',
 
-    // v2.1: Evidence-gating fields
-    status: DELEGATION_STATUS.SUSPECTED,  // No document evidence
+    // v2.1.1: Separated evidence and effectiveness - SUSPECTED due to no doc evidence
+    evidenceLevel: DELEGATION_EVIDENCE.SUSPECTED,
+    effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,  // Likely effective but unconfirmed
+    linesOfBusiness: [LINE_OF_BUSINESS.COMMERCIAL],  // Only some commercial plans
+    lobNotes: 'Not all Cigna plans delegate. Plan-specific verification needed.',
+
     staticSource: true,
     evidence: null,  // No document evidence available
     lastVerified: '2026-02-01',
@@ -209,12 +268,14 @@ export function getDetectedDelegation(payerId) {
 
 /**
  * Get delegation status with evidence gating
- * v2.1: Returns status based on both static map and detected evidence
+ * v2.1.1: Returns separated evidence level and effectiveness
  *
  * @param {string} payerId - Payer ID
+ * @param {Object} options - { lineOfBusiness?: string }
  * @returns {Object|null} Delegation with computed status
  */
-export function getDelegationStatus(payerId) {
+export function getDelegationStatus(payerId, options = {}) {
+  const { lineOfBusiness } = options;
   const staticDelegation = getDelegation(payerId);
   const detected = getDetectedDelegation(payerId);
 
@@ -228,36 +289,97 @@ export function getDelegationStatus(payerId) {
     return {
       payerId,
       delegatesTo: detected.delegatesTo,
+      // v2.1.1: Separated axes
+      evidenceLevel: detected.confidence > 0.8
+        ? DELEGATION_EVIDENCE.CONFIRMED
+        : DELEGATION_EVIDENCE.SUSPECTED,
+      effectiveness: DELEGATION_EFFECTIVENESS.EFFECTIVE,  // Assume effective if detected
+      // Legacy field for backwards compatibility
       status: detected.confidence > 0.8 ? DELEGATION_STATUS.ACTIVE : DELEGATION_STATUS.SUSPECTED,
       staticSource: false,
       evidence: detected,
       lastVerified: detected.detectedAt,
+      linesOfBusiness: [LINE_OF_BUSINESS.ALL],  // Unknown, assume all
+      lobApplicable: true,
     };
   }
 
-  // Static delegation exists - check if evidence is fresh
+  // Static delegation exists - build result
   const base = { ...staticDelegation };
 
-  // If we have recent detected evidence, promote to active
-  if (detected && detected.confidence > 0.8) {
-    base.status = DELEGATION_STATUS.ACTIVE;
-    base.evidence = detected;
-    base.lastVerified = detected.detectedAt;
-    return base;
+  // v2.1.1: Check LOB applicability
+  if (lineOfBusiness && base.linesOfBusiness) {
+    const lobApplicable = base.linesOfBusiness.includes(LINE_OF_BUSINESS.ALL) ||
+      base.linesOfBusiness.includes(lineOfBusiness);
+    base.lobApplicable = lobApplicable;
+
+    if (!lobApplicable) {
+      // Delegation exists but not for this LOB
+      return {
+        ...base,
+        lobApplicable: false,
+        routingNote: `Delegation to ${base.delegatesTo} does not apply to ${lineOfBusiness}. ${base.lobNotes || ''}`.trim(),
+      };
+    }
+  } else {
+    base.lobApplicable = true;
   }
 
-  // Check if static evidence is within window
+  // v2.1.1: Compute effectiveness based on dates
+  const now = new Date();
+  if (base.effectiveDate) {
+    const effectiveDate = new Date(base.effectiveDate);
+    if (effectiveDate > now) {
+      base.effectiveness = DELEGATION_EFFECTIVENESS.PENDING;
+    }
+  }
+  if (base.effectiveEndDate) {
+    const endDate = new Date(base.effectiveEndDate);
+    if (endDate < now) {
+      base.effectiveness = DELEGATION_EFFECTIVENESS.EXPIRED;
+    }
+  }
+
+  // If we have recent detected evidence, upgrade evidence level
+  if (detected && detected.confidence > 0.8) {
+    base.evidenceLevel = DELEGATION_EVIDENCE.CONFIRMED;
+    base.evidence = detected;
+    base.lastVerified = detected.detectedAt;
+  }
+
+  // Check if static evidence is within window (affects evidence level)
   if (staticDelegation.lastVerified) {
     const verifiedDate = new Date(staticDelegation.lastVerified);
     const daysSinceVerified = (Date.now() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24);
 
-    if (daysSinceVerified > EVIDENCE_WINDOW_DAYS) {
-      // Evidence is stale
-      base.status = staticDelegation.evidence ? DELEGATION_STATUS.EXPIRED : DELEGATION_STATUS.SUSPECTED;
+    if (daysSinceVerified > EVIDENCE_WINDOW_DAYS && !detected) {
+      // Evidence is stale - downgrade to suspected
+      base.evidenceLevel = DELEGATION_EVIDENCE.SUSPECTED;
     }
   }
 
+  // v2.1.1: Compute legacy status for backwards compatibility
+  base.status = computeLegacyStatus(base.evidenceLevel, base.effectiveness);
+
   return base;
+}
+
+/**
+ * Compute legacy status from new separated axes
+ * @private
+ */
+function computeLegacyStatus(evidenceLevel, effectiveness) {
+  if (effectiveness === DELEGATION_EFFECTIVENESS.EXPIRED) {
+    return DELEGATION_STATUS.EXPIRED;
+  }
+  if (evidenceLevel === DELEGATION_EVIDENCE.SUSPECTED) {
+    return DELEGATION_STATUS.SUSPECTED;
+  }
+  if (evidenceLevel === DELEGATION_EVIDENCE.CONFIRMED &&
+      effectiveness === DELEGATION_EFFECTIVENESS.EFFECTIVE) {
+    return DELEGATION_STATUS.ACTIVE;
+  }
+  return DELEGATION_STATUS.CONFIRMED;
 }
 
 /**
@@ -310,6 +432,11 @@ export const DELEGATION_PATTERNS = [
 
 export default {
   PAYER_DELEGATIONS,
+  // v2.1.1: New separated axes
+  DELEGATION_EVIDENCE,
+  DELEGATION_EFFECTIVENESS,
+  LINE_OF_BUSINESS,
+  // Legacy (deprecated)
   DELEGATION_STATUS,
   EVIDENCE_WINDOW_DAYS,
   getDelegation,
