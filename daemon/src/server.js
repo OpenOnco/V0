@@ -96,6 +96,10 @@ async function embedQuery(queryText) {
 }
 
 async function searchSimilarItems(queryEmbedding, filters = {}) {
+  // Boost factor for guideline sources (NCCN) which have shorter text
+  // This compensates for their lower raw similarity scores
+  const NCCN_BOOST = 1.15;
+
   let sql = `
     SELECT DISTINCT ON (g.id)
       g.id,
@@ -110,7 +114,11 @@ async function searchSimilarItems(queryEmbedding, filters = {}) {
       g.journal,
       g.authors,
       e.chunk_text,
-      1 - (e.embedding <=> $1::vector) as similarity
+      1 - (e.embedding <=> $1::vector) as raw_similarity,
+      CASE
+        WHEN g.source_type = 'nccn' THEN (1 - (e.embedding <=> $1::vector)) * ${NCCN_BOOST}
+        ELSE 1 - (e.embedding <=> $1::vector)
+      END as similarity
     FROM mrd_item_embeddings e
     JOIN mrd_guidance_items g ON e.guidance_id = g.id
     WHERE g.is_superseded = FALSE
@@ -467,12 +475,13 @@ async function handleImportNccn(req, res) {
 
         const title = `NCCN ${rec.cancer_type.charAt(0).toUpperCase() + rec.cancer_type.slice(1)} Cancer: ${rec.clinical_setting || 'ctDNA Recommendation'}`;
 
-        await query(
+        const insertResult = await query(
           `INSERT INTO mrd_guidance_items (
             source_type, source_id, source_url,
             title, summary, evidence_type, evidence_level,
             key_findings, publication_date
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          RETURNING id`,
           [
             'nccn',
             `nccn-${rec.cancer_type}-${Date.now()}-${saved}`,
@@ -489,6 +498,29 @@ async function handleImportNccn(req, res) {
             new Date(),
           ]
         );
+
+        const guidanceId = insertResult.rows[0].id;
+
+        // Add cancer type to junction table
+        if (rec.cancer_type) {
+          await query(
+            `INSERT INTO mrd_guidance_cancer_types (guidance_id, cancer_type)
+             VALUES ($1, $2)
+             ON CONFLICT DO NOTHING`,
+            [guidanceId, rec.cancer_type]
+          );
+        }
+
+        // Add clinical setting to junction table
+        if (rec.clinical_setting) {
+          await query(
+            `INSERT INTO mrd_guidance_clinical_settings (guidance_id, clinical_setting)
+             VALUES ($1, $2)
+             ON CONFLICT DO NOTHING`,
+            [guidanceId, rec.clinical_setting]
+          );
+        }
+
         saved++;
       } catch (err) {
         logger.warn('Failed to save NCCN rec', { error: err.message });

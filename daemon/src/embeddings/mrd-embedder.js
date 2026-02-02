@@ -115,9 +115,19 @@ export function chunkText(text, maxTokens = MAX_CHUNK_TOKENS) {
 export function buildEmbeddingText(item) {
   const parts = [];
 
+  // Source type context - important for NCCN guidelines
+  if (item.source_type === 'nccn') {
+    parts.push('Source: NCCN Clinical Practice Guidelines for ctDNA/MRD testing');
+  }
+
   // Title is most important
   if (item.title) {
     parts.push(`Title: ${item.title}`);
+  }
+
+  // Evidence level - important for guidelines
+  if (item.evidence_level) {
+    parts.push(`Evidence Level: ${item.evidence_level}`);
   }
 
   // Summary
@@ -128,7 +138,13 @@ export function buildEmbeddingText(item) {
   // Key findings
   if (item.key_findings && Array.isArray(item.key_findings)) {
     const findings = item.key_findings
-      .map((f) => `${f.finding}: ${f.implication}`)
+      .map((f) => {
+        const findingParts = [f.finding];
+        if (f.implication) findingParts.push(f.implication);
+        if (f.quote) findingParts.push(`"${f.quote}"`);
+        if (f.setting) findingParts.push(`Clinical setting: ${f.setting}`);
+        return findingParts.join('. ');
+      })
       .join(' ');
     parts.push(`Key Findings: ${findings}`);
   }
@@ -145,6 +161,11 @@ export function buildEmbeddingText(item) {
 
   if (item.clinical_settings && item.clinical_settings.length > 0) {
     parts.push(`Clinical Settings: ${item.clinical_settings.join(', ')}`);
+  }
+
+  // For NCCN items, add extra context keywords to improve matching
+  if (item.source_type === 'nccn') {
+    parts.push('Keywords: NCCN guidelines, clinical practice, evidence-based recommendations, ctDNA, circulating tumor DNA, liquid biopsy, MRD, minimal residual disease, molecular residual disease');
   }
 
   return parts.join('\n\n');
