@@ -50,7 +50,7 @@ The OpenOnco daemon is an autonomous background intelligence system that monitor
 ## Directory Structure
 
 ```
-daemon/
+test-data-tracker/
 ├── src/
 │   ├── index.js                      # Main entry point
 │   ├── config.js                     # Master configuration (~1,000 lines)

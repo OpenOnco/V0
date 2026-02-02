@@ -23,7 +23,7 @@ import { PlaywrightCrawler } from './playwright-base.js';
 import { config, SOURCES, DISCOVERY_TYPES } from '../config.js';
 import { createLogger } from '../utils/logger.js';
 import { getAllPolicies } from '../data/policy-registry.js';
-import { initializeTestDictionary, matchTests } from '../data/test-dictionary.js';
+import { initializeTestDictionary, matchTests, lookupTestByName } from '../data/test-dictionary.js';
 import { addDiscoveries } from '../queue/index.js';
 import { updateCrawlerHealth, recordCrawlerError } from '../health.js';
 import { createProposal } from '../proposals/queue.js';
@@ -308,6 +308,9 @@ export class PayerCrawler extends PlaywrightCrawler {
    * Fetch PDF content using direct HTTP (Playwright triggers downloads for PDFs)
    */
   async fetchPdfContent(url) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), PAGE_TIMEOUT_MS);
+
     try {
       // Use fetch() directly - Playwright page.goto() triggers downloads for PDFs
       const response = await fetch(url, {
@@ -315,8 +318,10 @@ export class PayerCrawler extends PlaywrightCrawler {
           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
           'Accept': 'application/pdf,*/*',
         },
-        timeout: PAGE_TIMEOUT_MS,
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -330,6 +335,7 @@ export class PayerCrawler extends PlaywrightCrawler {
 
       return pdf.text;
     } catch (error) {
+      clearTimeout(timeoutId);
       logger.error(`Failed to fetch PDF: ${url}`, { error: error.message });
       return null;
     }
@@ -377,7 +383,9 @@ export class PayerCrawler extends PlaywrightCrawler {
         policyType: policy.policyType,
         docType: policy.docType,
         contentType: policy.contentType,
-        testsFound: testMatches.map(t => t.id || t.name),
+        testsFound: testMatches
+          .map(t => t.openOncoId || t.id || t.test?.id || t.test?.name || t.name)
+          .filter(Boolean),
         isNewPolicy: result.isNew,
         analysis: analysis,
         // v2: Include extraction and change data
@@ -440,11 +448,15 @@ export class PayerCrawler extends PlaywrightCrawler {
    * v2: Create coverage assertions from analysis
    */
   async createCoverageAssertions(policy, extraction, analysis) {
+    const explicitTestIds = (analysis?.testsExplicitlyMentioned || [])
+      .map((name) => lookupTestByName(name)?.id || null)
+      .filter(Boolean);
+
     const testIds = [
       ...(extraction?.testIds || []),
-      ...(analysis?.testsExplicitlyMentioned || []).map(t => t.toLowerCase().replace(/\s+/g, '-')),
+      ...explicitTestIds,
     ];
-    const uniqueTestIds = [...new Set(testIds)];
+    const uniqueTestIds = [...new Set(testIds)].filter(Boolean);
 
     // Determine layer based on docType
     const layerMap = {
@@ -607,9 +619,10 @@ Provide a JSON response:
     let created = 0;
     for (const testName of allTests) {
       try {
+        const match = lookupTestByName(testName);
         await createProposal(PROPOSAL_TYPES.COVERAGE, {
           testName,
-          testId: testName.toLowerCase().replace(/\s+/g, '-'),
+          testId: match?.id || null,
           payer: metadata.payerName,
           payerId: metadata.payerId,
           coverageStatus: analysis?.coverageStatus || 'conditional',

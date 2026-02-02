@@ -137,6 +137,27 @@ export class DiscoveryCrawler {
   }
 
   /**
+   * Fetch with timeout using AbortController
+   * @param {string} url
+   * @param {Object} options
+   * @param {number} timeoutMs
+   * @returns {Promise<Response>}
+   */
+  async fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      return await this.fetchFn(url, {
+        ...options,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  /**
    * Run discovery for all configured payers
    * @returns {Object} { candidates, errors }
    */
@@ -251,13 +272,12 @@ export class DiscoveryCrawler {
     logger.debug(`Parsing sitemap: ${sitemapUrl}`);
 
     try {
-      const response = await this.fetchFn(sitemapUrl, {
+      const response = await this.fetchWithTimeout(sitemapUrl, {
         headers: {
           'User-Agent': 'OpenOnco-Daemon/1.0 (Research; contact@openonco.org)',
           'Accept': 'application/xml, text/xml',
         },
-        timeout: 30000,
-      });
+      }, 30000);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -339,12 +359,11 @@ export class DiscoveryCrawler {
     logger.debug(`Crawling index page: ${url}`);
 
     try {
-      const response = await this.fetchFn(url, {
+      const response = await this.fetchWithTimeout(url, {
         headers: {
           'User-Agent': 'OpenOnco-Daemon/1.0 (Research; contact@openonco.org)',
         },
-        timeout: 30000,
-      });
+      }, 30000);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -386,12 +405,11 @@ export class DiscoveryCrawler {
     logger.debug(`Searching: ${searchUrl}`);
 
     try {
-      const response = await this.fetchFn(searchUrl, {
+      const response = await this.fetchWithTimeout(searchUrl, {
         headers: {
           'User-Agent': 'OpenOnco-Daemon/1.0 (Research; contact@openonco.org)',
         },
-        timeout: 30000,
-      });
+      }, 30000);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);

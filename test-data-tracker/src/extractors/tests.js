@@ -7,6 +7,8 @@
  * v2.1: Added context-aware scoring to avoid bibliography/historical mentions
  */
 
+import { lookupTestByName } from '../data/test-dictionary.js';
+
 /**
  * Known MRD/liquid biopsy tests
  * Maps variations to canonical test ID
@@ -319,13 +321,17 @@ export function extractNamedTests(content) {
     }
 
     if (matches.length > 0) {
+      const firstMatch = matches[0].text;
+      const dictionaryMatch = lookupTestByName(firstMatch);
+
       found.push({
         id: testInfo.id,
+        openOncoId: dictionaryMatch?.id || null,
         name: testId,
         vendor: testInfo.vendor,
         matchCount: matches.length,
         plaCode: testInfo.plaCode,
-        firstMatch: matches[0].text,
+        firstMatch,
       });
     }
   }
@@ -368,13 +374,17 @@ export function extractTestsWithContext(content) {
       // Average weight across all mentions
       const avgWeight = totalWeight / matches.length;
 
+      const firstMatch = matches[0].text;
+      const dictionaryMatch = lookupTestByName(firstMatch);
+
       found.push({
         id: testInfo.id,
+        openOncoId: dictionaryMatch?.id || null,
         name: testId,
         vendor: testInfo.vendor,
         matchCount: matches.length,
         plaCode: testInfo.plaCode,
-        firstMatch: matches[0].text,
+        firstMatch,
         weight: avgWeight,
         weightedScore: matches.length * avgWeight,
         // Flag if mostly bibliography/example mentions

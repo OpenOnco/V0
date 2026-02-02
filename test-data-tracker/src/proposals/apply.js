@@ -62,6 +62,9 @@ export async function generatePatch(options = {}) {
   const coverageUpdates = [];
   const testUpdates = [];
   const newTests = [];
+  const coverageAssertions = [];
+  const documentCandidates = [];
+  const delegationChanges = [];
 
   for (const proposal of proposals) {
     const instruction = generateProposalInstruction(proposal, dataJs);
@@ -75,10 +78,19 @@ export async function generatePatch(options = {}) {
         testUpdates.push(proposal);
       } else if (proposal.type === PROPOSAL_TYPES.NEW_TEST) {
         newTests.push(proposal);
+      } else if (proposal.type === PROPOSAL_TYPES.COVERAGE_ASSERTION) {
+        coverageAssertions.push(proposal);
+      } else if (proposal.type === PROPOSAL_TYPES.DOCUMENT_CANDIDATE) {
+        documentCandidates.push(proposal);
+      } else if (proposal.type === PROPOSAL_TYPES.DELEGATION_CHANGE) {
+        delegationChanges.push(proposal);
       }
 
-      // Generate changelog entry
-      changelogEntries.push(generateChangelogEntry(proposal));
+      // Generate changelog entry (only for data.js changes)
+      const changelogEntry = generateChangelogEntry(proposal);
+      if (changelogEntry) {
+        changelogEntries.push(changelogEntry);
+      }
     }
   }
 
@@ -90,7 +102,10 @@ export async function generatePatch(options = {}) {
     changelogEntries,
     coverageUpdates,
     testUpdates,
-    newTests
+    newTests,
+    coverageAssertions,
+    documentCandidates,
+    delegationChanges
   );
 
   // Write patch file
@@ -121,6 +136,12 @@ function generateProposalInstruction(proposal, dataJs) {
       return generateUpdateInstruction(proposal, dataJs);
     case PROPOSAL_TYPES.NEW_TEST:
       return generateNewTestInstruction(proposal, dataJs);
+    case PROPOSAL_TYPES.DOCUMENT_CANDIDATE:
+      return generateDocumentCandidateInstruction(proposal);
+    case PROPOSAL_TYPES.DELEGATION_CHANGE:
+      return generateDelegationChangeInstruction(proposal);
+    case PROPOSAL_TYPES.COVERAGE_ASSERTION:
+      return generateCoverageAssertionInstruction(proposal);
     default:
       return `Unknown proposal type: ${proposal.type}`;
   }
@@ -284,6 +305,91 @@ function generateNewTestInstruction(proposal) {
 }
 
 /**
+ * Generate instruction for document candidate proposal
+ */
+function generateDocumentCandidateInstruction(proposal) {
+  const confidence = Math.round((proposal.relevanceScore ?? 0) * 100);
+  return `
+## Document Candidate: ${proposal.title || proposal.payerName || proposal.payerId}
+
+**Proposal ID:** ${proposal.id}
+**Payer:** ${proposal.payerName || proposal.payerId}
+**URL:** ${proposal.url}
+**Doc Type (guess):** ${proposal.docTypeGuess || 'unknown'}
+**Policy Type (guess):** ${proposal.policyTypeGuess || 'liquid_biopsy'}
+**Confidence:** ${confidence}%
+
+### Action Required:
+1. Open \`test-data-tracker/src/data/policy-registry.js\`
+2. Add this URL under payer \`${proposal.payerId}\` if valid:
+   \`\`\`javascript
+   {
+     id: "[assign unique id]",
+     name: "${proposal.title || 'Policy Document'}",
+     url: "${proposal.url}",
+     contentType: "${proposal.contentType || 'html'}",
+     policyType: "${proposal.policyTypeGuess || 'liquid_biopsy'}",
+     docType: "${proposal.docTypeGuess || 'medical_policy'}",
+     discoveryMethod: "link_crawl",
+     notes: "${proposal.linkContext ? proposal.linkContext.replace(/"/g, '\\"').slice(0, 160) : 'Discovered via policy discovery crawler.'}",
+     lastVerified: "${new Date().toISOString().split('T')[0]}"
+   }
+   \`\`\`
+3. If invalid, mark proposal rejected with reason.
+`;
+}
+
+/**
+ * Generate instruction for delegation change proposal
+ */
+function generateDelegationChangeInstruction(proposal) {
+  const confidence = Math.round((proposal.confidence ?? 0) * 100);
+  return `
+## Delegation Change: ${proposal.payerName || proposal.payerId}
+
+**Proposal ID:** ${proposal.id}
+**Delegated To:** ${proposal.delegatedToName || proposal.delegatedTo}
+**Effective Date:** ${proposal.effectiveDate || 'Unknown'}
+**Scope:** ${proposal.scope || 'unknown'}
+**Confidence:** ${confidence}%
+
+**Source:** ${proposal.sourceUrl || proposal.source}
+${proposal.sourceQuote ? `**Quote:** "${proposal.sourceQuote}"` : ''}
+
+### Action Required:
+1. Open \`test-data-tracker/src/data/delegation-map.js\`
+2. Add/update the delegation entry for payer \`${proposal.payerId}\`
+3. Update evidence block with source URL and quote
+4. If invalid, mark proposal rejected with reason.
+`;
+}
+
+/**
+ * Generate instruction for coverage assertion proposal
+ */
+function generateCoverageAssertionInstruction(proposal) {
+  const confidence = Math.round((proposal.confidence ?? 0) * 100);
+  return `
+## Coverage Assertion: ${proposal.testName || proposal.testId} @ ${proposal.payerName || proposal.payerId}
+
+**Proposal ID:** ${proposal.id}
+**Layer:** ${proposal.layer}
+**Status:** ${proposal.assertionStatus}
+**Effective Date:** ${proposal.effectiveDate || 'Unknown'}
+**Confidence:** ${confidence}%
+
+**Source:** ${proposal.sourceUrl || proposal.source}
+${proposal.sourceQuote ? `**Quote:** "${proposal.sourceQuote}"` : ''}
+
+### Action Required:
+1. Review the assertion details and criteria
+2. If accepted, add to coverage assertions store (SQLite) using a manual admin step
+3. If the assertion implies a data.js change, create a coverage proposal for \`payerCoverage\`
+4. If invalid, mark proposal rejected with reason.
+`;
+}
+
+/**
  * Generate changelog entry for a proposal
  */
 function generateChangelogEntry(proposal) {
@@ -304,6 +410,8 @@ function generateChangelogEntry(proposal) {
   } else if (proposal.type === PROPOSAL_TYPES.NEW_TEST) {
     type = 'added';
     description = `Added ${proposal.testData?.name} (${proposal.testData?.vendor})`;
+  } else {
+    return null; // Non-data.js proposal types should not create changelog entries
   }
 
   return {
@@ -323,7 +431,17 @@ function generateChangelogEntry(proposal) {
 /**
  * Generate the full patch document
  */
-function generatePatchDocument(proposals, instructions, changelogEntries, coverageUpdates, testUpdates, newTests) {
+function generatePatchDocument(
+  proposals,
+  instructions,
+  changelogEntries,
+  coverageUpdates,
+  testUpdates,
+  newTests,
+  coverageAssertions,
+  documentCandidates,
+  delegationChanges
+) {
   const timestamp = new Date().toISOString();
 
   let doc = `# Proposal Application Document
@@ -334,6 +452,9 @@ Total Proposals: ${proposals.length}
 - Coverage Updates: ${coverageUpdates.length}
 - Test Updates: ${testUpdates.length}
 - New Tests: ${newTests.length}
+- Coverage Assertions: ${coverageAssertions.length}
+- Document Candidates: ${documentCandidates.length}
+- Delegation Changes: ${delegationChanges.length}
 
 ---
 
@@ -349,7 +470,7 @@ Add these entries to the TOP of \`DATABASE_CHANGELOG\` array in data.js:
 
 \`\`\`javascript
 // Generated by daemon proposal system - ${timestamp.split('T')[0]}
-${changelogEntries.map(e => JSON.stringify(e, null, 2)).join(',\n')}
+${changelogEntries.length > 0 ? changelogEntries.map(e => JSON.stringify(e, null, 2)).join(',\n') : '// (No data.js changelog entries generated for these proposals)'}
 \`\`\`
 
 ---

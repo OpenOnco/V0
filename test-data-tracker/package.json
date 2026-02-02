@@ -1,7 +1,7 @@
 {
-  "name": "openonco-daemon",
+  "name": "openonco-test-data-tracker",
   "version": "1.0.1",
-  "description": "Background daemon for OpenOnco scheduled tasks and notifications",
+  "description": "OpenOnco Test Data Tracker - Monitors CMS, vendors, and payers for test database updates",
   "main": "src/index.js",
   "type": "module",
   "engines": {

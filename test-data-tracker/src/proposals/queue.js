@@ -53,6 +53,10 @@ const TYPE_DIRS = {
   [PROPOSAL_TYPES.COVERAGE]: 'coverage',
   [PROPOSAL_TYPES.UPDATE]: 'updates',
   [PROPOSAL_TYPES.NEW_TEST]: 'new-tests',
+  // v2 additions
+  [PROPOSAL_TYPES.COVERAGE_ASSERTION]: 'coverage-assertions',
+  [PROPOSAL_TYPES.DOCUMENT_CANDIDATE]: 'document-candidates',
+  [PROPOSAL_TYPES.DELEGATION_CHANGE]: 'delegation-changes',
 };
 
 /**
@@ -127,6 +131,9 @@ export async function getProposal(id) {
     cov: PROPOSAL_TYPES.COVERAGE,
     upd: PROPOSAL_TYPES.UPDATE,
     new: PROPOSAL_TYPES.NEW_TEST,
+    ca: PROPOSAL_TYPES.COVERAGE_ASSERTION,
+    doc: PROPOSAL_TYPES.DOCUMENT_CANDIDATE,
+    del: PROPOSAL_TYPES.DELEGATION_CHANGE,
   };
 
   const type = typeMap[prefix];

@@ -9,7 +9,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { PlaywrightCrawler, USER_AGENT } from './playwright-base.js';
 import { config, DISCOVERY_TYPES, SOURCES, MONITORED_VENDORS } from '../config.js';
-import { matchTests, formatMatchesForPrompt } from '../data/test-dictionary.js';
+import { matchTests, formatMatchesForPrompt, lookupTestByName } from '../data/test-dictionary.js';
 import { computeDiff, truncateDiff } from '../utils/diff.js';
 import { canonicalizeContent } from '../utils/canonicalize.js';
 import { initializeCLFS, lookupPLARate, extractPLACodes } from '../utils/medicare-rates.js';
@@ -1461,7 +1461,9 @@ Respond ONLY with valid JSON.`,
       metadata.deterministicMatches?.[0]?.testName ||
       metadata.llmSuggestedTests?.[0];
 
-    const testId = metadata.deterministicMatches?.[0]?.testId || null;
+    const deterministicId = metadata.deterministicMatches?.[0]?.testId || null;
+    const matched = testName ? lookupTestByName(testName) : null;
+    const testId = deterministicId || matched?.id || null;
 
     // Calculate confidence based on match type
     let confidence = 0.7; // Base confidence
@@ -1534,9 +1536,11 @@ Respond ONLY with valid JSON.`,
       };
     }
 
+    const match = lookupTestByName(metadata.testName);
+
     return createProposal(PROPOSAL_TYPES.UPDATE, {
       testName: metadata.testName,
-      testId: null, // Would need test matching logic
+      testId: match?.id || null,
       changes,
       source: url,
       sourceTitle: title,

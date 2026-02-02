@@ -1,11 +1,11 @@
 # OpenOnco Session State
 
-> Last updated: 2026-01-28 14:15 PST
-> Updated by: Claude (claude.ai)
+> Last updated: 2026-02-02 00:00 PST
+> Updated by: Codex (OpenAI)
 
 ## Current State
 
-### Daemon Crawlers (Railway) - ALL WORKING ✅
+### Test Data Tracker Crawlers (Railway) - ALL WORKING ✅
 
 | Crawler | Status | Success Rate | Notes |
 |---------|--------|--------------|-------|
@@ -18,7 +18,7 @@ Added RSS feed support in `vendor.js` for investor relations sites that block Pl
 - Adaptive: `https://investors.adaptivebiotech.com/rss/news-releases.xml`
 - Veracyte: `https://investor.veracyte.com/rss/news-releases.xml`
 
-Changes to `daemon/src/crawlers/vendor.js`:
+Changes to `test-data-tracker/src/crawlers/vendor.js`:
 1. Added `rssUrl` field to Adaptive and Veracyte in VENDOR_SOURCES
 2. Added `fetchRSS(url)` method that parses RSS XML
 3. Updated crawl loop to use RSS when `vendor.rssUrl` exists
@@ -35,24 +35,24 @@ _None - verification complete_
 ## Next Steps
 
 1. **Phase 2:** Add Claude inline intelligence for change extraction
-2. Test full daemon run end-to-end
+2. Test full test-data-tracker run end-to-end
 3. Set up weekly email digest
 4. Consider removing Anthem or finding alternative data source
 
 ## Files Modified This Session
 
-- `daemon/src/crawlers/vendor.js` - RSS fallback for blocking sites
+- `test-data-tracker/src/crawlers/vendor.js` - RSS fallback for blocking sites
 
 ## Project Location
 
-`/Users/adickinson/Documents/GitHub/V0/daemon`
+`/Users/adickinson/Documents/GitHub/V0/test-data-tracker`
 
 ## Test Commands
 
 ```bash
-cd daemon && node test-crawler.js cms      # Test CMS crawler
-cd daemon && node test-crawler.js payers   # Test payers crawler  
-cd daemon && node test-crawler.js vendor   # Test vendor crawler
+cd test-data-tracker && node test-crawler.js cms      # Test CMS crawler
+cd test-data-tracker && node test-crawler.js payers   # Test payers crawler  
+cd test-data-tracker && node test-crawler.js vendor   # Test vendor crawler
 ```
 
 ---

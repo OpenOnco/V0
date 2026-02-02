@@ -11,6 +11,15 @@ Background service that monitors insurance coverage changes for cancer diagnosti
 
 > **Human-in-the-loop.** The daemon surfaces coverage changes; a human reviews and approves database updates.
 
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [README.md](README.md) | Quick start (this file) |
+| [DAEMON.md](DAEMON.md) | Comprehensive architecture, all crawlers |
+| [docs/PAYER_CRAWLER.md](docs/PAYER_CRAWLER.md) | Payer crawler deep-dive (v2.1.1) |
+| [docs/MRD_SYSTEM_ARCHITECTURE.md](docs/MRD_SYSTEM_ARCHITECTURE.md) | MRD guidance monitor system |
+
 ## Architecture
 
 ```
@@ -52,7 +61,7 @@ Background service that monitors insurance coverage changes for cancer diagnosti
 ## Quick Start
 
 ```bash
-cd daemon
+cd test-data-tracker
 npm install
 npx playwright install chromium  # Required for payers crawler
 
@@ -102,7 +111,7 @@ Runs on [Railway](https://railway.app). Auto-deploys from `develop` branch.
 ## Files
 
 ```
-daemon/
+test-data-tracker/
 ├── src/
 │   ├── config.js           # Payers, tests, vendors, schedules
 │   ├── scheduler.js        # Cron jobs

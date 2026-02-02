@@ -15,6 +15,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { BaseCrawler } from './base.js';
 import { config, DISCOVERY_TYPES, SOURCES, ALL_TEST_NAMES } from '../config.js';
 import { initializeCLFS, lookupPLARate, lookupMultiplePLARates, extractPLACodes } from '../utils/medicare-rates.js';
+import { lookupTestByName } from '../data/test-dictionary.js';
 import { createProposal } from '../proposals/queue.js';
 import { PROPOSAL_TYPES } from '../proposals/schema.js';
 
@@ -616,9 +617,10 @@ Focus on:
     // Create a coverage proposal for each affected test
     for (const testName of affectedTests) {
       try {
+        const match = lookupTestByName(testName);
         await createProposal(PROPOSAL_TYPES.COVERAGE, {
           testName,
-          testId: testName.toLowerCase().replace(/\s+/g, '-'),
+          testId: match?.id || null,
           payer: 'Medicare',
           payerId: 'cms',
           coverageStatus: metadata?.coverageDecision || 'conditional',

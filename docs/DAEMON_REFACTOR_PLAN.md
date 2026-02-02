@@ -1,5 +1,7 @@
 # Daemon Refactor Plan
 
+**Note:** The daemon was split in the 2026 reorg. This plan now applies to the `test-data-tracker/` service (coverage/vendor monitoring). MRD clinical guidance now lives in `physician-system/`.
+
 ## Overview
 
 This plan covers two initiatives:
@@ -40,7 +42,7 @@ BaseCrawler (HTTP-based crawling, shared interface)
 - `recordUrlHealth(url, success)` — track URL reliability
 
 **Files:**
-- Create `daemon/src/crawlers/playwright-base.js`
+- Create `test-data-tracker/src/crawlers/playwright-base.js`
 - Refactor `vendor.js` and `payers.js` to extend it
 
 ---
@@ -94,7 +96,7 @@ CREATE TABLE IF NOT EXISTS content_hashes (
 
 **Additional work:**
 - Anthem needs per-state URL generation (CA, IN, GA, etc.)
-- Add URL validation on daemon startup (warn on 404s)
+- Add URL validation on test-data-tracker startup (warn on 404s)
 
 ---
 
@@ -364,7 +366,7 @@ Each vendor needs multiple page types monitored. URLs verified January 2026.
    }
    ```
 
-3. **Proposal creation** — Write to `daemon/data/proposals/coverage/`
+3. **Proposal creation** — Write to `test-data-tracker/data/proposals/coverage/`
 
 4. **Review** — Weekly email with pending proposals; review via web UI or Claude conversation
 
@@ -419,7 +421,7 @@ GET https://clinicaltrials.gov/api/v2/studies?query.term=Signatera&filter.overal
 **Workflow:**
 1. Crawler detects new test announcement (regex match)
 2. Claude extracts test details
-3. Creates draft in `daemon/data/proposals/new-tests/`
+3. Creates draft in `test-data-tracker/data/proposals/new-tests/`
 4. Sends notification email
 5. Human reviews via web UI or Claude conversation, fills gaps, approves
 6. Test added to data.js with `vendorVerified: false`
@@ -432,7 +434,7 @@ GET https://clinicaltrials.gov/api/v2/studies?query.term=Signatera&filter.overal
 **Central queue for all proposed changes:**
 
 ```
-daemon/data/proposals/
+test-data-tracker/data/proposals/
 ├── coverage/
 │   ├── cov-2024-001.json
 │   └── cov-2024-002.json

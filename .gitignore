@@ -180,3 +180,8 @@ kk
 restore*.sh
 ~$*
 /NCCN/
+
+# MRD Guidance Monitor - watched files (PDFs are licensed/large)
+daemon/watched-files/**/*.pdf
+daemon/watched-files/**/*.html
+!daemon/watched-files/**/.gitkeep

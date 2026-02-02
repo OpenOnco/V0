@@ -34,7 +34,8 @@ src/           React frontend
 api/           Vercel serverless functions
   chat.js      Claude chatbot API
   v1/          Public REST API
-daemon/        Background intelligence crawler
+physician-system/  MRD clinical decision support (RAG + crawlers)
+test-data-tracker/ Coverage & vendor change monitoring (crawler + digest)
 tests/         Playwright tests
 eval/          Chatbot evaluation (Python)
 ```

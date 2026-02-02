@@ -25,7 +25,7 @@ npm run test:smoke       # Quick validation
 **Slash commands available:**
 - `/recall` - Read SESSION_STATE.md and summarize context
 - `/store` - Write current state to SESSION_STATE.md
-- `/proposals` - Review pending proposals from daemon crawls
+- `/proposals` - Review pending proposals from test-data-tracker crawls
 
 ## Project Overview
 
@@ -60,8 +60,13 @@ OpenOnco is a non-profit database of cancer diagnostic tests (liquid biopsy, mol
 │   ├── v1/                 # Public REST API
 │   └── _data.js            # Shared API data
 │
-├── daemon/                 # Background intelligence (Railway)
-│   ├── src/crawlers/       # Vendor, payer, news crawlers
+├── physician-system/       # MRD clinical decision support (Railway)
+│   ├── src/crawlers/       # Evidence + guideline crawlers
+│   ├── src/chat/           # MRD chat API server
+│   └── src/triage/         # AI triage + classification
+│
+├── test-data-tracker/      # Coverage & vendor monitoring (Railway)
+│   ├── src/crawlers/       # CMS, payer, vendor crawlers
 │   ├── src/email/          # Digest email templates
 │   └── src/triage/         # AI-powered change detection
 │
@@ -108,9 +113,13 @@ npm run test:api         # API endpoint tests
 ./release                # main branch → production
 ./release "v1.2.0"       # With version tag
 
-# Daemon (from /daemon directory)
+# Test Data Tracker (from /test-data-tracker directory)
 npm run dev              # Run with auto-reload
-npm run test:email       # Test digest email
+npm test                 # Unit tests
+
+# Physician System (from /physician-system directory)
+npm start                # Start MRD chat server
+node src/cli.js all      # Run all crawlers
 ```
 
 ## Conventions
@@ -182,7 +191,7 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 
 ### Review proposals (`/proposals`)
 
-The daemon crawls vendor/payer sites and creates proposal JSON files in `daemon/data/proposals/`.
+The test-data-tracker crawls vendor/payer sites and creates proposal JSON files in `test-data-tracker/data/proposals/`.
 
 **Proposal types:**
 - `coverage/` - New payer coverage info to add to a test's `payerCoverage` array
@@ -190,7 +199,7 @@ The daemon crawls vendor/payer sites and creates proposal JSON files in `daemon/
 - `new-tests/` - Entirely new tests to add
 
 **Workflow:**
-1. Read all pending proposals from `daemon/data/proposals/*/`
+1. Read all pending proposals from `test-data-tracker/data/proposals/*/`
 2. Present each proposal to user with relevant context
 3. For each: user approves or rejects
 4. Apply approved changes directly to `src/data.js`
@@ -223,9 +232,9 @@ payerCoverage: [
 
 ### Policy URL Research
 
-When asked to research payer policy URLs, use parallel agents to search for and verify URLs in `daemon/src/data/policy-registry.js`.
+When asked to research payer policy URLs, use parallel agents to search for and verify URLs in `test-data-tracker/src/data/policy-registry.js`.
 
-**Registry location:** `daemon/src/data/policy-registry.js`
+**Registry location:** `test-data-tracker/src/data/policy-registry.js`
 
 **What to do:**
 1. Spawn parallel agents to search for policy URLs at target payers

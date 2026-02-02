@@ -41,7 +41,7 @@ export async function extractStructuredData(content, options = {}) {
 
   // Extract named tests
   const namedTests = extractNamedTests(content);
-  const testIds = namedTests.map(t => t.id);
+  const testIds = namedTests.map(t => t.openOncoId || t.id);
   const mrdContent = detectMRDContent(content);
 
   // Extract criteria
