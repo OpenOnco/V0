@@ -117,7 +117,7 @@ async function main() {
     // Start the scheduler
     startScheduler();
 
-    // Start the HTTP server for MRD Chat API
+    // Start the HTTP server for health checks
     startServer();
 
     // Log initial status
