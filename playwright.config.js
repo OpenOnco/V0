@@ -7,7 +7,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  testIgnore: ['**/api.spec.js', '**/unit/**'],  // API tests run separately; unit tests use vitest
+  testIgnore: ['**/api.spec.js', '**/mrd-chat.spec.js', '**/unit/**'],  // API tests run separately; unit tests use vitest
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

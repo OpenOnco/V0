@@ -155,6 +155,9 @@ playwright-report/
 test-results/
 .playwright-mcp/
 
+# Shared logger test artifacts
+shared/logger/test-logs/
+
 # Daemon logs and test artifacts
 daemon/logs/
 daemon/test-screenshot-*.png

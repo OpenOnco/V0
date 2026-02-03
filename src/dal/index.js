@@ -49,7 +49,7 @@ export { GlossaryRepository } from './repositories/GlossaryRepository.js';
 
 // Export normalizers
 export { normalizeChangelog } from './normalizers/changelog.js';
-export { normalizeVendors, normalizeVendorVerifications, normalizeAssistancePrograms } from './normalizers/vendors.js';
+export { normalizeVendors } from './normalizers/vendors.js';
 export { normalizeInsurance, buildPayerNameMap } from './normalizers/insurance.js';
 export { normalizeGlossary } from './normalizers/glossary.js';
 
@@ -58,59 +58,33 @@ export {
   useAllTests,
   useTestsByCategory,
   useTestCounts,
-  useTestById,
   useTestStats,
   useTestsByCategories,
-  resetCache,
 } from './hooks/useTests.js';
 
 // React hooks for DAL access - Changelog
 export {
   useChangelog,
-  useRecentChanges,
-  useChangelogByType,
-  useChangelogByTestId,
-  useChangelogByCategory,
-  useChangelogStats,
-  useRecentlyAddedTests,
-  resetChangelogCache,
 } from './hooks/useChangelog.js';
 
 // React hooks for DAL access - Vendors
 export {
   useVendors,
-  useVendorById,
-  useVendorByName,
   useTestVerification,
-  useVendorsWithAssistance,
   useAssistanceProgram,
   useTestContribution,
-  useVendorStats,
-  resetVendorCache,
 } from './hooks/useVendors.js';
 
 // React hooks for DAL access - Insurance
 export {
   useInsuranceProviders,
-  useInsuranceById,
-  useInsuranceByCategory,
   useInsuranceGrouped,
-  useTestCoverage,
-  useTestCoveringProviders,
-  resetInsuranceCache,
 } from './hooks/useInsurance.js';
 
 // React hooks for DAL access - Glossary
 export {
   useGlossary,
   useGlossaryTerm,
-  useGlossaryByName,
-  useGlossarySearch,
-  useRelatedTerms,
-  useGlossaryBySource,
-  useRandomTerm,
-  useGlossaryLookup,
-  resetGlossaryCache,
 } from './hooks/useGlossary.js';
 
 /**
@@ -228,40 +202,4 @@ export function createDAL(adapter, options = {}) {
     glossary: new GlossaryRepository(adapter),
     adapter,
   };
-}
-
-// Singleton instance for convenience
-let _instance = null;
-
-/**
- * Get or create the global DAL instance
- * Lazily initializes on first call
- *
- * @param {Object} [dataArrays] - Test data arrays (only used on first call)
- * @returns {DAL}
- */
-export function getDAL(dataArrays) {
-  if (!_instance) {
-    if (!dataArrays) {
-      throw new Error('DAL not initialized. Call initializeDAL() first or provide data arrays.');
-    }
-    _instance = initializeDAL(dataArrays);
-  }
-  return _instance;
-}
-
-/**
- * Reset the global DAL instance
- * Useful for testing or re-initialization
- */
-export function resetDAL() {
-  _instance = null;
-}
-
-/**
- * Set a pre-initialized DAL as the global instance
- * @param {DAL} dal - The DAL instance to use
- */
-export function setDAL(dal) {
-  _instance = dal;
 }

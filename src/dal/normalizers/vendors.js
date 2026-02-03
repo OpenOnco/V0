@@ -162,35 +162,3 @@ export function buildVendorLookupMaps(normalizedVendors) {
 
   return { byId, byName };
 }
-
-/**
- * Normalize VENDOR_VERIFIED into a flat collection for direct DAL access
- * Used when we need to access verification data independent of vendor records
- *
- * @param {Object} vendorVerified - VENDOR_VERIFIED object from data.js
- * @returns {Array} - Array of verification records
- */
-export function normalizeVendorVerifications(vendorVerified = {}) {
-  return Object.entries(vendorVerified).map(([testId, data]) => ({
-    id: `verification-${testId}`,
-    testId,
-    verifierName: data.name,
-    company: data.company,
-    verifiedDate: data.verifiedDate,
-    editsSubmitted: data.editsSubmitted || 0,
-  }));
-}
-
-/**
- * Normalize VENDOR_ASSISTANCE_PROGRAMS into a flat collection
- *
- * @param {Object} assistancePrograms - VENDOR_ASSISTANCE_PROGRAMS object
- * @returns {Array} - Array of assistance program records
- */
-export function normalizeAssistancePrograms(assistancePrograms = {}) {
-  return Object.entries(assistancePrograms).map(([vendorName, data]) => ({
-    id: generateVendorId(vendorName),
-    vendorName,
-    ...data,
-  }));
-}

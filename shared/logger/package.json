@@ -1,0 +1,31 @@
+{
+  "name": "@openonco/logger",
+  "version": "1.0.0",
+  "description": "Shared Pino-based logging module for OpenOnco",
+  "type": "module",
+  "main": "./node.js",
+  "browser": "./browser.js",
+  "exports": {
+    ".": {
+      "browser": "./browser.js",
+      "node": "./node.js",
+      "default": "./index.js"
+    },
+    "./node": "./node.js",
+    "./browser": "./browser.js"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "pino": "^8.21.0",
+    "pino-pretty": "^10.3.1",
+    "@logtail/pino": "^0.4.0",
+    "pino-roll": "^1.3.0"
+  },
+  "keywords": [
+    "logging",
+    "pino",
+    "openonco"
+  ]
+}
