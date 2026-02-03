@@ -3,6 +3,7 @@
  * Manages all scheduled tasks with proper error handling
  *
  * v2: Added discovery job for automatic policy discovery
+ * v3: Added publication-index integration
  */
 
 import cron from 'node-cron';
@@ -17,6 +18,14 @@ import { runDiscovery, createDocumentCandidateProposal } from './crawlers/discov
 import { initHashStore, getPendingDiscoveries } from './utils/hash-store.js';
 import { createProposal } from './proposals/queue.js';
 import { PROPOSAL_TYPES } from './proposals/schema.js';
+
+// v3: Publication index integration (optional)
+let publicationIndexModule = null;
+try {
+  publicationIndexModule = await import('../../publication-index/src/scheduler.js');
+} catch (e) {
+  // publication-index not available, skip
+}
 
 const logger = createLogger('scheduler');
 
@@ -173,10 +182,38 @@ export async function triggerDiscovery(options = {}) {
 }
 
 /**
+ * v3: Schedule publication-index job (runs Sunday 9 PM, before other crawlers)
+ */
+function schedulePublicationIndex() {
+  if (!publicationIndexModule) {
+    logger.debug('Publication index module not available, skipping');
+    return null;
+  }
+
+  const schedule = process.env.PUBINDEX_SCHEDULE || '0 21 * * 0'; // Sunday 9 PM
+  logger.info('Scheduling publication-index job', { schedule });
+
+  const job = cron.schedule(schedule, async () => {
+    logger.info('Running scheduled publication-index crawl');
+    try {
+      await publicationIndexModule.runWithNotification();
+    } catch (error) {
+      logger.error('Publication-index crawl failed', { error: error.message });
+    }
+  });
+
+  jobs.set('publication-index', job);
+  return job;
+}
+
+/**
  * Start all scheduled jobs
  */
 export function startScheduler() {
   logger.info('Starting scheduler');
+
+  // v3: Schedule publication-index (runs first)
+  schedulePublicationIndex();
 
   // Schedule crawlers
   scheduleCrawler(SOURCES.CMS, config.schedules.cms);
@@ -192,6 +229,7 @@ export function startScheduler() {
   logger.info('Scheduler started', {
     jobs: Array.from(jobs.keys()),
     schedules: {
+      publicationIndex: process.env.PUBINDEX_SCHEDULE || '0 21 * * 0',
       cms: config.schedules.cms,
       vendor: config.schedules.vendor,
       payers: config.schedules.payers,

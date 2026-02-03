@@ -5,15 +5,19 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
+    "start": "node src/server.js",
     "crawl": "node src/cli.js crawl",
     "crawl:dry": "node src/cli.js crawl --dry-run",
+    "crawl:notify": "node -e \"import('./src/scheduler.js').then(m => m.runWithNotification())\"",
     "status": "node src/cli.js status",
     "help": "node src/cli.js help"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "dotenv": "^16.3.1",
+    "node-cron": "^3.0.3",
     "pg": "^8.11.3",
-    "playwright": "^1.40.0"
+    "playwright": "^1.40.0",
+    "resend": "^2.0.0"
   }
 }
