@@ -42,6 +42,7 @@ describe('GUARDRAILS', () => {
 });
 
 describe('getPromptForSourceType', () => {
+  // Detailed keys (direct lookup)
   it('should return vendor publications index prompt for vendor_publications_index', () => {
     const prompt = getPromptForSourceType('vendor_publications_index');
     expect(prompt).toBe(VENDOR_PUBLICATIONS_INDEX);
@@ -72,6 +73,27 @@ describe('getPromptForSourceType', () => {
     expect(prompt).toContain('Clinical Guideline');
   });
 
+  // Coarse keys (mapped from DB source_type values)
+  it('should map coarse "vendor" to vendor publications index prompt', () => {
+    const prompt = getPromptForSourceType('vendor');
+    expect(prompt).toBe(VENDOR_PUBLICATIONS_INDEX);
+  });
+
+  it('should map coarse "guideline" to guideline references prompt', () => {
+    const prompt = getPromptForSourceType('guideline');
+    expect(prompt).toBe(GUIDELINE_REFERENCES);
+  });
+
+  it('should map coarse "news" to news review prompt', () => {
+    const prompt = getPromptForSourceType('news');
+    expect(prompt).toBe(NEWS_REVIEW);
+  });
+
+  it('should map coarse "society" to society editorial prompt', () => {
+    const prompt = getPromptForSourceType('society');
+    expect(prompt).toBe(SOCIETY_EDITORIAL);
+  });
+
   it('should default to vendor publications index for unknown types', () => {
     const prompt = getPromptForSourceType('unknown_type');
     expect(prompt).toBe(VENDOR_PUBLICATIONS_INDEX);
@@ -79,6 +101,7 @@ describe('getPromptForSourceType', () => {
 });
 
 describe('getGuardrailForSourceType', () => {
+  // Detailed keys (direct lookup)
   it('should return guardrail for society_editorial', () => {
     const guardrail = getGuardrailForSourceType('society_editorial');
     expect(guardrail).toBe(GUARDRAILS.society_editorial);
@@ -89,8 +112,29 @@ describe('getGuardrailForSourceType', () => {
     expect(guardrail).toBe(GUARDRAILS.news_review);
   });
 
-  it('should return null for unknown source types', () => {
+  // Coarse keys (mapped from DB source_type values)
+  it('should map coarse "society" to society_editorial guardrail', () => {
+    const guardrail = getGuardrailForSourceType('society');
+    expect(guardrail).toBe(GUARDRAILS.society_editorial);
+  });
+
+  it('should map coarse "news" to news_review guardrail', () => {
+    const guardrail = getGuardrailForSourceType('news');
+    expect(guardrail).toBe(GUARDRAILS.news_review);
+  });
+
+  it('should return null for vendor (no default guardrail)', () => {
     const guardrail = getGuardrailForSourceType('vendor');
+    expect(guardrail).toBeNull();
+  });
+
+  it('should return null for guideline (no default guardrail)', () => {
+    const guardrail = getGuardrailForSourceType('guideline');
+    expect(guardrail).toBeNull();
+  });
+
+  it('should return null for unknown source types', () => {
+    const guardrail = getGuardrailForSourceType('unknown_type');
     expect(guardrail).toBeNull();
   });
 

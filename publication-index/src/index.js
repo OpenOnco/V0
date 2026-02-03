@@ -191,6 +191,8 @@ export class PublicationIndexCrawler extends PlaywrightCrawler {
     if (!source.base_url) {
       logger.warn(`Source ${source.source_key} has no base_url configured`);
       result.skipped = true;
+      // Still update last_checked_at to prevent retrying every run
+      await this.updateSourceCheckedAt(source.id);
       return result;
     }
 

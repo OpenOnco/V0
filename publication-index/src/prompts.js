@@ -210,8 +210,20 @@ Return JSON array of referenced publications:
 `;
 
 /**
+ * Map coarse source_type (from DB) to detailed prompt key
+ * DB stores: vendor, guideline, news, society
+ * Prompts expect: vendor_publications_index, society_editorial, etc.
+ */
+const SOURCE_TYPE_TO_PROMPT_KEY = {
+  vendor: 'vendor_publications_index',
+  guideline: 'guideline_references',
+  news: 'news_review',
+  society: 'society_editorial',
+};
+
+/**
  * Get the appropriate prompt for a source type
- * @param {string} sourceType - The type of source page
+ * @param {string} sourceType - The type of source page (coarse or detailed)
  * @returns {string} The prompt template
  */
 export function getPromptForSourceType(sourceType) {
@@ -223,16 +235,29 @@ export function getPromptForSourceType(sourceType) {
     guideline_references: GUIDELINE_REFERENCES,
   };
 
-  return prompts[sourceType] || VENDOR_PUBLICATIONS_INDEX;
+  // First check if it's a detailed key, then map from coarse type
+  const promptKey = prompts[sourceType] ? sourceType : SOURCE_TYPE_TO_PROMPT_KEY[sourceType];
+  return prompts[promptKey] || VENDOR_PUBLICATIONS_INDEX;
 }
 
 /**
+ * Map coarse source_type to guardrail key
+ */
+const SOURCE_TYPE_TO_GUARDRAIL_KEY = {
+  society: 'society_editorial',
+  news: 'news_review',
+  // vendor and guideline don't have default guardrails
+};
+
+/**
  * Get the interpretation guardrail for a source type
- * @param {string} sourceType - The type of source page
+ * @param {string} sourceType - The type of source page (coarse or detailed)
  * @returns {string|null} The guardrail text, or null if not needed
  */
 export function getGuardrailForSourceType(sourceType) {
-  return GUARDRAILS[sourceType] || null;
+  // First check if it's a detailed key, then map from coarse type
+  const guardrailKey = GUARDRAILS[sourceType] ? sourceType : SOURCE_TYPE_TO_GUARDRAIL_KEY[sourceType];
+  return GUARDRAILS[guardrailKey] || null;
 }
 
 /**
