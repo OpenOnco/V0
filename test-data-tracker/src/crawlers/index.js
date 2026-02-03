@@ -131,7 +131,13 @@ export function getCrawlerStatuses() {
 }
 
 // Export crawler classes for direct instantiation
-export { BaseCrawler, PlaywrightCrawler, CMSCrawler, VendorCrawler, PayerCrawler };
+export {
+  BaseCrawler,
+  PlaywrightCrawler,
+  CMSCrawler,
+  VendorCrawler,
+  PayerCrawler,
+};
 
 export default {
   // Factory

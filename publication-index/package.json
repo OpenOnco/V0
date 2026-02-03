@@ -1,0 +1,19 @@
+{
+  "name": "publication-index",
+  "version": "1.0.0",
+  "description": "Publication index crawler for extracting citations from vendor evidence pages",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "crawl": "node src/cli.js crawl",
+    "crawl:dry": "node src/cli.js crawl --dry-run",
+    "status": "node src/cli.js status",
+    "help": "node src/cli.js help"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.3",
+    "playwright": "^1.40.0"
+  }
+}
