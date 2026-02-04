@@ -55,20 +55,35 @@ const STATUS_MAP = {
 
 // Priority trial NCT numbers (landmark MRD trials)
 const PRIORITY_TRIALS = [
+  // CIRCULATE consortium trials
   'NCT04264702', // CIRCULATE-US
   'NCT04089631', // CIRCULATE-Japan
+  'NCT05174169', // CIRCULATE-North America
+
+  // Colorectal MRD trials
   'NCT04120701', // DYNAMIC (colorectal)
   'NCT04302025', // DYNAMIC-III
   'NCT05078866', // BESPOKE CRC
-  'NCT05827614', // COBRA (colon)
+  'NCT05827614', // NRG-GI005/COBRA (stage II colon)
+  'NCT04068103', // NRG-GI005/COBRA (stage III colon)
+  'NCT03832569', // GALAXY (Japan)
+  'NCT02070146', // PLCRC (parent containing MEDOCC-CrEATE)
+  'NCT04457297', // ALTAIR (Japan) - ctDNA-guided adjuvant
+  'NCT03803553', // ACT3 (Australia) - ctDNA-guided escalation
+
+  // Bladder/Urothelial MRD trials
   'NCT03748680', // IMvigor 011
   'NCT05084339', // MERMAID-1 (bladder)
   'NCT04385368', // MERMAID-2 (bladder)
-  'NCT03832569', // GALAXY
+
+  // Breast MRD trials
   'NCT04585477', // c-TRAK TN (breast)
   'NCT05581134', // DARE (breast)
+
+  // Lung MRD trials
   'NCT05102045', // BR.36 (lung)
 ];
+// NOTE: VEGA (jRCT1031200006) is in Japanese registry only, not ClinicalTrials.gov
 
 /**
  * Filter for solid tumor interventional trials
@@ -492,19 +507,35 @@ export async function seedPriorityTrials() {
 }
 
 /**
- * Sync priority trials to mrd_guidance_items for RAG search
+ * Sync trials to mrd_guidance_items for RAG search
  * Creates searchable guidance items from trial data
- * @returns {Promise<{synced: number, skipped: number}>}
+ *
+ * @param {Object} options - Sync options
+ * @param {boolean} options.priorityOnly - Only sync priority trials (default: false)
+ * @param {boolean} options.forceUpdate - Update existing items (default: false)
+ * @returns {Promise<{synced: number, skipped: number, updated: number}>}
  */
-export async function syncTrialsToGuidance() {
-  logger.info('Syncing priority trials to guidance items');
+export async function syncTrialsToGuidance(options = {}) {
+  const { priorityOnly = false, forceUpdate = false } = options;
+
+  logger.info('Syncing trials to guidance items', { priorityOnly, forceUpdate });
+
+  // Query: priority trials OR trials with results OR active phase 3 trials
+  const whereClause = priorityOnly
+    ? 'WHERE is_priority_trial = true'
+    : `WHERE is_priority_trial = true
+       OR has_results = true
+       OR (phase LIKE '%3%' AND status IN ('recruiting', 'active_not_recruiting', 'completed'))`;
 
   const trials = await query(`
     SELECT * FROM mrd_clinical_trials
-    WHERE is_priority_trial = true
+    ${whereClause}
+    ORDER BY is_priority_trial DESC, has_results DESC, start_date DESC
   `);
 
-  const stats = { synced: 0, skipped: 0 };
+  logger.info('Found trials to sync', { count: trials.rows.length, priorityOnly });
+
+  const stats = { synced: 0, skipped: 0, updated: 0 };
 
   for (const trial of trials.rows) {
     const sourceId = `trial-${trial.nct_number}`;
@@ -515,7 +546,7 @@ export async function syncTrialsToGuidance() {
       [sourceId]
     );
 
-    if (existing.rows.length > 0) {
+    if (existing.rows.length > 0 && !forceUpdate) {
       stats.skipped++;
       continue;
     }
@@ -529,6 +560,20 @@ export async function syncTrialsToGuidance() {
     } catch {
       cancerTypes = [trial.cancer_types].filter(Boolean);
     }
+
+    // Determine clinical setting based on trial title and phase
+    const titleLower = (trial.brief_title || '').toLowerCase();
+    let clinicalSetting = 'adjuvant';
+    if (titleLower.includes('de-escalation') || titleLower.includes('deescalation')) {
+      clinicalSetting = 'adjuvant_de_escalation';
+    } else if (titleLower.includes('escalation')) {
+      clinicalSetting = 'adjuvant_escalation';
+    } else if (titleLower.includes('surveillance') || titleLower.includes('monitoring')) {
+      clinicalSetting = 'surveillance';
+    } else if (titleLower.includes('neoadjuvant')) {
+      clinicalSetting = 'neoadjuvant';
+    }
+
     const summary = [
       trial.official_title || trial.brief_title,
       '',
@@ -540,30 +585,67 @@ export async function syncTrialsToGuidance() {
       `Primary Endpoints: ${trial.primary_endpoints || 'Not specified'}`,
       '',
       `Cancer Types: ${cancerTypes.join(', ') || 'Solid tumors'}`,
+      `Clinical Setting: ${clinicalSetting}`,
       '',
       `This is a clinical trial studying ${trial.acronym || 'MRD-guided therapy'}. `,
       `The trial is investigating ctDNA/MRD-based treatment decisions.`,
-    ].join('\n');
+      trial.has_results ? 'Results have been posted.' : '',
+    ].filter(Boolean).join('\n');
 
-    // Insert as guidance item
-    await query(
-      `INSERT INTO mrd_guidance_items (
-        source_type, source_id, source_url, title, summary,
-        evidence_type, publication_date
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [
-        'clinicaltrials',
-        sourceId,
-        `https://clinicaltrials.gov/study/${trial.nct_number}`,
-        `${trial.acronym || trial.nct_number}: ${trial.brief_title}`,
-        summary,
-        'rct_results',
-        trial.start_date,
-      ]
-    );
+    if (existing.rows.length > 0 && forceUpdate) {
+      // Update existing
+      await query(
+        `UPDATE mrd_guidance_items SET
+          title = $1, summary = $2, updated_at = NOW()
+        WHERE source_id = $3`,
+        [
+          `${trial.acronym || trial.nct_number}: ${trial.brief_title}`,
+          summary,
+          sourceId,
+        ]
+      );
+      stats.updated++;
+      logger.info('Updated trial in guidance', { nct: trial.nct_number, acronym: trial.acronym });
+    } else {
+      // Insert as guidance item
+      const insertResult = await query(
+        `INSERT INTO mrd_guidance_items (
+          source_type, source_id, source_url, title, summary,
+          evidence_type, publication_date
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id`,
+        [
+          'clinicaltrials',
+          sourceId,
+          `https://clinicaltrials.gov/study/${trial.nct_number}`,
+          `${trial.acronym || trial.nct_number}: ${trial.brief_title}`,
+          summary,
+          trial.has_results ? 'rct_results' : 'rct_ongoing',
+          trial.start_date,
+        ]
+      );
 
-    stats.synced++;
-    logger.info('Synced trial to guidance', { nct: trial.nct_number, acronym: trial.acronym });
+      const guidanceId = insertResult.rows[0].id;
+
+      // Insert cancer types into junction table
+      for (const cancerType of cancerTypes) {
+        await query(
+          `INSERT INTO mrd_guidance_cancer_types (guidance_id, cancer_type)
+           VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+          [guidanceId, cancerType]
+        );
+      }
+
+      // Insert clinical setting into junction table
+      await query(
+        `INSERT INTO mrd_guidance_clinical_settings (guidance_id, clinical_setting)
+         VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+        [guidanceId, clinicalSetting]
+      );
+
+      stats.synced++;
+      logger.info('Synced trial to guidance', { nct: trial.nct_number, acronym: trial.acronym });
+    }
   }
 
   logger.info('Trial sync complete', { stats });

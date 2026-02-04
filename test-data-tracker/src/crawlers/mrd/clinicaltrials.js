@@ -55,20 +55,35 @@ const STATUS_MAP = {
 
 // Priority trial NCT numbers (landmark MRD trials)
 const PRIORITY_TRIALS = [
+  // CIRCULATE consortium trials
   'NCT04264702', // CIRCULATE-US
   'NCT04089631', // CIRCULATE-Japan
+  'NCT05174169', // CIRCULATE-North America
+
+  // Colorectal MRD trials
   'NCT04120701', // DYNAMIC (colorectal)
   'NCT04302025', // DYNAMIC-III
   'NCT05078866', // BESPOKE CRC
-  'NCT05827614', // COBRA (colon)
+  'NCT05827614', // NRG-GI005/COBRA (stage II colon)
+  'NCT04068103', // NRG-GI005/COBRA (stage III colon)
+  'NCT03832569', // GALAXY (Japan)
+  'NCT02070146', // PLCRC (parent containing MEDOCC-CrEATE)
+  'NCT04457297', // ALTAIR (Japan) - ctDNA-guided adjuvant
+  'NCT03803553', // ACT3 (Australia) - ctDNA-guided escalation
+
+  // Bladder/Urothelial MRD trials
   'NCT03748680', // IMvigor 011
   'NCT05084339', // MERMAID-1 (bladder)
   'NCT04385368', // MERMAID-2 (bladder)
-  'NCT03832569', // GALAXY
+
+  // Breast MRD trials
   'NCT04585477', // c-TRAK TN (breast)
   'NCT05581134', // DARE (breast)
+
+  // Lung MRD trials
   'NCT05102045', // BR.36 (lung)
 ];
+// NOTE: VEGA (jRCT1031200006) is in Japanese registry only, not ClinicalTrials.gov
 
 /**
  * Filter for solid tumor interventional trials

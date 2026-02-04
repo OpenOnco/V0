@@ -6,7 +6,7 @@ import cron from 'node-cron';
 import { createLogger } from './utils/logger.js';
 import { config } from './config.js';
 import { runPubMedCrawler } from './crawlers/index.js';
-import { crawlClinicalTrials } from './crawlers/clinicaltrials.js';
+import { crawlClinicalTrials, syncTrialsToGuidance } from './crawlers/clinicaltrials.js';
 import { crawlFDA } from './crawlers/fda.js';
 import { ingestCMSData } from './crawlers/cms.js';
 import { embedAllMissing } from './embeddings/mrd-embedder.js';
@@ -111,9 +111,13 @@ export function startScheduler() {
   );
 
   // Weekly crawlers
-  scheduleJob('clinicaltrials', config.schedules.clinicaltrials, () =>
-    crawlClinicalTrials({ maxResults: 500 })
-  );
+  scheduleJob('clinicaltrials', config.schedules.clinicaltrials, async () => {
+    // Crawl new/updated trials
+    const result = await crawlClinicalTrials({ maxResults: 500 });
+    // Sync to guidance items for RAG search
+    await syncTrialsToGuidance();
+    return result;
+  });
 
   scheduleJob('cms', config.schedules.cms, () =>
     ingestCMSData({})
@@ -170,7 +174,11 @@ export async function runJobNow(name) {
   const jobFns = {
     pubmed: () => runPubMedCrawler({ mode: 'incremental' }),
     fda: () => crawlFDA({}),
-    clinicaltrials: () => crawlClinicalTrials({ maxResults: 500 }),
+    clinicaltrials: async () => {
+      const result = await crawlClinicalTrials({ maxResults: 500 });
+      await syncTrialsToGuidance();
+      return result;
+    },
     cms: () => ingestCMSData({}),
     embed: () => embedAllMissing({ limit: 100 }),
     link: () => linkAllTrials({ limit: 100 }),

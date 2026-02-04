@@ -94,7 +94,9 @@ Options for 'pubmed':
 
 Options for 'clinicaltrials':
   --seed          Seed priority MRD trials only
-  --sync          Sync priority trials to guidance items for RAG
+  --sync          Sync trials to guidance items for RAG search
+  --priority-only Only sync priority trials (with --sync)
+  --force-update  Update existing guidance items (with --sync)
   --max=<n>       Maximum trials (default: 500)
   --dry-run       Don't write to database
 
@@ -210,10 +212,13 @@ async function main() {
           console.log(`  Success: ${result.success}`);
           console.log(`  Failed: ${result.failed}`);
         } else if (options.sync) {
-          console.log('Syncing priority trials to guidance items for RAG...');
-          const result = await syncTrialsToGuidance();
+          const priorityOnly = options['priority-only'];
+          const forceUpdate = options['force-update'];
+          console.log(`Syncing ${priorityOnly ? 'priority' : 'all relevant'} trials to guidance items for RAG...`);
+          const result = await syncTrialsToGuidance({ priorityOnly, forceUpdate });
           console.log('\n=== Trials Synced to Guidance ===');
           console.log(`  Synced: ${result.synced}`);
+          console.log(`  Updated: ${result.updated}`);
           console.log(`  Skipped (already exist): ${result.skipped}`);
         } else {
           const result = await crawlClinicalTrials({
@@ -380,16 +385,20 @@ async function main() {
         console.log('\n2. ClinicalTrials.gov crawler...');
         await crawlClinicalTrials({ maxResults: 500 });
 
+        // Sync trials to guidance items for RAG search
+        console.log('\n3. Syncing trials to guidance items...');
+        await syncTrialsToGuidance();
+
         // FDA
-        console.log('\n3. FDA crawler...');
+        console.log('\n4. FDA crawler...');
         await crawlFDA({});
 
         // Embeddings
-        console.log('\n4. Generating embeddings...');
+        console.log('\n5. Generating embeddings...');
         await embedAllMissing({ limit: 100 });
 
         // Trial linking
-        console.log('\n5. Linking trials to publications...');
+        console.log('\n6. Linking trials to publications...');
         await linkAllTrials({ limit: 100 });
 
         console.log('\n=== All Crawlers Complete ===');
