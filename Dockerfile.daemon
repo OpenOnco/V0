@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/playwright:v1.52.0-jammy
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y unzip curl && rm -rf /var/lib/apt/lists/*
+
+# Copy package files for both services
+COPY test-data-tracker/package*.json ./test-data-tracker/
+COPY publication-index/package*.json ./publication-index/
+
+# Install dependencies for both
+WORKDIR /app/test-data-tracker
+ARG CACHEBUST=1
+RUN npm ci --omit=dev
+
+WORKDIR /app/publication-index
+RUN npm ci --omit=dev
+
+# Copy source for both
+WORKDIR /app
+COPY test-data-tracker/ ./test-data-tracker/
+COPY publication-index/ ./publication-index/
+
+# Create persistent data directory
+RUN mkdir -p /app/test-data-tracker/data && chmod 755 /app/test-data-tracker/data
+
+WORKDIR /app/test-data-tracker
+
+CMD ["npm", "start"]
