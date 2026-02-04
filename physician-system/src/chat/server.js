@@ -369,7 +369,8 @@ async function searchSimilarItems(queryEmbedding, filters = {}) {
 
 // Search using pgvector extension (efficient)
 async function searchWithPgVector(queryEmbedding, filters = {}) {
-  const NCCN_BOOST = 1.15;
+  // Note: Previously had NCCN_BOOST=1.15 but removed to avoid artificial guideline bias
+  // Let semantic similarity determine relevance, not source type
 
   let sql = `
     SELECT DISTINCT ON (g.id)
@@ -385,11 +386,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.journal,
       g.authors,
       e.chunk_text,
-      1 - (e.embedding <=> $1::vector) as raw_similarity,
-      CASE
-        WHEN g.source_type = 'nccn' THEN (1 - (e.embedding <=> $1::vector)) * ${NCCN_BOOST}
-        ELSE 1 - (e.embedding <=> $1::vector)
-      END as similarity
+      1 - (e.embedding <=> $1::vector) as similarity
     FROM mrd_item_embeddings e
     JOIN mrd_guidance_items g ON e.guidance_id = g.id
     WHERE g.is_superseded = FALSE
@@ -426,7 +423,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
 
 // Fallback search using JSONB embeddings (less efficient, computes similarity in JS)
 async function searchWithJSONB(queryEmbedding, filters = {}) {
-  const NCCN_BOOST = 1.15;
+  // Note: Previously had NCCN_BOOST=1.15 but removed to avoid artificial guideline bias
 
   // Fetch all items with embeddings (limited to avoid memory issues)
   let sql = `
@@ -480,12 +477,9 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       const embedding = Array.isArray(row.embedding) ? row.embedding : [];
       if (embedding.length === 0) return null;
 
-      const rawSimilarity = cosineSimilarity(queryEmbedding, embedding);
-      const similarity = row.source_type === 'nccn'
-        ? rawSimilarity * NCCN_BOOST
-        : rawSimilarity;
+      const similarity = cosineSimilarity(queryEmbedding, embedding);
 
-      return { ...row, similarity, raw_similarity: rawSimilarity };
+      return { ...row, similarity };
     })
     .filter(row => row !== null && row.similarity >= MIN_SIMILARITY)
     .sort((a, b) => b.similarity - a.similarity)
