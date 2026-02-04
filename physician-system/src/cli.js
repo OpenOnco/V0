@@ -15,11 +15,13 @@
 
 import 'dotenv/config';
 import { runPubMedCrawler, fillGaps } from './crawlers/index.js';
-import { crawlClinicalTrials, seedPriorityTrials } from './crawlers/clinicaltrials.js';
+import { crawlClinicalTrials, seedPriorityTrials, syncTrialsToGuidance } from './crawlers/clinicaltrials.js';
 import { crawlFDA } from './crawlers/fda.js';
 import { processNccnPdf, processNccnDirectory } from './crawlers/processors/nccn.js';
 import { processSocietyGuideline, processSocietyDirectory } from './crawlers/processors/society.js';
 import { ingestCMSData, listCMSData } from './crawlers/cms.js';
+import { ingestVendorEvidence, checkVendorEvidenceStatus } from './crawlers/vendor-ingest.js';
+import { ingestPublications, ingestSources } from './crawlers/seed-ingest.js';
 import { embedAllMissing } from './embeddings/mrd-embedder.js';
 import { linkAllTrials } from './embeddings/cross-link.js';
 import { close } from './db/client.js';
@@ -76,6 +78,8 @@ Commands:
   guideline-scan  Scan watch folders for new guideline PDFs
   seed-sources    Seed the source registry with all known sources
   sources         List all registered sources and their status
+  vendor-ingest   Ingest vendor clinical evidence from test-data-tracker
+  seed            Load seed publications and sources from CSV files
   help            Show this help message
 
 Options for 'pubmed':
@@ -90,6 +94,7 @@ Options for 'pubmed':
 
 Options for 'clinicaltrials':
   --seed          Seed priority MRD trials only
+  --sync          Sync priority trials to guidance items for RAG
   --max=<n>       Maximum trials (default: 500)
   --dry-run       Don't write to database
 
@@ -114,6 +119,18 @@ Options for 'embed':
 
 Options for 'link':
   --limit=<n>     Max trials to link (default: 100)
+
+Options for 'vendor-ingest':
+  --status        Show status of vendor evidence in DB (primary mode)
+  --dry-run       Show what would be ingested without writing (backup mode)
+  --force         Re-ingest already processed items (backup mode)
+  --path=<path>   Custom path to export JSON file (backup mode)
+
+Options for 'seed':
+  --publications=<path>  Path to publications CSV file
+  --sources=<path>       Path to sources CSV file
+  --dry-run              Preview without writing
+  --no-abstracts         Skip fetching abstracts from PubMed
 
 Examples:
   # Daily incremental crawl
@@ -192,6 +209,12 @@ async function main() {
           console.log('\n=== Priority Trials Seeded ===');
           console.log(`  Success: ${result.success}`);
           console.log(`  Failed: ${result.failed}`);
+        } else if (options.sync) {
+          console.log('Syncing priority trials to guidance items for RAG...');
+          const result = await syncTrialsToGuidance();
+          console.log('\n=== Trials Synced to Guidance ===');
+          console.log(`  Synced: ${result.synced}`);
+          console.log(`  Skipped (already exist): ${result.skipped}`);
         } else {
           const result = await crawlClinicalTrials({
             maxResults: parseInt(options.max || '500', 10),
@@ -547,6 +570,103 @@ async function main() {
           console.log(`  ${s.source_key}${version} - ${s.access_method}, ${s.expected_cadence} (last: ${lastCheck})${status}`);
         }
         console.log(`\nTotal: ${result.rows.length} sources`);
+        break;
+      }
+
+      case 'vendor-ingest': {
+        if (options.status) {
+          // Show status of vendor evidence in DB
+          const status = await checkVendorEvidenceStatus();
+
+          console.log('\n=== Vendor Evidence Status ===');
+          console.log('\nBy source type and evidence type:');
+
+          if (status.byType.length === 0) {
+            console.log('  No vendor evidence in database yet.');
+            console.log('  The test-data-tracker vendor crawler writes directly to this DB');
+            console.log('  when PHYSICIAN_DATABASE_URL is configured.');
+          } else {
+            for (const row of status.byType) {
+              console.log(`  ${row.source_type} / ${row.evidence_type}:`);
+              console.log(`    Total: ${row.count}, Last 24h: ${row.last_24h}, Last 7d: ${row.last_7d}`);
+            }
+          }
+
+          console.log('\nEmbedding status:');
+          console.log(`  Total items: ${status.embeddings.total}`);
+          console.log(`  With embeddings: ${status.embeddings.with_embeddings}`);
+          console.log(`  Missing embeddings: ${status.embeddings.total - status.embeddings.with_embeddings}`);
+
+          if (status.embeddings.total > status.embeddings.with_embeddings) {
+            console.log('\n  Run "node src/cli.js embed" to generate missing embeddings.');
+          }
+        } else {
+          // File-based import (backup mode)
+          const result = await ingestVendorEvidence({
+            dryRun: options['dry-run'],
+            forceReingest: options.force,
+            exportPath: options.path,
+          });
+
+          console.log('\n=== Vendor Evidence Ingestion Results ===');
+          console.log('(File-based backup mode - primary mode is direct DB write from test-data-tracker)');
+          console.log(`\nStatus: ${result.success ? 'Success' : 'Completed with errors'}`);
+          console.log('\nStats:');
+          console.log(`  Total items: ${result.stats.total}`);
+          console.log(`  New: ${result.stats.new}`);
+          console.log(`  Updated: ${result.stats.updated}`);
+          console.log(`  Skipped: ${result.stats.skipped}`);
+          console.log(`  Failed: ${result.stats.failed}`);
+
+          if (result.failed?.length > 0) {
+            console.log('\nFailed items:');
+            for (const f of result.failed.slice(0, 5)) {
+              console.log(`  - ${f.source_id}: ${f.error}`);
+            }
+          }
+        }
+        break;
+      }
+
+      case 'seed': {
+        const pubPath = options.publications;
+        const srcPath = options.sources;
+        const dryRun = options['dry-run'];
+        const fetchAbstracts = !options['no-abstracts'];
+
+        if (!pubPath && !srcPath) {
+          console.log('Error: Specify --publications=<path> and/or --sources=<path>');
+          console.log('Example: node src/cli.js seed --publications=/path/to/mrd_seed_publications.csv');
+          break;
+        }
+
+        console.log('\n=== Seed Data Ingestion ===');
+        if (dryRun) console.log('(Dry run mode - no changes will be made)\n');
+
+        if (pubPath) {
+          console.log(`\nLoading publications from: ${pubPath}`);
+          const pubStats = await ingestPublications(pubPath, { dryRun, fetchAbstracts });
+          console.log('\nPublication Results:');
+          console.log(`  Total: ${pubStats.total}`);
+          console.log(`  New: ${pubStats.new}`);
+          console.log(`  Updated: ${pubStats.updated}`);
+          console.log(`  Failed: ${pubStats.failed}`);
+          if (pubStats.abstractsFetched) {
+            console.log(`  Abstracts fetched: ${pubStats.abstractsFetched}`);
+          }
+        }
+
+        if (srcPath) {
+          console.log(`\nLoading sources from: ${srcPath}`);
+          const srcStats = await ingestSources(srcPath, { dryRun });
+          console.log('\nSource Results:');
+          console.log(`  Total: ${srcStats.total}`);
+          console.log(`  New: ${srcStats.new}`);
+          console.log(`  Updated: ${srcStats.updated}`);
+          console.log(`  Failed: ${srcStats.failed}`);
+        }
+
+        console.log('\nDone! Run "node src/cli.js embed" to generate embeddings for new items.');
         break;
       }
 

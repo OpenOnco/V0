@@ -491,6 +491,85 @@ export async function seedPriorityTrials() {
   return stats;
 }
 
+/**
+ * Sync priority trials to mrd_guidance_items for RAG search
+ * Creates searchable guidance items from trial data
+ * @returns {Promise<{synced: number, skipped: number}>}
+ */
+export async function syncTrialsToGuidance() {
+  logger.info('Syncing priority trials to guidance items');
+
+  const trials = await query(`
+    SELECT * FROM mrd_clinical_trials
+    WHERE is_priority_trial = true
+  `);
+
+  const stats = { synced: 0, skipped: 0 };
+
+  for (const trial of trials.rows) {
+    const sourceId = `trial-${trial.nct_number}`;
+
+    // Check if already exists
+    const existing = await query(
+      'SELECT id FROM mrd_guidance_items WHERE source_id = $1',
+      [sourceId]
+    );
+
+    if (existing.rows.length > 0) {
+      stats.skipped++;
+      continue;
+    }
+
+    // Build summary for embedding
+    let cancerTypes = [];
+    try {
+      cancerTypes = typeof trial.cancer_types === 'string'
+        ? JSON.parse(trial.cancer_types)
+        : (trial.cancer_types || []);
+    } catch {
+      cancerTypes = [trial.cancer_types].filter(Boolean);
+    }
+    const summary = [
+      trial.official_title || trial.brief_title,
+      '',
+      `Study Type: ${trial.study_type} | Phase: ${trial.phase} | Status: ${trial.status}`,
+      `Enrollment: ${trial.enrollment_target} patients`,
+      '',
+      `Intervention: ${trial.intervention_summary || 'Not specified'}`,
+      '',
+      `Primary Endpoints: ${trial.primary_endpoints || 'Not specified'}`,
+      '',
+      `Cancer Types: ${cancerTypes.join(', ') || 'Solid tumors'}`,
+      '',
+      `This is a clinical trial studying ${trial.acronym || 'MRD-guided therapy'}. `,
+      `The trial is investigating ctDNA/MRD-based treatment decisions.`,
+    ].join('\n');
+
+    // Insert as guidance item
+    await query(
+      `INSERT INTO mrd_guidance_items (
+        source_type, source_id, source_url, title, summary,
+        evidence_type, publication_date
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        'clinicaltrials',
+        sourceId,
+        `https://clinicaltrials.gov/study/${trial.nct_number}`,
+        `${trial.acronym || trial.nct_number}: ${trial.brief_title}`,
+        summary,
+        'rct_results',
+        trial.start_date,
+      ]
+    );
+
+    stats.synced++;
+    logger.info('Synced trial to guidance', { nct: trial.nct_number, acronym: trial.acronym });
+  }
+
+  logger.info('Trial sync complete', { stats });
+  return stats;
+}
+
 export default {
   searchTrials,
   fetchTrial,
@@ -498,5 +577,6 @@ export default {
   upsertTrial,
   crawlClinicalTrials,
   seedPriorityTrials,
+  syncTrialsToGuidance,
   PRIORITY_TRIALS,
 };
