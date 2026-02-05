@@ -217,7 +217,7 @@ async function extractRecommendations(sections, cancerType, version) {
 
 For each distinct recommendation, provide:
 - recommendation: The specific clinical recommendation (factual, not prescriptive)
-- evidence_category: NCCN category (1, 2A, 2B, or 3) if stated
+- evidence_category: NCCN category number ONLY (1, 2A, 2B, or 3). Look for annotations like "Category 2A", "(2A)", superscript references, or statements like "based on high-level evidence (1)" or "uniform consensus (2A)". IMPORTANT: If the text is from NCCN guidelines but no explicit category is stated, default to "2A" since that is the standard NCCN recommendation category for consensus-based guidelines.
 - clinical_setting: When this applies (e.g., "post-surgical surveillance", "metastatic disease", "adjuvant therapy decision")
 - test_timing: When testing should occur if specified
 - key_quote: A VERBATIM quote from the text supporting this (max 100 words, must be exact text)
@@ -226,11 +226,12 @@ For each distinct recommendation, provide:
   - population: Who this applies to (stage, setting)
   - options_discussed: Array of options/actions mentioned (neutral list)
   - limitations_noted: Array of caveats or limitations mentioned
-  - strength_of_evidence: Evidence category as stated
+  - strength_of_evidence: Evidence category as stated, or "2A (assumed default)" if not explicitly stated
 
 Return JSON array. Only include recommendations about ctDNA, liquid biopsy, or MRD testing.
 If no clear recommendations found, return empty array [].
-IMPORTANT: key_quote must be EXACT text from the source - do not paraphrase.`,
+IMPORTANT: key_quote must be EXACT text from the source - do not paraphrase.
+IMPORTANT: Always return an evidence_category value - use "2A" as default if not explicitly stated.`,
     messages: [
       {
         role: 'user',
@@ -361,13 +362,17 @@ async function saveRecommendations(recommendations, cancerType, version, filenam
       const settingPart = rec.clinical_setting || 'ctDNA Recommendation';
       const title = `NCCN ${cancerType.charAt(0).toUpperCase() + cancerType.slice(1).replace('_', ' ')} Cancer: ${settingPart}`;
 
+      // Determine evidence level - default to 2A if not specified (standard NCCN consensus)
+      const evidenceCategory = rec.evidence_category || '2A';
+      const evidenceLevel = `NCCN Category ${evidenceCategory}`;
+
       // Build decision context
       const decisionContext = rec.decision_context || {
         decision_point: rec.clinical_setting,
         population: { cancer_type: cancerType },
         options_discussed: [],
         limitations_noted: [],
-        strength_of_evidence: rec.evidence_category ? `NCCN Category ${rec.evidence_category}` : null,
+        strength_of_evidence: evidenceLevel,
       };
 
       // Build direct quotes array
@@ -394,7 +399,7 @@ async function saveRecommendations(recommendations, cancerType, version, filenam
           title,
           rec.recommendation,
           'guideline',
-          rec.evidence_category ? `NCCN Category ${rec.evidence_category}` : null,
+          evidenceLevel,
           JSON.stringify([{
             finding: rec.recommendation,
             timing: rec.test_timing,
