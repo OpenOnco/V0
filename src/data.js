@@ -5842,7 +5842,34 @@ export const ecdTestData = [
       "cptCode": null,
       "notes": "NOT covered by Medicare. REACH study (IDE) provides coverage for 50,000 study participants only. Pending FDA approval and congressional action (H.R. 2407, S. 2085).",
       "lastVerified": "2026-01-13"
-    }},
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-02-02",
+      "privatePayers": {
+        "evicore": {
+          "status": "NOT_COVERED",
+          "policy": "MOL.TS.396.A",
+          "policyUrl": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-12/MOL.TS_.396.A_Multi-Cancer%20Early%20Detection%20Screening_V1.0.2026_Eff01.01.2026_Pub09.26.2025_Upd12.08.2025_0.pdf",
+          "coveredIndications": [],
+          "notes": "Multi-Cancer Early Detection Screening considered experimental/investigational. ctDNA assays not covered for cancer screening outside clinical trials. Insufficient evidence of clinical validity and utility.",
+          "lastReviewed": "2026-02-01"
+        },
+        "highmark": {
+          "status": "NOT_COVERED",
+          "policy": "L-123-006",
+          "policyUrl": "https://secure.highmark.com/ldap/medicalpolicy/wpa-highmark/L-123-006.html",
+          "coveredIndications": [],
+          "notes": "All liquid biopsy testing for solid tumors considered experimental/investigational. Policy acknowledges analytical validity but notes clinical utility data still emerging.",
+          "lastReviewed": "2026-02-01"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Accurate - GRAIL acknowledges limited coverage",
+        "patientGuidance": "Self-pay ($949) or employer-sponsored programs. REACH study provides Medicare coverage for enrolled participants only. Most commercial insurers consider MCED investigational.",
+        "keyInsight": "FDA PMA submission filed Jan 2026 may unlock broader coverage. Congressional bills (H.R.2407/S.2085) pending to mandate Medicare coverage."
+      }
+    }
+  },
   {
     "id": "ecd-3",
     "sampleCategory": "Stool",
@@ -11005,6 +11032,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Feb 2, 2026',
+    type: 'updated',
+    testId: 'ecd-2',
+    testName: 'Galleri',
+    vendor: 'GRAIL',
+    category: 'ECD',
+    description: 'Added coverageCrossReference with EviCore (MOL.TS.396.A) and Highmark (L-123-006) policy details. Both explicitly list MCED/liquid biopsy for screening as experimental/investigational.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'EviCore MOL.TS.396.A, Highmark L-123-006'
+  },
   {
     date: 'Feb 1, 2026',
     type: 'added',
