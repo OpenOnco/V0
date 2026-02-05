@@ -11,6 +11,7 @@
 import { createHttpClient } from '../../utils/http.js';
 import { createLogger } from '../../utils/logger.js';
 import { query } from '../../db/mrd-client.js';
+import { parseRSSItems } from '../../utils/rss.js';
 
 const logger = createLogger('mrd-fda');
 
@@ -65,56 +66,7 @@ async function fetchRSSFeed(url) {
   }
 }
 
-/**
- * Parse RSS XML into items
- * Simple regex-based parsing for RSS feeds
- * @param {string} xml - RSS XML content
- * @returns {Object[]}
- */
-function parseRSSItems(xml) {
-  const items = [];
-  const itemMatches = xml.matchAll(/<item>([\s\S]*?)<\/item>/g);
-
-  for (const match of itemMatches) {
-    const itemXml = match[1];
-
-    const title = extractRSSTag(itemXml, 'title');
-    const link = extractRSSTag(itemXml, 'link');
-    const description = extractRSSTag(itemXml, 'description');
-    const pubDate = extractRSSTag(itemXml, 'pubDate');
-    const category = extractRSSTag(itemXml, 'category');
-
-    if (title) {
-      items.push({
-        title: cleanHtml(title),
-        link,
-        description: cleanHtml(description),
-        pubDate: pubDate ? new Date(pubDate) : null,
-        category: cleanHtml(category),
-      });
-    }
-  }
-
-  return items;
-}
-
-function extractRSSTag(xml, tagName) {
-  const match = xml.match(new RegExp(`<${tagName}[^>]*>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tagName}>`, 'i'));
-  return match ? match[1].trim() : null;
-}
-
-function cleanHtml(text) {
-  if (!text) return null;
-  return text
-    .replace(/<[^>]*>/g, '')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+// parseRSSItems and cleanHtml imported from ../../utils/rss.js
 
 /**
  * Check if item is MRD/ctDNA relevant

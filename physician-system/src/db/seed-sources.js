@@ -192,6 +192,40 @@ const SOURCES = [
     stale_threshold_days: 7,
   },
 
+  // JNCCN RSS feed
+  {
+    source_key: 'rss-jnccn',
+    source_type: 'literature',
+    display_name: 'JNCCN - Journal of the National Comprehensive Cancer Network (RSS)',
+    base_url: 'https://jnccn.org/rss/current.xml',
+    access_method: 'rss',
+    change_detector: 'guid',
+    expected_cadence: 'daily',
+    stale_threshold_days: 7,
+  },
+
+  // Conference abstract sources
+  {
+    source_key: 'asco-annual-meeting',
+    source_type: 'conference',
+    display_name: 'ASCO Annual Meeting Abstracts',
+    base_url: 'https://meetings.asco.org/abstracts-presentations/search',
+    access_method: 'scrape',
+    change_detector: 'hash',
+    expected_cadence: 'yearly',
+    stale_threshold_days: 400,
+  },
+  {
+    source_key: 'esmo-congress',
+    source_type: 'conference',
+    display_name: 'ESMO Congress Abstracts',
+    base_url: 'https://oncologypro.esmo.org/meeting-resources',
+    access_method: 'scrape',
+    change_detector: 'hash',
+    expected_cadence: 'yearly',
+    stale_threshold_days: 400,
+  },
+
   // Payer policies
   {
     source_key: 'payer-aetna',
