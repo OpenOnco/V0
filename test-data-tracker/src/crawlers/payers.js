@@ -193,6 +193,19 @@ export class PayerCrawler extends PlaywrightCrawler {
       payerId: policy.payerId,
     });
 
+    // v2.2: PDF structured extraction for granular diffing
+    let pdfStructured = null;
+    let pdfDiff = null;
+    if (policy.contentType === 'pdf') {
+      pdfStructured = this.extractPdfStructuredData(content);
+      const legacyHashKey = `${policy.payerId}:policy:${policy.url}`;
+      const previousMetadata = this.getStoredMetadata(legacyHashKey);
+      pdfDiff = this.diffPdfStructuredData(previousMetadata?.pdfStructured || null, pdfStructured);
+      if (pdfDiff && !pdfDiff.isNew) {
+        logger.debug(`PDF diff for ${policy.id}: ${pdfDiff.summary}`);
+      }
+    }
+
     // v2: Compute multi-hash
     const hashData = prepareForMultiHash(extraction);
     const newHashes = computeMultiHash(content, hashData);
@@ -232,15 +245,26 @@ export class PayerCrawler extends PlaywrightCrawler {
     });
 
     // Also update legacy hash for backwards compatibility
+    // v2.2: Store PDF structured data as metadata for future diffing
     const hashKey = `${policy.payerId}:policy:${policy.url}`;
+    const hashMetadata = pdfStructured ? { pdfStructured } : null;
     setHash(hashKey, { hash: newHashes.contentHash, content: content.substring(0, 50000) });
+    if (hashMetadata) {
+      this.storeHash(hashKey, newHashes.contentHash, content.substring(0, 50000), hashMetadata);
+    }
     await recordSuccess(policy.url, policy.payerId);
 
     const changeSummary = getChangeSummary(comparison);
+    // v2.2: Append PDF diff summary if available
+    const enrichedChangeSummary = pdfDiff && !pdfDiff.isNew
+      ? `${changeSummary} | ${pdfDiff.summary}`
+      : changeSummary;
+
     logger.info(`Policy changed: ${policy.id}`, {
       payerId: policy.payerId,
       priority: comparison.priority,
       changedHashes: comparison.changedHashes,
+      ...(pdfDiff && { pdfDiffSummary: pdfDiff.summary }),
     });
 
     // v2: Check if change is significant enough to analyze
@@ -251,11 +275,14 @@ export class PayerCrawler extends PlaywrightCrawler {
       content,
       extraction,
       comparison,
-      changeSummary,
+      changeSummary: enrichedChangeSummary,
       shouldAnalyze: shouldAnalyzeChange,
       isNew: !previousHashes,
       // v2.1.1: Include artifact ID for anchor linking
       artifactId,
+      // v2.2: Include PDF structured diff
+      pdfStructured,
+      pdfDiff,
     };
   }
 
@@ -268,12 +295,54 @@ export class PayerCrawler extends PlaywrightCrawler {
       return await this.fetchPdfContent(policy.url);
     }
 
-    // HTML pages use Playwright for JS rendering
+    // Static HTML pages use direct HTTP fetch (no Playwright needed)
+    if (policy.contentType === 'static_html') {
+      return await this.fetchStaticHtmlContent(policy.url);
+    }
+
+    // JS-rendered HTML pages use Playwright
     const page = await this.browser.newPage();
     try {
       return await this.fetchHtmlContent(page, policy.url);
     } finally {
       await page.close();
+    }
+  }
+
+  /**
+   * Fetch static HTML page content using Node.js fetch()
+   * For pages that don't require JS rendering (no bot protection, no SPA)
+   */
+  async fetchStaticHtmlContent(url) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), PAGE_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+        },
+        signal: controller.signal,
+        redirect: 'follow',
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const html = await response.text();
+
+      // Reuse parseHtmlContent from playwright-base for consistent text extraction
+      const parsed = this.parseHtmlContent(html, url);
+      return parsed.content;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      logger.error(`Failed to fetch static HTML: ${url}`, { error: error.message });
+      return null;
     }
   }
 
@@ -342,10 +411,130 @@ export class PayerCrawler extends PlaywrightCrawler {
   }
 
   /**
+   * Extract structured data from PDF content for granular diffing.
+   * Pulls PLA codes, CPT codes, coverage criteria sections, and named tests.
+   *
+   * @param {string} text - Raw text extracted from PDF
+   * @returns {Object} Structured extraction { plaCodes, cptCodes, coverageCriteria, namedTests, sections }
+   */
+  extractPdfStructuredData(text) {
+    if (!text) return null;
+
+    // Extract PLA codes (0XXXU pattern)
+    const plaCodePattern = /\b(0\d{3}U)\b/gi;
+    const plaCodes = [...new Set((text.match(plaCodePattern) || []).map(c => c.toUpperCase()))].sort();
+
+    // Extract CPT codes (8XXXX pattern for molecular pathology)
+    const cptCodePattern = /\b(8\d{4})\b/g;
+    const cptCodes = [...new Set((text.match(cptCodePattern) || []))].sort();
+
+    // Extract HCPCS codes (alphanumeric like G0452, S3854)
+    const hcpcsPattern = /\b([A-Z]\d{4})\b/g;
+    const hcpcsRaw = text.match(hcpcsPattern) || [];
+    // Filter to likely medical codes (starting with G, S, or U)
+    const hcpcsCodes = [...new Set(hcpcsRaw.filter(c => /^[GSU]/.test(c)))].sort();
+
+    // Extract named tests using existing matchTests
+    const testMatchResults = matchTests(text);
+    const namedTests = testMatchResults.map(m => ({
+      id: m.test?.id,
+      name: m.test?.name,
+      confidence: m.confidence,
+      matchType: m.matchType,
+    }));
+
+    // Extract coverage criteria sections
+    const criteriaPatterns = [
+      /(?:medically\s+necessary|criteria\s+for\s+coverage|covered\s+when)[^.]*\./gi,
+      /(?:investigational|experimental|unproven)[^.]*\./gi,
+      /(?:not\s+medically\s+necessary|not\s+covered)[^.]*\./gi,
+      /(?:prior\s+authorization\s+required|requires?\s+prior\s+auth)[^.]*\./gi,
+    ];
+
+    const coverageCriteria = [];
+    for (const pattern of criteriaPatterns) {
+      const matches = text.match(pattern) || [];
+      coverageCriteria.push(...matches.slice(0, 5).map(m => m.trim()));
+    }
+
+    // Extract section headers for structure mapping
+    const sectionPattern = /^[A-Z][A-Z\s]{3,50}$/gm;
+    const sections = [...new Set((text.match(sectionPattern) || []).map(s => s.trim()))].slice(0, 20);
+
+    return {
+      plaCodes,
+      cptCodes,
+      hcpcsCodes,
+      namedTests,
+      coverageCriteria: [...new Set(coverageCriteria)],
+      sections,
+      codeCount: plaCodes.length + cptCodes.length + hcpcsCodes.length,
+    };
+  }
+
+  /**
+   * Compute a diff between two PDF structured extractions.
+   * Returns a human-readable summary of what changed.
+   *
+   * @param {Object|null} previous - Previous extraction
+   * @param {Object} current - Current extraction
+   * @returns {Object} { summary, addedCodes, removedCodes, criteriaChanges }
+   */
+  diffPdfStructuredData(previous, current) {
+    if (!previous) {
+      return {
+        summary: `New document: ${current.plaCodes.length} PLA codes, ${current.cptCodes.length} CPT codes, ${current.namedTests.length} named tests.`,
+        addedCodes: { pla: current.plaCodes, cpt: current.cptCodes, hcpcs: current.hcpcsCodes },
+        removedCodes: { pla: [], cpt: [], hcpcs: [] },
+        criteriaChanges: current.coverageCriteria,
+        isNew: true,
+      };
+    }
+
+    const addedPla = current.plaCodes.filter(c => !previous.plaCodes.includes(c));
+    const removedPla = previous.plaCodes.filter(c => !current.plaCodes.includes(c));
+    const addedCpt = current.cptCodes.filter(c => !previous.cptCodes.includes(c));
+    const removedCpt = previous.cptCodes.filter(c => !current.cptCodes.includes(c));
+    const addedHcpcs = (current.hcpcsCodes || []).filter(c => !(previous.hcpcsCodes || []).includes(c));
+    const removedHcpcs = (previous.hcpcsCodes || []).filter(c => !(current.hcpcsCodes || []).includes(c));
+
+    // Named test changes
+    const prevTestIds = new Set((previous.namedTests || []).map(t => t.id).filter(Boolean));
+    const currTestIds = new Set((current.namedTests || []).map(t => t.id).filter(Boolean));
+    const addedTests = current.namedTests.filter(t => t.id && !prevTestIds.has(t.id));
+    const removedTests = (previous.namedTests || []).filter(t => t.id && !currTestIds.has(t.id));
+
+    // Build summary
+    const parts = [];
+    if (addedPla.length > 0) parts.push(`+${addedPla.length} PLA codes (${addedPla.join(', ')})`);
+    if (removedPla.length > 0) parts.push(`-${removedPla.length} PLA codes (${removedPla.join(', ')})`);
+    if (addedCpt.length > 0) parts.push(`+${addedCpt.length} CPT codes (${addedCpt.join(', ')})`);
+    if (removedCpt.length > 0) parts.push(`-${removedCpt.length} CPT codes (${removedCpt.join(', ')})`);
+    if (addedHcpcs.length > 0) parts.push(`+${addedHcpcs.length} HCPCS codes`);
+    if (removedHcpcs.length > 0) parts.push(`-${removedHcpcs.length} HCPCS codes`);
+    if (addedTests.length > 0) parts.push(`+${addedTests.length} named tests (${addedTests.map(t => t.name).join(', ')})`);
+    if (removedTests.length > 0) parts.push(`-${removedTests.length} named tests`);
+
+    const summary = parts.length > 0
+      ? `Code/test changes: ${parts.join('; ')}`
+      : 'Content changed but no code or named test differences detected.';
+
+    return {
+      summary,
+      addedCodes: { pla: addedPla, cpt: addedCpt, hcpcs: addedHcpcs },
+      removedCodes: { pla: removedPla, cpt: removedCpt, hcpcs: removedHcpcs },
+      addedTests,
+      removedTests,
+      criteriaChanges: current.coverageCriteria,
+      isNew: false,
+    };
+  }
+
+  /**
    * Create a discovery from a policy change (v2: uses extraction data)
    */
   async createDiscovery(policy, result) {
-    const { extraction, comparison, changeSummary, shouldAnalyze: shouldDoAnalysis, artifactId } = result;
+    const { extraction, comparison, changeSummary, shouldAnalyze: shouldDoAnalysis, artifactId, pdfDiff } = result;
 
     // v2: Use pre-extracted test matches
     const testMatches = extraction?.namedTests || matchTests(result.content);
@@ -359,7 +548,7 @@ export class PayerCrawler extends PlaywrightCrawler {
     // v2: Skip LLM analysis for low-priority changes
     let analysis = null;
     if (shouldDoAnalysis && (testMatches.length > 0 || result.isNew)) {
-      analysis = await this.analyzeChange(policy, result.content, testMatches, extraction);
+      analysis = await this.analyzeChange(policy, result.content, testMatches, extraction, pdfDiff);
     }
 
     // v2: Create coverage assertions for each test
@@ -404,6 +593,14 @@ export class PayerCrawler extends PlaywrightCrawler {
         delegationDetected: delegationDetection.detected,
         // v2.1.1: Artifact ID for audit trail
         artifactId,
+        // v2.2: PDF structured diff for granular change analysis
+        pdfDiff: pdfDiff ? {
+          summary: pdfDiff.summary,
+          addedCodes: pdfDiff.addedCodes,
+          removedCodes: pdfDiff.removedCodes,
+          addedTests: pdfDiff.addedTests,
+          removedTests: pdfDiff.removedTests,
+        } : null,
       },
     };
 
@@ -504,10 +701,15 @@ export class PayerCrawler extends PlaywrightCrawler {
   /**
    * Analyze policy change with Claude (v2: includes extraction context)
    */
-  async analyzeChange(policy, content, testMatches, extraction = null) {
+  async analyzeChange(policy, content, testMatches, extraction = null, pdfDiff = null) {
     try {
       // v2: Build context from extraction
       const extractionContext = extraction ? buildLLMContext(extraction) : '';
+
+      // v2.2: Include PDF diff context if available
+      const pdfDiffContext = pdfDiff && !pdfDiff.isNew
+        ? `\nPDF Structured Changes:\n${pdfDiff.summary}\n${pdfDiff.addedCodes?.pla?.length ? `Added PLA codes: ${pdfDiff.addedCodes.pla.join(', ')}` : ''}${pdfDiff.removedCodes?.pla?.length ? `\nRemoved PLA codes: ${pdfDiff.removedCodes.pla.join(', ')}` : ''}${pdfDiff.addedTests?.length ? `\nNewly mentioned tests: ${pdfDiff.addedTests.map(t => t.name).join(', ')}` : ''}`
+        : '';
 
       const prompt = `Analyze this insurance policy document for coverage changes related to ctDNA, liquid biopsy, and MRD testing.
 
@@ -517,6 +719,7 @@ Document Type: ${policy.docType || 'unknown'}
 Tests found: ${testMatches.map(t => t.id || t.name).join(', ') || 'None from our watchlist'}
 
 ${extractionContext}
+${pdfDiffContext}
 
 Content (truncated):
 ${content.substring(0, 12000)}

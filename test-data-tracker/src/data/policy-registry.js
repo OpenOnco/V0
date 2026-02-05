@@ -11,7 +11,8 @@
  * - 'link_crawl': Discovered by following links from index pages
  *
  * Content types:
- * - 'html': Web page with policy text
+ * - 'html': Web page requiring JS rendering (Playwright)
+ * - 'static_html': Server-rendered HTML fetchable via plain HTTP GET
  * - 'pdf': PDF document
  *
  * Policy types:
@@ -175,11 +176,11 @@ export const POLICY_REGISTRY = {
         id: 'anthem-lab-00015',
         name: 'Detection of Circulating Tumor Cells (LAB.00015)',
         url: 'https://anthem.com/dam/medpolicies/abc/active/policies/mp_pw_a049885.html',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'ctdna',
         docType: 'medical_policy',
         discoveryMethod: 'manual',
-        notes: 'CTC detection policy - generally investigational.',
+        notes: 'CTC detection policy - generally investigational. Static HTML served from Anthem DAM.',
         lastVerified: '2026-01-31',
       },
       {
@@ -394,33 +395,33 @@ export const POLICY_REGISTRY = {
         id: 'highmark-l123',
         name: 'Liquid Biopsy Testing - Solid Tumors (L-123)',
         url: 'https://secure.highmark.com/ldap/medicalpolicy/wpa-highmark/L-123-006.html',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         docType: 'medical_policy',
         discoveryMethod: 'manual',
-        notes: 'Primary liquid biopsy policy. Updated 12/29/2025.',
+        notes: 'Primary liquid biopsy policy. Updated 12/29/2025. Static server-rendered HTML.',
         lastVerified: '2026-01-31',
       },
       {
         id: 'highmark-l113',
         name: 'Molecular/Genomic Testing (L-113)',
         url: 'https://secure.highmark.com/ldap/medicalpolicy/wpa-highmark/printerfriendly/L-113-009.html',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'molecular_oncology',
         docType: 'medical_policy',
         discoveryMethod: 'manual',
-        notes: 'General molecular testing criteria.',
+        notes: 'General molecular testing criteria. Static server-rendered HTML.',
         lastVerified: '2026-01-31',
       },
       {
         id: 'highmark-l267-navdx',
         name: 'NavDx HPV ctDNA Testing (L-267)',
         url: 'https://securecms.highmark.com/content/medpolicy/en/highmark/pa/commercial/policies/Laboratory/L-267/L-267-001.html',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'mrd',
         docType: 'um_criteria',
         discoveryMethod: 'manual',
-        notes: 'CRITICAL: NavDx specific criteria. May be medically necessary when criteria met (prior to surgery OR within 5 years post-op for HPV-driven HNSCC).',
+        notes: 'CRITICAL: NavDx specific criteria. May be medically necessary when criteria met (prior to surgery OR within 5 years post-op for HPV-driven HNSCC). Static CMS-served HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -535,10 +536,10 @@ export const POLICY_REGISTRY = {
         id: 'bcbst-ctdna-liquid-biopsy',
         name: 'Circulating Tumor DNA (Liquid Biopsy)',
         url: 'https://www.bcbst.com/mpmanual/!ssl!/webhelp/Circulating_Tumor_DNA_Liquid_Biopsy.htm',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Primary ctDNA/liquid biopsy policy. Covers NSCLC, breast, prostate indications.',
+        notes: 'Primary ctDNA/liquid biopsy policy. Covers NSCLC, breast, prostate indications. Static server-rendered HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -552,10 +553,10 @@ export const POLICY_REGISTRY = {
         id: 'bcbsnc-liquid-biopsy-g2054',
         name: 'Liquid Biopsy (AHS-G2054)',
         url: 'https://www.bluecrossnc.com/providers/policies-guidelines-codes/commercial/laboratory/updates/liquid-biopsy',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Covers NSCLC, breast (PIK3CA), prostate. MCED considered investigational.',
+        notes: 'Covers NSCLC, breast (PIK3CA), prostate. MCED considered investigational. Static server-rendered HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -586,10 +587,10 @@ export const POLICY_REGISTRY = {
         id: 'bcbsks-ctdna-liquid-biopsy',
         name: 'Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsy)',
         url: 'https://www.bcbsks.com/medical-policies/circulating-tumor-dna-and-circulating-tumor-cells-cancer-management-liquid-biopsy',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'BCBS Kansas liquid biopsy medical policy. PDF verified 2026-02-01.',
+        notes: 'BCBS Kansas liquid biopsy medical policy. Static server-rendered HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -654,10 +655,10 @@ export const POLICY_REGISTRY = {
         id: 'bcbsmn-vi49-liquid-biopsy',
         name: 'Circulating Tumor DNA (Liquid Biopsy) (VI-49)',
         url: 'https://securecms.bluecrossmnonline.com/content/medpolicy/en/minnesota/core/all/policies/Laboratory/VI-49/VI-49-007.html',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Primary liquid biopsy policy. Covers Guardant360, CancerIntercept Detect, NeoLAB.',
+        notes: 'Primary liquid biopsy policy. Covers Guardant360, CancerIntercept Detect, NeoLAB. Static CMS-served HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -671,10 +672,10 @@ export const POLICY_REGISTRY = {
         id: 'bcidaho-mp204141',
         name: 'Circulating Tumor DNA and Cells for Cancer Management (MP 2.04.141)',
         url: 'https://providers.bcidaho.com/medical-management/medical-policies/med/mp_204141.page',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Effective 08/29/2024. Transitioning to Carelon Jan 2026.',
+        notes: 'Effective 08/29/2024. Transitioning to Carelon Jan 2026. Static server-rendered HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -688,10 +689,10 @@ export const POLICY_REGISTRY = {
         id: 'bcbssc-liquid-biopsy',
         name: 'Liquid Biopsy',
         url: 'https://www.southcarolinablues.com/web/public/brands/medicalpolicy/external/external-policies/liquid-biopsy/',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Covers NSCLC, HR+/HER2- breast (PIK3CA), CRPC (AR-V7, BRCA1/2).',
+        notes: 'Covers NSCLC, HR+/HER2- breast (PIK3CA), CRPC (AR-V7, BRCA1/2). Static server-rendered HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -832,10 +833,10 @@ export const POLICY_REGISTRY = {
         id: 'amerigroup-gene49-ctdna',
         name: 'Circulating Tumor DNA Panel Testing (GENE.00049)',
         url: 'https://provider.healthybluenc.com/dam/medpolicies/healthybluenc/active/policies/mp_pw_d082650.html',
-        contentType: 'html',
+        contentType: 'static_html',
         policyType: 'liquid_biopsy',
         discoveryMethod: 'google_search',
-        notes: 'Healthy Blue NC (Amerigroup affiliate). Uses Anthem policy framework.',
+        notes: 'Healthy Blue NC (Amerigroup affiliate). Uses Anthem policy framework. Static DAM-served HTML.',
         lastVerified: '2026-02-01',
       },
     ],
@@ -977,11 +978,19 @@ export function getPdfPolicies() {
 }
 
 /**
- * Get all HTML policies
+ * Get all HTML policies (JS-rendered, require Playwright)
  * @returns {Array} HTML policies
  */
 export function getHtmlPolicies() {
   return getAllPolicies().filter(p => p.contentType === 'html');
+}
+
+/**
+ * Get all static HTML policies (fetchable via plain HTTP GET)
+ * @returns {Array} Static HTML policies
+ */
+export function getStaticHtmlPolicies() {
+  return getAllPolicies().filter(p => p.contentType === 'static_html');
 }
 
 export default POLICY_REGISTRY;

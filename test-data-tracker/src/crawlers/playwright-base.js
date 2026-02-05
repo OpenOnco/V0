@@ -179,13 +179,24 @@ export class PlaywrightCrawler extends BaseCrawler {
    * @param {string} hashKey - Hash storage key
    * @param {string} hash - New hash value
    * @param {string} content - Content to store (truncated)
+   * @param {Object} [metadata] - Optional structured metadata to store alongside hash
    */
-  storeHash(hashKey, hash, content) {
+  storeHash(hashKey, hash, content, metadata = null) {
     this.hashes[hashKey] = {
       hash,
       content: content.slice(0, MAX_STORED_CONTENT_SIZE),
       fetchedAt: new Date().toISOString(),
+      ...(metadata && { metadata }),
     };
+  }
+
+  /**
+   * Get stored metadata for a hash key
+   * @param {string} hashKey - Hash storage key
+   * @returns {Object|null} Stored metadata or null
+   */
+  getStoredMetadata(hashKey) {
+    return this.hashes[hashKey]?.metadata || null;
   }
 
   /**
