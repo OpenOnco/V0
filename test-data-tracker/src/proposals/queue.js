@@ -271,15 +271,35 @@ export async function rejectProposal(id, reason, reviewedBy = 'unknown') {
 
 /**
  * Mark a proposal as applied
+ *
+ * WARNING: This only updates the proposal JSON status. It does NOT apply
+ * changes to data.js. Ensure changes have been manually applied before
+ * calling this function.
+ *
+ * For coverage proposals, verify the payer exists in:
+ * - commercialPayers array, OR
+ * - coverageCrossReference.privatePayers object
+ *
  * @param {string} id - Proposal ID
- * @param {string} commitHash - Git commit hash (optional)
+ * @param {string} commitHash - Git commit hash (optional, recommended)
  * @returns {Promise<Object|null>} Updated proposal
  */
 export async function markApplied(id, commitHash = null) {
+  const proposal = await getProposal(id);
+
+  if (!proposal) {
+    return null;
+  }
+
+  // Log warning if no commit hash provided
+  if (!commitHash) {
+    logger.warn('markApplied called without commitHash - cannot verify changes were committed', { id });
+  }
+
   return updateProposal(id, {
     status: PROPOSAL_STATES.APPLIED,
     appliedAt: new Date().toISOString(),
-    commitHash,
+    commitHash: commitHash || 'manual-review-' + new Date().toISOString().split('T')[0],
   });
 }
 

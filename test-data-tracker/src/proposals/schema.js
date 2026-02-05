@@ -101,6 +101,13 @@ export function generateProposalId(type) {
 /**
  * Coverage proposal schema
  * Used for payer coverage status changes
+ *
+ * NOTE: data.js uses two coverage structures:
+ * 1. Simple: commercialPayers[] array + commercialPayersNotes
+ * 2. Detailed: coverageCrossReference.privatePayers.{payerId}
+ *
+ * When applying coverage proposals, choose the appropriate structure
+ * based on whether the test already has coverageCrossReference.
  */
 export const coverageProposalSchema = {
   id: '',                     // e.g., "cov-2024-abc123"
@@ -108,15 +115,18 @@ export const coverageProposalSchema = {
   status: PROPOSAL_STATES.PENDING,
 
   // What's being changed
-  testId: '',                 // ID from data.js
-  testName: '',               // Human-readable name
-  payer: '',                  // Payer name
-  payerId: '',                // Payer ID
+  testId: '',                 // ID from data.js (e.g., "mrd-7", "tds-1")
+  testName: '',               // Human-readable name (for lookup if testId unknown)
+  payer: '',                  // Payer display name (e.g., "Blue Shield of California")
+  payerId: '',                // Payer ID for privatePayers key (e.g., "blueshieldca")
 
-  // The proposed change
-  coverageStatus: '',         // covered | not_covered | conditional | prior_auth_required
-  conditions: '',             // Coverage conditions/requirements
+  // The proposed change - maps to data.js structures
+  coverageStatus: '',         // COVERED | PARTIAL | CONDITIONAL | EXPERIMENTAL | NOT_COVERED
+  conditions: '',             // Coverage conditions (goes in commercialPayersNotes or privatePayers.notes)
+  coveredIndications: [],     // Specific indications covered (for privatePayers structure)
   effectiveDate: null,        // When coverage takes effect
+  policyNumber: '',           // Policy ID (e.g., "CPB 0715")
+  policyUrl: '',              // Direct URL to policy document
 
   // Evidence
   source: '',                 // URL where this was discovered
