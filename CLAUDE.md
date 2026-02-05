@@ -20,8 +20,6 @@ npm run test:smoke       # Quick validation
 
 **Start of session:** Read `docs/SESSION_STATE.md` for context from previous work.
 
-**End of session:** Run `/handoff` to update session state.
-
 **Slash commands available:**
 - `/recall` - Read SESSION_STATE.md and summarize context
 - `/store` - Write current state to SESSION_STATE.md
@@ -194,8 +192,8 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 The test-data-tracker crawls vendor/payer sites and creates proposal JSON files in `test-data-tracker/data/proposals/`.
 
 **Proposal types:**
-- `coverage/` - New payer coverage info to add to a test's `payerCoverage` array
-- `updates/` - Field updates for existing tests
+- `coverage/` - Payer coverage updates for existing tests
+- `updates/` - Field updates for existing tests (clinical data, regulatory status)
 - `new-tests/` - Entirely new tests to add
 
 **Workflow:**
@@ -207,28 +205,59 @@ The test-data-tracker crawls vendor/payer sites and creates proposal JSON files 
 6. If tests pass, commit and push to main
 7. Mark applied proposals with `status: "applied"` and `appliedAt` timestamp
 
+**IMPORTANT:** Proposals marked "applied" must have ACTUAL changes in `src/data.js` before marking. The `markApplied` function only updates the proposal JSON - it does NOT modify data.js.
+
 **Coverage proposal format:**
 ```json
 {
-  "id": "...",
+  "id": "cov-2026-...",
   "type": "coverage",
   "status": "pending",
   "testName": "Signatera",
-  "testId": "signatera",
-  "payer": "Aetna",
-  "coverageStatus": "covered",
-  "conditions": "For colorectal cancer MRD",
+  "testId": "mrd-7",
+  "payer": "Blue Shield of California",
+  "payerId": "blueshieldca",
+  "coverageStatus": "conditional",
+  "conditions": "Stage III/IV solid tumors seeking treatment",
   "source": "https://...",
   "confidence": 0.85
 }
 ```
 
-**Applying coverage:** Add entry to test's `payerCoverage` array:
+**Applying coverage - data.js uses TWO structures:**
+
+1. **Simple coverage** - Add payer to `commercialPayers` array with notes:
 ```js
-payerCoverage: [
-  { payer: "...", status: "covered", conditions: "...", source: "...", updatedAt: "YYYY-MM-DD" }
-]
+commercialPayers: ["BCBS Louisiana", "Blue Shield of California"],
+commercialPayersCitations: "https://source1 | https://source2",
+commercialPayersNotes: "BCBS LA: first payer (2023). BSCA: conditional for stage III/IV (2026).",
+// For explicit non-coverage:
+commercialPayersNonCoverage: ["UnitedHealthcare"],
+commercialPayersNonCoverageNotes: "UHC policy lists as unproven."
 ```
+
+2. **Detailed coverage** - Add to `coverageCrossReference.privatePayers`:
+```js
+coverageCrossReference: {
+  privatePayers: {
+    aetna: {
+      status: "PARTIAL",  // COVERED | PARTIAL | EXPERIMENTAL | NOT_COVERED
+      policy: "CPB 0715",
+      policyUrl: "https://...",
+      coveredIndications: ["CRC Stage II-III"],
+      notes: "Covered for CRC only; other tumors experimental",
+      lastReviewed: "2026-02-01"
+    }
+  }
+}
+```
+
+**Matching proposals to tests:** Proposals use `testName` which may not match exactly. Search data.js by vendor + test name. Common mappings:
+- "Guardant Reveal" → `mrd-6`
+- "Signatera" → `mrd-7`
+- "FoundationOne Liquid CDx" → `tds-2`
+- "Guardant360 CDx" → `tds-1`
+- "Resolution ctDx FIRST" → `tds-23`
 
 ### Policy URL Research
 

@@ -141,6 +141,6 @@ npm run test:smoke     # Quick smoke tests only
 
 **At session start:** Read `docs/SESSION_STATE.md` for context from previous work.
 
-**Before ending session:** Run `/handoff` to update `docs/SESSION_STATE.md` with current state.
+Use `/store` to update `docs/SESSION_STATE.md` with current state when needed.
 
 This maintains continuity across Claude Code sessions and prevents context loss.
