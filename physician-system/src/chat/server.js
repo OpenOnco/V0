@@ -99,7 +99,16 @@ Return JSON with:
 - evidence_focus: "guidelines" | "trials" | "payer_coverage" | "all"
 - keywords: Array of key medical terms for text search
 
+IMPORTANT for evidence_focus:
+- Use "guidelines" when query mentions NCCN, ASCO, ESMO, SITC, guideline, recommendation, or asks "what does X say"
+- Use "trials" when query asks about studies, RCTs, clinical trials, research, evidence, data
+- Use "payer_coverage" when query asks about Medicare, insurance, coverage, reimbursement
+- Use "all" when the query is general or doesn't specify a focus
+
 Be concise. If uncertain, use empty arrays or "general".`;
+
+// Keywords that suggest guidelines focus (for fallback detection)
+const GUIDELINE_KEYWORDS = ['nccn', 'asco', 'esmo', 'sitc', 'guideline', 'guidelines', 'recommendation', 'recommends'];
 
 async function extractQueryIntent(queryText) {
   try {
@@ -119,10 +128,23 @@ async function extractQueryIntent(queryText) {
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const intent = JSON.parse(jsonMatch[0]);
+      
+      // Fallback: If LLM missed explicit guideline keywords, override evidence_focus
+      const lowerQuery = queryText.toLowerCase();
+      if (intent.evidence_focus !== 'guidelines' && 
+          GUIDELINE_KEYWORDS.some(kw => lowerQuery.includes(kw))) {
+        logger.info('Overriding evidence_focus to guidelines based on keyword detection', {
+          originalFocus: intent.evidence_focus,
+          query: queryText.substring(0, 100),
+        });
+        intent.evidence_focus = 'guidelines';
+      }
+      
       logger.info('Extracted query intent', {
         type: intent.query_type,
         cancers: intent.cancer_types?.length || 0,
         keywords: intent.keywords?.length || 0,
+        evidenceFocus: intent.evidence_focus,
       });
       return intent;
     }
@@ -130,15 +152,17 @@ async function extractQueryIntent(queryText) {
     logger.warn('Intent extraction failed, using defaults', { error: error.message });
   }
 
-  // Default intent
+  // Default intent - also check for guideline keywords here
+  const lowerQuery = queryText.toLowerCase();
+  const isGuidelinesQuery = GUIDELINE_KEYWORDS.some(kw => lowerQuery.includes(kw));
   return {
-    query_type: 'general',
+    query_type: isGuidelinesQuery ? 'clinical_guidance' : 'general',
     cancer_types: [],
     clinical_settings: [],
     test_names: [],
     payers: [],
     time_context: 'any',
-    evidence_focus: 'all',
+    evidence_focus: isGuidelinesQuery ? 'guidelines' : 'all',
     keywords: queryText.toLowerCase().split(/\s+/).filter(w => w.length > 3),
   };
 }
@@ -257,6 +281,12 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     cancerType: intent.cancer_types?.[0] || filters.cancerType,
   };
 
+  logger.info('Hybrid search filters', {
+    evidenceFocus: intent.evidence_focus,
+    sourceTypes: sourceTypes.length > 0 ? sourceTypes : 'all',
+    cancerType: enhancedFilters.cancerType || 'all',
+  });
+
   // Run both searches in parallel
   const [vectorResults, keywordResults] = await Promise.all([
     searchSimilarItems(queryEmbedding, enhancedFilters),
@@ -304,10 +334,17 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore))
     .slice(0, MAX_SOURCES);
 
+  // Count results by source type for debugging
+  const sourceTypeCounts = results.reduce((acc, r) => {
+    acc[r.source_type] = (acc[r.source_type] || 0) + 1;
+    return acc;
+  }, {});
+
   logger.info('Hybrid search complete', {
     vectorResults: vectorResults.length,
     keywordResults: keywordResults.length,
     merged: results.length,
+    sourceTypes: sourceTypeCounts,
   });
 
   return results;
@@ -371,6 +408,7 @@ async function searchSimilarItems(queryEmbedding, filters = {}) {
 async function searchWithPgVector(queryEmbedding, filters = {}) {
   // Note: Previously had NCCN_BOOST=1.15 but removed to avoid artificial guideline bias
   // Let semantic similarity determine relevance, not source type
+  // Source type filtering is now done via sourceTypes filter for intent-based queries
 
   let sql = `
     SELECT DISTINCT ON (g.id)
@@ -395,6 +433,13 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
 
   const params = [JSON.stringify(queryEmbedding), MIN_SIMILARITY];
   let paramIndex = 3;
+
+  // Filter by source types when intent specifies (e.g., guidelines-focused queries)
+  if (filters.sourceTypes?.length > 0) {
+    sql += ` AND g.source_type = ANY($${paramIndex})`;
+    params.push(filters.sourceTypes);
+    paramIndex++;
+  }
 
   if (filters.cancerType) {
     sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
@@ -424,6 +469,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
 // Fallback search using JSONB embeddings (less efficient, computes similarity in JS)
 async function searchWithJSONB(queryEmbedding, filters = {}) {
   // Note: Previously had NCCN_BOOST=1.15 but removed to avoid artificial guideline bias
+  // Source type filtering is now done via sourceTypes filter for intent-based queries
 
   // Fetch all items with embeddings (limited to avoid memory issues)
   let sql = `
@@ -448,6 +494,13 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
 
   const params = [];
   let paramIndex = 1;
+
+  // Filter by source types when intent specifies (e.g., guidelines-focused queries)
+  if (filters.sourceTypes?.length > 0) {
+    sql += ` AND g.source_type = ANY($${paramIndex})`;
+    params.push(filters.sourceTypes);
+    paramIndex++;
+  }
 
   if (filters.cancerType) {
     sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
