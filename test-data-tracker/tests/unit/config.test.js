@@ -85,7 +85,7 @@ describe('DISCOVERY_TYPES', () => {
 describe('SOURCES', () => {
   it('has expected sources', () => {
     expect(SOURCES.CMS).toBe('cms');
-    expect(SOURCES.VENDOR).toBe('vendors'); // Note: plural
+    expect(SOURCES.VENDOR).toBe('vendor');
     expect(SOURCES.PAYERS).toBe('payers');
   });
 });

@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml9vxyny",
+  "type": "update",
+  "status": "rejected",
+  "createdAt": "2026-02-05T20:04:47.422Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": "Duplicate of upd-2026-ml6zqju6 (Guardant Reveal late-stage monitoring)",
+  "testName": "Reveal Test",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "Late-Stage Therapy Response Monitoring",
+      "date": null
+    }
+  },
+  "source": "https://guardanthealth.com/newsroom/press-releases",
+  "sourceTitle": "Guardant Health: Reveal Test expands to Late-Stage Therapy Response Monitoring",
+  "confidence": 0.75,
+  "snippet": "New indication: Late-Stage Therapy Response Monitoring"
+}

@@ -1,0 +1,14 @@
+{
+  "artifactId": "floridablue_floridablue-tumor-markers_2026-02-05_d79b60506700",
+  "payerId": "floridablue",
+  "policyId": "floridablue-tumor-markers",
+  "fetchedAt": "2026-02-05T20:07:59.789Z",
+  "contentType": "html",
+  "sourceUrl": "https://mcgs.bcbsfl.com/MCG?mcgId=05-86000-22",
+  "contentLength": 83,
+  "contentHash": "d79b6050670073cf291a28a2c1b6aa7ab8e810b8e350a41ce355075622e19774",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

@@ -1,0 +1,14 @@
+{
+  "artifactId": "anthem_anthem-gene-59_2026-02-05_404195f9e6bf",
+  "payerId": "anthem",
+  "policyId": "anthem-gene-59",
+  "fetchedAt": "2026-02-05T20:05:42.249Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://files.providernews.anthem.com/1781/GENE.00059.pdf",
+  "contentLength": 16041,
+  "contentHash": "404195f9e6bffcab3d11f23759e8e7468336be7617efcdbd986b199c8c0e9796",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

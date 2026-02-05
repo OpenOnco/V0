@@ -1,0 +1,24 @@
+{
+  "id": "upd-2026-ml9vxyo0",
+  "type": "update",
+  "status": "rejected",
+  "createdAt": "2026-02-05T20:04:47.424Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": "Already in database: Galleri PMA submission date already recorded in fdaStatus field",
+  "testName": "Galleri",
+  "testId": null,
+  "changes": {
+    "regulatory": {
+      "action": "FDA Premarket Approval Application submitted",
+      "indication": "Multi-Cancer Early Detection Test",
+      "date": "2026-01-29"
+    }
+  },
+  "source": "https://www.grail.com/press-releases",
+  "sourceTitle": "GRAIL: Galleri FDA Premarket Approval Application submitted",
+  "confidence": 0.75,
+  "snippet": "FDA Premarket Approval Application submitted for Multi-Cancer Early Detection Test"
+}

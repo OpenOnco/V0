@@ -1,0 +1,14 @@
+{
+  "artifactId": "evicore_evicore-liquid-biopsy-2025-v2_2026-02-05_89600bfa7192",
+  "payerId": "evicore",
+  "policyId": "evicore-liquid-biopsy-2025-v2",
+  "fetchedAt": "2026-02-05T20:05:59.686Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-06/MOL.TS_.194.A%20Liquid%20Biopsy%20Testing_V2.0.2025_eff07.01.2025_pub04.08.2025_upd05.06.2025_upd06.02.2025.pdf",
+  "contentLength": 49050,
+  "contentHash": "89600bfa7192dfbd6756b0230bdea87d6d17416fe28bf7f34156775f44ead44f",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

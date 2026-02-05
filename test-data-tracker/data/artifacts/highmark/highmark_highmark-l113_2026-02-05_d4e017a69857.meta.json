@@ -1,0 +1,14 @@
+{
+  "artifactId": "highmark_highmark-l113_2026-02-05_d4e017a69857",
+  "payerId": "highmark",
+  "policyId": "highmark-l113",
+  "fetchedAt": "2026-02-05T20:06:45.776Z",
+  "contentType": "static_html",
+  "sourceUrl": "https://secure.highmark.com/ldap/medicalpolicy/wpa-highmark/printerfriendly/L-113-009.html",
+  "contentLength": 15853,
+  "contentHash": "d4e017a69857a3cc7bef85dcf1fe0645427e3ccb358c9fe5ed9a16569f2d1b71",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

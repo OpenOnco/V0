@@ -1,0 +1,14 @@
+{
+  "artifactId": "anthem_anthem-gene-13_2026-02-05_03e99b153c66",
+  "payerId": "anthem",
+  "policyId": "anthem-gene-13",
+  "fetchedAt": "2026-02-05T20:05:27.109Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://files.providernews.anthem.com/2002/CG-GENE-13.pdf",
+  "contentLength": 334462,
+  "contentHash": "03e99b153c666e1bfe33288c5acdbfc9a3573995ab85ea7c800b4a02135e6784",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

@@ -1,0 +1,4590 @@
+
+
+Blue Shield of California 
+601 12
+th
+ Street, Oakland, CA 94607  
+ 
+Reproduction without authorization from Blue 
+Shield of California is prohibited 
+ 
+ Medical Policy 
+ 
+ 
+ 
+An independent member of the Blue Shield Association
+ 
+ 
+BSC2.18 
+Tumor-Informed Circulating Tumor DNA Testing for  
+Cancer Management 
+Original Policy Date: June 1, 2022 Effective Date: March  1, 2023 
+Section: 2.0 Medicine Page: Page 1 of 50 
+ 
+Policy Statement 
+ 
+I. The use of a personalized, tumor-informed circulating tumor DNA (ctDNA) plasma-based test 
+(e.g., Signatera by Natera or Personalized Cancer Monitoring—PCM by Invitae) for solid 
+tumors is considered 
+medically necessary when BOTH the following are met: 
+A. Individual with stage I-IV cancer after surgical intervention with curative intent to provide 
+information for 
+any of the following: 
+1. Adjuvant or targeted therapy 
+2. Monitoring for relapse or progression (including but not limited to the use of 
+immunotherapy immune checkpoint inhibitors {e.g., pembrolizumab [Keytruda], 
+ipilimumab [Yervoy], nivilumab [Opdivo]}) 
+B. Frequency of testing does not exceed recommendations for monitoring noted in National 
+Comprehensive Cancer Network (NCCN) guidelines for RECIST (Response Evaluation 
+Criteria in Solid Tumors) for 
+any of the following: 
+1. Initial testing within 4-6 weeks after surgery as a baseline and for adjuvant therapy 
+decisions 
+2. Every 3-6 months for the first 2 years initially or with recurrence or progression (not to 
+exceed 4 tests/year) 
+3. Every 6-12 months for the following 3 years (not to exceed 2 tests/year) for colorectal 
+cancer (CRC), NSCLC (Non-Small Cell Lung Cancer) 
+4. Annually for the following 5 years (not to exceed 1 test/year)  
+5. As indicated thereafter based on clinicopathologic features 
+ 
+II. The use of tumor-informed ctDNA is considered to be investigational for individuals with any 
+of the following conditions: 
+A. Pregnancy 
+B. Active hematological malignancy 
+C. History of allogeneic bone marrow/stem cell transplants 
+D. Within 2 weeks after blood transfusion 
+E. Other situations not meeting medically necessary criteria noted above 
+ 
+NOTE: Refer to Appendix A to see the policy statement changes (if any) from the previous version. 
+ 
+Policy Guidelines 
+ 
+This medical policy addresses the use of tumor-informed
+ ctDNA MRD testing. The term MRD is 
+variously used to describe Molecular, Minimal or Measurable Residual Disease.  In this context, given 
+the ctDNA testing used, MRD will be defined as Molecular Residual Disease. 
+ 
+Initial testing includes tumor testing (tumor block or FFPE slides from surgery or biopsy) and whole-
+blood testing (to allow matching of whole exome sequencing of tumor and blood DNA), and can take 
+35-42 days to complete.  Subsequent monitoring testing is plasma only, based on initial testing 
+results and is usually available within 7-14 days. 
+ 
+These tests are specifically designed for the detection of somatic mutations (in cancer) and are not 
+appropriate for the identification of heritable germline mutations.  This policy does not address the 
+use of blood-based comprehensive genomic profile (CGP) or other testing to identify driver mutations 
+to select targeted therapies or use of blood-based testing for gene expression profiling.  
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 2 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Refer to the following related Blue Shield of California Medical Policies for indications not covered in 
+this policy: 
+• Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsy)   
+• Comprehensive Genomic Profiling for Selecting Targeted Cancer Therapies 
+• Gene Expression Profile Testing and Circulating Tumor DNA Testing for Predicting 
+Recurrence in Colon Cancer  
+• Gene Expression Profiling and Protein Biomarkers for Prostate Cancer Management  
+• Genetic and Protein Biomarkers for the Diagnosis and Cancer Risk Assessment of Prostate 
+Cancer  
+• Germline and Somatic Biomarker Testing (Including Liquid Biopsy) for Targeted Treatment 
+and Immunotherapy in Breast Cancer 
+• Molecular Analysis (Including Liquid Biopsy) for Targeted Therapy or Immunotherapy of Non-
+Small-Cell Lung Cancer 
+ 
+This CPT code may be used for Tumor-informed circulating tumor DNA testing: 
+• 81479: Unlisted molecular pathology procedure 
+ 
+Effective April 1, 2022 there are new CPT codes that represent PCM™ (Personalized Cancer 
+Monitoring). Per the manufacturer, this test is patient- specific, tumor informed assay for the 
+detection of circulating tumor DNA in the plasma of patients previously diagnosed with cancer.  
+• 0306U:  Oncology (minimal residual disease [MRD]), next-generation targeted sequencing 
+analysis, cell-free DNA, initial (baseline) assessment to determine a patient-specific panel for 
+future comparisons to evaluate for MRD 
+• 0307U:  Oncology (minimal residual disease [MRD]), next-generation targeted sequencing 
+analysis of a patient-specific panel, cell-free DNA, subsequent assessment with comparison 
+to previously analyzed patient specimens to evaluate for MRD 
+ 
+Effective October 1, 2022 there is a new CPT code that represents Signatera™. Per the manufacturer, 
+this test is patient- specific, tumor informed assay for the detection of circulating tumor DNA in the 
+plasma of patients previously diagnosed with cancer.  
+• 0340U: Oncology (pan-cancer), analysis of minimal residual disease (MRD) from plasma, 
+with assays personalized to each patient based on prior next-generation sequencing of the 
+patient’s tumor and germline DNA, reported as absence or presence of MRD, with disease-
+burden correlation, if appropriate
+ 
+ 
+Description 
+ 
+This evidence review addresses the use of tumor-informed circulating tumor DNA (ctDNA) testing for 
+cancer management. The purpose of tumor-informed ctDNA testing in individuals with cancer is to 
+predict disease course to inform treatment decisions and to monitor for recurrence following 
+treatment. 
+ 
+NGS-based MRD assays can be either tumor-informed or tumor-agnostic 
+• Tumor-informed assays begin with a surgical specimen to determine which tumor-derived 
+variants are present and are most amenable to tracking in cell-free DNA. That information 
+can then be used to design a targeted NGS panel unique to the patient’s tumor that can be 
+used for subsequent monitoring.  
+• Tumor-agnostic assays include fixed panels designed to detect a specific number of genomic 
+and/or epigenomic alterations commonly associated with a particular tumor type. 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 3 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+To detect MRD, tumor-informed and tumor-agnostic assays both rely on how well a tumor sheds 
+DNA into the bloodstream, but tumor-informed approaches have the potential benefit of predicting 
+which unique variants in a patient’s tumor are the best alterations to detect and monitor.  In contrast 
+to the analysis of tumor biopsy samples, which are not only invasive to obtain but often also do not 
+fully capture tumor heterogeneity and evolution, the analysis of ctDNA offers a non-invasive method 
+of repeatedly evaluating the genomic profile of a patient’s cancer to monitor for relapse, progression, 
+treatment decisions, etc..  
+ 
+First used as a clinical metric in hematological cancers, MRD was historically measured with cell-
+based assays such as flow cytometry. Only recently, with the development of highly sensitive 
+methods of DNA analysis, has ctDNA in plasma samples been shown to be a reliable biomarker for 
+MRD for solid tumors as well.   
+ 
+Circulating tumor DNA (ctDNA) is a component of cell-free DNA that is shed by malignant tumors 
+into the bloodstream and other bodily fluids
+1
+. Mechanisms of release into the bloodstream include 
+cellular apoptosis, necrosis, phagocytosis, and active secretion
+2-5
+. ctDNA has clinically demonstrated 
+the ability to function as a highly sensitive and specific cancer biomarker6-8. Quantitative 
+characterization of ctDNA via liquid biopsy is associated with clinical and pathologic features of 
+cancer, including stage, tumor burden, vascularization, and response to therapy
+6-8.
+ The short half-life 
+of ctDNA ensures that its detection captures tumor burden in real-time
+9-10
+. Crucial to its clinical role in 
+guiding therapeutic decision-making, the presence of ctDNA is identified as molecular residual 
+disease (MRD) which is clinically occult micrometastatic disease that remains in the patient during 
+and after cancer treatment11-12. An overwhelming amount of literature suggests that MRD is 
+subclinical disease responsible for cancer recurrence.  Quantitative measures of ctDNA via a 
+peripheral blood sample has been associated with a high-risk for recurrence but cannot be measured 
+by standard clinical imaging techniques or other tumor biomarkers
+13-15
+.   
+ 
+ctDNA serves as a biomarker for (1) postoperative and post-adjuvant chemotherapy treatment (ACT) 
+risk stratification, (2) monitoring ACT effectiveness, (3) detection of clinical actionable mutations, and 
+(4) early detection of recurrence. These observations have clinical implications and potential net 
+health benefits for postoperative ctDNA-guided management of certain cancers.   
+ 
+Clinicopathologic risk factors have, and continue to dictate the patient selection strategy for 
+adjuvant chemotherapy (ACT) in early -stage colorectal (CRC) patients. However, accumulating data 
+indicate that the risk-stratification based on standard criteria is imprecise in identifying patients with 
+MRD, resulting in overtreatment and undertreatment of a significant number of patients. In fact, 
+approximately 50% of the stage III CRC patients and 74% of low-risk stage III CRC patients are cured 
+by surgery alone. However, current guidelines recommend ACT for all such patients resulting in 
+unnecessary chemotherapy administration in a large proportion of patients, causing a myriad of 
+short- and long-term toxicities. Conversely, 5% of stage I CRC and 10-25% of Stage II patients recur; 
+however, for Stage I and average-risk stage II patients, there is no available risk-stratification tool to 
+identify patients who are likely to recur after curative surgery. Standard methods (e.g., RECIST or 
+Response Evaluation Criteria in Solid Tumors) for monitoring disease after CRC surgery include 
+radiological imaging and analysis of circulating tumor markers such as carcinoembryonic antigen 
+(CEA) and serum cancer antigen 125 (CA-125). However, standard imaging detects only macroscopic 
+disease, and the sensitivity and specificity of CEA and CA-125 are poor.   Therefore, a biomarker that 
+can identify earlier and more reliably patients with MRD is of critical importance in refining patient 
+selection for adjuvant therapy. 
+ 
+Related Policies 
+ 
+• Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsy)   
+• Comprehensive Genomic Profiling for Selecting Targeted Cancer Therapies 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 4 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+• Gene Expression Profile Testing and Circulating Tumor DNA Testing for Predicting 
+Recurrence in Colon Cancer  
+• Gene Expression Profiling and Protein Biomarkers for Prostate Cancer Management  
+• Genetic and Protein Biomarkers for the Diagnosis and Cancer Risk Assessment of Prostate 
+Cancer  
+• Germline and Somatic Biomarker Testing (Including Liquid Biopsy) for Targeted Treatment 
+and Immunotherapy in Breast Cancer 
+• Molecular Analysis (Including Liquid Biopsy) for Targeted Therapy or Immunotherapy of Non-
+Small-Cell Lung Cancer 
+ 
+Benefit Application 
+ 
+Benefit determinations should be based in all cases on the applicable contract language. To the 
+extent there are any conflicts between these guidelines and the contract language, the contract 
+language will control. Please refer to the member's contract benefits in effect at the time of service to 
+determine coverage or non-coverage of these services as it applies to an individual member.  
+ 
+Some state or federal mandates (e.g., Federal Employee Program [FEP]) prohibits plans from 
+denying Food and Drug Administration (FDA)-approved technologies as investigational. In these 
+instances, plans may have to consider the coverage eligibility of FDA-approved technologies on the 
+basis of medical necessity alone. 
+ 
+Regulatory Status 
+ 
+Signatera is a laboratory developed test regulated under CLIA. Signatera has been developed and its 
+performance characteristics determined by Natera, the CLIA-certified laboratory performing the 
+test. The test has not been cleared or approved by the US Food and Drug Administration (FDA), but 
+has received 3 Breakthrough Device Designations from FDA: 
+• In May 2019, Signatera was granted a BDD for the detection of ctDNA in localized or 
+advanced colorectal cancer patients to optimize the use of chemotherapy alone or in 
+combination with durvalumab. 
+• A  March 2021 press release announced that FDA granted 2 additional Breakthrough Device 
+Designations covering new intended uses.
+1,
+ 
+ 
+Rationale 
+ 
+Background 
+The purpose of tumor-informed ctDNA testing in individuals with cancer is to predict disease course 
+to inform treatment decisions and to monitor for recurrence following treatment. 
+ 
+In addition to colorectal cancer (CRC), MRD testing has been performed in multiple cancer types. 
+Validation studies for the use of MRD testing have been done for lung, breast, bladder, melanoma, 
+cervical and esophageal cancers, among others. MRD testing across multiple cancer types 
+demonstrates consistent sensitivity and specificity (ranging from 88-100% sensitivity and 98-100% 
+specificity). Although the size, parameters, type of cancer and specific tests used for various studies 
+varies, the results are consistent.  Moreover, in these studies, ctDNA has shown significant lead time 
+over radiographic imaging for the detection of relapse, and better performance than other standard 
+indicators. In TRAcking non-small cell lung cancer (NSCLC) Evolution through therapy (TRACERx), a 
+prospective study the median interval between ctDNA detection and detection of relapse by imaging 
+was 70 days (range 10 to 346 days); in some of these cases, lead times of more than 6 months were 
+noted. 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 5 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Another longitudinal study in breast cancer patients found that plasma ctDNA was detected before 
+clinical or radiologic relapse in 16 of 18 relapsed patients; in addition, ctDNA predicted metastatic 
+relapse with a lead time of up to 2 years.  A prospective study evaluating ctDNA before and after 
+surgery and during chemotherapy in patients with locally advanced bladder cancer found that the 
+measurement of ctDNA during treatment is a good predictor of outcome and a better predictor of 
+treatment efficacy than pathologic downstaging (a commonly used surrogate marker). Moreover, in 
+this study, patients without clearance of ctDNA had a response rate of 0%.  ctDNA has also been 
+shown to accurately monitor the activity and diagnose recurrence of endometrial cancer.  Multiple 
+studies have found it to be highly sensitive for monitoring and predicting disease progression and 
+response to therapy in patients with metastatic melanoma.  
+ 
+Immune check point inhibitors (ICI) have emerged as an effective therapy and have been approved 
+for various types of solid tumor malignancies. However, in most settings only a minority of patients 
+respond to immunotherapy. FDA labels for ICI therapies call for treatment until disease progression 
+or unacceptable toxicity. However, there is no definitive guidance on the method for evaluation of 
+disease progression, which leaves this decision up to the judgement of clinicians prescribing these 
+drugs, often without reliable objective measurements. 
+ 
+The determination as to whether a tumor is progressing is currently based largely on repeated 
+radiographic evaluation of the tumor (sometimes combined with other biomarkers). While tumor 
+growth is often associated with progression, this is complicated by pseudo-progression, where 
+immune cell infiltration may cause the tumor to initially appear larger on a scan prior to shrinking, 
+making it difficult to know in a timely fashion who is responding to treatment and who is not based 
+on radiographic imaging and complicating patient management. 
+ 
+A recent (2022) study related to the use of ctDNA found that a ctDNA-guided approach compared to 
+standard clinicopathological features for the treatment of stage II colon cancer reduced adjuvant 
+chemotherapy use without compromising recurrence-free survival. 
+ 
+MRD testing using ctDNA is not without limitations and challenges in interpretation.  There are 
+limited studies reporting management changes made in response to ctDNA test results or net health 
+outcomes based solely on ctDNA results, including long term outcomes.   The sample sizes are small 
+for some studies for certain cancers or for a particular test.  And standard evaluations, management 
+and treatments vary by type of cancer, meaning that test results need to be assessed with those 
+differences in mind.  Yet when considered in aggregate, the results are consistent and compelling.  
+Because of the limitations noted, testing is currently most likely to be used in addition to standard 
+approaches until further evidence emerges.  However, given the significant limitations of current 
+monitoring standards, there is still a place for ctDNA to add to the information available to clinicians 
+for critical decision making.   
+ 
+Signatera (Natera) and Personalized Cancer Monitoring (PCM, Invitae) 
+Both tests are customized tumor-specific ctDNA test. Tumor tissue obtained from either a diagnostic 
+biopsy or surgically resected tissue is used to identify 16 (for Signatera) or 18-50 (for PCM) single 
+nucleotide variants found in the tumor but not in normal tissue and are likely to be present in all 
+tumor cells regardless of tumor evolution. A custom assay of those tumor-specific clonal, somatic 
+variants is generated for the individual and the resulting tumor signature can be monitored 
+throughout the individual’s disease course. When the test is used for detection of recurrence following 
+curative treatment, plasma samples with a few of these variants detected above a predefined 
+confidence threshold are deemed to be positive. When the test is used to monitor treatment 
+response, evaluation is based on whether ctDNA levels increase or decrease from a baseline 
+measurement. The tests are currently intended to be used in conjunction with radiological 
+assessment in most cases. 
+ 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 6 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Literature Review 
+Evidence reviews assess whether a medical test is clinically useful. The first step in assessing a 
+medical test is to formulate the clinical context and purpose of the test. A useful test provides 
+information to make a clinical management decision that improves the net health outcome. That is, 
+the balance of benefits and harms is better when the test is used to manage the condition than when 
+another test or no test is used to manage the condition. 
+ 
+A test is clinically useful if the use of the results informs management decisions that improve the net 
+health outcome of care. The net health outcome can be improved if individuals receive correct 
+therapy, or more effective therapy, or avoid unnecessary therapy, or avoid unnecessary testing. 
+ 
+Direct evidence of clinical utility is provided by studies that have compared health outcomes for 
+individuals managed with and without the test. Because these are intervention studies, the preferred 
+evidence would be from randomized controlled trials. 
+ 
+Indirect evidence on clinical utility rests on clinical validity. If the evidence is insufficient to 
+demonstrate test performance, no inferences can be made about clinical utility. 
+ 
+Colorectal Cancer (CRC) 
+Clinical Context and Test Purpose 
+The purpose of tumor-informed ctDNA testing in individuals who have colorectal cancer is to inform 
+treatment decisions and to monitor for recurrence following curative treatment. 
+ 
+The question addressed in this evidence review is: Does tumor-informed circulating tumor DNA 
+(ctDNA) testing improve the net health outcome in individuals with colorectal cancer? 
+ 
+The following PICO was used to select literature to inform this review. 
+ 
+Populations 
+The relevant populations of interest are individuals: 
+• With stage II or III colorectal cancer who have undergone surgical resection. 
+• Who are being monitored for relapse following treatment for stage II or III colorectal cancer. 
+• With metastatic (stage IV) colorectal cancer who have undergone surgical resection and are 
+being evaluated for adjuvant chemotherapy and/or targeted therapy. 
+ 
+Interventions 
+The test being considered is ctDNA testing with Signatera or PCM: 
+• Following surgery, to inform decisions about adjuvant chemotherapy or targeted therapy. 
+• During disease surveillance after curative treatment, to identify metastatic relapse at an 
+early timepoint, and aid in the selection of individuals who may benefit from early/adjuvant 
+treatment. 
+ 
+Comparators 
+For individuals with stage II colorectal cancer, the current standard of care is not to routinely 
+administer adjuvant chemotherapy. However, current National Comprehensive Cancer Network 
+(NCCN) guidelines are that adjuvant chemotherapy can be considered in individuals with stage II 
+colorectal cancer, using clinicopathologic characteristics to identify individuals who might benefit. 
+ 
+For individuals with stage III colorectal cancer, the current standard of care is to administer adjuvant 
+chemotherapy routinely. 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 7 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+For individuals who are being monitored for relapse following treatment for stage II or III colorectal 
+cancer, guidelines suggest monitoring carcinoembryonic antigen (CEA) every 3 to 6 months for 2 
+years, then every 6 months for a total of 5 years, as well as imaging every 6 to 12 months for 5 years. 
+ 
+For individuals with metastatic colorectal cancer who have undergone surgical resection, the current 
+standard of care is routine individual checkups, periodic computed tomography scans, and 
+monitoring of CEA level. 
+ 
+Outcomes 
+The general outcomes of interest are disease-specific survival, test accuracy and validity, and change 
+in disease status. Specific outcomes of interest are recurrence risk, recurrence-free survival (RFS), and 
+overall survival at follow-up.   
+ 
+Given that the majority of colorectal cancer recurrences occur within the first 3 years after surgical 
+resection of the primary tumor and approximately 95% in the first 5 years, the timepoint of interest to 
+assess recurrence is 3 to 5 years following surgical resection. 
+ 
+For individuals with stage II colorectal cancer who are being evaluated for adjuvant chemotherapy, 
+given that the test will be used to  
+rule  -in stage II individuals for adjuvant chemotherapy, the 
+perfomance characteristics of most interest are positive predictive value and specificity. 
+ 
+For individuals with stage III colorectal cancer who are being evaluated for adjuvant chemotherapy, 
+given that the test will be used to 
+rule  -out individuals for adjuvant chemotherapy, the performance 
+characteristics of most interest are negative predictive value and sensitivity. However, since the test 
+would be used to select individuals who would not receive category 1 recommended treatment, direct 
+evidence of improvement in outcomes is required. For individuals who are being monitored for 
+relapse following treatment for colorectal cancer, recurrence at 3 to 5 years should be assessed. 
+ 
+Study Selection Criteria 
+For the evaluation of clinical validity of the Signatera or PCM test   s, studies that meet the following 
+eligibility criteria were considered: 
+• Reported on the accuracy of the marketed version of the technology 
+• Included a suitable reference standard 
+• Individual/sample clinical characteristics were described 
+• Individual/sample selection criteria were described. 
+ 
+Trials 
+Two randomized and nine nonrandomized studies examined the association of tumor-informed 
+ctDNA testing to prognosis, DFS, recurrence, ctDNA dynamics and treatment response in individuals 
+with colorectal cancer (CRC) (Table 1). They differed in their study designs, populations (e.g., stage of 
+disease), frequency and timing of standard care, outcome measures, and timing of follow up. Nine 
+studies evaluated the association of ctDNA results (positive and negative) and risk for recurrence 
+(disease free survival) in CRC (Table 2). Five studies reveal ctDNA results for early relapse detection as 
+compared to CT Imaging (Table 3).  Clinical findings from all 11 studies demonstrate clinical utility 
+benefits for risk stratification for therapy selection, monitoring response to therapy, or early relapse 
+detection in patients with resected CRC (table 4). 
+ 
+Randomized Trials 
+Tie, et al (2022) conducted an Australian trial to assess whether a ctDNA-guided approach could 
+reduce the use of adjuvant chemotherapy without compromising recurrence risk.  The study 
+enrolled 
+455 patients (322 for ctDNA and 153 standard) with medial followup of 37 months.  About half of 
+the ctDNA group got adjuvant therapy compared to standard (15 vs 28%).  Yet ctDNA guided 
+management was similar to standard for 2 year recurrence-free survival (93.5 vs. 92.4%).  Three-
+year recurrence-free survival was 86.4% among ctDNA-positive patients who received adjuvant 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 8 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+chemotherapy and 92.5% among ctDNA-negative patients who did not.  The study authors 
+concluded “A ctDNA-guided approach to the treatment of stage II colon cancer reduced adjuvant 
+chemotherapy use without compromising recurrencefree survival.”
+ 
+ 
+Nonrandomized Trials 
+Four nonrandomized studies, 3 of which were noncomparative, examined the association of 
+Signatera testing to prognosis in individuals with colorectal cancer (CRC) (Table 1). They differed in 
+their study designs, populations (e.g., stage of disease), frequency and timing of standard care, 
+outcome measures, and timing of follow up. Three studies evaluated the association between 
+positive ctDNA results and prognosis in CRC (Table 2). These studies did not provide comparisons of 
+ctDNA testing to standard methods of risk stratification for therapy selection, monitoring response to 
+therapy, or early relapse detection. One retrospective study compared Signatera testing to other 
+surveillance strategies in individuals with resected colorectal cancer.
+2,
+ There are limited randomized 
+controlled trials, and studies in which Signatera testing was used to guide treatment decisions. 
+ 
+Reinert et al (2019) enrolled 125 individuals with stage I to III colorectal cancer in a validation study of 
+the Signatera assay.
+3,
+ Plasma samples were collected before surgery, at 30 days following surgery, 
+and every 3 months for up to 3 years. The recurrence rate at 3 years was 70% in individuals with a 
+positive ctDNA test (7 of 10) compared to 11.9% (10 of 84) of those with a negative ctDNA test. In 
+multivariate analyses, ctDNA status was associated with recurrence after adjusting for 
+clinicopathological risk factors including stage, lymphovascular invasion, and microradical resection 
+status. 
+ 
+Henriksen et al (2022) assessed the added benefit of serial ctDNA analysis; with samples taken at 
+diagnosis, following surgery, during adjuvant therapy, and at follow up.
+4, 
+ 
+Loupakis et al (2021) evaluated the association of ctDNA with Signatera on survival outcomes in 112 
+individuals who had undergone resection for metastatic (stage IV) CRC.
+5,
+ The study included an 
+analysis of the sensitivity of Signatera testing to digital droplet PCR testing but not to standard 
+methods to identify recurrence, such as CEA and imaging. 
+ 
+Fakih et al (2022) directly compared Signatera testing to other surveillance strategies in individuals 
+with resected CRC in a retrospective observational study (Table 3).
+2,
+ This study was unique in that it 
+used NCCN recommended guidelines for surveillance and ctDNA testing was performed at the same 
+interval as standard surveillance with CEA and imaging. Test characteristics for Signatera were not 
+significantly different from standard imaging techniques. Estimates were imprecise, with wide 
+confidence intervals. 
+ 
+Tie et al (2016) investigated whether serial postsurgical and postchemotherapy ctDNA analysis could 
+provide a real-time indication of adjuvant therapy efficacy in stage III colon cancer. This multicenter 
+Australian trial recruited 100 consecutive patients (4 were excluded) with newly diagnosed stage III 
+colon cancer. Median duration of follow  -up was 28.9 months (range, 11.6-46.4 months). Main 
+outcomes and measures included detection of ctDNA and recurrence-free interval (RFI). At least 1 
+somatic mutation was identified in the tumor tissue of all 96 evaluable patients. Circulating tumor 
+DNA was detectable in 20 of 96 (21%) postsurgical samples and was associated with inferior 
+recurrence-free survival (hazard ratio [HR], 3.8; 95% CI, 2.4-21.0; P < .001). Circulating tumor DNA was 
+detectable in 15 of 88 (17%) postchemotherapy samples. The estimated 3-year RFI was 30% when 
+ctDNA was detectable after chemotherapy and 77% when ctDNA was undetectable (HR, 6.8; 95% CI, 
+11.0  -157.0; P < .001). Postsurgical ctDNA status remained independently associated with RFI after 
+adjusting for known clinicopathologic risk factors (HR, 7.5; 95% CI, 3.5-16.1; P < .001). The authors 
+concluded “Results suggest that ctDNA analysis after surgery is a promising prognostic marker in 
+stage III colon cancer. Postchemotherapy ctDNA analysis may define a patient subset that remains 
+at high risk of recurrence despite completing standard adjuvant treatment. This high-risk population 
+presents a unique opportunity to explore additional therapeutic approaches.” 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 9 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Study limitations are shown in Tables 4 and 5. Major limitations include a lack of comparison to tests 
+used for the same purpose, imprecise estimates due to small sample sizes, and clinical heterogeneity 
+of study populations. 
+ 
+Table 1. Tumor-Informed ctDNA Testing Studies Supporting the Value of ctDNA for Molecular 
+Residual Disease Assessment and Surveillance in Patients with Resected Colorectal Cancer. 
+Study Major Findings Conclusions & Relevance 
+Reinert et 
+al
+16 
+At postoperative day 30, ctDNA-positive 
+patients were 7 times more likely to relapse 
+than ctDNA-negative patients (hazard ratio 
+[HR], 7.2; 95% CI, 2.7-19.0; P < .001). 
+ 
+After ACT ctDNA-positive patients were 17 
+times (HR, 17.5; 95% CI, 5.4-56.5; P < .001) more 
+likely to relapse. 
+ 
+During surveillance after definitive therapy, 
+ctDNA-positive patients were more than 40 
+times more likely to experience disease 
+recurrence than ctDNA-negative patients (HR, 
+43.5; 95% CI, 9.8-193.5 P < .001).  
+ 
+In all multivariate analyses, ctDNA status was 
+independently associated with relapse after 
+adjusting for known clinicopathologic risk 
+factors. Serial ctDNA analyses revealed 
+disease recurrence up to 16.5 months ahead of 
+standard-of-care radiologic imaging 
+ 
+ 
+The study reported that longitudinal ctDNA 
+analysis in patients with stages I to III CRC 
+can effectively detect and monitor changes 
+in tumor burden throughout the clinical 
+disease course 
+ 
+Results show that ctDNA serves as a robust 
+biomarker for (1) postoperative and post-ACT 
+risk stratification, (2) monitoring ACT 
+effectiveness, (3) detection of clinical 
+actionable mutations, and (4) early detection 
+of recurrence.  
+ 
+The study found that in multivariate analysis 
+ctDNA status (among stage, CEA, and other 
+high-risk factors) was the only significant 
+factor associated with recurrence. This 
+suggests that ctDNA analysis may be a 
+better tool for identifying high risk patients.  
+  
+The study provides first-line evidence that 
+ACT can reduce the risk of recurrence in 
+ctDNA-positive patients.  
+Henriksen et 
+al
+19 
+Detection of ctDNA was a strong recurrence 
+predictor postoperatively [HR = 7.0; 95% 
+confidence interval (CI), 3.7–13.5; P < 0.001] and 
+directly after ACT (HR = 50.76; 95% CI, 15.4–
+167; P < 0.001). 
+ 
+Serial ctDNA assessment after the end of 
+treatment was similarly predictive of 
+recurrence (HR = 50.80; 95% CI, 14.9–172; 
+P<0.001) 
+ 
+The recurrence rate of postoperative ctDNA-
+positive patients treated with ACT was 80%. 
+Only patients who cleared ctDNA permanently 
+during ACT did not relapse. 
+ 
+Serial ctDNA analysis every 3 months detected 
+recurrence with a median lead-time of 9.8 
+months compared with standard-of-care 
+computed tomography 
+ 
+ 
+ 
+ 
+ 
+ 
+The current study demonstrated ctDNA as a 
+strong prognostic marker immediately post-
+ACT. 
+ 
+The results suggest that radiological 
+surveillance may be deescalated in low-risk 
+(ctDNA-negative) patients with no/minimal 
+effect on the outcome. For high-risk (ctDNA-
+positive) patients, there is an opportunity for 
+intensifying imaging immediately upon 
+ctDNA detection. 
+ 
+The analysis comparing concurrent ctDNA 
+and CT imaging assessments showed that in 
+33% of patients, who later recurred, ctDNA 
+was detected at a time where no recurrence 
+was visible by CT imaging. This indicates that 
+ctDNA measurements in some cases may be 
+more sensitive for recurrence detection than 
+standard CT imaging 
+ 
+ctDNA was the strongest prognostic marker 
+in multivariable analysis with conventionally 
+used risk markers. The findings are consistent 
+with and extend on previous colorectal 
+cancer studies 
+Tie et al
+12 
+Patients with ctDNA-positive status 
+postoperatively had a markedly reduced 
+The study has demonstrated that stage II 
+colon cancer patients who were ctDNA-
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 10 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+recurrence-free survival (RFS) compared to 
+those with a ctDNA-negative status [HR, 18; 
+95% confidence interval (CI), 7.9 to 40; P = 2.6 
+× 10−12]. Kaplan-Meier estimates of RFS at 3 
+years were 0% for the ctDNA-positive and 
+90% for the ctDNA-negative groups. 
+ 
+Postoperative ctDNA status had a greater 
+impact on RFS than any individual 
+clinicopathological risk factor or any 
+combination of clinicopathological factors. 
+Postoperative ctDNA status added significant 
+prognostic value to patients classified as 
+either low-risk or high-risk on the basis of 
+clinicopathological factors (low-risk: HR, 28; 
+95% CI, 8.1 to 93; P = 9.2 × 10−8; high-risk: HR, 
+7.5; 95% CI, 2.6 to 22; P = 0.0002). 
+ 
+ 
+After multivariable adjustment, postoperative 
+ctDNA status remained an independent 
+predictor of RFS for patients not treated with 
+chemotherapy (HR, 28; 95% CI, 11 to 68) and 
+for all patients (HR, 14; 95% CI, 6.8 to 28) 
+ 
+ctDNA positivity immediately after completion 
+of chemotherapy was associated with poorer 
+RFS (HR, 11; 95% CI, 1.8 to 68; P = 0.001) 
+ 
+The median lead time from ctDNA detection 
+to radiological recurrence was over 5 months, 
+which might be sufficient to change patient 
+management. 
+ 
+ 
+ 
+ 
+ 
+positive postoperatively are at extremely 
+high risk of radiologic recurrence (HR, 18; 95% 
+CI, 7.9 to 40; P = 2.6 × 10−12) when not 
+treated with chemotherapy. 
+ 
+Conversely, patients with negative ctDNA 
+postoperatively were at a low risk of 
+radiologic recurrence (3-year RFS of 90%), 
+not dissimilar to patients with stage I 
+colorectal cancer, defining a group where 
+adjuvant therapy is less likely to be helpful. 
+ 
+The prognostic impact of postoperative 
+ctDNA status was independent of individual 
+clinicopathological risk features and 
+improved the RFS risk estimates for both 
+patients with clinicopathologic low (HR, 28; 
+95% CI, 8.1 to 93) and high-risk features (HR, 
+7.5; 95% CI, 2.6 to 22). 
+ 
+The study also demonstrated that being 
+ctDNA-positive at the completion of 
+adjuvant chemotherapy treatment predicted 
+a very high risk of radiologic recurrence. 
+ 
+The findings that postoperative ctDNA is a 
+robust predictor of disease recurrence is 
+consistent with recent reports in other tumor 
+types.  
+ 
+This ctDNA measurement is superior to 
+clinicopathological measures currently used 
+to guide adjuvant chemotherapy decisions. 
+ 
+ctDNA detection after stage II colon cancer 
+resection provides direct evidence of residual 
+disease and identifies patients at very high 
+risk of recurrence. 
+Tie et al
+11 
+Significantly worse recurrence-free survival 
+was seen if ctDNA was detectable after 
+chemoradiotherapy (HR 6.6; P<0.001) or after 
+surgery (HR 13.0; P<0.001). 
+ 
+The estimated 3-year recurrence-free survival 
+was 33% for the postoperative ctDNA -
+positive patients and 87% for the 
+postoperative ctDNA -negative patients. 
+ 
+Postoperative ctDNA detection was predictive 
+of recurrence irrespective of adjuvant 
+chemotherapy use (chemotherapy: HR 10.0; 
+P<0.001; without chemotherapy: HR 22.0; 
+P<0.001) 
+ 
+Postoperative ctDNA status remained an 
+independent predictor of recurrence-free 
+survival after adjusting for known 
+clinicopathological risk factors (HR 6.0; 
+P<0.001). 
+This study provides the first evidence that 
+circulating tumor DNA analysis after curative 
+intent surgery for locally advanced rectal 
+cancer could stratify patients into subsets at 
+very high risk or low risk of recurrence. 
+ 
+The strong prognostic impact of 
+postoperative circulating tumor DNA status 
+appears to be independent of other known 
+pathological risk factors. 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 11 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+Tarazona et 
+al
+20 
+Detection of ctDNA after surgery and in serial 
+plasma samples during follow-up were 
+associated with poorer disease-free survival 
+(DFS) [hazard ratio (HR), 17.56; log-rank P = 
+0.0014 and HR, 11.33; log-rank P = 0.0001, 
+respectively]. 
+ 
+In patients treated with adjuvant 
+chemotherapy, presence of ctDNA after 
+therapy was associated with early relapse (HR 
+10.02; log-rank P < 0.0001).  
+ 
+Detection of ctDNA at follow-up preceded 
+radiological recurrence with a median lead 
+time of 11.5 months. 
+ 
+ctDNA was the only significantly independent 
+predictor of DFS in multivariable analysis. 
+Plasma postoperative ctDNA detected MRD 
+and identified patients at high risk of relapse 
+in localized CC. 
+ 
+The data showed the presence of 
+postoperative ctDNA establishes a stronger 
+prognostic marker than conventional 
+pathological factors such as stage.  
+ 
+The findings are consistent with previous 
+studies, which have already shown that 
+ctDNA after surgery can be a biomarker of 
+MRD and therefore a prognostic factor for 
+recurrence in patients with colorectal cancer. 
+Tie et al
+21 
+Patients with detectable postoperative ctDNA 
+experienced a significantly lower RFS (HR 6.3; 
+95% CI 2.58 to 15.2; P < 0.001) and overall 
+survival (HR 4.2; 95% CI 1.5 to 11.8; P < 0.001) 
+compared to patients with undetectable 
+ctDNA 
+ 
+All patients with detectable postoperative 
+ctDNA who failed to clear their ctDNA 
+following adjuvant chemotherapy experienced 
+recurrence, while 67% of patients whose 
+ctDNA became undetectable after 
+chemotherapy remained disease-free 
+ 
+End   -of-treatment (surgery +/− adjuvant 
+chemotherapy) ctDNA detection was 
+associated with a 5-year RFS of 0% compared 
+to 75.6% for patients with an undetectable 
+end  -of-treatment ctDNA (HR 14.9; 95% CI 4.94 
+to 44.7; P < 0.001). 
+We confirmed the prognostic impact of post-
+surgery and post-treatment ctDNA in 
+patients with resected CRLM.  
+ 
+The potential utility of serial ctDNA analysis 
+during adjuvant chemotherapy as an early 
+marker of treatment efficacy was also 
+demonstrated 
+ 
+ctDNA detection after surgery or after 
+completion of adjuvant chemotherapy is 
+associated with a very high risk of recurrence 
+and    death in patients with resectable CRLM 
+ 
+ctDNA dynamics before and after adjuvant 
+chemotherapy reflected adjuvant treatment 
+efficacy. 
+Loupakis et 
+al
+22 
+Postsurgical, MRD positivity was observed in 
+54.4% (61 of 112) of patients, of which 96.7% (59 
+of 61) progressed at the time of data cutoff 
+(hazard ratio [HR]: 5.8; 95% CI, 3.5 to 9.7; P < 
+.001). 
+ 
+MRD-positive status was also associated with 
+an inferior overall survival: HR: 16.0; 95% CI, 3.9 
+to 68.0; P < .001. 
+ 
+At the time of analyses, 96% (49 of 51) of 
+patients were alive in the MRD-negative arm 
+compared with 52.4% (32 of 61) in the MRD-
+positive arm. 
+ 
+Patients who did not receive systemic therapy 
+and were MRD-negative in the combined 
+ctDNA analysis at two time points had an 
+overall survival of 100%. 
+ 
+This study confirms that in mCRC undergoing 
+resection of metastases, postoperative MRD 
+analysis is a strong prognostic biomarker 
+ 
+The present work supports the continuous 
+expansion of the number of clinical studies in 
+patients with mCRC using personalized 
+ctDNA-based MRD analysis and provides 
+direct evidence of the predictive and 
+prognostic value of ctDNA, which could help 
+clinicians and researchers with real numbers 
+to design their clinical studies and support 
+therapeutic decisions in the adjuvant setting 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 12 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+In the multivariate analysis, ctDNA-based 
+MRD status was the most significant 
+prognostic factor associated with disease-free 
+survival (HR: 5.78; 95% CI, 3.34 to 10.0; P < .001). 
+Fakih et al
+23 
+Surveillance with CEA measurement appeared 
+to perform poorly in detecting a first 
+recurrence, with a sensitivity of only 20.0% 
+(95% CI, 5.3%-48.6%).  
+ 
+Circulating tumor DNA did not appear to 
+perform numerically better than imaging, with 
+sensitivities of 53.3% (95% CI, 27.4%-77.7%) and 
+60.0% (95% CI, 32.9%-82.5%), (P > .99), 
+respectively.  
+ 
+The specificity was the highest for ctDNA at 
+100% (95% CI, 87.0%-100%) 
+ 
+When combining imaging and measurement 
+of CEA levels, as recommended by NCCN 
+guidelines, the combination modality had a 
+numerical advantage compared with ctDNA in 
+identifying a recurrence (sensitivity, 73.3% 
+[95% CI, 44.8%-91.1%]; P = .55) and performed 
+well on both the PPV (73.3% [95% CI, 44.8%-
+91.1%] vs 100% [95% CI, 59.8%-100%]) and 
+NPV (87.9% [95% CI, 70.9%- 96.0%] vs 82.5% 
+[95% CI, 66.6%-92.1%]). 
+ 
+Statistical analysis showed that the sensitivity 
+of CEA surveillance was significantly worse 
+than that of combined imaging and 
+measurement of CEA levels (20.0% [95% CI, 
+5.3%-48.6%]; P = .01). 
+ 
+No significant difference was noted among 
+ctDNA (median, 14.3 months), imaging 
+(median, 15.0 months), or imaging plus 
+measurement of CEA levels (median, 15.0 
+months) in the time to identify disease 
+recurrence. 
+The findings of this prospective cohort study 
+suggest that ctDNA assay may not provide 
+definitive advantages as a surveillance 
+strategy compared with standard imaging 
+combined with measurement of CEA levels 
+when performed per NCCN guidelines. 
+However, a positive ctDNA finding without 
+doubt indicates an almost definitive risk of 
+relapse. 
+Tie et al.
+26
+ Circulating tumor DNA was detectable in 20 of 
+96 (21%) postsurgical samples and was 
+associated with inferior recurrence-free 
+survival (hazard ratio [HR], 3.8; 95% CI, 2.4-
+21.0; P < .001) 
+ 
+In this multicenter cohort study of 96 patients 
+with stage III colon cancer, a significant 
+difference in 3-year recurrence-free interval 
+was observed in patients with detectable vs 
+undetectable levels of circulating tumor DNA 
+after surgery (47% vs 76%)  
+ 
+The estimated 3-year RFI was 30% when 
+ctDNA was detectable after chemotherapy 
+and    77% when ctDNA was undetectable (HR, 
+6.8; 95% CI, 11.0-157.0; P < .001) 
+ 
+Results suggest that ctDNA analysis after 
+surgery is a promising prognostic marker in 
+stage III colon cancer. Post chemotherapy 
+ctDNA analysis may define a patient subset 
+that remains at high risk of recurrence 
+despite completing standard adjuvant 
+treatment. 
+ 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 13 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+Postsurgical ctDNA status remained 
+independently associated with RFI after 
+adjusting for known clinicopathologic risk 
+factors (HR, 7.5; 95% CI, 3.5-16.1; P < .001). 
+Tie et al.
+24 
+455 patients underwent randomization, 302 
+were assigned to ctDNA-guided management 
+and 153 to standard of care management 
+ 
+A lower percentage of patients in the ctDNA-
+guided group than in the standard-
+management group received adjuvant 
+chemotherapy (15% vs. 28%; relative risk, 1.82; 
+95% confidence interval [CI], 1.25 to 2.65). 
+ 
+In the evaluation of 2-year recurrence-free 
+survival, ctDNA-guided management was 
+noninferior to standard management (93.5% 
+and 92.4%, respectively; absolute difference, 1.1 
+percentage points; 95% CI, −4.1 to 6.2 
+[noninferiority margin, −8.5 percentage 
+points]). 
+ 
+Three-year recurrence-free survival was 86.4% 
+among ctDNA-positive patients who received 
+adjuvant chemotherapy and 92.5% among 
+ctDNA-negative patients who did not. 
+ 
+Among ctDNA-negative patients, 3-year 
+recurrence-free survival was higher among 
+patients with clinical low-risk cancers than 
+among those with high-risk cancers (96.7% vs. 
+85.1%; hazard ratio, 3.04; 95% CI, 1.26 to 7.34) 
+ 
+3-year recurrence-free survival was higher 
+among patients with T3 tumors than among 
+those with T4 tumors (94.2% vs. 81.3%; hazard 
+ratio, 2.60; 95% CI, 1.01 to 6.71) 
+ 
+ 
+ 
+ 
+ 
+ 
+In this trial, we found that a ctDNA-guided 
+approach reduced the number of patients 
+who received adjuvant therapy and did not 
+alter the risk of recurrence. 
+ 
+ctDNA positive patients appeared to derive 
+considerable benefit from adjuvant 
+treatment, given the low percentage of 
+patients with recurrence in this trial as 
+compared with previously reported high 
+recurrence rates in this subgroup of patients 
+when no adjuvant chemotherapy was 
+administered 
+ 
+The study confirmed the very low risk of 
+recurrence in untreated ctDNA-negative 
+patient 
+ 
+Most notable was the 3-year recurrence-free 
+survival of 96.7% among patients with low-
+risk disease, indicating that adjuvant therapy 
+sho  uld not be considered for ctDNA negative 
+patients who are at clinicopathological low 
+risk. This is an important observation, 
+because in routine clinical practice adjuvant 
+chemotherapy is still administered to some 
+patients at low risk (11% in our standard-
+management group), particularly younger 
+patients 
+ 
+The results of this trial suggest that a survival 
+benefit from adjuvant chemotherapy may be 
+obtained in a well-defined subgroup of 
+patients with stage II colon cancer — 
+namely, those with detectable ctDNA after 
+surgery 
+ 
+A ctDNA-guided approach to the treatment 
+of stage II colon cancer reduced adjuvant 
+chemotherapy use without compromising 
+recurrence-free survival.  
+Kotaka et 
+al
+25 
+GALAXY enrolled 1,564 patients, of whom 1,040 
+(the “outcome cohort”) were included in the 
+current analysis. 
+ 
+Patients who tested positive for ctDNA 4 
+weeks after surgery had an 11- to 13-times 
+increased risk for recurrence. 
+ 
+The assay’s sensitivity for disease recurrence 
+was calculated at 63.6% for the analysis of 
+patients with stage I to IV disease and 67.6% 
+for those with stage II to III disease. 
+ 
+The study shows that stratifying post-
+surgical treatment decisions using the ctDNA 
+assay can identify patients likely to benefit 
+from ACT across all stages of disease, 
+including pStage II.  
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 14 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+The multivariate analysis showed the risk of 
+recurrence for patients with stage II to III 
+tumors was highly correlated with ctDNA 
+positivity at 4 weeks after surgery (hazard 
+ratio [HR] = 15.3; P < .001).  
+ 
+Patients with baseline ctDNA positivity who 
+remained positive over the course of 
+treatment had an almost 16-fold increased 
+risk of disease recurrence 
+ 
+Patients who did not clear their ctDNA 
+between 4- and 12-weeks during adjuvant 
+chemotherapy had significantly worse 
+outcomes relative to those who cleared their 
+ctDNA—i.e., “positive to positive” (58.3%) vs 
+“positive to negative” (100%)—exhibiting a 
+15.8  -fold increased risk.  
+ 
+The disease-free survival rate for ctDNA-
+negative patients that remained negative was 
+98% and for those who turned positive 62.5%. 
+ 
+For patients with high-risk stage II, stage III, 
+and stage IV disease, adjuvant chemotherapy 
+yielded a benefit among patients who tested 
+positive for ctDNA 4 weeks after surgery, with 
+hazard ratios of 9.4 (P = .04), 8.8 (P < .001), and 
+2.4 (P = .02), respectively.  
+ 
+Patients with high-risk stage II to III disease 
+who tested negative for ctDNA at 4 weeks, on 
+the other hand, had excellent outcomes, 
+whether or not they received chemotherapy, 
+with a disease-free survival of approximately 
+95% at 12 months. 
+HR: hazard ratio, ACT: adjuvant chemotherapy, DSF: disease free survival, RFS: recurrence free survival, CRLM: 
+colorectal cancer liver metastases, mCRC: metastatic colorectal cancer 
+ 
+Table 2. Recurrence Rates by Risk Category (ctDNA Positive/Negative) in Tumor-Informed 
+ctDNA Testing Studies in Colorectal Cancer 
+Study Recurrence Risk After 
+Surgery 
+Study Population 
+Recurrence Risk After ACT Longitudinal Recurrence 
+Risk 
+Reinert et 
+al
+3
+ 
+At postoperative day 30, 
+ctDNA-positive patients were 
+7 times more likely to relapse 
+than ctDNA-negative patients 
+(hazard ratio [HR], 7.2; 95% CI, 
+2.7  -19.0; P < .001). 
+After ACT ctDNA-positive 
+patients were 17 times (HR, 
+17.5; 95% CI, 5.4-56.5; P < .001) 
+more likely to relapse.  
+During surveillance after 
+definitive therapy, ctDNA-
+positive patients were more 
+than 40 times more likely to 
+experience disease 
+recurrence than ctDNA-
+negative patients (HR, 43.5; 
+95% CI, 9.8-193.5 P < .001). 
+Henriksen 
+et al
+4 
+Detection of ctDNA was a 
+strong recurrence predictor 
+postoperatively [HR = 7.0; 
+95% confidence interval (CI), 
+3.7–13.5; P < 0.001] 
+Detection of ctDNA was a 
+strong predictor of recurrence 
+after ACT (HR = 50.76; 95% CI, 
+15.4  –167; P < 0.001). 
+Serial ctDNA assessment 
+after the end of treatment 
+was similarly predictive of 
+recurrence (HR = 50.80; 95% 
+CI, 14.9–172; P < 0.001) 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 15 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Recurrence Risk After 
+Surgery 
+Study Population 
+Recurrence Risk After ACT Longitudinal Recurrence 
+Risk 
+Tie et al
+29 
+Patients with ctDNA-positive 
+status postoperatively had a 
+markedly reduced recurrence-
+free survival (RFS) compared 
+to those with a ctDNA-
+negative status [HR = 18; 95% 
+CI, 7.9 to 40; P = 2.6 × 10
+-12
+] 
+ctDNA positivity immediately 
+after completion of 
+chemotherapy was associated 
+with poorer RFS (HR, 11; 95% 
+CI, 1.8 to 68; P = 0.001) 
+The prognostic impact of 
+postoperative ctDNA status 
+was independent of 
+individual clinicopathological 
+risk features and improved 
+the RFS risk estimates for 
+both patients with 
+clinicopathologic low (HR = 
+28; 95% CI, 8.1 to 93) and 
+high-risk features (HR = 7.5; 
+95% CI, 2.6 to 22). 
+Tie et al
+27 
+Significantly worse 
+recurrence-free survival was 
+seen if ctDNA was detectable 
+after surgery (HR = 13.0; 
+P<0.001) 
+ 
+Significantly worse recurrence-
+free survival was seen if ctDNA 
+was detectable after 
+chemoradiotherapy (HR = 6.6; 
+P<0.001) 
+ 
+Postoperative ctDNA 
+detection was predictive of 
+recurrence irrespective of 
+adjuvant chemotherapy use 
+(chemotherapy: HR = 10.0; 
+P<0.001; without 
+chemotherapy: HR = 22; 
+P<0.001). Postoperative 
+ctDNA status remained an 
+independent predictor of 
+recurrence-free survival 
+after adjusting for known 
+clinicopathological risk 
+factors (HR = 6.0; P<0.001). 
+Tarazona 
+et al
+24 
+The presence of ctDNA 
+immediately after surgery was 
+associated with poorer DFS 
+(HR 6.96; P = 0.0001). After 
+multivariable adjustment, 
+postoperative ctDNA status 
+remained the only significant 
+predictor of DFS (HR 11.64; 
+95% CI 3.67-36.88; P < 0.001)  
+ctDNA positivity after 
+completion of chemotherapy 
+was associated with poorer 
+DFS (HR 10.02; 95% CI 9.202 - 
+307.3; P < 0.0001) 
+Detection of ctDNA after 
+surgery and in serial plasma 
+samples during follow-up 
+were associated with poorer 
+DFS [HR 17.56; log-rank P = 
+0.0014 and HR 11.33; log-
+rank P = 0.0001, 
+respectively]. 
+Tie et al
+30 
+Patients with detectable 
+postoperative ctDNA 
+experienced a significantly 
+lower RFS (HR 6.3; 95% CI 2.58 
+to 15.2; P < 0.001) and overall 
+survival (HR 4.2; 95% CI 1.5 to 
+11.8; P < 0.001) compared to 
+patients with undetectable 
+ctDNA 
+The estimated 5-year RFS was 
+66.7% for patients who cleared 
+their ctDNA after adjuvant 
+chemotherapy compared to 
+0% in patients with 
+persistently positive ctDNA 
+after adjuvant chemotherapy 
+(HR, 7.87; 95% CI 0.95 to 63.7; P 
+= 0.056) 
+End-of-treatment (surgery 
++/− adjuvant chemotherapy) 
+ctDNA detection was 
+associated with a 5-year RFS 
+of 0% compared to 75.6% for 
+patients with an 
+undetectable end-of-
+treatment ctDNA (HR 14.9; 
+95% CI 4.94 to 44.7; P < 
+0.001). 
+Loupakis 
+et al
+5 
+Postsurgical, MRD positivity 
+was observed in 54.4% (61 of 
+112) of patients, of which 96.7% 
+(59 of 61) progressed at the 
+time of data cutoff (HR: 5.8; 
+95% CI, 3.5 to 9.7; P < .001). 
+At the time of analyses, 96% 
+(49 of 51) of patients were alive 
+in the MRD-negative arm 
+compared with 52.4% (32 of 61) 
+in the MRD-positive arm. 
+Patients who did not receive 
+systemic therapy and were 
+MRD-negative in the 
+combined ctDNA analysis at 
+two time points had an overall 
+survival of 100%. 
+ctDNA-based MRD status 
+was the most significant 
+prognostic factor associated 
+with disease-free survival 
+(HR: 5.78; 95% CI, 3.34 to 
+10.0; P < .001). 
+Tie et al
+26 
+Circulating tumor DNA was 
+detectable in 20 of 96 (21%) 
+The estimated 3-year RFI was 
+30% when ctDNA was 
+Postsurgical longitudinal 
+ctDNA status remained 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 16 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Recurrence Risk After 
+Surgery 
+Study Population 
+Recurrence Risk After ACT Longitudinal Recurrence 
+Risk 
+postsurgical samples and was 
+associated with inferior 
+recurrence-free survival 
+(hazard ratio [HR], 3.8; 95% CI, 
+2.4-21.0; P < .001). 
+detectable after 
+chemotherapy and 77% when 
+ctDNA was undetectable (HR, 
+6.8; 95% CI, 11.0-157.0; P < .001). 
+independently associated 
+with RFI after adjusting for 
+known clinicopathologic risk 
+factors (HR, 7.5; 95% CI, 3.5-
+16.1; P < .001). 
+Tie et al
+31 
+N/A A lower percentage of patients 
+in the ctDNA-guided group 
+than in the standard-
+management group received 
+adjuvant chemotherapy (15% 
+vs. 28%; relative risk, 1.82; 95% 
+confidence interval [CI], 1.25 to 
+2.65). In the evaluation of 2-
+year recurrence-free survival, 
+ctDNA-guided management 
+was noninferior to standard 
+management (93.5% and 
+92.4%, respectively; absolute 
+difference, 1.1 percentage 
+points; 95% CI, −4.1 to 6.2 
+[noninferiority margin, −8.5 
+percentage points]). 
+The estimated 3-year 
+recurrence-free survival was 
+92.5% among ctDNA-
+negative patients and 86.4% 
+among ctDNA-positive 
+patients (HR 1.83; 95% CI, 
+0.79 to 4.27) 
+Kotaka et 
+al
+32 
+N/A 
+ 
+6-month post operative DFS in 
+overall population (pStage I-
+IV) for ctDNA negative 
+patients was 96.5% (95.0-97.5; 
+95% CI), while 6-month DFS in 
+ctDNA positive patients was 
+62.8% (55.4-69.2; 95%CI).  
+12-month post operative 
+DFS in overall population 
+(pStage I-IV) for ctDNA 
+negative patients was 92.7% 
+(90.4-94.5; 95% CI), while 12-
+month DFS in ctDNA positive 
+patients was 47.5% (39.3-
+55.2; 95%CI; HR 10.9; 
+P<0.001). 
+ACT: adjuvant chemotherapy; HR: hazard ratio; CI: confidence interval; RFS: recurrence free survival; RFI: 
+recurrence free interval 
+ 
+Table 3. Tumor-Informed ctDNA Testing Compared to Other Surveillance Strategies in Resected 
+Colorectal Cancer 
+Study Sensitivity Specificity PPV NPV 
+Median Time to Recurrence, 
+Months 
+Reinert et 
+al
+3 
+ctDNA 88% 
+CEA 69% 
+ctDNA 98% 
+CEA 64% 
+N/A N/A 
+The mean lead time from ctDNA 
+detection in plasma to relapse 
+detection by standard-of-care 
+computed tomography was 8.7 
+months (range, 0.8-16.5 months; 
+Wilcoxon signed rank test; 
+P<.001); by contrast CEA 
+revealed no lead time. 
+Henriksen 
+et al
+4 
+N/A N/A N/A N/A 
+Serial ctDNA analysis every 3 
+months detected recurrence with 
+a median lead-time of 9.8 
+months compared with 
+standard-of-care computed 
+tomography. (IQR: 2–9; P < 
+0.001, Wilcoxon signed rank test) 
+Tie et al
+29 
+ctDNA 48% ctDNA 100% N/A N/A 
+85% of patients were ctDNA-
+positive up to or at the time of 
+radiologic recurrence, whereas 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 17 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Sensitivity Specificity PPV NPV 
+Median Time to Recurrence, 
+Months 
+CEA was only elevated in 41% of 
+patients. The median lead time 
+from ctDNA detection to 
+radiological recurrence was over 
+5 months 
+Tarazona et 
+al
+24 
+N/A N/A N/A N/A 
+Detection of ctDNA had a 
+median of 11.5 months (range 3-
+18 months) lead time over 
+radiological relapse 
+Loupakis et 
+al
+5 
+ctDNA 91.4% 
+CEA 46% 
+ctDNA 
+93.3% 
+ctDNA 
+96.7% 
+N/A N/A 
+Fakih et al
+2 
+ctDNA 53.3% 
+Imaging 
+60% 
+CEA 20% 
+CEA + 
+Imaging 
+73.3% 
+ctDNA 100% 
+Imaging 
+96.9% 
+CEA 90.9% 
+CEA + 
+Imaging 
+87.9% 
+ctDNA 
+100% 
+Imaging 
+90% 
+CEA 50% 
+CEA + 
+Imaging 
+73.3% 
+ctDNA 
+82.5% 
+Imaging 
+84.2% 
+CEA 71.4% 
+CEA + 
+Imaging 
+87.9% 
+Median time to recurrence 
+(months) 
+ctDNA 14.3 
+Imaging 15.0 
+CEA N/A 
+CEA + Imaging 15.0 
+CEA: carcinoembryonic antigen; CRC: colorectal cancer; CT: computerized tomography; IQR: interquartile range; 
+NCCN: National Comprehensive Cancer Network. 
+ 
+Table 4. Tumor-Informed ctDNA Testing Studies Supporting the Value of ctDNA for Molecular 
+Residual Disease Assessment and Surveillance in Patients with Resected Colorectal Cancer.  
+Study Major Findings Conclusions & Relevance 
+Reinert et 
+al
+3 
+At postoperative day 30, ctDNA-positive 
+patients were 7 times more likely to relapse 
+than ctDNA-negative patients (hazard ratio 
+[HR], 7.2; 95% CI, 2.7-19.0; P < .001). 
+ 
+After ACT ctDNA-positive patients were 17 
+times (HR, 17.5; 95% CI, 5.4-56.5; P < .001) more 
+likely to relapse. 
+ 
+During surveillance after definitive therapy, 
+ctDNA-positive patients were more than 40 
+times more likely to experience disease 
+recurrence than ctDNA-negative patients (HR, 
+43.5; 95% CI, 9.8-193.5 P < .001).  
+ 
+In all multivariate analyses, ctDNA status was 
+independently associated with relapse after 
+adjusting for known clinicopathologic risk 
+factors. Serial ctDNA analyses revealed 
+disease recurrence up to 16.5 months ahead of 
+standard-of-care radiologic imaging 
+ 
+ 
+The study reported that longitudinal ctDNA 
+analysis in patients with stages I to III CRC 
+can effectively detect and monitor changes 
+in tumor burden throughout the clinical 
+disease course 
+ 
+Results show that ctDNA serves as a robust 
+biomarker for (1) postoperative and post-ACT 
+risk stratification, (2) monitoring ACT 
+effectiveness, (3) detection of clinical 
+actionable mutations, and (4) early detection 
+of recurrence.  
+ 
+The study found that in multivariate analysis 
+ctDNA status (among stage, CEA, and other 
+high-risk factors) was the only significant 
+factor associated with recurrence. This 
+suggests that ctDNA analysis may be a 
+better tool for identifying high risk patients.  
+  
+The study provides first-line evidence that 
+ACT can reduce the risk of recurrence in 
+ctDNA-positive patients.  
+Henriksen et 
+al
+4 
+Detection of ctDNA was a strong recurrence 
+predictor postoperatively [HR = 7.0; 95% 
+confidence interval (CI), 3.7–13.5; P < 0.001] and 
+directly after ACT (HR = 50.76; 95% CI, 15.4–
+167; P < 0.001). 
+ 
+Serial ctDNA assessment after the end of 
+treatment was similarly predictive of 
+The current study demonstrated ctDNA as a 
+st rong prognostic marker immediately post-
+ACT. 
+ 
+The results suggest that radiological 
+surveillance may be deescalated in low-risk 
+(ctDNA-negative) patients with no/minimal 
+effect on the outcome. For high-risk (ctDNA-
+positive) patients, there is an opportunity for 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 18 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+recurrence (HR = 50.80; 95% CI, 14.9–172; 
+P<0.001) 
+ 
+The recurrence rate of postoperative ctDNA-
+positive patients treated with ACT was 80%. 
+Only patients who cleared ctDNA permanently 
+during ACT did not relapse. 
+ 
+Serial ctDNA analysis every 3 months detected 
+recurrence with a median lead-time of 9.8 
+months compared with standard-of-care 
+computed tomography 
+ 
+ 
+intensifying imaging immediately upon 
+ctDNA detection. 
+ 
+The analysis comparing concurrent ctDNA 
+and CT imaging assessments showed that in 
+33% of patients, who later recurred, ctDNA 
+was detected at a time where no recurrence 
+was visible by CT imaging. This indicates that 
+ctDNA measurements in some cases may be 
+more sensitive for recurrence detection than 
+standard CT imaging 
+ 
+ctDNA was the strongest prognostic marker 
+in multivariable analysis with conventionally 
+used risk markers. The findings are consistent 
+with and extend on previous colorectal 
+cancer studies 
+Tie et al
+29 
+Patients with ctDNA-positive status 
+postoperatively had a markedly reduced 
+recurrence-free survival (RFS) compared to 
+those with a ctDNA-negative status [HR, 18; 
+95% confidence interval (CI), 7.9 to 40; P = 2.6 
+× 10−12]. Kaplan-Meier estimates of RFS at 3 
+years were 0% for the ctDNA-positive and 
+90% for the ctDNA-negative groups. 
+ 
+Postoperative ctDNA status had a greater 
+impact on RFS than any individual 
+clinicopathological risk factor or any 
+combination of clinicopathological factors. 
+Postoperative ctDNA status added significant 
+prognostic value to patients classified as 
+either low-risk or high-risk on the basis of 
+clinicopathological factors (low-risk: HR, 28; 
+95% CI, 8.1 to 93; P = 9.2 × 10−8; high-risk: HR, 
+7.5; 95% CI, 2.6 to 22; P = 0.0002). 
+ 
+ 
+After multivariable adjustment, postoperative 
+ctDNA status remained an independent 
+predictor of RFS for patients not treated with 
+chemotherapy (HR, 28; 95% CI, 11 to 68) and 
+for all patients (HR, 14; 95% CI, 6.8 to 28) 
+ 
+ctDNA positivity immediately after completion 
+of chemotherapy was associated with poorer 
+RFS (HR, 11; 95% CI, 1.8 to 68; P = 0.001) 
+ 
+The median lead time from ctDNA detection 
+to radiological recurrence was over 5 months, 
+which might be sufficient to change patient 
+management. 
+ 
+ 
+ 
+ 
+ 
+The study has demonstrated that stage II 
+colon cancer patients who were ctDNA-
+positive postoperatively are at extremely 
+high risk of radiologic recurrence (HR, 18; 95% 
+CI, 7.9 to 40; P = 2.6 × 10−12) when not 
+treated with chemotherapy. 
+ 
+Conversely, patients with negative ctDNA 
+postoperatively were at a low risk of 
+radiologic recurrence (3-year RFS of 90%), 
+not dissimilar to patients with stage I 
+colorectal cancer, defining a group where 
+adjuvant therapy is less likely to be helpful. 
+ 
+The prognostic impact of postoperative 
+ctDNA status was independent of individual 
+clinicopathological risk features and 
+improved the RFS risk estimates for both 
+patients with clinicopathologic low (HR, 28; 
+95% CI, 8.1 to 93) and high-risk features (HR, 
+7.5; 95% CI, 2.6 to 22). 
+ 
+The study also demonstrated that being 
+ctDNA-positive at the completion of 
+adjuvant chemotherapy treatment predicted 
+a very high risk of radiologic recurrence. 
+ 
+The findings that postoperative ctDNA is a 
+robust predictor of disease recurrence is 
+consistent with recent reports in other tumor 
+types.  
+ 
+This ctDNA measurement is superior to 
+clinicopathological measures currently used 
+to guide adjuvant chemotherapy decisions. 
+ 
+ctDNA detection after stage II colon cancer 
+resection provides direct evidence of residual 
+disease and identifies patients at very high 
+risk of recurrence. 
+Tie et al
+27 
+Significantly worse recurrence-free survival 
+was seen if ctDNA was detectable after 
+This study provides the first evidence that 
+circulating tumor DNA analysis after curative 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 19 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+chemoradiotherapy (HR 6.6; P<0.001) or after 
+surgery (HR 13.0; P<0.001). 
+ 
+The estimated 3-year recurrence-free survival 
+was 33% for the postoperative ctDNA -
+positive patients and 87% for the 
+postoperative ctDNA -negative patients. 
+ 
+Postoperative ctDNA detection was predictive 
+of recurrence irrespective of adjuvant 
+chemotherapy use (chemotherapy: HR 10.0; 
+P<0.001; without chemotherapy: HR 22.0; 
+P<0.001) 
+ 
+Postoperative ctDNA status remained an 
+independent predictor of recurrence-free 
+survival after adjusting for known 
+clinicopathological risk factors (HR 6.0; 
+P<0.001). 
+ 
+intent surgery for locally advanced rectal 
+cancer could stratify patients into subsets at 
+very high risk or low risk of recurrence. 
+ 
+The strong prognostic impact of 
+postoperative circulating tumor DNA status 
+appears to be independent of other known 
+pathological risk factors. 
+Tarazona et 
+al
+24 
+Detection of ctDNA after surgery and in serial 
+plasma samples during follow-up were 
+associated with poorer disease-free survival 
+(DFS) [hazard ratio (HR), 17.56; log-rank P = 
+0.0014 and HR, 11.33; log-rank P = 0.0001, 
+respectively]. 
+ 
+In patients treated with adjuvant 
+chemotherapy, presence of ctDNA after 
+therapy was associated with early relapse (HR 
+10.02; log-rank P < 0.0001).  
+ 
+Detection of ctDNA at follow-up preceded 
+radiological recurrence with a median lead 
+time of 11.5 months. 
+ 
+ctDNA was the only significantly independent 
+predictor of DFS in multivariable analysis. 
+ 
+Plasma postoperative ctDNA detected MRD 
+and identified patients at high risk of relapse 
+in localized CC. 
+ 
+The data showed the presence of 
+postoperative ctDNA establishes a stronger 
+prognostic marker than conventional 
+pathological factors such as stage.  
+ 
+The findings are consistent with previous 
+studies, which have already shown that 
+ctDNA after surgery can be a biomarker of 
+MRD and therefore a prognostic factor for 
+recurrence in patients with colorectal cancer. 
+Tie et al
+30 
+Patients with detectable postoperative ctDNA 
+experienced a significantly lower RFS (HR 6.3; 
+95% CI 2.58 to 15.2; P < 0.001) and overall 
+survival (HR 4.2; 95% CI 1.5 to 11.8; P < 0.001) 
+compared to patients with undetectable 
+ctDNA 
+ 
+All patients with detectable postoperative 
+ctDNA who failed to clear their ctDNA 
+following adjuvant chemotherapy experienced 
+recurrence, while 67% of patients whose 
+ctDNA became undetectable after 
+chemotherapy remained disease-free 
+ 
+End   -of-treatment (surgery +/− adjuvant 
+chemotherapy) ctDNA detection was 
+associated with a 5-year RFS of 0% compared 
+to 75.6% for patients with an undetectable 
+end  -of-treatment ctDNA (HR 14.9; 95% CI 4.94 
+to 44.7; P < 0.001). 
+We confirmed the prognostic impact of post-
+surgery and post-treatment ctDNA in 
+patients with resected CRLM.  
+ 
+The potential utility of serial ctDNA analysis 
+during adjuvant chemotherapy as an early 
+marker of treatment efficacy was also 
+demonstrated 
+ 
+ctDNA detection after surgery or after 
+completion of adjuvant chemotherapy is 
+associated with a very high risk of recurrence 
+and death in patients with resectable CRLM 
+ 
+ctDNA dynamics before and after adjuvant 
+chemotherapy reflected adjuvant treatment 
+efficacy. 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 20 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+Loupakis et 
+al
+5 
+Postsurgical, MRD positivity was observed in 
+54.4% (61 of 112) of patients, of which 96.7% (59 
+of 61) progressed at the time of data cutoff 
+(hazard ratio [HR]: 5.8; 95% CI, 3.5 to 9.7; P < 
+.001). 
+ 
+MRD-positive status was also associated with 
+an inferior overall survival: HR: 16.0; 95% CI, 3.9 
+to 68.0; P < .001. 
+ 
+At the time of analyses, 96% (49 of 51) of 
+patients were alive in the MRD-negative arm 
+compared with 52.4% (32 of 61) in the MRD-
+positive arm. 
+ 
+Patients who did not receive systemic therapy 
+and were MRD-negative in the combined 
+ctDNA analysis at two time points had an 
+overall survival of 100%. 
+ 
+In the multivariate analysis, ctDNA-based 
+MRD status was the most significant 
+prognostic factor associated with disease-free 
+survival (HR: 5.78; 95% CI, 3.34 to 10.0; P < .001). 
+This study confirms that in mCRC undergoing 
+resection of metastases, postoperative MRD 
+analysis is a strong prognostic biomarker 
+ 
+The present work supports the continuous 
+expansion of the number of clinical studies in 
+patients with mCRC using personalized 
+ctDNA-based MRD analysis and provides 
+direct evidence of the predictive and 
+prognostic value of ctDNA, which could help 
+clinicians and researchers with real numbers 
+to design their clinical studies and support 
+therapeutic decisions in the adjuvant setting 
+Fakih et al
+2 
+Surveillance with CEA measurement appeared 
+to perform poorly in detecting a first 
+recurrence, with a sensitivity of only 20.0% 
+(95% CI, 5.3%-48.6%).  
+ 
+Circulating tumor DNA did not appear to 
+perform numerically better than imaging, with 
+sensitivities of 53.3% (95% CI, 27.4%-77.7%) and 
+60.0% (95% CI, 32.9%-82.5%), (P > .99), 
+respectively.  
+ 
+The specificity was the highest for ctDNA at 
+100% (95% CI, 87.0%-100%) 
+ 
+When combining imaging and measurement 
+of CEA levels, as recommended by NCCN 
+guidelines, the combination modality had a 
+numerical advantage compared with ctDNA in 
+identifying a recurrence (sensitivity, 73.3% 
+[95% CI, 44.8%-91.1%]; P = .55) and performed 
+well on both the PPV (73.3% [95% CI, 44.8%-
+91.1%] vs 100% [95% CI, 59.8%-100%]) and 
+NPV (87.9% [95% CI, 70.9%- 96.0%] vs 82.5% 
+[95% CI, 66.6%-92.1%]). 
+ 
+Statistical analysis showed that the sensitivity 
+of CEA surveillance was significantly worse 
+than that of combined imaging and 
+measurement of CEA levels (20.0% [95% CI, 
+5.3%-48.6%]; P = .01). 
+ 
+No significant difference was noted among 
+ctDNA (median, 14.3 months), imaging 
+(median, 15.0 months), or imaging plus 
+measurement of CEA levels (median, 15.0 
+The findings of this prospective cohort study 
+suggest that ctDNA assay may not provide 
+definitive advantages as a surveillance 
+strategy compared with standard imaging 
+combined with measurement of CEA levels 
+when performed per NCCN guidelines. 
+However, a positive ctDNA finding without 
+doubt indicates an almost definitive risk of 
+relapse. 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 21 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+months) in the time to identify disease 
+recurrence. 
+Tie et al.
+26
+ Circulating tumor DNA was detectable in 20 of 
+96 (21%) postsurgical samples and was 
+associated with inferior recurrence-free 
+survival (hazard ratio [HR], 3.8; 95% CI, 2.4-
+21.0; P < .001) 
+ 
+In this multicenter cohort study of 96 patients 
+with stage III colon cancer, a significant 
+difference in 3-year recurrence-free interval 
+was observed in patients with detectable vs 
+undetectable levels of circulating tumor DNA 
+after surgery (47% vs 76%)  
+ 
+The estimated 3-year RFI was 30% when 
+ctDNA was detectable after chemotherapy 
+and 77% when ctDNA was undetectable (HR, 
+6.8; 95% CI, 11.0-157.0; P < .001) 
+ 
+Postsurgical ctDNA status remained 
+independently associated with RFI after 
+adjusting for known clinicopathologic risk 
+factors (HR, 7.5; 95% CI, 3.5-16.1; P < .001). 
+Results suggest that ctDNA analysis after 
+surgery is a promising prognostic marker in 
+stage III colon cancer. Post chemotherapy 
+ctDNA analysis may define a patient subset 
+that remains at high risk of recurrence 
+despite completing standard adjuvant 
+treatment. 
+ 
+ 
+Tie et al.
+31 
+455 patients underwent randomization, 302 
+were assigned to ctDNA-guided management 
+and 153 to standard of care management 
+ 
+A lower percentage of patients in the ctDNA-
+guided group than in the standard-
+management group received adjuvant 
+chemotherapy (15% vs. 28%; relative risk, 1.82; 
+95% confidence interval [CI], 1.25 to 2.65). 
+ 
+In the evaluation of 2-year recurrence-free 
+survival, ctDNA-guided management was 
+noninferior to standard management (93.5% 
+and 92.4%, respectively; absolute difference, 1.1 
+percentage points; 95% CI, −4.1 to 6.2 
+[noninferiority margin, −8.5 percentage 
+points]). 
+ 
+Three-year recurrence-free survival was 86.4% 
+among ctDNA-positive patients who received 
+adjuvant chemotherapy and 92.5% among 
+ctDNA-negative patients who did not. 
+ 
+Among ctDNA-negative patients, 3-year 
+recurrence-free survival was higher among 
+patients with clinical low-risk cancers than 
+among those with high-risk cancers (96.7% vs. 
+85.1%; hazard ratio, 3.04; 95% CI, 1.26 to 7.34) 
+ 
+3-year recurrence-free survival was higher 
+among patients with T3 tumors than among 
+those with T4 tumors (94.2% vs. 81.3%; hazard 
+ratio, 2.60; 95% CI, 1.01 to 6.71) 
+ 
+In this trial, we found that a ctDNA-guided 
+approach reduced the number of patients 
+who received adjuvant therapy and did not 
+alter the risk of recurrence. 
+ 
+ctDNA positive patients appeared to derive 
+considerable benefit from adjuvant 
+treatment, given the low percentage of 
+patients with recurrence in this trial as 
+compared with previously reported high 
+recurrence rates in this subgroup of patients 
+when no adjuvant chemotherapy was 
+administered 
+ 
+The study confirmed the very low risk of 
+recurrence in untreated ctDNA-negative 
+patient 
+ 
+Most notable was the 3-year recurrence-free 
+survival of 96.7% among patients with low-
+risk disease, indicating that adjuvant therapy 
+should not be considered for ctDNA negative 
+patients who are at clinicopathological low 
+risk. This is an important observation, 
+because in routine clinical practice adjuvant 
+chemotherapy is still administered to some 
+patients at low risk (11% in our standard-
+management group), particularly younger 
+patients 
+ 
+The results of this trial suggest that a survival 
+benefit from adjuvant chemotherapy may be 
+obtained in a well-defined subgroup of 
+patients with stage II colon cancer — 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 22 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Major Findings Conclusions & Relevance 
+namely, those with detectable ctDNA after 
+surgery 
+ 
+A ctDNA-guided approach to the treatment 
+of stage II colon cancer reduced adjuvant 
+chemotherapy use without compromising 
+recurrence-free survival.  
+Kotaka et 
+al
+32 
+GALAXY enrolled 1,564 patients, of whom 1,040 
+(the “outcome cohort”) were included in the 
+current analysis. 
+ 
+Patients who tested positive for ctDNA 4 
+weeks after surgery had an 11- to 13-times 
+increased risk for recurrence. 
+ 
+The assay’s sensitivity for disease recurrence 
+was calculated at 63.6% for the analysis of 
+patients with stage I to IV disease and 67.6% 
+for those with stage II to III disease. 
+ 
+The multivariate analysis showed the risk of 
+recurrence for patients with stage II to III 
+tumors was highly correlated with ctDNA 
+positivity at 4 weeks after surgery (hazard 
+ratio [HR] = 15.3; P < .001).  
+ 
+Patients with baseline ctDNA positivity who 
+remained positive over the course of 
+treatment had an almost 16-fold increased 
+risk of disease recurrence 
+ 
+Patients who did not clear their ctDNA 
+between 4- and 12-weeks during adjuvant 
+chemotherapy had significantly worse 
+outcomes relative to those who cleared their 
+ctDNA—i.e., “positive to positive” (58.3%) vs 
+“positive to negative” (100%)—exhibiting a 
+15.8  -fold increased risk.  
+ 
+The disease-free survival rate for ctDNA-
+negative patients that remained negative was 
+98% and for those who turned positive 62.5%. 
+ 
+For patients with high-risk stage II, stage III, 
+and stage IV disease, adjuvant chemotherapy 
+yielded a benefit among patients who tested 
+positive for ctDNA 4 weeks after surgery, with 
+hazard ratios of 9.4 (P = .04), 8.8 (P < .001), and 
+2.4 (P = .02), respectively.  
+ 
+Patients with high-risk stage II to III disease 
+who tested negative for ctDNA at 4 weeks, on 
+the other hand, had excellent outcomes, 
+whether or not they received chemotherapy, 
+with a disease-free survival of approximately 
+95% at 12 months. 
+The study shows that stratifying post-
+surgical treatment decisions using the ctDNA 
+assay can identify patients likely to benefit 
+from ACT across all stages of disease, 
+including pStage II.  
+HR: hazard ratio, ACT: adjuvant chemotherapy, DSF: disease free survival, RFS: recurrence free survival, CRLM: 
+colorectal cancer liver metastases, mCRC: metastatic colorectal cancer 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 23 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Table 5. Study Design and Conduct Limitations 
+Study Selection
+a
+ Blinding
+b
+ Delivery of 
+Test
+c
+ 
+Selective 
+Reporting
+d
+ 
+Data 
+Completeness
+e
+ 
+Statistical
+f
+ 
+Reinert et 
+al (2019)
+3,
+ 
+1. individual 
+selection not 
+described 
+    
+Multiple 
+subgroup 
+analyses, 
+small 
+numbers of 
+individuals 
+with positive 
+ctDNA tests. 
+Henriksen 
+et al 
+(2022)
+4,
+ 
+  
+2. 
+Standard-
+of-care 
+imaging 
+frequency 
+differed 
+between 
+the Spanish 
+(every 6 
+months) 
+and Danish 
+(at month 
+12 and 36) 
+cohort. 
+  
+Small 
+numbers of 
+individuals 
+with positive 
+ctDNA tests. 
+Loupakis 
+et al 
+(2021)
+5,
+ 
+     
+Small 
+numbers of 
+individuals 
+with positive 
+ctDNA tests. 
+Fakih et al 
+(2022)
+2,
+ 
+      
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+ctDNA: circulating tumor DNA. 
+a 
+Selection key: 1. Selection not described; 2. Selection not random or consecutive (ie, convenience). 
+b 
+Blinding key: 1. Not blinded to results of reference or other comparator tests. 
+c 
+Test Delivery key: 1. Timing of delivery of index or reference test not described; 2. Timing of index and 
+comparator tests not same; 3. Procedure for interpreting tests not described; 4. Expertise of evaluators not 
+described. 
+d
+ Selective Reporting key: 1. Not registered; 2. Evidence of selective reporting; 3. Evidence of selective publication. 
+e
+ Data Completeness key: 1. Inadequate description of indeterminate and missing samples; 2. High number of 
+samples excluded; 3. High loss to follow-up or missing data. 
+f
+ Statistical key: 1. Confidence intervals and/or p values not reported; 2. Comparison to other tests not reported. 
+ 
+Section Summary: Tumor-Informed Circulating Tumor DNA Testing with Signatera in Individuals 
+with Colorectal Cancer 
+For individuals with colorectal cancer (CRC) who receive tumor-informed ctDNA testing with 
+Signatera to guide treatment decisions and monitor for recurrence, the evidence includes 3 
+noncomparative studies (N = 410) and 1 retrospective comparative study (N = 48).  
+ 
+Nonrandomized studies have reported an association between ctDNA results measured at diagnosis, 
+following surgery, during adjuvant therapy, and during surveillance after curative treatment and 
+prognosis, but these studies are limited by a lack of comparison to tests used for the same purpose, 
+imprecise estimates due to small sample sizes, and clinical heterogeneity of study populations. No 
+stu  dy reported management changes made in response to ctDNA test results. A retrospective 
+observational study found no advantage to surveillance with Signatera compared to standard 
+surveillance conducted according to NCCN guidelines (p>.99 for sensitivity and specificity compared 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 24 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+to imaging). There is no direct evidence that the use of the test improves health outcomes, and 
+indirect evidence is not sufficient to draw conclusions about clinical validity. 
+ 
+Breast Cancer 
+The purpose of tumor-informed ctDNA testing in individuals with breast cancer is to predict disease 
+course (e.g., aggressiveness, risk of recurrence, death) and inform treatment decisions, and to monitor 
+for recurrence following curative treatment. 
+ 
+The question addressed in this evidence review is: Does tumor-informed circulating tumor DNA 
+testing improve the net health outcome in individuals with breast cancer? 
+ 
+The following PICO was used to select literature to inform this review. 
+ 
+Populations 
+The population of interest is individuals with breast cancer, or those who have been treated for 
+breast cancer and are being monitored for recurrence. 
+ 
+Interventions 
+The test being considered is circulating tumor DNA testing with Signatera: 
+• At diagnosis to inform decisions about neoadjuvant chemotherapy. 
+• After surgery to inform decisions about adjuvant treatment. 
+• Following curative treatment, to monitor for recurrence. 
+ 
+Comparators 
+• Decisions about neoadjuvant and adjuvant chemotherapy are based on clinicopathological 
+risk factors. 
+• Guidelines for disease surveillance following breast cancer treatment recommend regular 
+imaging and physical examinations, and additional testing upon presentation of symptoms. 
+ 
+Outcomes 
+The general outcomes of interest are disease-specific survival, test accuracy and validity, and change 
+in disease status. Specific outcomes of interest are recurrence risk, RFS, and overall survival at follow-
+up. 
+ 
+The specific outcomes of interest depend on the proposed purpose of testing in individuals with 
+breast cancer. 
+• If used for risk stratification to 
+rule  -out individuals for neoadjuvant chemotherapy at 
+diagnosis or adjuvant treatment following surgery, the performance characteristics of most 
+interest are negative predictive value and sensitivity. 
+• If used for risk stratification to to  
+rule  -in individuals for neoadjuvant chemotherapy at 
+diagnosis or adjuvant treatment following surgery, the performance characteristics of most 
+interest are positive predictive value and specificity. 
+ 
+If used for disease surveillance following primary treatment, beneficial outcomes of a true positive 
+test would be earlier detection of metastasis and initiation of treatment. Harmful outcomes of a false 
+positive test would be undergoing unnecessary or incorrect treatment, and experiencing adverse 
+effects of such treatment. See also Evidence review 2.04.36 for additional discussion of outcomes in 
+breast cancer risk assessment studies. 
+ 
+Study Selection Criteria 
+For the evaluation of clinical validity of tumor informed ctDNA testing  , studies that meet the 
+following eligibility criteria were considered: 
+• Reported on the accuracy of the marketed version of the technology 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 25 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+• Included a suitable reference standard 
+• Individual/sample clinical characteristics were described 
+• Individual/sample selection criteria were described. 
+ 
+Nonrandomized Trials 
+Coombes et al (2019) evaluated Signatera for disease surveillance in 49 individuals who had received 
+surgery and adjuvant therapy for stage I to III breast cancer of various subtypes.
+6,
+ Signatera detected 
+ctDNA in 16 of 18 individuals who subsequently relapsed, and the presence of ctDNA test was 
+associated with poorer prognosis (Table 7). 
+ 
+Magbanua et al (2021) evaluated ctDNA clearance as a predictor of response to neoadjuvant 
+chemotherapy (NAC) in 84 individuals with nonmetastatic breast cancer who were enrolled in the I-
+SPY2 trial.
+7,
+ In the population as a whole, ctDNA positivity decreased during the course of NAC, from 
+73% before treatment (T0), to 35% at 3 weeks (T1), to 14% at the inter-regimen time point (T2), and 
+down to 9% after NAC (T3). Hazard ratios for recurrence at each of these timepoints are shown in 
+Table 7 and indicate that positive predictive value increased over time. 
+ 
+Study limitations are shown in Tables 8 and 9. Major limitations of both studies include a lack of 
+comparison to standard methods of monitoring, and heterogeneity in the study populations. 
+ 
+Coombes et al (2019), in a longitudinal study6 in breast cancer patients found that plasma ctDNA 
+was detected before clinical or radiologic relapse in 16 of 18 relapsed patients; moreover, ctDNA 
+predicted metastatic relapse with a lead time of up to 2 years. 
+ 
+Table 6. Nonrandomized Studies of Signatera Testing in Breast Cancer - Study Characteristics 
+Study Test 
+Purpose 
+Study 
+Population 
+Study 
+Design and 
+Setting 
+Reference 
+Standard 
+Threshol
+d for 
+Positive 
+Index 
+Test 
+Timing of 
+Reference 
+and Index 
+Tests 
+Blinding 
+of 
+Assesso
+rs 
+Coombes 
+et al 
+(2019)
+6,
+ 
+Relapse 
+detection 
+following 
+primary 
+treatment 
+49 individuals 
+with stage I 
+to III breast 
+cancer who 
+had 
+undergone 
+surgery and 
+adjuvant 
+chemotherap
+y; 34 HR–
+positive/HER
+2-negative, 8 
+HER2-
+positive, 7 
+TNBC 
+Prospective 
+cohort, 
+multicenter, 
+UK 
+Cancer 
+antigen 15-
+3 serum 
+testing, CT 
+imaging 
+2 or 
+more 
+variants 
+detected 
+out of 16 
+Plasma 
+samples 
+every 6 
+months for 
+up   to 4 years 
+Yes 
+Magbanu
+a et al 
+(2021)
+7,
+ 
+Response to 
+neoadjuvant 
+chemothera
+py 
+84 individuals 
+with >  2.5 cm 
+nonmetastati
+c stage II/III 
+breast cancer 
+Retrospecti
+ve analysis 
+of samples 
+prospectivel
+y collected 
+as part of 
+the I-SPY2 
+TRIAL 
+Radiologic
+al imaging 
+2 or 
+more 
+variants 
+detected 
+out of 16 
+Plasma 
+samples 
+collected 
+before, 
+during, and 
+after 
+neoadjuvant 
+chemothera
+py 
+Yes 
+CT: computerized tomography; HR: hormone receptor; HER2: human epidermal growth factor receptor 2; TNBC: 
+triple-negative breast cancer. 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 26 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Table 7. Nonrandomized Studies of Signatera Testing in Breast Cancer - Study Results 
+Study 
+Initial 
+N 
+Final 
+N 
+Excluded 
+Samples 
+Recurrence 
+Rate 
+Median 
+Time to 
+Recurren
+ce, 
+months 
+(range) 
+Clinical Validity 
+      
+Sensitivity Specificity 
+PPV NPV 
+Coombes et 
+al (2019)
+6,
+ 
+197 49 148 18/49 
+(36.7%) 
+8.9 (0.5 to 
+24.0) 
+16/18 
+(89%) 
+31/31 
+(100%) 
+NR NR 
+Hazard ratio 
+(95% CI) for 
+RFS (first 
+postsurgical 
+sample) 
+11.8 (4.3 to 32.5), p<.001 
+Hazard ratio 
+(95% CI) for 
+RFS (any 
+follow up 
+sample) 
+35.8 (7.9 to 161.3), p<.001 
+Magbanua et 
+al (2021)
+7,
+ 
+84 75 9 NA NA NR NR 4/6 
+(67%) 
+50/5
+4 
+(93%) 
+Hazard ratio 
+(95% CI) for 
+recurrence 
+(T0, baseline) 
+4.11 (0.52 to 32.4) 
+Hazard ratio 
+(95% CI) for 
+RFS (T1, 3 
+weeks after 
+therapy 
+initiation) 
+4.5 (1.2 to 17.4) 
+Hazard ratio 
+(95% CI) for 
+RFS (T2, 
+between 
+regimens) 
+5.4 (1.3 to 22.5) 
+Hazard ratio 
+(95% CI) for 
+RFS (T3, after 
+neoadjuvant 
+chemotherap
+y) 
+11.5 (2.9 to 46.1) 
+CI: confidence interval; NA: not applicable; NPV: negative predictive value; NR: not reported; PPV: positive 
+predictive value; RFS: recurrence-free survival. 
+ 
+Table 8. Study Relevance Limitations 
+Study Population
+a
+ Intervention
+b
+ Comparator
+c
+ Outcomes
+d
+ Duration of 
+Follow-Up
+e
+ 
+Coombes et al 
+(2019)
+6,
+ 
+2. Study 
+population 
+included a mix 
+of individuals 
+with stage I to 
+III breast cancer 
+ 
+3. Not 
+compared to 
+tests used for 
+the same 
+purpose 
+  
+Magbanua et al 
+(2021)
+7,
+ 
+  
+3. Not 
+compared to 
+tests used for 
+  
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 27 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Population
+a
+ Intervention
+b
+ Comparator
+c
+ Outcomes
+d
+ Duration of 
+Follow-Up
+e
+ 
+the same 
+purpose 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Population key: 1. Intended use population unclear; 2. Clinical context is unclear; 3. Study population is unclear; 
+4. Study population not representative of intended use. 
+b
+ Intervention key: 1. Classification thresholds not defined; 2. Version used unclear; 3. Not intervention of interest. 
+c
+ Comparator key: 1. Classification thresholds not defined; 2. Not compared to credible reference standard; 3. 
+Not compared to other tests in use for same purpose. 
+d
+ Outcomes key: 1. Study does not directly assess a key health outcome; 2. Evidence chain or decision model not 
+explicated; 3. Key clinical validity outcomes not reported (sensitivity, specificity and predictive values); 4. 
+Reclassification of diagnostic or risk categories not reported; 5. Adverse events of the test not described 
+(excluding minor discomforts and inconvenience of venipuncture or noninvasive tests). 
+e
+ Follow-Up key: 1. Follow-up duration not sufficient with respect to natural history of disease (true positives, true 
+negatives, false positives, false negatives cannot be determined). 
+ 
+Table 9. Study Design and Conduct Limitations 
+Study Selection
+a
+ Blinding
+b
+ Delivery of 
+Test
+c
+ 
+Selective 
+Reporting
+d
+ 
+Data 
+Completeness
+e
+ 
+Statistical
+f
+ 
+Coombes et 
+al (2019)
+6,
+ 
+     
+1. Confidence 
+intervals for 
+test 
+characteristics 
+not reported; 
+small number 
+of positive 
+ctDNA tests 
+Magbanua 
+et al (2021)
+7,
+ 
+2. 
+Retrospective 
+analysis 
+    
+1. Confidence 
+intervals for 
+test 
+characteristics 
+not reported; 
+small number 
+of positive 
+ctDNA tests 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Selection key: 1. Selection not described; 2. Selection not random or consecutive (ie, convenience). 
+b
+ Blinding key: 1. Not blinded to results of reference or other comparator tests. 
+c
+ Test Delivery key: 1. Timing of delivery of index or reference test not described; 2. Timing of index and 
+comparator tests not same; 3. Procedure for interpreting tests not described; 4. Expertise of evaluators not 
+described. 
+d
+ Selective Reporting key: 1. Not registered; 2. Evidence of selective reporting; 3. Evidence of selective publication. 
+e
+ Data Completeness key: 1. Inadequate description of indeterminate and missing samples; 2. High number of 
+samples excluded; 3. High loss to follow-up or missing data. 
+f
+ Statistical key: 1. Confidence intervals and/or p values not reported; 2. Comparison to other tests not reported. 
+ 
+Section Summary: Tumor-Informed Circulating Tumor DNA Testing in Individuals with Breast 
+Cancer 
+For individuals with breast cancer who receive tumor-informed ctDNA testing to guide treatment 
+decisions and monitor for recurrence, the evidence includes 2 noncomparative studies (N = 133). One 
+study evaluated Signatera testing for disease surveillance following primary treatment, and 1 
+reported the association of test results at different timepoints with response to neoadjuvant 
+chemotherapy. Although the studies found an association of test results with prognosis, the studies 
+are limited by a lack of comparison to tests used for the same purpose, imprecise estimates due to 
+small sample sizes, and clinical heterogeneity of study populations. No study reported management 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 28 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+changes made in response to ctDNA test results. There is no direct evidence that the use of the test 
+improves health outcomes, and indirect evidence is not sufficient to draw conclusions about clinical 
+validity. 
+ 
+Bladder Cancer 
+Clinical Context and Test Purpose 
+The purpose of testing in individuals with bladder cancer is to predict disease course to inform 
+treatment decisions and to monitor for recurrence following curative treatment. 
+ 
+The question addressed in this evidence review is: Does tumor-informed circulating tumor DNA 
+testing improve the net health outcome in individuals with bladder cancer? 
+The following PICO was used to select literature to inform this review. 
+ 
+Populations 
+The relevant population of interest is individuals with bladder cancer, or those who have been treated 
+for bladder cancer and are being monitored for recurrence. 
+ 
+Interventions 
+The test being considered is circulating tumor DNA testing: 
+• At diagnosis, to identify individuals at low risk of recurrence after cystectomy who may be 
+eligible for cystectomy without neoadjuvant chemotherapy. 
+• After chemotherapy before cystectomy, to determine treatment response and inform 
+treatment decisions (e.g., additional cycles of chemotherapy or other therapeutic strategies). 
+• During disease surveillance after cystectomy, to identify metastatic relapse after cystectomy 
+at an early time point, and aid in the selection of individuals who may benefit from 
+early/adjuvant treatment. For individuals with bladder cancer who are being evaluated for 
+adjuvant chemotherapy, given that the test will be used to 
+rule  -in individuals for adjuvant 
+chemotherapy, the performance characteristics of most interest are positive predictive value 
+and specificity. 
+ 
+Comparators 
+• Urine testing, cystoscopy, and radiographic imaging are used for disease monitoring in 
+individuals with bladder cancer. 
+• Detection of relapse and monitoring of response to treatment in the metastatic setting is 
+performed by standard computed tomography scan. 
+ 
+Outcomes 
+The general outcomes of interest are disease-specific survival, test accuracy and validity, and change 
+in disease status. Specific outcomes of interest are recurrence risk, RFS, and overall survival at follow-
+up. 
+ 
+If used to 
+rule in individuals with bladder cancer who would be likely to benefit from adjuvant 
+chemotherapy, the performance characteristics of most interest are positive predictive value and 
+specificity. 
+ 
+If used to 
+rule out patients with bladder cancer who could forego adjuvant chemotherapy, the 
+performance characteristics of most interest are negative predictive value and sensitivity. However, 
+since the test would be used to select individuals who would not receive category 1 recommended 
+treatment, direct evidence of improvement in outcomes is required. 
+ 
+Study Selection Criteria 
+For the evaluation of clinical validity of these test   s, studies that meet the following eligibility criteria 
+were considered: 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 29 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+• Reported on the accuracy of the marketed version of the technology 
+• Included a suitable reference standard 
+• Individual/sample clinical characteristics were described 
+• Individual/sample selection criteria were described. 
+ 
+Nonrandomized Trials 
+Two nonrandomized studies have reported an association between Signatera testing and prognosis 
+in bladder cancer (Tables 10 and 11). 
+ 
+Christensen et al (2019) assessed the association of ctDNA with prognosis in 68 individuals with 
+localized advanced bladder cancer.
+8, 
+ 
+Powles et al (2021) reported the association of a positive Signatera test to treatment response in 581 
+individuals who had undergone surgery for urothelial cancer and were enrolled in a RCT of 
+atezolizumab versus observation.
+9,
+ Study participants who were positive for ctDNA had improved 
+disease-free survival and overall survival in the atezolizumab arm versus the observation arm 
+(disease-free survival hazard ratio = 0.58 [95% CI, 0.43–0.79]; p=.0024 and overall survival hazard 
+ratio = 0.59 [95% CI, 0.41–0.86]). No difference in disease-free survival or overall survival between 
+treatment arms was noted for patients who were negative for ctDNA. 
+ 
+Christensen et al (2019) A prospective study evaluating ctDNA before and after surgery and during 
+chemotherapy in patients with locally advanced bladder cancer found that the dynamics of ctDNA 
+during treatment is a good predictor of outcome and a better predictor of treatment efficacy than 
+pathologic downstaging. Moreover, in this study, patients without clearance of ctDNA had a 
+response rate of 0%8. 
+ 
+The major limitation of these studies was lack of comparison to other tests used for the same 
+purpose (Tables 12 and 13). 
+ 
+Table 10. Nonrandomized Studies of Signatera Testing in Bladder Cancer - Study Characteristics 
+Study Study 
+Population 
+Study Design 
+and Setting 
+Reference 
+Standard 
+Threshold 
+for Positive 
+Index Test 
+Timing of 
+Reference and 
+Index Tests 
+Blinding of 
+Assessors 
+Christensen 
+et al (2019) 
+8,
+ 
+68 individuals 
+with muscle-
+invasive 
+bladder cancer 
+who were 
+receiving 
+neoadjuvant 
+chemotherapy 
+before 
+cystectomy 
+between 2013 
+and 2017 
+Prospective, 
+one 
+University 
+Hospital, 
+Denmark 
+Radiological 
+imaging 
+greater or 
+equal to 2 
+variants 
+detected 
+out of 16 
+Surveillance 
+according to 
+European 
+Guidelines. 
+ 
+Blood samples 
+collected at 
+uniformly 
+scheduled 
+clinical visits 
+and before 
+each 
+chemotherapy 
+cycle. 
+ 
+Median follow-
+up of 21 months 
+after 
+cystectomy. 
+Yes 
+Powles et al 
+(2021)
+9,
+ 
+581 individuals 
+with urothelial 
+cancer from a 
+randomized 
+Retrospective Radiological 
+imaging 
+greater or 
+equal to 2 
+variants 
+Post-surgical 
+plasma 
+samples were 
+collected and 
+No 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 30 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Study 
+Population 
+Study Design 
+and Setting 
+Reference 
+Standard 
+Threshold 
+for Positive 
+Index Test 
+Timing of 
+Reference and 
+Index Tests 
+Blinding of 
+Assessors 
+Phase III trial 
+of adjuvant 
+atezolizumab 
+vs.   observation 
+who had 
+undergone 
+surgery and 
+were 
+evaluable for 
+ctDNA 
+detected 
+out of 16 
+tested at 
+baseline and 6 
+weeks after 
+randomization 
+and individuals 
+were followed 
+up for a 
+median of 23 
+months 
+ 
+Table 11. Recurrence Rates by Risk Category in Nonrandomized Studies of Signatera in Bladder Cancer 
+Study Mean Recurrence Rate (95% CI) 
+ 
+ctDNA Positive ctDNA Negative 
+Christensen et al (2019) 
+8,
+ 
+  
+At diagnosis before chemotherapy 11/24 (46%) 1/35 (3%) 
+Adjusted hazard ratio (95% CI) for recurrence 29.1; p=.001 
+After chemotherapy before cystectomy 6/8 (75%) 6/55 (11%) 
+Adjusted hazard ratio (95% CI) for recurrence 12.0; p<.001 
+During disease surveillance after cystectomy 13/17 (76%) 0/47 (0%) 
+Adjusted hazard ratio for recurrence 129.6; p<.001 
+Powles et al (2021)
+9,
+ 
+ 
+Following surgery (cycle 1 day 1) 
+  
+Hazard ratio (95% CI) for DFS 6.3 (4.45 to 8.92); p<.0001 
+6 weeks after randomization (cycle 3 day 1) 
+  
+Hazard ratio (95% CI) for DFS 8.65 (5.67 to 13.18); p<.0001 
+CI: confidence interval; ctDNA: circulating tumor DNA; DFS: disease-free survival. 
+ 
+Table 12. Study Relevance Limitations 
+Study Population
+a
+ Intervention
+b
+ Comparator
+c
+ Outcomes
+d
+ Duration of 
+Follow-Up
+e
+ 
+Christensen et 
+al (2019) 
+8,
+ 
+  
+3. Not 
+compared to 
+tests used for 
+the same 
+purpose 
+  
+Powles et al 
+(2021)
+9,
+ 
+. 
+ 
+3. Not 
+compared to 
+tests used for 
+the same 
+purpose 
+  
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Population key: 1. Intended use population unclear; 2. Clinical context is unclear; 3. Study population is unclear; 
+4. Study population not representative of intended use. 
+b
+ Intervention key: 1. Classification thresholds not defined; 2. Version used unclear; 3. Not intervention of interest. 
+c
+ Comparator key: 1. Classification thresholds not defined; 2. Not compared to credible reference standard; 3. 
+Not compared to other tests in use for same purpose. 
+d
+ Outcomes key: 1. Study does not directly assess a key health outcome; 2. Evidence chain or decision model not 
+explicated; 3. Key clinical validity outcomes not reported (sensitivity, specificity and predictive values); 4. 
+Reclassification of diagnostic or risk categories not reported; 5. Adverse events of the test not described 
+(excluding minor discomforts and inconvenience of venipuncture or noninvasive tests). 
+e
+ Follow-Up key: 1. Follow-up duration not sufficient with respect to natural history of disease (true positives, true 
+negatives, false positives, false negatives cannot be determined). 
+ 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 31 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Table 13. Study Design and Conduct Limitations 
+Study Selection
+a
+ Blinding
+b
+ Delivery of 
+Test
+c
+ 
+Selective 
+Reporting
+d
+ 
+Data 
+Completeness
+e
+ 
+Statistical
+f
+ 
+Christensen 
+et al (2019) 
+8,
+ 
+     
+1. Confidence 
+intervals for 
+hazard 
+ratios not 
+reported. 
+Powles et al 
+(2021)
+9,
+ 
+      
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Selection key: 1. Selection not described; 2. Selection not random or consecutive (ie, convenience). 
+b
+ Blinding key: 1. Not blinded to results of reference or other comparator tests. 
+c
+ Test Delivery key: 1. Timing of delivery of index or reference test not described; 2. Timing of index and 
+comparator tests not same; 3. Procedure for interpreting tests not described; 4. Expertise of evaluators not 
+described. 
+d
+ Selective Reporting key: 1. Not registered; 2. Evidence of selective reporting; 3. Evidence of selective publication. 
+e
+ Data Completeness key: 1. Inadequate description of indeterminate and missing samples; 2. High number of 
+samples excluded; 3. High loss to follow-up or missing data. 
+f
+ Statistical key: 1. Confidence intervals and/or p values not reported; 2. Comparison to other tests not reported. 
+ 
+Section Summary: Tumor-Informed Circulating Tumor DNA Testing in Individuals with Bladder 
+Cancer 
+For individuals with bladder cancer who receive tumor-informed ctDNA testing to guide treatment 
+decisions and monitor for recurrence, the evidence includes 1 uncontrolled prospective cohort study 
+(N = 68) and 1 retrospective subgroup analysis from a RCT (N = 581). The prospective study reported 
+an association between Signatera test results at diagnosis, during chemotherapy treatment, and 
+during surveillance following cystectomy to prognosis. The retrospective analysis reported an 
+association between test results and response to atezolizumab treatment. Study limitations, including 
+a lack of comparison to tests used for the same purpose preclude drawing conclusions about clinical 
+validity and usefulness. No study reported management changes made in response to ctDNA test 
+results. There is no direct evidence that the use of the test improves health outcomes, and indirect 
+evidence is not sufficient to draw conclusions about clinical validity. 
+ 
+Non-Small Cell Lung Cancer (NSCLC) 
+Clinical Context and Test Purpose 
+The purpose of testing in individuals with non-small cell lung cancer (NSCLC) is to predict disease 
+course to inform treatment decisions and to monitor for recurrence following surgical resection. 
+ 
+The question addressed in this evidence review is: Does tumor-informed circulating tumor DNA 
+testing improve the net health outcome in individuals with NSCLC? 
+ 
+The following PICO was used to select literature to inform this review. 
+ 
+Populations 
+The relevant population of interest is individuals with NSCLC, or those who have been treated for 
+NSCLC and are being monitored for recurrence.    
+ 
+Interventions 
+The test being considered is tumor informed circulating tumor DNA testing following surgical 
+resection, to identify metastatic relapse at an early time point, and aid in the selection of individuals 
+who may benefit from early/adjuvant treatment. 
+ 
+Adjuvant platinum-based chemotherapy is not the standard of care following surgery for NSCLC; 
+treatment improves cure rates after surgery in only 5% of patients, and 20% of patients receiving 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 32 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+chemotherapy experience acute toxicities.    Testing is proposed to select patients who are very likely to 
+relapse post-operatively and who might benefit from adjuvant treatment. 
+ 
+Comparators 
+Radiographic imaging is used for disease monitoring in individuals with NSCLC. Detection of relapse 
+and monitoring of response to treatment in the metastatic setting is performed by standard 
+computed tomography scan, with frequency and type of imaging depending on primary treatment 
+and stage. For patients with stage I-II NSCLC following completion of definitive therapy, NCCN 
+guidelines recommend history and physical and chest CT every 6 months for 2 to 3 years, then 
+annually. For patients with primary treatment that included radiotherapy, surveillance is 
+recommended every 3 to 6 months for 3 years, and every 6 months for 2 years, then annually. 
+Treatment options following recurrence include resection and/or systemic therapy. 
+ 
+Outcomes 
+The general outcomes of interest are disease-specific survival, test accuracy and validity, and change 
+in disease status. Specific outcomes of interest are recurrence risk, RFS, and overall survival at follow-
+up. 
+ 
+Beneficial outcomes of a true positive test would be an individual undergoing potentially beneficial 
+additional treatment such as chemotherapy at an earlier time point than if a relapse were identified 
+clinically. 
+ 
+Harmful outcomes of a false positive test would be undergoing unnecessary or incorrect treatment, 
+and experiencing adverse effects of such treatment. 
+ 
+Nonrandomized Trial 
+The evidence for the use of ctDNA testing to detect relapse in NSCLC following surgery is limited to a 
+subgroup analysis of 24 individuals enrolled in TRACERx, a longitudinal cohort study of tumor 
+sampling and genetic analysis in individuals with NSCLC.
+10,
+ Of 14 individuals with confirmed relapse, 
+13 (93%) had a positive ctDNA test (defined as at least 2 single-nucleotide variants detected). Of 10 
+individuals with no relapse after a median follow up of 775 days, (range 688 to 945 days), 1 had a 
+positive ctDNA test (10%). 
+ 
+Also, the TRAcking non-small cell lung cancer (NSCLC) Evolution through therapy (TRACERx), is a 
+prospective study phylogenetically profiling and monitoring (from diagnosis to death) the clonal 
+evolution of tumors in 100 NSCLC patients. The median interval between ctDNA detection and 
+detection of relapse by imaging was 70 days (range 10 to 346 days); in some of these cases, lead 
+times of more than 6 months were observed.
+10
+ In some cases, further subclonal analysis revealed 
+targetable mutations and amplification events implicated in driving the relapse, thereby also 
+impacting the therapeutic options available to a given patient.
+10
+ 
+ 
+Study limitations are shown in Tables 15 and 16. Major limitations include no comparison to standard 
+surveillance methods and imprecise estimates due to the small sample size. Additionally, the 
+commercially available Signatera has been updated since this publication. 
+ 
+Table 14. Nonrandomized Study of Signatera Testing in Non-Small Cell Lung Cancer 
+Study Study 
+Population 
+Study 
+Design and 
+Setting 
+Reference 
+Standard 
+Threshold 
+for 
+Positive 
+Index Test 
+Timing of 
+Reference 
+and Index 
+Tests 
+Blinding 
+of 
+Assessors 
+Main Results 
+Abbosh 
+et al 
+(2017)
+10,
+ 
+24 
+individuals 
+with early-
+stage 
+NSCLC 
+Prospective, 
+subgroup of 
+patients 
+enrolled in 
+the 
+Clinical 
+assessment 
+and chest 
+radiograph 
+Greater or 
+equal to 2 
+variants 
+detected 
+out of 16 
+Every 3 
+months for 
+2 years, 
+then every 
+6 months 
+Yes Of 14 
+individuals 
+with 
+confirmed 
+relapse, 13 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 33 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Study Study 
+Population 
+Study 
+Design and 
+Setting 
+Reference 
+Standard 
+Threshold 
+for 
+Positive 
+Index Test 
+Timing of 
+Reference 
+and Index 
+Tests 
+Blinding 
+of 
+Assessors 
+Main Results 
+TRACERx 
+Study 
+thereafter; 
+individuals 
+were 
+followed up 
+for a 
+median of 
+775 days 
+(93%) had a 
+positive 
+ctDNA test Of 
+10 individuals 
+with no 
+relapse after 
+a median 
+followup of 
+775 days, 
+(range 688 to 
+945 days), 1 
+had a positive 
+ctDNA test 
+(10%). Median 
+interval 
+between 
+ctDNA 
+detection and 
+NSCLC 
+relapse 
+confirmed by 
+CT imaging 
+indicated by 
+clinical and 
+chest 
+radiograph 
+follow-up 
+(lead time) 
+was 70 days 
+(range, 10 to 
+346 days). 
+  
+Table 15. Study Relevance Limitations 
+Study Population
+a
+ Intervention
+b
+ Comparator
+c
+ Outcomes
+d
+ Duration of 
+Follow-Up
+e
+ 
+Abbosh et al 
+(2017)
+10,
+ 
+  
+3. No 
+comparison to 
+standard 
+methods of 
+monitoring for 
+relapse 
+1. Health 
+outcomes not 
+assessed 
+ 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Population key: 1. Intended use population unclear; 2. Clinical context is unclear; 3. Study population is unclear; 
+4. Study population not representative of intended use. 
+b
+ Intervention key: 1. Classification thresholds not defined; 2. Version used unclear; 3. Not intervention of interest. 
+c
+ Comparator key: 1. Classification thresholds not defined; 2. Not compared to credible reference standard; 3. 
+Not compared to other tests in use for same purpose. 
+d
+ Outcomes key: 1. Study does not directly assess a key health outcome; 2. Evidence chain or decision model not 
+explicated; 3. Key clinical validity outcomes not reported (sensitivity, specificity and predictive values); 4. 
+Reclassification of diagnostic or risk categories not reported; 5. Adverse events of the test not described 
+(excluding minor discomforts and inconvenience of venipuncture or noninvasive tests). 
+e
+ Follow-Up key: 1. Follow-up duration not sufficient with respect to natural history of disease (true positives, true 
+negatives, false positives, false negatives cannot be determined). 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 34 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Table 16. Study Design and Conduct Limitations 
+Study Selection
+a
+ Blinding
+b
+ Delivery of 
+Test
+c
+ 
+Selective 
+Reporting
+d
+ 
+Data 
+Completeness
+e
+ 
+Statistical
+f
+ 
+Abbosh et al 
+(2017)
+10,
+ 
+2. Subgroup 
+analysis, 
+subset of the 
+first 100 
+participants 
+enrolled in 
+the study; 
+unclear if 
+selection 
+was 
+consecutive 
+ 
+2. Timing of 
+ctDNA 
+testing 
+unclear 
+  
+1. No 
+comparison 
+to imaging, 
+no 
+confidence 
+intervals 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Selection key: 1. Selection not described; 2. Selection not random or consecutive (i.e.  , convenience). 
+b
+ Blinding key: 1. Not blinded to results of reference or other comparator tests. 
+c
+ Test Delivery key: 1. Timing of delivery of index or reference test not described; 2. Timing of index and 
+comparator tests not same; 3. Procedure for interpreting tests not described; 4. Expertise of evaluators not 
+described. 
+d
+ Selective Reporting key: 1. Not registered; 2. Evidence of selective reporting; 3. Evidence of selective publication. 
+e
+ Data Completeness key: 1. Inadequate description of indeterminate and missing samples; 2. High number of 
+samples excluded; 3. High loss to follow-up or missing data. 
+f
+ Statistical key: 1. Confidence intervals and/or p values not reported; 2. Comparison to other tests not reported. 
+ 
+Section Summary: Tumor-Informed Circulating Tumor DNA Testing in Individuals with Non-Small 
+Cell Lung Cancer 
+For individuals with NSCLC who receive tumor-informed ctDNA testing with Signatera to guide 
+treatment decisions and monitor for recurrence, the evidence includes 1 subgroup analysis of 
+participants enrolled in a prospective observational study (N = 24). Of 14 individuals with confirmed 
+relapse, 13 (93%) had a positive ctDNA test (defined as at least 2 single-nucleotide variants detected). 
+Of 10 individuals with no relapse after a median follow up of 775 days, (range 688 to 945 days), 1 had 
+a positive ctDNA test (10%). This study’s small sample size and lack of a comparator preclude 
+drawing conclusions about clinical validity. There is no direct evidence that the use of the test 
+improves health outcomes, and indirect evidence is not sufficient to draw conclusions about clinical 
+validity. 
+ 
+Tumor-Informed Circulating Tumor DNA Testing in Individuals with Esophageal Cancer 
+Clinical Context and Test Purpose 
+The purpose of testing in individuals with esophageal cancer is to detect minimal residual disease 
+following surgical resection and to monitor for disease recurrence. 
+ 
+The question addressed in this evidence review is: Does tumor-informed circulating tumor DNA 
+testing improve the net health outcome in individuals with esophageal cancer? 
+ 
+The following PICO was used to select literature to inform this review. 
+ 
+Populations 
+The relevant population of interest is individuals with esophageal cancer who have undergone 
+surgical resection. 
+ 
+Interventions 
+The test being considered is circulating tumor DNA testing with Signatera: 
+• Following surgical resection, to detect minimal residual disease and aid in the selection of 
+individuals who may benefit from early/adjuvant treatment. 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 35 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+• For disease monitoring after curative treatment, to identify metastatic relapse at an early 
+time point, and aid in the selection of individuals who may benefit from early/adjuvant 
+treatment. 
+ 
+Comparators 
+Recommendations on surveillance and monitoring following esophageal cancer treatment include 
+per  iodic upper endoscopy, laboratory tests, and imaging as indicated. Specific recommendations 
+depend on tumor classification. 
+ 
+Outcomes 
+The general outcomes of interest are disease-specific survival, test accuracy and validity, and change 
+in disease status. Specific outcomes of interest are recurrence risk, RFS, and overall survival at follow-
+up. 
+ 
+Beneficial outcomes of a true positive test would be an individual undergoing potentially beneficial 
+additional treatment at an earlier time point than if a relapse were identified clinically. 
+ 
+Harmful outcomes of a false positive test would be undergoing unnecessary or incorrect treatment 
+and experiencing adverse effects of such treatment. 
+ 
+Study Selection Criteria 
+For the evaluation of clinical validity of the Signatera test, studies that meet the following eligibility 
+criteria were considered: 
+• Reported on the accuracy of the marketed version of the technology 
+• Included a suitable reference standard 
+• Individual/sample clinical characteristics were described 
+• Individual/sample selection criteria were described. 
+ 
+Nonrandomized Trial 
+One noncomparative retrospective study reported the association of Signatera testing measured 
+before and after surgery with relapse and recurrence in 17 individuals with esophageal 
+adenocarcinoma (Tables 17 and 18). Patients who were ctDNA-positive before surgery had 
+significantly poorer disease-free survival (DFS) (p<.042), with a median DFS of 32.0 months vs. 63.0 
+months in ctDNA-negative preoperative patients. This study was limited by the very small number 
+sample size, and its retrospective design (Tables 19 and 20). 
+ 
+Table 17. Nonrandomized Study of Signatera Testing to Predict Relapse in Esophageal Cancer - 
+Study Characteristics 
+Study Study 
+Population 
+Study Design 
+and Setting 
+Reference 
+Standard 
+Threshold for 
+Positive 
+Index Test 
+Timing of 
+Reference 
+and Index 
+Tests 
+Blinding of 
+Assessors 
+Ococks et 
+al (2021)
+11,
+ 
+17 individuals 
+with esophageal 
+adenocarcinoma 
+who had 
+undergone 
+surgery 
+Retrospective Radiological 
+imaging 
+2 or more 
+variants 
+detected out 
+of 16 
+Blood 
+samples 
+were 
+collected 
+before and 
+after surgical 
+treatment 
+and patients 
+were 
+followed up 
+for a median 
+of 43.4 
+months. 
+Yes 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 36 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Table 18. Recurrence Rates by Risk Category in Nonrandomized Studies of Signatera in Resected 
+Esophageal Cancer 
+Study 
+ 
+Median Disease-Free Survival 
+ 
+ 
+ctDNA Positive ctDNA Negative p for 
+comparison 
+Ococks et al (2021)
+11,
+ 
+   
+ctDNA status before surgery 
+   
+Recurrence rate 5/11 0/6 
+ 
+Median disease-free survival 32.0 months 63.0 months .042 
+ctDNA status following surgery 
+   
+Recurrence rate 4/4 1/13 NR 
+Median disease-free survival 14.2 months 51.2 months NR 
+ctDNA: circulating tumor DNA; NR: not reported; RFS: recurrence-free survival. 
+ 
+Table 19. Study Relevance Limitations 
+Study Population
+a
+ Intervention
+b
+ Comparator
+c
+ Outcomes
+d
+ Duration of 
+Follow-Up
+e
+ 
+Ococks et al 
+(2021)
+11,
+ 
+ 
+2. Unclear if the 
+test used was 
+the 
+commercially 
+available 
+version 
+3. No 
+comparison to 
+tests used for 
+the same 
+purpose 
+  
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Population key: 1. Intended use population unclear; 2. Clinical context is unclear; 3. Study population is unclear; 
+4. Study population not representative of intended use. 
+b
+ Intervention key: 1. Classification thresholds not defined; 2. Version used unclear; 3. Not intervention of interest. 
+c
+ Comparator key: 1. Classification thresholds not defined; 2. Not compared to credible reference standard; 3. 
+Not compared to other tests in use for same purpose. 
+d
+ Outcomes key: 1. Study does not directly assess a key health outcome; 2. Evidence chain or decision model not 
+explicated; 3. Key clinical validity outcomes not reported (sensitivity, specificity and predictive values); 4. 
+Reclassification of diagnostic or risk categories not reported; 5. Adverse events of the test not described 
+(excluding minor discomforts and inconvenience of venipuncture or noninvasive tests). 
+e
+ Follow-Up key: 1. Follow-up  duration not sufficient with respect to natural history of disease (true positives, true 
+negatives, false positives, false negatives cannot be determined). 
+ 
+Table 20. Study Design and Conduct Limitations 
+Study Selection
+a
+ Blinding
+b
+ Delivery of 
+Test
+c
+ 
+Selective 
+Reporting
+d
+ 
+Data 
+Completeness
+e
+ 
+Statistical
+f
+ 
+Ococks et al 
+(2021)
+11,
+ 
+    
+Excluded 
+individuals who 
+did not 
+undergo 
+surgery 
+Imprecise 
+estimates 
+due to small 
+sample size 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Selection key: 1. Selection not described; 2. Selection not random or consecutive (i.e.  , convenience). 
+b
+ Blinding key: 1. Not blinded to results of reference or other comparator tests. 
+c
+ Test Delivery key: 1. Timing of delivery of index or reference test not described; 2. Timing of index and 
+comparator tests not same; 3. Procedure for interpreting tests not described; 4. Expertise of evaluators not 
+described. 
+d
+ Selective Reporting key: 1. Not registered; 2. Evidence of selective reporting; 3. Evidence of selective publication. 
+e
+ Data Completeness key: 1. Inadequate description of indeterminate and missing samples; 2. High number of 
+samples excluded; 3. High loss to follow-up or missing data. 
+f
+ Statistical key: 1. Confidence intervals and/or p values not reported; 2. Comparison to other tests not reported. 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 37 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Section Summary: Tumor-Informed Circulating Tumor DNA Testing in Individuals with 
+Esophageal Cancer 
+For individuals with esophageal cancer who receive tumor-informed ctDNA testing to guide 
+treatment decisions and monitor for recurrence, the evidence includes 1 noncomparative, 
+retrospective study (N = 17). Patients who were ctDNA-positive before surgery had significantly 
+poorer disease-free    survival (DFS) (p<.042), with a median DFS of 32.0 months versus 63.0 months in 
+ctDNA-negative preoperative patients. This study was limited by its small number sample size and 
+retrospective design. There is no direct evidence that the use of the test improves health outcomes. 
+Due to the study's limitations and lack of additional supporting studies, the evidence is not sufficient 
+to draw conclusions on clinical validity. Additionally, the management pathway for Signatera testing 
+in esophageal cancer has not been clearly defined. 
+ 
+Immunotherapy for Solid Tumors 
+Clinical Context and Test Purpose 
+The purpose of testing in individuals with solid tumors who have received immunotherapy is to 
+monitor treatment response and inform subsequent treatment decisions. Tumor-informed ctDNA 
+testing is proposed as a method to stratify patients according to their likelihood of response to 
+immunotherapy, to guide treatment decisions. 
+ 
+The question addressed in this evidence review is: Does tumor-informed circulating tumor DNA 
+testing improve the net health outcome in individuals with solid tumors who have received 
+immunotherapy? 
+ 
+The following PICO was used to select literature to inform this review. 
+ 
+Populations 
+The relevant population of interest is individuals with solid tumors who have received immune 
+checkpoint therapy. 
+ 
+Interventions 
+The test being considered is circulating tumor DNA testing with Signatera. 
+ 
+Comparators 
+For individuals with solid tumors receiving immunotherapy, treatment response is monitored by 
+repeated radiographic evaluation of the tumor. 
+ 
+Outcomes 
+The general outcomes of interest are disease-specific survival, test accuracy and validity, and change 
+in disease status. Specific outcomes of interest are recurrence risk, RFS, and overall survival at follow-
+up. 
+ 
+If the test is used to 
+rule  -in individuals with solid tumors who are likely to respond to immunotherapy, 
+the performance characteristics of most interest are positive predictive value and specificity. 
+ 
+If the test is used to 
+rule  -out   individuals with solid tumors who are unlikely to respond to 
+immunotherapy, the performance characteristics of most interest are negative predictive value and 
+sensitivity. 
+ 
+Study Selection Criteria 
+For the evaluation of clinical validity of the Signatera test, studies that meet the following eligibility 
+criteria were considered: 
+• Reported on the accuracy of the marketed version of the technology 
+• Included a suitable reference standard 
+• Individual/sample clinical characteristics were described 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 38 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+• Individual/sample selection criteria were described. 
+ 
+Nonrandomized Trial 
+Bratman et al (2020) evaluated Signatera to predict treatment response in 106 individuals receiving 
+pembrolizumab for solid tumors, including squamous cell cancer of head and neck, triple negative 
+breast cancer, high-grade serous ovarian cancer, malignant melanoma, and mixed solid tumors 
+(Tables 21 and 22).
+12,   
+ 
+Lower-than-median ctDNA levels at baseline were associated with improved overall survival 
+(adjusted hazard ratio [HR] 0.49, 95% CI 0.29 to 0.83) and progression free survival (adjusted HR 0.54, 
+95% CI 0.34 to 0.85). Among participants with at least 2 ctDNA measurements, any rise in ctDNA 
+levels during surveillance above baseline was associated with rapid disease progression and poor 
+survival (median overall survival 13.7 months), whereas among 12 patients whose ctDNA cleared 
+during treatment, overall survival was 100% at a median follow up of 25.4 months (range 10.8 to 29.5 
+months) following the first clearance. 
+ 
+Study limitations are shown in Tables 23 and 24. This single-center study is limited by its small sample 
+size and variability in results across different tumor types. The study did not include a comparison of 
+monitoring with ctDNA to standard methods of monitoring response such as repeat imaging. 
+ 
+Table 21. Nonrandomized Study of Signatera Testing to Predict Response to Immunotherapy in 
+Individuals with Solid Tumors - Study Characteristics 
+Study Study 
+Population 
+Study 
+Design and 
+Setting 
+Reference 
+Standard 
+Threshold for 
+Positive 
+Index Test 
+Timing of 
+Reference 
+and Index 
+Tests 
+Blinding of 
+Assessors 
+Bratman 
+et al 
+(2020)
+12,
+ 
+106 individuals 
+with advanced 
+solid tumors who 
+were enrolled in 
+a Phase II clinical 
+trial of 
+pembrolizumab 
+(NCT02644369) 
+Prospective, 
+single center 
+TMB, PD-L1 
+testing, 
+radiological 
+imaging 
+Greater or 
+equal to 2 
+variants 
+detected out 
+of 16 
+Baseline 
+sample 
+obtained 
+and after 
+every 3 
+cycles; 
+individuals 
+were 
+followed up 
+for a median 
+of 25 months 
+Yes 
+PD -L1: programmed death ligand-1; TMB: tumor mutational burden. 
+ 
+Table 22. Overall Survival by Risk Category in a Nonrandomized Study of Signatera to Monitor 
+Response to Immunotherapy 
+ 
+Overall Survival 
+Bratman et al (2020)
+12,
+ 
+ 
+Lower than median ctDNA at baseline adjusted HR 0.49 (95% CI 0.29–
+0.83) 
+ctDNA increased (n = 45) 13.7 months 
+ctDNA decreased but still detectable (n = 16) 23.8 months 
+ctDNA cleared (n = 12) 25.4 months (range 10.8 to 29.5 
+months) 
+CI: confidence interval; ctDNA: circulating tumor DNA; RFS: HR: hazard ratio. 
+ 
+Table 23. Study Relevance Limitations 
+Study Population
+a
+ Intervention
+b
+ Comparator
+c
+ Outcomes
+d
+ Duration of 
+Follow-Up
+e
+ 
+Bratman et al 
+(2020)
+12,
+ 
+1, 2. Unclear 
+what 
+management 
+ 
+No comparison 
+to standard 
+3. Clinical 
+validity 
+ 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 39 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+changes would 
+be 
+implemented 
+based on test 
+results. 
+surveillance 
+methods 
+outcomes not 
+reported 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Population key: 1. Intended use population unclear; 2. Clinical context is unclear; 3. Study population is unclear; 
+4. Study population not representative of intended use. 
+b
+ Intervention key: 1. Classification thresholds not defined; 2. Version used unclear; 3. Not intervention of interest. 
+c
+ Comparator key: 1. Classification thresholds not defined; 2. Not compared to credible reference standard; 3. 
+Not compared to other tests in use for same purpose. 
+d
+ Outcomes key: 1. Study does not directly assess a key health outcome; 2. Evidence chain or decision model not 
+explicated; 3. Key clinical validity outcomes not reported (sensitivity, specificity and predictive values); 4. 
+Reclassification of diagnostic or risk categories not reported; 5. Adverse events of the test not described 
+(excluding minor discomforts and inconvenience of venipuncture or noninvasive tests). 
+e
+ Follow-Up key: 1. Follow-up duration not sufficient with respect to natural history of disease (true positives, true 
+negatives, false positives, false negatives cannot be determined). 
+ 
+Table 24. Study Design and Conduct Limitations 
+Study Selection
+a
+ Blinding
+b
+ Delivery of 
+Test
+c
+ 
+Selective 
+Reporting
+d
+ 
+Data 
+Completeness
+e
+ 
+Statistical
+f
+ 
+Bratman et 
+al (2020)
+12,
+ 
+     
+2. 
+Comparison 
+to other 
+tests not 
+reported 
+The study limitations stated in this table are those notable in the current review; this is not a comprehensive 
+gaps assessment. 
+a 
+Selection key: 1. Selection not described; 2. Selection not random or consecutive (ie, convenience). 
+b
+ Blinding key: 1. Not blinded to results of reference or other comparator tests. 
+c
+ Test Delivery key: 1. Timing of delivery of index or reference test not described; 2. Timing of index and 
+comparator tests not same; 3. Procedure for interpreting tests not described; 4. Expertise of evaluators not 
+described. 
+d
+ Selective Reporting key: 1. Not registered; 2. Evidence of selective reporting; 3. Evidence of selective publication. 
+e
+ Data Completeness key: 1. Inadequate description of indeterminate and missing samples; 2. High number of 
+samples excluded; 3. High loss to follow-up or missing data. 
+f
+ Statistical key: 1. Confidence intervals and/or p values not reported; 2. Comparison to other tests not reported. 
+ 
+Section Summary: Tumor-Informed Circulating Tumor DNA Testing in Individuals with Solid 
+Tumors Receiving Immunotherapy 
+For individuals with solid tumors who receive tumor-informed ctDNA testing to monitor response to 
+immunotherapy, the evidence includes a subgroup analysis of individuals enrolled in a 
+nonrandomized trial of pembrolizumab (N = 106). The subgroup analysis evaluated testing to monitor 
+response to immunotherapy in individuals with advanced solid tumors who were enrolled in a Phase 
+II clinical trial of pembrolizumab. Lower-than-median ctDNA levels at baseline were associated with 
+improved overall survival (adjusted HR 0.49, 95% CI 0.29 to 0.83) and progression free survival 
+(adjusted HR 0.54, 95% CI 0.34 to 0.85). The study was limited by a small sample size, variability in 
+results across different tumor types, and lack of a comparison to standard methods of monitoring 
+response to treatment. There is limited direct evidence that the use of the test improves health 
+outcomes. The management pathway for tumor-informed ctDNA testing for monitoring response to 
+immunotherapy needs further definition. 
+ 
+Other cancers 
+ctDNA has also been shown to accurately monitor the activity and diagnose recurrence of 
+endometrial cancer
+59
+, and multiple studies have found it to be highly sensitive for monitoring and 
+predicting disease progression and response to therapy in patients with metastatic melanoma
+60, 61
+.  
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 40 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Overall Summary of Evidence 
+For individuals with CRC who receive tumor-informed ctDNA testing to guide treatment decisions 
+and monitor for recurrence, the evidence includes 3 noncomparative studies (N = 410) and 1 
+retrospective comparative study (N = 48). Relevant outcomes are overall survival, disease-specific 
+survival, test validity, other test performance measures, change in disease status, morbid events, 
+functional outcomes, health status measures, quality of life, and treatment-related mortality. 
+Nonrandomized studies have reported an association between ctDNA results measured at diagnosis, 
+following surgery, during adjuvant therapy, and during surveillance after curative treatment and 
+prognosis, but these studies are limited by a lack of comparison to tests used for the same purpose, 
+imprecise estimates due to small sample sizes, and clinical heterogeneity of study populations. No 
+study reported management changes made in response to ctDNA test results. A retrospective 
+observational study found no clear advantage to surveillance compared to standard surveillance 
+conducted according to NCCN guidelines (p>.99 for sensitivity and specificity compared to imaging), 
+however, direct use comparison was not done in the study. There is limited direct evidence that the 
+use of the test improves health outcomes. However, indirect evidence supports the use of this 
+technology.  
+ 
+For individuals with breast cancer who receive tumor-informed ctDNA testing to guide treatment 
+decisions and monitor for recurrence, the evidence includes 2 noncomparative studies (N = 133). 
+Relevant outcomes are overall survival, disease-specific survival, test validity, other test performance 
+measures, change in disease status, morbid events, functional outcomes, health status measures, 
+quality of life, and treatment-related mortality. One study evaluated Signatera testing for disease 
+surveillance following primary treatment, and 1 reported the association of test results at different 
+timepoints with response to neoadjuvant chemotherapy. Although the studies found an association 
+of test results with prognosis, the studies are limited by a lack of comparison to tests used for the 
+same purpose, and imprecise estimates due to small sample sizes. No study reported management 
+changes made in response to ctDNA test results, but that was not an outcome measure. There is 
+limited direct evidence that the use of the test improves health outcomes, however, indirect evidence 
+supports the use of this technology.  
+ 
+For individuals with bladder cancer who receive tumor-informed ctDNA testing with Signatera to 
+guide treatment decisions and monitor for recurrence, the evidence includes 1 uncontrolled 
+prospective cohort study (N = 68) and 1 retrospective subgroup analysis from a RCT (N = 581). 
+Relevant outcomes are overall survival, disease-specific survival, test validity, other test performance 
+measure, change in disease status, morbid events, functional outcomes, health status measures, 
+quality of life, and treatment-related mortality. The prospective study reported an association 
+between test results at diagnosis, during chemotherapy treatment, and during surveillance following 
+cystectomy to prognosis. The retrospective analysis reported an association between test results and 
+response to atezolizumab treatment. Study limitations, including a lack of comparison to tests used 
+for the same purpose limit drawing definitive conclusions about clinical validity and usefulness. No 
+study reported management changes made in response to ctDNA test results. There is limited direct 
+evidence that the use of the test improves health outcomes, however, indirect evidence supports the 
+use of this technology.  
+ 
+For individuals with NSCLC who receive tumor-inf  ormed ctDNA testing to guide treatment decisions 
+and monitor for recurrence, the evidence includes 1 subgroup analysis of participants enrolled in a 
+prospective observational study (N = 24). Relevant outcomes are overall survival, disease-specific 
+survival, test validity, other test performance measures, change in disease status, morbid events, 
+functional outcomes, health status measures, quality of life, and treatment-related mortality. Of 14 
+individuals with confirmed relapse, 13 (93%) had a positive ctDNA test (defined as at least 2 single-
+nucleotide variants detected). Of 10 individuals with no relapse after a median follow up of 775 days, 
+(range 688 to 945 days), 1 had a positive ctDNA test (10%). This study’s small sample size and lack of a 
+comparator limit drawing definitive conclusions about clinical validity. There is limited direct evidence 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 41 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+that the use of the test improves health outcomes, however, indirect evidence supports the use of this 
+technology.  
+ 
+For individuals with esophageal cancer who receive tumor-informed ctDNA testing to guide 
+treatment decisions and monitor for recurrence, the evidence includes 1 noncomparative, 
+retrospective study (N = 17). Relevant outcomes are overall survival, disease-specific survival, test 
+validity, other test performance measure, change in disease status, morbid events, functional 
+outcomes, health status measures, quality of life, and treatment-related mortality. Patients who were 
+ctDNA-positive before surgery had significantly poorer disease-free survival (DFS) (p<.042), with a 
+median DFS of 32.0 months versus 63.0 months in ctDNA-negative preoperative patients. This study 
+was limited by its small number sample size and retrospective design. There is limited direct evidence 
+that the use of the test improves health outcomes. However, indirect evidence supports the use of this 
+technology.  
+ 
+For individuals with solid tumors who receive tumor-informed ctDNA testing to monitor response to 
+immunotherapy, the evidence includes a subgroup analysis of individuals enrolled in a 
+nonrandomized trial of pembrolizumab (N = 106). Relevant outcomes are overall survival, disease-
+specific survival, test validity, other test performance measures, change in disease status, morbid 
+events, functional outcomes, health status measures, quality of life, and treatment-related mortality. 
+The subgroup analysis evaluated testing to monitor response to immunotherapy in individuals with 
+advanced solid tumors who were enrolled in a Phase II clinical trial of pembrolizumab. Lower-than-
+median ctDNA levels at baseline were associated with improved overall survival (adjusted [HR 0.49, 
+95% CI 0.29 to 0.83) and progression free survival (adjusted HR 0.54, 95% CI 0.34 to 0.85). The study 
+was limited by a small sample size, variability in results across different tumor types, and lack of a 
+comparison to standard methods of monitoring response to treatment. There is limited direct 
+evidence that the use of the test improves health outcomes. However, indirect evidence supports the 
+use of this technology. 
+ 
+Supplemental Information 
+The purpose of the following information is to provide reference material. Inclusion does not imply 
+endorsement or alignment with the evidence review conclusions. 
+ 
+Practice Guidelines and Position Statements 
+Guidelines or position statements will be considered for inclusion in ‘Supplemental Information' if they 
+were issued by, or jointly by, a US professional society, an international society with US 
+representation, or National Institute for Health and Care Excellence (NICE). Priority will be given to 
+guidelines that are informed by a systematic review, include strength of evidence ratings, and include 
+a description of management of conflict of interest. 
+ 
+National Comprehensive Cancer Network 
+National Comprehensive Cancer Network guidelines do not yet specifically address tumor-informed 
+ctDNA testing for any of the cancer types included in this review. The guidelines on colon cancer 
+state: "The panel believes that there are insufficient data to recommend the use of multigene assays, 
+Immunoscore or post-surgical ctDNA to estimate risk of recurrence or determine adjuvant therapy."
+13,  
+ 
+U.S. Preventive Services Task Force Recommendations 
+Not applicable. 
+ 
+Medicare National Coverage 
+There is no national coverage determination. In the absence of a national coverage determination, 
+coverage decisions are left to the discretion of local Medicare carriers. 
+ 
+Medicare Local Coverage Determination by MolDx allows for coverage, stating: 
+LCD - MolDX: Minimal Residual Disease Testing for Cancer (L38779) (cms.gov) 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 42 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+“MRD testing for cancer is rapidly becoming a sensitive and specific method for monitoring the 
+relative amounts of tumor-derived genetic material circulating in the blood of cancer patients. These 
+tests leverage new genomic technologies that allow detection of extremely dilute tumor material, 
+yielding an extremely sensitive method for determining the continued presence of tumor material or, 
+by serially testing the same individual, tracking the relative increase or decrease of tumor material 
+being deposited in the blood. Although it is a relatively new application of novel genomic 
+technologies, it has rapidly demonstrated its ability to impact patient care in several ways in cancer 
+diagnosis and treatment. MRD testing can be used to: 
+• diagnose cancer progression, recurrence, or relapse before there is clinical, biological, or 
+radiographical evidence of progression, recurrence or relapse 
+• detect tumor response to therapy by measuring the proportional changes in the amount of 
+available tumor DNA 
+ 
+Both above uses may enable physicians to better assign risk stratification, deploy alternate 
+treatment strategies, or preclude the use of unnecessary adjuvant therapies.” 
+ 
+Ongoing and Unpublished Clinical Trials 
+Some currently unpublished trials that might influence this review are listed in Table 25. 
+ 
+Table 25. Summary of Key Trials 
+NCT No. Trial Name Planned 
+Enrollment 
+Completion 
+Date 
+Ongoing 
+   
+NCT05212779 Predicting the Risk of Ovarian Cancer Recurrence Using 
+Circulating Tumor DNA to Assess Residual Disease 
+45 Dec 2024 
+NCT04761783
+a
+ BESPOKE Study of ctDNA Guided Immunotherapy 1539 May 2025 
+NCT04264702
+a
+ BESPOKE Study of ctDNA Guided Therapy in Colorectal 
+Cancer 
+2000 Jan 2025 
+NCT04786600
+a
+ A Phase II Randomized Therapeutic Optimization Trial for 
+Subjects With Refractory Metastatic Colorectal Cancer Using 
+ctDNA: Rapid 1 Trial 
+78 May 2025 
+NCT05178576
+a
+ A Single Arm Phase II Study to Evaluate Treatment With 
+Gevokizumab in individuals With Stage II/III Colon Cancer 
+Who Are ctDNA-positive After Curative Surgery and Adjuvant 
+Chemotherapy 
+31 Nov 2025 
+NCT04920032
+a
+ Proof of Concept Study of ctDNA Guided Change in 
+Treatment for Refractory Minimal Residual Disease in Colon 
+Adenocarcinomas 
+22 Jun 2024 
+NCT05060003
+a
+ A Phase II Randomized Study of Tiragolumab Plus 
+Atezolizumab Versus Atezolizumab in the Treatment of Stage 
+II Melanoma individuals Who Are ctDNA-positive Following 
+Resection 
+244 Feb 2028 
+NCT05081024
+a
+ Establishing a ctDNA Biomarker to Improve Organ Preserving 
+Strategies in individuals With Rectal Cancer 
+50 Sep 2024 
+NCT05067842 A Pilot Observational Study to Assess Feasibility of Tumor 
+Response Assessment by Circulating Tumor DNA (ctDNA) in 
+individuals With Locally Advanced Esophageal and GE 
+Junction Adenocarcinoma Undergoing Treatment With Total 
+Upfront Chemotherapy and Chemoradiation 
+30 Jan 2028 
+NCT04670588 A Prospective Observational Study to Determine the 
+Feasibility of Tumor Response Assessment by Circulating 
+Tumor DNA in individuals With Locally Advanced Rectal 
+Cancer Undergoing Total Neoadjuvant Therapy 
+30 Dec 2025 
+NCT04929015 Peritoneal Carcinomatosis Leveraging ctDNA Guided 
+Treatment in GI Cancer Study (PERICLES Study) 
+30 Nov 2024 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 43 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+NCT No. Trial Name Planned 
+Enrollment 
+Completion 
+Date 
+NCT05058183
+a
+ Safe De-escalation of Chemotherapy for Stage 1 Breast 
+Cancer 
+400 Nov 2027 
+NCT05174169
+a
+ Colon Adjuvant Chemotherapy Based on Evaluation of 
+Residual Disease 
+1912 Jan 2030 
+NCT: national clinical trial. 
+a
+ Denotes industry-sponsored or cosponsored trial. 
+ 
+References 
+ 
+1. Natera. FDA Grants Two New Breakthrough Device Designations for Nateras Signatera MRD 
+Test. March 24, 2021. https://www.natera.com/company/news/fda-grants-two  -new  -
+breakthrough-device-designations-for -nateras-signatera-mrd   -test/. Accessed April 5, 2022 
+2. Fakih M, Sandhu J, Wang C, et al. Evaluation of Comparative Surveillance Strategies of 
+Circulating Tumor DNA, Imaging, and Carcinoembryonic Antigen Levels in Patients With 
+Resected Colorectal Cancer. JAMA Netw Open. Mar 01 2022; 5(3): e221093. PMID 35258578 
+3. Reinert T, Henriksen TV, Christensen E, et al. Analysis of Plasma Cell-Free DNA by Ultradeep 
+Sequencing in Patients With Stages I to III Colorectal Cancer. JAMA Oncol. Aug 01 2019; 5(8): 
+1124-1131. PMID 31070691 
+4. Henriksen TV, Tarazona N, Frydendahl A, et al. Circulating Tumor DNA in Stage III Colorectal 
+Cancer, beyond Minimal Residual Disease Detection, toward Assessment of Adjuvant 
+Therapy Efficacy and Clinical Behavior of Recurrences. Clin Cancer Res. Feb 01 2022; 28(3): 
+507-517. PMID 34625408 
+5. Loupakis F, Sharma S, Derouazi M, et al. Detection of Molecular Residual Disease Using 
+Personalized Circulating Tumor DNA Assay in Patients With Colorectal Cancer Undergoing 
+Resection of Metastases. JCO Precis Oncol. Jul 2021; 5. PMID 34327297 
+6. Coombes RC, Page K, Salari R, et al. Personalized Detection of Circulating Tumor DNA 
+Antedates Breast Cancer Metastatic Recurrence. Clin Cancer Res. Jul 15 2019; 25(14): 4255-
+4263. PMID 30992300 
+7. Magbanua MJM, Swigart LB, Wu HT, et al. Circulating tumor DNA in neoadjuvant-treated 
+breast cancer reflects response and survival. Ann Oncol. Feb 2021; 32(2): 229-239. PMID 
+33232761 
+8. Christensen E, Birkenkamp-Demtroder K, Sethi H, et al. Early Detection of Metastatic Relapse 
+and Monitoring of Therapeutic Efficacy by Ultra-Deep Sequencing of Plasma Cell-Free DNA 
+in Patients With Urothelial Bladder Carcinoma. J Clin Oncol. Jun 20 2019; 37(18): 1547-1557. 
+PMID 31059311 
+9. Powles T, Assaf ZJ, Davarpanah N, et al. ctDNA guiding adjuvant immunotherapy in 
+urothelial carcinoma. Nature. Jul 2021; 595(7867): 432-437. PMID 34135506 
+10. Abbosh C, Birkbak NJ, Wilson GA, et al. Phylogenetic ctDNA analysis depicts early-stage lung 
+cancer evolution. Nature. Apr 26 2017; 545(7655): 446-451. PMID 28445469 
+11. Ococks E, Sharma S, Ng AWT, et al. Serial Circulating Tumor DNA Detection Using a 
+Personalized, Tumor-Informed Assay in Esophageal Adenocarcinoma Patients Following 
+Resection. Gastroenterology. Nov 2021; 161(5): 1705-1708.e2. PMID 34284036 
+12. Bratman SV, Yang SYC, Iafolla MAJ, et al. Personalized circulating tumor DNA analysis as a 
+predictive biomarker in solid tumor patients treated with pembrolizumab. Nat Cancer. Sep 
+2020; 1(9): 873-881. PMID 35121950 
+13. National Comprehensive Cancer Network. Guidelines on Colon Cancer. Version 1.2022. 
+https://www.nccn.org/professionals/physician_gls/pdf/colon.pdf. Accessed April 5, 2022. 
+14. Jessup JM, G.R., Aware EA, et al. . AJCC Cancer Staging Manual, 8th, Amin MB (Ed), AJCC, 
+Chicago 2017. 2017.  
+15. Bockelman, C.; Engelmann, B.E.; Kaprio, T.; Hansen, T.F.; Glimelius, B. Risk of recurrence in 
+patients with colon cancer stage II and III: a systematic review and meta-analysis of recent 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 44 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+literature. Acta oncologica (Stockholm, Sweden) 2015, 54, 5-16, 
+doi:10.3109/0284186X.2014.975839.  
+16. Osterman, E.; Glimelius, B. Recurrence Risk After Up-to -Date Colon Cancer Staging, Surgery, 
+and Pathology: Analysis of the Entire Swedish Population. Dis Colon Rectum 2018, 61, 1016-
+1025, doi:10.1097/dcr.0000000000001158.  
+17. Påhlman, L.A.; Hohenberger, W.M.; Matzel, K.; Sugihara, K.; Quirke, P.; Glimelius, B. Should the 
+Benefit of Adjuvant Chemotherapy in Colon Cancer Be Re-Evaluated? Journal of Clinical 
+Oncology 2016, 34, 1297- 1299, doi:10.1200/jco.2015.65.3048.  
+18. Osterman, E.; Hammarstrom, K.; Imam, I.; Osterlund, E.; Sjoblom, T.; Glimelius, B. 
+Completeness and accuracy of the registration of recurrences in the Swedish Colorectal 
+Cancer Registry (SCRCR) and an update of recurrence risk in colon cancer. Acta oncologica 
+(Stockholm, Sweden) 2021, 60, 842-849, doi:10.1080/0284186X.2021.1896033.  
+19. Argilés, G.; Tabernero, J.; Labianca, R.; Hochhauser, D.; Salazar, R.; Iveson, T.; Laurent-Puig, P.; 
+Quirke, P.; Yoshino, T.; Taieb, J., et al. Localised colon cancer: ESMO Clinical Practice 
+Guidelines for diagnosis, treatment and follow-up. Ann Oncol 2020, 31, 1291-1305, 
+doi:10.1016/j.annonc.2020.06.022. 
+20. Benson, A.I.; Venook, A.; Al-Hawary, M. NCCN Guidelines version 1. 2022 Colon Cancer. 
+//efaidnbmnnnibpcajpcglclefindmkaj/https://www.nccn.org/professionals/physician_gls/p
+df/colon.pdf 2022.  
+21. Chakrabarti, S.; Peterson, C.Y.; Sriram, D.; Mahipal, A. Early-stage colon cancer: Current 
+treatment standards, evolving paradigms, and future directions. World J Gastrointest Oncol. 
+2020, 12(8), 808-832, doi:10.4251/wjgo.v12.i8.808.  
+22. Badia-Ramentol, J.; Linares, J.; Gómez-Llonin, A.; Calon, A. Minimal Residual Disease, 
+Metastasis and Immunity. Biomolecules 2021, 11, doi:10.3390/biom11020130.  
+23. Parikh, A.R.; Van Seventer, E.E.; Siravegna, G.; Hartwig, A.V.; Jaimovich, A.; He, Y.; Kanter, K.; 
+Fish, M.G.; Fosbenner, K.D.; Miao, B., et al. Minimal Residual Disease Detection using a 
+Plasma-only Circulating Tumor DNA Assay in Patients with Colorectal Cancer. Clin Cancer 
+Res 2021, 27, 5586-5594, doi:10.1158/1078-0432.Ccr-21-0410.  
+24. Tarazona, N.; Gimeno-Valiente, F.; Gambardella, V.; Zuñiga, S.; Rentero-Garrido, P.; Huerta, 
+M.; Roselló, S.; Martinez-Ciarpaglini, C.; Carbonell-Asins, J.A.; Carrasco, F., et al. Targeted 
+next-generation sequencing of circulating-tumor DNA for tracking minimal residual disease 
+in localized colon cancer. Ann Oncol 2019, 30, 1804-1812, doi:10.1093/annonc/mdz390.  
+25. Tie, J.; Cohen, J.D.; Lo, S.N.; Wang, Y.; Li, L.; Christie, M.; Lee, M.; Wong, R.; Kosmider, S.; 
+Skinner, I., et al. Prognostic significance of postsurgery circulating tumor DNA in 
+nonmetastatic colorectal cancer: Individual patient pooled analysis of three cohort studies. 
+Int J Cancer 2021, 148, 1014-1026, doi:10.1002/ijc.33312.  
+26. Tie, J.; Cohen, J.D.; Wang, Y.; Christie, M.; Simons, K.; Lee, M.; Wong, R.; Kosmider, S.; Ananda, 
+S.; McKendrick, J., et al. Circulating Tumor DNA Analyses as Markers of Recurrence Risk and 
+Benefit of Adjuvant Therapy for Stage III Colon Cancer. JAMA Oncol 2019, 
+10.1001/jamaoncol.2019.3616, doi:10.1001/jamaoncol.2019.3616.  
+27. Tie, J.; Cohen, J.D.; Wang, Y.; Li, L.; Christie, M.; Simons, K.; Elsaleh, H.; Kosmider, S.; Wong, R.; 
+Yip, D., et al. Serial circulating tumour DNA analysis during multimodality treatment of locally 
+advanced rectal cancer: a prospective biomarker study. Gut 2019, 68, 663-671, 
+doi:10.1136/gutjnl-2017-315852. 
+28. Tie, J.; Kinde, I.; Wang, Y.; Wong, H.L.; Roebert, J.; Christie, M.; Tacey, M.; Wong, R.; Singh, M.; 
+Karapetis, C.S., et al. Circulating tumor DNA as an early marker of therapeutic response in 
+patients with metastatic colorectal cancer. Ann Oncol 2015, 26, 1715- 1722, 
+doi:10.1093/annonc/mdv177.  
+29. Tie J, Wang Y, Tomasetti C, et al. Circulating tumor DNA analysis detects minimal residual 
+disease and predicts recurrence in patients with stage II colon cancer. Sci Transl Med. 
+2016;8:1–10.     
+30. Tie, J.; Wang, Y.; Cohen, J.; Li, L.; Hong, W.; Christie, M.; Wong, H.L.; Kosmider, S.; Wong, R.; 
+Thomson, B., et al. Circulating tumor DNA dynamics and recurrence risk in patients 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 45 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+undergoing curative intent resection of colorectal cancer liver metastases: A prospective 
+cohort study. PLoS Med 2021, 18, e1003620. 
+31. Tie J, Cohen JD, Lahouel K, Lo SN, Wang Y, Kosmider S, Wong R, Shapiro J, Lee M, Harris S, 
+Khattak A, Burge M, Harris M, Lynam J, Nott L, Day F, Hayes T, McLachlan SA, Lee B, Ptak J, 
+Silliman N, Dobbyn L,Popoli M, Hruban R, Lennon AM, Papadopoulos N, Kinzler KW, 
+Vogelstein B, Tomasetti C, Gibbs P; DYNAMIC Investigators. Circulating Tumor DNA Analysis 
+Guiding Adjuvant Therapy in Stage II Colon Cancer. N Engl J Med. 2022 Jun 16;386(24):2261-
+2272.  
+32. Kotaka, M.; Shirasu, H.; Watanabe, J.; Yamazaki, K.; Hirata, K.; Akazawa, N.; Matsuhashi, N.; 
+Yokota, M.; Ikeda, M.; Kato, K., et al. Association of circulating tumor DNA dynamics with 
+clinical outcomes in the adjuvant setting for patients with colorectal cancer from an 
+observational GALAXY study in CIRCULATEJapan. Journal of Clinical Oncology 2022, 40, 9-9 
+33. Chaudhuri AA, Chabon JJ, Lovejoy AF, et al. Early Detection of Molecular Residual Disease in 
+Localized Lung Cancer by Circulating Tumor DNA Profiling. Cancer Discov. 2017;7(12):1394-
+1403. doi:10.1158/2159-8290.CD-17-0716  
+34. Newton KF, Newman W, Hill J. Review of biomarkers in colorectal cancer. Colorectal Dis Off J 
+Assoc Coloproctology G B Irel. 2012;14(1):3-17. doi:10.1111/j.1463-1318.2010.02439.x  
+35. Hellmann MD, Nabet BY, Rizvi H, et al. Circulating Tumor DNA Analysis to Assess Risk of 
+Progression after Long-term Response to PD-(L)1 Blockade in NSCLC. Clin Cancer Res Off J 
+Am Assoc Cancer Res. 2020;26(12):2849-2858. doi:10.1158/1078-0432.CCR-19-3418  
+36. Naidoo M, Gibbs P, Tie J. ctDNA and Adjuvant Therapy for Colorectal Cancer: Time to Re-
+Invent Our Treatment Paradigm. Cancers. 2021;13(2):346. doi:10.3390/cancers13020346  
+37. Pantel K, Alix-Panabières C. Liquid biopsy and minimal residual disease - latest advances 
+and implications for cure. Nat Rev Clin Oncol. 2019;16(7):409-424. doi:10.1038/s41571-019  -
+0187-3  
+38. Chin RI, Chen K, Usmani A, et al. Detection of Solid Tumor Molecular Residual Disease (MRD) 
+Using Circulating Tumor DNA (ctDNA). Mol Diagn Ther. 2019;23(3):311-331. doi:10.1007/s40291-
+019  -00390-5 
+39. Garcia-Murillas I, Schiavon G, Weigelt B, et al. Mutation tracking in circulating tumor DNA 
+predicts relapse in early breast cancer. Sci Transl Med. 2015;7(302):302ra133. 
+doi:10.1126/scitranslmed.aab0021 
+40. Chen YH, Hancock BA, Solzak JP, et al. Next-generation sequencing of circulating tumor DNA 
+to predict recurrence in triple-negative breast cancer patients with residual disease after 
+neoadjuvant chemotherapy. NPJ Breast Cancer. 2017;3:24. doi:10.1038/s41523-017  -0028-4  
+41. Olsson E, Winter C, George A, et al. Serial monitoring of circulating tumor DNA in patients 
+with primary breast cancer for detection of occult metastatic disease. EMBO Mol Med. 
+2015;7(8):1034-1047. doi:10.15252/emmm.201404913  
+42. Riva F, Bidard FC, Houy A, et al. Patient-Specific Circulating Tumor DNA Detection during 
+Neoadjuvant Chemotherapy in Triple-Negative Breast Cancer. Clin Chem. 2017;63(3):691-699. 
+doi:10.1373/clinchem.2016.262337  
+43. McDonald BR, Contente-Cuomo T, Sammut SJ, et al. Personalized circulating tumor DNA 
+analysis to detect residual disease after neoadjuvant therapy in breast cancer. Sci Transl 
+Med. 2019;11(504):eaax7392. doi:10.1126/scitranslmed.aax7392  
+44. Reece M, Saluja H, Hollington P, et al. The Use of Circulating Tumor DNA to Monitor and 
+Predict Response to Treatment in Colorectal Cancer. Front Genet. 2019;10:1118. 
+doi:10.3389/fgene.2019.01118  a metanalysis of 92 studies 
+45. Dasari A, Morris VK, Allegra CJ, et al. ctDNA applications and integration in colorectal cancer: 
+an NCI Colon and Rectal–Anal Task Forces whitepaper. Nat Rev Clin Oncol. 2020;17(12):757-
+770. doi:10.1038/s41571-020-0392-0  
+46. Chae YK, Oh MS. Detection of Minimal Residual Disease Using ctDNA in Lung Cancer: Current 
+Evidence and Future Directions. J Thorac Oncol Off Publ Int Assoc Study Lung Cancer. 
+2019;14(1):16-24. doi:10.1016/j.jtho.2018.09.022    
+47. Ho GYF, Wang T, Kwok HH, et al. Longitudinal multi-gene panel assessment of circulating 
+tumor DNA revealed tumor burden and molecular characteristics along treatment course of 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 46 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+non-small cell lung cancer. Transl Lung Cancer Res. 2020;9(5):1873-1884. doi:10.21037/tlcr-20-
+675   20 patients 
+48. Sausen M, Phallen J, Adleff V, et al. Clinical implications of genomic alterations in the tumour 
+and circulation of pancreatic cancer patients. Nat Commun. 2015;6:7686. 
+doi:10.1038/ncomms8686   urine (not plasma) tumor DNA 
+49. Dudley JC, Schroers-Martin J, Lazzareschi DV, et al. Detection and Surveillance of Bladder 
+Cancer Using Urine Tumor DNA. Cancer Discov. 2019;9(4):500-509. doi:10.1158/2159-
+8290.CD-18 -0825  
+50. Springer SU, Chen CH, Rodriguez Pena MDC, et al. Non-invasive detection of urothelial 
+cancer through the analysis of driver gene mutations and aneuploidy. eLife. 2018;7:e32143. 
+doi:10.7554/eLife.32143   Urine DNA, UroSEEK 
+51. Bettegowda C, Sausen M, Leary RJ, et al. Detection of circulating tumor DNA in early- and 
+late   -stage human malignancies. Sci Transl Med. 2014;6(224):224ra24. 
+doi:10.1126/scitranslmed.3007094  
+52. AstraZeneca collaborates with ArcherDX to use personalised cancer assays to detect minimal 
+residual disease in lung cancer trials. Accessed February 28, 2022. 
+https://www.astrazeneca.com/media-centre/press-releases/2020/astrazeneca-
+collaborates-with-archerdx-to -use-personalisedcancer-assays-to -detect-minimal-residual-
+disease-in-lung-cancer-trials.html  
+53. U.S. National Library of Medicine (ClinicalTrials.gov). Phase III study to determine the efficacy 
+of durvalumab in combination with chemotherapy in completely resected stage II-III non-
+small cell lung cancer (NSCLC) (MERMAID-1). https://clinicaltrials.gov/ct2/ 
+show/NCT04385368?term=mermaid-1&draw=2&rank=1  
+54. U.S. National Library of Medicine (ClinicalTrials.gov). Phase III study to determine efficacy of 
+durvalumab in stage II-III non-small cell lung cancer (NSCLC) after curative intent therapy 
+(MERMAID-2). https://clinicaltrials.gov/ct2/show/ NCT04642469?term=mermaid-
+2&draw=2&rank=2  
+55. Babayan A, Pantel K. Advances in liquid biopsy approaches for early detection and 
+monitoring of cancer. Genome Med. 2018;10(1):21. doi:10.1186/s13073-018  -0533-6 
+56. Phy   logenetic tracking and minimal residual disease detection using ctDNA in early-stage 
+NSCLC: A lung TRACERx study. Accessed February 28, 2022. 
+https://www.abstractsonline.com/pp8/#!/9045/presentation/10734collaboration-at-2020-
+aacr-virtual-annual-meeting-301048632.html 
+57. Potential clinical utility of liquid biopsy in early-stage non-small cell lung cancer | BMC 
+Medicine | Full Text (biomedcentral.com)    A metanalysis of 34 studies diagnostic and 21 
+prognostic.  
+58. Kotani, D., Oki, E., Nakamura, Y. et al. Molecular residual disease and efficacy of adjuvant 
+chemotherapy in patients with colorectal cancer. Nat Med (2023). 
+https://doi.org/10.1038/s41591-022-02115-4  (GALAXY trial)  
+59. Moss EL, Gorsia DN, Collins A, et al. Utility of circulating tumor DNA for detection and 
+monitoring of endometrial cancer recurrence and progression. medRxiv. 
+2020:2020.2003.2004.20030908. 
+60. Váraljai R, Wistuba-Hamprecht K, Seremet T, et al. Application of circulating cell-free tumor 
+DNA profiles for therapeutic monitoring and outcome prediction in genetically 
+heterogeneous metastatic melanoma. JCO precision oncology. 2020;3. 
+61. Di Guardo L, Randon G, Corti F, et al. Liquid biopsy and radiological response predict 
+outcomes following discontinuation of targeted therapy in patients with BRAF mutated 
+melanoma. The oncologist. 2021. 
+ 
+Documentation for Clinical Review 
+ 
+Please provide the following documentation: 
+• History and physical and/or consultation notes including: 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 47 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+o Clinical findings (i.e., pertinent symptoms and duration) 
+o Activity and functional limitations 
+o Family history, if applicable 
+o Reason for procedure/test/device, when applicable (e.g., routine screening, suspected 
+recurrence or progression, etc.) 
+o Pertinent past procedural and surgical history 
+o Past and present diagnostic testing and results, including previous MRD testing 
+o Prior treatments, duration, and response 
+o Treatment plan (i.e., surgical intervention) 
+• Radiology report(s) and interpretation (i.e., MRI, CT, PET) 
+ 
+Post Service (in addition to the above, please include the following): 
+• Results/reports of tests performed 
+• Procedure report(s) 
+ 
+Coding 
+ 
+This Policy relates only to the services or supplies described herein. Benefits may vary according to 
+product design; therefore, contract language should be reviewed before applying the terms of the 
+Policy.  
+ 
+The following codes are included below for informational purposes. Inclusion or exclusion of a code(s) 
+does not constitute or imply member coverage or provider reimbursement policy.  Policy Statements 
+are intended to provide member coverage information and may include the use of some codes for 
+clarity.  The Policy Guidelines section may also provide additional information for how to interpret the 
+Policy Statements and to provide coding guidance in some cases. 
+ 
+Type Code Description 
+CPT
+®
+ 
+81479 Unlisted molecular pathology procedure 
+0306U Oncology (minimal residual disease [MRD]), next-generation targeted 
+sequencing analysis, cell-free DNA, initial (baseline) assessment to 
+determine a patient-specific panel for future comparisons to evaluate 
+for MRD (Code effective 4/1/2022) 
+0307U Oncology (minimal residual disease [MRD]), next-generation targeted 
+sequencing analysis of a patient-specific panel, cell-free DNA, 
+subsequent assessment with comparison to previously analyzed patient 
+specimens to evaluate for MRD 
+(Code effective 4/1/2022) 
+0340U Oncology (pan-cancer), analysis of minimal residual disease (MRD) from 
+plasma, with assays personalized to each patient based on prior next-
+generation sequencing of the patient’s tumor and germline DNA, 
+reported as absence or presence of MRD, with disease-burden 
+correlation, if appropriate 
+(Code effective 10/1/2022) 
+HCPCS None 
+ 
+Policy History 
+ 
+This section provides a chronological history of the activities, updates and changes that have 
+occurred with this Medical Policy. 
+ 
+Effective Date Action  
+06/01/2022 New policy. 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 48 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Effective Date Action  
+ 11/01/2022 Coding update  
+03/01/2023 
+Annual update. Converted to custom policy. Policy statement, guidelines and 
+literature updated. 
+ 
+Definitions of Decision Determinations 
+ 
+Medically Necessary: Services that are Medically Necessary include only those which have been 
+established as safe and effective, are furnished under generally accepted professional standards to 
+treat illness, injury or medical condition, and which, as determined by Blue Shield, are: (a) consistent 
+with Blue Shield medical policy; (b) consistent with the symptoms or diagnosis; (c) not furnished 
+primarily for the convenience of the patient, the attending Physician or other provider; (d) furnished 
+at the most appropriate level which can be provided safely and effectively to the patient; and (e) not 
+more costly than an alternative service or sequence of services at least as likely to produce equivalent 
+therapeutic or diagnostic results as to the diagnosis or treatment of the Member’s illness, injury, or 
+disease. 
+ 
+Investigational/Experimental:  A treatment, procedure, or drug is investigational when it has not 
+been recognized as safe and effective for use in treating the particular condition in accordance with 
+generally accepted professional medical standards. This includes services where approval by the 
+federal or state governmental is required prior to use, but has not yet been granted.   
+ 
+Split Evaluation:  Blue Shield of California/Blue Shield of California Life & Health Insurance Company 
+(Blue Shield) policy review can result in a split evaluation, where a treatment, procedure, or drug will 
+be considered to be investigational for certain indications or conditions, but will be deemed safe and 
+effective for other indications or conditions, and therefore potentially medically necessary in those 
+instances. 
+ 
+Prior Authorization Requirements and Feedback (as applicable to your plan) 
+ 
+Within five days before the actual date of service, the provider must confirm with Blue Shield that the 
+member's health plan coverage is still in effect. Blue Shield reserves the right to revoke an 
+authorization prior to services being rendered based on cancellation of the member's eligibility. Final 
+determination of benefits will be made after review of the claim for limitations or exclusions.  
+ 
+Questions regarding the applicability of this policy should be directed to the Prior Authorization 
+Department at (800) 541-6652, or the Transplant Case Management Department at (800) 637-2066 
+ext.    3507708 or visit the provider portal at www.blueshieldca.com/provider
+. 
+ 
+We are interested in receiving feedback relative to developing, adopting, and reviewing criteria for 
+medical policy. Any licensed practitioner who is contracted with Blue Shield of California or Blue 
+Shield of California Promise Health Plan is welcome to provide comments, suggestions, or 
+concerns.  Our internal policy committees will receive and take your comments into consideration. 
+ 
+For utilization and medical policy feedback, please send comments to: MedPolicy@blueshieldca.com
+ 
+ 
+Disclaimer: This medical policy is a guide in evaluating the medical necessity of a particular service or treatment. 
+Blue Shield of California may consider published peer-reviewed scientific literature, national guidelines, and local 
+standards of practice in developing its medical policy. Federal and state law, as well as contract language, 
+including definitions and specific contract provisions/exclusions, take precedence over medical policy and must 
+be considered first in determining covered services. Member contracts may differ in their benefits. Blue Shield 
+reserves the right to review and update policies as appropriate. 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 49 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Appendix A 
+ 
+POLICY STATEMENT 
+BEFORE 
+Red font: Verbiage removed 
+AFTER  
+Blue font: Verbiage Changes/Additions 
+Tumor-Informed Circulating Tumor DNA Testing for Cancer 
+Management 2.04.153 
+ 
+Policy Statement: 
+I. Tumor-informed circulating tumor DNA testing (e.g., Signatera) is 
+considered 
+investigational for all indications. 
+ 
+Tumor-Informed Circulating Tumor DNA Testing for Cancer 
+Management BSC2.18 
+ 
+Policy Statement: 
+I. The use of a personalized, tumor-informed circulating tumor DNA 
+(ctDNA) plasma-based test (e.g., Signatera by Natera or 
+Personalized Cancer Monitoring—PCM by Invitae) for solid tumors is 
+considered 
+medically necessary when BOTH the following are met: 
+A. Individual with stage I-IV cancer after surgical intervention with 
+curative intent to provide information for 
+any of the following: 
+1. Adjuvant or targeted therapy 
+2. Monitoring for relapse or progression (including but not 
+limited to the use of immunotherapy immune checkpoint 
+inhibitors {e.g., pembrolizumab [Keytruda], ipilimumab 
+[Yervoy], nivilumab [Opdivo]}) 
+B. Frequency of testing does not exceed recommendations for 
+monitoring noted in National Comprehensive Cancer Network 
+(NCCN) guidelines for RECIST (Response Evaluation Criteria in 
+Solid Tumors) for 
+any of the following: 
+1. Initial testing within 4-6 weeks after surgery as a baseline 
+and for adjuvant therapy decisions 
+2. Every 3-6 months for the first 2 years initially or with 
+recurrence or progression (not to exceed 4 tests/year) 
+3. Every 6-12 months for the following 3 years (not to exceed 2 
+tests/year) for colorectal cancer (CRC), NSCLC (Non-Small 
+Cell Lung Cancer) 
+4. Annually for the following 5 years (not to exceed 1 test/year)  
+5. As indicated thereafter based on clinicopathologic features 
+ 
+II. The use of tumor-informed ctDNA is considered to be 
+investigational for individuals with any of the following conditions: 
+A. Pregnancy 
+B. Active hematological malignancy 
+C. History of allogeneic bone marrow/stem cell transplants 
+
+BSC2.18 Tumor-Informed Circulating Tumor DNA Testing for Cancer Management 
+Page 50 of 50 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+BEFORE 
+Red font: Verbiage removed 
+AFTER  
+Blue font: Verbiage Changes/Additions 
+D. Within 2 weeks after blood transfusion 
+E. Other situations not meeting medically necessary criteria noted 
+above 
+ 

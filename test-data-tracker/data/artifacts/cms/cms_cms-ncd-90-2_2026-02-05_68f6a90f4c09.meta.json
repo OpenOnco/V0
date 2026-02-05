@@ -1,0 +1,14 @@
+{
+  "artifactId": "cms_cms-ncd-90-2_2026-02-05_68f6a90f4c09",
+  "payerId": "cms",
+  "policyId": "cms-ncd-90-2",
+  "fetchedAt": "2026-02-05T20:09:34.492Z",
+  "contentType": "html",
+  "sourceUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=372",
+  "contentLength": 16862,
+  "contentHash": "68f6a90f4c095ee60e70660a88659f724f702a7801961db7a0d65f52d1d6bc72",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

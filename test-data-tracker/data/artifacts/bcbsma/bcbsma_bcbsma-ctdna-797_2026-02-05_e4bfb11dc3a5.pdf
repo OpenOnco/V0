@@ -1,0 +1,333 @@
+
+
+ 
+1 
+ 
+  
+Medical Policy 
+Circulating Tumor DNA and Circulating Tumor Cells for Cancer  
+Management (Liquid Biopsy) 
+Table of Contents 
+• Policy: Commercial • Coding Information  • Information Pertaining to All Policies  
+• Policy: Medicare • Description  • References  
+• Authorization Information • Policy History  • Endnotes 
+Policy Number: 797 
+BCBSA Reference Number: 2.04.141  
+ 
+Related Policies  
+Biomarkers for the Diagnosis and Cancer Risk Assessment of Prostate Cancer, #336 
+Policy
+1 
+Commercial Members: Managed Care (HMO and POS), PPO, and Indemnity  
+ 
+Plasma-based comprehensive somatic genomic profiling testing (CGP) using Guardant360® for patients 
+with Stage IIIB/IV non-small cell lung cancer (NSCLC) is considered MEDICALLY NECESSARY when 
+the following criteria have been met: 
+ 
+Diagnosis:  
+• When tissue-based CGP is infeasible (i.e., quantity not sufficient for tissue-based CGP or invasive 
+biopsy is medically contraindicated), AND 
+• When prior results for ALL of the following tests are not available: 
+o EGFR single nucleotide variants (SNVs) and insertions and deletions (indels)  
+o ALK and ROS1 rearrangements  
+o PDL1 expression.  
+ 
+Progression:  
+• Patients progressing on or after chemotherapy or immunotherapy who have never been tested for 
+EGFR SNVs and indels, and ALK and ROS1 rearrangements, and for whom tissue-based CGP is 
+infeasible (i.e., quantity not sufficient for tissue-based CGP), OR 
+• For patients progressing on EGFR tyrosine kinase inhibitors (TKIs). 
+ 
+If no genetic alteration is detected by Guardant360®, or if circulating tumor DNA (ctDNA) is 
+insufficient/not detected, tissue-based genotyping should be considered. 
+ 
+Other plasma-based CGP tests are considered INVESTIGATIONAL. 
+  
+CGP and the use of circulating tumor DNA is considered INVESTIGATIONAL for all other indications. 
+
+ 
+2 
+ 
+ 
+The use of circulating tumor cells is considered INVESTIGATIONAL for all indications. 
+ 
+Prior Authorization Information 
+Inpatient 
+• For services described in this policy, precertification/preauthorization IS REQUIRED for all products if 
+the procedure is performed inpatient.  
+Outpatient 
+• For services described in this policy, see below for products where prior authorization might be 
+required if the procedure is performed outpatient. 
+ 
+ Outpatient 
+Commercial Managed 
+Care (HMO and POS)  
+ 
+Commercial PPO and 
+Indemnity 
+The requirements of BCBSMA Genetic Testing Management Program 
+require prior authorization via AIM Specialty Health. These requirements are 
+member-specific:  
+ 
+Please verify member eligibility and requirements through Online Services 
+by logging onto Provider Central. Refer to our Quick Tip for an overview of 
+pre-certification and prior authorization requirements. 
+ 
+Ordering clinicians should request prior authorization from AIM Specialty 
+Health.  AIM’s ProviderPortal
+SM
+ registration is required or call 1-866-745-
+1783 (when applicable).   
+ 
+ 
+CPT Codes / HCPCS Codes / ICD Codes  
+Inclusion or exclusion of a code does not constitute or imply member coverage or provider 
+reimbursement. Please refer to the member’s contract benefits in effect at the time of service to determine 
+coverage or non-coverage as it applies to an individual member.  
+ 
+Providers should report all services using the most up-to-date industry-standard procedure, revenue, and 
+diagnosis codes, including modifiers where applicable. 
+ 
+The following codes are included below for informational purposes only; this is not an all-inclusive list. 
+ 
+The above medical necessity criteria MUST be met for the following codes to be covered for 
+Commercial Members: Managed Care (HMO and POS), PPO, and Indemnity: 
+CPT Codes 
+CPT codes: Code Description 
+81445 
+Targeted genomic sequence analysis panel, solid organ neoplasm, DNA analysis, and 
+RNA analysis when performed, 5-50 genes (eg, ALK, BRAF, CDKN2A, EGFR, ERBB2, 
+KIT, KRAS, NRAS, MET, PDGFRA, PDGFRB, PGR, PIK3CA, PTEN, RET), interrogation 
+for sequence variants and copy number variants or rearrangements, if performed 
+81450 
+Targeted genomic sequence analysis panel, hematolymphoid neoplasm or disorder, DNA 
+analysis, and RNA analysis when performed, 5-50 genes (eg, BRAF, CEBPA, DNMT3A, 
+EZH2, FLT3, IDH1, IDH2, JAK2, KRAS, KIT, MLL, NRAS, NPM1, NOTCH1), interrogation 
+for sequence variants, and copy number variants or rearrangements, or isoform 
+expression or mRNA expression levels, if performed 
+81455 
+Targeted genomic sequence analysis panel, solid organ or hematolymphoid neoplasm, 
+DNA analysis, and RNA analysis when performed, 51 or greater genes (eg, ALK, BRAF, 
+CDKN2A, CEBPA, DNMT3A, EGFR, ERBB2, EZH2, FLT3, IDH1, IDH2, JAK2, KIT, 
+KRAS, MLL, NPM1, NRAS, MET, NOTCH1, PDGFRA, PDGFRB, PGR, PIK3CA, PTEN, 
+
+ 
+3 
+ 
+RET), interrogation for sequence variants and copy number variants or rearrangements, if 
+performed 
+ 
+Description 
+Liquid biopsy refers to analysis of circulating tumor DNA (ctDNA) or circulating tumor cells (CTCs) as a 
+method of noninvasively characterizing tumors and tumor genome from the peripheral blood. 
+ 
+Circulating Tumor DNA 
+Normal and tumor cells release small fragments of DNA into the blood, which is referred to as cell-free 
+DNA (cfDNA). cfDNA from nonmalignant cells is released by apoptosis. Most cell-free tumor DNA is 
+derived from apoptotic and/or necrotic tumor cells, either from the primary tumor, metastases, or CTCs. 
+Unlike apoptosis, necrosis is considered a pathologic process, and generates larger DNA fragments due 
+to an incomplete and random digestion of genomic DNA. The length or integrity of the circulating DNA 
+can potentially distinguish between apoptotic and necrotic origin. ctDNA can be used for genomic 
+characterization of the tumor. 
+ 
+Circulating Tumor Cells 
+Intact CTCs are released from a primary tumor and/or a metastatic site into the bloodstream. The half-life 
+of a CTC in the bloodstream is short (1-2 hours), and CTCs are cleared through extravasation into 
+secondary organs. Most assays detect CTCs through the use of surface epithelial markers such as 
+EpCAM and cytokeratins. The primary reason for in detecting CTCs is prognostic, through quantification 
+of circulating levels. 
+Technologies for Detecting ctDNA and CTCs 
+Detection of ctDNA is challenging because ctDNA is diluted by nonmalignant circulating DNA and usually 
+represents a small fraction (<1%) of total cfDNA. Therefore, more sensitive methods than the standard 
+sequencing approaches (eg, Sanger sequencing) are needed. 
+ 
+Highly sensitive and specific methods have been developed to detect ctDNA, for both single-nucleotide 
+mutations (eg BEAMing [which combines emulsion polymerase chain reaction [PCR] with magnetic beads 
+and flow cytometry] and digital PCR) and copy-number changes. Digital genomic technologies allow for 
+enumeration of rare mutant variants in complex mixtures of DNA. 
+ 
+Approaches to detecting ctDNA can be considered targeted, which h includes the analysis of known 
+genetic mutations from the primary tumor in a small set of frequently occurring driver mutations, which 
+can impact therapy decisions (eg, EGFR and ALK in non-small-cell lung cancer), or untargeted without 
+knowledge of specific mutations present in the primary tumor, and include array comparative genomic 
+hybridization, next-generation sequencing, and whole exome and genome sequencing. 
+ 
+CTC assays usually start with an enrichment step that increases the concentration of CTCs, either on the 
+basis of biologic properties (expression of protein markers) or physical properties (size, density, electric 
+charge). CTCs can then be detected using immunologic, molecular, or functional assays. 
+ 
+Summary 
+Circulating tumor DNA (ctDNA) and circulating tumor cells (CTCs) in peripheral blood, referred to as 
+“liquid biopsy,” potentially offer a noninvasive alternative to tissue biopsy for therapeutic decisions and 
+clinical prognosis in patients with cancer.  
+ 
+For individuals who have cancer who receive molecular characterization of tumor using ctDNA, the 
+evidence includes case series and systematic reviews of these case series. Relevant outcomes are 
+overall survival, disease-specific survival, test accuracy and validity, morbid events, and medication use. 
+Ultrasensitive methods to detect mutations from ctDNA have been developed, but there is limited 
+evidence on the analytic validity of these methods. There is a need for further optimization and 
+standardization of testing methods. Clinical validity consists of case series that report correlations 
+between mutations detected in ctDNA with mutations detected in tumor tissue. Results have shown 
+variable results for clinical sensitivity. Although some reports have suggested that clinical sensitivity may 
+
+ 
+4 
+ 
+be high, this finding has not been consistent. Published studies have consistently reported high clinical 
+specificity; however, most study populations are small and heterogeneous, and it is not known to what 
+degree mutations detected by ctDNA are representative of the primary tumor. Published studies reporting 
+clinical outcomes and/or clinical utility are lacking. However, specifically for ctDNA in non-small cell lung 
+cancer (NSCLC), the evidence supports improved health outcomes at tumor progression and at diagnosis 
+if tissue sample is unobtainable.    
+ 
+For individuals who have cancer or are at high risk of developing cancer who receive identification and 
+quantification of CTCs, the evidence includes case series and meta-analyses of these case series. 
+Relevant outcomes are overall survival, disease-specific survival, and test accuracy and test validity. 
+ 
+Published data on analytic validity are lacking. Most of the literature consists of reports of levels of CTCs 
+and cancer prognosis, and have shown a correlation with survival in certain cancer types. However, the 
+cutoff levels that should be used to signal a change in patient management are unknown, and there are 
+no studies showing clinical utility and improved patient outcomes. The evidence is insufficient to 
+determine the effects of the technology on health outcomes. If a separate evidence review exists, then 
+conclusions reached there supersede conclusions in this review. 
+ 
+Policy History 
+Date Action 
+1/2021 Medicare information removed. See MP #132 Medicare Advantage Management for 
+local coverage determination and national coverage determination reference. 
+Clarified coding information.    
+6/2020 Policy reactivated.  Prior authorization clarified.  Prior authorization is required 
+through AIM Specialty Health. Effective 6/8/2020.   
+10/2017 Clarified coding information. 
+9/1/2017 New medically necessary indications described.  Clarified coding information. 
+Effective 9/1/2017. 
+10/2016 New medical policy describing investigational indications.  Effective 10/1/2016. 
+Information Pertaining to All Blue Cross Blue Shield Medical Policies 
+Click on any of the following terms to access the relevant information: 
+Medical Policy Terms of Use 
+Managed Care Guidelines 
+Indemnity/PPO Guidelines 
+Clinical Exception Process 
+Medical Technology Assessment Guidelines 
+References 
+1. Alix-Panabieres C, Pantel K. Clinical Applications of Circulating Tumor Cells and Circulating Tumor 
+DNA as Liquid Biopsy. Cancer Discov. May 2016;6(5):479-491. PMID 26969689 
+2. Newman AM, Bratman SV, To J, et al. An ultrasensitive method for quantitating circulating tumor DNA 
+with broad patient coverage. Nat Med. May 2014;20(5):548-554. PMID 24705333 
+3. Bettegowda C, Sausen M, Leary RJ, et al. Detection of circulating tumor DNA in early- and late-stage 
+human malignancies. Sci Transl Med. Feb 19 2014;6(224):224ra224. PMID 24553385 
+4. Mao C, Yuan JQ, Yang ZY, et al. Blood as a substitute for tumor tissue in detecting egfr mutations for 
+guiding EGFR TKIs treatment of nonsmall cell lung cancer: a systematic review and meta-analysis. 
+Medicine (Baltimore). May 2015;94(21):e775. PMID 26020382 
+5. Qiu M, Wang J, Xu Y, et al. Circulating tumor DNA is effective for the detection of EGFR mutation in non-
+small  cell  lung cancer:  a  meta-analysis.  Cancer  Epidemiol  Biomarkers  Prev. Jan 2015;24(1):206-212. 
+PMID 25339418 
+6. Sacher AG, Paweletz C, Dahlberg SE, et al. Prospective Validation of Rapid Plasma Genotyping for the 
+Detection of EGFR and KRAS Mutations in Advanced Lung Cancer. JAMA Oncol. Apr 7 2016. PMID 
+27055085 
+7. Pailler E, Adam J, Barthelemy A, et al. Detection of circulating tumor cells harboring a unique ALK 
+rearrangement in ALK-positive non-small-cell lung cancer. J Clin Oncol. Jun 20 2013;31(18):2273-
+2281. PMID 23669222 
+
+ 
+5 
+ 
+8. Pailler E, Auger N, Lindsay CR, et al. High level of chromosomal instability in circulating tumor cells of 
+ROS1-rearranged non-small-cell lung cancer. Ann Oncol. Jul 2015;26(7):1408-1415. PMID 25846554 
+9. Lyberopoulou A, Aravantinos G, Efstathopoulos EP, et al. Mutational analysis of circulating tumor cells 
+from colorectal cancer patients and correlation with primary tumor tissue. PLoS One. 
+2015;10(4):e0123902. PMID 25902072 
+10. Tabernero J, Lenz HJ, Siena S, et al. Analysis of circulating DNA and protein biomarkers to predict the 
+clinical activity of regorafenib and assess prognosis in patients with metastatic colorectal cancer: a 
+retrospective, exploratory analysis of the CORRECT trial. Lancet Oncol. Aug 2015;16(8):937-948. 
+PMID 26184520 
+11. Labgaa I, Villanueva A. Liquid biopsy in liver cancer. Discov Med. Apr 2015;19(105):263-273. PMID 
+25977189 
+12. Xu MJ, Dorsey JF, Amaravadi R, et al. Circulating tumor cells, DNA, and mRNA: potential for clinical 
+utility in patients with melanoma. Oncologist. Jan 2016;21(1):84-94. PMID 26614709 
+13. Riva F, Dronov OI, Khomenko DI, et al. Clinical applications of circulating tumor DNA and circulating 
+tumor cells in pancreatic cancer. Mol Oncol. Mar 2016;10(3):481-493. PMID 26856794 
+14. Schmidt H, Kulasinghe A, Perry C, et al. A liquid biopsy for head and neck cancers. Expert Rev Mol 
+Diagn. Feb 2016;16(2):165-172. PMID 26631411 
+15. Zhang L, Riethdorf S, Wu G, et al. Meta-analysis of the prognostic value of circulating tumor cells in 
+breast cancer. Clin Cancer Res. Oct 15 2012;18(20):5701-5710. PMID 22908097 
+16. Zhao S, Liu Y, Zhang Q, et al. The prognostic role of circulating tumor cells (CTCs) detected by RT-PCR 
+in  
+breast cancer: a meta-analysis of published literature. Breast Cancer Res Treat. 2011;130(3):809-816. 
+17. Cristofanilli  M,  Budd  GT,  Ellis MJ,  et  al.  Circulating  tumor  cells,  disease  progression  and  survival  in 
+metastatic breast cancer. N Engl J Med. 2004;351(8-Jan):781-791. 
+18. Nole F, Munzone E, Zorzino L, et al. Variation of circulating tumor cell levels during treatment of 
+metastatic breast cancer: prognostic and therapeutic implications. Ann Oncol. 2008;19(5):891-897. 
+19. Pierga JY, Hajage D, Bachelot T, et al. High independent prognostic and predictive value of circulating 
+tumor cells compared with serum tumor markers in a large prospective trial in first-line chemotherapy 
+for metastatic breast cancer patients. Ann Oncol. 2012;23(3-Jan):618-624. 
+20. Ma X, Xiao Z, Li X, et al. Prognostic role of circulating tumor cells and disseminated tumor cells in 
+patients with prostate cancer: a systematic review and meta-analysis. Tumour Biol. Feb 22 2014. 
+PMID 24563278 
+21. Wang FB, Yang XQ, Yang S, et al. A higher number of circulating tumor cells in peripheral blood 
+indicates poor prognosis in prostate cancer patients-a meta-analysis. Asian Pac J Cancer Prev. 
+2011;12(10):2629-2635. 
+22. de Bono J., Scher HI, Montgomery RB, et al. Circulating tumor cells predict survival benefit from 
+treatment in metastatic castration-resistant prostate cancer. Clin Cancer Res. 2008;14(19):6302-6309. 
+23. Huang X, Gao P, Song Y, et al. Meta-analysis of the prognostic value of circulating tumor cells 
+detected with the CellSearch System in colorectal cancer. BMC Cancer. 2015;15:202. PMID 
+25880692 
+24. Groot Koerkamp B, Rahbari NN, Buchler MW, et al. Circulating tumor cells and prognosis of patients 
+with resectable colorectal liver metastases or widespread metastatic colorectal cancer: a meta-
+analysis. Ann Surg Oncol. Mar 2 2013;20(7):2156-2165. PMID 23456317 
+25. Sanguedolce F, Cormio A, Bufo P, et al. Molecular markers in bladder cancer: Novel research 
+frontiers. Crit Rev Clin Lab Sci. 2015;52(5):242-255. PMID 26053693 
+26. Cohen SJ, Punt CJ, Iannotti N, et al. Relationship of circulating tumor cells to tumor response, 
+progression-free survival and overall survival in patients with metastatic colorectal cancer. J Clin Oncol. 
+2008;26(19):3213-3221. 
+27. Seeberg LT, Waage A, Brunborg C, et al. Circulating Tumor Cells in Patients With Colorectal Liver 
+Metastasis Predict Impaired Survival. Ann Surg. Feb 6 2014. PMID 24509211 
+28. Bork U, Rahbari NN, Scholch S, et al. Circulating tumour cells and outcome in non-metastatic 
+colorectal cancer: a prospective study. Br J Cancer. Apr 14 2015;112(8):1306-1313. PMID 25867263 
+29. Krebs MG, Sloane R, Priest L, et al. Evaluation and prognostic significance of circulating tumor cells in 
+patients with non-small-cell lung cancer. J Clin Oncol. 2011;29(12):1556-1563. 
+30. Naito T, Tanaka F, Ono A, et al. Prognostic impact of circulating tumor cells in patients with small cell 
+lung cancer. J Thorac Oncol. 2012;7(3):512-519. 
+31. Hirose T, Murata Y, Oki Y, et al. Relationship of circulating tumor cells to the effectiveness of cytotoxic 
+chemotherapy in patients with metastatic non-small-cell lung cancer. Oncol Res. 2012;20(2-3):131-
+137. PMID 23193919 
+32. Ma XL, Xiao ZL, Liu L, et al. Meta-analysis of circulating tumor cells as a prognostic marker in lung 
+cancer. Asian Pac J Cancer Prev. 2012;13(4):1137-1144. PMID 22799295 
+
+ 
+6 
+ 
+33. Guzzo TJ, McNeil BK, Bivalacqua TJ, et al. The presence of circulating tumor cells does not predict 
+extravesical disease in bladder cancer patients prior to radical cystectomy. Urol Oncol. 2012;30(1):44-
+48. 
+34. Rink M, Chun FK, Minner S, et al. Detection of circulating tumor cells in peripheral blood of patients 
+with advanced non-metastatic bladder cancer. BJU Intl. 2011;107(10):1668-1675. 
+35. Gazzaniga P, de Berardinis E, Raimondi C, et al. Circulating tumor cells detection has independent 
+prognostic impact in high-risk non-muscle invasive bladder cancer. Int J Cancer. Mar 6 2014. PMID 
+24599551 
+36. de Albuquerque A., Kubisch I, Breier G, et al. Multimarker gene analysis of circulating tumor cells in 
+pancreatic cancer patients: a feasibility study. Oncology. 2012;82(1):3-10. 
+37. Okabe H, Tsunoda S, Hosogi H, et al. Circulating Tumor Cells as an Independent Predictor of Survival 
+in Advanced Gastric Cancer. Ann Surg Oncol. Mar 17 2015. PMID 25777087 
+38. Schulze K, Gasch C, Staufer K, et al. Presence of EpCAM-positive circulating tumor cells as 
+biomarker for systemic disease strongly correlates to survival in patients with hepatocellular 
+carcinoma. Int J Cancer. Nov 2013;133(9):2165-2171. PMID 23616258 
+39. Nichols AC, Lowes LE, Szeto CC, et al. Detection of circulating tumor cells in advanced head and 
+neck cancer using the CellSearch system. Head Neck. Oct 2012;34(10):1440-1444. PMID 22076949 
+40. Khoja L, Lorigan P, Zhou C, et al. Biomarker Utility of Circulating Tumor Cells in Metastatic Cutaneous 
+Melanoma. J Invest Dermatol. Dec 6 2013;133(6):1582-1590. PMID 23223143 
+41. Bidard FC, Madic J, Mariani P, et al. Detection rate and prognostic value of circulating tumor cells and 
+circulating tumor DNA in metastatic uveal melanoma. Int J Cancer. Mar 1 2014;134(5):1207-1213. PMID 
+23934701 
+42. Zhang J, Wang HT, Li BG. Prognostic significance of circulating tumor cells in small--cell lung cancer 
+patients: a meta-analysis. Asian Pac J Cancer Prev. 2014;15(19):8429-8433. PMID 25339041 
+43. Smerage JB, Barlow WE, Hortobagyi GN, et al. Circulating tumor cells and response to chemotherapy 
+in metastatic breast cancer: SWOG S0500. J Clin Oncol. Nov 1 2014;32(31):3483-3489. PMID 
+24888818 
+44. National Comprehensive Cancer Network. NCCN Clinical Practice Guidelines in Oncology: Breast 
+Cancer (Version 2.2016). 2016; 
+https://www.nccn.org/professionals/physician_gls/pdf/breast_blocks.pdf. Accessed May, 2016. 
+Endnotes 
+ 
+1
+ Based on MPRM 2.04.141 and expert opinion. 

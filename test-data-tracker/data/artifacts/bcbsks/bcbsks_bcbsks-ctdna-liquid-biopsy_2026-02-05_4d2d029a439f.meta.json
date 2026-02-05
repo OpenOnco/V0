@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbsks_bcbsks-ctdna-liquid-biopsy_2026-02-05_4d2d029a439f",
+  "payerId": "bcbsks",
+  "policyId": "bcbsks-ctdna-liquid-biopsy",
+  "fetchedAt": "2026-02-05T20:07:39.494Z",
+  "contentType": "static_html",
+  "sourceUrl": "https://www.bcbsks.com/medical-policies/circulating-tumor-dna-and-circulating-tumor-cells-cancer-management-liquid-biopsy",
+  "contentLength": 372580,
+  "contentHash": "4d2d029a439fb6b0521261aac41f67a5c4186a6c4e9b9a76a926d6399e69fcc4",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

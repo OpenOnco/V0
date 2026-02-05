@@ -1,0 +1,14 @@
+{
+  "artifactId": "anthem_anthem-lab-00015_2026-02-05_185474c0c32a",
+  "payerId": "anthem",
+  "policyId": "anthem-lab-00015",
+  "fetchedAt": "2026-02-05T20:05:38.898Z",
+  "contentType": "static_html",
+  "sourceUrl": "https://anthem.com/dam/medpolicies/abc/active/policies/mp_pw_a049885.html",
+  "contentLength": 55243,
+  "contentHash": "185474c0c32aafe1fe1841ef9e0f507abf4c07adb81b0e451c1590600981e463",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

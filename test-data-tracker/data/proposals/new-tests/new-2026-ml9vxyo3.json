@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-ml9vxyo3",
+  "type": "new-test",
+  "status": "rejected",
+  "createdAt": "2026-02-05T20:04:47.427Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": "QIAsprint Connect is lab automation hardware, not a diagnostic test",
+  "testData": {
+    "name": "QIAsprint Connect High-Throughput Automation System",
+    "vendor": "QIAGEN",
+    "category": "Hereditary Cancer Testing",
+    "description": "High-throughput automation system for labs worldwide showcased at SLAS 2026",
+    "launchDate": null
+  },
+  "source": "https://corporate.qiagen.com/newsroom/press-releases/default.aspx",
+  "sourceTitle": "QIAGEN: Launches QIAsprint Connect High-Throughput Automation System",
+  "confidence": 0.7,
+  "snippet": "High-throughput automation system for labs worldwide showcased at SLAS 2026"
+}

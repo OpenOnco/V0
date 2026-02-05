@@ -1,0 +1,14 @@
+{
+  "artifactId": "kaiser_kaiser-wa-genetic-screening_2026-02-05_d4661e52e8db",
+  "payerId": "kaiser",
+  "policyId": "kaiser-wa-genetic-screening",
+  "fetchedAt": "2026-02-05T20:09:11.606Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://wa-provider.kaiserpermanente.org/static/pdf/hosting/clinical/criteria/pdf/genetic_screening.pdf",
+  "contentLength": 128422,
+  "contentHash": "d4661e52e8db68621606940d08719bdfc89b4c85c2c0b91650acd40e78bf008e",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

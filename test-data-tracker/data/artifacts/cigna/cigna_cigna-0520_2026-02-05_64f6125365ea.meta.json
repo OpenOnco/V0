@@ -1,0 +1,14 @@
+{
+  "artifactId": "cigna_cigna-0520_2026-02-05_64f6125365ea",
+  "payerId": "cigna",
+  "policyId": "cigna-0520",
+  "fetchedAt": "2026-02-05T20:05:16.793Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
+  "contentLength": 114351,
+  "contentHash": "64f6125365ea62f2ba93d61b4044d057269fedb8d2445e57e7f336e134e2c9dc",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

@@ -1,0 +1,14 @@
+{
+  "artifactId": "blueshieldca_bsca-ctdna-liquid-biopsy_2026-02-05_ea5d557b615c",
+  "payerId": "blueshieldca",
+  "policyId": "bsca-ctdna-liquid-biopsy",
+  "fetchedAt": "2026-02-05T20:06:52.834Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.blueshieldca.com/content/dam/bsca/en/provider/docs/medical-policies/Oncology-Circulating-Tumor-DNA-Circulating-Tumor-Cells-Liquid-Biopsy.pdf",
+  "contentLength": 65875,
+  "contentHash": "ea5d557b615c9bd3dfd3467b09ed64cabcc385c28f3dffb5058367294fc5cfb2",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

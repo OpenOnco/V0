@@ -1,0 +1,14 @@
+{
+  "artifactId": "blueshieldca_bsca-molecular-analysis-tumors_2026-02-05_30ca95b74a2e",
+  "payerId": "blueshieldca",
+  "policyId": "bsca-molecular-analysis-tumors",
+  "fetchedAt": "2026-02-05T20:07:04.087Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.blueshieldca.com/content/dam/bsca/en/provider/docs/medical-policies/Oncology-Molecular-Analysis-Solid-Tumors-Hematologic-Malignancies.pdf",
+  "contentLength": 204193,
+  "contentHash": "30ca95b74a2e120765f1ed2953e00d2b8a3b2473892c1f7838fe357247dbebd1",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

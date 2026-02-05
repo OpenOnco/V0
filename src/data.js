@@ -1348,9 +1348,10 @@ export const mrdTestData = [
     "cancerTypes": [
       "Breast",
       "Colorectal",
-      "NSCLC"
+      "NSCLC",
+      "Cervical"
     ],
-    "indicationsNotes": "Personalis NeXT Personal Dx tumor-informed MRD assay. Medicare-covered for early-stage breast cancer recurrence monitoring; clinical data also reported in colorectal cancer and NSCLC.",
+    "indicationsNotes": "Personalis NeXT Personal Dx tumor-informed MRD assay. Medicare-covered for early-stage breast cancer recurrence monitoring; clinical data also reported in colorectal cancer, NSCLC, and cervical cancer.",
     "sensitivity": 100,
     "sensitivityCitations": "https://investors.personalis.com/static-files/ef5485c7-4866-449d-9dcb-bfaf081bf97d",
     "sensitivityNotes": "100% sensitivity reported in validation cohort (n=493). Value represents analytical validation; larger clinical cohorts ongoing.",
@@ -1926,8 +1927,8 @@ export const mrdTestData = [
     "clinicalAvailability": "Clinical LDT – shipping",
     "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf",
     "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000; Guardant Reveal ctDNA analysis)",
-    "clinicalSettings": ["Post-Surgery", "Surveillance"],
-    "clinicalSettingsNotes": "Validated for post-surgical landmark assessment (63% sensitivity) and longitudinal surveillance (81% sensitivity) in CRC. Medicare coverage for both post-surgical and surveillance settings.",
+    "clinicalSettings": ["Post-Surgery", "Surveillance", "Therapy Response"],
+    "clinicalSettingsNotes": "Validated for post-surgical landmark assessment (63% sensitivity), longitudinal surveillance (81% sensitivity) in CRC, and late-stage therapy response monitoring. Medicare coverage for both post-surgical and surveillance settings.",
     "totalParticipants": 2000,
     "numPublications": 10,
     "numPublicationsPlus": true,
@@ -1990,20 +1991,29 @@ export const mrdTestData = [
           "status": "COVERED",
           "policy": "Medical Policy",
           "policyUrl": null,
-          "coveredIndications": ["Stage II-III CRC initial (4-6 weeks post-surgery)", "Stage II-III CRC surveillance (q3-6mo x2yr, then q6-12mo x3yr)"],
-          "notes": "Coverage announced July 2023"
+          "coveredIndications": ["Stage II-III CRC initial (4-6 weeks post-surgery)", "Stage II-III CRC surveillance (q3-6mo x2yr, then q6-12mo x3yr)", "Stage I-III breast cancer (coverage expanding)"],
+          "notes": "Coverage announced July 2023. CRC fully covered; breast cancer (stage I-III) coverage expanding.",
+          "lastReviewed": "2026-02-05"
         },
         "bcbsLouisiana": {
           "status": "COVERED",
-          "policy": "Medical Policy",
+          "policy": "Medical Policy (retired; delegated to Carelon July 2024)",
           "policyUrl": null,
           "coveredIndications": ["Stage II-III CRC"],
-          "notes": "First commercial payer to cover Guardant Reveal (July 2023)"
+          "notes": "First commercial payer to cover Guardant Reveal (July 2023). Policy retired as part of partnership with Carelon effective July 2024.",
+          "lastReviewed": "2026-02-05"
+        },
+        "blueshieldca": {
+          "status": "PARTIAL",
+          "policy": "Tumor-Informed ctDNA UM Policy",
+          "coveredIndications": ["Stage I-IV cancer after surgical intervention with curative intent", "Adjuvant/targeted therapy decisions", "Relapse/progression monitoring"],
+          "notes": "Covered with restrictions (CPT 0306U, 0307U). Stage I-IV cancer after curative-intent surgery.",
+          "lastReviewed": "2026-02-05"
         }
       },
       "analysis": {
         "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Significantly overstated",
-        "patientGuidance": "Medicare patients: covered for CRC only. Commercial insurance: expect denial from major payers (Aetna/Cigna/UHC classify as experimental). Exception: BCBS Louisiana and Geisinger cover CRC.",
+        "patientGuidance": "Medicare patients: covered for CRC only. Commercial insurance: expect denial from major payers (Aetna/Cigna/UHC classify as experimental). Exception: BCBS Louisiana (now via Carelon), Geisinger, and Blue Shield CA (with restrictions) cover CRC.",
         "keyInsight": "Vendor 'in-network' claims are misleading. Most major commercial payers explicitly classify Guardant Reveal as experimental/investigational despite in-network status."
       }
     }
@@ -2081,7 +2091,7 @@ export const mrdTestData = [
     "tat": 28.0,
     "tatCitations": "https://www.natera.com/oncology/signatera-advanced-cancer-detection/faq/",
     "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1–1.5 weeks for follow-up tests.",
-    "fdaStatus": "CLIA LDT; not FDA-cleared/approved as of late 2025 (clinical validation via numerous peer-reviewed studies).",
+    "fdaStatus": "CLIA LDT; PMA submitted for companion diagnostic indication (Feb 2026). Not yet FDA-cleared/approved.",
     "reimbursement": "Medicare (CRC, Breast, Bladder, NSCLC, Ovarian, ICI)",
     "reimbursementNote": "Medicare MolDX coverage for: CRC (stage II-IV, oligometastatic), breast cancer (neoadjuvant, stage IIb+ adjuvant/recurrence), bladder (MIBC), NSCLC (stage I-III surveillance), ovarian/fallopian/peritoneal, and pan-solid ICI response monitoring. ADLT pricing. Coverage varies by indication - verify specific cancer type with payer.",
     "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California"],
@@ -2169,11 +2179,24 @@ export const mrdTestData = [
           "coveredIndications": [],
           "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
           "lastReviewed": "2026-01-27"
+        },
+        "blueshieldca": {
+          "status": "PARTIAL",
+          "policy": "Tumor-Informed ctDNA UM Policy",
+          "coveredIndications": ["Stage I-IV cancer after surgical intervention with curative intent", "Adjuvant/targeted therapy decisions", "Relapse/progression monitoring"],
+          "notes": "Covered with restrictions (CPT 0340U). Stage I-IV cancer after curative-intent surgery for therapy decisions or monitoring.",
+          "lastReviewed": "2026-02-05"
+        },
+        "carelon": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Genomic testing with established analytical and clinical validity"],
+          "notes": "Genomic testing must have established analytical and clinical validity. Repeated testing limited.",
+          "lastReviewed": "2026-02-05"
         }
       },
       "analysis": {
         "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
-        "patientGuidance": "Medicare patients: full coverage for all listed indications. Commercial insurance: Aetna covers CRC only; Cigna/UHC likely to deny. Expect prior auth and potential appeal process for non-CRC indications.",
+        "patientGuidance": "Medicare patients: full coverage for all listed indications. Commercial insurance: Aetna covers CRC only; Blue Shield CA covers with restrictions for post-surgical patients; Carelon partial coverage with restrictions; Cigna/UHC likely to deny.",
         "keyInsight": "Vendor 'in-network' status does not equal covered benefit. Private payer coverage significantly lags Medicare, with most limiting coverage to CRC or classifying as experimental."
       }
     }
@@ -2273,11 +2296,29 @@ export const mrdTestData = [
           "coveredIndications": [],
           "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
           "lastReviewed": "2026-01-27"
+        },
+        "carelon": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "Policy covers somatic genomic testing but MRD not specifically covered.",
+          "lastReviewed": "2026-02-05"
+        },
+        "blueshieldca": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "Evidence-based solid tumor MRD testing has limited criteria; emerging evidence denied as investigational.",
+          "lastReviewed": "2026-02-05"
+        },
+        "kaiser": {
+          "status": "PARTIAL",
+          "coveredIndications": ["MRD testing meeting Medicare MolDX program criteria"],
+          "notes": "Must meet Medicare MolDX program criteria. FDA approval required.",
+          "lastReviewed": "2026-02-05"
         }
       },
       "analysis": {
         "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Limited",
-        "patientGuidance": "Medicare patients: CRC coverage emerging. Commercial: CRC may be covered at Aetna; others likely denied.",
+        "patientGuidance": "Medicare patients: CRC coverage emerging. Commercial: CRC may be covered at Aetna; Carelon and Blue Shield CA do not cover MRD specifically; Kaiser requires Medicare MolDX criteria and FDA approval; others likely denied.",
         "keyInsight": "Tempus xM MRD is building coverage but currently limited to CRC indication."
       }
     }
@@ -2888,11 +2929,29 @@ export const mrdTestData = [
           "coveredIndications": [],
           "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
           "lastReviewed": "2026-01-27"
+        },
+        "humana": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Advanced stage III/IV or recurrent cancer"],
+          "notes": "Advanced stage III/IV or recurrent cancer. Tissue-based testing infeasible. No previous comprehensive molecular profiling.",
+          "lastReviewed": "2026-02-05"
+        },
+        "carelon": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Genetic liquid biopsy testing meeting general criteria", "Cancer site-specific criteria"],
+          "notes": "Must meet general criteria for genetic liquid biopsy testing. Cancer site-specific criteria must be satisfied.",
+          "lastReviewed": "2026-02-05"
+        },
+        "blueshieldca": {
+          "status": "PARTIAL",
+          "coveredIndications": ["HPV-Related Solid Tumor MRD Testing"],
+          "notes": "Listed under HPV-Related Solid Tumor MRD Testing. Evidence-based criteria.",
+          "lastReviewed": "2026-02-05"
         }
       },
       "analysis": {
         "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
-        "patientGuidance": "Medicare patients: covered for HPV+ cancers. Commercial: expect denial - HPV ctDNA is a niche indication not addressed by most policies.",
+        "patientGuidance": "Medicare patients: covered for HPV+ cancers. Commercial: Carelon partial coverage with general criteria; Blue Shield CA covers HPV-related MRD testing; most other payers likely to deny.",
         "keyInsight": "NavDx fills a unique niche for HPV cancers with Medicare coverage, but commercial payers haven't caught up."
       }
     }},
@@ -4479,11 +4538,18 @@ export const mrdTestData = [
           "notes": "Treatment monitoring experimental"
         },
         "united": {
-          "status": "INVESTIGATIONAL",
-          "policy": "Case-by-case",
+          "status": "NOT_COVERED",
+          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
           "policyUrl": null,
           "coveredIndications": [],
-          "notes": "Not established"
+          "notes": "MRD assays in solid tumor cancers unproven and not medically necessary",
+          "lastReviewed": "2026-02-05"
+        },
+        "anthem": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "No coverage for hybrid personalized MRD tests for any indication. Considered investigational.",
+          "lastReviewed": "2026-02-05"
         }
       },
       "analysis": {
@@ -5670,6 +5736,34 @@ export const mrdTestData = [
     "technologyDifferentiator": "Only blood-based MRD test using clonotypic peptides MS for myeloma. Measures M-protein directly in serum without bone marrow. No therapeutic antibody interference.",
     "submissionInfo": "Vendor submission 2026-01-30 by Jenna Kerry (jenna.kerry@rapidnovor.com)",
     "dateAdded": "2026-01-31"
+  },
+  {
+    "id": "mrd-30",
+    "sampleCategory": "Blood",
+    "name": "Quest Flow Cytometry MRD Blood Test",
+    "vendor": "Quest Diagnostics",
+    "approach": "Tumor-naïve",
+    "method": "Next-generation flow cytometry (NGF) for ultrasensitive MRD detection in peripheral blood. Detects aberrant plasma cell immunophenotypes with sensitivity comparable to NGS-based bone marrow MRD assays.",
+    "cancerTypes": ["Multiple Myeloma"],
+    "cancerTypesNotes": "Validated for multiple myeloma MRD monitoring from peripheral blood, eliminating need for bone marrow biopsy.",
+    "sensitivity": null,
+    "sensitivityNotes": "Reported as sensitive as next-generation sequencing for myeloma MRD detection.",
+    "specificity": null,
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "Blood-based; no bone marrow biopsy or tumor tissue required.",
+    "requiresMatchedNormal": "No",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "Laboratory-developed test available through Quest Diagnostics.",
+    "reimbursement": "Not yet established",
+    "clinicalAvailability": "Clinical LDT – shipping",
+    "clinicalAvailabilityNotes": "Available via Quest Diagnostics network. Five-day specimen stability enables broad access.",
+    "availableRegions": ["US"],
+    "clinicalSettings": ["Surveillance"],
+    "clinicalSettingsNotes": "MRD monitoring during and after myeloma treatment.",
+    "isClinicalLDT": true,
+    "vendorVerified": false,
+    "technologyDifferentiator": "Blood-based flow cytometry MRD test for myeloma with 5-day specimen stability. Eliminates need for bone marrow biopsy. Comparable sensitivity to NGS-based approaches.",
+    "dateAdded": "2026-02-05"
   }
 ];
 
@@ -5861,11 +5955,47 @@ export const ecdTestData = [
           "coveredIndications": [],
           "notes": "All liquid biopsy testing for solid tumors considered experimental/investigational. Policy acknowledges analytical validity but notes clinical utility data still emerging.",
           "lastReviewed": "2026-02-01"
+        },
+        "aetna": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "ctDNA/liquid biopsy screening tests considered experimental/investigational",
+          "lastReviewed": "2026-02-05"
+        },
+        "united": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "MCED/screening tests listed as unproven and not medically necessary",
+          "lastReviewed": "2026-02-05"
+        },
+        "kaiser": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Tests meeting Medicare MolDX program criteria with FDA approval"],
+          "notes": "Must meet Medicare MolDX program criteria. FDA approval required for covered tests.",
+          "lastReviewed": "2026-02-05"
+        },
+        "blueCrossNC": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "NSCLC patients when tissue-based testing infeasible only. MCED screening not covered.",
+          "lastReviewed": "2026-02-05"
+        },
+        "regence": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "Advanced/metastatic cancers only. Tissue-based testing must not be performable. MCED screening not covered.",
+          "lastReviewed": "2026-02-05"
+        },
+        "bcbsMichigan": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "Advanced solid cancers (metastatic, inoperable, refractory, recurrent, stages III-IV) only. MCED screening not covered.",
+          "lastReviewed": "2026-02-05"
         }
       },
       "analysis": {
         "vendorClaimAccuracy": "Accurate - GRAIL acknowledges limited coverage",
-        "patientGuidance": "Self-pay ($949) or employer-sponsored programs. REACH study provides Medicare coverage for enrolled participants only. Most commercial insurers consider MCED investigational.",
+        "patientGuidance": "Self-pay ($949) or employer-sponsored programs. REACH study provides Medicare coverage for enrolled participants only. Most commercial insurers consider MCED investigational. Kaiser requires MolDX criteria and FDA approval.",
         "keyInsight": "FDA PMA submission filed Jan 2026 may unlock broader coverage. Congressional bills (H.R.2407/S.2085) pending to mandate Medicare coverage."
       }
     }
@@ -7915,7 +8045,24 @@ export const cgpTestData = [
     },
     "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna"],
     "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA ctDNA/Liquid Biopsy Policy, Aetna CPB 0352, EviCore MOL.TS.194.A",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. Aetna CPB 0352: covered for NSCLC and prostate cancer when tissue insufficient (up to 50 genes). Blue Shield CA: covered for stage IV lung, metastatic CRC/pancreatic/prostate. EviCore (lab benefit manager) also covers."
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. Aetna CPB 0352: covered for NSCLC and prostate cancer when tissue insufficient (up to 50 genes). Blue Shield CA: covered for stage IV lung, metastatic CRC/pancreatic/prostate. EviCore (lab benefit manager) also covers.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-02-05",
+      "privatePayers": {
+        "evicore": {
+          "status": "PARTIAL",
+          "coveredIndications": ["FDA-approved companion diagnostic with specific cancer type indication"],
+          "notes": "Covered as FDA-approved companion diagnostic with specific cancer type indication.",
+          "lastReviewed": "2026-02-05"
+        },
+        "fepblue": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "ctDNA/CTC testing considered investigational",
+          "lastReviewed": "2026-02-05"
+        }
+      }
+    }
   },
   {
     "id": "tds-3",
@@ -8058,9 +8205,50 @@ export const cgpTestData = [
       "notes": null,
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna"],
-    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology ctDNA Policy, Aetna CPB 0715",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. Humana: strict conditions (0242U code, advanced cancer, tissue infeasible). Blue Shield CA: stage IV lung, metastatic CRC/pancreatic/prostate. Aetna CPB 0715: conditionally covered for ESR1 mutations only (breast cancer). EviCore also covers per MOL.TS.194.A guidelines."
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna", "BCBS Michigan"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology ctDNA Policy, Aetna CPB 0715. BCBS Michigan policy crawl 2026-02-05.",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. Humana: strict conditions (0242U code, advanced cancer, tissue infeasible). Blue Shield CA: stage IV lung, metastatic CRC/pancreatic/prostate. Aetna CPB 0715: conditionally covered for ESR1 mutations only (breast cancer). EviCore also covers per MOL.TS.194.A guidelines. BCBS Michigan: advanced solid cancers (metastatic, inoperable, refractory, recurrent, stages III-IV) for FDA-approved targeted therapies.",
+    "coverageCrossReference": {
+      "lastVerified": "2026-02-05",
+      "privatePayers": {
+        "anthem": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Advanced solid tumors when FFPE tissue inadequate/unavailable"],
+          "notes": "Covered when FFPE tissue inadequate/unavailable. Must be for guiding targeted therapy.",
+          "lastReviewed": "2026-02-05"
+        },
+        "regence": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Limited targeted treatment selection in advanced cancers"],
+          "notes": "Covered for limited targeted treatment selection only in advanced cancers.",
+          "lastReviewed": "2026-02-05"
+        },
+        "humana": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Advanced stage III/IV or recurrent cancer under CGP criteria"],
+          "notes": "Advanced stage III/IV or recurrent cancer under CGP criteria.",
+          "lastReviewed": "2026-02-05"
+        },
+        "evicore": {
+          "status": "PARTIAL",
+          "coveredIndications": ["NSCLC with specific criteria (LDT); FDA-approved CDx path for other indications"],
+          "notes": "Guardant360 LDT restricted to NSCLC with specific criteria. FDA-approved CDx path for other indications.",
+          "lastReviewed": "2026-02-05"
+        },
+        "bcbsMichigan": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Advanced solid cancers for selecting FDA-approved targeted therapies"],
+          "notes": "Advanced solid cancers (metastatic, inoperable locally advanced, refractory, recurrent, stages III-IV) for selecting FDA-approved targeted therapies.",
+          "lastReviewed": "2026-02-05"
+        },
+        "blueshieldca": {
+          "status": "PARTIAL",
+          "coveredIndications": ["Stage IV or metastatic cancers for broad panels", "Advanced/metastatic lung cancer for lung-focused panels"],
+          "notes": "Stage IV or metastatic cancers for broad panels. Advanced/metastatic lung cancer for lung-focused panels.",
+          "lastReviewed": "2026-02-05"
+        }
+      }
+    }
   },
   {
     "id": "tds-17",
@@ -8268,7 +8456,9 @@ export const cgpTestData = [
     },
     "commercialPayers": ["Blue Shield of California"],
     "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors requiring liquid biopsy CGP."
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors requiring liquid biopsy CGP.",
+    "commercialPayersNonCoverage": ["Aetna"],
+    "commercialPayersNonCoverageNotes": "Aetna: Most ctDNA/liquid biopsy tests considered experimental/investigational."
   },
   {
     "id": "tds-7",
@@ -9348,7 +9538,9 @@ export const cgpTestData = [
     },
     "commercialPayers": ["Blue Shield of California", "Aetna"],
     "commercialPayersCitations": "Policy crawl 2026-02-01: Blue Shield CA Oncology ctDNA/Liquid Biopsy Policy, Aetna CPB 0352",
-    "commercialPayersNotes": "Blue Shield CA: covered for stage IV/metastatic lung cancers. Aetna CPB 0352: covered for NSCLC when tissue insufficient (up to 50 genes)."
+    "commercialPayersNotes": "Blue Shield CA: covered for stage IV/metastatic lung cancers. Aetna CPB 0352: covered for NSCLC when tissue insufficient (up to 50 genes). BCBS South Carolina: NSCLC ctDNA testing restricted to when tissue-based testing is infeasible or insufficient.",
+    "commercialPayersNonCoverage": ["BCBS South Carolina (restricted)"],
+    "commercialPayersNonCoverageNotes": "BCBS SC: ctDNA testing covered for NSCLC only when tissue-based testing infeasible or insufficient."
   },
   {
     "id": "tds-24",
@@ -10201,6 +10393,40 @@ export const cgpTestData = [
     "regulatoryStatusNotes": "CAP-accredited NGS laboratories",
     "vendorVerified": true,
     "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test - also listed in MRD category for personalized ctDNA monitoring. 2026-01-23: Gene count corrected to 504 (commercial product vs. 473 in publication); verified by David Schlesinger (Gene Solutions)"
+  },
+  {
+    "id": "tds-29",
+    "sampleCategory": "Tissue",
+    "name": "Decipher Prostate",
+    "vendor": "Veracyte",
+    "productType": "Central Lab Service",
+    "approach": "Tissue Gene Expression",
+    "method": "22-gene genomic classifier (GC) using whole-transcriptome microarray analysis of FFPE prostate tumor tissue. Generates a score (0-1) predicting risk of metastasis within 5 years of radical prostatectomy.",
+    "cancerTypes": ["Prostate"],
+    "cancerTypesNotes": "Prostate cancer: post-prostatectomy risk stratification, radiation therapy benefit prediction, and hormone therapy benefit prediction in recurrent prostate cancer.",
+    "biomarkersReported": ["Genomic Classifier Score"],
+    "biomarkersReportedNotes": "22-gene expression signature generating GC score (0-1) for metastasis risk. Low (<0.45), Intermediate (0.45-0.60), High (>0.60).",
+    "sensitivity": null,
+    "specificity": null,
+    "requiresTumorTissue": "Yes",
+    "requiresTumorTissueNotes": "FFPE prostate tumor tissue from radical prostatectomy or biopsy specimens.",
+    "requiresMatchedNormal": "No",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "CLIA-certified, CAP-accredited laboratory-developed test performed at Veracyte (San Diego, CA).",
+    "reimbursement": "Medicare and commercial coverage",
+    "reimbursementNote": "Medicare coverage via Palmetto GBA MolDX LCD. Broad commercial payer coverage.",
+    "clinicalAvailability": "Clinical LDT – Central lab",
+    "clinicalAvailabilityNotes": "Performed at Veracyte central laboratory. Available in US.",
+    "availableRegions": ["US"],
+    "nccnNamedInGuidelines": true,
+    "nccnGuidelinesNotes": "NCCN Prostate Cancer guidelines include Decipher as a tissue-based genomic assay for risk stratification.",
+    "numPublications": 100,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "Extensively validated with 100+ peer-reviewed publications including prospective studies.",
+    "vendorVerified": false,
+    "isClinicalLDT": true,
+    "technologyDifferentiator": "Most validated genomic classifier for prostate cancer treatment decisions. Predicts metastasis risk post-prostatectomy, radiation therapy benefit, and hormone therapy benefit in recurrent disease.",
+    "dateAdded": "2026-02-05"
   }
 ];
 
@@ -11032,6 +11258,66 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Feb 5, 2026',
+    type: 'added',
+    testId: 'tds-29',
+    testName: 'Decipher Prostate',
+    vendor: 'Veracyte',
+    category: 'TDS',
+    description: 'Added Veracyte Decipher Prostate genomic classifier. 22-gene GC for prostate cancer post-prostatectomy risk stratification and hormone therapy benefit prediction in recurrent disease. NCCN-recommended.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'Daemon crawler: Veracyte investor news'
+  },
+  {
+    date: 'Feb 5, 2026',
+    type: 'added',
+    testId: 'mrd-30',
+    testName: 'Quest Flow Cytometry MRD Blood Test',
+    vendor: 'Quest Diagnostics',
+    category: 'MRD',
+    description: 'Added Quest Diagnostics flow cytometry-based MRD blood test for myeloma. Blood-based (no bone marrow biopsy), 5-day specimen stability, sensitivity comparable to NGS. Launched Feb 2, 2026.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'Daemon crawler: Quest Diagnostics newsroom'
+  },
+  {
+    date: 'Feb 5, 2026',
+    type: 'updated',
+    testId: 'mrd-7',
+    testName: 'Signatera',
+    vendor: 'Natera',
+    category: 'MRD',
+    description: 'Updated FDA status: PMA submitted for companion diagnostic indication (Feb 2026).',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'Daemon crawler: Natera company news'
+  },
+  {
+    date: 'Feb 5, 2026',
+    type: 'updated',
+    testId: 'mrd-6',
+    testName: 'Reveal MRD',
+    vendor: 'Guardant Health',
+    category: 'MRD',
+    description: 'Added late-stage therapy response monitoring to clinical settings.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'Daemon crawler: Guardant Health newsroom'
+  },
+  {
+    date: 'Feb 5, 2026',
+    type: 'updated',
+    testId: 'mrd-2',
+    testName: 'NeXT Personal Dx',
+    vendor: 'Personalis',
+    category: 'MRD',
+    description: 'Added cervical cancer to cancer types.',
+    contributor: null,
+    affiliation: 'OpenOnco',
+    citation: 'Daemon crawler: Personalis news'
+  },
   {
     date: 'Feb 2, 2026',
     type: 'updated',

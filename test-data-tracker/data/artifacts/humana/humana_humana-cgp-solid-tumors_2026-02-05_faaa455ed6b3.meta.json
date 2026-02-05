@@ -1,0 +1,14 @@
+{
+  "artifactId": "humana_humana-cgp-solid-tumors_2026-02-05_faaa455ed6b3",
+  "payerId": "humana",
+  "policyId": "humana-cgp-solid-tumors",
+  "fetchedAt": "2026-02-05T20:05:48.725Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://assets.humana.com/is/content/humana/Comprehensive_Genomic_Profiling_and_Genetic_Testing_for_Solid_Tumorspdf",
+  "contentLength": 39730,
+  "contentHash": "faaa455ed6b3c466b1aa4115ac3bc790f0dbbd8588ca882a3415d93168da22ab",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

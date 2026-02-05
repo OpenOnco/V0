@@ -1,0 +1,2176 @@
+
+
+ 
+1 
+ 
+ 
+Medical Policy 
+ 
+ 
+  
+ 
+ 
+Joint Medical Policies are a source for BCBSM and BCN medical policy information only. These documents 
+are not to be used to determine benefits or reimbursement. When Centers for Medicare and Medicaid (CMS) 
+coverage rules are not fully developed, this medical policy may be used by BCBSM or BCN Medicare 
+Advantage plans 42 CFR § 422.101 (b)(6). Please reference the appropriate certificate or contract for benefit 
+information. This policy may be updated and is therefore subject to change. 
+ 
+ 
+    *Current Policy Effective Date:  11/1/25 
+(See policy history boxes for previous effective dates) 
+ 
+Title: Genetic Testing - Chromosomal Microarray (CMA) Analysis 
+and Next-Generation Sequencing Panels, for the 
+Evaluation of Children with Developmental 
+Delay/Intellectual Disability, Autism Spectrum Disorder, 
+and/or Congenital Anomalies  
+ 
+ 
+Description 
+ 
+Chromosomal microarray (CMA) testing has been proposed for the detection of genetic 
+imbalances in infants or children with characteristics of developmental delay/intellectual 
+disability, autism spectrum disorder, and/or congenital anomalies. CMA testing increases the 
+diagnostic yield over karyotyping in children with the aforementioned characteristics, and CMA 
+testing may impact clinical management decisions. Next-generation sequencing panel testing 
+allows for the simultaneous analysis of a large number of genes and, in patients with normal 
+CMA testing, next-generation testing has been proposed as a way to identify single-gene 
+causes of syndromes that have autism as a significant clinical feature. 
+ 
+ 
+Medical Policy Statement 
+ 
+Chromosomal microarray analysis is established when criteria are met. 
+ 
+ 
+Inclusionary and Exclusionary Guidelines  
+ 
+Inclusions: 
+Chromosomal microarray analysis may be considered established as first line testing in the 
+initial postnatal evaluation of an individual with any of the following: 
+• Apparently non-syndromic developmental delay/intellectual disability 
+• Autism spectrum disorder 
+• Multiple congenital anomalies not specific to a well-delineated genetic syndrome  
+
+ 
+2 
+ 
+Exclusions: 
+• Panel testing using next-generation sequencing is considered experimental/investigational 
+in all cases of suspected genetic abnormality in children with developmental delay/ 
+intellectual disability, autism spectrum disorder, or congenital anomalies. 
+• Chromosomal microarray is considered investigational for the evaluation of all other 
+conditions of delayed development, including but not limited to idiopathic growth or 
+language delay. 
+ 
+ 
+CPT/HCPCS Level II Codes (Note: The inclusion of a code in this list is not a guarantee of 
+coverage.  Please refer to the medical policy statement to determine the status of a given procedure) 
+  
+Established codes: 
+S3870  81228 81229 81349             
+Other codes (investigational, not medically necessary, etc.): 
+81470  81471 0156U 0170U 0209U 0318U 
+ 
+ 
+Background 
+ 
+DIAGNOSTIC TESTING 
+ 
+Karyotyping and Fluorescent In Situ Hybridization   
+The goal of a cytogenetic evaluation is to identify chromosomal imbalances that cause a 
+disorder. The most common imbalances are copy number variants (CNVs) or deletions and 
+duplications of large segments of genomic material. CNVs are common in DD/ID and autism 
+spectrum disorder (ASD) but more often reflect normal genetic variation.
+1
+ However, de novo 
+CNVs are observed about 4 times more frequently in children with ASD than in normal 
+individuals.
+2
+ Less frequently, other abnormalities such as balanced translocations (i.e., 
+exchanges of equally sized DNA loci between chromosomes) may be pathogenic. For many 
+well described syndromes, the type and location of the associated chromosomal abnormality 
+have been established by studying large patient samples. For others, few patients with similar 
+abnormalities may have been evaluated to establish genotype-phenotype correlation. Finally, 
+in some patients, cytogenetic analysis will discover chromosomal abnormalities that require 
+study to determine their significance. 
+ 
+Prior to the advent of CMAs, the initial step in cytogenetic analysis was G-banded karyotyping, 
+which evaluates all chromosomes. High-resolution G-banding can detect changes as small as 
+3 to 5 megabases (Mb) in size, although standard G-banding evaluates more than 10-Mb 
+changes. In children with DD/ID, a review by Stankiewicz and Beaudet (2007) found G-banded 
+karyotyping diagnostic in approximately 3% to 5%.
+3
+ In ASD, high-resolution karyotyping 
+appears to identify abnormalities in up to 5% of cases.
+4
+ 
+ 
+In contrast, molecular cytogenetic techniques can detect small submicroscopic chromosomal 
+alterations. Fluorescent in situ hybridization (FISH), a targeted approach, is used to identify 
+specific chromosomal abnormalities associated with suspected diagnoses such as DiGeorge 
+syndrome. Prior to CMAs, FISH was also used to screen the rearrangement-prone 
+subtelomeric regions. Subtelomeric FISH was found to identify abnormalities in children with 
+
+ 
+3 
+DD and ID,
+5
+ diagnostic in approximately 5% to 6% of those with negative karyotypes, but 
+uncommonly in ASD.
+6
+ 
+ 
+Chromosomal Microarrays  
+Two types of CMAs are considered here: array comparative genomic hybridization (aCGH) 
+and single nucleotide variants (SNV) arrays. The aCGH approach uses DNA samples from a 
+patient and normal control. Each is labeled with distinct fluorescent dyes (red or green). The 
+labeled samples are then mixed and hybridized to thousands of cloned or synthesized 
+reference (normal) DNA fragments of known genomic locus immobilized on a glass slide 
+(microarray) to conduct thousands of comparative reactions simultaneously. CNVs are 
+determined by computer analysis of the array patterns and intensities of the hybridization 
+signals. If the patient sequence is missing part of the normal sequence (a deletion) or has the 
+normal sequence plus additional genomic material within that genomic location (e.g., a 
+duplication), the sequence imbalance is detected as a difference in fluorescence intensity (Korf 
+and Rehm [2013]
+7
+ offer an illustrative graphic). For this reason, aCGH cannot detect balanced 
+chromosomal translations (equal exchange of material between chromosomes) or sequence 
+inversions (same sequence is present in reverse base pair order) because the fluorescence 
+intensity would not change. A portion of the increased diagnostic yield from CMA over 
+karyotyping comes from the discovery that chromosomal rearrangements that appear 
+balanced (and therefore not pathogenic) by G-banded karyotype analysis are found to have 
+small imbalances with greater resolution. It has been estimated that 40% of apparently 
+balanced de novo or inherited translocations with abnormal phenotype are associated with 
+cryptic deletion if analyzed by CMA testing. 
+ 
+Like aCGH, SNV arrays detect CNVs. In an SNV array, the 2 alleles for genes of interest are 
+tagged with different florescent dyes. Comparative florescence intensity will be increased when 
+there are duplications and diminished with deletions. The resolution provided by aCGH is 
+higher than that with SNV arrays. In addition, aCGH has better signal-to-background 
+characteristics than SNV arrays. In contrast to aCGH, SNV arrays will also identify long 
+stretches of DNA homozygosity, which may suggest uniparental disomy (UPD) or 
+consanguinity. UPD occurs when a child inherits 2 copies of a chromosome from 1 parent and 
+no copies from the other parent. UPD can lead to syndromes such as Angelman and Prader-
+Willi. 
+ 
+Table 1 summarizes the cytogenetic tests used to evaluate children with DD/ID and autism. 
+The table emphasizes the large difference in resolution between karyotyping and CMA. 
+ 
+Table 1. Resolution and Analysis Comparison of FISH, Karyotyping, and CMA Analysis 
+Test Resolution in Kilobases
+a 
+Analysis 
+ 
+Karyotyping 3000-5000 kb Genome-wide 
+CMA ≈50 kb Genome-wide 
+FISH ≈500 to 1000 kb (depending on probe) Targeted 
+CMA: chromosomal microarray; FISH: fluorescent in situ hybridization; kb: kilobases. 
+a
+ One kb= 1000 bases, 1000 kb= 1 Mb 
+ 
+Microarrays may be prepared by the laboratory using the technology or, more commonly, by 
+commercial manufacturers, and sold to laboratories that must qualify and validate the product 
+for use in their assay, in conjunction with computerized software for interpretation. The 
+proliferation of laboratory-developed and commercially available platforms prompted the 
+American College of Medical Genetics (ACMG) to publish guidelines for the design and 
+
+ 
+4 
+performance expectations for clinical microarrays and associated software in the postnatal 
+setting.
+8
+ 
+  
+Next-Generation Sequencing  
+Next-generation sequencing (NGS) has been proposed to detect single-gene causes of autism 
+and possibly identify a syndrome that involves autism in patients with normal array-based 
+testing. NGS involves the sequencing of millions of fragments of genetic material in a 
+massively parallel fashion. NGS can be performed on segments of genetic material of various 
+sizes—from the entire genome (whole-genome sequencing) to small subsets of genes 
+(targeted sequencing). NGS allows the detection of SNVs, CNVs, insertions, and deletions. 
+With higher resolution comes higher likelihood of detection of variants of uncertain 
+significance. 
+ 
+GENETIC ASSOCIATIONS WITH DEVELOPMENTAL DELAY/INTELLECTUAL DISABILITY 
+AND AUTISM SPECTRUM DISORDER 
+For common phenotypes and syndromes, the pathogenicity of CNVs may be supported by 
+considerable evidence; for uncommon phenotypes and uncommon CNVs determining 
+pathogenicity requires a systematic evaluation that includes parental studies, examining 
+databases for reported associations, and considering the molecular consequences of the 
+identified variant. Parental studies (e.g., “trio” testing of affected child, father, and mother) can 
+identify an inherited CNV from an unaffected parent and therefore considered benign.
+9
+ A 
+variety of databases index the clinical implications of CNVs their associations with a particular 
+phenotype. CNVs are continuously cataloged and, with growth in CMA testing and improved 
+resolution, databases have become increasingly extensive (e.g., DECIPHER 
+[https://decipher.sanger.ac.uk], ClinVar [http://www.ncbi.nlm.nih.gov/clinvar/]). For uncommon 
+CNVs, in addition to reports of CNV-phenotype associations, the location and size of the CNV 
+can offer clues to pathogenicity; larger CNVs are more often pathogenic and the role of 
+affected genes in brain circuitry and effect of CNV on gene expression can implicate 
+pathogenicity. Although uncommon, an observed phenotype can result from unmasking a 
+mutated recessive allele on the unaffected (non-CNV) chromosome.
+10
+ Other considerations 
+when determining pathogenicity include CNV dosage, X linkage, number of reports in the 
+literature of association between CNV and phenotype, and findings in “normal” individuals. 
+ 
+The American College of Medical Genetics (ACMG) has published guidelines for evaluating, 
+interpreting, and reporting pathogenicity reflecting these principles.
+11
+ The recommended 
+categories of clinical significance for reporting are pathogenic, uncertain clinical significance 
+(likely pathogenic, likely benign, or no subclassification), or benign. The International 
+Standards for Cytogenomic Arrays Consortium more recently proposed “an evidence-based 
+approach to guide the development of content on chromosomal microarrays and to support 
+interpretation of clinically significant copy number variation.”
+12
+ The proposal defined levels of 
+evidence describe how well or how poorly detected variants or CNVs correlate with phenotype. 
+ 
+  
+SUMMARY OF EVIDENCE 
+ 
+For individuals who have DD/ID, ASD, or multiple congenital anomalies not specific to a well-
+delineated genetic syndrome who receive CMA testing, the evidence includes primarily case 
+series.  Relevant outcomes are test accuracy and validity, changes in reproductive decision 
+making, morbid events, and resource utilization.  The available evidence supports test 
+ 
+ 
+
+ 
+5 
+accuracy and validity.  Although systematic studies of the impact of CMA on patient outcomes 
+are lacking, the improvement in diagnostic yield over karyotyping has been well-demonstrated. 
+While direct evidence of improved outcomes with CMA compared with karyotyping is lacking, 
+at least a subset of the disorders potentially diagnosed with CMA testing in this patient 
+population, there are well-defined and accepted management steps associated with positive 
+test results.  Further, there is evidence of changes in reproductive decision making as a result 
+of positive test results.  The information derived from CMA testing can: end a long diagnostic 
+odyssey, result in a reduction in morbidity for certain conditions with initiation of surveillance or 
+management of associated comorbidities, and may impact future reproductive decision making 
+for parents and potentially the affected child.  The evidence is sufficient to determine that the 
+technology results in a meaningful improvement in the net health outcome. 
+ 
+For individuals who have DD/ID, ASD, or multiple congenital anomalies not specific to a well-
+delineated genetic syndrome who receive next-generation sequencing panel testing, the 
+evidence includes primarily case series. Relevant outcomes are test accuracy and validity, 
+changes in reproductive decision making, morbid events, and resource utilization.  The rates of 
+variants of uncertain significance associated with next-generation sequencing panel testing in 
+this patient population are not well-characterized.  The yield of testing and likelihood of an 
+uncertain result is variable, based on gene panel, gene tested, and patient population.  There 
+are real risks of uninterpretable and incidental results.  The evidence is insufficient to 
+determine the effects of the technology on health outcomes. 
+  
+Rationale 
+ 
+This review has been informed by a TEC Special Report (2009) on array comparative genomic 
+hybridization (aCGH)
+13
+ and a TEC Special Report (2015) on chromosomal microarray (CMA) 
+testing for the genetic evaluation of patients with global developmental delay (DD), intellectual 
+disability (ID), and autism spectrum disorder (ASD).
+14
+ 
+ 
+Evidence reviews assess clinical evidence to determine whether the use of a technology 
+improves the net health outcome. Broadly defined, health outcomes are length of life, quality of 
+life, and ability to function including benefits and harms. Every clinical condition has specific 
+outcomes that are important to the individual and to managing the course of that condition. 
+Validated outcome measures are necessary to ascertain whether a condition improves or 
+worsens; and whether the magnitude of that change is clinically significant. The net health 
+outcome is a balance of benefits and harms. The following is a summary of the key literature to 
+date. 
+ 
+Developmental Delay/Intellectual Disability 
+Developmental delay (DD) is diagnosed in children five years or younger who show a 
+significant delay in two or more developmental domains: gross or fine motor, speech/language, 
+cognitive, social/personal, and activities of daily living.
+15
+ DD can precede the development of 
+intellectual disability (ID)  as the child ages.
+16
+ 
+ 
+ID is manifested by significant limitations in intellectual functioning and adaptive behavior. It is 
+diagnosed at or after age 5 (when intelligence testing is considered valid and reliable) but prior 
+to age 18 and is lifelong. The Diagnostic and Statistical Manual of Mental Disorders: Fifth 
+Edition (DSM-5) defines ID as occurring during the developmental period and involving 
+ 
+ 
+
+ 
+6 
+impairments of general mental abilities (e.g., IQ <70 or 75) that impact adaptive functioning in 
+the conceptual, social, and practical domains.
+17
+ 
+ 
+The national prevalence of developmental delay and intellectual disability were estimated at 
+4.1% and 1.2%, respectively, in US children based on data from the 2009 to 2017 National 
+Health Interview Survey.
+18
+  Both are influenced by genetic, environmental, infectious, and 
+perinatal factors. Approximately 450 genes have been causally related to ID; most genes 
+(»90%) are associated with syndromes.
+19
+ Inheritance of ID can be autosomal-dominant, 
+recessive, or X-linked; and most nonsyndromic genes are located on the X chromosome. Prior 
+to the advent of whole-exome and genome sequencing, Willemsen and Kleefstra (2014) 
+concluded that 20% to 40% of ID cases could be attributed to a genetic variant.
+20
+ With the use 
+of whole-genome sequencing, they estimated that almost 60% of cases have an identifiable 
+genetic etiology. 
+ 
+Congenital anomalies are frequently present in children with DD and ID. In addition, a 
+suspected etiology can often be established from history and physical examination ( for skilled 
+specialists, as much as 20% to 40% of cases) without genetic testing.
+21
+ The recommended 
+approach to evaluation in DD/ID begins with 3-generation family history and physical (including 
+neurologic) exam. Subsequent testing is used to confirm a suspected diagnosis (e.g., targeted 
+fluorescent in situ hybridization [FISH] testing for DiGeorge or cri-du-chat syndromes). If no 
+diagnosis is suspected, fragile X syndrome testing, metabolic testing for inborn errors of 
+metabolism, and CMA testing (without karyotyping) are recommended, regardless of the 
+presence or absence of dysmorphologic features or congenital anomalies.
+15
+ 
+ 
+Autism Spectrum Disorder 
+DSM-5 definesASD15,[a] as the presence of:
+17 
+• Persistent deficits in social communication and social interaction across multiple 
+contexts, 
+• Restricted, repetitive patterns of behavior, interests, or activities, 
+• Symptoms in the early developmental period (typically recognized in the first two years 
+of life), and 
+• Symptoms causing clinically significant impairment in social, occupational, or other 
+important areas of current functioning. 
+ 
+The estimated prevalence of ASD in US children is estimated to be 3.11%, and is higher 
+among boys (4.66%) than girls (1.50%).
+19,
+ 
+ 
+An accurate diagnosis can generally be made by 
+age two. The evaluation includes developmental screening and diagnostic evaluation (i.e., 
+hearing, vision, and neurological testing; laboratory testing for metabolic disorders; and genetic 
+testing). 
+ 
+A large body of evidence supports a genetic etiology in ASD. Twin studies estimate heritability 
+between 60% and 90%.
+2
+ A family with an affected child has a 13% to 19% risk for recurrence 
+in subsequent children.
+22
+ Based on Swedish genetic studies, Gaugler et al (2014) concluded 
+that “the bulk of autism arises from genetic variation” (as opposed to environmental causes).
+23 
+Still, although genetic determinants can be heritable, most appear to arise de novo.
+2
+ 
+ 
+For these reasons, a child with ASD is often evaluated with genetic testing. Testing may be 
+targeted when a child has a recognizable syndrome such as those shown in Table 2. 
+Alternatively, high-resolution cytogenetic analysis evaluating multiple genes-the focus of this 
+evidence review-is used. 
+
+ 
+7 
+ 
+Table 2. Examples of Specific Genes Associated with Disorders That Include Autistic Behaviors 
+ 
+Gene (Syndrome) Patient Selection Yield, % Reference 
+ 
+FMR1 (fragile X) Unselected autism 3-10 Schaefer and 
+Mendelsohn (2008)
+24 
+MECP2 (Rett) Females with nonsyndromic autism, intellectual 
+disability, and cerebral palsy 
+3-13 
+PTEN Autism with macrocephaly <17 Butler et al (2005)
+25 
+[a] http://www.nimh.nih.gov/health/topics/autism-spectrum-disorders-asd/index.shtml.
+15
+ 
+ 
+CHROMOSOMAL MICROARRAY TESTING 
+ 
+Study Selection Criteria 
+For the evaluation of clinical validity of the CMA test, studies that met the following eligibility 
+criteria were considered: case series or cohort studies that enrolled 20 or more patients with 
+clinical diagnoses DD/ID or ASD with known or suspicion of genetic abnormalities, with or 
+without negative results by conventional cytogenetic evaluation, and performed CMA testing 
+on enrolled patients. Studies were also included if they examined management decisions 
+and/or patient outcomes based on genetic evaluation results. 
+ 
+Case Series or Cohort Studies  
+Several studies have conducted CMA testing on samples with known chromosomal 
+abnormalities using standard karyotyping and are summarized in Table 3. The median 
+diagnostic yield in DD/ID patients from 21 studies published after 2012 was 19%. Most studies 
+included patients with prior normal studies (e.g., karyotype and FMR1 testing). However, it is 
+difficult to assess phenotype severity across studies owing to reporting and how samples were 
+assembled. For a recent comparison, investigators reported diagnostic yield from 1133 
+children enrolled in the U.K. Deciphering Developmental Disorders study for whom a diagnosis 
+was not established prior to CMA testing.
+26
+ Using both CMA and exome sequencing, a 
+diagnostic yield of 27% was achieved. 
+ 
+Table 3. Diagnostic Yield of 67 Case Series Assessing Chromosomal Microarray Testing for DD, ID, and 
+ASD Published Before 2015 
+ 
+Study N Diagnosis Patient Description 
+Previous Normal 
+Studies 
+Yield, % 
+ 
+Eriksson et al 
+(2015)
+27
+ 
+ 
+162 ASD Suspected ASD  Karyotype (unclear 
+precise proportion but < 
+half) 
+8.6 
+Lay-Son et al 
+(2015)
+28
+  
+40 DD/ID/Other Patients had at least 2 of 
+the following: Cas, facial 
+dysmorphism, DD/ID 
+Karyotype, 4 (10%) 
+patients had abnormality 
+on karyotype but it did 
+not convey a definite 
+cause of patients 
+disorder 
+25.0 
+Bartnik et al 
+(2014a)
+29
+ 
+256 DD/ID DD/ID with or without 
+dysmorphic features, 
+additional 
+neurodevelopmental 
+abnormalities, and/or CA 
+G-banded karyotype, 
+fragile X testing 
+27.0 
+Bartnik et al 
+(2014b)
+30   
+112 DD/ID ID accompanied by 
+dysmorphic features 
+and/or CA 
+G-banded karyotype, 
+fragile X testing, MPLA 
+21.4 
+
+ 
+8 
+Chong et al 
+(2014)
+31
+ 
+ 
+115 DD/ID/ASD/CA 105 patients with 
+DD/ID/ASD/CA recruited 
+by clinical genetics 
+services 
+Karyotype 19.0 
+D’Amours et al 
+(2014)
+32   
+21 CA DD/ID with or without CA Karyotype 14.3 
+Henderson et al 
+(2014)
+33   
+1780 DD/ID/ASD Referral to laboratory for 
+CMA 
+Not specified 12.7 
+Nava et al 
+(2014)
+34   
+194 ASD ASD Karyotype, fragile X 
+testing, FISH 
+1.5 
+Nicholl et al 
+(2014)
+35   
+1700 DD/ID/ASD 1453 unrelated patients 
+prospectively referred for 
+investigation of 
+DD/ID/ASD and 247 
+epilepsy cases 
+Uncertain 11.5 
+Palmer et al 
+(2014)
+36   
+67 ID Idiopathic ID Karyotype, fragile X, 
+subtelomeric MPLA 
+19.0 
+Preiksaitiene et 
+al (2014)
+37   
+211 DD/ID Syndromic and 
+nonsyndromic cases of 
+unknow etiology of DD/ID 
+FISH, MLPA, or 
+karyotype 
+13.7 
+Redin et al 
+(2014)
+38   
+106 DD/ID Idiopathic ID Karyotype 24.5 
+Roberts et al 
+(2014)
+39   
+215 DD/ID/ASD ID/ASD Uncertain 14.9 
+Stobbe et al 
+(2014)
+40   
+23 ASD Retrospective review of 
+patients referred for autism 
+testing 
+Karyotype (<44% patient, 
+1 patient with known 
+chromosomal 
+abnormality 
+21.7 
+Tao et al 
+(2014)
+41   
+327 DD/ID/ASD Patients seen by clinical 
+geneticist 
+Not specified 11.3 
+Utine et al 
+(2014)
+42   
+100 ID Idiopathic ID Karyotype, FISH 12.0 
+Uwineza et al 
+(2014)
+43   
+50 DD/ID DD/ID/MCA Karyotype 26.0 
+Battaglia et al 
+(2013)
+44   
+349 DD/ID/ASD Idiopathic DD/ID/ASD or 
+dysmorphia 
+FISH or karyotype 22.1 
+Lee et al 
+(2013)
+45   
+190 DD/ID Retrospective chart review 
+of    patients at single-center 
+with idiopathic DD/ID 
+G-banded karyotype 13.7 
+Shoukier et al 
+(2013)
+46   
+342 DD/ID Retrospective review of 
+idiopathic DD/ID 
+Karyotype 13.2 
+Sorte et al 
+(2013)
+47   
+50 ASD ASD G-banded karyotype 16.0 
+Filges et al 
+(2012)
+48   
+131 DD/ID/ASD Consecutive patients with 
+normal karyotype but 
+presenting with 
+chromosomal phenotypes: 
+malformation syndromes, 
+syndromic and 
+nonsyndromic ID, and 
+ASD 
+Karyotype  
+Iourov et al 
+(2012)
+49   
+54 ID/ASD/CA Highly selected patients 
+from group of 2426 
+patients based on clinical 
+and cytogenic data 
+G-banded karyotype 28.0 
+McGrew et al 
+(2012)
+50   
+97 ASD Retrospective review of 
+EMR for patients with ASD 
+or pervasive DD NOS 
+Uncertain (karyotype?) 6.2 
+
+ 
+9 
+Tzetis et al 
+(2012)
+51   
+334 DD/ID/ASD DD/ID/ASD or with major 
+CA or dysmorphic features 
+Karyotype, FISH, fragile 
+X and Rett syndromes 
+25.1 
+Bremer et al 
+(2011)
+52   
+223 ASD 151 diagnosed ASD with 
+normal Karyotype, 1 
+nonpathogenic inherited 
+balanced translocation, 72 
+patients who had not 
+received karyotyping 
+Karytype 8.1 
+Coulter et al 
+(2011)
+53   
+1792 DD/ID/ASD DD/ID/ASD, CA, 
+dysmorphic features, 
+seizures, hypotonia 
+Majority karyotype 7.3 
+Wincent et al 
+(2011)
+54   
+160 DD/CA Idiopathic DD/CA Karyotype, fragile X, 
+FISH, MPLA 
+13.1 
+Manolakos et al 
+(2010)
+55   
+82 ID Idiopathic MR G-banded karyotype 3.6 
+Rosenfeld et al 
+(2010)
+56   
+1461 ASD Retrospective review of 
+putative ASD submitted for 
+clinical testing 
+Not specified 7.7 
+Schaefer et al 
+(2010)
+57   
+68 ASD Retrospective review of 
+patients who had received 
+aCGH for autism 
+Uncertain 22.0 
+Shen et al 
+(2010)
+58   
+848 ASD Idiopathic MR and/or 
+dysmorphism or MCAs 
+G-banded karyotype, 
+fragile X 
+7.0 
+Bruno et al 
+(2009)
+59   
+117 DD/ID Idiopathic MR and/or CA Karyotype (400 to 650-
+band level) 
+15.4 
+Friedman et al 
+(2009)
+60   
+100 ID Moderate-to-severe 
+idiopathic DD/MR with CA 
+Uncertain 16.0 
+Baldwin et al 
+(2008)
+61   
+211 DD/ID/ASD Various, including 
+idiopathic DD/ID, 
+dysmorphic features, CA, 
+ASD, or syndromal 
+phenotype 
+G-banded karyotype 
+(many) 
+15.6 
+Christian et al 
+(2008)
+62   
+397 ASD Nonsyndromic autism, 
+subset of AGRE subjects 
+(Roswell Park Cancer 
+Institute) 
+Karyotype 11.6 
+Marshall et al 
+(2008)
+63   
+427 ASD ASD Karyotype (32 with 
+known abnormality) 
+6.3 
+Pickering et al 
+(2008)
+64   
+1176 DD/ID/CA Consecutive cases 
+referred for idiopathic 
+DD/MR/MCA or other 
+dysmorphia 
+Karyotype (30 with 
+visible chromosomal 
+abnormality), FISH in 
+some patients 
+9.8 
+Saam et al 
+(2008)
+65   
+490 DD/ID DD/ID Karyotype 17.6 
+Shevell et al 
+(2008)
+66   
+94 DD/ID DD G-banded karyotype, 
+fragile X, FMR1, 
+neuroimaging 
+6.4 
+Aradhya et al 
+(2007a)
+67   
+20 DD/ID DD/ID and either 
+dysmorphic features, CA, 
+or growth retardation 
+G-banded karyotype, 
+FISH 
+30.0 
+Aradhya et al 
+(2007b)
+67   
+20 DD/ID As above As above  50.0 
+Ballif et al 
+(2007)
+68   
+6946 DD/ID Various clinical 
+presentations, most 
+commonly DD, dysmorphic 
+features, and/or MCA 
+Karyotype, subtelomere 
+FISH 
+2.4 
+Froyen et al 
+(2007)
+69   
+108 DD/ID Suspicious for X-linked 
+MR 
+G-banded karyotype, 
+FMR1 
+13.0 
+
+ 
+10 
+Hoyer et al 
+(2007)
+70   
+104 DD/ID Unselected patients with 
+idiopathic MR 
+G-banded karyotype 9.1 
+Lu et al 
+(2007)
+71   
+1726 DD/ID DD/ID, dysmorphic, or 
+MCA features 
+G-banded karyotype 
+and/or FISH 
+5.2 
+Madrigal et al 
+(2007)
+72   
+54 DD/ID Idiopathic MR; 52 from 
+families with X-linked 
+inherited MR; 2 with 
+suspicion of X 
+chromosome deletion 
+Karyotype, FMR1 11.6 
+Sebat et al 
+(2007)
+73
+ 
+195 ASD Nonsyndromic autism; 
+majority from AGRE or 
+NIMH Center for 
+Collaborative Genetic 
+Studies on Mental 
+Disorders 
+Karyotype 7.2 
+Shen et al 
+(2007)
+74   
+211 DD/ID ASD Not selected by prior 
+results 
+8.1 
+Thuresson et al 
+(2007)
+75   
+48 DD/ID Idiopathic MR and CA G-banded karyotype, 
+subtelomere FISH 
+6.0 
+Wagenstaller et 
+al (2007)
+76   
+67 DD/ID Idiopathic MR G-banded karyotype, 
+FISH (n=42) 
+16.4 
+Ballif et al 
+(2006)
+77   
+3600 DD/ID Consecutive cases with 
+diverse range of DD or MR 
+features 
+Not specified 5.1 
+Friedman et al 
+(2006)
+78   
+100 DD/ID Idiopathic ID Karyotype 11.0 
+Jacquemont et 
+al (2006)
+79   
+29 ASD Syndromic ASD Karyotype, biochemical 
+tests 
+28.0 
+Krepischi-
+Santos et al 
+(2006)
+28   
+95 DD/ID Syndromic MR or other G-banded karyotype, 
+FMR1 (in some) 
+15.8 
+Lugtenberg et 
+al (2006)
+80   
+40 DD/ID Idiopathic MR, suspicious 
+for X-linked abnormality 
+Karyotype 7.5 
+Menten et al 
+(2006)
+81   
+140 DD/ID Idiopathic MR and MCA Karyotype, subtelomere 
+MPLA (n=31) 
+13.6 
+Miyake et al 
+(2006)
+82   
+30 DD/ID Idiopathic MR with some 
+dysmorphic features 
+G-banded karyotype 16.7 
+Rosenberg et al 
+(2006)
+83   
+81 DD/ID Idiopathic MR and CA Karyotype  16.0 
+Shaffer et al 
+(2006)
+84   
+1500 DD/ID Consecutive patients with 
+DD or MR 
+Karyotype (94%), FISH 
+(20%) where prior testing 
+available 
+5.6 
+Sharp et al 
+(2006)
+85   
+290 DD/ID Idiopathic MR with or 
+without dysmorphism or 
+MCA 
+Karyotype, subtelomere 
+FISH (n=255) 
+5.5 
+De Vries et al 
+(2005)
+86   
+100 DD/ID Idiopathic MR G-banded karyotype, 
+subtelomere MPLA 
+10.0 
+Schoumans et 
+al (2005)
+87   
+41 DD/ID Mild-to-severe idiopathic 
+MR and dysmorphism 
+and/or family history; 
+patients scored >3 on de 
+Vries checklist (2001) 
+Spectral karyotype 
+(n=11), subtelomere 
+FISH (n=30) 
+9.8 
+Tyson et al 
+(2005)
+88   
+22 DD/ID Mild-to-moderate MR and 
+nonsyndromic dysmorphic 
+features; patients scored 
+>3 on de Vries checklist 
+(2001) 
+G-banded karyotype, 
+subtelomere FISH (n=13) 
+13.6 
+Harada et al 
+(2004)
+89   
+69 DD/ID Idiopathic MR, with or 
+without MCA 
+Karyotype (400-band 
+level) 
+5.8 
+
+ 
+11 
+Shaw-Smith et 
+al (2004)
+90   
+50 DD/ID Idiopathic MR and 
+dysmorphism or other 
+features 
+Karyotype, subtelomere 
+(n=41) 
+14.0 
+Vissers et al 
+(2003)
+91   
+20 DD/ID Idiopathic MR and 
+dysmorphism; patients 
+scored >3 on de Vries 
+checklist (2001) 
+Karyotype 10.0 
+aCGH:array comparative genomic hybridization; AGRE: Autism Genetic Resource Exchange; ASD: autism spectrum disorder; CA: congenital 
+anomaly; DD: developmental delay; EMR: electronic medical records; FISH: fluorescent in situ hybridization; EMR: electronic medical record; 
+FISH: fluorescent in situ hybridization; ID: intellectual disability; MCA: multiple congenital anomalies; MPLA: ligation-dependent probe 
+amplification; MR: mental retardation; NIMH: National Institute of Mental Health 
+ 
+Six additional studies published after 2015 are summarized in Table 4.
+92,93,94,95,96  
+In the first 
+study by Ho et al (2016), the overall detection rate of copy number variant (CNVs) was 29.4 
+(9.2% pathogenic, 20.2% variant of uncertain significance) in 5487 patients.
+96
+ In the second 
+study by Ho et al (2016), the overall detection rate of CNVs was 28.1% (8.6% pathogenic, 
+19.4% variant of uncertain significance) in 10,351 consecutive patients, with an average of 1.2 
+reportable CNVs per individual.
+97
+ Overlap of patients in the 2 reports is unclear. 
+ 
+Table 4. Diagnostic Yield of Studies of Patients With DD, ID, and ASD Published After 2015 
+ 
+Study N Diagnoses Patient Description Previous 
+Normal 
+Studies 
+Yield, % 
+Chaves et al 
+(2019)
+92  ,
+ 
+420 DD/ID/facial 
+dysmorphism/ASD 
+Children in Brazil with  
+neurodevelopment 
+disorders (62%  male; 
+mean age, 9.5 y; range 
+0 to 49 y) 
+Karotype 
+(n=138) 
+18 (all) 
+Hu et al (2019)
+93
+ 633 DD/ID/ASD Children in China with 
+DD/ID/ASD (359  
+males, 274 females; 
+age range, 3 mo to  17 
+y) 
+Uncertain 20.06 (all) 
+Xu et al (2018)
+94,
+ 434 DD/ID/ASD Children in China with 
+DD/ID/ ASD (371  boys, 
+63 girls; mean age, 6 y; 
+range, 4  mo to 17 y) 
+Uncertain 13.6 (all) 
+14.7 (excluding 
+ASD)  12 (only 
+ASD) 
+Sansovic et al 
+(2017)
+95
+ 
+337 DD/ID/ASD or CAs Children in Croatia with 
+DD/ID/ASD or  CA 
+(median age, 7 y; 
+range, 1 mo to 25  y) 
+Some patients 
+had  previous 
+classical  
+cytogenetic and 
+molecular  
+cytogenetic 
+methods 
+21.6 (all) 
+Ho et al (2016)
+96,
+ 5487 DD/ID/ASD DD/ID/ASD with or 
+without multiple  CAs, 
+speech/language delay 
+Uncertain 29.4 (all) 
+33 (excluding ASD) 
+25 (only ASD) 
+Ho et al (2016)
+97,
+ 10,351 DD/ID/ASD or 
+multiple CAs 
+DD/ID/ASD or multiple 
+CAs 
+Uncertain 28.1 (all) 
+33 (excluding ASD) 
+24.4 (only ASD) 
+ASD: autism spectrum disorder; CA: congenital anomaly; DD: developmental delay; ID: intellectual disability. 
+ 
+Studies that reported on diagnostic yield for congenital anomalies are summarized in Table 5. 
+No studies were identified that evaluated diagnostic yield of CMA for idiopathic language 
+delay. 
+ 
+
+ 
+12 
+Table 5. Diagnostic Yield Studies in Patients with Congenital Anomalies 
+ 
+Study N Diagnoses Patient Description 
+Previous 
+Normal 
+Studies 
+Yield 
+ 
+Hu et al 
+(2016)
+98   
+119 Idiopathic 
+short stature 
+Height of the individual is 
+below 2 SDS of the 
+corresponding mean height 
+for a given age, sex, and 
+population group, and no 
+known causes can be found 
+Uncertain 3/119 (2.5%) 
+identified with a 
+pathogenic CNV 
+Lu et al (2008)
+99 
+638 Birth defects Neonates with possible 
+chromosomal abnormality, 
+ambiguous genitalia, 
+dysmorphic features, multiple 
+congenital anomalies, 
+congenital heart disease 
+Uncertain 109 (17.1%) patients 
+were identified with 
+clinically significant 
+CNVs most of which 
+would not have been 
+defined by 
+karyotyping 
+CNV: copy number variant; SDS: standard deviation score. 
+ 
+ 
+As noted, CMA testing has a higher diagnostic yield than standard karyotyping, which is an 
+accepted test in the evaluation of DD/ID, ASD, and congenital anomalies. In some cases, 
+disorders are defined by the presence of a genetic variant or genetic testing can contribute to 
+the diagnosis. 
+ 
+In some cases, a specific diagnosis leads to management changes that are either standard of 
+care or are likely to lead to improvements in outcomes. 
+ 
+Changes in Management 
+A reasonable body of literature has evaluated whether or not the establishment of a definitive 
+diagnosis in patients with DD/ID, ASD, and/or congenital anomalies leads to changes in 
+management that are likely to improve outcomes. Of particular interest in the use of CMA 
+testing to make a specific genetic diagnosis in a patient with DD/ID, ASD, and/or congenital 
+anomalies is the effect of that diagnosis on the patient’s family. Because many affected 
+patients will be evaluated for testing in childhood, the implications of testing on family members 
+and the reciprocal effect on the patient are considerations. 
+ 
+Results of six retrospective studies that examined the potential impact of CMA results on 
+clinical decisions are summarized in Table 8. These studies collectively indicate that identified 
+pathogenic variants can prompt clinical actions potentially impacting morbidity. Less clear is 
+how often the outcome will be improved and in which cases interventions might have occurred 
+in the absence of testing. The proportion that may benefit will depend on the variants identified 
+as well as diagnostic yield, which in turn depends on phenotype severity. Studies did not report 
+on any follow-up or management changes in patients without identified pathogenic variants. In 
+addition to reducing morbidity, bringing closure to a diagnostic odyssey is a reason for genetic 
+testing cited by parents
+100
+ and noted as an outcome in case series and reports.
+101
+ For 
+example, Turner et al (2008) found a median of 16.5 years from the initial medical contact to 
+identify a causal variant in 38 extended families with fragile X syndrome.
+102
+ Saam et al (2008) 
+noted that CMA testing may influence that odyssey.
+65
+ Parents cite obtaining services and 
+support as a reason for testing but how the frequency can impact outcomes is difficult to 
+quantify. The studies reviewed convey a set of intermediate outcomes likely to favorably affect 
+
+ 
+13 
+the health of some children. Lacking are end-to-end studies following children at presentation 
+to final outcomes. In addition to these studies, Lingen et al (2016) has reported a benefit for 
+maternal quality of life if aCGH tests succeed to clarify the etiologic diagnosis in an affected 
+child.
+103
+ 
+ 
+Table 6. Studies Reporting Management Changes After CMA Testing 
+ 
+Study 
+Dates 
+Testing 
+Patients 
+(Tests) 
+Diagnostic 
+Yield, n 
+(%) or % 
+Pathogenic, 
+n 
+Actionable, n (%) 
+Clinical 
+Management 
+Changes, n (%) 
+ 
+Hayeems et 
+al (2015)
+104 
+2009-
+2011 
+752 (Dd and/or 
+CA) 
+114 (15.2)
+f 
+72 (9.6)
+g 
+114 
+• 79.6% (364/457) with 
+reportable results 
+•  62.4% (184/295) with 
+benign results 
+received medical 
+recommendations 
+• Specialist 
+consults: 221 
+(37.7) 
+•  Imaging: 125 
+(21.3) 
+•  Lab tests: 70 
+(12.0) 
+•  Surveillance: 
+88(15.0) 
+•  Family: 
+82(14.0) 
+Henderson 
+et al 
+(2014)
+33   
+2009-
+2012 
+1780 
+(DD/ID/ASD 
+(81.5% of 227 
+abnormal) 
+12.7 187 102 (54.5) 
+• Referral: 
+84(44.9) 
+•  Screening: 
+11(5.9) 
+•  Imaging: 
+38(20.3) 
+•  Lab tests: 
+29(15.5) 
+Tao et al 
+(2014)41
+ 
+2011-
+2013 
+327 DD/ID/ASD 11.3 9
+e 
+6(66.7)  
+Ellison et al 
+(2012)
+105 
+2004-
+2011 
+46,298 DD/ID 
+dysmorphic, 
+neurobehavioral 
+others 
+5.4 1259 441(35)
+d 
+Clinically 
+actionable 
+responses 
+included 
+additional 
+specific tests for 
+monitoring 
+specific 
+disorders 
+Coulter et al 
+(2011)
+53   
+2009-
+2010 
+1792 
+DD/ID/ASD or 
+CA 
+7.3
+a 
+5.8
+b 
+121
+a,c
+ 
+73
+a,c 
+65(53.7)
+a 
+25 (34.2)
+b 
+• Referral: 67 
+(60)
+a
+ and 11 
+(29)
+b
+ 
+•  Imaging: 
+25(22)
+a
+ and 
+11(29)
+b
+ 
+•  Lab tests: 
+20(18)
+a
+ and 
+18(47)
+b
+ 
+Saam et al 
+(2008)
+65   
+2005-
+2007 
+490 DD/ID 17.6 48 34(70.8) 
+• Referral: 
+7(14.6) 
+•  Screening: 
+8(16.7) 
+•  Avoid further 
+genetic 
+testing: 
+12(25) 
+
+ 
+14 
+• Improved 
+access to 
+services: 
+12(25) 
+•  Reproductive 
+recurrence 
+risk: 17(35.4) 
+ASD: autism spectrum disorder; CA: congenital anomaly; CMA: chromosomal microarray; DD: developmental delay; ID: intellectual disability. 
+a
+ Abnormal. 
+b
+ Possibly significant. 
+c
+ Percentages as reported in the publication-denominators varied from 121 and 73. 
+d
+ Assumed to be from pathogenic results oligonucleotide arrays. 
+e
+ Of the 215 patients with DD/ID or ASD. 
+f
+ Clinically significant. 
+g
+ Uncertain, likely clinically significant. 
+ 
+Reproductive Decision Making 
+Risk estimates for recurrence of disease in future births can be altered considerably by 
+information from the genetic diagnosis (see Table 7). Having a child with ASD appears to 
+impact reproductive decision-making or so-called reproductive stoppage. For example, 
+Hoffmann et al (2014) examined reproductive stoppage in families with ASD using the 
+California Department of Developmental Services database linked to birth certificates.106, 
+Between 1990 and 2003, 19,710 families with 39,361 siblings and half-siblings were identified. 
+Birth histories in these families were then compared with a control group (matched 2:1 by sex, 
+birth year, maternal age, ethnicity/race, and county). Investigators found fertility rates in case 
+and control families similar in the 2 years following the birth of a child with ASD, but, in the 
+subsequent years, the rate was 33% (95% confidence interval, 30% to 37%) lower in families 
+having a child affected by ASD. 
+ 
+Table 7. Sibling Recurrence Risk After Identification of Different Types of Genomic Abnormalities 
+Associated With ASD 
+Type of Genetic Abnormality Clinical Example Sibling Recurrence Risk 
+Dominant single-gene disorder 
+with full  penetrance 
+Tuberous sclerosis: involves abnormalities of the 
+skin, brain, and heart;  associated with ID and 
+ASD 
+50% if parent carries the 
+disease-causing variant (i.e., 
+not a de novo  variant) 
+Recessive single-gene disorder Smith-Lemli-Opitz syndrome: congenital multiple 
+anomaly syndrome;  associated with ASD 
+25% 
+X-linked single-gene disorder Fragile X syndrome: most common cause of 
+mental retardation; associated  with ASD 
+Brother: 50% 
+Sister: up to 50% will be 
+carriers or might be mildly 
+affected 
+Copy number variant Prader-Willi syndrome/Angelman syndrome 
+(15q11-q13 duplication) 
+Same as population 
+prevalence if de novo (i.e., not 
+found in parents) 
+ASD: autism spectrum disorder; ID: intellectual disability. 
+ 
+Section Summary: Chromosomal Microarray Testing  
+The evidence for CMA testing for a definitive diagnosis in individuals with DD/ID, ASD, and/or 
+congenital anomalies consists of studies reporting on the yield of a positive test in affected 
+individuals, combined with an indirect chain of evidence to support the clinical utility of testing. 
+The yield of testing varies depending on the underlying population tested, but is generally 
+higher than 10%, with higher rates in patients with congenital anomalies.  While direct 
+evidence of improved outcomes with CMA compared with karyotype is lacking, for at least a 
+subset of the disorders potentially diagnosed with CMA in this patient population, there are 
+well-defined and accepted management steps associated with positive test results.  Further, 
+there is evidence of changes in reproductive decision making as a result of positive test 
+
+ 
+15 
+results. For children with idiopathic growth  or language delay, clinical validity has not been 
+established and there is no direct or indirect evidence to support clinical utility. 
+ 
+NEXT-GENERATION SEQUENCING Panel Testing 
+ 
+Clinical Context and Test Purpose  
+The purpose of gene panel testing with next generation sequencing (NGS) is to identify a 
+genetic cause for individuals with DD/ID, ASD, and congenital anomalies.  A genetic diagnosis 
+may end a diagnostic odyssey, improve treatment, facilitate the management of associated 
+medical conditions, and permit carrier testing to assess risks to future offspring. 
+ 
+Case Series or Cohort Studies 
+Several studies have assessed next-generation sequencing panel testing on samples from 
+patients with intellectual disability with negative aCGH testing. Table 8 summarizes the 
+diagnostic yield. For example, Grozeva et al (2016) reported that next-generation sequencing 
+targeted testing resulted in an 11% additional diagnostic yield beyond the 10% to 15% yield 
+from aCGH alone.
+107,
+ However, Kalsner et al (2018) reported no increase in yield using an 
+NGS panel.
+108,
+ 
+Table 8. Diagnostic Yield Studies Published 
+Study N Diagnoses Patient Description 
+Previous 
+Normal Studies 
+Yield 
+Kalsner 
+et al  
+(2018) 
+106,
+ 
+100 ASD 
+Consecutive children referred to a 
+single U.S. neurogenetics clinic with  
+confirmed diagnosis of ASD without 
+a known genetic diagnosis 
+suspected to  be causative of ASD 
+Performed 
+concurrently 
+with  CMA 
+CMA yield: 12% 
+(included  
+pathogenic 
+CNVs and 
+VUS)  NGS 
+panel yield: 
+11% (included  
+pathogenic or 
+likely 
+pathogenic  
+variants [VUS 
+likely 
+pathogenic]) 
+Grozeva 
+et al  
+(2015)
+107,
+ 
+986 M-to-S ID 
+996 patients with M-to -S ID from the 
+U.K. (70%), Australia, Spain, U.S., 
+and  Italy. Studied phenotypes 
+included: 905 cases with congenital 
+heart disease;  911 cases with 
+ciliopathy, coloboma, neuromuscular 
+disease, severe insulin  resistance, 
+congenital thyroid disease. 
+Negative CMA 
+testing at 500 kb  
+resolution, and 
+testing for fragile  
+X   and   Prader-
+Willi                 or                 
+Angelman  
+syndrome 
+11% (likely 
+pathogenic 
+rare  variant)· 
+8% (likely 
+pathogenic·  
+loss-of-function 
+variant) 
+3% (known 
+pathogenic 
+missense  
+variant) 
+Redin et 
+al  
+(2014)
+38
+ 
+166 ID  
+ID patients with or without 
+associated autistic-like features, 
+fragile X, and  other specific 
+genetic conditions 
+Negative for 
+aCGH 
+Overall 
+diagnostic yield: 
+25%, with  26 
+causative 
+variants (16 X-  
+linked, 10 de 
+novo in 
+
+ 
+16 
+autosomal-  
+dominant genes). 
+aCGH: array comparative genomic hybridization; ASD: autism spectrum disorder; CHD: congenital heart disease; CMA: chromosomal 
+microarray; CNV: copy number variant; ID: intellectual disability; M-to-S: moderate-to-severe; NGS: next-generation sequencing; VUS: variant 
+of uncertain significance. 
+ 
+ 
+Section Summary: Next-Generation Sequencing  
+It is arguable that the indirect chain of evidence for the use of CMA in evaluating DD/ID, ASD, 
+and/or congenital anomalies would apply to NGS panels. However, the clinical validity of NGS 
+panels is less well-established than for CMA, particularly regarding VOUS rates.  The yield of 
+testing and likelihood of an uncertain result is variable, based on gene panel, gene tested, and 
+patient population.  There are real risks of uninterpretable and incidental results.  Therefore, 
+the evidence does not permit conclusions whether NGS panel testing improves outcomes. 
+ 
+SUPPLEMENTAL INFORMATION 
+ 
+PRACTICE GUIDELINES AND POSITION STATEMENTS 
+Guidelines or position statements will be considered for inclusion in ‘Supplemental Information' 
+if they are issued by, or jointly by, a US professional society, an international  society with US 
+representation, or National Institute for Health and Care Excellence (NICE). Priority will be 
+given to guidelines that are informed by a systematic review, include  strength of evidence 
+ratings, and include a description of management of conflict of interest. 
+ 
+American Academy of Pediatrics (AAP) 
+In 2014, the AAP issued a clinical report on the optimal medical genetics evaluation of a child 
+with global developmental delays (GDD) or ID.
+15
+ Regarding CMA testing, this report states: 
+ 
+“CMA now should be considered a first-tier diagnostic test in all children with GDD/ID for whom 
+the causal diagnosis is not known...CMA is now the standard for diagnosis of patients with 
+GDD/ID, as well as other conditions, such as autism spectrum disorders or multiple congenital 
+anomalies.” 
+ 
+In 2020, the AAP issued a clinical report on identifying infants and young children with 
+developmental disorders through surveillance and screening. 
+115
+ The report proposed a 
+screening model that included performing a complete medical evaluation and stated that a 
+"child with suspected global developmental delay or intellectual disability should have 
+laboratory testing done, including chromosomal microarray and fragile X testing[...] Further 
+testing may be indicated when a diagnosis is not established with initial laboratory evaluation 
+including whole exome sequencing and gene panels." 
+ 
+In 2025, the AAP updated their clinical report on genetic evaluation of a child with intellectual 
+disability or global developmental delay.
+116
+ The AAP recommends exome/genome sequencing 
+as a first-tier test for GDD/ID in most circumstances because of superior diagnostic yield and 
+higher cost-effectiveness if pursued earlier in the diagnostic process. 
+ 
+American Academy of Child and Adolescent Psychiatry  
+In 2014, the American Academy of Child and Adolescent Psychiatry updated its guidelines on 
+the assessment and treatment of children and adolescents with autism spectrum disorder 
+(ASD).
+109
+  The Academy recommended that “all children with ASD should have a medical 
+assessment, which typically includes physical examination, a hearing screen, a Wood's lamp 
+
+ 
+17 
+examination for signs of tuberous sclerosis, and genetic testing, which may include G-banded 
+karyotype, fragile X testing, or chromosomal microarray.” 
+ 
+American Academy of Neurology and Child Neurology Society 
+In 2011, the American Academy of Neurology and the Practice Committee of the Child 
+Neurology Society updated their guideline regarding the evaluation of unexplained global 
+developmental delay/intellectual disability with information on genetic and metabolic 
+(biochemical) testing in order to accommodate advances in the field.
+110
+  The guidelines 
+concluded that CMA testing has the highest diagnostic yield in children with DD/ID, ASD, or 
+multiple congenital anomalies (MCA).  Often complex results require confirmation and careful 
+interpretation, often with the assistance of a medical geneticist, and that CMA should be 
+considered the first-line test.  The guidelines acknowledge that “Research is sorely lacking on 
+the medical, social and financial benefits of having an accurate etiologic diagnosis.”  
+ 
+American College of Medical Genetics 
+The American College of Medical Genetics (ACMG) (2010; reaffirmed 2020) published 
+guidelines on array-based technologies and their clinical utilization for detecting chromosomal 
+abnormalities.
+111, 112
+  Chromosomal microarray testing for copy number variation (CNV) is 
+recommended as a first-line test in the initial postnatal evaluation of individuals with the 
+following:  
+• Multiple anomalies not specific to a well-delineated genetic syndrome  
+• Apparently non-syndromic developmental delay/ intellectual disability  
+• Autism spectrum disorders (ASDs) 
+ 
+Other ACMG guidelines have addressed the design and performance expectations for clinical 
+microarrays and associated software
+8
+ and for the interpretation and reporting of CNVs,
+11
+ both 
+intended for the post-natal setting.  A 2013 update includes recommendations for validation of 
+microarray methodologies for both prenatal and postnatal specimens.
+113
+ 
+ 
+A 2013 guideline update from the ACMG states that a stepwise or tiered approach to the 
+clinical genetic diagnostic evaluation of autism spectrum disorder is recommended, with the 
+recommendation being for first-tier to include FXS [fragile X syndrome] and CMA, and second 
+tier to include MECP2 and PTEN testing.
+114
+  The guideline states that  
+ 
+“This approach will evolve with continued advancements in diagnostic testing and improved 
+understanding of the ASD phenotype. Multiple additional conditions have been reported in 
+association with an ASD phenotype, but none of these have been evaluated in a large 
+prospective cohort. Therefore, a future third tier of evaluation is a distinct possibility. Further 
+studies would be needed to elevate the evidence to the point of recommended testing. 
+Alternatively, advances in technology may permit bundling of individual tests into an 
+extended, more readily accessible, and less expensive platform.” The accumulating 
+evidence using next-generation sequencing (third tier testing) “will increase the diagnostic 
+yield even more over the next few years.” 
+ 
+U.S. Preventive Services Task Force Recommendations 
+Not applicable. 
+ 
+Ongoing and Unpublished Clinical Trials 
+A search of ClinicalTrials.gov did not identify any ongoing or unpublished trials that would likely 
+influence this policy. 
+ 
+
+ 
+18 
+ 
+Regulatory Status 
+ 
+CMA analysis and NGS are commercially available from several laboratories as laboratory-
+developed tests. Laboratory-developed tests performed by laboratories licensed for high 
+complexity testing under the Clinical Laboratory Improvement Amendments (CLIA) do not 
+require U.S. Food and Drug Administration (FDA) clearance for marketing.  
+ 
+In July 2010, the FDA indicated that the agency would require microarray manufacturers to 
+seek clearance in order to sell their products for use in clinical cytogenetics.  
+ 
+CMA Testing 
+CMA Testing CMA testing is commercially available through many laboratories and includes 
+targeted and whole genome arrays, with or without SNV microarray analysis. 
+ 
+On January 17, 2014, the FDA cleared the Affymetrix CytoScan® Dx Assay for marketing.  
+The FDA reviewed the Affymetrix CytoScan Dx Assay through its de novo classification 
+process.  For the de novo petition, the review of the CytoScan Dx Assay included an analytic 
+evaluation of the test’s ability to accurately detect numerous chromosomal variations of 
+different types, sizes, and genome locations when compared with several analytically validated 
+test methods. The FDA found that the CytoScan Dx Assay could analyze a patient’s entire 
+genome and adequately detect chromosome variations in regions of the genome associated 
+with intellectual and developmental disabilities.  FDA product code: PFX 
+ 
+FirstStep
+Dx
+ PLUS® (Lineagen) uses Lineagen’s custom-designed microarray platform 
+manufactured by Affymetrix. As of July 2017, this microarray consists of a 2.8 million probe 
+microarray for the detection of CNVs associated with neurodevelopmental disorders. The array 
+includes probes that come standard on the Affymetrix CytoScan HD® microarray, with an 
+additional 88,435 custom probes designed by Lineagen. 
+ 
+Ambry Genetics offers multiple tests (CMA and NGS) designed for diagnosing ASD and 
+neurodevelopmental disorders. As of July 2017, the CMA offered by Ambry Genetics includes 
+over 2.6 million probes for copy number and 750,000 SNV probes. The expanded NGS panel 
+for neurodevelopmental disorders includes assessing 196 genes. 
+ 
+LabCorp offers the Reveal® SNP Microarray-Pediatric for individuals with nonsyndromic 
+congenital anomalies, dysmorphic features, DD/ID, and/or ASD. The Reveal® microarray has 
+2695 million probes as of July 2017. 
+ 
+Next-Generation Sequencing  
+A variety of commercial and academic laboratories offer NGS panels designed for the 
+evaluation of ASD, DD/ID, and congenital anomalies, which vary in terms of the numbers of 
+and specific genes tested.  
+ 
+Emory Genetics Laboratory offers an NGS ASD panel of genes targeting genetic syndromes 
+that include autism or autistic features.  Greenwood Genetics Center offers an NGS panel for 
+syndromic autism that includes 83 genes.  Fulgent Genetics offers an next-generation 
+sequencing ASD panel that includes 121 genes. 
+ 
+
+ 
+19 
+ 
+Government Regulations 
+National: 
+No national coverage determination on this topic.   
+ 
+Local:  
+No local coverage determination on this topic. 
+ 
+(The above Medicare information is current as of the review date for this policy.  However, the coverage 
+issues and policies maintained by the Centers for Medicare & Medicare Services [CMS, formerly HCFA] are 
+updated and/or revised periodically.  Therefore, the most current CMS information may not be contained in 
+this document.  For the most current information, the reader should contact an official Medicare source.) 
+ 
+ 
+ 
+Related Policies 
+ 
+• Genetic Testing and Counseling 
+• Genetic testing for Tay-Sachs Disease 
+• Genetic Testing for Myotonic Dystrophy 
+• Genetic Testing for Cystic Fibrosis 
+• Genetic Testing for FMR1 and FMR2 Variants (Including Fragile X and Fragile XE 
+Syndromes)  
+• Genetic Testing-Chromosomal Microarray Testing for the Evaluation of Early Pregnancy 
+Loss and Intrauterine Fetal Demise. 
+• Genetic Testing - Whole Exome and Whole Genome Sequencing for Diagnosis of Genetic 
+Disorders 
+ 
+ 
+References 
+ 
+1.  Mikhail FM, Lose EJ, Robin NH, et al. Clinically relevant single gene or intragenic deletions 
+encompassing critical neurodevelopmental genes in patients with developmental delay, 
+mental retardation, and/or autism spectrum disorders. Am J Med Genet A. Oct 2011; 
+155A(10): 2386-96. PMID 22031302 
+2.  Brandler WM, Sebat J. From de novo mutations to personalized therapeutic interventions in 
+autism. Annu Rev Med. 2015; 66: 487-507. PMID 25587659 
+3.  Stankiewicz P, Beaudet AL. Use of array CGH in the evaluation of dysmorphology, 
+malformations, developmental delay, and idiopathic mental retardation. Curr Opin Genet 
+Dev. Jun 2007; 17(3): 182-92. PMID 17467974 
+4.  Stuart SW, King CH, Pai GS. Autism spectrum disorder, Klinefelter syndrome, and 
+chromosome 3p21.31 duplication: a case report. MedGenMed. Dec 18, 2007; 9(4): 60. 
+PMID 18311409 
+5.  Moeschler JB. Medical genetics diagnostic evaluation of the child with global developmental 
+delay or intellectual disability. Curr Opin Neurol. Apr 2008; 21(2): 117-22. PMID 18317267 
+6.  Schaefer GB, Mendelsohn NJ. Clinical genetics evaluation in identifying the etiology of 
+autism spectrum disorders. Genet Med. Apr 2008; 10(4): 301-5. PMID 18414214 
+7.  Korf BR, Rehm HL. New approaches to molecular diagnosis. JAMA. Apr 10, 2013; 309(14): 
+1511-21. PMID 23571590 
+8.  Kearney HM, South ST, Wolff DJ, et al. American College of Medical Genetics 
+recommendations for the design and performance expectations for clinical genomic copy 
+ 
+ 
+
+ 
+20 
+number microarrays intended for use in the postnatal setting for detection of constitutional 
+abnormalities. Genet Med. Jul 2011; 13(7): 676-9. PMID 21681105 
+9.  Rodriguez-Revenga L, Vallespin E, Madrigal I, et al. A parallel study of different array-CGH 
+platforms in a set of Spanish patients with developmental delay and intellectual disability. 
+Gene. May 25, 2013; 521(1): 82-6. PMID 23524024 
+10. Kloosterman WP, Hochstenbach R. Deciphering the pathogenic consequences of 
+chromosomal aberrations in human genetic disease. Mol Cytogenet. 2014; 7(1): 100. PMID 
+25606056 
+11. Kearney HM, Thorland EC, Brown KK, et al. American College of Medical Genetics 
+standards and guidelines for interpretation and reporting of postnatal constitutional copy 
+number variants. Genet Med. Jul 2011; 13(7): 680-5. PMID 21681106 
+12. Riggs ER, Church DM, Hanson K, et al. Towards an evidence-based process for the clinical 
+interpretation of copy number variation. Clin Genet. May 2012; 81(5): 403-12. PMID 
+22097934 
+13. Blue Cross Blue Shield Association Technology Evaluation Center (TEC). TEC Special 
+Report: Array Comparative Genomic Hybridization (aCGH) for the Genetic Evaluation of 
+Patients with Developmental Delay/Mental Retardation and Autism Spectrum Disorder. TEC 
+Assessments. 2009;Volume 24;Tab 10. 
+14. Blue Cross and Blue Shield Association. Special Report: Chromosomal Microarray for the 
+Genetic Evaluation of Patients with Global Developmental Delay, Intellectual Disability, and 
+Autism Spectrum Disorder. TEC Assessments. 2015;Volume 30;Tab 2. 
+15. Moeschler JB, Shevell M, Moeschler JB, et al. Comprehensive evaluation of the child with 
+intellectual disability or global developmental delays. Pediatrics. Sep 2014; 134(3): e903-18. 
+PMID 25157020 
+16. Shevell M, Ashwal S, Donley D, et al. Practice parameter: evaluation of the child with global 
+developmental delay: report of the Quality Standards Subcommittee of the American 
+Academy of Neurology and The Practice Committee of the Child Neurology Society. 
+Neurology. Feb 11, 2003; 60(3): 367-80. PMID 12578916 
+17. American Psychiatric Association. Diagnostic and Statistical Manual of Mental Disorders, 
+5th Edition: DSM-5. Washington (DC): American Psychiatric Association; 2013. 
+18. Zablotsky B, Black LI, Maenner MJ, et al. Prevalence and Trends of Developmental 
+Disabilities among Children in the United States: 2009-2017. Pediatrics. Oct 2019; 144(4). 
+PMID 31558576 
+19. Srour M, Shevell M. Genetics and the investigation of developmental delay/intellectual 
+disability. Arch Dis Child. Apr 2014; 99(4): 386-9. PMID 24344174 
+20. Willemsen MH, Kleefstra T. Making headway with genetic diagnostics of intellectual 
+disabilities. Clin Genet. Feb 2014; 85(2): 101-10. PMID 23895455 
+21. Moeschler JB. Genetic evaluation of intellectual disabilities. Semin Pediatr Neurol. Mar 
+2008; 15(1): 2-9. PMID 18342255 
+22. Yuen RK, Thiruvahindrapuram B, Merico D, et al. Whole-genome sequencing of quartet 
+families with autism spectrum disorder. Nat Med. Feb 2015; 21(2): 185-91. PMID 25621899 
+23. Gaugler T, Klei L, Sanders SJ, et al. Most genetic risk for autism resides with common 
+variation. Nat Genet. Aug 2014; 46(8): 881-5. PMID 25038753 
+24. Schaefer GB, Mendelsohn NJ. Genetics evaluation for the etiologic diagnosis of autism 
+spectrum disorders. Genet Med. Jan 2008; 10(1): 4-12. PMID 18197051 
+25. Butler MG, Dasouki MJ, Zhou XP, et al. Subset of individuals with autism spectrum 
+disorders and extreme macrocephaly associated with germline PTEN tumour suppressor 
+gene mutations. J Med Genet. Apr 2005; 42(4): 318-21. PMID 15805158 
+
+ 
+21 
+26. Wright CF, Fitzgerald TW, Jones WD, et al. Genetic diagnosis of developmental disorders in 
+the DDD study: a scalable analysis of genome-wide research data. Lancet. Apr 04, 2015; 
+385(9975): 1305-14. PMID 25529582 
+27. Eriksson MA, Lieden A, Westerlund J, et al. Rare copy number variants are common in 
+young children with autism spectrum disorder. Acta Paediatr. Jun 2015; 104(6): 610-8. 
+PMID 25661985 
+28. Krepischi-Santos AC, Vianna-Morgante AM, Jehee FS, et al. Whole-genome array-CGH 
+screening in undiagnosed syndromic patients: old syndromes revisited and new alterations. 
+Cytogenet Genome Res. 2006; 115(3-4): 254-61. PMID 17124408 
+29. Bartnik M, Nowakowska B, Derwinska K, et al. Application of array comparative genomic 
+hybridization in 256 patients with developmental delay or intellectual disability. J Appl 
+Genet. Feb 2014; 55(1): 125-44. PMID 24297458 
+30. Bartnik M, Wisniowiecka-Kowalnik B, Nowakowska B, et al. The usefulness of array 
+comparative genomic hybridization in clinical diagnostics of intellectual disability in children. 
+Dev Period Med. Jul-Sep 2014; 18(3): 307-17. PMID 25182394 
+31. Chong WW, Lo IF, Lam ST, et al. Performance of chromosomal microarray for patients with 
+intellectual disabilities/developmental delay, autism, and multiple congenital anomalies in a 
+Chinese cohort. Mol Cytogenet. 2014; 7: 34. PMID 24926319 
+32. D'Amours G, Langlois M, Mathonnet G, et al. SNP arrays: comparing diagnostic yields for 
+four platforms in children with developmental delay. BMC Med Genomics. Dec 24, 2014; 7: 
+70. PMID 25539807 
+33. Henderson LB, Applegate CD, Wohler E, et al. The impact of chromosomal microarray on 
+clinical management: a retrospective analysis. Genet Med. Sep 2014; 16(9): 657-64. PMID 
+24625444 
+34. Nava C, Keren B, Mignot C, et al. Prospective diagnostic analysis of copy number variants 
+using SNP microarrays in individuals with autism spectrum disorders. Eur J Hum Genet. Jan 
+2014; 22(1): 71-8. PMID 23632794 
+35. Nicholl J, Waters W, Mulley JC, et al. Cognitive deficit and autism spectrum disorders: 
+prospective diagnosis by array CGH. Pathology. Jan 2014; 46(1): 41-5. PMID 24300712 
+36. Palmer E, Speirs H, Taylor PJ, et al. Changing interpretation of chromosomal microarray 
+over time in a community cohort with intellectual disability. Am J Med Genet A. Feb 2014; 
+164A(2): 377-85. PMID 24311194 
+37. Preiksaitiene E, Molyte A, Kasnauskiene J, et al. Considering specific clinical features as 
+evidence of pathogenic copy number variants. J Appl Genet. May 2014; 55(2): 189-96. 
+PMID 24535828 
+38. Redin C, Gerard B, Lauer J, et al. Efficient strategy for the molecular diagnosis of 
+intellectual disability using targeted high-throughput sequencing. J Med Genet. Nov 2014; 
+51(11): 724-36. PMID 25167861 
+39. Roberts JL, Hovanes K, Dasouki M, et al. Chromosomal microarray analysis of consecutive 
+individuals with autism spectrum disorders or learning disability presenting for genetic 
+services. Gene. Feb 01, 2014; 535(1): 70-8. PMID 24188901 
+40. Stobbe G, Liu Y, Wu R, et al. Diagnostic yield of array comparative genomic hybridization in 
+adults with autism spectrum disorders. Genet Med. Jan 2014; 16(1): 70-7. PMID 23765050 
+41. Tao VQ, Chan KY, Chu YW, et al. The clinical impact of chromosomal microarray on 
+paediatric care in Hong Kong. PLoS One. 2014; 9(10): e109629. PMID 25333781 
+42. Utine GE, Haliloglu G, Volkan-Salanci B, et al. Etiological yield of SNP microarrays in 
+idiopathic intellectual disability. Eur J Paediatr Neurol. May 2014; 18(3): 327-37. PMID 
+24508361 
+
+ 
+22 
+43. Uwineza A, Caberg JH, Hitayezu J, et al. Array-CGH analysis in Rwandan patients 
+presenting development delay/intellectual disability with multiple congenital anomalies. BMC 
+Med Genet. Jul 12, 2014; 15: 79. PMID 25016475 
+44. Battaglia A, Doccini V, Bernardini L, et al. Confirmation of chromosomal microarray as a 
+first-tier clinical diagnostic test for individuals with developmental delay, intellectual 
+disability, autism spectrum disorders and dysmorphic features. Eur J Paediatr Neurol. Nov 
+2013; 17(6): 589-99. PMID 23711909 
+45. Lee CG, Park SJ, Yun JN, et al. Array-based comparative genomic hybridization in 190 
+Korean patients with developmental delay and/or intellectual disability: a single tertiary care 
+university center study. Yonsei Med J. Nov 2013; 54(6): 1463-70. PMID 24142652 
+46. Shoukier M, Klein N, Auber B, et al. Array CGH in patients with developmental delay or 
+intellectual disability: are there phenotypic clues to pathogenic copy number variants? Clin 
+Genet. Jan 2013; 83(1): 53-65. PMID 22283495 
+47. Sorte HS, Gjevik E, Sponheim E, et al. Copy number variation findings among 50 children 
+and adolescents with autism spectrum disorder. Psychiatr Genet. Apr 2013; 23(2): 61-9. 
+PMID 23277134 
+48. Filges I, Suda L, Weber P, et al. High-resolution array in the clinical approach to 
+chromosomal phenotypes. Gene. Mar 10, 2012; 495(2): 163-9. PMID 22240311 
+49. Iourov IY, Vorsanova SG, Kurinnaia OS, et al. Molecular karyotyping by array CGH in a 
+Russian cohort of children with intellectual disability, autism, epilepsy and congenital 
+anomalies. Mol Cytogenet. Dec 31, 2012; 5(1): 46. PMID 23272938 
+50. McGrew SG, Peters BR, Crittendon JA, et al. Diagnostic yield of chromosomal microarray 
+analysis in an autism primary care practice: which guidelines to implement? J Autism Dev 
+Disord. Aug 2012; 42(8): 1582-91. PMID 22089167 
+51. Tzetis M, Kitsiou-Tzeli S, Frysira H, et al. The clinical utility of molecular karyotyping using 
+high-resolution array-comparative genomic hybridization. Expert Rev Mol Diagn. Jun 2012; 
+12(5): 449-57. PMID 22702362 
+52. Bremer A, Giacobini M, Eriksson M, et al. Copy number variation characteristics in 
+subpopulations of patients with autism spectrum disorders. Am J Med Genet B 
+Neuropsychiatr Genet. Mar 2011; 156(2): 115-24. PMID 21302340 
+53. Coulter ME, Miller DT, Harris DJ, et al. Chromosomal microarray testing influences medical 
+management. Genet Med. Sep 2011; 13(9): 770-6. PMID 21716121 
+54. Wincent J, Anderlid BM, Lagerberg M, et al. High-resolution molecular karyotyping in 
+patients with developmental delay and/or multiple congenital anomalies in a clinical setting. 
+Clin Genet. Feb 2011; 79(2): 147-57. PMID 20486943 
+55. Manolakos E, Vetro A, Kefalas K, et al. The use of array-CGH in a cohort of Greek children 
+with developmental delay. Mol Cytogenet. Nov 09, 2010; 3: 22. PMID 21062444 
+56. Rosenfeld JA, Ballif BC, Torchia BS, et al. Copy number variations associated with autism 
+spectrum disorders contribute to a spectrum of neurodevelopmental disorders. Genet Med. 
+Nov 2010; 12(11): 694-702. PMID 20808228 
+57. Schaefer GB, Starr L, Pickering D, et al. Array comparative genomic hybridization findings in 
+a cohort referred for an autism evaluation. J Child Neurol. Dec 2010; 25(12): 1498-503. 
+PMID 20729506 
+58. Shen Y, Dies KA, Holm IA, et al. Clinical genetic testing for patients with autism spectrum 
+disorders. Pediatrics. Apr 2010; 125(4): e727-35. PMID 20231187 
+59. Bruno DL, Ganesamoorthy D, Schoumans J, et al. Detection of cryptic pathogenic copy 
+number variations and constitutional loss of heterozygosity using high resolution SNP 
+microarray analysis in 117 patients referred for cytogenetic analysis and impact on clinical 
+practice. J Med Genet. Feb 2009; 46(2): 123-31. PMID 19015223 
+
+ 
+23 
+60. Friedman J, Adam S, Arbour L, et al. Detection of pathogenic copy number variants in 
+children with idiopathic intellectual disability using 500 K SNP array genomic hybridization. 
+BMC Genomics. Nov 16, 2009; 10: 526. PMID 19917086 
+61. Baldwin EL, Lee JY, Blake DM, et al. Enhanced detection of clinically relevant genomic 
+imbalances using a targeted plus whole genome oligonucleotide microarray. Genet Med. 
+Jun 2008; 10(6): 415-29. PMID 18496225 
+62. Christian SL, Brune CW, Sudi J, et al. Novel submicroscopic chromosomal abnormalities 
+detected in autism spectrum disorder. Biol Psychiatry. Jun 15, 2008; 63(12): 1111-7. PMID 
+18374305 
+63. Marshall CR, Noor A, Vincent JB, et al. Structural variation of chromosomes in autism 
+spectrum disorder. Am J Hum Genet. Feb 2008; 82(2): 477-88. PMID 18252227 
+64. Pickering DL, Eudy JD, Olney AH, et al. Array-based comparative genomic hybridization 
+analysis of 1176 consecutive clinical genetics investigations. Genet Med. Apr 2008; 10(4): 
+262-6. PMID 18414209 
+65. Saam J, Gudgeon J, Aston E, et al. How physicians use array comparative genomic 
+hybridization results to guide patient management in children with developmental delay. 
+Genet Med. Mar 2008; 10(3): 181-6. PMID 18344707 
+66. Shevell MI, Bejjani BA, Srour M, et al. Array comparative genomic hybridization in global 
+developmental delay. Am J Med Genet B Neuropsychiatr Genet. Oct 05, 2008; 147B(7): 
+1101-8. PMID 18361433 
+67. Aradhya S, Manning MA, Splendore A, et al. Whole-genome array-CGH identifies novel 
+contiguous gene deletions and duplications associated with developmental delay, mental 
+retardation, and dysmorphic features. Am J Med Genet A. Jul 01, 2007; 143A(13): 1431-41. 
+PMID 17568414 
+68. Ballif BC, Sulpizio SG, Lloyd RM, et al. The clinical utility of enhanced subtelomeric 
+coverage in array CGH. Am J Med Genet A. Aug 15, 2007; 143A(16): 1850-7. PMID 
+17632771 
+69. Froyen G, Van Esch H, Bauters M, et al. Detection of genomic copy number changes in 
+patients with idiopathic mental retardation by high-resolution X-array-CGH: important role for 
+increased gene dosage of XLMR genes. Hum Mutat. Oct 2007; 28(10): 1034-42. PMID 
+17546640 
+70. Hoyer J, Dreweke A, Becker C, et al. Molecular karyotyping in patients with mental 
+retardation using 100K single-nucleotide polymorphism arrays. J Med Genet. Oct 2007; 
+44(10): 629-36. PMID 17601928 
+71. Lu X, Shaw CA, Patel A, et al. Clinical implementation of chromosomal microarray analysis: 
+summary of 2513 postnatal cases. PLoS One. Mar 28, 2007; 2(3): e327. PMID 17389918 
+72. Madrigal I, Rodriguez-Revenga L, Armengol L, et al. X-chromosome tiling path array 
+detection of copy number variants in patients with chromosome X-linked mental retardation. 
+BMC Genomics. Nov 29, 2007; 8: 443. PMID 18047645 
+73. Sebat J, Lakshmi B, Malhotra D, et al. Strong association of de novo copy number 
+mutations with autism. Science. Apr 20, 2007; 316(5823): 445-9. PMID 17363630 
+74. Shen Y, Irons M, Miller DT, et al. Development of a focused oligonucleotide-array 
+comparative genomic hybridization chip for clinical diagnosis of genomic imbalance. Clin 
+Chem. Dec 2007; 53(12): 2051-9. PMID 17901113 
+75. Thuresson AC, Bondeson ML, Edeby C, et al. Whole-genome array-CGH for detection of 
+submicroscopic chromosomal imbalances in children with mental retardation. Cytogenet 
+Genome Res. 2007; 118(1): 1-7. PMID 17901693 
+76. Wagenstaller J, Spranger S, Lorenz-Depiereux B, et al. Copy-number variations measured 
+by single-nucleotide-polymorphism oligonucleotide arrays in patients with mental 
+retardation. Am J Hum Genet. Oct 2007; 81(4): 768-79. PMID 17847001 
+
+ 
+24 
+77. Ballif BC, Rorem EA, Sundin K, et al. Detection of low-level mosaicism by array CGH in 
+routine diagnostic specimens. Am J Med Genet A. Dec 15, 2006; 140(24): 2757-67. PMID 
+17103431 
+78. Friedman JM, Baross A, Delaney AD, et al. Oligonucleotide microarray analysis of genomic 
+imbalance in children with mental retardation. Am J Hum Genet. Sep 2006; 79(3): 500-13. 
+PMID 16909388 
+79. Jacquemont ML, Sanlaville D, Redon R, et al. Array-based comparative genomic 
+hybridisation identifies high frequency of cryptic chromosomal rearrangements in patients 
+with syndromic autism spectrum disorders. J Med Genet. Nov 2006; 43(11): 843-9. PMID 
+16840569 
+80. Lugtenberg D, de Brouwer AP, Kleefstra T, et al. Chromosomal copy number changes in 
+patients with non-syndromic X linked mental retardation detected by array CGH. J Med 
+Genet. Apr 2006; 43(4): 362-70. PMID 16169931 
+81. Menten B, Maas N, Thienpont B, et al. Emerging patterns of cryptic chromosomal imbalance 
+in patients with idiopathic mental retardation and multiple congenital anomalies: a new 
+series of 140 patients and review of published reports. J Med Genet. Aug 2006; 43(8): 625-
+33. PMID 16490798 
+82. Miyake N, Shimokawa O, Harada N, et al. BAC array CGH reveals genomic aberrations in 
+idiopathic mental retardation. Am J Med Genet A. Feb 01, 2006; 140(3): 205-11. PMID 
+16419101 
+83. Rosenberg C, Knijnenburg J, Bakker E, et al. Array-CGH detection of micro rearrangements 
+in mentally retarded individuals: clinical significance of imbalances presents both in affected 
+children and normal parents. J Med Genet. Feb 2006; 43(2): 180-6. PMID 15980116 
+84. Shaffer LG, Kashork CD, Saleki R, et al. Targeted genomic microarray analysis for 
+identification of chromosome abnormalities in 1500 consecutive clinical cases. J Pediatr. Jul 
+2006; 149(1): 98-102. PMID 16860135 
+85. Sharp AJ, Hansen S, Selzer RR, et al. Discovery of previously unidentified genomic 
+disorders from the duplication architecture of the human genome. Nat Genet. Sep 2006; 
+38(9): 1038-42. PMID 16906162 
+86. de Vries BB, Pfundt R, Leisink M, et al. Diagnostic genome profiling in mental retardation. 
+Am J Hum Genet. Oct 2005; 77(4): 606-16. PMID 16175506 
+87. Schoumans J, Ruivenkamp C, Holmberg E, et al. Detection of chromosomal imbalances in 
+children with idiopathic mental retardation by array based comparative genomic 
+hybridisation (array-CGH). J Med Genet. Sep 2005; 42(9): 699-705. PMID 16141005 
+88. Tyson C, Harvard C, Locker R, et al. Submicroscopic deletions and duplications in 
+individuals with intellectual disability detected by array-CGH. Am J Med Genet A. Dec 15, 
+2005; 139(3): 173-85. PMID 16283669 
+89. Harada N, Hatchwell E, Okamoto N, et al. Subtelomere specific microarray based 
+comparative genomic hybridisation: a rapid detection system for cryptic rearrangements in 
+idiopathic mental retardation. J Med Genet. Feb 2004; 41(2): 130-6. PMID 14757861 
+90. Shaw-Smith C, Redon R, Rickman L, et al. Microarray based comparative genomic 
+hybridisation (array-CGH) detects submicroscopic chromosomal deletions and duplications 
+in patients with learning disability/mental retardation and dysmorphic features. J Med Genet. 
+Apr 2004; 41(4): 241-8. PMID 15060094 
+91. Vissers LE, de Vries BB, Osoegawa K, et al. Array-based comparative genomic 
+hybridization for the genome wide detection of submicroscopic chromosomal abnormalities. 
+Am J Hum Genet. Dec 2003; 73(6): 1261-70. PMID 14628292 
+92. Chaves TF, Baretto N, Oliveira LF, et al. Copy Number Variations in a Cohort of 420 
+Individuals with Neurodevelopmental Disorders from the South of Brazil. Sci Rep. Nov 28, 
+2019; 9(1): 17776. PMID 31780800 
+
+ 
+25 
+93. Hu T, Zhang Z, Wang J, et al. Chromosomal Aberrations in Pediatric Patients with 
+Developmental Delay/Intellectual Disability: A Single-Center Clinical Investigation. Biomed 
+Res Int. 2019; 2019: 9352581. PMID 31781653 
+94. Xu M, Ji Y, Zhang T, et al. Clinical Application of Chromosome Microarray Analysis in Han 
+Chinese Children with Neurodevelopmental Disorders. Neurosci Bull. Dec 2018; 34(6): 981-
+991. PMID 29948840 
+95. Sansovic I, Ivankov AM, Bobinec A, et al. Chromosomal microarray in clinical diagnosis: a 
+study of 337 patients with congenital anomalies and developmental delays or intellectual 
+disability. Croat Med J. Jun 14, 2017; 58(3): 231-238. PMID 28613040 
+96. Ho KS, Twede H, Vanzo R, et al. Clinical Performance of an Ultrahigh Resolution 
+Chromosomal Microarray Optimized for Neurodevelopmental Disorders. Biomed Res Int. 
+2016; 2016: 3284534. PMID 27975050 
+97. Ho KS, Wassman ER, Baxter AL, et al. Chromosomal Microarray Analysis of Consecutive 
+Individuals with Autism Spectrum Disorders Using an Ultra-High Resolution Chromosomal 
+Microarray Optimized for Neurodevelopmental Disorders. Int J Mol Sci. Dec 09, 2016; 
+17(12). PMID 27941670 
+98. Hu G, Fan Y, Wang L, et al. Copy number variations in 119 Chinese children with idiopathic 
+short stature identified by the custom genome-wide microarray. Mol Cytogenet. 2016; 9: 16. 
+PMID 26884814 
+99.   Lu XY, Phung MT, Shaw CA, et al. Genomic imbalances in neonates with birth defects: high 
+detection rates by using chromosomal microarray analysis. Pediatrics. Dec 2008; 122(6): 
+1310-8. PMID 19047251 
+100. Gogarty B. Parents as partners. A report and guidelines on the investigation of children with 
+developmental delay; by parents, for professionals Cambridge: Cambridge Genetics 
+Knowledge Park; 2006. 
+101. Mroch AR, Flanagan JD, Stein QP. Solving the puzzle: case examples of array comparative 
+genomic hybridization as a tool to end the diagnostic odyssey. Curr Probl Pediatr Adolesc 
+Health Care. Mar 2012; 42(3): 74-8. PMID 22325475 
+102. Turner G, Boyle J, Partington MW, et al. Restoring reproductive confidence in families with 
+X-linked mental retardation by finding the causal mutation. Clin Genet. Feb 2008; 73(2): 
+188-90. PMID 18070138 
+103. Lingen M, Albers L, Borchers M, et al. Obtaining a genetic diagnosis in a child with disability: 
+impact on parental quality of life. Clin Genet. Feb 2016; 89(2): 258-66. PMID 26084449 
+104. Hayeems RZ, Hoang N, Chenier S, et al. Capturing the clinical utility of genomic testing: 
+medical recommendations following pediatric microarray. Eur J Hum Genet. Sep 2015; 
+23(9): 1135-41. PMID 25491637 
+105. Ellison JW, Ravnan JB, Rosenfeld JA, et al. Clinical utility of chromosomal microarray 
+analysis. Pediatrics. Nov 2012; 130(5): e1085-95. PMID 23071206 
+106. Hoffmann TJ, Windham GC, Anderson M, et al. Evidence of reproductive stoppage in 
+families with autism spectrum disorder: a large, population-based cohort study. JAMA 
+Psychiatry. Aug 2014; 71(8): 943-51. PMID 24942798 
+107. Grozeva D, Carss K, Spasic-Boskovic O, et al. Targeted Next-Generation Sequencing 
+Analysis of 1,000 Individuals with Intellectual Disability. Hum Mutat. Dec 2015; 36(12): 
+1197-204. PMID 26350204 
+108. Kalsner L, Twachtman-Bassett J, Tokarski K, et al. Genetic testing including targeted gene 
+panel in a diverse clinical population of children with autism spectrum disorder: Findings and 
+implications. Mol Genet Genomic Med. Mar 2018; 6(2): 171-185. PMID 29271092 
+109. Volkmar F, Siegel M, Woodbury-Smith M, et al. Practice parameter for the assessment and 
+treatment of children and adolescents with autism spectrum disorder. J Am Acad Child 
+Adolesc Psychiatry. Feb 2014; 53(2): 237-57. PMID 24472258 
+
+ 
+26 
+110. Michelson DJ, Shevell MI, Sherr EH, et al. Evidence report: Genetic and metabolic testing 
+on children with global developmental delay: report of the Quality Standards Subcommittee 
+of the American Academy of Neurology and the Practice Committee of the Child Neurology 
+Society. Neurology. Oct 25, 2011; 77(17): 1629-35. PMID 21956720 
+111. Manning M, Hudgins L. Array-based technology and recommendations for utilization in 
+medical genetics practice for detection of chromosomal abnormalities. Genet Med. Nov 
+2010; 12(11): 742-5. PMID 20962661 
+112. Manning M, Hudgins L. Addendum: Array-based technology and recommendations for 
+utilization in medical genetics practice for detection of chromosomal abnormalities. Genet 
+Med. Jun 08, 2020. PMID 32514088 
+113. South ST, Lee C, Lamb AN, et al. ACMG Standards and Guidelines for constitutional 
+cytogenomic microarray analysis, including postnatal and prenatal applications: revision 
+2013. Genet Med. Nov 2013; 15(11): 901-9. PMID 24071793 
+114. Schaefer GB, Mendelsohn NJ. Clinical genetics evaluation in identifying the etiology of 
+autism spectrum disorders: 2013 guideline revisions. Genet Med. May 2013; 15(5): 399-
+407. PMID 23519317 
+115. Lipkin PH, Macias MM, Norwood KW, et al. Promoting Optimal Development: Identifying 
+Infants and Young Children with Developmental Disorders Through Developmental 
+Surveillance and Screening. Pediatrics. Jan 2020; 145(1). PMID 31843861 
+116. Rodan LH, Stoler J, Chen E, et al. Genetic evaluation of the child with intellectual disability 
+or global developmental delay: clinical report. Pediatrics. July 2025; 156(1):1-12. 
+ 
+The articles reviewed in this research include those obtained in an Internet based literature search 
+for relevant medical references through Ju ne 2025, the date the research was completed. 
+
+ 
+27 
+Joint BCBSM/BCN Medical Policy History 
+ 
+Policy   
+Effective Date 
+BCBSM 
+Signature Date 
+BCN   
+Signature Date 
+Comments 
+3/1/09 1/29/09 12/9/08 Joint policy established 
+9/1/12 6/12/12 6/19/12 Routine maintenance.  Policy 
+reformatted to mirror BCBSA policy.  
+No change to position statement or 
+inclusions/ exclusions.  Codes added 
+to policy, which will be effective in 
+2013. 
+7/1/13 4/16/13 4/22/13 Routine update.  81228 and 81229 
+codes changed to established.  
+References added. 
+9/1/14 6/17/14 6/23/14 Updated CPT code nomenclature, 
+updated references, added “Genetic 
+Testing for FMR1 mutations 
+(including Fragile X Syndrome)” as a 
+related policy.  Added exclusion and 
+supporting rationale to policy 
+regarding genetic testing of products 
+of conception following miscarriage 
+or idiopathic recurrent pregnancy 
+loss (RPL). 
+11/1/15 8/18/15 9/14/15 
+Updated rationale and references; 
+removed all information related to 
+prenatal CMA testing.  
+ 
+Policy statements changed to 
+indicated that CMA may be 
+considered medically necessary for 
+apparently nonsyndromic 
+developmental delay/intellectual 
+disability, autism spectrum disorder 
+and multiple anomalies not specific 
+to a well-delineated genetic 
+syndrome.  
+ 
+Updated title to mirror BCBSA title. 
+11/1/16 8/16/16 8/16/16 
+Routine policy maintenance, no 
+change in policy status.   
+  
+
+ 
+28 
+11/1/17 8/15/17 8/15/17 
+Updated rationale, added references 
+5, 7, 24, 26, 27, 30, 32-34, 38 and 
+40. No change in policy status. 
+11/1/18 8/21/18 8/21/18 
+Routine policy maintenance. No 
+changes in policy status. 
+11/1/19 8/20/19  
+Removed Medicaid section.  No 
+changes in policy status. 
+11/1/20 8/18/20  
+Rationale reorganized, tables for 
+studies added. No change in policy 
+status. 
+11/1/21 8/17/21  
+Routine maintenance.  No 
+references added.  No change in 
+policy status. 
+11/1/22 8/16/22  
+Routine maintenance 
+11/1/23 8/15/23  
+Routine maintenance. 
+No change in policy status. 
+Codes 0156U, 0170U, 0209U, and 
+0318U added to policy as E/I. 
+Vendor: N/A. (ky) 
+11/1/24 8/20/24  
+Routine maintenance. 
+Vendor: Avalon M2176 - Testing for 
+Autism Spectrum Disorder and 
+Developmental Delay: 12/6/23. 
+Codes 81470, 81471, and 0170U are 
+on this Avalon policy as not meeting 
+coverage criteria. JUMP policy has 
+these codes as E/I. (ky) 
+11/1/25 8/19/25  
+Routine policy maintenance, added 
+reference #116. No change in status. 
+Vendor managed: N/A (ds) 
+ 
+Next Review Date:    3
+rd
+ Qtr. 2026 
+ 
+ 
+
+ 
+29 
+BLUE CARE NETWORK BENEFIT COVERAGE 
+P
+OLICY:  GENETIC TESTING - CHROMOSOMAL MICROARRAY ANALYSIS AND NEXT-
+G
+ENERATION SEQUENCING PANELS, FOR THE EVALUATION OF CHILDREN WITH 
+DEVELOPMENTAL DELAY/INTELLECTUAL DISABILITY, AUTISM SPECTRUM DISORDER, 
+AND
+/OR CONGENITAL ANOMALIES 
+ 
+I.   Coverage Determination: 
+ 
+Commercial HMO 
+(includes Self-Funded 
+groups unless otherwise 
+specified) 
+Covered; criteria apply. 
+BCNA (Medicare 
+Advantage) 
+See government section. 
+BCN65 (Medicare 
+Complementary) 
+Coinsurance covered if primary Medicare covers the 
+service.  
+ 
+II.  Administrative Guidelines:   
+ 
+• The member's contract must be active at the time the service is rendered. 
+• The service must be authorized by the member's PCP except for Self-Referral Option 
+(SRO) members seeking Tier 2 coverage. 
+• Services must be performed by a BCN-contracted provider, if available, except for 
+Self-Referral Option (SRO) members seeking Tier 2 coverage. 
+• Payment is based on BCN payment rules, individual certificate and certificate riders. 
+• Appropriate copayments will apply.  Refer to certificate and applicable riders for 
+detailed information. 
+• CPT - HCPCS codes are used for descriptive purposes only and are not a guarantee 
+of coverage. 
+ 

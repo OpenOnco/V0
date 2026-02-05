@@ -1,0 +1,14 @@
+{
+  "artifactId": "wellmark_wellmark-ctdna-liquid-biopsy_2026-02-05_6a5b8db368c2",
+  "payerId": "wellmark",
+  "policyId": "wellmark-ctdna-liquid-biopsy",
+  "fetchedAt": "2026-02-05T20:08:21.287Z",
+  "contentType": "html",
+  "sourceUrl": "https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx",
+  "contentLength": 513,
+  "contentHash": "6a5b8db368c22d35d34a34ce079f9424d3cc66a871e270b5858ae81cfcd39096",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

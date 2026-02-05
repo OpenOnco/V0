@@ -1,0 +1,14 @@
+{
+  "artifactId": "blueshieldca_bsca-algorithmic-testing_2026-02-05_c40e3ebb7ad0",
+  "payerId": "blueshieldca",
+  "policyId": "bsca-algorithmic-testing",
+  "fetchedAt": "2026-02-05T20:07:00.260Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.blueshieldca.com/content/dam/bsca/en/provider/docs/medical-policies/Oncology-Algorithmic-Testing.pdf",
+  "contentLength": 145343,
+  "contentHash": "c40e3ebb7ad0cd6bb7b35a09f06066655c56f0ea77abdfdd663ec8d890629e21",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

@@ -1,12 +1,12 @@
 {
   "id": "new-2026-ml6zqju7",
   "type": "new-test",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-02-03T19:27:41.551Z",
   "createdBy": "daemon",
-  "reviewedAt": null,
-  "reviewedBy": null,
-  "appliedAt": null,
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": "2026-02-05T20:30:00.000Z",
   "rejectionReason": null,
   "testData": {
     "name": "Quest Diagnostics Flow Cytometry MRD Blood Test for Myeloma",

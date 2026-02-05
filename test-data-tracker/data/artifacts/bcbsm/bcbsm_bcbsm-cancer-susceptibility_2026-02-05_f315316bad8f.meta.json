@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbsm_bcbsm-cancer-susceptibility_2026-02-05_f315316bad8f",
+  "payerId": "bcbsm",
+  "policyId": "bcbsm-cancer-susceptibility",
+  "fetchedAt": "2026-02-05T20:06:38.527Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.bcbsm.com/amslibs/content/dam/public/mpr/mprsearch/pdf/2032136.pdf",
+  "contentLength": 67223,
+  "contentHash": "f315316bad8f0de2e75386073150cd4768dd8cf9eecc418c868bc267d26e3f16",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

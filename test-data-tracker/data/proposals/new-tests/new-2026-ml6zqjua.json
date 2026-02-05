@@ -1,13 +1,13 @@
 {
   "id": "new-2026-ml6zqjua",
   "type": "new-test",
-  "status": "pending",
+  "status": "rejected",
   "createdAt": "2026-02-03T19:27:41.554Z",
   "createdBy": "daemon",
-  "reviewedAt": null,
-  "reviewedBy": null,
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
   "appliedAt": null,
-  "rejectionReason": null,
+  "rejectionReason": "Billion Cell Atlas is a research platform, not a clinical diagnostic test",
   "testData": {
     "name": "Billion Cell Atlas",
     "vendor": "Illumina",

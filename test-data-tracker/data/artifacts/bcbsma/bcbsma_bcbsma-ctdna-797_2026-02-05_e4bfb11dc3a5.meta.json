@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbsma_bcbsma-ctdna-797_2026-02-05_e4bfb11dc3a5",
+  "payerId": "bcbsma",
+  "policyId": "bcbsma-ctdna-797",
+  "fetchedAt": "2026-02-05T20:07:31.595Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.bluecrossma.org/medical-policies/sites/g/files/csphws2091/files/acquiadam-assets/797Circulating_Tumor_DNA_For_Cancer.pdf",
+  "contentLength": 20340,
+  "contentHash": "e4bfb11dc3a514209c08aa2670addd50eaa5bfd78cf6636412e6ba82ddc4c84e",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

@@ -1,0 +1,14 @@
+{
+  "artifactId": "aetna_aetna-cpb-0352_2026-02-05_dd4f84971968",
+  "payerId": "aetna",
+  "policyId": "aetna-cpb-0352",
+  "fetchedAt": "2026-02-05T20:05:00.238Z",
+  "contentType": "html",
+  "sourceUrl": "https://www.aetna.com/cpb/medical/data/300_399/0352.html",
+  "contentLength": 2074148,
+  "contentHash": "dd4f849719684601d70831a62f3268b1b45ab96a8c6ba6c3d9e70f7b9d9ae73c",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

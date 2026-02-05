@@ -1,0 +1,14 @@
+{
+  "artifactId": "anthem_anthem-gene-14_2026-02-05_ce0137c701b2",
+  "payerId": "anthem",
+  "policyId": "anthem-gene-14",
+  "fetchedAt": "2026-02-05T20:05:23.648Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://files.providernews.anthem.com/2003/CG-GENE-14.pdf",
+  "contentLength": 371026,
+  "contentHash": "ce0137c701b2f052138d0bb81c87fe22620be0408bd9023575ee67228e9c43d2",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

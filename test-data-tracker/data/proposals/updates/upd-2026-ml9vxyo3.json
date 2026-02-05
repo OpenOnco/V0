@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml9vxyo3",
+  "type": "update",
+  "status": "applied",
+  "createdAt": "2026-02-05T20:04:47.427Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": "2026-02-05T20:30:00.000Z",
+  "rejectionReason": null,
+  "testName": "Decipher",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "Predicting hormone therapy benefit in men with recurrent prostate cancer",
+      "date": null
+    }
+  },
+  "source": "https://investor.veracyte.com/rss/news-releases.xml",
+  "sourceTitle": "Veracyte: Decipher expands to Predicting hormone therapy benefit in men with recurrent prostate cancer",
+  "confidence": 0.75,
+  "snippet": "New indication: Predicting hormone therapy benefit in men with recurrent prostate cancer"
+}

@@ -1,0 +1,3192 @@
+
+
+Blue Shield of California 
+601 12
+th
+ Street, Oakland, CA 94607    
+ 
+Reproduction without authorization from Blue 
+Shield of California is prohibited 
+ 
+ 
+Medical Policy 
+ 
+ 
+ 
+An independent member of the Blue Shield Association
+ 
+ 
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Original Policy Date: August 1, 2023 Effective Date: May 1, 2025 
+Section: 2.0 Medicine Page: Page 1 of 45 
+ 
+Example Test Table 
+ 
+The tests, associated laboratories, CPT codes, and ICD codes contained within this document serve 
+only as examples to help users navigate claims and corresponding coverage criteria; as such, they 
+are not comprehensive and are not a guarantee of coverage or non-coverage. Please see the 
+Concert Platform for a comprehensive list of registered tests.  
+ 
+Policy Statement Locations Example Tests, Labs Common CPT Codes 
+Breast Cancer  
+Breast Cancer Treatment and 
+Prognostic Algorithmic Tests 
+Oncotype Dx Breast Recurrence Score (Exact 
+Sciences) 
+81519, S3854 
+Breast Cancer Extended Endocrine 
+Therapy Algorithmic Tests 
+Breast Cancer Index (bioTheranostics) 81518, S3854 
+Breast Cancer Prognostic 
+Algorithmic Tests 
+EndoPredict (Myriad) 81522, S3854 
+MammaPrint (Agendia, Inc.) 
+ 
+81521, 81523 S3854  
+Prosigna Assay (NeoGenomics) 81520 
+Gene Expression Profiling Breast 
+Cancer Subtyping Tests 
+BluePrint (Agendia, Inc.) 81599, S3854 
+Breast DCIS Prognostic Algorithmic 
+Tests 
+Oncotype DX Breast DCIS Score (Exact 
+Sciences) 
+0045U 
+Colorectal Cancer  
+Colorectal Cancer Prognostic 
+Algorithmic Tests 
+Oncotype DX Colon Recurrence Score (Exact 
+Sciences) 
+81525 
+miR-31now (GoPath Laboratories) 0069U 
+Immunoscore (Veracyte) 0261U 
+Prostate Cancer  
+Prostate Cancer Treatment and 
+Prognostic Algorithmic Tests 
+Oncotype DX Genomic Prostate Score 
+(MDxHealth) 
+0047U  
+Decipher Prostate Biopsy Genomic Classifier 
+(Veracyte)  
+81542  
+Decipher Prostate RP Genomic Classifier 
+(Veracyte) 
+Prolaris (Myriad Genetics)  81541  
+ArteraAI Prostate Test (Artera) 0376U 
+Evidence Based Prostate Cancer 
+Risk Assessment and Diagnostic 
+Algorithmic Tests 
+4K Prostate Score (Serum) (BioReference 
+Laboratories) 
+81539  
+Prostate Health Index (ARUP Laboratories) 84153, 84154, 86316 
+SelectMDx for Prostate Cancer (MDxHealth) 0339U 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 2 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Policy Statement Locations Example Tests, Labs Common CPT Codes 
+ExoDx Prostate Test (ExosomeDx) 0005U 
+IsoPSA (Cleveland Diagnostics, Inc) 0359U 
+MyProstateScore (Lynx DX)  0113U 
+ConfirmMDx for Prostate Cancer (MDxHealth)  81551 
+Prostate Cancer Gene 3 (Integrated Regional 
+Laboratories) 
+81479 
+Emerging Evidence Prostate 
+Cancer Risk Assessment and 
+Diagnostic Algorithmic Tests 
+Apifiny (Armune Bioscience) 0021U 
+PanGIA Prostate (Genetics Institute of 
+America) 
+0228U 
+MyProstateScore 2.0 (Lynx Dx) 0403U 
+miR Sentinel Prostate Cancer Test (miR 
+Scientific) 
+0343U, 0424U 
+EpiSwitch Prostate Screening Test (PSE) 
+(Oxford BioDynamics) 
+0433U 
+Tempus p-MSI (Tempus AI, Inc) 0512U 
+Tempus p-Prostate (Tempus AI, Inc) 0513U 
+Thyroid Cancer  
+Thyroid Cancer Diagnostic 
+Algorithmic Tests 
+ 
+ThyroSeq Genomic Classifier (CBLPath) 0026U 
+ThyGeNEXT (Interpace Diagnostics) 0245U 
+ThyraMIR (Interpace Diagnostics) 0018U 
+Afirma Genomic Sequencing Classifier 
+(Veracyte) 
+81546 
+Afirma Xpression Atlas (Veracyte) 0204U 
+ThyroSeq CRC (UPMC) 0287U  
+Uveal Melanoma  
+Uveal Melanoma Prognostic 
+Algorithmic Tests 
+DecisionDx-UM (Castle Bioscience, Inc.) 81552 
+Cutaneous Melanoma  
+Evidence Based Cutaneous 
+Melanoma Prognostic Algorithmic 
+Tests 
+DecisionDx-Melanoma (Castle Biosciences, 
+Inc.)    
+81529 
+Merlin Melanoma (BioCartis) 81479 
+MelaNodal (Quest) 81599 
+Emerging Evidence Cutaneous 
+Melanoma Prognostic Algorithmic 
+Tests 
+AMBLor (AMLo Biosciences) 0387U 
+myPath Melanoma (Castle Biosciences, Inc.)  0090U 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 3 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Policy Statement Locations Example Tests, Labs Common CPT Codes 
+Cutaneous Melanoma Diagnostic 
+Algorithmic Tests 
+DecisionDx-DiffDx-Melanoma (Castle 
+Biosciences, Inc.) 
+0314U 
+Cutaneous Melanoma Risk 
+Assessment Algorithmic Tests 
+Pigmented Lesion Assay (DermTech) 0089U 
+Ovarian Cancer  
+Ovarian Cancer Diagnostic 
+Algorithmic Tests 
+OVA1 (Aspira Women’s Health) 81503 
+Overa (Aspira Women’s Health) 0003U 
+Risk of Ovarian Malignancy (ROMA) (Labcorp) 81500 
+OvaWatch (Aspira Women’s Health)  0375U 
+Avantect Ovarian Cancer Test (ClearNote 
+Health) 
+0507U 
+Ovarian Cancer Treatment 
+Algorithmic Tests 
+myChoice CDx (Myriad Genetics) 0172U 
+Gynecologic Cancer 
+Gynecologic Cancer Treatment 
+Algorithmic Tests 
+ChemoFx (Helomics Corporation) 81535 
+ChemoFx - Additional Drug (Helomics 
+Corporation) 
+81536 
+Lung Cancer  
+Evidence Based Lung Cancer 
+Diagnostic Algorithmic Tests 
+Nodify XL2 (Biodesix) 0080U 
+Emerging Evidence Lung Cancer 
+Diagnostic Algorithmic Tests 
+REVEAL Lung Nodule Characterization 
+(MagArray) 
+0092U 
+Percepta Lung Cancer Diagnostics  (Veracyte) 
+81479 
+ 
+LungLB Test (LungLife AI) 0317U 
+Nodify CDT (Biodesix) 0360U 
+OncobiotaLUNGdetect (Micronoma) 0395U 
+CyPath Lung (Precision Pathology Laboratory) 0406U 
+Evidence-Based Lung Cancer 
+Treatment Algorithmic Tests 
+Veristrat (Biodesix) 81538 
+Razor14/Risk Reveal (RazorGenomics) 81599 
+DetermaRx (Oncocyte Corporation) 0288U 
+Emerging Evidence Lung Cancer 
+Treatment Algorithmic Tests 
+LungOI (Imagene) 0414U 
+PROphet NSCLC Test (OncoHost Inc) 0436U 
+Bladder and Urinary Tract Cancer  
+Bladder/Urinary Tract Cancer 
+Diagnostic Algorithmic Tests 
+CxBladder Detect+ (Pacific Edge) 0420U 
+Cxbladder Detect (Pacific Edge) 0012M 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 4 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Policy Statement Locations Example Tests, Labs Common CPT Codes 
+Oncuria Detect (DiaCarta Clinical Lab) 0365U 
+Bladder Cancer Treatment and 
+Recurrence Algorithmic Tests 
+Cxbladder Monitor (Pacific Edge) 0013M 
+Decipher Bladder (Veracyte) 0016M 
+Cxbladder Triage (Pacific Edge) 0363U 
+Oncuria Monitor (DiaCarta Clinical Lab) 0366U 
+Oncuria Predict (DiaCarta Clinical Lab) 0367U 
+Pancreatic Cancer 
+Evidence-Based Pancreatic Cyst 
+Risk Assessment Algorithmic Tests 
+PancraGEN (Interpace Diagnostics) 81479  
+Emerging Evidence Pancreatic 
+Cyst Risk Assessment Algorithmic 
+Tests 
+PancreaSeq Genomic Classifier (Univ of 
+Pittsburgh Medical Center Molecular and 
+Genomic Pathology Laboratory) 
+0313U 
+Cancer of Unknown Primary 
+Cancer of Unknown Primary Gene 
+Expression Profiling Tests 
+CancerTYPE ID (Biotheranostics) 81540 
+Polygenic Risk Score Tests 
+Breast Cancer Polygenic Risk Score 
+Tests 
+geneType for Breast Cancer (Genetic 
+Technologies) 
+81599 
+ 
+Policy Statement 
+ 
+Breast Cancer  
+Breast Cancer Treatment and Prognostic Algorithmic Tests 
+I. The use of the breast cancer treatment and prognostic algorithmic test Oncotype DX Breast 
+Recurrence Score (81519, S3854) may be considered 
+medically necessary in all patients, 
+regardless of gender, when 
+all of the following criteria are met: 
+A. The member has primary breast cancer that is ductal/NST, lobular, mixed or 
+micropapillary, AND 
+B. The member’s tumor is hormone receptor-positive (estrogen receptor-positive or 
+progesterone receptor-positive), 
+AND 
+C. The member’s tumor is human epidermal growth factor receptor 2 (HER2)-negative, AND 
+D. The member is considering treatment with adjuvant therapy (e.g., tamoxifen, aromatase 
+inhibitors, immunotherapy), AND 
+E. The member is status post tumor resection and surgical axillary nodal staging and meets 
+one of the following (regardless of menopausal status): 
+1. Tumor is greater than 0.5 cm and node negative (pN0), OR 
+2. Lymph nodes are pN1mi (2mm or smaller axillary node metastases), OR 
+3. Lymph nodes are pN1 (1-3 positive nodes). 
+ 
+II. The use of the breast cancer treatment and prognostic algorithmic test Oncotype DX Breast 
+Recurrence Score (81519, S3854) is considered 
+investigational for all other indications. 
+ 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 5 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Breast Cancer Extended Endocrine Therapy Algorithmic Tests 
+III. The use of the breast cancer extended endocrine therapy test Breast Cancer Index (BCI) 
+(81518, S3854) may be considered 
+medically necessary when all of the following criteria are 
+met: 
+A. The member is female (sex assigned at birth), AND 
+B. The member has primary breast cancer that is ductal/NST, lobular, mixed or 
+micropapillary, AND 
+C. The member’s tumor is hormone receptor-positive (estrogen receptor-positive or 
+progesterone receptor-positive), 
+AND 
+D. The member’s tumor is HER2-negative, AND 
+E. The member has no distant metastases, AND 
+F. The member has completed at least 4 years of endocrine therapy, AND 
+G. The member is considering extended treatment with adjuvant therapy (e.g., tamoxifen, 
+aromatase inhibitors, immunotherapy), AND 
+H. The member meets one of the following (regardless of menopausal status): 
+1. Tumor is greater than 0.5 cm and node negative (pN0), OR 
+2. Lymph nodes are pN1mi (2mm or smaller axillary node metastases), OR 
+3. Lymph nodes are pN1 (1-3 positive nodes). 
+ 
+IV. The use of the breast cancer extended endocrine therapy test Breast Cancer Index (BCI) 
+(81518, S3854) in men (sex assigned at birth) with breast cancer is considered 
+investigational. 
+ 
+V. The use of the breast cancer extended endocrine therapy test Breast Cancer Index (BCI) 
+(81518, S3854) is considered 
+investigational for all other indications.       
+ 
+Breast Cancer Prognostic Algorithmic Tests 
+VI. The use of a breast cancer prognostic algorithmic test (i.e., EndoPredict, Prosigna, 
+MammaPrint) (81520, 81521, 81522, 81523, S3854) may be considered 
+medically necessary 
+when:  
+A. The member is female (sex assigned at birth), AND 
+B. The member meets at least one of the following: 
+1. Postmenopausal status, OR 
+2. Greater than 50 years of age, AND 
+C. The member has primary breast cancer that is ductal/NST, lobular, mixed or 
+micropapillary, AND 
+D. The member’s tumor is estrogen receptor-positive, AND 
+E. The member’s tumor is human epidermal growth factor receptor 2 (HER2)-negative, AND 
+F. The member is considering treatment with adjuvant therapy (for example, tamoxifen, 
+aromatase inhibitors, immunotherapy), AND 
+G. The member has had axial nodal staging and has the following node status: 
+1. pN0, nodes negative pathologically, OR 
+2. pN1mi or pN1 (1-3 nodes positive pathologically)*. 
+ 
+VII. The use of a breast cancer prognostic algorithmic test (i.e., EndoPredict, Prosigna, 
+MammaPrint) (81520, 81521, 81522, 81523, S3854) in individuals with 4 or more positive nodes is 
+considered 
+investigational. 
+ 
+VIII. The use of the breast cancer prognostic algorithmic test Prosigna (81520) in individuals with 1-
+3 node positive breast cancer is considered 
+investigational. 
+ 
+IX. The use of a breast cancer prognostic algorithmic test (i.e., EndoPredict, Prosigna, 
+MammaPrint) (81520, 81521, 81522, 81523, S3854) in men (sex assigned at birth) with breast 
+cancer is considered 
+investigational. 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 6 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+X. The use of a breast cancer prognostic algorithmic test (i.e., EndoPredict, Prosigna, 
+MammaPrint ) (81520, 81521, 81522, 81523, S3854) is considered 
+investigational for all other 
+indications. 
+ 
+*Prosigna is indicated for node negative disease, but not for disease with 1-3 positive nodes. 
+EndoPredict and Mammaprint are indicated for node negative disease and for disease with 1-3 
+positive nodes. 
+ 
+Gene Expression Profiling Breast Cancer Subtyping Tests 
+XI. Gene expression profiling breast cancer subtyping tests (e.g., BluePrint) (81599, S3854) are 
+considered 
+investigational. 
+ 
+Breast DCIS Prognostic Algorithmic Tests  
+XII. Breast DCIS prognostic algorithmic tests (0045U) may be considered medically necessary 
+when 
+all of the following are met: 
+A. The member has ductal carcinoma in situ (DCIS), AND 
+B. The tumor specimen contains at least 0.5 mm of DCIS, AND 
+C. The result of testing would aid in treatment decision-making (i.e., pursuing additional 
+surgery or radiation therapy), 
+AND 
+D. The member’s DCIS was not removed via mastectomy (i.e., there is residual ipsilateral 
+breast tissue). 
+ 
+XIII. Breast DCIS prognostic algorithmic tests (0045U) are considered investigational for all other 
+indications. 
+ 
+Colorectal Cancer 
+Colorectal Cancer Prognostic Algorithmic Tests 
+XIV. Colorectal cancer prognostic algorithmic tests (0069U, 0261U, 81525) are considered 
+investigational. 
+ 
+Prostate Cancer  
+Prostate Cancer Treatment and Prognostic Algorithmic Tests  
+XV. The use of a prostate cancer treatment and prognostic algorithmic test (i.e., Oncotype DX 
+Prostate (0047U), Prolaris (81541), Decipher (81542), ArteraAI (0376U)) may be considered 
+medically necessary when:   
+A. The member has a life expectancy of 10 years or more, AND 
+B. The member does not have either of the following:  
+1. Very low-risk prostate cancer, OR 
+2. Very high-risk prostate cancer. 
+ 
+XVI. The use of the prostate cancer treatment and prognostic algorithmic test Decipher assay 
+(81542) may be considered 
+medically necessary when: 
+A. The member has a life expectancy of more than 5 years, AND 
+B. The patient has had radical prostatectomy, AND 
+C. There are no lymph node metastases, AND 
+D. There is PSA persistence/recurrence.  
+ 
+XVII. The use of a prostate cancer treatment and prognostic algorithmic test (0047U, 0376U, 81541, 
+81542) is considered 
+investigational for all other indications.  
+ 
+Evidence-Based Prostate Cancer Risk Assessment and Diagnostic Algorithmic Tests 
+XVIII. Prostate cancer risk assessment and diagnostic algorithmic tests (0005U, 0113U, 0339U, 
+0359U, 81539, 84153, 84154, 86316, 81479, 81551) with sufficient evidence of clinical validity and 
+utility may be considered 
+medically necessary for either of the following:  
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 7 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+A. The member meets all of the following: 
+1. The member has not had a prostate biopsy, AND 
+2. The member has at least one of the following:  
+a. Prostate specific antigen (PSA) of greater than 3 ng/ml, OR 
+b. A digital rectal exam (DRE) that is suspicious for cancer, AND 
+3. The test is one of the following:  
+a. Prostate Health Index (PHI), OR 
+b. SelectMDx, OR 
+c. 4Kscore, OR 
+d. ExoDx Prostate Test, OR 
+e. MyProstateScore (MPS), OR 
+f. IsoPSA, OR 
+B. The member meets all of the following: 
+1. The member has had a prostate biopsy, AND 
+2. The result is one of the following: 
+a. Atypia, suspicious for cancer, OR  
+b. High-grade prostatic intraepithelial neoplasia (PIN), OR 
+c. Benign, AND 
+3. The test is one of the following:  
+a. Prostate Health Index (PHI), OR 
+b. 4Kscore, OR 
+c. ExoDx Prostate Test, OR 
+d. MyProstateScore (MPS), OR 
+e. IsoPSA, OR 
+f. ConfirmMDx, OR 
+g. PCA3.  
+ 
+XIX. The use of prostate cancer risk assessment and diagnostic algorithmic tests (0005U, 0113U, 
+0339U, 0359U, 81539, 84153, 84154, 86316, 81479, 81551) with sufficient evidence of clinical 
+validity and utility are considered 
+investigational for all other indications where clinical 
+validity and utility have not been demonstrated.  
+ 
+Emerging Evidence Prostate Cancer Risk Assessment and Diagnostic Algorithmic Tests 
+XX. Prostate cancer risk assessment and diagnostic algorithmic tests (0228U, 0343U, 0403U, 
+0424U, 0433U) with insufficient guidance for use are considered 
+investigational.    
+ 
+Thyroid Cancer  
+Thyroid Cancer Diagnostic Algorithmic Tests 
+XXI. The use of a thyroid cancer diagnostic algorithmic test (0018U, 0026U, 0204U, 0245U, 0287U, 
+81546) in fine needle aspirates of thyroid nodules may be considered 
+medically necessary 
+when:  
+A. The fine needle aspirate showed indeterminate cytologic findings (i.e., Bethesda 
+diagnostic category III or IV), AND  
+B. The result of the test would affect surgical decision making. 
+ 
+XXII. The use of a thyroid cancer diagnostic algorithmic test (0018U, 0026U, 0204U, 0245U, 0287U, 
+81546) in fine needle aspirates of thyroid nodules is considered 
+investigational for all other 
+indications. 
+ 
+Uveal Melanoma  
+Uveal Melanoma Prognostic Algorithmic Tests 
+XXIII. The use of a uveal melanoma prognostic algorithmic test (81552) may be considered 
+medically necessary when: 
+A. The member has primary, localized uveal melanoma. 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 8 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+XXIV. The use of a uveal melanoma prognostic algorithmic test (81552) is considered investigational 
+for all other indications. 
+ 
+Cutaneous Melanoma  
+Evidence-Based Cutaneous Melanoma Prognostic Algorithmic Tests 
+XXV. Cutaneous melanoma prognostic algorithmic tests (81479, 81529, 81599) with sufficient 
+evidence of clinical validity and utility may be considered 
+medically necessary when:  
+A. The member has either of the following: 
+1. Stage I melanoma (staging based on AJCC American Joint Committee on Cancer), 
+OR 
+2. Stage II melanoma (staging based on AJCC American Joint Committee on Cancer), 
+AND 
+B. The member does NOT have metastatic disease, AND 
+C. The results of testing will inform subsequent biopsy decisions, use of adjuvant 
+therapy(ies), or follow-up screening protocols. 
+ 
+XXVI. Cutaneous melanoma prognostic algorithmic tests (81479, 81529, 81599) with sufficient 
+evidence of clinical validity and utility are considered 
+investigational for all other indications 
+where clinical validity and utility have not been demonstrated. 
+ 
+Emerging Evidence Cutaneous Melanoma Prognostic Algorithmic Tests 
+XXVII. Cutaneous melanoma prognostic algorithmic tests (0387U) with insufficient evidence of 
+clinical validity are considered 
+investigational.   
+          
+Cutaneous Melanoma Diagnostic Algorithmic Tests 
+XXVIII. Cutaneous melanoma diagnostic algorithmic tests (0090U, 0314U) may be considered 
+medically necessary when: 
+A. The member has a melanocytic neoplasm that is diagnostically uncertain or equivocal 
+after histopathology. 
+ 
+XXIX. Cutaneous melanoma diagnostic algorithmic tests (0090U, 0314U) are considered 
+investigational for all other indications, including: 
+A. A melanocytic neoplasm that has pathology definitive for melanoma, desmoplastic 
+melanoma, or sclerosing nevus. 
+ 
+Cutaneous Melanoma Risk Assessment Algorithmic Tests 
+XXX. Cutaneous melanoma risk assessment algorithmic tests (0089U) may be considered 
+medically necessary when: 
+A. The member has a melanocytic neoplasm that shows at least one ABCDE feature 
+(asymmetry, border irregularity, color variegation, diameter greater than 6 mm, and 
+evolution), AND 
+B. A biopsy is being considered but has not yet been performed, AND 
+ 
+C. The use of the test is limited to a maximum of 2 times per visit. 
+ 
+XXXI. Cutaneous melanoma risk assessment algorithmic tests (0089U) are considered 
+investigational for all other indications. 
+ 
+Ovarian Cancer  
+Ovarian Cancer Diagnostic Algorithmic Tests 
+XXXII. Ovarian cancer diagnostic algorithmic tests (i.e., OVA1, Overa, ROMA, and OvaWatch) (0003U, 
+0375U, 81500, 81503) are considered 
+investigational for all indications, including but not 
+limited to: 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 9 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+A. Preoperative evaluation of adnexal masses to triage for malignancy 
+B. Screening for ovarian cancer 
+C. Selecting patients for surgery for an adnexal mass 
+D. Evaluation of patients with clinical or radiologic evidence of malignancy 
+E. Evaluation of patients with nonspecific signs or symptoms suggesting possible 
+malignancy 
+F. Postoperative testing and monitoring to assess surgical outcome and/or to detect 
+recurrent malignant disease following treatment.  
+ 
+Ovarian Cancer Treatment Algorithmic Tests 
+XXXIII. Ovarian cancer treatment algorithmic tests (0172U) may be considered medically necessary 
+when both of the following are met: 
+A. The member has a diagnosis of ovarian cancer, AND 
+B. The member is being considered for PARP inhibitor therapy. 
+ 
+II.   Ovarian cancer treatment algorithmic tests (0172U) are considered investigational for all 
+other indications. 
+ 
+Gynecologic Cancer 
+Gynecologic Cancer Treatment Algorithmic Tests 
+XXXIV. Gynecologic cancer treatment algorithmic tests (81535, 81536) in the assessment of 
+gynecological cancers are considered 
+investigational. 
+ 
+Lung Cancer  
+Evidence-Based Lung Cancer Diagnostic Algorithmic Tests 
+XXXV. Lung cancer diagnostic algorithmic tests (0080U) with sufficient evidence of clinical validity 
+and utility may be considered 
+medically necessary when all of the following are met: 
+A. The member is age 40 years or older, AND 
+B. The member has a single lung nodule between 8 and 30 mm in diameter, AND 
+C. The member has a risk of cancer of 50% or less according to the Mayo risk prediction 
+algorithm, AND 
+D. The member does NOT have a diagnosis of cancer (except for nonmelanoma skin cancer) 
+within 5 years of the lung nodule detection. 
+ 
+XXXVI. Lung cancer diagnostic algorithmic tests (0080U) with sufficient evidence of clinical validity 
+and utility are considered 
+investigational for all other indications where clinical validity and 
+utility have not been demonstrated. 
+ 
+Emerging Evidence Lung Cancer Diagnostic Algorithmic Tests 
+XXXVII. Lung cancer diagnostic algorithmic tests (0092U, 0317U, 0360U, 0395U, 0406U, 81479) with 
+insufficient evidence of clinical validity are considered 
+investigational. 
+ 
+Evidence-Based Lung Cancer Treatment Algorithmic Tests 
+XXXVIII. Lung cancer treatment algorithmic tests (0288U, 81538, 81599) with sufficient evidence of 
+clinical validity and utility may be
+ considered medically necessary when all of the following 
+are met:
+ 
+A. The member has a non-squamous non-small cell lung cancer (NSCLC), AND  
+B. The member’s tumor size less than 5 cm, AND 
+C. The member has no positive lymph nodes (stages I and IIa), AND 
+D. The member is considering adjuvant platinum-containing chemotherapy.  
+ 
+XXXIX. Lung cancer treatment algorithmic tests (0288U, 81538, 81599) with sufficient evidence of 
+clinical validity and utility are considered 
+investigational for all other indications where clinical 
+validity and utility have not been demonstrated. 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 10 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Emerging Evidence Lung Cancer Treatment Algorithmic Tests 
+XL. Lung cancer treatment algorithmic tests (0414U, 0436U) with insufficient evidence of clinical 
+validity are considered 
+investigational.  
+ 
+Bladder And Urinary Tract Cancer  
+Bladder/Urinary Tract Cancer Diagnostic Algorithmic Tests 
+XLI. Bladder/urinary tract cancer diagnostic algorithmic tests (0012M, 0365U, 0420U) are 
+considered 
+investigational for all indications. 
+ 
+Bladder Cancer Treatment and Recurrence Algorithmic Tests 
+XLII. The use of bladder cancer treatment and recurrence algorithmic test (0013M, 0016M, 0363U, 
+0366U, 0367U) may be
+ considered medically necessary when all of the following are met: 
+A. The member has a diagnosis of bladder cancer, AND 
+B. Results of algorithmic testing will affect management decisions for the member’s bladder 
+cancer, 
+AND 
+C. The member has not previously undergone bladder cancer treatment and recurrence 
+algorithmic testing for the current cancer diagnosis. 
+ 
+XLIII. The use of bladder cancer treatment and recurrence algorithmic test (0013M, 0016M, 0363U, 
+0366U, 0367U) is considered 
+investigational for all other indications. 
+ 
+Pancreatic Cancer 
+Evidence-Based Pancreatic Cyst Risk Assessment Algorithmic Tests  
+XLIV. Pancreatic cyst risk assessment algorithmic tests (81479) with sufficient evidence of clinical 
+validity and utility may be
+ considered medically necessary when all of the following are met:  
+A. The member has a pancreatic cyst, AND 
+B. Initial testing (for example, CEA measurement, cytopathology and/or radiology) has been 
+inconclusive for malignancy, 
+AND 
+C. The results of the test will impact treatment decisions (e.g., surgery, more aggressive 
+treatment).  
+ 
+XLV. Pancreatic cyst risk assessment algorithmic tests (81479) with sufficient evidence of clinical 
+validity and utility are considered 
+investigational for all other indications where clinical 
+validity and utility have not been demonstrated. 
+ 
+Emerging Evidence Pancreatic Cyst Risk Assessment Algorithmic Tests  
+XLVI. Pancreatic cyst risk assessment algorithmic tests (0313U) with insufficient evidence of clinical 
+validity are considered 
+investigational. 
+ 
+Cancer Of Unknown Primary 
+Cancer of Unknown Primary Gene Expression Profiling Tests 
+XLVII. The use of a cancer of unknown primary gene expression profiling test (81540) to evaluate the 
+site of origin of a tumor of unknown primary, or to distinguish a primary from a metastatic 
+tumor is considered 
+investigational.  
+ 
+Polygenic Risk Score Tests 
+Breast Cancer Polygenic Risk Score Tests 
+XLVIII. The use of a breast cancer polygenic risk score test (81599) is considered investigational. 
+ 
+NOTE: Refer to Appendix A to see the policy statement changes (if any) from the previous version. 
+ 
+ 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 11 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Policy Guidelines 
+ 
+Definitions 
+1. Ductal/NST breast cancer: Ductal cancer that is of no special type (NST), meaning the 
+cancer cells have no features that class them as a special type of breast cancer when 
+examined by microscope. 
+2. Indeterminate cytologic findings: In thyroid nodules, indeterminate cytologic findings 
+include Bethesda diagnostic category III (atypia/follicular lesion of undetermined 
+significance) or Bethesda diagnostic category IV (follicular neoplasm/suspicion for a follicular 
+neoplasm) 
+3. Adjuvant therapy: Medication (such as chemotherapy or endocrine therapy) given after the 
+surgical removal of a cancerous tumor. 
+4. PSA persistence/recurrence: Defined in the NCCN Prostate Cancer guidelines (4.2024) as 
+failure of PSA to fall to undetectable levels (PSA persistence) or undetectable PSA after a 
+radical prostatectomy with a subsequent detectable PSA that increases on 2 or more 
+determinations (PSA recurrence) or that increases to PSA greater than 0.1 ng/mL (p. PROS-
+10) 
+5. ABCDE feature: Feature outlined in ABCDE criteria, which is an acronym for examining 
+patients with a lesion that is suspicious for melanoma: 
+asymmetry, border irregularity, color 
+variegation, 
+diameter >6 mm, and evolution. 
+6. Very high-risk prostate cancer: Defined by NCCN as an individual who has no very-high-risk 
+features but has at least 
+one of the following high-risk features: 
+a. cT3b-cT4 
+b. Primary Gleason pattern 5 
+c. 2 or 3 high-risk features 
+d. More than 4 cores with Grade Group 4 or 5 
+7. Very low risk prostate cancer: Defined by NCCN as all of the following: 
+a. cT1c 
+b. Grade Group 1 
+c. PSA <10 mg/nl and density <0.15 ng/mL/g 
+d. Biopsy shows <3 positive cores/fragments and < or equal to 50% cancer in each 
+core/fragment. 
+ 
+Coding 
+See the Codes table for details. 
+ 
+Description 
+ 
+Oncology diagnostic, prognostic and algorithmic tests combine biomarkers and/or clinical data into 
+an algorithm to generate a disease risk assessment, prognostic result, or clinical recommendation for 
+treatment. Testing methodologies commonly include Gene Expression Profiling (GEP), which analyzes 
+messenger RNA (mRNA) typically of multiple genes simultaneously, multimarker serum analysis, 
+single-nucleotide variant testing, plasma-based proteomic analysis, and incorporation of other 
+clinical data into test outputs.   
+ 
+In addition to the tests previously mentioned, proteogenomic testing is an emerging area. 
+Proteogenomic testing combines the analysis of DNA with RNA and/or protein analysis. The current 
+focus of proteogenomics is primarily on diagnostic and prognostic analyses in various cancers. 
+Results also seek to provide potential treatment options, and to which treatments the cancer may be 
+resistant. 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 12 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Polygenic Risk Score (PRS) tests are another emerging area. These tests combine information from 
+population SNP analysis with clinical and family history and aim to give additional insight into an 
+individual's lifetime risk to develop a specific cancer.  
+Results of oncology algorithmic tests are often reported as a recurrence score, probability of distant 
+disease recurrence, malignant potential, probable site of origin, or cancer risk score. Additionally, the 
+output of these algorithmic tests may be useful to assist in surgical and management decision-
+making and to identify individuals who may benefit from adjuvant therapy. 
+ 
+In keeping with the language used in National Comprehensive Cancer Network (NCCN) guidelines, 
+the terms “male” and “female” refer to sex assigned at birth. 
+ 
+Related Policies 
+ 
+This policy document provides coverage criteria for tests that determine the risk for or the prognosis 
+for cancer. For other oncology related testing, please refer to:  
+• Oncology: Molecular Analysis of Solid Tumors and Hematologic Malignancies for criteria 
+related to DNA testing of a solid tumor or a blood cancer. 
+• Genetic Testing: Hereditary Cancer Susceptibility Syndromes for criteria related to genetic 
+testing to determine if an individual has an inherited cancer susceptibility syndrome. 
+• Oncology: Cancer Screening for criteria related to the use of non-invasive fecal, urine or 
+blood tests for screening for cancer. 
+• Oncology: Circulating Tumor DNA and Circulating Tumor Cells (Liquid Biopsy) for criteria 
+related to circulating tumor DNA (ctDNA) or circulating tumor cell testing performed on 
+peripheral blood for cancer diagnosis, management and surveillance. 
+• Genetic Testing: General Approach to Genetic and Molecular Testing for coverage criteria 
+related to algorithmic testing in oncology that is not specifically discussed in this or another 
+non-general policy. 
+ 
+Benefit Application 
+ 
+Benefit determinations should be based in all cases on the applicable contract language. To the 
+extent there are any conflicts between these guidelines and the contract language, the contract 
+language will control. Please refer to the member's contract benefits in effect at the time of service to 
+determine coverage or non-coverage of these services as it applies to an individual member.  
+ 
+Some state or federal mandates (e.g., Federal Employee Program [FEP]) prohibits plans from 
+denying Food and Drug Administration (FDA)-approved technologies as investigational. In these 
+instances, plans may have to consider the coverage eligibility of FDA-approved technologies on the 
+basis of medical necessity alone. 
+ 
+Regulatory Status 
+ 
+State: 
+Starting on July 1, 2022 (per CA law SB 535) for commercial plans regulated by the California 
+Department of Managed Healthcare and California Department of Insurance (PPO and HMO), 
+health care service plans and insurers shall not require prior authorization for biomarker testing, 
+including biomarker testing for cancer progression and recurrence, if a member has stage 3 or 4 
+cancer. Health care service plans and insurers can still do a medical necessity review of a biomarker 
+test and possibly deny coverage after biomarker testing has been completed and a claim is 
+submitted (post service review). 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 13 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+SB 496 requires health plans licensed under the Knox-Keene Act ("Plans"), Medi-Cal managed care 
+plans ("MCPS"), and health insurers ("Insurers") to cover biomarker testing for the diagnosis, 
+treatment, appropriate management, or ongoing monitoring of an enrollee's disease or condition to 
+guide treatment decisions, as prescribed. The bill does not require coverage of biomarker testing for 
+screening purposes. Restricted or denied use of biomarker testing for these purposes is subject to 
+state and federal grievance and appeal processes. Where biomarker testing is deemed medically 
+necessary, Plans and Insurers must ensure that the testing is provided in a way that limits disruptions 
+in care. 
+ 
+Rationale 
+ 
+BREAST CANCER  
+Breast Cancer Treatment and Prognostic Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+Oncotype DX for breast cancer is a 21-gene expression assay. NCCN guidelines for Breast Cancer 
+(4.2024) recommend the 21-gene expression assay for both prognosis and treatment decisions in the 
+following patients: 
+• Patients of either sex (p. BINV-J 1 of 2) 
+• Evidence level 1: Postmenopausal patients with a ductal/NST, lobular, mixed, or 
+micropapillary tumor that is pT1–3, and at least 0.5cm, with pN1mi (2 mm or smaller axillary 
+node metastases) or pN1 (1–3 positive nodes). Tumor must be HR positive, HER2 negative. (p. 
+BINV-6, BINV-N 1 of 5, BINV-N 2 of 5) 
+• Evidence level 1: Premenopausal patient with a ductal/NST, lobular, mixed, or micropapillary 
+tumor that is at least 0.5cm and pN0. Tumor must be HR positive, HER2 negative. (p. BINV-7, 
+BINV-N 1 of 5, BINV-N 2 of 5) 
+• Evidence level 2A: Premenopausal patient with a ductal/NST, lobular, mixed, or 
+micropapillary tumor that is at least 0.5cm and pN1mi (2 mm or smaller axillary node 
+metastasis) or pN1 (1–3 positive nodes). Tumor must be HR positive, HER2 negative. (p. BINV-
+8, BINV-N 1 of 5, BINV-N 2 of 5) 
+ 
+Breast Cancer Extended Endocrine Therapy Tests 
+National Comprehensive Cancer Network (NCCN) 
+The BCI (Breast Cancer Index) is recommended by NCCN Breast Cancer guidelines (4.2024) for both 
+indications of prognosis as well as predicting treatment for extended adjuvant endocrine therapy. 
+Appropriate patients for this test are:  
+• Evidence level 2A: Postmenopausal patients with a ductal/NST, lobular, mixed, or 
+micropapillary tumor that is pT1–3, and 0.5cm or larger, with pN1mi (2 mm or smaller axillary 
+node metastases) or pN1 (1–3 positive nodes). Tumor must be HR positive, HER2 negative. (p. 
+BINV-6, BINV-N 1 of 5, BINV-N 4 of 5) 
+• Evidence level 2A: Premenopausal patients with a ductal/NST, lobular, mixed, or 
+micropapillary tumor that is at least 0.5cm and pN0. Tumor must be HR positive, HER2 
+negative. (p. BINV-7, BINV-N 1 of 5, BINV-N 4 of 5) 
+• Evidence level 2A: Premenopausal patients with a ductal/NST, lobular, mixed, or 
+micropapillary tumor that is at least 0.5cm and pN1mi (2 mm or smaller axillary node 
+metastasis) or pN1 (1–3 positive nodes). Tumor must be HR positive, HER2 negative. (p. BINV-
+8, BINV-N 1 of 5, BINV-N 4 of 5) 
+• Data are limited regarding the use of molecular assays to assess prognosis and to predict 
+benefit from chemotherapy in males with breast cancer. Available data suggest the 21-gene 
+assay recurrence score provides prognostic information in males with breast cancer (p. BINV-
+J 1 of 2) 
+ 
+ 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 14 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+American Society of Clinical Oncology (ASCO) 
+In 2022, the American Society of Clinical Oncology (ASCO) issued a statement regarding the use of 
+Breast Cancer Index testing for extended endocrine therapy for ER-positive HER2-negative breast 
+cancer.  Their recommendations are as follows: 
+- Recommendation 1.24: If a patient has node-negative or node-positive breast cancer with 1-3 
+positive nodes and has been treated with 5 years of primary endocrine therapy without 
+evidence of recurrence, the clinician may offer the BCI test to guide decisions about extended 
+end  ocrine therapy with either tamoxifen, an AI, or a sequence of tamoxifen followed by AI 
+(Type: evidence-based; Evidence quality: intermediate; Strength of recommendation: 
+moderate).  
+- Recommendation 1.25: If a patient has node-positive breast cancer with 4 or more positive 
+nodes and has been treated with 5 years of primary endocrine therapy without evidence of 
+recurrence, there is insufficient evidence to use the BCI test to guide decisions about extended 
+endocrine therapy with either tamoxifen, an AI, or a sequence of tamoxifen followed by AI 
+(Type: evidence-based; Evidence quality: intermediate; Strength of recommendation: strong). 
+ 
+Breast Cancer Prognostic Algorithmic Tests 
+American Society of Clinical Oncology (ASCO) 
+The 2022 ASCO guideline update for Biomarkers for Adjuvant Endocrine and Chemotherapy in Early-
+Stage Breast Cancer provides guidance for the diagnostic indications for several breast cancer 
+prognostic algorithmic tests, including EndoPredict, MammaPrint, and Prosigna (among others). 
+Figure 1 summarizes the following: if a female patient is postmenopausal or older than age 50 years, 
+has early-stage invasive breast cancer, node negative disease, and a HER2 negative, ER positive 
+tumor, then EndoPredict, Prosnigna, or MammaPrint may be ordered. However, if the patient has 1 to 
+3 positive node disease, MammaPrint or EndoPredict may be ordered. (p. 1821)  
+ 
+National Comprehensive Cancer Network (NCCN) 
+NCCN Breast Cancer guidelines (4.2024) recommend consideration of other prognostic gene 
+expression assays to help assess risk of recurrence in pre-  and postmenopausal patients with HR-
+positive, Her2-negative pT1-3 and pN0 or pN+ tumors, but these other tests have not been validated 
+to predict response to chemotherapy. (p. BINV-  6, BINV-7, BINV-8) Gene expression assays can 
+provide prognostic and treatment-predictive information that can be used with T,N,M and biomarker 
+information. These prognostic gene expression assays can provide prognostic information but the 
+ability to predict chemotherapy benefit has not been shown. (p. BINV-N, 1 of 5, 3 of 5) 
+ 
+Gene Expression Profiling Breast Cancer Subtyping Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN Breast Cancer guidelines (4.2024) do not reference gene expression profiling tests (i.e., 
+Blueprint) for the purpose of subtyping breast cancer to provide information for clinical decision-
+making. 
+ 
+American Society of Clinical Oncology 
+The ASCO Guideline Update on Biomarkers for Adjuvant Endocrine and Chemotherapy in Early Stage 
+Breast Cancer (2022) does not include breast cancer subtyping tests (i.e., BluePrint) as recommended 
+biomarker tests for guiding adjuvant therapy.   
+ 
+Concert Note 
+There is insufficient evidence to support the use of this test. No recommendations for or against this 
+testing within standard professional society guidelines covering this area of testing were identified. 
+ 
+Breast DCIS Prognostic Algorithmic Tests 
+Centers for Medicare and Medicaid Services 
+The CMS local coverage determination (LCD) entitled “MolDX: Oncotype DX Breast Cancer for DCIS 
+(Genomic Health)” includes the following coverage criteria for OncotypeDX DCIS: 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 15 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+“The Oncotype DX DCIS assay is covered only when the following clinical conditions are met: 
+• Pathology (excisional or core biopsy) reveals ductal carcinoma in situ of the breast (no 
+pathological evidence of invasive disease), and 
+• FFPE specimen with at least 0.5 mm of DCIS length, and 
+• Patient is a candidate for and is considering breast conserving surgery alone as well as 
+breast conserving surgery combined with adjuvant radiation therapy, and 
+• Test result will be used to determine treatment choice between surgery alone vs. surgery with 
+radiation therapy, and 
+• Patient has not received and is not planning on receiving a mastectomy.” 
+ 
+COLORECTAL CANCER 
+Colorectal Cancer Prognostic Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Colon Cancer (4.2024) does not recommend use of multigene panel assays to 
+assist in making clinical decisions about adjuvant therapy. (p. COL-4)
+ 
+ 
+PROSTATE CANCER 
+Prostate Cancer Treatment and Prognostic Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Prostate Cancer (4.2024) recommend advanced risk stratification tools (i.e., gene 
+expression biomarkers, AI digital pathology) when there is the possibility of changing disease 
+management in men with localized prostate cancer and life expectancy of 10 yrs or more. (p. PROS-
+4,5,6)  The most common reasons to use these tools is for deciding between active surveillance and 
+radical treatment, or use of radiation alone vs radiation with androgen deprivation therapy (short or 
+long term). These tests can also be useful post prostatectomy with recurrence, when choosing 
+radiation with or without androgen deprivation therapy. (p. PROS-H, 1 of 8) These tests should not be 
+used for very low risk or very high risk disease as they have not been validated in these populations. 
+(p. PROS-H, 1 and 4-6 of 8)  The following tumor-based assays are called out for use: Decipher, 
+Genomic Prostate Score, ArteraAI and Prolaris. (p. PROS-H 3 of 8) 
+ 
+American Society of Clinical Oncology (ASCO) 
+ASCO (2020) issued a guideline for the use of molecular biomarkers in localized prostate cancer that 
+included the following summary of recommendations: 
+“Tissue-based molecular biomarkers (evaluating the sample with the highest volume of the highest 
+Gleason pattern) may improve risk stratification when added to standard clinical parameters, but the 
+Expert Panel endorses their use only in situations in which the assay results, when considered as a 
+whole with routine clinical factors, are likely to affect a clinical decision. These assays are not 
+recommended for routine use as they have not been prospectively tested or shown to improve long-
+term outcomes—for    example, quality of life, need for treatment, or survival.” (p. 1474) 
+ 
+Evidence-Based Prostate Cancer Risk Assessment and Diagnostic Algorithmic Tests 
+American Urological Association/Society of Urologic Oncology 
+The American Urological Association/Society of Urologic Oncology published guidelines on the early 
+detection of prostate cancer (2023). They state that clinicians and patients may use adjunctive urine 
+or serum markers to inform the shared decision making process regarding prostate biopsy (initial 
+and/or repeat biopsy). It is imperative clinicians are familiar with biomarkers, understand what 
+information or data each test provides, and consider whether additional information will impact 
+management decisions before ordering a test. (conditional recommendation, evidence level C). (p. 21-
+22, 24) Of note, conditional recommendations are non-directive statements used when the evidence 
+indicates that there is no apparent net benefit or harm, or when the balance between benefits and 
+risks/burden is unclear. For evidence level C, the balance between benefits and risks is unclear but net 
+benefit or net harm is comparable to other options. 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 16 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+National Comprehensive Cancer Network (NCCN) 
+NCCN Prostate Cancer Early Detection guidelines (2.2024) recommends consideration of  biomarkers 
+that improve the specificity of screening in patients considering biopsy after abnormal PSA and/or 
+DRE. Although these biomarker tests are not currently mandated as first-line screening tests in 
+conjunction with serum PSA, there may be some patients who could consider biopsy based on PSA 
+standards but are seeking further risk clarification. The probability of high-grade cancer (Gleason 
+score ≥3+4, Grade Group 2 or higher) may be further defined utilizing the Prostate Health Index (PHI), 
+SelectMDx, 4Kscore, ExoDx Prostate Test, MyProstateScore (MPS), and IsoPSA. (p. PROSD-3) Tests 
+that improve specificity when considering a repeat biopsy should be considered after negative biopsy 
+in patients felt to be at higher risk (p. PROSD-4). These tests include those listed above (except for 
+SelectMDX) plus PCA3 and ConfirmMDX.  
+ 
+Emerging Evidence Prostate Cancer Risk Assessment and Diagnostic Algorithmic Tests  
+NCCN Prostate Cancer Early Detection guidelines (2.2024) comment on the usefulness of biomarker 
+testing to assist in biopsy decision making. The guidelines do not mention the following tests as part 
+of recommended clinical care: EpiSwitch Prostate Screening Test (PSE), miR Sentinel Prostate Cancer 
+Test, MyProstateScore 2.0, PanGIA Prostate, and Apifiny.   
+ 
+Concert Note 
+There is insufficient evidence to support the use of these tests.  At this time, there are no known 
+recommendations for or against this testing within standard professional society guidelines covering 
+this area of testing as current evidence indicates neither benefit nor harm at this time.  
+ 
+ 
+THYROID CANCER 
+Thyroid Cancer Diagnostic Algorithmic Tests 
+ 
+American Thyroid Association 
+The American Thyroid Association (2016) updated its guidelines on the management of thyroid 
+nodules and differentiated thyroid cancer in adults. These guidelines made the following statements 
+on molecular diagnostics in thyroid nodules: “For nodules with AUS/FLUS [atypia of undetermined 
+significance/follicular lesion of undetermined significance]... molecular testing may be used to 
+supplement malignancy risk assessment in lieu or proceeding directly with either surveillance or 
+diagnostic surgery.” (p. 21)  
+ 
+National Comprehensive Cancer Network (NCCN) 
+NCCN Guidelines for Thyroid Carcinoma (3.2024) recommends consideration of  molecular 
+diagnostics on fine needle aspirate (FNA) results of thyroid nodules which are classified as Bethesda 
+III or Bethesda IV if there is not high clinical and/or radiographic suspicion of malignancy. (p. THYR-1 
+and THYR-2) 
+ 
+American Association of Clinical Endocrinologists, American College of Endocrinology, and 
+Associazone Medici Endocrinologi 
+The American Association of Clinical Endocrinologists, American College of Endocrinology, and 
+Associazone Medici Endocrinologi (2016) updated their joint guidelines on molecular testing for 
+cytologically indeterminate thyroid nodules and endorsed the following: 
+• 
+TERT mutational analysis may improve the diagnostic sensitivity of molecular testing on 
+cytologic samples. (p. 32) 
+• There is insufficient evidence to recommend either in favor of or against the use of gene 
+expression classifiers for cytologically indeterminate nodules. (p. 10) 
+• With the exception of mutations such as 
+BRAF V600E, there is insufficient evidence to 
+recommend in favor of or against the use of mutation testing to determine the extent of 
+surgery. (p. 10) 
+ 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 17 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+UVEAL MELANOMA 
+Uveal Melanoma Prognostic Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Uveal Melanoma (1.2024) recommends consideration of biopsy of the primary 
+tumor before radiation for prognostic analysis. Molecular testing for prognostication is 
+recommended over cytology alone. (p. UM-2A) Tumor class defined by gene expression profiling  was 
+more strongly associated with risk of  metastasis than any other prognostic factor. (p. UM-4) 
+ 
+ 
+CUTANEOUS MELANOMA 
+Evidence-Based Cutaneous Melanoma Prognostic Algorithmic Tests 
+ 
+ECRI Genetic Test Assessment 
+A recent review completed by ECRI (2023) found evidence for the DecisionDx-Melanoma 31-gene 
+profiling (31-GEP) test to be somewhat favorable based on the available data pertaining to clinical 
+validity, and potential clinical utility of the test. Specifically, the available studies demonstrated that 
+they may improve patient outcomes (e.g., overall survival, by informing decisions to escalate 
+surveillance when the test is added to best available care (i.e., tumor staging, SLNB). 
+Concert Evidence Review for Coverage Determination (Published 12/21/2023, Re-issued 7/1/2024 
+with minor updates to test names; no updates to literature) 
+ 
+The current literature suggests that DecisionDx Melanoma (also referred to as 31-GEP in the 
+literature) test exhibits high sensitivity (70-95%) and negative predictive value (>90%) in the 
+prognosis of stage I and II cutaneous melanoma (CM) at multiple clinical endpoints including risk of 
+recurrence, distant-site metastasis occurrence, and melanoma-specific death.  
+ 
+The literature demonstrates that the 31-GEP test has significant evidence of clinical validity and 
+utility when incorporated as part of standard clinicopathologic features, both in predicting the 
+potential prognosis of a cutaneous melanoma diagnosis as well as the prediction of SLNB positivity. 
+Bailey et al (2023) showed that performing the 31-GEP test resulted in higher 3 year melanoma-
+specific survival (MSS) and overall survival (OS) in individuals with cutaneous melanoma, compared to 
+patients not tested with the 31-GEP (P < 0.001). Additionally, the 31-GEP test was associated with a 
+29% lower MSS mortality and 17% lower overall mortality, allowing patients to be stratified by their 
+risk. A study by Tassavor et al (2023) showed that the 31-GEP test outperformed the Memorial Sloan 
+Kettering Cancer Center nomogram for predicting SLNB positivity in patients with cutaneous 
+melanoma (T1-T2 tumors), thereby reducing the number of patients who need invasive procedures.  
+Specifically, the study notes: “In patients with T1 tumors, for whom guidance on the clinical decision to 
+perform SLNB is least clear, the i31-GEP for SLNB could have reduced the number of SLNBs by 
+43.7%, compared with standard NCCN SLNB guidance using AJCC staging, while maintaining a low 
+false-negative rate.” (p. 4514) Finally, in a prospective multicenter study, Yamamoto et al (2023) 
+showed that overall 85.3% of decisions related to sentinel lymph node biopsy were influenced by 31-
+GEP test results in individuals with T1-T2 tumors. Concordance between performing an SLNB and 31-
+GEP influence was 78.5%. 
+ 
+Based upon retrospective cohort data, the Merlin assay shows relatively high clinical validity in 
+individuals with primary cutaneous melanoma, with a NPV > 95% and elevated levels of sensitivity 
+(80% in T1-T2 patients and 92.3% in T1-T3 patients) (Yousaf et al., 2021). Other research shows a 
+potential for the Merlin assay to reduce SLNB complications by 50 -  69.1% by reducing the number of 
+patients undergoing SLNB (Hieken et al., 2022). There is some evidence that suggests the CP-GEP 
+assay can be used to further stratify the risk of recurrence, metastasis, and melanoma specific 
+survival in patients (Eggermont et al., 2020).  
+ 
+MelaNodal Predict was added to this evidence review after determining that Melanodal uses the 
+Merlin algorithm and is licensed by Quest. For this reason, we are assuming these tests are the same 
+and therefore, the evidence review information above will apply to MelaNodal Predict. 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 18 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Following on a systematic review of available peer-reviewed evidence, cutaneous melanoma 
+prognostic algorithmic tests such as DecisionDx-Melanoma and Merlin / MelaNodal Predict, have 
+SUFFICIENT EVIDENCE for clinical validity to effectively identify patients with a poorer prognosis 
+and for clinical utility in direct more aggressive treatment to promote increased patient survival. 
+ 
+ 
+Emerging Evidence Cutaneous Melanoma Prognostic Algorithmic Tests 
+Concert Evidence Review for Coverage Determination (Published 12/21/2023) 
+ 
+There were no available peer-reviewed studies concerning the AMBlor assay that met inclusion 
+criteria for a systematic review. At this time, there is 
+INSUFFICIENT EVIDENCE to support the clinical 
+validity of this test in identifying early stage melanoma patients with poorer prognoses.  No 
+recommendations for or against this testing within standard professional society guidelines covering 
+this area of testing were identified. 
+ 
+Cutaneous Melanoma Diagnostic Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Cutaneous Melanoma (2.2024) indicate that gene expression profiling is an 
+available test for diagnosing indeterminate melanocytic neoplasms by histopathology, along with 
+immunohistochemistry (IHC), comparative genomic hybridization (CGH), fluorescence in situ 
+hybridization (FISH), single-nucleotide polymorphism (SNP) array, and next-generation sequencing 
+(NGS). These tests may lead to a definitive diagnosis and treatment selection in cases that are 
+diagnostically equivocal or controversial by histopathology and NCCN recommends consideration of 
+these tests in conjunction with clinical and pathology evaluation. (p. ME-C 1 of 8). 
+ 
+American Academy of Dermatology 
+The American Academy of Dermatology (Swetter, 2019) published guidelines of care for the 
+management of primary cutaneous melanoma. The guidelines state the following regarding GEP 
+tests: 
+• Diagnostic molecular techniques are still largely investigative and may be appropriate as 
+ancillary tests in equivocal melanocytic neoplasms, but they are not recommended for 
+routine diagnostic use in CM. These include comparative genomic hybridization (CGH), 
+fluorescence in situ hybridization (FISH), gene expression profiling (GEP), and (potentially) 
+next-generation sequencing. (page 219) 
+• Ancillary diagnostic molecular techniques (e.g., CGH, FISH, GEP) may be used for equivocal 
+melanocytic neoplasms. (p. 219) 
+ 
+American Society of Dermatopathology 
+The American Academy of Dermatopathology (AUC Committee Members, 2022) published conditions 
+where a 23 gene qRT-PCR test (MyPath Melanoma) was determined by a review of published 
+evidence to be “majority usually appropriate.” These include the differential diagnosis of nevus versus 
+melanoma in fully sampled histopathologically ambiguous tumors, partially sampled nevus versus 
+melanoma in adults, nevus versus nevoid melanoma, and nevus versus melanoma in cosmetically 
+sensitive sites and special sites in pediatric patients. These recommendations specifically exclude 
+scenarios where pathology is definitive for melanoma or for distinction between incompletely 
+sampled sclerosing (desmoplastic) nevus versus desmoplastic melanoma. (p. 237-8)  
+ 
+Cutaneous Melanoma Risk Assessment Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN Guidelines for Cutaneous Melanoma (2.2024) recommends consideration of  pre-diagnostic 
+noninvasive patch testing to help inform  decisions regarding biopsy for patients with melanocytic 
+neoplasms that are clinically/dermoscopically suspicious for melanoma. (p. ME-12) 
+ 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 19 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ECRI Genetic Test Assessment 
+A recent review completed by ECRI (2023) found evidence for the Pigmented Lesion Assay (PLA) to be 
+somewhat favorable based on the available data demonstrating clinical validity and utility to 
+improve patient outcomes when added to standard of care. (p. 1) 
+ 
+American Academy of Dermatology 
+In their 2019 publication, the American Academy of Dermatology stated the following: Skin biopsy 
+remains the first step to establish a definitive diagnosis of CM, although various molecular and 
+imaging techniques have been studied as adjuncts to histopathologic assessment of melanocytic 
+neoplasms. (p. 211) 
+ 
+Newer noninvasive techniques (eg, reflectance confocal microscopy [RCM], as well as electrical 
+impedance spectroscopy, gene expression analysis, optical coherence tomography, and others can 
+also be considered as these become more readily available. (p. 211) 
+ 
+UpToDate Melanoma: Clinical Features and diagnosis 
+Patients with a pigmented lesion that is changing and has additional ABCDE (asymmetry, border 
+irregularity, 
+color variegation, diameter >6 mm, evolution) criteria should be strongly considered for 
+dermatology referral. 
+ 
+Centers for Medicare & Medicaid Services 
+Per MolDX: Pigmented Lesion Assay LCD (L38051), “Only 1 test may be used per patient per clinical 
+encounter, in most cases. In roughly 10% of patients, a second test may be indicated for the same 
+clinical encounter. For rare cases where more than 2 tests are indicated in a single clinical encounter, 
+an appeal with supporting documentation may be submitted for additional tests.” 
+ 
+OVARIAN CANCER 
+Ovarian Cancer Diagnostic Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Ovarian Cancer, Fallopian Tube Cancer, and Primary Peritoneal Cancer (3.2024) 
+recognize that a number of specific biomarkers and algorithms using multiple biomarker test results 
+have been proposed for preoperatively distinguishing benign from malignant tumors in patients who 
+have an undiagnosed adnexal/pelvic mass.  Currently, the NCCN Panel does not recommend the use 
+of these biomarker tests for evaluation  of an undiagnosed adnexal/pelvic mass. (p. MS-10, MS-11)     
+ 
+Ovarian Cancer Treatment Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Ovarian Cancer, Fallopian Tube Cancer, and Primary Peritoneal Cancer (3.2024) 
+recommend genetic risk evaluation, and germline and somatic testing if not previously done, 
+including 
+BRCA1/2 to guide maintenance therapy for patients with ovarian, fallopian tube, or primary 
+peritoneal cancer. If a patient does not have a germline 
+BRCA1/2 mutation, homologous 
+recombination status may help determine the benefit of PARP inhibitor therapy. (p. OV-1)  
+ 
+American Society of Clinical Oncology (ASCO) 
+ASCO (2020) issued a guideline for the use of PARP inhibitors in the management of ovarian cancer, 
+which included the following summary of recommendations: 
+“The guideline pertains to patients who are PARPi naïve. All patients with newly diagnosed, stage III-
+IV EOC (epithelial ovarian, tubal, or primary peritoneal cancer), whose disease is in complete or 
+partial response to first-line, platinum-based chemotherapy with high-grade serous or endometrioid 
+EOC should be offered PARPi maintenance therapy with niraparib. For patients with germline or 
+somatic pathogenic or likely pathogenic variants in 
+BRCA1 (g/sBRCA1) or BRCA2 (g/sBRCA2) genes, 
+should be treated with olaparib. The addition of olaparib to bevacizumab may be offered to patients 
+with stage III-IV EOC with g/s
+BRCA1/2 and/or genomic instability and a partial or complete response 
+to chemotherapy plus bevacizumab combination. Maintenance therapy (second line or more) with 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 20 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+single-agent PARPi may be offered for patients with EOC who have not received a PARPi and have 
+responded to platinum-based therapy regardless of 
+BRCA mutation status. Treatment with a PARPi 
+should be offered to patients with recurrent EOC that has not recurred within 6 months of platinum-
+based therapy, who have not received a PARPi and have a g/s
+BRCA1/2, or whose tumor 
+demonstrates genomic instability. PARPis are not recommended for use in combination with 
+chemotherapy, other targeted agents, or immune-oncology agents in the recurrent setting outside 
+the context of a clinical trial. Recommendations for managing specific adverse events are presented. 
+Data to support reuse of PARPis in any setting are needed.” (p. 3) 
+ 
+GYNECOLOGIC CANCER 
+Gynecologic Cancer Treatment Algorithmic Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Ovarian Cancer, Fallopian Tube Cancer, and Primary Peritoneal Cancer (3.2024) 
+state that chemosensitivity/resistance assays have been proposed for informing decisions related to 
+future chemotherapy if there are multiple equivalent chemotherapy options available.  This has a 
+category 3 level of evidence which indicates that there is major NCCN disagreement that the 
+intervention is appropriate. (p. OV-C, 1 of 12)  
+ 
+NCCN guidelines for Cervical Cancer (3.2024) do not mention chemosensitivity or chemoresistance 
+assays as part of clinical care. 
+ 
+NCCN guidelines for Uterine Neoplasms (2.2024) do not mention chemosensitivity or 
+chemoresistance assays as part of clinical care. 
+ 
+LUNG CANCER 
+Evidence-Based Lung Cancer Diagnostic Algorithmic Tests 
+Concert Evidence Review for Coverage Determination (Published 12/21/23) 
+This body of literature includes validation studies for NodifyXL2. These studies were each published 
+with authors from the company that developed or currently offer the test, with the exception of the 
+2023 study published by Kheir et al examining NodifyXL2. In this case, the authors disclosed no 
+conflicts of interest except for the lead author who received honoraria from Biodesix and Veracyte for 
+educational events. 
+ 
+Multiple studies have been published on NodifyXL2 and the clinical validity of this test as it pertains 
+to identifying the risk of cancer in patients with lung nodules. Two studies published in 2023 (Pritchett 
+et al and Kheir et al) examined NodifyXL2 and demonstrated adequate clinical utility. Kheir et al 
+published a retrospective study examining patients with lung nodules who were evaluated using the 
+integrated proteomic classifier NodifyXL2 compared to standard clinical care during the same period 
+of time, with a follow-up time of 1 year. In the study group of 102 patients, fewer invasive procedures 
+were performed compared to the non-integrated classifier group of 129 patients (26.5% vs 79.1%; 
+P<0.001). Pritchett et al also examined biopsy rates in patients in matched cohorts (197 patients in 
+each group). Patients in the study group (tested with NodifyXL2) were 74% less likely to undergo an 
+invasive procedure compared to the control group (absolute difference 14%; P<0.001), and for every 7 
+patients tested, one unnecessary invasive procedure was avoided.  Both of these studies had similar 
+inclusion criteria for patients: age 40 years or older, with a risk for cancer of 50% or less according to 
+the Mayo Solitary Pulmonary Nodule calculator, a lung nodule between 8 and 30 mm in diameter, 
+and no history of cancer (except non-melanomatous skin cancer) within 5 years of the discovery of 
+the lung nodule. 
+ 
+Emerging Evidence Lung Cancer Diagnostic Algorithmic Tests 
+Concert Evidence Review for Coverage Determination (Published 12/21/23) 
+Multiple studies have been published on Percepta Bronchial Genomic Classifier and REVEAL Lung 
+Nodule Characterization and their ability to identify risk of cancer in patients with lung nodules. This 
+body of literature includes studies meant to assess clinical validity for each test. Overall, these studies 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 21 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+inadequately demonstrate the clinical validity of these tests for distinguishing high risk nodules from 
+low risk nodules. 
+ 
+Percepta originally had a cost-effectiveness study published in 2017. A new validation study for this 
+test was published in 2021 and it is not clear if the new test would also be cost-effective. 
+There are a few studies that include some characterization of clinical utility for the Percepta and 
+REVEAL Lung Nodule Characterization and their ability to identify risk of cancer in patients with lung 
+nodules. But these studies have significant flaws, including small population sizes, and potential bias 
+due to authors with conflict of interest. These studies were each published with authors from the 
+company that developed or currently offers the test. Additionally, the costs of these tests compared 
+to costs of under-  and over-diagnosis of lung cancer in patients with lung nodules needs to be 
+completed. To our knowledge, there are currently no randomized controlled trials enrolling for 
+Percept or REVEAL. 
+ 
+Tests that have limited established clinical utility or validity as defined in the Concert policy for 
+General Approach to Genetic and Molecular testing do not meet the threshold for coverage.  
+Evidence for validity may include a Technology Assessment conducted by an independent third party 
+(e.g.MolDx Tech, ECRI, Optum Genomic) and/or evidence-based guidelines published by professional 
+societies.  Such evidence was not identified for the tests referenced by this policy. 
+ 
+Evidence-Based Lung Cancer Treatment Algorithmic Tests 
+Centers for Medicare and Medicaid Services 
+The CMS local coverage determination (LCD) entitled “MolDX: Predictive Classifiers for Early Stage 
+Non-Small Cell Lung Cancer” includes the following coverage criteria for lung cancer treatment 
+algorithmic tests:  
+• “The patient has a non-squamous NSCLC with a tumor size < 5cm, and there are no positive 
+lymph nodes (i.e. American Joint Committee on Cancer (AJCC) Eighth Edition Stages I and IIa) 
+• The patient is sufficiently healthy to tolerate chemotherapy 
+• Adjuvant platinum-containing chemotherapy is being considered for the patient 
+• The test is ordered by a physician who is treating the patient for NSCLC (generally a medical 
+oncologist, surgeon, or radiation oncologist) to help in the decision of whether or not to 
+recommend adjuvant chemotherapy”. 
+ 
+From the Billing and Coding article: 
+DetermaRx (PLA code 0288U) is a covered test.  
+ 
+Emerging Evidence Lung Cancer Treatment Algorithmic Tests 
+Tests that have limited established clinical utility or validity as defined in the Concert policy for 
+General Approach to Genetic and Molecular testing do not meet the threshold for coverage.  
+Evidence for validity may include a Technology Assessment conducted by an independent third party 
+(e.g. MolDx Tech, ECRI, Optum Genomic) and/or evidence-based guidelines published by 
+professional societies.  Such evidence was not identified for the tests referenced by this policy. 
+ 
+BLADDER AND URINARY TRACT CANCER 
+Bladder/Urinary Tract Cancer Diagnostic Algorithmic Tests 
+There is insufficient evidence to support the use of this test. No recommendations for or against this 
+testing within standard professional society guidelines covering this area of testing were identified. 
+Sources reviewed: National Comprehensive Cancer Network Bladder Cancer guidelines (4.2024), The 
+American Urological Association and Society of Urologic Oncology (Hozbeierlein et al).
+  
+ 
+ 
+ 
+ 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 22 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Bladder Cancer Treatment and Recurrence Algorithmic Tests 
+Centers for Medicare and Medicaid Services 
+The CMS local coverage determination (LCD) entitled “MolDX: Prognostic and Predictive Molecular 
+Classifiers for Bladder Cancer” states the following regarding bladder cancer molecular diagnostic 
+tests, including algorithmic tests: 
+“This contractor will cover molecular diagnostic tests for use in a beneficiary with bladder cancer 
+when all of the following conditions are met: 
+1. The beneficiary is being actively managed for bladder cancer. 
+2. The beneficiary is within the population and has the indication for which the test was 
+developed and is covered. The laboratory will make available the appropriate indications of 
+the test to the treating/ordering physician. 
+3. At least 1 of the 2 criteria are met: 
+a. The patient is a candidate for multiple potential treatments, which could be 
+considered to have varied or increasing levels of intensity based on a consensus 
+guideline, and the physician and patient must decide among these treatments. OR 
+b. The patient is a candidate for multiple therapies, and the test has shown that it 
+predicts response to a specific therapy among accepted therapy options based on 
+nationally recognized society consensus guidelines (i.e., National Comprehensive 
+Cancer Network [NCCN], American Society of Clinical Oncology [ASCO], Society of 
+Urologic Oncology [SUO], or American Urological Association [AUA]). 
+4. The test demonstrates analytical validity including both analytical and clinical validations. If 
+the test relies on an algorithm (which may range in complexity from a threshold 
+determination of a single numeric value to a complex mathematical or computational 
+function), the algorithm must be validated in a cohort that is not a development cohort for 
+the algorithm. 
+5. The test has demonstrated clinical validity and utility, establishing a clear and significant 
+biological/molecular basis for stratifying patients and subsequently selecting (either 
+positively or negatively) a clinical management decision (in 4. above) in a clearly defined 
+population. 
+6. The test successfully completes a Molecular Diagnostic Services Program (MolDX®) technical 
+assessment that ensures the test is reasonable and necessary as described above. 
+7. Only 1 test may be performed prior to the initiation of therapy UNLESS a second test that 
+interrogates different genomic content AND meets all the criteria established herein, is 
+reasonable and necessary. 
+8. The genomic content interrogated by the test must be relevant to the therapy under 
+consideration.” 
+ 
+PANCREATIC CANCER 
+Evidence-Based Pancreatic Cyst Risk Assessment Algorithmic Tests  
+Centers for Medicare and Medicaid Services 
+The CMS local coverage determination (LCD) entitled “Loss-of -Heterozygosity Based Topographic 
+Genotyping with PathfinderTG” includes the following coverage criteria for PathfinderTG (currently 
+known as PancraGen):  
+“PathfinderTG will be considered medically reasonable and necessary when selectively used as an 
+occasional second-line diagnostic supplement: 
+• Only where there remains clinical uncertainty as to either the current malignancy or the 
+possible malignant potential of the pancreatic cyst based upon a comprehensive first-line 
+evaluation; AND 
+• A decision regarding treatment (e.g. surgery) has NOT already been made based on existing 
+information. 
+The specific requirements for medical necessity involve: 
+• Highly-concise affirmation, documented in the medical record, that a decision regarding 
+treatment has not already been made and that the results of the molecular evaluation will 
+assist in determining if more aggressive treatment than what is being considered is 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 23 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+necessary. 
+ 
+• Previous first-line diagnostics, such as, but not restricted to, the following have 
+demonstrated: 
+o A pancreatic cyst fluid carcinoembryonic antigen (CEA), which is greater than or equal to 
+200 ng/ml, suggesting a mucinous cyst, but is not diagnostic. 
+o Cyst cytopathologic or radiographic findings, which raise the index of malignancy 
+suspicion, but where second-line molecular diagnostics is expected to be more 
+compelling in the context of a surgical vs. non-surgical care plan. 
+Specific criteria of Non-coverage to include either: 
+• Image guided needle aspiration of the pancreatic cyst or cystic component of a mass lesion 
+or dilated duct demonstrate definitive diagnosis of malignancy by cytology; OR 
+Cytology not showing malignancy but meets AGA guidelines to reach a definitive diagnosis of 
+benign disease. Lesions must be: 
+o Under 1 cm; 
+o Lack a solid component; 
+o Lack concerning cytology features; 
+o Lack main pancreatic duct dilatation of > 1cm in diameter with absence of abrupt change 
+in duct diameter; 
+o Have fluid CEA level not exceeding 5 ng/ml”. 
+ 
+Emerging Evidence Pancreatic Cyst Risk Assessment Algorithmic Tests 
+Tests that have limited established clinical utility or validity as defined in the Concert policy for 
+General Approach to Genetic and Molecular testing do not meet the threshold for coverage.  
+Evidence for validity may include a Technology Assessment conducted by an independent third party 
+(e.g. MolDx Tech, ECRI, Optum Genomic) and/or evidence-based guidelines published by 
+professional societies.  Such evidence was not identified for the tests referenced by this policy. 
+ 
+CANCER OF UNKNOWN PRIMARY 
+Cancer of Unknown Primary Gene Expression Profiling Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Occult Primary (Cancer of Unknown Primary) (1.2025) state that gene 
+sequencing to predict tissue of origin is not recommended. (p. OCC-1) There has been no clinical 
+benefit from gene expression profiling to identify tissue of origin. (p. MS   -4) 
+ 
+ 
+POLYGENIC RISK SCORE TESTS 
+Breast Cancer Polygenic Risk Score Tests 
+National Comprehensive Cancer Network (NCCN) 
+NCCN guidelines for Genetic/Familial High-Risk Assessment for Breast, Ovarian, and Pancreatic 
+cancers (3.2024) speak broadly about the use of polygenic risk scores, stating that there are currently 
+significant limitations to this type of testing, and their use is not recommended for clinical 
+management at this time outside of the context of a clinical trial (p. EVAL-A, 3 of 10). 
+ 
+References 
+ 
+1. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Breast Cancer. Version 4.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/breast.pdf 
+2. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Colon Cancer. Version 4.2024 
+https://www.nccn.org/professionals/physician_gls/pdf/colon.pdf 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 24 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+3. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Prostate Cancer. Version 4.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/prostate.pdf 
+4. Wei JT, Barocas D, Carlsson S, et al. Early detection of prostate cancer: AUA/SUO guideline: 
+prostate cancer screening. J Urol. 2023;210(1):45-63.  
+5. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Thyroid Carcinoma. Version 3.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/thyroid.pdf 
+6. Gharib H, Papini E, Garber JR, et al. American Association of Clinical Endocrinologists, 
+American College of Endocrinology, and Associazione Medici Endocrinologi Medical 
+Guidelines for Clinical Practice for the Diagnosis and Management of Thyroid Nodules--2016 
+Update. Endocr Pract. 2016;22(5):622-639. doi:10.4158/EP161208.GL. 
+7. Haugen BR, Alexander EK, Bible KC, et al. American Thyroid Association management 
+guidelines for adult patients with thyroid nodules and differentiated thyroid cancer: The 
+American Thyroid Association Guidelines Task Force on Thyroid Nodules and Differentiated 
+Thyroid Cancer. Thyroid. 2016;26(1):1-133. doi:10.1089/thy.2015.0020. 
+8. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Uveal Melanoma. Version 1.2024 
+https://www.nccn.org/professionals/physician_gls/pdf/uveal.pdf 
+9. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Cutaneous Melanoma. Version 2.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/cutaneous_melanoma.pdf 
+10. Swetter, SS, Tsao, HH, Bichakjian, CC, et al. Guidelines of care for the management of primary 
+cutaneous melanoma. J Am Acad Dermatol. 2019;80(1):208-250. 
+doi:10.1016/j.jaad.2018.08.055.  
+11. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Ovarian Cancer including Fallopian Tube Cancer and Primary Peritoneal Cancer. 
+Version 3.2024. https://www.nccn.org/professionals/physician_gls/pdf/ovarian.pdf 
+12. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Bladder Cancer. Version 4.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/bladder.pdf 
+13. Holzbeierlein J, Bixler BR, Buckley DI, et al. Treatment of non-metastatic muscle-invasive 
+bladder cancer: AUA/ASCO/SUO guideline (2017; amended 2020, 2024). J Urol. Published 
+online April 25, 2024. doi:10.1097/JU.0000000000003981 
+https://www.auajournals.org/doi/10.1097/JU.0000000000003981 
+14. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Genetic/Familial High Risk Assessment: Breast, Ovarian and Pancreatic. Version 
+3.2024. https://www.nccn.org/professionals/physician_gls/pdf/genetics_bop.pdf 
+15. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Occult Primary (Cancer of Unknown Primary). Version 1.2025. 
+https://www.nccn.org/professionals/physician_gls/pdf/occult.pdf 
+16. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Cervical Cancer. Version 3.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/cervical.pdf 
+17. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Uterine Neoplasms. Version 2.2024 
+https://www.nccn.org/professionals/physician_gls/pdf/uterine.pdf 
+18. Eggener SE, Rumble RB, Armstrong AJ, et al. Molecular Biomarkers in Localized Prostate 
+Cancer: ASCO Guideline. J Clin Oncol. 2020;38(13):1474-1494. doi:10.1200/JCO.19.02768 
+19. Tew WP, Lacchetti C, Ellis A, et al. PARP Inhibitors in the Management of Ovarian Cancer: 
+ASCO Guideline. J Clin Oncol. 2020;38(30):3468-3493. doi:10.1200/JCO.20.01924 
+20. Concert. Evidence Review for Coverage Determination for Lung Cancer Diagnostic 
+Algorithmic Tests. Published 7/1/2024.  
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 25 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+21. AUC Committee Members, Fung MA, Vidal CI, et al. Appropriate use criteria for ancillary 
+diagnostic testing in dermatopathology: New recommendations for 11 tests and 220 clinical 
+scenarios from the American Society of Dermatopathology Appropriate Use Criteria 
+Committee. J Cutan Pathol. 2022;49(3):231-245. doi:10.1111/cup.14135 
+22. National Comprehensive Cancer Network (NCCN). NCCN Clinical Practice Guidelines in 
+Oncology: Prostate Cancer Early Detection. Version 2.2024. 
+https://www.nccn.org/professionals/physician_gls/pdf/prostate_detection.pdf 
+23. Andre F, Ismaila N, Allison KH, et al. Biomarkers for Adjuvant Endocrine and Chemotherapy in 
+Early-Stage Breast Cancer: ASCO Guideline Update [published correction appears in J Clin 
+Oncol. 2022 Aug 1;40(22):2514]. 
+J Clin Oncol. 2022;40(16):1816-1837. doi:10.1200/JCO.22.00069  
+24. ECRI. DecisionDx-Melanoma (Castle Biosciences, Inc.) for Evaluating Prognosis and Guiding 
+Management of Cutaneous Melanoma. Genetic Test Assessment. 2023 Oct. 
+25. Concert. Evidence Review for Coverage Determination for Cutaneous Melanoma Prognostic 
+Algorithmic Tests. Published 12/22/2023; Re-issued 7/1/2024. 
+26. Swetter, S and Geller, A. Melanoma: Clinical features and diagnosis. In: UpToDate,Connor RF 
+(Ed), Wolters Kluwer. Accessed March 21, 2024. 
+https://www.uptodate.com/contents/melanoma-clinical-features-and-diagnosis 
+27. Centers for Medicare & Medicaid Services. Medicare Coverage Database: Local Coverage 
+Determination. MolDX: Pigmented Lesion Assay (L38051).Available 
+at:  https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=38151 
+28. ECRI. Pigmented Lesion Assay (DermTech) for Aiding Melanoma Diagnosis. Genetic Test 
+Assessment. 2023 March. 
+29. Centers for Medicare & Medicaid Services. Medicare Coverage Database: Local Coverage 
+Determination. MolDX: Predictive Classifiers for Early Stage Non-Small Cell Lung Cancer 
+(L38238). Available at: https://www.cms.gov/medicare-coverage-
+database/view/lcd.aspx?lcdid=38238 
+30. Centers for Medicare & Medicaid Services. Medicare Coverage Database: Local Coverage 
+Determination. MolDX: Loss-of-Heterozygosity Based Topographic Genotyping with 
+PathfinderTG. (L34864). Available at: https://www.cms.gov/medicare-coverage-
+database/view/lcd.aspx?lcdid=34864 
+31. Centers for Medicare & Medicaid Services. Medicare Coverage Database: Local Coverage 
+Local Coverage DeterminationMolDX: Oncotype DX Breast Cancer for DCIS (Genomic Health) 
+(L36912). Available at: https://www.cms.gov/medicare-coverage-
+database/view/lcd.aspx?lcdid=36912 
+32. Centers for Medicare & Medicaid Services., Dep't of Health & Human Services (“CMS”), 
+Medicare Coverage Database: Local Coverage Determination  “MolDX: Prognostic and 
+Predictive Molecular Classifiers for Bladder Cancer” (L38576). Available at: 
+https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=38576 
+33. Centers for Medicare & Medicaid Services. Medicare Coverage Database: Billing and Coding. 
+MolDX: Predictive Classifiers for Early Stage Non-Small Cell Lung Cancer (A58031). Available 
+at:   https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleId=58031 
+ 
+Documentation for Clinical Review 
+ 
+Please provide the following documentation: 
+•
+ 
+Name of the test being requested or the Concert Genetics GTU identifier. The Concert 
+Genetics GTU can be found at https://app.concertgenetics.com
+ 
+•
+ 
+CPT codes to be billed for the particular genetic test (GTU required for unlisted codes)
+ 
+•
+ 
+History and physical and/or consultation notes including:
+ 
+o
+ 
+Clinical findings:
+ 
+ 
+Signs/symptoms leading to a suspicion of genetic condition
+ 
+ 
+Family history if applicable
+ 
+o
+ 
+Prior evaluation/treatment:
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 26 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Previous test results (i.e., imagining, lab work, etc.) related to reason for genetic 
+testing
+ 
+ 
+Family member’s genetic test result, if applicable 
+o
+ 
+Rationale 
+ 
+Reason for performing test 
+ 
+How test result will impact clinical decision making 
+   
+Post Service (in addition to the above, please include the following): 
+•
+ 
+Results/reports of tests performed
+ 
+ 
+Coding 
+ 
+This Policy relates only to the services or supplies described herein. Benefits may vary according to 
+product design; therefore, contract language should be reviewed before applying the terms of the 
+Policy.  
+ 
+The following codes are included below for informational purposes. Inclusion or exclusion of a code(s) 
+does not constitute or imply member coverage or provider reimbursement policy.   Policy Statements 
+are intended to provide member coverage information and may include the use of some codes for 
+clarity.  The Policy Guidelines section may also provide additional information for how to interpret the 
+Policy Statements and to provide coding guidance in some cases. 
+ 
+Type Code Description 
+CPT
+®
+ 
+0003U 
+Oncology (ovarian) biochemical assays of five proteins (apolipoprotein 
+A-1, CA 125 II, follicle stimulating hormone, human epididymis protein 4, 
+transferrin), utilizing serum, algorithm reported as a likelihood score 
+0005U 
+Oncology (prostate) gene expression profile by real-time RT-PCR of 3 
+genes (ERG, PCA3, and SPDEF), urine, algorithm reported as risk score 
+0012M 
+Oncology (urothelial), mRNA, gene expression profiling by real-time 
+quantitative PCR of five genes (MDK, HOXA13, CDC2 [CDK1], IGFBP5, 
+and CXCR2), utilizing urine, algorithm reported as a risk score for having 
+urothelial carcinoma 
+0013M 
+Oncology (urothelial), mRNA, gene expression profiling by real-time 
+quantitative PCR of five genes (MDK, HOXA13, CDC2 [CDK1], IGFBP5, 
+and CXCR2), utilizing urine, algorithm reported as a risk score for having 
+recurrent urothelial carcinoma 
+0016M 
+Oncology (bladder), mRNA, microarray gene expression profiling of 219 
+genes, utilizing formalin-fixed paraffin-embedded tissue, algorithm 
+reported as molecular subtype (luminal, luminal infiltrated, basal, basal 
+claudin-low, neuroendocrine-like) 
+0018U 
+Oncology (thyroid), microRNA profiling by RT-PCR of 10 microRNA 
+sequences, utilizing fine needle aspirate, algorithm reported as a 
+positive or negative result for moderate to high risk of malignancy 
+0026U 
+Oncology (thyroid), DNA and mRNA of 112 genes, next-generation 
+sequencing, fine needle aspirate of thyroid nodule, algorithmic analysis 
+reported as a categorical result ("Positive, high probability of 
+malignancy" or "Negative, low probability of malignancy") 
+0045U 
+Oncology (breast ductal carcinoma in situ), mRNA, gene expression 
+profiling by real-time RT-PCR of 12 genes (7 content and 5 
+housekeeping), utilizing formalin-fixed paraffin-embedded tissue, 
+algorithm reported as recurrence score 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 27 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Type Code Description 
+0047U  
+Oncology (prostate), mRNA, gene expression profiling by real-time RT-
+PCR of 17 genes (12 content and 5 housekeeping), utilizing formalin-fixed 
+paraffin-embedded tissue, algorithm reported as a risk score 
+0067U 
+Oncology (breast), immunohistochemistry, protein expression profiling 
+of 4 biomarkers (matrix metalloproteinase-1 [MMP-1], carcinoembryonic 
+antigen-related cell adhesion molecule 6 [CEACAM6], 
+hyaluronoglucosaminidase [HYAL1], highly expressed in cancer protein 
+[HEC1]), formalin-fixed paraffin-embedded precancerous breast tissue, 
+algorithm reported as carcinoma risk score 
+0069U 
+Oncology (colorectal), microRNA, RT-PCR expression profiling of miR-
+31-3p, formalin-fixed paraffin-embedded tissue, algorithm reported as 
+an expression score 
+0080U 
+Oncology (lung), mass spectrometric analysis of galectin-3-binding 
+protein and scavenger receptor cysteine-rich type 1 protein M130, with 
+five clinical risk factors (age, smoking status, nodule diameter, nodule-
+spiculation status and nodule location), utilizing plasma, algorithm 
+reported as a categorical probability of malignancy 
+0083U 
+Oncology, response to chemotherapy drugs using motility contrast 
+tomography, fresh or frozen tissue, reported as likelihood of sensitivity or 
+resistance to drugs or drug combinations 
+0089U 
+Oncology (melanoma), gene expression profiling by RTqPCR, PRAME 
+and LINC00518, superficial collection using adhesive patch(es) 
+0090U 
+Oncology (cutaneous melanoma), mRNA gene expression profiling by 
+RT-PCR of 23 genes (14 content and 9 housekeeping), utilizing formalin-
+fixed paraffin-embedded (FFPE) tissue, algorithm reported as a 
+categorical result (i.e., benign, intermediate, malignant) 
+0092U 
+Oncology (lung), three protein biomarkers, immunoassay using 
+magnetic nanosensor technology, plasma, algorithm reported as risk 
+score for likelihood of malignancy 
+0113U 
+Oncology (prostate), measurement of PCA3 and TMPRSS2-ERG in urine 
+and PSA in serum following prostatic massage, by RNA amplification 
+and fluorescence-based detection, algorithm reported as risk score
+  
+0172U 
+Oncology (solid tumor as indicated by the label), somatic mutation 
+analysis of BRCA1 (BRCA1, DNA repair associated), BRCA2 (BRCA2, DNA 
+repair associated) and analysis of homologous recombination deficiency 
+pathways, DNA, formalin-fixed paraffin-embedded tissue, algorithm 
+quantifying tumor genomic instability score 
+0220U 
+Oncology (breast cancer), image analysis with artificial intelligence 
+assessment of 12 histologic and immunohistochemical features, 
+reported as a recurrence score 
+0228U 
+Oncology (prostate), multianalyte molecular profile by photometric 
+detection of macromolecules adsorbed on nanosponge array slides with 
+machine learning, utilizing first morning voided urine, algorithm 
+reported as likelihood of prostate cancer 
+0245U 
+Oncology (thyroid), mutation analysis of 10 genes and 37 RNA fusions 
+and expression of 4 mRNA markers using next-generation sequencing, 
+fine needle aspirate, report includes associated risk of malignancy 
+expressed as a percentage 
+0288U 
+Oncology (lung), mRNA, quantitative PCR analysis of 11 genes (BAG1, 
+BRCA1, CDC6, CDK2AP1, ERBB3, FUT3, IL11, LCK, RND3, SH3BGR, 
+WNT3A) and 3 reference genes (ESD, TBP, YAP1), formalin-fixed 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 28 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Type Code Description 
+paraffin-embedded (FFPE) tumor tissue, algorithmic interpretation 
+reported as a recurrence risk score 
+0313U 
+Oncology (pancreas), DNA and mRNA next-generation sequencing 
+analysis of 74 genes and analysis of CEA (CEACAM5) gene expression, 
+pancreatic cyst fluid, algorithm reported as a categorical result (i.e., 
+negative, low probability of neoplasia or positive, high probability of 
+neoplasia) 
+0317U 
+Oncology (lung cancer), four-probe FISH (3q29, 3p22.1, 10q22.3, 10cen) 
+assay, whole blood, predictive algorithm-generated evaluation reported 
+as decreased or increased risk for lung cancer 
+0339U 
+Oncology (prostate), mRNA expression profiling of HOXC6 and DLX1, 
+reverse transcription polymerase chain reaction (RT-PCR), first-void 
+urine following digital rectal examination, algorithm reported as 
+probability of high-grade cancer 
+0343U 
+Oncology (prostate), exosome-based analysis of 442 small noncoding 
+RNAs (sncRNAs) by quantitative reverse transcription polymerase chain 
+reaction (RT-qPCR), urine, reported as molecular evidence of no-, low-, 
+intermediate- or high-risk of prostate cancer 
+0359U 
+Oncology (prostate cancer), analysis of all prostate-specific antigen 
+(PSA) structural isoforms by phase separation and immunoassay, 
+plasma, algorithm reports risk of cancer 
+0360U 
+Oncology (lung), enzyme-linked immunosorbent assay (ELISA) of 7 
+autoantibodies (p53, NY-ESO-1, CAGE, GBU4-5, SOX2, MAGE A4, and 
+HuD), plasma, algorithm reported as a categorical result for risk of 
+malignancy 
+0363U 
+Oncology (urothelial), mRNA, gene-expression profiling by real-time 
+quantitative PCR of 5 genes (MDK, HOXA13, CDC2 [CDK1], IGFBP5, and 
+CXCR2), utilizing urine, algorithm incorporates age, sex, smoking history, 
+and macrohematuria frequency, reported as a risk score for having 
+urothelial carcinoma 
+0365U 
+Oncology (bladder), 10 protein biomarkers (A1AT, ANG, APOE, CA9, IL8, 
+MMP9, MMP10, PAI1, SDC1 and VEGFA), by immunoassays, urine, 
+diagnostic algorithm, including patient's age, race and gender, reported 
+as a probability of harboring urothelial cancer  
+(Code revision effective 1/1/2025) 
+0366U 
+Oncology (bladder), analysis of 10 protein biomarkers (A1AT, ANG, APOE, 
+CA9, IL8, MMP9, MMP10, PAI1, SDC1 and VEGFA) by immunoassays, 
+urine, algorithm reported as a probability of recurrent bladder cancer 
+0367U 
+Oncology (bladder), analysis of 10 protein biomarkers (A1AT, ANG, APOE, 
+CA9, IL8, MMP9, MMP10, PAI1, SDC1 and VEGFA) by immunoassays, 
+urine, diagnostic algorithm reported as a risk score for probability of 
+rapid recurrence of recurrent or persistent cancer following 
+transurethral resection 
+0375U  
+Oncology (ovarian), biochemical assays of 7 proteins (follicle stimulating 
+hormone, human epididymis protein 4, apolipoprotein A-1, transferrin, 
+beta-2 macroglobulin, prealbumin [i.e.,    transthyretin], and cancer 
+antigen 125), algorithm reported as ovarian cancer risk score 
+0376U  
+Oncology (prostate cancer), image analysis of at least 128 histologic 
+features and clinical factors, prognostic algorithm determining the risk 
+of distant metastases, and prostate cancer-specific mortality, includes 
+predictive algorithm to androgen deprivation-therapy response, if 
+appropriate 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 29 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Type Code Description 
+0387U 
+Oncology (melanoma), autophagy and beclin 1 regulator 1 (AMBRA1) and 
+loricrin (AMLo) by immunohistochemistry, formalinfixed paraffin-
+embedded (FFPE) tissue, report for risk of progression  
+0395U 
+Oncology (lung), multi-omics (microbial DNA by shotgun next-
+generation sequencing and carcinoembryonic antigen and osteopontin 
+by immunoassay), plasma, algorithm reported as malignancy risk for 
+lung nodules in early-stage disease  
+0403U 
+Oncology (prostate), mRNA, gene expression profiling of 18 genes, first-
+catch urine, algorithm reported as percentage of likelihood of detecting 
+clinically significant prostate cancer (Code revision 10/1/2024) 
+0406U 
+Oncology (lung), flow cytometry, sputum, 5 markers (meso-tetra [4-
+carboxyphenyl] porphyrin [TCPP], CD206, CD66b, CD3, CD19), algorithm 
+reported as likelihood of lung cancer  
+0414U 
+Oncology (lung), augmentative algorithmic analysis of digitized whole 
+slide imaging for 8 genes (ALK, BRAF, EGFR, ERBB2, MET, NTRK1-3, RET, 
+ROS1), and KRAS G12C and PD-L1, if performed, formalin-fixed paraffin-
+embedded (FFPE) tissue, reported as positive or negative for each 
+biomarker  
+0420U 
+Oncology (urothelial), mRNA expression profiling by real-time 
+quantitative PCR of MDK, HOXA13, CDC2, IGFBP5, and CXCR2 in 
+combination with droplet digital PCR (ddPCR) analysis of 6 single-
+nucleotide polymorphisms (SNPs) genes TERT and FGFR3, urine, 
+algorithm reported as a risk score for urothelial carcinoma  
+0424U 
+Oncology (prostate), exosome-based analysis of 53 small noncoding 
+RNAs (sncRNAs) by quantitative reverse transcription polymerase chain 
+reaction (RT-qPCR), urine, reported as no molecular evidence, low-, 
+moderate- or elevated-risk of prostate cancer 
+0433U 
+Oncology (prostate), 5 DNA regulatory markers by quantitative PCR, 
+whole blood, algorithm, including prostate-specific antigen, reported as 
+likelihood of cancer  
+0465U 
+Oncology (urothelial carcinoma), DNA, quantitative methylation-specific 
+PCR of 2 genes (ONECUT2, VIM), algorithmic analysis reported as 
+positive or negative (Code effective 7/1/2024) 
+0495U 
+Oncology (prostate), analysis of circulating plasma proteins (tPSA, fPSA, 
+KLK2, PSP94, and GDF15), germline polygenic risk score (60 variants), 
+clinical information (age, family history of prostate cancer, prior 
+negative prostate biopsy), algorithm reported as risk of likelihood of 
+detecting clinically significant prostate cancer 
+(Code effective 10/1/2024) 
+0497U 
+Oncology (prostate), mRNA gene-expression profiling by real-time RT-
+PCR of 6 genes (FOXM1, MCM3, MTUS1, TTC21B, ALAS1, and PPP2CA), 
+utilizing formalin-fixed paraffin-embedded (FFPE) tissue, algorithm 
+reported as a risk score for prostate cancer(Code effective 10/1/2024) 
+0507U 
+Oncology (ovarian), DNA, wholegenome sequencing with 5- 
+hydroxymethylcytosine (5hmC) enrichment, using whole blood or 
+plasma, algorithm reported as cancer detected or not detected 
+(Code 
+effective 10/1/2024) 
+0512U 
+Oncology (prostate), augmentative algorithmic analysis of digitized 
+whole-slide imaging of histologic features for microsatellite instability 
+(MSI) status, formalin-fixed paraffinembedded (FFPE) tissue, reported 
+as increased or decreased probability of MSI-high (MSI-H)    
+(Code 
+effective 10/1/2024) 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 30 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Type Code Description 
+0513U 
+Oncology (prostate), augmentative algorithmic analysis of digitized 
+whole-slide imaging of histologic features for microsatellite instability 
+(MSI) and homologous recombination deficiency (HRD) status, 
+formalinfixed paraffin-embedded (FFPE) tissue, reported as increased 
+or decreased probability of each biomarker 
+(Code effective 10/1/2024) 
+0534U 
+Oncology (prostate), microRNA, single-nucleotide polymorphisms 
+(SNPs) analysis by RT-PCR of 32 variants, using buccal swab, algorithm 
+reported as a risk score (Code effective 4/1/2025) 
+0549U 
+Oncology (urothelial), DNA, quantitative methylated real-time PCR of 
+TRNA-Cys, SIM2, and NKX1-1, using urine, diagnostic algorithm reported 
+as a probability index for bladder cancer and/or upper tract urothelial 
+carcinoma (UTUC) 
+(Code effective 4/1/2025) 
+0550U 
+Oncology (prostate), enzyme-linked immunosorbent assays (ELISA) for 
+total prostate-specific antigen (PSA) and free PSA, serum, combined 
+with age, previous negative prostate biopsy status, digital rectal 
+examination findings, prostate volume, and image and data reporting 
+of the prostate, algorithm reported as a risk score for the presence of 
+high-grade prostate cancer 
+(Code effective 4/1/2025) 
+81479 Unlisted molecular pathology procedure 
+81500 
+Oncology (ovarian), biochemical assays of two proteins (CA-125 and 
+HE4), utilizing serum, with menopausal status, algorithm reported as a 
+risk score 
+81503 
+Oncology (ovarian), biochemical assays of five proteins (CA-125, 
+apolipoprotein A1, beta-2 microglobulin, transferrin, and pre-albumin), 
+utilizing serum, algorithm reported as a risk score 
+81518 
+Oncology (breast), mRNA, gene expression profiling by real-time RT-
+PCR of 11 genes (7 content and 4 housekeeping), utilizing formalin-fixed 
+paraffin-embedded tissue, algorithms reported as percentage risk for 
+metastatic recurrence and likelihood of benefit from extended 
+endocrine therapy 
+81519 
+Oncology (breast), mRNA, gene expression profiling by real-time RT-
+PCR of 21 genes, utilizing formalin-fixed paraffin embedded tissue, 
+algorithm reported as recurrence score 
+81520 
+Oncology (breast), mRNA gene expression profiling by hybrid capture of 
+58 genes (50 content and 8 housekeeping), utilizing formalin-fixed 
+paraffin-embedded tissue, algorithm reported as a recurrence risk score 
+81521 
+Oncology (breast), mRNA, microarray gene expression profiling of 70 
+content genes and 465 housekeeping genes, utilizing fresh frozen or 
+formalin-fixed paraffin-embedded tissue, algorithm reported as index 
+related to risk of distant metastasis 
+81522 
+Oncology (breast), mRNA, gene expression profiling by RT-PCR of 12 
+genes (8 content and 4 housekeeping), utilizing formalin-fixed paraffin-
+embedded tissue, algorithm reported as recurrence risk score 
+81523 
+Oncology (breast), mRNA, next-generation sequencing gene expression 
+profiling of 70 content genes and 31 housekeeping genes, utilizing 
+formalin-fixed paraffin-embedded tissue, algorithm reported as index 
+related to risk to distant metastasis 
+81525 
+Oncology (colon), mRNA, gene expression profiling by real-time RT-PCR 
+of 12 genes (7 content and 5 housekeeping), utilizing formalin-fixed 
+paraffin-embedded tissue, algorithm reported as a recurrence score 
+81529 
+Oncology (cutaneous melanoma), mRNA, gene expression profiling by 
+real-time RT-PCR of 31 genes (28 content and 3 housekeeping), utilizing 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 31 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Type Code Description 
+formalin-fixed paraffin-embedded tissue, algorithm reported as 
+recurrence risk, including likelihood of sentinel lymph node metastasis 
+81535 
+Oncology (gynecologic), live tumor cell culture and chemotherapeutic 
+response by DAPI stain and morphology, predictive algorithm reported 
+as a drug response score; first single drug or drug combination 
+81536 
+Oncology (gynecologic), live tumor cell culture and chemotherapeutic 
+response by DAPI stain and morphology, predictive algorithm reported 
+as a drug response score; each additional single drug or drug 
+combination (List separately in addition to code for primary procedure) 
+81538 
+Oncology (lung), mass spectrometric 8-protein signature, including 
+amyloid A, utilizing serum, prognostic and predictive algorithm reported 
+as good versus poor overall survival 
+81539 
+Oncology (high-grade prostate cancer), biochemical assay of four 
+proteins (Total PSA, Free PSA, Intact PSA, and human kallikrein-2 [hK2]), 
+utilizing plasma or serum, prognostic algorithm reported as a 
+probability score 
+81540 
+Oncology (tumor of unknown origin), mRNA, gene expression profiling 
+by real-time RT-PCR of 92 genes (87 content and 5 housekeeping) to 
+classify tumor into main cancer type and subtype, utilizing formalin-
+fixed paraffin-embedded tissue, algorithm reported as a probability of 
+a predicted main cancer type and subtype 
+81541 
+Oncology (prostate), mRNA gene expression profiling by real-time RT-
+PCR of 46 genes (31 content and 15 housekeeping), utilizing formalin-
+fixed paraffin-embedded tissue, algorithm reported as a disease-
+specific mortality risk score 
+81542 
+Oncology (prostate), mRNA, microarray gene expression profiling of 22 
+content genes, utilizing formalin-fixed paraffin-embedded tissue, 
+algorithm reported as metastasis risk score 
+81546 
+Oncology (thyroid), mRNA, gene expression analysis of 10,196 genes, 
+utilizing fine needle aspirate, algorithm reported as a categorical result 
+(e.g., benign or suspicious) 
+81551 
+Oncology (prostate), promoter methylation profiling by real-time PCR of 
+3 genes (GSTP1, APC, RASSF1), utilizing formalin-fixed paraffin-
+embedded tissue, algorithm reported as a likelihood of prostate cancer 
+detection on repeat biopsy 
+81552 
+Oncology (uveal melanoma), mRNA, gene expression profiling by real-
+time RT-PCR of 15 genes (12 content and 3 housekeeping), utilizing fine 
+needle aspirate or formalin-fixed paraffin-embedded tissue, algorithm 
+reported as risk of metastasis 
+81599 Unlisted multianalyte assay with algorithmic analysis 
+84153 Prostate specific antigen (PSA); total 
+84154 Prostate specific antigen (PSA); free 
+86316 
+Immunoassay for tumor antigen, other antigen, quantitative (e.g., CA 50, 
+72-4, 549), each 
+HCPCS S3854 
+Gene expression profiling panel for use in the management of breast 
+cancer treatment 
+ 
+Policy History 
+ 
+This section provides a chronological history of the activities, updates and changes that have 
+occurred with this Medical Policy. 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 32 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+Effective Date Action  
+08/01/2023 
+New policy (combined policies 2.04.36, 2.04.111, 2.04.33, 2.04.62, 2.04.142, 2.04.07 
+and 2.04.54). 
+11/01/2023 Coding Update. 
+03/01/2024 Coding Update. 
+07/01/2024 
+Annual review. Policy statement, guidelines and literature updated. Policy title 
+changed from Oncology: Algorithmic (Genetic Expression) Testing to current one. 
+09/01/2024 Coding Update. 
+11/01/2024 Coding Update. 
+01/01/2025 Annual review. Policy statement, guidelines and literature updated. 
+02/01/2025 Coding Update. 
+05/01/2025 Coding Update. 
+ 
+Definitions of Decision Determinations 
+ 
+Medically Necessary: Services that are Medically Necessary include only those which have been 
+established as safe and effective, are furnished under generally accepted professional standards to 
+treat illness, injury or medical condition, and which, as determined by Blue Shield, are: (a) consistent 
+with Blue Shield medical policy; (b) consistent with the symptoms or diagnosis; (c) not furnished 
+primarily for the convenience of the patient, the attending Physician or other provider; (d) furnished 
+at the most appropriate level which can be provided safely and effectively to the patient; and (e) not 
+mor   e costly than an alternative service or sequence of services at least as likely to produce equivalent 
+therapeutic or diagnostic results as to the diagnosis or treatment of the Member’s illness, injury, or 
+disease. 
+ 
+Investigational/Experimental:   A treatment, procedure, or drug is investigational when it has not 
+been recognized as safe and effective for use in treating the particular condition in accordance with 
+generally accepted professional medical standards. This includes services where approval by the 
+federal or state governmental is required prior to use, but has not yet been granted.   
+ 
+Split Evaluation:   Blue Shield of California/Blue Shield of California Life & Health Insurance Company 
+(Blue Shield) policy review can result in a split evaluation, where a treatment, procedure, or drug will 
+be considered to be investigational for certain indications or conditions, but will be deemed safe and 
+effective for other indications or conditions, and therefore potentially medically necessary in those 
+instances. 
+ 
+Prior Authorization Requirements and Feedback (as applicable to your plan) 
+ 
+Within five days before the actual date of service, the provider must confirm with Blue Shield that the 
+member's health plan coverage is still in effect. Blue Shield reserves the right to revoke an 
+authorization prior to services being rendered based on cancellation of the member's eligibility. Final 
+determination of benefits will be made after review of the claim for limitations or exclusions.  
+ 
+Questions regarding the applicability of this policy should be directed to the Prior Authorization 
+Department at   (800) 541-6652, or the Transplant Case Management Department at (800) 637-2066 
+ext.    3507708 or visit the provider portal at www.blueshieldca.com/provider. 
+ 
+We are interested in receiving feedback relative to developing, adopting, and reviewing criteria for 
+medical policy. Any licensed practitioner who is contracted with Blue Shield of California or Blue 
+Shield of California Promise Health Plan is welcome to provide comments, suggestions, or 
+concerns.   Our internal policy committees will receive and take your comments into consideration. 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 33 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+ 
+For utilization and medical policy feedback, please send comments to: MedPolicy@blueshieldca.com 
+ 
+Disclaimer: This medical policy is a guide in evaluating the medical necessity of a particular service or treatment. 
+Blue Shield of California may consider published peer-reviewed scientific literature, national guidelines, and local 
+standards of practice in developing its medical policy. Federal and state law, as well as contract language, 
+including definitions and specific contract provisions/exclusions, take precedence over medical policy and must 
+be considered first in determining covered services. Member contracts may differ in their benefits. Blue Shield 
+reserves the right to review and update policies as appropriate. 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 34 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+Appendix A 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+Oncology: Algorithmic Testing BSC_CON_2.05 
+ 
+Policy Statement: 
+Breast Cancer  
+Breast Cancer Treatment and Prognostic Algorithmic Tests 
+I. The use of the breast cancer treatment and prognostic algorithmic 
+test Oncotype DX Breast Recurrence Score (81519, S3854) may be 
+considered 
+medically necessary in all patients, regardless of 
+gender, when 
+all of the following criteria are met: 
+A. The member has primary breast cancer that is ductal/NST, 
+lobular, mixed or micropapillary, AND 
+B. The member’s tumor is hormone receptor-positive (estrogen 
+receptor-positive or progesterone receptor-positive), 
+AND 
+C. The member’s tumor is human epidermal growth factor 
+receptor 2 (HER2)-negative, 
+AND 
+D. The member is considering treatment with adjuvant therapy 
+(e.g., tamoxifen, aromatase inhibitors, immunotherapy), 
+AND 
+E. The member is status post tumor resection and surgical axillary 
+nodal staging and meets 
+one of the following (regardless of 
+menopausal status): 
+1. Tumor is greater than 0.5 cm and node negative (pN0), OR 
+2. Lymph nodes are pN1mi (2mm or smaller axillary node 
+metastases), 
+OR 
+3. Lymph nodes are pN1 (1-3 positive nodes). 
+ 
+II. The use of the breast cancer treatment and prognostic algorithmic 
+test Oncotype DX Breast Recurrence Score (81519, S3854) is 
+considered 
+investigational for all other indications. 
+ 
+Breast Cancer Extended Endocrine Therapy Algorithmic Tests 
+III. The use of the breast cancer extended endocrine therapy test Breast 
+Cancer Index (BCI) (81518, S3854) may be considered 
+medically 
+necessary when all of the following criteria are met: 
+A. The member is female (sex assigned at birth), AND 
+Oncology: Algorithmic Testing BSC_CON_2.05 
+ 
+Policy Statement: 
+Breast Cancer  
+Breast Cancer Treatment and Prognostic Algorithmic Tests 
+I. The use of the breast cancer treatment and prognostic algorithmic 
+test Oncotype DX Breast Recurrence Score (81519, S3854) may be 
+considered 
+medically necessary in all patients, regardless of 
+gender, when 
+all of the following criteria are met: 
+A. The member has primary breast cancer that is ductal/NST, 
+lobular, mixed or micropapillary, AND 
+B. The member’s tumor is hormone receptor-positive (estrogen 
+receptor-positive or progesterone receptor-positive), 
+AND 
+C. The member’s tumor is human epidermal growth factor 
+receptor 2 (HER2)-negative, 
+AND 
+D. The member is considering treatment with adjuvant therapy 
+(e.g., tamoxifen, aromatase inhibitors, immunotherapy), 
+AND 
+E. The member is status post tumor resection and surgical axillary 
+nodal staging and meets 
+one of the following (regardless of 
+menopausal status): 
+1. Tumor is greater than 0.5 cm and node negative (pN0), OR 
+2. Lymph nodes are pN1mi (2mm or smaller axillary node 
+metastases), 
+OR 
+3. Lymph nodes are pN1 (1-3 positive nodes). 
+ 
+II. The use of the breast cancer treatment and prognostic algorithmic 
+test Oncotype DX Breast Recurrence Score (81519, S3854) is 
+considered 
+investigational for all other indications. 
+ 
+Breast Cancer Extended Endocrine Therapy Algorithmic Tests 
+III. The use of the breast cancer extended endocrine therapy test Breast 
+Cancer Index (BCI) (81518, S3854) may be considered 
+medically 
+necessary when all of the following criteria are met: 
+A. The member is female (sex assigned at birth), AND 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 35 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+B. The member has primary breast cancer that is ductal/NST, 
+lobular, mixed or micropapillary, AND 
+C. The member’s tumor is hormone receptor-positive (estrogen 
+receptor-positive or progesterone receptor-positive), 
+AND 
+D. The member’s tumor is HER2-negative, AND 
+E. The member has no distant metastases, AND 
+F. The member has completed at least 4 years of endocrine 
+therapy,
+ AND 
+G. The member is considering extended treatment with adjuvant 
+therapy (e.g., tamoxifen, aromatase inhibitors, 
+immunotherapy), 
+AND 
+H. The member meets one of the following (regardless of 
+menopausal status): 
+1. Tumor is greater than 0.5 cm and node negative (pN0), OR 
+2. Lymph nodes are pN1mi (2mm or smaller axillary node 
+metastases), 
+OR 
+3. Lymph nodes are pN1 (1-3 positive nodes). 
+ 
+IV. The use of the breast cancer extended endocrine therapy test Breast 
+Cancer Index (BCI) (81518, S3854) in men (sex assigned at birth) with 
+breast cancer is considered 
+investigational. 
+ 
+V. The use of the breast cancer extended endocrine therapy test Breast 
+Cancer Index (BCI) (81518, S3854) is considered 
+investigational for all 
+other indications.       
+ 
+Breast Cancer Prognostic Algorithmic Tests 
+VI. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint) (81520, 81521, 81522, 81523, 
+S3854) may be considered 
+medically necessary when:  
+A. The member is female (sex assigned at birth), AND 
+B. The member meets at least one of the following: 
+1. Postmenopausal status, OR 
+2. Greater than 50 years of age, AND 
+C. The member has primary breast cancer that is ductal/NST, 
+lobular, mixed or micropapillary, 
+AND 
+D. The member’s tumor is estrogen receptor-positive, AND 
+B. The member has primary breast cancer that is ductal/NST, 
+lobular, mixed or micropapillary, AND 
+C. The member’s tumor is hormone receptor-positive (estrogen 
+receptor-positive or progesterone receptor-positive), 
+AND 
+D. The member’s tumor is HER2-negative, AND 
+E. The member has no distant metastases, AND 
+F. The member has completed at least 4 years of endocrine 
+therapy,
+ AND 
+G. The member is considering extended treatment with adjuvant 
+therapy (e.g., tamoxifen, aromatase inhibitors, 
+immunotherapy), 
+AND 
+H. The member meets one of the following (regardless of 
+menopausal status): 
+1. Tumor is greater than 0.5 cm and node negative (pN0), OR 
+2. Lymph nodes are pN1mi (2mm or smaller axillary node 
+metastases), 
+OR 
+3. Lymph nodes are pN1 (1-3 positive nodes). 
+ 
+IV. The use of the breast cancer extended endocrine therapy test Breast 
+Cancer Index (BCI) (81518, S3854) in men (sex assigned at birth) with 
+breast cancer is considered 
+investigational. 
+ 
+V. The use of the breast cancer extended endocrine therapy test Breast 
+Cancer Index (BCI) (81518, S3854) is considered 
+investigational for all 
+other indications.       
+ 
+Breast Cancer Prognostic Algorithmic Tests 
+VI. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint) (81520, 81521, 81522, 81523, 
+S3854) may be considered 
+medically necessary when:  
+A. The member is female (sex assigned at birth), AND 
+B. The member meets at least one of the following: 
+1. Postmenopausal status, OR 
+2. Greater than 50 years of age, AND 
+C. The member has primary breast cancer that is ductal/NST, 
+lobular, mixed or micropapillary, 
+AND 
+D. The member’s tumor is estrogen receptor-positive, AND 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 36 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+E. The member’s tumor is human epidermal growth factor 
+receptor 2 (HER2)-negative, AND 
+F. The member is considering treatment with adjuvant therapy 
+(for example, tamoxifen, aromatase inhibitors, 
+immunotherapy), 
+AND 
+G. The member has had axial nodal staging and has the following 
+node status: 
+1. pN0, nodes negative pathologically, OR 
+2. pN1mi or pN1 (1-3 nodes positive pathologically)*. 
+ 
+VII. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint) (81520, 81521, 81522, 81523, 
+S3854) in individuals with 4 or more positive nodes is considered 
+investigational. 
+ 
+VIII. The use of the breast cancer prognostic algorithmic test Prosigna 
+(81520) in individuals with 1-3 node positive breast cancer is 
+considered 
+investigational. 
+ 
+IX. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint) (81520, 81521, 81522, 81523, 
+S3854) in men (sex assigned at birth) with breast cancer is 
+considered 
+investigational. 
+ 
+X. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint ) (81520, 81521, 81522, 81523, 
+S3854) is considered 
+investigational for all other indications. 
+ 
+*Prosigna is indicated for node negative disease, but not for disease with 1-3 
+positive nodes. EndoPredict and Mammaprint are indicated for node negative 
+disease and for disease with 1-3 positive nodes. 
+ 
+Gene Expression Profiling Breast Cancer Subtyping Tests 
+XI. Gene expression profiling breast cancer subtyping tests (e.g., 
+BluePrint) (81599, S3854) are considered 
+investigational. 
+ 
+Breast DCIS Prognostic Algorithmic Tests  
+E. The member’s tumor is human epidermal growth factor 
+receptor 2 (HER2)-negative, AND 
+F. The member is considering treatment with adjuvant therapy 
+(for example, tamoxifen, aromatase inhibitors, 
+immunotherapy), 
+AND 
+G. The member has had axial nodal staging and has the following 
+node status: 
+1. pN0, nodes negative pathologically, OR 
+2. pN1mi or pN1 (1-3 nodes positive pathologically)*. 
+ 
+VII. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint) (81520, 81521, 81522, 81523, 
+S3854) in individuals with 4 or more positive nodes is considered 
+investigational. 
+ 
+VIII. The use of the breast cancer prognostic algorithmic test Prosigna 
+(81520) in individuals with 1-3 node positive breast cancer is 
+considered 
+investigational. 
+ 
+IX. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint) (81520, 81521, 81522, 81523, 
+S3854) in men (sex assigned at birth) with breast cancer is 
+considered 
+investigational. 
+ 
+X. The use of a breast cancer prognostic algorithmic test (i.e., 
+EndoPredict, Prosigna, MammaPrint ) (81520, 81521, 81522, 81523, 
+S3854) is considered 
+investigational for all other indications. 
+ 
+*Prosigna is indicated for node negative disease, but not for disease with 1-3 
+positive nodes. EndoPredict and Mammaprint are indicated for node negative 
+disease and for disease with 1-3 positive nodes. 
+ 
+Gene Expression Profiling Breast Cancer Subtyping Tests 
+XI. Gene expression profiling breast cancer subtyping tests (e.g., 
+BluePrint) (81599, S3854) are considered 
+investigational. 
+ 
+Breast DCIS Prognostic Algorithmic Tests  
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 37 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+XII. Breast DCIS prognostic algorithmic tests (0045U) may be 
+considered medically necessary when all of the following are met: 
+A. The member has ductal carcinoma in situ (DCIS), AND 
+B. The tumor specimen contains at least 0.5 mm of DCIS, AND 
+C. The result of testing would aid in treatment decision-making 
+(i.e., pursuing additional surgery or radiation therapy), 
+AND 
+D. The member’s DCIS was not removed via mastectomy (i.e., 
+there is residual ipsilateral breast tissue). 
+ 
+XIII. Breast DCIS prognostic algorithmic tests (0045U) are considered 
+investigational for all other indications. 
+ 
+Colorectal Cancer 
+Colorectal Cancer Prognostic Algorithmic Tests 
+XIV. Colorectal cancer prognostic algorithmic tests (0069U, 0261U, 
+81525) are considered 
+investigational. 
+ 
+Prostate Cancer  
+Prostate Cancer Treatment and Prognostic Algorithmic Tests  
+XV. The use of a prostate cancer treatment and prognostic algorithmic 
+test (i.e., Oncotype DX Prostate (0047U), Prolaris (81541), Decipher 
+(81542), ArteraAI (0376U)) may be considered 
+medically necessary 
+when:   
+A. The member has a life expectancy of 10 years or more, AND 
+B. The member does not have either of the following:  
+1. Very low-risk prostate cancer, OR 
+2. Very high-risk prostate cancer. 
+ 
+ 
+ 
+XVI. The use of the prostate cancer treatment and prognostic 
+algorithmic test Decipher assay (81542) may be considered 
+medically necessary when: 
+A. The member has a life expectancy of more than 5 years, AND 
+ 
+B. The patient has had radical prostatectomy, AND 
+C. There are no lymph node metastases, AND 
+XII. Breast DCIS prognostic algorithmic tests (0045U) may be 
+considered medically necessary when all of the following are met: 
+A. he member has ductal carcinoma in situ (DCIS), AND 
+B. The tumor specimen contains at least 0.5 mm of DCIS, AND 
+C. The result of testing would aid in treatment decision-making 
+(i.e., pursuing additional surgery or radiation therapy), 
+AND 
+D. The member’s DCIS was not removed via mastectomy (i.e., 
+there is residual ipsilateral breast tissue). 
+ 
+XIII. Breast DCIS prognostic algorithmic tests (0045U) are considered 
+investigational for all other indications. 
+ 
+Colorectal Cancer 
+Colorectal Cancer Prognostic Algorithmic Tests 
+XIV. Colorectal cancer prognostic algorithmic tests (0069U, 0261U, 81525) 
+are considered 
+investigational. 
+ 
+Prostate Cancer  
+Prostate Cancer Treatment and Prognostic Algorithmic Tests  
+XV. The use of a prostate cancer treatment and prognostic algorithmic 
+test (i.e., Oncotype DX Prostate (0047U), Prolaris (81541), Decipher 
+(81542), ArteraAI (0376U)) may be considered 
+medically necessary 
+when:   
+C. The member has a life expectancy of 10 years or more, AND 
+D. The member does not have either of the following:  
+1. Very low-risk prostate cancer, OR 
+2. Very high-risk prostate cancer. 
+ 
+ 
+ 
+XVI. The use of the prostate cancer treatment and prognostic 
+algorithmic test Decipher assay (81542) may be considered 
+medically necessary when: 
+A. The member has a life expectancy of more than 5 years, AND 
+ 
+B. The patient has had radical prostatectomy, AND 
+C. There are no lymph node metastases, AND 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 38 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+D. There is PSA persistence/recurrence.  
+ 
+ 
+XVII. The use of a prostate cancer treatment and prognostic algorithmic 
+test (0047U, 0376U, 81541, 81542) is considered 
+investigational for all 
+other indications.  
+ 
+Evidence-Based Prostate Cancer Risk Assessment and Diagnostic 
+Algorithmic Tests 
+XVIII. Prostate cancer risk assessment and diagnostic algorithmic tests 
+(0005U, 0113U, 0339U, 0359U, 81539, 84153, 84154, 86316, 81479, 
+81551) with sufficient evidence of clinical validity and utility may be 
+considered 
+medically necessary for either of the following:  
+A. The member meets all of the following: 
+1. The member has not had a prostate biopsy, AND 
+2. The member has at least one of the following:  
+a. Prostate specific antigen (PSA) of greater than 3 ng/ml, 
+OR 
+b. A digital rectal exam (DRE) that is suspicious for cancer, 
+AND 
+3. The test is one of the following:  
+a. Prostate Health Index (PHI), OR 
+b. SelectMDx, OR 
+c. 4Kscore, OR 
+d. ExoDx Prostate Test, OR 
+e. MyProstateScore (MPS), OR 
+f. IsoPSA, OR 
+B. The member meets all of the following: 
+1. The member has had a prostate biopsy, AND 
+2. The result is one of the following: 
+a. Atypia, suspicious for cancer, OR  
+b. High-grade prostatic intraepithelial neoplasia (PIN), OR 
+c. Benign, AND 
+3. The test is one of the following:  
+a. Prostate Health Index (PHI), OR 
+b. 4Kscore, OR 
+c. ExoDx Prostate Test, OR 
+D. There is PSA persistence/recurrence.  
+ 
+ 
+XVII. The use of a prostate cancer treatment and prognostic algorithmic 
+test (0047U, 0376U, 81541, 81542) is considered 
+investigational for all 
+other indications.  
+ 
+Evidence-Based Prostate Cancer Risk Assessment and Diagnostic 
+Algorithmic Tests 
+XVIII. Prostate cancer risk assessment and diagnostic algorithmic tests 
+(0005U, 0113U, 0339U, 0359U, 81539, 84153, 84154, 86316, 81479, 
+81551) with sufficient evidence of clinical validity and utility may be 
+considered 
+medically necessary for either of the following:  
+A. The member meets all of the following: 
+1. The member has not had a prostate biopsy, AND 
+2. The member has at least one of the following:  
+a. Prostate specific antigen (PSA) of greater than 3 ng/ml, 
+OR 
+b. A digital rectal exam (DRE) that is suspicious for cancer, 
+AND 
+3. The test is one of the following:  
+a. Prostate Health Index (PHI), OR 
+b. SelectMDx, OR 
+c. 4Kscore, OR 
+d. ExoDx Prostate Test, OR 
+e. MyProstateScore (MPS), OR 
+f. IsoPSA, OR 
+B. The member meets all of the following: 
+1. The member has had a prostate biopsy, AND 
+2. The result is one of the following: 
+a. Atypia, suspicious for cancer, OR  
+b. High-grade prostatic intraepithelial neoplasia (PIN), OR 
+c. Benign, AND 
+3. The test is one of the following:  
+a. Prostate Health Index (PHI), OR 
+b. 4Kscore, OR 
+c. ExoDx Prostate Test, OR 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 39 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+d. MyProstateScore (MPS), OR 
+e. IsoPSA, OR 
+f. ConfirmMDx, OR 
+g. PCA3.  
+ 
+XIX. The use of prostate cancer risk assessment and diagnostic 
+algorithmic tests (0005U, 0113U, 0339U, 0359U, 81539, 84153, 84154, 
+86316, 81479, 81551) with sufficient evidence of clinical validity and 
+utility are considered 
+investigational for all other indications where 
+clinical validity and utility have not been demonstrated.  
+ 
+Emerging Evidence Prostate Cancer Risk Assessment and Diagnostic 
+Algorithmic Tests 
+XX. Prostate cancer risk assessment and diagnostic algorithmic tests 
+(0228U, 0343U, 0403U, 0424U, 0433U) with insufficient guidance for 
+use are considered 
+investigational.    
+ 
+Thyroid Cancer  
+Thyroid Cancer Diagnostic Algorithmic Tests 
+XXI. The use of a thyroid cancer diagnostic algorithmic test (0018U, 
+0026U, 0204U, 0245U, 0287U, 81546) in fine needle aspirates of 
+thyroid nodules may be considered 
+medically necessary when:  
+A. The fine needle aspirate showed indeterminate cytologic 
+findings (i.e., Bethesda diagnostic category III or IV), 
+AND  
+B. The result of the test would affect surgical decision making. 
+ 
+XXII. The use of a thyroid cancer diagnostic algorithmic test (0018U, 
+0026U, 0204U, 0245U, 0287U, 81546) in fine needle aspirates of 
+thyroid nodules is considered 
+investigational for all other 
+indications. 
+ 
+Uveal Melanoma  
+Uveal Melanoma Prognostic Algorithmic Tests 
+XXIII. The use of a uveal melanoma prognostic algorithmic test (81552) 
+may be considered 
+medically necessary when: 
+A. The member has primary, localized uveal melanoma. 
+ 
+d. MyProstateScore (MPS), OR 
+e. IsoPSA, OR 
+f. ConfirmMDx, OR 
+g. PCA3.  
+ 
+XIX. The use of prostate cancer risk assessment and diagnostic 
+algorithmic tests (0005U, 0113U, 0339U, 0359U, 81539, 84153, 84154, 
+86316, 81479, 81551) with sufficient evidence of clinical validity and 
+utility are considered 
+investigational for all other indications where 
+clinical validity and utility have not been demonstrated.  
+ 
+Emerging Evidence Prostate Cancer Risk Assessment and Diagnostic 
+Algorithmic Tests 
+XX. Prostate cancer risk assessment and diagnostic algorithmic tests 
+(0228U, 0343U, 0403U, 0424U, 0433U) with insufficient guidance for 
+use are considered 
+investigational.    
+ 
+Thyroid Cancer  
+Thyroid Cancer Diagnostic Algorithmic Tests 
+XXI. The use of a thyroid cancer diagnostic algorithmic test (0018U, 
+0026U, 0204U, 0245U, 0287U, 81546) in fine needle aspirates of 
+thyroid nodules may be considered 
+medically necessary when:  
+A. The fine needle aspirate showed indeterminate cytologic 
+findings (i.e., Bethesda diagnostic category III or IV), 
+AND 
+B. The result of the test would affect surgical decision making. 
+ 
+XXII. The use of a thyroid cancer diagnostic algorithmic test (0018U, 
+0026U, 0204U, 0245U, 0287U, 81546) in fine needle aspirates of 
+thyroid nodules is considered 
+investigational for all other 
+indications. 
+ 
+Uveal Melanoma  
+Uveal Melanoma Prognostic Algorithmic Tests 
+XXIII. The use of a uveal melanoma prognostic algorithmic test (81552) 
+may be considered 
+medically necessary when: 
+A. The member has primary, localized uveal melanoma. 
+ 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 40 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+XXIV. The use of a uveal melanoma prognostic algorithmic test (81552) is 
+considered investigational for all other indications. 
+ 
+Cutaneous Melanoma  
+Evidence-Based Cutaneous Melanoma Prognostic Algorithmic Tests 
+XXV. Cutaneous melanoma prognostic algorithmic tests (81479, 81529, 
+81599) with sufficient evidence of clinical validity and utility may be 
+considered 
+medically necessary when:  
+A. The member has either of the following: 
+1. Stage I melanoma (staging based on AJCC American Joint 
+Committee on Cancer), 
+OR 
+2. Stage II melanoma (staging based on AJCC American Joint 
+Committee on Cancer), 
+AND 
+B. The member does NOT have metastatic disease, AND 
+C. The results of testing will inform subsequent biopsy decisions, 
+use of adjuvant therapy(ies), or follow-up screening protocols. 
+ 
+ 
+XXVI. Cutaneous melanoma prognostic algorithmic tests (81479, 81529, 
+81599) with sufficient evidence of clinical validity and utility are 
+considered 
+investigational for all other indications where clinical 
+validity and utility have not been demonstrated. 
+ 
+Emerging Evidence Cutaneous Melanoma Prognostic Algorithmic Tests 
+XXVII. Cutaneous melanoma prognostic algorithmic tests (0387U) with 
+insufficient evidence of clinical validity are considered 
+investigational.   
+          
+Cutaneous Melanoma Diagnostic Algorithmic Tests 
+XXVIII. Cutaneous melanoma diagnostic algorithmic tests (0090U, 0314U) 
+may be considered 
+medically necessary when: 
+A. The member has a melanocytic neoplasm that is diagnostically 
+uncertain or equivocal after histopathology. 
+ 
+XXIX. Cutaneous melanoma diagnostic algorithmic tests (0090U, 0314U) 
+are considered investigational for all other indications, including: 
+XXIV. The use of a uveal melanoma prognostic algorithmic test (81552) is 
+considered investigational for all other indications. 
+ 
+Cutaneous Melanoma  
+Evidence-Based Cutaneous Melanoma Prognostic Algorithmic Tests 
+XXV. Cutaneous melanoma prognostic algorithmic tests (81479, 81529, 
+81599) with sufficient evidence of clinical validity and utility may be 
+considered 
+medically necessary when:  
+A. The member has either of the following: 
+1. Stage I melanoma (staging based on AJCC American Joint 
+Committee on Cancer), 
+OR 
+2. Stage II melanoma (staging based on AJCC American Joint 
+Committee on Cancer), 
+AND 
+B. The member does NOT have metastatic disease, AND 
+C. The results of testing will inform subsequent biopsy decisions, 
+use of adjuvant therapy(ies), or follow-up screening protocols. 
+ 
+ 
+XXVI. Cutaneous melanoma prognostic algorithmic tests (81479, 81529, 
+81599) with sufficient evidence of clinical validity and utility are 
+considered 
+investigational for all other indications where clinical 
+validity and utility have not been demonstrated. 
+ 
+Emerging Evidence Cutaneous Melanoma Prognostic Algorithmic Tests 
+XXVII. Cutaneous melanoma prognostic algorithmic tests (0387U) with 
+insufficient evidence of clinical validity are considered 
+investigational.   
+          
+Cutaneous Melanoma Diagnostic Algorithmic Tests 
+XXVIII. Cutaneous melanoma diagnostic algorithmic tests (0090U, 0314U) 
+may be considered 
+medically necessary when: 
+A. The member has a melanocytic neoplasm that is diagnostically 
+uncertain or equivocal after histopathology. 
+ 
+XXIX. Cutaneous melanoma diagnostic algorithmic tests (0090U, 0314U) 
+are considered investigational for all other indications, including: 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 41 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+A. A melanocytic neoplasm that has pathology definitive for 
+melanoma, desmoplastic melanoma, or sclerosing nevus. 
+Cutaneous Melanoma Risk Assessment Algorithmic Tests 
+XXX. Cutaneous melanoma risk assessment algorithmic tests (0089U) 
+may be considered 
+medically necessary when: 
+A. The member has a melanocytic neoplasm that shows at least 
+one ABCDE feature (
+asymmetry, border irregularity, color 
+variegation, 
+diameter greater than 6 mm, and evolution), AND 
+B. A biopsy is being considered but has not yet been performed, 
+AND 
+C. The use of the test is limited to a maximum of 2 times per visit. 
+ 
+XXXI. Cutaneous melanoma risk assessment algorithmic tests (0089U) are 
+considered 
+investigational for all other indications. 
+ 
+Ovarian Cancer  
+Ovarian Cancer Diagnostic Algorithmic Tests 
+XXXII. Ovarian cancer diagnostic algorithmic tests (i.e., OVA1, Overa, 
+ROMA, and OvaWatch) (0003U, 0375U, 81500, 81503) are 
+considered 
+investigational for all indications, including but not 
+limited to: 
+A. Preoperative evaluation of adnexal masses to triage for 
+malignancy 
+B. Screening for ovarian cancer 
+C. Selecting patients for surgery for an adnexal mass 
+D. Evaluation of patients with clinical or radiologic evidence of 
+malignancy 
+E. Evaluation of patients with nonspecific signs or symptoms 
+suggesting possible malignancy 
+F. Postoperative testing and monitoring to assess surgical 
+outcome and/or to detect recurrent malignant disease 
+following treatment.  
+ 
+Ovarian Cancer Treatment Algorithmic Tests 
+XXXIII. Ovarian cancer treatment algorithmic tests (0172U) may be 
+considered 
+medically necessary when both of the following are 
+met: 
+A. A melanocytic neoplasm that has pathology definitive for 
+melanoma, desmoplastic melanoma, or sclerosing nevus. 
+Cutaneous Melanoma Risk Assessment Algorithmic Tests 
+XXX. Cutaneous melanoma risk assessment algorithmic tests (0089U) 
+may be considered 
+medically necessary when: 
+A. The member has a melanocytic neoplasm that shows at least 
+one ABCDE feature (
+asymmetry, border irregularity, color 
+variegation, 
+diameter greater than 6 mm, and evolution), AND 
+B. A biopsy is being considered but has not yet been performed, 
+AND 
+C. The use of the test is limited to a maximum of 2 times per visit. 
+ 
+XXXI. Cutaneous melanoma risk assessment algorithmic tests (0089U) are 
+considered 
+investigational for all other indications. 
+ 
+Ovarian Cancer  
+Ovarian Cancer Diagnostic Algorithmic Tests 
+XXXII. Ovarian cancer diagnostic algorithmic tests (i.e., OVA1, Overa, 
+ROMA, and OvaWatch) (0003U, 0375U, 81500, 81503) are 
+considered 
+investigational for all indications, including but not 
+limited to: 
+A. Preoperative evaluation of adnexal masses to triage for 
+malignancy 
+B. Screening for ovarian cancer 
+C. Selecting patients for surgery for an adnexal mass 
+D. Evaluation of patients with clinical or radiologic evidence of 
+malignancy 
+E. Evaluation of patients with nonspecific signs or symptoms 
+suggesting possible malignancy 
+F. Postoperative testing and monitoring to assess surgical 
+outcome and/or to detect recurrent malignant disease 
+following treatment.  
+ 
+Ovarian Cancer Treatment Algorithmic Tests 
+XXXIII. Ovarian cancer treatment algorithmic tests (0172U) may be 
+considered 
+medically necessary when both of the following are 
+met: 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 42 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+A. The member has a diagnosis of ovarian cancer, AND 
+B. The member is being considered for PARP inhibitor therapy. 
+ 
+III.    Ovarian cancer treatment algorithmic tests (0172U) are considered 
+investigational for all other indications. 
+ 
+Gynecologic Cancer 
+Gynecologic Cancer Treatment Algorithmic Tests 
+XXXIV. Gynecologic cancer treatment algorithmic tests (81535, 81536) in the 
+assessment of gynecological cancers are considered 
+investigational. 
+ 
+Lung Cancer  
+Evidence-Based Lung Cancer Diagnostic Algorithmic Tests 
+XXXV. Lung cancer diagnostic algorithmic tests (0080U) with sufficient 
+evidence of clinical validity and utility may be considered 
+medically 
+necessary when all of the following are met: 
+A. The member is age 40 years or older, AND 
+B. The member has a single lung nodule between 8 and 30 mm in 
+diameter, 
+AND 
+C. The member has a risk of cancer of 50% or less according to the 
+Mayo risk prediction algorithm, 
+AND 
+D. The member does NOT have a diagnosis of cancer (except for 
+nonmelanoma skin cancer) within 5 years of the lung nodule 
+detection. 
+ 
+XXXVI. Lung cancer diagnostic algorithmic tests (0080U) with sufficient 
+evidence of clinical validity and utility are considered 
+investigational for all other indications where clinical validity and 
+utility have not been demonstrated. 
+ 
+Emerging Evidence Lung Cancer Diagnostic Algorithmic Tests 
+XXXVII. Lung cancer diagnostic algorithmic tests (0092U, 0317U, 0360U, 
+0395U, 0406U, 81479) with insufficient evidence of clinical validity 
+are considered 
+investigational. 
+ 
+Evidence-Based Lung Cancer Treatment Algorithmic Tests 
+A. The member has a diagnosis of ovarian cancer, AND 
+B. The member is being considered for PARP inhibitor therapy. 
+ 
+IV. Ovarian cancer treatment algorithmic tests (0172U) are considered 
+investigational for all other indications. 
+ 
+Gynecologic Cancer 
+Gynecologic Cancer Treatment Algorithmic Tests 
+XXXIV. Gynecologic cancer treatment algorithmic tests (81535, 81536) in the 
+assessment of gynecological cancers are considered 
+investigational. 
+ 
+Lung Cancer  
+Evidence-Based Lung Cancer Diagnostic Algorithmic Tests 
+XXXV. Lung cancer diagnostic algorithmic tests (0080U) with sufficient 
+evidence of clinical validity and utility may be considered 
+medically 
+necessary when all of the following are met: 
+A. The member is age 40 years or older, AND 
+B. The member has a single lung nodule between 8 and 30 mm in 
+diameter, 
+AND 
+C. The member has a risk of cancer of 50% or less according to the 
+Mayo risk prediction algorithm, 
+AND 
+D. The member does NOT have a diagnosis of cancer (except for 
+nonmelanoma skin cancer) within 5 years of the lung nodule 
+detection. 
+ 
+XXXVI. Lung cancer diagnostic algorithmic tests (0080U) with sufficient 
+evidence of clinical validity and utility are considered 
+investigational 
+for all other indications where clinical validity and utility have not 
+been demonstrated. 
+ 
+Emerging Evidence Lung Cancer Diagnostic Algorithmic Tests 
+XXXVII. Lung cancer diagnostic algorithmic tests (0092U, 0317U, 0360U, 
+0395U, 0406U, 81479) with insufficient evidence of clinical validity 
+are considered 
+investigational. 
+ 
+Evidence-Based Lung Cancer Treatment Algorithmic Tests 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 43 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+XXVIII. Lung cancer treatment algorithmic tests (0288U, 81538, 81599) with 
+sufficient evidence of clinical validity and utility may be considered 
+medically necessary when all of the following are met: 
+A. The member has a non-squamous non-small cell lung cancer 
+(NSCLC), 
+AND  
+B. The member’s tumor size less than 5 cm, AND 
+C. The member has no positive lymph nodes (stages I and IIa), 
+AND 
+D. The member is considering adjuvant platinum-containing 
+chemotherapy.  
+ 
+XXXIX. Lung cancer treatment algorithmic tests (0288U, 81538, 81599) with 
+sufficient evidence of clinical validity and utility are considered 
+investigational for all other indications where clinical validity and 
+utility have not been demonstrated. 
+ 
+Emerging Evidence Lung Cancer Treatment Algorithmic Tests 
+XL. Lung cancer treatment algorithmic tests (0414U, 0436U) with 
+insufficient evidence of clinical validity are considered 
+investigational.  
+ 
+Bladder And Urinary Tract Cancer  
+Bladder/Urinary Tract Cancer Diagnostic Algorithmic Tests 
+XLI. Bladder/urinary tract cancer diagnostic algorithmic tests (0012M, 
+0365U, 0420U) are considered 
+investigational for all indications. 
+ 
+ 
+Bladder Cancer Treatment and Recurrence Algorithmic Tests 
+XLII. The use of bladder cancer treatment and recurrence algorithmic 
+test (0013M, 0016M, 0363U, 0366U, 0367U) may be
+ considered 
+medically necessary when all of the following are met: 
+A. The member has a diagnosis of bladder cancer, AND 
+B. Results of algorithmic testing will affect management decisions 
+for the member’s bladder cancer, 
+AND 
+C. The member has not previously undergone bladder cancer 
+treatment and recurrence algorithmic testing for the current 
+cancer diagnosis. 
+XXVIII. Lung cancer treatment algorithmic tests (0288U, 81538, 81599) with 
+sufficient evidence of clinical validity and utility may be considered 
+medically necessary when all of the following are met: 
+A. The member has a non-squamous non-small cell lung cancer 
+(NSCLC), 
+AND  
+B. The member’s tumor size less than 5 cm, AND 
+C. The member has no positive lymph nodes (stages I and IIa), 
+AND 
+D. The member is considering adjuvant platinum-containing 
+chemotherapy.  
+ 
+XXXIX. Lung cancer treatment algorithmic tests (0288U, 81538, 81599) with 
+sufficient evidence of clinical validity and utility are considered 
+investigational for all other indications where clinical validity and 
+utility have not been demonstrated. 
+ 
+Emerging Evidence Lung Cancer Treatment Algorithmic Tests 
+XL. Lung cancer treatment algorithmic tests (0414U, 0436U) with 
+insufficient evidence of clinical validity are considered 
+investigational.  
+ 
+Bladder And Urinary Tract Cancer  
+Bladder/Urinary Tract Cancer Diagnostic Algorithmic Tests 
+XLI. Bladder/urinary tract cancer diagnostic algorithmic tests (0012M, 
+0365U, 0420U) are considered 
+investigational for all indications. 
+ 
+ 
+Bladder Cancer Treatment and Recurrence Algorithmic Tests 
+XLII. The use of bladder cancer treatment and recurrence algorithmic 
+test (0013M, 0016M, 0363U, 0366U, 0367U) may be
+ considered 
+medically necessary when all of the following are met: 
+A. The member has a diagnosis of bladder cancer, AND 
+B. Results of algorithmic testing will affect management decisions 
+for the member’s bladder cancer, 
+AND 
+C. The member has not previously undergone bladder cancer 
+treatment and recurrence algorithmic testing for the current 
+cancer diagnosis. 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 44 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+ 
+ 
+XLIII. The use of bladder cancer treatment and recurrence algorithmic 
+test (0013M, 0016M, 0363U, 0366U, 0367U) is considered 
+investigational for all other indications. 
+ 
+Pancreatic Cancer 
+Evidence-Based Pancreatic Cyst Risk Assessment Algorithmic Tests  
+XLIV. Pancreatic cyst risk assessment algorithmic tests (81479) with 
+sufficient evidence of clinical validity and utility may be
+ considered 
+medically necessary when all of the following are met:  
+A. The member has a pancreatic cyst, AND 
+B. Initial testing (for example, CEA measurement, cytopathology 
+and/or radiology) has been inconclusive for malignancy, 
+AND 
+C. The results of the test will impact treatment decisions (e.g., 
+surgery, more aggressive treatment).  
+ 
+XLV. Pancreatic cyst risk assessment algorithmic tests (81479) with 
+sufficient evidence of clinical validity and utility are considered 
+investigational for all other indications where clinical validity and 
+utility have not been demonstrated. 
+ 
+Emerging Evidence Pancreatic Cyst Risk Assessment Algorithmic Tests  
+XLVI. Pancreatic cyst risk assessment algorithmic tests (0313U) with 
+insufficient evidence of clinical validity are considered 
+investigational. 
+ 
+Cancer Of Unknown Primary 
+Cancer of Unknown Primary Gene Expression Profiling Tests 
+XLVII. The use of a cancer of unknown primary gene expression profiling 
+test (81540) to evaluate the site of origin of a tumor of unknown 
+primary, or to distinguish a primary from a metastatic tumor is 
+considered 
+investigational.  
+ 
+Polygenic Risk Score Tests 
+Breast Cancer Polygenic Risk Score Tests 
+ 
+ 
+XLIII. The use of bladder cancer treatment and recurrence algorithmic 
+test (0013M, 0016M, 0363U, 0366U, 0367U) is considered 
+investigational for all other indications. 
+ 
+Pancreatic Cancer 
+Evidence-Based Pancreatic Cyst Risk Assessment Algorithmic Tests  
+XLIV. Pancreatic cyst risk assessment algorithmic tests (81479) with 
+sufficient evidence of clinical validity and utility may be
+ considered 
+medically necessary when all of the following are met:  
+A. The member has a pancreatic cyst, AND 
+B. Initial testing (for example, CEA measurement, cytopathology 
+and/or radiology) has been inconclusive for malignancy, 
+AND 
+C. The results of the test will impact treatment decisions (e.g., 
+surgery, more aggressive treatment).  
+ 
+XLV. Pancreatic cyst risk assessment algorithmic tests (81479) with 
+sufficient evidence of clinical validity and utility are considered 
+investigational for all other indications where clinical validity and 
+utility have not been demonstrated. 
+ 
+Emerging Evidence Pancreatic Cyst Risk Assessment Algorithmic Tests  
+XLVI. Pancreatic cyst risk assessment algorithmic tests (0313U) with 
+insufficient evidence of clinical validity are considered 
+investigational. 
+ 
+Cancer Of Unknown Primary 
+Cancer of Unknown Primary Gene Expression Profiling Tests 
+XLVII. The use of a cancer of unknown primary gene expression profiling 
+test (81540) to evaluate the site of origin of a tumor of unknown 
+primary, or to distinguish a primary from a metastatic tumor is 
+considered 
+investigational.  
+ 
+Polygenic Risk Score Tests 
+Breast Cancer Polygenic Risk Score Tests 
+
+BSC_CON_2.05 Oncology: Algorithmic Testing 
+Page 45 of 45 
+ 
+ 
+Reproduction without authorization from Blue Shield of California is prohibited 
+ 
+POLICY STATEMENT 
+(No changes) 
+BEFORE AFTER  
+XLVIII. The use of a breast cancer polygenic risk score test (81599) is 
+considered investigational. 
+XLVIII. The use of a breast cancer polygenic risk score test (81599) is 
+considered investigational. 
+ 
+ 

@@ -1,0 +1,14 @@
+{
+  "artifactId": "blueshieldca_bsca-tumor-informed-ctdna-um_2026-02-05_4bd86ea1bb9c",
+  "payerId": "blueshieldca",
+  "policyId": "bsca-tumor-informed-ctdna-um",
+  "fetchedAt": "2026-02-05T20:06:56.611Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.blueshieldca.com/content/dam/bsca/en/provider/documents/2023/authorizations/PRV_Tumor_Informed_Circulating_Tumor_DNA_Test_Cancer_Mng.pdf",
+  "contentLength": 170763,
+  "contentHash": "4bd86ea1bb9c8d4b14e66f60e07e11a8e90453130346a1c6af1e928c84a3dd0d",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

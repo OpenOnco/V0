@@ -1,0 +1,27 @@
+{
+  "id": "del-2026-ml9vwx6w",
+  "type": "delegation-change",
+  "status": "rejected",
+  "createdAt": "2026-02-05T20:03:58.856Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T21:00:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": "False positive: EviCore self-referencing delegation",
+  "payerId": "evicore",
+  "payerName": "EviCore (Evernorth)",
+  "delegatedTo": "evicore",
+  "delegatedToName": "eviCore Healthcare",
+  "effectiveDate": null,
+  "scope": "unknown",
+  "scopeDescription": "Scope not specified",
+  "sourceUrl": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-12/MOL.TS_.396.A_Multi-Cancer%20Early%20Detection%20Screening_V1.0.2026_Eff01.01.2026_Pub09.26.2025_Upd12.08.2025_0.pdf",
+  "sourceQuote": "managed by EviCore",
+  "confidence": 0.6,
+  "recommendation": "Monitor eviCore Healthcare guidelines for EviCore (Evernorth) coverage",
+  "lbmGuidelinesToMonitor": [
+    "evicore-liquid-biopsy-2026",
+    "evicore-molecular-testing-2026"
+  ],
+  "source": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-12/MOL.TS_.396.A_Multi-Cancer%20Early%20Detection%20Screening_V1.0.2026_Eff01.01.2026_Pub09.26.2025_Upd12.08.2025_0.pdf"
+}

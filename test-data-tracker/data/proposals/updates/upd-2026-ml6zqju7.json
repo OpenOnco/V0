@@ -1,13 +1,13 @@
 {
   "id": "upd-2026-ml6zqju7",
   "type": "update",
-  "status": "pending",
+  "status": "rejected",
   "createdAt": "2026-02-03T19:27:41.551Z",
   "createdBy": "daemon",
-  "reviewedAt": null,
-  "reviewedBy": null,
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
   "appliedAt": null,
-  "rejectionReason": null,
+  "rejectionReason": "No existing test to update - performance data folded into new test entry mrd-30",
   "testName": "Quest Diagnostics Flow Cytometry MRD Blood Test for Myeloma",
   "testId": null,
   "changes": {

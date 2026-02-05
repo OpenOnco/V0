@@ -1,0 +1,14 @@
+{
+  "artifactId": "geisinger_geisinger-mp360-mrd_2026-02-05_30395edac728",
+  "payerId": "geisinger",
+  "policyId": "geisinger-mp360-mrd",
+  "fetchedAt": "2026-02-05T20:07:11.307Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+  "contentLength": 25461,
+  "contentHash": "30395edac728bf879718e2e617f780b38725660d0a3edd47e88aaf75a587623c",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

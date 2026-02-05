@@ -1,13 +1,13 @@
 {
   "id": "new-2026-ml6zqju9",
   "type": "new-test",
-  "status": "pending",
+  "status": "rejected",
   "createdAt": "2026-02-03T19:27:41.553Z",
   "createdBy": "daemon",
-  "reviewedAt": null,
-  "reviewedBy": null,
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
   "appliedAt": null,
-  "rejectionReason": null,
+  "rejectionReason": "Real-Time Variant Tracker is a software feature, not a standalone diagnostic test",
   "testData": {
     "name": "Real-Time Variant Tracker",
     "vendor": "Personalis",

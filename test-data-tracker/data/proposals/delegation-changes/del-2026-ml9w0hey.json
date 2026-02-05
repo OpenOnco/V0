@@ -1,0 +1,27 @@
+{
+  "id": "del-2026-ml9w0hey",
+  "type": "delegation-change",
+  "status": "approved",
+  "createdAt": "2026-02-05T20:06:45.034Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T21:00:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": null,
+  "payerId": "bcbsla",
+  "payerName": "BCBS Louisiana",
+  "delegatedTo": "carelon",
+  "delegatedToName": "Carelon Medical Benefits Management",
+  "effectiveDate": "2024-07-01",
+  "scope": "unknown",
+  "scopeDescription": "Scope not specified",
+  "sourceUrl": "https://www.lablue.com/-/media/Medical%20Policies/2022/07/11/17/15/Tumor%20Informed%20Circulating%20Tumor%20DNA%20Testing%20for%20Cancer%20Management%2000792%2020220711_accessibile%20pdf.pdf",
+  "sourceQuote": "policy is being retired  as a part of the collaborative partnership with Carelon",
+  "confidence": 0.95,
+  "recommendation": "Monitor Carelon Medical Benefits Management guidelines for BCBS Louisiana coverage",
+  "lbmGuidelinesToMonitor": [
+    "carelon-liquid-biopsy-2025",
+    "carelon-genetic-testing-2025"
+  ],
+  "source": "https://www.lablue.com/-/media/Medical%20Policies/2022/07/11/17/15/Tumor%20Informed%20Circulating%20Tumor%20DNA%20Testing%20for%20Cancer%20Management%2000792%2020220711_accessibile%20pdf.pdf"
+}

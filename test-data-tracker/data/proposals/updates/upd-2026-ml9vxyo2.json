@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml9vxyo2",
+  "type": "update",
+  "status": "applied",
+  "createdAt": "2026-02-05T20:04:47.426Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": "2026-02-05T20:30:00.000Z",
+  "rejectionReason": null,
+  "testName": "ctDNA MRD testing",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "cervical cancer",
+      "date": null
+    }
+  },
+  "source": "https://www.personalis.com/news",
+  "sourceTitle": "Personalis: ctDNA MRD testing expands to cervical cancer",
+  "confidence": 0.75,
+  "snippet": "New indication: cervical cancer"
+}

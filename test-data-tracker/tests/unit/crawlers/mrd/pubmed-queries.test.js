@@ -73,8 +73,13 @@ describe('PubMed MRD Queries', () => {
       expect(query).toContain('English[la]');
     });
 
-    it('includes humans filter', () => {
+    it('excludes humans filter by default', () => {
       const query = buildMRDSearchQuery();
+      expect(query).not.toContain('Humans[Mesh]');
+    });
+
+    it('includes humans filter when explicitly requested', () => {
+      const query = buildMRDSearchQuery({ requireHumansMesh: true });
       expect(query).toContain('Humans[Mesh]');
     });
   });

@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbsm_bcbsm-ctdna_2026-02-05_00cdf7069ec7",
+  "payerId": "bcbsm",
+  "policyId": "bcbsm-ctdna",
+  "fetchedAt": "2026-02-05T20:06:27.168Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.bcbsm.com/amslibs/content/dam/public/mpr/mprsearch/pdf/2002479.pdf",
+  "contentLength": 46606,
+  "contentHash": "00cdf7069ec7c9ee402b12d376003f2a27c3b4581eae9bb9b251d31490980c03",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

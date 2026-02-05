@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbst_bcbst-ctdna-liquid-biopsy_2026-02-05_d05542ad08ef",
+  "payerId": "bcbst",
+  "policyId": "bcbst-ctdna-liquid-biopsy",
+  "fetchedAt": "2026-02-05T20:07:18.102Z",
+  "contentType": "static_html",
+  "sourceUrl": "https://www.bcbst.com/mpmanual/!ssl!/webhelp/Circulating_Tumor_DNA_Liquid_Biopsy.htm",
+  "contentLength": 9659,
+  "contentHash": "d05542ad08eff96ea9f59066b1a49319fa0b6e474128e7ddf70d232edf55a01b",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

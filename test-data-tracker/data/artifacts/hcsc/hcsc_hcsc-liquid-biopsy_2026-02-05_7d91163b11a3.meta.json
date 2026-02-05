@@ -1,0 +1,14 @@
+{
+  "artifactId": "hcsc_hcsc-liquid-biopsy_2026-02-05_7d91163b11a3",
+  "payerId": "hcsc",
+  "policyId": "hcsc-liquid-biopsy",
+  "fetchedAt": "2026-02-05T20:09:21.952Z",
+  "contentType": "html",
+  "sourceUrl": "https://medicalpolicy.hcsc.com/home.html?corpEntCd=HCSC",
+  "contentLength": 3901,
+  "contentHash": "7d91163b11a3a2b7a6aae2435dc446567e93ca5418058956802d01efd5c84ab5",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

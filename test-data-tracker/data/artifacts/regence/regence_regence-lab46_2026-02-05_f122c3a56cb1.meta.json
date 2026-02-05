@@ -1,0 +1,14 @@
+{
+  "artifactId": "regence_regence-lab46_2026-02-05_f122c3a56cb1",
+  "payerId": "regence",
+  "policyId": "regence-lab46",
+  "fetchedAt": "2026-02-05T20:08:24.729Z",
+  "contentType": "pdf",
+  "sourceUrl": "http://blue.regence.com/trgmedpol/lab/lab46.pdf",
+  "contentLength": 74970,
+  "contentHash": "f122c3a56cb1d78f8fc9b2a76caa64e8a86f94c88b48dcf30a08b3caa23e74a0",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

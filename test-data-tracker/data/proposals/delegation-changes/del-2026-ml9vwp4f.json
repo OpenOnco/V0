@@ -1,0 +1,27 @@
+{
+  "id": "del-2026-ml9vwp4f",
+  "type": "delegation-change",
+  "status": "rejected",
+  "createdAt": "2026-02-05T20:03:48.399Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T21:00:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": "False positive: EviCore self-referencing delegation",
+  "payerId": "evicore",
+  "payerName": "EviCore (Evernorth)",
+  "delegatedTo": "evicore",
+  "delegatedToName": "eviCore Healthcare",
+  "effectiveDate": null,
+  "scope": "unknown",
+  "scopeDescription": "Scope not specified",
+  "sourceUrl": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-06/MOL.TS_.194.A%20Liquid%20Biopsy%20Testing_V2.0.2025_eff07.01.2025_pub04.08.2025_upd05.06.2025_upd06.02.2025.pdf",
+  "sourceQuote": "managed by EviCore",
+  "confidence": 0.6,
+  "recommendation": "Monitor eviCore Healthcare guidelines for EviCore (Evernorth) coverage",
+  "lbmGuidelinesToMonitor": [
+    "evicore-liquid-biopsy-2026",
+    "evicore-molecular-testing-2026"
+  ],
+  "source": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-06/MOL.TS_.194.A%20Liquid%20Biopsy%20Testing_V2.0.2025_eff07.01.2025_pub04.08.2025_upd05.06.2025_upd06.02.2025.pdf"
+}

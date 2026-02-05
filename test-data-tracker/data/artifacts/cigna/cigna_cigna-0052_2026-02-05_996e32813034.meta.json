@@ -1,0 +1,14 @@
+{
+  "artifactId": "cigna_cigna-0052_2026-02-05_996e32813034",
+  "payerId": "cigna",
+  "policyId": "cigna-0052",
+  "fetchedAt": "2026-02-05T20:05:19.920Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0052_coveragepositioncriteria_genetic_testing.pdf",
+  "contentLength": 70218,
+  "contentHash": "996e32813034654170d24687ba3c6c231e5f81defd9c18d35ed540041327e86d",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

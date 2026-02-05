@@ -1,0 +1,14 @@
+{
+  "artifactId": "excellus_excellus-ctdna-liquid-biopsy_2026-02-05_3bd184f2e668",
+  "payerId": "excellus",
+  "policyId": "excellus-ctdna-liquid-biopsy",
+  "fetchedAt": "2026-02-05T20:07:43.612Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.excellusbcbs.com/documents/d/global/exc-prv-circulating-tumor-dna-for-management-of-cancer-liquid-biopsy-",
+  "contentLength": 46312,
+  "contentHash": "3bd184f2e6680d08b1f7862644a972c4ccaee0fcf6dc4126a064e716d5ef756c",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

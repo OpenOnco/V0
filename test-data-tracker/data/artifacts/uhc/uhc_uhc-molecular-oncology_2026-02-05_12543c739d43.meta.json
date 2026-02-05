@@ -1,0 +1,14 @@
+{
+  "artifactId": "uhc_uhc-molecular-oncology_2026-02-05_12543c739d43",
+  "payerId": "uhc",
+  "policyId": "uhc-molecular-oncology",
+  "fetchedAt": "2026-02-05T20:05:10.062Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
+  "contentLength": 441536,
+  "contentHash": "12543c739d43d2c1919b5a8953a2e117d77511d4aab1dddfbb724b71d340dd42",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

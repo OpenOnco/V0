@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-ml9vxyo0",
+  "type": "new-test",
+  "status": "rejected",
+  "createdAt": "2026-02-05T20:04:47.424Z",
+  "createdBy": "daemon",
+  "reviewedAt": "2026-02-05T20:30:00.000Z",
+  "reviewedBy": "claude",
+  "appliedAt": null,
+  "rejectionReason": "Duplicate of new-2026-ml6zqju7 (Quest Flow Cytometry MRD)",
+  "testData": {
+    "name": "Novel Flow Cytometry MRD Blood Test for Myeloma",
+    "vendor": "Quest Diagnostics",
+    "category": "Molecular Residual Disease",
+    "description": "Flow cytometry-based MRD test for myeloma with sensitivity comparable to next-generation sequencing and five-day specimen stability",
+    "launchDate": "2026-02-02"
+  },
+  "source": "https://newsroom.questdiagnostics.com/press-releases",
+  "sourceTitle": "Quest Diagnostics: Launches Novel Flow Cytometry MRD Blood Test for Myeloma",
+  "confidence": 0.7,
+  "snippet": "Flow cytometry-based MRD test for myeloma with sensitivity comparable to next-generation sequencing and five-day specimen stability"
+}

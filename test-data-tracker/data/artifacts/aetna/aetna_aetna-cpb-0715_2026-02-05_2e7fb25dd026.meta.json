@@ -1,0 +1,14 @@
+{
+  "artifactId": "aetna_aetna-cpb-0715_2026-02-05_2e7fb25dd026",
+  "payerId": "aetna",
+  "policyId": "aetna-cpb-0715",
+  "fetchedAt": "2026-02-05T20:05:05.589Z",
+  "contentType": "html",
+  "sourceUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
+  "contentLength": 628111,
+  "contentHash": "2e7fb25dd02690840ce46ae6aa8f540a2a2d3359687c14748629136137c98f77",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

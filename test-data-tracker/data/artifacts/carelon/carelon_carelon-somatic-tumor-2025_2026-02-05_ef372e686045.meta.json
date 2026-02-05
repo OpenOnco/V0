@@ -1,0 +1,14 @@
+{
+  "artifactId": "carelon_carelon-somatic-tumor-2025_2026-02-05_ef372e686045",
+  "payerId": "carelon",
+  "policyId": "carelon-somatic-tumor-2025",
+  "fetchedAt": "2026-02-05T20:06:22.628Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://guidelines.carelonmedicalbenefitsmanagement.com/wp-content/uploads/2025/08/PDF-Somatic-Tumor-Testing-2025-10-05.pdf",
+  "contentLength": 272256,
+  "contentHash": "ef372e6860459a75a50b8f2dcac953c5c0460a9927ea90e7a81fb6e8e41deaf6",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}
