@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-ml6zqjua",
+  "type": "new-test",
+  "status": "pending",
+  "createdAt": "2026-02-03T19:27:41.554Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testData": {
+    "name": "Billion Cell Atlas",
+    "vendor": "Illumina",
+    "category": "Comprehensive Genomic Profiling",
+    "description": "Platform to accelerate AI and drug discovery",
+    "launchDate": "2026-01-13"
+  },
+  "source": "https://www.illumina.com/company/news-center/press-releases.html",
+  "sourceTitle": "Illumina: Launches Billion Cell Atlas",
+  "confidence": 0.7,
+  "snippet": "Platform to accelerate AI and drug discovery"
+}

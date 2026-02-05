@@ -1,0 +1,25 @@
+{
+  "id": "upd-2026-ml6zqju7",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-02-03T19:27:41.551Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Quest Diagnostics Flow Cytometry MRD Blood Test for Myeloma",
+  "testId": null,
+  "changes": {
+    "performance": {
+      "sensitivity": "as sensitive as next-generation sequencing",
+      "cancerType": "myeloma",
+      "stage": null,
+      "population": "ultrasensitive detection of residual disease"
+    }
+  },
+  "source": "https://newsroom.questdiagnostics.com/press-releases",
+  "sourceTitle": "Quest Diagnostics: Quest Diagnostics Flow Cytometry MRD Blood Test for Myeloma sensitivity as sensitive as next-generation sequencing",
+  "confidence": 0.75,
+  "snippet": "sensitivity: as sensitive as next-generation sequencing in myeloma"
+}

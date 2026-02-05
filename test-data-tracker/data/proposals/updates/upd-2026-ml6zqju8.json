@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml6zqju8",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-02-03T19:27:41.552Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "MRD Assay",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "colorectal cancer",
+      "date": null
+    }
+  },
+  "source": "https://www.personalis.com/news",
+  "sourceTitle": "Personalis: MRD Assay expands to colorectal cancer",
+  "confidence": 0.75,
+  "snippet": "New indication: colorectal cancer"
+}

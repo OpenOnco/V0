@@ -1,0 +1,24 @@
+{
+  "id": "upd-2026-ml6zqju5",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-02-03T19:27:41.549Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Signatera™ CDx",
+  "testId": null,
+  "changes": {
+    "regulatory": {
+      "action": "PMA submission",
+      "indication": "Companion diagnostic",
+      "date": "2026-02-02"
+    }
+  },
+  "source": "https://www.natera.com/company/news",
+  "sourceTitle": "Natera: Signatera™ CDx PMA submission",
+  "confidence": 0.75,
+  "snippet": "PMA submission for Companion diagnostic"
+}

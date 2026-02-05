@@ -1,0 +1,23 @@
+{
+  "id": "upd-2026-ml6zqju6",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-02-03T19:27:41.550Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Guardant Reveal",
+  "testId": null,
+  "changes": {
+    "newIndication": {
+      "indication": "Late-stage therapy response monitoring",
+      "date": null
+    }
+  },
+  "source": "https://guardanthealth.com/newsroom/press-releases",
+  "sourceTitle": "Guardant Health: Guardant Reveal expands to Late-stage therapy response monitoring",
+  "confidence": 0.75,
+  "snippet": "New indication: Late-stage therapy response monitoring"
+}
