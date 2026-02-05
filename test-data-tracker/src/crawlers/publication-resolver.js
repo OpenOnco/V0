@@ -36,6 +36,11 @@ function sleep(ms) {
 function buildSearchQuery(evidence) {
   const parts = [];
 
+  // Direct title search - exact match on publication title
+  if (evidence.title) {
+    parts.push(`"${evidence.title}"[ti]`);
+  }
+
   // Trial name is often the best identifier
   if (evidence.trialName) {
     // Clean up trial name - remove common suffixes
@@ -257,6 +262,7 @@ function extractAuthors(xml) {
  */
 export async function resolvePublication(evidence) {
   logger.debug('Resolving publication', {
+    title: evidence.title,
     trialName: evidence.trialName,
     testName: evidence.testName,
   });

@@ -487,7 +487,7 @@ export async function writePublicationToPhysicianDb(pub, context = {}) {
   const item = {
     source_type: sourceType,
     source_id: sourceId,
-    source_url: pub.sourceUrl || pub.url || context.sourceUrl,
+    source_url: pub.sourceUrl || pub.url || null,
     title: pub.title,
     publication_date: pub.publicationDate ? new Date(pub.publicationDate) : (pub.year ? new Date(`${pub.year}-01-01`) : null),
     journal: pub.journal,

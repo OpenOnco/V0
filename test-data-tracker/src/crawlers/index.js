@@ -8,6 +8,7 @@ import { VendorCrawler } from './vendor.js';
 import { PayerCrawler } from './payers.js';
 import { BaseCrawler } from './base.js';
 import { PlaywrightCrawler } from './playwright-base.js';
+import { PublicationIndexCrawler, runPublicationIndexCrawler, getPublicationSourceStatus } from './publication-index.js';
 import { createLogger } from '../utils/logger.js';
 import { SOURCES } from '../config.js';
 
@@ -137,7 +138,11 @@ export {
   CMSCrawler,
   VendorCrawler,
   PayerCrawler,
+  PublicationIndexCrawler,
 };
+
+// Export publication index functions
+export { runPublicationIndexCrawler, getPublicationSourceStatus };
 
 export default {
   // Factory
@@ -161,4 +166,9 @@ export default {
   CMSCrawler,
   VendorCrawler,
   PayerCrawler,
+  PublicationIndexCrawler,
+
+  // Publication index
+  runPublicationIndexCrawler,
+  getPublicationSourceStatus,
 };

@@ -9,6 +9,8 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { PlaywrightCrawler, USER_AGENT } from './playwright-base.js';
 import { config, DISCOVERY_TYPES, SOURCES, MONITORED_VENDORS } from '../config.js';
+import { writeToPhysicianDb, writePublicationsToPhysicianDb, isPhysicianDbConfigured } from './physician-db-writer.js';
+import { resolvePublications } from './publication-resolver.js';
 import { matchTests, formatMatchesForPrompt, lookupTestByName } from '../data/test-dictionary.js';
 import { computeDiff, truncateDiff } from '../utils/diff.js';
 import { canonicalizeContent } from '../utils/canonicalize.js';
@@ -405,7 +407,12 @@ TASK: ${diff ? 'Based on the changes detected, extract' : 'Extract'} ALL of the 
 
 1. **Coverage Announcements** - Insurance coverage, reimbursement decisions, CMS determinations, payer partnerships
 2. **PLA/CPT Codes** - Any codes mentioned (format: 0XXXU for PLA), which test, is it newly assigned?
-3. **Clinical Evidence** - Trial names, publications, key findings, NCT IDs
+3. **Clinical Evidence / Publications** - IMPORTANT: Extract enough detail to find the paper on PubMed:
+   - Trial/study name (CIRCULATE, DYNAMIC, GALAXY, etc.)
+   - Journal name (NEJM, JCO, Lancet Oncology, Nature Medicine, etc.)
+   - NCT ID, PMID, or DOI if mentioned
+   - First author's last name if mentioned
+   - Publication date/year
 4. **Performance Data** - Sensitivity, specificity, PPV, NPV with cancer type/stage context
 5. **Regulatory Updates** - FDA actions (approval, clearance, breakthrough designation) with dates and indications
 6. **New Indications** - New cancer types or clinical settings for existing tests
@@ -436,12 +443,16 @@ Respond with JSON ONLY (no markdown, no explanation):
   ],
   "clinicalEvidence": [
     {
-      "trialName": "Trial or study name",
-      "nctId": "NCT ID if available (or null)",
-      "publication": "Journal/publication if mentioned (or null)",
-      "testName": "Associated test",
+      "trialName": "Trial or study name (e.g., CIRCULATE, DYNAMIC, GALAXY)",
+      "nctId": "NCT ID if available (e.g., NCT04264702)",
+      "journal": "Journal name if mentioned (e.g., NEJM, JCO, Lancet Oncology)",
+      "pmid": "PubMed ID if mentioned (numeric only)",
+      "doi": "DOI if mentioned (e.g., 10.1056/NEJMoa2305032)",
+      "firstAuthor": "First author's last name if mentioned",
+      "testName": "Associated test name",
+      "cancerType": "Cancer type (colorectal, breast, lung, etc.)",
       "findings": "Key findings summary",
-      "date": "Publication or announcement date (or null)"
+      "publicationDate": "Publication date if mentioned (YYYY-MM or YYYY)"
     }
   ],
   "performanceData": [
@@ -916,11 +927,62 @@ Respond ONLY with valid JSON.`,
       stats,
     });
 
+    // Resolve vendor publication hints to actual PubMed papers
+    let publicationResults = { resolved: [], stats: { total: 0, found: 0 } };
+    const clinicalEvidenceItems = discoveries
+      .filter(d => d.type === 'vendor_clinical_evidence')
+      .map(d => ({
+        trialName: d.metadata.trialName,
+        nctId: d.metadata.nctId,
+        journal: d.metadata.journal,
+        pmid: d.metadata.pmid,
+        doi: d.metadata.doi,
+        firstAuthor: d.metadata.firstAuthor,
+        testName: d.metadata.testName,
+        cancerType: d.metadata.cancerType,
+        publicationDate: d.metadata.publicationDate,
+        vendorName: d.metadata.vendorName,
+      }));
+
+    if (clinicalEvidenceItems.length > 0) {
+      try {
+        this.log('info', `Resolving ${clinicalEvidenceItems.length} publication hints to PubMed...`);
+        publicationResults = await resolvePublications(clinicalEvidenceItems);
+        this.log('info', 'Publication resolution complete', {
+          found: publicationResults.stats.found,
+          notFound: publicationResults.stats.notFound,
+        });
+      } catch (error) {
+        this.log('warn', 'Publication resolution failed', { error: error.message });
+      }
+    }
+
+    // Write resolved publications to physician-system database
+    let physicianDbWrite = { skipped: true, stats: { total: 0, new: 0 } };
+    if (publicationResults.resolved.length > 0 && isPhysicianDbConfigured()) {
+      try {
+        physicianDbWrite = await writePublicationsToPhysicianDb(publicationResults.resolved);
+        if (physicianDbWrite.stats.new > 0) {
+          this.log('info', 'Wrote publications to physician-system DB', {
+            new: physicianDbWrite.stats.new,
+            updated: physicianDbWrite.stats.updated,
+            failed: physicianDbWrite.stats.failed,
+          });
+        }
+      } catch (error) {
+        this.log('warn', 'Failed to write publications to physician-system DB', { error: error.message });
+      }
+    } else if (publicationResults.resolved.length > 0) {
+      this.log('debug', 'Physician DB not configured - skipping publication export');
+    }
+
     // Return enhanced result with proposals and skipped for email
     return {
       discoveries,
       proposals,
       skippedDiscoveries,
+      publicationResults,
+      physicianDbWrite,
     };
   }
 
@@ -1193,11 +1255,16 @@ Respond ONLY with valid JSON.`,
   }
 
   /**
-   * Create discovery for clinical evidence
+   * Create discovery for clinical evidence / publication hint
+   * Includes fields needed to resolve to actual PubMed paper
    */
   createClinicalEvidenceDiscovery(vendor, evidence, sourceUrl) {
-    const parts = [evidence.trialName || evidence.publication].filter(Boolean);
+    const parts = [evidence.trialName || evidence.journal].filter(Boolean);
     const title = `${vendor.name}: ${parts[0] || 'Clinical Evidence'}`;
+
+    // Higher relevance if we have specific identifiers
+    const hasSpecificId = evidence.nctId || evidence.pmid || evidence.doi;
+    const relevance = hasSpecificId ? 'high' : (evidence.journal ? 'medium' : 'low');
 
     return {
       source: SOURCES.VENDOR,
@@ -1205,16 +1272,22 @@ Respond ONLY with valid JSON.`,
       title: title.slice(0, 200),
       summary: evidence.findings || 'Clinical study results announced',
       url: sourceUrl,
-      relevance: evidence.nctId ? 'high' : 'medium',
+      relevance,
       metadata: {
         vendorId: vendor.id,
         vendorName: vendor.name,
+        // Publication identifiers for PubMed resolution
         trialName: evidence.trialName,
         nctId: evidence.nctId,
-        publication: evidence.publication,
+        journal: evidence.journal,
+        pmid: evidence.pmid,
+        doi: evidence.doi,
+        firstAuthor: evidence.firstAuthor,
+        publicationDate: evidence.publicationDate,
+        // Test and context info
         testName: evidence.testName,
+        cancerType: evidence.cancerType,
         findings: evidence.findings,
-        date: evidence.date,
       },
     };
   }
