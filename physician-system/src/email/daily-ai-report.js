@@ -19,7 +19,8 @@ async function gatherSystemData() {
   // Get counts and recent activity
   const [
     totals,
-    recentItems,
+    recentItemsCount,
+    recentItemsSample,
     recentTrials,
     sourceBreakdown,
     recentErrors,
@@ -34,6 +35,13 @@ async function gatherSystemData() {
         (SELECT COUNT(*) FROM mrd_clinical_trials) as clinical_trials,
         (SELECT COUNT(*) FROM mrd_item_embeddings) as embeddings
     `),
+    // Get actual count of new items (not limited)
+    query(`
+      SELECT COUNT(*) as count
+      FROM mrd_guidance_items
+      WHERE created_at > NOW() - INTERVAL '24 hours'
+    `),
+    // Get sample of recent items for AI to analyze
     query(`
       SELECT source_type, title, created_at
       FROM mrd_guidance_items
@@ -113,7 +121,8 @@ async function gatherSystemData() {
     timestamp: new Date().toISOString(),
     health,
     totals: totals.rows[0],
-    recentItems: recentItems.rows,
+    recentItemsCount: parseInt(recentItemsCount.rows[0].count),
+    recentItemsSample: recentItemsSample.rows,
     recentTrials: recentTrials.rows,
     sourceBreakdown: sourceBreakdown.rows,
     potentialIssues: recentErrors.rows,
@@ -223,7 +232,7 @@ export async function sendDailyAIReport() {
     const systemData = await gatherSystemData();
     logger.info('System data gathered', {
       items: systemData.totals.guidance_items,
-      recentActivity: systemData.recentItems.length
+      recentActivity: systemData.recentItemsCount
     });
 
     // Generate AI analysis
@@ -232,13 +241,13 @@ export async function sendDailyAIReport() {
 
     // Determine status for subject line
     const hasErrors = systemData.health.errorCount > 0;
-    const hasActivity = systemData.recentItems.length > 0;
+    const hasActivity = systemData.recentItemsCount > 0;
 
     let statusEmoji = '✅';
     if (hasErrors) statusEmoji = '⚠️';
     else if (!hasActivity) statusEmoji = '📊';
 
-    const subject = `${statusEmoji} OpenOnco MRD Daily: ${systemData.totals.guidance_items} items, ${systemData.recentItems.length} new today`;
+    const subject = `${statusEmoji} OpenOnco MRD Daily: ${systemData.totals.guidance_items} items, ${systemData.recentItemsCount} new today`;
 
     // Generate CC action items HTML
     const ccItemsHtml = systemData.ccActionItems.length > 0
