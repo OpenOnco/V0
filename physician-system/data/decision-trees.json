@@ -1,0 +1,819 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-06",
+  "description": "Clinical decision tree mapping for MRD testing scenarios. Used by the physician chat system to route queries to evidence and structure responses around clinical decisions.",
+  "routing": {
+    "description": "MRD results create a binary clinical fork. Route to the appropriate scenario based on indication + result polarity.",
+    "paths": {
+      "negative": {
+        "label": "De-escalation Path",
+        "clinical_question": "Can therapy be safely reduced or omitted?",
+        "soc_tension": "Current SOC recommends continuing treatment. De-escalation goes against SOC and requires strong evidence justification."
+      },
+      "positive": {
+        "label": "Escalation Path",
+        "clinical_question": "Should therapy be intensified, switched, or supplemented?",
+        "soc_tension": "No formal guidelines address MRD-guided escalation. Physician is navigating without a map."
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "scenario_id": "CRC_III_post_resection_MRD_positive",
+      "display_name": "CRC Stage III, MRD Positive, Post-Resection",
+      "cancer_type": "colorectal",
+      "stage": "III",
+      "clinical_setting": "post_surgery",
+      "mrd_result": "positive",
+      "query_patterns": [
+        "CRC MRD positive after surgery",
+        "stage 3 colon cancer ctDNA detected post-resection",
+        "colorectal cancer stage III positive Signatera result after colectomy",
+        "MRD detected in stage III CRC patient who completed surgery",
+        "ctDNA positive after CRC resection what do I do",
+        "post-operative MRD positivity in colon cancer management",
+        "stage III rectal cancer molecular residual disease detected",
+        "adjuvant therapy escalation for MRD-positive CRC"
+      ],
+      "decisions": [
+        {
+          "id": "escalate_adjuvant",
+          "question": "Should adjuvant therapy be intensified?",
+          "options": [
+            "Escalate to FOLFOXIRI from standard FOLFOX",
+            "Add anti-EGFR agent (cetuximab/panitumumab) if RAS wild-type",
+            "Add bevacizumab to backbone chemotherapy",
+            "Extend adjuvant duration beyond standard 3-6 months",
+            "Continue standard FOLFOX and monitor with serial MRD"
+          ],
+          "evidence_tags": ["CIRCULATE-Japan", "GALAXY", "VEGA", "NCCN_CRC_adjuvant"],
+          "key_trials": ["NCT04120701", "NCT04776655"],
+          "evidence_strength": "emerging",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Adjuvant Therapy and Surveillance sections",
+          "clinical_context": "MRD positivity post-resection in stage III CRC is associated with a >70% recurrence rate at 3 years. Prospective data from CIRCULATE-Japan and GALAXY support MRD-guided adjuvant intensification, but randomized evidence for survival benefit from escalation specifically is still maturing. RAS/BRAF status should guide targeted agent selection."
+        },
+        {
+          "id": "retest_timing",
+          "question": "When and how often should MRD be retested?",
+          "options": [
+            "Landmark retest at 4 weeks post-surgery (if not already done)",
+            "Every 3 months during adjuvant therapy",
+            "Post-adjuvant landmark at 2-4 weeks after last cycle",
+            "Serial monitoring every 3-6 months for 3 years post-treatment"
+          ],
+          "evidence_tags": ["GALAXY", "DYNAMIC-III", "CIRCULATE-Japan"],
+          "key_trials": ["NCT04776655", "NCT04089631"],
+          "evidence_strength": "moderate",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Post-Treatment Surveillance",
+          "clinical_context": "The 4-week post-surgery landmark timepoint is most validated for initial MRD assessment. During adjuvant therapy, serial testing every 3 months allows detection of molecular response or persistence. Clearance of ctDNA during adjuvant is prognostically favorable but does not necessarily indicate cure."
+        },
+        {
+          "id": "clinical_trial_enrollment",
+          "question": "Is the patient eligible for an MRD-guided clinical trial?",
+          "options": [
+            "CIRCULATE (NCT04120701) — MRD-guided adjuvant in stage II-III CRC",
+            "DYNAMIC-III (NCT04089631) — ctDNA-guided adjuvant for stage III CRC",
+            "NRG-GI005 (NCT05062226) — MRD-directed therapy in resected CRC",
+            "COBRA (NCT04068103) — ctDNA-guided management in CRC",
+            "No suitable trial available at this center"
+          ],
+          "evidence_tags": ["CIRCULATE", "DYNAMIC-III", "NRG-GI005", "COBRA"],
+          "key_trials": ["NCT04120701", "NCT04089631", "NCT05062226", "NCT04068103"],
+          "evidence_strength": "actively_enrolling",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Clinical Trial Participation",
+          "clinical_context": "Multiple randomized trials are evaluating MRD-guided adjuvant therapy in stage III CRC. DYNAMIC-III and NRG-GI005 specifically address stage III patients. Enrollment should be considered early before initiating off-protocol therapy changes based on MRD status alone."
+        },
+        {
+          "id": "accelerate_imaging",
+          "question": "Should imaging surveillance be intensified?",
+          "options": [
+            "Advance next scheduled CT chest/abdomen/pelvis",
+            "Add PET-CT for occult metastatic workup",
+            "MRI liver if hepatic metastasis suspected",
+            "Maintain standard NCCN surveillance imaging schedule"
+          ],
+          "evidence_tags": ["NCCN_CRC_surveillance", "GALAXY"],
+          "key_trials": ["NCT04776655"],
+          "evidence_strength": "emerging",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Surveillance and Follow-up",
+          "clinical_context": "MRD positivity can precede radiographic recurrence by a median of 8-12 months. Accelerated imaging may detect oligometastatic disease amenable to metastasectomy or ablation. However, false-positive MRD results can lead to unnecessary imaging and anxiety. PET-CT has higher sensitivity for extrahepatic disease in this context."
+        }
+      ],
+      "test_considerations": {
+        "signatera": {
+          "relevance": "high",
+          "note": "Most CRC validation data from GALAXY and CIRCULATE trials. Tumor-informed, tracks 16 patient-specific variants. Requires tumor tissue for bespoke panel design with ~2-week initial turnaround. Preferred when tissue is available and time permits."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Tumor-naive approach using methylation signatures and fragmentomics. No tissue required, faster initial turnaround. Lower sensitivity than tumor-informed assays for low-burden MRD but avoids tissue dependency. Consider when tissue is unavailable or degraded."
+        },
+        "foundationone_tracker": {
+          "relevance": "moderate",
+          "note": "Tumor-informed approach leveraging FoundationOne CDx tissue panel. Limited CRC-specific published validation compared to Signatera. May be convenient when FoundationOne CDx was already run for treatment planning."
+        }
+      },
+      "evidence_gaps": [
+        "No prospective RCT demonstrating overall survival benefit from MRD-guided therapy escalation in stage III CRC",
+        "Optimal timing for MRD testing relative to surgery and adjuvant initiation not standardized",
+        "Head-to-head comparison of tumor-informed vs tumor-naive assays in stage III CRC lacking",
+        "Unknown whether MRD-guided escalation in RAS-mutant CRC provides similar benefit as in RAS-wt",
+        "Role of MRD in guiding immunotherapy (MSI-H patients) vs chemotherapy intensification not established"
+      ],
+      "related_scenarios": [
+        "CRC_III_post_resection_MRD_negative",
+        "CRC_III_during_adjuvant_MRD_positive"
+      ]
+    },
+    {
+      "scenario_id": "CRC_III_post_resection_MRD_negative",
+      "display_name": "CRC Stage III, MRD Negative, Post-Resection",
+      "cancer_type": "colorectal",
+      "stage": "III",
+      "clinical_setting": "post_surgery",
+      "mrd_result": "negative",
+      "query_patterns": [
+        "CRC MRD negative after surgery can I de-escalate",
+        "stage 3 colon cancer ctDNA not detected post-resection",
+        "Signatera negative in stage III CRC should I shorten chemo",
+        "MRD negative colorectal cancer skip adjuvant oxaliplatin",
+        "ctDNA undetectable after colon resection adjuvant decision",
+        "stage III rectal cancer MRD cleared do I still need FOLFOX",
+        "de-escalation of adjuvant therapy based on negative MRD CRC",
+        "negative molecular residual disease colon cancer prognosis"
+      ],
+      "decisions": [
+        {
+          "id": "deescalate_adjuvant",
+          "question": "Can adjuvant chemotherapy be de-escalated or shortened?",
+          "options": [
+            "Shorten FOLFOX from 6 months to 3 months",
+            "Omit oxaliplatin and use fluoropyrimidine monotherapy",
+            "Omit adjuvant chemotherapy entirely (stage III — investigational)",
+            "Continue standard adjuvant per risk stratification regardless of MRD"
+          ],
+          "evidence_tags": ["DYNAMIC", "VEGA", "IDEA", "ACT3"],
+          "key_trials": ["NCT04089631", "NCT04776655", "NCT05054400"],
+          "evidence_strength": "emerging",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Adjuvant Therapy, Duration of Therapy",
+          "clinical_context": "DYNAMIC demonstrated that MRD-negative stage II CRC patients could safely omit adjuvant chemotherapy without compromising recurrence-free survival. For stage III, de-escalation based on MRD negativity is still investigational. The IDEA collaboration supports 3-month FOLFOX for low-risk stage III (T1-3, N1), and adding MRD negativity may further support this approach, but prospective validation is pending from DYNAMIC-III and VEGA."
+        },
+        {
+          "id": "retest_interval",
+          "question": "How frequently should MRD be rechecked after a negative result?",
+          "options": [
+            "Repeat every 3 months for the first 2 years",
+            "Repeat every 6 months as part of standard surveillance",
+            "Test only if clinical or imaging concern arises",
+            "Serial monitoring every 3 months during adjuvant, then every 6 months"
+          ],
+          "evidence_tags": ["GALAXY", "DYNAMIC-III", "BESPOKE"],
+          "key_trials": ["NCT04776655", "NCT04089631"],
+          "evidence_strength": "moderate",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Post-Treatment Surveillance",
+          "clinical_context": "A single negative MRD result does not exclude future recurrence. Serial monitoring increases the negative predictive value and enables early detection of molecular recurrence. GALAXY data showed that some patients with initial MRD negativity later converted to positive, often preceding radiographic recurrence. The optimal interval for serial testing in MRD-negative stage III patients is under investigation."
+        },
+        {
+          "id": "confidence_by_test_type",
+          "question": "How confident should I be in the MRD-negative result based on test used?",
+          "options": [
+            "Tumor-informed assay (Signatera, FoundationOne Tracker) — higher NPV, more reassuring",
+            "Tumor-naive assay (Guardant Reveal) — acceptable NPV but lower sensitivity for low-burden disease",
+            "Consider confirmatory test with alternative assay if clinical suspicion remains",
+            "Accept result and follow standard surveillance"
+          ],
+          "evidence_tags": ["assay_comparison", "GALAXY", "analytical_validation"],
+          "key_trials": ["NCT04776655", "NCT04264702"],
+          "evidence_strength": "moderate",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Biomarker Testing",
+          "clinical_context": "Tumor-informed assays (Signatera, FoundationOne Tracker) track patient-specific mutations and generally have higher analytical sensitivity (down to ~0.01% VAF) compared to tumor-naive approaches. Negative predictive value for tumor-informed assays at the 4-week post-surgery landmark is approximately 90-95% in stage III CRC. Tumor-naive assays may miss low-burden disease but still provide meaningful prognostic information. Clinical decision-making should integrate MRD status with conventional risk factors (T stage, N stage, LVI, PNI, grade)."
+        },
+        {
+          "id": "surveillance_modification",
+          "question": "Should standard imaging surveillance be reduced?",
+          "options": [
+            "Maintain standard NCCN surveillance schedule regardless of MRD status",
+            "Consider reduced imaging frequency with continued serial MRD monitoring",
+            "Lengthen interval between CT scans if serial MRD remains negative",
+            "No change — insufficient evidence to modify imaging based on MRD alone"
+          ],
+          "evidence_tags": ["NCCN_CRC_surveillance", "DYNAMIC"],
+          "key_trials": ["NCT04089631"],
+          "evidence_strength": "insufficient",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Surveillance and Follow-up",
+          "clinical_context": "There is currently no prospective evidence supporting reduction of standard imaging surveillance based on MRD negativity in stage III CRC. While intuitively appealing, false-negative MRD results and the limitations of current assay sensitivity mean imaging remains essential. Future trials may address whether MRD-guided surveillance reduction is safe, but this is not recommended outside of a clinical trial setting at present."
+        }
+      ],
+      "test_considerations": {
+        "signatera": {
+          "relevance": "high",
+          "note": "Highest NPV in CRC among commercial MRD assays. GALAXY data demonstrated strong prognostic value of negative results. Serial negativity further increases confidence. Preferred for de-escalation decision-making given most robust validation."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Tumor-naive with lower analytical sensitivity. A negative result is less reassuring for de-escalation decisions compared to tumor-informed assays. May miss low-variant-allele-frequency ctDNA. Consider confirmatory tumor-informed testing if de-escalation is being considered."
+        },
+        "foundationone_tracker": {
+          "relevance": "moderate",
+          "note": "Tumor-informed approach with reasonable NPV. Less published CRC validation data than Signatera for de-escalation context. Acceptable alternative when FoundationOne CDx tissue profiling was already performed."
+        }
+      },
+      "evidence_gaps": [
+        "No completed RCT validating adjuvant omission in MRD-negative stage III CRC (DYNAMIC-III ongoing)",
+        "Single-timepoint MRD negativity has incomplete NPV — serial monitoring data still maturing",
+        "Tumor-naive assay NPV in stage III CRC not well characterized for de-escalation",
+        "Impact of microsatellite instability status on MRD-negative interpretation not fully elucidated",
+        "Whether MRD-guided de-escalation is safe for high-risk stage III (T4 or N2) is unknown"
+      ],
+      "related_scenarios": [
+        "CRC_III_post_resection_MRD_positive",
+        "CRC_III_during_adjuvant_MRD_positive"
+      ]
+    },
+    {
+      "scenario_id": "CRC_III_during_adjuvant_MRD_positive",
+      "display_name": "CRC Stage III, MRD Positive, During Adjuvant Therapy",
+      "cancer_type": "colorectal",
+      "stage": "III",
+      "clinical_setting": "during_adjuvant",
+      "mrd_result": "positive",
+      "query_patterns": [
+        "CRC patient on FOLFOX MRD still positive",
+        "ctDNA detected during adjuvant chemotherapy colon cancer",
+        "MRD rising on adjuvant FOLFOX stage III CRC",
+        "persistent ctDNA during chemo colorectal cancer what to do",
+        "stage 3 colon cancer Signatera positive mid-treatment",
+        "molecular residual disease not clearing on adjuvant therapy CRC",
+        "should I switch chemo regimen if MRD positive during FOLFOX",
+        "serial MRD increasing during adjuvant treatment colorectal"
+      ],
+      "decisions": [
+        {
+          "id": "switch_regimen",
+          "question": "Should the chemotherapy regimen be changed?",
+          "options": [
+            "Escalate from FOLFOX to FOLFOXIRI (add irinotecan)",
+            "Switch to irinotecan-based regimen (FOLFIRI) if oxaliplatin intolerant",
+            "Continue current FOLFOX and retest after 2-3 additional cycles",
+            "Discontinue adjuvant if poor performance status and transition to surveillance"
+          ],
+          "evidence_tags": ["CIRCULATE-Japan", "MEDOCC-CrEATE", "NCCN_CRC_adjuvant"],
+          "key_trials": ["NCT04120701", "NCT04958083"],
+          "evidence_strength": "very_limited",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Adjuvant Therapy",
+          "clinical_context": "Persistent or rising ctDNA during adjuvant chemotherapy suggests resistant residual disease. However, there is minimal prospective evidence guiding regimen changes based on mid-treatment MRD status. MEDOCC-CrEATE is evaluating MRD-guided treatment intensification but results are pending. Clinicians must weigh toxicity of escalation against the unproven benefit. Molecular profiling (RAS, BRAF, MSI) should guide targeted agent options."
+        },
+        {
+          "id": "add_targeted_agent",
+          "question": "Should a targeted agent be added to the backbone chemotherapy?",
+          "options": [
+            "Add cetuximab or panitumumab if RAS wild-type and left-sided primary",
+            "Add bevacizumab to chemotherapy backbone",
+            "Consider pembrolizumab if MSI-H/dMMR",
+            "No targeted agent — insufficient evidence for MRD-guided targeted addition"
+          ],
+          "evidence_tags": ["CIRCULATE-Japan", "RAS_wt_targeted", "MSI_immunotherapy"],
+          "key_trials": ["NCT04120701"],
+          "evidence_strength": "very_limited",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Systemic Therapy for Advanced Disease (extrapolated)",
+          "clinical_context": "Adding targeted agents based on MRD persistence during adjuvant therapy is not supported by completed prospective trials. Anti-EGFR therapy in the adjuvant setting has historically not shown benefit (PETACC-8, N0147), though this predates MRD selection. For MSI-H tumors with persistent MRD, checkpoint inhibitor therapy is biologically rational but off-label in the adjuvant setting for CRC. These decisions should ideally occur within a clinical trial."
+        },
+        {
+          "id": "retest_timing_during_treatment",
+          "question": "When should MRD be retested during adjuvant therapy?",
+          "options": [
+            "Retest every 3 months (aligned with standard restaging intervals)",
+            "Retest mid-cycle (after 4 cycles of planned 8-12 cycle regimen)",
+            "Retest at end of planned adjuvant course",
+            "Retest 2-4 weeks after any regimen change to assess molecular response"
+          ],
+          "evidence_tags": ["GALAXY", "serial_monitoring", "CIRCULATE-Japan"],
+          "key_trials": ["NCT04776655", "NCT04120701"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Surveillance",
+          "clinical_context": "Optimal frequency of MRD testing during adjuvant therapy is not established. Most trial protocols test at 3-month intervals or at landmark timepoints (mid-treatment, end-of-treatment). Testing too frequently may detect transient fluctuations in ctDNA levels that do not reflect true molecular response. A pragmatic approach is to align MRD testing with restaging imaging intervals."
+        },
+        {
+          "id": "imaging_workup",
+          "question": "What imaging should be performed for persistent MRD positivity?",
+          "options": [
+            "CT chest/abdomen/pelvis to evaluate for occult metastatic disease",
+            "PET-CT if CT is negative and MRD is persistently positive or rising",
+            "MRI liver to rule out sub-centimeter hepatic metastases",
+            "Continue standard surveillance imaging — MRD alone does not mandate accelerated imaging"
+          ],
+          "evidence_tags": ["NCCN_CRC_surveillance", "imaging_sensitivity"],
+          "key_trials": [],
+          "evidence_strength": "expert_opinion",
+          "nccn_reference": "NCCN Colon Cancer v1.2026 — Surveillance and Follow-up",
+          "clinical_context": "Persistent MRD positivity during adjuvant therapy raises concern for occult metastatic disease that may be below the resolution of standard CT imaging. PET-CT may identify metabolically active disease not seen on CT. Liver MRI has superior sensitivity for small hepatic lesions. However, imaging in the context of a positive MRD without radiographic correlate may lead to anxiety and serial scans without actionable findings. A stepwise approach (CT first, then PET-CT if negative) is reasonable."
+        }
+      ],
+      "test_considerations": {
+        "signatera": {
+          "relevance": "high",
+          "note": "Best validated for serial monitoring kinetics in CRC. Quantitative ctDNA levels (mean tumor molecules/mL) enable tracking of molecular response or progression over time. GALAXY data supports use of ctDNA dynamics during treatment."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Can be used for serial monitoring but quantitative tracking of ctDNA dynamics is less characterized compared to Signatera. Semi-quantitative output (detected/not detected with signal score) may be sufficient for binary clearance assessment."
+        },
+        "foundationone_tracker": {
+          "relevance": "moderate",
+          "note": "Tumor-informed serial monitoring is feasible. Less published data on ctDNA kinetics during adjuvant therapy compared to Signatera. Quantitative output available."
+        }
+      },
+      "evidence_gaps": [
+        "No completed RCT addressing therapy modification based on mid-adjuvant MRD status",
+        "Unknown whether MRD-guided regimen switch during adjuvant improves outcomes vs completing planned therapy",
+        "Optimal ctDNA threshold for defining molecular non-response during treatment not established",
+        "Role of targeted agents added mid-adjuvant based on MRD not studied prospectively",
+        "Whether persistent MRD positivity during adjuvant should trigger early transition to metastatic treatment paradigm is unknown"
+      ],
+      "related_scenarios": [
+        "CRC_III_post_resection_MRD_positive",
+        "CRC_III_post_resection_MRD_negative"
+      ]
+    },
+    {
+      "scenario_id": "breast_I_III_post_resection_MRD_positive",
+      "display_name": "Breast Cancer Stage I-III, MRD Positive, Post-Resection",
+      "cancer_type": "breast",
+      "stage": "I-III",
+      "clinical_setting": "post_surgery",
+      "mrd_result": "positive",
+      "query_patterns": [
+        "breast cancer MRD positive after mastectomy",
+        "ctDNA detected in triple negative breast cancer post-surgery",
+        "TNBC Signatera positive what treatment options",
+        "HR positive breast cancer MRD detected after lumpectomy",
+        "HER2 positive breast cancer MRD positive post-resection management",
+        "molecular residual disease breast cancer adjuvant therapy decision",
+        "ctDNA positive early stage breast cancer recurrence risk",
+        "MRD guided treatment breast cancer post-operative"
+      ],
+      "decisions": [
+        {
+          "id": "treatment_by_subtype",
+          "question": "How should MRD-positive results be interpreted by breast cancer subtype?",
+          "options": [
+            "TNBC: Consider capecitabine (CREATE-X), olaparib if BRCA-mutated (OlympiA), pembrolizumab extension",
+            "HR+/HER2-: CDK4/6 inhibitor (monarchE abemaciclib), extended endocrine therapy",
+            "HER2+: T-DXd consideration (DESTINY-Breast05 pending), extended trastuzumab/pertuzumab",
+            "Consult multidisciplinary tumor board for integrated treatment planning"
+          ],
+          "evidence_tags": ["CREATE-X", "OlympiA", "monarchE", "DESTINY-Breast05", "c-TRAK_TN"],
+          "key_trials": ["NCT03145961", "NCT04264702"],
+          "evidence_strength": "emerging",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Adjuvant and Post-Neoadjuvant Therapy",
+          "clinical_context": "MRD-positive breast cancer interpretation is subtype-dependent. For TNBC, MRD positivity post-neoadjuvant with residual disease aligns with CREATE-X (capecitabine) and KEYNOTE-522 (pembrolizumab) indications, though these were not MRD-selected trials. For HR+/HER2-, monarchE showed abemaciclib benefit in high-risk patients, and MRD positivity may support its use. HER2+ patients have multiple escalation options. Critically, no completed RCT has used MRD as the selection biomarker for treatment escalation in breast cancer."
+        },
+        {
+          "id": "available_interventions",
+          "question": "What therapeutic interventions are available for MRD-positive breast cancer?",
+          "options": [
+            "TNBC: Capecitabine (if residual disease after neoadjuvant), olaparib (if germline BRCA1/2), pembrolizumab continuation",
+            "HR+/HER2-: Abemaciclib + endocrine therapy, extended endocrine therapy (10 years), ovarian function suppression if premenopausal",
+            "HER2+: T-DM1 (if residual disease after neoadjuvant), neratinib, T-DXd (emerging data)",
+            "All subtypes: Clinical trial enrollment should be prioritized"
+          ],
+          "evidence_tags": ["CREATE-X", "OlympiA", "monarchE", "ExteNET", "KATHERINE"],
+          "key_trials": ["NCT03145961", "NCT04264702"],
+          "evidence_strength": "emerging",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Systemic Adjuvant Therapy",
+          "clinical_context": "Current post-surgical treatment decisions in breast cancer are driven by pathologic response to neoadjuvant therapy, tumor subtype, and genomic assays (Oncotype, MammaPrint) rather than MRD status. MRD positivity provides additional prognostic information but is not yet incorporated into NCCN treatment algorithms. The evidence base is strongest for using standard escalation pathways (CREATE-X, OlympiA, monarchE, KATHERINE) in the appropriate clinical context, with MRD status serving as supportive rather than deterministic information."
+        },
+        {
+          "id": "serial_monitoring_approach",
+          "question": "What serial MRD monitoring schedule should be used?",
+          "options": [
+            "Every 3 months during active adjuvant/post-adjuvant treatment",
+            "Every 6 months during extended endocrine therapy (HR+)",
+            "Retest after completing adjuvant therapy to assess clearance",
+            "No standardized monitoring schedule — follow institutional protocol or trial"
+          ],
+          "evidence_tags": ["BESPOKE", "c-TRAK_TN", "serial_monitoring"],
+          "key_trials": ["NCT04264702", "NCT03145961"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Surveillance",
+          "clinical_context": "Serial MRD monitoring in breast cancer is less standardized than in CRC. The BESPOKE trial demonstrated that serial Signatera testing could identify breast cancer recurrence earlier than standard imaging. c-TRAK TN evaluated ctDNA-guided pembrolizumab in TNBC with detectable ctDNA. Monitoring intervals should be individualized based on subtype (TNBC recurrence peaks earlier than HR+), treatment phase, and available assay turnaround time."
+        },
+        {
+          "id": "clinical_trial_enrollment_breast",
+          "question": "Is the patient eligible for an MRD-guided breast cancer trial?",
+          "options": [
+            "c-TRAK TN (NCT03145961) — ctDNA-guided pembrolizumab in TNBC",
+            "BESPOKE (NCT04264702) — MRD-guided management across breast subtypes",
+            "Institutional MRD-guided interventional studies",
+            "No suitable trial available — consider standard-of-care escalation pathways"
+          ],
+          "evidence_tags": ["c-TRAK_TN", "BESPOKE", "clinical_trials"],
+          "key_trials": ["NCT03145961", "NCT04264702"],
+          "evidence_strength": "actively_enrolling",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Special Considerations",
+          "clinical_context": "The landscape of MRD-guided interventional trials in breast cancer is more limited than in CRC. c-TRAK TN is a key trial evaluating pembrolizumab triggered by ctDNA detection in TNBC. BESPOKE is evaluating MRD across subtypes. Patients with MRD-positive results should be evaluated for trial eligibility before initiating off-protocol MRD-guided therapy changes."
+        }
+      ],
+      "test_considerations": {
+        "signatera": {
+          "relevance": "high",
+          "note": "Most breast cancer validation data from BESPOKE trial. Demonstrated ability to detect molecular relapse a median of 8.9 months before clinical/radiographic recurrence in early breast cancer. Tumor-informed with high sensitivity."
+        },
+        "radar": {
+          "relevance": "moderate",
+          "note": "NeoGenomics RaDaR assay tracks up to 48 tumor-specific variants. Some published breast cancer data. Tumor-informed approach similar to Signatera with expanded variant panel."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Tumor-naive approach applicable across subtypes. Less breast-specific validation data compared to Signatera. May be preferred when tumor tissue is limited (e.g., small core biopsy from lumpectomy)."
+        },
+        "foundationone_tracker": {
+          "relevance": "low_moderate",
+          "note": "Tumor-informed, applicable when FoundationOne CDx was used for treatment planning. Limited published breast cancer MRD validation data."
+        }
+      },
+      "evidence_gaps": [
+        "No completed RCT using MRD as the selection biomarker for breast cancer treatment escalation",
+        "Optimal MRD assay and testing schedule for breast cancer not established",
+        "Unclear whether MRD-guided escalation improves survival beyond standard risk-adapted therapy",
+        "Limited data on MRD dynamics during neoadjuvant therapy and correlation with pathologic response",
+        "HR+/HER2- late recurrences (5-20 years) may not be captured by standard MRD monitoring windows",
+        "Role of MRD in guiding CDK4/6 inhibitor use (beyond monarchE criteria) not studied"
+      ],
+      "related_scenarios": [
+        "CRC_III_post_resection_MRD_positive",
+        "breast_I_III_post_resection_MRD_negative"
+      ]
+    },
+    {
+      "scenario_id": "NSCLC_I_III_post_resection_MRD_positive",
+      "display_name": "NSCLC Stage I-III, MRD Positive, Post-Resection",
+      "cancer_type": "non_small_cell_lung",
+      "stage": "I-III",
+      "clinical_setting": "post_surgery",
+      "mrd_result": "positive",
+      "query_patterns": [
+        "lung cancer MRD positive after lobectomy",
+        "NSCLC ctDNA detected post-resection what to do",
+        "stage II lung cancer Signatera positive adjuvant options",
+        "EGFR mutant NSCLC MRD positive should I start osimertinib",
+        "non-small cell lung cancer molecular residual disease management",
+        "ctDNA positive after lung surgery immunotherapy decision",
+        "MRD guided adjuvant therapy lung cancer stage III",
+        "resected NSCLC persistent ctDNA treatment options"
+      ],
+      "decisions": [
+        {
+          "id": "adjuvant_therapy_decision",
+          "question": "What adjuvant therapy should be considered for MRD-positive resected NSCLC?",
+          "options": [
+            "Cisplatin-based doublet chemotherapy (if not already received)",
+            "Osimertinib for EGFR-mutant NSCLC (ADAURA-supported, MRD adds urgency)",
+            "Atezolizumab for PD-L1 >= 1% stage II-IIIA (IMpower010-supported)",
+            "Pembrolizumab for stage IB-IIIA (PEARLS/KEYNOTE-091-supported)",
+            "Sequential chemo then immunotherapy",
+            "Clinical trial enrollment (MERMAID-1, TRACC)"
+          ],
+          "evidence_tags": ["ADAURA", "IMpower010", "KEYNOTE-091", "MERMAID-1", "NCCN_NSCLC_adjuvant"],
+          "key_trials": ["NCT04385368", "NCT04050345"],
+          "evidence_strength": "early",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Adjuvant Systemic Therapy",
+          "clinical_context": "Adjuvant therapy decisions in resected NSCLC are currently driven by stage, PD-L1 status, and molecular profiling (EGFR, ALK) rather than MRD status. ADAURA established osimertinib as standard adjuvant for EGFR-mutant stage IB-IIIA NSCLC regardless of MRD. IMpower010 and KEYNOTE-091 support adjuvant immunotherapy for selected patients. MRD positivity may add urgency to initiate or intensify adjuvant therapy but is not yet a validated selection biomarker for any specific agent in NSCLC."
+        },
+        {
+          "id": "immunotherapy_mrd_guided",
+          "question": "Should immunotherapy be initiated or modified based on MRD status?",
+          "options": [
+            "Initiate adjuvant atezolizumab or pembrolizumab if eligible by PD-L1/stage",
+            "Consider durvalumab (extrapolated from unresectable stage III PACIFIC data)",
+            "MERMAID-1 (NCT04385368) — ctDNA-guided durvalumab in resected NSCLC",
+            "Do not use MRD alone to justify immunotherapy outside of approved indications"
+          ],
+          "evidence_tags": ["MERMAID-1", "IMpower010", "PACIFIC", "IMvigor011"],
+          "key_trials": ["NCT04385368", "NCT04660344"],
+          "evidence_strength": "early",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Adjuvant Immunotherapy",
+          "clinical_context": "MERMAID-1 is the key trial evaluating ctDNA-guided adjuvant immunotherapy (durvalumab + chemo vs chemo alone) in resected NSCLC with detectable ctDNA. IMvigor011 in bladder cancer provides a relevant analog for ctDNA-guided immunotherapy in solid tumors. Current NCCN guidelines do not incorporate MRD status into adjuvant immunotherapy decisions for NSCLC. MRD positivity may identify patients most likely to benefit from immunotherapy, but this remains hypothesis-generating."
+        },
+        {
+          "id": "retest_timing_nsclc",
+          "question": "When should MRD be retested in resected NSCLC?",
+          "options": [
+            "Landmark at 4 weeks post-surgery",
+            "Every 3 months during adjuvant therapy",
+            "Post-adjuvant landmark 4-6 weeks after last treatment",
+            "Every 3-6 months during surveillance for 3-5 years"
+          ],
+          "evidence_tags": ["TRACC", "TRACERx", "serial_monitoring"],
+          "key_trials": ["NCT04050345"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Surveillance",
+          "clinical_context": "There is less consensus on MRD testing intervals in NSCLC compared to CRC. The TRACERx study provided foundational data on ctDNA dynamics in resected NSCLC, showing that post-surgical ctDNA detection precedes radiographic relapse. TRACC is prospectively evaluating ctDNA monitoring in resected NSCLC. A pragmatic approach mirrors CRC protocols: landmark post-surgery, serial testing during adjuvant, and periodic surveillance testing."
+        },
+        {
+          "id": "integrate_molecular_profiling",
+          "question": "How should MRD results be integrated with comprehensive molecular profiling?",
+          "options": [
+            "EGFR-mutant: MRD supports osimertinib initiation if not already started (ADAURA)",
+            "ALK-rearranged: Alectinib adjuvant (ALINA trial), MRD may support urgency",
+            "No actionable driver: MRD supports adjuvant chemo + immunotherapy if eligible",
+            "High TMB/PD-L1: MRD may support immunotherapy prioritization over chemo alone"
+          ],
+          "evidence_tags": ["ADAURA", "ALINA", "molecular_profiling", "NCCN_NSCLC_biomarkers"],
+          "key_trials": ["NCT04385368", "NCT04050345"],
+          "evidence_strength": "early",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Molecular Testing and Targeted Therapy",
+          "clinical_context": "NSCLC treatment is uniquely driven by molecular profiling (EGFR, ALK, ROS1, BRAF, MET, RET, KRAS G12C, NTRK, HER2). MRD status should be interpreted alongside these results. For patients with actionable drivers, targeted therapy decisions (osimertinib for EGFR, alectinib for ALK per ALINA) are made on molecular profiling alone, and MRD adds prognostic rather than predictive information. For patients without actionable drivers, MRD may help risk-stratify for adjuvant chemo/immunotherapy decisions."
+        }
+      ],
+      "test_considerations": {
+        "foundationone_tracker": {
+          "relevance": "moderate_high",
+          "note": "Leverages FoundationOne CDx tissue profiling commonly performed in NSCLC for treatment planning. Tumor-informed approach with comprehensive genomic profiling already integrated. Convenient when CGP has been completed for molecular subtyping."
+        },
+        "signatera": {
+          "relevance": "moderate_high",
+          "note": "Growing lung cancer validation data. TRACERx and TRACC data support ctDNA monitoring in resected NSCLC. Tumor-informed with high sensitivity. Requires dedicated tissue analysis separate from CGP panel."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Useful when tissue is limited — common in NSCLC where only small core biopsies or cytology may be available from bronchoscopy or CT-guided biopsy. Tumor-naive approach avoids tissue dependency. Less lung-specific validation data."
+        },
+        "foundationone_tracker_note": {
+          "relevance": "info",
+          "note": "In NSCLC, tissue availability can be a challenge (small biopsies, EBUS samples). Tumor-informed assays requiring separate tissue submission may face practical barriers. Consider tissue availability when selecting an MRD assay."
+        }
+      },
+      "evidence_gaps": [
+        "No practice-changing prospective data for MRD-guided therapy in resected NSCLC as of early 2026",
+        "MERMAID-1 results pending — primary study for ctDNA-guided adjuvant immunotherapy in NSCLC",
+        "Unknown whether MRD-guided escalation improves survival beyond standard adjuvant (ADAURA, IMpower010)",
+        "Optimal MRD assay for NSCLC not determined — tissue availability is a unique challenge",
+        "Role of MRD in guiding adjuvant targeted therapy duration (e.g., osimertinib 3 years vs longer) not studied",
+        "Limited data on MRD dynamics in NSCLC with driver mutations under targeted therapy",
+        "Whether MRD-negative resected NSCLC can safely forgo adjuvant therapy is unstudied"
+      ],
+      "related_scenarios": [
+        "CRC_III_post_resection_MRD_positive",
+        "breast_I_III_post_resection_MRD_positive",
+        "NSCLC_I_III_post_resection_MRD_negative"
+      ]
+    },
+    {
+      "scenario_id": "breast_I_III_post_resection_MRD_negative",
+      "display_name": "Breast Cancer Stage I-III, MRD Negative, Post-Resection",
+      "cancer_type": "breast",
+      "stage": "I-III",
+      "clinical_setting": "post_surgery",
+      "mrd_result": "negative",
+      "query_patterns": [
+        "breast cancer MRD negative can I stop capecitabine",
+        "TNBC ctDNA undetectable after neoadjuvant skip CREATE-X",
+        "HR positive breast MRD negative omit CDK4/6 inhibitor",
+        "breast cancer ctDNA negative de-escalation safe",
+        "MRD negative early breast cancer reduce adjuvant therapy",
+        "triple negative breast cancer MRD cleared do I still need pembro",
+        "estrogen receptor positive MRD negative skip abemaciclib",
+        "breast cancer MRD guided treatment reduction"
+      ],
+      "decisions": [
+        {
+          "id": "deescalate_by_subtype",
+          "question": "Can adjuvant therapy be de-escalated based on MRD negativity and subtype?",
+          "options": [
+            "TNBC: Consider omitting capecitabine if MRD-negative AND pathologic complete response to neoadjuvant (investigational)",
+            "HR+/HER2-: Consider endocrine therapy alone without CDK4/6 inhibitor if MRD-negative (monarchE eligibility not MRD-guided)",
+            "HER2+: Standard anti-HER2 therapy continues regardless — MRD-guided de-escalation not studied",
+            "Continue full standard-of-care adjuvant regardless of MRD status (most conservative)"
+          ],
+          "evidence_tags": ["CREATE-X", "monarchE", "KATHERINE", "penelope-B", "BESPOKE"],
+          "key_trials": ["NCT04264702"],
+          "evidence_strength": "very_limited",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Adjuvant and Post-Neoadjuvant Therapy",
+          "clinical_context": "No completed RCT has validated MRD-guided de-escalation in breast cancer for ANY subtype. The key concern is that standard adjuvant therapies (capecitabine for TNBC, abemaciclib for HR+, T-DM1 for HER2+) were selected by pathologic response and clinical risk factors — not MRD status. A negative MRD result does not mean the patient would not benefit from these therapies. For HR+ disease, late recurrence risk (5-20 years) makes MRD-guided de-escalation particularly risky since current assays may not detect dormant micrometastatic disease."
+        },
+        {
+          "id": "late_recurrence_risk",
+          "question": "How does the risk of late recurrence affect the MRD-negative interpretation in breast cancer?",
+          "options": [
+            "HR+ breast cancer: Late recurrences (5-20 years) are well documented and may not shed detectable ctDNA during dormancy",
+            "TNBC: Recurrence risk peaks at 1-3 years, making MRD negativity somewhat more reassuring in the early window",
+            "HER2+: Late recurrences uncommon with modern anti-HER2 therapy, but MRD-guided de-escalation still unvalidated",
+            "All subtypes: Serial MRD monitoring does not replace standard imaging surveillance"
+          ],
+          "evidence_tags": ["BESPOKE", "late_recurrence", "dormancy", "serial_monitoring"],
+          "key_trials": ["NCT04264702"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Surveillance",
+          "clinical_context": "HR+/HER2- breast cancer has a uniquely prolonged recurrence risk that extends 10-20 years beyond diagnosis. This is fundamentally different from CRC, where most recurrences occur within 3-5 years. Current MRD assays detect actively shedding tumor DNA; dormant micrometastatic disease in HR+ breast cancer may remain undetectable by ctDNA for years before reactivation. This biological limitation makes MRD-guided de-escalation in HR+ breast cancer significantly riskier than in CRC."
+        },
+        {
+          "id": "serial_monitoring_negative",
+          "question": "What serial MRD monitoring approach is appropriate after a negative result?",
+          "options": [
+            "Every 3 months for 2 years post-treatment (aligned with highest recurrence risk window for TNBC)",
+            "Every 6 months for 5 years (HR+ disease with extended recurrence risk)",
+            "Retest only at clinical concern or after completing adjuvant therapy",
+            "No standardized protocol — follow institutional or trial-specific schedule"
+          ],
+          "evidence_tags": ["BESPOKE", "c-TRAK_TN", "serial_monitoring"],
+          "key_trials": ["NCT04264702", "NCT03145961"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Surveillance",
+          "clinical_context": "Serial monitoring schedule should be subtype-adapted. TNBC recurrence risk peaks early (1-3 years), supporting more frequent monitoring in that window. HR+ recurrence risk is protracted, and monitoring may need to extend longer but at lower frequency. BESPOKE data showed ctDNA can detect molecular relapse ~8.9 months before radiographic detection, supporting serial monitoring. A single negative result should not provide false reassurance."
+        },
+        {
+          "id": "confidence_mrd_negative_breast",
+          "question": "How confident should clinicians be in a negative MRD result for breast cancer?",
+          "options": [
+            "Tumor-informed assay (Signatera): Higher NPV but limited breast-specific de-escalation validation",
+            "Tumor-naive assay (Guardant Reveal): Lower sensitivity, less reassuring for de-escalation decisions",
+            "Consider repeat testing at 3-6 months to confirm sustained negativity before any de-escalation",
+            "Integrate with other prognostic tools (Oncotype DX, MammaPrint, pathologic response) rather than using MRD alone"
+          ],
+          "evidence_tags": ["assay_comparison", "BESPOKE", "OncotypeDX", "MammaPrint"],
+          "key_trials": ["NCT04264702"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 — Biomarker Testing",
+          "clinical_context": "The NPV of MRD assays in breast cancer is less characterized than in CRC. Tumor-informed assays have higher analytical sensitivity, but breast cancer biology (especially HR+ dormancy) poses unique challenges for ctDNA-based MRD assessment. Genomic assays (Oncotype DX, MammaPrint) provide complementary risk stratification that should be considered alongside MRD status. Clinical decisions should never rest on MRD status alone."
+        }
+      ],
+      "test_considerations": {
+        "signatera": {
+          "relevance": "high",
+          "note": "Most breast validation data from BESPOKE. NPV for MRD-negative breast is less mature than CRC. Serial negativity increases confidence but late HR+ recurrences remain a concern."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Tumor-naive, lower sensitivity. A negative result from Guardant Reveal provides less reassurance for de-escalation than a tumor-informed negative result. Consider when tissue unavailable."
+        },
+        "foundationone_tracker": {
+          "relevance": "moderate",
+          "note": "Tumor-informed approach. Less breast MRD de-escalation data. Acceptable when FoundationOne CDx tissue profiling was already performed."
+        }
+      },
+      "evidence_gaps": [
+        "No completed RCT validating MRD-guided de-escalation in breast cancer for any subtype",
+        "Late recurrence in HR+ breast cancer (5-20 years) may be undetectable by current ctDNA assays during dormancy",
+        "NPV of MRD assays in breast cancer less characterized than in CRC, especially for de-escalation decisions",
+        "Interaction between MRD status and genomic risk scores (Oncotype DX, MammaPrint) not studied",
+        "Whether MRD negativity in TNBC after pCR to neoadjuvant truly identifies patients who can avoid capecitabine is unknown",
+        "Optimal monitoring schedule for MRD-negative breast cancer not established"
+      ],
+      "related_scenarios": [
+        "breast_I_III_post_resection_MRD_positive",
+        "CRC_III_post_resection_MRD_negative"
+      ]
+    },
+    {
+      "scenario_id": "NSCLC_I_III_post_resection_MRD_negative",
+      "display_name": "NSCLC Stage I-III, MRD Negative, Post-Resection",
+      "cancer_type": "non_small_cell_lung",
+      "stage": "I-III",
+      "clinical_setting": "post_surgery",
+      "mrd_result": "negative",
+      "query_patterns": [
+        "NSCLC MRD negative after lobectomy skip chemo",
+        "lung cancer ctDNA undetectable omit adjuvant immunotherapy",
+        "EGFR positive NSCLC MRD negative still need osimertinib",
+        "stage II lung cancer MRD negative adjuvant decision",
+        "non-small cell lung cancer MRD guided de-escalation",
+        "resected NSCLC ctDNA cleared can I avoid atezolizumab",
+        "MRD negative lung cancer reduce adjuvant therapy",
+        "NSCLC post-surgery negative Signatera treatment implications"
+      ],
+      "decisions": [
+        {
+          "id": "deescalate_adjuvant_nsclc",
+          "question": "Can adjuvant therapy be omitted or shortened based on MRD negativity?",
+          "options": [
+            "Omit adjuvant cisplatin-based chemotherapy if MRD-negative (investigational — no RCT supports this)",
+            "Omit adjuvant immunotherapy (atezolizumab/pembrolizumab) if MRD-negative (no evidence supports this)",
+            "Shorten planned adjuvant duration based on sustained MRD negativity (unstudied)",
+            "Continue full standard adjuvant therapy regardless of MRD status (most evidence-based)"
+          ],
+          "evidence_tags": ["TRACERx", "IMpower010", "KEYNOTE-091", "MERMAID-1"],
+          "key_trials": ["NCT04385368", "NCT04050345"],
+          "evidence_strength": "very_limited",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Adjuvant Systemic Therapy",
+          "clinical_context": "No RCT supports omitting adjuvant therapy based on MRD negativity in NSCLC. TRACERx showed that MRD-negative patients had excellent prognosis, but this was observational — the patients still received standard therapy. IMpower010 and KEYNOTE-091 established adjuvant immunotherapy for eligible patients regardless of MRD status. MRD-guided de-escalation in NSCLC is less mature than in CRC."
+        },
+        {
+          "id": "egfr_adaura_exception",
+          "question": "Does MRD negativity change the ADAURA-based recommendation for EGFR-mutant NSCLC?",
+          "options": [
+            "No — ADAURA supports 3 years of adjuvant osimertinib for EGFR-mutant stage IB-IIIA regardless of MRD status",
+            "MRD negativity does not override ADAURA; osimertinib is standard for eligible patients",
+            "Some clinicians consider MRD status when discussing osimertinib duration, but this is off-label and unstudied",
+            "Clinical trial enrollment to study MRD-guided osimertinib duration is the preferred approach"
+          ],
+          "evidence_tags": ["ADAURA", "EGFR_osimertinib", "MRD_NSCLC"],
+          "key_trials": ["NCT02511106"],
+          "evidence_strength": "established_for_adaura_not_for_mrd",
+          "nccn_reference": "NCCN NSCLC v3.2026 — EGFR-Mutant Adjuvant Therapy",
+          "clinical_context": "ADAURA demonstrated significant DFS and OS improvement with adjuvant osimertinib in EGFR-mutant stage IB-IIIA NSCLC. This benefit was observed across all subgroups and was NOT MRD-selected. MRD negativity in an EGFR-mutant patient does NOT provide evidence that osimertinib can be safely omitted. The ADAURA recommendation stands regardless of MRD result. This is a critical distinction: MRD adds prognostic information but does NOT modify the treatment recommendation for EGFR-mutant disease."
+        },
+        {
+          "id": "serial_monitoring_negative_nsclc",
+          "question": "What monitoring approach is appropriate after a negative MRD result in resected NSCLC?",
+          "options": [
+            "Every 3 months for 2 years, then every 6 months for years 3-5",
+            "Aligned with standard NCCN imaging surveillance schedule (CT every 6-12 months)",
+            "Retest at end of adjuvant therapy and at any clinical concern",
+            "No standardized protocol — TRACERx and TRACC data support serial monitoring but interval not standardized"
+          ],
+          "evidence_tags": ["TRACERx", "TRACC", "serial_monitoring"],
+          "key_trials": ["NCT04050345"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Surveillance",
+          "clinical_context": "TRACERx demonstrated ctDNA dynamics predict recurrence in resected NSCLC, with ctDNA detection preceding radiographic relapse. TRACC is prospectively evaluating serial ctDNA monitoring. MRD-negative results are reassuring but a single negative does not exclude future recurrence. Monitoring should complement, not replace, standard NCCN imaging surveillance."
+        },
+        {
+          "id": "confidence_mrd_negative_nsclc",
+          "question": "How confident should clinicians be in a negative MRD result for NSCLC?",
+          "options": [
+            "Tumor-informed assay: Higher NPV, supported by TRACERx data",
+            "Tumor-naive assay: Lower sensitivity, less reassuring for de-escalation consideration",
+            "NSCLC-specific challenge: Small biopsy specimens may limit tumor-informed assay design quality",
+            "Integrate with molecular profiling (EGFR, ALK, PD-L1) — MRD negativity does not change driver mutation management"
+          ],
+          "evidence_tags": ["TRACERx", "assay_comparison", "tissue_availability"],
+          "key_trials": ["NCT04050345"],
+          "evidence_strength": "limited",
+          "nccn_reference": "NCCN NSCLC v3.2026 — Biomarker Testing",
+          "clinical_context": "NSCLC presents unique tissue challenges for tumor-informed MRD assays. Small core biopsies or EBUS cytology specimens may yield insufficient DNA for bespoke panel design. Tumor-naive assays avoid this barrier but have lower sensitivity. Regardless of MRD status, patients with actionable driver mutations (EGFR, ALK, ROS1) should receive targeted adjuvant therapy per established evidence. MRD adds a prognostic layer but does not override molecular-profiling-based treatment decisions."
+        }
+      ],
+      "test_considerations": {
+        "signatera": {
+          "relevance": "moderate_high",
+          "note": "Growing NSCLC data from TRACERx/TRACC. Tissue requirement can be challenging with small NSCLC biopsies. High NPV when tissue is adequate."
+        },
+        "foundationone_tracker": {
+          "relevance": "moderate_high",
+          "note": "Leverages FoundationOne CDx commonly done in NSCLC. Convenient when CGP already completed. Limited de-escalation-specific data."
+        },
+        "guardant_reveal": {
+          "relevance": "moderate",
+          "note": "Tissue-free advantage critical in NSCLC where biopsy tissue is often limited. Lower sensitivity means negative result is less reassuring for de-escalation."
+        }
+      },
+      "evidence_gaps": [
+        "No RCT supports omitting adjuvant therapy in MRD-negative resected NSCLC",
+        "ADAURA benefit for EGFR-mutant patients was not MRD-selected — MRD negativity does not justify omitting osimertinib",
+        "IMpower010 correlative ctDNA data are hypothesis-generating only — MRD-guided immunotherapy omission is unvalidated",
+        "TRACERx data on MRD-negative prognosis is observational, not interventional",
+        "Tissue limitation in NSCLC (small biopsies) may reduce quality of tumor-informed MRD assay design",
+        "Whether MRD-negative resected NSCLC without driver mutations can safely forgo adjuvant chemo is unknown"
+      ],
+      "related_scenarios": [
+        "NSCLC_I_III_post_resection_MRD_positive",
+        "CRC_III_post_resection_MRD_negative"
+      ]
+    }
+  ],
+  "evidence_strength_definitions": {
+    "established": "Supported by published phase III RCT data with practice-changing results",
+    "moderate": "Supported by prospective cohort data or published phase II/III with meaningful endpoints",
+    "emerging": "Supported by published prospective data but not yet practice-changing; ongoing confirmatory trials",
+    "actively_enrolling": "Key trials are open and enrolling — results pending",
+    "limited": "Based on retrospective data, small prospective studies, or extrapolation from related settings",
+    "very_limited": "Minimal or no direct evidence; decisions based on biological rationale or expert opinion",
+    "insufficient": "No meaningful evidence to support or refute the approach",
+    "expert_opinion": "Based on consensus or expert practice patterns without prospective data"
+  },
+  "test_glossary": {
+    "signatera": {
+      "vendor": "Natera",
+      "approach": "tumor_informed",
+      "variants_tracked": 16,
+      "requires_tissue": true,
+      "initial_tat_days": "10-14",
+      "monitoring_tat_days": "5-7"
+    },
+    "guardant_reveal": {
+      "vendor": "Guardant Health",
+      "approach": "tumor_naive",
+      "technology": "methylation + fragmentomics + SNV",
+      "requires_tissue": false,
+      "initial_tat_days": "7-10",
+      "monitoring_tat_days": "7-10"
+    },
+    "foundationone_tracker": {
+      "vendor": "Foundation Medicine (Roche)",
+      "approach": "tumor_informed",
+      "requires_tissue": true,
+      "leverages_cgp": true,
+      "initial_tat_days": "14-21",
+      "monitoring_tat_days": "7-10"
+    },
+    "radar": {
+      "vendor": "NeoGenomics",
+      "approach": "tumor_informed",
+      "variants_tracked": 48,
+      "requires_tissue": true,
+      "initial_tat_days": "14-21",
+      "monitoring_tat_days": "7-10"
+    }
+  }
+}

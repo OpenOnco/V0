@@ -76,7 +76,7 @@ async function gatherSystemData() {
         (SELECT COUNT(*) FROM mrd_item_embeddings) as embedded_items
     `),
     query(`
-      SELECT source_key,
+      SELECT source_key, source_type,
              EXTRACT(days FROM NOW() - COALESCE(last_release_at, created_at)) as days_stale
       FROM mrd_sources
       WHERE is_active = TRUE
@@ -132,18 +132,56 @@ async function gatherSystemData() {
 }
 
 /**
+ * Generate a source-specific remediation prompt based on source type
+ */
+function getStaleSourcePrompt(src) {
+  const key = src.source_key;
+
+  // NCCN guidelines → version-watch
+  if (key.startsWith('nccn-')) {
+    return `Check if there's a new version of ${key}. Check NCCN website for updates. Run: node src/cli.js version-watch`;
+  }
+
+  // Crawler-backed sources get their specific CLI command
+  const crawlerCommands = {
+    pubmed: `Run the PubMed crawler to refresh literature. Run: node src/cli.js pubmed`,
+    clinicaltrials: `Run the ClinicalTrials.gov crawler to refresh trials. Run: node src/cli.js clinicaltrials`,
+    'fda-drugs': `Run the FDA crawler to check for new drug approvals. Run: node src/cli.js fda`,
+    'fda-devices': `Run the FDA crawler to check for new device approvals. Run: node src/cli.js fda`,
+    'cms-lcd': `Run the CMS crawler to check for LCD updates. Run: node src/cli.js cms`,
+  };
+
+  if (crawlerCommands[key]) {
+    return crawlerCommands[key];
+  }
+
+  // RSS feeds
+  if (key.startsWith('rss-')) {
+    return `Run the RSS monitor to fetch new articles from ${key}. Run: node src/cli.js monitor`;
+  }
+
+  // Payer sources
+  if (key.startsWith('payer-')) {
+    return `Check for payer policy updates from ${key}. Run: node src/cli.js health to review status.`;
+  }
+
+  // Fallback for any other source type
+  return `Check for updates to ${key}. Run: node src/cli.js health to review status.`;
+}
+
+/**
  * Generate Claude Code action items with copy-paste prompts
  */
 function generateCCActionItems({ staleSources, lowConfidenceItems, failedCrawlerRuns, embeddingPercent, health }) {
   const items = [];
 
-  // Stale sources need version check
+  // Stale sources need refresh — generate source-specific prompts
   for (const src of staleSources) {
     items.push({
       type: 'stale-source',
       priority: src.days_stale > 30 ? 'high' : 'medium',
       title: `${src.source_key} is ${Math.round(src.days_stale)} days stale`,
-      prompt: `Check if there's a new version of ${src.source_key}. If it's an NCCN guideline, check their website for updates. Run: node src/cli.js version-watch`,
+      prompt: getStaleSourcePrompt(src),
     });
   }
 

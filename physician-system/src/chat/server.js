@@ -4,6 +4,9 @@
  */
 
 import { createServer } from 'http';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import crypto from 'crypto';
 import { createLogger } from '../utils/logger.js';
 import { query } from '../db/client.js';
@@ -15,6 +18,11 @@ import { embedAllMissing } from '../embeddings/mrd-embedder.js';
 import { ensureCitationCompliance } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
+import { getExamplesByType } from './few-shot-examples.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const DECISION_TREES = JSON.parse(readFileSync(join(__dirname, '../../data/decision-trees.json'), 'utf8'));
 
 const logger = createLogger('server');
 
@@ -37,20 +45,20 @@ const MAX_REQUESTS_PER_WINDOW = 10;
 
 const MEDICAL_DISCLAIMER = `This summary is for informational purposes only and does not constitute medical advice. Clinical decisions should incorporate the full context of each patient's situation. Evidence levels and guideline recommendations may change. Always review primary sources and consult with qualified healthcare professionals.`;
 
-const MRD_CHAT_SYSTEM_PROMPT = `You are a medical literature assistant helping physicians find MRD (Molecular Residual Disease) evidence for solid tumors.
+const MRD_CHAT_SYSTEM_PROMPT = `You are a clinical decision support tool for physicians using MRD/ctDNA testing in solid tumors.
 
-CRITICAL RULES - FOLLOW EXACTLY:
-1. NEVER make treatment recommendations or say "you should", "we recommend", or "consider doing"
-2. EVERY factual claim MUST cite a source using [1], [2], etc.
-3. Use phrases like "the evidence suggests", "studies show", "guidelines state"
-4. Note evidence levels when available (e.g., "Category 2A", "Level I", "Grade A")
-5. If evidence conflicts, present both sides with citations
-6. Encourage clinical trial enrollment when relevant
-7. Acknowledge limitations and gaps in evidence
-8. Keep responses concise (3-5 paragraphs max)
-9. Focus on solid tumors only (NOT hematologic malignancies)
+CORE PRINCIPLE: Organize responses around the clinical decisions physicians face, not academic literature review. When a physician asks a question, identify the decision at hand and present the evidence for each option.
 
-You provide INFORMATION to support clinical judgment, not ADVICE.
+QUERY-TYPE ROUTING: The user's question will fall into one of these categories. Use the matching response structure from the template rules below:
+- clinical_guidance: Decision-oriented, present options with evidence for each
+- coverage_policy: Payer-by-payer coverage status, access options
+- test_comparison: Head-to-head data, practical differences
+- trial_evidence: Trial details, enrollment status, key findings
+- general: Simplified evidence summary
+
+SAFETY: Present evidence for clinical options — never recommend a specific option. Use "evidence suggests", "guidelines state", "clinicians often consider". Never use "you should", "I recommend", "you need to". Every factual claim must cite [N]. Acknowledge evidence gaps honestly. Focus on solid tumors only. 3-5 paragraphs max.
+
+Few-shot examples may be provided to illustrate expected output quality.
 
 ${RESPONSE_TEMPLATE_PROMPT}
 
@@ -201,6 +209,62 @@ function intentToSourceTypes(intent) {
   }
 
   return [...new Set(sourceTypes)];
+}
+
+// ============================================
+// DECISION TREE MATCHING
+// ============================================
+
+const MRD_POSITIVE_PATTERNS = /\b(mrd[- ]?positive|ctdna[- ]?positive|ctdna[- ]?detected|mrd[- ]?detected|signatera[- ]?positive|mrd\+|ctdna\+|positive[- ]?mrd|positive[- ]?ctdna|detectable[- ]?ctdna|ctdna[- ]?still[- ]?positive|rising[- ]?ctdna|persistent[- ]?ctdna)\b/i;
+const MRD_NEGATIVE_PATTERNS = /\b(mrd[- ]?negative|ctdna[- ]?negative|ctdna[- ]?undetect|ctdna[- ]?not[- ]?detected|ctdna[- ]?cleared|mrd[- ]?cleared|signatera[- ]?negative|mrd-|ctdna-|negative[- ]?mrd|negative[- ]?ctdna|undetectable[- ]?ctdna|ctdna[- ]?clearance)\b/i;
+
+const CANCER_TYPE_ALIASES = {
+  colorectal: ['colorectal', 'crc', 'colon', 'rectal', 'colon cancer', 'colorectal cancer'],
+  breast: ['breast', 'tnbc', 'triple negative', 'triple-negative', 'hr+', 'hr positive', 'her2', 'breast cancer'],
+  non_small_cell_lung: ['nsclc', 'non-small cell', 'non small cell', 'lung', 'lung cancer', 'non-small-cell lung'],
+};
+
+function findMatchingScenario(intent, queryText) {
+  const lowerQuery = queryText.toLowerCase();
+
+  // Detect MRD result polarity
+  const isPositive = MRD_POSITIVE_PATTERNS.test(lowerQuery);
+  const isNegative = MRD_NEGATIVE_PATTERNS.test(lowerQuery);
+  const mrdResult = isPositive ? 'positive' : isNegative ? 'negative' : null;
+
+  if (!mrdResult) return null;
+
+  // Detect cancer type from intent or query text
+  let matchedCancerType = null;
+  const intentCancerTypes = (intent.cancer_types || []).map(c => c.toLowerCase());
+
+  for (const [canonicalType, aliases] of Object.entries(CANCER_TYPE_ALIASES)) {
+    if (intentCancerTypes.some(ct => aliases.some(a => ct.includes(a)))) {
+      matchedCancerType = canonicalType;
+      break;
+    }
+    if (aliases.some(a => lowerQuery.includes(a))) {
+      matchedCancerType = canonicalType;
+      break;
+    }
+  }
+
+  if (!matchedCancerType) return null;
+
+  // Find matching scenario
+  const scenario = DECISION_TREES.scenarios.find(s =>
+    s.cancer_type === matchedCancerType && s.mrd_result === mrdResult
+  );
+
+  if (scenario) {
+    logger.info('Decision tree matched', {
+      scenario: scenario.scenario_id,
+      cancerType: matchedCancerType,
+      mrdResult,
+    });
+  }
+
+  return scenario || null;
 }
 
 // ============================================
@@ -724,13 +788,16 @@ async function handleMRDChat(req, res) {
     // Step 1: Extract query intent (Phase 5)
     const intent = await extractQueryIntent(queryText);
 
+    // Step 1b: Match decision tree scenario
+    const matchedScenario = findMatchingScenario(intent, queryText);
+
     // Step 2: Embed the query
     const queryEmbedding = await embedQuery(queryText);
 
     // Step 3: Hybrid search (Phase 5)
     const sources = await hybridSearch(queryText, queryEmbedding, intent, filters);
 
-    if (sources.length === 0) {
+    if (sources.length === 0 && !matchedScenario) {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({
         success: true,
@@ -747,26 +814,59 @@ async function handleMRDChat(req, res) {
     // Step 4: Generate response with Claude
     const claude = getAnthropic();
 
+    // Build scenario context if decision tree matched
+    let scenarioContext = '';
+    if (matchedScenario) {
+      const decisionsText = matchedScenario.decisions
+        .map(d => `- ${d.question} (evidence: ${d.evidence_strength})`)
+        .join('\n');
+      scenarioContext = `\n\nMATCHED CLINICAL SCENARIO: ${matchedScenario.display_name}
+RELEVANT DECISIONS:
+${decisionsText}
+TEST CONSIDERATIONS: ${JSON.stringify(matchedScenario.test_considerations)}
+EVIDENCE GAPS: ${matchedScenario.evidence_gaps.join('; ')}
+
+Use this scenario to structure your response around these specific decisions.`;
+    }
+
+    // Get relevant few-shot examples (1 pair max to manage token budget)
+    const examples = getExamplesByType(intent.query_type).slice(0, 2);
+
+    const hasSources = sources.length > 0;
+    const userContent = hasSources
+      ? `Based on the following sources, answer this clinical question about MRD (Molecular Residual Disease):
+
+QUESTION: ${queryText}
+
+AVAILABLE SOURCES:
+${sourcesContext}${scenarioContext}
+
+Remember:
+- Cite sources using [1], [2], etc.
+- Structure your response around the clinical decisions the physician faces
+- Present evidence FOR EACH clinical option, not as a literature review
+- Acknowledge what evidence doesn't address
+- 3-5 paragraphs max`
+      : `Answer this clinical question about MRD (Molecular Residual Disease) using the matched decision tree scenario:
+
+QUESTION: ${queryText}
+${scenarioContext}
+
+NOTE: No indexed database sources matched this query. Use the decision tree scenario above and your clinical knowledge to provide a structured response. Clearly state that the response is based on the decision framework rather than indexed literature. Do not fabricate citations.
+
+Remember:
+- Structure your response around the clinical decisions the physician faces
+- Present evidence FOR EACH clinical option, not as a literature review
+- Acknowledge what evidence doesn't address
+- 3-5 paragraphs max`;
+
     const response = await claude.messages.create({
       model: SONNET_MODEL,
       max_tokens: 1024,
       system: MRD_CHAT_SYSTEM_PROMPT,
       messages: [
-        {
-          role: 'user',
-          content: `Based on the following sources, answer this clinical question about MRD (Molecular Residual Disease):
-
-QUESTION: ${queryText}
-
-AVAILABLE SOURCES:
-${sourcesContext}
-
-Remember:
-- Cite sources using [1], [2], etc.
-- Never make treatment recommendations
-- Focus on evidence and guidelines
-- Keep it concise (3-5 paragraphs)`,
-        },
+        ...examples,
+        { role: 'user', content: userContent },
       ],
     });
 
@@ -889,6 +989,12 @@ Remember:
           cancerTypes: intent.cancer_types,
           evidenceFocus: intent.evidence_focus,
         },
+        matchedScenario: matchedScenario ? {
+          id: matchedScenario.scenario_id,
+          displayName: matchedScenario.display_name,
+          mrdResult: matchedScenario.mrd_result,
+          decisionsCount: matchedScenario.decisions.length,
+        } : null,
       },
     }));
 
