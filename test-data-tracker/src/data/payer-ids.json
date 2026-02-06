@@ -1,0 +1,218 @@
+{
+  "uhc": {
+    "name": "UnitedHealthcare",
+    "aliases": ["unitedhealthcare", "united-healthcare", "united_healthcare", "uhc-ma"]
+  },
+  "anthem": {
+    "name": "Anthem/Elevance Health",
+    "aliases": ["elevance", "anthem-virginia", "anthem-va", "anthem-indiana", "anthem-in", "anthem-new-york", "anthem-ny"]
+  },
+  "centene": {
+    "name": "Centene/Ambetter",
+    "aliases": ["ambetter", "superior", "superiorhealthplan"]
+  },
+  "cigna": {
+    "name": "Cigna",
+    "aliases": ["cigna-internal"]
+  },
+  "humana": {
+    "name": "Humana",
+    "aliases": ["humana-ma"]
+  },
+  "molina": {
+    "name": "Molina Healthcare",
+    "aliases": ["molina-healthcare"]
+  },
+  "kaiser": {
+    "name": "Kaiser Permanente",
+    "aliases": ["kaiser-permanente"]
+  },
+  "aetna": {
+    "name": "Aetna",
+    "aliases": ["aetna-ma"]
+  },
+  "hcsc": {
+    "name": "HCSC",
+    "aliases": ["hcsc-tx", "hcsc-il", "hcsc-mt", "hcsc-ok", "hcsc-nm"]
+  },
+  "highmark": {
+    "name": "Highmark BCBS",
+    "aliases": ["highmark-bcbs"]
+  },
+  "floridablue": {
+    "name": "Florida Blue",
+    "aliases": ["florida-blue", "bcbsfl"]
+  },
+  "bcbsm": {
+    "name": "BCBS Michigan",
+    "aliases": ["bcbs-michigan", "bcbs-michigan-medicare"]
+  },
+  "bcbsnc": {
+    "name": "Blue Cross NC",
+    "aliases": ["bcbs-nc", "bcbs-north-carolina", "bluecrossnc"]
+  },
+  "bcbssc": {
+    "name": "BCBS South Carolina",
+    "aliases": ["bcbs-sc", "bcbs-south-carolina", "southcarolinablues"]
+  },
+  "bcbst": {
+    "name": "BCBS Tennessee",
+    "aliases": ["bcbstn", "bcbs-tn", "bcbs-tennessee"]
+  },
+  "bcbsal": {
+    "name": "BCBS Alabama",
+    "aliases": ["bcbs-al", "bcbs-alabama"]
+  },
+  "bcbsla": {
+    "name": "BCBS Louisiana",
+    "aliases": ["bcbs-louisiana", "bcbs-la", "lablue", "la-blue"]
+  },
+  "bcbsaz": {
+    "name": "BCBS Arizona",
+    "aliases": ["bcbs-az", "bcbs-arizona", "azblue"]
+  },
+  "bcbsks": {
+    "name": "BCBS Kansas",
+    "aliases": ["bcbs-ks", "bcbs-kansas"]
+  },
+  "bcbskc": {
+    "name": "BCBS Kansas City",
+    "aliases": ["bcbs-kc", "bluekc"]
+  },
+  "bcbsne": {
+    "name": "BCBS Nebraska",
+    "aliases": ["bcbs-ne", "nebraskablue"]
+  },
+  "bcbsnd": {
+    "name": "BCBS North Dakota",
+    "aliases": ["bcbs-nd"]
+  },
+  "bcbswy": {
+    "name": "BCBS Wyoming",
+    "aliases": ["bcbs-wy"]
+  },
+  "bcbsma": {
+    "name": "BCBS Massachusetts",
+    "aliases": ["bcbs-ma", "bcbs-massachusetts", "blue-cross-ma", "bluecrossma"]
+  },
+  "bcbsri": {
+    "name": "BCBS Rhode Island",
+    "aliases": ["bcbs-ri"]
+  },
+  "bcbsvt": {
+    "name": "BCBS Vermont",
+    "aliases": ["bcbs-vt"]
+  },
+  "bcbsmn": {
+    "name": "BCBS Minnesota",
+    "aliases": ["bcbs-mn", "bluecrossmn"]
+  },
+  "blueshieldca": {
+    "name": "Blue Shield of California",
+    "aliases": ["blue-shield-ca", "bsca", "blueshield-ca"]
+  },
+  "carefirst": {
+    "name": "CareFirst BCBS",
+    "aliases": ["carefirst-bcbs"]
+  },
+  "horizon": {
+    "name": "Horizon BCBS NJ",
+    "aliases": ["horizonnj", "horizon-bcbs-nj", "horizon-nj"]
+  },
+  "excellus": {
+    "name": "Excellus BCBS",
+    "aliases": ["excellus-bcbs"]
+  },
+  "empire": {
+    "name": "Empire BCBS",
+    "aliases": ["empire-bcbs"]
+  },
+  "ibx": {
+    "name": "Independence Blue Cross",
+    "aliases": ["independence-blue-cross", "independence-bc"]
+  },
+  "premera": {
+    "name": "Premera Blue Cross",
+    "aliases": ["premera-bc"]
+  },
+  "regence": {
+    "name": "Regence BlueCross BlueShield",
+    "aliases": ["regence-bcbs"]
+  },
+  "wellmark": {
+    "name": "Wellmark BCBS",
+    "aliases": ["wellmark-bcbs"]
+  },
+  "bcidaho": {
+    "name": "Blue Cross of Idaho",
+    "aliases": ["blue-cross-idaho", "bc-idaho"]
+  },
+  "arkbcbs": {
+    "name": "Arkansas BCBS",
+    "aliases": ["bcbs-ar", "bcbs-arkansas"]
+  },
+  "evicore": {
+    "name": "EviCore (Evernorth)",
+    "aliases": ["evicore-evernorth", "evernorth"]
+  },
+  "carelon": {
+    "name": "Carelon",
+    "aliases": ["aim", "aim-specialty-health", "carelon-medical"]
+  },
+  "avalon": {
+    "name": "Avalon Healthcare Solutions",
+    "aliases": ["avalon-hcs"]
+  },
+  "cms": {
+    "name": "Centers for Medicare & Medicaid Services",
+    "aliases": ["medicare", "medicaid"]
+  },
+  "fepblue": {
+    "name": "FEP Blue",
+    "aliases": ["fep", "federal-employee-program"]
+  },
+  "tricare": {
+    "name": "TRICARE",
+    "aliases": ["dha", "defense-health-agency"]
+  },
+  "wellcare": {
+    "name": "WellCare",
+    "aliases": ["wellcare-centene"]
+  },
+  "amerigroup": {
+    "name": "Amerigroup",
+    "aliases": ["amerigroup-anthem", "healthybluenc"]
+  },
+  "geisinger": {
+    "name": "Geisinger Health Plan",
+    "aliases": ["geisinger-hp"]
+  },
+  "oscar": {
+    "name": "Oscar Health",
+    "aliases": ["oscar-health"]
+  },
+  "caresource": {
+    "name": "CareSource",
+    "aliases": []
+  },
+  "healthnet": {
+    "name": "Health Net",
+    "aliases": ["health-net"]
+  },
+  "fidelis": {
+    "name": "Fidelis Care",
+    "aliases": ["fidelis-care"]
+  },
+  "bcbsmt-comm": {
+    "name": "BCBS Montana (Commercial)",
+    "aliases": ["bcbs-montana-commercial"]
+  },
+  "bcbsmt-gov": {
+    "name": "BCBS Montana (Government)",
+    "aliases": ["bcbs-montana-government"]
+  },
+  "capitalbc": {
+    "name": "Capital Blue Cross",
+    "aliases": ["capital-blue-cross"]
+  }
+}

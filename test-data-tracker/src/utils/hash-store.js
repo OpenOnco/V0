@@ -20,6 +20,7 @@ import { dirname, resolve } from 'path';
 import { existsSync } from 'fs';
 import { logger } from './logger.js';
 import { computeMultiHash, compareMultiHash, getChangeSummary } from './multi-hash.js';
+import { normalizePayerId } from './normalize-payer-id.js';
 
 // Database path
 const DB_PATH = resolve(process.cwd(), 'data', 'payer-hashes.db');
@@ -234,6 +235,16 @@ export async function initHashStore() {
 
   // Migrate from JSON if exists
   await migrateFromJson();
+
+  // Validate payer IDs in coverage_assertions against canonical registry
+  const unknownPayers = db.prepare(`
+    SELECT DISTINCT payer_id FROM coverage_assertions
+  `).all();
+  for (const { payer_id } of unknownPayers) {
+    if (!normalizePayerId(payer_id)) {
+      logger.warn(`Unknown payer ID in coverage_assertions: "${payer_id}"`);
+    }
+  }
 
   logger.info('Hash store initialized', { path: DB_PATH });
   return db;
@@ -919,8 +930,14 @@ export function upsertCoverageAssertion(assertion) {
     );
   }
 
+  const normalizedPayerId = normalizePayerId(assertion.payerId);
+  if (!normalizedPayerId) {
+    logger.warn(`Unknown payer ID: ${assertion.payerId}`);
+  }
+  const payerId = normalizedPayerId || assertion.payerId;
+
   const assertionId = assertion.assertionId ||
-    generateAssertionId(assertion.payerId, assertion.testId, assertion.layer, assertion.sourcePolicyId);
+    generateAssertionId(payerId, assertion.testId, assertion.layer, assertion.sourcePolicyId);
 
   const now = new Date().toISOString();
 
@@ -945,7 +962,7 @@ export function upsertCoverageAssertion(assertion) {
       updated_at = CURRENT_TIMESTAMP
   `).run(
     assertionId,
-    assertion.payerId,
+    payerId,
     assertion.testId,
     assertion.layer,
     assertion.status,
