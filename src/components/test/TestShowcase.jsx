@@ -486,13 +486,13 @@ const TestShowcase = ({
     // Sensitivity (most important clinical metric)
     const sensDisplay = formatPercent(test.sensitivity);
     if (sensDisplay) {
-      badges.push({ label: 'Sens', value: sensDisplay, type: 'clinical' });
+      badges.push({ label: 'Sens', value: sensDisplay, type: 'clinical', cohortSize: test.validationCohortSize, cohortStudy: test.validationCohortStudy });
     }
-    
+
     // Specificity
     const specDisplay = formatPercent(test.specificity);
     if (specDisplay) {
-      badges.push({ label: 'Spec', value: specDisplay, type: 'clinical' });
+      badges.push({ label: 'Spec', value: specDisplay, type: 'clinical', cohortSize: test.validationCohortSize, cohortStudy: test.validationCohortStudy });
     }
     
     // TAT
@@ -751,14 +751,29 @@ const TestShowcase = ({
                   </div>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {badges.map((badge, idx) => (
-                      <span 
-                        key={idx}
-                        className={`text-[10px] px-1.5 py-0.5 rounded ${
-                          badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                        }`}
-                      >
-                        {badge.label}: {badge.value}
-                      </span>
+                      badge.cohortSize ? (
+                        <span
+                          key={idx}
+                          className={`relative group/badge text-[10px] px-1.5 py-0.5 rounded cursor-help ${
+                            badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          {badge.label}: {badge.value}
+                          <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 w-max max-w-[180px] px-2 py-1 bg-gray-900 text-white text-[10px] rounded-md shadow-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-150 z-50 pointer-events-none">
+                            <span className="font-semibold">n={badge.cohortSize.toLocaleString()}</span>
+                            {badge.cohortStudy && <span className="block text-gray-300 text-[9px] mt-0.5 leading-tight">{badge.cohortStudy}</span>}
+                          </span>
+                        </span>
+                      ) : (
+                        <span
+                          key={idx}
+                          className={`text-[10px] px-1.5 py-0.5 rounded ${
+                            badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          {badge.label}: {badge.value}
+                        </span>
+                      )
                     ))}
                     {badges.length === 0 && (
                       <span className="text-[10px] text-slate-400">No data</span>
@@ -983,14 +998,29 @@ const TestShowcase = ({
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {badges.map((badge, idx) => (
-                    <span 
-                      key={idx}
-                      className={`text-[10px] px-1.5 py-0.5 rounded ${
-                        badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {badge.label}: {badge.value}
-                    </span>
+                    badge.cohortSize ? (
+                      <span
+                        key={idx}
+                        className={`relative group/badge text-[10px] px-1.5 py-0.5 rounded cursor-help ${
+                          badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {badge.label}: {badge.value}
+                        <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 w-max max-w-[180px] px-2 py-1 bg-gray-900 text-white text-[10px] rounded-md shadow-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-150 z-50 pointer-events-none">
+                          <span className="font-semibold">n={badge.cohortSize.toLocaleString()}</span>
+                          {badge.cohortStudy && <span className="block text-gray-300 text-[9px] mt-0.5 leading-tight">{badge.cohortStudy}</span>}
+                        </span>
+                      </span>
+                    ) : (
+                      <span
+                        key={idx}
+                        className={`text-[10px] px-1.5 py-0.5 rounded ${
+                          badge.type === 'clinical' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {badge.label}: {badge.value}
+                      </span>
+                    )
                   ))}
                   {badges.length === 0 && (
                     <span className="text-[10px] text-slate-400">No data</span>

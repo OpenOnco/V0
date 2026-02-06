@@ -16,7 +16,7 @@
 
 import { withVercelLogging } from '../shared/logger/index.js';
 
-const DAEMON_URL = process.env.MRD_DAEMON_URL || 'https://daemon-production-5ed1.up.railway.app';
+const DAEMON_URL = process.env.MRD_DAEMON_URL || 'https://physician-system-production.up.railway.app';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -75,7 +75,24 @@ export default withVercelLogging(async (req, res) => {
       body: JSON.stringify({ query, filters }),
     });
 
-    const data = await response.json();
+    // Parse response — guard against non-JSON daemon responses
+    const contentType = response.headers.get('content-type') || '';
+    let data;
+
+    if (contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      req.logger.error('Daemon returned non-JSON response', {
+        status: response.status,
+        contentType,
+        bodyPreview: text.slice(0, 200),
+      });
+      return res.status(502).json({
+        success: false,
+        error: 'MRD service temporarily unavailable',
+      });
+    }
 
     // Log response
     req.logger.info('Response sent', {

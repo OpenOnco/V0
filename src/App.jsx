@@ -66,6 +66,7 @@ import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
 import Chat from './components/Chat';
+import MRDChat from './components/physician/MRDChat';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
 import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, MINIMUM_PARAMS, FIELD_DEFINITIONS } from './config/testFields';
@@ -435,15 +436,19 @@ const HomePage = ({ onNavigate, persona }) => {
           {/* Right column: Chat + Quick Search */}
           <div className="lg:w-1/2 flex flex-col gap-4">
             {/* Chat */}
-            <Chat
-              persona={persona}
-              testData={chatTestData}
-              variant="sidebar"
-              showModeToggle={false}
-              resizable={false}
-              showTitle={true}
-              className="flex-1 min-h-[400px]"
-            />
+            {persona === 'medical' ? (
+              <MRDChat compact className="flex-1 min-h-[400px]" />
+            ) : (
+              <Chat
+                persona={persona}
+                testData={chatTestData}
+                variant="sidebar"
+                showModeToggle={false}
+                resizable={false}
+                showTitle={true}
+                className="flex-1 min-h-[400px]"
+              />
+            )}
 
             {/* Quick Search */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">

@@ -32,7 +32,11 @@ OPTION C: [Third option when applicable — e.g., clinical trial enrollment, ser
 
 WHAT THE EVIDENCE DOESN'T ADDRESS: [Honest gaps — unstudied populations, missing endpoints, conflicting data]
 
-TEST-SPECIFIC NOTE: [If query mentions a specific test (Signatera, Guardant, etc.), note test-specific validation data or lack thereof]
+TEST-SPECIFIC NOTE: [If TEST-SPECIFIC DATA is provided above, you MUST incorporate it:
+  mention the test's approach (tumor-informed vs tumor-naïve), tissue requirements,
+  turnaround time, LOD, FDA status, and per-payer coverage. Weave into the clinical
+  discussion — do not reformat as a separate table. If no TEST-SPECIFIC DATA is provided,
+  note test-specific validation data or lack thereof.]
 `;
 
 const COVERAGE_POLICY_TEMPLATE = `
@@ -42,6 +46,8 @@ COVERAGE SUMMARY: [Test name and general coverage landscape]
 MEDICARE: [LCD/NCD status, MolDX coverage, conditions, effective dates]
 COMMERCIAL: [Payer-by-payer status if available — Aetna, UHC, BCBS, Cigna, etc.]
 PRIOR AUTHORIZATION: [Requirements, common documentation needed]
+[If TEST-SPECIFIC DATA includes coverage cross-reference, use exact payer statuses,
+  policy IDs, and covered indications. Do not generalize — cite the specific policy.]
 ACCESS OPTIONS: [If coverage is denied — appeals process, manufacturer programs, clinical trials, self-pay]
 `;
 
@@ -49,7 +55,9 @@ const TEST_COMPARISON_TEMPLATE = `
 RESPONSE STRUCTURE FOR TEST COMPARISON QUERIES:
 
 COMPARISON: [Test A] vs [Test B]
-KEY DIFFERENCES: [Technical approach, tissue requirements, panel size, LOD, turnaround time]
+KEY DIFFERENCES: [Use TEST-SPECIFIC DATA to compare: approach (tumor-informed vs tumor-naïve),
+  tissue requirements, TAT, LOD, sensitivity, FDA status, coverage. Include specific numbers from the data.
+  If no TEST-SPECIFIC DATA is provided, compare based on: technical approach, tissue requirements, panel size, LOD, turnaround time.]
 CLINICAL DATA: [Head-to-head studies if available; otherwise per-test validation data with citations]
 PRACTICAL CONSIDERATIONS: [Availability, coverage, TAT, ordering logistics, sample requirements]
 `;

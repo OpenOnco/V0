@@ -19,6 +19,7 @@ import { ensureCitationCompliance } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
 import { getExamplesByType } from './few-shot-examples.js';
+import { lookupTests, formatTestContext } from './openonco-client.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -829,6 +830,31 @@ EVIDENCE GAPS: ${matchedScenario.evidence_gaps.join('; ')}
 Use this scenario to structure your response around these specific decisions.`;
     }
 
+    // Enrich with OpenOnco test-specific data
+    let testDataContext = '';
+    let testsMatched = [];
+    let mentionedTests = intent.test_names || [];
+
+    // Fallback: for test_comparison queries where intent missed test names,
+    // scan the query for known MRD test names
+    if (mentionedTests.length === 0 && intent.query_type === 'test_comparison') {
+      const KNOWN_TESTS = ['Signatera', 'Guardant Reveal', 'FoundationOne Tracker', 'RaDaR', 'NavDx', 'clonoSEQ', 'Haystack', 'MRD-EDGE', 'PhasED-Seq', 'TumorNext-MRD', 'Resolution ctDx'];
+      const lowerQuery = queryText.toLowerCase();
+      mentionedTests = KNOWN_TESTS.filter(t => lowerQuery.includes(t.toLowerCase()));
+    }
+
+    if (mentionedTests.length > 0) {
+      try {
+        const matched = await lookupTests(mentionedTests);
+        if (matched.length > 0) {
+          testsMatched = matched.map(t => t.name);
+          testDataContext = '\n\nTEST-SPECIFIC DATA (from OpenOnco database — use these exact figures):\n' + formatTestContext(matched);
+        }
+      } catch (err) {
+        logger.warn('OpenOnco test lookup failed', { error: err.message });
+      }
+    }
+
     // Get relevant few-shot examples (1 pair max to manage token budget)
     const examples = getExamplesByType(intent.query_type).slice(0, 2);
 
@@ -839,24 +865,26 @@ Use this scenario to structure your response around these specific decisions.`;
 QUESTION: ${queryText}
 
 AVAILABLE SOURCES:
-${sourcesContext}${scenarioContext}
+${sourcesContext}${scenarioContext}${testDataContext}
 
 Remember:
 - Cite sources using [1], [2], etc.
 - Structure your response around the clinical decisions the physician faces
 - Present evidence FOR EACH clinical option, not as a literature review
+- If TEST-SPECIFIC DATA is provided, incorporate the exact figures (LOD, sensitivity, TAT, coverage) into your response
 - Acknowledge what evidence doesn't address
 - 3-5 paragraphs max`
       : `Answer this clinical question about MRD (Molecular Residual Disease) using the matched decision tree scenario:
 
 QUESTION: ${queryText}
-${scenarioContext}
+${scenarioContext}${testDataContext}
 
 NOTE: No indexed database sources matched this query. Use the decision tree scenario above and your clinical knowledge to provide a structured response. Clearly state that the response is based on the decision framework rather than indexed literature. Do not fabricate citations.
 
 Remember:
 - Structure your response around the clinical decisions the physician faces
 - Present evidence FOR EACH clinical option, not as a literature review
+- If TEST-SPECIFIC DATA is provided, incorporate the exact figures (LOD, sensitivity, TAT, coverage) into your response
 - Acknowledge what evidence doesn't address
 - 3-5 paragraphs max`;
 
@@ -995,6 +1023,8 @@ Remember:
           mrdResult: matchedScenario.mrd_result,
           decisionsCount: matchedScenario.decisions.length,
         } : null,
+        testDataEnriched: testsMatched.length > 0,
+        testsMatched,
       },
     }));
 

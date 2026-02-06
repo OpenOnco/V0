@@ -33,7 +33,7 @@ const EXAMPLE_QUERIES = [
   'What is the prognostic significance of ctDNA clearance during treatment?',
 ];
 
-export default function MRDChat() {
+export default function MRDChat({ compact = false, className = '' }) {
   const [query, setQuery] = useState('');
   const [cancerType, setCancerType] = useState('');
   const [clinicalSetting, setClinicalSetting] = useState('');
@@ -89,10 +89,10 @@ export default function MRDChat() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className={compact ? `bg-white rounded-2xl border border-slate-200 shadow-sm p-4 ${className}` : 'max-w-4xl mx-auto'}>
       {/* Header */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-slate-900">MRD Guidance Search</h2>
+      <div className={compact ? 'mb-3' : 'mb-6'}>
+        <h2 className={compact ? 'text-base font-semibold text-slate-900' : 'text-xl font-semibold text-slate-900'}>MRD Guidance Search</h2>
         <p className="text-sm text-slate-600 mt-1">
           Ask clinical questions about MRD testing, evidence, and guidelines
         </p>
@@ -106,7 +106,7 @@ export default function MRDChat() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask a clinical question about MRD testing..."
             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
-            rows={3}
+            rows={compact ? 2 : 3}
             maxLength={1000}
           />
           <div className="text-xs text-slate-500 mt-1 text-right">
@@ -158,10 +158,10 @@ export default function MRDChat() {
 
       {/* Example Queries */}
       {!result && !loading && (
-        <div className="mt-6">
+        <div className={compact ? 'mt-3' : 'mt-6'}>
           <p className="text-sm font-medium text-slate-700 mb-2">Example questions:</p>
           <div className="flex flex-wrap gap-2">
-            {EXAMPLE_QUERIES.map((example, i) => (
+            {(compact ? EXAMPLE_QUERIES.slice(0, 2) : EXAMPLE_QUERIES).map((example, i) => (
               <button
                 key={i}
                 type="button"
@@ -177,16 +177,16 @@ export default function MRDChat() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className={`${compact ? 'mt-3' : 'mt-6'} p-4 bg-red-50 border border-red-200 rounded-lg`}>
           <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
 
       {/* Result */}
       {result && (
-        <div ref={resultRef} className="mt-8 space-y-6">
+        <div ref={resultRef} className={`${compact ? 'mt-4 space-y-4 max-h-[400px] overflow-y-auto' : 'mt-8 space-y-6'}`}>
           {/* Answer */}
-          <div className="bg-white border border-slate-200 rounded-lg p-6">
+          <div className={`${compact ? 'border border-slate-200 rounded-lg p-4' : 'bg-white border border-slate-200 rounded-lg p-6'}`}>
             <div className="prose prose-slate max-w-none">
               {result.answer.split('\n\n').map((para, i) => (
                 <p key={i} className="mb-4 last:mb-0">{para}</p>
@@ -196,7 +196,7 @@ export default function MRDChat() {
 
           {/* Sources */}
           {result.sources && result.sources.length > 0 && (
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+            <div className={`bg-slate-50 border border-slate-200 rounded-lg ${compact ? 'p-4' : 'p-6'}`}>
               <h3 className="font-semibold text-slate-900 mb-4">Sources</h3>
               <div className="space-y-3">
                 {result.sources.map((source) => (
