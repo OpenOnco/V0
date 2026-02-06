@@ -84,9 +84,9 @@ export function getEnvironment() {
     // Check for test environment
     if (process.env?.NODE_ENV === 'test') return 'test';
 
-    // Check for Vercel environment
+    // Check for Vercel environment (preview and production both run as 'production')
     if (process.env?.VERCEL === '1') {
-      return process.env.VERCEL_ENV === 'production' ? 'production' : 'development';
+      return process.env.VERCEL_ENV === 'development' ? 'development' : 'production';
     }
 
     // Standard NODE_ENV check
