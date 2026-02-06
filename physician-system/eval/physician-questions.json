@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "created": "2026-02-06",
-  "description": "Physician MRD chat evaluation set — tests decision-oriented clinical response quality",
+  "description": "Physician MRD chat evaluation set — tests decision-oriented clinical response quality. Coverage/payer questions are out of scope (handled by main OpenOnco chatbot).",
   "scoring_rubric": {
     "decision_orientation": "Response organizes around clinical options/decisions, not academic literature sections (0-2 points)",
     "evidence_quality": "Citations from relevant sources; trial data, guidelines, or payer policies as appropriate (0-2 points)",
@@ -437,91 +437,6 @@
       },
       "difficulty": "standard",
       "notes": "Tests specific knowledge of the CIRCULATE sub-studies. GALAXY is the observational arm providing natural history data; VEGA tests omission of oxaliplatin in MRD-negative patients."
-    },
-    {
-      "id": 26,
-      "category": "coverage",
-      "query": "Is Signatera covered by Medicare for CRC surveillance? I've had some claims denied and want to understand the current LCD situation.",
-      "expected_query_type": "coverage_policy",
-      "expected_structure": {
-        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
-        "should_not_contain": ["I recommend", "you should"]
-      },
-      "expected_content": {
-        "must_mention": ["Medicare", "Signatera", "coverage"],
-        "should_mention": ["LCD", "MolDX", "Palmetto GBA", "CRC"],
-        "bonus_mention": ["CPT", "criteria", "colorectal", "Noridian"]
-      },
-      "difficulty": "standard",
-      "notes": "Coverage query — system should route to payer evidence and provide specific LCD/coverage determination details. Should not give billing advice but can reference publicly available coverage policies."
-    },
-    {
-      "id": 27,
-      "category": "coverage",
-      "query": "My patient has UnitedHealthcare commercial insurance. Will they cover MRD testing with Signatera or Guardant Reveal? I've been burned with denials before.",
-      "expected_query_type": "coverage_policy",
-      "expected_structure": {
-        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
-        "should_not_contain": ["I recommend", "you should"]
-      },
-      "expected_content": {
-        "must_mention": ["UnitedHealthcare", "coverage", "MRD"],
-        "should_mention": ["medical policy", "commercial", "prior authorization"],
-        "bonus_mention": ["experimental", "investigational", "appeal", "medical necessity"]
-      },
-      "difficulty": "standard",
-      "notes": "Commercial payer coverage question. System should present available policy information and note that coverage varies by plan and indication. Should acknowledge if UHC considers MRD testing experimental."
-    },
-    {
-      "id": 28,
-      "category": "coverage",
-      "query": "What CPT codes should my office be using for ctDNA MRD testing? We've been getting denials and I wonder if it's a coding issue.",
-      "expected_query_type": "coverage_policy",
-      "expected_structure": {
-        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
-        "should_not_contain": ["I recommend", "you should"]
-      },
-      "expected_content": {
-        "must_mention": ["CPT", "ctDNA", "coding"],
-        "should_mention": ["81479", "proprietary", "billing"],
-        "bonus_mention": ["Z-code", "0179U", "0266U", "PLA codes"]
-      },
-      "difficulty": "standard",
-      "notes": "Practical billing question. System should provide publicly available CPT code information without acting as a billing consultant. Should note that test-specific PLA codes may apply."
-    },
-    {
-      "id": 29,
-      "category": "coverage",
-      "query": "What's the out-of-pocket cost for Guardant Reveal if insurance doesn't cover it? My patient is asking about self-pay options.",
-      "expected_query_type": "coverage_policy",
-      "expected_structure": {
-        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
-        "should_not_contain": ["I recommend", "you should"]
-      },
-      "expected_content": {
-        "must_mention": ["Guardant Reveal", "cost", "out-of-pocket"],
-        "should_mention": ["self-pay", "list price", "patient assistance"],
-        "bonus_mention": ["financial assistance program", "Guardant Health"]
-      },
-      "difficulty": "standard",
-      "notes": "Pricing question. System should provide publicly available pricing information if known, note that prices change, and mention patient assistance programs. Should not guarantee specific prices."
-    },
-    {
-      "id": 30,
-      "category": "coverage",
-      "query": "Which commercial payers are covering MRD testing as of 2026? I want to know before I order so I can set patient expectations on potential out-of-pocket costs.",
-      "expected_query_type": "coverage_policy",
-      "expected_structure": {
-        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
-        "should_not_contain": ["I recommend", "you should"]
-      },
-      "expected_content": {
-        "must_mention": ["commercial payers", "coverage", "MRD"],
-        "should_mention": ["Medicare", "Aetna", "BCBS", "UnitedHealthcare"],
-        "bonus_mention": ["eviCore", "Carelon", "prior authorization", "LCD"]
-      },
-      "difficulty": "standard",
-      "notes": "Broad coverage landscape question. System should summarize known payer positions without guaranteeing coverage for any specific patient scenario."
     }
   ],
   "adversarial_questions": [
