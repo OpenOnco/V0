@@ -14,6 +14,7 @@
  */
 
 import Database from 'better-sqlite3';
+import { createHash } from 'crypto';
 import { readFile, mkdir } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { existsSync } from 'fs';
@@ -227,6 +228,8 @@ export async function initHashStore() {
     CREATE INDEX IF NOT EXISTS idx_assertions_test ON coverage_assertions(test_id);
     CREATE INDEX IF NOT EXISTS idx_assertions_layer ON coverage_assertions(layer);
     CREATE INDEX IF NOT EXISTS idx_assertions_status ON coverage_assertions(status);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_assertions_unique
+      ON coverage_assertions(payer_id, test_id, layer, source_policy_id);
   `);
 
   // Migrate from JSON if exists
@@ -896,9 +899,10 @@ export function getPolicyHashStats() {
  * @param {string} layer - Coverage layer
  * @returns {string} Unique assertion ID
  */
-function generateAssertionId(payerId, testId, layer) {
-  const timestamp = Date.now().toString(36);
-  return `ca_${payerId}_${testId}_${layer}_${timestamp}`;
+function generateAssertionId(payerId, testId, layer, sourcePolicyId) {
+  const key = `${payerId}|${testId}|${layer}|${sourcePolicyId || ''}`;
+  const hash = createHash('sha256').update(key).digest('hex').slice(0, 12);
+  return `ca_${hash}`;
 }
 
 /**
@@ -910,7 +914,7 @@ export function upsertCoverageAssertion(assertion) {
   if (!db) throw new Error('Hash store not initialized');
 
   const assertionId = assertion.assertionId ||
-    generateAssertionId(assertion.payerId, assertion.testId, assertion.layer);
+    generateAssertionId(assertion.payerId, assertion.testId, assertion.layer, assertion.sourcePolicyId);
 
   const now = new Date().toISOString();
 
@@ -946,7 +950,7 @@ export function upsertCoverageAssertion(assertion) {
     assertion.sourceQuote || null,
     assertion.effectiveDate || null,
     assertion.expirationDate || null,
-    assertion.confidence || null,
+    assertion.confidence ?? null,
     now
   );
 
