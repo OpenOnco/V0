@@ -797,7 +797,7 @@ async function handleMRDChat(req, res) {
     // Step 3: Hybrid search (Phase 5)
     const sources = await hybridSearch(queryText, queryEmbedding, intent, filters);
 
-    if (sources.length === 0) {
+    if (sources.length === 0 && !matchedScenario) {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({
         success: true,
@@ -832,15 +832,9 @@ Use this scenario to structure your response around these specific decisions.`;
     // Get relevant few-shot examples (1 pair max to manage token budget)
     const examples = getExamplesByType(intent.query_type).slice(0, 2);
 
-    const response = await claude.messages.create({
-      model: SONNET_MODEL,
-      max_tokens: 1024,
-      system: MRD_CHAT_SYSTEM_PROMPT,
-      messages: [
-        ...examples,
-        {
-          role: 'user',
-          content: `Based on the following sources, answer this clinical question about MRD (Molecular Residual Disease):
+    const hasSources = sources.length > 0;
+    const userContent = hasSources
+      ? `Based on the following sources, answer this clinical question about MRD (Molecular Residual Disease):
 
 QUESTION: ${queryText}
 
@@ -852,8 +846,27 @@ Remember:
 - Structure your response around the clinical decisions the physician faces
 - Present evidence FOR EACH clinical option, not as a literature review
 - Acknowledge what evidence doesn't address
-- 3-5 paragraphs max`,
-        },
+- 3-5 paragraphs max`
+      : `Answer this clinical question about MRD (Molecular Residual Disease) using the matched decision tree scenario:
+
+QUESTION: ${queryText}
+${scenarioContext}
+
+NOTE: No indexed database sources matched this query. Use the decision tree scenario above and your clinical knowledge to provide a structured response. Clearly state that the response is based on the decision framework rather than indexed literature. Do not fabricate citations.
+
+Remember:
+- Structure your response around the clinical decisions the physician faces
+- Present evidence FOR EACH clinical option, not as a literature review
+- Acknowledge what evidence doesn't address
+- 3-5 paragraphs max`;
+
+    const response = await claude.messages.create({
+      model: SONNET_MODEL,
+      max_tokens: 1024,
+      system: MRD_CHAT_SYSTEM_PROMPT,
+      messages: [
+        ...examples,
+        { role: 'user', content: userContent },
       ],
     });
 
