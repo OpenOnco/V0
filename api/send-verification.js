@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import crypto from 'crypto';
+import { withVercelLogging } from '../shared/logger/index.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -16,21 +17,33 @@ const createToken = (email, code) => {
   return `${data}.${signature}`;
 };
 
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
+
   if (req.method !== 'POST') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { email, vendor, testName } = req.body;
 
   if (!email || !vendor) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
     return res.status(400).json({ error: 'Email and vendor are required' });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
     return res.status(400).json({ error: 'Invalid email format' });
   }
+
+  // Log request (after validation, no PII)
+  req.logger.info('Verification request received', {
+    vendor,
+    hasTestName: !!testName,
+    emailDomain: email?.split('@')[1]
+  });
 
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   const token = createToken(email, code);
@@ -56,9 +69,19 @@ export default async function handler(req, res) {
       `
     });
 
+    req.logger.info('Response sent', {
+      status: 200,
+      durationMs: Date.now() - startTime,
+      emailSent: true
+    });
     return res.status(200).json({ success: true, token });
   } catch (error) {
-    console.error('Error sending email:', error);
+    req.logger.error('Error sending verification email', {
+      error,
+      vendor,
+      emailDomain: email?.split('@')[1]
+    });
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'email_send_failure' });
     return res.status(500).json({ error: 'Failed to send verification email' });
   }
-}
+}, { moduleName: 'api:auth:send-verification' });

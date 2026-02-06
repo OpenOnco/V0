@@ -18,6 +18,7 @@
 
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { withVercelLogging } from '../../shared/logger/index.js';
 
 // In Vercel serverless, we read from the daemon/data directory
 const DISCOVERIES_FILE = join(process.cwd(), 'daemon', 'data', 'discoveries.json');
@@ -28,7 +29,7 @@ const ADMIN_KEY = process.env.ADMIN_KEY || 'openonco-admin-2024';
 // Detect if running on Vercel (read-only filesystem)
 const IS_VERCEL = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
-function loadDiscoveries() {
+function loadDiscoveries(logger) {
   if (!existsSync(DISCOVERIES_FILE)) {
     return { data: [], error: null };
   }
@@ -36,12 +37,16 @@ function loadDiscoveries() {
     const content = readFileSync(DISCOVERIES_FILE, 'utf-8');
     return { data: JSON.parse(content), error: null };
   } catch (err) {
-    console.error('Error loading discoveries:', err.message);
+    if (logger) {
+      logger.error('Error loading discoveries', { error: err });
+    }
     return { data: [], error: err.message };
   }
 }
 
-export default function handler(req, res) {
+export default withVercelLogging((req, res) => {
+  const startTime = Date.now();
+
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -54,6 +59,8 @@ export default function handler(req, res) {
   // Auth check - support key in query param or header
   const key = req.query.key || req.headers['x-admin-key'] || req.headers['admin-key'];
   if (key !== ADMIN_KEY) {
+    req.logger.warn('Unauthorized access attempt', { hasKey: !!key, keyPrefix: key?.slice(0, 4) });
+    req.logger.info('Error response sent', { status: 401, durationMs: Date.now() - startTime, errorType: 'unauthorized' });
     return res.status(401).json({
       success: false,
       error: 'Unauthorized - invalid or missing admin key'
@@ -61,35 +68,46 @@ export default function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    return handleGet(req, res);
+    return handleGet(req, res, startTime);
   } else if (req.method === 'POST') {
     // Write operations are not supported on Vercel due to read-only filesystem
     if (IS_VERCEL) {
+      req.logger.info('Error response sent', { status: 501, durationMs: Date.now() - startTime, errorType: 'write_not_supported' });
       return res.status(501).json({
         success: false,
         error: 'Write operations not supported on Vercel',
         message: 'The Vercel serverless environment has a read-only filesystem. Use the local daemon to mark discoveries as reviewed.'
       });
     }
+    req.logger.info('Error response sent', { status: 501, durationMs: Date.now() - startTime, errorType: 'write_disabled' });
     return res.status(501).json({
       success: false,
       error: 'Write operations disabled',
       message: 'POST operations have been disabled. Use the local daemon for write operations.'
     });
   } else {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({
       success: false,
       error: 'Method not allowed'
     });
   }
-}
+}, { moduleName: 'api:admin:discoveries' });
 
-function handleGet(req, res) {
+function handleGet(req, res, startTime) {
   const { source, status, limit = '100', offset = '0' } = req.query;
 
-  const { data: allDiscoveries, error: loadError } = loadDiscoveries();
+  req.logger.info('Admin discoveries request received', {
+    source: source || 'all',
+    status: status || 'all',
+    limit,
+    offset
+  });
+
+  const { data: allDiscoveries, error: loadError } = loadDiscoveries(req.logger);
 
   if (loadError) {
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'load_error' });
     return res.status(500).json({
       success: false,
       error: 'Failed to load discoveries',
@@ -129,6 +147,12 @@ function handleGet(req, res) {
   const offsetNum = parseInt(offset, 10);
   const paginated = discoveries.slice(offsetNum, offsetNum + limitNum);
 
+  req.logger.info('Response sent', {
+    status: 200,
+    durationMs: Date.now() - startTime,
+    discoveryCount: paginated.length,
+    hasMore: offsetNum + limitNum < discoveries.length
+  });
   return res.status(200).json({
     success: true,
     meta: {

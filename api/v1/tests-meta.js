@@ -10,6 +10,7 @@
  */
 
 import { dal } from '../_data.js';
+import { withVercelLogging } from '../../shared/logger/index.js';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,7 +22,8 @@ function setCorsHeaders(res) {
   Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
 }
 
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
   setCorsHeaders(res);
 
   // Handle CORS preflight
@@ -30,10 +32,13 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'GET') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
+    req.logger.info('Tests meta request received');
+
     // Fetch all tests using findAll() to ensure we get all tests
     // regardless of internal category structure
     const { data: allTests } = await dal.tests.findAll();
@@ -54,16 +59,18 @@ export default async function handler(req, res) {
     // Set cache header for CDN (1 hour)
     res.setHeader('Cache-Control', 'public, s-maxage=3600');
 
+    req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, testsReturned: tests.length });
     return res.status(200).json({
       count: tests.length,
       generated: new Date().toISOString(),
       tests,
     });
   } catch (error) {
-    console.error('API Error:', error);
+    req.logger.error('API error', { error });
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'internal_error' });
     return res.status(500).json({
       error: 'Internal server error',
       message: error.message,
     });
   }
-}
+}, { moduleName: 'api:v1:tests-meta' });

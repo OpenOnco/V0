@@ -1,15 +1,28 @@
 import { Resend } from 'resend';
+import { withVercelLogging } from '../shared/logger/index.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
+
   if (req.method !== 'POST') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { feedback, email, testName, sessionContext, url, timestamp } = req.body;
 
+  // Log request
+  req.logger.info('Feedback submission received', {
+    hasEmail: !!email,
+    hasTestName: !!testName,
+    feedbackLength: feedback?.length,
+    hasSessionContext: !!sessionContext
+  });
+
   if (!feedback) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
     return res.status(400).json({ error: 'Feedback is required' });
   }
 
@@ -61,9 +74,23 @@ export default async function handler(req, res) {
       html
     });
 
+    req.logger.info('Response sent', {
+      status: 200,
+      durationMs: Date.now() - startTime,
+      emailSent: true
+    });
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Failed to send feedback email:', error);
+    req.logger.error('Failed to send feedback email', {
+      error,
+      feedbackLength: feedback?.length,
+      hasTestName: !!testName
+    });
+    req.logger.info('Error response sent', {
+      status: 500,
+      durationMs: Date.now() - startTime,
+      errorType: 'email_send_failure'
+    });
     return res.status(500).json({ error: 'Failed to send feedback' });
   }
-}
+}, { moduleName: 'api:forms:feedback' });

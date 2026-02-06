@@ -14,6 +14,8 @@
  * }
  */
 
+import { withVercelLogging } from '../shared/logger/index.js';
+
 const DAEMON_URL = process.env.MRD_DAEMON_URL || 'https://daemon-production-5ed1.up.railway.app';
 
 const CORS_HEADERS = {
@@ -22,7 +24,9 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
+
   // Set CORS headers
   Object.entries(CORS_HEADERS).forEach(([key, value]) => res.setHeader(key, value));
 
@@ -31,6 +35,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'POST') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
@@ -38,6 +43,7 @@ export default async function handler(req, res) {
     const { query, filters = {} } = req.body;
 
     if (!query || typeof query !== 'string' || query.trim().length === 0) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
       return res.status(400).json({
         success: false,
         error: 'Missing or invalid query',
@@ -45,11 +51,19 @@ export default async function handler(req, res) {
     }
 
     if (query.length > 1000) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
       return res.status(400).json({
         success: false,
         error: 'Query too long (max 1000 characters)',
       });
     }
+
+    // Log request
+    req.logger.info('MRD chat request received', {
+      queryLength: query?.length,
+      hasCancerType: !!filters?.cancerType,
+      hasClinicalSetting: !!filters?.clinicalSetting
+    });
 
     // Forward request to daemon's MRD chat API
     const response = await fetch(`${DAEMON_URL}/api/mrd-chat`, {
@@ -63,16 +77,26 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
+    // Log response
+    req.logger.info('Response sent', {
+      status: response.status,
+      durationMs: Date.now() - startTime
+    });
+
     // Forward the daemon's response
     return res.status(response.status).json(data);
 
   } catch (error) {
-    console.error('MRD Chat Proxy Error:', error);
+    req.logger.error('MRD chat proxy error', {
+      error,
+      daemonUrl: DAEMON_URL
+    });
 
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'proxy_error' });
     return res.status(500).json({
       success: false,
       error: 'Internal server error',
       message: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
-}
+}, { moduleName: 'api:chat:mrd' });

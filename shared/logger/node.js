@@ -175,7 +175,10 @@ export function createLogger(moduleName, options = {}) {
   const hostname = os.hostname();
 
   // Base context included in every log entry
+  // Betterstack: _host populates Host column; service is for pattern display only
   const base = {
+    service: moduleName,    // For live_tail_pattern {service} display
+    _host: hostname,        // Populates Betterstack Host column
     module: moduleName,
     project,
     hostname

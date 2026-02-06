@@ -17,6 +17,8 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import { withVercelLogging } from '../shared/logger/index.js';
+import { sanitizeMessage } from './_sanitize.js';
 
 // ============================================
 // RATE LIMITING
@@ -468,8 +470,11 @@ function validateMessages(messages) {
 // ============================================
 // MAIN HANDLER
 // ============================================
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
+
   if (req.method !== 'POST') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -482,13 +487,16 @@ export default async function handler(req, res) {
   
   if (!rateLimit.allowed) {
     res.setHeader('Retry-After', rateLimit.retryAfter);
+    req.logger.warn('Rate limit exceeded', { retryAfter: rateLimit.retryAfter });
+    req.logger.info('Error response sent', { status: 429, durationMs: Date.now() - startTime, errorType: 'rate_limit' });
     return res.status(429).json({ error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter });
   }
 
   try {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      console.error('ANTHROPIC_API_KEY not set');
+      req.logger.error('ANTHROPIC_API_KEY not set');
+      req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'config' });
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
@@ -504,8 +512,20 @@ export default async function handler(req, res) {
       wizardHelperContext  // Structured context for wizard helper (NOT raw prompts)
     } = req.body;
 
+    // Log request
+    req.logger.info('Chat request received', {
+      category,
+      persona,
+      messageCount: messages?.length,
+      model: requestedModel,
+      chatMode: patientChatMode,
+      hasPatientContext: !!patientContext,
+      hasWizardContext: !!wizardHelperContext
+    });
+
     // Validate category
     if (!category || !VALID_CATEGORIES.includes(category)) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
       return res.status(400).json({ error: 'Invalid category' });
     }
 
@@ -515,6 +535,7 @@ export default async function handler(req, res) {
     // Validate test data - skip validation for wizard-helper mode since it doesn't need test data
     if (patientChatMode !== 'wizard-helper') {
       if (!testData || typeof testData !== 'string') {
+        req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
         return res.status(400).json({ error: 'Test data required' });
       }
     }
@@ -522,6 +543,7 @@ export default async function handler(req, res) {
     // Validate messages
     const msgValidation = validateMessages(messages);
     if (!msgValidation.valid) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
       return res.status(400).json({ error: msgValidation.error });
     }
 
@@ -532,6 +554,7 @@ export default async function handler(req, res) {
     if (patientChatMode === 'wizard-helper' && wizardHelperContext) {
       systemPrompt = buildWizardHelperPrompt(wizardHelperContext);
       if (!systemPrompt) {
+        req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
         return res.status(400).json({ error: 'Invalid wizard helper context' });
       }
     } else {
@@ -554,19 +577,34 @@ export default async function handler(req, res) {
       messages
     });
 
+    req.logger.info('Response sent', {
+      status: 200,
+      durationMs: Date.now() - startTime,
+      tokensUsed: response.usage?.output_tokens,
+      stopReason: response.stop_reason,
+      model: response.model
+    });
     return res.status(200).json(response);
     
   } catch (error) {
-    console.error('Chat API error:', error.message);
-    
+    req.logger.error('Chat API error', {
+      error,
+      category: req.body?.category,
+      persona: req.body?.persona,
+      messageCount: req.body?.messages?.length,
+      lastMessage: sanitizeMessage(req.body?.messages?.at(-1)?.content)
+    });
+
     if (error.status === 429) {
+      req.logger.info('Error response sent', { status: 429, durationMs: Date.now() - startTime, errorType: 'api_rate_limit' });
       return res.status(429).json({ error: 'Service temporarily unavailable' });
     }
-    
-    return res.status(500).json({ 
+
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'api_error' });
+    return res.status(500).json({
       error: 'An error occurred',
       message: error.message,
       type: error.constructor.name
     });
   }
-}
+}, { moduleName: 'api:chat:main' });

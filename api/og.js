@@ -1,9 +1,11 @@
 /**
  * Prerender API for SEO / Link Previews
- * 
+ *
  * Returns full HTML with content + OG tags for crawlers.
  * Called by Vercel rewrites when crawler user-agents are detected.
  */
+
+import { withVercelLogging } from '../shared/logger/index.js';
 
 // Test data mapping
 const TEST_INFO = {
@@ -477,21 +479,24 @@ function generateHomePageHtml({ url }) {
 </html>`;
 }
 
-export default function handler(req, res) {
+export default withVercelLogging((req, res) => {
+  const startTime = Date.now();
   const { path: requestPath } = req.query;
-  
+
   if (!requestPath) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
     return res.status(400).json({ error: 'Path required' });
   }
-  
+
   // Normalize path
   let path = Array.isArray(requestPath) ? requestPath.join('/') : requestPath;
   path = '/' + path.replace(/^\/+/, '');
-  
+
   let html = null;
+  let pageType = 'home';
   const baseUrl = 'https://www.openonco.org';
   const url = `${baseUrl}${path}`;
-  
+
   // Pattern: /compare/[slug]
   const compareMatch = path.match(/^\/compare\/([^\/]+)\/?$/i);
   if (compareMatch) {
@@ -499,9 +504,10 @@ export default function handler(req, res) {
     const comparison = COMPARISON_PAGES[slug];
     if (comparison) {
       html = generateComparisonPageHtml({ comparison, slug, url });
+      pageType = 'comparison';
     }
   }
-  
+
   // Pattern: /test/[slug]
   const testMatch = path.match(/^\/test\/([^\/]+)\/?$/i);
   if (!html && testMatch) {
@@ -509,9 +515,10 @@ export default function handler(req, res) {
     const test = TEST_INFO[slug];
     if (test) {
       html = generateTestPageHtml({ test, category: test.category, url });
+      pageType = 'test';
     }
   }
-  
+
   // Pattern: /[category]/[slug] - supports both new and legacy URLs
   const categoryTestMatch = path.match(/^\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\/([^\/]+)\/?$/i);
   if (!html && categoryTestMatch) {
@@ -523,9 +530,10 @@ export default function handler(req, res) {
     const test = TEST_INFO[slug];
     if (test) {
       html = generateTestPageHtml({ test, category: test.category, url });
+      pageType = 'test';
     }
   }
-  
+
   // Pattern: /[category] (category page) - supports both new and legacy URLs
   const categoryMatch = path.match(/^\/(mrd|ecd|trm|tds|cgp|monitor|screen|treat|risk)\/?$/i);
   if (!html && categoryMatch) {
@@ -536,15 +544,19 @@ export default function handler(req, res) {
     const catInfo = CATEGORY_INFO[category];
     if (catInfo) {
       html = generateCategoryPageHtml({ category, catInfo, url });
+      pageType = 'category';
     }
   }
-  
+
   // Default: homepage or unknown
   if (!html) {
     html = generateHomePageHtml({ url });
   }
-  
+
+  req.logger.info('OG request received', { path, pageType });
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, pageType, contentType: 'text/html' });
+
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   res.status(200).send(html);
-}
+}, { moduleName: 'api:meta:og' });

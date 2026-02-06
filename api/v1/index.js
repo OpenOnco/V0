@@ -19,6 +19,7 @@
 
 import { dal } from '../_data.js';
 import { generateHtmlDocs, generateJsonDocs } from './docs.js';
+import { withVercelLogging } from '../../shared/logger/index.js';
 
 // ============================================================================
 // SHARED CONSTANTS
@@ -57,21 +58,23 @@ function setCorsHeaders(res) {
 // ROUTE HANDLERS
 // ============================================================================
 
-function handleDocs(req, res) {
+function handleDocs(req, res, startTime) {
   const accept = req.headers.accept || '';
   const format = req.query.format;
 
   if (format === 'json' || (!accept.includes('text/html') && accept.includes('application/json'))) {
     res.setHeader('Cache-Control', 'public, max-age=3600');
+    req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'docs', contentType: 'application/json' });
     return res.status(200).json(generateJsonDocs());
   }
 
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 'public, max-age=3600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'docs', contentType: 'text/html' });
   return res.status(200).send(generateHtmlDocs());
 }
 
-async function handleTests(req, res) {
+async function handleTests(req, res, startTime) {
   const { category, vendor, cancer, fda = 'all', medicare, payer, payerStatus, fields, limit = '100', offset = '0' } = req.query;
 
   const limitNum = Math.min(Math.max(1, parseInt(limit) || 100), 500);
@@ -128,6 +131,7 @@ async function handleTests(req, res) {
   if (payer) {
     const payerLower = payer.toLowerCase();
     if (!VALID_PAYERS.includes(payerLower)) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, route: 'tests', errorType: 'validation' });
       return res.status(400).json({
         success: false,
         error: 'Invalid payer',
@@ -160,6 +164,7 @@ async function handleTests(req, res) {
   }
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'tests', testsReturned: tests.length, hasMore: offsetNum + tests.length < totalCount });
   return res.status(200).json({
     success: true,
     meta: {
@@ -176,7 +181,7 @@ async function handleTests(req, res) {
   });
 }
 
-async function handleSingleTest(req, res, testId) {
+async function handleSingleTest(req, res, testId, startTime) {
   let test = await dal.tests.findById(testId);
 
   // Try case-insensitive lookup if not found
@@ -187,12 +192,14 @@ async function handleSingleTest(req, res, testId) {
   }
 
   if (!test) {
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: 'tests/:id', errorType: 'not_found' });
     return res.status(404).json({ success: false, error: 'Test not found', message: `No test found with ID "${testId}"` });
   }
 
   const urlPath = CATEGORY_INFO[test.category]?.urlPath || test.category.toLowerCase();
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'tests/:id', testId: test.id });
   return res.status(200).json({
     success: true,
     meta: { generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
@@ -201,7 +208,7 @@ async function handleSingleTest(req, res, testId) {
   });
 }
 
-async function handleCategories(req, res) {
+async function handleCategories(req, res, startTime) {
   const stats = await dal.tests.getStats();
 
   const categories = Object.entries(CATEGORY_INFO).map(([id, info]) => ({
@@ -221,6 +228,7 @@ async function handleCategories(req, res) {
   }));
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'categories', count: categories.length });
   return res.status(200).json({
     success: true,
     meta: { totalCategories: categories.length, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
@@ -238,7 +246,7 @@ function getDescription(id) {
   return descriptions[id] || '';
 }
 
-async function handleVendors(req, res) {
+async function handleVendors(req, res, startTime) {
   const { category } = req.query;
 
   const { data: allTests } = await dal.tests.findAll();
@@ -266,6 +274,7 @@ async function handleVendors(req, res) {
   }
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'vendors', count: vendors.length });
   return res.status(200).json({
     success: true,
     meta: { totalVendors: vendors.length, generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
@@ -273,7 +282,7 @@ async function handleVendors(req, res) {
   });
 }
 
-async function handleAssistance(req, res) {
+async function handleAssistance(req, res, startTime) {
   const { medicare, medicaid, hasFpl } = req.query;
 
   // Get all vendors with assistance programs
@@ -315,6 +324,7 @@ async function handleAssistance(req, res) {
   }
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'assistance', count: programs.length });
   return res.status(200).json({
     success: true,
     meta: {
@@ -327,18 +337,19 @@ async function handleAssistance(req, res) {
   });
 }
 
-async function handleAssistanceByVendor(req, res, vendorName) {
+async function handleAssistanceByVendor(req, res, vendorName, startTime) {
   // Find vendor by name (case-insensitive, partial match)
   const { data: vendors } = await dal.vendors.findAll();
-  
+
   const vendorLower = vendorName.toLowerCase().replace(/-/g, ' ');
-  const vendor = vendors.find(v => 
+  const vendor = vendors.find(v =>
     v.name.toLowerCase() === vendorLower ||
     v.id === vendorName.toLowerCase() ||
     v.name.toLowerCase().includes(vendorLower)
   );
 
   if (!vendor) {
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: 'assistance/:vendor', errorType: 'not_found' });
     return res.status(404).json({
       success: false,
       error: 'Vendor not found',
@@ -347,6 +358,7 @@ async function handleAssistanceByVendor(req, res, vendorName) {
   }
 
   if (!vendor.assistanceProgram) {
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: 'assistance/:vendor', errorType: 'no_program' });
     return res.status(404).json({
       success: false,
       error: 'No assistance program',
@@ -355,6 +367,7 @@ async function handleAssistanceByVendor(req, res, vendorName) {
   }
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'assistance/:vendor', vendorId: vendor.id });
   return res.status(200).json({
     success: true,
     meta: {
@@ -370,10 +383,11 @@ async function handleAssistanceByVendor(req, res, vendorName) {
   });
 }
 
-async function handleStats(req, res) {
+async function handleStats(req, res, startTime) {
   const stats = await dal.tests.getStats();
 
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=1800');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'stats' });
   return res.status(200).json({
     success: true,
     meta: { generatedAt: new Date().toISOString(), source: 'OpenOnco (openonco.org)', license: 'CC BY 4.0' },
@@ -381,10 +395,11 @@ async function handleStats(req, res) {
   });
 }
 
-async function handleEmbed(req, res) {
+async function handleEmbed(req, res, startTime) {
   const { id, theme = 'light', width = '400', format } = req.query;
 
   if (!id) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, route: 'embed', errorType: 'validation' });
     return res.status(400).send('<!DOCTYPE html><html><body>Missing test ID</body></html>');
   }
 
@@ -396,12 +411,14 @@ async function handleEmbed(req, res) {
   }
 
   if (!test) {
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: 'embed', errorType: 'not_found' });
     return res.status(404).send('<!DOCTYPE html><html><body>Test not found</body></html>');
   }
 
   const urlPath = CATEGORY_INFO[test.category]?.urlPath || test.category.toLowerCase();
 
   if (format === 'json') {
+    req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'embed', testId: test.id, contentType: 'application/json' });
     return res.status(200).json({
       success: true,
       embed: { iframe: `<iframe src="https://openonco.org/api/v1/embed/test?id=${test.id}" width="${width}" height="280" frameborder="0"></iframe>` },
@@ -424,6 +441,7 @@ async function handleEmbed(req, res) {
                   test.genesAnalyzed ? `<div class="metric"><div class="metric-label">Genes</div><div class="metric-value">${test.genesAnalyzed}</div></div>` : '';
   const metric2 = test.specificity ? `<div class="metric"><div class="metric-label">Specificity</div><div class="metric-value">${test.specificity}%</div></div>` : '';
 
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'embed', testId: test.id, contentType: 'text/html' });
   return res.status(200).send(`<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:${bg};color:${text};padding:16px}
@@ -453,7 +471,7 @@ ${metric2}
 // COVERAGE ENDPOINTS
 // ============================================================================
 
-async function handleCoverage(req, res) {
+async function handleCoverage(req, res, startTime) {
   const { medicare, payer, payerStatus, limit = '100', offset = '0' } = req.query;
 
   const limitNum = Math.min(Math.max(1, parseInt(limit) || 100), 500);
@@ -483,6 +501,7 @@ async function handleCoverage(req, res) {
   if (payer) {
     const payerLower = payer.toLowerCase();
     if (!VALID_PAYERS.includes(payerLower)) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, route: 'coverage', errorType: 'validation' });
       return res.status(400).json({
         success: false,
         error: 'Invalid payer',
@@ -524,6 +543,7 @@ async function handleCoverage(req, res) {
   tests = tests.slice(offsetNum, offsetNum + limitNum);
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'coverage', testsWithCoverage: tests.length, hasMore: offsetNum + tests.length < totalCount });
   return res.status(200).json({
     success: true,
     meta: {
@@ -541,7 +561,7 @@ async function handleCoverage(req, res) {
   });
 }
 
-async function handleCoverageById(req, res, testId) {
+async function handleCoverageById(req, res, testId, startTime) {
   let test = await dal.tests.findById(testId);
   if (!test) {
     const idLower = testId.toLowerCase();
@@ -550,6 +570,7 @@ async function handleCoverageById(req, res, testId) {
   }
 
   if (!test) {
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: 'coverage/:testId', errorType: 'not_found' });
     return res.status(404).json({
       success: false,
       error: 'Test not found',
@@ -558,6 +579,7 @@ async function handleCoverageById(req, res, testId) {
   }
 
   if (!test.coverageCrossReference) {
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: 'coverage/:testId', errorType: 'no_coverage' });
     return res.status(404).json({
       success: false,
       error: 'No coverage data',
@@ -566,6 +588,7 @@ async function handleCoverageById(req, res, testId) {
   }
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'coverage/:testId', testId: test.id });
   return res.status(200).json({
     success: true,
     meta: {
@@ -583,10 +606,11 @@ async function handleCoverageById(req, res, testId) {
   });
 }
 
-async function handleCoverageByPayer(req, res, payerName) {
+async function handleCoverageByPayer(req, res, payerName, startTime) {
   const payerLower = payerName.toLowerCase();
 
   if (!VALID_PAYERS.includes(payerLower)) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, route: 'coverage/payer/:name', errorType: 'validation' });
     return res.status(400).json({
       success: false,
       error: 'Invalid payer',
@@ -620,6 +644,7 @@ async function handleCoverageByPayer(req, res, payerName) {
   const totalTests = Object.values(grouped).reduce((sum, arr) => sum + arr.length, 0);
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'coverage/payer/:name', payer: payerLower, testsReturned: totalTests });
   return res.status(200).json({
     success: true,
     meta: {
@@ -637,10 +662,11 @@ async function handleCoverageByPayer(req, res, payerName) {
 // SEARCH ENDPOINT
 // ============================================================================
 
-async function handleSearch(req, res) {
+async function handleSearch(req, res, startTime) {
   const { q, category, fields, limit = '100', offset = '0' } = req.query;
 
   if (!q || q.trim() === '') {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, route: 'search', errorType: 'validation' });
     return res.status(400).json({
       success: false,
       error: 'Missing search query',
@@ -673,6 +699,7 @@ async function handleSearch(req, res) {
   });
 
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  req.logger.info('Response sent', { status: 200, durationMs: Date.now() - startTime, route: 'search', resultsReturned: data.length, queryLength: q?.length });
   return res.status(200).json({
     success: true,
     meta: {
@@ -695,7 +722,8 @@ async function handleSearch(req, res) {
 // MAIN HANDLER
 // ============================================================================
 
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
   setCorsHeaders(res);
 
   if (req.method === 'OPTIONS') {
@@ -703,6 +731,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'GET') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -717,72 +746,85 @@ export default async function handler(req, res) {
 
     const routeKey = route || segments[0] || '';
 
+    // Log request with route info
+    req.logger.info('API request received', {
+      route: routeKey || 'docs',
+      category: req.query.category,
+      vendor: req.query.vendor,
+      cancer: req.query.cancer,
+      limit: req.query.limit,
+      offset: req.query.offset,
+      searchQuery: req.query.q?.slice(0, 50)
+    });
+
     if (!routeKey) {
-      return handleDocs(req, res);
+      return handleDocs(req, res, startTime);
     }
 
     if (routeKey === 'tests') {
       if (testId) {
-        return await handleSingleTest(req, res, testId);
+        return await handleSingleTest(req, res, testId, startTime);
       }
       if (segments[1]) {
-        return await handleSingleTest(req, res, segments[1]);
+        return await handleSingleTest(req, res, segments[1], startTime);
       }
-      return await handleTests(req, res);
+      return await handleTests(req, res, startTime);
     }
 
     if (routeKey === 'categories') {
-      return await handleCategories(req, res);
+      return await handleCategories(req, res, startTime);
     }
 
     if (routeKey === 'vendors') {
-      return await handleVendors(req, res);
+      return await handleVendors(req, res, startTime);
     }
 
     if (routeKey === 'assistance') {
       if (segments[1]) {
-        return await handleAssistanceByVendor(req, res, segments[1]);
+        return await handleAssistanceByVendor(req, res, segments[1], startTime);
       }
       if (req.query.vendor) {
-        return await handleAssistanceByVendor(req, res, req.query.vendor);
+        return await handleAssistanceByVendor(req, res, req.query.vendor, startTime);
       }
-      return await handleAssistance(req, res);
+      return await handleAssistance(req, res, startTime);
     }
 
     if (routeKey === 'stats') {
-      return await handleStats(req, res);
+      return await handleStats(req, res, startTime);
     }
 
     if (routeKey === 'embed') {
       if (embedType === 'test' || segments[1] === 'test') {
-        return await handleEmbed(req, res);
+        return await handleEmbed(req, res, startTime);
       }
     }
 
     if (routeKey === 'coverage') {
       if (segments[1] === 'payer' && segments[2]) {
-        return await handleCoverageByPayer(req, res, segments[2]);
+        return await handleCoverageByPayer(req, res, segments[2], startTime);
       }
       if (req.query.subRoute === 'payer' && req.query.payer) {
-        return await handleCoverageByPayer(req, res, req.query.payer);
+        return await handleCoverageByPayer(req, res, req.query.payer, startTime);
       }
       if (segments[1] && segments[1] !== 'payer') {
-        return await handleCoverageById(req, res, segments[1]);
+        return await handleCoverageById(req, res, segments[1], startTime);
       }
       if (testId) {
-        return await handleCoverageById(req, res, testId);
+        return await handleCoverageById(req, res, testId, startTime);
       }
-      return await handleCoverage(req, res);
+      return await handleCoverage(req, res, startTime);
     }
 
     if (routeKey === 'search') {
-      return await handleSearch(req, res);
+      return await handleSearch(req, res, startTime);
     }
 
+    req.logger.info('Error response sent', { status: 404, durationMs: Date.now() - startTime, route: routeKey, errorType: 'not_found' });
     return res.status(404).json({ error: 'Not found', route: routeKey });
 
   } catch (error) {
-    console.error('API Error:', error);
+    req.logger.error('API error', { error });
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'internal_error' });
     return res.status(500).json({ success: false, error: 'Internal server error', message: error.message });
   }
-}
+}, { moduleName: 'api:v1:public' });

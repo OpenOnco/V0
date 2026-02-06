@@ -15,6 +15,8 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import { withVercelLogging } from '../shared/logger/index.js';
+import { sanitizeMessage } from './_sanitize.js';
 import {
   mrdTestData,
   ecdTestData,
@@ -557,8 +559,11 @@ function validateMessages(messages) {
 // ============================================
 // MAIN HANDLER
 // ============================================
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
+
   if (req.method !== 'POST') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -571,13 +576,16 @@ export default async function handler(req, res) {
 
   if (!rateLimit.allowed) {
     res.setHeader('Retry-After', rateLimit.retryAfter);
+    req.logger.warn('Rate limit exceeded', { retryAfter: rateLimit.retryAfter });
+    req.logger.info('Error response sent', { status: 429, durationMs: Date.now() - startTime, errorType: 'rate_limit' });
     return res.status(429).json({ error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter });
   }
 
   try {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      console.error('ANTHROPIC_API_KEY not set');
+      req.logger.error('ANTHROPIC_API_KEY not set');
+      req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'config' });
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
@@ -588,9 +596,18 @@ export default async function handler(req, res) {
       model: requestedModel,
     } = req.body;
 
+    // Log request
+    req.logger.info('Chat v2 request received', {
+      messageCount: inputMessages?.length,
+      category,
+      persona,
+      model: requestedModel
+    });
+
     // Validate messages
     const msgValidation = validateMessages(inputMessages);
     if (!msgValidation.valid) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
       return res.status(400).json({ error: msgValidation.error });
     }
 
@@ -625,6 +642,7 @@ export default async function handler(req, res) {
     // Tool use loop
     let iterations = 0;
     let response;
+    const toolsUsed = [];
 
     while (iterations < MAX_TOOL_ITERATIONS) {
       iterations++;
@@ -653,6 +671,7 @@ export default async function handler(req, res) {
       // Execute each tool call
       const toolResults = [];
       for (const toolUse of toolUseBlocks) {
+        toolsUsed.push(toolUse.name);
         try {
           const result = executeToolCall(toolUse.name, toolUse.input);
           toolResults.push({
@@ -661,7 +680,10 @@ export default async function handler(req, res) {
             content: JSON.stringify(result, null, 2),
           });
         } catch (toolError) {
-          console.error(`Tool execution error (${toolUse.name}):`, toolError);
+          req.logger.error('Tool execution error', {
+            toolName: toolUse.name,
+            error: toolError
+          });
           toolResults.push({
             type: 'tool_result',
             tool_use_id: toolUse.id,
@@ -684,7 +706,10 @@ export default async function handler(req, res) {
 
     // Check if we hit the iteration limit
     if (iterations >= MAX_TOOL_ITERATIONS) {
-      console.warn('Hit maximum tool iterations');
+      req.logger.warn('Hit maximum tool iterations', {
+        iterations: MAX_TOOL_ITERATIONS,
+        toolsUsed
+      });
     }
 
     // Extract text content from final response
@@ -692,6 +717,15 @@ export default async function handler(req, res) {
       .filter(block => block.type === 'text')
       .map(block => block.text)
       .join('\n');
+
+    // Log response
+    req.logger.info('Response sent', {
+      status: 200,
+      durationMs: Date.now() - startTime,
+      tokensUsed: response.usage?.output_tokens,
+      toolsUsed: toolsUsed.length,
+      iterations
+    });
 
     // Return response in format compatible with chat.js
     return res.status(200).json({
@@ -705,23 +739,32 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Chat v2 API error:', error.message);
+    req.logger.error('Chat v2 API error', {
+      error,
+      category: req.body?.category,
+      persona: req.body?.persona,
+      messageCount: req.body?.messages?.length,
+      lastMessage: sanitizeMessage(req.body?.messages?.at(-1)?.content)
+    });
 
     if (error.status === 429) {
+      req.logger.info('Error response sent', { status: 429, durationMs: Date.now() - startTime, errorType: 'api_rate_limit' });
       return res.status(429).json({ error: 'Service temporarily unavailable' });
     }
 
     if (error.status === 400) {
+      req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'api_bad_request' });
       return res.status(400).json({
         error: 'Invalid request',
         message: error.message,
       });
     }
 
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'api_error' });
     return res.status(500).json({
       error: 'An error occurred',
       message: error.message,
       type: error.constructor.name
     });
   }
-}
+}, { moduleName: 'api:chat:v2' });

@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import crypto from 'crypto';
+import { withVercelLogging } from '../shared/logger/index.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -54,14 +55,25 @@ function isDuplicateSubmission(hash) {
   return false;
 }
 
-export default async function handler(req, res) {
+export default withVercelLogging(async (req, res) => {
+  const startTime = Date.now();
+
   if (req.method !== 'POST') {
+    req.logger.info('Error response sent', { status: 405, durationMs: Date.now() - startTime });
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { submission } = req.body;
 
+  // Log request
+  req.logger.info('Form submission received', {
+    submissionType: submission?.submissionType,
+    hasEmail: !!submission?.submitter?.email,
+    category: submission?.category
+  });
+
   if (!submission) {
+    req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'validation' });
     return res.status(400).json({ error: 'Submission data required' });
   }
 
@@ -69,6 +81,15 @@ export default async function handler(req, res) {
   const submissionHash = generateSubmissionHash(submission);
   if (isDuplicateSubmission(submissionHash)) {
     // Return success to avoid confusing the user, but don't send duplicate email
+    req.logger.info('Duplicate submission detected', {
+      submissionType: submission?.submissionType,
+      hashPrefix: submissionHash.slice(0, 8)
+    });
+    req.logger.info('Response sent', {
+      status: 200,
+      durationMs: Date.now() - startTime,
+      duplicate: true
+    });
     return res.status(200).json({
       success: true,
       message: 'Submission already received',
@@ -237,9 +258,19 @@ export default async function handler(req, res) {
         `
       });
 
+      req.logger.info('Response sent', {
+        status: 200,
+        durationMs: Date.now() - startTime,
+        submissionType: 'vendor-confirmation',
+        emailSent: true
+      });
       return res.status(200).json({ success: true, message: 'Vendor confirmation sent successfully' });
     } catch (error) {
-      console.error('Error sending vendor confirmation:', error);
+      req.logger.error('Error sending vendor confirmation', {
+        error,
+        submissionType: 'vendor-confirmation'
+      });
+      req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'email_send_failure' });
       return res.status(500).json({ error: 'Failed to send vendor confirmation' });
     }
   } else {
@@ -332,9 +363,19 @@ export default async function handler(req, res) {
       `
     });
 
+    req.logger.info('Response sent', {
+      status: 200,
+      durationMs: Date.now() - startTime,
+      submissionType: submission?.submissionType,
+      emailSent: true
+    });
     return res.status(200).json({ success: true, message: 'Submission sent successfully' });
   } catch (error) {
-    console.error('Error sending submission:', error);
+    req.logger.error('Error sending submission', {
+      error,
+      submissionType: submission?.submissionType
+    });
+    req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'email_send_failure' });
     return res.status(500).json({ error: 'Failed to send submission' });
   }
-}
+}, { moduleName: 'api:forms:submit' });
