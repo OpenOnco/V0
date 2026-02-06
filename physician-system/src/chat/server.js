@@ -4,6 +4,9 @@
  */
 
 import { createServer } from 'http';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import crypto from 'crypto';
 import { createLogger } from '../utils/logger.js';
 import { query } from '../db/client.js';
@@ -15,6 +18,11 @@ import { embedAllMissing } from '../embeddings/mrd-embedder.js';
 import { ensureCitationCompliance } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
+import { getExamplesByType } from './few-shot-examples.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const DECISION_TREES = JSON.parse(readFileSync(join(__dirname, '../../data/decision-trees.json'), 'utf8'));
 
 const logger = createLogger('server');
 
@@ -201,6 +209,62 @@ function intentToSourceTypes(intent) {
   }
 
   return [...new Set(sourceTypes)];
+}
+
+// ============================================
+// DECISION TREE MATCHING
+// ============================================
+
+const MRD_POSITIVE_PATTERNS = /\b(mrd[- ]?positive|ctdna[- ]?positive|ctdna[- ]?detected|mrd[- ]?detected|signatera[- ]?positive|mrd\+|ctdna\+|positive[- ]?mrd|positive[- ]?ctdna|detectable[- ]?ctdna|ctdna[- ]?still[- ]?positive|rising[- ]?ctdna|persistent[- ]?ctdna)\b/i;
+const MRD_NEGATIVE_PATTERNS = /\b(mrd[- ]?negative|ctdna[- ]?negative|ctdna[- ]?undetect|ctdna[- ]?not[- ]?detected|ctdna[- ]?cleared|mrd[- ]?cleared|signatera[- ]?negative|mrd-|ctdna-|negative[- ]?mrd|negative[- ]?ctdna|undetectable[- ]?ctdna|ctdna[- ]?clearance)\b/i;
+
+const CANCER_TYPE_ALIASES = {
+  colorectal: ['colorectal', 'crc', 'colon', 'rectal', 'colon cancer', 'colorectal cancer'],
+  breast: ['breast', 'tnbc', 'triple negative', 'triple-negative', 'hr+', 'hr positive', 'her2', 'breast cancer'],
+  non_small_cell_lung: ['nsclc', 'non-small cell', 'non small cell', 'lung', 'lung cancer', 'non-small-cell lung'],
+};
+
+function findMatchingScenario(intent, queryText) {
+  const lowerQuery = queryText.toLowerCase();
+
+  // Detect MRD result polarity
+  const isPositive = MRD_POSITIVE_PATTERNS.test(lowerQuery);
+  const isNegative = MRD_NEGATIVE_PATTERNS.test(lowerQuery);
+  const mrdResult = isPositive ? 'positive' : isNegative ? 'negative' : null;
+
+  if (!mrdResult) return null;
+
+  // Detect cancer type from intent or query text
+  let matchedCancerType = null;
+  const intentCancerTypes = (intent.cancer_types || []).map(c => c.toLowerCase());
+
+  for (const [canonicalType, aliases] of Object.entries(CANCER_TYPE_ALIASES)) {
+    if (intentCancerTypes.some(ct => aliases.some(a => ct.includes(a)))) {
+      matchedCancerType = canonicalType;
+      break;
+    }
+    if (aliases.some(a => lowerQuery.includes(a))) {
+      matchedCancerType = canonicalType;
+      break;
+    }
+  }
+
+  if (!matchedCancerType) return null;
+
+  // Find matching scenario
+  const scenario = DECISION_TREES.scenarios.find(s =>
+    s.cancer_type === matchedCancerType && s.mrd_result === mrdResult
+  );
+
+  if (scenario) {
+    logger.info('Decision tree matched', {
+      scenario: scenario.scenario_id,
+      cancerType: matchedCancerType,
+      mrdResult,
+    });
+  }
+
+  return scenario || null;
 }
 
 // ============================================
@@ -724,6 +788,9 @@ async function handleMRDChat(req, res) {
     // Step 1: Extract query intent (Phase 5)
     const intent = await extractQueryIntent(queryText);
 
+    // Step 1b: Match decision tree scenario
+    const matchedScenario = findMatchingScenario(intent, queryText);
+
     // Step 2: Embed the query
     const queryEmbedding = await embedQuery(queryText);
 
@@ -747,11 +814,30 @@ async function handleMRDChat(req, res) {
     // Step 4: Generate response with Claude
     const claude = getAnthropic();
 
+    // Build scenario context if decision tree matched
+    let scenarioContext = '';
+    if (matchedScenario) {
+      const decisionsText = matchedScenario.decisions
+        .map(d => `- ${d.question} (evidence: ${d.evidence_strength})`)
+        .join('\n');
+      scenarioContext = `\n\nMATCHED CLINICAL SCENARIO: ${matchedScenario.display_name}
+RELEVANT DECISIONS:
+${decisionsText}
+TEST CONSIDERATIONS: ${JSON.stringify(matchedScenario.test_considerations)}
+EVIDENCE GAPS: ${matchedScenario.evidence_gaps.join('; ')}
+
+Use this scenario to structure your response around these specific decisions.`;
+    }
+
+    // Get relevant few-shot examples (1 pair max to manage token budget)
+    const examples = getExamplesByType(intent.query_type).slice(0, 2);
+
     const response = await claude.messages.create({
       model: SONNET_MODEL,
       max_tokens: 1024,
       system: MRD_CHAT_SYSTEM_PROMPT,
       messages: [
+        ...examples,
         {
           role: 'user',
           content: `Based on the following sources, answer this clinical question about MRD (Molecular Residual Disease):
@@ -759,13 +845,14 @@ async function handleMRDChat(req, res) {
 QUESTION: ${queryText}
 
 AVAILABLE SOURCES:
-${sourcesContext}
+${sourcesContext}${scenarioContext}
 
 Remember:
 - Cite sources using [1], [2], etc.
-- Never make treatment recommendations
-- Focus on evidence and guidelines
-- Keep it concise (3-5 paragraphs)`,
+- Structure your response around the clinical decisions the physician faces
+- Present evidence FOR EACH clinical option, not as a literature review
+- Acknowledge what evidence doesn't address
+- 3-5 paragraphs max`,
         },
       ],
     });
@@ -889,6 +976,12 @@ Remember:
           cancerTypes: intent.cancer_types,
           evidenceFocus: intent.evidence_focus,
         },
+        matchedScenario: matchedScenario ? {
+          id: matchedScenario.scenario_id,
+          displayName: matchedScenario.display_name,
+          mrdResult: matchedScenario.mrd_result,
+          decisionsCount: matchedScenario.decisions.length,
+        } : null,
       },
     }));
 

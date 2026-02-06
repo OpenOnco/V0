@@ -20,6 +20,8 @@ const QUERY_TYPES = [
   'test_comparison',
   'coverage_policy',
   'general',
+  'clinical_guidance',
+  'clinical_guidance',
 ];
 
 export const FEW_SHOT_EXAMPLES = [
@@ -173,13 +175,77 @@ Clinical practice in many academic centers has outpaced the current guideline la
 LIMITATIONS:
 NCCN guidelines are updated on a rolling basis and the specific language around ctDNA may change between guideline versions. The recommendations referenced here are based on the most recent indexed version available in the evidence database. Guidelines in rapidly evolving fields like MRD testing may lag behind the latest published trial data and real-world clinical adoption patterns.`,
   },
+
+  // ──────────────────────────────────────────────
+  // Example 6: TNBC breast de-escalation (MRD-negative)
+  // queryType: clinical_guidance
+  // ──────────────────────────────────────────────
+  {
+    role: 'user',
+    content:
+      'My TNBC patient is MRD-negative after neoadjuvant chemo and surgery. She had a pathologic complete response. The plan was capecitabine per CREATE-X. Do I still need it if ctDNA is undetectable?',
+  },
+  {
+    role: 'assistant',
+    content: `CLINICAL SCENARIO: Triple-negative breast cancer (TNBC), post-neoadjuvant chemotherapy, pathologic complete response (pCR), ctDNA undetectable.
+DECISION: Whether to proceed with adjuvant capecitabine per CREATE-X in a patient with pCR and negative MRD.
+
+OPTION A: Proceed with capecitabine per CREATE-X indication regardless of MRD status.
+- Evidence: The CREATE-X trial demonstrated significant overall survival benefit from adjuvant capecitabine in HER2-negative breast cancer patients with residual invasive disease after neoadjuvant therapy [1]. Critically, CREATE-X enrolled patients based on pathologic response (non-pCR), not MRD status. The benefit was most pronounced in the TNBC subgroup. Current NCCN guidelines recommend capecitabine for TNBC patients with residual disease after neoadjuvant therapy [2].
+- Caveats: This patient achieved pCR, which already places her in a favorable prognostic category. CREATE-X was designed for non-pCR patients. Whether capecitabine adds benefit for pCR patients (regardless of MRD status) is not established.
+
+OPTION B: Consider omitting capecitabine based on both pCR and MRD negativity.
+- Evidence: Patients achieving pCR after neoadjuvant therapy for TNBC have significantly better outcomes than non-pCR patients [3]. Adding MRD negativity to pCR further identifies an extremely low-risk subgroup. The BESPOKE study showed that ctDNA-negative early breast cancer patients had favorable outcomes [4]. However, no prospective trial has evaluated omitting capecitabine specifically in pCR + MRD-negative TNBC patients.
+- Caveats: This approach is entirely investigational. The absence of detectable ctDNA does not prove absence of micrometastatic disease. TNBC recurrence risk peaks at 1-3 years post-treatment, and even low-risk patients experience recurrences.
+
+OPTION C: Serial MRD monitoring with capecitabine initiation only if ctDNA converts positive.
+- Evidence: c-TRAK TN evaluated ctDNA-triggered pembrolizumab in TNBC, demonstrating feasibility of a "watch and treat on conversion" approach [4]. A similar strategy could theoretically apply to capecitabine, initiating treatment only upon molecular recurrence detection. This has not been studied in a randomized trial.
+- Caveats: This deferred approach risks missing the optimal adjuvant treatment window. Capecitabine benefit may be greatest early after surgery, and delaying initiation until molecular relapse may reduce efficacy. This strategy is hypothesis-generating only.
+
+WHAT THE EVIDENCE DOESN'T ADDRESS:
+No trial has tested MRD-guided de-escalation in TNBC. CREATE-X was not MRD-selected and enrolled non-pCR patients. The combination of pCR + MRD negativity identifies a very favorable subgroup, but "very favorable" is not "zero risk." Additionally, TNBC has limited late-recurrence risk compared to HR+ disease, which makes MRD monitoring somewhat more informative in the early post-treatment window — but the clinical actionability of that information for de-escalation remains unproven.
+
+TEST-SPECIFIC NOTE: Tumor-informed assays (Signatera) have higher sensitivity for detecting low-level ctDNA than tumor-naive approaches. For de-escalation decisions where a false-negative result could lead to undertreating a curable cancer, maximizing assay sensitivity is critical. Consider repeat testing at 3-6 months to confirm sustained negativity.`,
+  },
+
+  // ──────────────────────────────────────────────
+  // Example 7: NSCLC escalation (MRD-positive, no driver mutations)
+  // queryType: clinical_guidance
+  // ──────────────────────────────────────────────
+  {
+    role: 'user',
+    content:
+      'Stage IIB NSCLC, no driver mutations, PD-L1 30%, MRD positive after lobectomy. I was planning standard adjuvant cisplatin-pemetrexed. Should I push for adjuvant immunotherapy based on the MRD result?',
+  },
+  {
+    role: 'assistant',
+    content: `CLINICAL SCENARIO: Stage IIB NSCLC, no actionable driver mutations, PD-L1 30%, ctDNA-positive post-lobectomy.
+DECISION: Whether MRD positivity should influence the choice of adjuvant therapy, specifically the addition of immunotherapy.
+
+OPTION A: Adjuvant atezolizumab per IMpower010 (after cisplatin-based chemotherapy).
+- Evidence: IMpower010 demonstrated significant DFS improvement with adjuvant atezolizumab following cisplatin-based chemotherapy in resected stage II-IIIA NSCLC with PD-L1 ≥1% [1]. This patient (stage IIB, PD-L1 30%) falls within the approved indication. Correlative ctDNA analyses from IMpower010 suggested that patients with detectable ctDNA post-surgery derived benefit from atezolizumab, though these data are hypothesis-generating [1].
+- Caveats: Atezolizumab adjuvant approval is based on PD-L1 and stage, not MRD status. The IMpower010 ctDNA correlative data have not been validated prospectively for treatment selection.
+
+OPTION B: Adjuvant pembrolizumab per KEYNOTE-091.
+- Evidence: KEYNOTE-091 (PEARLS) demonstrated DFS improvement with adjuvant pembrolizumab in stage IB-IIIA resected NSCLC [2]. Unlike IMpower010, the KEYNOTE-091 benefit was observed regardless of PD-L1 expression level. This provides an alternative immunotherapy option for this patient.
+- Caveats: MRD status was not a stratification factor in KEYNOTE-091 and ctDNA correlative analyses are limited. The choice between atezolizumab and pembrolizumab is typically based on PD-L1 status, toxicity profile, and practical considerations rather than MRD.
+
+OPTION C: Clinical trial enrollment — MERMAID-1 for ctDNA-guided adjuvant durvalumab.
+- Evidence: MERMAID-1 (NCT04385368) is specifically evaluating adjuvant durvalumab plus chemotherapy versus chemotherapy alone in resected NSCLC patients with detectable ctDNA post-surgery [3]. This is the only phase III trial explicitly using MRD as a selection biomarker for adjuvant immunotherapy in NSCLC. Enrollment may provide access to MRD-guided therapy within a rigorous trial framework.
+- Caveats: Trial availability is site-dependent. Results have not yet been reported. If enrolled, randomization may assign the patient to the control arm.
+
+WHAT THE EVIDENCE DOESN'T ADDRESS:
+MRD positivity in this clinical scenario adds prognostic urgency — these patients have a high likelihood of recurrence. However, MRD is not a validated predictive biomarker for immunotherapy benefit in NSCLC. The patient already qualifies for adjuvant immunotherapy based on stage and PD-L1 status via IMpower010. MRD positivity may reinforce the decision to add immunotherapy but does not represent a new indication beyond what PD-L1/stage already supports. The unanswered question is whether MRD-positive patients who are PD-L1-negative would benefit from immunotherapy — this is being addressed by MERMAID-1 but is not yet established.
+
+TEST-SPECIFIC NOTE: For patients without actionable driver mutations, the choice of MRD assay is less constrained than for EGFR/ALK-positive patients. Tissue availability from lobectomy specimens is typically adequate for tumor-informed assays. FoundationOne Tracker may be convenient if FoundationOne CDx comprehensive genomic profiling was already performed for driver mutation screening.`,
+  },
 ];
 
 /**
  * Get few-shot examples formatted for the Claude messages API.
  * Returns alternating user/assistant message pairs.
  *
- * @param {number} [count=5] - Number of example pairs to include (max 5)
+ * @param {number} [count=5] - Number of example pairs to include (max 7)
  * @returns {Array<{role: string, content: string}>} Messages array for Claude API
  */
 export function getFewShotMessages(count = 5) {
