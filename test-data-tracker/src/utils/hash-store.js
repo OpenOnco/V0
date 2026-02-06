@@ -913,6 +913,12 @@ function generateAssertionId(payerId, testId, layer, sourcePolicyId) {
 export function upsertCoverageAssertion(assertion) {
   if (!db) throw new Error('Hash store not initialized');
 
+  if (!assertion.sourcePolicyId) {
+    throw new Error(
+      `Cannot upsert assertion without sourcePolicyId (payer=${assertion.payerId}, test=${assertion.testId})`
+    );
+  }
+
   const assertionId = assertion.assertionId ||
     generateAssertionId(assertion.payerId, assertion.testId, assertion.layer, assertion.sourcePolicyId);
 
