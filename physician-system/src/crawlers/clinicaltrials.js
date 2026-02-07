@@ -140,8 +140,9 @@ export async function searchTrials(options = {}) {
   // Add filter for incremental updates
   if (lastUpdateDate) {
     // Filter to trials updated since last run
-    // Note: API uses AREA[LastUpdatePostDate]RANGE[min,max] format
-    const minDate = lastUpdateDate.replace(/-/g, '/');
+    // ClinicalTrials.gov v2 API expects MM/DD/YYYY format for date ranges
+    const [year, month, day] = lastUpdateDate.split('-');
+    const minDate = `${month}/${day}/${year}`;
     params.set('filter.advanced', `AREA[LastUpdatePostDate]RANGE[${minDate},MAX]`);
     logger.info('Incremental search with date filter', { since: lastUpdateDate });
   }

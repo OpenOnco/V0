@@ -1006,9 +1006,9 @@ const TestShowcase = ({
                         }`}
                       >
                         {badge.label}: {badge.value}
-                        <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 w-max max-w-[180px] px-2 py-1 bg-gray-900 text-white text-[10px] rounded-md shadow-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-150 z-50 pointer-events-none">
-                          <span className="font-semibold">n={badge.cohortSize.toLocaleString()}</span>
-                          {badge.cohortStudy && <span className="block text-gray-300 text-[9px] mt-0.5 leading-tight">{badge.cohortStudy}</span>}
+                        <span className="absolute left-0 bottom-full mb-1 w-max max-w-[200px] px-2 py-1.5 bg-white/95 backdrop-blur-sm border border-slate-200 text-slate-700 text-[10px] rounded-md shadow-md opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-150 z-50 pointer-events-none">
+                          <span className="font-semibold text-slate-800">Validation cohort: n={badge.cohortSize.toLocaleString()}</span>
+                          {badge.cohortStudy && <span className="block text-slate-500 text-[9px] mt-0.5 leading-tight">{badge.cohortStudy}</span>}
                         </span>
                       </span>
                     ) : (
