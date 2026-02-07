@@ -145,8 +145,31 @@ async function main() {
   }
 }
 
-// Start the daemon
-main().catch((error) => {
-  logger.error('Fatal error', { error });
-  process.exit(1);
-});
+// CLI command handling (e.g., node src/index.js digest:preview)
+const cliCommand = process.argv[2];
+if (cliCommand?.startsWith('digest:')) {
+  import('./digest/send-weekly.js').then(async (mod) => {
+    try {
+      if (cliCommand === 'digest:preview') {
+        const result = await mod.generateDraft();
+        console.log('Draft result:', JSON.stringify(result, null, 2));
+      } else if (cliCommand === 'digest:send') {
+        const digestId = process.argv[3] ? parseInt(process.argv[3], 10) : null;
+        const result = await mod.sendApprovedDigest(digestId);
+        console.log('Send result:', JSON.stringify(result, null, 2));
+      } else {
+        console.error(`Unknown digest command: ${cliCommand}`);
+        console.log('Available: digest:preview, digest:send [digestId]');
+      }
+    } catch (error) {
+      console.error('Command failed:', error.message);
+    }
+    process.exit(0);
+  });
+} else {
+  // Start the daemon
+  main().catch((error) => {
+    logger.error('Fatal error', { error });
+    process.exit(1);
+  });
+}

@@ -67,6 +67,8 @@ import SubmissionsPage from './pages/SubmissionsPage';
 import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
 import Chat from './components/Chat';
 import MRDChat from './components/physician/MRDChat';
+import DigestSignup from './components/physician/DigestSignup';
+import DigestPage from './pages/DigestPage';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
 import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, MINIMUM_PARAMS, FIELD_DEFINITIONS } from './config/testFields';
@@ -437,7 +439,10 @@ const HomePage = ({ onNavigate, persona }) => {
           <div className="lg:w-1/2 flex flex-col gap-4">
             {/* Chat */}
             {persona === 'medical' ? (
-              <MRDChat compact className="flex-1 min-h-[400px]" />
+              <>
+                <MRDChat compact className="flex-1 min-h-[400px]" />
+                <DigestSignup compact className="mt-0" />
+              </>
             ) : (
               <Chat
                 persona={persona}
@@ -1220,6 +1225,8 @@ export default function App() {
     '/patient/mrd': 'patient-watching',  // Alias for watching (MRD = monitoring)
     '/patient/lookup': 'patient-lookup',  // Path 1: Test lookup
     '/patient/appeal': 'patient-appeal',  // Path 3: Appeal help
+    // Digest
+    '/digest': 'digest',
     // Admin routes
     '/admin/discoveries': 'admin-discoveries',
     '/patient/screening': 'patient-screening',
@@ -1271,6 +1278,7 @@ export default function App() {
     'patient-watching': '/patient/watching',
     'patient-lookup': '/patient/lookup',  // Path 1: Test lookup
     'patient-appeal': '/patient/appeal',  // Path 3: Appeal help
+    'digest': '/digest',
     'admin-discoveries': '/admin/discoveries',
     'patient-screening': '/patient/screening',
     'patient-choosing': '/patient/choosing',
@@ -1337,6 +1345,11 @@ export default function App() {
   const [currentCompareSlug, setCurrentCompareSlug] = useState(initialRoute.compareSlug || null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
+  // Digest confirmation banner
+  const [showDigestConfirmed, setShowDigestConfirmed] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('digest_confirmed') === 'true';
+  });
   // Key to force wizard remount when navigating home
   const [wizardResetKey, setWizardResetKey] = useState(0);
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
@@ -1582,6 +1595,7 @@ export default function App() {
       case 'about': return <AboutPage />;
       case 'privacy': return <PrivacyPage />;
       case 'terms': return <TermsPage />;
+      case 'digest': return <DigestPage />;
       // Admin routes
       case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
@@ -1637,6 +1651,12 @@ export default function App() {
         {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
         <div className="min-h-screen bg-gray-50 flex flex-col">
           <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />
+          {showDigestConfirmed && (
+            <div className="bg-emerald-600 text-white text-center py-2.5 px-4 text-sm font-medium">
+              Your MRD Weekly Digest subscription is confirmed! You'll receive your first digest next Monday.
+              <button onClick={() => { setShowDigestConfirmed(false); window.history.replaceState({}, '', '/'); }} className="ml-3 underline hover:no-underline">Dismiss</button>
+            </div>
+          )}
           <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
           <Footer />
           <Analytics />

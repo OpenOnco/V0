@@ -10,6 +10,14 @@ import { createLogger } from './utils/logger.js';
 import { getHealthSummary } from './health.js';
 import { getQueueStatus } from './queue/index.js';
 import { getSchedulerStatus } from './scheduler.js';
+import {
+  createSubscriber,
+  confirmSubscriber,
+  unsubscribeByToken,
+  getPreferences,
+  updatePreferences,
+} from './digest/subscribers.js';
+import { sendConfirmationEmail } from './email/digest-confirmation.js';
 
 const logger = createLogger('server');
 
@@ -107,11 +115,129 @@ async function handleRequest(req, res) {
       return;
     }
 
+    // --- Digest subscriber API routes ---
+
+    // POST /api/digest/subscribe
+    if (path === '/api/digest/subscribe' && method === 'POST') {
+      const body = await parseBody(req);
+      const { email, cancerTypes, contentTypes, name, institution } = body;
+
+      if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        sendJson(res, { success: false, error: 'Valid email is required' }, 400);
+        return;
+      }
+
+      try {
+        const subscriber = await createSubscriber({ email: email.toLowerCase().trim(), cancerTypes, contentTypes, name, institution });
+        // Send confirmation email (don't block response on email delivery)
+        sendConfirmationEmail({ email: subscriber.email, confirmationToken: subscriber.confirmation_token, name })
+          .catch(err => logger.error('Failed to send confirmation email', { error: err.message }));
+        sendJson(res, { success: true, message: 'Check your email to confirm your subscription.' });
+      } catch (error) {
+        logger.error('Subscribe error', { error: error.message });
+        sendJson(res, { success: false, error: 'Failed to subscribe' }, 500);
+      }
+      return;
+    }
+
+    // POST /api/digest/confirm
+    if (path === '/api/digest/confirm' && method === 'POST') {
+      const body = await parseBody(req);
+      const { token } = body;
+
+      if (!token) {
+        sendJson(res, { success: false, error: 'Token is required' }, 400);
+        return;
+      }
+
+      try {
+        const result = await confirmSubscriber(token);
+        if (!result) {
+          sendJson(res, { success: false, error: 'Invalid or expired token' }, 404);
+          return;
+        }
+        sendJson(res, { success: true, email: result.email });
+      } catch (error) {
+        logger.error('Confirm error', { error: error.message });
+        sendJson(res, { success: false, error: 'Failed to confirm' }, 500);
+      }
+      return;
+    }
+
+    // GET /api/digest/unsubscribe?token=
+    if (path === '/api/digest/unsubscribe' && method === 'GET') {
+      const token = url.searchParams.get('token');
+
+      if (!token) {
+        sendJson(res, { success: false, error: 'Token is required' }, 400);
+        return;
+      }
+
+      try {
+        const result = await unsubscribeByToken(token);
+        sendJson(res, {
+          success: true,
+          message: result ? 'You have been unsubscribed.' : 'Already unsubscribed or invalid token.',
+        });
+      } catch (error) {
+        logger.error('Unsubscribe error', { error: error.message });
+        sendJson(res, { success: false, error: 'Failed to unsubscribe' }, 500);
+      }
+      return;
+    }
+
+    // GET /api/digest/preferences?token=
+    if (path === '/api/digest/preferences' && method === 'GET') {
+      const token = url.searchParams.get('token');
+
+      if (!token) {
+        sendJson(res, { success: false, error: 'Token is required' }, 400);
+        return;
+      }
+
+      try {
+        const prefs = await getPreferences(token);
+        if (!prefs) {
+          sendJson(res, { success: false, error: 'Subscriber not found' }, 404);
+          return;
+        }
+        sendJson(res, { success: true, preferences: prefs });
+      } catch (error) {
+        logger.error('Get preferences error', { error: error.message });
+        sendJson(res, { success: false, error: 'Failed to get preferences' }, 500);
+      }
+      return;
+    }
+
+    // POST /api/digest/preferences
+    if (path === '/api/digest/preferences' && method === 'POST') {
+      const body = await parseBody(req);
+      const { token, cancerTypes, contentTypes, frequency, name, institution } = body;
+
+      if (!token) {
+        sendJson(res, { success: false, error: 'Token is required' }, 400);
+        return;
+      }
+
+      try {
+        const result = await updatePreferences(token, { cancerTypes, contentTypes, frequency, name, institution });
+        if (!result) {
+          sendJson(res, { success: false, error: 'Subscriber not found or inactive' }, 404);
+          return;
+        }
+        sendJson(res, { success: true, preferences: result });
+      } catch (error) {
+        logger.error('Update preferences error', { error: error.message });
+        sendJson(res, { success: false, error: 'Failed to update preferences' }, 500);
+      }
+      return;
+    }
+
     // 404 for everything else
     sendJson(res, {
       error: 'Not found',
       message: 'This is the test-data-tracker service. MRD Chat API is at physician-system.',
-      availableEndpoints: ['/health', '/api/queue', '/api/scheduler'],
+      availableEndpoints: ['/health', '/api/queue', '/api/scheduler', '/api/digest/subscribe', '/api/digest/confirm', '/api/digest/unsubscribe', '/api/digest/preferences'],
     }, 404);
 
   } catch (error) {
@@ -129,9 +255,14 @@ export function startServer() {
   server.listen(PORT, () => {
     logger.info(`Test Data Tracker server listening on port ${PORT}`);
     logger.info('Endpoints:');
-    logger.info('  GET /health      - Health check');
-    logger.info('  GET /api/queue   - Queue status');
-    logger.info('  GET /api/scheduler - Scheduler status');
+    logger.info('  GET  /health                  - Health check');
+    logger.info('  GET  /api/queue               - Queue status');
+    logger.info('  GET  /api/scheduler            - Scheduler status');
+    logger.info('  POST /api/digest/subscribe     - Subscribe to digest');
+    logger.info('  POST /api/digest/confirm       - Confirm subscription');
+    logger.info('  GET  /api/digest/unsubscribe   - Unsubscribe');
+    logger.info('  GET  /api/digest/preferences   - Get preferences');
+    logger.info('  POST /api/digest/preferences   - Update preferences');
   });
 
   server.on('error', (error) => {

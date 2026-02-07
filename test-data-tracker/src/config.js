@@ -29,8 +29,11 @@ export const config = {
     cms: process.env.SCHEDULE_CMS || '0 23 * * 0',           // Sunday 11:00 PM
     vendor: process.env.SCHEDULE_VENDORS || '0 23 * * 0',    // Sunday 11:00 PM
     payers: process.env.SCHEDULE_PAYERS || '30 23 * * 0',    // Sunday 11:30 PM
+    nih: process.env.SCHEDULE_NIH || '0 23 * * 0',            // Sunday 11:00 PM (with CMS/vendor)
     discovery: process.env.SCHEDULE_DISCOVERY || '0 22 * * 0', // Sunday 10:00 PM (v2)
     digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
+    physicianDigestDraft: process.env.SCHEDULE_PHYSICIAN_DIGEST_DRAFT || '0 5 * * 1',  // Monday 5:00 AM PT
+    physicianDigestSend: process.env.SCHEDULE_PHYSICIAN_DIGEST_SEND || '0 10 * * 1',   // Monday 10:00 AM PT (auto-send cutoff)
   },
 
   // Crawler enable flags
@@ -52,6 +55,12 @@ export const config = {
       name: 'Payer Policies',
       description: 'Payer ctDNA/MRD policy documents from policy registry',
       rateLimit: parseInt(process.env.RATE_LIMIT_PAYERS || '3', 10),
+    },
+    nih: {
+      enabled: process.env.CRAWLER_NIH_ENABLED !== 'false',
+      name: 'NIH RePORTER',
+      description: 'NIH-funded MRD/ctDNA research grants',
+      rateLimit: parseInt(process.env.RATE_LIMIT_NIH || '1', 10),
     },
   },
 
@@ -941,6 +950,10 @@ export const DISCOVERY_TYPES = {
   VENDOR_REGULATORY: 'vendor_regulatory',
   VENDOR_NEW_INDICATION: 'vendor_new_indication',
   VENDOR_NEW_TEST: 'vendor_new_test',
+
+  // NIH RePORTER grant types
+  NIH_NEW_GRANT: 'nih_new_grant',
+  NIH_GRANT_UPDATE: 'nih_grant_update',
 };
 
 // =============================================================================
@@ -951,6 +964,7 @@ export const SOURCES = {
   CMS: 'cms',
   PAYERS: 'payers',
   VENDOR: 'vendor',
+  NIH: 'nih',
 };
 
 // =============================================================================

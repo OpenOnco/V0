@@ -6,6 +6,7 @@
 import { CMSCrawler } from './cms.js';
 import { VendorCrawler } from './vendor.js';
 import { PayerCrawler } from './payers.js';
+import { NIHReporterCrawler } from './nih-reporter.js';
 import { BaseCrawler } from './base.js';
 import { PlaywrightCrawler } from './playwright-base.js';
 import { PublicationIndexCrawler, runPublicationIndexCrawler, getPublicationSourceStatus } from './publication-index.js';
@@ -19,6 +20,7 @@ const crawlers = {
   [SOURCES.CMS]: new CMSCrawler(),
   [SOURCES.VENDOR]: new VendorCrawler(),
   [SOURCES.PAYERS]: new PayerCrawler(),
+  [SOURCES.NIH]: new NIHReporterCrawler(),
 };
 
 /**
@@ -31,6 +33,7 @@ export function createAllCrawlers(queue = null) {
     [SOURCES.CMS]: new CMSCrawler(),
     [SOURCES.VENDOR]: new VendorCrawler(),
     [SOURCES.PAYERS]: new PayerCrawler(),
+    [SOURCES.NIH]: new NIHReporterCrawler(),
   };
 
   // If queue is provided, attach it to each crawler for future use
@@ -138,6 +141,7 @@ export {
   CMSCrawler,
   VendorCrawler,
   PayerCrawler,
+  NIHReporterCrawler,
   PublicationIndexCrawler,
 };
 
@@ -166,6 +170,7 @@ export default {
   CMSCrawler,
   VendorCrawler,
   PayerCrawler,
+  NIHReporterCrawler,
   PublicationIndexCrawler,
 
   // Publication index

@@ -52,7 +52,7 @@ export async function sendCrawlCompleteEmail(options = {}) {
   const resend = new Resend(config.email.apiKey);
 
   // Build subject
-  const sourceName = source === 'cms' ? 'CMS' : source === 'payers' ? 'Payers' : 'Vendor';
+  const sourceName = source === 'cms' ? 'CMS' : source === 'payers' ? 'Payers' : source === 'nih' ? 'NIH RePORTER' : 'Vendor';
   let subject;
   if (errors.length > 0) {
     subject = `[OpenOnco] ⚠️ ${sourceName} crawl: ${errors.length} error${errors.length > 1 ? 's' : ''}`;
