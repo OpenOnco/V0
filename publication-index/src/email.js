@@ -159,7 +159,7 @@ function generateHtml(result) {
     ${statsHtml}
 
     <div style="background: #1e293b; border-radius: 6px; padding: 12px 16px;">
-      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Check status:</div>
+      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">No action needed — to inspect details locally, run:</div>
       <code style="font-size: 13px; color: #e2e8f0;">cd publication-index && node src/cli.js status</code>
     </div>
 
@@ -199,7 +199,8 @@ ${success ? '✓' : '⚠️'} ${formatDuration(duration)}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Check status: cd publication-index && node src/cli.js status
+No action needed. To inspect details locally, run:
+cd publication-index && node src/cli.js status
 
 OpenOnco Publication Index · ${new Date().toLocaleString()}
 `;
