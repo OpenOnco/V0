@@ -120,7 +120,7 @@ async function handleRequest(req, res) {
     // POST /api/digest/subscribe
     if (path === '/api/digest/subscribe' && method === 'POST') {
       const body = await parseBody(req);
-      const { email, cancerTypes, contentTypes, name, institution } = body;
+      const { email, cancerTypes, contentTypes, name, institution, digestType } = body;
 
       if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         sendJson(res, { success: false, error: 'Valid email is required' }, 400);
@@ -128,7 +128,7 @@ async function handleRequest(req, res) {
       }
 
       try {
-        const subscriber = await createSubscriber({ email: email.toLowerCase().trim(), cancerTypes, contentTypes, name, institution });
+        const subscriber = await createSubscriber({ email: email.toLowerCase().trim(), cancerTypes, contentTypes, name, institution, digestType });
         // Send confirmation email (don't block response on email delivery)
         sendConfirmationEmail({ email: subscriber.email, confirmationToken: subscriber.confirmation_token, name })
           .catch(err => logger.error('Failed to send confirmation email', { error: err.message }));

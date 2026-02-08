@@ -1,45 +1,29 @@
 /**
- * DigestSignup — Physician MRD Weekly Digest signup form
+ * RDDigestSignup — R&D Industry Weekly Digest signup form
  *
  * Props:
  *   compact (boolean) — slim version for homepage embed
  *   className (string) — additional CSS classes
  */
 
-import React, { useState } from 'react';
-
-const CANCER_TYPES = [
-  { value: 'colorectal', label: 'Colorectal' },
-  { value: 'breast', label: 'Breast' },
-  { value: 'lung_nsclc', label: 'Lung (NSCLC)' },
-  { value: 'bladder', label: 'Bladder' },
-  { value: 'pancreatic', label: 'Pancreatic' },
-  { value: 'melanoma', label: 'Melanoma' },
-  { value: 'ovarian', label: 'Ovarian' },
-];
+import { useState } from 'react';
 
 const CONTENT_TYPES = [
-  { value: 'clinical_evidence', label: 'Clinical evidence' },
-  { value: 'coverage_updates', label: 'Coverage updates' },
+  { value: 'vendor_news', label: 'Vendor news & launches' },
+  { value: 'regulatory_updates', label: 'FDA & regulatory' },
+  { value: 'clinical_publications', label: 'Clinical publications' },
   { value: 'new_tests', label: 'New tests' },
-  { value: 'guideline_updates', label: 'Guideline updates' },
+  { value: 'pricing_pla', label: 'Pricing & PLA codes' },
 ];
 
-export default function DigestSignup({ compact = false, className = '' }) {
+export default function RDDigestSignup({ compact = false, className = '' }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [institution, setInstitution] = useState('');
-  const [selectedCancerTypes, setSelectedCancerTypes] = useState([]);
   const [selectedContentTypes, setSelectedContentTypes] = useState([]);
-  const [status, setStatus] = useState('idle'); // idle | submitting | success | error
+  const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
-
-  const toggleCancerType = (value) => {
-    setSelectedCancerTypes(prev =>
-      prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
-    );
-  };
 
   const toggleContentType = (value) => {
     setSelectedContentTypes(prev =>
@@ -62,15 +46,15 @@ export default function DigestSignup({ compact = false, className = '' }) {
           email: email.trim(),
           name: name.trim() || undefined,
           institution: institution.trim() || undefined,
-          cancerTypes: selectedCancerTypes.length > 0 ? selectedCancerTypes : undefined,
           contentTypes: selectedContentTypes.length > 0 ? selectedContentTypes : undefined,
+          digestType: 'research',
         }),
       });
 
       const data = await response.json();
       if (data.success) {
         setStatus('success');
-        try { localStorage.setItem('oo_digest_subscribed', '1'); } catch {}
+        try { localStorage.setItem('oo_rd_digest_subscribed', '1'); } catch {}
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Something went wrong.');
@@ -83,33 +67,32 @@ export default function DigestSignup({ compact = false, className = '' }) {
 
   if (status === 'success') {
     return (
-      <div className={`bg-emerald-50 border border-emerald-200 rounded-xl p-4 ${className}`}>
-        <div className="flex items-center gap-2 text-emerald-700">
+      <div className={`bg-violet-50 border border-violet-200 rounded-xl p-4 ${className}`}>
+        <div className="flex items-center gap-2 text-violet-700">
           <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <div>
             <p className="font-semibold text-sm">Check your email to confirm</p>
-            <p className="text-xs text-emerald-600 mt-0.5">Click the confirmation link we sent to start receiving the weekly digest.</p>
+            <p className="text-xs text-violet-600 mt-0.5">Click the confirmation link to start receiving the weekly R&D digest.</p>
           </div>
         </div>
       </div>
     );
   }
 
-  // Compact version for homepage embed
   if (compact) {
     return (
       <div className={`bg-white rounded-xl border border-slate-200 shadow-sm ${className}`}>
         <div className="p-4">
           <div className="flex items-center gap-2 mb-3">
-            <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            <h3 className="text-sm font-semibold text-slate-800">MRD Weekly Digest</h3>
+            <h3 className="text-sm font-semibold text-slate-800">R&D Industry Digest</h3>
           </div>
           <p className="text-xs text-slate-500 mb-3">
-            Weekly curated MRD/ctDNA clinical updates delivered to your inbox.
+            Weekly vendor intelligence and clinical developments delivered to your inbox.
           </p>
           <form onSubmit={handleSubmit} className="flex gap-2">
             <input
@@ -118,12 +101,12 @@ export default function DigestSignup({ compact = false, className = '' }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
               required
-              className="flex-1 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              className="flex-1 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
             />
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="px-4 py-1.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+              className="px-4 py-1.5 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 disabled:opacity-50 transition-colors"
             >
               {status === 'submitting' ? 'Signing up...' : 'Subscribe'}
             </button>
@@ -136,39 +119,36 @@ export default function DigestSignup({ compact = false, className = '' }) {
     );
   }
 
-  // Full version for digest page
   return (
     <div className={`bg-white rounded-2xl border border-slate-200 shadow-sm ${className}`}>
       <div className="p-6">
         <div className="flex items-center gap-2 mb-2">
-          <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          <h3 className="text-lg font-semibold text-slate-900">Subscribe to MRD Weekly Digest</h3>
+          <h3 className="text-lg font-semibold text-slate-900">Subscribe to R&D Industry Digest</h3>
         </div>
         <p className="text-sm text-slate-500 mb-5">
-          Curated MRD/ctDNA clinical developments delivered weekly. Evidence highlights, coverage updates, new tests, and guideline changes.
+          Stay current on vendor launches, regulatory updates, and competitive intelligence. Curated from 26+ vendor sources, delivered weekly.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email (required) */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Email address *</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="physician@hospital.edu"
+              placeholder="name@company.com"
               required
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
             />
           </div>
 
-          {/* Preferences toggle */}
           <button
             type="button"
             onClick={() => setShowPreferences(!showPreferences)}
-            className="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
+            className="text-sm text-violet-600 hover:text-violet-700 font-medium flex items-center gap-1"
           >
             <svg className={`w-3 h-3 transition-transform ${showPreferences ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -177,54 +157,29 @@ export default function DigestSignup({ compact = false, className = '' }) {
           </button>
 
           {showPreferences && (
-            <div className="space-y-4 pl-2 border-l-2 border-emerald-100">
-              {/* Name */}
+            <div className="space-y-4 pl-2 border-l-2 border-violet-100">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Dr. Jane Smith"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Jane Smith"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                 />
               </div>
 
-              {/* Institution */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Institution</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Company / Institution</label>
                 <input
                   type="text"
                   value={institution}
                   onChange={(e) => setInstitution(e.target.value)}
-                  placeholder="Memorial Sloan Kettering"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Acme Diagnostics"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                 />
               </div>
 
-              {/* Cancer type interests */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Cancer type interests</label>
-                <div className="flex flex-wrap gap-2">
-                  {CANCER_TYPES.map(ct => (
-                    <button
-                      key={ct.value}
-                      type="button"
-                      onClick={() => toggleCancerType(ct.value)}
-                      className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-                        selectedCancerTypes.includes(ct.value)
-                          ? 'bg-emerald-100 border-emerald-300 text-emerald-700'
-                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
-                      }`}
-                    >
-                      {ct.label}
-                    </button>
-                  ))}
-                </div>
-                <p className="text-xs text-slate-400 mt-1">Leave empty for all cancer types</p>
-              </div>
-
-              {/* Content preferences */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Content preferences</label>
                 <div className="flex flex-wrap gap-2">
@@ -235,7 +190,7 @@ export default function DigestSignup({ compact = false, className = '' }) {
                       onClick={() => toggleContentType(ct.value)}
                       className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                         selectedContentTypes.includes(ct.value)
-                          ? 'bg-emerald-100 border-emerald-300 text-emerald-700'
+                          ? 'bg-violet-100 border-violet-300 text-violet-700'
                           : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                       }`}
                     >
@@ -248,13 +203,12 @@ export default function DigestSignup({ compact = false, className = '' }) {
             </div>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+            className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-violet-600 rounded-lg hover:bg-violet-700 disabled:opacity-50 transition-colors"
           >
-            {status === 'submitting' ? 'Subscribing...' : 'Subscribe to Weekly Digest'}
+            {status === 'submitting' ? 'Subscribing...' : 'Subscribe to R&D Digest'}
           </button>
 
           {status === 'error' && (

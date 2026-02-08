@@ -69,6 +69,7 @@ import Chat from './components/Chat';
 import MRDChat from './components/physician/MRDChat';
 import MRDNavigator from './components/physician/MRDNavigator';
 import DigestSignup from './components/physician/DigestSignup';
+import RDDigestSignup from './components/research/RDDigestSignup';
 import DigestPage from './pages/DigestPage';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
@@ -409,6 +410,9 @@ const SponsorBar = ({ className = '' }) => (
 const HomePage = ({ onNavigate, persona, chatTestData }) => {
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
   const { tests: allTests } = useAllTests();
+  const [rdDigestSubscribed] = useState(() => {
+    try { return localStorage.getItem('oo_rd_digest_subscribed') === '1'; } catch { return false; }
+  });
 
   return (
     <div>
@@ -444,15 +448,20 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
                 <DigestSignup compact className="mt-0" />
               </>
             ) : (
-              <Chat
-                persona={persona}
-                testData={chatTestData}
-                variant="sidebar"
-                showModeToggle={false}
-                resizable={false}
-                showTitle={true}
-                className="flex-1 min-h-[400px]"
-              />
+              <>
+                <Chat
+                  persona={persona}
+                  testData={chatTestData}
+                  variant="sidebar"
+                  showModeToggle={false}
+                  resizable={false}
+                  showTitle={true}
+                  className="flex-1 min-h-[400px]"
+                />
+                {persona === 'rnd' && !rdDigestSubscribed && (
+                  <RDDigestSignup compact className="mt-0" />
+                )}
+              </>
             )}
 
             {/* Quick Search */}

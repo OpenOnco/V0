@@ -45,7 +45,7 @@ export default withVercelLogging(async (req, res) => {
   }
 
   try {
-    const { email, name, cancerTypes, contentTypes, institution } = req.body || {};
+    const { email, name, cancerTypes, contentTypes, institution, digestType } = req.body || {};
 
     // Validate email
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
@@ -64,7 +64,7 @@ export default withVercelLogging(async (req, res) => {
         'Content-Type': 'application/json',
         'X-Forwarded-For': ip,
       },
-      body: JSON.stringify({ email: email.trim(), name, cancerTypes, contentTypes, institution }),
+      body: JSON.stringify({ email: email.trim(), name, cancerTypes, contentTypes, institution, digestType }),
     });
 
     const contentType = response.headers.get('content-type') || '';

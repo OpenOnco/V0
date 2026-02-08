@@ -5,6 +5,7 @@
 
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import TestShowcase from '../test/TestShowcase';
+import DigestSignup from './DigestSignup';
 import { useInsuranceProviders, useAllTests } from '../../dal';
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -205,6 +206,9 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
   const [covQuery, setCovQuery] = useState('');
   const [selectedPayer, setSelectedPayer] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [digestSubscribed] = useState(() => {
+    try { return localStorage.getItem('oo_digest_subscribed') === '1'; } catch { return false; }
+  });
   const endRef = useRef(null);
   const ctxRef = useRef(null);
   const covRef = useRef(null);
@@ -548,18 +552,23 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
 
   // ─── Category Cards ─────────────────────────────────────────────────────
 
+  const testCount = (allTests || []).length;
+
   const CategoryRow = () => (
-    <div className="flex gap-4">
-      {CATEGORIES.map(({ code, label, card, dot, text, route }) => (
-        <button key={code} onClick={() => onNavigate && onNavigate(route)}
-          className={`flex-1 ${card} border rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer p-4 text-left`}>
-          <div className="flex items-center gap-2 mb-1">
-            <span className={`w-2.5 h-2.5 rounded-full ${dot}`} />
-            <span className={`text-sm font-semibold ${text}`}>{code}</span>
-          </div>
-          <div className="text-xs text-slate-500">{label}</div>
-        </button>
-      ))}
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h3 className="text-lg font-semibold text-slate-800 mb-4">Browse and compare {testCount} molecular cancer tests</h3>
+      <div className="flex gap-4">
+        {CATEGORIES.map(({ code, label, card, dot, text, route }) => (
+          <button key={code} onClick={() => onNavigate && onNavigate(route)}
+            className={`flex-1 ${card} border rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer p-4 text-left`}>
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`w-2.5 h-2.5 rounded-full ${dot}`} />
+              <span className={`text-sm font-semibold ${text}`}>{code}</span>
+            </div>
+            <div className="text-xs text-slate-500">{label}</div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 
@@ -591,6 +600,11 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
               ))}
             </div>
             <p className="text-[10px] text-slate-400 mt-3">Evidence synthesis only · Not clinical guidance</p>
+            {!digestSubscribed && (
+              <div className="w-full max-w-2xl mt-6 pt-5 border-t border-slate-100">
+                <DigestSignup compact className="mt-0" />
+              </div>
+            )}
           </div>
         )}
 
