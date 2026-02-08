@@ -67,6 +67,7 @@ import SubmissionsPage from './pages/SubmissionsPage';
 import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
 import Chat from './components/Chat';
 import MRDChat from './components/physician/MRDChat';
+import MRDNavigator from './components/physician/MRDNavigator';
 import DigestSignup from './components/physician/DigestSignup';
 import DigestPage from './pages/DigestPage';
 import { VENDOR_BADGES } from './config/vendors';
@@ -405,10 +406,9 @@ const SponsorBar = ({ className = '' }) => (
   </div>
 );
 
-const HomePage = ({ onNavigate, persona }) => {
+const HomePage = ({ onNavigate, persona, chatTestData }) => {
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
   const { tests: allTests } = useAllTests();
-  const chatTestData = useChatTestData();
 
   return (
     <div>
@@ -1584,7 +1584,10 @@ export default function App() {
             />
           );
         }
-        return <HomePage onNavigate={handleNavigate} persona={persona} />;
+        if (persona === 'medical') {
+          return <MRDNavigator testData={chatTestData} onNavigate={handleNavigate} />;
+        }
+        return <HomePage onNavigate={handleNavigate} persona={persona} chatTestData={chatTestData} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'CGP': case 'HCT': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
@@ -1633,11 +1636,12 @@ export default function App() {
         />
       );
       case 'patient-financial-assistance': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Financial Assistance</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
-      default: return <HomePage onNavigate={handleNavigate} />;
+      default: return <HomePage onNavigate={handleNavigate} chatTestData={chatTestData} />;
     }
   };
 
   const seoConfig = getSEOForPage();
+  const isFullPageMode = false;
 
   return (
     <ErrorBoundary>
@@ -1649,16 +1653,16 @@ export default function App() {
           structuredData={seoConfig.structuredData}
         />
         {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-          <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />
-          {showDigestConfirmed && (
+        <div className="min-h-screen bg-gray-50 flex flex-col" style={{ background: isFullPageMode ? '#F5F3EE' : undefined }}>
+          {!isFullPageMode && <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />}
+          {showDigestConfirmed && !isFullPageMode && (
             <div className="bg-emerald-600 text-white text-center py-2.5 px-4 text-sm font-medium">
               Your MRD Weekly Digest subscription is confirmed! You'll receive your first digest next Monday.
               <button onClick={() => { setShowDigestConfirmed(false); window.history.replaceState({}, '', '/'); }} className="ml-3 underline hover:no-underline">Dismiss</button>
             </div>
           )}
           <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
-          <Footer />
+          {!isFullPageMode && <Footer />}
           <Analytics />
         </div>
       </HelmetProvider>

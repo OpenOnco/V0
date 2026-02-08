@@ -40,7 +40,7 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreview
         aria-label="Go to home page"
       >
         <img src="/OO_logo_2.png" alt="OpenOnco" className="h-14" />
-        {persona === 'patient' && showPreviewBanner && (
+        {(persona === 'patient' || persona === 'medical') && showPreviewBanner && (
           <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full border border-amber-300">
             Preview
           </span>
@@ -139,8 +139,8 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreview
   </header>
   {/* Trust Banner for Patient Persona */}
   {showTrustBanner && <TrustBanner />}
-  {/* Preview Banner for Patient Persona - shown below Trust Banner */}
-  {persona === 'patient' && showPreviewBanner && <PreviewBanner />}
+  {/* Preview Banner - shown for patient and medical personas */}
+  {(persona === 'patient' || persona === 'medical') && showPreviewBanner && <PreviewBanner />}
   </>
   );
 };
