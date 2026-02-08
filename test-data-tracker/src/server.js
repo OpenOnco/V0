@@ -18,6 +18,7 @@ import {
   updatePreferences,
 } from './digest/subscribers.js';
 import { sendConfirmationEmail } from './email/digest-confirmation.js';
+import { listPending } from './proposals/queue.js';
 
 const logger = createLogger('server');
 
@@ -112,6 +113,28 @@ async function handleRequest(req, res) {
     if (path === '/api/scheduler' && method === 'GET') {
       const scheduler = getSchedulerStatus();
       sendJson(res, scheduler);
+      return;
+    }
+
+    // Proposal stats endpoint (used by physician-system daily report)
+    if (path === '/api/proposals/stats' && method === 'GET') {
+      try {
+        const pending = await listPending();
+        const counts = { total: 0, coverage: 0, 'new-tests': 0, updates: 0, 'delegation-changes': 0 };
+        for (const p of pending) {
+          counts.total++;
+          const typeKey = p.type === 'coverage' ? 'coverage'
+            : p.type === 'new-test' ? 'new-tests'
+            : p.type === 'update' ? 'updates'
+            : p.type === 'delegation-change' ? 'delegation-changes'
+            : null;
+          if (typeKey) counts[typeKey]++;
+        }
+        sendJson(res, counts);
+      } catch (e) {
+        logger.error('Failed to get proposal stats', { error: e.message });
+        sendJson(res, { total: 0, coverage: 0, 'new-tests': 0, updates: 0, 'delegation-changes': 0 });
+      }
       return;
     }
 
@@ -237,7 +260,7 @@ async function handleRequest(req, res) {
     sendJson(res, {
       error: 'Not found',
       message: 'This is the test-data-tracker service. MRD Chat API is at physician-system.',
-      availableEndpoints: ['/health', '/api/queue', '/api/scheduler', '/api/digest/subscribe', '/api/digest/confirm', '/api/digest/unsubscribe', '/api/digest/preferences'],
+      availableEndpoints: ['/health', '/api/queue', '/api/scheduler', '/api/proposals/stats', '/api/digest/subscribe', '/api/digest/confirm', '/api/digest/unsubscribe', '/api/digest/preferences'],
     }, 404);
 
   } catch (error) {
