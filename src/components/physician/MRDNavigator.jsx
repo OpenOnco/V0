@@ -208,8 +208,9 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
   const [followUps, setFollowUps] = useState([]);
   const [model] = useState('deep');
   const [showCtx, setShowCtx] = useState(false);
-  const [showCoverage, setShowCoverage] = useState(false);
-  const pendingCoverageRef = useRef(false);
+  const [covExpanded, setCovExpanded] = useState(false);
+  const [covTestQuery, setCovTestQuery] = useState('');
+  const [selectedTest, setSelectedTest] = useState(null);
   const [covQuery, setCovQuery] = useState('');
   const [selectedPayer, setSelectedPayer] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -218,7 +219,6 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
   });
   const endRef = useRef(null);
   const ctxRef = useRef(null);
-  const covRef = useRef(null);
   const textareaRef = useRef(null);
   const abortControllerRef = useRef(null);
 
@@ -247,32 +247,26 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
     );
   }, [insuranceProviders, covQuery]);
 
-  // Coverage results for selected payer
-  const coverageResults = useMemo(() => {
-    if (!selectedPayer || !mrdTests.length) return [];
-    return mrdTests
-      .map(test => {
-        const coverage = getCoverageForPayer(test, selectedPayer.label);
-        if (coverage.length === 0) return null;
-        return { test, coverage };
-      })
-      .filter(Boolean);
-  }, [selectedPayer, mrdTests]);
+  // Filtered tests for autocomplete
+  const filteredTests = useMemo(() => {
+    if (!covTestQuery.trim()) return [];
+    const q = covTestQuery.toLowerCase();
+    return mrdTests.filter(t =>
+      t.name.toLowerCase().includes(q) || t.vendor.toLowerCase().includes(q)
+    ).slice(0, 8);
+  }, [mrdTests, covTestQuery]);
 
-  // Auto-open Coverage Check once all case details are filled (if user came from Coverage Check button)
-  useEffect(() => {
-    if (pendingCoverageRef.current && cancer && stage && txPhase) {
-      pendingCoverageRef.current = false;
-      setShowCtx(false);
-      setShowCoverage(true);
-    }
-  }, [cancer, stage, txPhase]);
+  // Coverage result for selected test + payer
+  const coverageResult = useMemo(() => {
+    if (!selectedTest || !selectedPayer) return null;
+    const coverage = getCoverageForPayer(selectedTest, selectedPayer.label);
+    return coverage.length > 0 ? { test: selectedTest, coverage } : null;
+  }, [selectedTest, selectedPayer]);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [msgs, loading]);
   useEffect(() => {
     const handler = (e) => {
       if (ctxRef.current && !ctxRef.current.contains(e.target)) setShowCtx(false);
-      if (covRef.current && !covRef.current.contains(e.target)) setShowCoverage(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -324,7 +318,6 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
     setInput('');
     setFollowUps([]);
     setShowCtx(false);
-    setShowCoverage(false);
     if (textareaRef.current) textareaRef.current.style.height = 'auto';
 
     const fullMessage = contextPrefix + question;
@@ -381,10 +374,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
   const CtxPopover = () => (
     <div ref={ctxRef} className="absolute top-full left-0 mt-2 bg-white rounded-xl border border-slate-200 shadow-lg p-4 w-80 z-50">
       <div className="text-sm font-semibold text-slate-800 mb-1">Case Details</div>
-      {pendingCoverageRef.current && (
-        <p className="text-xs text-blue-600 mb-3">Fill in case details so we can look up coverage for this scenario.</p>
-      )}
-      {!pendingCoverageRef.current && <div className="mb-2" />}
+      <div className="mb-2" />
       {[
         ['Cancer type', cancer, setCancer, CANCERS],
         ['Stage', stage, setStage, STAGES],
@@ -410,113 +400,11 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
     </div>
   );
 
-  // ─── Coverage Check Popover ─────────────────────────────────────────────
-
-  const CoveragePopover = () => (
-    <div ref={covRef} className="absolute top-full right-0 mt-2 bg-white rounded-xl border border-slate-200 shadow-lg w-96 z-50 max-h-[420px] flex flex-col">
-      <div className="p-4 border-b border-slate-100">
-        <div className="text-sm font-semibold text-slate-800 mb-2">Coverage Check</div>
-        <div className="relative">
-          <input
-            type="text"
-            value={covQuery}
-            onChange={e => { setCovQuery(e.target.value); setSelectedPayer(null); }}
-            placeholder="Type insurance name..."
-            className="w-full text-sm px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-blue-300 bg-white text-slate-800 placeholder:text-slate-400"
-            autoFocus
-          />
-          {covQuery && !selectedPayer && (
-            <button onClick={() => { setCovQuery(''); setSelectedPayer(null); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-            </button>
-          )}
-        </div>
-        {/* Autocomplete dropdown */}
-        {covQuery && !selectedPayer && filteredPayers.length > 0 && (
-          <div className="mt-1 border border-slate-200 rounded-lg bg-white max-h-40 overflow-y-auto">
-            {filteredPayers.map(p => (
-              <button key={p.id} onClick={() => { setSelectedPayer(p); setCovQuery(p.label); }}
-                className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center justify-between">
-                <span>{p.label}</span>
-                <span className="text-[10px] text-slate-400 capitalize">{p.category}</span>
-              </button>
-            ))}
-          </div>
-        )}
-        {covQuery && !selectedPayer && filteredPayers.length === 0 && (
-          <p className="mt-2 text-xs text-slate-400">No matching insurers found</p>
-        )}
-      </div>
-
-      {/* Coverage results */}
-      {selectedPayer && (
-        <div className="flex-1 overflow-y-auto p-4 pt-2">
-          <div className="text-xs text-slate-500 mb-2">
-            MRD test coverage for <span className="font-medium text-slate-700">{selectedPayer.label}</span>
-          </div>
-          {coverageResults.length === 0 ? (
-            <p className="text-xs text-slate-400 py-2">No coverage data available for this payer across MRD tests.</p>
-          ) : (
-            <div className="space-y-2">
-              {coverageResults.map(({ test, coverage }) => {
-                const primary = coverage[0];
-                const s = STATUS_STYLES[primary.status] || STATUS_STYLES.NOT_COVERED;
-                return (
-                  <div key={test.id} className={`${s.bg} border ${s.border} rounded-lg p-2.5`}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-slate-800">{test.name}</span>
-                      <span className={`text-[10px] font-medium ${s.text} px-1.5 py-0.5 rounded-full ${s.bg} border ${s.border}`}>
-                        {s.label}
-                      </span>
-                    </div>
-                    <div className="text-[10px] text-slate-500 mb-0.5">{test.vendor}</div>
-                    {primary.coveredIndications?.length > 0 && (
-                      <div className="text-[11px] text-slate-600 mt-1">
-                        <span className="font-medium">Indications: </span>
-                        {primary.coveredIndications.join('; ')}
-                      </div>
-                    )}
-                    {primary.indications?.length > 0 && (
-                      <div className="text-[11px] text-slate-600 mt-1">
-                        <span className="font-medium">Indications: </span>
-                        {primary.indications.join('; ')}
-                      </div>
-                    )}
-                    {primary.notes && (
-                      <div className="text-[11px] text-slate-500 mt-1 leading-relaxed">{primary.notes}</div>
-                    )}
-                    {primary.policy && (
-                      <div className="text-[10px] text-slate-400 mt-1">
-                        Policy: {primary.policyUrl
-                          ? <a href={primary.policyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{primary.policy}</a>
-                          : primary.policy
-                        }
-                      </div>
-                    )}
-                    {primary.lastReviewed && (
-                      <div className="text-[10px] text-slate-400">Reviewed: {primary.lastReviewed}</div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-          <button onClick={() => { setSelectedPayer(null); setCovQuery(''); }}
-            className="text-xs text-slate-400 hover:text-slate-600 mt-3">
-            Check another payer
-          </button>
-        </div>
-      )}
-    </div>
-  );
-
   // ─── Input Box ──────────────────────────────────────────────────────────
 
   const InputBox = ({ centered }) => (
     <div className={`w-full max-w-2xl ${centered ? 'mx-auto' : ''} relative`}>
       {showCtx && <CtxPopover />}
-      {showCoverage && <CoveragePopover />}
       <div className={`border border-slate-200 rounded-2xl bg-white px-4 pt-3 pb-2 ${centered ? 'shadow-sm' : ''}`}>
         <textarea ref={textareaRef} value={input} onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); } }}
@@ -528,7 +416,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
         />
         <div className="flex items-center justify-between mt-1.5">
           <div className="flex items-center gap-2">
-            <button onClick={() => { setShowCtx(!showCtx); setShowCoverage(false); }}
+            <button onClick={() => setShowCtx(!showCtx)}
               className={`text-xs font-medium px-2.5 py-1 rounded-lg border cursor-pointer transition-colors ${
                 ctxSet
                   ? 'border-orange-300 bg-orange-50 text-orange-700'
@@ -537,17 +425,6 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
                     : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700'
               }`}>
               Case Details{ctxSet ? ` · ${[cancer, stage].filter(Boolean).join(' ')}` : ''}
-            </button>
-            <button onClick={() => {
-                if (!ctxSet) { pendingCoverageRef.current = true; setShowCtx(true); setShowCoverage(false); return; }
-                setShowCoverage(!showCoverage); setShowCtx(false);
-              }}
-              className={`text-xs font-medium px-2.5 py-1 rounded-lg border cursor-pointer transition-colors ${
-                showCoverage
-                  ? 'border-blue-300 bg-blue-50 text-blue-700'
-                  : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700'
-              }`}>
-              Coverage Check
             </button>
           </div>
           <div className="flex items-center gap-2">
@@ -702,6 +579,126 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
               <InputBox />
             </div>
             <p className="text-[11px] text-slate-400 mt-2 text-center">Clinical decision support · Not a substitute for clinical judgment</p>
+          </div>
+        )}
+      </div>
+
+      {/* Check Patient Coverage */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <button onClick={() => setCovExpanded(!covExpanded)}
+          className="w-full flex items-center justify-between px-6 py-4 text-left">
+          <span className="text-sm font-semibold text-slate-800">Check Patient Coverage</span>
+          <svg className={`w-4 h-4 text-slate-400 transition-transform ${covExpanded ? 'rotate-180' : ''}`}
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {covExpanded && (
+          <div className="px-6 pb-5 pt-0 space-y-4">
+            {/* Row 1: Two autocomplete fields side by side */}
+            <div className="flex gap-3">
+              {/* Test autocomplete */}
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={selectedTest ? selectedTest.name : covTestQuery}
+                  onChange={e => { setCovTestQuery(e.target.value); setSelectedTest(null); }}
+                  placeholder="Test name..."
+                  className="w-full text-sm px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-orange-300 bg-white text-slate-800 placeholder:text-slate-400"
+                />
+                {covTestQuery && !selectedTest && filteredTests.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 border border-slate-200 rounded-lg bg-white max-h-48 overflow-y-auto z-50 shadow-lg">
+                    {filteredTests.map(t => (
+                      <button key={t.id} onClick={() => { setSelectedTest(t); setCovTestQuery(''); }}
+                        className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center justify-between">
+                        <span>{t.name}</span>
+                        <span className="text-[10px] text-slate-400">{t.vendor}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {selectedTest && (
+                  <button onClick={() => { setSelectedTest(null); setCovTestQuery(''); }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                  </button>
+                )}
+              </div>
+              {/* Insurer autocomplete */}
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={selectedPayer ? selectedPayer.label : covQuery}
+                  onChange={e => { setCovQuery(e.target.value); setSelectedPayer(null); }}
+                  placeholder="Insurance provider..."
+                  className="w-full text-sm px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-blue-300 bg-white text-slate-800 placeholder:text-slate-400"
+                />
+                {covQuery && !selectedPayer && filteredPayers.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 border border-slate-200 rounded-lg bg-white max-h-48 overflow-y-auto z-50 shadow-lg">
+                    {filteredPayers.map(p => (
+                      <button key={p.id} onClick={() => { setSelectedPayer(p); setCovQuery(''); }}
+                        className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center justify-between">
+                        <span>{p.label}</span>
+                        <span className="text-[10px] text-slate-400 capitalize">{p.category}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {covQuery && !selectedPayer && filteredPayers.length === 0 && (
+                  <p className="absolute top-full left-0 mt-1 text-xs text-slate-400">No matching insurers found</p>
+                )}
+                {selectedPayer && (
+                  <button onClick={() => { setSelectedPayer(null); setCovQuery(''); }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                  </button>
+                )}
+              </div>
+            </div>
+            {/* Coverage result card */}
+            {coverageResult ? (() => {
+              const primary = coverageResult.coverage[0];
+              const s = STATUS_STYLES[primary.status] || STATUS_STYLES.NOT_COVERED;
+              return (
+                <div className={`${s.bg} border ${s.border} rounded-lg p-3`}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-semibold text-slate-800">{coverageResult.test.name}</span>
+                    <span className={`text-[10px] font-medium ${s.text} px-1.5 py-0.5 rounded-full ${s.bg} border ${s.border}`}>
+                      {s.label}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mb-1">{coverageResult.test.vendor}</div>
+                  {primary.coveredIndications?.length > 0 && (
+                    <div className="text-[11px] text-slate-600 mt-1">
+                      <span className="font-medium">Indications: </span>
+                      {primary.coveredIndications.join('; ')}
+                    </div>
+                  )}
+                  {primary.indications?.length > 0 && (
+                    <div className="text-[11px] text-slate-600 mt-1">
+                      <span className="font-medium">Indications: </span>
+                      {primary.indications.join('; ')}
+                    </div>
+                  )}
+                  {primary.notes && (
+                    <div className="text-[11px] text-slate-500 mt-1 leading-relaxed">{primary.notes}</div>
+                  )}
+                  {primary.policy && (
+                    <div className="text-[10px] text-slate-400 mt-1">
+                      Policy: {primary.policyUrl
+                        ? <a href={primary.policyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{primary.policy}</a>
+                        : primary.policy
+                      }
+                    </div>
+                  )}
+                  {primary.lastReviewed && (
+                    <div className="text-[10px] text-slate-400">Reviewed: {primary.lastReviewed}</div>
+                  )}
+                </div>
+              );
+            })() : selectedTest && selectedPayer ? (
+              <p className="text-xs text-slate-400 py-2">No coverage data for {selectedTest.name} with {selectedPayer.label}</p>
+            ) : null}
           </div>
         )}
       </div>
