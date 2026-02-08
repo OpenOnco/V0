@@ -71,34 +71,31 @@ const BC = {
 // ─── Suggestion Engine ──────────────────────────────────────────────────────
 
 function getQuestions(ctx, hasMsgs) {
-  const { cancer, txPhase, indication } = ctx;
+  const { cancer, txPhase } = ctx;
   const c = cancer || '';
   if (hasMsgs) return [
     'What trials are actively enrolling?',
-    'How does the evidence compare across assays?',
-    cancer ? `Coverage evidence for ${c}?` : 'Payer coverage landscape?',
+    cancer ? `When should I escalate therapy in ${c}?` : 'When should I escalate based on ctDNA?',
+    cancer ? `Surveillance strategy for ${c}?` : 'Optimal surveillance intervals?',
   ];
-  if (indication === 'Post-positive ctDNA' && txPhase === 'Post-surgical' && cancer)
-    return [`Escalation evidence after ctDNA+ in ${c}?`, `Retesting intervals in ${c}?`, `Trials enrolling ctDNA+ ${c}?`];
-  if (indication === 'Post-positive ctDNA')
-    return ['Escalation evidence after ctDNA detection?', 'Prognostic data on post-resection ctDNA+?', 'ctDNA-guided therapy trials?'];
-  if (indication === 'Post-negative ctDNA')
-    return ['De-escalation evidence after ctDNA clearance?', 'Negative predictive value across assays?', 'Surveillance intervals after negative ctDNA?'];
-  if (indication === 'Test selection')
-    return cancer
-      ? [`Assays validated for ${c}?`, `Tumor-informed vs naïve for ${c}?`, `NCCN-referenced assays for ${c}?`]
-      : ['Tumor-informed vs tumor-naïve?', 'Strongest validation data?', 'NCCN-referenced MRD assays?'];
+  if (txPhase === 'Post-surgical' && cancer)
+    return [`Should I escalate after ctDNA+ in ${c}?`, `When to draw first ctDNA post-resection in ${c}?`, `Adjuvant therapy options if ctDNA persists?`];
   if (txPhase === 'Post-surgical')
-    return ['Timing for first ctDNA draw post-resection?', 'ctDNA clearance kinetics?', 'Post-surgical validation data?'];
+    return ['Should I escalate after ctDNA detection?', 'When to draw first ctDNA post-resection?', 'Adjuvant therapy if ctDNA persists?'];
+  if (txPhase === 'Neoadjuvant')
+    return [cancer ? `Neoadjuvant response monitoring in ${c}?` : 'Neoadjuvant response monitoring with ctDNA?', 'Can ctDNA guide surgical timing?', 'Switch therapy if ctDNA doesn\'t clear?'];
+  if (txPhase === 'Surveillance' && cancer)
+    return [`Surveillance intervals for ${c}?`, `Can I de-escalate if ctDNA stays negative in ${c}?`, `ctDNA vs imaging for recurrence in ${c}?`];
   if (txPhase === 'Surveillance')
-    return ['Serial monitoring intervals?', 'ctDNA vs imaging lead time?', 'De-escalation after ctDNA clearance?'];
+    return ['How often should I retest ctDNA?', 'Can I de-escalate if ctDNA stays negative?', 'ctDNA vs imaging for recurrence detection?'];
+  if (txPhase === 'Adjuvant (active)')
+    return [cancer ? `Should I stop adjuvant if ctDNA clears in ${c}?` : 'Stop adjuvant if ctDNA clears?', 'Duration of therapy guided by ctDNA?', 'Escalation after ctDNA persistence?'];
   if (cancer)
-    return [`MRD evidence landscape for ${c}?`, `Key ctDNA trials in ${c}?`, `NCCN on ctDNA in ${c}?`];
+    return [`ctDNA positive in ${c} — what are my options?`, `ctDNA negative in ${c} — can I de-escalate?`, `NCCN on ctDNA-guided therapy in ${c}?`];
   return [
-    'Next steps after ctDNA+?',
-    'Compare MRD assays head-to-head',
-    'What does CIRCULATE show?',
-    'NCCN-referenced ctDNA assays',
+    'My patient is ctDNA positive — what are my options?',
+    'My patient is ctDNA negative — can I safely de-escalate?',
+    'NCCN on ctDNA-guided treatment decisions',
   ];
 }
 
@@ -203,6 +200,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
   const [model] = useState('deep');
   const [showCtx, setShowCtx] = useState(false);
   const [showCoverage, setShowCoverage] = useState(false);
+  const pendingCoverageRef = useRef(false);
   const [covQuery, setCovQuery] = useState('');
   const [selectedPayer, setSelectedPayer] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -251,6 +249,15 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
       })
       .filter(Boolean);
   }, [selectedPayer, mrdTests]);
+
+  // Auto-open Coverage Check once all case details are filled (if user came from Coverage Check button)
+  useEffect(() => {
+    if (pendingCoverageRef.current && cancer && stage && txPhase) {
+      pendingCoverageRef.current = false;
+      setShowCtx(false);
+      setShowCoverage(true);
+    }
+  }, [cancer, stage, txPhase]);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [msgs, loading]);
   useEffect(() => {
@@ -371,7 +378,11 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
 
   const CtxPopover = () => (
     <div ref={ctxRef} className="absolute top-full left-0 mt-2 bg-white rounded-xl border border-slate-200 shadow-lg p-4 w-80 z-50">
-      <div className="text-sm font-semibold text-slate-800 mb-3">Case Details</div>
+      <div className="text-sm font-semibold text-slate-800 mb-1">Case Details</div>
+      {pendingCoverageRef.current && (
+        <p className="text-xs text-blue-600 mb-3">Fill in case details so we can look up coverage for this scenario.</p>
+      )}
+      {!pendingCoverageRef.current && <div className="mb-2" />}
       {[
         ['Cancer type', cancer, setCancer, CANCERS],
         ['Stage', stage, setStage, STAGES],
@@ -526,7 +537,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
               Case Details{ctxSet ? ` · ${[cancer, stage].filter(Boolean).join(' ')}` : ''}
             </button>
             <button onClick={() => {
-                if (!ctxSet) { setShowCtx(true); setShowCoverage(false); return; }
+                if (!ctxSet) { pendingCoverageRef.current = true; setShowCtx(true); setShowCoverage(false); return; }
                 setShowCoverage(!showCoverage); setShowCtx(false);
               }}
               className={`text-xs font-medium px-2.5 py-1 rounded-lg border cursor-pointer transition-colors ${
