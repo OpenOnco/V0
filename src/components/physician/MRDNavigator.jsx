@@ -170,16 +170,25 @@ function Prose({ text }) {
       }
       const bm = rest.match(/\*\*(.+?)\*\*/);
       if (bm && bm.index < best) { best = bm.index; type = 'bold'; m = bm; }
+      const cm = rest.match(/\[(\d{1,2}(?:,\s*\d{1,2})*)\]/);
+      if (cm && cm.index < best) { best = cm.index; type = 'cite'; m = cm; }
       if (best === rest.length) { parts.push(<span key={k++}>{rest}</span>); break; }
       if (best > 0) parts.push(<span key={k++}>{rest.slice(0, best)}</span>);
       if (type === 'badge') {
         parts.push(<span key={k++} className="text-[10px] font-semibold ml-1 opacity-75" style={{ color: BC[m] }}>{m}</span>);
         rest = rest.slice(best + m.length + 2);
+      } else if (type === 'cite') {
+        parts.push(<sup key={k++} className="text-[10px] font-medium text-orange-500 ml-0.5">{m[0]}</sup>);
+        rest = rest.slice(best + m[0].length);
       } else {
         parts.push(<strong key={k++} className="font-semibold text-slate-800">{m[1]}</strong>);
         rest = rest.slice(best + m[0].length);
       }
     }
+    if (line.match(/^(CLINICAL SCENARIO|DECISION|OPTION [A-Z]|WHAT THE EVIDENCE|TEST-SPECIFIC NOTE|COMPARISON|COVERAGE SUMMARY|GUIDELINE|CLINICAL CONSIDERATIONS|LIMITATIONS):/))
+      return <p key={i} className="my-1.5 text-[15px] leading-relaxed text-slate-700"><strong className="font-semibold text-slate-800">{line.split(':')[0]}:</strong>{line.slice(line.indexOf(':') + 1)}</p>;
+    if (line.match(/^- /))
+      return <p key={i} className="my-0.5 text-[14px] leading-relaxed text-slate-600 pl-3">{parts}</p>;
     if (line.match(/^[A-Z][a-z]+ et al/))
       return <p key={i} className="mt-4 pt-2.5 border-t border-slate-200 text-xs text-slate-400">{line}</p>;
     return <p key={i} className="my-1 text-[15px] leading-relaxed text-slate-700">{parts}</p>;
@@ -324,26 +333,20 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
     setMsgs(updated);
     setLoading(true);
 
-    const apiMessages = updated.slice(-MAX_MESSAGES).map(m => ({
-      role: m.role === 'ai' ? 'assistant' : m.role,
-      content: m.content || m.text,
-    }));
-
     if (abortControllerRef.current) abortControllerRef.current.abort();
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/api/mrd-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
         body: JSON.stringify({
-          category: 'MRD',
-          persona: 'medical',
-          testData: typeof testData === 'string' ? testData : JSON.stringify(testData),
-          messages: apiMessages,
-          model: MODELS[model],
+          query: fullMessage,
+          filters: {
+            ...(cancer && { cancerType: cancer.toLowerCase().replace(/\s*\(.*\)/, '') }),
+          },
         }),
       });
 
@@ -353,10 +356,9 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
       }
 
       const data = await response.json();
-      const assistantText = data?.content?.[0]?.text;
 
-      if (assistantText) {
-        const aiMsg = { role: 'ai', text: assistantText, content: assistantText };
+      if (data.success && data.answer) {
+        const aiMsg = { role: 'ai', text: data.answer, content: data.answer, sources: data.sources || [] };
         const withResponse = [...updated, aiMsg];
         setMsgs(withResponse);
         fetchFollowups(withResponse.map(m => ({
@@ -364,7 +366,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
           content: m.content || m.text,
         })));
       } else {
-        throw new Error('No response received');
+        throw new Error(data.error || 'No response received');
       }
     } catch (err) {
       if (err.name === 'AbortError') return;
@@ -372,7 +374,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
     } finally {
       setLoading(false);
     }
-  }, [loading, msgs, contextPrefix, testData, model, fetchFollowups]);
+  }, [loading, msgs, contextPrefix, cancer, fetchFollowups]);
 
   // ─── Patient Context Popover ────────────────────────────────────────────
 
@@ -610,7 +612,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-slate-400 mt-3">Evidence synthesis only · Not clinical guidance</p>
+            <p className="text-[10px] text-slate-400 mt-3">Clinical decision support · Not a substitute for clinical judgment</p>
             {!digestSubscribed && (
               <div className="w-full max-w-2xl mt-6 pt-5 border-t border-slate-100">
                 <DigestSignup compact className="mt-0" />
@@ -649,6 +651,24 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
                         </div>
                       )}
                       <Prose text={m.text} />
+                      {m.sources?.length > 0 && (
+                        <details className="mt-2 group">
+                          <summary className="text-[11px] text-slate-400 cursor-pointer hover:text-slate-600 select-none">
+                            {m.sources.length} source{m.sources.length !== 1 ? 's' : ''} cited
+                          </summary>
+                          <div className="mt-1.5 space-y-1 pl-1">
+                            {m.sources.map(s => (
+                              <div key={s.index} className="text-[11px] text-slate-500 leading-snug">
+                                <span className="text-orange-500 font-medium">[{s.index}]</span>{' '}
+                                {s.url ? (
+                                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-slate-700">{s.title}</a>
+                                ) : s.title}
+                                {s.sourceType && <span className="ml-1 text-slate-300">· {s.sourceType}</span>}
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      )}
                     </div>
                   )}
                 </div>
@@ -656,7 +676,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
               {loading && (
                 <div>
                   <span className="text-xs text-slate-400 block mb-2">
-                    {model === 'deep' ? 'Searching deeply\u2026' : 'Searching evidence\u2026'}
+                    Searching clinical evidence\u2026
                   </span>
                   {[100, 70, 45].map((w, j) => (
                     <div key={j} className="h-2 rounded mb-2 animate-pulse bg-slate-100" style={{ width: `${w}%` }} />
@@ -681,7 +701,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
             <div className="max-w-2xl mx-auto">
               <InputBox />
             </div>
-            <p className="text-[11px] text-slate-400 mt-2 text-center">Evidence synthesis only · Not clinical guidance</p>
+            <p className="text-[11px] text-slate-400 mt-2 text-center">Clinical decision support · Not a substitute for clinical judgment</p>
           </div>
         )}
       </div>
