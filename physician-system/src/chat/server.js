@@ -390,14 +390,43 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     }
   }
 
-  // Sort by hybrid score
-  const results = Array.from(resultMap.values())
+  // Sort by hybrid score, then diversify source types
+  const ranked = Array.from(resultMap.values())
     .map(r => ({
       ...r,
       similarity: r.hybridScore || r.vectorScore || r.keywordScore * 0.5,
     }))
-    .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore))
-    .slice(0, MAX_SOURCES);
+    .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore));
+
+  // Diversify source types: for clinical queries, prioritize trial/publication evidence
+  // over guidelines (NCCN/ASCO/ESMO are inherently late on MRD)
+  const GUIDELINE_TYPES = new Set(['nccn', 'asco', 'esmo', 'sitc', 'guideline', 'cap-amp']);
+  const isClinicaQuery = intent.query_type === 'clinical_guidance' || intent.query_type === 'trial_evidence';
+  const MAX_GUIDELINES = isClinicaQuery ? 2 : 4;
+  const MAX_PER_TYPE = 3;
+  const results = [];
+  const typeCounts = {};
+  let guidelineCount = 0;
+  const deferred = [];
+  for (const r of ranked) {
+    const t = r.source_type || 'unknown';
+    const isGuideline = GUIDELINE_TYPES.has(t);
+    typeCounts[t] = (typeCounts[t] || 0) + 1;
+    if (isGuideline && guidelineCount >= MAX_GUIDELINES) {
+      deferred.push(r);
+    } else if (typeCounts[t] > MAX_PER_TYPE) {
+      deferred.push(r);
+    } else {
+      results.push(r);
+      if (isGuideline) guidelineCount++;
+    }
+    if (results.length >= MAX_SOURCES) break;
+  }
+  // Backfill if we haven't reached MAX_SOURCES
+  for (const r of deferred) {
+    if (results.length >= MAX_SOURCES) break;
+    results.push(r);
+  }
 
   // Count results by source type for debugging
   const sourceTypeCounts = results.reduce((acc, r) => {
@@ -525,7 +554,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
   }
 
   sql += ` ORDER BY g.id, similarity DESC LIMIT $${paramIndex}`;
-  params.push(MAX_SOURCES);
+  params.push(MAX_SOURCES * 3);
 
   const result = await query(sql, params);
   return result.rows;
