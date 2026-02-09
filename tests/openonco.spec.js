@@ -1025,7 +1025,7 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(1000);
 
     // Should see landing page with path buttons
-    await expect(page.getByText(/watching for cancer's return/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
 
     // Click "I'm exploring my options" to start wizard (Path 2)
     await page.getByRole('button', { name: /i'm exploring my options/i }).click();
@@ -1048,7 +1048,7 @@ test.describe('Persona System', () => {
     // Verify patient via /patient URL - now shows 3-path landing
     await page.goto('/patient');
     await page.waitForTimeout(1000);
-    await expect(page.getByText(/watching for cancer's return/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
   });
 
   test('patient can navigate to Learn page', async ({ page }) => {
