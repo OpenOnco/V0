@@ -35,6 +35,26 @@ const EXEMPT_PATTERNS = [
 
 const CITATION_PATTERN = /\[\d+\]/g;
 
+// Known landmark MRD trial names for study-name detection
+const KNOWN_STUDY_NAMES = [
+  'TRACERx', 'DYNAMIC', 'DYNAMIC-III', 'DYNAMIC-Rectal',
+  'CIRCULATE-Japan', 'CIRCULATE', 'GALAXY', 'VEGA',
+  'BESPOKE', 'COSMOS', 'MERMAID', 'c-TRAK',
+  'monarchE', 'IMpower010', 'PEGASUS', 'CheckMate',
+  'MEDOCC-CrEATE', 'ACT-3', 'COBRA', 'NRG-GI005',
+  'ALTAIR', 'PRODIGE', 'CIRCULATE-US', 'IMPROVE-IT',
+  'NivoMRD', 'TRACER', 'BESPOKE-CRC',
+];
+
+// Build a regex that matches known study names (case-insensitive, word boundary)
+const STUDY_NAME_REGEX = new RegExp(
+  '\\b(' + KNOWN_STUDY_NAMES.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b',
+  'gi'
+);
+
+// Patterns that indicate a study name is already verified
+const VERIFIED_NEARBY = /\[\d+\]|PMID[:\s]*\d{7,8}|NCT\d{8}/;
+
 /**
  * Check if a sentence contains a clinical claim that needs citation
  */
@@ -46,6 +66,22 @@ function needsCitation(sentence) {
 
   // Check for clinical claims
   return CLINICAL_CLAIM_PATTERNS.some(p => p.test(sentence));
+}
+
+/**
+ * Detect study names that appear without a citation or PMID nearby
+ */
+function detectUnverifiedStudyNames(sentence) {
+  const matches = [];
+  let m;
+  STUDY_NAME_REGEX.lastIndex = 0;
+  while ((m = STUDY_NAME_REGEX.exec(sentence)) !== null) {
+    // Check if there's a citation/PMID/NCT nearby (within the same sentence)
+    if (!VERIFIED_NEARBY.test(sentence)) {
+      matches.push(m[1]);
+    }
+  }
+  return matches;
 }
 
 /**
@@ -69,6 +105,16 @@ export function validateCitations(response, sources) {
         patterns: CLINICAL_CLAIM_PATTERNS
           .filter(p => p.test(sentence))
           .map(p => p.source.substring(0, 30)),
+      });
+    }
+
+    // Second pass: detect unverified study names
+    const unverifiedStudies = detectUnverifiedStudyNames(sentence);
+    if (unverifiedStudies.length > 0) {
+      violations.push({
+        sentence: sentence.trim(),
+        reason: 'Study name without citation or PMID',
+        studyNames: unverifiedStudies,
       });
     }
   }
@@ -111,10 +157,13 @@ RULES:
 1. For each flagged sentence, either:
    a) Add a citation [N] if a source supports the claim
    b) Rephrase to express uncertainty: "The indexed evidence does not specifically address..." or "Based on the available sources, it is unclear whether..."
-2. Do NOT invent claims or citations
-3. Do NOT remove valid information
-4. Keep the same overall structure
-5. Preserve all existing citations
+2. For sentences flagged with "Study name without citation or PMID":
+   a) If a source matches the study, add the [N] citation
+   b) Otherwise, replace the study name with generic language (e.g. "The DYNAMIC trial showed..." → "Recent prospective data suggest...")
+3. Do NOT invent claims or citations
+4. Do NOT remove valid information
+5. Keep the same overall structure
+6. Preserve all existing citations
 
 Return ONLY the revised response, no explanations.`;
 

@@ -162,7 +162,7 @@ function CiteRef({ nums, sources }) {
   const hideTimer = useRef(null);
   const refs = nums.map(n => {
     const s = (sources || []).find(s => s.index === n);
-    return { n, title: s?.title, url: s?.url, type: s?.sourceType };
+    return { n, title: s?.title, url: s?.url, type: s?.sourceType, pmid: s?.pmid };
   });
   const enter = () => { clearTimeout(hideTimer.current); setShow(true); };
   const leave = () => { hideTimer.current = setTimeout(() => setShow(false), 150); };
@@ -187,6 +187,7 @@ function CiteRef({ nums, sources }) {
               <span className="text-orange-400 font-medium">[{r.n}]</span>{' '}
               {r.url ? <a href={r.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-orange-200">{r.title || 'Source'}</a> : (r.title || 'Source')}
               {r.type && <span className="text-slate-400 ml-1">· {r.type}</span>}
+              {r.pmid && <a href={`https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/`} target="_blank" rel="noopener noreferrer" className="text-emerald-300 ml-1 text-[10px] hover:underline">PMID:{r.pmid}</a>}
             </span>
           ))}
         </span>
@@ -676,6 +677,7 @@ export default function MRDNavigator({ testData = {}, onNavigate }) {
                                   <a href={s.url} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-slate-700">{s.title}</a>
                                 ) : s.title}
                                 {s.sourceType && <span className="ml-1 text-slate-300">· {s.sourceType}</span>}
+                                {s.pmid && <a href={`https://pubmed.ncbi.nlm.nih.gov/${s.pmid}/`} target="_blank" rel="noopener noreferrer" className="ml-1 text-emerald-500 hover:underline">PMID:{s.pmid}</a>}
                               </div>
                             ))}
                           </div>

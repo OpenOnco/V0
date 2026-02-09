@@ -20,6 +20,7 @@ import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
 import { getExamplesByType } from './few-shot-examples.js';
 import { lookupTests, formatTestContext } from './openonco-client.js';
+import { searchPubMed } from './pubmed-client.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -64,6 +65,12 @@ SAFETY: Present evidence for clinical options — never recommend a specific opt
 Few-shot examples may be provided to illustrate expected output quality.
 
 ${RESPONSE_TEMPLATE_PROMPT}
+
+STUDY CITATION RULES:
+- NEVER name a clinical trial or study without a PMID in parentheses or a [N] citation referencing a provided source.
+- If you need to cite a study NOT in the provided sources, use search_pubmed to verify it first.
+- If search_pubmed returns nothing, do NOT name the study. Say "recent data suggest..." instead.
+- Prefer citing provided sources over invoking search_pubmed.
 
 Format citations as [1], [2], etc. The system will append the full citation list.`;
 
@@ -569,6 +576,8 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.publication_date,
       g.journal,
       g.authors,
+      g.pmid,
+      g.doi,
       e.chunk_text,
       1 - (e.embedding <=> $1::vector) as similarity
     FROM mrd_item_embeddings e
@@ -631,6 +640,8 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.publication_date,
       g.journal,
       g.authors,
+      g.pmid,
+      g.doi,
       e.chunk_text,
       e.embedding
     FROM mrd_item_embeddings e
@@ -825,6 +836,81 @@ function checkRateLimit(clientIP) {
 }
 
 // ============================================
+// TOOL-USE LOOP (PubMed verification)
+// ============================================
+
+const PUBMED_TOOL = {
+  name: 'search_pubmed',
+  description: 'Search PubMed for a specific study to verify its PMID and existence. Use when citing a study not in the provided sources.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      query: {
+        type: 'string',
+        description: 'Search query — trial name, author, or keywords (e.g. "DYNAMIC trial colorectal ctDNA")',
+      },
+    },
+    required: ['query'],
+  },
+};
+
+/**
+ * Call Claude with tool support. Handles up to maxRounds of tool_use responses.
+ * Returns { text, toolCallsUsed }.
+ */
+async function callClaudeWithTools(claude, systemPrompt, messages, maxRounds = 2) {
+  let currentMessages = [...messages];
+  let toolCallsUsed = 0;
+
+  for (let round = 0; round <= maxRounds; round++) {
+    const response = await claude.messages.create({
+      model: SONNET_MODEL,
+      max_tokens: 1500,
+      system: systemPrompt,
+      tools: [PUBMED_TOOL],
+      messages: currentMessages,
+    });
+
+    // Check if response needs tool use
+    const toolUseBlocks = response.content.filter(b => b.type === 'tool_use');
+    const textBlocks = response.content.filter(b => b.type === 'text');
+
+    if (toolUseBlocks.length === 0 || round === maxRounds) {
+      // Final response — extract text
+      const text = textBlocks.map(b => b.text).join('') || 'Unable to generate response.';
+      return { text, toolCallsUsed };
+    }
+
+    // Process tool calls
+    const toolResults = [];
+    for (const toolBlock of toolUseBlocks) {
+      if (toolBlock.name === 'search_pubmed') {
+        toolCallsUsed++;
+        const query = toolBlock.input?.query || '';
+        logger.info('PubMed tool call', { query: query.substring(0, 80), round });
+
+        const result = await searchPubMed(query, { maxResults: 3 });
+        toolResults.push({
+          type: 'tool_result',
+          tool_use_id: toolBlock.id,
+          content: JSON.stringify(result),
+        });
+      }
+    }
+
+    // Add assistant response + tool results to conversation
+    currentMessages = [
+      ...currentMessages,
+      { role: 'assistant', content: response.content },
+      { role: 'user', content: toolResults },
+    ];
+  }
+
+  // Shouldn't reach here, but safety fallback
+  return { text: 'Unable to generate response.', toolCallsUsed };
+}
+
+// ============================================
 // REQUEST HANDLERS
 // ============================================
 
@@ -973,17 +1059,17 @@ Remember:
 - Acknowledge what evidence doesn't address
 - 3-5 paragraphs max`;
 
-    const response = await claude.messages.create({
-      model: SONNET_MODEL,
-      max_tokens: 1024,
-      system: MRD_CHAT_SYSTEM_PROMPT,
-      messages: [
+    const { text: rawAnswer, toolCallsUsed } = await callClaudeWithTools(
+      claude,
+      MRD_CHAT_SYSTEM_PROMPT,
+      [
         ...examples,
         { role: 'user', content: userContent },
       ],
-    });
+      2, // max 2 tool rounds
+    );
 
-    let answer = response.content[0]?.text || 'Unable to generate response.';
+    let answer = rawAnswer;
 
     // Step 5: Validate citations (P0 safety)
     let citationStats = { wasRewritten: false, violations: 0 };
@@ -1017,6 +1103,8 @@ Remember:
         evidenceLevel: s.evidence_level,
         similarity: parseFloat(s.similarity || 0).toFixed(3),
         crossIndication: s.crossIndication || false,
+        pmid: s.pmid || null,
+        doi: s.doi || null,
       };
 
       // Include the text excerpt (summary or chunk_text)
@@ -1111,6 +1199,7 @@ Remember:
         } : null,
         testDataEnriched: testsMatched.length > 0,
         testsMatched,
+        toolCallsUsed: toolCallsUsed || 0,
       },
     }));
 
