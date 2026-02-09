@@ -211,11 +211,13 @@ The test-data-tracker crawls vendor/payer sites and creates proposal JSON files 
 **Workflow:**
 1. Read all pending proposals from `test-data-tracker/data/proposals/*/`
 2. Present each proposal to user with relevant context
-3. For each: user approves or rejects
-4. Apply approved changes directly to `src/data.js`
+3. **STOP and wait for the user to approve or reject EACH proposal. Do NOT auto-approve. Do NOT batch-process. The human decides.**
+4. Apply ONLY user-approved changes directly to `src/data.js`
 5. Run `npm run test:smoke` to validate
 6. If tests pass, commit and push to main
 7. Mark applied proposals with `status: "applied"` and `appliedAt` timestamp
+
+**NEVER auto-review proposals.** Claude must not set `reviewedBy: "claude"`. Every proposal requires explicit human approval or rejection. If there are too many to review in one session, stop and tell the user how many remain.
 
 **IMPORTANT:** Proposals marked "applied" must have ACTUAL changes in `src/data.js` before marking. The `markApplied` function only updates the proposal JSON - it does NOT modify data.js.
 
