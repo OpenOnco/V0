@@ -52,7 +52,7 @@ OpenOnco is a non-profit database platform for cancer diagnostic tests, focusing
 │   ├── Header.jsx       # Site header with nav + persona selector
 │   └── ...
 │
-├── pages/               # Route pages
+├── pages/               # Route pages (DigestPage, etc.)
 ├── chatPrompts/         # UI config only (NOT system prompts)
 ├── personaConfig.js     # Persona definitions
 └── personaContent.js    # Persona-specific UI content

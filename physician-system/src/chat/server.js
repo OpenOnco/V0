@@ -20,6 +20,7 @@ import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
 import { getExamplesByType } from './few-shot-examples.js';
 import { lookupTests, formatTestContext } from './openonco-client.js';
+import { searchPubMed } from './pubmed-client.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,7 +36,7 @@ const PORT = process.env.PORT || 3000;
 const SONNET_MODEL = 'claude-sonnet-4-20250514';
 const HAIKU_MODEL = 'claude-3-5-haiku-20241022';
 const EMBEDDING_MODEL = 'text-embedding-ada-002';
-const MAX_SOURCES = 10;
+const MAX_SOURCES = 8;
 const MIN_SIMILARITY = 0.55;  // Lowered to include more relevant results
 const KEYWORD_BOOST = 0.1;   // Bonus for keyword matches in hybrid search
 
@@ -57,11 +58,19 @@ QUERY-TYPE ROUTING: The user's question will fall into one of these categories. 
 - trial_evidence: Trial details, enrollment status, key findings
 - general: Simplified evidence summary
 
+CROSS-INDICATION EVIDENCE: Some sources may be marked ⚠️ CROSS-INDICATION, meaning they come from a different tumor type than the query. When this happens: (1) clearly state which tumor type the evidence comes from, (2) explain why it may or may not be applicable, (3) present it in a separate "Evidence from Other Indications" section after the primary evidence so clinicians can judge cross-indication relevance. This is especially valuable in tumor types where MRD evidence is still emerging.
+
 SAFETY: Present evidence for clinical options — never recommend a specific option. Use "evidence suggests", "guidelines state", "clinicians often consider". Never use "you should", "I recommend", "you need to". Every factual claim must cite [N]. Acknowledge evidence gaps honestly. Focus on solid tumors only. 3-5 paragraphs max.
 
 Few-shot examples may be provided to illustrate expected output quality.
 
 ${RESPONSE_TEMPLATE_PROMPT}
+
+STUDY CITATION RULES:
+- NEVER name a clinical trial or study without a PMID in parentheses or a [N] citation referencing a provided source.
+- If you need to cite a study NOT in the provided sources, use search_pubmed to verify it first.
+- If search_pubmed returns nothing, do NOT name the study. Say "recent data suggest..." instead.
+- Prefer citing provided sources over invoking search_pubmed.
 
 Format citations as [1], [2], etc. The system will append the full citation list.`;
 
@@ -398,11 +407,12 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     }))
     .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore));
 
-  // Diversify source types: for clinical queries, prioritize trial/publication evidence
-  // over guidelines (NCCN/ASCO/ESMO are inherently late on MRD)
+  // Diversify source types: cap guidelines so trials/publications aren't drowned out.
+  // NCCN/ASCO/ESMO are important context but shouldn't dominate — MRD evidence
+  // moves faster in trials than guideline update cycles.
   const GUIDELINE_TYPES = new Set(['nccn', 'asco', 'esmo', 'sitc', 'guideline', 'cap-amp']);
-  const isClinicaQuery = intent.query_type === 'clinical_guidance' || intent.query_type === 'trial_evidence';
-  const MAX_GUIDELINES = isClinicaQuery ? 2 : 4;
+  const isGuidelineQuery = intent.evidence_focus === 'guidelines';
+  const MAX_GUIDELINES = isGuidelineQuery ? 6 : 3;
   const MAX_PER_TYPE = 3;
   const results = [];
   const typeCounts = {};
@@ -422,10 +432,59 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     }
     if (results.length >= MAX_SOURCES) break;
   }
-  // Backfill if we haven't reached MAX_SOURCES
+  // Backfill from deferred — but respect the guideline cap even during backfill
   for (const r of deferred) {
     if (results.length >= MAX_SOURCES) break;
+    const isGuideline = GUIDELINE_TYPES.has(r.source_type || 'unknown');
+    if (isGuideline && guidelineCount >= MAX_GUIDELINES) continue;
     results.push(r);
+    if (isGuideline) guidelineCount++;
+  }
+
+  // Cross-indication broadening: if we got sparse results and had a cancer type
+  // filter, re-run without cancer type to find evidence from other indications.
+  // Clinicians can judge cross-indication relevance themselves.
+  const SPARSE_THRESHOLD = 3;
+  const queriedCancerType = enhancedFilters.cancerType;
+  if (results.length < SPARSE_THRESHOLD && queriedCancerType) {
+    const broadFilters = { ...enhancedFilters, cancerType: undefined };
+    const existingIds = new Set(results.map(r => r.id));
+    const slotsAvailable = MAX_SOURCES - results.length;
+
+    const [broadVector, broadKeyword] = await Promise.all([
+      searchSimilarItems(queryEmbedding, broadFilters),
+      keywordSearch(intent.keywords, broadFilters),
+    ]);
+
+    // Merge broad results the same way, skipping already-found items
+    const broadMap = new Map();
+    for (const item of broadVector) {
+      if (existingIds.has(item.id)) continue;
+      broadMap.set(item.id, { ...item, vectorScore: parseFloat(item.similarity) || 0, keywordScore: 0 });
+    }
+    for (const item of broadKeyword) {
+      if (existingIds.has(item.id)) continue;
+      if (broadMap.has(item.id)) {
+        const existing = broadMap.get(item.id);
+        existing.keywordScore = item.text_rank || 0;
+        existing.hybridScore = existing.vectorScore + KEYWORD_BOOST;
+      } else {
+        broadMap.set(item.id, { ...item, vectorScore: 0, keywordScore: item.text_rank || 0, hybridScore: (item.text_rank || 0) * 0.5 });
+      }
+    }
+
+    const broadRanked = Array.from(broadMap.values())
+      .map(r => ({ ...r, similarity: r.hybridScore || r.vectorScore || r.keywordScore * 0.5, crossIndication: true }))
+      .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore))
+      .slice(0, slotsAvailable);
+
+    results.push(...broadRanked);
+
+    logger.info('Cross-indication broadening', {
+      queriedCancerType,
+      originalResults: results.length - broadRanked.length,
+      crossIndicationAdded: broadRanked.length,
+    });
   }
 
   // Count results by source type for debugging
@@ -517,6 +576,8 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.publication_date,
       g.journal,
       g.authors,
+      g.pmid,
+      g.doi,
       e.chunk_text,
       1 - (e.embedding <=> $1::vector) as similarity
     FROM mrd_item_embeddings e
@@ -579,6 +640,8 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.publication_date,
       g.journal,
       g.authors,
+      g.pmid,
+      g.doi,
       e.chunk_text,
       e.embedding
     FROM mrd_item_embeddings e
@@ -686,7 +749,7 @@ function buildSourcesContext(sources) {
   return sources.map((s, i) => {
     let context = `Source [${i + 1}]:
 Title: ${s.title}
-Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}
+Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}${s.crossIndication ? '\n⚠️ CROSS-INDICATION: This evidence is from a different tumor type than the query. Present it clearly as cross-indication data so the clinician can judge its relevance.' : ''}
 Summary: ${s.summary || s.chunk_text}`;
 
     // Include direct quotes if available (Phase 5)
@@ -770,6 +833,81 @@ function checkRateLimit(clientIP) {
 
   clientData.count++;
   return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - clientData.count };
+}
+
+// ============================================
+// TOOL-USE LOOP (PubMed verification)
+// ============================================
+
+const PUBMED_TOOL = {
+  name: 'search_pubmed',
+  description: 'Search PubMed for a specific study to verify its PMID and existence. Use when citing a study not in the provided sources.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      query: {
+        type: 'string',
+        description: 'Search query — trial name, author, or keywords (e.g. "DYNAMIC trial colorectal ctDNA")',
+      },
+    },
+    required: ['query'],
+  },
+};
+
+/**
+ * Call Claude with tool support. Handles up to maxRounds of tool_use responses.
+ * Returns { text, toolCallsUsed }.
+ */
+async function callClaudeWithTools(claude, systemPrompt, messages, maxRounds = 2) {
+  let currentMessages = [...messages];
+  let toolCallsUsed = 0;
+
+  for (let round = 0; round <= maxRounds; round++) {
+    const response = await claude.messages.create({
+      model: SONNET_MODEL,
+      max_tokens: 1500,
+      system: systemPrompt,
+      tools: [PUBMED_TOOL],
+      messages: currentMessages,
+    });
+
+    // Check if response needs tool use
+    const toolUseBlocks = response.content.filter(b => b.type === 'tool_use');
+    const textBlocks = response.content.filter(b => b.type === 'text');
+
+    if (toolUseBlocks.length === 0 || round === maxRounds) {
+      // Final response — extract text
+      const text = textBlocks.map(b => b.text).join('') || 'Unable to generate response.';
+      return { text, toolCallsUsed };
+    }
+
+    // Process tool calls
+    const toolResults = [];
+    for (const toolBlock of toolUseBlocks) {
+      if (toolBlock.name === 'search_pubmed') {
+        toolCallsUsed++;
+        const query = toolBlock.input?.query || '';
+        logger.info('PubMed tool call', { query: query.substring(0, 80), round });
+
+        const result = await searchPubMed(query, { maxResults: 3 });
+        toolResults.push({
+          type: 'tool_result',
+          tool_use_id: toolBlock.id,
+          content: JSON.stringify(result),
+        });
+      }
+    }
+
+    // Add assistant response + tool results to conversation
+    currentMessages = [
+      ...currentMessages,
+      { role: 'assistant', content: response.content },
+      { role: 'user', content: toolResults },
+    ];
+  }
+
+  // Shouldn't reach here, but safety fallback
+  return { text: 'Unable to generate response.', toolCallsUsed };
 }
 
 // ============================================
@@ -888,6 +1026,10 @@ Use this scenario to structure your response around these specific decisions.`;
     const examples = getExamplesByType(intent.query_type).slice(0, 2);
 
     const hasSources = sources.length > 0;
+    const hasCrossIndication = sources.some(s => s.crossIndication);
+    const crossIndicationNote = hasCrossIndication
+      ? `\n- Some sources are from OTHER tumor types (marked ⚠️ CROSS-INDICATION). Present these separately under "Evidence from Other Indications" — state which tumor type, explain potential relevance, and let the clinician judge applicability.`
+      : '';
     const userContent = hasSources
       ? `Based on the following sources, answer this clinical question about MRD (Molecular Residual Disease):
 
@@ -901,7 +1043,7 @@ Remember:
 - Structure your response around the clinical decisions the physician faces
 - Present evidence FOR EACH clinical option, not as a literature review
 - If TEST-SPECIFIC DATA is provided, incorporate the exact figures (LOD, sensitivity, TAT, coverage) into your response
-- Acknowledge what evidence doesn't address
+- Acknowledge what evidence doesn't address${crossIndicationNote}
 - 3-5 paragraphs max`
       : `Answer this clinical question about MRD (Molecular Residual Disease) using the matched decision tree scenario:
 
@@ -917,17 +1059,17 @@ Remember:
 - Acknowledge what evidence doesn't address
 - 3-5 paragraphs max`;
 
-    const response = await claude.messages.create({
-      model: SONNET_MODEL,
-      max_tokens: 1024,
-      system: MRD_CHAT_SYSTEM_PROMPT,
-      messages: [
+    const { text: rawAnswer, toolCallsUsed } = await callClaudeWithTools(
+      claude,
+      MRD_CHAT_SYSTEM_PROMPT,
+      [
         ...examples,
         { role: 'user', content: userContent },
       ],
-    });
+      2, // max 2 tool rounds
+    );
 
-    let answer = response.content[0]?.text || 'Unable to generate response.';
+    let answer = rawAnswer;
 
     // Step 5: Validate citations (P0 safety)
     let citationStats = { wasRewritten: false, violations: 0 };
@@ -960,6 +1102,9 @@ Remember:
         evidenceType: s.evidence_type,
         evidenceLevel: s.evidence_level,
         similarity: parseFloat(s.similarity || 0).toFixed(3),
+        crossIndication: s.crossIndication || false,
+        pmid: s.pmid || null,
+        doi: s.doi || null,
       };
 
       // Include the text excerpt (summary or chunk_text)
@@ -1054,6 +1199,7 @@ Remember:
         } : null,
         testDataEnriched: testsMatched.length > 0,
         testsMatched,
+        toolCallsUsed: toolCallsUsed || 0,
       },
     }));
 
@@ -1338,6 +1484,63 @@ async function handleTriggerCrawl(req, res) {
 }
 
 // ============================================
+// EVIDENCE STATS
+// ============================================
+
+let evidenceStatsCache = null;
+let evidenceStatsCacheTime = 0;
+const EVIDENCE_STATS_TTL = 5 * 60 * 1000; // 5 minutes
+
+async function handleEvidenceStats(req, res) {
+  try {
+    const now = Date.now();
+    if (evidenceStatsCache && (now - evidenceStatsCacheTime) < EVIDENCE_STATS_TTL) {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify(evidenceStatsCache));
+    }
+
+    const result = await query(`
+      SELECT source_type, COUNT(*) as count
+      FROM mrd_guidance_items
+      WHERE is_superseded = FALSE
+      GROUP BY source_type
+      ORDER BY count DESC
+    `);
+
+    const raw = {};
+    for (const row of result.rows) {
+      raw[row.source_type] = parseInt(row.count);
+    }
+
+    // Aggregate into display categories
+    const guidelineCount = (raw.nccn || 0) + (raw.asco || 0) + (raw.esmo || 0) + (raw.sitc || 0);
+    const pubCount = (raw.pubmed || 0) + (raw.extracted_publication || 0) +
+      (raw.seed_publication || 0) + (raw['rss-asco'] || 0) + (raw['rss-esmo'] || 0);
+    const trialCount = raw.clinicaltrials || 0;
+
+    const stats = {
+      generated: new Date().toISOString(),
+      sources: {
+        nccn: { label: 'NCCN', count: raw.nccn || 0, unit: 'guidelines referenced', color: 'blue' },
+        pubmed: { label: 'PubMed', count: pubCount, unit: 'publications indexed', color: 'emerald' },
+        asco: { label: 'ASCO', count: (raw.asco || 0) + (raw['rss-asco'] || 0), unit: 'abstracts tracked', color: 'violet' },
+        trials: { label: 'ClinicalTrials.gov', count: trialCount, unit: 'active MRD trials', color: 'amber' },
+      },
+    };
+
+    evidenceStatsCache = stats;
+    evidenceStatsCacheTime = now;
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(stats));
+  } catch (error) {
+    logger.error('Evidence stats error', { error: error.message });
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Failed to compute evidence stats' }));
+  }
+}
+
+// ============================================
 // SERVER
 // ============================================
 
@@ -1368,6 +1571,10 @@ const server = createServer(async (req, res) => {
 
   if (url.pathname === '/api/import-nccn' && req.method === 'POST') {
     return handleImportNccn(req, res);
+  }
+
+  if (url.pathname === '/api/evidence-stats' && req.method === 'GET') {
+    return handleEvidenceStats(req, res);
   }
 
   res.writeHead(404, { 'Content-Type': 'application/json' });

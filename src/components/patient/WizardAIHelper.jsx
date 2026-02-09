@@ -277,7 +277,7 @@ export default function WizardAIHelper({ currentStep, wizardData }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <span className="text-3xl sm:text-4xl lg:text-5xl">🤔</span>
+          <span className="text-sm sm:text-base lg:text-lg font-bold text-white tracking-tight">Help!</span>
         )}
       </button>
 
