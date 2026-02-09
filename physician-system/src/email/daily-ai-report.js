@@ -124,6 +124,8 @@ async function gatherSystemData() {
   return {
     timestamp: new Date().toISOString(),
     health,
+    crawlerRuns: lastSuccessfulRuns.rows,
+    failedCrawlerRuns: failedCrawlerRuns.rows,
     totals: totals.rows[0],
     recentItemsCount: parseInt(recentItemsCount.rows[0].count),
     recentItemsSample: recentItemsSample.rows,
@@ -311,6 +313,7 @@ IMPORTANT context about this system:
 - Stale data sources are normal between cron runs. Only flag staleness if it indicates a broken cron (3+ days with no successful run).
 - The CC Action Items section (generated separately) handles actionable items. Your report should focus on what happened, not duplicate those action items.
 - The main reason the user opens Claude Code is to review pending proposals, not to babysit crawlers.
+- For crawler health, use the "crawlerRuns" and "failedCrawlerRuns" fields (from the database) as the authoritative source. The "health.crawlers" field is from an ephemeral file that may be empty after deploys — ignore it if crawlerRuns has data.
 
 Style guidelines:
 - Be concise, not verbose
