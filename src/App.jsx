@@ -1226,6 +1226,7 @@ export default function App() {
     '/patients': 'home',
     '/patient': 'patient-landing',
     '/rnd': 'home',
+    '/physician': 'home',
     '/clinician': 'home',
     '/clinicians': 'home',
     '/medical': 'home',
@@ -1250,6 +1251,7 @@ export default function App() {
     '/patients': 'patient',
     '/patient': 'patient',
     '/rnd': 'rnd',
+    '/physician': 'medical',
     '/clinician': 'medical',
     '/clinicians': 'medical',
     '/medical': 'medical',
@@ -1386,6 +1388,11 @@ export default function App() {
     trackPersona(newPersona); // Track persona for feedback context
     analytics.identifyPersona(newPersona); // PostHog persona tracking
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
+
+    // Navigate to home when switching away from a persona-specific page
+    if (currentPage.startsWith('patient-')) {
+      handleNavigate('home');
+    }
   };
 
   // Check URL parameters on mount for direct test links and comparison links (backward compatibility)

@@ -1,6 +1,6 @@
 # Service Architecture
 
-**Date:** February 2, 2026
+**Date:** February 6, 2026
 
 This document describes the backend services for OpenOnco.
 
@@ -85,22 +85,60 @@ OpenOnco has two backend services, each with distinct responsibilities:
 
 ### 2. test-data-tracker
 
-**Purpose:** OpenOnco test database maintenance and monitoring
+**Purpose:** OpenOnco test database maintenance, monitoring, and physician digest
+
+**URL:** https://daemon-production-5ed1.up.railway.app
 
 **Responsibilities:**
 - Vendor website monitoring (test availability, pricing)
 - Payer policy tracking (coverage changes)
 - CMS reimbursement updates
+- NIH RePORTER grant tracking (MRD/ctDNA research funding)
 - Proposal generation for data updates
 - Test database reconciliation
+- Physician digest email system (subscribe, curate, send)
 
-**Key Features:**
-- Crawlers for vendor sites
-- Payer policy extraction
-- Change detection and diffing
-- Proposal queue for human review
+**Key Endpoints:**
+- `GET /health` — Health check with queue/scheduler status
+- `GET /api/queue` — Queue status
+- `GET /api/scheduler` — Scheduler status
+- `POST /api/digest/subscribe` — Subscribe to physician digest
+- `POST /api/digest/confirm` — Confirm subscription
+- `GET /api/digest/unsubscribe?token=` — One-click unsubscribe
+- `GET /api/digest/preferences?token=` — Get subscriber preferences
+- `POST /api/digest/preferences` — Update subscriber preferences
+
+**Scheduled Jobs:**
+| Job | Schedule | Description |
+|-----|----------|-------------|
+| Publication Index | Sunday 9 PM | Publication index crawl |
+| Discovery | Sunday 10 PM | Policy discovery |
+| CMS | Sunday 11 PM | CMS coverage crawl |
+| Vendor | Sunday 11 PM | Vendor website crawl |
+| NIH RePORTER | Sunday 11 PM | NIH grant tracking |
+| Payers | Sunday 11:30 PM | Payer policy crawl |
+| Queue Cleanup | Daily midnight | Remove old discoveries |
+| Physician Digest Draft | Monday 5 AM | AI-curated digest draft |
+| Physician Digest Send | Monday 10 AM | Auto-send if not reviewed |
+
+**Crawlers:**
+- `cms` — CMS reimbursement/coverage updates
+- `vendor` — Vendor website changes
+- `payers` — Payer policy monitoring
+- `nih` — NIH RePORTER API (MRD/ctDNA research grants)
+- `discovery` — Automated policy discovery
+
+**Physician Digest Pipeline:**
+```
+Crawlers (Sun night) → curate.js (aggregate week's findings)
+  → generateDraft() → mrd_digest_history (status: draft)
+  → Admin preview email → manual approve or auto-send at 10 AM
+  → Resend API → all active subscribers
+```
 
 **Database:** Connects to main OpenOnco Supabase database
+- `mrd_digest_subscribers` — Email subscribers with preferences
+- `mrd_digest_history` — Digest drafts and send history
 
 ---
 
@@ -108,11 +146,12 @@ OpenOnco has two backend services, each with distinct responsibilities:
 
 | Aspect | physician-system | test-data-tracker |
 |--------|------------------|-------------------|
-| **Focus** | MRD clinical guidance | Test database maintenance |
+| **Focus** | MRD clinical guidance | Test database maintenance + digest |
 | **Chat API** | Yes (RAG-based) | No |
+| **Email digest** | No | Yes (weekly physician digest) |
 | **Database** | Railway Postgres (MRD) | Supabase (OpenOnco tests) |
-| **Crawl targets** | PubMed, FDA, NCCN, trials | Vendor sites, payer policies |
-| **Output** | Chat responses, guidance | Proposals, data updates |
+| **Crawl targets** | PubMed, FDA, NCCN, trials | Vendor sites, payer policies, NIH grants |
+| **Output** | Chat responses, guidance | Proposals, data updates, digest emails |
 
 ---
 
@@ -166,4 +205,4 @@ The MRD Chat API exists only in `physician-system/src/chat/server.js`. Any dupli
 
 ---
 
-*Last updated: February 2, 2026*
+*Last updated: February 6, 2026*

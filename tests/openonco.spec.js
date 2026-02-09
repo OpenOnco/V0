@@ -998,7 +998,7 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(2000);
 
     // Should see landing page headline about MRD testing
-    await expect(page.getByText(/watching for cancer's return/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 10000 });
 
     // Should see the three path buttons
     await expect(page.getByRole('button', { name: /my doctor recommended a test/i })).toBeVisible();

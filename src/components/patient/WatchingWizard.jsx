@@ -409,10 +409,10 @@ function LandingStep({ onNext, onNavigate }) {
     <div className="max-w-3xl mx-auto py-8 px-4">
       {/* Hero headline - empathetic hook */}
       <h1 className="text-xl sm:text-2xl font-medium text-slate-700 mb-3 text-center leading-relaxed">
-        Watching for cancer's return?
+        You finished treatment.<br className="hidden sm:inline" /> Now MRD testing will keep watch with a simple blood test.
       </h1>
       <p className="text-lg text-slate-500 mb-10 text-center">
-        We'll help you navigate MRD testing.
+        We'll help you find the right test, understand costs, and navigate coverage.
       </p>
 
       {/* Three action paths - visible without scrolling */}

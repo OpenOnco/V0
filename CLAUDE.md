@@ -64,8 +64,9 @@ OpenOnco is a non-profit database of cancer diagnostic tests (liquid biopsy, mol
 │   └── src/triage/         # AI triage + classification
 │
 ├── test-data-tracker/      # Coverage & vendor monitoring (Railway)
-│   ├── src/crawlers/       # CMS, payer, vendor crawlers
-│   ├── src/email/          # Digest email templates
+│   ├── src/crawlers/       # CMS, payer, vendor, NIH crawlers
+│   ├── src/digest/         # Physician digest (subscribers, curate, send)
+│   ├── src/email/          # Email templates (digest, confirmation, crawl)
 │   └── src/triage/         # AI-powered change detection
 │
 ├── tests/                  # Playwright E2E tests
@@ -114,6 +115,8 @@ npm run test:api         # API endpoint tests
 # Test Data Tracker (from /test-data-tracker directory)
 npm run dev              # Run with auto-reload
 npm test                 # Unit tests
+node src/index.js digest:preview   # Generate digest draft
+node src/index.js digest:send [id] # Send approved digest
 
 # Physician System (from /physician-system directory)
 npm start                # Start MRD chat server
@@ -168,6 +171,15 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 | `GET /stats` | Database stats |
 
 **Chat API:** `POST /api/chat` (rate limited 20/min per IP)
+
+**Digest API:** (Vercel proxies to Railway daemon)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/mrd-digest/subscribe` | POST | Subscribe to physician digest |
+| `/api/mrd-digest/confirm` | GET | Confirm subscription (from email) |
+| `/api/mrd-digest/unsubscribe` | GET | One-click unsubscribe |
+| `/api/mrd-digest/preferences` | GET/POST | Read/update subscriber preferences |
 
 ## Common Tasks
 

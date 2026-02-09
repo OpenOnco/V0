@@ -1,69 +1,65 @@
 # OpenOnco Session State
 
-> Last updated: 2026-02-06 12:00 PST
+> Last updated: 2026-02-08 PST
 > Updated by: Claude Opus 4.6
 
 ## Current State
 
-### Physician System — Deployed, Benchmarked, Decision Trees Live
-
-The physician-system MRD chat is deployed on Railway with the full decision support pipeline wired end-to-end. Baseline eval: **7.0/10 average, 64% pass rate**.
-
-**Architecture:**
-```
-User query → Haiku intent extraction → findMatchingScenario() (decision tree match)
-           → ada-002 embedding → hybrid search (pgvector + keyword)
-           → Few-shot examples injected → Sonnet response generation
-           → OPTION A/B/C structured output
-```
-
 ### What Was Done This Session
 
-**1. Railway Deploy + No-Sources Fix**
-- Deployed physician-system to Railway (not auto-deploying — requires `railway up` from physician-system/ dir)
-- Fixed bug: when query matches decision tree but DB returns 0 sources (e.g. NSCLC), system now generates response from decision tree context instead of returning "no guidance found"
-- Verified health endpoint: 269 guidance items, 263 embeddings
+**1. Coverage Check — Moved to Standalone Collapsible**
+- Removed Coverage Check button from chat input box (was cramped alongside Case Details)
+- Deleted `CoveragePopover` component, `showCoverage` state, `pendingCoverageRef`, `covRef`, and related useEffects
+- Added new standalone collapsible section ("Check Patient Coverage") between chat card and CategoryRow
+- Two side-by-side autocomplete fields: test name (from `mrdTests`) + insurance provider
+- Single-test coverage result card with status badge, indications, notes, policy link
+- New state: `covExpanded`, `covTestQuery`, `selectedTest`; replaced `coverageResults` (all tests) with `coverageResult` (single test lookup)
+- Case Details button still works in chat input
+- Committed: `7f0f384 feat: move coverage check to standalone collapsible section below chat`
+- Pushed to develop, deployed to preview
 
-**2. Backfill Complete**
-- Ran `backfill-decision-context.js` — **89/89 items updated**, 0 failures
-- All guidance items now have `decision_context` populated
+**2. Publication Index Crawl Email Clarification**
+- Changed "Check status:" label to "No action needed — to inspect details locally, run:" in both HTML and plain text email templates
+- File: `publication-index/src/email.js`
+- Committed: `60ebc1a fix: clarify crawl email snippet is informational, no action needed`
+- Pushed to develop
 
-**3. Live Test — Binary Fork Validated**
+**3. Renamed `/status` Custom Command**
+- `/status` conflicted with built-in Claude Code command
+- Tried `/todo` (autocompletes to `/todos`), `/state` (autocompletes to `/status`)
+- Final name: `/whatswhat` — file at `.claude/commands/whatswhat.md`
+- Updated reference in `docs/FEATURE_TRACKER.md`
+- **Not committed yet** — also uncommitted: CLAUDE.md, docs/ updates, public/sitemap.xml from prior sessions
 
-| Query | Scenario Matched | Format | Sources |
-|-------|-----------------|--------|---------|
-| CRC stage III, Signatera negative, safe to stop? | `CRC_III_post_resection_MRD_negative` | OPTION A/B/C | 10 |
-| TNBC MRD positive after mastectomy | `breast_I_III_post_resection_MRD_positive` | OPTION A/B/C | 10 |
-| Stage IIB NSCLC, MRD positive post-lobectomy | `NSCLC_I_III_post_resection_MRD_positive` | OPTION A/B/C | 0 (decision tree) |
-| MRD positive, no cancer type (edge case) | None (correct — can't route) | OPTION A/B/C | 10 |
+### Uncommitted Changes
 
-**4. Eval Suite — Baseline Benchmark**
+Files modified but not committed:
+- `.claude/commands/whatswhat.md` (renamed from status.md)
+- `docs/FEATURE_TRACKER.md` (updated `/status` → `/whatswhat` reference)
+- `CLAUDE.md` (doc updates from prior sessions)
+- `docs/CLAUDE_CONTEXT.md` (doc updates from prior sessions)
+- `docs/SERVICE_ARCHITECTURE.md` (doc updates from prior sessions)
+- `public/sitemap.xml` (regenerated)
 
-| Category | Avg Score | Pass Rate | Notes |
-|----------|-----------|-----------|-------|
-| Adversarial | **9.7/10** | 3/3 | Safety guardrails excellent |
-| Test interpretation | **8.6/10** | 4/5 | Handles assay comparison well |
-| Clinical scenarios | **8.0/10** | 9/10 | Decision format works for CRC/breast |
-| Trial evidence | **7.2/10** | 2/5 | DYNAMIC/CIRCULATE detail gaps |
-| Guidelines | **6.6/10** | 3/5 | NSCLC guidelines missing from DB |
-| Coverage | **1.8/10** | 0/5 | Zero payer data in DB |
+Untracked files:
+- `docs/FEATURE_TRACKER.md`
+- `docs/plans/CITATION_SYSTEM_PLAN.md`
+- `physician-system/CITATION_UPGRADE_PLAN.md`
+- `plan.md`
+- `src/components/physician/MRDCompendium.jsx`
+- `src/components/physician/MRDNavigator-wireframe.jsx`
 
-**12 failing questions — root causes are all data gaps, not prompt/format issues:**
-- Coverage (Q26-30): DB has 0 payer/coverage content → need to run coverage-bridge.js
-- NSCLC (Q8, Q19): 0 NSCLC items in embeddings → need NSCLC guideline ingestion
-- Trial depth (Q21, Q22, Q24): DB has trial entries but insufficient design/endpoint detail
-- Head/neck (Q8): HPV oropharyngeal ctDNA not in DB at all
+### Design Decision: Coverage Check Doesn't Filter by Case Details
 
-### Commits Pushed to Main
+The coverage section shows raw policy data (indications, notes, status) without auto-matching against the patient's cancer/stage/phase. This is intentional — coverage policies have nuanced language that doesn't map cleanly to dropdown values, and a false signal could be worse than no signal. Physicians interpret the indications themselves.
 
-1. `e2e7078` — data: apply crawler proposals (3 test updates, 2 new tests, 36 coverage entries)
-2. `cb5a8ba` — fix(policy-registry): update 6 broken payer policy URLs
-3. `1eda1db` — feat(physician-system): Phase 0 + Phase 2 (audit, decision trees, trial watcher, coverage bridge)
-4. `b557f48` — feat(physician-system): Phase 1 (prompt rewrite, few-shot examples, eval set, backfill script)
-5. `7cb6bf4` — feat(physician-system): wire decision trees, few-shot examples, MRD-negative scenarios
-6. `1fd55ff` — fix(physician-system): fall through to decision tree when no DB sources match
-7. `9eed801` — feat(physician-system): add eval runner for 33-question physician benchmark
-8. `8158287` — data(physician-system): baseline eval results — 7.0/10 avg, 64% pass
+## Prior State (from previous sessions)
+
+### Physician Digest System — Live on Production
+Weekly MRD/ctDNA email digest for physicians. Hybrid review: AI draft Monday 5 AM, admin reviews, auto-sends Monday 10 AM.
+
+### NIH RePORTER Crawler — Live on Production
+Weekly crawler for MRD/ctDNA research grants, surfaces in physician digest.
 
 ### Railway Services
 
@@ -72,12 +68,19 @@ User query → Haiku intent extraction → findMatchingScenario() (decision tree
 | physician-system | https://physician-system-production.up.railway.app/health | OK | `cd physician-system && railway up -d` |
 | test-data-tracker | https://daemon-production-5ed1.up.railway.app/health | OK | auto-deploy from main |
 
-**Note:** physician-system does NOT auto-deploy from GitHub. Must manually deploy with `railway up -d` from the `physician-system/` directory.
-
 ### Cron Schedules
-- CMS/Vendor: Sunday 11PM PT
-- Payers: Sunday 11:30PM PT
-- Digest email: Monday 1AM PT
+
+| Job | Schedule | Service |
+|-----|----------|---------|
+| Publication Index | Sunday 9 PM | test-data-tracker |
+| NIH RePORTER | Sunday 11 PM | test-data-tracker |
+| CMS/Vendor | Sunday 11 PM | test-data-tracker |
+| Payers | Sunday 11:30 PM | test-data-tracker |
+| Discovery | Sunday 10 PM | test-data-tracker |
+| Physician Digest Draft | Monday 5 AM | test-data-tracker |
+| Physician Digest Auto-Send | Monday 10 AM | test-data-tracker |
+| Internal Digest | Monday 1 AM | test-data-tracker |
+| Queue Cleanup | Daily midnight | test-data-tracker |
 
 ## Known Issues
 
@@ -87,24 +90,15 @@ User query → Haiku intent extraction → findMatchingScenario() (decision tree
 - **trm-1** (Invitae Personalis MRD) discontinued — crawler still generates proposals
 - **Coverage data gap** — physician-system DB has 0 payer coverage items; coverage-bridge.js exists but hasn't been run
 - **NSCLC/H&N content gap** — 0 items in embeddings for NSCLC guidelines or head/neck ctDNA
+- **Digest DB migration** — migration 010 needs to be run on Railway Postgres
+- **Custom commands not loading** — Claude Code launched from parent dir (`/Users/adickinson/Documents/GitHub`) doesn't pick up `.claude/commands/` in `V0/`. Must launch from `V0/` directly.
 
 ## Next Steps (Priority Order)
 
-1. **Fill data gaps to improve eval score:**
-   - Run `coverage-bridge.js` to sync payer data (would fix Q26-30, +5 passes)
-   - Ingest NSCLC NCCN guidelines (would fix Q19, Q20)
-   - Add DYNAMIC/CIRCULATE trial detail entries (would fix Q21, Q22, Q24)
-   - After data fills, re-run eval to measure improvement
-2. **Phase 3: Frontend physician UX** — Hold for oncologist review of chat quality
-3. Consider adding crawler logic to skip proposals for discontinued tests (trm-1)
-4. Address Highmark TLS cert chain issue in payer crawler
-
-## Files Modified This Session
-
-- `physician-system/src/chat/server.js` — no-sources decision tree fallback fix
-- `physician-system/eval/run-eval.js` — NEW: eval runner (sends 33 questions, Haiku scoring)
-- `physician-system/eval/eval-results.json` — baseline eval results
-- All files from previous session (decision trees, few-shot, prompt rewrite, etc.)
+1. **Run migration 010** on Railway Postgres for digest subscriber/history columns
+2. **Fill data gaps to improve eval score** (coverage-bridge.js, NSCLC guidelines, trial details)
+3. **Test digest end-to-end** — subscribe, confirm, trigger draft, verify email
+4. **Commit remaining doc updates** — CLAUDE.md, FEATURE_TRACKER.md, whatswhat rename
 
 ## Project Location
 
