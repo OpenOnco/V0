@@ -11,7 +11,7 @@ import { createLogger } from './utils/logger.js';
 import { config, SOURCES } from './config.js';
 import { runCrawler, getCrawlerStatuses } from './crawlers/index.js';
 import { cleanupOldDiscoveries } from './queue/index.js';
-import { sendCrawlCompleteEmail } from './email/crawl-complete.js';
+// Per-crawler emails removed in v5 — replaced by single weekly summary via aggregation job
 
 // v2: Import discovery crawler
 import { runDiscovery, createDocumentCandidateProposal } from './crawlers/discovery.js';
@@ -21,6 +21,10 @@ import { PROPOSAL_TYPES } from './proposals/schema.js';
 
 // v4: Physician digest integration
 import { generateDraft, autoSendIfPending } from './digest/send-weekly.js';
+
+// v5: Weekly submissions aggregation
+import { buildWeeklySubmissions, cleanupStagingFiles } from './submissions/writer.js';
+import { sendWeeklySummaryEmail } from './email/weekly-summary.js';
 
 // v3: Publication index integration (optional)
 let publicationIndexModule = null;
@@ -60,27 +64,10 @@ function scheduleCrawler(source, schedule) {
         duration: result.duration,
       });
 
-      // Send crawl complete email with proposals and skipped details
-      await sendCrawlCompleteEmail({
-        source,
-        success: result.success,
-        duration: result.duration,
-        proposals: result.proposals || [],
-        skippedDiscoveries: result.skippedDiscoveries || [],
-        errors: result.errors || [],
-      });
+      // v5: per-crawler emails removed — weekly summary sent by aggregation job
     } catch (error) {
       logger.error(`Scheduled crawl failed: ${crawlerConfig.name}`, { error });
       errors.push(error.message);
-
-      // Still send email on failure
-      await sendCrawlCompleteEmail({
-        source,
-        success: false,
-        proposals: [],
-        skippedDiscoveries: [],
-        errors,
-      });
     }
   });
 
@@ -210,6 +197,43 @@ function schedulePublicationIndex() {
 }
 
 /**
+ * v5: Schedule weekly submissions aggregation (Monday 12:30 AM)
+ * Reads all staging files from crawler results, builds a single weekly
+ * submissions file, sends summary email, and cleans up staging.
+ */
+function scheduleAggregation() {
+  const schedule = config.schedules.aggregation || '30 0 * * 1';
+  logger.info('Scheduling weekly aggregation', { schedule });
+
+  const job = cron.schedule(schedule, async () => {
+    logger.info('Running weekly submissions aggregation');
+
+    try {
+      const { path: filePath, weeklyFile } = await buildWeeklySubmissions();
+
+      logger.info('Weekly submissions file built', {
+        path: filePath,
+        total: weeklyFile.stats.total,
+        bySource: weeklyFile.stats.bySource,
+      });
+
+      // Send single weekly summary email
+      await sendWeeklySummaryEmail(weeklyFile);
+
+      // Clean up staging files
+      const removed = cleanupStagingFiles();
+      logger.info('Staging files cleaned up', { removed });
+
+    } catch (error) {
+      logger.error('Weekly aggregation failed', { error: error.message });
+    }
+  });
+
+  jobs.set('aggregation', job);
+  return job;
+}
+
+/**
  * v4: Schedule physician digest draft generation (Monday 5 AM)
  */
 function schedulePhysicianDigestDraft() {
@@ -272,6 +296,9 @@ export function startScheduler() {
   // v2: Schedule discovery
   scheduleDiscovery();
 
+  // v5: Schedule weekly aggregation
+  scheduleAggregation();
+
   // v4: Schedule physician digest
   schedulePhysicianDigestDraft();
   schedulePhysicianDigestSend();
@@ -285,6 +312,7 @@ export function startScheduler() {
       payers: config.schedules.payers,
       nih: config.schedules.nih || '0 23 * * 0',
       discovery: config.schedules.discovery || '0 22 * * 0',
+      aggregation: config.schedules.aggregation || '30 0 * * 1',
       physicianDigestDraft: config.schedules.physicianDigestDraft || '0 5 * * 1',
       physicianDigestSend: config.schedules.physicianDigestSend || '0 10 * * 1',
     },
@@ -334,17 +362,7 @@ export function getSchedulerStatus() {
 export async function triggerCrawler(source) {
   logger.info(`Manually triggering crawler: ${source}`);
   const result = await runCrawler(source);
-
-  // Send crawl complete email with proposals and skipped details
-  await sendCrawlCompleteEmail({
-    source,
-    success: result.success,
-    duration: result.duration,
-    proposals: result.proposals || [],
-    skippedDiscoveries: result.skippedDiscoveries || [],
-    errors: result.errors || [],
-  });
-
+  // v5: per-crawler emails removed — run aggregation after all crawlers finish
   return result;
 }
 

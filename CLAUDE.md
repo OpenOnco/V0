@@ -23,7 +23,8 @@ npm run test:smoke       # Quick validation
 **Slash commands available:**
 - `/recall` - Read SESSION_STATE.md and summarize context
 - `/store` - Write current state to SESSION_STATE.md
-- `/proposals` - Review pending proposals from test-data-tracker crawls
+- `/triage` - Research and triage weekly crawler submissions (supersedes /proposals)
+- `/proposals` - Review pending proposals (legacy, prefer /triage)
 
 ## Project Overview
 
@@ -199,7 +200,24 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 2. Add entry to `VENDOR_VERIFIED` object with date and contact
 3. Add entry to `DATABASE_CHANGELOG`
 
-### Review proposals (`/proposals`)
+### Weekly triage (`/triage`)
+
+The primary workflow for processing crawler results. Each week the daemon crawls CMS, vendors, payers, and NIH, then aggregates ALL findings into a single file at `test-data-tracker/data/submissions/weekly-YYYY-MM-DD.json`.
+
+**How it works:**
+1. Claude reads the weekly submissions file
+2. Parallel research agents investigate each item (WebSearch, PubMed, CMS MCP)
+3. Items are sorted into 3 buckets:
+   - **APPROVE** — Claude applies autonomously (research confirms, low-risk)
+   - **IGNORE** — Claude skips (not relevant, duplicate, insufficient evidence)
+   - **ASK ALEX** — Escalated to user (ambiguous, high-stakes, new tests)
+4. Only ASK ALEX items require human input
+
+**Autonomy model:** Unlike `/proposals`, `/triage` grants Claude autonomy to approve/ignore items backed by research. Coverage removals and new tests always escalate.
+
+### Review proposals (`/proposals`) (legacy)
+
+> **Prefer `/triage`** — `/proposals` is kept for backward compatibility but `/triage` supersedes it.
 
 The test-data-tracker crawls vendor/payer sites and creates proposal JSON files in `test-data-tracker/data/proposals/`.
 
