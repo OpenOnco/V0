@@ -121,7 +121,7 @@ export async function batchTriage(articles, options = {}) {
   const {
     concurrency = 5,
     delayMs = 100,
-    minScore = 6,
+    minScore = 0,  // v5: annotate all items, don't filter — /triage does real triage
   } = options;
 
   logger.info('Starting batch triage', { count: articles.length, concurrency });

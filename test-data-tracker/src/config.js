@@ -32,6 +32,7 @@ export const config = {
     nih: process.env.SCHEDULE_NIH || '0 23 * * 0',            // Sunday 11:00 PM (with CMS/vendor)
     discovery: process.env.SCHEDULE_DISCOVERY || '0 22 * * 0', // Sunday 10:00 PM (v2)
     digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
+    aggregation: process.env.SCHEDULE_AGGREGATION || '30 0 * * 1',  // Monday 12:30 AM PT (after crawlers)
     physicianDigestDraft: process.env.SCHEDULE_PHYSICIAN_DIGEST_DRAFT || '0 5 * * 1',  // Monday 5:00 AM PT
     physicianDigestSend: process.env.SCHEDULE_PHYSICIAN_DIGEST_SEND || '0 10 * * 1',   // Monday 10:00 AM PT (auto-send cutoff)
   },
