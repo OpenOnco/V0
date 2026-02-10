@@ -429,40 +429,14 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
           </h1>
         </div>
 
-        {/* Two-column layout: Left (LifecycleNavigator) | Right (Chat + QuickSearch) */}
+        {/* Two-column layout: Left (Categories + Quick Search) | Right (Chat + Digest Signup) */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
-          {/* Left column: LifecycleNavigator */}
-          <div className="lg:w-1/2 flex flex-col">
+          {/* Left column: LifecycleNavigator + Quick Search */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex-1">
               <h3 className="text-lg font-bold text-slate-800 mb-3 text-center">Click on a Test Category to see Details and do Comparisons:</h3>
               <LifecycleNavigator onNavigate={onNavigate} />
             </div>
-          </div>
-
-          {/* Right column: Chat + Quick Search */}
-          <div className="lg:w-1/2 flex flex-col gap-4">
-            {/* Chat */}
-            {persona === 'medical' ? (
-              <>
-                <MRDChat compact className="flex-1 min-h-[400px]" />
-                <DigestSignup compact className="mt-0" />
-              </>
-            ) : (
-              <>
-                <Chat
-                  persona={persona}
-                  testData={chatTestData}
-                  variant="sidebar"
-                  showModeToggle={false}
-                  resizable={false}
-                  showTitle={true}
-                  className="flex-1 min-h-[400px]"
-                />
-                {persona === 'rnd' && !rdDigestSubscribed && (
-                  <RDDigestSignup compact className="mt-0" />
-                )}
-              </>
-            )}
 
             {/* Quick Search */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
@@ -491,6 +465,31 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Right column: Chat + Digest Signup */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
+            {persona === 'medical' ? (
+              <MRDChat compact className="flex-1" />
+            ) : (
+              <Chat
+                persona={persona}
+                testData={chatTestData}
+                variant="sidebar"
+                showModeToggle={false}
+                resizable={false}
+                showTitle={true}
+                className="flex-1"
+              />
+            )}
+
+            {/* Digest Signup */}
+            {persona === 'medical' && (
+              <DigestSignup compact className="mt-0" />
+            )}
+            {persona === 'rnd' && !rdDigestSubscribed && (
+              <RDDigestSignup compact className="mt-0" />
+            )}
           </div>
         </div>
 
