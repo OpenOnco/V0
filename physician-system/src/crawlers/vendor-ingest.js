@@ -16,6 +16,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { query, transaction } from '../db/client.js';
 import { createLogger } from '../utils/logger.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const logger = createLogger('vendor-ingest');
@@ -112,10 +113,14 @@ async function insertGuidanceItem(item) {
     ]
   );
 
-  return {
-    id: result.rows[0].id,
-    isNew: result.rows[0].is_new,
-  };
+  const id = result.rows[0].id;
+  const isNew = result.rows[0].is_new;
+
+  if (isNew) {
+    await embedAfterInsert(id, 'vendor-ingest');
+  }
+
+  return { id, isNew };
 }
 
 /**

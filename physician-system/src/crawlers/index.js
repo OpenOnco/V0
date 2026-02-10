@@ -14,6 +14,7 @@ import { crawlMRDArticles } from './pubmed.js';
 import { batchPrefilter } from '../triage/mrd-prefilter.js';
 import { batchTriage } from '../triage/mrd-triage.js';
 import { batchClassify } from '../triage/mrd-classifier.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const logger = createLogger('mrd-crawler');
 
@@ -148,6 +149,9 @@ async function addToGuidanceItems(article, classification, runId) {
   }
 
   const guidanceId = insertResult.rows[0].id;
+
+  // Embed immediately (best-effort)
+  await embedAfterInsert(guidanceId, 'pubmed');
 
   // Add cancer types
   for (const cancerType of classification.cancer_types || []) {

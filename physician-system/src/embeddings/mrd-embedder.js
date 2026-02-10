@@ -287,6 +287,26 @@ export async function embedAllMissing(options = {}) {
 }
 
 /**
+ * Best-effort embed after insert. Call after any INSERT INTO mrd_guidance_items.
+ * Never throws — failures are caught by the daily embedAllMissing batch.
+ * @param {number} guidanceId - The ID returned from INSERT ... RETURNING id
+ * @param {string} [context] - Caller name for logging
+ */
+export async function embedAfterInsert(guidanceId, context = 'unknown') {
+  if (!guidanceId) return;
+  try {
+    await embedGuidanceItem(guidanceId);
+    logger.debug('Embed-on-insert succeeded', { guidanceId, context });
+  } catch (error) {
+    logger.warn('Embed-on-insert failed (batch job will retry)', {
+      guidanceId,
+      context,
+      error: error.message,
+    });
+  }
+}
+
+/**
  * Search for similar items using vector similarity
  * @param {string} queryText - Query text
  * @param {Object} options - Search options

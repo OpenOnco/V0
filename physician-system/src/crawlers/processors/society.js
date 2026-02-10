@@ -18,6 +18,7 @@ import pdf from 'pdf-parse';
 import { createLogger } from '../../utils/logger.js';
 import { query } from '../../db/client.js';
 import Anthropic from '@anthropic-ai/sdk';
+import { embedAfterInsert } from '../../embeddings/mrd-embedder.js';
 
 const logger = createLogger('society-processor');
 
@@ -499,6 +500,7 @@ async function saveRecommendations(recommendations, societyId, societyConfig, ca
       );
 
       const guidanceId = insertResult.rows[0].id;
+      await embedAfterInsert(guidanceId, 'society');
       results.saved++;
 
       // Store quote anchor

@@ -14,7 +14,7 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { crawlClinicalTrials, seedPriorityTrials } from '../crawlers/clinicaltrials.js';
 import { processNccnPdf } from '../crawlers/processors/nccn.js';
-import { embedAllMissing } from '../embeddings/mrd-embedder.js';
+import { embedAllMissing, embedAfterInsert } from '../embeddings/mrd-embedder.js';
 import { ensureCitationCompliance } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
@@ -1424,6 +1424,7 @@ async function handleImportNccn(req, res) {
           );
         }
 
+        await embedAfterInsert(guidanceId, 'chat-nccn-import');
         saved++;
       } catch (err) {
         logger.warn('Failed to save NCCN rec', { error: err.message });

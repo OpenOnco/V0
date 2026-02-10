@@ -6,6 +6,7 @@
 import axios from 'axios';
 import { query } from '../db/client.js';
 import { createLogger } from '../utils/logger.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const logger = createLogger('society-monitor');
 
@@ -134,6 +135,7 @@ export async function monitorRSSFeeds() {
               ]
             );
             if (insertResult.rows.length > 0) {
+              await embedAfterInsert(insertResult.rows[0].id, 'society-rss');
               results.new++;
               results.feeds[feedName].new++;
               logger.info(`Found new RSS item: ${item.title.substring(0, 60)}...`);

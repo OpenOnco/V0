@@ -14,6 +14,7 @@ import fs from 'fs';
 import { parse } from 'csv-parse/sync';
 import { query } from '../db/client.js';
 import { createLogger } from '../utils/logger.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const logger = createLogger('seed-ingest');
 
@@ -245,6 +246,7 @@ export async function ingestPublications(csvPath, options = {}) {
       const isNew = result.rows[0].is_new;
 
       if (isNew) {
+        await embedAfterInsert(itemId, 'seed-ingest');
         stats.new++;
         logger.info('Inserted publication', { id: itemId, title: pub.title?.substring(0, 50) });
       } else {

@@ -11,6 +11,7 @@
 import https from 'https';
 import { createLogger } from '../utils/logger.js';
 import { query, close } from '../db/client.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const logger = createLogger('cms-ingest');
 
@@ -267,6 +268,7 @@ async function ingestLCDs(lcds, options = {}) {
           [guidanceId, 'coverage_determination']
         );
 
+        await embedAfterInsert(guidanceId, 'cms');
         logger.info('Saved LCD', { id: guidanceId, lcdId, title: lcd.title?.substring(0, 50) });
       }
 
