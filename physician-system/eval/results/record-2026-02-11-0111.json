@@ -1,0 +1,281 @@
+{
+  "timestamp": "2026-02-11T01:11:19.832Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "description": "Eval recording for Opus scoring in Claude Code. Each entry has the question, chat answer, automated CDS results, and accuracy check. LLM scoring was skipped — score these in CC.",
+  "scoring_instructions": {
+    "dimensions": {
+      "accuracy": "0-2: Does response match ground truth? Correct or fabricated? 0=hallucinations, 1=mostly correct, 2=fully accurate",
+      "completeness": "0-2: Major options covered? Gaps acknowledged? 0=major omissions, 1=adequate, 2=comprehensive",
+      "evidence_quality": "0-2: Sources relevant? Evidence levels characterized? 0=poor, 1=adequate, 2=excellent",
+      "automation_bias_mitigation": "0-1: Defers to clinical judgment? 0=no deference, 1=appropriately defers"
+    },
+    "automated_scores": "criterion3 (0-2) + criterion4 (0-1) already computed. Total = automated (0-3) + LLM (0-7) = 10 points. Pass >= 8."
+  },
+  "entries": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+      "answer": "CLINICAL SCENARIO: Stage III colon cancer (T3N2), 6 weeks post-hemicolectomy, Signatera MRD-positive at 4-week timepoint, planning CAPOX.\nDECISION: Whether to intensify adjuvant therapy from CAPOX to FOLFOXIRI based on MRD-positive status.\n\nOPTION A: Escalate to FOLFOXIRI based on MRD-positive status.\n- Evidence: The CIRCULATE-Japan GALAXY study demonstrated that MRD-positive patients have dramatically worse outcomes, with hazard ratios of 11.99 for disease-free survival and 9.68 for overall survival compared to MRD-negative patients [4]. However, no completed prospective trial has yet demonstrated that escalating therapy based on MRD positivity improves survival outcomes. The ongoing CIRCULATE-US trial is specifically designed to test this question, randomizing MRD-positive patients to intensified therapy including mFOLFIRINOX, but results are not yet available [1]. A separate phase III trial (NCT03803553) is testing various intensification strategies including FOLFIRI and targeted combinations in MRD-positive stage III patients, also without mature results [2].\n- Caveats: No survival benefit from MRD-guided escalation has been proven. FOLFOXIRI carries increased toxicity compared to CAPOX, particularly neuropathy, diarrhea, and neutropenia.\n\nOPTION B: Proceed with planned CAPOX and serial MRD monitoring.\n- Evidence: The GALAXY data showed that sustained ctDNA clearance during adjuvant therapy was associated with favorable outcomes compared to persistent positivity [4]. Serial monitoring can track molecular response to standard therapy, with Signatera demonstrating 94% sensitivity for longitudinal surveillance [Test Data]. The ongoing trials will help define whether standard therapy with MRD monitoring is non-inferior to escalation strategies.\n- Caveats: High-risk MRD-positive patients may have suboptimal outcomes with standard therapy alone, based on the dramatic prognostic separation seen in GALAXY [4].\n\nOPTION C: Clinical trial enrollment.\n- Evidence: Both CIRCULATE-US [1] and the micrometastatic disease trial (NCT03803553) [2] are actively recruiting MRD-positive stage III patients and offer access to intensification strategies not available in standard practice, including novel targeted combinations based on tumor molecular features.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No completed phase III trial demonstrates that MRD-guided therapy escalation improves overall survival in stage III CRC. The optimal intensification regimen for MRD-positive patients (chemotherapy vs targeted therapy vs immunotherapy combinations) remains unknown.\n\nTEST-SPECIFIC NOTE: Based on the available sources, it is unclear whether Signatera's tumor-informed approach tracking 16 patient-specific variants has the most extensive CRC validation data, with the indexed evidence not specifically addressing comparative validation studies across ctDNA platforms. The 4-week post-surgery timepoint aligns with the landmark assessment used in GALAXY [4]. Serial monitoring during adjuvant therapy (9-day turnaround) can track molecular response, with sustained clearance associated with improved outcomes [4].",
+      "expected_content": {
+        "must_mention": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "CIRCULATE",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "bonus_mention": [
+          "NRG-GI005",
+          "COBRA",
+          "BESPOKE"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial enrolled stage II colon cancer patients, not stage III",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "No completed RCT shows survival benefit from ctDNA-guided escalation in stage III CRC"
+          },
+          {
+            "claim": "NRG-GI005 is testing ctDNA-guided therapy escalation in stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial included stage III patients",
+          "RCT evidence supports escalation to FOLFOXIRI based on MRD status in stage III"
+        ]
+      },
+      "notes": "Core use case — MRD+ post-resection CRC with treatment intensification question.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": true,
+          "score": 1,
+          "maxScore": 1,
+          "violations": []
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 3,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "CIRCULATE",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "shouldMentionMissing": [
+          "DYNAMIC"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery. Signatera just came back MRD-negative. Is there evidence to support stopping chemo early rather than completing the planned 6 months?",
+      "answer": "CLINICAL SCENARIO: Stage III rectal cancer, completed 3 months of FOLFOX post-surgery, Signatera MRD-negative.\nDECISION: Whether to de-escalate or stop adjuvant chemotherapy early versus completing the planned 6-month course.\n\nOPTION A: Stop adjuvant chemotherapy early based on MRD-negative status.\n- Evidence: No completed randomized controlled trial has validated stopping adjuvant chemotherapy early in MRD-negative stage III rectal cancer. Based on the available sources, it is unclear whether ongoing trials are specifically designed to address this question by randomizing ctDNA-negative patients to standard versus de-escalated adjuvant therapy.\n- Test-specific considerations: Based on the available sources, it is unclear whether Signatera has been specifically validated for recurrence surveillance in CRC with defined sensitivity and specificity parameters. The negative predictive value of a single timepoint result in stage III disease supports continued confidence in the MRD-negative result, though serial monitoring data further strengthen prognostic value.\n- Caveats: Evidence for treatment de-escalation based on MRD status remains investigational. High-risk stage III features (T4, N2 disease) have not been specifically studied in MRD-guided de-escalation strategies.\n\nOPTION B: Complete the planned 6 months of FOLFOX with serial MRD monitoring.\n- Evidence: Standard 6-month adjuvant therapy remains the evidence-based approach for stage III rectal cancer, with established survival benefits from completed treatment courses. Serial MRD monitoring during treatment can provide additional prognostic information and reassurance if negativity persists.\n- Guidelines: Current NCCN guidelines acknowledge ctDNA as an emerging biomarker but do not endorse treatment de-escalation based on MRD status outside of clinical trials.\n- Caveats: Completing standard therapy may represent overtreatment in some MRD-negative patients, though this hypothesis requires prospective validation.\n\nOPTION C: Clinical trial enrollment for MRD-guided therapy.\n- Evidence: The indexed evidence does not specifically address whether trials designed for MRD-negative patients provide access to evidence-based de-escalation strategies while contributing to the knowledge base needed to validate this approach.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No completed phase III trial has demonstrated that de-escalating therapy based on MRD-negative status maintains equivalent survival outcomes in stage III rectal cancer. The optimal timing for MRD assessment during adjuvant therapy and the impact of microsatellite instability status on MRD interpretation remain unclear.\n\n**Evidence from Other Indications:**\nCross-indication data from stage II colon cancer [1] and broader CRC cohorts [2,3] demonstrate strong prognostic value of MRD-negative results, with hazard ratios of 11-18 for recurrence when comparing MRD-positive versus MRD-negative patients. While this suggests robust negative predictive value across CRC stages, the indexed evidence does not specifically address whether treatment de-escalation has been validated in stage III rectal cancer patients.",
+      "expected_content": {
+        "must_mention": [
+          "de-escalation",
+          "MRD-negative",
+          "adjuvant"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "IDEA",
+          "3 months",
+          "6 months"
+        ],
+        "bonus_mention": [
+          "CIRCULATE-Japan",
+          "VEGA",
+          "recurrence-free survival"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial showed ctDNA-guided approach was non-inferior to standard management for recurrence-free survival in stage II CRC",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "IDEA trial showed 3 months of adjuvant therapy was non-inferior to 6 months for low-risk stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial proved de-escalation is safe in stage III rectal cancer"
+        ]
+      },
+      "notes": "Tests de-escalation scenario.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "While this suggests robust negative predictive value across CRC stages, the indexed evidence does not specifically addre",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 2,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "de-escalation",
+          "MRD-negative",
+          "adjuvant"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "3 months",
+          "6 months"
+        ],
+        "shouldMentionMissing": [
+          "DYNAMIC",
+          "IDEA"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "64-year-old, stage II colon cancer, pT4aN0, MSS, no high-risk features besides T4a. Post-surgery Signatera is MRD-positive. Standard guidelines wouldn't call for adjuvant chemo here. What does the MRD data say about treating these patients?",
+      "answer": "CLINICAL SCENARIO: Stage II colon cancer (pT4aN0, MSS) with MRD-positive result post-surgery, where based on the available sources, standard guidelines would not recommend adjuvant chemotherapy [1,2].\nDECISION: Whether to initiate adjuvant chemotherapy based on positive MRD status alone.\n\nOPTION A: Initiate adjuvant chemotherapy based on MRD-positive result.\n- Evidence: The indexed evidence does not specifically address whether ctDNA positivity is prognostic for recurrence risk in stage II CRC or whether completed randomized trials have demonstrated that MRD-guided treatment initiation improves outcomes. Based on the available sources, it is unclear whether specific sensitivity and specificity data for CRC recurrence surveillance or lead time advantages over imaging-based detection have been established. The assay tracks 16 patient-specific variants with a limit of detection around 0.01% VAF.\n- Guidelines: Both NCCN and ESMO explicitly state there is currently insufficient evidence to recommend routine treatment decisions based on ctDNA results [1,2,5]. NCCN specifically notes that \"de-escalation of care and treatment decision-making are not recommended based on ctDNA results\" [3,5].\n- Caveats: No prospective evidence that treating MRD-positive, otherwise low-risk stage II patients improves overall survival.\n\nOPTION B: Standard surveillance without adjuvant chemotherapy.\n- Evidence: NCCN guidelines classify ctDNA as prognostic but not predictive for chemotherapy selection in high-risk stage II disease [1]. Current evidence supports ctDNA's role in risk stratification but not treatment modification. Standard surveillance with CEA monitoring and imaging remains the guideline-endorsed approach for this clinical scenario.\n- Caveats: Patient will remain at higher recurrence risk given positive MRD status, though the magnitude of benefit from treating based on MRD alone remains unproven.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: ESMO classifies ctDNA MRD as a level III (investigational) biomarker for treatment decisions [4]. Several ongoing trials are specifically designed for MRD-positive patients, including studies evaluating adjuvant therapy initiation in stage II CRC based on ctDNA status. These trials may provide access to MRD-guided treatment strategies while contributing to the evidence base.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No randomized controlled trial has demonstrated overall survival benefit from initiating adjuvant therapy based solely on positive MRD results in otherwise standard-risk stage II colon cancer. The optimal timing for MRD testing post-surgery and threshold for clinical action remain unstandardized.\n\nTEST-SPECIFIC NOTE: Based on the available sources, it is unclear whether specific requirements for tumor tissue from the resection specimen for bespoke panel design, turnaround times for initial results and monitoring samples have been established. The assay is covered by Medicare for CRC stages II-IV monitoring ($3,500) and has partial commercial coverage from several payers including Aetna for CRC stage II-III adjuvant therapy guidance.",
+      "expected_content": {
+        "must_mention": [
+          "stage II",
+          "MRD-positive",
+          "adjuvant"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "recurrence risk",
+          "T4",
+          "ctDNA-guided"
+        ],
+        "bonus_mention": [
+          "Tie et al.",
+          "number needed to treat",
+          "overtreatment"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial demonstrated ctDNA-guided treatment in stage II CRC reduced adjuvant chemotherapy use without compromising recurrence-free survival",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "T4 is considered a high-risk feature in stage II CRC by NCCN guidelines"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Tension between standard guidelines and MRD positivity.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "CLINICAL SCENARIO: Stage II colon cancer (pT4aN0, MSS) with MRD-positive result post-surgery, where based on the availab",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "TEST-SPECIFIC NOTE: Based on the available sources, it is unclear whether specific requirements for tumor tissue from th",
+              "reason": "Study name without citation or PMID",
+              "detail": "Uncited studies: bespoke"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 2,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "stage II",
+          "MRD-positive",
+          "adjuvant"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "recurrence risk",
+          "T4"
+        ],
+        "shouldMentionMissing": [
+          "DYNAMIC",
+          "ctDNA-guided"
+        ],
+        "bonusFound": []
+      }
+    }
+  ]
+}

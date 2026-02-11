@@ -19,7 +19,7 @@
 
 | Feature | Stage | Notes | Since |
 |---------|-------|-------|-------|
-| Unified weekly triage system | needs-preview | Submissions pipeline + /triage skill built. Dry-run complete (64 items triaged). On develop, needs preview + Railway deploy. | 2026-02-09 |
+| Unified weekly triage — Railway deploy | needs-testing | Code on main. Still needs `railway up -d` in test-data-tracker/ so aggregation cron runs next Monday. | 2026-02-10 |
 | Physician digest system | needs-testing | Migration 010 applied. Still needs E2E test: subscribe, confirm, trigger draft, receive email. | 2026-02-06 |
 | NIH RePORTER crawler | needs-testing | Code shipped to prod. First real run will be Sunday 11 PM cron. Verify grant store creation and digest integration. | 2026-02-06 |
 
@@ -29,6 +29,7 @@
 
 | Feature | Shipped | Notes |
 |---------|---------|-------|
+| Unified weekly triage system | 2026-02-10 | /triage skill, submissions pipeline, weekly summary email, homepage layout rebalance |
 | Citation system — PubMed tool calling | 2026-02-09 | search_pubmed tool, study-name detection, PMID in tooltips/sources |
 | Live evidence & coverage stats | 2026-02-09 | Daemon + Vercel proxy + frontend stats |
 | Cross-indication evidence broadening | 2026-02-09 | Broadens to other indications when sparse results |

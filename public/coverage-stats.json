@@ -1,0 +1,9 @@
+{
+  "generated": "2026-02-09T00:00:00Z",
+  "sources": {
+    "payers": { "label": "Private Payers", "count": 26, "unit": "insurers tracked", "color": "blue" },
+    "medicare": { "label": "Medicare", "count": 8, "unit": "LCD policies monitored", "color": "emerald" },
+    "tests": { "label": "Tests", "count": 34, "unit": "with coverage data", "color": "violet" },
+    "pap": { "label": "Patient Assistance", "count": 12, "unit": "programs cataloged", "color": "amber" }
+  }
+}

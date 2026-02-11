@@ -1,0 +1,227 @@
+{
+  "timestamp": "2026-02-11T00:39:20.803Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "config": {
+    "cdsOnly": true,
+    "adversarialOnly": false,
+    "category": null,
+    "limit": 5
+  },
+  "summary": {
+    "totalQuestions": 5,
+    "averageScore": 3,
+    "passRate": "5/5",
+    "passPercentage": 100,
+    "passThreshold": 8,
+    "maxScore": 10,
+    "passing": 5,
+    "failing": 0,
+    "errors": 0
+  },
+  "cdsCompliance": {
+    "criterion3PassRate": "5/5",
+    "criterion4PassRate": "1/5",
+    "totalViolations": 12,
+    "violations": [
+      {
+        "questionId": 1,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "DECISION: Should adjuvant therapy be intensified from planned CAPOX to FOLFOXIRI based on MRD-positive status?",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|"
+      },
+      {
+        "questionId": 1,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "**OPTION A: Intensify to FOLFOXIRI based on MRD-positive status**\n- Evidence: While emerging data suggest MRD-positive p",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|, \\b(survival|recurrence|respons"
+      },
+      {
+        "questionId": 1,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "**OPTION B: Proceed with planned CAPOX and serial MRD monitoring**\n- Evidence: NCCN guidelines specifically state that \"",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(guideline|nccn|asco|esmo)\\b"
+      },
+      {
+        "questionId": 1,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "Based on the available sources, it is unclear whether serial monitoring with Signatera can track molecular response duri",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(survival|recurrence|respons"
+      },
+      {
+        "questionId": 1,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "- Guidelines: Both NCCN and ESMO recommend standard adjuvant therapy regardless of ctDNA status [1,2,3,4,5].",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|, \\b(guideline|nccn|asco|esmo)\\b"
+      },
+      {
+        "questionId": 1,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "The indexed evidence does not specifically address the optimal timing for repeat MRD testing during adjuvant therapy and",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|"
+      },
+      {
+        "questionId": 2,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "The 300-day lead time over imaging provides substantial opportunity for early intervention if molecular recurrence occur",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(survival|recurrence|respons"
+      },
+      {
+        "questionId": 2,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "Recent prospective data suggest 94% longitudinal sensitivity and provide a 300-day lead time over imaging for recurrence",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|, \\b(survival|recurrence|respons"
+      },
+      {
+        "questionId": 4,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "Recent prospective data suggest that ctDNA can detect molecular relapse a median of 8.9 months before clinical/radiograp",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|"
+      },
+      {
+        "questionId": 4,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "Recent data suggest that ctDNA monitoring provides 94% longitudinal sensitivity for detecting distant recurrence with su",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|"
+      },
+      {
+        "questionId": 5,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "This phase III study is investigating whether molecular relapse should trigger treatment escalation [4].",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|"
+      },
+      {
+        "questionId": 5,
+        "criterion": 4,
+        "check": "citation_missing",
+        "sentence": "- Caveats: Based on the available sources, it is unclear whether established protocols exist for surveillance frequency ",
+        "reason": "Clinical claim without citation",
+        "detail": "\\b(recommend|should|indicated|"
+      }
+    ]
+  },
+  "categoryAverages": {
+    "clinical_scenario": 3
+  },
+  "dimensionAverages": {
+    "accuracy": null,
+    "completeness": null,
+    "evidence_quality": null,
+    "automation_bias_mitigation": null,
+    "criterion3_nondirective": 2,
+    "criterion4_transparency": 1
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+      "total": 3,
+      "pass": true,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "subtotal": 3
+      },
+      "llm": null,
+      "cdsViolations": 6,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": null
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery. Signatera just came back MRD-negative. Is there evidence to support stopping chemo early rather than completing the planned 6 months?",
+      "total": 3,
+      "pass": true,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "subtotal": 3
+      },
+      "llm": null,
+      "cdsViolations": 2,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": null
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "64-year-old, stage II colon cancer, pT4aN0, MSS, no high-risk features besides T4a. Post-surgery Signatera is MRD-positive. Standard guidelines wouldn't call for adjuvant chemo here. What does the MRD data say about treating these patients?",
+      "total": 3,
+      "pass": true,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "subtotal": 3
+      },
+      "llm": null,
+      "cdsViolations": 0,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": null
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "TNBC patient, had neoadjuvant AC-T, partial response, then surgery with residual disease. Post-op Signatera is MRD-positive. She already got capecitabine per CREATE-X. Any ctDNA-guided options beyond that?",
+      "total": 3,
+      "pass": true,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "subtotal": 3
+      },
+      "llm": null,
+      "cdsViolations": 2,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": null
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "HR+/HER2- breast cancer, stage IIA, had lumpectomy + adjuvant ET. Now 18 months out, surveillance Signatera just turned positive. No imaging findings yet. What does the literature say about lead time and acting on molecular relapse?",
+      "total": 3,
+      "pass": true,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "subtotal": 3
+      },
+      "llm": null,
+      "cdsViolations": 2,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": null
+    }
+  ]
+}
