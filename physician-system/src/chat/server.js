@@ -348,13 +348,34 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
 // HYBRID SEARCH (Phase 5)
 // ============================================
 
+// Normalize LLM cancer type output to DB-canonical values
+const CANCER_TYPE_NORMALIZE = {
+  'colorectal': 'colorectal', 'crc': 'colorectal', 'colon': 'colorectal', 'rectal': 'colorectal',
+  'breast': 'breast', 'tnbc': 'breast', 'triple negative': 'breast', 'triple-negative': 'breast',
+  'lung': 'lung_nsclc', 'nsclc': 'lung_nsclc', 'non-small cell lung': 'lung_nsclc',
+  'sclc': 'lung_sclc', 'small cell lung': 'lung_sclc',
+  'head and neck': 'head_neck', 'head_neck': 'head_neck', 'hnscc': 'head_neck',
+  'oropharyngeal': 'head_neck', 'oropharynx': 'head_neck', 'hpv': 'head_neck',
+  'bladder': 'bladder', 'urothelial': 'bladder',
+  'melanoma': 'melanoma', 'merkel': 'merkel_cell', 'merkel cell': 'merkel_cell',
+  'pancreatic': 'pancreatic', 'ovarian': 'ovarian', 'renal': 'renal',
+  'gastric': 'gastric', 'esophageal': 'esophageal',
+};
+
+function normalizeCancerType(rawType) {
+  if (!rawType) return undefined;
+  const lower = rawType.toLowerCase().trim();
+  return CANCER_TYPE_NORMALIZE[lower] || lower.replace(/\s+/g, '_');
+}
+
 async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
   // Get source type filters from intent
   const sourceTypes = intentToSourceTypes(intent);
+  const rawCancerType = intent.cancer_types?.[0] || filters.cancerType;
   const enhancedFilters = {
     ...filters,
     sourceTypes: sourceTypes.length > 0 ? sourceTypes : undefined,
-    cancerType: intent.cancer_types?.[0] || filters.cancerType,
+    cancerType: normalizeCancerType(rawCancerType),
   };
 
   logger.info('Hybrid search filters', {
