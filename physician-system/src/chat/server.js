@@ -39,6 +39,7 @@ const EMBEDDING_MODEL = 'text-embedding-ada-002';
 const MAX_SOURCES = 8;
 const MIN_SIMILARITY = 0.55;  // Lowered to include more relevant results
 const KEYWORD_BOOST = 0.1;   // Bonus for keyword matches in hybrid search
+const RCT_BOOST = 0.02;      // Small boost for RCT-level evidence to prioritize landmark trials
 
 // Rate limiting (in-memory)
 const rateLimitMap = new Map();
@@ -406,13 +407,18 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     }
   }
 
-  // Sort by hybrid score, then diversify source types
+  // Sort by hybrid score with RCT boost, then diversify source types
+  const RCT_TYPES = new Set(['rct_results', 'rct_ongoing']);
   const ranked = Array.from(resultMap.values())
-    .map(r => ({
-      ...r,
-      similarity: r.hybridScore || r.vectorScore || r.keywordScore * 0.5,
-    }))
-    .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore));
+    .map(r => {
+      const baseScore = r.hybridScore || r.vectorScore || r.keywordScore * 0.5;
+      const rctBoost = RCT_TYPES.has(r.evidence_type) ? RCT_BOOST : 0;
+      return {
+        ...r,
+        similarity: baseScore + rctBoost,
+      };
+    })
+    .sort((a, b) => b.similarity - a.similarity);
 
   // Diversify source types: cap guidelines so trials/publications aren't drowned out.
   // NCCN/ASCO/ESMO are important context but shouldn't dominate — MRD evidence
