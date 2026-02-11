@@ -39,7 +39,7 @@ const EMBEDDING_MODEL = 'text-embedding-ada-002';
 const MAX_SOURCES = 8;
 const MIN_SIMILARITY = 0.55;  // Lowered to include more relevant results
 const KEYWORD_BOOST = 0.1;   // Bonus for keyword matches in hybrid search
-const RCT_BOOST = 0.02;      // Small boost for RCT-level evidence to prioritize landmark trials
+// RCT items get their own diversification bucket (not counted against pubmed cap)
 
 // Rate limiting (in-memory)
 const rateLimitMap = new Map();
@@ -407,17 +407,17 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     }
   }
 
-  // Sort by hybrid score with RCT boost, then diversify source types
-  const RCT_TYPES = new Set(['rct_results', 'rct_ongoing']);
+  // Sort by hybrid score, then diversify source types
+  // RCT-level evidence gets its own diversification bucket so landmark trials
+  // aren't crowded out by other pubmed items in the MAX_PER_TYPE cap.
+  const RCT_EVIDENCE_TYPES = new Set(['rct_results', 'rct_ongoing', 'randomized trial']);
   const ranked = Array.from(resultMap.values())
-    .map(r => {
-      const baseScore = r.hybridScore || r.vectorScore || r.keywordScore * 0.5;
-      const rctBoost = RCT_TYPES.has(r.evidence_type) ? RCT_BOOST : 0;
-      return {
-        ...r,
-        similarity: baseScore + rctBoost,
-      };
-    })
+    .map(r => ({
+      ...r,
+      similarity: r.hybridScore || r.vectorScore || r.keywordScore * 0.5,
+      // Override source_type for diversification: RCTs get their own bucket
+      _diversifyType: RCT_EVIDENCE_TYPES.has(r.evidence_type) ? '_rct' : (r.source_type || 'unknown'),
+    }))
     .sort((a, b) => b.similarity - a.similarity);
 
   // Diversify source types: cap guidelines so trials/publications aren't drowned out.
@@ -432,8 +432,8 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
   let guidelineCount = 0;
   const deferred = [];
   for (const r of ranked) {
-    const t = r.source_type || 'unknown';
-    const isGuideline = GUIDELINE_TYPES.has(t);
+    const t = r._diversifyType;
+    const isGuideline = GUIDELINE_TYPES.has(r.source_type || 'unknown');
     typeCounts[t] = (typeCounts[t] || 0) + 1;
     if (isGuideline && guidelineCount >= MAX_GUIDELINES) {
       deferred.push(r);

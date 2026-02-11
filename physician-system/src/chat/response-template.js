@@ -181,8 +181,10 @@ export const FORBIDDEN_PATTERNS = [
   /based on your results?/i,
 
   // Prescriptive treatment language
-  /start(ing)? (treatment|therapy|chemo)/i,
-  /stop(ping)? (treatment|therapy|chemo)/i,
+  // These patterns only match prescriptive uses, not analytical/caveat contexts
+  // e.g., "start treatment" is directive, but "demonstrated that starting therapy..." is analysis
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)\bstart(ing)? (treatment|therapy|chemo)/i,
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)\bstop(ping)? (treatment|therapy|chemo)/i,
   /(should|would) (receive|get|have) (treatment|therapy|chemo)/i,
 
   // Definitive prognosis
