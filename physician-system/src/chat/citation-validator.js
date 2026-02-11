@@ -174,7 +174,23 @@ Return ONLY the revised response, no explanations.`;
       messages: [{ role: 'user', content: prompt }],
     });
 
-    const rewritten = result.content[0].text;
+    let rewritten = result.content[0].text;
+
+    // Strip any prompt scaffolding that the LLM may have echoed back.
+    // The rewrite prompt contains "SENTENCES NEEDING CITATIONS OR REWORDING:"
+    // and "AVAILABLE SOURCES:" — if present in the output, truncate there.
+    const scaffoldMarkers = [
+      'SENTENCES NEEDING CITATIONS',
+      'AVAILABLE SOURCES:',
+      'RULES:\n1. For each flagged sentence',
+    ];
+    for (const marker of scaffoldMarkers) {
+      const idx = rewritten.indexOf(marker);
+      if (idx > 0) {
+        logger.warn('Rewrite contained prompt scaffolding, truncating', { marker });
+        rewritten = rewritten.substring(0, idx).trimEnd();
+      }
+    }
 
     // Validate the rewrite
     const revalidation = validateCitations(rewritten, sources);

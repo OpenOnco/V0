@@ -184,8 +184,8 @@ export const FORBIDDEN_PATTERNS = [
   // These patterns only match prescriptive uses, not analytical/caveat contexts
   // e.g., "start treatment" is directive, but "demonstrated that starting therapy..." is analysis
   // "Consider stopping" is option-naming in decision-oriented format, not directive
-  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)\bstart(ing)? (treatment|therapy|chemo)/i,
-  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)\bstop(ping)? (treatment|therapy|chemo)/i,
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)\bstart(ing)? (treatment|therapy|chemo)/i,
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)\bstop(ping)? (treatment|therapy|chemo)/i,
   /(should|would) (receive|get|have) (treatment|therapy|chemo)/i,
 
   // Definitive prognosis
