@@ -154,16 +154,11 @@ async function extractQueryIntent(queryText) {
     if (jsonMatch) {
       const intent = JSON.parse(jsonMatch[0]);
       
-      // Fallback: If LLM missed explicit guideline keywords, override evidence_focus
-      const lowerQuery = queryText.toLowerCase();
-      if (intent.evidence_focus !== 'guidelines' && 
-          GUIDELINE_KEYWORDS.some(kw => lowerQuery.includes(kw))) {
-        logger.info('Overriding evidence_focus to guidelines based on keyword detection', {
-          originalFocus: intent.evidence_focus,
-          query: queryText.substring(0, 100),
-        });
-        intent.evidence_focus = 'guidelines';
-      }
+      // NOTE: Previously had a keyword override that forced evidence_focus='guidelines'
+      // when the query mentioned guideline-related words. Removed because it caused
+      // false positives: queries like "guidelines wouldn't call for..." were being
+      // restricted to guideline-only sources, excluding critical trial evidence.
+      // Trust the LLM intent extraction for evidence_focus classification.
       
       logger.info('Extracted query intent', {
         type: intent.query_type,
@@ -177,17 +172,16 @@ async function extractQueryIntent(queryText) {
     logger.warn('Intent extraction failed, using defaults', { error: error.message });
   }
 
-  // Default intent - also check for guideline keywords here
-  const lowerQuery = queryText.toLowerCase();
-  const isGuidelinesQuery = GUIDELINE_KEYWORDS.some(kw => lowerQuery.includes(kw));
+  // Default intent when LLM extraction fails — use 'all' evidence focus
+  // to avoid restricting to guidelines-only based on keyword heuristics
   return {
-    query_type: isGuidelinesQuery ? 'clinical_guidance' : 'general',
+    query_type: 'general',
     cancer_types: [],
     clinical_settings: [],
     test_names: [],
     payers: [],
     time_context: 'any',
-    evidence_focus: isGuidelinesQuery ? 'guidelines' : 'all',
+    evidence_focus: 'all',
     keywords: queryText.toLowerCase().split(/\s+/).filter(w => w.length > 3),
   };
 }
