@@ -292,8 +292,10 @@ export function validateResponseStructure(response, queryType) {
   }
 
   // Check for forbidden language patterns
+  // Strip OPTION header lines — these name clinical choices, not directives
+  const strippedForForbidden = response.replace(/^(?:\*{0,2})OPTION\s+[A-Z]:.*$/gm, '');
   for (const pattern of FORBIDDEN_PATTERNS) {
-    const match = response.match(pattern);
+    const match = strippedForForbidden.match(pattern);
     if (match) {
       issues.push(`Contains forbidden language: "${match[0]}"`);
     }
