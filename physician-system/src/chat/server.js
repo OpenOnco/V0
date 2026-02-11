@@ -304,14 +304,19 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
       g.evidence_type,
       g.evidence_level,
       g.publication_date,
+      g.journal,
+      g.pmid,
       g.decision_context,
       g.direct_quotes,
       g.key_findings,
+      t.acronym as trial_acronym,
       ts_rank(
         to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, '')),
         to_tsquery('english', $1)
       ) as text_rank
     FROM mrd_guidance_items g
+    LEFT JOIN mrd_trial_publications tp ON tp.guidance_id = g.id
+    LEFT JOIN mrd_clinical_trials t ON tp.trial_id = t.id
     WHERE g.is_superseded = FALSE
       AND to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, ''))
           @@ to_tsquery('english', $1)
@@ -608,9 +613,12 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.doi,
       g.key_findings,
       e.chunk_text,
-      1 - (e.embedding <=> $1::vector) as similarity
+      1 - (e.embedding <=> $1::vector) as similarity,
+      t.acronym as trial_acronym
     FROM mrd_item_embeddings e
     JOIN mrd_guidance_items g ON e.guidance_id = g.id
+    LEFT JOIN mrd_trial_publications tp ON tp.guidance_id = g.id
+    LEFT JOIN mrd_clinical_trials t ON tp.trial_id = t.id
     WHERE g.is_superseded = FALSE
       AND 1 - (e.embedding <=> $1::vector) >= $2
   `;
@@ -673,9 +681,12 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.doi,
       g.key_findings,
       e.chunk_text,
-      e.embedding
+      e.embedding,
+      t.acronym as trial_acronym
     FROM mrd_item_embeddings e
     JOIN mrd_guidance_items g ON e.guidance_id = g.id
+    LEFT JOIN mrd_trial_publications tp ON tp.guidance_id = g.id
+    LEFT JOIN mrd_clinical_trials t ON tp.trial_id = t.id
     WHERE g.is_superseded = FALSE
   `;
 
@@ -777,9 +788,24 @@ function formatCitation(source, index) {
 
 function buildSourcesContext(sources) {
   return sources.map((s, i) => {
-    let context = `Source [${i + 1}]:
+    // Build header with trial acronym if available
+    const acronymLabel = s.trial_acronym ? ` (${s.trial_acronym} Trial)` : '';
+    // Build citation line: Journal (Year), PMID: ...
+    let citationLine = '';
+    const citeParts = [];
+    if (s.journal) {
+      const year = s.publication_date
+        ? (typeof s.publication_date === 'string' ? s.publication_date : s.publication_date.toISOString?.() || '').substring(0, 4)
+        : '';
+      citeParts.push(year ? `${s.journal} (${year})` : s.journal);
+    }
+    if (s.pmid) citeParts.push(`PMID: ${s.pmid}`);
+    else if (s.source_type === 'pubmed' && s.source_id) citeParts.push(`PMID: ${s.source_id}`);
+    if (citeParts.length > 0) citationLine = `\nCitation: ${citeParts.join(', ')}`;
+
+    let context = `Source [${i + 1}]:${acronymLabel}
 Title: ${s.title}
-Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}${s.crossIndication ? '\n⚠️ CROSS-INDICATION: This evidence is from a different tumor type than the query. Present it clearly as cross-indication data so the clinician can judge its relevance.' : ''}
+Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}${citationLine}${s.crossIndication ? '\n⚠️ CROSS-INDICATION: This evidence is from a different tumor type than the query. Present it clearly as cross-indication data so the clinician can judge its relevance.' : ''}
 Summary: ${s.summary || s.chunk_text}`;
 
     // Include direct quotes if available (Phase 5)
