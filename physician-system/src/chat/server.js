@@ -66,6 +66,12 @@ Few-shot examples may be provided to illustrate expected output quality.
 
 ${RESPONSE_TEMPLATE_PROMPT}
 
+EVIDENCE PROPORTIONALITY:
+- State what IS known with confidence before discussing what isn't. Lead with evidence, not uncertainty.
+- When a provided source contains specific trial names, outcomes, or statistics, cite them by name. Do not paraphrase landmark trials as "recent data."
+- Reserve "it is unclear" for genuinely unstudied questions. Do not use hedging language when the provided sources contain relevant data.
+- If a source includes key findings with specific numbers (HR, RFS, p-values), include those numbers in your response.
+
 STUDY CITATION RULES:
 - NEVER name a clinical trial or study without a PMID in parentheses or a [N] citation referencing a provided source.
 - If you need to cite a study NOT in the provided sources, use search_pubmed to verify it first.
@@ -305,6 +311,7 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
       g.publication_date,
       g.decision_context,
       g.direct_quotes,
+      g.key_findings,
       ts_rank(
         to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, '')),
         to_tsquery('english', $1)
@@ -578,6 +585,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.authors,
       g.pmid,
       g.doi,
+      g.key_findings,
       e.chunk_text,
       1 - (e.embedding <=> $1::vector) as similarity
     FROM mrd_item_embeddings e
@@ -642,6 +650,7 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.authors,
       g.pmid,
       g.doi,
+      g.key_findings,
       e.chunk_text,
       e.embedding
     FROM mrd_item_embeddings e
@@ -759,6 +768,20 @@ Summary: ${s.summary || s.chunk_text}`;
         : s.direct_quotes;
       if (quotes.length > 0) {
         context += `\nDirect Quote: "${quotes[0].text}"`;
+      }
+    }
+
+    // Include key findings if available
+    if (s.key_findings && (Array.isArray(s.key_findings) ? s.key_findings.length > 0 : true)) {
+      const findings = typeof s.key_findings === 'string'
+        ? JSON.parse(s.key_findings)
+        : s.key_findings;
+      if (Array.isArray(findings) && findings.length > 0) {
+        context += '\nKey Findings:';
+        for (const f of findings.slice(0, 3)) {
+          context += `\n- ${f.finding}`;
+          if (f.implication) context += ` → ${f.implication}`;
+        }
       }
     }
 
