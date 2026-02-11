@@ -596,7 +596,9 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
   // Let semantic similarity determine relevance, not source type
   // Source type filtering is now done via sourceTypes filter for intent-based queries
 
-  let sql = `
+  // Use subquery to pick best chunk per guidance item, then sort by similarity.
+  // Previously ORDER BY g.id caused LIMIT to take lowest IDs instead of most similar.
+  let innerSql = `
     SELECT DISTINCT ON (g.id)
       g.id,
       g.title,
@@ -628,30 +630,32 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
 
   // Filter by source types when intent specifies (e.g., guidelines-focused queries)
   if (filters.sourceTypes?.length > 0) {
-    sql += ` AND g.source_type = ANY($${paramIndex})`;
+    innerSql += ` AND g.source_type = ANY($${paramIndex})`;
     params.push(filters.sourceTypes);
     paramIndex++;
   }
 
   if (filters.cancerType) {
-    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
+    innerSql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
     params.push(filters.cancerType);
     paramIndex++;
   }
 
   if (filters.clinicalSetting) {
-    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_clinical_settings cs WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex})`;
+    innerSql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_clinical_settings cs WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex})`;
     params.push(filters.clinicalSetting);
     paramIndex++;
   }
 
   if (filters.evidenceType) {
-    sql += ` AND g.evidence_type = $${paramIndex}`;
+    innerSql += ` AND g.evidence_type = $${paramIndex}`;
     params.push(filters.evidenceType);
     paramIndex++;
   }
 
-  sql += ` ORDER BY g.id, similarity DESC LIMIT $${paramIndex}`;
+  innerSql += ` ORDER BY g.id, similarity DESC`;
+
+  const sql = `SELECT * FROM (${innerSql}) sub ORDER BY similarity DESC LIMIT $${paramIndex}`;
   params.push(MAX_SOURCES * 3);
 
   const result = await query(sql, params);
