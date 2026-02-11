@@ -1,0 +1,203 @@
+{
+  "timestamp": "2026-02-11T06:15:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-0550.json",
+  "cycle": 5,
+  "cycle_description": "Guideline keyword override removal + RCT diversification bucket + C3 lookbehinds",
+  "fixes_applied": [
+    "Removed guideline keyword override that forced evidence_focus='guidelines' when query mentioned 'guidelines'",
+    "RCT evidence types get own diversification bucket (_rct) instead of competing with pubmed",
+    "Added negative lookbehinds to C3 forbidden patterns for analytical context",
+    "DYNAMIC (ID 379) re-embedded with query-aligned summary (rank #19 → #4)",
+    "ID 295 (DYNAMIC companion) superseded"
+  ],
+  "summary": {
+    "averageScore": 8.6,
+    "maxScore": 10,
+    "passRate": "9/10",
+    "passPercentage": 90,
+    "failing": 1,
+    "errors": 0,
+    "notes": "Q2 FAIL persists: C3 false positive on 'Stop chemotherapy' in option header (not preceded by lookbehind word). DYNAMIC now appears in Q7 (1/4 CRC answers, up from 0/4). Q3 improved 8→9 (ALTAIR data new). Q5 regressed 10→9 (lost TREAT ctDNA/SERENA-6 references). Net: DYNAMIC breakthrough but avg dropped 8.8→8.6."
+  },
+  "dimensionAverages": {
+    "accuracy": 1.8,
+    "completeness": 1.8,
+    "evidence_quality": 1.2,
+    "automation_bias_mitigation": 1.0,
+    "criterion3_nondirective": 1.8,
+    "criterion4_transparency": 1.0
+  },
+  "comparison_to_c4": {
+    "passRate": "9/10 → 9/10 (same)",
+    "avgScore": "8.8 → 8.6 (down 0.2)",
+    "dynamic_in_crc": "0/4 → 1/4 (Q7, improvement)",
+    "improvements": ["Q3: 8→9 (ALTAIR data)"],
+    "regressions": ["Q5: 10→9 (lost named breast cancer trial references)"],
+    "stable": ["Q1(9), Q2(6 FAIL), Q4(8), Q6(10), Q7(9), Q8(8), Q9(10), Q10(8)"]
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Strong clinical accuracy. GALAXY HRs well-cited. DYNAMIC still missing from stage III CRC escalation context."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 0, "criterion4": 1, "subtotal": 1 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 6,
+      "pass": false,
+      "summary": "FAIL: C3 false positive persists — 'Stop chemotherapy' in OPTION A header triggers forbidden pattern. Not preceded by lookbehind word (start of line). Missing DYNAMIC and IDEA trials. With corrected C3=2, would be 8/10 borderline PASS.",
+      "c3_false_positive": true,
+      "corrected_total_if_c3_fixed": 8
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Improved from C4 (8→9). ALTAIR trial data (HR 0.75, p=0.0406) is a significant new addition. DYNAMIC still absent despite being rank #4 in vector search — may not be making final top-8 sources consistently."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Stable. Missing pembrolizumab/KEYNOTE-522 and c-TRAK TN as specific named options for TNBC MRD space."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Regressed from C4 (10→9). Lost TREAT ctDNA and SERENA-6 references that were present before. Heavy hedging on lead time data. ESR1 mutation guidance is a good addition."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding. ADAURA correctly framed, MERMAID-1 referenced, cross-indication properly caveated."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "DYNAMIC now referenced — first CRC answer to include DYNAMIC across all eval cycles. NCCN guideline position well-cited. Signatera specs add practical value."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Missing HPV ctDNA as distinct analyte from somatic ctDNA. Cross-indication cites p16-NEGATIVE data for HPV-POSITIVE question (wrong population). NavDx specs correct."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. Four options including clinical trial enrollment. GALAXY HR (2.71) well-cited. NCT number provided. Realistic assessment of limited evidence."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "IMvigor011 correctly identified. Honest about missing results. Missing CheckMate 274 as standard-of-care adjuvant immunotherapy context."
+    }
+  ]
+}

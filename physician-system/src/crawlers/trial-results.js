@@ -22,7 +22,7 @@ import { createHttpClient } from '../utils/http.js';
 import { createLogger } from '../utils/logger.js';
 import { query } from '../db/client.js';
 import { config } from '../config.js';
-import { embedGuidanceItem } from '../embeddings/mrd-embedder.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 import { sendEmail } from '../email/index.js';
 
 const logger = createLogger('trial-results');
@@ -560,16 +560,8 @@ async function createGuidanceItem(article, trial, isPrimaryResult) {
     );
   }
 
-  // Trigger embedding generation (best-effort, don't fail the overall process)
-  try {
-    await embedGuidanceItem(guidanceId);
-    logger.debug('Embedding generated', { guidanceId });
-  } catch (error) {
-    logger.warn('Embedding generation failed (will be caught by embedAllMissing)', {
-      guidanceId,
-      error: error.message,
-    });
-  }
+  // Embed immediately (best-effort, batch job catches failures)
+  await embedAfterInsert(guidanceId, 'trial-results');
 
   return guidanceId;
 }

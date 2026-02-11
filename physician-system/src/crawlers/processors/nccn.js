@@ -17,6 +17,7 @@ import pdf from 'pdf-parse';
 import { createLogger } from '../../utils/logger.js';
 import { query } from '../../db/client.js';
 import Anthropic from '@anthropic-ai/sdk';
+import { embedAfterInsert } from '../../embeddings/mrd-embedder.js';
 
 const logger = createLogger('nccn-processor');
 
@@ -415,6 +416,7 @@ async function saveRecommendations(recommendations, cancerType, version, filenam
       );
 
       const guidanceId = insertResult.rows[0].id;
+      await embedAfterInsert(guidanceId, 'nccn');
       results.saved++;
 
       // Store quote anchor if we have a quote

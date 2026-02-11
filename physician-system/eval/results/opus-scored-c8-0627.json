@@ -1,0 +1,216 @@
+{
+  "timestamp": "2026-02-11T06:50:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-0627.json",
+  "cycle": 8,
+  "cycle_description": "SOURCE UTILIZATION prompt (FAILED) + c-TRAK TN seed",
+  "fixes_applied": [
+    "Added SOURCE UTILIZATION prompt section (REVERTED — caused regression)",
+    "Seeded c-TRAK TN trial (PMID 36423745, ID 382) for TNBC MRD-guided evidence",
+    "Deployed to Railway with updated server.js"
+  ],
+  "summary": {
+    "averageScore": 7.8,
+    "maxScore": 10,
+    "passRate": "5/10",
+    "passPercentage": 50,
+    "failing": 5,
+    "errors": 0,
+    "notes": "MAJOR REGRESSION. SOURCE UTILIZATION prompt caused widespread degradation. Q7 citation-validator leaked system instructions into response. Q9 C3 false positive on 'versus stopping therapy'. IDEA/DYNAMIC still not cited by Sonnet despite being in RAG. c-TRAK TN not surfacing for Q4 yet. Prompt reverted, citation leak and C3 lookbehind fixed in follow-up commit."
+  },
+  "dimensionAverages": {
+    "accuracy": 1.6,
+    "completeness": 1.2,
+    "evidence_quality": 1.3,
+    "automation_bias_mitigation": 1.0,
+    "criterion3_nondirective": 1.8,
+    "criterion4_transparency": 1.0
+  },
+  "comparison_to_c7": {
+    "passRate": "10/10 → 5/10 (REGRESSION)",
+    "avgScore": "9.0 → 7.8 (down 1.2!)",
+    "improvements": [],
+    "regressions": [
+      "Q2: 8→7 (DYNAMIC/IDEA still missing)",
+      "Q3: 9→7 (DYNAMIC missing, T4a mischaracterized)",
+      "Q4: 8→6 (pembrolizumab/KEYNOTE-522/c-TRAK TN all missing)",
+      "Q7: 9→7 (citation-validator system instructions leaked into response)",
+      "Q9: 10→6 (C3 forbidden language 'versus stopping therapy' + completeness gaps)",
+      "Q10: 8→7 (IMvigor011 identified but positive results not reported)"
+    ],
+    "stable": ["Q1(9), Q5(9), Q6(10), Q8(10)"]
+  },
+  "score_progression": {
+    "original": { "passRate": "80%", "avg": 8.6 },
+    "c1b": { "passRate": "90%", "avg": 8.7 },
+    "c2": { "passRate": "90%", "avg": 8.7 },
+    "c3": { "passRate": "100%", "avg": 8.9 },
+    "c4": { "passRate": "90%", "avg": 8.8 },
+    "c5": { "passRate": "90%", "avg": 8.6 },
+    "c6": { "passRate": "100%", "avg": 9.1 },
+    "c7": { "passRate": "100%", "avg": 9.0 },
+    "c8": { "passRate": "50%", "avg": 7.8, "note": "REVERTED — prompt regression" }
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Stable. DYNAMIC mentioned briefly. NCCN/ESMO correctly cited. Missing CIRCULATE and NRG-GI005 specifics."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "DYNAMIC and IDEA both missing despite being #1 and #6 in RAG results. Sonnet ignores them in generation. GALAXY cited but observational. Critical omission for 3-vs-6-month question."
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "DYNAMIC missing for stage II CRC question. T4a mischaracterized as not meeting criteria for adjuvant chemo. GALAXY cited with HRs. Regressed from C7."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 0,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 3
+      },
+      "total": 6,
+      "pass": false,
+      "summary": "Worst score of any question. Missing pembrolizumab/KEYNOTE-522, olaparib, c-TRAK TN. Generic 'clinical trial enrollment' without naming any specific agents or trials. c-TRAK TN was seeded but didn't surface."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Strong. TREAT ctDNA, SERENA-6, c-TRAK TN (cross-indication) all cited. Missing specific median lead time figure."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding. ADAURA OS benefit correctly framed. MERMAID-1 exclusion criteria noted. Consistent 10/10."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "BUG: Citation-validator system instructions ('SENTENCES NEEDING CITATIONS OR REWORDING', 'AVAILABLE SOURCES', 'RULES') leaked into clinician-facing output. GALAXY data adequate but presentation broken. Fixed in follow-up commit."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "HPV ctDNA distinction maintained. NavDx performance data accurate. Cross-indication well-flagged. Consistent 10/10."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 0, "criterion4": 1, "subtotal": 1 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 6,
+      "pass": false,
+      "summary": "C3 FAIL: 'versus stopping therapy' triggered forbidden pattern. Missing MSI status/immunotherapy discussion. Fixed lookbehind in follow-up commit."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "IMvigor011 identified and PMID correct, but did NOT report positive results (DFS HR 0.64, OS HR 0.59). For a clinician asking about the readout, omitting that it was a positive trial is a critical gap."
+    }
+  ]
+}

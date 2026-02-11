@@ -1,0 +1,188 @@
+{
+  "timestamp": "2026-02-11T05:15:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-0504.json",
+  "cycle": 4,
+  "cycle_description": "RCT evidence boost (+0.02 similarity for rct_results/rct_ongoing)",
+  "summary": {
+    "averageScore": 8.8,
+    "maxScore": 10,
+    "passRate": "9/10",
+    "passPercentage": 90,
+    "failing": 1,
+    "errors": 0,
+    "notes": "Q2 FAIL due to C3 false positive ('stopping therapy' in caveat). With corrected C3, Q2 would be 8/10 PASS (10/10 pass rate). DYNAMIC trial still absent from all 4 CRC answers."
+  },
+  "dimensionAverages": {
+    "accuracy": 1.8,
+    "completeness": 1.7,
+    "evidence_quality": 1.3,
+    "automation_bias_mitigation": 1.0,
+    "criterion3_nondirective": 1.8,
+    "criterion4_transparency": 0.9
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Strong clinical accuracy. Missing DYNAMIC trial in CRC escalation context."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 0, "criterion4": 1, "subtotal": 1 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 6,
+      "pass": false,
+      "summary": "FAIL: C3 false positive ('stopping therapy' in caveat costs 2 pts). Missing DYNAMIC and IDEA trials — the two most relevant trials for this question. With corrected C3=2, would be 8/10 borderline PASS.",
+      "c3_false_positive": true,
+      "corrected_total_if_c3_fixed": 8
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Borderline PASS. DYNAMIC trial omission is critical — this is the exact clinical scenario DYNAMIC addressed (stage II CRC ctDNA-guided therapy)."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Borderline PASS. Missing pembrolizumab/KEYNOTE-522 and olaparib/BRCA as major TNBC options."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. Named trials (TREAT ctDNA, SERENA-6), appropriate cross-indication flagging, strong deference."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding. ADAURA correctly framed, MRD-guided modifications properly caveated, cross-indication flagging excellent."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Solid practical answer. Missing DYNAMIC, unnecessary hedging on well-known assay specs."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "PASS but gaps. Missing HPV vs somatic ctDNA biological distinction, no H&N-specific named studies."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Exceptional for a question with limited evidence. Specific trial data (trifluridine/tipiracil HR 0.75), NCT number, honest gaps."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Passes. IMvigor011 correctly identified. Missing CheckMate 274 as standard-of-care context."
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "timestamp": "2026-02-11T06:30:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-0600.json",
+  "cycle": 6,
+  "cycle_description": "C3 OPTION header exclusion fix + fresh recording",
+  "fixes_applied": [
+    "Exclude OPTION header lines from C3 forbidden pattern scanning (both eval scorer and production)",
+    "Production response-template.js deployed to Railway with same fix"
+  ],
+  "summary": {
+    "averageScore": 9.1,
+    "maxScore": 10,
+    "passRate": "10/10",
+    "passPercentage": 100,
+    "gradable": 10,
+    "errors": 0,
+    "failing": 0,
+    "notes": "Q1 re-recorded separately (API errored in main recording). Q1 scored 10/10 — DYNAMIC mentioned for first time + ESMO/NCCN guideline integration excellent. Q2 C3 false positive FIXED (6→8). Q10 IMvigor011 breakthrough (8→10, PMID 41124204 found). Best cycle: 100% pass, 9.1 avg. DYNAMIC appearing in Q1 (1/4 CRC)."
+  },
+  "dimensionAverages": {
+    "accuracy": 1.8,
+    "completeness": 1.9,
+    "evidence_quality": 1.4,
+    "automation_bias_mitigation": 1.0,
+    "criterion3_nondirective": 2.0,
+    "criterion4_transparency": 1.0
+  },
+  "comparison_to_c5": {
+    "passRate": "9/10 (90%) → 10/10 (100%)",
+    "avgScore": "8.6 → 9.0 (up 0.4!)",
+    "dynamic_in_crc": "1/4 (Q7) → 0/4 (inconsistent)",
+    "improvements": ["Q1: 9→10 (DYNAMIC + guideline integration)", "Q2: 6→8 (C3 FIXED!)", "Q10: 8→10 (IMvigor011 PMID found!)"],
+    "regressions": [],
+    "stable": ["Q3(9), Q4(8), Q5(9), Q6(10), Q7(9), Q8(8), Q9(10)"]
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding — best Q1 score ever. DYNAMIC mentioned ('ESMO acknowledges promising data from trials like DYNAMIC'). NCCN directly quoted. ESMO ESCAT III classification. 'Prognostic but not predictive' framing is clinically precise. Re-recorded separately due to API error in main recording.",
+      "note": "Re-recorded from record-2026-02-11-0602.json"
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "C3 FALSE POSITIVE FIXED! Now passes with 8/10. OPTION A: 'Stop chemotherapy early' correctly excluded from forbidden pattern scan. DYNAMIC/IDEA still missing from evidence. Multiple myeloma cross-indication is a stretch."
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Stable. GALAXY + ALTAIR well-cited. DYNAMIC still absent despite being the defining trial for this scenario."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Stable. Missing pembrolizumab/KEYNOTE-522, c-TRAK TN, olaparib/BRCA. Lost immunotherapy mention from C5."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Stable at 9. Lead time ~300 days mentioned but uncited. CDK4/6 inhibitor switch option is practical. ESR1 guidance correct."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding. ADAURA OS benefit, ALK-positive NSCLC cross-indication (more relevant than CRC for NSCLC question)."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Stable. NCCN/ESMO guidelines well-cited. DYNAMIC not found this time (was in C5). Practical monitoring options."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Stable. Still missing HPV ctDNA as distinct analyte. p16-negative cross-indication wrong population for HPV+ question."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. ALTAIR (HR 0.75, DFS 9.23 vs 5.55) + GALAXY data. Named terminated trials (CLAUDE, RAPID-1) — excellent transparency about limited trial landscape."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "BREAKTHROUGH: IMvigor011 PMID 41124204 found and correctly cited as 'first positive phase III trial of MRD-guided adjuvant immunotherapy in bladder cancer'. Previously couldn't find results. Score 8→10."
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import pdf from 'pdf-parse';
 import { createLogger } from '../../utils/logger.js';
 import { query } from '../../db/client.js';
 import Anthropic from '@anthropic-ai/sdk';
+import { embedAfterInsert } from '../../embeddings/mrd-embedder.js';
 
 const logger = createLogger('payer-processor');
 
@@ -562,6 +563,7 @@ async function saveCoverageCriteria(criteria, payerId, payerConfig, metadata, ar
       );
 
       const guidanceId = insertResult.rows[0].id;
+      await embedAfterInsert(guidanceId, 'payer');
       results.saved++;
 
       // Store quote anchor

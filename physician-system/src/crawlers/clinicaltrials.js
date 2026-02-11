@@ -10,6 +10,7 @@
 import { createHttpClient } from '../utils/http.js';
 import { createLogger } from '../utils/logger.js';
 import { query, transaction } from '../db/client.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const logger = createLogger('mrd-clinicaltrials');
 const BASE_URL = 'https://clinicaltrials.gov/api/v2';
@@ -644,6 +645,7 @@ export async function syncTrialsToGuidance(options = {}) {
         [guidanceId, clinicalSetting]
       );
 
+      await embedAfterInsert(guidanceId, 'clinicaltrials');
       stats.synced++;
       logger.info('Synced trial to guidance', { nct: trial.nct_number, acronym: trial.acronym });
     }

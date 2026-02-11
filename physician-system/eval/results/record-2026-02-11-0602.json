@@ -1,0 +1,114 @@
+{
+  "timestamp": "2026-02-11T06:02:34.105Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "description": "Eval recording for Opus scoring in Claude Code. Each entry has the question, chat answer, automated CDS results, and accuracy check. LLM scoring was skipped — score these in CC.",
+  "scoring_instructions": {
+    "dimensions": {
+      "accuracy": "0-2: Does response match ground truth? Correct or fabricated? 0=hallucinations, 1=mostly correct, 2=fully accurate",
+      "completeness": "0-2: Major options covered? Gaps acknowledged? 0=major omissions, 1=adequate, 2=comprehensive",
+      "evidence_quality": "0-2: Sources relevant? Evidence levels characterized? 0=poor, 1=adequate, 2=excellent",
+      "automation_bias_mitigation": "0-1: Defers to clinical judgment? 0=no deference, 1=appropriately defers"
+    },
+    "automated_scores": "criterion3 (0-2) + criterion4 (0-1) already computed. Total = automated (0-3) + LLM (0-7) = 10 points. Pass >= 8."
+  },
+  "entries": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+      "answer": "CLINICAL SCENARIO: Stage III colon cancer (T3N2), 6 weeks post-resection, Signatera MRD-positive at 4-week timepoint.\nDECISION: Whether to intensify adjuvant therapy from planned CAPOX to FOLFOXIRI based on MRD status.\n\nOPTION A: Proceed with planned CAPOX without intensification.\n- Guidelines: NCCN explicitly states that \"de-escalation of care and treatment decision-making are not recommended based on ctDNA results\" [2], and notes \"there is currently insufficient evidence to recommend routine use of ctDNA assays outside of a clinical trial\" [3]. ESMO classifies ctDNA MRD as ESCAT level III (investigational) for treatment decisions, indicating MRD-guided therapy is not yet standard practice [4].\n- Evidence: The MRD-positive result is prognostic but not predictive for chemotherapy selection according to current guidelines [1]. Standard CAPOX remains the evidence-based backbone for stage III disease regardless of MRD status.\n- Caveats: This approach may miss an opportunity for early intervention if emerging MRD-guided intensification strategies prove beneficial.\n\nOPTION B: Intensify to FOLFOXIRI based on MRD-positive status.\n- Evidence: While no guidelines currently endorse MRD-guided escalation, ESMO acknowledges promising data from trials like DYNAMIC, though they await phase III confirmation [4]. Some centers are exploring intensification strategies for MRD-positive patients outside of trials.\n- Caveats: No prospective randomized trial has demonstrated overall survival benefit from MRD-guided therapy escalation in stage III CRC. Based on the available sources, guidelines do not recommend treatment decisions based on ctDNA results [2,3].\n\nOPTION C: Clinical trial enrollment.\n- Evidence: Given that NCCN states insufficient evidence exists for routine ctDNA use outside clinical trials [3], and ESMO considers MRD-guided therapy investigational [4], trial participation may be the most appropriate approach for this MRD-positive patient.\n- Benefits: Access to structured MRD-guided protocols with safety monitoring and contribution to evidence generation.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No completed phase III trial demonstrates survival benefit from intensifying therapy based on MRD-positive results in stage III CRC. The optimal action threshold for MRD positivity and whether intensification benefits vary by molecular subtype remain undefined.\n\nTEST-SPECIFIC NOTE: Based on the available sources, it is unclear whether Signatera's reported performance characteristics of 94% sensitivity and 98% specificity for recurrence surveillance in CRC are validated in the indexed evidence. It requires tumor tissue and has a 28-day initial turnaround time but only 9 days for monitoring. The indexed evidence does not specifically address the extent of CRC validation data or Medicare coverage details for this assay.",
+      "expected_content": {
+        "must_mention": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "CIRCULATE",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "bonus_mention": [
+          "NRG-GI005",
+          "COBRA",
+          "BESPOKE"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial enrolled stage II colon cancer patients, not stage III",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "No completed RCT shows survival benefit from ctDNA-guided escalation in stage III CRC"
+          },
+          {
+            "claim": "NRG-GI005 is testing ctDNA-guided therapy escalation in stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial included stage III patients",
+          "RCT evidence supports escalation to FOLFOXIRI based on MRD status in stage III"
+        ]
+      },
+      "notes": "Core use case — MRD+ post-resection CRC with treatment intensification question.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "Based on the available sources, guidelines do not recommend treatment decisions based on ctDNA results [2,3].",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "TEST-SPECIFIC NOTE: Based on the available sources, it is unclear whether Signatera's reported performance characteristi",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(survival|recurrence|respons"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 3,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "DYNAMIC",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "shouldMentionMissing": [
+          "CIRCULATE"
+        ],
+        "bonusFound": []
+      }
+    }
+  ]
+}

@@ -14,7 +14,7 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { crawlClinicalTrials, seedPriorityTrials } from '../crawlers/clinicaltrials.js';
 import { processNccnPdf } from '../crawlers/processors/nccn.js';
-import { embedAllMissing } from '../embeddings/mrd-embedder.js';
+import { embedAllMissing, embedAfterInsert } from '../embeddings/mrd-embedder.js';
 import { ensureCitationCompliance } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
@@ -39,6 +39,7 @@ const EMBEDDING_MODEL = 'text-embedding-ada-002';
 const MAX_SOURCES = 8;
 const MIN_SIMILARITY = 0.55;  // Lowered to include more relevant results
 const KEYWORD_BOOST = 0.1;   // Bonus for keyword matches in hybrid search
+// RCT items get their own diversification bucket (not counted against pubmed cap)
 
 // Rate limiting (in-memory)
 const rateLimitMap = new Map();
@@ -65,6 +66,12 @@ SAFETY: Present evidence for clinical options — never recommend a specific opt
 Few-shot examples may be provided to illustrate expected output quality.
 
 ${RESPONSE_TEMPLATE_PROMPT}
+
+EVIDENCE PROPORTIONALITY:
+- State what IS known with confidence before discussing what isn't. Lead with evidence, not uncertainty.
+- When a provided source contains specific trial names, outcomes, or statistics, cite them by name. Do not paraphrase landmark trials as "recent data."
+- Reserve "it is unclear" for genuinely unstudied questions. Do not use hedging language when the provided sources contain relevant data.
+- If a source includes key findings with specific numbers (HR, RFS, p-values), include those numbers in your response.
 
 STUDY CITATION RULES:
 - NEVER name a clinical trial or study without a PMID in parentheses or a [N] citation referencing a provided source.
@@ -147,16 +154,11 @@ async function extractQueryIntent(queryText) {
     if (jsonMatch) {
       const intent = JSON.parse(jsonMatch[0]);
       
-      // Fallback: If LLM missed explicit guideline keywords, override evidence_focus
-      const lowerQuery = queryText.toLowerCase();
-      if (intent.evidence_focus !== 'guidelines' && 
-          GUIDELINE_KEYWORDS.some(kw => lowerQuery.includes(kw))) {
-        logger.info('Overriding evidence_focus to guidelines based on keyword detection', {
-          originalFocus: intent.evidence_focus,
-          query: queryText.substring(0, 100),
-        });
-        intent.evidence_focus = 'guidelines';
-      }
+      // NOTE: Previously had a keyword override that forced evidence_focus='guidelines'
+      // when the query mentioned guideline-related words. Removed because it caused
+      // false positives: queries like "guidelines wouldn't call for..." were being
+      // restricted to guideline-only sources, excluding critical trial evidence.
+      // Trust the LLM intent extraction for evidence_focus classification.
       
       logger.info('Extracted query intent', {
         type: intent.query_type,
@@ -170,17 +172,16 @@ async function extractQueryIntent(queryText) {
     logger.warn('Intent extraction failed, using defaults', { error: error.message });
   }
 
-  // Default intent - also check for guideline keywords here
-  const lowerQuery = queryText.toLowerCase();
-  const isGuidelinesQuery = GUIDELINE_KEYWORDS.some(kw => lowerQuery.includes(kw));
+  // Default intent when LLM extraction fails — use 'all' evidence focus
+  // to avoid restricting to guidelines-only based on keyword heuristics
   return {
-    query_type: isGuidelinesQuery ? 'clinical_guidance' : 'general',
+    query_type: 'general',
     cancer_types: [],
     clinical_settings: [],
     test_names: [],
     payers: [],
     time_context: 'any',
-    evidence_focus: isGuidelinesQuery ? 'guidelines' : 'all',
+    evidence_focus: 'all',
     keywords: queryText.toLowerCase().split(/\s+/).filter(w => w.length > 3),
   };
 }
@@ -305,6 +306,7 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
       g.publication_date,
       g.decision_context,
       g.direct_quotes,
+      g.key_findings,
       ts_rank(
         to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, '')),
         to_tsquery('english', $1)
@@ -346,13 +348,34 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
 // HYBRID SEARCH (Phase 5)
 // ============================================
 
+// Normalize LLM cancer type output to DB-canonical values
+const CANCER_TYPE_NORMALIZE = {
+  'colorectal': 'colorectal', 'crc': 'colorectal', 'colon': 'colorectal', 'rectal': 'colorectal',
+  'breast': 'breast', 'tnbc': 'breast', 'triple negative': 'breast', 'triple-negative': 'breast',
+  'lung': 'lung_nsclc', 'nsclc': 'lung_nsclc', 'non-small cell lung': 'lung_nsclc',
+  'sclc': 'lung_sclc', 'small cell lung': 'lung_sclc',
+  'head and neck': 'head_neck', 'head_neck': 'head_neck', 'hnscc': 'head_neck',
+  'oropharyngeal': 'head_neck', 'oropharynx': 'head_neck', 'hpv': 'head_neck',
+  'bladder': 'bladder', 'urothelial': 'bladder',
+  'melanoma': 'melanoma', 'merkel': 'merkel_cell', 'merkel cell': 'merkel_cell',
+  'pancreatic': 'pancreatic', 'ovarian': 'ovarian', 'renal': 'renal',
+  'gastric': 'gastric', 'esophageal': 'esophageal',
+};
+
+function normalizeCancerType(rawType) {
+  if (!rawType) return undefined;
+  const lower = rawType.toLowerCase().trim();
+  return CANCER_TYPE_NORMALIZE[lower] || lower.replace(/\s+/g, '_');
+}
+
 async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
   // Get source type filters from intent
   const sourceTypes = intentToSourceTypes(intent);
+  const rawCancerType = intent.cancer_types?.[0] || filters.cancerType;
   const enhancedFilters = {
     ...filters,
     sourceTypes: sourceTypes.length > 0 ? sourceTypes : undefined,
-    cancerType: intent.cancer_types?.[0] || filters.cancerType,
+    cancerType: normalizeCancerType(rawCancerType),
   };
 
   logger.info('Hybrid search filters', {
@@ -400,12 +423,17 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
   }
 
   // Sort by hybrid score, then diversify source types
+  // RCT-level evidence gets its own diversification bucket so landmark trials
+  // aren't crowded out by other pubmed items in the MAX_PER_TYPE cap.
+  const RCT_EVIDENCE_TYPES = new Set(['rct_results', 'rct_ongoing', 'randomized trial']);
   const ranked = Array.from(resultMap.values())
     .map(r => ({
       ...r,
       similarity: r.hybridScore || r.vectorScore || r.keywordScore * 0.5,
+      // Override source_type for diversification: RCTs get their own bucket
+      _diversifyType: RCT_EVIDENCE_TYPES.has(r.evidence_type) ? '_rct' : (r.source_type || 'unknown'),
     }))
-    .sort((a, b) => (b.hybridScore || b.vectorScore) - (a.hybridScore || a.vectorScore));
+    .sort((a, b) => b.similarity - a.similarity);
 
   // Diversify source types: cap guidelines so trials/publications aren't drowned out.
   // NCCN/ASCO/ESMO are important context but shouldn't dominate — MRD evidence
@@ -419,8 +447,8 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
   let guidelineCount = 0;
   const deferred = [];
   for (const r of ranked) {
-    const t = r.source_type || 'unknown';
-    const isGuideline = GUIDELINE_TYPES.has(t);
+    const t = r._diversifyType;
+    const isGuideline = GUIDELINE_TYPES.has(r.source_type || 'unknown');
     typeCounts[t] = (typeCounts[t] || 0) + 1;
     if (isGuideline && guidelineCount >= MAX_GUIDELINES) {
       deferred.push(r);
@@ -578,6 +606,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.authors,
       g.pmid,
       g.doi,
+      g.key_findings,
       e.chunk_text,
       1 - (e.embedding <=> $1::vector) as similarity
     FROM mrd_item_embeddings e
@@ -642,6 +671,7 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.authors,
       g.pmid,
       g.doi,
+      g.key_findings,
       e.chunk_text,
       e.embedding
     FROM mrd_item_embeddings e
@@ -759,6 +789,20 @@ Summary: ${s.summary || s.chunk_text}`;
         : s.direct_quotes;
       if (quotes.length > 0) {
         context += `\nDirect Quote: "${quotes[0].text}"`;
+      }
+    }
+
+    // Include key findings if available
+    if (s.key_findings && (Array.isArray(s.key_findings) ? s.key_findings.length > 0 : true)) {
+      const findings = typeof s.key_findings === 'string'
+        ? JSON.parse(s.key_findings)
+        : s.key_findings;
+      if (Array.isArray(findings) && findings.length > 0) {
+        context += '\nKey Findings:';
+        for (const f of findings.slice(0, 3)) {
+          context += `\n- ${f.finding}`;
+          if (f.implication) context += ` → ${f.implication}`;
+        }
       }
     }
 
@@ -1424,6 +1468,7 @@ async function handleImportNccn(req, res) {
           );
         }
 
+        await embedAfterInsert(guidanceId, 'chat-nccn-import');
         saved++;
       } catch (err) {
         logger.warn('Failed to save NCCN rec', { error: err.message });

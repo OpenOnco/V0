@@ -1,54 +1,105 @@
 /**
- * run-eval.js — Physician MRD chat evaluation runner
+ * run-eval.js — Physician MRD Chat Evaluation Runner (v2)
  *
- * Sends each question from physician-questions.json to the live chat endpoint,
- * scores responses against the rubric using Claude Haiku, and outputs a summary.
+ * Two-pass evaluation: automated CDS/accuracy checks, then LLM scoring.
+ * Produces JSON + Markdown reports with CDS safe harbor compliance analysis.
  *
  * Usage:
- *   node physician-system/eval/run-eval.js                    # full eval (33 questions)
- *   node physician-system/eval/run-eval.js --limit=5          # first 5 only
- *   node physician-system/eval/run-eval.js --adversarial-only # 3 adversarial only
+ *   node physician-system/eval/run-eval.js                          # full eval (~100 questions)
+ *   node physician-system/eval/run-eval.js --limit=5                # first 5 only
+ *   node physician-system/eval/run-eval.js --adversarial-only       # adversarial questions only
+ *   node physician-system/eval/run-eval.js --category=clinical_scenario
+ *   node physician-system/eval/run-eval.js --cds-only               # deterministic checks only (no LLM)
+ *   node physician-system/eval/run-eval.js --record                 # capture Q&A + CDS checks, skip LLM (for Opus scoring in CC)
+ *   node physician-system/eval/run-eval.js --endpoint=http://localhost:3000/api/mrd-chat
+ *   node physician-system/eval/run-eval.js --report=md              # Markdown only
+ *   node physician-system/eval/run-eval.js --report=json            # JSON only
  *
  * Requires: ANTHROPIC_API_KEY in environment (or .env in physician-system/)
  */
 
 import 'dotenv/config';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import Anthropic from '@anthropic-ai/sdk';
 
+import { checkCDSCompliance } from './scoring/cds-compliance.js';
+import { checkAccuracy } from './scoring/accuracy-checker.js';
+import { scoreLLM, combineScores } from './scoring/llm-scorer.js';
+import { buildJSONReport, writeReports } from './scoring/report-generator.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const CHAT_ENDPOINT = process.env.CHAT_ENDPOINT || 'https://physician-system-production.up.railway.app/api/mrd-chat';
-const SCORER_MODEL = 'claude-haiku-4-5-20251001';
-const LIMIT = process.argv.find(a => a.startsWith('--limit='))
-  ? parseInt(process.argv.find(a => a.startsWith('--limit=')).split('=')[1])
-  : Infinity;
-const ADVERSARIAL_ONLY = process.argv.includes('--adversarial-only');
+// ---------------------------------------------------------------------------
+// CLI argument parsing
+// ---------------------------------------------------------------------------
+
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const config = {
+    endpoint: process.env.CHAT_ENDPOINT || 'https://physician-system-production.up.railway.app/api/mrd-chat',
+    limit: Infinity,
+    adversarialOnly: false,
+    cdsOnly: false,
+    record: false,
+    category: null,
+    reportFormat: 'both', // 'both' | 'json' | 'md'
+  };
+
+  for (const arg of args) {
+    if (arg.startsWith('--limit=')) {
+      config.limit = parseInt(arg.split('=')[1]);
+    } else if (arg === '--adversarial-only') {
+      config.adversarialOnly = true;
+    } else if (arg === '--cds-only') {
+      config.cdsOnly = true;
+    } else if (arg === '--record') {
+      config.record = true;
+    } else if (arg.startsWith('--category=')) {
+      config.category = arg.split('=')[1];
+    } else if (arg.startsWith('--endpoint=')) {
+      config.endpoint = arg.split('=')[1];
+    } else if (arg.startsWith('--report=')) {
+      config.reportFormat = arg.split('=')[1];
+    }
+  }
+
+  return config;
+}
 
 // ---------------------------------------------------------------------------
 // Load questions
 // ---------------------------------------------------------------------------
 
-const evalData = JSON.parse(readFileSync(join(__dirname, 'physician-questions.json'), 'utf8'));
-const rubric = evalData.scoring_rubric;
-const maxScore = evalData.max_score;
-const passThreshold = evalData.pass_threshold;
+function loadQuestions(config) {
+  const evalData = JSON.parse(readFileSync(join(__dirname, 'physician-questions.json'), 'utf8'));
 
-let questions = ADVERSARIAL_ONLY
-  ? evalData.adversarial_questions
-  : [...evalData.questions, ...evalData.adversarial_questions];
+  let questions = [...(evalData.questions || []), ...(evalData.adversarial_questions || [])];
 
-questions = questions.slice(0, LIMIT);
+  // Filter by adversarial-only
+  if (config.adversarialOnly) {
+    questions = questions.filter(q => q.category?.startsWith('adversarial'));
+  }
+
+  // Filter by category
+  if (config.category) {
+    questions = questions.filter(q => q.category === config.category);
+  }
+
+  // Apply limit
+  questions = questions.slice(0, config.limit);
+
+  return { questions, evalData };
+}
 
 // ---------------------------------------------------------------------------
 // Chat endpoint caller
 // ---------------------------------------------------------------------------
 
-async function queryChatEndpoint(query) {
-  const res = await fetch(CHAT_ENDPOINT, {
+async function queryChatEndpoint(endpoint, query) {
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query }),
@@ -60,110 +111,29 @@ async function queryChatEndpoint(query) {
 }
 
 // ---------------------------------------------------------------------------
-// Scorer
-// ---------------------------------------------------------------------------
-
-function buildScorerPrompt(question, chatResponse) {
-  const answer = chatResponse.answer || '';
-  const meta = chatResponse.meta || {};
-  const sources = (chatResponse.sources || []).map(s => s.title).join(', ');
-
-  return `You are an expert oncology evaluator scoring a clinical decision support system's response.
-
-SCORING RUBRIC (${maxScore} points total):
-${Object.entries(rubric).map(([k, v]) => `- ${k}: ${v}`).join('\n')}
-
-QUESTION (id=${question.id}, category=${question.category}, difficulty=${question.difficulty}):
-${question.query}
-
-EXPECTED CONTENT:
-- Must mention: ${(question.expected_content.must_mention || []).join(', ')}
-- Should mention: ${(question.expected_content.should_mention || []).join(', ')}
-- Bonus mention: ${(question.expected_content.bonus_mention || []).join(', ')}
-
-EXPECTED STRUCTURE:
-- Should contain: ${(question.expected_structure.should_contain || []).join(', ')}
-- Should NOT contain: ${(question.expected_structure.should_not_contain || []).join(', ')}
-
-SYSTEM RESPONSE:
-${answer}
-
-METADATA:
-- Sources retrieved: ${meta.sourcesRetrieved || 0}
-- Matched scenario: ${meta.matchedScenario?.id || 'none'}
-- Sources used: ${sources || 'none'}
-
-EVALUATOR NOTES: ${question.notes}
-
-Score each dimension and provide a total. Be strict but fair.
-
-CRITICAL: Respond with ONLY valid JSON. No text before or after. Keep all string values short (under 50 chars) and avoid special characters in strings. Use this exact schema:
-{"decision_orientation":{"score":1,"note":"short reason"},"evidence_quality":{"score":1,"note":"short reason"},"test_specificity":{"score":1,"note":"short reason"},"completeness":{"score":1,"note":"short reason"},"evidence_gaps":{"score":1,"note":"short reason"},"safety":{"score":1,"note":"short reason"},"total":6,"must_mention_found":["term1"],"must_mention_missing":["term2"],"structure_violations":[],"summary":"Brief assessment."}`;
-}
-
-async function scoreResponse(anthropic, question, chatResponse) {
-  const prompt = buildScorerPrompt(question, chatResponse);
-
-  const response = await anthropic.messages.create({
-    model: SCORER_MODEL,
-    max_tokens: 600,
-    messages: [{ role: 'user', content: prompt }],
-  });
-
-  const text = response.content[0]?.text || '';
-
-  // Extract JSON from response — try multiple strategies
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    throw new Error(`Scorer did not return valid JSON: ${text.slice(0, 200)}`);
-  }
-
-  try {
-    return JSON.parse(jsonMatch[0]);
-  } catch {
-    // Fallback: try to fix common JSON issues (unescaped quotes in notes)
-    const cleaned = jsonMatch[0]
-      .replace(/:\s*"([^"]*)"([^,}\]\n])/g, ':"$1\\"$2')
-      .replace(/\n/g, ' ');
-    try {
-      return JSON.parse(cleaned);
-    } catch {
-      // Last resort: extract just the total score
-      const totalMatch = text.match(/"total"\s*:\s*(\d+)/);
-      const total = totalMatch ? parseInt(totalMatch[1]) : 5;
-      return {
-        decision_orientation: { score: Math.min(2, Math.round(total / 5)), note: 'parsed from total' },
-        evidence_quality: { score: Math.min(2, Math.round(total / 5)), note: 'parsed from total' },
-        test_specificity: { score: total >= 6 ? 1 : 0, note: 'parsed from total' },
-        completeness: { score: Math.min(2, Math.round(total / 5)), note: 'parsed from total' },
-        evidence_gaps: { score: total >= 5 ? 1 : 0, note: 'parsed from total' },
-        safety: { score: Math.min(2, Math.round(total / 5)), note: 'parsed from total' },
-        total,
-        must_mention_found: [],
-        must_mention_missing: [],
-        structure_violations: [],
-        summary: `Score ${total}/10 (extracted from malformed JSON)`,
-      };
-    }
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Main
+// Main evaluation loop
 // ---------------------------------------------------------------------------
 
 async function main() {
-  const anthropic = new Anthropic();
+  const config = parseArgs();
+  const { questions } = loadQuestions(config);
 
-  console.log(`\nPhysician MRD Chat Evaluation`);
-  console.log(`Endpoint: ${CHAT_ENDPOINT}`);
-  console.log(`Questions: ${questions.length}`);
-  console.log(`Scorer: ${SCORER_MODEL}`);
-  console.log(`Pass threshold: ${passThreshold}/${maxScore}`);
+  const skipLLM = config.cdsOnly || config.record;
+  const anthropic = skipLLM ? null : new Anthropic();
+  const mode = config.record ? 'Record (Q&A + CDS, no LLM — for Opus scoring in CC)'
+    : config.cdsOnly ? 'CDS-only (no LLM)'
+    : 'Full (automated + LLM)';
+
+  console.log(`\nPhysician MRD Chat Evaluation (v2)`);
+  console.log(`Endpoint:   ${config.endpoint}`);
+  console.log(`Questions:  ${questions.length}`);
+  console.log(`Mode:       ${mode}`);
+  if (config.category) console.log(`Category:   ${config.category}`);
+  if (config.adversarialOnly) console.log(`Filter:     adversarial only`);
+  console.log(`Threshold:  8/10`);
   console.log('='.repeat(70));
 
   const results = [];
-  const failures = [];
 
   for (let i = 0; i < questions.length; i++) {
     const q = questions[i];
@@ -173,41 +143,74 @@ async function main() {
 
     try {
       // Query the chat endpoint
-      const chatResponse = await queryChatEndpoint(q.query);
+      const chatResponse = await queryChatEndpoint(config.endpoint, q.query);
+      const answer = chatResponse.answer || '';
+      const sources = chatResponse.sources || [];
 
-      // Score with Claude
-      const score = await scoreResponse(anthropic, q, chatResponse);
-      const total = score.total;
-      const pass = total >= passThreshold;
+      // Pass 1: Automated checks (free, deterministic)
+      const cdsResult = checkCDSCompliance(answer, q, sources);
+      const accuracyResult = checkAccuracy(answer, q);
 
-      results.push({
+      let llmScore = null;
+      let combined;
+
+      if (skipLLM) {
+        // CDS-only or record mode: no LLM scoring, use automated score only
+        combined = {
+          total: cdsResult.automatedScore,
+          maxScore: cdsResult.maxAutomatedScore,
+          passThreshold: 3,
+          pass: cdsResult.automatedScore >= 3,
+          automated: {
+            criterion3: cdsResult.criterion3.score,
+            criterion4: cdsResult.criterion4.score,
+            subtotal: cdsResult.automatedScore,
+          },
+          llm: null,
+        };
+      } else {
+        // Pass 2: LLM scoring
+        llmScore = await scoreLLM(anthropic, q, chatResponse, cdsResult, accuracyResult);
+        combined = combineScores(cdsResult, llmScore);
+      }
+
+      const result = {
         id: q.id,
         category: q.category,
         difficulty: q.difficulty,
-        query: q.query.slice(0, 80) + (q.query.length > 80 ? '...' : ''),
-        total,
-        pass,
-        dimensions: score,
+        query: q.query,
+        answer,
+        cdsResult,
+        accuracyResult,
+        llmScore,
+        combined,
         matchedScenario: chatResponse.meta?.matchedScenario?.id || null,
         sourcesRetrieved: chatResponse.meta?.sourcesRetrieved || 0,
-      });
+      };
 
-      if (!pass) failures.push(results[results.length - 1]);
+      results.push(result);
 
-      const icon = pass ? 'PASS' : 'FAIL';
-      console.log(`${total}/${maxScore} ${icon}${score.must_mention_missing?.length ? ` (missing: ${score.must_mention_missing.join(', ')})` : ''}`);
+      // Console output
+      const icon = combined.pass ? 'PASS' : 'FAIL';
+      const cdsFlag = cdsResult.totalViolations > 0 ? ` [CDS: ${cdsResult.totalViolations} violations]` : '';
+      const missingFlag = accuracyResult.mustMention.missing.length > 0
+        ? ` (missing: ${accuracyResult.mustMention.missing.join(', ')})`
+        : '';
+      console.log(`${combined.total}/${combined.maxScore} ${icon}${cdsFlag}${missingFlag}`);
+
     } catch (err) {
       console.log(`ERROR: ${err.message}`);
       results.push({
         id: q.id,
         category: q.category,
         difficulty: q.difficulty,
-        query: q.query.slice(0, 80),
-        total: 0,
-        pass: false,
+        query: q.query,
+        cdsResult: null,
+        accuracyResult: null,
+        llmScore: null,
+        combined: { total: 0, maxScore: 10, pass: false, automated: null, llm: null },
         error: err.message,
       });
-      failures.push(results[results.length - 1]);
     }
 
     // Rate limit: brief pause between requests
@@ -217,84 +220,120 @@ async function main() {
   }
 
   // ---------------------------------------------------------------------------
-  // Summary
+  // Record mode: write Q&A + CDS file for Opus scoring in Claude Code
   // ---------------------------------------------------------------------------
 
-  const scores = results.filter(r => !r.error).map(r => r.total);
-  const avg = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 0;
-  const passing = results.filter(r => r.pass).length;
-  const failing = results.filter(r => !r.pass).length;
+  if (config.record) {
+    const resultsDir = join(__dirname, 'results');
+    mkdirSync(resultsDir, { recursive: true });
 
-  // Per-dimension averages
-  const dimNames = Object.keys(rubric);
-  const dimAvgs = {};
-  for (const dim of dimNames) {
-    const vals = results
-      .filter(r => r.dimensions?.[dim])
-      .map(r => r.dimensions[dim].score);
-    dimAvgs[dim] = vals.length > 0 ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2) : 'N/A';
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '').replace('T', '-').slice(0, 15);
+    const recordPath = join(resultsDir, `record-${timestamp}.json`);
+
+    const record = {
+      timestamp: new Date().toISOString(),
+      endpoint: config.endpoint,
+      description: 'Eval recording for Opus scoring in Claude Code. Each entry has the question, chat answer, automated CDS results, and accuracy check. LLM scoring was skipped — score these in CC.',
+      scoring_instructions: {
+        dimensions: {
+          accuracy: '0-2: Does response match ground truth? Correct or fabricated? 0=hallucinations, 1=mostly correct, 2=fully accurate',
+          completeness: '0-2: Major options covered? Gaps acknowledged? 0=major omissions, 1=adequate, 2=comprehensive',
+          evidence_quality: '0-2: Sources relevant? Evidence levels characterized? 0=poor, 1=adequate, 2=excellent',
+          automation_bias_mitigation: '0-1: Defers to clinical judgment? 0=no deference, 1=appropriately defers',
+        },
+        automated_scores: 'criterion3 (0-2) + criterion4 (0-1) already computed. Total = automated (0-3) + LLM (0-7) = 10 points. Pass >= 8.',
+      },
+      entries: results.map(r => ({
+        id: r.id,
+        category: r.category,
+        difficulty: r.difficulty,
+        query: r.query,
+        answer: r.answer,
+        expected_content: questions.find(q => q.id === r.id)?.expected_content || null,
+        ground_truth: questions.find(q => q.id === r.id)?.ground_truth || null,
+        notes: questions.find(q => q.id === r.id)?.notes || null,
+        automated: {
+          criterion3: r.cdsResult?.criterion3 || null,
+          criterion4: r.cdsResult?.criterion4 || null,
+          automatedScore: r.cdsResult?.automatedScore || 0,
+        },
+        accuracy: r.accuracyResult?.summary || null,
+        mustMention: r.accuracyResult?.mustMention || null,
+      })),
+    };
+
+    writeFileSync(recordPath, JSON.stringify(record, null, 2));
+    console.log(`\n  Record file: ${recordPath}`);
+    console.log(`  Load this file in Claude Code for Opus scoring.\n`);
+    return;
   }
 
-  // Per-category averages
-  const categories = [...new Set(results.map(r => r.category))];
-  const catAvgs = {};
-  for (const cat of categories) {
-    const catScores = results.filter(r => r.category === cat && !r.error).map(r => r.total);
-    catAvgs[cat] = catScores.length > 0
-      ? (catScores.reduce((a, b) => a + b, 0) / catScores.length).toFixed(1)
-      : 'N/A';
-  }
+  // ---------------------------------------------------------------------------
+  // Report generation
+  // ---------------------------------------------------------------------------
+
+  const jsonReport = buildJSONReport({
+    endpoint: config.endpoint,
+    results,
+    config: {
+      cdsOnly: config.cdsOnly,
+      adversarialOnly: config.adversarialOnly,
+      category: config.category,
+      limit: config.limit === Infinity ? null : config.limit,
+    },
+  });
+
+  // Write reports
+  const resultsDir = join(__dirname, 'results');
+  const paths = writeReports(jsonReport, resultsDir, { format: config.reportFormat });
+
+  // Console summary
+  const s = jsonReport.summary;
+  const c = jsonReport.cdsCompliance;
 
   console.log('\n' + '='.repeat(70));
   console.log('  EVALUATION SUMMARY');
   console.log('='.repeat(70));
-  console.log(`  Average score:  ${avg}/${maxScore}`);
-  console.log(`  Pass rate:      ${passing}/${results.length} (${(passing / results.length * 100).toFixed(0)}%)`);
-  console.log(`  Failing:        ${failing}`);
+  console.log(`  Average score:  ${s.averageScore}/${s.maxScore}`);
+  console.log(`  Pass rate:      ${s.passRate} (${s.passPercentage}%)`);
+  console.log(`  Failing:        ${s.failing}`);
+  console.log(`  Errors:         ${s.errors}`);
 
-  console.log('\n  Dimension Averages:');
-  for (const [dim, avg] of Object.entries(dimAvgs)) {
-    const maxDim = dim === 'test_specificity' || dim === 'evidence_gaps' ? 1 : 2;
-    console.log(`    ${dim.padEnd(25)} ${avg}/${maxDim}`);
-  }
+  console.log('\n  CDS Safe Harbor Compliance:');
+  console.log(`    Criterion 3 (Non-directive):  ${c.criterion3PassRate}`);
+  console.log(`    Criterion 4 (Transparency):   ${c.criterion4PassRate}`);
+  console.log(`    Total CDS violations:         ${c.totalViolations}`);
 
   console.log('\n  Category Averages:');
-  for (const [cat, avg] of Object.entries(catAvgs)) {
-    console.log(`    ${cat.padEnd(25)} ${avg}/${maxScore}`);
+  for (const [cat, avg] of Object.entries(jsonReport.categoryAverages)) {
+    console.log(`    ${cat.padEnd(30)} ${avg !== null ? avg + '/10' : 'N/A'}`);
   }
 
+  console.log('\n  Dimension Averages:');
+  const dimMax = {
+    accuracy: 2, completeness: 2, evidence_quality: 2,
+    automation_bias_mitigation: 1, criterion3_nondirective: 2, criterion4_transparency: 1,
+  };
+  for (const [dim, avg] of Object.entries(jsonReport.dimensionAverages)) {
+    const max = dimMax[dim] || '?';
+    console.log(`    ${dim.replace(/_/g, ' ').padEnd(30)} ${avg !== null ? avg : 'N/A'}/${max}`);
+  }
+
+  // Show failures
+  const failures = jsonReport.results.filter(r => !r.pass);
   if (failures.length > 0) {
-    console.log(`\n  Questions Below Threshold (< ${passThreshold}/${maxScore}):`);
+    console.log(`\n  Questions Below Threshold:`);
     for (const f of failures) {
-      console.log(`    Q${f.id} (${f.category}, ${f.difficulty}): ${f.total || 0}/${maxScore}`);
-      console.log(`      ${f.query}`);
-      if (f.dimensions?.summary) {
-        console.log(`      → ${f.dimensions.summary}`);
-      }
-      if (f.error) {
-        console.log(`      → ERROR: ${f.error}`);
-      }
+      console.log(`    Q${f.id} (${f.category}): ${f.total}/${s.maxScore}${f.cdsViolations > 0 ? ` [CDS: ${f.cdsViolations}]` : ''}`);
+      if (f.llmSummary) console.log(`      → ${f.llmSummary}`);
+      if (f.error) console.log(`      → ERROR: ${f.error}`);
     }
   }
 
-  // Save detailed results
-  const outputPath = join(__dirname, 'eval-results.json');
-  const output = {
-    timestamp: new Date().toISOString(),
-    endpoint: CHAT_ENDPOINT,
-    scorer: SCORER_MODEL,
-    summary: {
-      totalQuestions: results.length,
-      averageScore: parseFloat(avg),
-      passRate: `${passing}/${results.length}`,
-      passThreshold,
-      dimensionAverages: dimAvgs,
-      categoryAverages: catAvgs,
-    },
-    results,
-  };
-  writeFileSync(outputPath, JSON.stringify(output, null, 2));
-  console.log(`\n  Detailed results: ${outputPath}\n`);
+  // Report paths
+  if (paths.jsonPath) console.log(`\n  JSON report: ${paths.jsonPath}`);
+  if (paths.mdPath) console.log(`  MD report:   ${paths.mdPath}`);
+  console.log('');
 }
 
 main().catch(err => {

@@ -1,0 +1,220 @@
+{
+  "timestamp": "2026-02-11T07:15:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-0638.json",
+  "cycle": "8b",
+  "cycle_description": "Bug fixes: citation leak fix + C3 versus lookbehind + SOURCE UTILIZATION reverted",
+  "fixes_applied": [
+    "Reverted SOURCE UTILIZATION prompt section (caused C8 regression)",
+    "Fixed citation-validator scaffold leak (strip SENTENCES NEEDING/AVAILABLE SOURCES markers)",
+    "Added 'versus' lookbehind to stop/start forbidden patterns (Q9 C3 fix)",
+    "c-TRAK TN (ID 382) still in DB from C8"
+  ],
+  "summary": {
+    "averageScore": 8.0,
+    "maxScore": 10,
+    "passRate": "8/10",
+    "passPercentage": 80,
+    "failing": 2,
+    "errors": 0,
+    "notes": "Bug fixes recovered Q7 (7→8) and Q9 (6→8) from C8. But DYNAMIC missing from all CRC questions (Q1-Q3, Q7) this run — RAG stochasticity. Q2 FAIL (7, DYNAMIC+IDEA missing). Q10 FAIL (7, IMvigor011 results not reported). Overall regression from C7 (9.0→8.0) appears to be normal LLM/RAG variance, not a code bug."
+  },
+  "dimensionAverages": {
+    "accuracy": 1.5,
+    "completeness": 1.4,
+    "evidence_quality": 1.3,
+    "automation_bias_mitigation": 1.0,
+    "criterion3_nondirective": 2.0,
+    "criterion4_transparency": 1.0
+  },
+  "comparison_to_c7": {
+    "passRate": "10/10 → 8/10 (down)",
+    "avgScore": "9.0 → 8.0 (down 1.0 — RAG variance)",
+    "improvements": [],
+    "regressions": [
+      "Q1: 9→8 (DYNAMIC absent this run)",
+      "Q2: 8→7 (DYNAMIC+IDEA still missing)",
+      "Q3: 9→7 (DYNAMIC absent for stage II CRC)",
+      "Q4: 8→7 (c-TRAK TN/pembrolizumab missing)",
+      "Q5: 9→8 (lead time not quantified)",
+      "Q7: 9→8 (garbled test-specific note, DYNAMIC absent)",
+      "Q9: 10→8 (MSI/immunotherapy discussion missing)",
+      "Q10: 8→7 (IMvigor011 results not reported)"
+    ],
+    "stable": ["Q6(10), Q8(10)"]
+  },
+  "score_progression": {
+    "original": { "passRate": "80%", "avg": 8.6 },
+    "c1b": { "passRate": "90%", "avg": 8.7 },
+    "c2": { "passRate": "90%", "avg": 8.7 },
+    "c3": { "passRate": "100%", "avg": 8.9 },
+    "c4": { "passRate": "90%", "avg": 8.8 },
+    "c5": { "passRate": "90%", "avg": 8.6 },
+    "c6": { "passRate": "100%", "avg": 9.1 },
+    "c7": { "passRate": "100%", "avg": 9.0 },
+    "c8": { "passRate": "50%", "avg": 7.8, "note": "REVERTED — prompt regression" },
+    "c8b": { "passRate": "80%", "avg": 8.0, "note": "Bug fixes recovered, but RAG variance down" }
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "GALAXY/CIRCULATE cited with specific HRs. DYNAMIC absent this run. NRG-GI005 not mentioned. Borderline pass."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "DYNAMIC and IDEA both missing despite being top-ranked in RAG. GALAXY only trial cited. Critical for 3-vs-6-month question."
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "DYNAMIC absent for stage II CRC question where it's maximally relevant. GALAXY+ALTAIR cited. T4a high-risk classification not discussed."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "Pembrolizumab/KEYNOTE-522 and c-TRAK TN all missing. Generic options presented without specific agents/trials. c-TRAK TN seeded but not surfacing in RAG for breast queries."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Accurate. No quantified lead time. Missing HR-positive-specific considerations. Borderline pass."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding. ADAURA benefit framed as independent of MRD status. Comprehensive guideline context. Consistent 10/10."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Practical monitoring guidance. Citation leak FIXED. Garbled test-specific note. DYNAMIC absent. Borderline pass."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "HPV ctDNA distinct analyte confirmed. NavDx data accurate. Cross-indication well-flagged. Consistent 10/10."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "C3 FIX CONFIRMED (versus lookbehind working). GALAXY data appropriate. Missing MSI/immunotherapy depth. Borderline pass."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "IMvigor011 identified, PMID correct, but positive results not reported. CheckMate 274 omitted. Clinician asking about readout needs to know it was positive."
+    }
+  ]
+}

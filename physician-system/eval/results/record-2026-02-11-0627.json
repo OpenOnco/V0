@@ -1,0 +1,880 @@
+{
+  "timestamp": "2026-02-11T06:27:13.680Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "description": "Eval recording for Opus scoring in Claude Code. Each entry has the question, chat answer, automated CDS results, and accuracy check. LLM scoring was skipped — score these in CC.",
+  "scoring_instructions": {
+    "dimensions": {
+      "accuracy": "0-2: Does response match ground truth? Correct or fabricated? 0=hallucinations, 1=mostly correct, 2=fully accurate",
+      "completeness": "0-2: Major options covered? Gaps acknowledged? 0=major omissions, 1=adequate, 2=comprehensive",
+      "evidence_quality": "0-2: Sources relevant? Evidence levels characterized? 0=poor, 1=adequate, 2=excellent",
+      "automation_bias_mitigation": "0-1: Defers to clinical judgment? 0=no deference, 1=appropriately defers"
+    },
+    "automated_scores": "criterion3 (0-2) + criterion4 (0-1) already computed. Total = automated (0-3) + LLM (0-7) = 10 points. Pass >= 8."
+  },
+  "entries": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+      "answer": "CLINICAL SCENARIO: Stage III colon cancer (T3N2), 4 weeks post-resection, Signatera MRD-positive, planning CAPOX adjuvant therapy.\nDECISION: Whether to intensify from CAPOX to FOLFOXIRI based on MRD-positive status.\n\nOPTION A: Intensify to FOLFOXIRI based on MRD-positive status.\n- Evidence: While MRD-positive status at 4 weeks post-surgery is a well-established poor prognostic marker with Signatera demonstrating 88-93% sensitivity and 98% specificity for detecting recurrence in CRC [TEST-SPECIFIC DATA], the indexed evidence does not specifically address whether prospective randomized trials have demonstrated that escalating therapy based on MRD results improves overall survival. ESMO classifies ctDNA MRD as a level III biomarker (investigational) for treatment decisions, acknowledging promising DYNAMIC trial data but awaiting phase III confirmation [4].\n- Guidelines: Current NCCN guidelines explicitly state that \"treatment decision-making is not recommended based on ctDNA results\" and note \"insufficient evidence to recommend routine use of ctDNA assays outside of a clinical trial\" [2][3][5].\n- Caveats: Based on the available sources, it is unclear whether validated algorithms exist for MRD-guided therapy escalation in stage III CRC, and the benefit-to-toxicity ratio of FOLFOXIRI escalation based solely on MRD status has not been established.\n\nOPTION B: Proceed with planned CAPOX and serial MRD monitoring.\n- Evidence: NCCN guidelines acknowledge that \"ctDNA is emerging as a prognostic marker\" but recommend against treatment escalation based on MRD results [1][5]. The indexed evidence does not specifically address whether serial monitoring with Signatera can track molecular response during adjuvant therapy, though longitudinal sensitivity improving to 94% for detecting distant recurrence has been reported [TEST-SPECIFIC DATA]. This approach allows for risk stratification while adhering to evidence-based standard-of-care chemotherapy.\n- Caveats: Standard monitoring intervals during active adjuvant treatment have not been established, though Signatera's 9-day monitoring turnaround time permits flexible scheduling.\n\nOPTION C: Clinical trial enrollment for MRD-guided therapy.\n- Evidence: Both NCCN and ESMO guidelines suggest that MRD-guided treatment decisions are most appropriate within clinical trial settings [3][4]. Several trials are actively enrolling stage III CRC patients with MRD-positive disease to evaluate escalation strategies in a controlled environment with survival endpoints.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No prospective RCT has demonstrated overall survival benefit from MRD-guided therapy escalation in stage III CRC. The optimal MRD threshold for clinical action, timing of serial assessments during adjuvant therapy, and whether escalation benefits vary by RAS mutation status remain unstudied.\n\nTEST-SPECIFIC NOTE: Signatera's tumor-informed approach tracking 16 patient-specific variants has the most extensive CRC validation data among available MRD assays. The test is covered by Medicare for CRC stages II-IV under multiple LCDs, though commercial coverage varies by payer [TEST-SPECIFIC DATA]. The 28-day initial turnaround requiring tumor tissue was likely completed using your patient's resection specimen.",
+      "expected_content": {
+        "must_mention": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "CIRCULATE",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "bonus_mention": [
+          "NRG-GI005",
+          "COBRA",
+          "BESPOKE"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial enrolled stage II colon cancer patients, not stage III",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "No completed RCT shows survival benefit from ctDNA-guided escalation in stage III CRC"
+          },
+          {
+            "claim": "NRG-GI005 is testing ctDNA-guided therapy escalation in stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial included stage III patients",
+          "RCT evidence supports escalation to FOLFOXIRI based on MRD status in stage III"
+        ]
+      },
+      "notes": "Core use case — MRD+ post-resection CRC with treatment intensification question.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "- Evidence: While MRD-positive status at 4 weeks post-surgery is a well-established poor prognostic marker with Signater",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(survival|recurrence|respons"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "- Caveats: Based on the available sources, it is unclear whether validated algorithms exist for MRD-guided therapy escal",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(treatment|therapy|regimen|p"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "The indexed evidence does not specifically address whether serial monitoring with Signatera can track molecular response",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(survival|recurrence|respons"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 2,
+        "mustMentionMiss": 1,
+        "shouldMentionHit": 3,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "adjuvant",
+          "ctDNA"
+        ],
+        "missing": [
+          "intensification"
+        ],
+        "shouldMentionFound": [
+          "DYNAMIC",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "shouldMentionMissing": [
+          "CIRCULATE"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery. Signatera just came back MRD-negative. Is there evidence to support stopping chemo early rather than completing the planned 6 months?",
+      "answer": "CLINICAL SCENARIO: Stage III rectal cancer, completed 3 months of FOLFOX post-surgery, Signatera MRD-negative.\nDECISION: Whether to stop adjuvant chemotherapy early or complete the planned 6-month course.\n\nOPTION A: Stop chemotherapy early based on MRD-negative status.\n- Evidence: The GALAXY study showed that patients with ctDNA clearance during adjuvant therapy had significantly better disease-free survival (DFS) and overall survival (OS) compared to those with persistent ctDNA positivity [4]. MRD-negative patients demonstrated favorable outcomes regardless of biomarker status. However, no completed randomized controlled trial has specifically validated stopping adjuvant therapy early in MRD-negative stage III patients.\n- Test-specific considerations: Signatera has 94% sensitivity and 98% specificity for recurrence detection in CRC, with particularly strong negative predictive value [4]. The 16-variant tumor-informed approach provides confidence in the negative result, though serial monitoring data continue to mature.\n- Caveats: Stage III rectal cancer carries higher baseline risk than colon cancer. No prospective data specifically validate early cessation in this population.\n\nOPTION B: Complete the planned 6-month adjuvant course with serial MRD monitoring.\n- Evidence: Standard 6-month FOLFOX remains the evidence-based backbone for stage III CRC based on multiple phase III trials. The GALAXY data suggest that sustained ctDNA clearance through completion of adjuvant therapy correlates with optimal outcomes [4]. Serial MRD monitoring at 3-month intervals can confirm sustained negativity and provide additional reassurance.\n- Caveats: Continuing therapy in an MRD-negative patient may represent overtreatment, though definitive evidence is lacking.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: The ongoing CIRCULATE North America and similar MRD-guided trials are specifically designed to address treatment duration questions in ctDNA-negative patients [1]. These studies may offer access to validated de-escalation strategies not available in routine practice.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo completed phase III trial has demonstrated the safety of stopping adjuvant therapy early in MRD-negative stage III rectal cancer patients. The optimal frequency of serial MRD monitoring after achieving negativity has not been established. The impact of microsatellite instability status and other molecular features on MRD-guided decisions remains unclear.\n\nTEST-SPECIFIC NOTE: Signatera's tumor-informed approach tracking 16 patient-specific variants provides high confidence in negative results, with 94% longitudinal sensitivity for detecting recurrence. The assay requires prior tumor tissue and has a 9-day turnaround time for monitoring samples. It is covered by Medicare under multiple LCDs for CRC surveillance ($3,500) and has partial commercial coverage through several major payers.",
+      "expected_content": {
+        "must_mention": [
+          "de-escalation",
+          "MRD-negative",
+          "adjuvant"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "IDEA",
+          "3 months",
+          "6 months"
+        ],
+        "bonus_mention": [
+          "CIRCULATE-Japan",
+          "VEGA",
+          "recurrence-free survival"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial showed ctDNA-guided approach was non-inferior to standard management for recurrence-free survival in stage II CRC",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "IDEA trial showed 3 months of adjuvant therapy was non-inferior to 6 months for low-risk stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial proved de-escalation is safe in stage III rectal cancer"
+        ]
+      },
+      "notes": "Tests de-escalation scenario.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": true,
+          "score": 1,
+          "maxScore": 1,
+          "violations": []
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 1,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "de-escalation",
+          "MRD-negative",
+          "adjuvant"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "3 months"
+        ],
+        "shouldMentionMissing": [
+          "DYNAMIC",
+          "IDEA",
+          "6 months"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "64-year-old, stage II colon cancer, pT4aN0, MSS, no high-risk features besides T4a. Post-surgery Signatera is MRD-positive. Standard guidelines wouldn't call for adjuvant chemo here. What does the MRD data say about treating these patients?",
+      "answer": "CLINICAL SCENARIO: Stage II colon cancer (pT4aN0), MSS, MRD-positive post-surgery, not meeting standard criteria for adjuvant chemotherapy.\nDECISION: Whether to initiate adjuvant treatment based solely on MRD positivity.\n\nOPTION A: Initiate adjuvant chemotherapy based on MRD-positive status.\n- Evidence: The CIRCULATE-Japan GALAXY study demonstrated that MRD-positive patients have dramatically worse disease-free survival (HR 11.99, P<0.0001) and overall survival (HR 9.68, P<0.0001) compared to MRD-negative patients [1]. In stage II colon cancer specifically, observational data show that ctDNA positivity predicts >80% risk of recurrence when no adjuvant treatment is given [5]. The GALAXY data also showed that sustained ctDNA clearance in response to adjuvant chemotherapy was associated with favorable DFS and OS outcomes [1].\n- Caveats: No completed randomized trial has demonstrated that treating MRD-positive stage II patients improves survival outcomes compared to observation alone.\n\nOPTION B: Proceed with observation and serial MRD monitoring.\n- Evidence: Based on the available sources, it is unclear whether standard guidelines recommend adjuvant chemotherapy for pT4aN0 MSS colon cancer without additional high-risk features. Serial monitoring can track molecular evolution, with tumor-naïve approaches like those validated in the GALAXY subset analysis showing ability to detect recurrence longitudinally [3]. Treatment upon molecular recurrence (before imaging detection) has shown improved disease-free survival (HR 0.75, p=0.0406) [4].\n- Caveats: Observation means accepting the high recurrence risk associated with MRD positivity, though treatment upon molecular recurrence may still provide benefit based on available evidence [4].\n\nOPTION C: Clinical trial enrollment for MRD-guided therapy.\n- Evidence: Several trials are specifically designed for MRD-positive patients, though enrollment in stage II disease may be limited. The terminated CLAUDE trial attempted to evaluate immunotherapy combinations for ctDNA-positive patients [8], indicating ongoing interest in novel approaches for this population.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No prospective randomized trial has compared immediate adjuvant therapy versus observation with treatment upon molecular recurrence in MRD-positive stage II colon cancer. The optimal frequency of MRD monitoring during observation has not been established.\n\nTEST-SPECIFIC NOTE: Signatera is tumor-informed, tracking 16 patient-specific variants with 94% sensitivity and 98% specificity for recurrence surveillance in CRC [1]. It provides a 300-day lead time over imaging and is covered by Medicare for CRC stage II-IV monitoring. The 28-day initial turnaround requires tumor tissue from resection, with subsequent monitoring samples processed in 9 days.",
+      "expected_content": {
+        "must_mention": [
+          "stage II",
+          "MRD-positive",
+          "adjuvant"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "recurrence risk",
+          "T4",
+          "ctDNA-guided"
+        ],
+        "bonus_mention": [
+          "Tie et al.",
+          "number needed to treat",
+          "overtreatment"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial demonstrated ctDNA-guided treatment in stage II CRC reduced adjuvant chemotherapy use without compromising recurrence-free survival",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "T4 is considered a high-risk feature in stage II CRC by NCCN guidelines"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Tension between standard guidelines and MRD positivity.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "In stage II colon cancer specifically, observational data show that ctDNA positivity predicts >80% risk of recurrence wh",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(survival|recurrence|respons"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "- Evidence: Based on the available sources, it is unclear whether standard guidelines recommend adjuvant chemotherapy fo",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "Treatment upon molecular recurrence (before imaging detection) has shown improved disease-free survival (HR 0.75, p=0.04",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(\\d+%|\\d+ percent|hazard rat, \\b(survival|recurrence|respons"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 2,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "stage II",
+          "MRD-positive",
+          "adjuvant"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "recurrence risk",
+          "T4"
+        ],
+        "shouldMentionMissing": [
+          "DYNAMIC",
+          "ctDNA-guided"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "TNBC patient, had neoadjuvant AC-T, partial response, then surgery with residual disease. Post-op Signatera is MRD-positive. She already got capecitabine per CREATE-X. Any ctDNA-guided options beyond that?",
+      "answer": "CLINICAL SCENARIO: TNBC patient, post-neoadjuvant AC-T with residual disease, completed CREATE-X capecitabine, now MRD-positive on Signatera.\nDECISION: Treatment options beyond standard capecitabine in an MRD-positive TNBC patient.\n\nOPTION A: Clinical trial enrollment for MRD-guided therapy.\n- Evidence: The current NCCN and ESMO guidelines do not provide specific recommendations for MRD-guided treatment decisions in breast cancer beyond standard risk-adapted approaches. ESMO classifies ctDNA MRD as an ESCAT level III (investigational) biomarker for treatment decisions, indicating that MRD-guided therapy remains investigational rather than standard practice [4]. However, several breast cancer MRD-guided trials are actively enrolling patients in this exact clinical scenario.\n- Caveats: Trial availability is institution-dependent, and eligibility criteria vary by study design.\n\nOPTION B: Intensified surveillance with serial MRD monitoring.\n- Evidence: The indexed evidence does not specifically address the precise timing advantage or performance characteristics of MRD detection compared to conventional surveillance methods in breast cancer patients. Serial monitoring can potentially track treatment response and guide the timing of imaging or intervention, though optimal monitoring intervals have not been established in randomized trials.\n- Caveats: No evidence that earlier detection of recurrence through MRD monitoring improves survival outcomes compared to standard imaging-based surveillance.\n\nOPTION C: Consider additional systemic therapy based on individual risk assessment.\n- Evidence: While guidelines do not endorse MRD-guided escalation, some clinicians consider additional therapy in high-risk TNBC patients with persistent MRD after standard treatment. Options might include extended capecitabine, platinum-based therapy, or investigational agents, though this approach lacks prospective validation.\n- Caveats: No completed randomized trial has demonstrated that escalating therapy based on MRD results improves outcomes in TNBC.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No completed RCT has used MRD as the selection biomarker for breast cancer treatment escalation. The optimal MRD testing schedule and clinical action thresholds remain unstudied. It's unclear whether MRD-guided interventions improve survival beyond standard risk-adapted therapy in TNBC.\n\nTEST-SPECIFIC NOTE: Based on the available sources, the specific performance characteristics and technical specifications of individual MRD assays are not clearly defined in guideline recommendations. The assay is covered by Medicare for breast cancer Stage IIb+ monitoring, with commercial coverage varying by payer (Aetna and Blue Shield CA provide partial coverage). Serial monitoring turnaround time is 9 days after the initial 28-day tumor-informed assay development.",
+      "expected_content": {
+        "must_mention": [
+          "TNBC",
+          "MRD-positive",
+          "residual disease"
+        ],
+        "should_mention": [
+          "pembrolizumab",
+          "immunotherapy",
+          "KEYNOTE-522",
+          "capecitabine"
+        ],
+        "bonus_mention": [
+          "c-TRAK TN",
+          "olaparib",
+          "BRCA",
+          "clinical trial enrollment"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "c-TRAK TN was one of the first MRD-guided interventional trials in TNBC"
+          },
+          {
+            "claim": "CREATE-X showed capecitabine improves survival in HER2-negative breast cancer with residual disease after neoadjuvant chemotherapy"
+          }
+        ],
+        "forbidden_facts": [
+          "RCT evidence supports ctDNA-guided therapy selection in TNBC"
+        ]
+      },
+      "notes": "Complex multi-step treatment history in TNBC.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": true,
+          "score": 1,
+          "maxScore": 1,
+          "violations": []
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 1,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "TNBC",
+          "MRD-positive",
+          "residual disease"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "capecitabine"
+        ],
+        "shouldMentionMissing": [
+          "pembrolizumab",
+          "immunotherapy",
+          "KEYNOTE-522"
+        ],
+        "bonusFound": [
+          "clinical trial enrollment"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "HR+/HER2- breast cancer, stage IIA, had lumpectomy + adjuvant ET. Now 18 months out, surveillance Signatera just turned positive. No imaging findings yet. What does the literature say about lead time and acting on molecular relapse?",
+      "answer": "CLINICAL SCENARIO: HR+/HER2- breast cancer, stage IIA, 18 months post-lumpectomy and adjuvant endocrine therapy, surveillance Signatera positive without imaging findings.\nDECISION: How to manage molecular relapse in the absence of radiographic progression.\n\nOPTION A: Intensify systemic therapy based on ctDNA positivity.\n- Evidence: The TREAT ctDNA trial is specifically designed for this scenario, randomizing ER+/HER2- breast cancer patients with ctDNA relapse to elacestrant vs standard endocrine therapy [5]. The SERENA-6 trial demonstrated the feasibility of ctDNA-guided treatment switches in HR+ breast cancer, though it focused on ESR1 mutations in the metastatic setting [4]. These trials acknowledge that ctDNA detection represents molecular evidence of residual or recurrent disease that may warrant therapeutic intervention before imaging detection.\n- Caveats: No completed randomized trial has yet demonstrated that treating ctDNA-positive/imaging-negative breast cancer improves survival outcomes. The optimal therapeutic approach for molecular relapse remains investigational.\n\nOPTION B: Intensify surveillance with serial ctDNA monitoring and imaging.\n- Evidence: The indexed evidence does not specifically address the lead time advantage or sensitivity/specificity parameters for Signatera in breast cancer surveillance. Serial monitoring may help distinguish persistent low-level disease from emerging progression. The c-TRAK TN experience in triple-negative breast cancer showed that 72% of ctDNA-positive patients already had metastatic disease on staging scans at detection [1], suggesting that earlier, more frequent monitoring might capture a therapeutic window.\n- Caveats: The optimal frequency of ctDNA monitoring after initial positivity has not been established. Imaging may still miss small-volume disease despite ctDNA detection.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: The TREAT ctDNA trial is actively recruiting patients exactly in this clinical scenario - ER+/HER2- breast cancer with ctDNA relapse [5]. This provides access to elacestrant, a novel SERD, in the ctDNA-positive setting while contributing to evidence generation for this understudied population.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No completed prospective trial has demonstrated survival benefit from intervening on ctDNA positivity alone in HR+ breast cancer. The distinction between truly residual disease vs new metastatic deposits cannot be determined from ctDNA results alone. Most MRD trials in breast cancer focus on triple-negative disease [1,7], with limited HR+ specific data.\n\nTEST-SPECIFIC NOTE: Based on the available sources, it is unclear whether Signatera's analytical sensitivity parameters or longitudinal sensitivity for detecting recurrence have been validated specifically in breast cancer surveillance populations.",
+      "expected_content": {
+        "must_mention": [
+          "molecular relapse",
+          "lead time",
+          "surveillance"
+        ],
+        "should_mention": [
+          "imaging",
+          "HR-positive",
+          "median lead time"
+        ],
+        "bonus_mention": [
+          "8.9 months",
+          "Parsons et al.",
+          "intervention on molecular relapse"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "ctDNA can detect relapse with a median lead time of several months before imaging"
+          },
+          {
+            "claim": "No RCT evidence shows acting on molecular relapse before radiographic relapse improves outcomes in HR+ breast cancer"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Tests ctDNA lead time understanding.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": true,
+          "score": 1,
+          "maxScore": 1,
+          "violations": []
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 1,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "molecular relapse",
+          "lead time",
+          "surveillance"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "imaging"
+        ],
+        "shouldMentionMissing": [
+          "HR-positive",
+          "median lead time"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "Stage IIB NSCLC, EGFR exon 19 deletion, s/p lobectomy. MRD-positive on Signatera at week 4. Would the ADAURA data on adjuvant osimertinib apply here regardless of MRD status, or does MRD positivity change the calculus?",
+      "answer": "CLINICAL SCENARIO: Stage IIB EGFR-mutant NSCLC, 4 weeks post-lobectomy, MRD-positive on Signatera.\nDECISION: Whether to proceed with standard adjuvant osimertinib per ADAURA data versus modify approach based on MRD positivity.\n\nOPTION A: Proceed with standard adjuvant osimertinib per ADAURA protocol.\n- Evidence: ADAURA remains the only adjuvant targeted therapy study in NSCLC demonstrating overall survival benefit, establishing osimertinib 80mg daily for 3 years as standard-of-care for resected EGFR-mutant stage IB-IIIA NSCLC [1]. The trial enrolled patients regardless of ctDNA status, making this the evidence-based approach for your stage IIB EGFR exon 19 deletion patient. Residual ctDNA after treatment predicts early relapse in patients with early-stage non-small cell lung cancer, with ctDNA-positive patients after resection having significantly higher recurrence risk [6].\n- Caveats: Based on the available sources, ADAURA did not stratify by or incorporate MRD testing, so the indexed evidence does not specifically address whether MRD status should modify the standard 3-year duration or dosing approach.\n\nOPTION B: Consider MRD-guided treatment intensification or monitoring.\n- Evidence: The indexed evidence does not specifically address whether MRD positivity should guide treatment escalation in NSCLC, though early-phase trials such as the APPROACH trial are testing MRD-guided treatment decisions after almonertinib induction in stage III EGFR-mutant disease [2]. However, these studies target unresectable stage III disease and use different EGFR inhibitors. Observational studies show ctDNA clearance during treatment correlates with improved outcomes, suggesting serial monitoring could inform treatment response [6].\n- Caveats: No completed prospective data support escalating or modifying osimertinib based on MRD status in resected EGFR-mutant NSCLC.\n\nOPTION C: Clinical trial enrollment for MRD-guided approaches.\n- Evidence: Several trials are investigating ctDNA-guided adjuvant strategies in NSCLC, though most exclude EGFR-mutant patients who have established targeted options. MERMAID-1 specifically excludes EGFR/ALK-positive patients [3]. The TROPION-Lung12 trial is studying adjuvant therapy in stage I ctDNA-positive adenocarcinoma but focuses on non-driver populations [8].\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No study has prospectively evaluated whether MRD-positive EGFR-mutant patients benefit from longer osimertinib duration, higher dosing, combination therapy, or different monitoring intervals compared to the standard ADAURA approach. The optimal integration of MRD testing with established targeted therapy protocols remains unstudied.\n\nTEST-SPECIFIC NOTE: Based on the available sources, the specific sensitivity and specificity parameters for Signatera in NSCLC recurrence surveillance are not definitively established in the indexed evidence. The tumor-informed assay tracks 16 patient-specific variants and requires tissue from your resection specimen, with 28-day initial turnaround and 9-day monitoring. Medicare covers Signatera for stage I-III NSCLC under LCD L38822 at $3,500 per test.",
+      "expected_content": {
+        "must_mention": [
+          "EGFR",
+          "osimertinib",
+          "ADAURA",
+          "MRD"
+        ],
+        "should_mention": [
+          "adjuvant",
+          "disease-free survival",
+          "stage II"
+        ],
+        "bonus_mention": [
+          "TRACERx",
+          "ctDNA clearance",
+          "MERMAID-1"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "ADAURA enrolled patients regardless of MRD or ctDNA status",
+            "source": "PMID: 32955177"
+          },
+          {
+            "claim": "ADAURA showed significant DFS benefit with adjuvant osimertinib in stage IB-IIIA EGFR-mutant NSCLC"
+          }
+        ],
+        "forbidden_facts": [
+          "ADAURA used ctDNA to select patients for treatment"
+        ]
+      },
+      "notes": "Tests interaction between MRD status and established targeted therapy data.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "- Caveats: Based on the available sources, ADAURA did not stratify by or incorporate MRD testing, so the indexed evidenc",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 4,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 2,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "EGFR",
+          "osimertinib",
+          "ADAURA",
+          "MRD"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "adjuvant",
+          "stage II"
+        ],
+        "shouldMentionMissing": [
+          "disease-free survival"
+        ],
+        "bonusFound": [
+          "ctDNA clearance",
+          "MERMAID-1"
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Following a stage III CRC patient with serial Signatera. Was MRD+ post-surgery, started FOLFOX, and now the 12-week on-treatment draw shows ctDNA clearance. When should I retest — continue every 3 months through treatment, or can I wait until end of adjuvant?",
+      "answer": "CLINICAL SCENARIO: Stage III CRC patient, initially MRD-positive post-surgery, now showing ctDNA clearance at 12 weeks on FOLFOX.\n\nDECISION: Optimal timing for next ctDNA assessment during ongoing adjuvant therapy.\n\nOPTION A: Continue serial monitoring every 3 months through treatment completion.\n- Evidence: The GALAXY study demonstrated that sustained ctDNA clearance during adjuvant therapy was associated with favorable disease-free survival and overall survival compared to transient clearance [1]. Serial monitoring at 3-month intervals during active treatment allows for real-time assessment of therapeutic response and early detection of molecular recurrence. Data suggest that patients who clear ctDNA during treatment and maintain clearance have significantly better outcomes than those with transient or no clearance [1].\n- Caveats: The optimal monitoring frequency during active treatment has not been established in randomized trials. More frequent monitoring adds cost without proven clinical benefit.\n\nOPTION B: Wait until completion of adjuvant therapy for next assessment.\n- Evidence: End-of-treatment ctDNA status is a well-validated prognostic marker, with multiple studies demonstrating that patients who remain ctDNA-negative after completing adjuvant therapy have excellent long-term outcomes [1]. This approach reduces testing frequency and cost while still capturing the critical post-treatment time point that informs surveillance strategies.\n- Caveats: This approach may miss early molecular recurrence during treatment, potentially delaying opportunities for treatment modification or intensification. If ctDNA becomes positive during treatment, earlier detection could inform clinical decision-making.\n\nOPTION C: Single confirmatory test at treatment midpoint (18 weeks), then end-of-treatment assessment.\n- Evidence: A hybrid approach balances the prognostic value of on-treatment monitoring with practical considerations. GALAXY data suggest that patients maintaining ctDNA clearance through treatment have superior outcomes [1]. A midpoint assessment can confirm sustained response while minimizing testing burden.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: \nNo randomized trial has determined whether more frequent ctDNA monitoring during adjuvant therapy improves clinical outcomes compared to less frequent testing. The clinical utility of detecting ctDNA positivity mid-treatment (when treatment intensification options are limited) remains unclear.\n\nTEST-SPECIFIC NOTE: Based on the available sources, the specific technical parameters and performance characteristics of individual ctDNA platforms are not well-addressed in the indexed evidence. The 9-day monitoring turnaround time makes serial assessment practical during active treatment. With Medicare coverage under LCD L38779 for CRC stages II-IV monitoring, insurance typically covers serial assessments during the adjuvant period.\n\nSENTENCES NEEDING CITATIONS OR REWORDING:\n- \"TEST-SPECIFIC NOTE: Signatera's tumor-informed approach tracks 16 patient-specific variants with 94% sensitivity for longitudinal monitoring and 98% specificity [TEST DATA].\"\n\nAVAILABLE SOURCES:\n[1] ctDNA-based molecular residual disease and survival in resectable colorectal cancer. (undefined, unknown)\n[2] A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan (undefined, unknown)\n[3] Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer (undefined, unknown)\n[4] Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147) (undefined, unknown)\n[5] NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial (undefined, unknown)\n[6] High accuracy of a blood ctDNA-based multimodal test to detect colorectal cancer (undefined, unknown)\n[7] Circulating tumor DNA using a plasma-only assay predicts survival in patients with oligometastatic colorectal cancer after definitive therapy. (undefined, unknown)\n[8] ALTAIR: Treatment on Molecular Recurrence (TOMR) with Trifluridine/Tipiracil in Signatera-positive Colorectal Cancer (NCT04457297) (undefined, unknown)\n\nRULES:\n1. For each flagged sentence, either:\n   a) Add a citation [N] if a source supports the claim\n   b) Rephrase to express uncertainty: \"The indexed evidence does not specifically address...\" or \"Based on the available sources, it is unclear whether...\"\n2. For sentences flagged with \"Study name without citation or PMID\":\n   a) If a source matches the study, add the [N] citation\n   b) Otherwise, replace the study name with generic language (e.g. \"The DYNAMIC trial showed...\" → \"Recent prospective data suggest...\")\n3. Do NOT invent claims or citations\n4. Do NOT remove valid information\n5. Keep the same overall structure\n6. Preserve all existing citations",
+      "expected_content": {
+        "must_mention": [
+          "serial monitoring",
+          "ctDNA clearance",
+          "retesting"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "surveillance schedule",
+          "3 months"
+        ],
+        "bonus_mention": [
+          "landmark analysis",
+          "on-treatment dynamics",
+          "time to clearance"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "Optimal retesting interval after ctDNA clearance during adjuvant therapy is not established by RCT data"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Practical monitoring question.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "\"The DYNAMIC trial showed...\" → \"Recent prospective data suggest...\")\n3.",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "\"The DYNAMIC trial showed...\" → \"Recent prospective data suggest...\")\n3.",
+              "reason": "Study name without citation or PMID",
+              "detail": "Uncited studies: DYNAMIC"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 2,
+        "mustMentionMiss": 1,
+        "shouldMentionHit": 2,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "serial monitoring",
+          "ctDNA clearance"
+        ],
+        "missing": [
+          "retesting"
+        ],
+        "shouldMentionFound": [
+          "DYNAMIC",
+          "3 months"
+        ],
+        "shouldMentionMissing": [
+          "surveillance schedule"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "HPV-positive oropharyngeal SCC, T2N1, planning for definitive chemoradiation. Colleague mentioned NavDx for treatment response assessment. Is there enough data on ctDNA in head and neck to justify ordering this pre-treatment?",
+      "answer": "CLINICAL SCENARIO: HPV-positive oropharyngeal SCC (T2N1) planning definitive chemoradiation therapy.\nDECISION: Whether to order pre-treatment ctDNA testing for treatment response monitoring.\n\nOPTION A: Order NavDx pre-treatment for baseline and treatment response monitoring.\n- Evidence: HPV ctDNA offers a distinct advantage in HPV-positive OPSCC by detecting viral DNA sequences rather than somatic mutations, potentially providing higher sensitivity for this specific cancer type [1]. NavDx clearance during chemoradiation correlates with treatment response, with >95% negative predictive value for complete response [1]. The assay provides 7-day turnaround time and requires no tissue sequencing, making it feasible for pre-treatment ordering [TEST-SPECIFIC]. Medicare covers NavDx under L38779 for HPV-associated oropharyngeal cancer surveillance, though commercial coverage varies significantly [TEST-SPECIFIC].\n- Caveats: Limited prospective data specifically validating treatment decisions based on HPV ctDNA results. No completed trials demonstrating that modifying therapy based on mid-treatment ctDNA clearance improves outcomes.\n\nOPTION B: Proceed with standard chemoradiation without ctDNA monitoring.\n- Evidence: Standard definitive chemoradiation remains the guideline-endorsed approach for T2N1 HPV-positive OPSCC with excellent outcomes. Treatment decisions can be based on established clinical and imaging response criteria without additional biomarker input.\n- Caveats: May miss opportunity for early treatment response assessment that could inform future surveillance strategies.\n\nOPTION C: Defer ctDNA testing until post-treatment surveillance phase.\n- Evidence: NavDx demonstrates 90.4% clinical sensitivity for detecting recurrent HPV-associated OPSCC with median 120-day lead time over imaging [1]. Post-treatment surveillance represents the most established use case for HPV ctDNA, with multiple ongoing de-intensification trials incorporating ctDNA endpoints [1].\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: \nBased on the available sources, it is unclear whether treatment modifications based on mid-therapy HPV ctDNA results improve survival outcomes in definitive chemoradiation patients, as no completed randomized trials have specifically addressed this question.\n\nEvidence from Other Indications:\nCross-indication data from colorectal [3,4,6], lung [5], Merkel cell [7], and bladder cancer [8] consistently demonstrate that ctDNA clearance during treatment and undetectable post-treatment levels correlate with improved outcomes. However, these studies used somatic mutation-based assays rather than viral DNA detection, limiting direct applicability to HPV ctDNA methodology.\n\nTEST-SPECIFIC NOTE: NavDx is a tumor-naïve HPV ctDNA assay with 90.4% sensitivity and 98.6% specificity, requiring only blood draw without tissue sequencing [1]. The 7-day turnaround time enables mid-treatment monitoring during the typical 7-week chemoradiation course.",
+      "expected_content": {
+        "must_mention": [
+          "HPV",
+          "head and neck",
+          "ctDNA"
+        ],
+        "should_mention": [
+          "NavDx",
+          "HPV ctDNA",
+          "treatment response"
+        ],
+        "bonus_mention": [
+          "tumor-naive",
+          "oropharyngeal",
+          "de-intensification trials"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "HPV ctDNA is a distinct analyte from somatic mutation-based ctDNA detection"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Tests knowledge beyond CRC/breast.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "WHAT THE EVIDENCE DOESN'T ADDRESS: \nBased on the available sources, it is unclear whether treatment modifications based ",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(treatment|therapy|regimen|p"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 2,
+        "mustMentionMiss": 1,
+        "shouldMentionHit": 3,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "HPV",
+          "ctDNA"
+        ],
+        "missing": [
+          "head and neck"
+        ],
+        "shouldMentionFound": [
+          "NavDx",
+          "HPV ctDNA",
+          "treatment response"
+        ],
+        "shouldMentionMissing": [],
+        "bonusFound": [
+          "oropharyngeal",
+          "de-intensification trials"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "Stage III CRC, already escalated to FOLFOXIRI after MRD+ finding post-resection. Now 4 cycles in, ctDNA still detectable. Patient is tolerating treatment. Is there any evidence on what to do when ctDNA doesn't clear on the most intensive regimen?",
+      "answer": "CLINICAL SCENARIO: Stage III CRC patient on FOLFOXIRI for 4 cycles after post-resection MRD positivity, ctDNA remains detectable despite intensive therapy.\n\nDECISION: Management approach when ctDNA persists on maximally intensive adjuvant chemotherapy.\n\nOPTION A: Continue current FOLFOXIRI regimen to planned completion.\n- Evidence: The CIRCULATE-Japan GALAXY study showed that sustained ctDNA clearance during adjuvant chemotherapy was associated with favorable disease-free survival and overall survival compared to those who remained ctDNA-positive [1]. However, the study did not specify optimal treatment duration for patients with persistent ctDNA positivity. Some patients may achieve delayed molecular response with continued treatment, though the kinetics of ctDNA clearance on intensive regimens like FOLFOXIRI have not been systematically studied.\n- Caveats: No data define the optimal number of cycles needed to achieve ctDNA clearance, or whether extending beyond standard duration improves outcomes in persistently MRD-positive patients.\n\nOPTION B: Switch to alternative systemic therapy or add targeted agents.\n- Evidence: The ongoing NCT03803553 trial is specifically designed for stage III colon cancer patients with detectable MRD and includes multiple experimental arms: FOLFIRI, nivolumab, and encorafenib/binimetinib/cetuximab combinations based on molecular features [8]. Based on the available sources, it is unclear whether switching regimens demonstrates superiority versus continuing current therapy in this setting, as no completed trials have directly addressed this question.\n- Caveats: Based on the available sources, it is unclear whether cross-resistance patterns between FOLFOX-based and FOLFIRI-based regimens from metastatic settings apply to the MRD-positive adjuvant setting.\n\nOPTION C: Clinical trial enrollment or transition to surveillance with serial MRD monitoring.\n- Evidence: The terminated Rapid 1 trial (NCT04786600) was specifically designed for ctDNA-guided therapeutic optimization, though it focused on refractory metastatic disease [5]. For this clinical scenario, enrollment in NCT03803553 may be appropriate if available, as it specifically addresses MRD-positive stage III patients [8]. Alternatively, transitioning to surveillance with serial ctDNA monitoring could inform timing of intervention at clinical recurrence, given that GALAXY data demonstrate ctDNA positivity correlates with shorter overall survival even after recurrence occurs [1].\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo prospective trial has directly compared continuing intensive chemotherapy versus switching regimens versus stopping therapy in patients with persistent ctDNA positivity after 3-4 cycles of treatment. The optimal threshold for clinical action when ctDNA levels remain stable versus rising during treatment has not been established. Additionally, there are no data on whether persistent low-level ctDNA positivity carries the same prognostic significance as high-level or rising ctDNA levels.",
+      "expected_content": {
+        "must_mention": [
+          "persistent ctDNA",
+          "FOLFOXIRI",
+          "treatment failure"
+        ],
+        "should_mention": [
+          "imaging",
+          "clinical trial",
+          "immunotherapy"
+        ],
+        "bonus_mention": [
+          "MSI status",
+          "checkpoint inhibitor",
+          "refractory"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "Persistent MRD positivity despite maximal chemotherapy is poorly characterized in the literature"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Edge case with limited evidence.",
+      "automated": {
+        "criterion3": {
+          "pass": false,
+          "score": 0,
+          "maxScore": 2,
+          "violations": [
+            {
+              "check": "forbidden_language",
+              "pattern": "(?<!\\bthat\\s)(?<!\\bwhether\\s)(?<!\\bof\\s)(?<!\\bfor\\s)(?<!\\babout\\s)(?<!\\bconsider\\s)\\bstop(ping)? (treatment|therapy|chemo)",
+              "matched": "stopping therapy",
+              "index": 2417,
+              "context": "herapy versus switching regimens versus stopping therapy in patients with persistent ctDNA posit"
+            }
+          ]
+        },
+        "criterion4": {
+          "pass": true,
+          "score": 1,
+          "maxScore": 1,
+          "violations": []
+        },
+        "automatedScore": 1
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 2,
+        "mustMentionMiss": 1,
+        "shouldMentionHit": 1,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "persistent ctDNA",
+          "FOLFOXIRI"
+        ],
+        "missing": [
+          "treatment failure"
+        ],
+        "shouldMentionFound": [
+          "clinical trial"
+        ],
+        "shouldMentionMissing": [
+          "imaging",
+          "immunotherapy"
+        ],
+        "bonusFound": [
+          "refractory"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Muscle-invasive bladder cancer, pT3N0, post-radical cystectomy. Considering ctDNA-guided immunotherapy based on what I've heard about IMvigor011. Is that trial readout available, and does it support MRD-guided atezolizumab?",
+      "answer": "CLINICAL SCENARIO: Muscle-invasive bladder cancer (pT3N0), post-radical cystectomy, considering ctDNA-guided adjuvant immunotherapy.\nDECISION: Whether to initiate atezolizumab based on ctDNA status.\n\nOPTION A: ctDNA-guided atezolizumab (if ctDNA-positive)\n- Evidence: The IMvigor011 trial results are now available (PMID: 41124204). This phase III randomized study evaluated ctDNA-guided adjuvant atezolizumab in muscle-invasive bladder cancer patients after radical cystectomy. Source [3] indicates this was a randomized trial evaluating ctDNA-guided adjuvant atezolizumab treatment specifically in MIBC patients. The trial represents the first prospective RCT data for MRD-directed immunotherapy in bladder cancer.\n- Guidelines: NCCN guidelines now reference ctDNA testing for bladder cancer in the MRD monitoring context, though specific guidance on ctDNA-guided therapy decisions may still be evolving.\n- Caveats: Access to ctDNA-guided therapy protocols may be limited outside of clinical trial settings, and cost considerations for both testing and extended immunotherapy duration need evaluation.\n\nOPTION B: Standard observation with ctDNA monitoring\n- Evidence: Contemporary analyses demonstrate that ctDNA has prognostic significance in bladder cancer patients, particularly those with lymph node involvement [2]. Based on the available sources, it is unclear whether serial monitoring provides significant lead time over imaging in bladder cancer specifically. For pT3N0 disease, standard surveillance with serial ctDNA monitoring allows for early intervention if molecular recurrence is detected.\n- Test considerations: The indexed evidence does not specifically address assay performance characteristics such as sensitivity and specificity in bladder MIBC. Signatera requires tumor tissue from the cystectomy specimen and has a 28-day initial turnaround time, with subsequent monitoring samples processed in 9 days.\n\nOPTION C: Clinical trial enrollment\n- Evidence: Active trials continue to evaluate MRD-directed approaches in bladder cancer. The MODERN trial (NCT05987241) is evaluating ctDNA-guided strategies in bladder cancer, and other immunotherapy-focused MRD trials may be available depending on institutional access.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: While IMvigor011 provides the first randomized evidence for ctDNA-guided adjuvant immunotherapy in bladder cancer, questions remain about optimal ctDNA thresholds for treatment decisions, duration of therapy, and cost-effectiveness compared to standard surveillance approaches.\n\nTEST-SPECIFIC NOTE: Signatera is covered by Medicare for bladder MIBC under LCDs L38779, L38822, L38835, and L38816 at $3,500. Commercial coverage varies significantly, with Aetna providing partial coverage and United Healthcare not covering the test. The IO Monitoring version specifically for immunotherapy response monitoring is covered by Medicare under L38779.",
+      "expected_content": {
+        "must_mention": [
+          "IMvigor011",
+          "bladder cancer",
+          "atezolizumab",
+          "MRD"
+        ],
+        "should_mention": [
+          "ctDNA-guided",
+          "muscle-invasive",
+          "adjuvant immunotherapy"
+        ],
+        "bonus_mention": [
+          "Signatera",
+          "CheckMate 274",
+          "nivolumab"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "IMvigor011 tested ctDNA-guided adjuvant atezolizumab in muscle-invasive urothelial carcinoma"
+          }
+        ],
+        "forbidden_facts": []
+      },
+      "notes": "Tests bladder cancer MRD landscape.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": true,
+          "score": 1,
+          "maxScore": 1,
+          "violations": []
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 4,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 3,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "IMvigor011",
+          "bladder cancer",
+          "atezolizumab",
+          "MRD"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "ctDNA-guided",
+          "muscle-invasive",
+          "adjuvant immunotherapy"
+        ],
+        "shouldMentionMissing": [],
+        "bonusFound": [
+          "Signatera"
+        ]
+      }
+    }
+  ]
+}

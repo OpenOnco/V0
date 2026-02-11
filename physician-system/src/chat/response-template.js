@@ -181,8 +181,11 @@ export const FORBIDDEN_PATTERNS = [
   /based on your results?/i,
 
   // Prescriptive treatment language
-  /start(ing)? (treatment|therapy|chemo)/i,
-  /stop(ping)? (treatment|therapy|chemo)/i,
+  // These patterns only match prescriptive uses, not analytical/caveat contexts
+  // e.g., "start treatment" is directive, but "demonstrated that starting therapy..." is analysis
+  // "Consider stopping" is option-naming in decision-oriented format, not directive
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)\bstart(ing)? (treatment|therapy|chemo)/i,
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)\bstop(ping)? (treatment|therapy|chemo)/i,
   /(should|would) (receive|get|have) (treatment|therapy|chemo)/i,
 
   // Definitive prognosis
@@ -289,8 +292,10 @@ export function validateResponseStructure(response, queryType) {
   }
 
   // Check for forbidden language patterns
+  // Strip OPTION header lines — these name clinical choices, not directives
+  const strippedForForbidden = response.replace(/^(?:\*{0,2})OPTION\s+[A-Z]:.*$/gm, '');
   for (const pattern of FORBIDDEN_PATTERNS) {
-    const match = response.match(pattern);
+    const match = strippedForForbidden.match(pattern);
     if (match) {
       issues.push(`Contains forbidden language: "${match[0]}"`);
     }

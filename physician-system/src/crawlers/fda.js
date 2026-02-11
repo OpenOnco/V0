@@ -11,6 +11,7 @@
 import { createHttpClient } from '../utils/http.js';
 import { createLogger } from '../utils/logger.js';
 import { query } from '../db/client.js';
+import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
 
 const logger = createLogger('mrd-fda');
 
@@ -219,6 +220,9 @@ async function addToGuidanceItems(item) {
         1,
       ]
     );
+    if (result.rows.length > 0) {
+      await embedAfterInsert(result.rows[0].id, 'fda');
+    }
     return result.rows.length > 0;
   } catch (error) {
     logger.warn('Failed to add FDA item', { id: item.source_id, error: error.message });

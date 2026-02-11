@@ -1,0 +1,9 @@
+{
+  "generated": "2026-02-09T00:00:00Z",
+  "sources": {
+    "nccn": { "label": "NCCN", "count": 14, "unit": "guidelines referenced", "color": "blue" },
+    "pubmed": { "label": "PubMed", "count": 847, "unit": "publications indexed", "color": "emerald" },
+    "asco": { "label": "ASCO", "count": 63, "unit": "abstracts tracked", "color": "violet" },
+    "trials": { "label": "ClinicalTrials.gov", "count": 42, "unit": "active MRD trials", "color": "amber" }
+  }
+}
