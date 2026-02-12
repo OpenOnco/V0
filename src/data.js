@@ -9647,10 +9647,10 @@ export const cgpTestData = [
     "numPublicationsCitations": "https://doi.org/10.1016/S2213-2600(18)30264-9 | Vendor-provided publication list (Dec 2025)",
     "isRUO": false,
     "isClinicalLDT": true,
-    "sampleRequirements": "FFPE Tissue; Fresh tissue fixed in neutral buffered formalin; 8 mL Pleural and ascitic fluids/Cerebrospinal fluid/Pericardial fluid (Streck Tube); 8 mL Blood (ctDNA + WBC, Streck Tube)",
-    "sampleRequirementsNotes": "Can test both tissue and blood samples. Multiple sample types supported per vendor.",
+    "sampleRequirements": "8 mL Blood (ctDNA + WBC, Streck Tube)",
+    "sampleRequirementsNotes": "Liquid biopsy test — blood draw only. Vendor originally provided platform-wide sample requirements including tissue; corrected per audit verification that OncoCompass Target is ctDNA/blood-only. OncoScreen products are the tissue-based tests.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Performance data and 129-paper publication list provided. Primary validation: BENEFIT trial (Lancet Respir Med 2018, PMID 30017884). 2026-01-13: Vendor verified by Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. 2 edits: (1) biomarkersReported updated to SNV, InDel, CNV, Fusion, MSI; (2) sampleRequirements added with multi-sample type capability."
+    "vendorRequestedChanges": "2025-01-01: Initial submission from Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. Performance data and 129-paper publication list provided. Primary validation: BENEFIT trial (Lancet Respir Med 2018, PMID 30017884). 2026-01-13: Vendor verified by Liankai Chi, PhD, Senior Marketing Manager, Burning Rock Dx. 2 edits: (1) biomarkersReported updated to SNV, InDel, CNV, Fusion, MSI; (2) sampleRequirements added with multi-sample type capability. 2026-02-12: Audit correction — sampleRequirements updated to blood-only; tissue/fluid requirements were platform-wide and belong to OncoScreen products."
   },
   {
     "id": "tds-25",
