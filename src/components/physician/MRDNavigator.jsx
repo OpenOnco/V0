@@ -246,7 +246,10 @@ function CiteRef({ nums, sources }) {
 }
 
 function Prose({ text, sources }) {
-  return text.split('\n').map((line, i) => {
+  // Pre-split: inject newlines before section headers so they render as separate blocks
+  const SECTION_RE = /(?<=\.[\s\u00A0]|[\]\)]\.\s)((?:OPTION [A-Z]|DECISION|CLINICAL SCENARIO|WHAT THE EVIDENCE|EVIDENCE GAPS?|TEST-SPECIFIC NOTE|COMPARISON|COVERAGE SUMMARY|GUIDELINE|CLINICAL CONSIDERATIONS|LIMITATIONS|REFERENCES):)/g;
+  const prepared = text.replace(SECTION_RE, '\n\n$1');
+  return prepared.split('\n').map((line, i) => {
     if (!line.trim()) return <div key={i} className="h-1.5" />;
     let parts = [], rest = line, k = 0;
     while (rest.length > 0) {
@@ -273,7 +276,7 @@ function Prose({ text, sources }) {
         rest = rest.slice(best + m[0].length);
       }
     }
-    const hdr = line.match(/^(CLINICAL SCENARIO|DECISION|OPTION [A-Z]|WHAT THE EVIDENCE|TEST-SPECIFIC NOTE|COMPARISON|COVERAGE SUMMARY|GUIDELINE|CLINICAL CONSIDERATIONS|LIMITATIONS):/);
+    const hdr = line.match(/^(CLINICAL SCENARIO|DECISION|OPTION [A-Z]|WHAT THE EVIDENCE|EVIDENCE GAPS?|TEST-SPECIFIC NOTE|COMPARISON|COVERAGE SUMMARY|GUIDELINE|CLINICAL CONSIDERATIONS|LIMITATIONS|REFERENCES):/);
     if (hdr) {
       // Re-parse only the body after the colon so citations get superscript treatment
       const colonIdx = line.indexOf(':');
@@ -296,7 +299,8 @@ function Prose({ text, sources }) {
           bodyRest = bodyRest.slice(best + m[0].length);
         }
       }
-      return <p key={i} className="my-1.5 text-[15px] leading-relaxed text-slate-700"><strong className="font-semibold text-slate-800">{line.slice(0, colonIdx + 1)}</strong>{bodyParts}</p>;
+      const isDecision = hdr[1] === 'DECISION';
+      return <p key={i} className={`${isDecision ? 'mb-2' : 'mt-4 mb-1'} text-[15px] leading-relaxed text-slate-700`}><strong className="font-semibold text-slate-800">{line.slice(0, colonIdx + 1)}</strong>{bodyParts}</p>;
     }
     if (line.match(/^- /))
       return <p key={i} className="my-0.5 text-[14px] leading-relaxed text-slate-600 pl-3">{parts}</p>;
