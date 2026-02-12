@@ -28,6 +28,10 @@ Thumbs.db
 # Test artifacts
 test-results/
 
+# Eval results (generated artifacts)
+eval/results/*.json
+eval/results/*.md
+
 # Guidelines data (PDFs restricted by ToS)
 data/guidelines/
 

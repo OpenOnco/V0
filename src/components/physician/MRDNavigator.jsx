@@ -533,43 +533,7 @@ export default function MRDNavigator({ testData = {}, onNavigate, currentPage })
 
   // ─── Input Box ──────────────────────────────────────────────────────────
 
-  const InputBox = ({ centered }) => (
-    <div className={`w-full max-w-2xl ${centered ? 'mx-auto' : ''} relative`}>
-      {showCtx && <CtxPopover />}
-      <div className={`border border-slate-200 rounded-2xl bg-white px-4 pt-3 pb-2 ${centered ? 'shadow-sm' : ''}`}>
-        <textarea ref={textareaRef} value={input} onChange={e => setInput(e.target.value)}
-          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); } }}
-          placeholder="What evidence are you looking for?"
-          disabled={loading}
-          rows={1}
-          className="w-full border-none outline-none resize-none text-[15px] text-slate-800 bg-transparent leading-relaxed min-h-[28px] max-h-[120px]"
-          onInput={e => { e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px'; }}
-        />
-        <div className="flex items-center justify-between mt-1.5">
-          <div className="flex items-center gap-2">
-            {ctxSet && (
-            <button onClick={() => setShowCtx(!showCtx)}
-              className={`text-xs font-medium px-2.5 py-1 rounded-lg border cursor-pointer transition-colors ${
-                showCtx
-                  ? 'border-slate-300 bg-slate-50 text-slate-700'
-                  : 'border-orange-300 bg-orange-50 text-orange-700'
-              }`}>
-              {[cancer, stage].filter(Boolean).join(' · ')}
-            </button>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => send(input)} disabled={!input.trim() || loading}
-              className={`w-[30px] h-[30px] rounded-[10px] border-none flex items-center justify-center text-base transition-all ${
-                input.trim() && !loading
-                  ? 'bg-slate-800 text-white cursor-pointer'
-                  : 'bg-slate-200 text-slate-400 cursor-default'
-              }`}>&#8593;</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  // InputBox removed — inlined at render sites to prevent textarea remounting on each keystroke
 
   // ─── Category Cards ─────────────────────────────────────────────────────
 
@@ -929,8 +893,43 @@ export default function MRDNavigator({ testData = {}, onNavigate, currentPage })
                       })}
                     </div>
 
-                    <InputBox centered />
-                    <p className="text-[10px] text-slate-400 text-center mt-3">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
+                    {/* Input box — inlined to avoid remounting on parent re-render */}
+                    <div className="w-full max-w-2xl mx-auto relative">
+                      {showCtx && <CtxPopover />}
+                      <div className="border border-slate-200 rounded-2xl bg-white px-4 pt-3 pb-2 shadow-sm">
+                        <textarea ref={textareaRef} value={input} onChange={e => setInput(e.target.value)}
+                          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); } }}
+                          placeholder="What evidence are you looking for?"
+                          disabled={loading}
+                          rows={1}
+                          className="w-full border-none outline-none resize-none text-[15px] text-slate-800 bg-transparent leading-relaxed min-h-[28px] max-h-[120px]"
+                          onInput={e => { e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px'; }}
+                        />
+                        <div className="flex items-center justify-between mt-1.5">
+                          <div className="flex items-center gap-2">
+                            {ctxSet && (
+                            <button onClick={() => setShowCtx(!showCtx)}
+                              className={`text-xs font-medium px-2.5 py-1 rounded-lg border cursor-pointer transition-colors ${
+                                showCtx
+                                  ? 'border-slate-300 bg-slate-50 text-slate-700'
+                                  : 'border-orange-300 bg-orange-50 text-orange-700'
+                              }`}>
+                              {[cancer, stage].filter(Boolean).join(' · ')}
+                            </button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => send(input)} disabled={!input.trim() || loading}
+                              className={`w-[30px] h-[30px] rounded-[10px] border-none flex items-center justify-center text-base transition-all ${
+                                input.trim() && !loading
+                                  ? 'bg-slate-800 text-white cursor-pointer'
+                                  : 'bg-slate-200 text-slate-400 cursor-default'
+                              }`}>&#8593;</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[15px] text-slate-400 text-center mt-3">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
                   </div>
 
                 </div>
@@ -1038,10 +1037,43 @@ export default function MRDNavigator({ testData = {}, onNavigate, currentPage })
                   </div>
                 )}
 
-                <div className="max-w-2xl mx-auto">
-                  <InputBox />
+                {/* Input box — inlined to avoid remounting on parent re-render */}
+                <div className="w-full max-w-2xl mx-auto relative">
+                  {showCtx && <CtxPopover />}
+                  <div className="border border-slate-200 rounded-2xl bg-white px-4 pt-3 pb-2">
+                    <textarea ref={textareaRef} value={input} onChange={e => setInput(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); } }}
+                      placeholder="What evidence are you looking for?"
+                      disabled={loading}
+                      rows={1}
+                      className="w-full border-none outline-none resize-none text-[15px] text-slate-800 bg-transparent leading-relaxed min-h-[28px] max-h-[120px]"
+                      onInput={e => { e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px'; }}
+                    />
+                    <div className="flex items-center justify-between mt-1.5">
+                      <div className="flex items-center gap-2">
+                        {ctxSet && (
+                        <button onClick={() => setShowCtx(!showCtx)}
+                          className={`text-xs font-medium px-2.5 py-1 rounded-lg border cursor-pointer transition-colors ${
+                            showCtx
+                              ? 'border-slate-300 bg-slate-50 text-slate-700'
+                              : 'border-orange-300 bg-orange-50 text-orange-700'
+                          }`}>
+                          {[cancer, stage].filter(Boolean).join(' · ')}
+                        </button>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => send(input)} disabled={!input.trim() || loading}
+                          className={`w-[30px] h-[30px] rounded-[10px] border-none flex items-center justify-center text-base transition-all ${
+                            input.trim() && !loading
+                              ? 'bg-slate-800 text-white cursor-pointer'
+                              : 'bg-slate-200 text-slate-400 cursor-default'
+                          }`}>&#8593;</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-2 text-center">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
+                <p className="text-[16px] text-slate-400 mt-2 text-center">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
               </div>
             )}
           </div>
