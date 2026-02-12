@@ -58,7 +58,7 @@ function parseArgs() {
 function loadQuestions(config) {
   const evalData = JSON.parse(readFileSync(join(__dirname, 'physician-questions.json'), 'utf8'));
 
-  let questions = [...(evalData.questions || []), ...(evalData.adversarial_questions || [])];
+  let questions = [...(evalData.questions || []), ...(evalData.context_aware_questions || []), ...(evalData.boundary_questions || []), ...(evalData.adversarial_questions || [])];
 
   // Skip out-of-scope questions
   questions = questions.filter(q => !q.out_of_scope);
@@ -68,9 +68,14 @@ function loadQuestions(config) {
     questions = questions.filter(q => q.category?.startsWith('adversarial'));
   }
 
-  // Filter by category
+  // Filter by category (supports prefix match with trailing *)
   if (config.category) {
-    questions = questions.filter(q => q.category === config.category);
+    if (config.category.endsWith('*')) {
+      const prefix = config.category.slice(0, -1);
+      questions = questions.filter(q => q.category?.startsWith(prefix));
+    } else {
+      questions = questions.filter(q => q.category === config.category);
+    }
   }
 
   // Apply limit
@@ -83,11 +88,13 @@ function loadQuestions(config) {
 // Chat endpoint caller
 // ---------------------------------------------------------------------------
 
-async function queryChatEndpoint(endpoint, query) {
+async function queryChatEndpoint(endpoint, query, filters = {}) {
+  const body = { query };
+  if (Object.keys(filters).length > 0) body.filters = filters;
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify(body),
   });
   if (!res.ok) {
     throw new Error(`Chat endpoint returned ${res.status}: ${await res.text()}`);
@@ -121,8 +128,9 @@ async function main() {
     process.stdout.write(`${label} ... `);
 
     try {
-      // Query the chat endpoint
-      const chatResponse = await queryChatEndpoint(config.endpoint, q.query);
+      // Build query with optional patient context prefix (simulates UI selection)
+      const fullQuery = (q.context_prefix || '') + q.query;
+      const chatResponse = await queryChatEndpoint(config.endpoint, fullQuery, q.filters || {});
       const answer = chatResponse.answer || '';
       const sources = chatResponse.sources || [];
 
@@ -147,6 +155,8 @@ async function main() {
         category: q.category,
         difficulty: q.difficulty,
         query: q.query,
+        context_prefix: q.context_prefix || null,
+        filters: q.filters || null,
         answer,
         sources,
         cdsResult,
@@ -213,6 +223,8 @@ async function main() {
       category: r.category,
       difficulty: r.difficulty,
       query: r.query,
+      context_prefix: r.context_prefix || null,
+      filters: r.filters || null,
       answer: r.answer,
       sources: (r.sources || []).map(s => ({
         index: s.index,

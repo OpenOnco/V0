@@ -154,12 +154,22 @@ const INTENT_EXTRACTION_PROMPT = `Analyze this clinical question about MRD/ctDNA
 
 Return JSON with:
 - query_type: "clinical_guidance" | "trial_evidence" | "test_comparison" | "general"
+- out_of_scope: null if in-scope, or one of: "non_medical" | "medical_non_oncology" | "oncology_non_mrd" | "test_selection" | "coverage_billing" | "patient_facing"
 - cancer_types: Array of cancer types mentioned (colorectal, breast, lung, etc.)
 - clinical_settings: Array like "surveillance", "treatment_decision", "adjuvant_therapy"
 - test_names: Specific test names mentioned (Signatera, Guardant, etc.)
 - time_context: "current" | "recent" | "any"
 - evidence_focus: "guidelines" | "trials" | "all"
 - keywords: Array of key medical terms for text search
+
+SCOPE CLASSIFICATION (for out_of_scope field):
+- null: Question is about interpreting MRD/ctDNA results or clinical decisions based on those results → IN SCOPE
+- "non_medical": Not a medical question at all (cooking, coding, sports, etc.)
+- "medical_non_oncology": Medical but not oncology (cardiology, neurology, infectious disease, etc.)
+- "oncology_non_mrd": Oncology but not about MRD/ctDNA (first-line treatment selection, CGP interpretation, drug dosing, etc.)
+- "test_selection": Which MRD test to order, assay specs, sensitivity comparisons
+- "coverage_billing": Insurance, Medicare, LCD, payer policies, reimbursement
+- "patient_facing": User identifies as a patient (not a physician) asking about their own results
 
 IMPORTANT for evidence_focus:
 - Use "guidelines" when query mentions NCCN, ASCO, ESMO, SITC, guideline, recommendation, or asks "what does X say"
@@ -220,6 +230,39 @@ async function extractQueryIntent(queryText) {
     evidence_focus: 'all',
     keywords: queryText.toLowerCase().split(/\s+/).filter(w => w.length > 3),
   };
+}
+
+// ============================================
+// OUT-OF-SCOPE REDIRECT MESSAGES
+// ============================================
+
+/**
+ * Build a clear, helpful redirect message for out-of-scope queries.
+ * Returns null if the query should be passed through to normal handling.
+ */
+function buildScopeRedirect(scopeType, queryText) {
+  switch (scopeType) {
+    case 'non_medical':
+      return 'This system is a clinical decision support tool for physicians interpreting MRD (Molecular Residual Disease) and ctDNA test results in solid tumors. Your question doesn\'t appear to be related to this clinical area. If you have a question about MRD/ctDNA testing for a specific cancer type, please ask and I\'ll do my best to help.';
+
+    case 'medical_non_oncology':
+      return 'This system is specifically designed to help physicians interpret MRD/ctDNA test results and make clinical decisions in oncology. Your question appears to be outside the oncology scope of this tool. For non-oncology clinical questions, please consult appropriate specialty resources or guidelines. If you have a question about MRD/ctDNA testing in a cancer patient, I\'d be happy to help.';
+
+    case 'oncology_non_mrd':
+      return 'This system focuses specifically on clinical decisions when MRD/ctDNA test results are available — such as treatment escalation or de-escalation based on ctDNA status, surveillance strategies, and interpreting molecular relapse. Your question appears to be about oncology treatment selection or management that isn\'t directly tied to MRD/ctDNA results. For treatment guidelines, I\'d suggest consulting NCCN.org, ASCO.org, or your institutional protocols. If you have a question about how MRD/ctDNA results should factor into your clinical decision, please ask.';
+
+    case 'test_selection':
+      return 'This system helps physicians interpret MRD/ctDNA test results and make clinical decisions based on those results, but test selection and technical specifications (sensitivity, sample requirements, turnaround time) fall outside our scope. For detailed test comparisons, I\'d recommend visiting OpenOnco.org/monitor for MRD test profiles, or contacting the test manufacturers directly. Once you have MRD results in hand, I can help with clinical interpretation and decision-making.';
+
+    case 'coverage_billing':
+      return 'Insurance coverage, Medicare policies, LCD numbers, and reimbursement questions fall outside the scope of this clinical evidence tool. For coverage information, I\'d recommend visiting OpenOnco.org for payer coverage databases, or contacting the test manufacturer\'s billing support team. If you have a clinical question about how to interpret MRD/ctDNA results for your patient, I\'d be happy to help with that.';
+
+    case 'patient_facing':
+      return 'This system is designed for healthcare professionals, not for direct patient use. I understand receiving test results can be concerning, and I want to make sure you get the best guidance. Please discuss your MRD/ctDNA test results with your oncologist or care team — they can interpret the results in the full context of your medical history, imaging, and treatment plan. If you need help finding a specialist, your primary care physician can provide a referral.';
+
+    default:
+      return null; // Pass through to normal handling
+  }
 }
 
 // Payer/insurance source types — NEVER retrieve these (out of scope)
@@ -1300,6 +1343,23 @@ async function handleMRDChat(req, res) {
     // Step 1: Extract query intent (Phase 5)
     const intent = await extractQueryIntent(queryText);
 
+    // Step 1a: Scope gate — redirect clearly out-of-scope queries before search
+    if (intent.out_of_scope) {
+      const scopeMessage = buildScopeRedirect(intent.out_of_scope, queryText);
+      if (scopeMessage) {
+        logger.info('Out-of-scope query redirected', { scope: intent.out_of_scope });
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({
+          success: true,
+          answer: scopeMessage,
+          sources: [],
+          relatedItems: [],
+          disclaimer: MEDICAL_DISCLAIMER,
+          meta: { outOfScope: intent.out_of_scope },
+        }));
+      }
+    }
+
     // Step 1b: Match decision tree scenario
     const matchedScenario = findMatchingScenario(intent, queryText);
 
@@ -1313,7 +1373,7 @@ async function handleMRDChat(req, res) {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({
         success: true,
-        answer: 'I could not find specific guidance on this topic in the database. This may be an emerging area where evidence is still being developed, or the topic may not be directly related to MRD testing in solid tumors.',
+        answer: 'This question may fall outside the scope of this tool. This system is designed to help physicians interpret MRD/ctDNA test results and make clinical decisions based on those results. If you have a question about MRD testing in a specific cancer type, I\'d be happy to help. For test comparisons or ordering, visit OpenOnco.org.',
         sources: [],
         relatedItems: [],
         disclaimer: MEDICAL_DISCLAIMER,
