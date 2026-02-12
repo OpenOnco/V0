@@ -122,28 +122,28 @@ function getQuestions(ctx, hasMsgs) {
   const { cancer, txPhase } = ctx;
   const c = cancer || '';
   if (hasMsgs) return [
-    'What trials are actively enrolling?',
-    cancer ? `When should I escalate therapy in ${c}?` : 'When should I escalate based on ctDNA?',
-    cancer ? `Surveillance strategy for ${c}?` : 'Optimal surveillance intervals?',
+    cancer ? `What trials are actively enrolling for ${c}?` : 'What MRD-guided trials are actively enrolling in CRC?',
+    cancer ? `When should I escalate therapy in ${c}?` : 'When should I escalate therapy based on ctDNA in breast cancer?',
+    cancer ? `Surveillance strategy for ${c}?` : 'ctDNA surveillance intervals in NSCLC?',
   ];
   if (txPhase === 'Post-surgical' && cancer)
     return [`Should I escalate after ctDNA+ in ${c}?`, `When to draw first ctDNA post-resection in ${c}?`, `Adjuvant therapy options if ctDNA persists?`];
   if (txPhase === 'Post-surgical')
-    return ['Should I escalate after ctDNA detection?', 'When to draw first ctDNA post-resection?', 'Adjuvant therapy if ctDNA persists?'];
+    return ['Should I escalate after ctDNA detection in CRC?', 'When to draw first ctDNA post-resection in colorectal cancer?', 'Adjuvant therapy if ctDNA persists in breast cancer?'];
   if (txPhase === 'Neoadjuvant')
-    return [cancer ? `Neoadjuvant response monitoring in ${c}?` : 'Neoadjuvant response monitoring with ctDNA?', 'Can ctDNA guide surgical timing?', 'Switch therapy if ctDNA doesn\'t clear?'];
+    return [cancer ? `Neoadjuvant response monitoring in ${c}?` : 'Neoadjuvant response monitoring with ctDNA in rectal cancer?', 'Can ctDNA guide surgical timing in CRC?', 'Switch therapy if ctDNA doesn\'t clear in breast cancer?'];
   if (txPhase === 'Surveillance' && cancer)
     return [`Surveillance intervals for ${c}?`, `Can I de-escalate if ctDNA stays negative in ${c}?`, `ctDNA vs imaging for recurrence in ${c}?`];
   if (txPhase === 'Surveillance')
-    return ['How often should I retest ctDNA?', 'Can I de-escalate if ctDNA stays negative?', 'ctDNA vs imaging for recurrence detection?'];
+    return ['How often should I retest ctDNA in colorectal cancer?', 'Can I de-escalate if ctDNA stays negative in breast cancer?', 'ctDNA vs imaging for recurrence detection in NSCLC?'];
   if (txPhase === 'Adjuvant (active)')
-    return [cancer ? `Should I stop adjuvant if ctDNA clears in ${c}?` : 'Stop adjuvant if ctDNA clears?', 'Duration of therapy guided by ctDNA?', 'Escalation after ctDNA persistence?'];
+    return [cancer ? `Should I stop adjuvant if ctDNA clears in ${c}?` : 'Stop adjuvant if ctDNA clears in stage III CRC?', 'Duration of therapy guided by ctDNA in colorectal cancer?', 'Escalation after ctDNA persistence in breast cancer?'];
   if (cancer)
     return [`ctDNA positive in ${c} — what are my options?`, `ctDNA negative in ${c} — can I de-escalate?`, `NCCN on ctDNA-guided therapy in ${c}?`];
   return [
-    'My patient is ctDNA positive — what are my options?',
-    'My patient is ctDNA negative — can I safely de-escalate?',
-    'NCCN on ctDNA-guided treatment decisions',
+    'ctDNA positive in colorectal cancer — what are my options?',
+    'ctDNA negative in breast cancer — can I de-escalate?',
+    'NCCN on ctDNA-guided therapy in lung cancer?',
   ];
 }
 
