@@ -1,5 +1,5 @@
 #!/bin/bash
-# OpenOnco Release: full test suite → push develop to main → openonco.org
+# OpenOnco Release: full test suite → merge develop into main → openonco.org
 
 set -e
 cd "$(dirname "$0")"
@@ -11,7 +11,12 @@ echo ""
 echo "✅ Tests passed. Pushing to production..."
 git add -A
 git commit -m "${1:-release}" --allow-empty
-git push origin develop:main
+
+git checkout main
+git pull origin main --ff-only
+git merge develop --no-edit
+git push origin main
+git checkout develop
 
 echo ""
 echo "🚀 Released to openonco.org!"
