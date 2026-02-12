@@ -183,6 +183,12 @@ kk
 restore*.sh
 ~$*
 /NCCN/
+plan.md
+
+# Screenshots (session artifacts)
+*.png
+!src/**/*.png
+!public/**/*.png
 
 # MRD Guidance Monitor - watched files (PDFs are licensed/large)
 daemon/watched-files/**/*.pdf
