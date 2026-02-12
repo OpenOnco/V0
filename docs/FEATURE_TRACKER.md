@@ -19,7 +19,10 @@
 
 | Feature | Stage | Notes | Since |
 |---------|-------|-------|-------|
-| Unified weekly triage — Railway deploy | needs-testing | Code on main. Still needs `railway up -d` in test-data-tracker/ so aggregation cron runs next Monday. | 2026-02-10 |
+| Physician scope gate | shipped | Out-of-scope queries (non-medical, non-oncology, patient-facing, coverage, test selection) get explicit redirects instead of generic fallback. 10 boundary red-team tests added. | 2026-02-12 |
+| Physician eval C9 | shipped | Template prose, citation validator tuning, context-aware questions. 90% pass, 8.6 avg. | 2026-02-11 |
+| Physician portal 1-2-3 redesign | shipped | Step-based landing page (Explore → Coverage → Evidence). | 2026-02-11 |
+| Unified weekly triage — Railway deploy | shipped | Deployed 2026-02-12. Aggregation cron active (Mon 12:30 AM PT). 9 scheduled jobs confirmed. | 2026-02-12 |
 | Physician digest system | needs-testing | Migration 010 applied. Still needs E2E test: subscribe, confirm, trigger draft, receive email. | 2026-02-06 |
 | NIH RePORTER crawler | needs-testing | Code shipped to prod. First real run will be Sunday 11 PM cron. Verify grant store creation and digest integration. | 2026-02-06 |
 

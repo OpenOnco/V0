@@ -930,7 +930,7 @@ export default function MRDNavigator({ testData = {}, onNavigate, currentPage })
                     </div>
 
                     <InputBox centered />
-                    <p className="text-[10px] text-slate-400 text-center mt-3">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
+                    <p className="text-[15px] text-slate-400 text-center mt-3">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
                   </div>
 
                 </div>
@@ -1041,7 +1041,7 @@ export default function MRDNavigator({ testData = {}, onNavigate, currentPage })
                 <div className="max-w-2xl mx-auto">
                   <InputBox />
                 </div>
-                <p className="text-[11px] text-slate-400 mt-2 text-center">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
+                <p className="text-[16px] text-slate-400 mt-2 text-center">Clinical decision support · Not a substitute for clinical judgment · Claude is AI and can make mistakes</p>
               </div>
             )}
           </div>
