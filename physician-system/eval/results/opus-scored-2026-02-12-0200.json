@@ -1,0 +1,117 @@
+{
+  "timestamp": "2026-02-12T02:00:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-12-0144.json",
+  "summary": {
+    "averageScore": 8.6,
+    "passRate": "9/10",
+    "passPercentage": 90,
+    "averageAutomated": 2.9,
+    "averageLLM": 5.7,
+    "perDimension": {
+      "accuracy": 1.6,
+      "completeness": 1.7,
+      "evidence_quality": 1.4,
+      "automation_bias_mitigation": 1.0
+    },
+    "perDifficulty": {
+      "standard": { "average": 9.5, "count": 4 },
+      "challenging": { "average": 8.0, "count": 6 }
+    },
+    "failures": [
+      {
+        "id": 5,
+        "score": 7,
+        "issues": "c-TRAK TN assay misattribution (Signatera vs RaDaR). Missing 'molecular relapse' term. Automated C4 penalty for evidence_levels. Limited HR+ specific sources."
+      }
+    ],
+    "systemicIssues": [
+      "Non-CRC cancer types have limited RAG source diversity, causing cross-indication contamination",
+      "Citation number errors (Q6: endometrial paper [5] cited for NSCLC claim instead of PROPHET [6])",
+      "Study-assay misattribution in c-TRAK TN (Q5: Signatera vs actual RaDaR/Inivata)",
+      "Template prose improvements are working well — responses read as flowing clinical reasoning"
+    ]
+  },
+  "results": [
+    {
+      "id": 1,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent CRC escalation response. GALAXY, IDEA, CIRCULATE-US, CLAUDIA all correctly cited. No fabrications."
+    },
+    {
+      "id": 2,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Strong de-escalation response with rectal-specific biology nuance. IDEA HR 1.16 accurate. CAPOX vs FOLFOX distinction correct."
+    },
+    {
+      "id": 3,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 1, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "DYNAMIC correctly cited (PMID 35657320). Minor accuracy issue: T4a described as 'not meeting traditional high-risk criteria' when T4 IS a high-risk feature per NCCN."
+    },
+    {
+      "id": 4,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "c-TRAK TN and PERSEVERE correctly described. Missing olaparib/BRCA and KEYNOTE-522. RAG noise in sources [4-6] but response filters appropriately."
+    },
+    {
+      "id": 5,
+      "automated": { "criterion3": 2, "criterion4": 0, "subtotal": 2 },
+      "llm": { "accuracy": 1, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 5 },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL: c-TRAK TN assay misattributed as Signatera (actual: RaDaR/Inivata). Missing 'molecular relapse' and HR+ specific lead time data. Automated C4 penalty."
+    },
+    {
+      "id": 6,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 1, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "ADAURA facts correct. Citation [5] (endometrial cancer RUBY trial) misattributed for NSCLC ctDNA claim — should have cited [6] (PROPHET). MERMAID-1 exclusion of EGFR+ properly noted."
+    },
+    {
+      "id": 7,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent practical monitoring response. GALAXY clearance dynamics well-characterized. Two balanced options with clear clinical reasoning."
+    },
+    {
+      "id": 8,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 1, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "Missing key distinction that HPV ctDNA is a distinct analyte from somatic mutation-based ctDNA. NavDx described as tumor-naive but mechanism not explained. Honest about evidence gaps."
+    },
+    {
+      "id": 9,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "Honest about sparse literature for persistent MRD+. Missing MSI status testing, imaging workup, and targeted therapy considerations."
+    },
+    {
+      "id": 10,
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "Honest about IMvigor011 data not being in evidence set. Missing CheckMate 274/nivolumab. AMPLIFY-201 source irrelevant to bladder cancer."
+    }
+  ]
+}
