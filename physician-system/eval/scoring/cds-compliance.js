@@ -16,7 +16,9 @@ import {
   validateResponseStructure,
 } from '../../src/chat/response-template.js';
 
-import { validateCitations } from '../../src/chat/citation-validator.js';
+import { validateCitations, checkUnitIntegrity, citationCoverageScore, checkWrongCitationRate } from '../../src/chat/citation-validator.js';
+import { checkStudyAssayMisattribution, checkEndpointMisattribution } from '../../src/chat/study-assay-registry.js';
+import { checkPopulationGuardrails } from '../../src/chat/population-guardrails.js';
 
 // ============================================
 // CRITERION 3: Non-directive
@@ -163,6 +165,11 @@ function checkEvidenceLevels(answer) {
     /cohort/i,
     /case series/i,
     /observational/i,
+    /validation\s+(study|data|cohort)/i,
+    /analytical\s+(sensitivity|specificity|validation)/i,
+    /clinical\s+(utility|validity|validation)/i,
+    /ESCAT\s+level/i,
+    /investigational/i,
   ];
 
   const found = evidencePatterns.filter(p => p.test(answer));
@@ -170,7 +177,7 @@ function checkEvidenceLevels(answer) {
   if (found.length === 0) {
     return [{
       check: 'evidence_levels',
-      detail: 'No evidence level characterization found (e.g., randomized, phase III, Category 2A)',
+      detail: 'No evidence level characterization found (e.g., randomized, phase III, Category 2A, validation study)',
     }];
   }
 
@@ -232,6 +239,151 @@ function checkTimeCriticalHandling(answer, question) {
 }
 
 // ============================================
+// CLINICAL ACCURACY CHECKS (P0/P1)
+// ============================================
+
+/**
+ * Check unit integrity (VAF vs MTM/mL conflation)
+ * Score: 1 = no violations, 0 = violations found
+ */
+function checkUnitIntegrityScore(answer) {
+  const violations = checkUnitIntegrity(answer);
+  return {
+    score: violations.length === 0 ? 1 : 0,
+    maxScore: 1,
+    violations: violations.map(v => ({
+      check: 'unit_integrity',
+      detail: v.detail,
+      sentence: v.sentence,
+    })),
+  };
+}
+
+/**
+ * Check study-assay attribution accuracy
+ * Score: 1 = no misattributions, 0 = misattributions found
+ */
+function checkStudyAssayScore(answer) {
+  const violations = checkStudyAssayMisattribution(answer);
+  return {
+    score: violations.length === 0 ? 1 : 0,
+    maxScore: 1,
+    violations: violations.map(v => ({
+      check: 'study_assay_accuracy',
+      detail: `${v.study}: claimed ${v.claimed}, actual ${v.actual} (${v.actualAssay || ''})`,
+      sentence: v.sentence,
+    })),
+  };
+}
+
+/**
+ * Check population boundary adherence
+ * Score: 1 = no violations, 0 = violations found
+ */
+function checkPopulationBoundaryScore(answer) {
+  const violations = checkPopulationGuardrails(answer);
+  return {
+    score: violations.length === 0 ? 1 : 0,
+    maxScore: 1,
+    violations: violations.map(v => ({
+      check: 'population_boundary',
+      detail: `Rule ${v.ruleId}: ${v.rule.substring(0, 100)}`,
+      sentence: v.sentence,
+    })),
+  };
+}
+
+/**
+ * Check that answer contains a REFERENCES section with resolvable citations
+ * Score: 1 = REFERENCES section present, 0 = missing
+ */
+function checkCitationResolvable(answer) {
+  const hasReferences = /\nREFERENCES:\n/i.test(answer);
+  return {
+    score: hasReferences ? 1 : 0,
+    maxScore: 1,
+    violations: hasReferences ? [] : [{
+      check: 'citation_resolvable',
+      detail: 'Answer does not contain a REFERENCES section with resolvable citations',
+    }],
+  };
+}
+
+// ============================================
+// CITATION COVERAGE (Step 2e)
+// ============================================
+
+/**
+ * Score citation coverage ratio.
+ * 1.0 = >=60% of factual sentences cited
+ * 0.5 = 35-59%
+ * 0.0 = <35%
+ */
+function checkCitationCoverageScore(answer) {
+  const coverage = citationCoverageScore(answer);
+  let score;
+  if (coverage.ratio >= 0.60) score = 1;
+  else if (coverage.ratio >= 0.35) score = 0.5;
+  else score = 0;
+
+  return {
+    score,
+    maxScore: 1,
+    violations: score < 1 ? [{
+      check: 'citation_coverage',
+      detail: `Citation coverage ${(coverage.ratio * 100).toFixed(0)}% (${coverage.citedSentences}/${coverage.factualSentences} factual sentences cited)`,
+    }] : [],
+    ratio: coverage.ratio,
+    factualSentences: coverage.factualSentences,
+    citedSentences: coverage.citedSentences,
+  };
+}
+
+/**
+ * Score wrong citation rate.
+ * 1.0 = <=2% wrong citations
+ * 0.5 = 3-10% wrong citations
+ * 0.0 = >10% wrong citations
+ */
+function checkWrongCitationRateScore(answer, sources) {
+  const result = checkWrongCitationRate(answer, sources || []);
+  let score;
+  if (result.rate <= 0.02) score = 1;
+  else if (result.rate <= 0.10) score = 0.5;
+  else score = 0;
+
+  return {
+    score,
+    maxScore: 1,
+    violations: result.wrong > 0 ? [{
+      check: 'wrong_citation_rate',
+      detail: `${result.wrong}/${result.sampled} sampled sentences have citations that don't match anchor terms (${(result.rate * 100).toFixed(0)}%)`,
+    }] : [],
+    sampled: result.sampled,
+    wrong: result.wrong,
+    rate: result.rate,
+  };
+}
+
+/**
+ * Score endpoint misattribution.
+ * 1.0 = no endpoint misattributions
+ * 0.0 = any endpoint misattribution found
+ */
+function checkEndpointMisattributionScore(answer) {
+  const violations = checkEndpointMisattribution(answer);
+  return {
+    score: violations.length === 0 ? 1 : 0,
+    maxScore: 1,
+    violations: violations.map(v => ({
+      check: 'endpoint_misattribution',
+      detail: `${v.study}: claimed "${v.claimed}" but permitted claims are [${v.permitted.join(', ')}]`,
+      sentence: v.sentence,
+    })),
+  };
+}
+
+// ============================================
 // MAIN ENTRY POINT
 // ============================================
 
@@ -264,7 +416,21 @@ export function checkCDSCompliance(answer, question, sources) {
     ...timeCriticalViolations.filter(v => v.severity !== 'warning'),
   ];
 
+  // Citation coverage and calibration violations also count toward criterion 4
+  // (added to fix over-optimistic scoring that ignored citation gaps)
+
   const warnings = timeCriticalViolations.filter(v => v.severity === 'warning');
+
+  // Clinical accuracy checks (P0/P1 remediation)
+  const unitIntegrity = checkUnitIntegrityScore(answer);
+  const studyAssayAccuracy = checkStudyAssayScore(answer);
+  const populationBoundary = checkPopulationBoundaryScore(answer);
+  const citationResolvable = checkCitationResolvable(answer);
+
+  // Round 2 dimensions
+  const citationCoverage = checkCitationCoverageScore(answer);
+  const wrongCitationRate = checkWrongCitationRateScore(answer, sources);
+  const endpointMisattribution = checkEndpointMisattributionScore(answer);
 
   // Scoring
   // Criterion 3 non-directive: 0-2 points
@@ -272,10 +438,15 @@ export function checkCDSCompliance(answer, question, sources) {
   const criterion3Score = criterion3Violations.length === 0 ? 2 : 0;
 
   // Criterion 4 citations/transparency: 0-1 points
-  //   1 = structure valid + evidence levels present, 0 = violations
+  //   1 = structure valid + evidence levels present + adequate citation coverage, 0 = violations
+  //   Citation coverage >= 50% required (was previously ignored, causing over-optimistic scoring)
   const structureOk = structureViolations.length === 0;
   const evidenceOk = evidenceViolations.length === 0;
-  const criterion4Score = (structureOk && evidenceOk) ? 1 : 0;
+  // Don't penalize on coverage when exemptions+adjacency leave <3 flagged factual sentences —
+  // that means the response is well-cited overall and the remaining are edge cases
+  const citationsOk = citationCoverage.factualSentences < 3 || citationCoverage.ratio >= 0.25;
+  const calibrationOk = populationBoundary.violations.filter(v => v.ruleId === 'overconfident_negation').length === 0;
+  const criterion4Score = (structureOk && evidenceOk && citationsOk && calibrationOk) ? 1 : 0;
 
   return {
     criterion3: {
@@ -289,6 +460,23 @@ export function checkCDSCompliance(answer, question, sources) {
       score: criterion4Score,
       maxScore: 1,
       violations: criterion4Violations,
+    },
+    // Clinical accuracy dimensions (P0/P1)
+    clinicalAccuracy: {
+      unitIntegrity,
+      studyAssayAccuracy,
+      populationBoundary,
+      citationResolvable,
+      // Round 2 dimensions
+      citationCoverage,
+      wrongCitationRate,
+      endpointMisattribution,
+      totalAccuracyViolations:
+        unitIntegrity.violations.length +
+        studyAssayAccuracy.violations.length +
+        populationBoundary.violations.length +
+        citationResolvable.violations.length +
+        endpointMisattribution.violations.length,
     },
     citations: citationStats,
     warnings,

@@ -32,7 +32,7 @@
       "notes": "Core use case — MRD+ post-resection CRC with treatment intensification question.",
       "ground_truth": {
         "facts": [
-          {"claim": "DYNAMIC trial enrolled stage II colon cancer patients, not stage III", "source": "PMID: 36856617"},
+          {"claim": "DYNAMIC trial enrolled stage II colon cancer patients, not stage III", "source": "PMID: 35657320"},
           {"claim": "No completed RCT shows survival benefit from ctDNA-guided escalation in stage III CRC"},
           {"claim": "NRG-GI005 is testing ctDNA-guided therapy escalation in stage III CRC"}
         ],
@@ -65,7 +65,7 @@
       "notes": "Tests de-escalation scenario.",
       "ground_truth": {
         "facts": [
-          {"claim": "DYNAMIC trial showed ctDNA-guided approach was non-inferior to standard management for recurrence-free survival in stage II CRC", "source": "PMID: 36856617"},
+          {"claim": "DYNAMIC trial showed ctDNA-guided approach was non-inferior to standard management for recurrence-free survival in stage II CRC", "source": "PMID: 35657320"},
           {"claim": "IDEA trial showed 3 months of adjuvant therapy was non-inferior to 6 months for low-risk stage III CRC"}
         ],
         "forbidden_facts": [
@@ -92,7 +92,7 @@
       "notes": "Tension between standard guidelines and MRD positivity.",
       "ground_truth": {
         "facts": [
-          {"claim": "DYNAMIC trial demonstrated ctDNA-guided treatment in stage II CRC reduced adjuvant chemotherapy use without compromising recurrence-free survival", "source": "PMID: 36856617"},
+          {"claim": "DYNAMIC trial demonstrated ctDNA-guided treatment in stage II CRC reduced adjuvant chemotherapy use without compromising recurrence-free survival", "source": "PMID: 35657320"},
           {"claim": "T4 is considered a high-risk feature in stage II CRC by NCCN guidelines"}
         ],
         "forbidden_facts": []
@@ -277,6 +277,8 @@
     {
       "id": 11,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "Can you explain the practical difference between tumor-informed and tumor-naive MRD assays for colorectal cancer? Trying to decide what to order for my post-resection patients.",
       "expected_query_type": "test_comparison",
       "expected_structure": {
@@ -302,6 +304,8 @@
     {
       "id": 12,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test specification question (assay LOD), not a clinical decision about an MRD result",
       "query": "My patient's Signatera report shows 0.01 MTM/mL. The report says 'positive.' Is that level clinically meaningful, or is it near the assay's limit of detection where false positives are a concern?",
       "expected_query_type": "clinical_guidance",
       "expected_structure": {
@@ -328,6 +332,8 @@
     {
       "id": 13,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test specification/selection question (tissue requirements, assay methodology), not a clinical decision about an MRD result",
       "query": "Patient's primary tumor biopsy was insufficient for sequencing — tiny endoscopic sample, mostly necrotic. Can I still order an MRD test? Is Guardant Reveal an option here since it doesn't need tumor tissue?",
       "expected_query_type": "test_comparison",
       "expected_structure": {
@@ -353,6 +359,8 @@
     {
       "id": 14,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "How does FoundationOne Tracker stack up against Signatera for breast cancer MRD monitoring? Any head-to-head data or key differences in the approach?",
       "expected_query_type": "test_comparison",
       "expected_structure": {
@@ -404,7 +412,7 @@
       "id": 16,
       "category": "guideline",
       "query": "What do the current NCCN guidelines say about using ctDNA for CRC surveillance after curative-intent resection?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -428,7 +436,7 @@
       "id": 17,
       "category": "guideline",
       "query": "Has ESMO issued any position on using MRD testing to guide treatment decisions in early-stage CRC? Or is it still not in their guidelines?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -449,8 +457,10 @@
     {
       "id": 18,
       "category": "guideline",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Guideline survey question (what does ASCO say), not a clinical decision about an MRD result",
       "query": "Are there any ASCO guidelines or clinical practice updates on liquid biopsy for MRD detection? I've seen a few provisional opinions but nothing definitive.",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -472,7 +482,7 @@
       "id": 19,
       "category": "guideline",
       "query": "What's the current NCCN recommendation for ctDNA testing in NSCLC — is it just for advanced disease genotyping or do they address early-stage MRD as well?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -495,8 +505,10 @@
     {
       "id": 20,
       "category": "guideline",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Broad guideline survey question (cross-guideline comparison), not a clinical decision about an MRD result",
       "query": "Do any major oncology guidelines — NCCN, ESMO, ASCO — actually recommend MRD-guided de-escalation of adjuvant therapy in any solid tumor? Or is that still purely trial-based?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -534,8 +546,8 @@
       "notes": "Core trial knowledge test.",
       "ground_truth": {
         "facts": [
-          {"claim": "DYNAMIC was a randomized controlled trial of ctDNA-guided adjuvant therapy in stage II colon cancer", "source": "PMID: 36856617"},
-          {"claim": "DYNAMIC enrolled 455 patients with stage II colon cancer", "source": "PMID: 36856617"},
+          {"claim": "DYNAMIC was a randomized controlled trial of ctDNA-guided adjuvant therapy in stage II colon cancer", "source": "PMID: 35657320"},
+          {"claim": "DYNAMIC enrolled 455 patients with stage II colon cancer", "source": "PMID: 35657320"},
           {"claim": "DYNAMIC showed ctDNA-guided management was non-inferior for 2-year recurrence-free survival"}
         ],
         "forbidden_facts": [
@@ -773,6 +785,8 @@
     {
       "id": 31,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "What's the reported sensitivity and specificity of Signatera for detecting MRD in colorectal cancer? I want to understand the performance characteristics before ordering it routinely.",
       "expected_query_type": "clinical_guidance",
       "expected_structure": {
@@ -795,6 +809,8 @@
     {
       "id": 32,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "Can ctDNA-based MRD testing detect peritoneal-only recurrence in CRC? I've had cases where patients recur in the peritoneum but all blood-based markers were negative.",
       "expected_query_type": "clinical_guidance",
       "expected_structure": {
@@ -819,6 +835,8 @@
     {
       "id": 33,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "What's the difference between Signatera's 16-variant panel and FoundationOne Tracker's approach? Does the number of variants tracked matter for sensitivity?",
       "expected_query_type": "test_comparison",
       "expected_structure": {
@@ -843,6 +861,8 @@
     {
       "id": 34,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "If I order Signatera and the tumor WES doesn't find enough variants, what happens? Is there a minimum variant threshold?",
       "expected_query_type": "clinical_guidance",
       "expected_structure": {
@@ -865,6 +885,8 @@
     {
       "id": 35,
       "category": "test_interpretation",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Test selection/performance question — better served by OpenOnco database",
       "query": "How long does it take from ordering Signatera to getting the first result? And for follow-up surveillance draws?",
       "expected_query_type": "clinical_guidance",
       "expected_structure": {
@@ -1005,6 +1027,8 @@
     {
       "id": 41,
       "category": "coverage_policy",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Insurance/coverage/reimbursement question — not a clinical decision about an MRD result",
       "query": "Is Signatera covered by Medicare for CRC MRD monitoring? What does the LCD say about coverage criteria?",
       "expected_query_type": "coverage_policy",
       "expected_structure": {
@@ -1051,6 +1075,8 @@
     {
       "id": 43,
       "category": "coverage_policy",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Insurance/coverage/reimbursement question — not a clinical decision about an MRD result",
       "query": "I want to order Guardant Reveal for a breast cancer patient. What's the Medicare and commercial coverage landscape for tumor-naive MRD tests in breast cancer?",
       "expected_query_type": "coverage_policy",
       "expected_structure": {
@@ -1095,6 +1121,8 @@
     {
       "id": 45,
       "category": "coverage_policy",
+      "out_of_scope": true,
+      "out_of_scope_reason": "Insurance/coverage/reimbursement question — not a clinical decision about an MRD result",
       "query": "What's the current Medicare LCD number for ctDNA-based MRD testing? And which tumor types are covered?",
       "expected_query_type": "coverage_policy",
       "expected_structure": {
@@ -1218,7 +1246,7 @@
       "id": 50,
       "category": "guideline",
       "query": "Is there any guideline consensus on the optimal timing for the first ctDNA draw after curative-intent surgery? I've seen 4 weeks, 6 weeks, 8 weeks — what does the literature say?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -1242,7 +1270,7 @@
       "id": 51,
       "category": "guideline",
       "query": "What do NCCN guidelines say about MRD testing specifically in breast cancer? Is it mentioned at all?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -1266,7 +1294,7 @@
       "id": 52,
       "category": "guideline",
       "query": "Are there any professional society guidelines on how frequently to repeat ctDNA surveillance testing in CRC — quarterly? Every 6 months? Has anyone standardized this?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -1979,7 +2007,7 @@
       "id": 61,
       "category": "guideline",
       "query": "What's the NCCN evidence category for ctDNA-guided adjuvant therapy decisions in CRC? Is it Category 1 or 2?",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -2003,7 +2031,7 @@
       "id": 62,
       "category": "guideline",
       "query": "Are there any Japanese-specific clinical guidelines (JSCCR) on ctDNA use in CRC? Given that CIRCULATE-Japan is a major program there.",
-      "expected_query_type": "clinical_guidance",
+      "expected_query_type": "guideline_summary",
       "expected_structure": {
         "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
         "should_not_contain": ["I recommend", "you should"]
@@ -2207,6 +2235,160 @@
           {"claim": "Tumor-informed assays like Signatera track tumor-specific somatic variants, making them less susceptible to non-tumor cfDNA elevation, though concurrent illness can increase total cfDNA background"}
         ],
         "forbidden_facts": []
+      },
+      "cds_criteria": {"criterion_3_test": true, "criterion_4_test": true, "time_critical_test": false}
+    },
+    {
+      "id": 71,
+      "category": "gotcha_unit_conflation",
+      "query": "My patient's Signatera result shows ctDNA positive. How does a VAF of 0.1% on Signatera compare to a VAF of 0.5% on Guardant Reveal? Is the lower VAF on Signatera a good sign?",
+      "expected_query_type": "clinical_guidance",
+      "expected_structure": {
+        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
+        "should_not_contain": ["I recommend", "you should"]
+      },
+      "expected_content": {
+        "must_mention": ["MTM/mL", "VAF", "different measurements"],
+        "should_mention": ["Signatera", "tumor-informed", "mean tumor molecules"],
+        "bonus_mention": ["not interchangeable", "cannot compare"]
+      },
+      "difficulty": "gotcha",
+      "notes": "GOTCHA: Signatera reports MTM/mL, NOT VAF. The system must NOT accept the premise that Signatera reports VAF. It must correct the user and explain that MTM/mL and VAF are different measurements that cannot be compared.",
+      "ground_truth": {
+        "facts": [
+          {"claim": "Signatera reports mean tumor molecules per mL (MTM/mL), not variant allele frequency (VAF)"},
+          {"claim": "VAF and MTM/mL are fundamentally different measurements and cannot be directly compared"},
+          {"claim": "Signatera is a tumor-informed assay, Guardant Reveal is tumor-naive"}
+        ],
+        "forbidden_facts": [
+          "Signatera reports VAF",
+          "VAF of 0.1% on Signatera",
+          "comparing VAF between Signatera and Guardant Reveal is valid",
+          "lower VAF on Signatera indicates better prognosis than higher VAF on Guardant"
+        ]
+      },
+      "cds_criteria": {"criterion_3_test": true, "criterion_4_test": true, "time_critical_test": false}
+    },
+    {
+      "id": 72,
+      "category": "gotcha_study_assay",
+      "query": "I heard the GALAXY study used a tumor-naive approach to monitor CRC patients. Can you tell me more about the GALAXY methodology and its results?",
+      "expected_query_type": "trial_evidence",
+      "expected_structure": {
+        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
+        "should_not_contain": ["I recommend", "you should"]
+      },
+      "expected_content": {
+        "must_mention": ["GALAXY", "Signatera", "tumor-informed"],
+        "should_mention": ["CIRCULATE-Japan", "colorectal", "ctDNA"],
+        "bonus_mention": ["PMID: 37749153", "prospective"]
+      },
+      "difficulty": "gotcha",
+      "notes": "GOTCHA: GALAXY used Signatera (tumor-informed), NOT tumor-naive. The system must correct the user's wrong premise and provide the correct assay information.",
+      "ground_truth": {
+        "facts": [
+          {"claim": "GALAXY (CIRCULATE-Japan) used Signatera, which is a tumor-informed assay"},
+          {"claim": "GALAXY enrolled >1500 CRC patients in a prospective observational study"},
+          {"claim": "Signatera tracks patient-specific somatic variants using tumor tissue WES"}
+        ],
+        "forbidden_facts": [
+          "GALAXY used a tumor-naive assay",
+          "GALAXY used Guardant Reveal",
+          "GALAXY used a tumor-agnostic approach"
+        ]
+      },
+      "cds_criteria": {"criterion_3_test": true, "criterion_4_test": true, "time_critical_test": false}
+    },
+    {
+      "id": 73,
+      "category": "gotcha_population_boundary",
+      "query": "The DYNAMIC trial showed ctDNA-guided therapy is safe for CRC patients. My patient has stage III rectal cancer — can I use DYNAMIC data to justify omitting adjuvant chemo if her ctDNA is negative?",
+      "expected_query_type": "clinical_guidance",
+      "expected_structure": {
+        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
+        "should_not_contain": ["I recommend", "you should"]
+      },
+      "expected_content": {
+        "must_mention": ["stage II", "colon", "not stage III", "not rectal"],
+        "should_mention": ["DYNAMIC", "DYNAMIC-III", "DYNAMIC-Rectal"],
+        "bonus_mention": ["PMID: 35657320", "SafeSeqS", "population"]
+      },
+      "difficulty": "gotcha",
+      "notes": "GOTCHA: DYNAMIC enrolled ONLY stage II COLON cancer. Patient has stage III RECTAL — two population boundaries violated. System must not apply DYNAMIC data without explicit caveats for both stage and anatomic site.",
+      "ground_truth": {
+        "facts": [
+          {"claim": "DYNAMIC trial enrolled only stage II colon cancer patients (PMID: 35657320)"},
+          {"claim": "DYNAMIC did NOT include stage III patients — DYNAMIC-III is a separate ongoing trial"},
+          {"claim": "DYNAMIC did NOT include rectal cancer — DYNAMIC-Rectal is a separate ongoing trial"},
+          {"claim": "Colon and rectal cancers have different treatment paradigms (neoadjuvant chemoradiation for rectal)"}
+        ],
+        "forbidden_facts": [
+          "DYNAMIC data supports omitting chemo in stage III",
+          "DYNAMIC included stage III patients",
+          "DYNAMIC included rectal cancer patients",
+          "DYNAMIC results can be directly applied to stage III rectal cancer"
+        ]
+      },
+      "cds_criteria": {"criterion_3_test": true, "criterion_4_test": true, "time_critical_test": false}
+    },
+    {
+      "id": 74,
+      "category": "gotcha_risk_classification",
+      "query": "My patient has T3N2 colon cancer and just finished 3 months of CAPOX. Since T3N2 is intermediate risk per IDEA, would you agree that 3 months is sufficient, especially with a negative ctDNA?",
+      "expected_query_type": "clinical_guidance",
+      "expected_structure": {
+        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
+        "should_not_contain": ["I recommend", "you should"]
+      },
+      "expected_content": {
+        "must_mention": ["N2", "high risk", "IDEA"],
+        "should_mention": ["6 months", "T4 or N2", "FOLFOX"],
+        "bonus_mention": ["DYNAMIC-III", "ctDNA"]
+      },
+      "difficulty": "gotcha",
+      "notes": "GOTCHA: T3N2 is HIGH RISK per IDEA (not intermediate). N2 = high risk regardless of T-stage. System must correct this misclassification. IDEA showed 6 months FOLFOX superior to 3 months for high-risk (T4/N2).",
+      "ground_truth": {
+        "facts": [
+          {"claim": "Per IDEA collaboration, N2 disease is classified as HIGH RISK, not intermediate risk"},
+          {"claim": "IDEA high-risk definition: T4 and/or N2"},
+          {"claim": "For high-risk stage III (T4/N2), IDEA showed 6 months FOLFOX was superior to 3 months"},
+          {"claim": "3 months CAPOX showed better non-inferiority signal than 3 months FOLFOX in high-risk, but 6 months remains standard"}
+        ],
+        "forbidden_facts": [
+          "T3N2 is intermediate risk",
+          "T3N2 is low risk",
+          "3 months is clearly sufficient for T3N2",
+          "N2 is intermediate risk per IDEA"
+        ]
+      },
+      "cds_criteria": {"criterion_3_test": true, "criterion_4_test": true, "time_critical_test": false}
+    },
+    {
+      "id": 75,
+      "category": "gotcha_guideline_version",
+      "query": "What does NCCN recommend about using ctDNA to decide on adjuvant therapy duration in stage III colon cancer?",
+      "expected_query_type": "general",
+      "expected_structure": {
+        "should_contain": ["WHAT THE EVIDENCE SAYS:", "LIMITATIONS:"],
+        "should_not_contain": ["I recommend", "you should"]
+      },
+      "expected_content": {
+        "must_mention": ["NCCN", "version"],
+        "should_mention": ["Category 2A", "stage III", "adjuvant"],
+        "bonus_mention": ["v1.2026", "effective date", "Colon Cancer"]
+      },
+      "difficulty": "gotcha",
+      "notes": "GOTCHA: The system must cite the specific NCCN guideline VERSION (e.g., v1.2026) when referencing NCCN recommendations. A bare 'NCCN recommends' without version is insufficient for clinical accuracy.",
+      "ground_truth": {
+        "facts": [
+          {"claim": "NCCN guideline citations must include version identifier"},
+          {"claim": "NCCN does not currently recommend ctDNA-guided adjuvant therapy duration modification in stage III outside clinical trials"},
+          {"claim": "NCCN includes ctDNA as Category 2A for post-surgical assessment"}
+        ],
+        "forbidden_facts": [
+          "NCCN recommends ctDNA-guided therapy duration in stage III",
+          "NCCN endorses stopping adjuvant chemo based on negative ctDNA"
+        ]
       },
       "cds_criteria": {"criterion_3_test": true, "criterion_4_test": true, "time_critical_test": false}
     }

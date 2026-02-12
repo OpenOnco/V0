@@ -79,7 +79,7 @@ const ITEMS = [
   // --- DYNAMIC trial detail (Q21) ---
   {
     source_type: 'pubmed',
-    source_id: '35657322',
+    source_id: '35657320',
     title: 'Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer',
     evidence_type: 'rct_results',
     evidence_level: 'Level I',
@@ -95,7 +95,7 @@ const ITEMS = [
     clinical_settings: ['post_surgery', 'during_adjuvant'],
     questions: ['positive_result_action', 'negative_result_action', 'de_escalation', 'when_to_test'],
     source_url: 'https://www.nejm.org/doi/full/10.1056/NEJMoa2200075',
-    pmid: '35657322',
+    pmid: '35657320',
     doi: '10.1056/NEJMoa2200075',
     journal: 'New England Journal of Medicine',
     publication_date: '2022-06-04',
@@ -110,8 +110,12 @@ const ITEMS = [
   // --- CIRCULATE-Japan / GALAXY (Q22) ---
   {
     source_type: 'pubmed',
-    source_id: 'circulate-galaxy-2024',
+    source_id: '37749153',
     title: 'CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer',
+    pmid: '37749153',
+    doi: '10.1038/s41591-024-03254-6',
+    journal: 'Nature Medicine',
+    publication_date: '2024-09-17',
     evidence_type: 'observational',
     evidence_level: 'Prospective cohort',
     summary: 'GALAXY is the observational biomarker validation arm of the CIRCULATE-Japan program, a large-scale prospective study evaluating ctDNA (Signatera) for post-surgical surveillance in resected CRC. Over 1,500 patients with stage I-IV CRC were enrolled for serial ctDNA monitoring. Key findings: ctDNA positivity at 4 weeks post-surgery was a strong independent predictor of recurrence (HR 10.0 for DFS). Serial ctDNA monitoring detected molecular relapse a median of 5.3 months before radiographic relapse. ctDNA clearance during adjuvant chemotherapy was associated with improved outcomes compared to persistent ctDNA positivity. GALAXY provides the natural history and biomarker validation data that supports the interventional CIRCULATE-Japan trials (VEGA and ALTAIR).',
@@ -136,7 +140,7 @@ const ITEMS = [
   // --- CIRCULATE-Japan / VEGA (Q22) ---
   {
     source_type: 'clinicaltrials',
-    source_id: 'circulate-vega-nct',
+    source_id: 'jRCT1031200006',
     title: 'CIRCULATE-Japan VEGA: Omission of Adjuvant Chemotherapy in ctDNA-Negative Stage II-III CRC',
     evidence_type: 'rct_results',
     evidence_level: 'Phase III RCT',
@@ -161,7 +165,7 @@ const ITEMS = [
   // --- CIRCULATE-Japan / ALTAIR (Q22) ---
   {
     source_type: 'clinicaltrials',
-    source_id: 'circulate-altair-nct',
+    source_id: 'EPOC1905',
     title: 'CIRCULATE-Japan ALTAIR: FTD/TPI for ctDNA-Positive Resected CRC',
     evidence_type: 'rct_results',
     evidence_level: 'Phase III RCT',
@@ -211,7 +215,7 @@ const ITEMS = [
 
   // --- HPV ctDNA in head and neck (Q8) ---
   {
-    source_type: 'pubmed',
+    source_type: 'expert_synthesis',
     source_id: 'hpv-ctdna-hnc-overview',
     title: 'HPV ctDNA as a Biomarker for Treatment Response and Surveillance in HPV-Positive Oropharyngeal Cancer',
     evidence_type: 'review',
@@ -236,7 +240,7 @@ const ITEMS = [
 
   // --- FoundationOne Tracker breast cancer (Q14) ---
   {
-    source_type: 'pubmed',
+    source_type: 'expert_synthesis',
     source_id: 'f1tracker-breast-validation',
     title: 'FoundationOne Tracker: Tumor-Informed ctDNA Monitoring for MRD in Breast Cancer',
     evidence_type: 'observational',

@@ -15,12 +15,14 @@ import Anthropic from '@anthropic-ai/sdk';
 import { crawlClinicalTrials, seedPriorityTrials } from '../crawlers/clinicaltrials.js';
 import { processNccnPdf } from '../crawlers/processors/nccn.js';
 import { embedAllMissing, embedAfterInsert } from '../embeddings/mrd-embedder.js';
-import { ensureCitationCompliance } from './citation-validator.js';
+import { ensureCitationCompliance, checkUnitIntegrity, citationCoverageScore, checkWrongCitationRate } from './citation-validator.js';
 import { anchorResponseQuotes } from './quote-extractor.js';
 import { RESPONSE_TEMPLATE_PROMPT, enforceTemplate } from './response-template.js';
 import { getExamplesByType } from './few-shot-examples.js';
 import { lookupTests, formatTestContext } from './openonco-client.js';
 import { searchPubMed } from './pubmed-client.js';
+import { buildStudyAssayPrompt, checkStudyAssayMisattribution, buildContextAwareTrialConstraints, checkEndpointMisattribution } from './study-assay-registry.js';
+import { buildPopulationGuardrailsPrompt, checkPopulationGuardrails } from './population-guardrails.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -54,14 +56,24 @@ CORE PRINCIPLE: Organize responses around the clinical decisions physicians face
 
 QUERY-TYPE ROUTING: The user's question will fall into one of these categories. Use the matching response structure from the template rules below:
 - clinical_guidance: Decision-oriented, present options with evidence for each
-- coverage_policy: Payer-by-payer coverage status, access options
 - test_comparison: Head-to-head data, practical differences
 - trial_evidence: Trial details, enrollment status, key findings
 - general: Simplified evidence summary
 
 CROSS-INDICATION EVIDENCE: Some sources may be marked ⚠️ CROSS-INDICATION, meaning they come from a different tumor type than the query. When this happens: (1) clearly state which tumor type the evidence comes from, (2) explain why it may or may not be applicable, (3) present it in a separate "Evidence from Other Indications" section after the primary evidence so clinicians can judge cross-indication relevance. This is especially valuable in tumor types where MRD evidence is still emerging.
 
-SAFETY: Present evidence for clinical options — never recommend a specific option. Use "evidence suggests", "guidelines state", "clinicians often consider". Never use "you should", "I recommend", "you need to". Every factual claim must cite [N]. Acknowledge evidence gaps honestly. Focus on solid tumors only. 3-5 paragraphs max.
+SAFETY: Present evidence for clinical options — never recommend a specific option. Use "evidence suggests", "guidelines state", "clinicians often consider". Never use "you should", "I recommend", "you need to". Acknowledge evidence gaps honestly. Focus on solid tumors only. 200-250 words max.
+
+SCOPE: This system helps physicians interpret MRD/ctDNA test RESULTS and make clinical decisions based on those results. The following question types are OUTSIDE our scope:
+- Test specification questions (assay sensitivity, limit of detection, tissue requirements, technical methodology) — redirect to the test manufacturer or OpenOnco.org test profiles
+- Test selection/ordering questions (which test to order, sample requirements) — redirect to OpenOnco.org for test comparisons
+- Broad cross-guideline survey questions ("Compare all guidelines on liquid biopsy" or "List every society that recommends ctDNA testing") — redirect to guideline sources directly (NCCN.org, ASCO.org). NOTE: Questions about what a SPECIFIC guideline says for a SPECIFIC cancer type ARE in scope (e.g., "What does NCCN say about ctDNA in NSCLC?" — answer this fully)
+- Insurance, coverage, reimbursement, LCD/NCD, Medicare, or payer policy questions — redirect to OpenOnco.org coverage database or the test manufacturer's billing team
+When you detect an out-of-scope question, briefly acknowledge the question, explain that this system focuses on clinical decisions when MRD/ctDNA results are available, and suggest the appropriate resource. Do NOT attempt to answer the question with incomplete information.
+
+CONTENT BOUNDARIES: Even when answering in-scope clinical questions, do NOT include insurance coverage details, Medicare LCD numbers, payer-specific coverage status, or reimbursement information. This is a clinical evidence tool, not a billing resource. If coverage is relevant context, limit to a single sentence: "Coverage varies by payer and indication; consult OpenOnco.org or the test manufacturer for current coverage status."
+
+CITATION MANDATE: Every factual claim in DECISION and OPTION sections MUST have an inline [N] citation referencing a provided source. Do not make uncited factual assertions. If you cannot cite a source for a claim, rephrase it as conditional ("Evidence is evolving; consider trial enrollment") or remove it. A REFERENCES section will be appended automatically — but inline [N] markers are required in the answer body itself.
 
 Few-shot examples may be provided to illustrate expected output quality.
 
@@ -79,7 +91,33 @@ STUDY CITATION RULES:
 - If search_pubmed returns nothing, do NOT name the study. Say "recent data suggest..." instead.
 - Prefer citing provided sources over invoking search_pubmed.
 
-Format citations as [1], [2], etc. The system will append the full citation list.`;
+GUIDELINE VERSION RULE: When citing a guideline (NCCN, ASCO, ESMO, etc.), always include the version identifier and effective date if provided in the source context (e.g., "NCCN Colon Cancer v1.2026, January 2026"). Never cite a guideline without specifying which version.
+
+UNIT INTEGRITY RULES:
+- VAF (variant allele frequency, %) and MTM/mL (mean tumor molecules/mL) are DIFFERENT measurements. Never equate or convert between them.
+- MTM/mL is specific to Signatera. VAF is used by tumor-naive assays and some panels.
+- When discussing detection thresholds, always specify which unit AND which assay.
+- Signatera reports MTM/mL, not VAF. Do not state VAF thresholds for Signatera.
+
+${buildStudyAssayPrompt()}
+
+${buildPopulationGuardrailsPrompt()}
+
+EPISTEMIC CALIBRATION:
+- NEVER say "no data exist" or "no published evidence" or "no studies have examined." Our database may not contain all published evidence.
+- Instead use: "In our current evidence set, we found limited direct data for [X]."
+- Add: "Published ctDNA data may exist outside this database; consider a targeted literature search."
+- Trigger this calibrated language when the provided sources are sparse or only contain pan-cancer/generic evidence for the queried tumor type.
+- Distinguish clearly between "no evidence in our database" and "no evidence in the world."
+
+EVIDENCE TIER LABELS: When stating evidence, prefix with the appropriate tier:
+- [RCT] — Randomized controlled trial
+- [PROSPECTIVE] — Prospective observational study
+- [RETROSPECTIVE] — Retrospective analysis
+- [GUIDELINE] — Guideline recommendation (include category/level)
+- [HYPOTHESIS] — Biologically plausible but unproven in trials
+
+Format citations as [1], [2], etc. A REFERENCES section will be appended automatically. Do not generate your own reference list.`;
 
 // ============================================
 // API CLIENTS
@@ -115,19 +153,17 @@ function getAnthropic() {
 const INTENT_EXTRACTION_PROMPT = `Analyze this clinical question about MRD/ctDNA testing and extract structured intent.
 
 Return JSON with:
-- query_type: "clinical_guidance" | "coverage_policy" | "trial_evidence" | "test_comparison" | "general"
+- query_type: "clinical_guidance" | "trial_evidence" | "test_comparison" | "general"
 - cancer_types: Array of cancer types mentioned (colorectal, breast, lung, etc.)
 - clinical_settings: Array like "surveillance", "treatment_decision", "adjuvant_therapy"
 - test_names: Specific test names mentioned (Signatera, Guardant, etc.)
-- payers: Specific payers mentioned (Medicare, Aetna, etc.)
 - time_context: "current" | "recent" | "any"
-- evidence_focus: "guidelines" | "trials" | "payer_coverage" | "all"
+- evidence_focus: "guidelines" | "trials" | "all"
 - keywords: Array of key medical terms for text search
 
 IMPORTANT for evidence_focus:
 - Use "guidelines" when query mentions NCCN, ASCO, ESMO, SITC, guideline, recommendation, or asks "what does X say"
 - Use "trials" when query asks about studies, RCTs, clinical trials, research, evidence, data
-- Use "payer_coverage" when query asks about Medicare, insurance, coverage, reimbursement
 - Use "all" when the query is general or doesn't specify a focus
 
 Be concise. If uncertain, use empty arrays or "general".`;
@@ -186,37 +222,24 @@ async function extractQueryIntent(queryText) {
   };
 }
 
+// Payer/insurance source types — NEVER retrieve these (out of scope)
+// Uses prefix match: any source_type starting with 'payer-' is excluded
+const PAYER_SOURCE_PREFIX = 'payer-';
+
 // Map query intent to source type filters
 function intentToSourceTypes(intent) {
   const sourceTypes = [];
 
   switch (intent.evidence_focus) {
     case 'guidelines':
-      sourceTypes.push('nccn', 'asco', 'esmo', 'sitc', 'cap-amp');
+      sourceTypes.push('nccn', 'asco', 'esmo', 'sitc', 'cap-amp', 'pubmed', 'seed_publication');
       break;
     case 'trials':
       sourceTypes.push('clinicaltrials', 'pubmed');
       break;
-    case 'payer_coverage':
-      sourceTypes.push('payer-carelon', 'payer-moldx', 'payer-aetna', 'payer-cigna', 'payer-uhc');
-      break;
     default:
-      // All sources
+      // All sources (payer exclusion applied at query level)
       break;
-  }
-
-  // Add payer-specific if mentioned
-  if (intent.payers?.length > 0) {
-    for (const payer of intent.payers) {
-      const lowerPayer = payer.toLowerCase();
-      if (lowerPayer.includes('medicare') || lowerPayer.includes('moldx')) {
-        sourceTypes.push('payer-moldx');
-      } else if (lowerPayer.includes('carelon') || lowerPayer.includes('evicore')) {
-        sourceTypes.push('payer-carelon');
-      } else if (lowerPayer.includes('aetna')) {
-        sourceTypes.push('payer-aetna');
-      }
-    }
   }
 
   return [...new Set(sourceTypes)];
@@ -301,17 +324,24 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
       g.source_type,
       g.source_id,
       g.source_url,
+      g.source_version,
       g.evidence_type,
       g.evidence_level,
       g.publication_date,
+      g.journal,
+      g.pmid,
       g.decision_context,
       g.direct_quotes,
       g.key_findings,
+      t.acronym as trial_acronym,
       ts_rank(
         to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, '')),
         to_tsquery('english', $1)
       ) as text_rank
     FROM mrd_guidance_items g
+    LEFT JOIN mrd_trial_publications tp ON tp.guidance_id = g.id
+    LEFT JOIN mrd_clinical_trials t ON tp.trial_id = t.id
+
     WHERE g.is_superseded = FALSE
       AND to_tsvector('english', COALESCE(g.title, '') || ' ' || COALESCE(g.summary, ''))
           @@ to_tsquery('english', $1)
@@ -319,6 +349,9 @@ async function keywordSearch(keywords, filters = {}, limit = 20) {
 
   const params = [tsQuery];
   let paramIndex = 2;
+
+  // Always exclude payer/insurance sources (any source_type starting with 'payer-')
+  sql += ` AND g.source_type NOT LIKE '${PAYER_SOURCE_PREFIX}%'`;
 
   if (filters.sourceTypes?.length > 0) {
     sql += ` AND g.source_type = ANY($${paramIndex})`;
@@ -366,6 +399,80 @@ function normalizeCancerType(rawType) {
   if (!rawType) return undefined;
   const lower = rawType.toLowerCase().trim();
   return CANCER_TYPE_NORMALIZE[lower] || lower.replace(/\s+/g, '_');
+}
+
+// ============================================
+// RETRIEVAL CONTAMINATION GATE
+// ============================================
+
+// Generic terms that are always relevant regardless of cancer type
+// Narrowed from 14 → 6 terms. Broad terms like 'ctdna', 'mrd', 'liquid biopsy'
+// matched nearly everything in the DB, defeating the contamination gate.
+const GENERIC_ALLOWLIST = [
+  'pan-cancer', 'pan cancer',
+  'assay validation', 'assay comparison',
+  'guideline methodology', 'meta-analysis',
+];
+
+/**
+ * Filter out retrieval contamination — off-topic sources that slipped through.
+ * Runs after hybrid merge but before cross-indication broadening.
+ *
+ * Rules:
+ * - Results tagged ONLY with different cancer types → remove if >=5 on-topic remain
+ * - Results with NO cancer_type tags → keep only if title contains generic allowlist term
+ * - Log removals for debugging
+ */
+function filterRetrievalContamination(results, queriedCancerType) {
+  if (!queriedCancerType || queriedCancerType === 'all' || results.length === 0) return results;
+
+  const onTopic = [];
+  const offTopic = [];
+  const untagged = [];
+
+  for (const r of results) {
+    const tags = r._cancerTypes || [];
+    if (tags.length === 0) {
+      untagged.push(r);
+    } else if (tags.includes(queriedCancerType)) {
+      onTopic.push(r);
+    } else {
+      offTopic.push(r);
+    }
+  }
+
+  // Keep untagged items only if title contains a generic allowlist term
+  const keptUntagged = [];
+  const droppedUntagged = [];
+  for (const r of untagged) {
+    const titleLower = (r.title || '').toLowerCase();
+    const summaryLower = (r.summary || r.chunk_text || '').toLowerCase().substring(0, 300);
+    const combined = titleLower + ' ' + summaryLower;
+    const isGeneric = GENERIC_ALLOWLIST.some(term => combined.includes(term.toLowerCase()));
+    if (isGeneric) {
+      keptUntagged.push(r);
+    } else {
+      droppedUntagged.push(r);
+    }
+  }
+
+  // NEVER keep off-topic sources. Wrong-disease sources are worse than sparse results.
+  // If results are sparse, the cross-indication broadening (with contamination gate) handles it safely.
+  const kept = [...onTopic, ...keptUntagged];
+
+  const totalDropped = results.length - kept.length;
+  if (totalDropped > 0 || droppedUntagged.length > 0) {
+    logger.info('Retrieval contamination gate', {
+      queriedCancerType,
+      onTopic: onTopic.length,
+      offTopicDropped: offTopic.length - (kept.includes(offTopic[0]) ? offTopic.length : 0),
+      untaggedKept: keptUntagged.length,
+      untaggedDropped: droppedUntagged.length,
+      totalDropped,
+    });
+  }
+
+  return kept;
 }
 
 async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
@@ -469,6 +576,40 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
     if (isGuideline) guidelineCount++;
   }
 
+  // Fetch cancer types for all results (for contamination gate)
+  const allIds = results.map(r => r.id).filter(Boolean);
+  if (allIds.length > 0 && enhancedFilters.cancerType) {
+    try {
+      const ctResult = await query(
+        `SELECT guidance_id, cancer_type FROM mrd_guidance_cancer_types WHERE guidance_id = ANY($1)`,
+        [allIds]
+      );
+      const ctMap = {};
+      for (const row of ctResult.rows) {
+        if (!ctMap[row.guidance_id]) ctMap[row.guidance_id] = [];
+        ctMap[row.guidance_id].push(row.cancer_type);
+      }
+      for (const r of results) {
+        r._cancerTypes = ctMap[r.id] || [];
+      }
+    } catch (err) {
+      logger.warn('Failed to fetch cancer types for contamination gate', { error: err.message });
+    }
+  }
+
+  // Apply retrieval contamination gate
+  const preFilterCount = results.length;
+  const filteredResults = filterRetrievalContamination(results, enhancedFilters.cancerType);
+  // Replace results array with filtered version
+  results.length = 0;
+  results.push(...filteredResults);
+  if (results.length < preFilterCount) {
+    logger.info('Contamination gate removed items', {
+      before: preFilterCount,
+      after: results.length,
+    });
+  }
+
   // Cross-indication broadening: if we got sparse results and had a cancer type
   // filter, re-run without cancer type to find evidence from other indications.
   // Clinicians can judge cross-indication relevance themselves.
@@ -507,6 +648,38 @@ async function hybridSearch(queryText, queryEmbedding, intent, filters = {}) {
       .slice(0, slotsAvailable);
 
     results.push(...broadRanked);
+
+    // Post-broadening contamination gate: drop cross-indication items that have
+    // NO cancer_type tags at all. We can't label them as "cross-indication from X"
+    // if we don't know what indication they're from — they're noise, not evidence.
+    if (broadRanked.length > 0) {
+      const broadIds = broadRanked.map(r => r.id).filter(Boolean);
+      if (broadIds.length > 0) {
+        try {
+          const ctResult = await query(
+            'SELECT guidance_id, cancer_type FROM mrd_guidance_cancer_types WHERE guidance_id = ANY($1)',
+            [broadIds]
+          );
+          const ctMap = {};
+          for (const row of ctResult.rows) {
+            if (!ctMap[row.guidance_id]) ctMap[row.guidance_id] = [];
+            ctMap[row.guidance_id].push(row.cancer_type);
+          }
+          let droppedUntaggedCross = 0;
+          for (let i = results.length - 1; i >= 0; i--) {
+            if (results[i].crossIndication && (!ctMap[results[i].id] || ctMap[results[i].id].length === 0)) {
+              results.splice(i, 1);
+              droppedUntaggedCross++;
+            }
+          }
+          if (droppedUntaggedCross > 0) {
+            logger.info('Post-broadening contamination gate', { droppedUntaggedCross });
+          }
+        } catch (err) {
+          logger.warn('Failed post-broadening contamination check', { error: err.message });
+        }
+      }
+    }
 
     logger.info('Cross-indication broadening', {
       queriedCancerType,
@@ -591,7 +764,9 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
   // Let semantic similarity determine relevance, not source type
   // Source type filtering is now done via sourceTypes filter for intent-based queries
 
-  let sql = `
+  // Use subquery to pick best chunk per guidance item, then sort by similarity.
+  // Previously ORDER BY g.id caused LIMIT to take lowest IDs instead of most similar.
+  let innerSql = `
     SELECT DISTINCT ON (g.id)
       g.id,
       g.title,
@@ -599,6 +774,7 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.source_type,
       g.source_id,
       g.source_url,
+      g.source_version,
       g.evidence_type,
       g.evidence_level,
       g.publication_date,
@@ -608,9 +784,13 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
       g.doi,
       g.key_findings,
       e.chunk_text,
-      1 - (e.embedding <=> $1::vector) as similarity
+      1 - (e.embedding <=> $1::vector) as similarity,
+      t.acronym as trial_acronym
     FROM mrd_item_embeddings e
     JOIN mrd_guidance_items g ON e.guidance_id = g.id
+    LEFT JOIN mrd_trial_publications tp ON tp.guidance_id = g.id
+    LEFT JOIN mrd_clinical_trials t ON tp.trial_id = t.id
+
     WHERE g.is_superseded = FALSE
       AND 1 - (e.embedding <=> $1::vector) >= $2
   `;
@@ -618,32 +798,37 @@ async function searchWithPgVector(queryEmbedding, filters = {}) {
   const params = [JSON.stringify(queryEmbedding), MIN_SIMILARITY];
   let paramIndex = 3;
 
+  // Always exclude payer/insurance sources (any source_type starting with 'payer-')
+  innerSql += ` AND g.source_type NOT LIKE '${PAYER_SOURCE_PREFIX}%'`;
+
   // Filter by source types when intent specifies (e.g., guidelines-focused queries)
   if (filters.sourceTypes?.length > 0) {
-    sql += ` AND g.source_type = ANY($${paramIndex})`;
+    innerSql += ` AND g.source_type = ANY($${paramIndex})`;
     params.push(filters.sourceTypes);
     paramIndex++;
   }
 
   if (filters.cancerType) {
-    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
+    innerSql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_cancer_types ct WHERE ct.guidance_id = g.id AND ct.cancer_type = $${paramIndex})`;
     params.push(filters.cancerType);
     paramIndex++;
   }
 
   if (filters.clinicalSetting) {
-    sql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_clinical_settings cs WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex})`;
+    innerSql += ` AND EXISTS (SELECT 1 FROM mrd_guidance_clinical_settings cs WHERE cs.guidance_id = g.id AND cs.clinical_setting = $${paramIndex})`;
     params.push(filters.clinicalSetting);
     paramIndex++;
   }
 
   if (filters.evidenceType) {
-    sql += ` AND g.evidence_type = $${paramIndex}`;
+    innerSql += ` AND g.evidence_type = $${paramIndex}`;
     params.push(filters.evidenceType);
     paramIndex++;
   }
 
-  sql += ` ORDER BY g.id, similarity DESC LIMIT $${paramIndex}`;
+  innerSql += ` ORDER BY g.id, similarity DESC`;
+
+  const sql = `SELECT * FROM (${innerSql}) sub ORDER BY similarity DESC LIMIT $${paramIndex}`;
   params.push(MAX_SOURCES * 3);
 
   const result = await query(sql, params);
@@ -664,6 +849,7 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.source_type,
       g.source_id,
       g.source_url,
+      g.source_version,
       g.evidence_type,
       g.evidence_level,
       g.publication_date,
@@ -673,14 +859,21 @@ async function searchWithJSONB(queryEmbedding, filters = {}) {
       g.doi,
       g.key_findings,
       e.chunk_text,
-      e.embedding
+      e.embedding,
+      t.acronym as trial_acronym
     FROM mrd_item_embeddings e
     JOIN mrd_guidance_items g ON e.guidance_id = g.id
+    LEFT JOIN mrd_trial_publications tp ON tp.guidance_id = g.id
+    LEFT JOIN mrd_clinical_trials t ON tp.trial_id = t.id
+
     WHERE g.is_superseded = FALSE
   `;
 
   const params = [];
   let paramIndex = 1;
+
+  // Always exclude payer/insurance sources (any source_type starting with 'payer-')
+  sql += ` AND g.source_type NOT LIKE '${PAYER_SOURCE_PREFIX}%'`;
 
   // Filter by source types when intent specifies (e.g., guidelines-focused queries)
   if (filters.sourceTypes?.length > 0) {
@@ -775,11 +968,118 @@ function formatCitation(source, index) {
   return `[${index}] ${parts.join('. ')}`;
 }
 
+/**
+ * Build a REFERENCES section to append to the answer text.
+ * Each reference includes: author, title/study name, journal (year), PMID/DOI,
+ * and guideline version if applicable.
+ */
+function buildReferencesSection(sources) {
+  const lines = sources.map((s, i) => {
+    const parts = [];
+
+    // Author
+    if (s.authors && Array.isArray(s.authors) && s.authors.length > 0) {
+      if (s.authors.length <= 3) {
+        parts.push(s.authors.map(a => a.name || a).join(', '));
+      } else {
+        const firstAuthor = s.authors[0];
+        parts.push(`${firstAuthor.name || firstAuthor} et al.`);
+      }
+    }
+
+    // Trial acronym or title
+    if (s.trial_acronym) {
+      parts.push(`${s.trial_acronym} Trial`);
+    }
+    if (s.title && (!s.trial_acronym || !s.title.toLowerCase().includes(s.trial_acronym.toLowerCase()))) {
+      parts.push(s.title);
+    }
+
+    // Guideline version
+    if (s.source_version) {
+      parts.push(s.source_version);
+    }
+
+    // Journal (Year)
+    if (s.journal) {
+      let journalPart = s.journal;
+      if (s.publication_date) {
+        const dateStr = typeof s.publication_date === 'string'
+          ? s.publication_date
+          : s.publication_date.toISOString?.() || '';
+        if (dateStr && dateStr.length >= 4) {
+          journalPart += ` (${dateStr.substring(0, 4)})`;
+        }
+      }
+      parts.push(journalPart);
+    } else if (s.source_type === 'pubmed') {
+      // Prevent LLM from hallucinating journal names for PubMed entries with NULL journals
+      parts.push('[Journal not indexed]');
+    }
+
+    // Identifiers
+    if (s.pmid) {
+      parts.push(`PMID: ${s.pmid}`);
+    } else if (s.source_type === 'pubmed' && s.source_id) {
+      parts.push(`PMID: ${s.source_id}`);
+    }
+
+    // DOI with journal-consistency check
+    const DOI_JOURNAL_MAP = {
+      '10.1056': 'new england',
+      '10.1038': 'nature',
+      '10.1016/j.ejca': 'european journal of cancer',
+      '10.1016/j.annonc': 'annals of oncology',
+      '10.1200': 'journal of clinical oncology',
+      '10.1126': 'science',
+    };
+    if (s.doi) {
+      const mismatchPrefix = Object.keys(DOI_JOURNAL_MAP).find(p => s.doi.startsWith(p));
+      if (mismatchPrefix && s.journal && !s.journal.toLowerCase().includes(DOI_JOURNAL_MAP[mismatchPrefix])) {
+        // DOI prefix doesn't match stated journal — omit DOI to prevent confusion
+        logger.warn('DOI-journal mismatch, omitting DOI', { doi: s.doi, journal: s.journal, pmid: s.pmid || s.source_id });
+      } else {
+        parts.push(`DOI: ${s.doi}`);
+      }
+    }
+    if (s.source_url && !s.pmid && !s.doi && s.source_type !== 'pubmed') {
+      parts.push(s.source_url);
+    }
+
+    return `[${i + 1}] ${parts.join('. ')}`;
+  });
+
+  return `REFERENCES:\n${lines.join('\n')}`;
+}
+
 function buildSourcesContext(sources) {
   return sources.map((s, i) => {
-    let context = `Source [${i + 1}]:
+    // Build header with trial acronym if available
+    const acronymLabel = s.trial_acronym ? ` (${s.trial_acronym} Trial)` : '';
+    // Build citation line: Journal (Year), PMID: ...
+    let citationLine = '';
+    const citeParts = [];
+    if (s.journal) {
+      const year = s.publication_date
+        ? (typeof s.publication_date === 'string' ? s.publication_date : s.publication_date.toISOString?.() || '').substring(0, 4)
+        : '';
+      citeParts.push(year ? `${s.journal} (${year})` : s.journal);
+    } else if (s.source_type === 'pubmed') {
+      citeParts.push('[Journal not indexed]');
+    }
+    if (s.pmid) citeParts.push(`PMID: ${s.pmid}`);
+    else if (s.source_type === 'pubmed' && s.source_id) citeParts.push(`PMID: ${s.source_id}`);
+    if (citeParts.length > 0) citationLine = `\nCitation: ${citeParts.join(', ')}`;
+
+    // Build version line for guidelines
+    let versionLine = '';
+    if (s.source_version) {
+      versionLine = `\nVersion: ${s.source_version}`;
+    }
+
+    let context = `Source [${i + 1}]:${acronymLabel}
 Title: ${s.title}
-Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}${s.crossIndication ? '\n⚠️ CROSS-INDICATION: This evidence is from a different tumor type than the query. Present it clearly as cross-indication data so the clinician can judge its relevance.' : ''}
+Type: ${s.evidence_type}${s.evidence_level ? ` (${s.evidence_level})` : ''}${versionLine}${citationLine}${s.crossIndication ? '\n⚠️ CROSS-INDICATION: This evidence is from a different tumor type than the query. Present it clearly as cross-indication data so the clinician can judge its relevance.' : ''}
 Summary: ${s.summary || s.chunk_text}`;
 
     // Include direct quotes if available (Phase 5)
@@ -1059,7 +1359,7 @@ Use this scenario to structure your response around these specific decisions.`;
         const matched = await lookupTests(mentionedTests);
         if (matched.length > 0) {
           testsMatched = matched.map(t => t.name);
-          testDataContext = '\n\nTEST-SPECIFIC DATA (from OpenOnco database — use these exact figures):\n' + formatTestContext(matched);
+          testDataContext = '\n\nTEST-SPECIFIC DATA (from OpenOnco database — for identification and logistics only, NOT citable for performance claims):\n' + formatTestContext(matched);
         }
       } catch (err) {
         logger.warn('OpenOnco test lookup failed', { error: err.message });
@@ -1068,6 +1368,27 @@ Use this scenario to structure your response around these specific decisions.`;
 
     // Get relevant few-shot examples (1 pair max to manage token budget)
     const examples = getExamplesByType(intent.query_type).slice(0, 2);
+
+    // Build context-aware trial constraints (only for trials in the query/sources)
+    const trialConstraints = buildContextAwareTrialConstraints(queryText, sources);
+
+    // Assess evidence sufficiency for epistemic calibration
+    const onTopicCount = sources.filter(s => !s.crossIndication).length;
+    const lowEvidenceMode = onTopicCount < 3;
+    const lowEvidenceNote = lowEvidenceMode
+      ? `\n\nLOW_EVIDENCE_MODE: Only ${onTopicCount} on-topic source(s) were retrieved for this query. Use calibrated epistemic language: say "In our current evidence set..." rather than "no data exist." Acknowledge that additional published evidence may exist outside this database.`
+      : '';
+
+    // Assess highest evidence tier among on-topic results
+    const RCT_EVIDENCE_TYPES_SET = new Set(['rct_results', 'rct_ongoing', 'randomized trial', 'RCT']);
+    const hasRCTEvidence = sources.some(s => !s.crossIndication && (
+      RCT_EVIDENCE_TYPES_SET.has(s.evidence_type) ||
+      (s.evidence_type || '').toLowerCase().includes('rct') ||
+      (s.evidence_type || '').toLowerCase().includes('randomized')
+    ));
+    const evidenceTierNote = (!hasRCTEvidence && sources.length > 0)
+      ? `\nEVIDENCE_TIER_BELOW_RCT: No RCT-level evidence was found for this specific cancer type and setting. Constrain DECISION section recommendations to: clinical trial enrollment, surveillance, confirmatory testing, or imaging-based follow-up. Do NOT recommend starting, switching, or escalating therapy based solely on MRD/ctDNA results without RCT support.`
+      : '';
 
     const hasSources = sources.length > 0;
     const hasCrossIndication = sources.some(s => s.crossIndication);
@@ -1080,13 +1401,13 @@ Use this scenario to structure your response around these specific decisions.`;
 QUESTION: ${queryText}
 
 AVAILABLE SOURCES:
-${sourcesContext}${scenarioContext}${testDataContext}
+${sourcesContext}${scenarioContext}${testDataContext}${trialConstraints}${lowEvidenceNote}${evidenceTierNote}
 
 Remember:
 - Cite sources using [1], [2], etc.
 - Structure your response around the clinical decisions the physician faces
 - Present evidence FOR EACH clinical option, not as a literature review
-- If TEST-SPECIFIC DATA is provided, incorporate the exact figures (LOD, sensitivity, TAT, coverage) into your response
+- If TEST-SPECIFIC DATA is provided, use it for test identification and logistics (TAT, tissue requirements, cancer types). Do NOT cite sensitivity/specificity numbers unless they come from a numbered source [N]
 - Acknowledge what evidence doesn't address${crossIndicationNote}
 - 3-5 paragraphs max`
       : `Answer this clinical question about MRD (Molecular Residual Disease) using the matched decision tree scenario:
@@ -1099,7 +1420,7 @@ NOTE: No indexed database sources matched this query. Use the decision tree scen
 Remember:
 - Structure your response around the clinical decisions the physician faces
 - Present evidence FOR EACH clinical option, not as a literature review
-- If TEST-SPECIFIC DATA is provided, incorporate the exact figures (LOD, sensitivity, TAT, coverage) into your response
+- If TEST-SPECIFIC DATA is provided, use it for test identification and logistics (TAT, tissue requirements, cancer types). Do NOT cite sensitivity/specificity numbers unless they come from a numbered source [N]
 - Acknowledge what evidence doesn't address
 - 3-5 paragraphs max`;
 
@@ -1132,6 +1453,73 @@ Remember:
       }
     } catch (validationError) {
       logger.warn('Citation validation failed', { error: validationError.message });
+    }
+
+    // Step 5b: Post-generation accuracy checks with repair
+    let accuracyWarnings = [];
+    try {
+      const unitViolations = checkUnitIntegrity(answer);
+      const studyViolations = checkStudyAssayMisattribution(answer);
+      const populationViolations = checkPopulationGuardrails(answer);
+      const endpointViolations = checkEndpointMisattribution(answer);
+      accuracyWarnings = [
+        ...unitViolations.map(v => ({ type: 'unit_integrity', ...v })),
+        ...studyViolations.map(v => ({ type: 'study_assay', ...v })),
+        ...populationViolations.map(v => ({ type: 'population_boundary', ...v })),
+        ...endpointViolations.map(v => ({ type: 'endpoint_misattribution', ...v })),
+      ];
+      if (accuracyWarnings.length > 0) {
+        logger.warn('Post-generation accuracy violations detected — repairing', {
+          unit: unitViolations.length,
+          studyAssay: studyViolations.length,
+          population: populationViolations.length,
+          endpoint: endpointViolations.length,
+        });
+
+        // Repair critical violations by removing offending sentences
+        // Unit integrity and endpoint misattribution are factual errors — strip them
+        const criticalViolations = [
+          ...unitViolations.map(v => v.sentence),
+          ...endpointViolations.map(v => v.sentence),
+        ];
+        for (const violatingSentence of criticalViolations) {
+          if (violatingSentence && violatingSentence.length > 20) {
+            // Find and remove the sentence from the answer
+            const escaped = violatingSentence.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const pattern = new RegExp(escaped.substring(0, Math.min(escaped.length, 120)) + '[^.]*\\.?\\s*', 'i');
+            answer = answer.replace(pattern, '');
+          }
+        }
+
+        // Population boundary violations: inject caveat after the offending sentence
+        for (const v of populationViolations) {
+          if (v.sentence && v.sentence.length > 20) {
+            const truncated = v.sentence.substring(0, Math.min(v.sentence.length, 100));
+            const idx = answer.indexOf(truncated);
+            if (idx !== -1) {
+              // Find end of sentence
+              const afterMatch = answer.indexOf('.', idx + truncated.length);
+              if (afterMatch !== -1) {
+                const caveat = ' *(Note: This evidence may not directly apply to the queried population — verify applicability.)*';
+                answer = answer.substring(0, afterMatch + 1) + caveat + answer.substring(afterMatch + 1);
+              }
+            }
+          }
+        }
+
+        logger.info('Post-generation repair applied', {
+          sentencesRemoved: criticalViolations.length,
+          caveatsAdded: populationViolations.length,
+        });
+      }
+    } catch (checkError) {
+      logger.warn('Post-generation checks failed', { error: checkError.message });
+    }
+
+    // Step 6: Build and append REFERENCES section
+    if (sources.length > 0) {
+      const referencesBlock = buildReferencesSection(sources);
+      answer = answer + '\n\n' + referencesBlock;
     }
 
     // Step 7: Format sources with quotes (Phase 5)
@@ -1244,6 +1632,7 @@ Remember:
         testDataEnriched: testsMatched.length > 0,
         testsMatched,
         toolCallsUsed: toolCallsUsed || 0,
+        accuracyWarnings: accuracyWarnings.length > 0 ? accuracyWarnings : undefined,
       },
     }));
 

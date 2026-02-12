@@ -121,26 +121,6 @@ export async function lookupTests(testNames) {
 }
 
 /**
- * Format private payer coverage into a compact string.
- */
-function formatPrivatePayers(privatePayers) {
-  if (!privatePayers || typeof privatePayers !== 'object') return '';
-
-  const parts = [];
-  for (const [payerId, info] of Object.entries(privatePayers)) {
-    if (!info || !info.status) continue;
-    const name = payerId.charAt(0).toUpperCase() + payerId.slice(1);
-    let entry = `${name} ${info.status}`;
-    if (info.policy) entry += ` (${info.policy})`;
-    if (info.coveredIndications?.length > 0) {
-      entry += ` — ${info.coveredIndications.join(', ')}`;
-    }
-    parts.push(entry);
-  }
-  return parts.join(' | ');
-}
-
-/**
  * Format a single test object into a compact, prompt-friendly block.
  * Extracts physician-relevant fields only.
  */
@@ -168,57 +148,16 @@ function formatSingleTest(test) {
     lines.push(tatLine);
   }
 
-  // Performance
-  const perfParts = [];
-  if (test.lod) perfParts.push(`LOD: ${test.lod}`);
-  if (test.sensitivity != null) {
-    let sensStr = `Sensitivity: ${test.sensitivity}%`;
-    if (test.sensitivityNotes) sensStr += ` (${test.sensitivityNotes.substring(0, 120)})`;
-    perfParts.push(sensStr);
-  }
-  if (test.specificity != null) perfParts.push(`Specificity: ${test.specificity}%`);
-  if (perfParts.length > 0) lines.push(perfParts.join(' | '));
+  // Performance metrics (LOD, sensitivity, specificity, lead time) intentionally
+  // excluded. These are vendor-reported numbers without citable PMIDs, causing
+  // the LLM to emit "[test data]" pseudo-citations. Clinical performance claims
+  // should ONLY come from peer-reviewed RAG sources with PMIDs.
 
-  // Landmark vs longitudinal
-  if (test.landmarkSensitivity != null || test.longitudinalSensitivity != null) {
-    const parts = [];
-    if (test.landmarkSensitivity != null) parts.push(`Landmark: ${test.landmarkSensitivity}%`);
-    if (test.longitudinalSensitivity != null) parts.push(`Longitudinal: ${test.longitudinalSensitivity}%`);
-    lines.push(`Serial monitoring: ${parts.join(' → ')}`);
-  }
-
-  // Lead time
-  if (test.leadTimeVsImaging) {
-    let leadStr = `Lead time vs imaging: ${test.leadTimeVsImaging} days`;
-    if (test.leadTimeVsImagingNotes) leadStr += ` (${test.leadTimeVsImagingNotes.substring(0, 80)})`;
-    lines.push(leadStr);
-  }
-
-  // Regulatory
+  // Regulatory — FDA status only (no CPT/billing codes, no coverage details)
   if (test.fdaStatus) lines.push(`FDA: ${test.fdaStatus}`);
-  if (test.cptCodes) lines.push(`CPT: ${test.cptCodes}${test.codeType ? ` (${test.codeType})` : ''}`);
-
-  // Medicare coverage
-  const ccr = test.coverageCrossReference;
-  if (ccr?.medicare) {
-    const mc = ccr.medicare;
-    let mcLine = `Medicare: ${mc.status}`;
-    if (mc.policies?.length > 0) mcLine += ` under ${mc.policies.join(', ')}`;
-    if (mc.indications?.length > 0) mcLine += ` — ${mc.indications.join('; ')}`;
-    if (mc.rate) mcLine += ` (${mc.rate})`;
-    lines.push(mcLine);
-  } else if (test.medicareStatus) {
-    lines.push(`Medicare: ${test.medicareStatus}${test.reimbursementNote ? ` — ${test.reimbursementNote.substring(0, 120)}` : ''}`);
-  }
-
-  // Commercial payer coverage
-  if (ccr?.privatePayers) {
-    const payerStr = formatPrivatePayers(ccr.privatePayers);
-    if (payerStr) lines.push(`Commercial: ${payerStr}`);
-  } else if (test.commercialPayers?.length > 0) {
-    lines.push(`Commercial payers: ${test.commercialPayers.join(', ')}`);
-    if (test.commercialPayersNotes) lines.push(`Coverage notes: ${test.commercialPayersNotes.substring(0, 150)}`);
-  }
+  // NOTE: Coverage/payer/Medicare/CPT/reimbursement data intentionally excluded.
+  // This is a clinical evidence tool — coverage info is out of scope and causes
+  // the LLM to weave insurance details into clinical answers.
 
   // Validation & evidence
   const evidParts = [];
