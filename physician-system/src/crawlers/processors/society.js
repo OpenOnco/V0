@@ -19,6 +19,7 @@ import { createLogger } from '../../utils/logger.js';
 import { query } from '../../db/client.js';
 import Anthropic from '@anthropic-ai/sdk';
 import { embedAfterInsert } from '../../embeddings/mrd-embedder.js';
+import { normalizeCancerType } from '../../utils/cancer-types.js';
 
 const logger = createLogger('society-processor');
 
@@ -501,6 +502,15 @@ async function saveRecommendations(recommendations, societyId, societyConfig, ca
 
       const guidanceId = insertResult.rows[0].id;
       await embedAfterInsert(guidanceId, 'society');
+
+      // Tag cancer type in junction table for retrieval filtering
+      const normalizedType = normalizeCancerType(cancerType);
+      await query(
+        `INSERT INTO mrd_guidance_cancer_types (guidance_id, cancer_type)
+         VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+        [guidanceId, normalizedType]
+      );
+
       results.saved++;
 
       // Store quote anchor

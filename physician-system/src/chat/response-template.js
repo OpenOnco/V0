@@ -15,76 +15,56 @@ const logger = createLogger('response-template');
 const CLINICAL_GUIDANCE_TEMPLATE = `
 RESPONSE STRUCTURE FOR CLINICAL GUIDANCE QUERIES:
 
-CLINICAL SCENARIO: [Extract the clinical situation from the query]
-DECISION: [State the clinical decision being faced]
+TARGET LENGTH: 350-500 words. Be thorough but precise. Include clinical reasoning that connects evidence to the decision.
 
-OPTION A: [First clinical option — e.g., escalate therapy, intensify surveillance]
-- Evidence: [Trial data with citations — study name, design, N, key outcome]
-- Guidelines: [NCCN/ASCO/ESMO position, if applicable — omit if silent]
-- Caveats: [What we don't know — unvalidated settings, limited follow-up, etc.]
+DECISION: [One sentence: the clinical decision being faced]
 
-OPTION B: [Second clinical option — e.g., standard-of-care without ctDNA-guided change]
-- Evidence: [...]
-- Caveats: [...]
+OPTION A: [Most evidence-supported option — 4-6 sentences with inline [N] citations. Include evidence tier: [RCT], [PROSPECTIVE], [RETROSPECTIVE], [GUIDELINE]. Name key trial(s), N, primary endpoint result. Frame how the evidence applies to the clinical context before citing specific data points.]
 
-OPTION C: [Third option when applicable — e.g., clinical trial enrollment, serial monitoring, watchful waiting]
-- Evidence: [...]
+OPTION B: [Alternative option — 4-6 sentences with inline [N] citations. Same depth as Option A.]
 
-WHAT THE EVIDENCE DOESN'T ADDRESS: [Honest gaps — unstudied populations, missing endpoints, conflicting data]
+EVIDENCE GAPS: [2-3 sentences: what key questions remain unanswered, what trials may address them, and why the gap matters clinically.]
 
-TEST-SPECIFIC NOTE: [If TEST-SPECIFIC DATA is provided above, you MUST incorporate it:
-  mention the test's approach (tumor-informed vs tumor-naïve), tissue requirements,
-  turnaround time, LOD, FDA status, and per-payer coverage. Weave into the clinical
-  discussion — do not reformat as a separate table. If no TEST-SPECIFIC DATA is provided,
-  note test-specific validation data or lack thereof.]
+Style guidance:
+- Two options unless a third is clearly distinct (not just "enroll in a trial")
+- Write in flowing clinical prose — avoid bullet-point terseness
+- Connect evidence to the decision: explain WHY a study matters for this scenario, not just WHAT it found
+- Omit TEST-SPECIFIC NOTE unless the test's characteristics directly affect the clinical decision
+- Do not repeat the clinical scenario from the query
 `;
 
 const COVERAGE_POLICY_TEMPLATE = `
-RESPONSE STRUCTURE FOR COVERAGE/POLICY QUERIES:
-
-COVERAGE SUMMARY: [Test name and general coverage landscape]
-MEDICARE: [LCD/NCD status, MolDX coverage, conditions, effective dates]
-COMMERCIAL: [Payer-by-payer status if available — Aetna, UHC, BCBS, Cigna, etc.]
-PRIOR AUTHORIZATION: [Requirements, common documentation needed]
-[If TEST-SPECIFIC DATA includes coverage cross-reference, use exact payer statuses,
-  policy IDs, and covered indications. Do not generalize — cite the specific policy.]
-ACCESS OPTIONS: [If coverage is denied — appeals process, manufacturer programs, clinical trials, self-pay]
+Coverage and insurance questions are outside this system's scope.
+Redirect to OpenOnco.org coverage database or the test manufacturer's billing team.
 `;
 
 const TEST_COMPARISON_TEMPLATE = `
 RESPONSE STRUCTURE FOR TEST COMPARISON QUERIES:
 
-COMPARISON: [Test A] vs [Test B]
-KEY DIFFERENCES: [Use TEST-SPECIFIC DATA to compare: approach (tumor-informed vs tumor-naïve),
-  tissue requirements, TAT, LOD, sensitivity, FDA status, coverage. Include specific numbers from the data.
-  If no TEST-SPECIFIC DATA is provided, compare based on: technical approach, tissue requirements, panel size, LOD, turnaround time.]
-CLINICAL DATA: [Head-to-head studies if available; otherwise per-test validation data with citations]
-PRACTICAL CONSIDERATIONS: [Availability, coverage, TAT, ordering logistics, sample requirements]
+TARGET LENGTH: 300-400 words.
+
+KEY DIFFERENCES: [Direct comparison: approach, tissue requirements, sensitivity, FDA status. Use specific numbers. Explain clinical implications of the differences.]
+CLINICAL DATA: [Head-to-head or per-test validation data with citations, 3-5 sentences. Contextualize which differences matter most for the clinical scenario.]
 `;
 
 const TRIAL_EVIDENCE_TEMPLATE = `
 RESPONSE STRUCTURE FOR TRIAL/EVIDENCE QUERIES:
 
-TRIAL OVERVIEW:
-- For each relevant trial, include: study name, design (RCT/prospective/retrospective), N, population, primary endpoint, key results, citation [N]
-- Note trial status: completed, ongoing, recruiting, results pending
+TARGET LENGTH: 300-400 words.
 
-KEY FINDINGS: [Synthesize across studies — what direction does the evidence point?]
-CONFLICTING DATA: [If studies disagree, present both sides with citations]
-ONGOING TRIALS: [Relevant trials still enrolling or awaiting results — NCT numbers if available]
+For each relevant trial (2-3 max): evidence tier, study name, N, primary endpoint, key result, citation [N]. 2-3 sentences per trial — include context on study design and clinical relevance.
 
-WHAT THE EVIDENCE DOESN'T ADDRESS: [Gaps, unstudied populations, missing endpoints]
+KEY FINDINGS: [3-5 sentences synthesizing the evidence direction and clinical implications]
+EVIDENCE GAPS: [1-2 sentences if applicable]
 `;
 
 const GENERAL_TEMPLATE = `
 RESPONSE STRUCTURE FOR GENERAL QUERIES:
 
-Use a simplified version of the clinical guidance format:
+TARGET LENGTH: 250-350 words.
 
-CONTEXT: [Brief framing of the topic]
-WHAT THE EVIDENCE SAYS: [Key findings organized by relevance, with citations]
-CURRENT CLINICAL LANDSCAPE: [How this is used in practice, guideline positions if relevant]
-LIMITATIONS: [Evidence gaps, areas of uncertainty]
+WHAT THE EVIDENCE SAYS: [Key findings with citations, 4-6 sentences. Provide enough clinical context for the reader to understand significance.]
+LIMITATIONS: [1-2 sentences on evidence gaps, if applicable]
 `;
 
 // ============================================
@@ -93,15 +73,15 @@ LIMITATIONS: [Evidence gaps, areas of uncertainty]
 
 const SAFETY_BLOCK = `
 SAFETY RULES (apply to ALL response types):
-1. Every factual claim must cite a source using [N] notation
+1. Cite sources using [N] notation for factual claims
 2. Present evidence for clinical options — never recommend a specific option
-3. Use: "evidence suggests", "guidelines state", "clinicians often consider", "data demonstrate"
-4. Never use: "you should", "I recommend", "we recommend", "you need to", "consider doing"
+3. Use: "evidence suggests", "guidelines state", "clinicians often consider"
+4. Never use: "you should", "I recommend", "we recommend", "you need to"
 5. Never interpret individual patient results or make prognosis statements
 6. Focus on solid tumors only (not hematologic MRD)
 7. Acknowledge evidence gaps honestly — do not overstate certainty
-8. Keep responses concise: 3-5 paragraphs max
-9. When guidelines are silent on a topic, state that clearly and pivot to available evidence
+
+PROSE QUALITY: Write in flowing clinical prose that a physician would find natural to read. Connect evidence to clinical reasoning — don't just list findings. Omit background context the physician already knows. Do not repeat the question. Do not pad with generic disclaimers.
 `;
 
 // ============================================
@@ -142,16 +122,13 @@ QUERY-TYPE ROUTING — Choose the structure that matches the query:
 1. CLINICAL GUIDANCE ("should I escalate?", "ctDNA-positive after adjuvant", "MRD-guided therapy")
 ${CLINICAL_GUIDANCE_TEMPLATE}
 
-2. COVERAGE/POLICY ("is Signatera covered?", "Medicare LCD", "prior auth for ctDNA")
-${COVERAGE_POLICY_TEMPLATE}
-
-3. TEST COMPARISON ("Signatera vs Guardant Reveal", "which MRD test for CRC")
+2. TEST COMPARISON ("Signatera vs Guardant Reveal", "which MRD test for CRC")
 ${TEST_COMPARISON_TEMPLATE}
 
-4. TRIAL EVIDENCE ("CIRCULATE trial results", "RCT evidence for ctDNA-guided", "what trials are enrolling")
+3. TRIAL EVIDENCE ("CIRCULATE trial results", "RCT evidence for ctDNA-guided", "what trials are enrolling")
 ${TRIAL_EVIDENCE_TEMPLATE}
 
-5. GENERAL (anything else)
+4. GENERAL (anything else)
 ${GENERAL_TEMPLATE}
 
 ${SAFETY_BLOCK}
@@ -184,8 +161,9 @@ export const FORBIDDEN_PATTERNS = [
   // These patterns only match prescriptive uses, not analytical/caveat contexts
   // e.g., "start treatment" is directive, but "demonstrated that starting therapy..." is analysis
   // "Consider stopping" is option-naming in decision-oriented format, not directive
-  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)\bstart(ing)? (treatment|therapy|chemo)/i,
-  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)\bstop(ping)? (treatment|therapy|chemo)/i,
+  // "validate stopping therapy" is analytical — not directive
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)(?<!\bvalidate\s)(?<!\bsupport\s)(?<!\bjustify\s)(?<!\bguide\s)\bstart(ing)? (treatment|therapy|chemo)/i,
+  /(?<!\bthat\s)(?<!\bwhether\s)(?<!\bof\s)(?<!\bfor\s)(?<!\babout\s)(?<!\bconsider\s)(?<!\bversus\s)(?<!\bvalidate\s)(?<!\bsupport\s)(?<!\bjustify\s)(?<!\bguide\s)\bstop(ping)? (treatment|therapy|chemo)/i,
   /(should|would) (receive|get|have) (treatment|therapy|chemo)/i,
 
   // Definitive prognosis
@@ -288,6 +266,12 @@ export function validateResponseStructure(response, queryType) {
   } else if (queryType === 'test_comparison') {
     if (!response.includes('COMPARISON:') && !response.includes('KEY DIFFERENCES:')) {
       issues.push('Test comparison response should include COMPARISON or KEY DIFFERENCES sections');
+    }
+  } else if (queryType === 'guideline_summary') {
+    // Guideline summaries don't require OPTION or CLINICAL SCENARIO structure —
+    // they present what guidelines say, not clinical decision options
+    if (!response.includes('WHAT THE EVIDENCE') && !response.includes('POSITION:') && !response.includes('GUIDELINE') && !response.includes('LIMITATIONS:') && !response.includes('CURRENT CLINICAL LANDSCAPE:')) {
+      issues.push('Guideline summary response should include evidence/guideline/limitations sections');
     }
   }
 

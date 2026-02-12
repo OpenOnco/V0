@@ -12,6 +12,7 @@ import https from 'https';
 import { createLogger } from '../utils/logger.js';
 import { query, close } from '../db/client.js';
 import { embedAfterInsert } from '../embeddings/mrd-embedder.js';
+import { normalizeCancerTypes } from '../utils/cancer-types.js';
 
 const logger = createLogger('cms-ingest');
 
@@ -252,8 +253,9 @@ async function ingestLCDs(lcds, options = {}) {
 
         const guidanceId = insertResult.rows[0].id;
 
-        // Add cancer types
-        for (const cancerType of cancerTypes) {
+        // Add cancer types (normalize through canonical utility)
+        const normalizedCancerTypes = normalizeCancerTypes(cancerTypes);
+        for (const cancerType of normalizedCancerTypes) {
           await query(
             `INSERT INTO mrd_guidance_cancer_types (guidance_id, cancer_type)
              VALUES ($1, $2) ON CONFLICT DO NOTHING`,

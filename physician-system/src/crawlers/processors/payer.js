@@ -17,6 +17,7 @@ import { createLogger } from '../../utils/logger.js';
 import { query } from '../../db/client.js';
 import Anthropic from '@anthropic-ai/sdk';
 import { embedAfterInsert } from '../../embeddings/mrd-embedder.js';
+import { normalizeCancerTypes } from '../../utils/cancer-types.js';
 
 const logger = createLogger('payer-processor');
 
@@ -564,6 +565,18 @@ async function saveCoverageCriteria(criteria, payerId, payerConfig, metadata, ar
 
       const guidanceId = insertResult.rows[0].id;
       await embedAfterInsert(guidanceId, 'payer');
+
+      // Tag cancer types in junction table for retrieval filtering
+      const rawTypes = crit.cancer_types || detectCancerTypes(crit.conditions || '');
+      const normalizedTypes = normalizeCancerTypes(rawTypes);
+      for (const ct of normalizedTypes) {
+        await query(
+          `INSERT INTO mrd_guidance_cancer_types (guidance_id, cancer_type)
+           VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+          [guidanceId, ct]
+        );
+      }
+
       results.saved++;
 
       // Store quote anchor
