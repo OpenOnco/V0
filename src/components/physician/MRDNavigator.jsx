@@ -247,8 +247,8 @@ function CiteRef({ nums, sources }) {
 
 function Prose({ text, sources }) {
   // Pre-split: inject newlines before section headers so they render as separate blocks
-  const SECTION_RE = /(?<=\.[\s\u00A0]|[\]\)]\.\s)((?:OPTION [A-Z]|DECISION|CLINICAL SCENARIO|WHAT THE EVIDENCE|EVIDENCE GAPS?|TEST-SPECIFIC NOTE|COMPARISON|COVERAGE SUMMARY|GUIDELINE|CLINICAL CONSIDERATIONS|LIMITATIONS|REFERENCES):)/g;
-  const prepared = text.replace(SECTION_RE, '\n\n$1');
+  const HEADERS = 'OPTION [A-Z]|DECISION|CLINICAL SCENARIO|WHAT THE EVIDENCE|EVIDENCE GAPS?|TEST-SPECIFIC NOTE|COMPARISON|COVERAGE SUMMARY|CLINICAL CONSIDERATIONS|LIMITATIONS|REFERENCES';
+  const prepared = text.replace(new RegExp(`([.\\])]\\s)(${HEADERS}):`, 'g'), '$1\n\n$2:');
   return prepared.split('\n').map((line, i) => {
     if (!line.trim()) return <div key={i} className="h-1.5" />;
     let parts = [], rest = line, k = 0;
