@@ -312,8 +312,11 @@ function Prose({ text, sources }) {
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
-export default function MRDNavigator({ testData = {}, onNavigate }) {
+export default function MRDNavigator({ testData = {}, onNavigate, currentPage }) {
   const [selectedStep, setSelectedStep] = useState(null); // null = landing, 1/2/3 = expanded
+
+  // Reset to landing when user clicks Home
+  useEffect(() => { if (currentPage === 'home') setSelectedStep(null); }, [currentPage]);
   const [cancer, setCancer] = useState('');
   const [stage, setStage] = useState('');
   const [txPhase, setTxPhase] = useState('');
