@@ -1600,7 +1600,7 @@ export default function App() {
           );
         }
         if (persona === 'medical') {
-          return <MRDNavigator testData={chatTestData} onNavigate={handleNavigate} />;
+          return <MRDNavigator testData={chatTestData} onNavigate={handleNavigate} currentPage={currentPage} />;
         }
         return <HomePage onNavigate={handleNavigate} persona={persona} chatTestData={chatTestData} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
