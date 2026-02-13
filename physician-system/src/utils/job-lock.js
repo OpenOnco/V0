@@ -76,9 +76,9 @@ export async function acquireJobLock(jobName) {
   // Create run record with heartbeat
   const run = await query(`
     INSERT INTO mrd_crawler_runs (
-      crawler_name, status, started_at, heartbeat_at
+      crawler_name, mode, status, started_at, heartbeat_at
     )
-    VALUES ($1, 'running', NOW(), NOW())
+    VALUES ($1, 'scheduled', 'running', NOW(), NOW())
     RETURNING id
   `, [jobName]);
 
