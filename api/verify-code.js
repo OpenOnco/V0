@@ -3,7 +3,7 @@ import { withVercelLogging } from '../shared/logger/index.js';
 
 // Verify the signed token and code
 const verifyToken = (token, code) => {
-  const secret = process.env.RESEND_API_KEY;
+  const secret = process.env.VERIFICATION_SECRET || process.env.RESEND_API_KEY;
   
   const [data, signature] = token.split('.');
   if (!data || !signature) {

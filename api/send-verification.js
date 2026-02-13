@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Create a signed token containing the code
 const createToken = (email, code) => {
-  const secret = process.env.RESEND_API_KEY;
+  const secret = process.env.VERIFICATION_SECRET || process.env.RESEND_API_KEY;
   const payload = {
     email: email.toLowerCase(),
     code,

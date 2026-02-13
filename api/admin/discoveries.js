@@ -23,8 +23,7 @@ import { withVercelLogging } from '../../shared/logger/index.js';
 // In Vercel serverless, we read from the daemon/data directory
 const DISCOVERIES_FILE = join(process.cwd(), 'daemon', 'data', 'discoveries.json');
 
-// Simple admin key check - in production you'd want proper auth
-const ADMIN_KEY = process.env.ADMIN_KEY || 'openonco-admin-2024';
+const ADMIN_KEY = process.env.ADMIN_KEY;
 
 // Detect if running on Vercel (read-only filesystem)
 const IS_VERCEL = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
@@ -58,7 +57,7 @@ export default withVercelLogging((req, res) => {
 
   // Auth check - support key in query param or header
   const key = req.query.key || req.headers['x-admin-key'] || req.headers['admin-key'];
-  if (key !== ADMIN_KEY) {
+  if (!ADMIN_KEY || key !== ADMIN_KEY) {
     req.logger.warn('Unauthorized access attempt', { hasKey: !!key, keyPrefix: key?.slice(0, 4) });
     req.logger.info('Error response sent', { status: 401, durationMs: Date.now() - startTime, errorType: 'unauthorized' });
     return res.status(401).json({
