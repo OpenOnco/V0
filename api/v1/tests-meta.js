@@ -70,7 +70,6 @@ export default withVercelLogging(async (req, res) => {
     req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'internal_error' });
     return res.status(500).json({
       error: 'Internal server error',
-      message: error.message,
     });
   }
 }, { moduleName: 'api:v1:tests-meta' });

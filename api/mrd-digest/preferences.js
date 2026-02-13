@@ -10,14 +10,16 @@ import { withVercelLogging } from '../../shared/logger/index.js';
 
 const DAEMON_URL = process.env.TRACKER_DAEMON_URL || 'https://daemon-production-5ed1.up.railway.app';
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function setCorsHeaders(req, res) {
+  const origin = req.headers.origin || '';
+  const allowed = origin.endsWith('openonco.org') || origin.includes('localhost');
+  res.setHeader('Access-Control-Allow-Origin', allowed ? origin : 'https://openonco.org');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
 
 export default withVercelLogging(async (req, res) => {
-  Object.entries(CORS_HEADERS).forEach(([key, value]) => res.setHeader(key, value));
+  setCorsHeaders(req, res);
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 

@@ -10,11 +10,13 @@ import { withVercelLogging } from '../../shared/logger/index.js';
 
 const DAEMON_URL = process.env.TRACKER_DAEMON_URL || 'https://daemon-production-5ed1.up.railway.app';
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function setCorsHeaders(req, res) {
+  const origin = req.headers.origin || '';
+  const allowed = origin.endsWith('openonco.org') || origin.includes('localhost');
+  res.setHeader('Access-Control-Allow-Origin', allowed ? origin : 'https://openonco.org');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
 
 // Simple in-memory rate limiting (per Vercel instance)
 const rateLimitMap = new Map();
@@ -33,7 +35,7 @@ function isRateLimited(ip) {
 }
 
 export default withVercelLogging(async (req, res) => {
-  Object.entries(CORS_HEADERS).forEach(([key, value]) => res.setHeader(key, value));
+  setCorsHeaders(req, res);
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });

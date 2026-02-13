@@ -4,6 +4,11 @@ import { withVercelLogging } from '../shared/logger/index.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // Create a signed token containing the code
 const createToken = (email, code) => {
   const secret = process.env.VERIFICATION_SECRET || process.env.RESEND_API_KEY;
@@ -56,7 +61,7 @@ export default withVercelLogging(async (req, res) => {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #2A63A4;">OpenOnco Email Verification</h2>
-          <p>You're submitting data for <strong>${testName || 'a liquid biopsy test'}</strong> on behalf of <strong>${vendor}</strong>.</p>
+          <p>You're submitting data for <strong>${escapeHtml(testName) || 'a liquid biopsy test'}</strong> on behalf of <strong>${escapeHtml(vendor)}</strong>.</p>
           <p>Your verification code is:</p>
           <div style="background-color: #f3f4f6; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
             <span style="font-size: 32px; font-weight: bold; letter-spacing: 4px; color: #1E4A7A;">${code}</span>
