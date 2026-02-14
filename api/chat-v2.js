@@ -756,15 +756,12 @@ export default withVercelLogging(async (req, res) => {
       req.logger.info('Error response sent', { status: 400, durationMs: Date.now() - startTime, errorType: 'api_bad_request' });
       return res.status(400).json({
         error: 'Invalid request',
-        message: error.message,
       });
     }
 
     req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'api_error' });
     return res.status(500).json({
       error: 'An error occurred',
-      message: error.message,
-      type: error.constructor.name
     });
   }
 }, { moduleName: 'api:chat:v2' });

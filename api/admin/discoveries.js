@@ -46,10 +46,12 @@ function loadDiscoveries(logger) {
 export default withVercelLogging((req, res) => {
   const startTime = Date.now();
 
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS headers — admin endpoints restricted to our domain
+  const origin = req.headers.origin || '';
+  const allowed = origin.endsWith('openonco.org') || origin.includes('localhost');
+  res.setHeader('Access-Control-Allow-Origin', allowed ? origin : 'https://openonco.org');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key, Admin-Key');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();

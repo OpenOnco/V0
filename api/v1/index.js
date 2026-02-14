@@ -825,6 +825,6 @@ export default withVercelLogging(async (req, res) => {
   } catch (error) {
     req.logger.error('API error', { error });
     req.logger.info('Error response sent', { status: 500, durationMs: Date.now() - startTime, errorType: 'internal_error' });
-    return res.status(500).json({ success: false, error: 'Internal server error', message: error.message });
+    return res.status(500).json({ success: false, error: 'Internal server error' });
   }
 }, { moduleName: 'api:v1:public' });
