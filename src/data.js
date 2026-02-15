@@ -1,6 +1,6 @@
 // ============================================
 // DATA.JS - OpenOnco Consolidated Data
-// Last updated: 2026-01-08
+// Last updated: 2026-02-15
 // ============================================
 //
 // ⚠️  READ SUBMISSION_PROCESS.md BEFORE MAKING ANY CHANGES
@@ -546,6 +546,12 @@ export const VENDOR_VERIFIED = {
     company: 'Burning Rock Dx',
     verifiedDate: '2026-01-13',
     editsSubmitted: 5
+  },
+  'tds-2': {  // FoundationOne Liquid CDx
+    name: 'Stanley Bogan',
+    company: 'Foundation Medicine',
+    verifiedDate: '2026-02-14',
+    editsSubmitted: 1
   },
 };
 
@@ -8118,9 +8124,9 @@ export const cgpTestData = [
     "vendorNCCNAlignmentCitation": "https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
     "vendorNCCNAlignmentIndications": ["NSCLC", "Breast Cancer", "Prostate Cancer", "Cholangiocarcinoma"],
     "vendorNCCNAlignmentNotes": "Covers biomarkers recommended by NCCN guidelines. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
-    "tat": "7-10 days",
-    "tatNotes": "Results typically available within 7-10 business days.",
-    "tatCitations": "https://www.foundationmedicine.com/info/detail/order-a-test",
+    "tat": "7 days",
+    "tatNotes": "Results typically available within 7 days or less from receipt of specimen.",
+    "tatCitations": "https://www.foundationmedicine.com/sites/default/files/media/documents/2025-04/v16_RAL-0035_P190032_S024_F1LCDx_Technical_Clean%20Label_10DEC2024.pdf | https://www.foundationmedicine.com/info/detail/order-a-test",
     "sampleRequirements": "2 tubes of whole blood in Streck cfDNA BCT tubes; minimum 5 mL per tube",
     "sampleRequirementsNotes": "7-day sample stability at ambient temperature. Can reflex to tissue testing if liquid negative for CDx mutations.",
     "sampleRequirementsCitations": "https://www.foundationmedicine.com/info/detail/order-a-test",
@@ -8178,7 +8184,9 @@ export const cgpTestData = [
           "lastReviewed": "2026-02-05"
         }
       }
-    }
+    },
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-02-14: Vendor verified by Stanley Bogan, Foundation Medicine. TAT updated from '7-10 days' to '7 days' per vendor with FDA technical label citation."
   },
   {
     "id": "tds-3",
@@ -11435,6 +11443,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Feb 14, 2026',
+    type: 'verified',
+    testId: 'tds-2',
+    testName: 'FoundationOne Liquid CDx',
+    vendor: 'Foundation Medicine',
+    category: 'TDS',
+    description: 'Vendor verified by Stanley Bogan (Foundation Medicine). TAT updated from 7-10 days to 7 days per vendor, citing FDA technical label.',
+    contributor: 'Stanley Bogan',
+    affiliation: 'Foundation Medicine (vendor)',
+    citation: 'https://www.foundationmedicine.com/sites/default/files/media/documents/2025-04/v16_RAL-0035_P190032_S024_F1LCDx_Technical_Clean%20Label_10DEC2024.pdf'
+  },
   {
     date: 'Feb 9, 2026',
     type: 'updated',
