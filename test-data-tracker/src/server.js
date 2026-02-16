@@ -153,7 +153,7 @@ async function handleRequest(req, res) {
       try {
         const subscriber = await createSubscriber({ email: email.toLowerCase().trim(), cancerTypes, contentTypes, name, institution, digestType });
         // Send confirmation email (don't block response on email delivery)
-        sendConfirmationEmail({ email: subscriber.email, confirmationToken: subscriber.confirmation_token, name })
+        sendConfirmationEmail({ email: subscriber.email, confirmationToken: subscriber.confirmation_token, name, digestType })
           .catch(err => logger.error('Failed to send confirmation email', { error: err.message }));
         sendJson(res, { success: true, message: 'Check your email to confirm your subscription.' });
       } catch (error) {

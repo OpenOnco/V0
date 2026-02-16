@@ -19,13 +19,12 @@ export async function createSubscriber({ email, cancerTypes = null, contentTypes
   const result = await query(
     `INSERT INTO mrd_digest_subscribers (email, cancer_types, content_types, name, institution, confirmation_token, is_active, digest_type)
      VALUES ($1, $2, $3, $4, $5, $6, TRUE, $7)
-     ON CONFLICT (email) DO UPDATE SET
+     ON CONFLICT (email, digest_type) DO UPDATE SET
        cancer_types = COALESCE($2, mrd_digest_subscribers.cancer_types),
        content_types = COALESCE($3, mrd_digest_subscribers.content_types),
        name = COALESCE($4, mrd_digest_subscribers.name),
        institution = COALESCE($5, mrd_digest_subscribers.institution),
        confirmation_token = $6,
-       digest_type = COALESCE($7, mrd_digest_subscribers.digest_type),
        is_active = TRUE,
        unsubscribed_at = NULL,
        confirmed_at = CASE WHEN mrd_digest_subscribers.confirmed_at IS NOT NULL THEN mrd_digest_subscribers.confirmed_at ELSE NULL END
