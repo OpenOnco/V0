@@ -40,10 +40,15 @@ const QUERIES_HIGH = [
 ];
 
 // Query group B - Broader liquid biopsy (medium relevance)
+// Tightened from generic terms to reduce false positives
 const QUERIES_MEDIUM = [
-  { text: 'liquid biopsy cancer detection', operator: 'and' },
-  { text: 'cell-free DNA cancer', operator: 'and' },
+  { text: 'liquid biopsy early cancer detection screening', operator: 'and' },
+  { text: 'cell-free DNA tumor monitoring', operator: 'and' },
 ];
+
+// How far back (in days) to look for newly awarded grants.
+// The crawler runs weekly, so 30 days gives ~4x buffer for missed runs.
+const LOOKBACK_DAYS = 30;
 
 export class NIHReporterCrawler extends BaseCrawler {
   constructor() {
@@ -150,6 +155,13 @@ export class NIHReporterCrawler extends BaseCrawler {
     let offset = 0;
     const limit = 500;
 
+    // Only fetch grants awarded in the lookback window.
+    // This prevents re-discovering the entire NIH portfolio on every run
+    // (or if the grant store is wiped).
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - LOOKBACK_DAYS);
+    const fromDateStr = fromDate.toISOString().slice(0, 10); // YYYY-MM-DD
+
     while (true) {
       const body = {
         criteria: {
@@ -160,13 +172,16 @@ export class NIHReporterCrawler extends BaseCrawler {
           },
           include_active_projects: true,
           agencies: ['NIH'],
+          award_notice_date: {
+            from_date: fromDateStr,
+          },
         },
         offset,
         limit,
         include_fields: INCLUDE_FIELDS,
       };
 
-      this.log('debug', `Searching RePORTER: "${searchText}" offset=${offset}`);
+      this.log('debug', `Searching RePORTER: "${searchText}" offset=${offset} since=${fromDateStr}`);
 
       const response = await this.http.postJson(`${API_BASE}/projects/search`, body);
 
@@ -181,8 +196,9 @@ export class NIHReporterCrawler extends BaseCrawler {
       if (results.length < limit) break;
       offset += limit;
 
-      // Safety cap — don't paginate beyond 5000 results per query
-      if (offset >= 5000) {
+      // Safety cap — 500 results per query should be more than enough
+      // with the date filter in place
+      if (offset >= 500) {
         this.log('warn', `Hit pagination cap for "${searchText}" at offset ${offset}`);
         break;
       }
