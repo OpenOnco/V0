@@ -1,0 +1,116 @@
+name: Auto-Triage Weekly Submissions
+
+on:
+  # Trigger when weekly file is pushed to develop
+  push:
+    branches: [develop]
+    paths:
+      - 'test-data-tracker/data/submissions/weekly-*.json'
+
+  # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log decisions only, no changes)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      weekly_file:
+        description: 'Specific weekly file path (optional, defaults to most recent)'
+        required: false
+        type: string
+
+jobs:
+  triage:
+    name: Auto-Triage
+    runs-on: ubuntu-latest
+    # Don't run on commits made by this workflow
+    if: "!contains(github.event.head_commit.message, '[auto-triage]')"
+
+    outputs:
+      changes_made: ${{ steps.orchestrator.outputs.changes_made }}
+      escalation_count: ${{ steps.orchestrator.outputs.escalation_count }}
+      summary: ${{ steps.orchestrator.outputs.summary }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          # Need full history for PR creation
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run auto-triage orchestrator
+        id: orchestrator
+        run: node scripts/auto-triage/index.js ${{ inputs.weekly_file || '' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          BATCH_SIZE: '5'
+
+      - name: Run smoke tests
+        if: steps.orchestrator.outputs.changes_made == 'true'
+        run: |
+          npx playwright install chromium --with-deps
+          npm run test:smoke
+
+      - name: Create PR branch
+        if: steps.orchestrator.outputs.changes_made == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH_NAME="auto-triage/$(date +%Y-%m-%d)"
+          git checkout -b "$BRANCH_NAME"
+          git add src/data.js test-data-tracker/data/submissions/
+          git commit -m "$(cat <<'EOF'
+          chore(data): auto-triage weekly submissions [auto-triage]
+
+          ${{ steps.orchestrator.outputs.summary }}
+
+          Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+          EOF
+          )"
+          git push origin "$BRANCH_NAME"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        id: create_branch
+
+      - name: Create Pull Request
+        if: steps.orchestrator.outputs.changes_made == 'true'
+        run: |
+          PR_URL=$(gh pr create \
+            --base develop \
+            --head "${{ steps.create_branch.outputs.branch_name }}" \
+            --title "Auto-triage: $(date +%Y-%m-%d)" \
+            --body-file /tmp/triage-pr-body.md)
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: create_pr
+
+      - name: Send escalation email
+        if: steps.orchestrator.outputs.escalation_count != '0'
+        run: node scripts/auto-triage/notify.js "${{ steps.create_pr.outputs.pr_url || '' }}"
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+
+      - name: Summary
+        run: |
+          echo "## Auto-Triage Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.orchestrator.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.create_pr.outputs.pr_url }}" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "PR: ${{ steps.create_pr.outputs.pr_url }}" >> $GITHUB_STEP_SUMMARY
+          fi
