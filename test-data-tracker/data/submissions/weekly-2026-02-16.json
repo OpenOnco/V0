@@ -1,0 +1,217 @@
+{
+  "id": "weekly-2026-02-16",
+  "generatedAt": "2026-02-17T16:29:30.677Z",
+  "weekOf": "2026-02-16",
+  "crawlSummary": {
+    "cms": {
+      "ran": true,
+      "itemCount": 1,
+      "errors": []
+    },
+    "vendor": {
+      "ran": true,
+      "itemCount": 2,
+      "errors": []
+    },
+    "payers": {
+      "ran": true,
+      "itemCount": 2,
+      "errors": []
+    },
+    "nih": {
+      "ran": false,
+      "itemCount": 0,
+      "errors": []
+    }
+  },
+  "submissions": [
+    {
+      "submissionId": "sub-2026-mlg093hstrtk",
+      "source": "payers",
+      "type": "payer_policy_update",
+      "title": "Cigna: Genetic Testing (Policy 0052) Updated",
+      "summary": "This policy document focuses exclusively on hereditary and multifactorial genetic conditions testing for germline variants passed down through families. It does not address somatic mutations, ctDNA, liquid biopsy, or MRD testing which are used for cancer monitoring and treatment guidance.",
+      "url": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0052_coveragepositioncriteria_genetic_testing.pdf",
+      "detectedAt": "2026-02-01T07:57:50.793Z",
+      "triageHint": {
+        "daemonScore": 3,
+        "reason": "",
+        "suggestedAction": "coverage_update",
+        "suggestedTestName": null,
+        "confidence": 0.35
+      },
+      "metadata": {
+        "payerId": "cigna",
+        "payerName": "Cigna",
+        "policyId": "cigna-0052",
+        "policyName": "Genetic Testing (Policy 0052)",
+        "policyType": "molecular_oncology",
+        "contentType": "pdf",
+        "testsFound": [],
+        "isNewPolicy": true,
+        "analysis": {
+          "summary": "This policy document focuses exclusively on hereditary and multifactorial genetic conditions testing for germline variants passed down through families. It does not address somatic mutations, ctDNA, liquid biopsy, or MRD testing which are used for cancer monitoring and treatment guidance.",
+          "coverageStatus": "unclear",
+          "keyConditions": [
+            "Must be FDA-approved and/or performed in CLIA-accredited laboratory",
+            "Results must directly impact clinical decision making",
+            "Testing must be for germline/inherited conditions only",
+            "Individual must demonstrate signs/symptoms of genetically-linked heritable disease OR have direct risk factor based on family history",
+            "Clinical benefit must outweigh potential psychological/medical harm"
+          ],
+          "testsExplicitlyMentioned": [],
+          "significantChanges": [
+            "Document shows effective date of 10/11/2025 indicating this is a future policy update",
+            "Includes new health equity considerations section addressing disparities in genomic databases"
+          ],
+          "confidence": 0.9
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "submissionId": "sub-2026-mlg093hs1rk1",
+      "source": "vendor",
+      "type": "vendor_clinical_evidence",
+      "title": "GRAIL: PATHFINDER 2",
+      "summary": "Galleri Multi-Cancer Early Detection Blood Test Increased Cancer Detection More Than Seven-Fold When Added to USPSTF A and B Recommended Screenings. More Than Half of Cancers Detected by Galleri Were Early Stage. Approximately Three-Quarters of Galleri-Detected Cancers Do Not Have Recommended Screenings. PATHFINDER 2 is the Largest U.S. Multi-Cancer Early Detection (MCED) Interventional Study in the Cancer Screening Population",
+      "url": "https://www.grail.com/press-releases",
+      "detectedAt": "2026-02-05T20:04:56.155Z",
+      "triageHint": {
+        "daemonScore": 3,
+        "reason": "",
+        "suggestedAction": "data_update",
+        "suggestedTestName": "Galleri",
+        "confidence": 0.35
+      },
+      "metadata": {
+        "vendorId": "grail",
+        "vendorName": "GRAIL",
+        "trialName": "PATHFINDER 2",
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "Galleri",
+        "cancerType": "multi-cancer",
+        "findings": "Galleri Multi-Cancer Early Detection Blood Test Increased Cancer Detection More Than Seven-Fold When Added to USPSTF A and B Recommended Screenings. More Than Half of Cancers Detected by Galleri Were Early Stage. Approximately Three-Quarters of Galleri-Detected Cancers Do Not Have Recommended Screenings. PATHFINDER 2 is the Largest U.S. Multi-Cancer Early Detection (MCED) Interventional Study in the Cancer Screening Population"
+      },
+      "status": "pending"
+    },
+    {
+      "submissionId": "sub-2026-mlg093hs59wi",
+      "source": "payers",
+      "type": "payer_policy_update",
+      "title": "Highmark BCBS: Molecular/Genomic Testing (L-113) Updated",
+      "summary": "This policy establishes general criteria for molecular/genomic testing requiring technical validity, clinical utility, and reasonable use, but does not explicitly mention ctDNA, liquid biopsy, or MRD testing. The policy lists many oncology molecular tests as experimental/investigational but none from the ctDNA/liquid biopsy watchlist are specifically named.",
+      "url": "https://secure.highmark.com/ldap/medicalpolicy/wpa-highmark/printerfriendly/L-113-009.html",
+      "detectedAt": "2026-02-01T07:45:03.726Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "coverage_update",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      },
+      "metadata": {
+        "payerId": "highmark",
+        "payerName": "Highmark BCBS",
+        "policyId": "highmark-l113",
+        "policyName": "Molecular/Genomic Testing (L-113)",
+        "policyType": "molecular_oncology",
+        "contentType": "html",
+        "testsFound": [
+          null
+        ],
+        "isNewPolicy": true,
+        "analysis": {
+          "summary": "This policy establishes general criteria for molecular/genomic testing requiring technical validity, clinical utility, and reasonable use, but does not explicitly mention ctDNA, liquid biopsy, or MRD testing. The policy lists many oncology molecular tests as experimental/investigational but none from the ctDNA/liquid biopsy watchlist are specifically named.",
+          "coverageStatus": "unclear",
+          "keyConditions": [
+            "Technical and clinical validity - test must be accurate, sensitive and specific based on sufficient quality scientific evidence",
+            "Clinical utility - healthcare providers can use test results to provide significantly better medical care",
+            "Reasonable use - usefulness not significantly offset by negative factors like expense or clinical risk",
+            "All three conditions must be met for reimbursement eligibility"
+          ],
+          "testsExplicitlyMentioned": [],
+          "significantChanges": [
+            "Cannot determine changes as this appears to be a general policy framework rather than a specific update to ctDNA/liquid biopsy coverage"
+          ],
+          "confidence": 0.7
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "submissionId": "sub-2026-mlg093hs5u42",
+      "source": "cms",
+      "type": "coverage_change",
+      "title": "Billing and Coding: MolDX: Pharmacogenomics Testing",
+      "summary": "Article update",
+      "url": "",
+      "detectedAt": "2026-02-05T19:57:51.054Z",
+      "triageHint": {
+        "daemonScore": 8,
+        "reason": "",
+        "suggestedAction": "coverage_update",
+        "suggestedTestName": null,
+        "confidence": 0.85
+      },
+      "metadata": {
+        "documentId": "",
+        "documentType": "Article",
+        "contractor": "",
+        "effectiveDate": "",
+        "version": 1,
+        "aiAnalysis": {
+          "coverageDecision": "unknown",
+          "affectedTests": [],
+          "isMolDXRelevant": true,
+          "keyChanges": "This appears to be a billing and coding article for MolDX pharmacogenomics testing with an effective date of February 5, 2026, indicating future policy implementation",
+          "analysisNotes": "This is a MolDX billing and coding article specifically focused on pharmacogenomics testing rather than the ctDNA, liquid biopsy, MRD, or tumor profiling tests in the search list. Pharmacogenomics tests analyze genetic variations that affect drug metabolism and response, which is a different category from the oncology molecular diagnostics tests specified. Without access to the full article content, specific coverage criteria, PLA codes, and billing requirements cannot be determined. The future effective date suggests this may contain updated billing guidance for pharmacogenomics testing under the MolDX program.",
+          "plaCodes": []
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "submissionId": "sub-2026-mlg093hs1gec",
+      "source": "vendor",
+      "type": "vendor_new_indication",
+      "title": "Guardant Health: Reveal Test expands to Late-Stage Therapy Response Monitoring",
+      "summary": "New indication: Late-Stage Therapy Response Monitoring",
+      "url": "https://guardanthealth.com/newsroom/press-releases",
+      "detectedAt": "2026-02-05T20:00:48.733Z",
+      "triageHint": {
+        "daemonScore": 8,
+        "reason": "",
+        "suggestedAction": "data_update",
+        "suggestedTestName": "Reveal Test",
+        "confidence": 0.85
+      },
+      "metadata": {
+        "vendorId": "guardant",
+        "vendorName": "Guardant Health",
+        "testName": "Reveal Test",
+        "indication": "Late-Stage Therapy Response Monitoring",
+        "date": null
+      },
+      "status": "pending"
+    }
+  ],
+  "stats": {
+    "total": 5,
+    "bySource": {
+      "payers": 2,
+      "vendor": 2,
+      "cms": 1
+    },
+    "byConfidence": {
+      "high": 2,
+      "medium": 1,
+      "low": 2
+    }
+  }
+}

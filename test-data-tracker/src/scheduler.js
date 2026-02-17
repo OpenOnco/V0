@@ -26,6 +26,9 @@ import { generateDraft, autoSendIfPending } from './digest/send-weekly.js';
 import { buildWeeklySubmissions, cleanupStagingFiles } from './submissions/writer.js';
 import { sendWeeklySummaryEmail } from './email/weekly-summary.js';
 
+// v6: Push weekly file to GitHub to trigger auto-triage Action
+import { pushFileToGitHub } from './submissions/github-push.js';
+
 // v3: Publication index integration (optional)
 let publicationIndexModule = null;
 try {
@@ -219,6 +222,14 @@ function scheduleAggregation() {
 
       // Send single weekly summary email
       await sendWeeklySummaryEmail(weeklyFile);
+
+      // v6: Push weekly file to GitHub to trigger auto-triage Action
+      try {
+        const repoPath = `test-data-tracker/data/submissions/weekly-${weeklyFile.weekOf}.json`;
+        await pushFileToGitHub(filePath, repoPath, `chore(data): weekly submissions ${weeklyFile.weekOf}`);
+      } catch (pushError) {
+        logger.error('GitHub push failed (non-fatal)', { error: pushError.message });
+      }
 
       // Clean up staging files
       const removed = cleanupStagingFiles();

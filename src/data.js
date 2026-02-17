@@ -4551,9 +4551,12 @@ export const mrdTestData = [
     "lod": "0.001% VAF",
     "lodNotes": "Analytical LoD ~0.001% VAF (~10 ppm), consistent with RaDaR ST MRD assay specifications. Earlier claims of 10⁻⁵–10⁻⁶ were not supported by peer-reviewed validation data.",
     "lodCitations": "https://neogenomics.com/test-menu/radar | NeoGenomics RaDaR product specifications",
-    "fdaStatus": "LDT in NeoGenomics CLIA/CAP lab; not FDA-approved",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Used in clinical research and select clinical programs; payer coverage still emerging. NeoGenomics has also introduced a WES-based RaDaR ST assay, currently positioned for biopharma partners and interventional trials.",
+    "fdaStatus": "DISCONTINUED - No longer available",
+    "reimbursement": "N/A - Discontinued",
+    "reimbursementNote": "RaDaR is no longer on the market due to legal proceedings. The successor test is RaDaR ST (mrd-5), which is currently available.",
+    "isDiscontinued": true,
+    "discontinuedDate": "February 2026",
+    "discontinuedReason": "RaDaR discontinued due to legal proceedings. Successor test marketed as RaDaR ST (mrd-5).",
     "commercialPayers": ["Blue Shield of California"],
     "commercialPayersCitations": "https://www.decibio.com/",
     "commercialPayersNotes": "Blue Shield of California covers RaDaR. Coverage is still emerging for TRM applications.",
@@ -4581,52 +4584,28 @@ export const mrdTestData = [
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
-        "url": "https://neogenomics.com/test-menu/radar",
-        "medicareClaimed": ["Coverage varies"],
-        "commercialClaimed": "Coverage varies",
+        "url": null,
+        "medicareClaimed": ["N/A - Discontinued"],
+        "commercialClaimed": "N/A - Discontinued",
         "cashPay": null
       },
       "medicare": {
-        "status": "LIMITED",
-        "policies": ["L38779"],
-        "indications": ["Solid tumor therapy monitoring (case-by-case)"],
+        "status": "DISCONTINUED",
+        "policies": [],
+        "indications": [],
         "rate": null,
-        "notes": "Coverage varies by indication; MolDX framework"
+        "notes": "Product discontinued; no longer available. See RaDaR ST (mrd-5)."
       },
       "privatePayers": {
-        "aetna": {
-          "status": "EXPERIMENTAL",
-          "policy": "CPB 0715",
-          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
-          "coveredIndications": [],
-          "notes": "Therapy monitoring not covered"
-        },
-        "cigna": {
-          "status": "EXPERIMENTAL",
-          "policy": "mm_0520",
-          "policyUrl": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/medical/mm_0520_coveragepositioncriteria_tumor_profiling.pdf",
-          "coveredIndications": [],
-          "notes": "Treatment monitoring experimental"
-        },
-        "united": {
-          "status": "NOT_COVERED",
-          "policy": "Molecular Oncology Testing for Solid Tumor Cancer (2026)",
-          "policyUrl": null,
-          "coveredIndications": [],
-          "notes": "MRD assays in solid tumor cancers unproven and not medically necessary",
-          "lastReviewed": "2026-02-05"
-        },
-        "anthem": {
-          "status": "NOT_COVERED",
-          "coveredIndications": [],
-          "notes": "No coverage for hybrid personalized MRD tests for any indication. Considered investigational.",
-          "lastReviewed": "2026-02-05"
-        }
+        "aetna": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" },
+        "cigna": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" },
+        "united": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" },
+        "anthem": { "status": "DISCONTINUED", "policy": null, "policyUrl": null, "coveredIndications": [], "notes": "Discontinued" }
       },
       "analysis": {
-        "vendorClaimAccuracy": "Medicare: Variable | Commercial: Limited",
-        "patientGuidance": "Coverage varies. Verify with payer before testing.",
-        "keyInsight": "RaDaR TRM coverage is inconsistent; expect case-by-case determination."
+        "vendorClaimAccuracy": "N/A - Discontinued",
+        "patientGuidance": "Product no longer available. See RaDaR ST (mrd-5) for current NeoGenomics MRD testing.",
+        "keyInsight": "Discontinued due to legal proceedings; successor is RaDaR ST."
       }
     }
   },
@@ -11443,6 +11422,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Feb 17, 2026',
+    type: 'updated',
+    testId: 'trm-5',
+    testName: 'RaDaR',
+    vendor: 'NeoGenomics',
+    category: 'TRM',
+    description: 'Marked RaDaR (trm-5) as discontinued per vendor contact. RaDaR is no longer on the market due to legal proceedings. Successor test is RaDaR ST (mrd-5).',
+    contributor: 'Christine Seward',
+    affiliation: 'NeoGenomics (vendor)',
+    citation: 'Vendor error report via OpenOnco website, 2026-02-16'
+  },
   {
     date: 'Feb 14, 2026',
     type: 'verified',
