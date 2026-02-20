@@ -35,8 +35,8 @@ const logger = createLogger('server');
 // ============================================
 
 const PORT = process.env.PORT || 3000;
-const SONNET_MODEL = 'claude-sonnet-4-20250514';
-const HAIKU_MODEL = 'claude-3-5-haiku-20241022';
+const SONNET_MODEL = 'claude-sonnet-4-6';
+const HAIKU_MODEL = 'claude-haiku-4-5-20251001';
 const EMBEDDING_MODEL = 'text-embedding-ada-002';
 const MAX_SOURCES = 8;
 const MIN_SIMILARITY = 0.55;  // Lowered to include more relevant results
