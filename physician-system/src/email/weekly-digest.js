@@ -3,7 +3,7 @@
  */
 
 import { sendEmail } from './index.js';
-import { getHealthSummary, recordDigestSent } from '../health.js';
+import { getHealthSummary } from '../health.js';
 import { query } from '../db/client.js';
 import { createLogger } from '../utils/logger.js';
 
@@ -13,7 +13,7 @@ export async function sendWeeklyDigest() {
   logger.info('Generating weekly digest');
 
   // Get health summary
-  const health = getHealthSummary();
+  const health = await getHealthSummary();
 
   // Get new items this week
   const newItems = await query(`
@@ -69,7 +69,6 @@ export async function sendWeeklyDigest() {
     text,
   });
 
-  recordDigestSent();
   logger.info('Weekly digest sent');
 }
 

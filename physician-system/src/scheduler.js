@@ -16,8 +16,8 @@ import { sendDailyAIReport } from './email/daily-ai-report.js';
 import { monitorRSSFeeds } from './crawlers/society-monitor.js';
 import { checkGuidelineVersions } from './crawlers/version-watcher.js';
 import { scanForNewGuidelines } from './crawlers/guideline-watcher.js';
-import { updateCrawlerHealth, recordCrawlerError } from './health.js';
 import { acquireJobLock, isJobRunning } from './utils/job-lock.js';
+import { query } from './db/client.js';
 
 const logger = createLogger('scheduler');
 const jobs = new Map();
@@ -32,6 +32,7 @@ async function runWithHealthTracking(name, fn) {
   const useLock = LOCKED_JOBS.includes(name);
 
   // For locked jobs, acquire a distributed lock first
+  // The lock creates/updates mrd_crawler_runs records automatically
   if (useLock) {
     const lock = await acquireJobLock(name);
     if (!lock) {
@@ -42,12 +43,8 @@ async function runWithHealthTracking(name, fn) {
     try {
       logger.info(`Starting scheduled job: ${name}`, { runId: lock.runId });
       const result = await fn();
-
-      // Update health tracking
       const stats = result?.stats || {};
-      updateCrawlerHealth(name, 'success', stats);
 
-      // Release lock with success
       await lock.release('completed', {
         found: stats.found || stats.items || 0,
         new: stats.new || stats.added || 0,
@@ -58,28 +55,46 @@ async function runWithHealthTracking(name, fn) {
       logger.info(`Completed scheduled job: ${name}`, { runId: lock.runId });
       return result;
     } catch (error) {
-      updateCrawlerHealth(name, 'error', {});
-      recordCrawlerError(name, error);
       await lock.release('failed', {}, error.message);
       logger.error(`Failed scheduled job: ${name}`, { error: error.message, runId: lock.runId });
       return null;
     }
   }
 
-  // For non-locked jobs (email, reports), use simple tracking
-  const start = Date.now();
+  // For non-locked jobs (email, reports), create DB record directly
+  let runId;
   try {
-    logger.info(`Starting scheduled job: ${name}`);
+    const run = await query(
+      `INSERT INTO mrd_crawler_runs (crawler_name, mode, status, started_at)
+       VALUES ($1, 'scheduled', 'running', NOW()) RETURNING id`,
+      [name]
+    );
+    runId = run.rows[0].id;
+  } catch (e) {
+    logger.error(`Failed to create run record for ${name}`, { error: e.message });
+  }
+
+  try {
+    logger.info(`Starting scheduled job: ${name}`, { runId });
     const result = await fn();
-    const duration = Date.now() - start;
-    updateCrawlerHealth(name, 'success', { duration, ...result?.stats });
-    logger.info(`Completed scheduled job: ${name}`, { duration });
+
+    if (runId) {
+      await query(
+        `UPDATE mrd_crawler_runs SET status = 'completed', completed_at = NOW() WHERE id = $1`,
+        [runId]
+      );
+    }
+
+    logger.info(`Completed scheduled job: ${name}`, { runId });
     return result;
   } catch (error) {
-    const duration = Date.now() - start;
-    updateCrawlerHealth(name, 'error', { duration });
-    recordCrawlerError(name, error);
-    logger.error(`Failed scheduled job: ${name}`, { error: error.message });
+    if (runId) {
+      await query(
+        `UPDATE mrd_crawler_runs SET status = 'failed', completed_at = NOW(), error_message = $2 WHERE id = $1`,
+        [runId, error.message]
+      );
+    }
+    logger.error(`Failed scheduled job: ${name}`, { error: error.message, runId });
     return null;
   }
 }

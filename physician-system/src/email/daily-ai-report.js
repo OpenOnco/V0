@@ -14,7 +14,7 @@ const logger = createLogger('daily-ai-report');
 const anthropic = new Anthropic();
 
 async function gatherSystemData() {
-  const health = getHealthSummary();
+  const health = await getHealthSummary();
 
   // Get counts and recent activity
   const [
@@ -195,25 +195,45 @@ async function countPendingProposals() {
  * Crawlers managed by cron — staleness for these is informational only,
  * not an action item (unless the cron itself has stopped running).
  */
-const CRON_MANAGED_CRAWLERS = new Set([
-  'pubmed', 'clinicaltrials', 'fda', 'fda-drugs', 'fda-devices',
-  'cms-lcd', 'monitor', 'embed', 'link',
-]);
+// Staleness thresholds per crawler (days). Weekly jobs get 10 days to avoid
+// false positives mid-week; daily jobs keep the 3-day threshold.
+const CRON_STALENESS_DAYS = {
+  pubmed: 3,
+  clinicaltrials: 3,
+  fda: 3,
+  'fda-drugs': 3,
+  'fda-devices': 3,
+  'cms-lcd': 10,        // weekly (Sunday)
+  monitor: 3,
+  embed: 3,
+  link: 10,             // weekly (Sunday)
+};
 
 /**
- * Detect crawlers whose cron jobs appear broken (no successful run in 3+ days)
+ * Detect crawlers whose cron jobs appear broken (no successful run within
+ * their expected staleness window).
  */
 function detectBrokenCrons(lastSuccessfulRuns) {
   const broken = [];
   const now = Date.now();
-  const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
+  const successfulNames = new Set(lastSuccessfulRuns.map(r => r.crawler_name));
 
   for (const run of lastSuccessfulRuns) {
-    if (!CRON_MANAGED_CRAWLERS.has(run.crawler_name)) continue;
+    const thresholdDays = CRON_STALENESS_DAYS[run.crawler_name];
+    if (thresholdDays == null) continue;
     const lastSuccess = new Date(run.completed_at).getTime();
-    const daysSince = Math.round((now - lastSuccess) / (24 * 60 * 60 * 1000));
-    if (now - lastSuccess > THREE_DAYS_MS) {
+    const daysSince = Math.round((now - lastSuccess) / DAY_MS);
+    if (daysSince > thresholdDays) {
       broken.push({ name: run.crawler_name, daysSince });
+    }
+  }
+
+  // Flag crawlers that have no successful run record at all
+  for (const name of Object.keys(CRON_STALENESS_DAYS)) {
+    if (!successfulNames.has(name)) {
+      broken.push({ name, daysSince: 'never' });
     }
   }
 
@@ -265,8 +285,12 @@ function generateCCActionItems({ staleSources, failedCrawlerRuns, lastSuccessful
     items.push({
       type: 'broken-cron',
       priority: 'high',
-      title: `${cron.name} cron appears broken (no success in ${cron.daysSince} days)`,
-      prompt: `The ${cron.name} crawler hasn't completed successfully in ${cron.daysSince} days. Check Railway deployment and logs. The cron job may have stopped.`,
+      title: cron.daysSince === 'never'
+        ? `${cron.name} cron has never completed successfully`
+        : `${cron.name} cron appears broken (no success in ${cron.daysSince} days)`,
+      prompt: cron.daysSince === 'never'
+        ? `The ${cron.name} crawler has no successful run on record. Check Railway deployment and logs.`
+        : `The ${cron.name} crawler hasn't completed successfully in ${cron.daysSince} days. Check Railway deployment and logs. The cron job may have stopped.`,
     });
   }
 

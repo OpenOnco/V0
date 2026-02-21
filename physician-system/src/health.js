@@ -1,104 +1,96 @@
 /**
  * Health tracking for physician-system crawlers
+ * DB-backed via mrd_crawler_runs table (replaces ephemeral health.json)
  */
 
-import fs from 'fs';
-import path from 'path';
+import { query } from './db/client.js';
 import { createLogger } from './utils/logger.js';
 
 const logger = createLogger('health');
-const HEALTH_FILE = './data/health.json';
 
-const DEFAULT_HEALTH = {
-  version: 1,
-  startedAt: null,
-  lastUpdated: null,
-  crawlers: {},
-  errors: [],
-  digestsSent: 0,
-  lastDigestSent: null,
-};
+// Process start time for uptime calculation (in-memory, resets on deploy)
+const PROCESS_START = new Date();
 
-let healthData = null;
+/**
+ * Get a full health summary from the DB.
+ * Replaces the old file-based getHealthSummary().
+ */
+export async function getHealthSummary() {
+  const [
+    crawlerStatuses,
+    lastSuccesses,
+    errorCount,
+    recentErrors,
+    digestCount,
+  ] = await Promise.all([
+    // Latest run per crawler
+    query(`
+      SELECT DISTINCT ON (crawler_name)
+             crawler_name, status, started_at, completed_at,
+             items_found, items_new, error_message
+      FROM mrd_crawler_runs
+      ORDER BY crawler_name, started_at DESC
+    `),
+    // Last successful run per crawler
+    query(`
+      SELECT DISTINCT ON (crawler_name)
+             crawler_name, completed_at
+      FROM mrd_crawler_runs
+      WHERE status = 'completed'
+      ORDER BY crawler_name, completed_at DESC
+    `),
+    // Error count in last 7 days
+    query(`
+      SELECT COUNT(*)::int as count
+      FROM mrd_crawler_runs
+      WHERE status = 'failed'
+        AND completed_at > NOW() - INTERVAL '7 days'
+    `),
+    // Recent errors (last 10)
+    query(`
+      SELECT crawler_name, error_message, completed_at
+      FROM mrd_crawler_runs
+      WHERE status = 'failed'
+        AND error_message IS NOT NULL
+      ORDER BY completed_at DESC
+      LIMIT 10
+    `),
+    // Digest count
+    query(`
+      SELECT COUNT(*)::int as count
+      FROM mrd_crawler_runs
+      WHERE crawler_name = 'digest'
+        AND status = 'completed'
+    `),
+  ]);
 
-export function getHealth() {
-  if (!healthData) {
-    try {
-      const dir = path.dirname(HEALTH_FILE);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      if (fs.existsSync(HEALTH_FILE)) {
-        healthData = JSON.parse(fs.readFileSync(HEALTH_FILE, 'utf8'));
-      } else {
-        healthData = { ...DEFAULT_HEALTH, startedAt: new Date().toISOString() };
-      }
-    } catch (e) {
-      logger.warn('Failed to load health data, using defaults', { error: e.message });
-      healthData = { ...DEFAULT_HEALTH, startedAt: new Date().toISOString() };
-    }
-  }
-  return healthData;
-}
-
-function saveHealth() {
-  const health = getHealth();
-  health.lastUpdated = new Date().toISOString();
-  try {
-    const dir = path.dirname(HEALTH_FILE);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(HEALTH_FILE, JSON.stringify(health, null, 2));
-  } catch (e) {
-    logger.error('Failed to save health data', { error: e.message });
-  }
-}
-
-export function updateCrawlerHealth(source, status, stats = {}) {
-  const health = getHealth();
-  health.crawlers[source] = {
-    status,
-    lastRun: new Date().toISOString(),
-    lastSuccess: status === 'success' ? new Date().toISOString() : health.crawlers[source]?.lastSuccess,
-    stats,
-  };
-  saveHealth();
-  logger.info(`Crawler health updated: ${source} = ${status}`);
-}
-
-export function recordCrawlerError(source, error) {
-  const health = getHealth();
-  health.errors.push({
-    source,
-    message: error.message,
-    stack: error.stack?.split('\n').slice(0, 3).join('\n'),
-    timestamp: new Date().toISOString(),
-  });
-  // Keep last 100 errors
-  if (health.errors.length > 100) {
-    health.errors = health.errors.slice(-100);
-  }
-  saveHealth();
-  logger.error(`Crawler error recorded: ${source}`, { error: error.message });
-}
-
-export function getHealthSummary() {
-  const health = getHealth();
-  const now = new Date();
-  const recentErrors = health.errors.filter(e =>
-    new Date(e.timestamp) > new Date(now - 7 * 24 * 60 * 60 * 1000)
+  // Build a lookup of last success per crawler
+  const successMap = new Map(
+    lastSuccesses.rows.map(r => [r.crawler_name, r.completed_at])
   );
 
+  const now = new Date();
+
   return {
-    uptime: health.startedAt ? formatDuration(now - new Date(health.startedAt)) : 'unknown',
-    crawlers: Object.entries(health.crawlers).map(([name, data]) => ({
-      name,
-      status: data.status,
-      lastSuccess: data.lastSuccess,
-      lastRun: data.lastRun,
-      stats: data.stats,
+    uptime: formatDuration(now - PROCESS_START),
+    crawlers: crawlerStatuses.rows.map(r => ({
+      name: r.crawler_name,
+      status: r.status === 'completed' ? 'success' : r.status === 'failed' ? 'error' : r.status,
+      lastSuccess: successMap.get(r.crawler_name) || null,
+      lastRun: r.started_at,
+      stats: {
+        found: r.items_found,
+        new: r.items_new,
+      },
     })),
-    recentErrors: recentErrors.slice(-10),
-    errorCount: recentErrors.length,
-    digestsSent: health.digestsSent,
-    lastDigestSent: health.lastDigestSent,
+    recentErrors: recentErrors.rows.map(r => ({
+      source: r.crawler_name,
+      message: r.error_message,
+      timestamp: r.completed_at,
+    })),
+    errorCount: errorCount.rows[0].count,
+    digestsSent: digestCount.rows[0].count,
+    lastDigestSent: null, // not tracked separately anymore
   };
 }
 
@@ -108,15 +100,12 @@ function formatDuration(ms) {
   return `${days}d ${hours}h`;
 }
 
-export function recordDigestSent() {
-  const health = getHealth();
-  health.digestsSent++;
-  health.lastDigestSent = new Date().toISOString();
-  saveHealth();
-}
+// No-ops — tracking is now handled by scheduler.js writing to mrd_crawler_runs
+export function updateCrawlerHealth() {}
+export function recordCrawlerError() {}
+export function recordDigestSent() {}
 
 export default {
-  getHealth,
   getHealthSummary,
   updateCrawlerHealth,
   recordCrawlerError,

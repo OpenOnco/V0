@@ -469,7 +469,7 @@ async function main() {
 
       case 'health': {
         const { getHealthSummary } = await import('./health.js');
-        const summary = getHealthSummary();
+        const summary = await getHealthSummary();
         console.log('\n=== Health Summary ===');
         console.log(`Uptime: ${summary.uptime}`);
         console.log(`Digests sent: ${summary.digestsSent}`);
