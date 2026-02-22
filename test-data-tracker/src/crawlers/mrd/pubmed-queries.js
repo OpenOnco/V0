@@ -142,8 +142,9 @@ export function buildMRDSearchQuery(options = {}) {
 
   parts.push(`(${cancerContext.join(' OR ')})`);
 
-  // Exclude hematologic malignancies (focus on solid tumors)
-  parts.push('NOT ("leukemia"[tiab] OR "lymphoma"[tiab] OR "myeloma"[tiab])');
+  // NOTE: Hematologic exclusion removed — the NOT clause was overly aggressive,
+  // eliminating solid tumor papers that mentioned heme malignancies in passing.
+  // AI triage (Sonnet 4.6) now handles heme filtering with better judgment.
 
   // Date filter
   if (fromDate) {

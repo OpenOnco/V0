@@ -1,5 +1,5 @@
 /**
- * MRD Triage: AI-powered relevance scoring using Claude Haiku
+ * MRD Triage: AI-powered relevance scoring using Claude Sonnet
  * Fast, cheap triage to filter before full classification
  */
 
@@ -7,7 +7,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createLogger } from '../utils/logger.js';
 
 const logger = createLogger('mrd-triage');
-const HAIKU_MODEL = 'claude-3-5-haiku-20241022';
+const SONNET_MODEL = 'claude-sonnet-4-6';
 
 let anthropic = null;
 
@@ -36,6 +36,13 @@ Focus on:
 - Surveillance and recurrence detection
 - Guidelines and recommendations
 
+STRICT EXCLUSIONS — score 1-2 for these:
+- Hematologic malignancies (leukemia, lymphoma, myeloma, MDS) unless comparing solid tumor MRD approaches
+- Broad biomarker reviews not focused on MRD/ctDNA clinical utility
+- Basic science without clinical MRD application
+- Surgical technique papers without MRD correlation
+- General oncology news (FDA alerts, drug safety) unless directly about an MRD/ctDNA test
+
 Respond with ONLY a JSON object (no markdown):
 {
   "score": <1-10>,
@@ -46,7 +53,7 @@ Respond with ONLY a JSON object (no markdown):
 }`;
 
 /**
- * Triage a single article with Haiku
+ * Triage a single article with Sonnet
  * @param {Object} article - Article with title and abstract
  * @returns {Promise<Object>} - Triage result
  */
@@ -63,7 +70,7 @@ MeSH Terms: ${article.meshTerms?.slice(0, 10).join(', ') || 'None'}`;
 
   try {
     const response = await client.messages.create({
-      model: HAIKU_MODEL,
+      model: SONNET_MODEL,
       max_tokens: 256,
       messages: [
         {
@@ -102,7 +109,7 @@ MeSH Terms: ${article.meshTerms?.slice(0, 10).join(', ') || 'None'}`;
     return {
       pmid: article.pmid,
       ...result,
-      model: HAIKU_MODEL,
+      model: SONNET_MODEL,
       triaged_at: new Date().toISOString(),
     };
   } catch (error) {

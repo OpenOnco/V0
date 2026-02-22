@@ -226,7 +226,7 @@ export async function runPubMedCrawler(options = {}) {
     // Step 3: AI Triage (if not skipped)
     let triaged = prefiltered;
     if (!skipTriage && prefiltered.length > 0) {
-      logger.info('Step 3: AI Triage with Haiku');
+      logger.info('Step 3: AI Triage with Sonnet 4.6');
       const triageResult = await batchTriage(prefiltered, { minScore: 6 });
       triaged = triageResult.passed;
       stats.triaged = triaged.length;

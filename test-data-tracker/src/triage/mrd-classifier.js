@@ -7,7 +7,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createLogger } from '../utils/logger.js';
 
 const logger = createLogger('mrd-classifier');
-const SONNET_MODEL = 'claude-sonnet-4-20250514';
+const SONNET_MODEL = 'claude-sonnet-4-6';
 
 let anthropic = null;
 
