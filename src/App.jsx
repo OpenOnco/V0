@@ -1388,10 +1388,8 @@ export default function App() {
     analytics.identifyPersona(newPersona); // PostHog persona tracking
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
 
-    // Navigate to home when switching away from a persona-specific page
-    if (currentPage.startsWith('patient-')) {
-      handleNavigate('home');
-    }
+    // Always navigate to home when switching personas
+    handleNavigate('home');
   };
 
   // Check URL parameters on mount for direct test links and comparison links (backward compatibility)
