@@ -280,6 +280,13 @@
 // ============================================
 export const COMPANY_CONTRIBUTIONS = {
   // Vendor Changelog Entries (22 tests - Dec 11-19)
+  'ecd-25': {  // CancerDetect Oral & Throat
+    name: 'Momchilo Vuyisich',
+    company: 'Viome',
+    date: '2025-01-01',
+    verifiedDate: '2026-02-24',
+    note: 'Vendor-verified submission. PPV/NPV values added per vendor correction (Feb 2026).'
+  },
   'mrd-26': {  // MRDVision
     name: 'Sandra Balladares',
     company: 'Inocras',
@@ -551,6 +558,12 @@ export const VENDOR_VERIFIED = {
     name: 'Stanley Bogan',
     company: 'Foundation Medicine',
     verifiedDate: '2026-02-14',
+    editsSubmitted: 1
+  },
+  'ecd-25': {  // CancerDetect Oral & Throat
+    name: 'Momchilo Vuyisich',
+    company: 'Viome',
+    verifiedDate: '2026-02-24',
     editsSubmitted: 1
   },
 };
@@ -5759,8 +5772,8 @@ export const mrdTestData = [
     "requiresTumorTissueNotes": "Blood-based; no bone marrow biopsy required.",
     "requiresMatchedNormal": "No",
     "requiresMatchedNormalNotes": "No matched normal sample required.",
-    "sensitivity": null,
-    "sensitivityNotes": "Detected M-protein in 79% of NGS MRD-negative samples (10⁻⁵) and 53% of NGF MRD-negative samples, suggesting greater sensitivity than bone marrow-based assays.",
+    "sensitivity": 79,
+    "sensitivityNotes": "79% MRD detection rate in NGS-negative samples (10⁻⁵ threshold). Not directly comparable to traditional MRD sensitivity metrics; measures M-protein via mass spectrometry rather than tumor DNA.",
     "sensitivityCitations": "https://doi.org/10.3324/haematol.2024.285933",
     "specificity": 100,
     "specificityCitations": "https://doi.org/10.1158/1078-0432.CCR-21-0649",
@@ -5788,6 +5801,7 @@ export const mrdTestData = [
     "clinicalTrialsCitations": "https://doi.org/10.1158/1078-0432.CCR-21-0649",
     "validationCohortSize": 26,
     "validationCohortStudy": "MCRN-001 trial (Liyasova et al., Clin Cancer Res 2021)",
+    "totalParticipants": 26,
     "numPublications": 4,
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34210683/",
     "numPublicationsNotes": "Liyasova CCR 2021; McDonald J Proteome Res 2021; Zhao Haematologica 2025; Slade Blood 2022 (ASH).",
@@ -7577,6 +7591,12 @@ export const ecdTestData = [
     "specificity": 95,
     "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://cancerdetect.viome.com/",
     "specificityNotes": "94-95% specificity across validation cohorts; 97.9% observed in larger technical validation (n=282)",
+    "ppv": 5.4,
+    "ppvCitations": "https://doi.org/10.1016/j.oraloncology.2023.106531",
+    "ppvNotes": "PPV 5.4% in high-risk screening population (≥50 years or tobacco history). Vendor-reported from full paper.",
+    "npv": 99.9,
+    "npvCitations": "https://doi.org/10.1016/j.oraloncology.2023.106531",
+    "npvNotes": "NPV 99.9% in high-risk screening population. Vendor-reported from full paper.",
     "performanceCitations": "https://pubmed.ncbi.nlm.nih.gov/37454545/ | https://www.nature.com/articles/s41525-021-00257-x",
     "performanceNotes": "Validation cohort of 230 samples (20 OSCC, 76 OPSCC, 134 controls). Earlier Nature study (n=433) showed ROC AUC 0.87 for high-risk population, 0.9+ for OC-only cohort.",
     "fdaStatus": "LDT - FDA Breakthrough Device Designation",
@@ -7602,7 +7622,7 @@ export const ecdTestData = [
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CLIA-certified LDT with FDA Breakthrough Device designation; not FDA-approved",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2025-01-01: Initial submission by Momchilo Vuyisich (Viome) with peer-reviewed publications. Vendor verified via email momo@viome.com."
+    "vendorRequestedChanges": "2025-01-01: Initial submission by Momchilo Vuyisich (Viome) with peer-reviewed publications. Vendor verified via email momo@viome.com. | 2026-02-19: PPV/NPV values added per Momchilo Vuyisich (momo@viome.com) vendor correction."
   ,
     "medicareCoverage": {
       "status": "NOT_COVERED",
@@ -11422,6 +11442,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Feb 24, 2026',
+    type: 'verified',
+    testId: 'ecd-25',
+    testName: 'CancerDetect Oral & Throat',
+    vendor: 'Viome',
+    category: 'ECD',
+    description: 'Vendor verified by Momchilo Vuyisich. PPV (5.4%) and NPV (99.9%) added per vendor correction from full Oral Oncology paper.',
+    contributor: 'Momchilo Vuyisich',
+    affiliation: 'Viome',
+    citation: 'https://doi.org/10.1016/j.oraloncology.2023.106531'
+  },
   {
     date: 'Feb 17, 2026',
     type: 'updated',
