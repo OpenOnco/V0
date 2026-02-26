@@ -1585,6 +1585,17 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
+        if (persona === 'patient') {
+          return (
+            <WatchingWizard
+              key={wizardResetKey}
+              onNavigate={handleNavigate}
+              onBack={null}
+              onComplete={() => {}}
+              testData={mrdTestsForWizard}
+            />
+          );
+        }
         if (persona === 'medical') {
           return <MRDNavigator key={wizardResetKey} testData={chatTestData} onNavigate={handleNavigate} currentPage={currentPage} />;
         }
