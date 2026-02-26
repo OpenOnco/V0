@@ -50,7 +50,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/"
@@ -62,7 +62,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/mrd/:slug*"
@@ -73,7 +73,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/ecd/:slug*"
@@ -84,7 +84,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/trm/:slug*"
@@ -95,7 +95,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/tds/:slug*"
@@ -106,7 +106,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/cgp/:slug*"
@@ -117,19 +117,63 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/test/:slug*"
     },
-    
+    {
+      "source": "/monitor/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/monitor/:slug*"
+    },
+    {
+      "source": "/screen/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/screen/:slug*"
+    },
+    {
+      "source": "/treat/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/treat/:slug*"
+    },
+    {
+      "source": "/risk/:slug*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/risk/:slug*"
+    },
+
     {
       "source": "/mrd",
       "has": [
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/mrd"
@@ -140,7 +184,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/ecd"
@@ -151,7 +195,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/trm"
@@ -162,7 +206,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/tds"
@@ -173,12 +217,56 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|Googlebot|bingbot|CFNetwork|Darwin|iMessageLinkPreview).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
         }
       ],
       "destination": "/api/og?path=/cgp"
     },
-    
+    {
+      "source": "/monitor",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/monitor"
+    },
+    {
+      "source": "/screen",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/screen"
+    },
+    {
+      "source": "/treat",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/treat"
+    },
+    {
+      "source": "/risk",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Applebot|Pinterest|vkShare|CFNetwork|Darwin|iMessageLinkPreview).*"
+        }
+      ],
+      "destination": "/api/og?path=/risk"
+    },
+
     {
       "source": "/mrd",
       "destination": "/"
