@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SITE_URL = 'https://openonco.org';
+const SITE_URL = 'https://www.openonco.org';
 const TODAY = new Date().toISOString().split('T')[0];
 
 const slugify = (text) =>
@@ -26,11 +26,6 @@ const staticPages = [
   { path: '/monitor', priority: '0.9', changefreq: 'weekly' },
   { path: '/screen', priority: '0.9', changefreq: 'weekly' },
   { path: '/treat', priority: '0.9', changefreq: 'weekly' },
-  // Legacy URLs (maintain for SEO - will redirect)
-  { path: '/mrd', priority: '0.8', changefreq: 'weekly' },
-  { path: '/ecd', priority: '0.8', changefreq: 'weekly' },
-  { path: '/trm', priority: '0.8', changefreq: 'weekly' },
-  { path: '/tds', priority: '0.8', changefreq: 'weekly' },
   // Other pages
   { path: '/alz-blood', priority: '0.9', changefreq: 'weekly' },
   { path: '/learn', priority: '0.8', changefreq: 'monthly' },
@@ -72,14 +67,18 @@ async function generateSitemap() {
 `;
   });
 
-  // Add individual test pages
+  // Add individual test pages (deduplicate by URL)
   let testCount = 0;
+  const seenUrls = new Set();
   Object.entries(categoryTests).forEach(([category, tests]) => {
     if (!tests) return;
     tests.forEach(test => {
       const slug = slugify(test.name);
+      const url = `${SITE_URL}/${category}/${slug}`;
+      if (seenUrls.has(url)) return;
+      seenUrls.add(url);
       xml += `  <url>
-    <loc>${SITE_URL}/${category}/${slug}</loc>
+    <loc>${url}</loc>
     <lastmod>${TODAY}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
