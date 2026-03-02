@@ -476,6 +476,12 @@ export const COMPANY_CONTRIBUTIONS = {
 // ============================================
 export const VENDOR_VERIFIED = {
   // Add test IDs here after vendors complete the validation flow
+  'mrd-29': {  // EasyM
+    name: 'Jenna Kerry',
+    company: 'Rapid Novor',
+    verifiedDate: '2026-03-01',
+    editsSubmitted: 2
+  },
   'mrd-26': {  // MRDVision
     name: 'Sandra Balladares',
     company: 'Inocras',
@@ -5778,9 +5784,9 @@ export const mrdTestData = [
     "specificity": 100,
     "specificityCitations": "https://doi.org/10.1158/1078-0432.CCR-21-0649",
     "specificityNotes": "100% patient-specific clonotypic approach. No interference from therapeutic antibodies (e.g., daratumumab) or polyclonal background.",
-    "lod": "0.0002 g/dL",
+    "lod": "1×10⁻⁵ g/dL",
     "lodCitations": "https://doi.org/10.1158/1078-0432.CCR-21-0649",
-    "lodNotes": "1000x more sensitive than SPEP, 200x more sensitive than IFE. Best sensitivity 0.58 mg/L in validation study.",
+    "lodNotes": "LOQ 1×10⁻⁵ g/dL (vendor-confirmed). LOD not formally determined for HR-MS assay — if M-protein is present, it can be detected. 1000x more sensitive than SPEP, 200x more sensitive than IFE.",
     "initialTat": 10,
     "initialTatCitations": "https://www.easym.com/easym-technology-mrd-blood-test-myeloma/",
     "initialTatNotes": "Diagnostic sequencing to identify patient-specific clonotypic peptides.",
@@ -5801,7 +5807,7 @@ export const mrdTestData = [
     "clinicalTrialsCitations": "https://doi.org/10.1158/1078-0432.CCR-21-0649",
     "validationCohortSize": 26,
     "validationCohortStudy": "MCRN-001 trial (Liyasova et al., Clin Cancer Res 2021)",
-    "totalParticipants": 26,
+    "totalParticipants": 500,
     "numPublications": 4,
     "numPublicationsCitations": "https://pubmed.ncbi.nlm.nih.gov/34210683/",
     "numPublicationsNotes": "Liyasova CCR 2021; McDonald J Proteome Res 2021; Zhao Haematologica 2025; Slade Blood 2022 (ASH).",
@@ -5812,7 +5818,7 @@ export const mrdTestData = [
     "leadTimeVsImagingNotes": "Up to 10 months earlier than IFE; Australian data showed up to 38 months earlier than electrophoretic methods.",
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "World's first CLIA-certified personalized blood test for myeloma MRD.",
-    "vendorVerified": false,
+    "vendorVerified": true,
     "independentValidation": "Yes",
     "independentValidationNotes": "Evaluated by Alfred Hospital (Australia) and Washington University independent of vendor.",
     "technologyDifferentiator": "Only blood-based MRD test using clonotypic peptides MS for myeloma. Measures M-protein directly in serum without bone marrow. No therapeutic antibody interference.",
@@ -11442,6 +11448,18 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Mar 1, 2026',
+    type: 'verified',
+    testId: 'mrd-29',
+    testName: 'EasyM',
+    vendor: 'Rapid Novor',
+    category: 'MRD',
+    description: 'Vendor verified by Jenna Kerry. Updated total participants (26 → 500+), LOD/LOQ (vendor-confirmed LOQ 1×10⁻⁵ g/dL), and sensitivity confirmed at 79% MRD detection rate in NGS-negative samples.',
+    contributor: 'Jenna Kerry',
+    affiliation: 'Rapid Novor',
+    citation: null
+  },
   {
     date: 'Feb 24, 2026',
     type: 'verified',
