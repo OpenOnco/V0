@@ -25,8 +25,6 @@ export const createTestCardGrid = ({
   hctTestData,
   COMPANY_CONTRIBUTIONS,
   VENDOR_VERIFIED,
-  MINIMUM_PARAMS,
-  calculateTestCompleteness,
   colorClasses,
   VendorBadge
 }) => {
@@ -131,23 +129,18 @@ export const createTestCardGrid = ({
       return isNaN(days) ? 999 : days;
     };
 
-    // Sort tests
+    // Sort tests - vendor verified always first
     const allTests = useMemo(() => {
       const sorted = [...baseTests];
-      const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
-      
+
       const prioritySort = (a, b) => {
         const aVerified = VENDOR_VERIFIED[a.id] !== undefined;
         const bVerified = VENDOR_VERIFIED[b.id] !== undefined;
         if (aVerified && !bVerified) return -1;
         if (!aVerified && bVerified) return 1;
-        const aBC = isBC(a);
-        const bBC = isBC(b);
-        if (aBC && !bBC) return -1;
-        if (!aBC && bBC) return 1;
         return 0;
       };
-      
+
       switch (sortBy) {
         case 'category':
           const categoryOrder = { 'MRD': 0, 'ECD': 1, 'CGP': 2, 'HCT': 3, 'ALZ-BLOOD': 4 };
@@ -311,8 +304,7 @@ export const createTestCardGrid = ({
               const isRUO = test.isRUO === true;
               const hasCompanyComm = COMPANY_CONTRIBUTIONS[test.id] !== undefined;
               const hasVendorVerified = VENDOR_VERIFIED[test.id] !== undefined;
-              const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
-              
+
               return (
                 <div
                   key={test.id}
@@ -328,11 +320,6 @@ export const createTestCardGrid = ({
                   {isRUO && !isDiscontinued && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <span className="text-amber-500/50 font-bold text-sm tracking-wider transform -rotate-12">RESEARCH ONLY</span>
-                    </div>
-                  )}
-                  {!isBC && !isDiscontinued && !isRUO && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">INCOMPLETE</span>
                     </div>
                   )}
                   

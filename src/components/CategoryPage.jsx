@@ -9,7 +9,7 @@ import {
 } from '../data';
 import { useTestsByCategory, useVendors } from '../dal';
 import { getStoredPersona } from '../utils/persona';
-import { calculateTestCompleteness } from '../utils/testMetrics';
+
 import { getSuggestedTests } from '../utils/suggestions';
 import Checkbox from './ui/Checkbox';
 import FilterSection from './ui/FilterSection';
@@ -381,12 +381,7 @@ const CategoryPage = ({ category, initialSelectedTestId, initialCompareIds, onCl
         if (aDate !== bDate) return bDate.localeCompare(aDate);
       }
       
-      // Then sort non-BC (MISS) tests to end
-      const aBC = calculateTestCompleteness(a, category).percentage === 100;
-      const bBC = calculateTestCompleteness(b, category).percentage === 100;
-      if (aBC && !bBC) return -1;
-      if (!aBC && bBC) return 1;
-      // Within same status, sort by vendor then test name
+      // Within same verification status, sort by vendor then test name
       return a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name);
     });
   }, [tests, searchQuery, selectedApproaches, selectedCancerTypes, selectedIndicationGroups, selectedReimbursement, selectedTestScopes, selectedSampleCategories, selectedFdaStatus, selectedRegions, selectedClinicalSettings, minParticipants, minPublications, maxPrice, minSensitivity, minSpecificity, maxTat, nccnOnly, tumorTissueRequired, minGenes, minCdx, selectedProductTypes, selectedBiomarkers, category, getVerificationData]);

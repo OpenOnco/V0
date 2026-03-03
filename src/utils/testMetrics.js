@@ -45,7 +45,7 @@ export const calculateCategoryMetrics = (tests, category) => {
   const hasCite = (val) => val && String(val).trim() !== '' && val !== 'N/A';
 
   const minFieldCompletion = tests.map(test => {
-    const filled = minFields.filter(field => hasVal(test[field])).length;
+    const filled = minParams.core.filter(p => hasVal(test[p.key]) || (p.alternateKeys && p.alternateKeys.some(ak => hasVal(test[ak])))).length;
     return { test: test.name, filled, total: minFields.length, complete: filled === minFields.length };
   });
 
@@ -71,13 +71,13 @@ export const calculateCategoryMetrics = (tests, category) => {
     });
   });
 
-  const fieldCompletionRates = minFields.map(field => {
-    const filled = tests.filter(t => hasVal(t[field])).length;
-    const citationField = `${field}Citations`;
+  const fieldCompletionRates = minParams.core.map(p => {
+    const filled = tests.filter(t => hasVal(t[p.key]) || (p.alternateKeys && p.alternateKeys.some(ak => hasVal(t[ak])))).length;
+    const citationField = `${p.key}Citations`;
     const cited = tests.filter(t => hasCite(t[citationField])).length;
     return {
-      field,
-      label: minParams.core.find(p => p.key === field)?.label || field,
+      field: p.key,
+      label: p.label || p.key,
       filled,
       total: tests.length,
       percentage: Math.round((filled / tests.length) * 100),
@@ -117,8 +117,9 @@ export const calculateTestCompleteness = (test, category) => {
   const minFields = minParams.core;
   const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
 
-  const filledFields = minFields.filter(p => hasValue(test[p.key]));
-  const missingFields = minFields.filter(p => !hasValue(test[p.key]));
+  const isFilled = (p) => hasValue(test[p.key]) || (p.alternateKeys && p.alternateKeys.some(ak => hasValue(test[ak])));
+  const filledFields = minFields.filter(isFilled);
+  const missingFields = minFields.filter(p => !isFilled(p));
   const percentage = minFields.length > 0
     ? Math.round((filledFields.length / minFields.length) * 100)
     : 0;
@@ -136,12 +137,10 @@ export const calculateMinimumFieldStats = (tests, category) => {
   const minParams = MINIMUM_PARAMS[category];
   if (!minParams?.core) return { complete: 0, total: tests.length, percentage: 0 };
 
-  const minFields = minParams.core.map(p => p.key);
-
   const hasValue = (val) => val != null && String(val).trim() !== '' && val !== 'N/A' && val !== 'Not disclosed';
 
   const completeTests = tests.filter(test =>
-    minFields.every(field => hasValue(test[field]))
+    minParams.core.every(p => hasValue(test[p.key]) || (p.alternateKeys && p.alternateKeys.some(ak => hasValue(test[ak]))))
   );
 
   const percentage = tests.length > 0

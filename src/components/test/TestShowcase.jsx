@@ -5,7 +5,7 @@ import {
   getDomain,
 } from '../../data';
 import { useAllTests, useTestCounts, useVendors } from '../../dal';
-import { calculateTestCompleteness } from '../../utils/testMetrics';
+
 import VendorBadge from '../badges/VendorBadge';
 import { LifecycleNavigator } from '../navigation';
 import PerformanceMetricWithWarning from '../ui/PerformanceMetricWithWarning';
@@ -228,39 +228,28 @@ const TestShowcase = ({
     return isNaN(days) ? 999 : days;
   };
 
-  // Sort tests based on selected option - non-BC (MISS) tests always at end
+  // Sort tests based on selected option - vendor verified always first
   const allTests = useMemo(() => {
     const sorted = [...baseTests];
-    
-    // Helper to check if test is BC (Baseline Complete)
-    const isBC = (test) => calculateTestCompleteness(test, test.category).percentage === 100;
-    
-    // Priority order: 1) VENDOR VERIFIED (newest first), 2) BC tests, 3) Non-BC tests
+
+    // Vendor verified tests always sort to top (newest first)
     const prioritySort = (a, b) => {
       const aVerifiedData = getVerificationData(a.id);
       const bVerifiedData = getVerificationData(b.id);
       const aVerified = aVerifiedData !== null;
       const bVerified = bVerifiedData !== null;
 
-      // VENDOR VERIFIED tests always come first
       if (aVerified && !bVerified) return -1;
       if (!aVerified && bVerified) return 1;
 
-      // Both verified: sort by date (newest first)
       if (aVerified && bVerified) {
         const aDate = aVerifiedData.verifiedDate || '1970-01-01';
         const bDate = bVerifiedData.verifiedDate || '1970-01-01';
-        if (aDate !== bDate) return bDate.localeCompare(aDate); // Descending (newest first)
+        if (aDate !== bDate) return bDate.localeCompare(aDate);
       }
-      
-      // Then BC tests
-      const aBC = isBC(a);
-      const bBC = isBC(b);
-      if (aBC && !bBC) return -1;
-      if (!aBC && bBC) return 1;
       return 0;
     };
-    
+
     switch (sortBy) {
       case 'category':
         const categoryOrder = { 'MRD': 0, 'ECD': 1, 'CGP': 2, 'HCT': 3, 'ALZ-BLOOD': 4 };
@@ -272,20 +261,16 @@ const TestShowcase = ({
       case 'vendorTests':
         return sorted.sort((a, b) => prioritySort(a, b) || vendorTestCounts[b.vendor] - vendorTestCounts[a.vendor] || a.vendor.localeCompare(b.vendor));
       case 'openness':
-        // Sort by vendor openness ranking (same as openness award logic)
-        // Vendors with 2+ tests get ranked by average score, single-test vendors go to bottom
         return sorted.sort((a, b) => {
           const priority = prioritySort(a, b);
           if (priority !== 0) return priority;
           const scoreA = vendorOpennessScores[a.vendor] ?? -1;
           const scoreB = vendorOpennessScores[b.vendor] ?? -1;
           if (scoreA !== scoreB) return scoreB - scoreA;
-          // Within same vendor score, sort by individual test score
           return calcOpenness(b) - calcOpenness(a) || a.vendor.localeCompare(b.vendor);
         });
       case 'vendor':
       default:
-        // Sort alphabetically by vendor name, then by test name
         return sorted.sort((a, b) => prioritySort(a, b) || a.vendor.localeCompare(b.vendor) || a.name.localeCompare(b.name));
     }
   }, [sortBy, vendorTestCounts, vendorOpennessScores, baseTests, getVerificationData]);
@@ -655,7 +640,6 @@ const TestShowcase = ({
               const testContribution = getContributionData(test.id);
               const hasCompanyComm = testContribution !== null;
               const hasVendorVerified = testVerification !== null;
-              const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
 
               return (
                 <div
@@ -676,14 +660,6 @@ const TestShowcase = ({
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <span className="text-amber-500/50 font-bold text-sm tracking-wider transform -rotate-12">
                         RESEARCH ONLY
-                      </span>
-                    </div>
-                  )}
-                  {/* INCOMPLETE text overlay for non-BC tests */}
-                  {!isBC && !isDiscontinued && !isRUO && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
-                        INCOMPLETE
                       </span>
                     </div>
                   )}
@@ -902,7 +878,6 @@ const TestShowcase = ({
             const testContribution = getContributionData(test.id);
             const hasCompanyComm = testContribution !== null;
             const hasVendorVerified = testVerification !== null;
-            const isBC = calculateTestCompleteness(test, test.category).percentage === 100;
 
             return (
               <div
@@ -923,14 +898,6 @@ const TestShowcase = ({
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-amber-500/50 font-bold text-sm tracking-wider transform -rotate-12">
                       RESEARCH ONLY
-                    </span>
-                  </div>
-                )}
-                {/* INCOMPLETE text overlay for non-BC tests */}
-                {!isBC && !isDiscontinued && !isRUO && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="text-red-400/40 font-bold text-lg tracking-wider transform -rotate-12">
-                      INCOMPLETE
                     </span>
                   </div>
                 )}

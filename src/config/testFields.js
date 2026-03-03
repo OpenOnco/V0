@@ -111,7 +111,7 @@ export const MINIMUM_PARAMS = {
   },
   ECD: {
     core: [
-      { key: 'sensitivity', label: 'Sensitivity' },
+      { key: 'sensitivity', label: 'Sensitivity', alternateKeys: ['stageISensitivity', 'stageIISensitivity', 'stageIIISensitivity', 'stageIVSensitivity'] },
       { key: 'specificity', label: 'Specificity' },
       { key: 'ppv', label: 'PPV' },
       { key: 'npv', label: 'NPV' },

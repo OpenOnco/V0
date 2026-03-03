@@ -4,7 +4,7 @@ import {
   BUILD_INFO,
 } from '../../data';
 import { useTestVerification, useTestContribution } from '../../dal';
-import { calculateTestCompleteness } from '../../utils/testMetrics';
+
 import Badge from '../ui/Badge';
 import VendorBadge from '../badges/VendorBadge';
 import ProductTypeBadge from '../badges/ProductTypeBadge';
@@ -27,10 +27,6 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
   const { contribution } = useTestContribution(test.id);
   const hasCompanyComm = contribution !== null;
 
-  // Calculate BC status - automatic when 100% minimum fields complete
-  const completeness = calculateTestCompleteness(test, category);
-  const isBC = completeness.percentage === 100;
-
   return (
     <div className="relative">
       <div id={`test-card-${test.id}`} data-testid="test-card" className={`relative h-full flex flex-col bg-white rounded-xl border-2 p-4 transition-all overflow-hidden ${isSelected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200 hover:border-gray-300'}`}>
@@ -39,14 +35,6 @@ const TestCard = ({ test, isSelected, onSelect, category, onShowDetail }) => {
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <span className="text-gray-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
             DISCONTINUED
-          </span>
-        </div>
-      )}
-      {/* INCOMPLETE text overlay for non-BC tests */}
-      {!isBC && !isDiscontinued && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-red-400/30 font-bold text-4xl tracking-wider transform -rotate-12">
-            INCOMPLETE
           </span>
         </div>
       )}

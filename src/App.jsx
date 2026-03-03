@@ -73,11 +73,9 @@ import RDDigestSignup from './components/research/RDDigestSignup';
 import DigestPage from './pages/DigestPage';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
-import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, MINIMUM_PARAMS, FIELD_DEFINITIONS } from './config/testFields';
+import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, FIELD_DEFINITIONS } from './config/testFields';
 import { PATIENT_INFO_CONTENT } from './config/patientContent';
-import { calculateTier1Metrics, calculateCategoryMetrics, calculateTestCompleteness, calculateMinimumFieldStats } from './utils/testMetrics';
-import CircularProgress from './components/ui/CircularProgress';
-import QualityGrade from './components/ui/QualityGrade';
+import { calculateTier1Metrics, calculateCategoryMetrics } from './utils/testMetrics';
 import Checkbox from './components/ui/Checkbox';
 import FilterSection from './components/ui/FilterSection';
 import Badge from './components/ui/Badge';
@@ -530,14 +528,13 @@ const DatabaseStatsSimple = () => {
   const { counts } = useTestCounts();
 
   // Derive stats from DAL data
-  const { totalTests, totalDataPoints, allVendors, categoryParams, completions } = useMemo(() => {
+  const { totalTests, totalDataPoints, allVendors, categoryParams } = useMemo(() => {
     if (!allTestData.length) {
       return {
         totalTests: 0,
         totalDataPoints: 0,
         allVendors: new Set(),
         categoryParams: { MRD: 0, ECD: 0, CGP: 0, HCT: 0 },
-        completions: { MRD: { completion: 0 }, ECD: { completion: 0 }, CGP: { completion: 0 }, HCT: { completion: 0 } },
       };
     }
 
@@ -558,26 +555,15 @@ const DatabaseStatsSimple = () => {
     // Get vendors
     const vendorSet = new Set(allTestData.map(t => t.vendor).filter(Boolean));
 
-    // Calculate completions
-    const comps = {};
-    for (const cat of ['MRD', 'ECD', 'CGP', 'HCT']) {
-      comps[cat] = calculateMinimumFieldStats(testsByCategory[cat] || [], cat);
-    }
-
     return {
       totalTests: allTestData.length,
       totalDataPoints: dataPoints,
       allVendors: vendorSet,
       categoryParams: catParams,
-      completions: comps,
     };
   }, [allTestData, testsByCategory]);
 
   const tier1Metrics = useMemo(() => calculateTier1Metrics(allTestData), [allTestData]);
-  const mrdCompletion = completions.MRD;
-  const ecdCompletion = completions.ECD;
-  const cgpCompletion = completions.CGP;
-  const hctCompletion = completions.HCT;
   const mrdParams = categoryParams.MRD;
   const ecdParams = categoryParams.ECD;
   const cgpParams = categoryParams.CGP;
@@ -609,22 +595,13 @@ const DatabaseStatsSimple = () => {
         </div>
       </div>
       
-      {/* Category breakdown with completion stats */}
+      {/* Category breakdown */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
           <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">{counts.MRD}</div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">MRD</p>
             <p className="text-[10px] text-gray-500">{mrdParams} fields</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="flex-1 h-1 bg-orange-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-orange-500 rounded-full transition-all"
-                  style={{ width: `${mrdCompletion.percentage}%` }}
-                />
-              </div>
-              <span className="text-[9px] text-orange-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{mrdCompletion.complete}/{mrdCompletion.total}</span>
-            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-emerald-50 rounded-lg border border-emerald-100">
@@ -632,15 +609,6 @@ const DatabaseStatsSimple = () => {
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">ECD</p>
             <p className="text-[10px] text-gray-500">{ecdParams} fields</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="flex-1 h-1 bg-emerald-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-emerald-500 rounded-full transition-all"
-                  style={{ width: `${ecdCompletion.percentage}%` }}
-                />
-              </div>
-              <span className="text-[9px] text-emerald-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{ecdCompletion.complete}/{ecdCompletion.total}</span>
-            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-violet-50 rounded-lg border border-violet-100">
@@ -648,15 +616,6 @@ const DatabaseStatsSimple = () => {
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">CGP</p>
             <p className="text-[10px] text-gray-500">{cgpParams} fields</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="flex-1 h-1 bg-violet-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-violet-500 rounded-full transition-all"
-                  style={{ width: `${cgpCompletion.percentage}%` }}
-                />
-              </div>
-              <span className="text-[9px] text-violet-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{cgpCompletion.complete}/{cgpCompletion.total}</span>
-            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 p-2 bg-purple-50 rounded-lg border border-purple-100">
@@ -664,15 +623,6 @@ const DatabaseStatsSimple = () => {
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-gray-800">HCT</p>
             <p className="text-[10px] text-gray-500">{hctParams} fields</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="flex-1 h-1 bg-purple-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-purple-500 rounded-full transition-all"
-                  style={{ width: `${hctCompletion.percentage}%` }}
-                />
-              </div>
-              <span className="text-[9px] text-purple-600 font-medium whitespace-nowrap" title="Tests with all minimum fields filled">{hctCompletion.complete}/{hctCompletion.total}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -718,7 +668,7 @@ const DatabaseStatsSimple = () => {
 };
 
 const SourceDataPage = () => {
-  const [expandedCategory, setExpandedCategory] = useState(null);
+
   const [activeTab, setActiveTab] = useState('overview');
 
   // Get tests via DAL
@@ -830,7 +780,7 @@ const SourceDataPage = () => {
 
       {/* Tab Navigation */}
       <div className="flex gap-1 p-1 bg-gray-100 rounded-lg mb-6 max-w-md mx-auto">
-        {[{ id: 'overview', label: 'Overview' }, { id: 'quality', label: 'Data Quality' }, { id: 'download', label: 'Download' }].map(tab => (
+        {[{ id: 'overview', label: 'Overview' }, { id: 'download', label: 'Download' }].map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
@@ -911,7 +861,7 @@ const SourceDataPage = () => {
               if (!m) return null;
               
               return (
-                <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-5 cursor-pointer transition-all hover:shadow-md`} onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}>
+                <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-5`}>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-12 h-12 rounded-xl ${colors.accent} flex items-center justify-center text-white font-bold text-lg`}>{m.testCount}</div>
@@ -920,19 +870,9 @@ const SourceDataPage = () => {
                         <p className="text-xs text-gray-500">{m.fieldCount} fields tracked</p>
                       </div>
                     </div>
-                    <QualityGrade percentage={m.minFieldCompletionRate} />
                   </div>
-                  
+
                   <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-600">Baseline Complete</span>
-                        <span className={`font-medium ${colors.text}`}>{m.testsWithAllMinFields}/{m.testCount}</span>
-                      </div>
-                      <div className="h-2 bg-white rounded-full overflow-hidden">
-                        <div className={`h-full ${colors.accent} rounded-full transition-all duration-500`} style={{ width: `${m.minFieldCompletionRate}%` }} />
-                      </div>
-                    </div>
                     <div>
                       <div className="flex justify-between text-xs mb-1">
                         <span className="text-gray-600">Citation Coverage</span>
@@ -943,23 +883,6 @@ const SourceDataPage = () => {
                       </div>
                     </div>
                   </div>
-                  
-                  {expandedCategory === category && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-3">Required Field Completion</h4>
-                      <div className="space-y-2">
-                        {m.fieldCompletionRates.map(field => (
-                          <div key={field.field} className="flex items-center gap-2">
-                            <div className="w-28 text-xs text-gray-600 truncate" title={field.label}>{field.label}</div>
-                            <div className="flex-1 h-1.5 bg-white rounded-full overflow-hidden">
-                              <div className={`h-full ${colors.accent} rounded-full`} style={{ width: `${field.percentage}%` }} />
-                            </div>
-                            <div className="w-12 text-xs text-right font-medium text-gray-700">{field.filled}/{field.total}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               );
             })}
@@ -999,98 +922,6 @@ const SourceDataPage = () => {
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Data Quality Tab */}
-      {activeTab === 'quality' && (
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Data Quality Framework</h3>
-            <p className="text-sm text-gray-600 mb-6">OpenOnco tracks data quality across multiple dimensions to ensure clinical reliability. Our Baseline Complete (BC) standard requires all minimum fields for each category to be filled.</p>
-            
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {['MRD', 'ECD', 'CGP', 'HCT'].map(category => {
-                const m = metrics[category];
-                const colors = CATEGORY_COLORS[category];
-                if (!m) return null;
-                
-                return (
-                  <div key={category} className="text-center">
-                    <div className="relative inline-flex items-center justify-center mb-3">
-                      <CircularProgress value={m.minFieldCompletionRate} size={100} strokeWidth={10} color={category === 'MRD' ? 'orange' : category === 'ECD' ? 'emerald' : category === 'CGP' ? 'violet' : 'purple'} />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xl font-bold text-gray-800">{m.minFieldCompletionRate}%</span>
-                      </div>
-                    </div>
-                    <h4 className={`font-semibold ${colors.text}`}>{category}</h4>
-                    <p className="text-xs text-gray-500">{m.testsWithAllMinFields} of {m.testCount} BC</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Per-Category Breakdown */}
-          {['MRD', 'ECD', 'CGP', 'HCT'].map(category => {
-            const m = metrics[category];
-            const colors = CATEGORY_COLORS[category];
-            if (!m) return null;
-            
-            return (
-              <div key={category} className={`${colors.bg} ${colors.border} border rounded-xl p-6`}>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">{category} Quality Breakdown</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">{m.testCount} tests</span>
-                    <QualityGrade percentage={m.minFieldCompletionRate} />
-                  </div>
-                </div>
-                
-                <div className="grid sm:grid-cols-3 gap-4 mb-6">
-                  <div className="bg-white rounded-lg p-4 border border-gray-100">
-                    <p className="text-2xl font-bold text-gray-800">{m.overallFillRate}%</p>
-                    <p className="text-xs text-gray-500">Overall Fill Rate</p>
-                    <p className="text-[10px] text-gray-400 mt-1">{m.filledDataPoints.toLocaleString()} / {m.totalDataPoints.toLocaleString()} fields</p>
-                  </div>
-                  <div className="bg-white rounded-lg p-4 border border-gray-100">
-                    <p className="text-2xl font-bold text-gray-800">{m.minFieldCompletionRate}%</p>
-                    <p className="text-xs text-gray-500">Baseline Complete</p>
-                    <p className="text-[10px] text-gray-400 mt-1">{m.testsWithAllMinFields} / {m.testCount} tests</p>
-                  </div>
-                  <div className="bg-white rounded-lg p-4 border border-gray-100">
-                    <p className="text-2xl font-bold text-gray-800">{m.tier1CitationRate}%</p>
-                    <p className="text-xs text-gray-500">Citation Coverage</p>
-                    <p className="text-[10px] text-gray-400 mt-1">{m.tier1Cited} / {m.tier1DataPoints} cited</p>
-                  </div>
-                </div>
-                
-                <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                    <h4 className="text-sm font-semibold text-gray-700">Required Fields ({m.minFieldsRequired})</h4>
-                  </div>
-                  <div className="divide-y divide-gray-50">
-                    {m.fieldCompletionRates.map(field => (
-                      <div key={field.field} className="px-4 py-2.5 flex items-center gap-4">
-                        <div className="w-32 text-sm text-gray-700">{field.label}</div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                              <div className={`h-full ${colors.accent} rounded-full transition-all`} style={{ width: `${field.percentage}%` }} />
-                            </div>
-                            <span className="text-xs font-medium text-gray-600 w-16 text-right">{field.filled}/{field.total}</span>
-                          </div>
-                        </div>
-                        <div className="w-20 text-right">
-                          {field.citedPercentage > 0 && <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded">{field.citedPercentage}% cited</span>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
         </div>
       )}
 
