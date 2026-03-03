@@ -559,23 +559,52 @@ const TestDetailModal = ({ test, category, onClose }) => {
                   <div className="space-y-1">
                     <div className="flex items-center justify-between py-1.5 border-b border-gray-100 gap-4 group">
                       <span className="text-xs text-gray-500"><ParameterLabel label="Reported Sensitivity" useGroupHover={true} /></span>
-                      <span className="text-sm font-medium text-gray-900 inline-flex items-center">
-                        {test.sensitivity ? (
-                          <>
-                            <span className={(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : ''}>
-                              {test.sensitivity}%
-                            </span>
-                            {test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
-                              <span className="ml-1" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'}) - ${test.validationCohortStudy || 'interpret with caution'}` : 'Analytical validation only - clinical performance may differ'}>
-                                <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                      <span className="text-sm font-medium text-gray-900 inline-flex items-center flex-wrap gap-1">
+                        {(() => {
+                          const isMCED = test.testScope === 'Multi-cancer (MCED)';
+                          const hasEarlyStage = test.stageISensitivity != null && test.stageIISensitivity != null;
+                          const hasAnyStage = test.stageISensitivity != null || test.stageIISensitivity != null || test.stageIIISensitivity != null || test.stageIVSensitivity != null;
+
+                          if (isMCED && hasEarlyStage) {
+                            // Best: show Stage I + II with green badge
+                            return <>
+                              <span className="text-emerald-600">I: {test.stageISensitivity}% / II: {test.stageIISensitivity}%</span>
+                              <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-semibold rounded">STAGE I-II</span>
+                            </>;
+                          }
+                          if (isMCED && test.sensitivity) {
+                            // Fallback: all-stage sensitivity with red badge
+                            return <>
+                              <span>{test.sensitivity}%</span>
+                              <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-[10px] font-semibold rounded">ALL STAGES</span>
+                            </>;
+                          }
+                          // Non-MCED: standard display
+                          if (test.sensitivity) {
+                            return <>
+                              <span className={(test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning)) ? 'text-amber-600' : ''}>
+                                {test.sensitivity}%
                               </span>
-                            )}
-                          </>
-                        ) : '—'}
-                        {test.sensitivity && <CitationTooltip citations={test.sensitivityCitations} />}
-                        {test.sensitivity && <NoteTooltip notes={test.sensitivityNotes} value={test.sensitivity} />}
+                              {test.sensitivity >= 99.9 && (test.smallSampleWarning || test.analyticalValidationWarning) && (
+                                <span className="ml-1" title={test.smallSampleWarning ? `Small cohort (n=${test.validationCohortSize || '?'}) - ${test.validationCohortStudy || 'interpret with caution'}` : 'Analytical validation only - clinical performance may differ'}>
+                                  <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                  </svg>
+                                </span>
+                              )}
+                            </>;
+                          }
+                          // No sensitivity at all but has stage data (non-MCED fallback)
+                          if (hasAnyStage) {
+                            const stageVals = [test.stageISensitivity, test.stageIISensitivity, test.stageIIISensitivity, test.stageIVSensitivity].filter(v => v != null);
+                            const min = Math.min(...stageVals);
+                            const max = Math.max(...stageVals);
+                            return <span className="text-emerald-600">{min === max ? `${min}%` : `${min}–${max}%`} <span className="text-[10px] text-gray-400 font-normal">(stage-specific)</span></span>;
+                          }
+                          return '—';
+                        })()}
+                        {(test.sensitivity || test.sensitivityCitations) && <CitationTooltip citations={test.sensitivityCitations} />}
+                        {(test.sensitivity || test.sensitivityNotes) && <NoteTooltip notes={test.sensitivityNotes} value={test.sensitivity} />}
                       </span>
                     </div>
                     {test.advancedAdenomaSensitivity && <DataRow label="Advanced Adenoma Sensitivity" value={test.advancedAdenomaSensitivity} unit="%" citations={test.advancedAdenomaSensitivityCitations} notes={test.advancedAdenomaSensitivityNotes} />}
@@ -686,32 +715,28 @@ const TestDetailModal = ({ test, category, onClose }) => {
               {(test.stageISensitivity || test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity || 
                 test.landmarkSensitivity || test.longitudinalSensitivity) && (
                 <Section title="Stage & Timepoint Performance" expertTopic="stageSpecific">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {test.stageISensitivity && (
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-2xl font-bold text-emerald-600">{test.stageISensitivity}%</p>
-                        <p className="text-xs text-gray-500">Stage I</p>
-                      </div>
-                    )}
-                    {test.stageIISensitivity && (
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-2xl font-bold text-emerald-600">{test.stageIISensitivity}%</p>
-                        <p className="text-xs text-gray-500">Stage II</p>
-                      </div>
-                    )}
-                    {test.stageIIISensitivity && (
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-2xl font-bold text-emerald-600">{test.stageIIISensitivity}%</p>
-                        <p className="text-xs text-gray-500">Stage III</p>
-                      </div>
-                    )}
-                    {test.stageIVSensitivity && (
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-2xl font-bold text-emerald-600">{test.stageIVSensitivity}%</p>
-                        <p className="text-xs text-gray-500">Stage IV</p>
-                      </div>
-                    )}
-                  </div>
+                  {(test.stageISensitivity != null || test.stageIISensitivity != null || test.stageIIISensitivity != null || test.stageIVSensitivity != null) && (
+                    <div className="grid grid-cols-4 gap-4">
+                      {[
+                        { key: 'stageISensitivity', label: 'Stage I', notesKey: 'stageISensitivityNotes' },
+                        { key: 'stageIISensitivity', label: 'Stage II', notesKey: 'stageIISensitivityNotes' },
+                        { key: 'stageIIISensitivity', label: 'Stage III', notesKey: 'stageIIISensitivityNotes' },
+                        { key: 'stageIVSensitivity', label: 'Stage IV', notesKey: 'stageIVSensitivityNotes' },
+                      ].map(stage => (
+                        <div key={stage.key} className="text-center p-3 bg-gray-50 rounded-lg relative group">
+                          <p className={`text-2xl font-bold ${test[stage.key] != null ? 'text-emerald-600' : 'text-slate-300'}`}>
+                            {test[stage.key] != null ? `${test[stage.key]}%` : 'N/R'}
+                          </p>
+                          <p className="text-xs text-gray-500">{stage.label}</p>
+                          {test[stage.notesKey] && (
+                            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-2 bg-gray-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+                              {test[stage.notesKey]}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   {(test.landmarkSensitivity || test.longitudinalSensitivity) && (
                     <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-gray-100">
                       {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" citations={test.landmarkSensitivityCitations} />}
