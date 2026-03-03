@@ -365,7 +365,7 @@
           "evidence_tags": ["CREATE-X", "OlympiA", "monarchE", "DESTINY-Breast05", "c-TRAK_TN"],
           "key_trials": ["NCT03145961", "NCT04264702"],
           "evidence_strength": "emerging",
-          "nccn_reference": "NCCN Breast Cancer v2.2026 — Adjuvant and Post-Neoadjuvant Therapy",
+          "nccn_reference": "NCCN Breast Cancer v2.2026 (Feb 2026) — Adjuvant and Post-Neoadjuvant Therapy. Note: v2.2026 acknowledges ctDNA for biomarker testing in recurrent/Stage IV disease (BINV-18 fn iii) and recommends ctDNA-preferred ESR1 mutation detection at progression (BINV-Q fn v), but does not endorse MRD-guided surveillance for early-stage breast cancer (BINV-17).",
           "clinical_context": "MRD-positive breast cancer interpretation is subtype-dependent. For TNBC, MRD positivity post-neoadjuvant with residual disease aligns with CREATE-X (capecitabine) and KEYNOTE-522 (pembrolizumab) indications, though these were not MRD-selected trials. For HR+/HER2-, monarchE showed abemaciclib benefit in high-risk patients, and MRD positivity may support its use. HER2+ patients have multiple escalation options. Critically, no completed RCT has used MRD as the selection biomarker for treatment escalation in breast cancer."
         },
         {
@@ -438,7 +438,8 @@
         "Unclear whether MRD-guided escalation improves survival beyond standard risk-adapted therapy",
         "Limited data on MRD dynamics during neoadjuvant therapy and correlation with pathologic response",
         "HR+/HER2- late recurrences (5-20 years) may not be captured by standard MRD monitoring windows",
-        "Role of MRD in guiding CDK4/6 inhibitor use (beyond monarchE criteria) not studied"
+        "Role of MRD in guiding CDK4/6 inhibitor use (beyond monarchE criteria) not studied",
+        "NCCN Breast v2.2026 does not include ctDNA/MRD in surveillance recommendations (BINV-17), despite acknowledging ctDNA utility in metastatic settings"
       ],
       "related_scenarios": [
         "CRC_III_post_resection_MRD_positive",
