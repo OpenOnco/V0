@@ -68,8 +68,6 @@ import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
 import Chat from './components/Chat';
 import MRDChat from './components/physician/MRDChat';
 import MRDNavigator from './components/physician/MRDNavigator';
-import DigestSignup from './components/physician/DigestSignup';
-import RDDigestSignup from './components/research/RDDigestSignup';
 import DigestPage from './pages/DigestPage';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
@@ -412,9 +410,6 @@ const SponsorBar = ({ className = '' }) => (
 const HomePage = ({ onNavigate, persona, chatTestData }) => {
   const [searchQuery, setSearchQuery] = useState(''); // Quick Search state for R&D/Medical personas
   const { tests: allTests } = useAllTests();
-  const [rdDigestSubscribed] = useState(() => {
-    try { return localStorage.getItem('oo_rd_digest_subscribed') === '1'; } catch { return false; }
-  });
 
   return (
     <div>
@@ -493,13 +488,6 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
               />
             )}
 
-            {/* Digest Signup */}
-            {persona === 'medical' && (
-              <DigestSignup compact className="mt-0" />
-            )}
-            {persona === 'rnd' && !rdDigestSubscribed && (
-              <RDDigestSignup compact className="mt-0" />
-            )}
           </div>
         </div>
 
