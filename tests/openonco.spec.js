@@ -993,19 +993,19 @@ test.describe('Persona System', () => {
   });
 
   test('patient homepage shows patient-specific elements', async ({ page }) => {
-    // Access patient view - now shows branded landing page
+    // Access patient view - now shows MRD-focused landing page
     await page.goto('/patient');
     await page.waitForTimeout(2000);
 
     // Should see landing page hero headline
-    await expect(page.getByText(/clarity in your/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 10000 });
 
     // Should see the nav branding and CTA
-    await expect(page.getByText('OpenOnco Patient Guide')).toBeVisible();
-    await expect(page.getByRole('button', { name: /find a test/i })).toBeVisible();
+    await expect(page.getByRole('navigation').getByText('OpenOnco')).toBeVisible();
+    await expect(page.getByRole('button', { name: /find a test/i }).first()).toBeVisible();
 
     // Should see key sections
-    await expect(page.getByText(/start learning/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /how to pay for it/i })).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -1027,14 +1027,14 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(1000);
 
     // Should see landing page hero
-    await expect(page.getByText(/clarity in your/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
 
-    // Click "Find a Test" to navigate to wizard
-    await page.getByRole('button', { name: /find a test/i }).click();
+    // Click "Find a Test" nav button to navigate to wizard
+    await page.getByRole('button', { name: /find a test/i }).first().click();
     await page.waitForTimeout(1000);
 
     // Should see the WatchingWizard content
-    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/my doctor recommended/i)).toBeVisible({ timeout: 5000 });
   });
 
   test('persona switcher in header works', async ({ page }) => {
@@ -1049,7 +1049,7 @@ test.describe('Persona System', () => {
     // Verify patient via /patient URL - now shows branded landing page
     await page.goto('/patient');
     await page.waitForTimeout(1000);
-    await expect(page.getByText(/clarity in your/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
   });
 
   test('patient can navigate to Learn page', async ({ page }) => {

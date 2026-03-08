@@ -86,6 +86,9 @@ import Markdown from './components/markdown/Markdown';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
 import WatchingWizard from './components/patient/WatchingWizard';
 import PatientLandingPage from './pages/PatientLandingPage';
+import PatientMRDInfoPage from './pages/PatientMRDInfoPage';
+import PatientDoctorFAQPage from './pages/PatientDoctorFAQPage';
+import PatientPageWrapper from './components/patient/PatientPageWrapper';
 import TestLookupWizard from './components/patient/TestLookupWizard';
 import AppealWizard from './components/patient/AppealWizard';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
@@ -1066,6 +1069,7 @@ export default function App() {
     '/patient/mrd': 'patient-watching',  // Alias for watching (MRD = monitoring)
     '/patient/lookup': 'patient-lookup',  // Path 1: Test lookup
     '/patient/appeal': 'patient-appeal',  // Path 3: Appeal help
+    '/patient/doctor-faq': 'patient-doctor-faq',  // Physician FAQ
     // Digest
     '/digest': 'digest',
     // Admin routes
@@ -1091,6 +1095,7 @@ export default function App() {
     '/patient/mrd': 'patient',  // Alias for watching
     '/patient/lookup': 'patient',  // Path 1: Test lookup
     '/patient/appeal': 'patient',  // Path 3: Appeal help
+    '/patient/doctor-faq': 'patient',  // Physician FAQ
     '/patient/screening': 'patient',
     '/patient/choosing': 'patient',
     '/patient/measuring': 'patient',
@@ -1120,6 +1125,7 @@ export default function App() {
     'patient-watching': '/patient/watching',
     'patient-lookup': '/patient/lookup',  // Path 1: Test lookup
     'patient-appeal': '/patient/appeal',  // Path 3: Appeal help
+    'patient-doctor-faq': '/patient/doctor-faq',  // Physician FAQ
     'digest': '/digest',
     'admin-discoveries': '/admin/discoveries',
     'patient-screening': '/patient/screening',
@@ -1441,46 +1447,71 @@ export default function App() {
       case 'patient-landing': return (
         <PatientLandingPage onNavigate={handleNavigate} />
       );
-      case 'patient-watching': return (
-        <WatchingWizard
-          key={wizardResetKey}
-          onNavigate={handleNavigate}
-          onBack={null}
-          onComplete={() => {}}
-          testData={mrdTestsForWizard}
-        />
+      case 'patient-mrd-info': return (
+        <PatientMRDInfoPage onNavigate={handleNavigate} />
       );
-      case 'patient-lookup': return (
-        <TestLookupWizard
-          testData={mrdTestsForWizard}
-          onNavigate={handleNavigate}
-          onBack={() => handleNavigate('patient-landing')}
-        />
+      case 'patient-doctor-faq': return (
+        <PatientDoctorFAQPage onNavigate={handleNavigate} />
       );
+      case 'patient-watching': {
+        const ctx = JSON.parse(sessionStorage.getItem('openonco-patient-context') || '{}');
+        return (
+          <PatientPageWrapper onNavigate={handleNavigate}>
+            <WatchingWizard
+              key={wizardResetKey}
+              onNavigate={handleNavigate}
+              onBack={null}
+              onComplete={() => {}}
+              testData={mrdTestsForWizard}
+              skipLanding
+              initialCancerId={ctx.cancerType || undefined}
+              initialStage={ctx.stage || undefined}
+            />
+          </PatientPageWrapper>
+        );
+      }
+      case 'patient-lookup': {
+        const ctx = JSON.parse(sessionStorage.getItem('openonco-patient-context') || '{}');
+        return (
+          <PatientPageWrapper onNavigate={handleNavigate}>
+            <TestLookupWizard
+              testData={mrdTestsForWizard}
+              onNavigate={handleNavigate}
+              onBack={() => handleNavigate('patient-landing')}
+              initialCancerId={ctx.cancerType || undefined}
+              initialStage={ctx.stage || undefined}
+            />
+          </PatientPageWrapper>
+        );
+      }
       case 'patient-appeal': return (
-        <AppealWizard
-          testData={mrdTestsForWizard}
-          onNavigate={handleNavigate}
-          onBack={() => handleNavigate('patient-landing')}
-        />
+        <PatientPageWrapper onNavigate={handleNavigate}>
+          <AppealWizard
+            testData={mrdTestsForWizard}
+            onNavigate={handleNavigate}
+            onBack={() => handleNavigate('patient-landing')}
+          />
+        </PatientPageWrapper>
       );
-      case 'patient-choosing': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Choosing Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
-      case 'patient-measuring': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Measuring Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
+      case 'patient-choosing': return <PatientPageWrapper onNavigate={handleNavigate}><div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Choosing Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div></PatientPageWrapper>;
+      case 'patient-measuring': return <PatientPageWrapper onNavigate={handleNavigate}><div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Measuring Journey</h1><p className="text-slate-600 mt-4">Coming soon...</p></div></PatientPageWrapper>;
       case 'patient-insurance-denied': return (
-        <AppealWizard
-          testData={mrdTestsForWizard}
-          onNavigate={handleNavigate}
-          onBack={() => handleNavigate('patient-landing')}
-        />
+        <PatientPageWrapper onNavigate={handleNavigate}>
+          <AppealWizard
+            testData={mrdTestsForWizard}
+            onNavigate={handleNavigate}
+            onBack={() => handleNavigate('patient-landing')}
+          />
+        </PatientPageWrapper>
       );
-      case 'patient-financial-assistance': return <div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Financial Assistance</h1><p className="text-slate-600 mt-4">Coming soon...</p></div>;
+      case 'patient-financial-assistance': return <PatientPageWrapper onNavigate={handleNavigate}><div className="max-w-4xl mx-auto px-6 py-12"><h1 className="text-2xl font-bold text-slate-900">Financial Assistance</h1><p className="text-slate-600 mt-4">Coming soon...</p></div></PatientPageWrapper>;
       default: return <HomePage onNavigate={handleNavigate} chatTestData={chatTestData} />;
     }
   };
 
   const seoConfig = getSEOForPage();
   const isFullPageMode = false;
-  const isPatientLanding = (currentPage === 'patient-landing') ||
+  const isPatientLanding = currentPage.startsWith('patient-') ||
     (currentPage === 'home' && persona === 'patient');
 
   return (

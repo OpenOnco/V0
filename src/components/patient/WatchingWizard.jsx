@@ -2475,12 +2475,15 @@ const CANCER_TYPE_MAP = {
  * @param {Array} props.testData - MRD test data from data.js (for results step)
  * @param {string} props.initialCancerType - Pre-fill cancer type (label from PatientIntakeFlow, e.g., "Breast Cancer")
  */
-export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate, testData = [], initialCancerType }) {
-  // Map initialCancerType from label to ID if provided
-  const mappedCancerType = initialCancerType ? (CANCER_TYPE_MAP[initialCancerType] || null) : null;
+export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate, testData = [], initialCancerType, initialCancerId, initialStage, skipLanding = false }) {
+  // Map initialCancerType from label to ID if provided, or use direct ID
+  const mappedCancerType = initialCancerId || (initialCancerType ? (CANCER_TYPE_MAP[initialCancerType] || null) : null);
 
-  // Determine starting step: skip to step 3 (cancer-type) if cancer type is pre-filled
-  const initialStep = mappedCancerType ? 3 : 0;
+  // Determine starting step based on what's pre-filled
+  // Steps: 0=landing, 1=treatment-gate, 2=location, 3=cancer-type, 4=cancer-stage, 5=tumor-tissue, 6=insurance, 7=results
+  const initialStep = mappedCancerType && initialStage ? 5
+    : mappedCancerType ? 4
+    : skipLanding ? 1 : 0;
 
   // DAL hooks for insurance and vendor data
   const { providersByCategory: insuranceByCategory } = useInsuranceGrouped();
@@ -2552,7 +2555,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   const [wizardData, setWizardData] = useState({
     country: null,              // Selected country/region
     cancerType: mappedCancerType,           // Selected cancer type or 'not-sure'
-    cancerStage: null,          // Selected cancer stage or 'not-sure'
+    cancerStage: initialStage || null,      // Selected cancer stage or 'not-sure'
     hasTumorTissue: null,       // 'yes', 'no', or 'not-sure'
     completedTreatment: null,   // 'yes' or 'no'
     insuranceType: null,        // 'medicare' | 'private' | 'none'
