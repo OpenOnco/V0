@@ -51,7 +51,7 @@ import {
 import { getStoredPersona, savePersona } from './utils/persona';
 import { trackPageVisit, trackTestView, trackPersona } from './utils/sessionTracking';
 import * as analytics from './utils/analytics';
-import PersonaGate from './components/PersonaGate';
+// PersonaGate removed — no more first-visit popup
 import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -429,6 +429,14 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 text-center">
             {allTests.length} Advanced Molecular Tests: Collected, Curated, Explained
           </h1>
+          <div className="text-center mt-3">
+            <button
+              onClick={() => onNavigate('patient-landing')}
+              className="inline-flex items-center gap-2 px-5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-full text-sm font-medium transition-colors"
+            >
+              Click here if you are a cancer patient interested in MRD
+            </button>
+          </div>
         </div>
 
         {/* Two-column layout: Left (Categories + Quick Search) | Right (Chat + Digest Signup) */}
@@ -1203,10 +1211,7 @@ export default function App() {
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
   // Persona determined by URL only: /patients = patient, everything else = rnd
   const [persona, setPersona] = useState(() => initialRoute.persona || 'rnd');
-  // Show persona gate if no URL persona specified and no stored persona
-  const [showPersonaGate, setShowPersonaGate] = useState(() => {
-    return !initialRoute.persona && !getStoredPersona();
-  });
+  // Persona gate removed — visitors see default R&D view, with a button to reach patient site
 
   // Save persona to localStorage if it came from URL (so it persists)
   useEffect(() => {
@@ -1221,7 +1226,6 @@ export default function App() {
   const handlePersonaChange = (newPersona) => {
     setPersona(newPersona);
     savePersona(newPersona);
-    setShowPersonaGate(false);
     trackPersona(newPersona); // Track persona for feedback context
     analytics.identifyPersona(newPersona); // PostHog persona tracking
     window.dispatchEvent(new CustomEvent('personaChanged', { detail: newPersona }));
@@ -1523,7 +1527,6 @@ export default function App() {
           path={seoConfig.path}
           structuredData={seoConfig.structuredData}
         />
-        {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
         <div className="min-h-screen bg-gray-50 flex flex-col" style={{ background: isFullPageMode ? '#F5F3EE' : undefined }}>
           {!isFullPageMode && !isPatientLanding && <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />}
           {showDigestConfirmed && !isFullPageMode && !isPatientLanding && (

@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { PERSONAS } from '../personaConfig';
 import { getNavItems } from '../personaContent';
 import { getSiteConfig } from '../data';
-import PersonaSelector from './PersonaSelector';
 import TrustBanner from './patient/TrustBanner';
 import PreviewBanner from './patient/PreviewBanner';
 
@@ -73,13 +71,6 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreview
         ))}
       </nav>
       
-      {/* Persona Selector - Right side */}
-      {persona && onPersonaChange && (
-        <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
-          <PersonaSelector currentPersona={persona} onSelect={onPersonaChange} />
-        </div>
-      )}
-      
       {/* Mobile hamburger button */}
       <button 
         className="sm:hidden p-2 rounded-lg hover:bg-gray-100"
@@ -110,29 +101,6 @@ const Header = ({ currentPage, onNavigate, persona, onPersonaChange, showPreview
               {getLabel(page)}
             </button>
           ))}
-          {/* Mobile Persona Selector */}
-          {persona && onPersonaChange && (
-            <div className="border-t border-gray-100 mt-2 pt-2 px-4">
-              <p className="text-xs text-gray-400 mb-2">Viewing as:</p>
-              {Object.entries(PERSONAS).map(([key, p]) => {
-                const isSelected = persona === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => { onPersonaChange(key); setMobileMenuOpen(false); }}
-                    className={`w-full p-2 mb-1 flex items-center gap-3 rounded-lg transition-all text-left ${isSelected ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
-                  >
-                    {p.iconImage ? (
-                      <img src={p.iconImage} alt="" className="w-5 h-5 object-contain" />
-                    ) : (
-                      <span className="text-lg">{p.icon}</span>
-                    )}
-                    <span className={`text-sm ${isSelected ? 'font-medium' : ''}`} style={isSelected ? { color: p.color } : {}}>{p.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
         </div>
       </div>
     )}
