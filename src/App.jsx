@@ -434,7 +434,7 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
               onClick={() => onNavigate('patient-landing')}
               className="inline-flex items-center gap-2 px-5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-full text-sm font-medium transition-colors"
             >
-              Click here if you are a cancer patient interested in MRD
+              Click here if you are a patient looking for information on MRD
             </button>
           </div>
         </div>
