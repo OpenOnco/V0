@@ -85,7 +85,6 @@ import ProductTypeBadge from './components/badges/ProductTypeBadge';
 import Markdown from './components/markdown/Markdown';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from './components/tooltips';
 import WatchingWizard from './components/patient/WatchingWizard';
-import PatientLandingPage from './pages/PatientLandingPage';
 import TestLookupWizard from './components/patient/TestLookupWizard';
 import AppealWizard from './components/patient/AppealWizard';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
@@ -1418,7 +1417,15 @@ export default function App() {
     switch (currentPage) {
       case 'home':
         if (persona === 'patient') {
-          return <PatientLandingPage onNavigate={handleNavigate} />;
+          return (
+            <WatchingWizard
+              key={wizardResetKey}
+              onNavigate={handleNavigate}
+              onBack={null}
+              onComplete={() => {}}
+              testData={mrdTestsForWizard}
+            />
+          );
         }
         if (persona === 'medical') {
           return <MRDNavigator key={wizardResetKey} testData={chatTestData} onNavigate={handleNavigate} currentPage={currentPage} />;
@@ -1438,9 +1445,7 @@ export default function App() {
       // Admin routes
       case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
-      case 'patient-landing': return (
-        <PatientLandingPage onNavigate={handleNavigate} />
-      );
+      case 'patient-landing':
       case 'patient-watching': return (
         <WatchingWizard
           key={wizardResetKey}
@@ -1480,8 +1485,6 @@ export default function App() {
 
   const seoConfig = getSEOForPage();
   const isFullPageMode = false;
-  const isPatientLanding = (currentPage === 'patient-landing') ||
-    (currentPage === 'home' && persona === 'patient');
 
   return (
     <ErrorBoundary>
@@ -1494,15 +1497,15 @@ export default function App() {
         />
         {showPersonaGate && <PersonaGate onSelect={handlePersonaChange} />}
         <div className="min-h-screen bg-gray-50 flex flex-col" style={{ background: isFullPageMode ? '#F5F3EE' : undefined }}>
-          {!isFullPageMode && !isPatientLanding && <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />}
-          {showDigestConfirmed && !isFullPageMode && !isPatientLanding && (
+          {!isFullPageMode && <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />}
+          {showDigestConfirmed && !isFullPageMode && (
             <div className="bg-emerald-600 text-white text-center py-2.5 px-4 text-sm font-medium">
               Your MRD Weekly Digest subscription is confirmed! You'll receive your first digest next Monday.
               <button onClick={() => { setShowDigestConfirmed(false); window.history.replaceState({}, '', '/'); }} className="ml-3 underline hover:no-underline">Dismiss</button>
             </div>
           )}
           <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
-          {!isFullPageMode && !isPatientLanding && <Footer />}
+          {!isFullPageMode && <Footer />}
           <Analytics />
         </div>
       </HelmetProvider>
