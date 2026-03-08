@@ -1029,12 +1029,12 @@ test.describe('Persona System', () => {
     // Should see landing page hero
     await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
 
-    // Click "Find a Test" nav button to navigate to wizard
-    await page.getByRole('button', { name: /find a test/i }).first().click();
+    // Click "Find My Test" CTA to navigate to wizard
+    await page.getByRole('button', { name: /find my test/i }).first().click();
     await page.waitForTimeout(1000);
 
-    // Should see the WatchingWizard content
-    await expect(page.getByText(/my doctor recommended/i)).toBeVisible({ timeout: 5000 });
+    // Should see the WatchingWizard treatment question (skipLanding skips old landing step)
+    await expect(page.getByRole('heading', { name: /completed cancer treatment/i })).toBeVisible({ timeout: 5000 });
   });
 
   test('persona switcher in header works', async ({ page }) => {
