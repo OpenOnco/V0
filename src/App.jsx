@@ -66,9 +66,6 @@ import HowItWorksPage from './pages/HowItWorksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import AdminDiscoveriesPage from './pages/AdminDiscoveriesPage';
 import Chat from './components/Chat';
-import MRDChat from './components/physician/MRDChat';
-import MRDNavigator from './components/physician/MRDNavigator';
-import DigestPage from './pages/DigestPage';
 import { VENDOR_BADGES } from './config/vendors';
 import { CATEGORY_COLORS } from './config/categories';
 import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, FIELD_DEFINITIONS } from './config/testFields';
@@ -434,7 +431,7 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
           </div>
         </div>
 
-        {/* Two-column layout: Left (Categories + Quick Search) | Right (Chat + Digest Signup) */}
+        {/* Two-column layout: Left (Categories + Quick Search) | Right (Chat) */}
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
           {/* Left column: LifecycleNavigator + Quick Search */}
           <div className="lg:w-1/2 flex flex-col gap-4">
@@ -472,21 +469,17 @@ const HomePage = ({ onNavigate, persona, chatTestData }) => {
             </div>
           </div>
 
-          {/* Right column: Chat + Digest Signup */}
+          {/* Right column: Chat */}
           <div className="lg:w-1/2 flex flex-col gap-4">
-            {persona === 'medical' ? (
-              <MRDChat compact className="flex-1" />
-            ) : (
-              <Chat
-                persona={persona}
-                testData={chatTestData}
-                variant="sidebar"
-                showModeToggle={false}
-                resizable={false}
-                showTitle={true}
-                className="flex-1"
-              />
-            )}
+            <Chat
+              persona={persona}
+              testData={chatTestData}
+              variant="sidebar"
+              showModeToggle={false}
+              resizable={false}
+              showTitle={true}
+              className="flex-1"
+            />
 
           </div>
         </div>
@@ -1066,8 +1059,6 @@ export default function App() {
     '/patient/lookup': 'patient-lookup',  // Path 1: Test lookup
     '/patient/appeal': 'patient-appeal',  // Path 3: Appeal help
     '/patient/doctor-faq': 'patient-doctor-faq',  // Physician FAQ
-    // Digest
-    '/digest': 'digest',
     // Admin routes
     '/admin/discoveries': 'admin-discoveries',
     '/patient/screening': 'patient-screening',
@@ -1122,7 +1113,6 @@ export default function App() {
     'patient-lookup': '/patient/lookup',  // Path 1: Test lookup
     'patient-appeal': '/patient/appeal',  // Path 3: Appeal help
     'patient-doctor-faq': '/patient/doctor-faq',  // Physician FAQ
-    'digest': '/digest',
     'admin-discoveries': '/admin/discoveries',
     'patient-screening': '/patient/screening',
     'patient-choosing': '/patient/choosing',
@@ -1189,11 +1179,6 @@ export default function App() {
   const [currentCompareSlug, setCurrentCompareSlug] = useState(initialRoute.compareSlug || null);
   const [submissionPrefill, setSubmissionPrefill] = useState(null);
   const [vendorInvite, setVendorInvite] = useState(null);
-  // Digest confirmation banner
-  const [showDigestConfirmed, setShowDigestConfirmed] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('digest_confirmed') === 'true';
-  });
   // Key to force wizard remount when navigating home
   const [wizardResetKey, setWizardResetKey] = useState(0);
   // Persona from URL takes precedence, then localStorage, then default to 'rnd'
@@ -1418,9 +1403,6 @@ export default function App() {
         if (persona === 'patient') {
           return <PatientLandingPage onNavigate={handleNavigate} />;
         }
-        if (persona === 'medical') {
-          return <MRDNavigator key={wizardResetKey} testData={chatTestData} onNavigate={handleNavigate} currentPage={currentPage} />;
-        }
         return <HomePage onNavigate={handleNavigate} persona={persona} chatTestData={chatTestData} />;
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
@@ -1432,7 +1414,6 @@ export default function App() {
       case 'about': return <AboutPage />;
       case 'privacy': return <PrivacyPage />;
       case 'terms': return <TermsPage />;
-      case 'digest': return <DigestPage />;
       // Admin routes
       case 'admin-discoveries': return <AdminDiscoveriesPage />;
       // Patient journey routes (keep for direct navigation)
@@ -1517,12 +1498,6 @@ export default function App() {
         />
         <div className="min-h-screen bg-gray-50 flex flex-col" style={{ background: isFullPageMode ? '#F5F3EE' : undefined }}>
           {!isFullPageMode && !isPatientLanding && <Header currentPage={currentPage} onNavigate={handleNavigate} persona={persona} onPersonaChange={handlePersonaChange} />}
-          {showDigestConfirmed && !isFullPageMode && !isPatientLanding && (
-            <div className="bg-emerald-600 text-white text-center py-2.5 px-4 text-sm font-medium">
-              Your MRD Weekly Digest subscription is confirmed! You'll receive your first digest next Monday.
-              <button onClick={() => { setShowDigestConfirmed(false); window.history.replaceState({}, '', '/'); }} className="ml-3 underline hover:no-underline">Dismiss</button>
-            </div>
-          )}
           <main className="flex-1" key={`main-${persona}`}>{renderPage()}</main>
           {!isFullPageMode && !isPatientLanding && <Footer />}
           <Analytics />

@@ -405,35 +405,12 @@ async function main() {
         break;
       }
 
-      case 'serve': {
-        // Import and start server
-        const { startServer } = await import('./chat/server.js');
-        await startServer();
-        // Server keeps running
-        break;
-      }
-
       case 'scheduler': {
         const { startScheduler } = await import('./scheduler.js');
         startScheduler();
         console.log('Scheduler running. Press Ctrl+C to stop.');
         // Keep process alive
         await new Promise(() => {});
-        break;
-      }
-
-      case 'digest': {
-        const { sendWeeklyDigest } = await import('./email/weekly-digest.js');
-        await sendWeeklyDigest();
-        console.log('Weekly digest sent');
-        break;
-      }
-
-      case 'daily-report': {
-        const { sendDailyAIReport } = await import('./email/daily-ai-report.js');
-        console.log('Generating AI-powered daily report...');
-        const result = await sendDailyAIReport();
-        console.log(`Daily report sent: ${result.subject}`);
         break;
       }
 
@@ -689,7 +666,7 @@ async function main() {
     console.error('Error:', error.message);
     process.exit(1);
   } finally {
-    if (command !== 'serve' && command !== 'scheduler') {
+    if (command !== 'scheduler') {
       await close();
     }
   }

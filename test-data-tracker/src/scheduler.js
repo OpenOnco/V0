@@ -19,9 +19,6 @@ import { initHashStore, getPendingDiscoveries } from './utils/hash-store.js';
 import { createProposal } from './proposals/queue.js';
 import { PROPOSAL_TYPES } from './proposals/schema.js';
 
-// v4: Physician digest integration
-import { generateDraft, autoSendIfPending } from './digest/send-weekly.js';
-
 // v5: Weekly submissions aggregation
 import { buildWeeklySubmissions, cleanupStagingFiles } from './submissions/writer.js';
 import { sendWeeklySummaryEmail } from './email/weekly-summary.js';
@@ -245,48 +242,6 @@ function scheduleAggregation() {
 }
 
 /**
- * v4: Schedule physician digest draft generation (Monday 5 AM)
- */
-function schedulePhysicianDigestDraft() {
-  const schedule = config.schedules.physicianDigestDraft || '0 5 * * 1';
-  logger.info('Scheduling physician digest draft', { schedule });
-
-  const job = cron.schedule(schedule, async () => {
-    logger.info('Generating physician digest draft');
-    try {
-      const result = await generateDraft();
-      logger.info('Physician digest draft result', result);
-    } catch (error) {
-      logger.error('Physician digest draft failed', { error: error.message });
-    }
-  });
-
-  jobs.set('physician-digest-draft', job);
-  return job;
-}
-
-/**
- * v4: Schedule physician digest auto-send cutoff (Monday 10 AM)
- */
-function schedulePhysicianDigestSend() {
-  const schedule = config.schedules.physicianDigestSend || '0 10 * * 1';
-  logger.info('Scheduling physician digest auto-send', { schedule });
-
-  const job = cron.schedule(schedule, async () => {
-    logger.info('Checking physician digest for auto-send');
-    try {
-      const result = await autoSendIfPending();
-      logger.info('Physician digest auto-send result', result);
-    } catch (error) {
-      logger.error('Physician digest auto-send failed', { error: error.message });
-    }
-  });
-
-  jobs.set('physician-digest-send', job);
-  return job;
-}
-
-/**
  * Start all scheduled jobs
  */
 export function startScheduler() {
@@ -310,10 +265,6 @@ export function startScheduler() {
   // v5: Schedule weekly aggregation
   scheduleAggregation();
 
-  // v4: Schedule physician digest
-  schedulePhysicianDigestDraft();
-  schedulePhysicianDigestSend();
-
   logger.info('Scheduler started', {
     jobs: Array.from(jobs.keys()),
     schedules: {
@@ -324,8 +275,6 @@ export function startScheduler() {
       nih: config.schedules.nih || '0 23 * * 0',
       discovery: config.schedules.discovery || '0 22 * * 0',
       aggregation: config.schedules.aggregation || '30 0 * * 1',
-      physicianDigestDraft: config.schedules.physicianDigestDraft || '0 5 * * 1',
-      physicianDigestSend: config.schedules.physicianDigestSend || '0 10 * * 1',
     },
   });
 

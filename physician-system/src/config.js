@@ -44,17 +44,23 @@ export const config = {
 
   // Schedules (cron format)
   schedules: {
-    pubmed: process.env.PUBMED_SCHEDULE || '0 6 * * *',         // Daily 6 AM
-    fda: process.env.FDA_SCHEDULE || '0 7 * * *',               // Daily 7 AM
-    clinicaltrials: process.env.TRIALS_SCHEDULE || '0 8 * * *', // Daily 8 AM (was weekly)
-    cms: process.env.CMS_SCHEDULE || '0 5 * * 0',               // Weekly Sunday
-    embed: process.env.EMBED_SCHEDULE || '0 10 * * *',          // Daily 10 AM
-    link: process.env.LINK_SCHEDULE || '0 12 * * 0',            // Weekly Sunday
-    monitor: process.env.MONITOR_SCHEDULE || '0 9 * * *',       // Daily 9 AM
-    digest: process.env.DIGEST_SCHEDULE || '0 9 * * 1',         // Weekly Monday 9 AM
-    dailyReport: process.env.DAILY_REPORT_SCHEDULE || '0 18 * * *', // Daily 6 PM UTC (10 AM PST)
-    versionWatch: process.env.VERSION_WATCH_SCHEDULE || '0 12 * * *', // Daily noon
-    guidelineScan: process.env.GUIDELINE_SCAN_SCHEDULE || '0 */4 * * *', // Every 4 hours
+    // Monthly crawlers (1st of month)
+    pubmed: process.env.PUBMED_SCHEDULE || '0 6 1 * *',             // 1st of month, 6 AM
+    fda: process.env.FDA_SCHEDULE || '0 7 1 * *',                   // 1st of month, 7 AM
+    clinicaltrials: process.env.TRIALS_SCHEDULE || '0 8 1 * *',     // 1st of month, 8 AM
+    cms: process.env.CMS_SCHEDULE || '0 5 1 * *',                   // 1st of month, 5 AM
+    // Monthly processing (1st of month, after crawlers)
+    embed: process.env.EMBED_SCHEDULE || '0 12 1 * *',              // 1st of month, noon
+    link: process.env.LINK_SCHEDULE || '0 13 1 * *',                // 1st of month, 1 PM
+    monitor: process.env.MONITOR_SCHEDULE || '0 9 1 * *',           // 1st of month, 9 AM
+    // Monthly FAQ refresh (2nd of month, after all evidence is embedded)
+    faqRefresh: process.env.FAQ_REFRESH_SCHEDULE || '0 10 2 * *',   // 2nd of month, 10 AM
+    // Deprecated — newsletters removed
+    // digest: process.env.DIGEST_SCHEDULE || '0 9 * * 1',
+    // dailyReport: process.env.DAILY_REPORT_SCHEDULE || '0 18 * * *',
+    // Guideline monitoring (keep more frequent — guidelines change rarely but matter a lot)
+    versionWatch: process.env.VERSION_WATCH_SCHEDULE || '0 12 * * 1', // Weekly Monday noon
+    guidelineScan: process.env.GUIDELINE_SCAN_SCHEDULE || '0 12 1 * *', // 1st of month, noon
   },
 
   // Thresholds
