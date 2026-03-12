@@ -1,20 +1,16 @@
 /**
  * OpenOnco Physician System
- * Clinical decision support for MRD testing in solid tumors
+ * Evidence crawling & FAQ generation for MRD testing
  *
  * This service provides:
  * - Clinical evidence aggregation (PubMed, ClinicalTrials.gov, FDA)
  * - Guideline monitoring (NCCN, ASCO, ESMO, SITC)
- * - Payer coverage tracking (Medicare MolDX, commercial payers)
- * - RAG-based chat interface for physician queries
- *
- * Separate from Test Data Tracker - this is a dedicated service for
- * MRD clinical decision support.
+ * - CMS/Medicare coverage tracking
+ * - Monthly FAQ generation from evidence database
  */
 
 import 'dotenv/config';
 import { createLogger } from './utils/logger.js';
-import { startServer, stopServer } from './chat/server.js';
 import { startScheduler, stopScheduler } from './scheduler.js';
 import { close as closeDb } from './db/client.js';
 
@@ -32,9 +28,6 @@ async function shutdown(signal) {
   try {
     stopScheduler();
     logger.info('Scheduler stopped');
-
-    await stopServer();
-    logger.info('HTTP server stopped');
 
     await closeDb();
     logger.info('Database connection closed');
@@ -67,7 +60,7 @@ function logStatus() {
 async function main() {
   logger.info('═══════════════════════════════════════════════════════════');
   logger.info('  OpenOnco Physician System');
-  logger.info('  Clinical Decision Support for MRD Testing');
+  logger.info('  Evidence Crawling & FAQ Generation');
   logger.info('═══════════════════════════════════════════════════════════');
 
   // Log configuration
@@ -94,9 +87,6 @@ async function main() {
   });
 
   try {
-    // Start the HTTP server for MRD Chat API
-    await startServer();
-
     // Start the scheduler for automated crawling
     const enableScheduler = process.env.ENABLE_SCHEDULER !== 'false';
     if (enableScheduler) {
@@ -110,17 +100,14 @@ async function main() {
     setInterval(logStatus, 60 * 60 * 1000);
 
     logger.info('Physician System started successfully');
-    logger.info('Services running:');
-    logger.info('  - MRD Chat API: POST /api/mrd-chat');
-    logger.info('  - Health Check: GET /health');
-    if (enableScheduler) {
-      logger.info('  - Scheduler: Automated crawling enabled');
-    }
-    logger.info('');
     logger.info('Manual CLI commands:');
     logger.info('  node src/cli.js pubmed        # PubMed literature');
     logger.info('  node src/cli.js clinicaltrials # Clinical trials');
     logger.info('  node src/cli.js embed         # Generate embeddings');
+    logger.info('  node src/cli.js faq-refresh   # Generate FAQ answers');
+
+    // Keep process alive (no HTTP server anymore)
+    await new Promise(() => {});
 
   } catch (error) {
     logger.error('Failed to start Physician System', { error });

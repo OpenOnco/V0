@@ -11,8 +11,7 @@ import { crawlFDA } from './crawlers/fda.js';
 import { ingestCMSData } from './crawlers/cms.js';
 import { embedAllMissing } from './embeddings/mrd-embedder.js';
 import { linkAllTrials } from './embeddings/cross-link.js';
-import { sendWeeklyDigest } from './email/weekly-digest.js';
-import { sendDailyAIReport } from './email/daily-ai-report.js';
+import { refreshFAQ } from './faq/generator.js';
 import { monitorRSSFeeds } from './crawlers/society-monitor.js';
 import { checkGuidelineVersions } from './crawlers/version-watcher.js';
 import { scanForNewGuidelines } from './crawlers/guideline-watcher.js';
@@ -23,7 +22,7 @@ const logger = createLogger('scheduler');
 const jobs = new Map();
 
 // Jobs that should use distributed locking (crawlers that hit external APIs)
-const LOCKED_JOBS = ['pubmed', 'fda', 'clinicaltrials', 'cms', 'embed', 'link', 'monitor', 'version-watch', 'guideline-scan'];
+const LOCKED_JOBS = ['pubmed', 'fda', 'clinicaltrials', 'cms', 'embed', 'link', 'monitor', 'version-watch', 'guideline-scan', 'faq-refresh'];
 
 /**
  * Run a job with health tracking and optional distributed locking
@@ -116,7 +115,7 @@ function scheduleJob(name, schedule, fn) {
 export function startScheduler() {
   logger.info('Starting scheduler');
 
-  // Daily crawlers
+  // Monthly crawlers (1st of month)
   scheduleJob('pubmed', config.schedules.pubmed, () =>
     runPubMedCrawler({ mode: 'incremental', maxResults: 200 })
   );
@@ -125,7 +124,6 @@ export function startScheduler() {
     crawlFDA({})
   );
 
-  // Weekly crawlers
   scheduleJob('clinicaltrials', config.schedules.clinicaltrials, async () => {
     // Crawl new/updated trials
     const result = await crawlClinicalTrials({ maxResults: 500 });
@@ -138,7 +136,7 @@ export function startScheduler() {
     ingestCMSData({})
   );
 
-  // Daily processing
+  // Monthly processing (1st of month, after crawlers)
   scheduleJob('embed', config.schedules.embed, () =>
     embedAllMissing({ limit: 100 })
   );
@@ -148,16 +146,15 @@ export function startScheduler() {
     monitorRSSFeeds()
   );
 
-  // Weekly processing
+  // Monthly processing
   scheduleJob('link', config.schedules.link, () =>
     linkAllTrials({ limit: 100 })
   );
 
-  // Weekly digest
-  scheduleJob('digest', config.schedules.digest, sendWeeklyDigest);
-
-  // Daily AI report
-  scheduleJob('daily-report', config.schedules.dailyReport, sendDailyAIReport);
+  // Monthly FAQ refresh (runs 2nd of month after all evidence is crawled + embedded)
+  scheduleJob('faq-refresh', config.schedules.faqRefresh, () =>
+    refreshFAQ()
+  );
 
   // Version watcher for guidelines
   scheduleJob('version-watch', config.schedules.versionWatch, checkGuidelineVersions);
@@ -200,8 +197,7 @@ export async function runJobNow(name) {
     monitor: () => monitorRSSFeeds(),
     'version-watch': checkGuidelineVersions,
     'guideline-scan': scanForNewGuidelines,
-    digest: sendWeeklyDigest,
-    'daily-report': sendDailyAIReport,
+    'faq-refresh': () => refreshFAQ(),
   };
 
   if (!jobFns[name]) {
