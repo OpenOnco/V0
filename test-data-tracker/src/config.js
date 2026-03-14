@@ -24,17 +24,14 @@ export const config = {
   },
 
   // Crawler schedules (cron syntax)
-  // Crawlers run Sunday 11 PM, digest Monday 1 AM
+  // Crawlers run Sunday 10-11 PM, aggregation Monday 12:30 AM
   schedules: {
     cms: process.env.SCHEDULE_CMS || '0 23 * * 0',           // Sunday 11:00 PM
     vendor: process.env.SCHEDULE_VENDORS || '0 23 * * 0',    // Sunday 11:00 PM
     payers: process.env.SCHEDULE_PAYERS || '30 23 * * 0',    // Sunday 11:30 PM
     nih: process.env.SCHEDULE_NIH || '0 23 * * 0',            // Sunday 11:00 PM (with CMS/vendor)
     discovery: process.env.SCHEDULE_DISCOVERY || '0 22 * * 0', // Sunday 10:00 PM (v2)
-    digest: process.env.SCHEDULE_DIGEST || '0 1 * * 1',      // Monday 1:00 AM
     aggregation: process.env.SCHEDULE_AGGREGATION || '30 0 * * 1',  // Monday 12:30 AM PT (after crawlers)
-    physicianDigestDraft: process.env.SCHEDULE_PHYSICIAN_DIGEST_DRAFT || '0 5 * * 1',  // Monday 5:00 AM PT
-    physicianDigestSend: process.env.SCHEDULE_PHYSICIAN_DIGEST_SEND || '0 10 * * 1',   // Monday 10:00 AM PT (auto-send cutoff)
   },
 
   // Crawler enable flags

@@ -23,8 +23,6 @@ function createEmptyHealth() {
     lastUpdated: new Date().toISOString(),
     crawlers: {},
     errors: [],
-    digestsSent: 0,
-    lastDigestSent: null,
   };
 }
 
@@ -124,17 +122,7 @@ export async function recordCrawlerError(source, error) {
 }
 
 /**
- * Record digest sent
- */
-export async function recordDigestSent() {
-  const health = await getHealth();
-  health.digestsSent++;
-  health.lastDigestSent = new Date().toISOString();
-  await saveHealth();
-}
-
-/**
- * Get health summary for digest
+ * Get health summary
  */
 export async function getHealthSummary() {
   const health = await getHealth();
@@ -158,8 +146,6 @@ export async function getHealthSummary() {
     })),
     recentErrorCount: recentErrors.length,
     recentErrors: recentErrors.slice(-5),
-    digestsSent: health.digestsSent,
-    lastDigestSent: health.lastDigestSent,
   };
 }
 
@@ -175,7 +161,6 @@ export default {
   getHealth,
   updateCrawlerHealth,
   recordCrawlerError,
-  recordDigestSent,
   getHealthSummary,
   resetHealth,
 };
