@@ -10,8 +10,10 @@
  */
 
 import 'dotenv/config';
+import http from 'http';
 import { createLogger } from './utils/logger.js';
 import { startScheduler, stopScheduler } from './scheduler.js';
+import { getHealthSummary } from './health.js';
 import { close as closeDb } from './db/client.js';
 
 const logger = createLogger('physician-system');
@@ -106,8 +108,26 @@ async function main() {
     logger.info('  node src/cli.js embed         # Generate embeddings');
     logger.info('  node src/cli.js faq-refresh   # Generate FAQ answers');
 
-    // Keep process alive (no HTTP server anymore)
-    await new Promise(() => {});
+    // Minimal health server for Railway healthcheck
+    const port = process.env.PORT || 3000;
+    const server = http.createServer(async (req, res) => {
+      if (req.url === '/health') {
+        try {
+          const summary = await getHealthSummary();
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ status: 'ok', service: 'physician-system', ...summary }));
+        } catch (err) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ status: 'ok', service: 'physician-system' }));
+        }
+      } else {
+        res.writeHead(404);
+        res.end();
+      }
+    });
+    server.listen(port, () => {
+      logger.info(`Health server listening on port ${port}`);
+    });
 
   } catch (error) {
     logger.error('Failed to start Physician System', { error });
