@@ -68,10 +68,7 @@ Commands:
   embed           Generate embeddings for items without them
   link            Link trials to publications
   all             Run all crawlers sequentially
-  serve           Start the MRD Chat API server
   scheduler       Start the cron scheduler (runs in foreground)
-  digest          Send the weekly digest email now
-  daily-report    Send AI-powered daily ops report now
   test-email      Send a test email to verify configuration
   health          Show health summary for all crawlers
   version-watch   Check guideline pages for new versions
@@ -159,16 +156,12 @@ Examples:
   # Check health status
   node src/cli.js health
 
-  # Send weekly digest
-  node src/cli.js digest
-
 Environment Variables:
   MRD_DATABASE_URL    PostgreSQL connection string
   ANTHROPIC_API_KEY   Required for AI triage/classification
   OPENAI_API_KEY      Required for embeddings
   NCBI_API_KEY        Optional, increases PubMed rate limit
   RESEND_API_KEY      Required for email notifications
-  EMAIL_TO            Recipient email for digests
 `);
 }
 
@@ -449,10 +442,6 @@ async function main() {
         const summary = await getHealthSummary();
         console.log('\n=== Health Summary ===');
         console.log(`Uptime: ${summary.uptime}`);
-        console.log(`Digests sent: ${summary.digestsSent}`);
-        if (summary.lastDigestSent) {
-          console.log(`Last digest: ${new Date(summary.lastDigestSent).toLocaleString()}`);
-        }
         console.log(`\nCrawler Status:`);
         if (summary.crawlers.length === 0) {
           console.log('  No crawler data yet');

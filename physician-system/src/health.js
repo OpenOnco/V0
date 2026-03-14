@@ -21,7 +21,6 @@ export async function getHealthSummary() {
     lastSuccesses,
     errorCount,
     recentErrors,
-    digestCount,
   ] = await Promise.all([
     // Latest run per crawler
     query(`
@@ -55,13 +54,6 @@ export async function getHealthSummary() {
       ORDER BY completed_at DESC
       LIMIT 10
     `),
-    // Digest count
-    query(`
-      SELECT COUNT(*)::int as count
-      FROM mrd_crawler_runs
-      WHERE crawler_name = 'digest'
-        AND status = 'completed'
-    `),
   ]);
 
   // Build a lookup of last success per crawler
@@ -89,8 +81,6 @@ export async function getHealthSummary() {
       timestamp: r.completed_at,
     })),
     errorCount: errorCount.rows[0].count,
-    digestsSent: digestCount.rows[0].count,
-    lastDigestSent: null, // not tracked separately anymore
   };
 }
 
@@ -103,11 +93,8 @@ function formatDuration(ms) {
 // No-ops — tracking is now handled by scheduler.js writing to mrd_crawler_runs
 export function updateCrawlerHealth() {}
 export function recordCrawlerError() {}
-export function recordDigestSent() {}
-
 export default {
   getHealthSummary,
   updateCrawlerHealth,
   recordCrawlerError,
-  recordDigestSent,
 };

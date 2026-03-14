@@ -7,7 +7,6 @@
  * - Monitors CMS for coverage updates (weekly)
  * - Tracks FDA approvals and guidance (weekly)
  * - Watches vendor websites for updates (weekly)
- * - Sends daily digest emails with discoveries and health status
  *
  * All discoveries go to a queue for human review - nothing is auto-updated.
  */
@@ -135,7 +134,7 @@ async function main() {
       cms: 'Sunday 11:00 PM',
       vendor: 'Sunday 11:00 PM',
       payers: 'Sunday 11:30 PM',
-      digest: 'Monday 1:00 AM',
+      aggregation: 'Monday 12:30 AM',
       cleanup: 'Daily midnight',
     });
 
@@ -145,31 +144,8 @@ async function main() {
   }
 }
 
-// CLI command handling (e.g., node src/index.js digest:preview)
-const cliCommand = process.argv[2];
-if (cliCommand?.startsWith('digest:')) {
-  import('./digest/send-weekly.js').then(async (mod) => {
-    try {
-      if (cliCommand === 'digest:preview') {
-        const result = await mod.generateDraft();
-        console.log('Draft result:', JSON.stringify(result, null, 2));
-      } else if (cliCommand === 'digest:send') {
-        const digestId = process.argv[3] ? parseInt(process.argv[3], 10) : null;
-        const result = await mod.sendApprovedDigest(digestId);
-        console.log('Send result:', JSON.stringify(result, null, 2));
-      } else {
-        console.error(`Unknown digest command: ${cliCommand}`);
-        console.log('Available: digest:preview, digest:send [digestId]');
-      }
-    } catch (error) {
-      console.error('Command failed:', error.message);
-    }
-    process.exit(0);
-  });
-} else {
-  // Start the daemon
-  main().catch((error) => {
-    logger.error('Fatal error', { error });
-    process.exit(1);
-  });
-}
+// Start the daemon
+main().catch((error) => {
+  logger.error('Fatal error', { error });
+  process.exit(1);
+});
