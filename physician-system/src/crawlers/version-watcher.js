@@ -52,6 +52,15 @@ const GUIDELINE_PAGES = [
   },
 ];
 
+// Map source_key to the expected filename in data/guidelines/nccn/
+const GUIDELINE_FILENAMES = {
+  'nccn-colorectal': 'colon.pdf',
+  'nccn-breast': 'breast.pdf',
+  'nccn-lung': 'nscl.pdf',
+  'nccn-bladder': 'bladder.pdf',
+  'nccn-gastric': 'gastric.pdf',
+};
+
 /**
  * Extract version string from page content
  */
@@ -153,6 +162,8 @@ async function checkGuideline(config) {
       }
 
       // Send alert email
+      const filename = GUIDELINE_FILENAMES[config.source_key] || `${config.source_key}.pdf`;
+      const destPath = `physician-system/data/guidelines/nccn/${filename}`;
       await sendEmail({
         subject: `🔔 New guideline version: ${display_name} ${currentVersion}`,
         text: `A new version of ${display_name} is available.
@@ -160,10 +171,11 @@ async function checkGuideline(config) {
 Old version: ${storedVersion}
 New version: ${currentVersion}
 
-Please download the updated PDF from:
-${config.url}
-
-Then place it in the guidelines folder for automatic processing.`,
+ACTION REQUIRED:
+1. Download the updated PDF from: ${config.url}
+2. Copy it to: ${destPath}
+   (Replace the existing file)
+3. The guideline-watcher will auto-ingest it on next scan.`,
         html: `
           <h2>New Guideline Version Available</h2>
           <p>A new version of <strong>${display_name}</strong> has been detected.</p>
@@ -172,7 +184,12 @@ Then place it in the guidelines folder for automatic processing.`,
             <tr><td>New version:</td><td><strong>${currentVersion}</strong></td></tr>
           </table>
           <p><a href="${config.url}">Download from NCCN</a></p>
-          <p><em>Place the PDF in the guidelines folder for automatic processing.</em></p>
+          <h3>Action Required</h3>
+          <ol>
+            <li>Download the updated PDF from the link above</li>
+            <li>Copy it to: <code>${destPath}</code></li>
+            <li>The guideline-watcher will auto-ingest it on next scan</li>
+          </ol>
         `,
       });
 
