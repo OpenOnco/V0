@@ -163,7 +163,7 @@ async function checkGuideline(config) {
 
       // Send alert email
       const filename = GUIDELINE_FILENAMES[config.source_key] || `${config.source_key}.pdf`;
-      const destPath = `physician-system/data/guidelines/nccn/${filename}`;
+      const destPath = `/Users/adickinson/Documents/GitHub/V0/physician-system/data/guidelines/nccn/${filename}`;
       await sendEmail({
         subject: `🔔 New guideline version: ${display_name} ${currentVersion}`,
         text: `A new version of ${display_name} is available.
