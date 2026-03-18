@@ -1,40 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, ArrowLeft, ChevronDown, FileText, Printer, ArrowRight, MessageCircle } from 'lucide-react';
 import { CONCERNS, getAnswer, getStageNote } from '../config/physicianFAQ';
-
-const CANCER_TYPES = [
-  { id: 'colorectal', label: 'Colorectal' },
-  { id: 'breast', label: 'Breast' },
-  { id: 'lung', label: 'Lung' },
-  { id: 'bladder', label: 'Bladder' },
-  { id: 'melanoma', label: 'Melanoma' },
-  { id: 'ovarian', label: 'Ovarian' },
-  { id: 'prostate', label: 'Prostate' },
-  { id: 'pancreatic', label: 'Pancreatic' },
-  { id: 'other-solid', label: 'Other' },
-];
-
-const CANCER_STAGES = [
-  { id: 'stage-1', label: 'Stage I' },
-  { id: 'stage-2', label: 'Stage II' },
-  { id: 'stage-3', label: 'Stage III' },
-  { id: 'stage-4', label: 'Stage IV' },
-  { id: 'not-sure', label: 'Not sure' },
-];
+import CancerStagePicker, { useCancerStageContext } from '../components/patient/CancerStagePicker';
 
 export default function PatientDoctorFAQPage({ onNavigate }) {
-  const [cancerType, setCancerType] = useState(null);
-  const [stage, setStage] = useState(null);
+  const { cancerType, setCancerType, stage, setStage } = useCancerStageContext();
   const [openIndex, setOpenIndex] = useState(null);
-
-  // Pre-fill from sessionStorage if patient already provided context
-  useEffect(() => {
-    try {
-      const ctx = JSON.parse(sessionStorage.getItem('openonco-patient-context') || '{}');
-      if (ctx.cancerType) setCancerType(ctx.cancerType);
-      if (ctx.stage) setStage(ctx.stage);
-    } catch {}
-  }, []);
 
   const hasContext = cancerType && stage;
 
@@ -44,26 +15,8 @@ export default function PatientDoctorFAQPage({ onNavigate }) {
   };
 
   return (
-    <div className="min-h-screen font-sans bg-warm-50 flex flex-col">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-warm-50/80 backdrop-blur-md border-b border-warm-200/50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button
-            onClick={() => onNavigate('patient-landing')}
-            className="flex items-center gap-2 text-stone-600 hover:text-brand-700 transition-colors font-medium"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </button>
-          <div className="flex items-center gap-2">
-            <Heart className="w-6 h-6 text-brand-700" />
-            <span className="font-serif text-xl font-medium text-brand-900">OpenOnco</span>
-          </div>
-          <div className="w-[72px]" />
-        </div>
-      </nav>
-
-      <main className="flex-1">
+    <div className="font-sans bg-warm-50">
+      <div>
         {/* Header */}
         <section className="py-16 bg-white border-b border-stone-200">
           <div className="max-w-4xl mx-auto px-6 text-center">
@@ -80,72 +33,12 @@ export default function PatientDoctorFAQPage({ onNavigate }) {
           </div>
         </section>
 
-        {/* Intake — only show if context not already provided */}
-        {!hasContext && (
-          <section className="py-12 bg-warm-50 border-b border-stone-200">
-            <div className="max-w-4xl mx-auto px-6">
-              <div className="text-center mb-8">
-                <h2 className="font-serif text-2xl text-stone-900 mb-2">Tell us your situation</h2>
-                <p className="text-stone-500">We'll personalize the answers for you.</p>
-              </div>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-3">Cancer type</label>
-                  <div className="flex flex-wrap gap-2">
-                    {CANCER_TYPES.map((type) => (
-                      <button
-                        key={type.id}
-                        onClick={() => setCancerType(type.id)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                          cancerType === type.id
-                            ? 'bg-brand-700 text-white border-brand-700'
-                            : 'bg-white text-stone-600 border-stone-200 hover:border-brand-300 hover:text-brand-700'
-                        }`}
-                      >
-                        {type.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-3">Stage</label>
-                  <div className="flex flex-wrap gap-2">
-                    {CANCER_STAGES.map((s) => (
-                      <button
-                        key={s.id}
-                        onClick={() => setStage(s.id)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                          stage === s.id
-                            ? 'bg-brand-700 text-white border-brand-700'
-                            : 'bg-white text-stone-600 border-stone-200 hover:border-brand-300 hover:text-brand-700'
-                        }`}
-                      >
-                        {s.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Context summary bar when filled */}
-        {hasContext && (
-          <div className="bg-brand-50 border-b border-brand-100 py-3">
-            <div className="max-w-4xl mx-auto px-6 flex items-center justify-between">
-              <p className="text-sm text-brand-800 font-medium">
-                Personalized for: {CANCER_TYPES.find(t => t.id === cancerType)?.label || cancerType} cancer, {CANCER_STAGES.find(s => s.id === stage)?.label || stage}
-              </p>
-              <button
-                onClick={() => { setCancerType(null); setStage(null); }}
-                className="text-sm text-brand-600 hover:text-brand-800 underline"
-              >
-                Change
-              </button>
-            </div>
+        {/* Cancer type & stage picker */}
+        <div className="py-6 border-b border-stone-200">
+          <div className="max-w-4xl mx-auto px-6">
+            <CancerStagePicker cancerType={cancerType} setCancerType={setCancerType} stage={stage} setStage={setStage} />
           </div>
-        )}
+        </div>
 
         {/* FAQ accordion */}
         <section className="py-16">
@@ -202,18 +95,7 @@ export default function PatientDoctorFAQPage({ onNavigate }) {
             </button>
           </div>
         </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-stone-900 text-stone-400 py-8 border-t border-stone-800">
-        <div className="max-w-7xl mx-auto px-6 text-sm flex flex-col md:flex-row items-center justify-between">
-          <div className="flex items-center gap-2 mb-2 md:mb-0">
-            <Heart className="w-4 h-4 text-brand-500" />
-            <span className="text-white font-medium">OpenOnco</span>
-          </div>
-          <p>This information is for educational purposes and does not replace professional medical advice.</p>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 }
