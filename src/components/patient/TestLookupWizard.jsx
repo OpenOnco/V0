@@ -3,6 +3,7 @@ import { JOURNEY_CONFIG } from './journeyConfig';
 import { useAssistanceProgram } from '../../dal';
 import TestDetailModal from '../test/TestDetailModal';
 import WizardAIHelper from './WizardAIHelper';
+import CancerStagePicker, { useCancerStageContext } from './CancerStagePicker';
 import {
   PAYER_LABELS,
   matchesIndication,
@@ -272,14 +273,26 @@ Your doctor recommended this test because it provides valuable information about
   // Render markdown-like text
   const renderContent = (text) => {
     if (!text) return null;
-    const parts = text.split(/\*\*([^*]+)\*\*/g);
-    return parts.map((part, i) => {
-      if (i % 2 === 1) {
-        return <h4 key={i} className="font-semibold text-slate-900 mt-4 mb-2 first:mt-0">{part}</h4>;
+    return text.split('\n').map((line, i) => {
+      const trimmed = line.trim();
+      if (!trimmed) return null;
+      // ## Headers
+      if (trimmed.startsWith('## ')) {
+        return <h4 key={i} className="font-semibold text-slate-900 mt-4 mb-2 first:mt-0">{trimmed.slice(3)}</h4>;
       }
-      return part.split('\n').map((line, j) => (
-        line.trim() ? <p key={`${i}-${j}`} className="text-slate-600 text-sm leading-relaxed mb-2">{line}</p> : null
-      ));
+      // Strip leading ": " (markdown definition list artifact)
+      const cleaned = trimmed.startsWith(': ') ? trimmed.slice(2) : trimmed;
+      // Render inline bold and italic
+      const rendered = cleaned.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((seg, j) => {
+        if (seg.startsWith('**') && seg.endsWith('**')) {
+          return <strong key={j} className="font-semibold text-slate-900">{seg.slice(2, -2)}</strong>;
+        }
+        if (seg.startsWith('*') && seg.endsWith('*')) {
+          return <em key={j}>{seg.slice(1, -1)}</em>;
+        }
+        return seg;
+      });
+      return <p key={i} className="text-slate-600 text-sm leading-relaxed mb-2">{rendered}</p>;
     });
   };
 
@@ -393,16 +406,15 @@ Your doctor recommended this test because it provides valuable information about
   );
 }
 
-export default function TestLookupWizard({ testData = [], onNavigate, onBack }) {
+export default function TestLookupWizard({ testData = [], onNavigate, onBack, initialCancerId, initialStage }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTest, setSelectedTest] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [insuranceType, setInsuranceType] = useState(null); // 'medicare' | 'private' | 'none' | null
 
-  // New state for deep insurance integration
-  const [cancerType, setCancerType] = useState(null);
-  const [cancerStage, setCancerStage] = useState(null);
+  // Cancer type & stage — shared via sessionStorage across wizards
+  const { cancerType, setCancerType, stage: cancerStage, setStage: setCancerStage } = useCancerStageContext();
   const [selectedPayer, setSelectedPayer] = useState(null);
   const [payerSearchQuery, setPayerSearchQuery] = useState('');
   const [showPayerDropdown, setShowPayerDropdown] = useState(false);
@@ -497,8 +509,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
     setSelectedTest(test);
     setSearchQuery('');
     setInsuranceType(null);
-    setCancerType(null);
-    setCancerStage(null);
+    // Keep cancer type and stage — they come from the picker
     setSelectedPayer(null);
     setPayerSearchQuery('');
     setShowPayerDropdown(false);
@@ -508,8 +519,7 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
   // Handle insurance type selection
   const handleInsuranceTypeSelect = (type) => {
     setInsuranceType(type);
-    setCancerType(null);
-    setCancerStage(null);
+    // Keep cancer type and stage — they come from the picker
     setSelectedPayer(null);
     setPayerSearchQuery('');
     setShowPayerDropdown(false);
@@ -596,34 +606,6 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
         </div>
       </div>
 
-      {/* Header - hide when printing */}
-      <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-4 sticky top-0 z-10 print:hidden">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="font-semibold text-slate-900">Test Lookup</h1>
-              <p className="text-sm text-slate-500">Learn about your recommended test</p>
-            </div>
-          </div>
-
-          <button
-            onClick={handleBack}
-            className="text-slate-500 hover:text-slate-700 transition-colors flex items-center gap-1 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400 rounded-lg p-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span className="hidden sm:inline">Back</span>
-          </button>
-        </div>
-      </header>
-
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 print:py-0 print:px-0 print:max-w-none">
         {!selectedTest ? (
           /* Step 1: Search for test */
@@ -636,6 +618,9 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
                 Search for the test name or vendor
               </p>
             </div>
+
+            {/* Cancer type & stage picker */}
+            <CancerStagePicker cancerType={cancerType} setCancerType={setCancerType} stage={cancerStage} setStage={setCancerStage} />
 
             {/* Search input */}
             <div className="relative">
@@ -702,6 +687,9 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
         ) : (
           /* Step 2: Show test info */
           <div className="space-y-6 print:space-y-3">
+            {/* Cancer type & stage picker */}
+            <CancerStagePicker cancerType={cancerType} setCancerType={setCancerType} stage={cancerStage} setStage={setCancerStage} />
+
             {/* Test header - hide when printing (we have print-only header) */}
             <div className="bg-white border border-slate-200 rounded-xl p-6 print:hidden">
               <div className="flex justify-between items-start">
@@ -784,11 +772,9 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
                     onChange={(e) => {
                       setPayerSearchQuery(e.target.value);
                       setShowPayerDropdown(true);
-                      // Clear selection if user starts typing something different
+                      // Clear payer selection if user starts typing something different
                       if (selectedPayer && e.target.value !== allKnownPayers.find(p => p.id === selectedPayer)?.label) {
                         setSelectedPayer(null);
-                        setCancerType(null);
-                        setCancerStage(null);
                       }
                     }}
                     onFocus={() => setShowPayerDropdown(true)}
@@ -847,55 +833,12 @@ export default function TestLookupWizard({ testData = [], onNavigate, onBack }) 
               </div>
             )}
 
-            {/* Cancer Type & Stage Selection (for Medicare, or for Private after payer selected) - hide when printing */}
-            {(insuranceType === 'medicare' || (insuranceType === 'private' && selectedPayer)) && (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6 print:hidden">
-                {/* Cancer Type Dropdown */}
-                <div>
-                  <label className="block font-medium text-slate-900 mb-2">
-                    What type of cancer were you diagnosed with?
-                  </label>
-                  <select
-                    value={cancerType || ''}
-                    onChange={(e) => {
-                      setCancerType(e.target.value || null);
-                      setCancerStage(null);
-                    }}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-slate-700
-                               focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
-                  >
-                    <option value="">Select cancer type...</option>
-                    {CANCER_TYPES.map((type) => (
-                      <option key={type.id} value={type.id}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Stage Selection */}
-                {cancerType && (
-                  <div>
-                    <label className="block font-medium text-slate-900 mb-2">
-                      What stage was your cancer at diagnosis?
-                    </label>
-                    <div className="grid grid-cols-5 gap-2">
-                      {CANCER_STAGES.map((stage) => (
-                        <button
-                          key={stage.id}
-                          onClick={() => setCancerStage(stage.id)}
-                          className={`py-2 px-2 border-2 rounded-lg font-medium transition-all text-center text-sm
-                            ${cancerStage === stage.id
-                              ? 'border-rose-500 bg-rose-50 text-rose-700'
-                              : 'border-slate-200 hover:border-rose-300'
-                            }`}
-                        >
-                          {stage.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            {/* Prompt to select cancer type/stage if not yet set */}
+            {(insuranceType === 'medicare' || (insuranceType === 'private' && selectedPayer)) && (!cancerType || !cancerStage) && (
+              <div className="bg-brand-50 border border-brand-200 rounded-xl p-4 text-center print:hidden">
+                <p className="text-sm text-brand-700 font-medium">
+                  Select your cancer type and stage above to see personalized coverage details.
+                </p>
               </div>
             )}
 

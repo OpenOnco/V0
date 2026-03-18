@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import CancerStagePicker from './CancerStagePicker';
 import { JOURNEY_CONFIG } from './journeyConfig';
 import { calculateComparativeBadges } from '../../utils/comparativeBadges';
 import { ComparativeBadgeRow } from '../badges/ComparativeBadge';
@@ -2565,6 +2566,22 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
     costSensitivity: null,      // 'cost-sensitive' or 'not-sensitive'
   });
 
+  // Picker state handlers that sync wizardData → sessionStorage
+  const handlePickerCancerType = (val) => {
+    setWizardData(prev => {
+      const updated = { ...prev, cancerType: val };
+      sessionStorage.setItem('openonco-patient-context', JSON.stringify({ cancerType: val || null, stage: prev.cancerStage || null }));
+      return updated;
+    });
+  };
+  const handlePickerStage = (val) => {
+    setWizardData(prev => {
+      const updated = { ...prev, cancerStage: val };
+      sessionStorage.setItem('openonco-patient-context', JSON.stringify({ cancerType: prev.cancerType || null, stage: val || null }));
+      return updated;
+    });
+  };
+
   // Ref for scrolling to top on step change
   const containerRef = useRef(null);
 
@@ -2703,38 +2720,7 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${colors.bgGradient}`}>
-      {/* Header - hide on landing */}
-      {!isLanding && (
-      <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-4 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          {/* Logo and title */}
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 ${colors.accentLight} rounded-full flex items-center justify-center`}>
-              <svg className={`w-5 h-5 ${colors.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="font-semibold text-slate-900">{watchingJourney.label} Journey</h1>
-              <p className="text-sm text-slate-500">MRD Testing Guide</p>
-            </div>
-          </div>
-
-          {/* Exit button */}
-          <button
-            onClick={handleExit}
-            className="text-slate-500 hover:text-slate-700 transition-colors flex items-center gap-1 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400 rounded-lg p-2"
-            aria-label="Exit wizard"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span className="hidden sm:inline">Exit</span>
-          </button>
-        </div>
-      </header>
-      )}
+      {/* Header removed — PatientPageWrapper provides nav */}
 
       {/* Main content */}
       <main
@@ -2766,6 +2752,16 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
             {WIZARD_STEPS[currentStep].title}
           </span>
         </div>
+        )}
+
+        {/* Cancer type & stage picker - show on non-landing steps */}
+        {!isLanding && (
+          <CancerStagePicker
+            cancerType={wizardData.cancerType}
+            setCancerType={handlePickerCancerType}
+            stage={wizardData.cancerStage}
+            setStage={handlePickerStage}
+          />
         )}
 
         {/* Step content */}

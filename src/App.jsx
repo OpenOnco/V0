@@ -86,6 +86,7 @@ import PatientDoctorFAQPage from './pages/PatientDoctorFAQPage';
 import PatientPageWrapper from './components/patient/PatientPageWrapper';
 import TestLookupWizard from './components/patient/TestLookupWizard';
 import AppealWizard from './components/patient/AppealWizard';
+import LandingPage from './pages/LandingPage';
 import { LifecycleNavigator, RecentlyAddedBanner, CancerTypeNavigator, getTestCount, getSampleTests } from './components/navigation';
 import TestShowcase from './components/test/TestShowcase';
 import TestDetailModal, { ComparisonModal } from './components/test/TestDetailModal';
@@ -1025,7 +1026,8 @@ export default function App() {
   // New plain-language URLs: /risk, /screen, /treat, /monitor
   // Legacy URLs redirect: /mrd→/monitor, /ecd→/screen, /trm→/monitor, /tds→/treat
   const pathToPage = {
-    '/': 'home',
+    '/': 'landing',
+    '/database': 'home',
     '/submissions': 'submissions',
     '/how-it-works': 'how-it-works',
     '/data-sources': 'data-sources',
@@ -1091,7 +1093,9 @@ export default function App() {
   };
 
   const pageToPath = {
-    'home': '/',
+    'landing': '/',
+    'home': '/database',
+    'home-rnd': '/database',
     'submissions': '/submissions',
     'how-it-works': '/how-it-works',
     'data-sources': '/data-sources',
@@ -1359,6 +1363,12 @@ export default function App() {
       analytics.trackPageView(page, { persona });
     }
     
+    // Landing page: "Industry & Research" card sets R&D persona and goes to database
+    if (page === 'home-rnd') {
+      handlePersonaChange('rnd');
+      page = 'home';
+    }
+
     // Always update state and scroll, even if already on the page
     setCurrentPage(page);
     setInitialSelectedTestId(testId || null);
@@ -1399,6 +1409,8 @@ export default function App() {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'landing':
+        return <LandingPage onNavigate={handleNavigate} />;
       case 'home':
         if (persona === 'patient') {
           return <PatientLandingPage onNavigate={handleNavigate} />;
@@ -1424,7 +1436,9 @@ export default function App() {
         <PatientMRDInfoPage onNavigate={handleNavigate} />
       );
       case 'patient-doctor-faq': return (
-        <PatientDoctorFAQPage onNavigate={handleNavigate} />
+        <PatientPageWrapper onNavigate={handleNavigate}>
+          <PatientDoctorFAQPage onNavigate={handleNavigate} />
+        </PatientPageWrapper>
       );
       case 'patient-watching': {
         const ctx = JSON.parse(sessionStorage.getItem('openonco-patient-context') || '{}');
@@ -1484,7 +1498,8 @@ export default function App() {
 
   const seoConfig = getSEOForPage();
   const isFullPageMode = false;
-  const isPatientLanding = currentPage.startsWith('patient-') ||
+  const isPatientLanding = currentPage === 'landing' ||
+    currentPage.startsWith('patient-') ||
     (currentPage === 'home' && persona === 'patient');
 
   return (

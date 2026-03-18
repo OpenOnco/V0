@@ -1,204 +1,124 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Heart, Activity, Shield, FileText, ArrowRight, Search, MessageCircle, Stethoscope } from 'lucide-react';
 import AnimateOnScroll from '../components/patient/AnimateOnScroll';
 
-const CANCER_TYPES = [
-  { id: 'colorectal', label: 'Colorectal' },
-  { id: 'breast', label: 'Breast' },
-  { id: 'lung', label: 'Lung' },
-  { id: 'bladder', label: 'Bladder' },
-  { id: 'ovarian', label: 'Ovarian' },
-  { id: 'prostate', label: 'Prostate' },
-  { id: 'pancreatic', label: 'Pancreatic' },
-  { id: 'melanoma', label: 'Melanoma' },
-  { id: 'other-solid', label: 'Other' },
-];
-
-const CANCER_STAGES = [
-  { id: 'stage-1', label: 'Stage I' },
-  { id: 'stage-2', label: 'Stage II' },
-  { id: 'stage-3', label: 'Stage III' },
-  { id: 'stage-4', label: 'Stage IV' },
-  { id: 'not-sure', label: 'Not sure' },
-];
-
 export default function PatientLandingPage({ onNavigate }) {
-  const [cancerType, setCancerType] = useState(null);
-  const [stage, setStage] = useState(null);
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // Navigate to wizard with pre-filled context
-  const navigateWithContext = (page) => {
-    // Store in sessionStorage so App.jsx can pass to wizards
-    if (cancerType || stage) {
-      sessionStorage.setItem('openonco-patient-context', JSON.stringify({ cancerType, stage }));
-    }
-    onNavigate(page);
-  };
-
   return (
     <div className="min-h-screen font-sans selection:bg-brand-100 selection:text-brand-900 bg-warm-50">
-      <PatientNavigation onNavigate={onNavigate} scrollTo={scrollTo} />
+      <PatientNavigation />
       <main>
         <Hero onNavigate={onNavigate} />
-        <PatientIntake
-          cancerType={cancerType}
-          setCancerType={setCancerType}
-          stage={stage}
-          setStage={setStage}
-        />
-        <DoctorRecommended onNavigate={navigateWithContext} />
-        <FindTheRightTest onNavigate={navigateWithContext} />
-        <TalkToYourDoctor onNavigate={navigateWithContext} />
+        <DoctorRecommended onNavigate={onNavigate} />
+        <FindTheRightTest onNavigate={onNavigate} />
+        <TalkToYourDoctor onNavigate={onNavigate} />
       </main>
-      <PatientFooter onNavigate={onNavigate} scrollTo={scrollTo} />
+      <PatientFooter onNavigate={onNavigate} />
     </div>
   );
 }
 
-function PatientNavigation({ onNavigate, scrollTo }) {
+function PatientNavigation() {
   return (
     <nav className="sticky top-0 z-50 bg-warm-50/80 backdrop-blur-md border-b border-warm-200/50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-center gap-8">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Heart className="w-6 h-6 text-brand-700" />
           <span className="font-serif text-xl font-medium text-brand-900">OpenOnco</span>
-        </div>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
-          <button onClick={() => onNavigate('patient-mrd-info')} className="hover:text-brand-700 transition-colors">What is MRD?</button>
-          <button onClick={() => scrollTo('doctor-recommended')} className="hover:text-brand-700 transition-colors">Paying for a Test</button>
-          <button onClick={() => scrollTo('find-test')} className="hover:text-brand-700 transition-colors">Find a Test</button>
-          <button onClick={() => scrollTo('talk-to-doctor')} className="hover:text-brand-700 transition-colors">Talk to Your Doctor</button>
-        </div>
-        <button
-          onClick={() => onNavigate('patient-watching')}
-          className="bg-brand-700 hover:bg-brand-900 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors"
-        >
-          Find a Test
         </button>
+        <div className="hidden md:flex items-center gap-6 text-base text-stone-500">
+          <span>Nonprofit</span>
+          <span className="text-stone-300">&middot;</span>
+          <span>Independent</span>
+          <span className="text-stone-300">&middot;</span>
+          <span>160+ Tests</span>
+          <span className="text-stone-300">&middot;</span>
+          <span>75+ Vendors</span>
+          <span className="text-stone-300">&middot;</span>
+          <span>Updated Weekly</span>
+        </div>
       </div>
     </nav>
   );
 }
 
 function Hero({ onNavigate }) {
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="relative pt-16 pb-20 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+    <section className="relative pt-12 pb-8 md:pt-16 md:pb-12 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
         <div className="max-w-xl animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-sm font-medium mb-6 border border-brand-100">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-sm font-medium mb-5 border border-brand-100">
             <Heart className="w-3.5 h-3.5" />
             A nonprofit making MRD accessible to all patients
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-stone-900 mb-6">
+          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.1] text-stone-900 mb-4">
             You finished treatment. <br />
-            <span className="italic text-brand-700">Now let's keep watch.</span>
+            <span className="italic text-brand-700">Now there's a way to keep watch.</span>
           </h1>
-          <p className="text-lg text-stone-600 mb-4 leading-relaxed">
-            There's a new technology called <strong>MRD testing</strong> that lets you and your care team monitor for any recurrence with a simple, regular blood test — so you can be proactive about resuming treatment if it's ever needed.
+          <p className="text-base text-stone-600 mb-3 leading-relaxed">
+            <strong>MRD testing</strong> lets you and your care team monitor for recurrence with a simple blood test — so you can be proactive if it's ever needed.
           </p>
-          <p className="text-stone-500 mb-10">
-            OpenOnco is a nonprofit with one mission: making MRD monitoring accessible to every cancer patient, regardless of insurance or income.
+          <p className="text-sm text-stone-500 mb-6">
+            OpenOnco is a nonprofit making MRD monitoring accessible to every cancer patient, regardless of insurance or income.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={() => onNavigate('patient-mrd-info')}
-              className="bg-brand-700 hover:bg-brand-900 text-white px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2"
-            >
-              What is MRD Testing? <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+          <button
+            onClick={() => onNavigate('patient-mrd-info')}
+            className="bg-brand-700 hover:bg-brand-900 text-white px-6 py-3 rounded-full text-sm font-medium transition-all flex items-center gap-2"
+          >
+            What is MRD Testing? <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
 
         <div className="relative opacity-0 animate-fade-in-scale">
-          <div className="absolute inset-0 bg-brand-100 rounded-[3rem] transform rotate-3 scale-105 -z-10"></div>
+          <div className="absolute inset-0 bg-brand-100 rounded-[2.5rem] transform rotate-3 scale-105 -z-10"></div>
           <img
             src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2000&auto=format&fit=crop"
             alt="Doctor and patient talking warmly"
-            className="rounded-[3rem] shadow-2xl object-cover aspect-[4/3] w-full"
+            className="rounded-[2.5rem] shadow-2xl object-cover aspect-[4/3] w-full"
             referrerPolicy="no-referrer"
             loading="lazy"
           />
-          <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl max-w-xs border border-stone-100 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            <div className="flex items-center gap-4 mb-2">
-              <div className="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-brand-700" />
-              </div>
-              <p className="font-serif text-lg font-medium text-stone-900">Knowledge is power</p>
-            </div>
-            <p className="text-sm text-stone-500">A simple blood test can detect cancer recurrence months before a scan would.</p>
-          </div>
         </div>
       </div>
-    </section>
-  );
-}
 
-/* ─── Patient Intake — cancer type + stage ─── */
-function PatientIntake({ cancerType, setCancerType, stage, setStage }) {
-  return (
-    <section id="your-situation" className="py-12 bg-white border-y border-stone-200">
-      <div className="max-w-4xl mx-auto px-6">
-        <AnimateOnScroll>
-          <div className="text-center mb-8">
-            <h2 className="font-serif text-2xl md:text-3xl text-stone-900 mb-2">Tell us about your situation</h2>
-            <p className="text-stone-500">This personalizes everything below — the tools, the evidence, and the recommendations.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Cancer type */}
-            <div>
-              <label className="block text-sm font-medium text-stone-700 mb-3">What were you treated for?</label>
-              <div className="flex flex-wrap gap-2">
-                {CANCER_TYPES.map((type) => (
-                  <button
-                    key={type.id}
-                    onClick={() => setCancerType(type.id)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                      cancerType === type.id
-                        ? 'bg-brand-700 text-white border-brand-700'
-                        : 'bg-white text-stone-600 border-stone-200 hover:border-brand-300 hover:text-brand-700'
-                    }`}
-                  >
-                    {type.label}
-                  </button>
-                ))}
+      {/* Three action cards — scroll to sections */}
+      <div className="max-w-7xl mx-auto px-6 mt-10 md:mt-14">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {[
+            { scrollTarget: 'doctor-recommended', icon: <Shield className="w-5 h-5 text-white" />, title: 'Coverage', subtitle: 'Is my test covered?', gradient: 'linear-gradient(135deg, rgba(30,75,184,0.80) 0%, rgba(15,45,107,0.85) 100%)', img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop', ring: 'focus:ring-brand-500', subtitleColor: 'text-blue-100' },
+            { scrollTarget: 'find-test', icon: <Search className="w-5 h-5 text-white" />, title: 'Test Search', subtitle: 'Which tests can help me?', gradient: 'linear-gradient(135deg, rgba(5,150,105,0.80) 0%, rgba(4,120,87,0.85) 100%)', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=800&auto=format&fit=crop', ring: 'focus:ring-emerald-500', subtitleColor: 'text-emerald-100' },
+            { scrollTarget: 'talk-to-doctor', icon: <MessageCircle className="w-5 h-5 text-white" />, title: 'Doctor FAQs', subtitle: 'Help me make the case for MRD', gradient: 'linear-gradient(135deg, rgba(109,40,217,0.80) 0%, rgba(91,33,182,0.85) 100%)', img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop', ring: 'focus:ring-violet-500', subtitleColor: 'text-violet-100' },
+          ].map((card, i) => (
+            <button
+              key={i}
+              onClick={() => scrollTo(card.scrollTarget)}
+              className={`group relative rounded-2xl overflow-hidden h-48 md:h-56 text-left cursor-pointer w-full focus:outline-none focus:ring-2 ${card.ring} focus:ring-offset-2`}
+            >
+              <img
+                src={card.img}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+              />
+              <div
+                className="absolute inset-0 transition-opacity duration-500"
+                style={{ background: card.gradient }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-3">
+                  {card.icon}
+                </div>
+                <h3 className="font-serif text-2xl text-white mb-1">{card.title}</h3>
+                <p className={`${card.subtitleColor} text-sm`}>{card.subtitle}</p>
               </div>
-            </div>
-
-            {/* Stage */}
-            <div>
-              <label className="block text-sm font-medium text-stone-700 mb-3">What stage?</label>
-              <div className="flex flex-wrap gap-2">
-                {CANCER_STAGES.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setStage(s.id)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                      stage === s.id
-                        ? 'bg-brand-700 text-white border-brand-700'
-                        : 'bg-white text-stone-600 border-stone-200 hover:border-brand-300 hover:text-brand-700'
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {cancerType && stage && (
-            <div className="mt-6 text-center">
-              <p className="text-sm text-brand-700 font-medium">
-                Got it — we'll personalize your results for {CANCER_TYPES.find(t => t.id === cancerType)?.label} cancer, {CANCER_STAGES.find(s => s.id === stage)?.label}.
-              </p>
-            </div>
-          )}
-        </AnimateOnScroll>
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -379,15 +299,15 @@ function TalkToYourDoctor({ onNavigate }) {
 }
 
 /* ─── Footer ─── */
-function PatientFooter({ onNavigate, scrollTo }) {
+function PatientFooter({ onNavigate }) {
   return (
     <footer className="bg-stone-900 text-stone-400 py-12 border-t border-stone-800">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
         <div className="col-span-2">
-          <div className="flex items-center gap-2 mb-4">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
             <Heart className="w-6 h-6 text-brand-500" />
             <span className="font-serif text-xl font-medium text-white">OpenOnco</span>
-          </div>
+          </button>
           <p className="max-w-sm mb-6">
             A nonprofit making MRD monitoring accessible to every cancer patient through vendor-neutral information, cost transparency, and patient advocacy tools.
           </p>
@@ -396,9 +316,9 @@ function PatientFooter({ onNavigate, scrollTo }) {
           <h4 className="text-white font-medium mb-4">For Patients</h4>
           <ul className="space-y-2">
             <li><button onClick={() => onNavigate('patient-mrd-info')} className="hover:text-brand-400 transition-colors">What is MRD?</button></li>
-            <li><button onClick={() => scrollTo('doctor-recommended')} className="hover:text-brand-400 transition-colors">Paying for a Test</button></li>
-            <li><button onClick={() => scrollTo('find-test')} className="hover:text-brand-400 transition-colors">Find a Test</button></li>
-            <li><button onClick={() => scrollTo('talk-to-doctor')} className="hover:text-brand-400 transition-colors">Talk to Your Doctor</button></li>
+            <li><button onClick={() => onNavigate('patient-lookup')} className="hover:text-brand-400 transition-colors">Coverage</button></li>
+            <li><button onClick={() => onNavigate('patient-watching')} className="hover:text-brand-400 transition-colors">Test Search</button></li>
+            <li><button onClick={() => onNavigate('patient-doctor-faq')} className="hover:text-brand-400 transition-colors">Doctor FAQs</button></li>
           </ul>
         </div>
         <div>

@@ -14,8 +14,8 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /completed treatment/i }).click();
     await page.waitForTimeout(700);
 
-    // Step 3: Location - just country, no state
-    await page.locator('select').first().selectOption('United States');
+    // Step 3: Location - select country (target by placeholder option text to avoid header selects)
+    await page.locator('select:has(option:text("Select country..."))').selectOption('United States');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
 
@@ -94,7 +94,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /completed treatment/i }).click();
     await page.waitForTimeout(700);
 
-    await page.locator('select').first().selectOption('United States');
+    await page.locator('select:has(option:text("Select country..."))').selectOption('United States');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
 
@@ -120,7 +120,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /completed treatment/i }).click();
     await page.waitForTimeout(700);
 
-    await page.locator('select').first().selectOption('United States');
+    await page.locator('select:has(option:text("Select country..."))').selectOption('United States');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
 
@@ -147,7 +147,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /completed treatment/i }).click();
     await page.waitForTimeout(700);
 
-    await page.locator('select').first().selectOption('United States');
+    await page.locator('select:has(option:text("Select country..."))').selectOption('United States');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
 
@@ -181,7 +181,7 @@ test.describe('Wizard Cancer Type Filtering', () => {
     await page.getByRole('button', { name: /completed treatment/i }).click();
     await page.waitForTimeout(700);
 
-    await page.locator('select').first().selectOption('United States');
+    await page.locator('select:has(option:text("Select country..."))').selectOption('United States');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.waitForTimeout(500);
 

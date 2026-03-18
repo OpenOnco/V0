@@ -66,16 +66,41 @@ const EXPECTED = {
 // HOMEPAGE TESTS
 // ===========================================
 
-test.describe('Homepage', () => {
-  test('loads and displays main elements', async ({ page }) => {
+test.describe('Landing Page', () => {
+  test('loads and displays landing page elements', async ({ page }) => {
     await page.goto('/');
-    
+
     // Check if we're on Vercel login page instead of the app
     const pageContent = await page.textContent('body');
     if (pageContent?.includes('Login') && pageContent?.includes('Vercel')) {
       throw new Error('Preview URL is showing Vercel login page instead of OpenOnco app. The deployment may be private or not fully propagated.');
     }
-    
+
+    // Check landing page elements
+    await expect(page.locator('text=OpenOnco').first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text=I\'m a Patient').first()).toBeVisible();
+    await expect(page.locator('text=Industry/R&D').first()).toBeVisible();
+  });
+
+  test('patient card navigates to patient landing', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('text=I\'m a Patient').first().click();
+    await page.waitForTimeout(500);
+    expect(page.url()).toContain('/patient');
+  });
+
+  test('research card navigates to database', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('text=Industry/R&D').first().click();
+    await page.waitForTimeout(500);
+    expect(page.url()).toContain('/database');
+  });
+});
+
+test.describe('Homepage', () => {
+  test('loads and displays main elements', async ({ page }) => {
+    await page.goto('/database');
+
     // Check page loaded by looking for category names (always visible)
     for (const cat of EXPECTED.categories) {
       await expect(page.locator(`text=${cat}`).first()).toBeVisible({ timeout: 10000 });
@@ -83,26 +108,26 @@ test.describe('Homepage', () => {
   });
 
   test('displays correct total test count', async ({ page }) => {
-    await page.goto('/');
-    
+    await page.goto('/database');
+
     const pageText = await page.textContent('body');
     expect(pageText).toContain(String(EXPECTED.testCounts.total));
   });
 
   test('chat input is visible', async ({ page }) => {
     // Chat should be visible in all personas now
-    await page.goto('/');
+    await page.goto('/database');
     await page.waitForTimeout(500);
-    
+
     const chatInput = page.locator('input[placeholder*="Ask"], input[placeholder*="ask"], input[placeholder*="Type"]');
     await expect(chatInput.first()).toBeVisible({ timeout: 5000 });
   });
 
   test('sample prompts are clickable', async ({ page }) => {
     // Sample prompts should be visible in all personas
-    await page.goto('/');
+    await page.goto('/database');
     await page.waitForTimeout(1000);
-    
+
     // Check for sample prompts across all personas
     // R&D prompts (new)
     const cfDnaPrompt = page.locator('button').filter({ hasText: /cfDNA input/i });
@@ -116,7 +141,7 @@ test.describe('Homepage', () => {
     const tumorInformedNaive = page.locator('button').filter({ hasText: /tumor-informed.*tumor-naive/i });
     const medicarePrompt = page.locator('button').filter({ hasText: /Medicare coverage/i });
     const colonCancerPrompt = page.locator('button').filter({ hasText: /colon cancer/i });
-    
+
     const cfDnaVisible = await cfDnaPrompt.isVisible().catch(() => false);
     const fdaBreakthroughVisible = await fdaBreakthroughPrompt.isVisible().catch(() => false);
     const signateraVisible = await signatera.isVisible().catch(() => false);
@@ -126,7 +151,7 @@ test.describe('Homepage', () => {
     const tumorInformedNaiveVisible = await tumorInformedNaive.isVisible().catch(() => false);
     const medicareVisible = await medicarePrompt.isVisible().catch(() => false);
     const colonVisible = await colonCancerPrompt.isVisible().catch(() => false);
-    
+
     // At least one sample prompt should be visible (any persona)
     expect(cfDnaVisible || fdaBreakthroughVisible || signateraVisible || landmarkVisible || interventionalVisible || nccnVisible || tumorInformedNaiveVisible || medicareVisible || colonVisible).toBeTruthy();
   });
@@ -998,14 +1023,15 @@ test.describe('Persona System', () => {
     await page.waitForTimeout(2000);
 
     // Should see landing page hero headline
-    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/you finished treatment/i).first()).toBeVisible({ timeout: 10000 });
 
-    // Should see the nav branding and CTA
+    // Should see the nav branding and trust signals
     await expect(page.getByRole('navigation').getByText('OpenOnco')).toBeVisible();
-    await expect(page.getByRole('button', { name: /find a test/i }).first()).toBeVisible();
 
-    // Should see key sections
-    await expect(page.getByRole('heading', { name: /how to pay for it/i })).toBeVisible();
+    // Should see the three action cards
+    await expect(page.getByRole('heading', { name: /coverage/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /test search/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /doctor faqs/i })).toBeVisible();
   });
 
   test('patient homepage hides R&D elements', async ({ page }) => {
@@ -1041,15 +1067,15 @@ test.describe('Persona System', () => {
     // Test URL-based persona access (persona selector temporarily disabled)
     // / = R&D, /patient = patient landing
 
-    // Verify R&D via root URL
+    // Verify landing page at root URL
     await page.goto('/');
     await page.waitForTimeout(1000);
-    await expect(page.getByText('Collected, Curated, Explained')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('OpenOnco').first()).toBeVisible({ timeout: 5000 });
 
     // Verify patient via /patient URL - now shows branded landing page
     await page.goto('/patient');
     await page.waitForTimeout(1000);
-    await expect(page.getByText(/you finished treatment/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/you finished treatment/i).first()).toBeVisible({ timeout: 5000 });
   });
 
   test('patient can navigate to Learn page', async ({ page }) => {
@@ -1077,13 +1103,13 @@ test.describe('Persona System', () => {
   });
 
   test('R&D persona shows full technical interface', async ({ page }) => {
-    // Access R&D view via root URL
-    await page.goto('/');
+    // Access R&D view via /database URL (root is now landing page)
+    await page.goto('/database');
     await page.waitForTimeout(1000);
-    
+
     // Should see R&D banner with test count
     await expect(page.getByText('Collected, Curated, Explained')).toBeVisible({ timeout: 5000 });
-    
+
     // Should see technical elements
     const testCount = String(EXPECTED.testCounts.total);
     const pageText = await page.textContent('body');
