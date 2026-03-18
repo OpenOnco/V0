@@ -23,6 +23,8 @@
     "@anthropic-ai/sdk": "^0.71.2",
     "@logtail/node": "^0.5.6",
     "@logtail/pino": "^0.5.7",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/og": "^0.8.6",
     "lucide-react": "^0.577.0",
