@@ -15,6 +15,8 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 import { withVercelLogging } from '../shared/logger/index.js';
 import { sanitizeMessage } from './_sanitize.js';
 import {
@@ -26,32 +28,56 @@ import {
 } from "../src/data.js";
 
 // ============================================
-// RATE LIMITING (same as chat.js)
+// RATE LIMITING (Upstash Redis — shared with chat.js)
 // ============================================
-const rateLimitMap = new Map();
-const RATE_LIMIT_WINDOW = 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 20;
 
-function getClientIP(req) {
-  const forwarded = req.headers['x-forwarded-for'];
-  const realIP = req.headers['x-real-ip'];
-  return (forwarded ? forwarded.split(',')[0].trim() : null) || realIP || 'unknown';
+let ratelimit;
+if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  ratelimit = new Ratelimit({
+    redis: new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    }),
+    limiter: Ratelimit.slidingWindow(MAX_REQUESTS_PER_WINDOW, '60 s'),
+    analytics: true,
+    prefix: 'openonco:chat',
+  });
 }
 
-function checkRateLimit(clientIP) {
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000;
+
+function getClientIP(req) {
+  const vercelIP = req.headers['x-vercel-forwarded-for'];
+  if (vercelIP) return vercelIP.split(',')[0].trim();
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) {
+    const ips = forwarded.split(',').map(ip => ip.trim());
+    return ips[ips.length - 1];
+  }
+  return 'unknown';
+}
+
+async function checkRateLimit(clientIP) {
+  if (ratelimit) {
+    const { success, remaining, reset } = await ratelimit.limit(clientIP);
+    if (!success) {
+      const retryAfter = Math.ceil((reset - Date.now()) / 1000);
+      return { allowed: false, remaining: 0, retryAfter: Math.max(retryAfter, 1) };
+    }
+    return { allowed: true, remaining };
+  }
   const now = Date.now();
   const clientData = rateLimitMap.get(clientIP);
-
   if (!clientData || now - clientData.windowStart > RATE_LIMIT_WINDOW) {
     rateLimitMap.set(clientIP, { count: 1, windowStart: now });
     return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - 1 };
   }
-
   if (clientData.count >= MAX_REQUESTS_PER_WINDOW) {
     const retryAfter = Math.ceil((clientData.windowStart + RATE_LIMIT_WINDOW - now) / 1000);
     return { allowed: false, remaining: 0, retryAfter };
   }
-
   clientData.count++;
   return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - clientData.count };
 }
@@ -569,7 +595,7 @@ export default withVercelLogging(async (req, res) => {
 
   // Rate limiting
   const clientIP = getClientIP(req);
-  const rateLimit = checkRateLimit(clientIP);
+  const rateLimit = await checkRateLimit(clientIP);
 
   res.setHeader('X-RateLimit-Limit', MAX_REQUESTS_PER_WINDOW);
   res.setHeader('X-RateLimit-Remaining', rateLimit.remaining);
@@ -636,8 +662,21 @@ export default withVercelLogging(async (req, res) => {
     // Initialize Anthropic client
     const client = new Anthropic({ apiKey });
 
-    // Clone messages for the conversation
-    let messages = [...inputMessages];
+    // Clone messages with trust boundary wrapping on user content
+    let messages = inputMessages.map(msg => {
+      if (msg.role === 'user') {
+        return { role: 'user', content: `<user_message>${msg.content}</user_message>` };
+      }
+      // Strip client-provided assistant messages to prevent history injection.
+      // Only keep the content text — drop any tool_use blocks the client may have fabricated.
+      if (msg.role === 'assistant' && typeof msg.content !== 'string') {
+        const textBlocks = Array.isArray(msg.content)
+          ? msg.content.filter(b => b.type === 'text').map(b => b.text).join('\n')
+          : String(msg.content);
+        return { role: 'assistant', content: textBlocks || '...' };
+      }
+      return msg;
+    });
 
     // Tool use loop
     let iterations = 0;
