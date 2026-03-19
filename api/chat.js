@@ -590,18 +590,20 @@ export default withVercelLogging(async (req, res) => {
     // Cap max_tokens
     const max_tokens = MAX_TOKENS_LIMIT;
 
-    // Wrap user messages in trust boundary tags and sanitize assistant history
+    // Wrap ALL client-provided messages in trust boundary tags.
+    // User messages: <user_message> tags
+    // Assistant messages: <client_provided_history> tags — these are replayed from the
+    // client and could contain injected instructions, so Claude must treat them as context
+    // only, not as authoritative system directives.
     const wrappedMessages = messages.map(msg => {
       if (msg.role === 'user') {
         return { role: 'user', content: `<user_message>${msg.content}</user_message>` };
       }
-      // Strip client-provided assistant messages to plain text — prevents
-      // injected tool_use blocks or fake system instructions in history
-      if (msg.role === 'assistant' && typeof msg.content !== 'string') {
-        const textBlocks = Array.isArray(msg.content)
-          ? msg.content.filter(b => b.type === 'text').map(b => b.text).join('\n')
-          : String(msg.content);
-        return { role: 'assistant', content: textBlocks || '...' };
+      if (msg.role === 'assistant') {
+        const text = typeof msg.content === 'string'
+          ? msg.content
+          : (Array.isArray(msg.content) ? msg.content.filter(b => b.type === 'text').map(b => b.text).join('\n') : String(msg.content));
+        return { role: 'assistant', content: `<client_provided_history>${text}</client_provided_history>` };
       }
       return msg;
     });
