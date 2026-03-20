@@ -1,4 +1,4 @@
-const API_BASE = 'https://openonco.org/api/v1';
+const API_BASE = 'https://www.openonco.org/api/v1';
 const CACHE_KEY = 'mced-portal-tests';
 const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
 
