@@ -5962,6 +5962,7 @@ export const ecdTestData = [
     "cancerTypes": [
       "50+ cancer types including colorectal, lung, pancreas, ovary, liver, head & neck, lymphoma, esophagus, stomach, bile duct, etc."
     ],
+    "detectedCancerTypes": ["Anus", "Bladder", "Breast", "Cervix", "Colon/Rectum", "Esophagus", "Gallbladder", "Gastric", "Head and Neck", "Kidney", "Leukemia", "Liver", "Lung", "Lymphoma", "Melanoma", "Multiple Myeloma", "Ovary", "Pancreas", "Prostate", "Sarcoma", "Thyroid", "Uterus"],
     "targetPopulation": "Asymptomatic adults ≥50 years as adjunct to standard single-cancer screening",
     "indicationGroup": "MCED",
     "sensitivity": 51.5,
@@ -6561,6 +6562,7 @@ export const ecdTestData = [
     "cancerTypes": [
       "Bladder; Colorectal; Esophageal; Gastric; Liver; Lung; Ovarian; Pancreas; Breast; Prostate (10 tumor types)"
     ],
+    "detectedCancerTypes": ["Bladder", "Breast", "Colon/Rectum", "Esophagus", "Gastric", "Liver", "Lung", "Ovary", "Pancreas", "Prostate"],
     "targetPopulation": "Average-risk adults 45+ years; ordered as add-on when physician requests Shield CRC test",
     "indicationGroup": "MCED",
     "tumorOriginAccuracy": null,
@@ -6631,6 +6633,8 @@ export const ecdTestData = [
     "cancerTypes": [
       "60+ cancer types including all 20 most fatal cancers: lung, liver, pancreas, esophageal, bladder, stomach, head & neck SCC, uterine, low-grade glioma, high-grade glioma (brain cancer detection believed unique among blood-based MCED tests)"
     ],
+    "detectedCancerTypes": ["Bladder", "Brain", "Breast", "Cervix", "Colon/Rectum", "Esophagus", "Gastric", "Head and Neck", "Kidney", "Leukemia", "Liver", "Lung", "Lymphoma", "Melanoma", "Multiple Myeloma", "Ovary", "Pancreas", "Prostate", "Uterus"],
+    "detectedCancerTypesNotes": "Derived from vendor claim of 60+ cancer types including all 20 most fatal. Brain (glioma) detection believed unique among blood-based MCED tests.",
     "targetPopulation": "Adults 45+ years with elevated cancer risk; can be considered from age 21 with risk factors (smoking, family history)",
     "indicationGroup": "MCED",
     "tumorOriginAccuracy": null,
@@ -7083,6 +7087,7 @@ export const ecdTestData = [
       "Stomach",
       "50+ cancer types"
     ],
+    "detectedCancerTypes": ["Anus", "Bladder", "Breast", "Cervix", "Colon/Rectum", "Esophagus", "Gastric", "Head and Neck", "Kidney", "Liver", "Lung", "Lymphoma", "Multiple Myeloma", "Ovary", "Pancreas", "Prostate", "Small Intestine", "Testis", "Thyroid", "Uterus", "Vulva"],
     "cancerTypesNotes": "Detects signals from 50+ cancer types. Highest sensitivity for 6 deadliest cancers (pancreatic, ovarian, liver, lung, CRC, esophageal) with limited screening options.",
     "targetPopulation": "Adults 50+ at average or elevated risk for cancer; individuals seeking complementary screening beyond single-cancer tests",
     "indicationGroup": "MCED",
