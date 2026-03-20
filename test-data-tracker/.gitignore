@@ -26,3 +26,4 @@ data/recommendations.json
 # Session state (temporary)
 SESSION_STATE_*.md
 daemon/watched-files/
+.vercel

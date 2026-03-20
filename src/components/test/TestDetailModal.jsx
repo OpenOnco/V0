@@ -13,6 +13,7 @@ import * as analytics from '../../utils/analytics';
 import VendorBadge, { getVendorBadges } from '../badges/VendorBadge';
 import CompanyCommunicationBadge from '../badges/CompanyCommunicationBadge';
 import Markdown from '../markdown/Markdown';
+import CancerTypeSensitivityTable from './CancerTypeSensitivityTable';
 import ExternalResourcesSection, { ExternalResourceLink } from '../markdown/ExternalResourcesSection';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from '../tooltips';
 import GlossaryTooltip from '../GlossaryTooltip';
@@ -712,10 +713,12 @@ const TestDetailModal = ({ test, category, onClose }) => {
               </div>
               
               {/* Stage-Specific Performance (if available) */}
-              {(test.stageISensitivity || test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity || 
+              {(test.cancerTypeSensitivity || test.stageISensitivity || test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity ||
                 test.landmarkSensitivity || test.longitudinalSensitivity) && (
-                <Section title="Stage & Timepoint Performance" expertTopic="stageSpecific">
-                  {(test.stageISensitivity != null || test.stageIISensitivity != null || test.stageIIISensitivity != null || test.stageIVSensitivity != null) && (
+                <Section title={test.cancerTypeSensitivity ? "Cancer Type & Stage Performance" : "Stage & Timepoint Performance"} expertTopic="stageSpecific">
+                  {test.cancerTypeSensitivity ? (
+                    <CancerTypeSensitivityTable test={test} />
+                  ) : (test.stageISensitivity != null || test.stageIISensitivity != null || test.stageIIISensitivity != null || test.stageIVSensitivity != null) && (
                     <div className="grid grid-cols-4 gap-4">
                       {[
                         { key: 'stageISensitivity', label: 'Stage I', notesKey: 'stageISensitivityNotes' },

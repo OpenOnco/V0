@@ -32,9 +32,8 @@ import {
 // Get MRD/Watching journey configuration for colors and label
 const watchingJourney = JOURNEY_CONFIG.mrd;
 
-// Wizard steps - landing first, then treatment gate to exit early if not a fit
+// Wizard steps — landing removed (patient home page serves as landing)
 const WIZARD_STEPS = [
-  { id: 'landing', title: 'Home', description: 'Learn about MRD testing', showInProgress: false },
   { id: 'treatment-gate', title: 'Treatment', description: 'Have you completed treatment?' },
   { id: 'location', title: 'Location', description: 'Where are you located?' },
   { id: 'cancer-type', title: 'Cancer Type', description: 'What cancer were you treated for?' },
@@ -263,39 +262,63 @@ function ProgressIndicator({ currentStep, totalSteps }) {
 /**
  * Step navigation dots
  */
-function StepDots({ steps, currentStep, onStepClick }) {
+function StepDots({ steps, currentStep, onStepClick, onRestart }) {
   return (
     <div className="flex items-center justify-center gap-2 mb-8">
       {steps.map((step, index) => {
         const isComplete = index < currentStep;
         const isCurrent = index === currentStep;
+        const isFirst = index === 0;
         const isClickable = index < currentStep;
 
         return (
           <React.Fragment key={step.id}>
-            <button
-              onClick={() => isClickable && onStepClick(index)}
-              disabled={!isClickable}
-              className={`
-                w-8 h-8 rounded-full flex items-center justify-center
-                text-sm font-medium transition-all duration-200
-                ${isComplete
-                  ? `${colors.accent} text-white cursor-pointer hover:bg-emerald-600`
-                  : isCurrent
-                    ? `${colors.accentLight} ${colors.text} border-2 border-emerald-500`
-                    : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                }
-              `}
-              aria-label={`Step ${index + 1}: ${step.title}`}
-            >
-              {isComplete ? (
+            {isFirst ? (
+              // First dot is always a restart button
+              <button
+                onClick={onRestart}
+                className={`
+                  w-8 h-8 rounded-full flex items-center justify-center
+                  text-sm font-medium transition-all duration-200 cursor-pointer
+                  ${isComplete
+                    ? 'bg-slate-500 text-white hover:bg-slate-600'
+                    : isCurrent
+                      ? `${colors.accentLight} ${colors.text} border-2 border-emerald-500`
+                      : 'bg-slate-100 text-slate-400'
+                  }
+                `}
+                aria-label="Restart wizard"
+                title="Restart"
+              >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-              ) : (
-                index + 1
-              )}
-            </button>
+              </button>
+            ) : (
+              <button
+                onClick={() => isClickable && onStepClick(index)}
+                disabled={!isClickable}
+                className={`
+                  w-8 h-8 rounded-full flex items-center justify-center
+                  text-sm font-medium transition-all duration-200
+                  ${isComplete
+                    ? `${colors.accent} text-white cursor-pointer hover:bg-emerald-600`
+                    : isCurrent
+                      ? `${colors.accentLight} ${colors.text} border-2 border-emerald-500`
+                      : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                  }
+                `}
+                aria-label={`Step ${index + 1}: ${step.title}`}
+              >
+                {isComplete ? (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  index + 1
+                )}
+              </button>
+            )}
 
             {index < steps.length - 1 && (
               <div
@@ -2481,10 +2504,10 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   const mappedCancerType = initialCancerId || (initialCancerType ? (CANCER_TYPE_MAP[initialCancerType] || null) : null);
 
   // Determine starting step based on what's pre-filled
-  // Steps: 0=landing, 1=treatment-gate, 2=location, 3=cancer-type, 4=cancer-stage, 5=tumor-tissue, 6=insurance, 7=results
-  const initialStep = mappedCancerType && initialStage ? 5
-    : mappedCancerType ? 4
-    : skipLanding ? 1 : 0;
+  // Steps: 0=treatment-gate, 1=location, 2=cancer-type, 3=cancer-stage, 4=tumor-tissue, 5=insurance, 6=results, 7=next-steps
+  const initialStep = mappedCancerType && initialStage ? 4
+    : mappedCancerType ? 3
+    : 0;
 
   // DAL hooks for insurance and vendor data
   const { providersByCategory: insuranceByCategory } = useInsuranceGrouped();
@@ -2633,8 +2656,6 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
   // Render current step content
   const renderStepContent = () => {
     switch (WIZARD_STEPS[currentStep].id) {
-      case 'landing':
-        return <LandingStep onNext={handleNext} onNavigate={onNavigate} />;
       case 'location':
         return (
           <LocationStep
@@ -2713,10 +2734,24 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
     }
   };
 
-  // Check if we're on landing page (don't show wizard chrome)
-  const isLanding = WIZARD_STEPS[currentStep]?.id === 'landing';
   // Check if we're on results page (needs wider layout)
   const isResults = WIZARD_STEPS[currentStep]?.id === 'results';
+
+  // Restart: go back to step 0 but keep cancer type and stage
+  const handleRestart = () => {
+    setWizardData(prev => ({
+      ...prev,
+      country: null,
+      hasTumorTissue: null,
+      completedTreatment: null,
+      insuranceType: null,
+      hasInsurance: undefined,
+      insuranceProvider: null,
+      selectedPayer: null,
+      costSensitivity: null,
+    }));
+    setCurrentStep(0);
+  };
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${colors.bgGradient}`}>
@@ -2726,56 +2761,47 @@ export default function WatchingWizard({ onComplete, onBack, onExit, onNavigate,
       <main
         ref={containerRef}
         className={
-          isLanding 
-            ? "px-4 sm:px-6 py-8 overflow-y-auto" 
-            : isResults 
-              ? "max-w-6xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
-              : "max-w-2xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
+          isResults
+            ? "max-w-6xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
+            : "max-w-2xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto"
         }
       >
-        {/* Progress indicator - hide on landing */}
-        {!isLanding && <ProgressIndicator currentStep={currentStep} totalSteps={WIZARD_STEPS.length} />}
+        {/* Progress indicator */}
+        <ProgressIndicator currentStep={currentStep} totalSteps={WIZARD_STEPS.length} />
 
-        {/* Step dots navigation - hide on landing */}
-        {!isLanding && (
+        {/* Step dots navigation — first dot is restart */}
         <StepDots
           steps={WIZARD_STEPS}
           currentStep={currentStep}
           onStepClick={handleStepClick}
+          onRestart={handleRestart}
         />
-        )}
 
-        {/* Current step badge - hide on landing */}
-        {!isLanding && (
+        {/* Current step badge */}
         <div className="text-center mb-6">
           <span className={`inline-block px-3 py-1 ${colors.accentLight} ${colors.text} rounded-full text-sm font-medium`}>
             {WIZARD_STEPS[currentStep].title}
           </span>
         </div>
-        )}
 
-        {/* Cancer type & stage picker - show on non-landing steps */}
-        {!isLanding && (
-          <CancerStagePicker
-            cancerType={wizardData.cancerType}
-            setCancerType={handlePickerCancerType}
-            stage={wizardData.cancerStage}
-            setStage={handlePickerStage}
-          />
-        )}
+        {/* Cancer type & stage picker */}
+        <CancerStagePicker
+          cancerType={wizardData.cancerType}
+          setCancerType={handlePickerCancerType}
+          stage={wizardData.cancerStage}
+          setStage={handlePickerStage}
+        />
 
         {/* Step content */}
-        <div className={isLanding ? "" : "bg-slate-50 rounded-2xl p-4 sm:p-6 md:p-8"}>
+        <div className="bg-slate-50 rounded-2xl p-4 sm:p-6 md:p-8">
           {renderStepContent()}
         </div>
 
-        {/* Disclaimer - hide on landing (it has its own) */}
-        {!isLanding && (
+        {/* Disclaimer */}
         <p className="text-center text-xs text-slate-500 mt-8 px-4">
           This guide is for educational purposes only and does not constitute medical advice.
           Always consult with your healthcare team about your specific situation.
         </p>
-        )}
       </main>
 
       {/* AI Helper Bubble */}
