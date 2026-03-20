@@ -13,6 +13,7 @@ import * as analytics from '../../utils/analytics';
 import VendorBadge, { getVendorBadges } from '../badges/VendorBadge';
 import CompanyCommunicationBadge from '../badges/CompanyCommunicationBadge';
 import Markdown from '../markdown/Markdown';
+import CancerTypeSensitivityTable from './CancerTypeSensitivityTable';
 import ExternalResourcesSection, { ExternalResourceLink } from '../markdown/ExternalResourcesSection';
 import { TestContext, ParameterLabel, InfoIcon, CitationTooltip, NoteTooltip, ExpertInsight, DataRow } from '../tooltips';
 import GlossaryTooltip from '../GlossaryTooltip';
@@ -683,9 +684,12 @@ const TestDetailModal = ({ test, category, onClose }) => {
               </div>
               
               {/* Stage-Specific Performance (if available) */}
-              {(test.stageISensitivity || test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity || 
+              {(test.cancerTypeSensitivity || test.stageISensitivity || test.stageIISensitivity || test.stageIIISensitivity || test.stageIVSensitivity ||
                 test.landmarkSensitivity || test.longitudinalSensitivity) && (
-                <Section title="Stage & Timepoint Performance" expertTopic="stageSpecific">
+                <Section title={test.cancerTypeSensitivity ? "Cancer Type & Stage Performance" : "Stage & Timepoint Performance"} expertTopic="stageSpecific">
+                  {test.cancerTypeSensitivity ? (
+                    <CancerTypeSensitivityTable test={test} />
+                  ) : (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {test.stageISensitivity && (
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
@@ -712,6 +716,7 @@ const TestDetailModal = ({ test, category, onClose }) => {
                       </div>
                     )}
                   </div>
+                  )}
                   {(test.landmarkSensitivity || test.longitudinalSensitivity) && (
                     <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-gray-100">
                       {test.landmarkSensitivity && <DataRow label="Landmark Sensitivity" value={test.landmarkSensitivity} unit="%" citations={test.landmarkSensitivityCitations} />}
