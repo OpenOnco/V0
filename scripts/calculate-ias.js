@@ -227,3 +227,59 @@ console.log('  cancer panels, so direct comparison should note the denominator d
 console.log('  CancerGuard excludes breast/prostate (not indicated), which are the two');
 console.log('  highest-incidence cancers and where Galleri has low sensitivity (30.5%, 11.2%).');
 console.log('');
+
+// ---------------------------------------------------------------------------
+// Specificity / False Positive Rate / PPV comparison across all MCED tests
+// ---------------------------------------------------------------------------
+const MCED_TESTS = [
+  { name: 'Galleri',          specificity: 99.5, ppv: 61.6, ias: galleri.ias },
+  { name: 'EPISEEK',          specificity: 99.5, ppv: 64.9, ias: 54.0 },
+  { name: 'CancerGuard',      specificity: 97.4, ppv: 19.4, ias: cancerguard.ias },
+  { name: 'Shield MCD',       specificity: 98.5, ppv: null, ias: null },
+  { name: 'OverC',            specificity: 98.9, ppv: null, ias: null },
+  { name: 'Trucheck Intelli', specificity: 96.3, ppv: null, ias: null },
+  { name: 'OncoXPLORE+',      specificity: 99.0, ppv: null, ias: null },
+];
+
+// Assume 1% cancer prevalence in screening population → 99,000 healthy per 100K
+const SCREENING_POP = 100000;
+const CANCER_PREVALENCE = 0.01;
+const HEALTHY_COUNT = SCREENING_POP * (1 - CANCER_PREVALENCE);
+
+console.log('='.repeat(80));
+console.log('  Specificity & False Positive Comparison (all MCED tests)');
+console.log('='.repeat(80));
+console.log('');
+console.log('  Assumption: 1% cancer prevalence → 99,000 healthy individuals per 100,000 screened');
+console.log('');
+
+const specHdr = [
+  'Test'.padEnd(20),
+  'Spec %'.padStart(8),
+  'FPR %'.padStart(8),
+  'Est. FP/100K'.padStart(14),
+  'PPV'.padStart(8),
+  'IAS'.padStart(8),
+].join('  ');
+console.log(specHdr);
+console.log('-'.repeat(specHdr.length));
+
+for (const t of MCED_TESTS) {
+  const fpr = 100 - t.specificity;
+  const estFP = Math.round(HEALTHY_COUNT * (fpr / 100));
+  console.log([
+    t.name.padEnd(20),
+    t.specificity.toFixed(1).padStart(8),
+    fpr.toFixed(1).padStart(8),
+    estFP.toString().padStart(14),
+    (t.ppv !== null ? t.ppv.toFixed(1) + '%' : '—').padStart(8),
+    (t.ias !== null ? t.ias.toFixed(1) + '%' : '—').padStart(8),
+  ].join('  '));
+}
+
+console.log('');
+console.log('  Key insight: 97.4% vs 99.5% specificity = ~5x more false positives.');
+console.log('  Higher observed sensitivity at lower specificity may reflect a lower');
+console.log('  detection threshold rather than superior cancer detection ability.');
+console.log('  Cross-test comparisons should always state the specificity alongside sensitivity.');
+console.log('');
