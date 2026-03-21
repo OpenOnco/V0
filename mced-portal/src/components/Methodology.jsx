@@ -26,7 +26,7 @@ export default function Methodology({ tests, dataMode, onDataModeChange }) {
             ({dataMode === 'early' ? 'click for all-stage' : 'click for early-stage'})
           </span>{' '}
           {dataMode === 'early'
-            ? '(early-stage disease), the stages where treatment is most effective.'
+            ? ', the stages where treatment is most effective.'
             : '(across all cancer stages I-IV).'}
           {' '}Values are derived from published clinical validation studies for each
           test.
