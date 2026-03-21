@@ -1,6 +1,8 @@
-export default function Legend() {
+export default function Legend({ source }) {
+  const isLive = source === 'api';
+
   return (
-    <div className="flex gap-4 mt-5 pt-3 border-t border-gray-200">
+    <div className="flex items-center gap-4 mt-5 pt-3 border-t border-gray-200">
       {[
         { color: '#4aba4a', label: 'Strong detection' },
         { color: '#EF9F27', label: 'Moderate' },
@@ -14,6 +16,12 @@ export default function Legend() {
           {label}
         </div>
       ))}
+      <div className="ml-auto flex items-center gap-1.5 text-[10px] text-gray-400">
+        <span
+          className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-green-500' : 'bg-gray-300'}`}
+        />
+        {isLive ? 'Live data from openonco.org' : 'Local data'}
+      </div>
     </div>
   );
 }

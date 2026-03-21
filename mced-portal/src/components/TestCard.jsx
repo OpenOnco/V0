@@ -18,13 +18,6 @@ export default function TestCard({ test, selectedCancers }) {
         <div className="min-w-[130px] max-w-[160px] shrink-0">
           <div className="text-base font-medium text-gray-900">{test.name}</div>
           <span className="text-xs text-gray-400 block mt-0.5">{test.vendor}</span>
-          {test.price ? (
-            <div className="text-[13px] font-medium text-gray-900 mt-0.5">
-              ${test.price.toLocaleString()}
-            </div>
-          ) : (
-            <div className="text-xs text-gray-400 italic mt-0.5">Price TBD</div>
-          )}
         </div>
 
         {/* Column 2: Traffic lights */}

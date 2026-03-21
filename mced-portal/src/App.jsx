@@ -13,7 +13,7 @@ import Methodology from './components/Methodology';
 import ResetButton from './components/ResetButton';
 
 export default function App() {
-  const { tests } = useTestData();
+  const { tests, source } = useTestData();
   const {
     sex, setSex,
     famEntries, addFamily, removeFamily,
@@ -92,7 +92,7 @@ export default function App() {
         ))}
       </div>
 
-      <Legend />
+      <Legend source={source} />
       <Methodology />
     </div>
   );
