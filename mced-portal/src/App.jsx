@@ -76,11 +76,12 @@ export default function App() {
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
-      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED Per-Cancer Data Filter</h1>
+      <h1 className="text-lg font-medium text-gray-900 mb-1">Early Cancer Detection Filter</h1>
       <p className="text-[13px] text-gray-500 mb-3 leading-relaxed">
-        This tool models a typical screening candidate&apos;s profile — family history,
-        lifestyle factors, and screening gaps — then shows how each MCED test&apos;s
-        published per-cancer sensitivity maps to that profile.
+        Early cancer detection tests vary widely in their ability to detect different
+        cancers. This analyzer gathers some basic family health information to help a
+        user identify cancers of interest, and then shows how well each test detects
+        those cancers.
       </p>
       <div className="text-[13px] font-medium text-gray-700 mb-2">Start here by selecting gender:</div>
       <GenderToggle sex={sex} onSelect={setSex} />
