@@ -1,0 +1,280 @@
+# MCED Portal — Complete Rebuild Spec
+
+**This replaces ALL previous specs. The prototype HTML file at `mced-portal/prototype.html` is the reference implementation.**
+
+---
+
+## Summary
+
+Single-page interactive MCED test comparison tool. All tests visible on page load. User selects cancer types of interest via dropdowns/toggles. Traffic light dots and card reordering happen in real time. No wizard, no separate results page, no scoring algorithm.
+
+---
+
+## Architecture
+
+- Lives in `mced-portal/` directory (existing)
+- React + Vite + Tailwind (existing stack)
+- Reads from OpenOnco API (`/api/v1/tests?category=ecd`)
+- Deploy at `mced.openonco.org` via Vercel
+
+---
+
+## Page layout (single page, top to bottom)
+
+### Header
+```
+MCED test explorer
+Compare multi-cancer early detection tests. Prepare for your doctor visit.
+All sensitivity values are Stage I-II (early detection) from published clinical studies.
+```
+
+### Gender toggle (full width, two buttons)
+```
+[ Male ]  [ Female ]
+```
+- No third "Reset" button in this row
+- Selecting a gender reveals the filter controls below
+- Selecting a gender also filters the family history dropdowns (see below)
+
+### Filter controls (hidden until gender selected)
+
+**Family cancer history (mom's side)**
+- Full-width dropdown, label above it
+- Dropdown contains only cancers where at least one test has ANY sensitivity data
+- Mom is female: exclude Prostate, Testis from her dropdown
+- On select → tag appears below dropdown, cards update immediately
+- Dropdown resets to placeholder after selection
+- IMPORTANT: guard against onchange loop when resetting select value
+
+**Family cancer history (dad's side)**
+- Same pattern as mom
+- Dad is male: exclude Breast, Cervix, Ovary, Endometrial, Uterus from his dropdown
+
+**Lifestyle**
+- Single pill toggle: "Smoker / former smoker"
+- When activated: auto-adds Lung, Bladder, Pancreas, Head and Neck, Kidney, Esophagus to selected cancers
+- Tags for smoking cancers appear below the pill
+
+**Screening gaps**
+- Sex-conditional pills:
+  - Male: "No colonoscopy" → Colon/Rectum, "No PSA test" → Prostate
+  - Female: "No colonoscopy" → Colon/Rectum, "No mammogram" → Breast, "No pap/HPV test" → Cervix
+- Tags appear below the pills
+
+**Tags**
+- Each control section has its own tag area directly below it
+- Family tags: purple, show cancer name + × to remove
+- Smoking tags: amber, show cancer names (not individually removable — toggle the pill off)
+- Gap tags: red, show cancer names
+
+**Reset all**
+- Small underlined text link, bottom-right of the controls area
+- Clears everything, hides controls, returns to initial state
+
+### Test cards
+
+Cards are always visible from page load. Three-column layout per card:
+
+**Column 1 (left, fixed width ~150px): Test info**
+```
+Test Name
+Vendor name
+$Price (or "Price TBD" in italic if null)
+```
+
+**Column 2 (middle, flex): Traffic lights — only when user has selections**
+- Header: "YOUR SELECTED CANCERS" (small caps, muted)
+- One row per selected cancer: colored dot + cancer name + sensitivity percentage
+- Dot colors: green (#4aba4a) >50%, amber (#EF9F27) 25-50%, red (#E24B4A) ≤25% or no data
+- Percentage shows one decimal: "53.0%" or "--" for no data
+- This column doesn't render at all when no cancers are selected
+
+**Column 3 (right, fixed width, full-height border-left): Cancer count**
+- Large bold black number (32px)
+- Below it, stacked words in small muted text, one per line:
+  - Default (no selections): "cancers / may be / detected / early"
+  - With selections: "additional / cancers / may be / detected / early"
+- Number = count of cancers in the test's data that are NOT in the user's current selections
+- Full-height left border divider
+
+**No-data card treatment (e.g., Shield MCD):**
+- Card has faded content (opacity 0.4)
+- Diagonal red stamp overlay: "NO EARLY STAGE PER CANCER DATA PUBLISHED"
+- Stamp: red text, red border, rotated -18deg, centered, uppercase, pointer-events none
+
+### Card sorting
+
+**Default (no selections):** Sort by total number of cancers in the test's data (descending). Tiebreak by number of >50% cancers. Final tiebreak alphabetical.
+
+**With selections:** Sort by:
+1. Tests with any data first (no-data tests → bottom)
+2. Most green dots (descending)
+3. Most amber dots (descending)
+4. Fewest red dots (ascending)
+5. Fewest no-data (ascending)
+
+### Legend
+```
+● Strong detection  ● Moderate  ● Limited or not tested
+```
+
+### Methodology section
+Full methodology text explaining:
+- Stage I-II rationale
+- Three sensitivity tiers with colored labels and thresholds (>50%, 25-50%, ≤25%)
+- n≥5 sample size floor
+- Data sources per test with study names
+- Disclaimer: informational only, not medical advice, physician ordering required
+
+---
+
+## Data
+
+### Sensitivity values are STAGE I-II only
+
+This is critical. All-stage numbers inflate the apparent detection capability. Stage I-II is what "early detection" actually means.
+
+### Test data (prototype values — verify against publications for production)
+
+**Caris Detect** (Caris Life Sciences, Price TBD, source: Achieve 1 interim Feb 2026)
+```
+Head and Neck: 100.0% (n=7)
+Lung: 86.7% (n=15)
+Cervix: 80.0% (n=5)
+Esophagus: 80.0% (n=5)  // reported as Esophagus/Stomach
+Gastric: 80.0% (n=5)    // reported as Esophagus/Stomach
+Prostate: 78.9% (n=38)
+Uterus: 73.7% (n=19)
+Pancreas: 71.4% (n=7)
+Colon/Rectum: 62.2% (n=45)
+Breast: 53.0% (n=253)
+// Excluded (n<5): Biliary n=3, Skin n=2, Liver n=2, Peritoneum n=1, Bone n=1
+```
+
+**Galleri** (GRAIL, $949, source: CCGA3)
+```
+Liver: 85.0, Ovary: 65.0, Pancreas: 61.0, Head and Neck: 56.0,
+Multiple Myeloma: 55.0, Lymphoma: 40.0, Esophagus: 38.5,
+Gastric: 35.0, Colon/Rectum: 33.0, Cervix: 30.0, Sarcoma: 28.0,
+Lung: 24.0, Endometrial: 18.0, Bladder: 15.0,
+Melanoma: 10.0, Breast: 8.5, Kidney: 8.0, Thyroid: 5.0, Prostate: 4.2
+```
+
+**Cancerguard** (Exact Sciences, $899, source: ASCEND-2 est.)
+```
+Liver: 62.0, Ovary: 52.0, Pancreas: 48.0, Head and Neck: 42.0,
+Gastric: 38.0, Lung: 35.0, Lymphoma: 32.0,
+Colon/Rectum: 30.0, Cervix: 28.0, Esophagus: 25.0,
+Bladder: 22.0, Endometrial: 20.0, Kidney: 16.0, Breast: 14.0
+```
+
+**EPISEEK** (Epigenomics, $299, source: published data est.)
+```
+Liver: 40.0, Lung: 30.0, Pancreas: 25.0, Colon/Rectum: 22.0,
+Ovary: 20.0, Gastric: 18.0, Breast: 7.0
+```
+
+**Shield MCD** (Guardant Health, $895, source: none — no per-cancer Stage I-II data published)
+```
+{} // empty — gets the stamp treatment
+```
+
+### Constants
+```js
+SENSITIVITY_TIERS = { GOOD: 50, OK: 25 }  // >50 green, 25-50 amber, ≤25 red
+MIN_SAMPLE_SIZE = 5
+SMOKING_CANCERS = ["Lung", "Bladder", "Pancreas", "Head and Neck", "Kidney", "Esophagus"]
+```
+
+### Dropdown filtering
+Only show cancers in the dropdowns where at least one test has ANY sensitivity data for that cancer. Don't show Brain, Gallbladder, Leukemia, Small Intestine, etc. — they produce all-red results because no test has data for them.
+
+---
+
+## Regulatory guardrails (built into the design)
+
+### What this tool is
+A filtered product comparison tool. Like GoodRx for drug prices or Consumer Reports for product ratings. It displays published clinical data reorganized by the user's filter choices.
+
+### What this tool is NOT
+- Not a medical device — it doesn't analyze patient data or generate clinical recommendations
+- Not a risk calculator — it doesn't compute cancer risk
+- Not advertising — it doesn't promote any specific test
+
+### Language rules
+- "Your selected cancers" — NOT "your risk factors" or "your cancer concerns"
+- "Prepare for your doctor visit" — NOT "your results"
+- Never use "recommended," "best," "optimal," "you should"
+- The user is choosing which cancers to VIEW, not receiving a personalized medical recommendation
+
+### No purchase links
+Do not link to vendor ordering pages or checkout flows.
+
+### Physician gating reinforced
+- Header: "Prepare for your doctor visit"
+- Methodology footer: "MCED tests require a physician's order"
+- Every test requires a physician order — the tool helps prepare for that conversation
+
+---
+
+## File structure (modify existing)
+
+Keep the existing `mced-portal/` scaffold. Key files to rewrite:
+
+```
+src/
+  App.jsx                    — Single-page layout, no routing
+
+  data/
+    thresholds.js            — GOOD: 50, OK: 25, MIN_SAMPLE_SIZE: 5
+    smokingCancers.js        — The 6 smoking-associated cancers
+    genderExclusions.js      — MALE_EXCLUDE, FEMALE_EXCLUDE arrays
+    screeningGaps.js         — Male gaps, female gaps with labels
+
+  hooks/
+    useTestData.js           — Fetch from API, filter to multi-cancer with data
+    useFilters.js            — Gender, family entries, smoking, gaps state
+
+  logic/
+    tierInfo.js              — Returns {color} based on sensitivity value
+    sortTests.js             — Default sort + selection-based sort
+    getDetectableCancers.js  — Filter ALL_CANCERS to only those any test covers
+
+  components/
+    GenderToggle.jsx
+    FamilyDropdown.jsx       — Single dropdown with tag area below
+    SmokingToggle.jsx
+    ScreeningGaps.jsx
+    TestCard.jsx             — Three-column card with all rendering
+    NoDataStamp.jsx          — The diagonal red stamp overlay
+    Legend.jsx
+    Methodology.jsx
+    ResetButton.jsx
+```
+
+Remove: `IntakeForm.jsx`, all `steps/` directory, `ComparisonMatrix.jsx`, `MatrixDot.jsx`, `MatrixTooltip.jsx`, `TestDetailPanel.jsx`, `ProfileSummary.jsx`, `DoctorQuestions.jsx`
+
+---
+
+## Reference implementation
+
+The file `mced-portal/prototype.html` is the complete working prototype. It is a single self-contained HTML file with all the behavior, data, and styling. Use it as the source of truth for behavior, layout, and interaction patterns. Convert to React components.
+
+---
+
+## Verification checklist
+
+1. Page loads with all 5 test cards visible, sorted by total cancer count
+2. No controls visible until Male/Female selected
+3. Select Female → dropdowns appear, mom excludes Prostate/Testis, dad excludes female cancers
+4. Pick "Breast" from mom dropdown → tag appears below mom, traffic lights appear on all cards, cards reorder
+5. Toggle smoking → 6 cancer tags appear, cards update with those cancers added
+6. Toggle "No mammogram" → Breast tag appears in gaps, cards update
+7. Shield MCD always at bottom with red diagonal stamp, faded content
+8. Right column shows correct count, ticking down as cancers are selected
+9. Right column says "cancers may be detected early" default, "additional cancers may be detected early" with selections
+10. Reset clears everything back to initial state
+11. All sensitivity values are Stage I-II
+12. Dropdowns only show cancers where ≥1 test has data
+13. No "recommended" or "best" language anywhere
+14. Methodology section with sources present in footer
