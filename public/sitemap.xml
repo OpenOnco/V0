@@ -517,6 +517,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.openonco.org/screen/harbinger-mced</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.openonco.org/treat/foundationone-cdx</loc>
     <lastmod>2026-03-21</lastmod>
     <changefreq>weekly</changefreq>

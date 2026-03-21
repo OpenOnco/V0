@@ -1,15 +1,23 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../src/App';
 
+const MOCK_TESTS = [
+  { name: 'Test A', vendor: 'Vendor A', source: 'Study A', cancers: { Lung: 80, Breast: 30, Liver: 60 } },
+  { name: 'Test B', vendor: 'Vendor B', source: 'Study B', cancers: { Lung: 40, Breast: 10 } },
+  { name: 'Test Empty', vendor: 'Vendor C', source: '', cancers: {} },
+];
+
+vi.mock('../src/hooks/useTestData', () => ({
+  useTestData: () => ({ tests: MOCK_TESTS, source: 'api' }),
+}));
+
 describe('App', () => {
-  it('renders all 5 test cards on load', () => {
+  it('renders test cards', () => {
     render(<App />);
-    expect(screen.getByText('Caris Detect')).toBeInTheDocument();
-    expect(screen.getByText('Galleri')).toBeInTheDocument();
-    expect(screen.getByText('Cancerguard')).toBeInTheDocument();
-    expect(screen.getByText('EPISEEK')).toBeInTheDocument();
-    expect(screen.getByText('Shield MCD')).toBeInTheDocument();
+    expect(screen.getByText('Test A')).toBeInTheDocument();
+    expect(screen.getByText('Test B')).toBeInTheDocument();
+    expect(screen.getByText('Test Empty')).toBeInTheDocument();
   });
 
   it('shows header text', () => {
@@ -47,7 +55,7 @@ describe('App', () => {
     expect(screen.getAllByText('Bladder').length).toBeGreaterThanOrEqual(1);
   });
 
-  it('shows no-data stamp on Shield MCD', () => {
+  it('shows no-data stamp on empty test', () => {
     render(<App />);
     expect(screen.getByText(/No early stage per cancer data published/i)).toBeInTheDocument();
   });
@@ -60,11 +68,12 @@ describe('App', () => {
     expect(screen.queryByText("Family cancer history (mom's side)")).not.toBeInTheDocument();
   });
 
-  it('shows legend', () => {
+  it('shows legend with live data indicator', () => {
     render(<App />);
     expect(screen.getByText('Strong detection')).toBeInTheDocument();
     expect(screen.getByText('Moderate')).toBeInTheDocument();
     expect(screen.getByText('Limited or not tested')).toBeInTheDocument();
+    expect(screen.getByText('Live data from openonco.org')).toBeInTheDocument();
   });
 
   it('shows methodology section', () => {
@@ -74,9 +83,11 @@ describe('App', () => {
     expect(screen.getByText(/physician/i)).toBeInTheDocument();
   });
 
-  it('shows Price TBD for Caris Detect', () => {
+  it('does not show prices', () => {
     render(<App />);
-    expect(screen.getByText('Price TBD')).toBeInTheDocument();
+    const html = document.body.innerHTML;
+    expect(html).not.toContain('Price TBD');
+    expect(html).not.toContain('$949');
   });
 
   it('does not use prohibited language', () => {

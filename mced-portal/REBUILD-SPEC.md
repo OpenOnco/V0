@@ -134,50 +134,21 @@ Full methodology text explaining:
 
 This is critical. All-stage numbers inflate the apparent detection capability. Stage I-II is what "early detection" actually means.
 
-### Test data (prototype values — verify against publications for production)
+### Test data — fetched from OpenOnco API
 
-**Caris Detect** (Caris Life Sciences, Price TBD, source: Achieve 1 interim Feb 2026)
-```
-Head and Neck: 100.0% (n=7)
-Lung: 86.7% (n=15)
-Cervix: 80.0% (n=5)
-Esophagus: 80.0% (n=5)  // reported as Esophagus/Stomach
-Gastric: 80.0% (n=5)    // reported as Esophagus/Stomach
-Prostate: 78.9% (n=38)
-Uterus: 73.7% (n=19)
-Pancreas: 71.4% (n=7)
-Colon/Rectum: 62.2% (n=45)
-Breast: 53.0% (n=253)
-// Excluded (n<5): Biliary n=3, Skin n=2, Liver n=2, Peritoneum n=1, Bone n=1
-```
+The portal fetches all ECD tests from `https://www.openonco.org/api/v1/tests?category=ecd` and auto-filters:
+- `testScope` includes "Multi-cancer"
+- `perCancerEarlyStageSensitivity` is not null
 
-**Galleri** (GRAIL, $949, source: CCGA3)
-```
-Liver: 85.0, Ovary: 65.0, Pancreas: 61.0, Head and Neck: 56.0,
-Multiple Myeloma: 55.0, Lymphoma: 40.0, Esophagus: 38.5,
-Gastric: 35.0, Colon/Rectum: 33.0, Cervix: 30.0, Sarcoma: 28.0,
-Lung: 24.0, Endometrial: 18.0, Bladder: 15.0,
-Melanoma: 10.0, Breast: 8.5, Kidney: 8.0, Thyroid: 5.0, Prostate: 4.2
-```
+Tests with populated `perCancerEarlyStageSensitivity` objects get traffic lights.
+Tests with empty `{}` objects get the stamp ("no per-cancer data published").
 
-**Cancerguard** (Exact Sciences, $899, source: ASCEND-2 est.)
-```
-Liver: 62.0, Ovary: 52.0, Pancreas: 48.0, Head and Neck: 42.0,
-Gastric: 38.0, Lung: 35.0, Lymphoma: 32.0,
-Colon/Rectum: 30.0, Cervix: 28.0, Esophagus: 25.0,
-Bladder: 22.0, Endometrial: 20.0, Kidney: 16.0, Breast: 14.0
-```
+No hardcoded test data. The API is the single source of truth.
+New tests added to OpenOnco with `perCancerEarlyStageSensitivity` automatically appear in the portal.
 
-**EPISEEK** (Epigenomics, $299, source: published data est.)
-```
-Liver: 40.0, Lung: 30.0, Pancreas: 25.0, Colon/Rectum: 22.0,
-Ovary: 20.0, Gastric: 18.0, Breast: 7.0
-```
-
-**Shield MCD** (Guardant Health, $895, source: none — no per-cancer Stage I-II data published)
-```
-{} // empty — gets the stamp treatment
-```
+As of March 2026, 11 MCED tests are in the catalog:
+- 6 with traffic light data: Galleri (19 cancers), Cancerguard (14), Caris Detect (10), EPISEEK (7), OverC (6), SPOT-MAS (4)
+- 5 with stamps: Shield MCD, Trucheck Intelli, OncoXPLORE+, OnkoSkan, Harbinger
 
 ### Constants
 ```js
