@@ -4,7 +4,15 @@ export default function Methodology({ tests, dataMode, onDataModeChange }) {
     .map((t) => `${t.name} — ${t.source}`)
     .join('. ');
 
-  const stageLabel = dataMode === 'all' ? 'all stages' : 'Stage I-II';
+  const activeClass = 'font-medium underline underline-offset-2 text-gray-600';
+  const linkClass = 'text-blue-600 underline underline-offset-2 cursor-pointer hover:text-blue-800';
+
+  const toggleTo = (mode) => ({
+    role: 'button',
+    tabIndex: 0,
+    onClick: () => onDataModeChange(mode),
+    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onDataModeChange(mode); } },
+  });
 
   return (
     <div className="mt-8 pt-5 border-t border-gray-300">
@@ -12,24 +20,20 @@ export default function Methodology({ tests, dataMode, onDataModeChange }) {
       <div className="text-xs text-gray-500 leading-relaxed space-y-2">
         <p>
           Sensitivity values represent the percentage of cancers correctly
-          identified at{' '}
-          <strong
-            className="text-blue-600 underline underline-offset-2 cursor-pointer hover:text-blue-800"
-            onClick={() => onDataModeChange(dataMode === 'early' ? 'all' : 'early')}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onDataModeChange(dataMode === 'early' ? 'all' : 'early'); } }}
-          >
-            {stageLabel}
-          </strong>{' '}
-          <span className="text-[11px] text-gray-400">
-            ({dataMode === 'early' ? 'click for all-stage' : 'click for early-stage'})
-          </span>{' '}
-          {dataMode === 'early'
-            ? ', the stages where treatment is most effective.'
-            : '(across all cancer stages I-IV).'}
-          {' '}Values are derived from published clinical validation studies for each
-          test.
+          identified at either{' '}
+          {dataMode === 'early' ? (
+            <span className={activeClass}>early stage I-II</span>
+          ) : (
+            <span className={linkClass} {...toggleTo('early')}>early stage I-II</span>
+          )}{' '}
+          or{' '}
+          {dataMode === 'all' ? (
+            <span className={activeClass}>all stages I-IV</span>
+          ) : (
+            <span className={linkClass} {...toggleTo('all')}>all stages I-IV</span>
+          )}
+          , the stages where treatment is most effective. Values are derived from
+          published clinical validation studies for each test.
         </p>
         <p>Detection strength is classified using two thresholds:</p>
         <p>
