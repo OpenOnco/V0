@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
-import { TESTS } from './data/tests';
 import { MALE_EXCLUDE, FEMALE_EXCLUDE } from './data/genderExclusions';
-import { getDetectableCancers } from './logic/getDetectableCancers';
 import { sortDefault, sortBySelection } from './logic/sortTests';
 import { useFilters } from './hooks/useFilters';
+import { useTestData } from './hooks/useTestData';
 import GenderToggle from './components/GenderToggle';
 import FamilyDropdown from './components/FamilyDropdown';
 import SmokingToggle from './components/SmokingToggle';
@@ -13,9 +12,8 @@ import Legend from './components/Legend';
 import Methodology from './components/Methodology';
 import ResetButton from './components/ResetButton';
 
-const detectableCancers = getDetectableCancers();
-
 export default function App() {
+  const { tests } = useTestData();
   const {
     sex, setSex,
     famEntries, addFamily, removeFamily,
@@ -25,22 +23,29 @@ export default function App() {
     selectedCancers,
   } = useFilters();
 
+  // Build detectable cancers list from current test data
+  const detectableCancers = useMemo(() => {
+    const detectable = new Set();
+    tests.forEach((t) => Object.keys(t.cancers).forEach((c) => detectable.add(c)));
+    return [...detectable].sort();
+  }, [tests]);
+
   // Mom is female → exclude male-only cancers; Dad is male → exclude female-only cancers
   const momCancers = useMemo(
     () => detectableCancers.filter((c) => !FEMALE_EXCLUDE.includes(c)),
-    []
+    [detectableCancers]
   );
   const dadCancers = useMemo(
     () => detectableCancers.filter((c) => !MALE_EXCLUDE.includes(c)),
-    []
+    [detectableCancers]
   );
 
   const sorted = useMemo(() => {
     if (selectedCancers.length > 0) {
-      return sortBySelection(TESTS, selectedCancers);
+      return sortBySelection(tests, selectedCancers);
     }
-    return sortDefault(TESTS);
-  }, [selectedCancers]);
+    return sortDefault(tests);
+  }, [tests, selectedCancers]);
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5">
