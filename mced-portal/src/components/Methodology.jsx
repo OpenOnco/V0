@@ -1,8 +1,10 @@
-export default function Methodology({ tests }) {
+export default function Methodology({ tests, dataMode, onOpenSettings }) {
   const sourceLine = (tests || [])
     .filter((t) => t.source)
     .map((t) => `${t.name} — ${t.source}`)
     .join('. ');
+
+  const stageLabel = dataMode === 'all' ? 'all stages' : 'Stage I-II';
 
   return (
     <div className="mt-8 pt-5 border-t border-gray-300">
@@ -10,41 +12,45 @@ export default function Methodology({ tests }) {
       <div className="text-xs text-gray-500 leading-relaxed space-y-2">
         <p>
           Sensitivity values represent the percentage of cancers correctly
-          identified at <strong className="text-gray-600">Stage I-II</strong>{' '}
-          (early-stage disease), the stages where treatment is most effective.
-          Values are derived from published clinical validation studies for each
+          identified at <strong className="text-gray-600">{stageLabel}</strong>{' '}
+          {dataMode === 'early'
+            ? '(early-stage disease), the stages where treatment is most effective.'
+            : '(across all cancer stages I-IV).'}
+          {' '}Values are derived from published clinical validation studies for each
           test.
         </p>
         <p>Detection strength is classified using two thresholds:</p>
         <p>
           <span className="text-green-700 font-medium">Strong detection (&gt;50%)</span>{' '}
-          — the test identifies more than half of early-stage cases for this
-          cancer type.
+          — the test identifies more than half of cases for this cancer type.
         </p>
         <p>
           <span className="text-amber-700 font-medium">Moderate detection (25-50%)</span>{' '}
-          — the test identifies between one-quarter and one-half of early-stage
-          cases.
+          — the test identifies between one-quarter and one-half of cases.
         </p>
         <p>
           <span className="text-red-500 font-medium">Limited or not tested (25% or less, or no data)</span>{' '}
-          — the test either detects fewer than one in four early-stage cases, or
+          — the test either detects fewer than one in four cases, or
           has not published per-cancer sensitivity data for this cancer type.
         </p>
         <p>
           Only cancer types with a sample size of at least 5 patients in the
           validation study are included.
-        </p>
-        <p>
-          Sensitivity thresholds (default: &gt;50% strong, 25–50% moderate) can
-          be adjusted via the settings icon (⚙). All thresholds are for
-          visualization only and do not represent clinical guidelines.
+          Sensitivity thresholds and data mode can be adjusted via{' '}
+          <button
+            onClick={onOpenSettings}
+            className="underline text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            settings
+          </button>
+          .
         </p>
         {sourceLine && (
           <p className="pt-2.5 border-t border-gray-200">
             <strong className="text-gray-600">Data sources:</strong> {sourceLine}.
-            All values are Stage I-II where available; some values are estimated
-            from published stage-specific breakdowns.
+            {dataMode === 'early'
+              ? ' All values are Stage I-II where available; some values are estimated from published stage-specific breakdowns.'
+              : ' All values are overall (all-stage) sensitivity computed from published validation data.'}
           </p>
         )}
         <p>
