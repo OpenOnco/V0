@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { SENSITIVITY_TIERS } from './data/thresholds';
 import { MALE_EXCLUDE, FEMALE_EXCLUDE } from './data/genderExclusions';
 import { sortDefault, sortBySelection } from './logic/sortTests';
 import { useFilters } from './hooks/useFilters';
@@ -11,6 +12,7 @@ import TestCard from './components/TestCard';
 import Legend from './components/Legend';
 import Methodology from './components/Methodology';
 import ResetButton from './components/ResetButton';
+import SettingsPanel from './components/SettingsPanel';
 
 export default function App() {
   const { tests, source } = useTestData();
@@ -22,6 +24,14 @@ export default function App() {
     resetAll,
     selectedCancers,
   } = useFilters();
+
+  const [strongThreshold, setStrongThreshold] = useState(SENSITIVITY_TIERS.GOOD);
+  const [moderateThreshold, setModerateThreshold] = useState(SENSITIVITY_TIERS.OK);
+
+  const thresholds = useMemo(
+    () => ({ strong: strongThreshold, moderate: moderateThreshold }),
+    [strongThreshold, moderateThreshold]
+  );
 
   // Build detectable cancers list from current test data
   const detectableCancers = useMemo(() => {
@@ -48,14 +58,29 @@ export default function App() {
   }, [tests, selectedCancers]);
 
   return (
-    <div className="max-w-[640px] mx-auto px-5 py-5">
-      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED test explorer</h1>
-      <p className="text-[13px] text-gray-400 mb-1.5">
-        Compare multi-cancer early detection tests. Prepare for your doctor visit.
+    <div className="max-w-[640px] mx-auto px-5 py-5 relative">
+      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED Early-Stage Sensitivity Data</h1>
+      <p className="text-[13px] text-gray-400 mb-1">
+        Published per-cancer detection rates across multi-cancer screening tests
       </p>
-      <p className="text-[11px] text-gray-300 mb-4">
+      <a
+        href="https://openonco.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-[11px] text-gray-300 underline hover:text-gray-500 transition-colors"
+      >
+        openonco.org
+      </a>
+      <p className="text-[11px] text-gray-300 mb-4 mt-1">
         All sensitivity values are Stage I-II (early detection) from published clinical studies.
       </p>
+
+      <SettingsPanel
+        strongThreshold={strongThreshold}
+        moderateThreshold={moderateThreshold}
+        onChangeStrong={setStrongThreshold}
+        onChangeModerate={setModerateThreshold}
+      />
 
       <GenderToggle sex={sex} onSelect={setSex} />
 
@@ -88,12 +113,12 @@ export default function App() {
 
       <div className="flex flex-col gap-2.5 mt-5">
         {sorted.map((t) => (
-          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} />
+          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} />
         ))}
       </div>
 
       <Legend source={source} />
-      <Methodology />
+      <Methodology tests={tests} />
     </div>
   );
 }

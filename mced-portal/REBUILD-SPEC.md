@@ -249,3 +249,141 @@ The file `mced-portal/prototype.html` is the complete working prototype. It is a
 12. Dropdowns only show cancers where ≥1 test has data
 13. No "recommended" or "best" language anywhere
 14. Methodology section with sources present in footer
+
+---
+
+# Spec Update v2 — Consumer-Friendly Surface + Research Settings
+
+**This section supersedes the data/test-list sections above. Layout and filter behavior from above still apply unless overridden here.**
+
+## Design philosophy
+
+**Consumer-friendly surface, research depth on demand.**
+
+- Default view: clean cards with gender/family/smoking filters — exactly like the prototype
+- Settings panel (gear icon): adjustable thresholds, stage toggle, data quality notes
+- Info button per card: opens the full OpenOnco test detail page in a new tab
+- No pricing anywhere
+- No hardcoded test data — API is the single source of truth
+
+## Data source
+
+All test data fetched from `https://www.openonco.org/api/v1/tests?category=ecd`
+
+Auto-detection logic:
+- `testScope.includes('Multi-cancer')` + `perCancerEarlyStageSensitivity != null` → include
+- Populated `perCancerEarlyStageSensitivity` object → traffic light card
+- Empty `{}` object → stamp card ("no per-cancer early-stage data published")
+
+New tests added to OpenOnco with `perCancerEarlyStageSensitivity` automatically appear.
+
+### API fields used by the portal
+
+From the list endpoint (`/api/v1/tests?category=ecd`):
+```
+name, vendor, id, testScope,
+perCancerEarlyStageSensitivity,
+perCancerEarlyStageSensitivitySource,
+sensitivity, specificity,
+stageISensitivity, stageIISensitivity,
+totalParticipants, fdaStatus,
+performanceNotes
+```
+
+For the info button link: `https://openonco.org/screen/{slugify(name)}`
+
+## Card layout changes
+
+### Column 1 (left): Test info — NO PRICE
+```
+Test Name
+Vendor name
+ⓘ  ← info icon, opens openonco.org/screen/{slug} in new tab
+```
+
+No price anywhere. The info icon (small circle-i) sits below vendor name. On click → `window.open('https://openonco.org/screen/' + slugify(test.name), '_blank')`.
+
+Slugify function:
+```js
+function slugify(name) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+```
+
+### Columns 2 and 3: Unchanged from prototype
+
+Traffic lights and cancer count columns work exactly as before.
+
+## Settings panel
+
+### Trigger
+Small gear icon (⚙) top-right of page near header. Not prominent.
+
+### Panel
+Click gear → compact settings panel slides open below header, above gender toggle. Click again → closes.
+
+### Contents
+
+**Sensitivity thresholds:**
+```
+Strong detection:   [  50  ] %
+Moderate detection: [  25  ] %
+```
+Number inputs or small sliders. Defaults: 50 and 25.
+When changed → all traffic light dots recolor in real time.
+Validation: strong must be > moderate > 0.
+
+**Data quality note (small muted text):**
+```
+Sensitivity values are from published clinical validation studies.
+Sample sizes and study designs vary between tests.
+See individual test pages for full methodology.
+```
+
+## Header
+
+```
+MCED Early-Stage Sensitivity Data
+Published per-cancer detection rates across multi-cancer screening tests
+openonco.org
+```
+
+"openonco.org" links to https://openonco.org (small, muted, underlined).
+
+Drop "Prepare for your doctor visit." Keep: "All sensitivity values are Stage I-II (early detection) from published clinical studies."
+
+## Filters — KEEP consumer-friendly
+
+Keep gender toggle, family history dropdowns, smoking toggle, screening gaps exactly as prototype. No changes to behavior.
+
+**Dropdown source change:** Derive available cancers from API response instead of hardcoded array:
+```js
+const allCancers = new Set();
+tests.forEach(t => {
+  Object.keys(t.cancers).forEach(c => allCancers.add(c));
+});
+```
+
+## Methodology disclaimer update
+
+Replace the existing disclaimer with:
+
+"This tool presents published clinical data for research and educational purposes. It is not a clinical decision support tool. MCED tests require a physician's order — discuss testing decisions with your healthcare provider. Data sourced from OpenOnco.org, an independent nonprofit cancer diagnostics database. Verify all values against original publications."
+
+Add: "Sensitivity thresholds (default: >50% strong, 25-50% moderate) can be adjusted in Settings (⚙). All thresholds are for visualization only and do not represent clinical guidelines."
+
+## Additional verification checklist items
+
+15. No price displayed anywhere on any card
+16. Info icon on each card opens correct OpenOnco test page in new tab
+17. Settings gear opens/closes threshold panel
+18. Changing threshold values updates traffic light colors in real time
+19. Tests auto-detected from API — no hardcoded test list
+20. Cancer type dropdowns derived from API data, not hardcoded list
+21. All MCED tests from API appear (traffic lights for those with data, stamps for empty)
+22. New test added to OpenOnco with perCancerEarlyStageSensitivity appears automatically on next page load

@@ -1,4 +1,9 @@
-export default function Methodology() {
+export default function Methodology({ tests }) {
+  const sourceLine = (tests || [])
+    .filter((t) => t.source)
+    .map((t) => `${t.name} — ${t.source}`)
+    .join('. ');
+
   return (
     <div className="mt-8 pt-5 border-t border-gray-300">
       <h2 className="text-sm font-medium text-gray-900 mb-2.5">Methodology</h2>
@@ -30,18 +35,33 @@ export default function Methodology() {
           Only cancer types with a sample size of at least 5 patients in the
           validation study are included.
         </p>
-        <p className="pt-2.5 border-t border-gray-200">
-          <strong className="text-gray-600">Data sources:</strong> Galleri —
-          CCGA3 clinical validation (Klein et al., Annals of Oncology, 2021).
-          Cancerguard — ASCEND-2 study (AACR 2024). Caris Detect — Achieve 1
-          interim readout (Caris Life Sciences, Feb 2026). EPISEEK — published
-          performance data. All values are Stage I-II where available; some
-          values are estimated from published stage-specific breakdowns.
-        </p>
         <p>
-          This tool is for informational purposes only and does not provide
-          medical advice. MCED tests require a physician&apos;s order. Discuss
-          testing decisions with your healthcare provider.
+          Sensitivity thresholds (default: &gt;50% strong, 25–50% moderate) can
+          be adjusted via the settings icon (⚙). All thresholds are for
+          visualization only and do not represent clinical guidelines.
+        </p>
+        {sourceLine && (
+          <p className="pt-2.5 border-t border-gray-200">
+            <strong className="text-gray-600">Data sources:</strong> {sourceLine}.
+            All values are Stage I-II where available; some values are estimated
+            from published stage-specific breakdowns.
+          </p>
+        )}
+        <p>
+          This tool presents published clinical data for research and educational
+          purposes. It is not a clinical decision support tool. MCED tests
+          require a physician&apos;s order — discuss testing decisions with your
+          healthcare provider. Data sourced from{' '}
+          <a
+            href="https://openonco.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-gray-500 hover:text-gray-700"
+          >
+            OpenOnco.org
+          </a>
+          , an independent nonprofit cancer diagnostics database. Verify all
+          values against original publications.
         </p>
       </div>
     </div>

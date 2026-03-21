@@ -1,7 +1,16 @@
 import { tierInfo } from '../logic/tierInfo';
 import NoDataStamp from './NoDataStamp';
 
-export default function TestCard({ test, selectedCancers }) {
+function slugify(name) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+
+export default function TestCard({ test, selectedCancers, thresholds }) {
   const hasData = Object.keys(test.cancers).length > 0;
   const hasSel = selectedCancers.length > 0;
 
@@ -15,9 +24,18 @@ export default function TestCard({ test, selectedCancers }) {
       {!hasData && <NoDataStamp />}
       <div className={`flex items-stretch ${!hasData ? 'opacity-40' : ''}`}>
         {/* Column 1: Test info */}
-        <div className="min-w-[130px] max-w-[160px] shrink-0">
-          <div className="text-base font-medium text-gray-900">{test.name}</div>
-          <span className="text-xs text-gray-400 block mt-0.5">{test.vendor}</span>
+        <div className="w-[130px] shrink-0">
+          <div className="text-[15px] font-medium text-gray-900 leading-tight truncate" title={test.name}>{test.name}</div>
+          <span className="text-xs text-gray-400 block mt-0.5 truncate" title={test.vendor}>{test.vendor}</span>
+          <button
+            onClick={() => window.open(`https://openonco.org/screen/${slugify(test.name)}`, '_blank')}
+            className="text-[13px] mt-1 leading-none hover:text-gray-500 transition-colors"
+            style={{ color: '#aaa' }}
+            title={`View ${test.name} on OpenOnco`}
+            aria-label={`Info about ${test.name}`}
+          >
+            ⓘ
+          </button>
         </div>
 
         {/* Column 2: Traffic lights */}
@@ -31,7 +49,7 @@ export default function TestCard({ test, selectedCancers }) {
                 <div className="flex flex-col gap-1.5 mt-1">
                   {selectedCancers.map((c) => {
                     const s = test.cancers[c];
-                    const tier = tierInfo(s);
+                    const tier = tierInfo(s, thresholds);
                     const pct = s != null ? `${s.toFixed(1)}%` : '--';
                     return (
                       <div key={c} className="flex items-center gap-2.5">
