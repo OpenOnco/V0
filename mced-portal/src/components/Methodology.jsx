@@ -1,4 +1,4 @@
-export default function Methodology({ tests, dataMode }) {
+export default function Methodology({ tests, dataMode, onDataModeChange }) {
   const sourceLine = (tests || [])
     .filter((t) => t.source)
     .map((t) => `${t.name} — ${t.source}`)
@@ -12,7 +12,19 @@ export default function Methodology({ tests, dataMode }) {
       <div className="text-xs text-gray-500 leading-relaxed space-y-2">
         <p>
           Sensitivity values represent the percentage of cancers correctly
-          identified at <strong className="text-gray-600">{stageLabel}</strong>{' '}
+          identified at{' '}
+          <strong
+            className="text-blue-600 underline underline-offset-2 cursor-pointer hover:text-blue-800"
+            onClick={() => onDataModeChange(dataMode === 'early' ? 'all' : 'early')}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onDataModeChange(dataMode === 'early' ? 'all' : 'early'); } }}
+          >
+            {stageLabel}
+          </strong>{' '}
+          <span className="text-[11px] text-gray-400">
+            ({dataMode === 'early' ? 'click for all-stage' : 'click for early-stage'})
+          </span>{' '}
           {dataMode === 'early'
             ? '(early-stage disease), the stages where treatment is most effective.'
             : '(across all cancer stages I-IV).'}
@@ -34,9 +46,12 @@ export default function Methodology({ tests, dataMode }) {
           has not published per-cancer sensitivity data for this cancer type.
         </p>
         <p>
+          These thresholds (&gt;50% and 25%) are defaults. Use the sensitivity
+          threshold slider above the test cards to adjust them.
+        </p>
+        <p>
           Only cancer types with a sample size of at least 5 patients in the
           validation study are included.
-          Sensitivity thresholds can be adjusted using the legend above the test cards.
         </p>
         {sourceLine && (
           <p className="pt-2.5 border-t border-gray-200">

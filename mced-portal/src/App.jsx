@@ -120,7 +120,7 @@ export default function App() {
         ))}
       </div>
 
-      <Methodology tests={displayTests} dataMode={dataMode} />
+      <Methodology tests={displayTests} dataMode={dataMode} onDataModeChange={setDataMode} />
     </div>
   );
 }
