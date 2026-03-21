@@ -10,7 +10,7 @@ function slugify(name) {
     .trim();
 }
 
-export default function TestCard({ test, selectedCancers, thresholds }) {
+export default function TestCard({ test, selectedCancers, thresholds, dataMode = 'early' }) {
   const hasData = Object.keys(test.cancers).length > 0;
   const hasSel = selectedCancers.length > 0;
 
@@ -29,12 +29,11 @@ export default function TestCard({ test, selectedCancers, thresholds }) {
           <span className="text-xs text-gray-400 block mt-0.5 truncate" title={test.vendor}>{test.vendor}</span>
           <button
             onClick={() => window.open(`https://openonco.org/screen/${slugify(test.name)}`, '_blank')}
-            className="text-[13px] mt-1 leading-none hover:text-gray-500 transition-colors"
-            style={{ color: '#aaa' }}
+            className="text-xs mt-1.5 px-2 py-0.5 rounded border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-300 transition-colors cursor-pointer"
             title={`View ${test.name} on OpenOnco`}
-            aria-label={`Info about ${test.name}`}
+            aria-label={`View ${test.name} on OpenOnco`}
           >
-            ⓘ
+            OpenOnco ↗
           </button>
         </div>
 
@@ -43,8 +42,13 @@ export default function TestCard({ test, selectedCancers, thresholds }) {
           <div className="flex-1 min-w-0 px-4 border-l border-gray-100">
             {hasData ? (
               <>
-                <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wide mt-2.5">
-                  Your selected cancers
+                <div className="flex items-center justify-between mt-2.5">
+                  <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
+                    Your selected cancers
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-medium">
+                    {dataMode === 'all' ? 'Stage I-IV' : 'Stage I-II'}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-1.5 mt-1">
                   {selectedCancers.map((c) => {

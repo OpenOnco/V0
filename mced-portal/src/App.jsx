@@ -115,7 +115,7 @@ export default function App() {
 
       <div className="flex flex-col gap-2.5 mt-5">
         {sorted.map((t) => (
-          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} />
+          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} dataMode={dataMode} />
         ))}
       </div>
 
