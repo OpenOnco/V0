@@ -22,7 +22,7 @@ describe('App', () => {
 
   it('shows header text', () => {
     render(<App />);
-    expect(screen.getByText(/MCED Early-Stage Sensitivity Data/)).toBeInTheDocument();
+    expect(screen.getByText(/MCED Per-Cancer Data Filter/)).toBeInTheDocument();
   });
 
   it('hides controls until gender selected', () => {
