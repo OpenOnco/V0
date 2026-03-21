@@ -298,10 +298,10 @@ For the info button link: `https://openonco.org/screen/{slugify(name)}`
 ```
 Test Name
 Vendor name
-ⓘ  ← info icon, opens openonco.org/screen/{slug} in new tab
+[ OpenOnco ↗ ]  ← small badge/pill, opens openonco.org/screen/{slug} in new tab
 ```
 
-No price anywhere. The info icon (small circle-i) sits below vendor name. On click → `window.open('https://openonco.org/screen/' + slugify(test.name), '_blank')`.
+No price anywhere. The OpenOnco badge is a small pill/chip (e.g., `text-xs px-2 py-0.5 rounded border text-slate-500 hover:text-blue-600 hover:border-blue-300 cursor-pointer`) sitting below vendor name. On click → `window.open('https://openonco.org/screen/' + slugify(test.name), '_blank')`.
 
 Slugify function:
 ```js
@@ -315,9 +315,26 @@ function slugify(name) {
 }
 ```
 
-### Columns 2 and 3: Unchanged from prototype
+### Column 2 (middle): Traffic lights — stage label above
 
-Traffic lights and cancer count columns work exactly as before.
+Traffic lights work exactly as before, but add a small stage label above the sensitivity column:
+
+```
+Stage I-II ▾        ← or "Stage I-IV" when toggled in settings
+YOUR SELECTED CANCERS
+● Breast  53.0%
+● Lung    28.5%
+● Colon   --
+```
+
+- Default label: **"Stage I-II"** (early-stage data)
+- When user toggles to all-stage in settings: **"Stage I-IV"**
+- Label is small muted text (`text-xs text-slate-400`), right-aligned or left-aligned above the dots
+- This makes it immediately clear which stage window the sensitivity values represent
+
+### Column 3: Unchanged from prototype
+
+Cancer count column works exactly as before.
 
 ## Settings panel
 
@@ -328,6 +345,13 @@ Small gear icon (⚙) top-right of page near header. Not prominent.
 Click gear → compact settings panel slides open below header, above gender toggle. Click again → closes.
 
 ### Contents
+
+**Stage window:**
+```
+[ Stage I-II (early) ▾ ]   ← dropdown or toggle
+  Stage I-IV (all)
+```
+Default: Stage I-II. When switched to I-IV, cards use `perCancerSensitivity` (all-stage) instead of `perCancerEarlyStageSensitivity`, and the stage label on each card updates to "Stage I-IV".
 
 **Sensitivity thresholds:**
 ```
@@ -380,10 +404,12 @@ Add: "Sensitivity thresholds (default: >50% strong, 25-50% moderate) can be adju
 ## Additional verification checklist items
 
 15. No price displayed anywhere on any card
-16. Info icon on each card opens correct OpenOnco test page in new tab
+16. OpenOnco badge on each card opens correct test page in new tab
 17. Settings gear opens/closes threshold panel
 18. Changing threshold values updates traffic light colors in real time
 19. Tests auto-detected from API — no hardcoded test list
 20. Cancer type dropdowns derived from API data, not hardcoded list
 21. All MCED tests from API appear (traffic lights for those with data, stamps for empty)
 22. New test added to OpenOnco with perCancerEarlyStageSensitivity appears automatically on next page load
+23. Stage label ("Stage I-II" or "Stage I-IV") appears above sensitivity column on each card
+24. Toggling stage in settings updates label and switches data source (early-stage vs all-stage sensitivity)

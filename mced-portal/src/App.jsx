@@ -74,34 +74,16 @@ export default function App() {
   const openSettings = useCallback(() => setSettingsOpen(true), []);
   const closeSettings = useCallback(() => setSettingsOpen(false), []);
 
-  const stageLabel = dataMode === 'all' ? 'All-Stage' : 'Early-Stage';
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
-      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED {stageLabel} Sensitivity Data</h1>
+      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED Per-Cancer Data Filter</h1>
       <p className="text-[13px] text-gray-500 mb-3 leading-relaxed">
         This tool models a typical screening candidate&apos;s profile — family history,
         lifestyle factors, and screening gaps — then shows how each MCED test&apos;s
-        published per-cancer sensitivity maps to that profile. Intended for
-        researchers, clinicians, and test developers comparing detection coverage
-        across the MCED landscape. Not a consumer decision tool.
+        published per-cancer sensitivity maps to that profile.
       </p>
-      <div className="flex items-center gap-3 mb-1">
-        <a
-          href="https://openonco.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[11px] text-gray-300 underline hover:text-gray-500 transition-colors"
-        >
-          openonco.org
-        </a>
-        <span className="text-[11px] text-gray-300">
-          {dataMode === 'early'
-            ? 'Stage I-II sensitivity from published clinical studies'
-            : 'All-stage sensitivity from published clinical studies'}
-        </span>
-      </div>
-
+      <div className="text-[13px] font-medium text-gray-700 mb-2">Start here by selecting gender:</div>
       <GenderToggle sex={sex} onSelect={setSex} />
 
       {sex && (
