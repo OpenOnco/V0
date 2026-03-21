@@ -1,65 +1,51 @@
-import { buildTrafficLight } from './buildTrafficLight';
-
 /**
- * Sort tests by traffic light performance:
- * 1. Most green dots (descending)
- * 2. Most amber dots (descending)
- * 3. Fewest red dots (ascending)
- * 4. Fewest no-data (ascending)
- * 5. Tests without any cancerTypeSensitivity → bottom
+ * Sort tests when no cancers selected:
+ * 1. Total cancers in test data (descending)
+ * 2. Count of >50% cancers (descending)
+ * 3. Alphabetical
  */
-export function sortTests(tests, concernCancers, screeningGaps) {
-  const allCancers = [...concernCancers, ...screeningGaps];
+export function sortDefault(tests) {
+  return [...tests].sort((a, b) => {
+    const aTotal = Object.keys(a.cancers).length;
+    const bTotal = Object.keys(b.cancers).length;
+    if (bTotal !== aTotal) return bTotal - aTotal;
 
-  return [...tests]
-    .map((test) => {
-      const trafficLight = buildTrafficLight(test, concernCancers, screeningGaps);
-      const allRows = [...trafficLight.concernRows, ...trafficLight.gapRows];
+    const aGreens = Object.values(a.cancers).filter((s) => s > 50).length;
+    const bGreens = Object.values(b.cancers).filter((s) => s > 50).length;
+    if (bGreens !== aGreens) return bGreens - aGreens;
 
-      const count = (tier) => allRows.filter((r) => r.tier === tier).length;
-
-      return {
-        test,
-        trafficLight,
-        greenCount: count('good'),
-        amberCount: count('ok'),
-        redCount: count('bad'),
-        noDataCount: count('no-data'),
-        hasData: trafficLight.hasAnySensitivityData,
-      };
-    })
-    .sort((a, b) => {
-      // Tests without data always sort to bottom
-      if (a.hasData !== b.hasData) return a.hasData ? -1 : 1;
-
-      // Most greens first
-      if (b.greenCount !== a.greenCount) return b.greenCount - a.greenCount;
-
-      // Most ambers (tiebreak)
-      if (b.amberCount !== a.amberCount) return b.amberCount - a.amberCount;
-
-      // Fewest reds
-      if (a.redCount !== b.redCount) return a.redCount - b.redCount;
-
-      // Fewest no-data
-      if (a.noDataCount !== b.noDataCount) return a.noDataCount - b.noDataCount;
-
-      // Final tiebreak: more total cancer types detected
-      return (
-        (b.test.detectedCancerTypes?.length || 0) -
-        (a.test.detectedCancerTypes?.length || 0)
-      );
-    });
+    return a.name.localeCompare(b.name);
+  });
 }
 
 /**
- * Fallback sort when user has no concerns and no gaps:
- * sort by total detectedCancerTypes count descending.
+ * Sort tests when cancers are selected:
+ * 1. Tests with any data first
+ * 2. Most green dots (descending)
+ * 3. Most amber dots (descending)
+ * 4. Fewest red dots (ascending)
+ * 5. Fewest no-data (ascending)
  */
-export function sortByTotalCancers(tests) {
-  return [...tests].sort(
-    (a, b) =>
-      (b.detectedCancerTypes?.length || 0) -
-      (a.detectedCancerTypes?.length || 0)
-  );
+export function sortBySelection(tests, selectedCancers) {
+  return [...tests]
+    .map((t) => {
+      let g = 0, a = 0, r = 0, nd = 0;
+      const hasData = Object.keys(t.cancers).length > 0;
+      selectedCancers.forEach((c) => {
+        const s = t.cancers[c];
+        if (s == null) nd++;
+        else if (s > 50) g++;
+        else if (s >= 25) a++;
+        else r++;
+      });
+      return { test: t, g, a, r, nd, hasData };
+    })
+    .sort((x, y) => {
+      if (x.hasData !== y.hasData) return x.hasData ? -1 : 1;
+      if (y.g !== x.g) return y.g - x.g;
+      if (y.a !== x.a) return y.a - x.a;
+      if (x.r !== y.r) return x.r - y.r;
+      return x.nd - y.nd;
+    })
+    .map((e) => e.test);
 }

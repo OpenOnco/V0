@@ -1,99 +1,99 @@
-import { useState, useMemo } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Disclaimer from './components/Disclaimer';
-import IntakeForm from './components/IntakeForm';
-import ResultsPage from './components/ResultsPage';
+import { useMemo } from 'react';
+import { MALE_EXCLUDE, FEMALE_EXCLUDE } from './data/genderExclusions';
+import { sortDefault, sortBySelection } from './logic/sortTests';
+import { useFilters } from './hooks/useFilters';
 import { useTestData } from './hooks/useTestData';
-import { useIntakeForm } from './hooks/useIntakeForm';
-import { buildConcernList } from './logic/buildConcernList';
-import { identifyScreeningGaps } from './logic/identifyScreeningGaps';
-import { sortTests, sortByTotalCancers } from './logic/sortTests';
+import GenderToggle from './components/GenderToggle';
+import FamilyDropdown from './components/FamilyDropdown';
+import SmokingToggle from './components/SmokingToggle';
+import ScreeningGaps from './components/ScreeningGaps';
+import TestCard from './components/TestCard';
+import Legend from './components/Legend';
+import Methodology from './components/Methodology';
+import ResetButton from './components/ResetButton';
 
 export default function App() {
-  const { tests, loading, error } = useTestData();
-  const { form, step, TOTAL_STEPS, update, next, back, reset } = useIntakeForm();
-  const [view, setView] = useState('intake');
+  const { tests } = useTestData();
+  const {
+    sex, setSex,
+    famEntries, addFamily, removeFamily,
+    smokeOn, toggleSmoke,
+    gapSet, toggleGap,
+    resetAll,
+    selectedCancers,
+  } = useFilters();
 
-  const results = useMemo(() => {
-    if (view !== 'results' || tests.length === 0) return null;
+  // Build detectable cancers list from current test data
+  const detectableCancers = useMemo(() => {
+    const detectable = new Set();
+    tests.forEach((t) => Object.keys(t.cancers).forEach((c) => detectable.add(c)));
+    return [...detectable].sort();
+  }, [tests]);
 
-    const concerns = buildConcernList(form);
-    const gaps = identifyScreeningGaps(form);
-    const allEqual = concerns.length === 0 && gaps.length === 0;
+  // Mom is female → exclude male-only cancers; Dad is male → exclude female-only cancers
+  const momCancers = useMemo(
+    () => detectableCancers.filter((c) => !FEMALE_EXCLUDE.includes(c)),
+    [detectableCancers]
+  );
+  const dadCancers = useMemo(
+    () => detectableCancers.filter((c) => !MALE_EXCLUDE.includes(c)),
+    [detectableCancers]
+  );
 
-    const sorted = allEqual
-      ? sortByTotalCancers(tests).map((test) => ({
-          test,
-          trafficLight: { concernRows: [], gapRows: [], hasAnySensitivityData: false },
-          greenCount: 0,
-          amberCount: 0,
-          redCount: 0,
-          noDataCount: 0,
-          hasData: false,
-        }))
-      : sortTests(tests, concerns, gaps);
-
-    return { sorted, concerns, gaps, allEqual };
-  }, [view, tests, form]);
-
-  const handleSubmit = () => setView('results');
-  const handleStartOver = () => {
-    reset();
-    setView('intake');
-  };
+  const sorted = useMemo(() => {
+    if (selectedCancers.length > 0) {
+      return sortBySelection(tests, selectedCancers);
+    }
+    return sortDefault(tests);
+  }, [tests, selectedCancers]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <div className="max-w-[640px] mx-auto px-5 py-5">
+      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED test explorer</h1>
+      <p className="text-[13px] text-gray-400 mb-1.5">
+        Compare multi-cancer early detection tests. Prepare for your doctor visit.
+      </p>
+      <p className="text-[11px] text-gray-300 mb-4">
+        All sensitivity values are Stage I-II (early detection) from published clinical studies.
+      </p>
 
-      <main className="flex-1 px-4 py-8 pb-16">
-        {loading && (
-          <div className="max-w-xl mx-auto text-center py-12">
-            <div className="inline-block h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <p className="mt-3 text-slate-500">Loading test data...</p>
+      <GenderToggle sex={sex} onSelect={setSex} />
+
+      {sex && (
+        <>
+          <div className="mb-4">
+            <FamilyDropdown
+              label="Family cancer history (mom's side)"
+              side="mom"
+              cancers={momCancers}
+              entries={famEntries}
+              onAdd={addFamily}
+              onRemove={removeFamily}
+            />
+            <FamilyDropdown
+              label="Family cancer history (dad's side)"
+              side="dad"
+              cancers={dadCancers}
+              entries={famEntries}
+              onAdd={addFamily}
+              onRemove={removeFamily}
+            />
           </div>
-        )}
 
-        {error && (
-          <div className="max-w-xl mx-auto bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-            <p className="text-red-800 font-medium">Failed to load test data</p>
-            <p className="text-red-600 text-sm mt-1">{error}</p>
-            <p className="text-red-500 text-xs mt-2">
-              Try refreshing the page or visit{' '}
-              <a href="https://openonco.org/screen" className="underline">
-                openonco.org/screen
-              </a>
-            </p>
-          </div>
-        )}
+          <SmokingToggle on={smokeOn} onToggle={toggleSmoke} />
+          <ScreeningGaps sex={sex} gapSet={gapSet} onToggle={toggleGap} />
+          <ResetButton onReset={resetAll} />
+        </>
+      )}
 
-        {!loading && !error && view === 'intake' && (
-          <IntakeForm
-            form={form}
-            step={step}
-            totalSteps={TOTAL_STEPS}
-            onUpdate={update}
-            onNext={next}
-            onBack={back}
-            onSubmit={handleSubmit}
-          />
-        )}
+      <div className="flex flex-col gap-2.5 mt-5">
+        {sorted.map((t) => (
+          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} />
+        ))}
+      </div>
 
-        {!loading && !error && view === 'results' && results && (
-          <ResultsPage
-            form={form}
-            sortedTests={results.sorted}
-            concerns={results.concerns}
-            gaps={results.gaps}
-            allEqual={results.allEqual}
-            onStartOver={handleStartOver}
-          />
-        )}
-      </main>
-
-      <Footer />
-      <Disclaimer />
+      <Legend />
+      <Methodology />
     </div>
   );
 }

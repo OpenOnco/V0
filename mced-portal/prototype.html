@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCED Explorer Prototype</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8f7f4;color:#1a1a1a;padding:20px}
+.mx{max-width:640px;margin:0 auto}
+h1{font-size:18px;font-weight:500;margin-bottom:4px}
+.sub{font-size:13px;color:#888;margin-bottom:6px}
+.stage-note{font-size:11px;color:#aaa;margin-bottom:16px}
+.top-row{display:flex;gap:8px;margin-bottom:16px}
+.seg{flex:1;font-size:13px;padding:9px 0;text-align:center;border-radius:8px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;transition:all .2s;font-weight:400}
+.seg:hover{border-color:#aaa}
+.seg.on{background:#EFF6FF;color:#1D4ED8;border-color:#93C5FD;font-weight:500}
+.reset-btn{font-size:11px;color:#aaa;background:none;border:none;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:2px}
+.reset-btn:hover{color:#666}
+.section{margin-bottom:16px}
+.cat{font-size:11px;color:#999;margin:0 0 6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.fam-group{margin-bottom:14px}
+.fam-title{font-size:12px;color:#666;font-weight:500;margin-bottom:5px}
+.fam-select{width:100%;font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#333;cursor:pointer}
+.fam-select:focus{outline:none;border-color:#93C5FD}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;min-height:0}
+.tag{font-size:11px;padding:4px 10px;border-radius:12px;display:inline-flex;align-items:center;gap:4px;cursor:pointer;transition:opacity .15s}
+.tag:hover{opacity:.7}
+.tag-fam{background:#EDE9FE;color:#5B21B6}
+.tag-smoke{background:#FEF3C7;color:#92400E}
+.tag-gap{background:#FEE2E2;color:#991B1B}
+.tag .x{font-size:14px;line-height:1;opacity:.5;margin-left:2px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12px;padding:5px 14px;border-radius:16px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;transition:all .15s;user-select:none}
+.pill:hover{border-color:#aaa}
+.pill.on-smoke{background:#FEF3C7;color:#92400E;border-color:#F59E0B}
+.pill.on-gap{background:#EFF6FF;color:#1D4ED8;border-color:#93C5FD}
+.cards{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+.stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-18deg);font-size:13px;font-weight:500;color:#E24B4A;opacity:0.55;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;border:2px solid #E24B4A;padding:6px 18px;border-radius:6px}
+.card-faded .ch{opacity:0.4}
+.ch{display:flex;align-items:stretch}
+.card-info{min-width:130px;max-width:160px;flex-shrink:0}
+.card-mid{flex:1;min-width:0;padding:0 16px;border-left:1px solid #f0f0f0}
+.card-right{flex-shrink:0;padding:0 16px;border-left:1px solid #e8e8e8;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:90px}
+.detect-big{font-size:32px;font-weight:500;color:#1a1a1a;line-height:1}
+.detect-words{font-size:10px;color:#bbb;text-align:center;line-height:1.5;margin-top:4px}
+.cn{font-size:16px;font-weight:500;color:#1a1a1a}
+.cv{font-size:12px;color:#aaa;display:block;margin-top:1px}
+.cp{font-size:13px;font-weight:500;color:#1a1a1a;margin-top:2px}
+.cp-tbd{font-size:12px;color:#aaa;font-style:italic;margin-top:2px}
+.dots{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.your-label{font-size:10px;color:#bbb;font-weight:500;text-transform:uppercase;letter-spacing:.04em;margin-top:10px}
+.dr{display:flex;align-items:center;gap:10px}
+.dd{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.dc{font-size:13px;color:#555;flex:1}
+.dp{font-size:12px;color:#999;font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.dn{font-size:10px;color:#bbb;margin-left:2px}
+.nd{font-size:12px;color:#bbb;font-style:italic;margin-top:10px}
+.src{font-size:10px;color:#ccc;margin-top:6px}
+.legend{display:flex;gap:16px;margin-top:20px;padding-top:12px;border-top:1px solid #eee}
+.lg{display:flex;align-items:center;gap:5px;font-size:11px;color:#999}
+.ld{width:9px;height:9px;border-radius:50%}
+.hidden{display:none}
+.methodology{margin-top:32px;padding-top:20px;border-top:1px solid #e0e0e0}
+.meth-title{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:10px}
+.methodology p{font-size:12px;color:#777;line-height:1.6;margin:0 0 8px}
+.methodology strong{color:#555;font-weight:500}
+.meth-sources{margin-top:12px;padding-top:10px;border-top:1px solid #eee}
+</style>
+</head>
+<body>
+<div class="mx">
+<h1>MCED test explorer</h1>
+<p class="sub">Compare multi-cancer early detection tests. Prepare for your doctor visit.</p>
+<p class="stage-note">All sensitivity values are Stage I-II (early detection) from published clinical studies.</p>
+
+<div class="top-row">
+<button class="seg" onclick="setSex('male')" id="bm">Male</button>
+<button class="seg" onclick="setSex('female')" id="bf">Female</button>
+</div>
+
+<div id="ctrls" class="hidden">
+<div class="section">
+<div class="fam-group">
+<div class="fam-title">Family cancer history (mom's side)</div>
+<select class="fam-select" id="sel-mom" onchange="addFrom('mom')"><option value="">Select cancer type...</option></select>
+<div class="tags" id="tags-mom"></div>
+</div>
+<div class="fam-group">
+<div class="fam-title">Family cancer history (dad's side)</div>
+<select class="fam-select" id="sel-dad" onchange="addFrom('dad')"><option value="">Select cancer type...</option></select>
+<div class="tags" id="tags-dad"></div>
+</div>
+</div>
+<div class="section">
+<div class="cat">Lifestyle</div>
+<div class="pills">
+<button class="pill" onclick="toggleSmoke(this)" id="sbtn">Smoker / former smoker</button>
+</div>
+<div class="tags" id="tags-smoke"></div>
+</div>
+<div class="section">
+<div class="cat">Screening gaps</div>
+<div class="pills" id="gp"></div>
+<div class="tags" id="tags-gap"></div>
+</div>
+</div>
+
+<div style="text-align:right;margin-top:4px" id="reset-wrap" class="hidden">
+<button class="reset-btn" onclick="doReset()">Reset all</button>
+</div>
+
+<div class="cards" id="cards"></div>
+<div class="legend" id="leg">
+<div class="lg"><span class="ld" style="background:#4aba4a"></span> Strong detection</div>
+<div class="lg"><span class="ld" style="background:#EF9F27"></span> Moderate</div>
+<div class="lg"><span class="ld" style="background:#E24B4A"></span> Limited or not tested</div>
+</div>
+
+<div class="methodology">
+<div class="meth-title">Methodology</div>
+<p>Sensitivity values represent the percentage of cancers correctly identified at <strong>Stage I-II</strong> (early-stage disease), the stages where treatment is most effective. Values are derived from published clinical validation studies for each test.</p>
+<p>Detection strength is classified using two thresholds:</p>
+<p><span style="color:#3a9a3a;font-weight:500">Strong detection (>50%)</span> — the test identifies more than half of early-stage cases for this cancer type. This threshold reflects the overall Stage I-II sensitivity reported for the best-performing MCED tests in clinical validation.</p>
+<p><span style="color:#c88a1a;font-weight:500">Moderate detection (25-50%)</span> — the test identifies between one-quarter and one-half of early-stage cases. Detection at this level may provide supplementary screening value alongside standard screening methods.</p>
+<p><span style="color:#E24B4A;font-weight:500">Limited or not tested (25% or less, or no data)</span> — the test either detects fewer than one in four early-stage cases, or has not published per-cancer sensitivity data for this cancer type. Tests should not be relied upon for screening of these cancers.</p>
+<p>Only cancer types with a sample size of at least 5 patients in the validation study are included. Per-cancer sensitivity values below this threshold are excluded due to insufficient statistical reliability.</p>
+<p class="meth-sources"><strong>Data sources:</strong> Galleri — CCGA3 clinical validation (Klein et al., Annals of Oncology, 2021). Cancerguard — ASCEND-2 study (AACR 2024). Caris Detect — Achieve 1 interim readout (Caris Life Sciences, Feb 2026). EPISEEK — published performance data. All values are Stage I-II where available; some values are estimated from published stage-specific breakdowns.</p>
+<p>This tool is for informational purposes only and does not provide medical advice. MCED tests require a physician's order. Discuss testing decisions with your healthcare provider.</p>
+</div>
+
+</div>
+
+<script>
+var TESTS = [
+  {name:"Caris Detect", vendor:"Caris Life Sciences", price:null, source:"Achieve 1 interim", cancers:{
+    "Head and Neck":100.0, "Lung":86.7, "Cervix":80.0,
+    "Esophagus":80.0, "Gastric":80.0,
+    "Prostate":78.9, "Uterus":73.7, "Pancreas":71.4,
+    "Colon/Rectum":62.2, "Breast":53.0
+  }},
+  {name:"Galleri", vendor:"GRAIL", price:949, source:"CCGA3", cancers:{
+    "Liver":85.0, "Ovary":65.0, "Pancreas":61.0, "Head and Neck":56.0,
+    "Multiple Myeloma":55.0, "Lymphoma":40.0, "Esophagus":38.5,
+    "Gastric":35.0, "Colon/Rectum":33.0, "Cervix":30.0, "Sarcoma":28.0,
+    "Lung":24.0, "Endometrial":18.0, "Bladder":15.0,
+    "Melanoma":10.0, "Breast":8.5, "Kidney":8.0, "Thyroid":5.0, "Prostate":4.2
+  }},
+  {name:"Cancerguard", vendor:"Exact Sciences", price:899, source:"ASCEND-2 est.", cancers:{
+    "Liver":62.0, "Ovary":52.0, "Pancreas":48.0, "Head and Neck":42.0,
+    "Gastric":38.0, "Lung":35.0, "Lymphoma":32.0,
+    "Colon/Rectum":30.0, "Cervix":28.0, "Esophagus":25.0,
+    "Bladder":22.0, "Endometrial":20.0, "Kidney":16.0, "Breast":14.0
+  }},
+  {name:"EPISEEK", vendor:"Epigenomics", price:299, source:"Published data est.", cancers:{
+    "Liver":40.0, "Lung":30.0, "Pancreas":25.0, "Colon/Rectum":22.0,
+    "Ovary":20.0, "Gastric":18.0, "Breast":7.0
+  }},
+  {name:"Shield MCD", vendor:"Guardant Health", price:895, source:"", cancers:{}}
+];
+
+var ALL_CANCERS = [
+  "Bladder","Brain","Breast","Cervix","Colon/Rectum","Endometrial",
+  "Esophagus","Gallbladder","Gastric","Head and Neck","Kidney",
+  "Leukemia","Liver","Lung","Lymphoma","Melanoma","Multiple Myeloma",
+  "Ovary","Pancreas","Prostate","Sarcoma","Small Intestine",
+  "Testis","Thyroid","Uterus"
+];
+var MALE_EXCLUDE = ["Breast","Cervix","Ovary","Endometrial","Uterus"];
+var FEMALE_EXCLUDE = ["Prostate","Testis"];
+var SMOKE_CANCERS = ["Lung","Bladder","Pancreas","Head and Neck","Kidney","Esophagus"];
+var MALE_GAPS = [
+  {label:"No colonoscopy", cancer:"Colon/Rectum"},
+  {label:"No PSA test", cancer:"Prostate"}
+];
+var FEMALE_GAPS = [
+  {label:"No colonoscopy", cancer:"Colon/Rectum"},
+  {label:"No mammogram", cancer:"Breast"},
+  {label:"No pap/HPV test", cancer:"Cervix"}
+];
+
+var sex = null;
+var famEntries = [];
+var gapSet = new Set();
+var smokeOn = false;
+
+function tierInfo(s) {
+  if (s == null) return {color:"#E24B4A"};
+  if (s > 50) return {color:"#4aba4a"};
+  if (s >= 25) return {color:"#EF9F27"};
+  return {color:"#E24B4A"};
+}
+
+function dotHtml(tier) {
+  return '<span class="dd" style="background:' + tier.color + '"></span>';
+}
+
+function allSelected() {
+  var s = new Set();
+  famEntries.forEach(function(e) { s.add(e.cancer); });
+  gapSet.forEach(function(c) { s.add(c); });
+  if (smokeOn) SMOKE_CANCERS.forEach(function(c) { s.add(c); });
+  return Array.from(s);
+}
+
+function setSex(s) {
+  sex = s;
+  famEntries = [];
+  gapSet.clear();
+  smokeOn = false;
+  document.getElementById("bm").className = s === "male" ? "seg on" : "seg";
+  document.getElementById("bf").className = s === "female" ? "seg on" : "seg";
+  document.getElementById("ctrls").classList.remove("hidden");
+  document.getElementById("reset-wrap").classList.remove("hidden");
+  document.getElementById("sbtn").className = "pill";
+  fillDropdowns();
+  buildGapPills();
+  renderTags();
+  renderCards();
+}
+
+function doReset() {
+  sex = null;
+  famEntries = [];
+  gapSet.clear();
+  smokeOn = false;
+  document.getElementById("bm").className = "seg";
+  document.getElementById("bf").className = "seg";
+  document.getElementById("ctrls").classList.add("hidden");
+  document.getElementById("reset-wrap").classList.add("hidden");
+  document.getElementById("sbtn").className = "pill";
+  renderCards();
+}
+
+function fillDropdowns() {
+  var detectable = new Set();
+  TESTS.forEach(function(t) {
+    Object.keys(t.cancers).forEach(function(c) { detectable.add(c); });
+  });
+  var momCancers = ALL_CANCERS.filter(function(c) {
+    return FEMALE_EXCLUDE.indexOf(c) === -1 && detectable.has(c);
+  });
+  var dadCancers = ALL_CANCERS.filter(function(c) {
+    return MALE_EXCLUDE.indexOf(c) === -1 && detectable.has(c);
+  });
+  var momEl = document.getElementById("sel-mom");
+  var dadEl = document.getElementById("sel-dad");
+  var mh = '<option value="">Select cancer type...</option>';
+  momCancers.forEach(function(c) { mh += '<option value="' + c + '">' + c + '</option>'; });
+  momEl.innerHTML = mh;
+  var dh = '<option value="">Select cancer type...</option>';
+  dadCancers.forEach(function(c) { dh += '<option value="' + c + '">' + c + '</option>'; });
+  dadEl.innerHTML = dh;
+}
+
+function buildGapPills() {
+  var gs = sex === "male" ? MALE_GAPS : FEMALE_GAPS;
+  var div = document.getElementById("gp");
+  div.innerHTML = "";
+  gs.forEach(function(g) {
+    var b = document.createElement("button");
+    b.className = "pill";
+    b.textContent = g.label;
+    b.onclick = function() {
+      if (gapSet.has(g.cancer)) {
+        gapSet.delete(g.cancer);
+        b.className = "pill";
+      } else {
+        gapSet.add(g.cancer);
+        b.className = "pill on-gap";
+      }
+      renderTags();
+      renderCards();
+    };
+    div.appendChild(b);
+  });
+}
+
+var _adding = false;
+function addFrom(side) {
+  if (_adding) return;
+  var sel = document.getElementById("sel-" + side);
+  var val = sel.value;
+  if (!val) return;
+  _adding = true;
+  var exists = famEntries.some(function(e) { return e.cancer === val && e.side === side; });
+  if (!exists) {
+    famEntries.push({cancer: val, side: side});
+  }
+  sel.value = "";
+  _adding = false;
+  renderTags();
+  renderCards();
+}
+
+function removeFam(idx) {
+  famEntries.splice(idx, 1);
+  renderTags();
+  renderCards();
+}
+
+function toggleSmoke(el) {
+  smokeOn = !smokeOn;
+  el.className = smokeOn ? "pill on-smoke" : "pill";
+  renderTags();
+  renderCards();
+}
+
+function renderTags() {
+  var momH = "";
+  var dadH = "";
+  famEntries.forEach(function(e, i) {
+    var h = '<span class="tag tag-fam" onclick="removeFam(' + i + ')">'
+      + e.cancer + ' <span class="x">&times;</span></span>';
+    if (e.side === "mom") momH += h; else dadH += h;
+  });
+  document.getElementById("tags-mom").innerHTML = momH;
+  document.getElementById("tags-dad").innerHTML = dadH;
+  var smokeH = "";
+  if (smokeOn) {
+    SMOKE_CANCERS.forEach(function(c) {
+      smokeH += '<span class="tag tag-smoke">' + c + '</span>';
+    });
+  }
+  document.getElementById("tags-smoke").innerHTML = smokeH;
+  var gapH = "";
+  gapSet.forEach(function(c) {
+    gapH += '<span class="tag tag-gap">' + c + '</span>';
+  });
+  document.getElementById("tags-gap").innerHTML = gapH;
+}
+
+function renderCards() {
+  var all = allSelected();
+  var ctr = document.getElementById("cards");
+  var entries = TESTS.map(function(t) {
+    var g = 0, a = 0, r = 0, nd = 0;
+    all.forEach(function(c) {
+      var s = t.cancers[c];
+      if (s == null) nd++; else if (s > 50) g++; else if (s >= 25) a++; else r++;
+    });
+    return {t: t, g: g, a: a, r: r, nd: nd};
+  });
+  if (all.length > 0) {
+    entries.sort(function(x, y) {
+      var xH = Object.keys(x.t.cancers).length > 0 ? 1 : 0;
+      var yH = Object.keys(y.t.cancers).length > 0 ? 1 : 0;
+      if (xH !== yH) return yH - xH;
+      if (y.g !== x.g) return y.g - x.g;
+      if (y.a !== x.a) return y.a - x.a;
+      if (x.r !== y.r) return x.r - y.r;
+      return x.nd - y.nd;
+    });
+  } else {
+    entries.sort(function(x, y) {
+      var xTotal = Object.keys(x.t.cancers).length;
+      var yTotal = Object.keys(y.t.cancers).length;
+      if (yTotal !== xTotal) return yTotal - xTotal;
+      var xGreens = Object.keys(x.t.cancers).filter(function(c) { return x.t.cancers[c] > 50; }).length;
+      var yGreens = Object.keys(y.t.cancers).filter(function(c) { return y.t.cancers[c] > 50; }).length;
+      if (yGreens !== xGreens) return yGreens - xGreens;
+      return x.t.name.localeCompare(y.t.name);
+    });
+  }
+  var h = "";
+  entries.forEach(function(e) {
+    var t = e.t;
+    var hasData = Object.keys(t.cancers).length > 0;
+    var allSet = new Set(all);
+    h += '<div class="card' + (hasData ? '' : ' card-faded') + '">';
+    if (!hasData) h += '<div class="stamp">No early stage per cancer data published</div>';
+    h += '<div class="ch">';
+    h += '<div class="card-info">';
+    h += '<div class="cn">' + t.name + '</div>';
+    h += '<span class="cv">' + t.vendor + '</span>';
+    if (t.price) {
+      h += '<div class="cp">$' + t.price.toLocaleString() + '</div>';
+    } else {
+      h += '<div class="cp-tbd">Price TBD</div>';
+    }
+    h += '</div>';
+    if (all.length > 0) {
+      h += '<div class="card-mid">';
+      if (hasData) {
+        h += '<div class="your-label">Your selected cancers</div>';
+        h += '<div class="dots">';
+        all.forEach(function(c) {
+          var s = t.cancers[c];
+          var tier = tierInfo(s);
+          var pct = s != null ? s.toFixed(1) + "%" : "--";
+          h += '<div class="dr">';
+          h += dotHtml(tier);
+          h += '<span class="dc">' + c + '</span>';
+          h += '<span class="dp">' + pct + '</span>';
+          h += '</div>';
+        });
+        h += '</div>';
+      } else {
+        h += '';
+      }
+      h += '</div>';
+    }
+    var otherCount = 0;
+    if (hasData) {
+      Object.keys(t.cancers).forEach(function(c) {
+        if (!allSet.has(c)) otherCount++;
+      });
+    }
+    if (otherCount > 0) {
+      h += '<div class="card-right">';
+      h += '<div class="detect-big">' + otherCount + '</div>';
+      if (all.length === 0) {
+        h += '<div class="detect-words">cancers<br>may be<br>detected<br>early</div>';
+      } else {
+        h += '<div class="detect-words">additional<br>cancers<br>may be<br>detected<br>early</div>';
+      }
+      h += '</div>';
+    }
+    h += '</div></div>';
+  });
+  ctr.innerHTML = h;
+}
+
+renderCards();
+</script>
+</body>
+</html>
