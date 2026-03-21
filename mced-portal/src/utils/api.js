@@ -1,14 +1,45 @@
 const API_BASE = 'https://www.openonco.org/api/v1';
-const CACHE_KEY = 'mced-explorer-tests-v2';
+const CACHE_KEY = 'mced-explorer-tests-v3';
 const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
 
+// Canonicalize cancer type names from the raw cancerTypeSensitivity arrays
+const ALIASES = {
+  'Liver/Bile-duct': 'Liver',
+  'Liver/Bile Duct': 'Liver',
+  'Stomach': 'Gastric',
+  'Lymphoid Leukemia': 'Leukemia',
+  'Myeloid Neoplasm': 'Leukemia',
+  'Plasma Cell Neoplasm': 'Multiple Myeloma',
+  'Non-Hodgkin Lymphoma': 'Lymphoma',
+};
+
+function canonicalize(name) {
+  return ALIASES[name] || name;
+}
+
 /**
- * Fetch MCED tests from the OpenOnco API.
- * Auto-detects which tests to show:
- *   - Tests with populated perCancerEarlyStageSensitivity → traffic lights
- *   - Tests with empty {} → stamp ("no per-cancer data published")
- * No hardcoded test list — the API is the single source of truth.
+ * Compute all-stage per-cancer sensitivity from the raw
+ * cancerTypeSensitivity array (overall.detected / overall.total).
  */
+function computeAllStageCancers(rawArray) {
+  if (!Array.isArray(rawArray)) return {};
+  const map = {};
+  for (const entry of rawArray) {
+    const name = canonicalize(entry.cancerType);
+    if (!name || !entry.overall || entry.overall.total === 0) continue;
+    if (entry.overall.total < 5) continue; // min sample size
+    // Keep larger sample if aliases collide
+    if (map[name] && map[name]._n >= entry.overall.total) continue;
+    map[name] = {
+      value: Math.round((entry.overall.detected / entry.overall.total) * 1000) / 10,
+      _n: entry.overall.total,
+    };
+  }
+  const result = {};
+  for (const [k, v] of Object.entries(map)) result[k] = v.value;
+  return result;
+}
+
 export async function fetchMcedTests() {
   const cached = sessionStorage.getItem(CACHE_KEY);
   if (cached) {
@@ -26,13 +57,13 @@ export async function fetchMcedTests() {
 
   const tests = allTests
     .filter((t) => t.testScope?.includes('Multi-cancer'))
-    .filter((t) => t.perCancerEarlyStageSensitivity != null) // includes {} and populated objects
+    .filter((t) => t.perCancerEarlyStageSensitivity != null)
     .map((t) => ({
       name: t.name,
       vendor: t.vendor,
       source: t.perCancerEarlyStageSensitivitySource || '',
       cancers: t.perCancerEarlyStageSensitivity || {},
-      // Study metadata for research framing
+      allStageCancers: computeAllStageCancers(t.cancerTypeSensitivity),
       sensitivity: t.sensitivity || null,
       specificity: t.specificity || null,
       stageISensitivity: t.stageISensitivity || null,

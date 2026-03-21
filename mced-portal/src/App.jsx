@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { SENSITIVITY_TIERS } from './data/thresholds';
 import { MALE_EXCLUDE, FEMALE_EXCLUDE } from './data/genderExclusions';
 import { sortDefault, sortBySelection } from './logic/sortTests';
@@ -27,60 +27,80 @@ export default function App() {
 
   const [strongThreshold, setStrongThreshold] = useState(SENSITIVITY_TIERS.GOOD);
   const [moderateThreshold, setModerateThreshold] = useState(SENSITIVITY_TIERS.OK);
+  const [dataMode, setDataMode] = useState('early'); // 'early' | 'all'
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const thresholds = useMemo(
     () => ({ strong: strongThreshold, moderate: moderateThreshold }),
     [strongThreshold, moderateThreshold]
   );
 
-  // Build detectable cancers list from current test data
+  // Apply data mode: swap cancers object based on early vs all-stage
+  const displayTests = useMemo(() => {
+    if (dataMode === 'all') {
+      return tests.map((t) => ({
+        ...t,
+        cancers: Object.keys(t.allStageCancers || {}).length > 0
+          ? t.allStageCancers
+          : t.cancers, // fallback to early if no all-stage data
+      }));
+    }
+    return tests;
+  }, [tests, dataMode]);
+
+  // Build detectable cancers list from current display data
   const detectableCancers = useMemo(() => {
     const detectable = new Set();
-    tests.forEach((t) => Object.keys(t.cancers).forEach((c) => detectable.add(c)));
+    displayTests.forEach((t) => Object.keys(t.cancers).forEach((c) => detectable.add(c)));
     return [...detectable].sort();
-  }, [tests]);
+  }, [displayTests]);
 
-  // Mom is female → exclude male-only cancers; Dad is male → exclude female-only cancers
-  const momCancers = useMemo(
+  const motherCancers = useMemo(
     () => detectableCancers.filter((c) => !FEMALE_EXCLUDE.includes(c)),
     [detectableCancers]
   );
-  const dadCancers = useMemo(
+  const fatherCancers = useMemo(
     () => detectableCancers.filter((c) => !MALE_EXCLUDE.includes(c)),
     [detectableCancers]
   );
 
   const sorted = useMemo(() => {
     if (selectedCancers.length > 0) {
-      return sortBySelection(tests, selectedCancers);
+      return sortBySelection(displayTests, selectedCancers);
     }
-    return sortDefault(tests);
-  }, [tests, selectedCancers]);
+    return sortDefault(displayTests);
+  }, [displayTests, selectedCancers]);
+
+  const openSettings = useCallback(() => setSettingsOpen(true), []);
+  const closeSettings = useCallback(() => setSettingsOpen(false), []);
+
+  const stageLabel = dataMode === 'all' ? 'All-Stage' : 'Early-Stage';
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
-      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED Early-Stage Sensitivity Data</h1>
-      <p className="text-[13px] text-gray-400 mb-1">
-        Published per-cancer detection rates across multi-cancer screening tests
+      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED {stageLabel} Sensitivity Data</h1>
+      <p className="text-[13px] text-gray-500 mb-3 leading-relaxed">
+        This tool models a typical screening candidate&apos;s profile — family history,
+        lifestyle factors, and screening gaps — then shows how each MCED test&apos;s
+        published per-cancer sensitivity maps to that profile. Intended for
+        researchers, clinicians, and test developers comparing detection coverage
+        across the MCED landscape. Not a consumer decision tool.
       </p>
-      <a
-        href="https://openonco.org"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-[11px] text-gray-300 underline hover:text-gray-500 transition-colors"
-      >
-        openonco.org
-      </a>
-      <p className="text-[11px] text-gray-300 mb-4 mt-1">
-        All sensitivity values are Stage I-II (early detection) from published clinical studies.
-      </p>
-
-      <SettingsPanel
-        strongThreshold={strongThreshold}
-        moderateThreshold={moderateThreshold}
-        onChangeStrong={setStrongThreshold}
-        onChangeModerate={setModerateThreshold}
-      />
+      <div className="flex items-center gap-3 mb-1">
+        <a
+          href="https://openonco.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[11px] text-gray-300 underline hover:text-gray-500 transition-colors"
+        >
+          openonco.org
+        </a>
+        <span className="text-[11px] text-gray-300">
+          {dataMode === 'early'
+            ? 'Stage I-II sensitivity from published clinical studies'
+            : 'All-stage sensitivity from published clinical studies'}
+        </span>
+      </div>
 
       <GenderToggle sex={sex} onSelect={setSex} />
 
@@ -88,17 +108,17 @@ export default function App() {
         <>
           <div className="mb-4">
             <FamilyDropdown
-              label="Family cancer history (mom's side)"
+              label="Family cancer history (mother's side)"
               side="mom"
-              cancers={momCancers}
+              cancers={motherCancers}
               entries={famEntries}
               onAdd={addFamily}
               onRemove={removeFamily}
             />
             <FamilyDropdown
-              label="Family cancer history (dad's side)"
+              label="Family cancer history (father's side)"
               side="dad"
-              cancers={dadCancers}
+              cancers={fatherCancers}
               entries={famEntries}
               onAdd={addFamily}
               onRemove={removeFamily}
@@ -118,7 +138,18 @@ export default function App() {
       </div>
 
       <Legend source={source} />
-      <Methodology tests={tests} />
+      <Methodology tests={displayTests} dataMode={dataMode} onOpenSettings={openSettings} />
+
+      <SettingsPanel
+        open={settingsOpen}
+        onClose={closeSettings}
+        strongThreshold={strongThreshold}
+        moderateThreshold={moderateThreshold}
+        onChangeStrong={setStrongThreshold}
+        onChangeModerate={setModerateThreshold}
+        dataMode={dataMode}
+        onChangeDataMode={setDataMode}
+      />
     </div>
   );
 }
