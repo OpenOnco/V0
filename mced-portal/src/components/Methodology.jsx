@@ -1,4 +1,4 @@
-export default function Methodology({ tests, dataMode, onOpenSettings }) {
+export default function Methodology({ tests, dataMode }) {
   const sourceLine = (tests || [])
     .filter((t) => t.source)
     .map((t) => `${t.name} — ${t.source}`)
@@ -36,14 +36,7 @@ export default function Methodology({ tests, dataMode, onOpenSettings }) {
         <p>
           Only cancer types with a sample size of at least 5 patients in the
           validation study are included.
-          Sensitivity thresholds and data mode can be adjusted via{' '}
-          <button
-            onClick={onOpenSettings}
-            className="underline text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            settings
-          </button>
-          .
+          Sensitivity thresholds can be adjusted using the legend above the test cards.
         </p>
         {sourceLine && (
           <p className="pt-2.5 border-t border-gray-200">

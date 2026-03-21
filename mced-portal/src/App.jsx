@@ -9,10 +9,9 @@ import FamilyDropdown from './components/FamilyDropdown';
 import SmokingToggle from './components/SmokingToggle';
 import ScreeningGaps from './components/ScreeningGaps';
 import TestCard from './components/TestCard';
-import Legend from './components/Legend';
+import ThresholdLegend from './components/ThresholdLegend';
 import Methodology from './components/Methodology';
 import ResetButton from './components/ResetButton';
-import SettingsPanel from './components/SettingsPanel';
 
 export default function App() {
   const { tests, source } = useTestData();
@@ -28,12 +27,16 @@ export default function App() {
   const [strongThreshold, setStrongThreshold] = useState(SENSITIVITY_TIERS.GOOD);
   const [moderateThreshold, setModerateThreshold] = useState(SENSITIVITY_TIERS.OK);
   const [dataMode, setDataMode] = useState('early'); // 'early' | 'all'
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const thresholds = useMemo(
     () => ({ strong: strongThreshold, moderate: moderateThreshold }),
     [strongThreshold, moderateThreshold]
   );
+
+  const handleThresholdsChange = useCallback(({ strong, moderate }) => {
+    setStrongThreshold(strong);
+    setModerateThreshold(moderate);
+  }, []);
 
   // Apply data mode: swap cancers object based on early vs all-stage
   const displayTests = useMemo(() => {
@@ -70,10 +73,6 @@ export default function App() {
     }
     return sortDefault(displayTests);
   }, [displayTests, selectedCancers]);
-
-  const openSettings = useCallback(() => setSettingsOpen(true), []);
-  const closeSettings = useCallback(() => setSettingsOpen(false), []);
-
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
@@ -113,25 +112,15 @@ export default function App() {
         </>
       )}
 
-      <div className="flex flex-col gap-2.5 mt-5">
+      <ThresholdLegend thresholds={thresholds} onThresholdsChange={handleThresholdsChange} />
+
+      <div className="flex flex-col gap-2.5">
         {sorted.map((t) => (
           <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} dataMode={dataMode} />
         ))}
       </div>
 
-      <Legend source={source} />
-      <Methodology tests={displayTests} dataMode={dataMode} onOpenSettings={openSettings} />
-
-      <SettingsPanel
-        open={settingsOpen}
-        onClose={closeSettings}
-        strongThreshold={strongThreshold}
-        moderateThreshold={moderateThreshold}
-        onChangeStrong={setStrongThreshold}
-        onChangeModerate={setModerateThreshold}
-        dataMode={dataMode}
-        onChangeDataMode={setDataMode}
-      />
+      <Methodology tests={displayTests} dataMode={dataMode} />
     </div>
   );
 }
