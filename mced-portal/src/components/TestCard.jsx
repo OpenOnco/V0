@@ -15,9 +15,9 @@ export default function TestCard({ test, selectedCancers }) {
       {!hasData && <NoDataStamp />}
       <div className={`flex items-stretch ${!hasData ? 'opacity-40' : ''}`}>
         {/* Column 1: Test info */}
-        <div className="min-w-[130px] max-w-[160px] shrink-0">
-          <div className="text-base font-medium text-gray-900">{test.name}</div>
-          <span className="text-xs text-gray-400 block mt-0.5">{test.vendor}</span>
+        <div className="w-[130px] shrink-0">
+          <div className="text-[15px] font-medium text-gray-900 leading-tight truncate" title={test.name}>{test.name}</div>
+          <span className="text-xs text-gray-400 block mt-0.5 truncate" title={test.vendor}>{test.vendor}</span>
         </div>
 
         {/* Column 2: Traffic lights */}
