@@ -1,0 +1,638 @@
+{
+  "grants": {
+    "11238020": {
+      "appl_id": 11238020,
+      "project_num": "5P30CA014089-50",
+      "project_title": "Genomic and Epigenomic Regulation",
+      "abstract_text": "PROJECT SUMMARY – Genomic and Epigenomic Regulation (GER) Program \nThe Genomic and Epigenomic Regulation (GER) Program is a basic science program with an overarching goal \nof discovering basic mechanisms of genomic and epigenomic regulation involved in growth and behavior of \nnormal and cancer cells, and translating basic findings into cancer detection, prognosis and treatment in \ncollaboration with other NCCC Programs. GER is led by Michael Stallcup PhD, who has made breakthrough \ndiscoveries in steroid hormone signaling and transcriptional regulation, and Yali Dou PhD, renowned for \ntranslation of epigenetic discoveries into novel inhibitors. Aligned with the NCCC Strategic Plan priorities focused \non multi-modal biomarkers of cancer evolution and translational drug development research, the Program's \nSpecific Aims are to: 1) Define the genomic, epigenomic, and transcriptomic features that are distinct in \ncancer cells relative to normal cells, and 2) Characterize regulatory mechanisms and signaling pathways \nresponsible for cancer phenotypes to identify and validate novel potential therapeutic targets. In the \ncurrent grant period, GER members made major discoveries of critical genes and pathways, leveraging the new \nsystematic process at identifying and prioritizing potential targets to advance in a go-no-go pipeline under the \nnew Center for Cancer Drug Development at NCCC. Signature achievements include: 1) identifying antiviral \ngene expression as a marker of response to DNA methylation inhibitors in leukemia; 2) creating novel \nbioinformatics pipelines that define tumor-specific enhancer elements, linked transcription factors, and target \ngenes as drivers of breast and prostate cancer; 3) identifying mechanisms by which GRP78 and HSP90α escape \nto the cancer cell surface and drive cell survival, and demonstrating that antibodies against GRP78 and HSP90α \nhave anti-tumor effects in animal models of various cancers; 4) establishing small molecule modulators of \ntranscriptional regulation of the cellular circadian clock as new potential therapeutic agents; and 5) identifying a \nnew inhibitor of a histone kinase that eliminates multiple types of cancer cells. With support from NCCC, GER \nfosters member interactions and drives novel collaborations through weekly and annual Program meetings, \njunior member mentoring, cancer-focused PhD programs, and participation in NCCC-organized Disease \nResearch Affinity Groups and the Targets to Therapies Steering Committee. GER has 40 full members who hold \n$12.1M in total cancer research funding (direct costs), of which $9.9M is peer reviewed and $3.5M is from NCI, \nrepresenting significant increases of 114%, 94%, and 134%, respectively since the 2015 review. During the \ncurrent grant period, members published 244 cancer-relevant publications, of which 27% are intra-programmatic, \n28% are inter-programmatic, and 31% are high impact (IF >9). GER leaders promote a sharp focus on catchment \narea cancer burdens including acute lymphoblastic leukemia and prostate, breast, liver, colorectal, and \nlung cancer.",
+      "award_amount": 69288,
+      "fiscal_year": 2026,
+      "activity_code": "P30",
+      "agency": "NCI",
+      "pi_names": "Bodour Salhia",
+      "pi_details": [
+        {
+          "name": "Bodour Salhia",
+          "profile_id": 9176624
+        }
+      ],
+      "organization_name": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+      "organization_city": "Los Angeles",
+      "organization_state": "CA",
+      "project_start_date": "1996-12-01T00:00:00",
+      "project_end_date": "2026-11-30T00:00:00",
+      "award_notice_date": "2026-02-23T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "97899d6e7a77a2c0b15d1680fe6e66f2"
+    },
+    "11238040": {
+      "appl_id": 11238040,
+      "project_num": "5P30CA014089-50",
+      "project_title": "Flow Cytometry Core",
+      "abstract_text": "PROJECT SUMMARY – Flow Cytometry and Immune Monitoring Shared Resource\nThe mission of the USC Norris Comprehensive Cancer Center (NCCC) Flow Cytometry and Immune Monitoring\nShared Resource (FCIM) is to provide advanced multi-parameter flow cytometry, cell sorting capabilities, and\nimmune monitoring services for advancing basic, translational, and clinical research with options for full-service\ntechnical support for cancer clinical trial immune-monitoring correlative studies. NCCC Administration oversees\nFCIM with Martin Kast PhD (continuing in the role) and Rong Lu PhD (new in the role in 2015) as the faculty Co-\nDirectors. Kast and Lu have extensive and complementary scientific expertise; they meet monthly to provide\nexecutive oversight for core services and to promote user access and satisfaction. In response to annual NCCC\nsurveys of Shared Resources (SR) and feedback from the NCCC External Advisory Board, FCIM significantly\nenhanced services and new equipment during the current grant cycle, including: 1) expanded sorting and high\nthroughput analysis capabilities with 3 new instruments offering more available colors, 2) increased post-sort\nviability, 3) added services for mass cytometry (CyTOF)-assisted projects; and 4) lowered costs due to improved\nefficiencies. In the next grant cycle, based on user feedback, FCIM will expand its services to include T cell\nreceptor (TCR) clonality determination and other single cell omics using a newly acquired Illumina MiSeq System\nin the Molecular Genomics SR and spatial immune profiling with the recently acquired Vector Polaris system in\nthe Translational Pathology SR. During the current grant period (2015-2020), 70 NCCC members representing\nall five programs utilized FCIM, resulting in 53 publications and $15.9M in direct cost grant funding as a direct\nresult of usage. The anticipated annual budget of FCIM in the first year of the next grant cycle is $632,453, yet\nthe CCSG request is $143,215. Accordingly, FCIM leverages extensive institutional and recharge support and\nseeks only 23% from CCSG funds.",
+      "award_amount": 195542,
+      "fiscal_year": 2026,
+      "activity_code": "P30",
+      "agency": "NCI",
+      "pi_names": "Fumito Ito",
+      "pi_details": [
+        {
+          "name": "Fumito Ito",
+          "profile_id": 11308005
+        }
+      ],
+      "organization_name": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+      "organization_city": "Los Angeles",
+      "organization_state": "CA",
+      "project_start_date": "1996-12-01T00:00:00",
+      "project_end_date": "2026-11-30T00:00:00",
+      "award_notice_date": "2026-02-23T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "b20b043bc2c44b2dda21ed7e06d9f8a4"
+    },
+    "11238051": {
+      "appl_id": 11238051,
+      "project_num": "5P30CA014089-50",
+      "project_title": "Data Science Core",
+      "abstract_text": "PROJECT SUMMARY – Data Science Shared Resource\nThe mission of the Data Science Shared Resource (DSC) of the USC Norris Comprehensive Cancer Center\n(NCCC) is to provide integrated state-of-the-art biostatistics and clinical research informatics support for cancer\nresearch spanning basic and translational science to clinical studies, and cancer etiology to cancer control. DSC\nmembers work with investigators on the design, conduct, analysis, and reporting of cancer research, and play a\nkey role in clinical trials protocol review and study monitoring in the NCCC. As such, the DSC serves as a key\nfoundational element in the Data Science component of the Strategic Plan, enabling infrastructure and data\nplatforms for all NCCC Research Programs. NCCC recruited Ming Li PhD as DSC Director and David Birtwell\nMSE as Co-Director with oversight of DSC by NCCC Administration. A major development in this grant period,\nDSC now expands beyond traditional biostatistics services to include clinical research informatics services to\nintegrate data from electronic health records to -omics platforms for analysis. DSC applies advanced and novel\nstatistical methods to these data, including artificial intelligence/machine learning for discovery of underlying risk\nfactors, prediction of population level risk, and clinical decision algorithms and tools. During the current grant\nperiod (2015-2020), 88 NCCC members representing all five programs utilized the DSC, resulting directly in 278\npublications and 13 funded cancer-related P and U grants. The anticipated annual budget of DSC in the first\nyear of the next grant cycle is $1,548,658, yet the CCSG request is $379,255. Accordingly, DSC leverages\nextensive institutional and recharge support and seeks only 24% from CCSG funds.",
+      "award_amount": 517824,
+      "fiscal_year": 2026,
+      "activity_code": "P30",
+      "agency": "NCI",
+      "pi_names": "Ming Li",
+      "pi_details": [
+        {
+          "name": "Ming Li",
+          "profile_id": 15034152
+        }
+      ],
+      "organization_name": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+      "organization_city": "Los Angeles",
+      "organization_state": "CA",
+      "project_start_date": "1996-12-01T00:00:00",
+      "project_end_date": "2026-11-30T00:00:00",
+      "award_notice_date": "2026-02-23T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "216a9160158aa156d0d9d82e814054df"
+    },
+    "11253304": {
+      "appl_id": 11253304,
+      "project_num": "5R01CA295877-02",
+      "project_title": "A Clinical Trial of Cancer Prevention by Biomarker Based Detections of Barrett's Esophagus and Its Progression",
+      "abstract_text": "Abstract\nThis Project aims to reduce mortality from Esophageal Adenocarcinoma (EAC) by pioneering two paradigm\nchanging approaches. First, we will demonstrate the efficacy of non-endoscopic biomarker-based early detection\nof Barrett's esophagus (BE), in a population without symptoms of gastroesophageal reflux disease (GERD).\nSecond, we will establish a novel molecular technology, dubbed “BAD”, for early detection and interception of\nBE progression toward EAC. BE is the precursor lesion of EAC, a cancer with 80% 5-year mortality. BE is\ncurrently detected only when individuals with GERD undergo endoscopic (EGD) screening. Once detected, BE\npatients undergo triennial surveillance EGD with random biopsies to catch progression to high-grade dysplasia\n(HGD), that can be eradicated endoscopically to prevent cancer. Weaknesses of the approach include: i) low\nacceptance of EGD screening among GERD patients; ii) the absence of any recommended screening among\nnon-GERD patients, who fall completely outside of BE screening guidelines, but who account for 40% of EAC;\nfrequent failure of random surveillance biopsies to detect early EAC, with many cancers arising in between\nsurveillance exams and others already metastatic when detected. Our team developed a novel swallowable\nballoon-based device to enable targeted screening of the distal esophagus (the site of BE origin) in a simple 5-\nminute office procedure. We mated this device with a methylated DNA biomarker panel that sensitively detects\nBE. In the GERD population we showed this approach detects non-dysplastic BE (NDBE) with 90% sensitivity\nand 92% specificity. We now find that non-GERD patients with 3 or more BE risk factors (age, obesity, smoking,\nmale sex, white race) have BE risk similar to GERD patients. Aim 1 of this proposal will conduct a human trial\ndemonstrating that our non-endoscopic biomarker-based technology will enable BE detection in this non-GERD\npopulation, with positive predictive value greater than that of current guidelines for EGD screening of GERD\npatients. Second, our group applied methods of deep DNA sequencing and AI analysis, developed for detecting\ncancer DNA in liquid biopsies, to instead detect abnormal DNA from nascent clones of progressed BE captured\nin esophageal brushings that comprehensively surveille the full BE disease segment. We showed this method,\n“BAD”, detects as “Very-BAD” 97% of EAC and 68% of HGD. We also showed Very-BAD identifies a 7% subset\nof non-dysplastic BE, that on retrospective review showed high risk of early progression to HGD or EAC. Aim 2\nof this proposal will: i) implement improvements to the BAD methodology aimed at increasing sensitivity for HGD\nto 85%, while preserving specificity; ii) prospectively demonstrate that Very-BAD NDBE defines a population with\nhigh 3-year risk of BE progression to HGD; iii) implement BAD as a method to enable frequent non-endoscopic\nBE surveillance by adapting BAD to work with samples from our non-endoscopic balloon device. Last, molecular\nstudies will determine the basis of false positive and false negative BE calls in non-GERD subjects, and will also\nvisualize and molecularly interrogate the early progressed BE cells that are detected as Very-BAD.",
+      "award_amount": 1400846,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "AMITABH CHAK, SANFORD MARKOWITZ, JOSEPH WILLIS",
+      "pi_details": [
+        {
+          "name": "AMITABH CHAK",
+          "profile_id": 2067894
+        },
+        {
+          "name": "SANFORD MARKOWITZ",
+          "profile_id": 1888502
+        },
+        {
+          "name": "JOSEPH WILLIS",
+          "profile_id": 7847976
+        }
+      ],
+      "organization_name": "CASE WESTERN RESERVE UNIVERSITY",
+      "organization_city": "CLEVELAND",
+      "organization_state": "OH",
+      "project_start_date": "2025-01-03T00:00:00",
+      "project_end_date": "2029-12-31T00:00:00",
+      "award_notice_date": "2026-02-24T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "36b41fa8bd033e42684daf0d794ccac2"
+    },
+    "11259163": {
+      "appl_id": 11259163,
+      "project_num": "1R35GM161360-01",
+      "project_title": "Structure and Relations of Proteins and Nucleic Acids",
+      "abstract_text": "Project Summary – Abstract\n In this MIRA application we describe recent progress and general plans for the next five years of our\nstudies that focus largely on understanding the molecular mechanisms of DNA ‘breathing’ fluctuations and their\nroles in the assembly, function and control of the macromolecular complexes that direct DNA replication in\nbacteriophage T4. This work is presently funded by our R01 grant from NIGMS (GM15792), which has one more\nyear to run, and which we do not plan to renew. Our proposed MIRA project in this area represents a continuation\nof our present tightly knit collaborative research program between the groups of Professors Andrew H. Marcus\nand Peter H. von Hippel at the University of Oregon. In earlier collaborative work, the Marcus and von Hippel\nlabs have focused on solution studies of the replication complex of bacteriophage T4, which involves essentially\nthe same molecular mechanisms for ‘driving’ and regulating these central life processes as do those of ‘higher\norganisms,’ including humans. The T4 replication system thus serves as a good model to determine how human\nDNA replication proceeds at the functional level, and these studies can help provide insights into what might go\nwrong in various genetic diseases, which are often caused by minor quantitative changes in the composition and\nmolecular mechanisms of the ‘macromolecular machines’ of genome expression.\n In recent years the Marcus and von Hippel groups (and collaborators) have developed a series of\npowerful single-molecule fluorescence and ensemble spectroscopic methods that can be used to determine the\nlocal conformations, conformational disorder and microsecond-resolved ‘breathing fluctuations’ of DNA\nconstructs that have been site-specifically labeled with fluorescent optical probes. These DNA constructs contain\nfluorescent base analogue or cyanine dye probes located at defined biologically relevant positions within model\nDNA frameworks. We use fluorescence, circular dichroism (CD) and two-dimensional fluorescence spectroscopy\n(2DFS) methods to monitor biologically relevant changes in local conformation and conformational disorder at\nand near the probe-labeled sites. By this means we obtain significant information about average local DNA base\nand backbone conformations and conformational disorder in bulk solution. We then use these same optical\nprobe-labeling strategies in single-molecule Förster Resonance Energy Transfer (smFRET) and Polarization-\nSweep Single-Molecule Fluorescence (PS-SMF) experiments to monitor microsecond-resolved DNA ‘breathing’\nfluctuations, including within protein-DNA complexes. As described in this MIRA proposal, these approaches\nnow permit us to obtain structural and dynamic information about local conformational changes that occur at\ndefined and biologically relevant DNA backbone and base analogue probe sites, as well as to determine free\nenergy surfaces (and define transition states) of individual rate-limiting molecular steps within such reconstituted\nmodels of regulatory genomic control systems.",
+      "award_amount": 403836,
+      "fiscal_year": 2026,
+      "activity_code": "R35",
+      "agency": "NIGMS",
+      "pi_names": "Andrew Marcus",
+      "pi_details": [
+        {
+          "name": "Andrew Marcus",
+          "profile_id": 6801858
+        }
+      ],
+      "organization_name": "UNIVERSITY OF OREGON",
+      "organization_city": "EUGENE",
+      "organization_state": "OR",
+      "project_start_date": "2026-03-01T00:00:00",
+      "project_end_date": "2031-02-28T00:00:00",
+      "award_notice_date": "2026-02-27T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "7562a3083bae77412b8f4238ca700060"
+    },
+    "11281739": {
+      "appl_id": 11281739,
+      "project_num": "1U01CA299594-01A1",
+      "project_title": "An exosome-based liquid biopsy assay for the non-invasive early detection of colorectal adenomas and cancers",
+      "abstract_text": "Project Summary: Colorectal cancer (CRC) is potentially preventable, but still ranks 3rd in diagnosis and 2nd\nin mortality worldwide: why? CRC screening trials based on fecal immunochemical testing (FIT) showed survival\nbenefits through a stage-shifting effect, reducing stage IV diagnoses but not preventing CRC incidence. FIT\nsensitivity declines for early-stage CRC and precursor lesions (the advanced adenomas, AAs), emphasizing its\nimpact on mortality rather than incidence. Endoscopy-first approaches have a higher sensitivity, but the\ncontentious results of the NordICC trial demonstrated the numerous challenges of a colonoscopy-first approach,\nincluding invasiveness, costs, and patient compliance. In fact, only 54% of the US screening-eligible population\nhas received a colonoscopy in the past 10 years. However, non-invasive tests promote participation. So far,\nbiomarker studies have demonstrated great sensitivity to CRC but not to AAs and early-stage CRC. These\ninvestigations operated under the assumption that the same analyte would effectively detect both CRC and AA.\nHowever, 1) if both CRC and AAs release the same analyte into the blood, AAs do so in considerably smaller\nquantities; and 2) adenomas and CRC exist at opposite ends of the adenoma-carcinoma sequence; therefore,\nthey may not yet release the same analytes. Therefore, in this proposal, we advocate for the development of an\ninnovative liquid biopsy, a test that, built separately for AAs and CRC, can assess both AAs and CRC from a\nsingle blood draw to optimize patient compliance and resource allocation and enable timely AA detection for\ncancer prevention. MicroRNAs (miRNAs) are small non-coding RNAs that regulate genes implicated in every\nhuman cancer, including CRC and AAs, and may thus be ideal biomarkers. Indeed, circulating cell-free miRNAs\n(cf-miRNAs) have been shown to have diagnostic potential. Furthermore, the recent discovery that cancer cells\nactively excrete miRNAs in small extracellular vesicles called exosomes (exo miRNAs) has revolutionized the\nfield, as tumor-derived exosomal cargo enables the identification of cancer-specific molecular markers. To date,\nour studies have been among only very few to directly compare the clinical significance of cf-miRNAs vs. exo-\nmiRNAs, and our team is unique in proposing a combination of cf- and exo-miRNAs as potentially superior\nbiomarkers. To address the limitations of cf-miRNA biomarkers and to interrogate the potential clinical\nsignificance of exo-mRNAs, we completed a systematic and comprehensive biomarker discovery and validation\neffort in patients with CRC, AAs, and low-risk adenomas. These successes collectively demonstrate our ability\nto establish a transcriptomic signature for the early detection and prevention of CRC. In this proposal, we will\ncomplete three milestone-based specific aims: 1) Refinement and large-scale validation of our assay to establish\nits performance in a cohort of patients with CRC and AAs. 2) Validate our assay in a cohort of individuals younger\nthan 50 years of age. 3) Evaluate the ability of our transcriptomic signature to detect CRC and AAs at their\nearliest stages in pre-diagnosis serum specimens and determine lead time before disease presentation.",
+      "award_amount": 738675,
+      "fiscal_year": 2026,
+      "activity_code": "U01",
+      "agency": "NCI",
+      "pi_names": "Ajay Goel",
+      "pi_details": [
+        {
+          "name": "Ajay Goel",
+          "profile_id": 8552045
+        }
+      ],
+      "organization_name": "BECKMAN RESEARCH INSTITUTE/CITY OF HOPE",
+      "organization_city": "DUARTE",
+      "organization_state": "CA",
+      "project_start_date": "2026-03-16T00:00:00",
+      "project_end_date": "2031-02-28T00:00:00",
+      "award_notice_date": "2026-03-16T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "11f75facbe5e7f87aa952b7e970c2e9f"
+    },
+    "11285303": {
+      "appl_id": 11285303,
+      "project_num": "5R01CA270365-04",
+      "project_title": "Circulating cell-free DNA methylation as an accurate tool for detection and clinical follow-up of glioma",
+      "abstract_text": "PROJECT SUMMARY/ABSTRACT\nDespite advances in surgical techniques and clinical regimens, malignant gliomas usually progress or recur after\ntreatment. Currently, visual inspection of imaging data is the mainstay to monitor glioma progression; however,\nthis approach may not be accurate or refined enough to monitor treatment response or evolving prognostic\nsubtypes. Imaging data has limited ability to distinguish 1) gliomas from other tumors (e.g., primary central\nnervous system lymphoma), 2) progression from pseudoprogression (pseudoPD) resulting from therapy-induced\nnecrosis, or 3) minimal or remnant tumoral burden. Recently, we and others found that potential drivers of glioma\nprogression are mediated by gene mutation and epigenetic abnormalities. Generally, cancer molecular\nsignatures are identifiable in tumoral tissue; however, several groups have reported that tumor specific\nsignatures using both genetics and DNA methylation can be captured by non- or minimally-invasive approach\nsuch as liquid biopsy (LB) using biospecimens such as blood and cerebrospinal fluid. To address this knowledge\ngap in the role of LB to monitor glioma progression/recurrence, we aim to establish a novel approach to detect\npostoperative malignant glioma using DNA methylation of blood-derived cell-free DNA (cfDNA) markers with the\nultimate goal to fine-tune surveillance and treatment in real time. With available DNA methylation data extracted\nfrom serum/plasma cfDNA at initial diagnosis, we will develop a non-invasive Glioma-score that is associated\nwith prognostically relevant subtypes of glioma (e.g., G-CIMP-high vs -low), gliomas harboring unique and\ndruggable genetic alterations (FGFR3-TACC3 [F3-T3]) and gliomas developing in patients with\nNeurofibromatosis type 1 (NF1-glioma) (Aim 1). From available cohorts spanning longitudinal specimens\naccrued for more than a decade, we will profile the epigenome of paired primary and recurrent sets (e.g., first,\nsecond /or third recurrence), and develop a Glioma recurrence (GliomaR)-score associated with recurrence, and\nresponse to therapy (Aim 2). Based on our defined scores, we will classify patients into defined prognostic\ngroups (e.g., good and poor outcome) and risk to recur as a more aggressive subtype upon recurrence\nsubgroups. This will assess the accuracy of LB to monitor postoperative progression of different molecular\nsubtypes of glioma throughout an individual’s disease. We will utilize the quantitative and semi-quantitative\nimaging features routinely used in the diagnosis and monitoring of glioma to correlate the epigenomic markers\nof the LB Glioma-score with well established glioma imaging standards and tailor the LB score towards the\nresolution of the current limitations of imaging data for human glioma (e.g., pseudoPD and radiation necrosis)\n(Aim 3). Our study will be the first to investigate glioma whole-epigenome LB markers to detect aggressive\ngliomas at initial diagnosis and during tumor progression. Accurate diagnosis through a simple blood test will\nallow clinicians to detect the evolution of the disease in real-time, thus identifying high-risk patients who may\nbenefit from more aggressive therapy at an earlier point when intervention could be more effective.",
+      "award_amount": 577365,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "Houtan Noushmehr",
+      "pi_details": [
+        {
+          "name": "Houtan Noushmehr",
+          "profile_id": 10877445
+        }
+      ],
+      "organization_name": "HENRY FORD HEALTH SYSTEM",
+      "organization_city": "DETROIT",
+      "organization_state": "MI",
+      "project_start_date": "2023-03-10T00:00:00",
+      "project_end_date": "2028-02-29T00:00:00",
+      "award_notice_date": "2026-02-26T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "4d1078c010b4f3de1481fc299f6ee657"
+    },
+    "11285329": {
+      "appl_id": 11285329,
+      "project_num": "5R01CA255618-05",
+      "project_title": "Use of radioprotector in rectal cancer",
+      "abstract_text": "PROJECT SUMMARY\nThe majority of patients diagnosed with rectal cancer will receive radiation therapy to treat their tumors. Long-\nterm complications from radiation therapy directed to the colorectal region are bowel fibrosis, rectal wall damage,\nbowel incontinence, rectal and bladder bleeding and pelvic fracture and there are no FDA approved treatments\nto protect normal rectal and anal tissues from radiation-induced damage. Radiation exposure leads to free\nradical-mediated oxidative damage to normal tissues leading to fibrosis. Cancer cells have increased metabolic\nproduction of reactive oxygen species (ROS), relative to normal cells, which have been shown to drive cancer\nprogression. Thus, suppressing radiation-induced ROS would act as both a radioprotector in normal tissues\nwhile inhibiting pro-survival and progression pathways in cancer cells. BMX-001 is a small molecule antioxidant,\nwhich scavenges ROS. Preliminary data demonstrate that BMX-001 protects rectal tissues from radiation-\ninduced damage, while enhancing colorectal cancer killing. The overall hypothesis of this proposal is that BMX-\n001 will protect normal tissues from radiation-induced damage, while not protecting the cancer cells in patients\nundergoing radiation therapy of rectal and anal cancers. Specific Aim 1 will determine the mechanism(s) by\nwhich BMX-001 protects from radiation-induced epithelial dysfunction and how BMX-001 prevents blood chemo-\nradiation toxicity. It will be determined whether BMX-001 prevents hematological chemoradiation toxicity through\nthe NRF2/MnSOD signaling and potential biomarkers of oxidative stress and GI damage will be identified in a\nchronic in vivo model of radiation-induced damage. Specific Aim 2 will determine the safety and efficacy in\npatients through Phase II clinical trials as a radioprotector of rectal cancers. A randomized phase II clinical trial\nwill determine whether BMX-001 is an efficacious radioprotector of normal tissues in rectal cancer patients\nundergoing total neoadjuvant chemoradiation therapy followed by surgery. Specific Aim 3 will identify potential\nbiomarkers that can be used to demonstrate radiation damage and radioprotector efficacy of BMX-001 in human\nclinical specimens obtained from the Phase II trial. Surgically resected tumor and adjacent normal rectal tissues\nfrom BMX-001 or placebo controlled patients after chemoradiation will be evaluated for inflammation, normal\ntissue damage, fibrosis and oxidative stress. In addition, oxidative stress markers will be evaluated in blood and\nurine samples. The completion of the studies will provide an in depth mechanistic understanding of the\nmechanisms by which BMX-001 inhibits normal tissue injury and whether BMX-001 can be used in rectal cancer\npatients as an effective radioprotector and could be universally adapted for treatment of other cancers receiving\npelvic irradiation.",
+      "award_amount": 543558,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "Chi Lin, REBECCA OBERLEY-DEEGAN",
+      "pi_details": [
+        {
+          "name": "Chi Lin",
+          "profile_id": 9258286
+        },
+        {
+          "name": "REBECCA OBERLEY-DEEGAN",
+          "profile_id": 6985381
+        }
+      ],
+      "organization_name": "UNIVERSITY OF NEBRASKA MEDICAL CENTER",
+      "organization_city": "OMAHA",
+      "organization_state": "NE",
+      "project_start_date": "2022-04-08T00:00:00",
+      "project_end_date": "2028-01-31T00:00:00",
+      "award_notice_date": "2026-02-24T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "aeaa4fcd6e082667c83f67f9412c7ac7"
+    },
+    "11290283": {
+      "appl_id": 11290283,
+      "project_num": "5F32HL177926-02",
+      "project_title": "The impact of pyruvate metabolic fate in myofibroblast differentiation in myelofibrosis.",
+      "abstract_text": "Project Summary/Abstract:\nMyelofibrosis (MF) is a type of myeloproliferative neoplasm (MPN) that results in progressive scarring of the\nbone marrow, leading to constitutional symptoms, decreased hematopoiesis, and increased risk of acute\nleukemia. Symptomatology and disease progression are driven by constitutive genetic activation of the\nJAK/STAT pathway. Current treatments target JAK/STAT signaling and alleviate symptoms but fail to alter the\nnatural progression of disease. Hyperactive cytokine signaling though JAK/STAT promotes disease\nprogression by stimulating pro-fibrotic signals, such as TGF-β, which converts mesenchymal stromal cells\n(MSCs) into myofibroblasts. Myofibroblasts deposit extracellular matrix, which perpetuates fibrosis. One\ntreatment goal is to prevent/reverse fibrosis and allow for expansion of normal hematopoietic stem cells\n(HSCs). However, there are currently no treatments that reproducibly inhibit progression of fibrotic diseases,\nand new treatment strategies are needed in this field. Lactate, which was canonically considered a waste\nproduct of glycolytic metabolism, has recently been shown to play a role in several diseases. Interestingly,\nfibroblasts increase glycolysis and lactate production when they convert to myofibroblasts. In line with these\nprevious observations, my preliminary data suggests that inhibiting lactate export from fibroblasts by\npharmacologically blocking monocarboxylate transporter 4 (MCT4) prevents TGF-β mediated myofibroblast\ndifferentiation in a cell autonomous manner. I also demonstrate that MCT4 is dramatically increased in bone\nmarrow samples from myelofibrosis patients compared to non-fibrotic bone marrow samples. Together, these\nfindings led me to hypothesize that lactate export through MCT4 is necessary for TGF-β mediated MSC-to-\nmyofibroblast differentiation and disease progression in MF. To test this hypothesis, I propose three specific\naims. First, I will determine the necessity of MCT4 for bone marrow MSC-to-myofibroblast differentiation. This\nwill include pharmacologically manipulating the fate of pyruvate under different nutrient conditions to\nmechanistically understand how pyruvate-lactate metabolic axis alters MSC and myofibroblast phenotype.\nSecond, I will test the relevance of MCT4 levels and function to MF pathophysiology in vivo. To do this, I will\nutilize human samples from pre-fibrotic MPN patients and compare them to patients with MF, to test the\nhypothesis that increased MCT4 expression correlates with fibrotic disease progression. Using a well\ncharacterized mouse model of MF, I will test whether MCT4 inhibition alleviates disease and prolongs survival.\nIn my third aim, I will use unbiased single cell RNA-sequencing and 13C-glucose tracing to understand how\ndifferent signals, such as TGF-β and mechanical tension, alter metabolism and lead to myofibroblast\ndifferentiation. This research proposal will determine whether MCT4 is a viable clinical target for myelofibrosis\nand given the recent development of selective MCT4 inhibitors, there is an opportunity for translation to the\nclinic and direct impact on patient care.",
+      "award_amount": 82744,
+      "fiscal_year": 2026,
+      "activity_code": "F32",
+      "agency": "NHLBI",
+      "pi_names": "Nathan Krah",
+      "pi_details": [
+        {
+          "name": "Nathan Krah",
+          "profile_id": 12101899
+        }
+      ],
+      "organization_name": "UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH",
+      "organization_city": "SALT LAKE CITY",
+      "organization_state": "UT",
+      "project_start_date": "2025-02-01T00:00:00",
+      "project_end_date": "2028-01-31T00:00:00",
+      "award_notice_date": "2026-02-27T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "46621749a51e242204390bccaf679ffd"
+    },
+    "11290319": {
+      "appl_id": 11290319,
+      "project_num": "5R01NS119322-05",
+      "project_title": "Ink4a/ARF/Ink4b locus in Neurofibromatosis Type 1",
+      "abstract_text": "Summary/Abstract\n Malignant peripheral nerve sheath tumors (MPNSTs) are the leading cause of death in patients with\nneurofibromatosis-1 (NF1). MPNSTs arise in NF1 patients from benign plexiform neurofibromas (PNFs) but it is\nunclear why only ~30% of PNFs transform into MPNSTs. Recent studies suggest that inactivation of the\nINK4a/ARF/INK4b locus (called CDKN2A for INK4a and ARF; CDKN2B for INK4b) generates a pre-malignant\nlesion called an atypical neurofibromatous neoplasm of uncertain biology (ANNUBP). ANNUBPs are the newly\nrecognized precursor to MPNSTs, but mechanisms that drive and classify this transitional intermediate are poorly\ndefined. INK4a/ARF/INK4b disruption is the main alteration currently linked to ANNUBPs, besides NF1 loss and\nRABL6A upregulation. In MPNSTs, the locus is altered at one, two or all three genes, with worse patient survival\nassociated with loss of all three. Each gene (INK4a, ARF, and INK4b) encodes a tumor suppressor, but their\nseparate contributions and cooperativity with other factors in driving cancer remain incompletely understood.\nGiven their prominent role, a better understanding of INK4a, ARF, and INK4b in MPNST development is needed,\nas drugs targeting the locus are either approved or showing promise in other cancers.\n Our central hypothesis is p16Ink4a, ARF and p15Ink4b act cooperatively in multiple pathways to\nsuppress the transformation of benign PNFs and ANNUBPs to MPNSTs. Aim 1 will define significant genetic\nand proteomic events coinciding with INK4a, ARF and INK4b inactivation in human ANNUBPs and MPNSTs by\ngenetic, molecular and histologic analyses. Results will be correlated to clinical variables such as survival. The\nprognostic value of a newly developed liquid biopsy assay evaluating locus status and other tumor markers will\nbe determined in NF1 patients. Aim 2 employs CRISPR editing of p16Ink4a, ARF and/or p15Ink4b in human\nPNF-derived cells to determine their roles in PNF-ANNUBP-MPNST transformation. Directed analyses of\nsuspected MPNST driver genes in cells and mouse models will identify genes that selectively cooperate with\nINK4a, ARF, or INK4b loss to drive ANNUBP-MPNST transformation in vitro and in vivo. Aim 3 establishes the\nbiological significance of drugs targeting Ink4a/Arf/Ink4b relevant pathways in PNF-ANNUBP-MPNST therapy\nand prevention. Predicted mediators of acquired resistance to therapy will be verified using molecular and\npharmacologic approaches. Studies will determine the value of targeted therapy against pre-MPNST models to\nprevent malignant progression. Impact: Studies will provide new insights into INK4a/ARF/INK4b, one of the most\nfrequently inactivated loci in human cancers. Innovative animal models of PNF-ANNUBP-MPNST progression\nwill be generated and mechanisms of transformation leading to MPNST will be defined. Preclinical studies will\nassess a new combination therapy targeting Ink4a/Arf/Ink4b pathways in preventing malignant progression.\nResults will advance our understanding of events driving MPNST development, facilitating earlier diagnosis and\npre-emptive interventions targeting ANNUBPs.",
+      "award_amount": 526144,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NINDS",
+      "pi_names": "Benjamin Darbro, Rebecca Dodd, DAWN QUELLE",
+      "pi_details": [
+        {
+          "name": "Benjamin Darbro",
+          "profile_id": 10129704
+        },
+        {
+          "name": "Rebecca Dodd",
+          "profile_id": 6940890
+        },
+        {
+          "name": "DAWN QUELLE",
+          "profile_id": 6830020
+        }
+      ],
+      "organization_name": "UNIVERSITY OF IOWA",
+      "organization_city": "IOWA CITY",
+      "organization_state": "IA",
+      "project_start_date": "2022-03-01T00:00:00",
+      "project_end_date": "2027-02-28T00:00:00",
+      "award_notice_date": "2026-02-25T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "adf8f811b76fab98f44fb5c3f4d1dd21"
+    },
+    "11291340": {
+      "appl_id": 11291340,
+      "project_num": "5R01CA282762-02",
+      "project_title": "A systems-level approach to therapeutically target STING in cancer",
+      "abstract_text": "PROJECT SUMMARY\nMost proteins have more than one function and participate in a wide range of biological processes. This compli-\ncates our ability to infer protein function from sequence. This problem, otherwise known as genotype-to-pheno-\ntype mapping, represents one of biology’s most intractable challenges. One way by which proteins diversify their\nfunctionality is through the evolution of modular domains, each of which can engage in distinct functions. Satu-\nration mutagenesis, which systematically alters each amino acid in a given protein, is a powerful technique to\nmap diverse functions to individual domains by generating separation-of-function mutants. However, the utility\nof this approach remains severely limited by excessive labor, prohibitive costs, and, most importantly, low-di-\nmensional readouts. The vast majority of saturation mutagenesis libraries have thus far been screened in vitro\nusing biochemical or simple cellular assays. There are currently no approaches to probe the complex cellular\nand in vivo functions of saturation mutagenesis libraries at scale. This inspired our development of SatSeq – a\nmodular breakthrough technology that couples the power of single cell sequencing with saturation mutagenesis\nand DNA barcoding – to map the structure-function landscape of multimodal proteins in complex and dynamic\nbiological systems both in vivo and in vitro. As a proof of principle, we will develop SatSeq to interrogate the\nopposing functions of an immune-related protein called Stimulator of Interferon Genes (STING) in cancer pro-\ngression. STING is a master regulator of innate immunity, and it has been proposed to activate anti-tumor im-\nmune responses early in disease progression. Yet, recent evidence suggests that its chronic activation in cancer\ncells can drive metastasis. We hypothesize that this duality is achieved through distinct functional elements.\nCoupling genome-wide, single cell transcriptional profiling with in vivo interrogation of saturation mutagenesis\nbarcodes, we will test the modular and time-dependent functions of STING during cancer progression. We will\nthen utilize SatSeq as a target validation platform for STING modulators in clinical development, given its ability\nto readily identify resistance mutations that prevent drug-target binding without impacting target protein activity\n(i.e. gatekeeper mutations). The identification of such mutations is the gold standard for validating on-target drug\neffects, which will be applied here to a set of small molecule activators and inhibitors of STING. This is particularly\nsalient since the first STING agonist to be used in clinical trials (DMXAA) was ineffective due to its inability to\nbind its target. In sum, we expect SatSeq will have significant impact at the fundamental and translational levels.\nFirst, it will expand our understanding of STING’s diverse functions during cancer progression – revealing the\ncontext in STING which activation vs. inhibition is therapeutically beneficial and creating new avenues for patient\nselection. Second, as a high-throughput platform to validate on-target drug activity, SatSeq will determine\nwhether emerging STING modulators act through on-target effects and suggest mechanisms of drug action.",
+      "award_amount": 701876,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "JOHN BLENIS, Ashley Laughney",
+      "pi_details": [
+        {
+          "name": "JOHN BLENIS",
+          "profile_id": 1860024
+        },
+        {
+          "name": "Ashley Laughney",
+          "profile_id": 11441179
+        }
+      ],
+      "organization_name": "WEILL MEDICAL COLL OF CORNELL UNIV",
+      "organization_city": "NEW YORK",
+      "organization_state": "NY",
+      "project_start_date": "2025-03-01T00:00:00",
+      "project_end_date": "2030-02-28T00:00:00",
+      "award_notice_date": "2026-02-27T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "74828ff0ceffdbb8824b663bd815f489"
+    },
+    "11294168": {
+      "appl_id": 11294168,
+      "project_num": "5R01DE023222-13",
+      "project_title": "Mutations and Target Genes in Adenoid Cystic Carcinoma",
+      "abstract_text": "Project Summary/Abstract\n Adenoid Cystic Carcinoma (ACC) is the second most common type of salivary gland tumor, but can also\narise in other tissues such as lacrimal gland, breast and skin. ACC tumors display heterogeneous morphology\nand have a variable clinical course. Many ACC patients survive 10 years or more after the standard therapy of\nsurgery and radiation, but a fraction succumb much more quickly and others acquire distant metastases or\nrelapse 5 or more years after the initial treatment. So patients often have to endure significant morbidity\nincluding reconstructive surgery while living under the threat of recurrence for decades.\n ACC is one of the only human tumors in which mutations involving the MYB oncogene are known to be the\nmost common driver. A large fraction of ACC tumors harbor a t(6;9) translocation, which juxtaposes an\nenhancer from the NFIB gene on chromosome 9p close to the MYB oncogene on chromosome 6q. However,\nACC tumors have heterogeneous molecular characteristics. About half the tumors that express MYB harbor\ntranslocations that fuse the MYB and NFIB genes, resulting in a ‘broken’ or truncated MYB gene that can only\nexpress Myb proteins with C-terminal truncations – mutations that are known to activate the oncogenic\npotential of the Myb transcription factor. But the remaining MYB positive tumors appear to express full-length\nMyb proteins without any fusion to NFIB. And some tumors harbor different translocations that position the\nMYB gene close to other enhancers or that involve the related MYBL1 gene instead of MYB. This molecular\nheterogeneity is also reflected in the subgroups of ACC patients that have been identified by gene expression\nprofiling, including at least one poor-prognosis subgroup with a unique gene expression profile and another\nsubgroup that expresses neither MYB nor MYBL1 and must harbor as yet unidentified driver mutations.\n Deciphering the molecular events that lead to ACC has been complicated by the lack of adequate cell\nmodels for this tumor. To avoid any issues from highly selected or mislabeled cell lines, our strategy has been\nto utilize primary salivary gland ACC patient samples, an approach that has led to numerous important results\nthat have reshaped our understanding of ACC tumors. In this competing renewal application we will generate\nthe largest set of ACC tumor RNA-seq data in order to move the field forward in several ways. We will address\nthe heterogeneity of ACC tumors and patients, set the stage for the development of new therapeutic strategies\nthat target Myb proteins, use patient samples in a translational way to validate experimental results about Myb\nprotein biology and we will begin migrating our approaches to clinical (CLIA) laboratories to make them usable\nin the clinic.",
+      "award_amount": 431067,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NIDCR",
+      "pi_names": "Viswanathan Palanisamy",
+      "pi_details": [
+        {
+          "name": "Viswanathan Palanisamy",
+          "profile_id": 8661961
+        }
+      ],
+      "organization_name": "UNIVERSITY OF NEW MEXICO HEALTH SCIS CTR",
+      "organization_city": "ALBUQUERQUE",
+      "organization_state": "NM",
+      "project_start_date": "2012-09-10T00:00:00",
+      "project_end_date": "2028-02-29T00:00:00",
+      "award_notice_date": "2026-02-23T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "429422faa7eca528e539c07e733abf78"
+    },
+    "11296639": {
+      "appl_id": 11296639,
+      "project_num": "1R01CA300766-01A1",
+      "project_title": "The enabler of tumor cell immortality in TERT promoter mutant cancers",
+      "abstract_text": "Replicative immortality is a hallmark of cancer that underpins tumor growth. Immortality is achieved by\nreactivating the Telomerase Reverse Transcriptase (TERT) gene. Without TERT, telomeres erode with each cell\nreplication, limiting cellular lifespan. Heterozygous activating mutations in the TERT promoter (TERTp) are the\nmost common non-coding mutations in cancer, but their activation mechanism is unresolved for most cancers.\nUnderstanding how TERTp mutations lead to reactivation and immortality is a central question in cancer research\nwith major therapeutic implications. However, a cadre of regulators of the mutant TERTp has been proposed.\nThe two hotspot mutations generate identical de novo E26 transformation specific (ETS) transcription factor\nbinding motifs largely shared by the 28 members of the ETS family. We were the first to discover that one unique\nETS factor, the multimeric GA-binding protein (GABP), activates the two hotspot mutations in TERTp mutant\nglioblastoma. In our preliminary data, we analyzed cell lines representing sixteen cancer types and six recurrent\nmutations and found that a B1L heterotetramer is responsible for activation in all cases.\nSurprisingly, TERT expression is maintained after B1L tetramer depletion. Further investigation revealed an\nunderlying network of GABP transcriptional auto-suppression, the release from which drives the upregulation of\nthe GABPB1S dimer or the alternative GABPB2 tetramer. We hypothesize that the B1L tetramer is the pan-\ncancer activator of the mutant TERT promoter, but it is replaceable exclusively by the upregulated B1S dimer or\nB2 tetramer. Based on this new regulatory model, we anticipate that targeting the common elements of the GABP\ncomplexes will reverse tumor cell immortality phenotypes and slow or eliminate further tumor growth. We devised\nthree specific aims to evaluate our hypothesis and develop experimental tools to subvert immortality. We will use\nCRISPR knockouts and a biological proteolysis-targeting chimera designed to selectively degrade GABP. In\nTERTp mutant and wildtype cancer cells, we will use these targeting tools to resolve the temporal relationships\nbetween GABP targeting and tumor immortality phenotypes including TERT expression, telomere loss, and cell\nviability associated gene expression signatures at the bulk and single cell level (Aim 1). In Aim 2, we will discover\nvulnerabilities in domains shared among GABP complexes via in silico mutagenesis at an unprecedented scale\nwith Artificial Intelligence tools AlphaFold and Struct-Evo, and validation experiments. This will allow us to refine\nand interpret the structure predictions of complete GABP complexes bound to the mutant TERTp at atomic\nresolution, to develop potent GABP degraders and potentially small molecule binders or inhibitors. In Aim 3, we\nwill determine whether an inducible GABP-degrader can subvert immortality in vivo, including sensitization and\nrescue experiments. Targeting this core enabler of immortality could convert oncogenes into drivers of cell death\nand senescence. The results of our study will be applicable to a wide spectrum of adult and pediatric cancers.\nThe AI-based mutagenesis and experimental validations may be applicable to many other cancer targets.",
+      "award_amount": 658722,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "Joseph Costello",
+      "pi_details": [
+        {
+          "name": "Joseph Costello",
+          "profile_id": 6867892
+        }
+      ],
+      "organization_name": "UNIVERSITY OF CALIFORNIA, SAN FRANCISCO",
+      "organization_city": "SAN FRANCISCO",
+      "organization_state": "CA",
+      "project_start_date": "2026-03-12T00:00:00",
+      "project_end_date": "2031-02-28T00:00:00",
+      "award_notice_date": "2026-03-12T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "a361b3f3529e33306d22e77d38bba3df"
+    },
+    "11296907": {
+      "appl_id": 11296907,
+      "project_num": "5R01CA271455-05",
+      "project_title": "Dissecting innate immune signaling in pre-leukemia evolution",
+      "abstract_text": "Abstract\nClonal hematopoiesis (CH) is an aging associated condition characterized by the clonal outgrowth of\nmutated pre-leukemic cells. Although individuals with CH are healthy, they are at an increased risk of\ndeveloping hematopoietic malignancies. To identify cooperating molecular alterations required for\nmalignant transformation of clonal pre-leukemic HSPC, we performed an in vivo shRNA screen and found\nthat shRNAs targeting Traf6 were overwhelmingly enriched in following transformation to overt myeloid\nleukemias. TRAF6 is an ubiquitin E3 ligase that synthesizes Lysine (K) 63-linked ubiquitin chains on\nsubstrates leading to Toll-like receptor (TLR) superfamily pathway activation. In support of our in vivo\nshRNA screen, promoter hypermethylation and reduced expression of TRAF6 is observed in subsets of\nmyeloid malignancy patients, including ~40-50% of acute myeloid leukemia (AML). Moreover, our\npreliminary data shows that deletion of Traf6 in pre-leukemic Tet2-deficient HSPC results in an aggressive\nmyeloid neoplasm in part through a novel MYC-dependent mechanism. Based on our findings, we\nhypothesize that loss of TRAF6 drives subsets of genetically-defined myeloid malignancies, specifically\nvia a novel post-translational modification of MYC resulting in its activation. The objectives of the proposal\nare to uncover the molecular and cellular basis of TRAF6 deletion on pre-leukemic HSPC function with the\nlong-term goal of uncovering improved therapeutic approaches by investigating the consequences of\nTRAF6 deletion in models of CH and on leukemia development (Aim 1), identifying the molecular basis of\nthe tumor suppressor-like function of TRAF6 in AML (Aim 2), and evaluating the oncogenic potential of a\nnovel TRAF6-dependent MYC post-translational modification (Aim 3). These studies are highly significant\nas they will provide critical insight into the progression of pre-leukemic states to overt leukemia as a result\nof subverting select innate immune pathways, describe a novel disease-modifying role of TLR-TRAF6, and\nreveal an unreported mechanism of MYC regulation. These studies have direct translational implications\nand fill an unmet clinical need for genetically- and phenotypically-defined subtypes of AML/MPN.",
+      "award_amount": 638243,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "Iannis Aifantis, Daniel Starczynowski",
+      "pi_details": [
+        {
+          "name": "Iannis Aifantis",
+          "profile_id": 7647769
+        },
+        {
+          "name": "Daniel Starczynowski",
+          "profile_id": 10813775
+        }
+      ],
+      "organization_name": "CINCINNATI CHILDRENS HOSP MED CTR",
+      "organization_city": "CINCINNATI",
+      "organization_state": "OH",
+      "project_start_date": "2022-03-04T00:00:00",
+      "project_end_date": "2027-02-28T00:00:00",
+      "award_notice_date": "2026-03-02T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "010fd5eb4dc78f74ffd67d2907e3dcf1"
+    },
+    "11301800": {
+      "appl_id": 11301800,
+      "project_num": "5R01DE031319-05",
+      "project_title": "Oral Dysplasia and Oral Cavity Cancer Risk in Dental and Medical Surveillance Settings Using a Chairside Chip-Based Cytopathology Tool",
+      "abstract_text": "ABSTRACT\n In the US, approximately 50,000 oral and pharyngeal cancers (OPCs) are diagnosed annually\n(10/100,000 incidence). Further, oral epithelial dysplasia (OED) is about 15 times more common than OPC.\nPatients diagnosed with OED are known to be at risk for malignant transformation (MT), and those treated for\noral squamous cell carcinoma (OSCC) are known to be at elevated risk for cancer recurrence (CR). There is\nlittle consensus about the optimal clinical surveillance pathways for these patients. Individuals with a history of\nOSCC and potentially malignant oral lesions (PMOLs) harboring OED/OSCC can have widely variable clinical\npresentation that overlaps with oral lesions of no malignant potential. Thus, clinicians may be reluctant to perform\nserial scalpel biopsies on these patients. Commercially available diagnostic adjuncts lack adequate clinical\nvalidation across the lesion disease spectrum. When OSCC or high-grade OED is diagnosed early, there is an\nopportunity to provide appropriate timely treatment, and patient outcomes can improve dramatically. Thus, there\nis a compelling need for new highly effective non-invasive precision oral lesion diagnostic technologies that can\nbe tailored for the needs of individual patients.\n This multi-institution prospective cohort study seeks to utilize and optimize first Point-of-Care Oral\nCytopathology Tool (POCOCT), a microfluidics ensemble and single cell image-based data acquisition system\nemploying artificial intelligence with interpretation of >100 image features including nuclear F-actin for precision\noral lesion diagnostics to be completed. Portable diagnostic tools and embedded algorithms will be optimized for\nsecondary and tertiary care settings for the first time. In this R01 study, POCOCT-derived OSCC CR and OED\nMT models will be developed to elucidate population and patient-specific dynamic changes in numerical index\nthat yield key information related to CR and risk of MT. While past efforts focused on a single time point, this\nsame multimodal chip-based approach will be used to sample repeatedly during surveillance to identify the value\nof speed of change to MT and CR. The overarching goals of this R01 study are: (1) to determine whether\ncytological signatures, when examined serially over time, can lead to better risk prediction for CR, (2) to\ndetermine if the same signatures can lead to earlier detection of local recurrence than the traditional clinical\npathway, and (3) to further optimize the POCOCT for precision lesion diagnostics of MT and CR using newly\nidentified biomarkers, including nuclear F-actin, and rare cell phenotypes identified by deep learning.\n This R01 will leverage unique NIDCR-Grand Opportunity databases for a new paradigm of precision\ndiagnostics. High risk patients will be longitudinally monitored in secondary and tertiary care settings at intervals,\nand their risk trajectory will be established over time using personalized multivariate cytological signatures as\nwell as initial values. This prospective longitudinal cohort study has potential for more accurate lesion diagnosis,\nimproving patient survival and overall quality of life.",
+      "award_amount": 722544,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NIDCR",
+      "pi_names": "JOHN MCDEVITT",
+      "pi_details": [
+        {
+          "name": "JOHN MCDEVITT",
+          "profile_id": 8231604
+        }
+      ],
+      "organization_name": "NEW YORK UNIVERSITY",
+      "organization_city": "NEW YORK",
+      "organization_state": "NY",
+      "project_start_date": "2022-04-07T00:00:00",
+      "project_end_date": "2027-02-28T00:00:00",
+      "award_notice_date": "2026-02-24T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "1c1aaf108ec65182b2612c9f8dae3708"
+    },
+    "11302663": {
+      "appl_id": 11302663,
+      "project_num": "5R01CA288880-03",
+      "project_title": "Neoadjuvant Tucatinib plus Trastuzumab in HER2-amplified Locally Advanced Rectal Cancer",
+      "abstract_text": "PROJECT SUMMARY/ABSTRACT\nCurrent standard tri-modality therapy (chemotherapy, radiation, and surgery) for locally advanced rectal cancer\nis associated with high morbidity and only cures disease in about 75% of patients. We hypothesize that a\nbiomarker-driven approach that gives matched targeted therapy to patients early in the treatment of locally\nadvanced rectal cancers will lead to high anti-tumor activity and provide the chance to avoid radiation and/or\nsurgery and its associated morbidities. We have already pioneered such an approach for mismatch repair\ndeficient locally advanced rectal cancer, where clinical complete response was seen in all patients who\ncompleted 6 months of upfront treatment with immune checkpoint inhibitors (23/23, 100% complete clinical\nresponse), allowing for the omission of radiation and/or surgery. In this proposal, we focus on patients with\nHER2-amplified rectal cancer and hypothesize that induction therapy with HER2-targeted treatment will lead to\ntumor regression and modify the need for tri-modality therapy. We propose an investigator-initiated phase II\nstudy (NCT05672524; MSK IRB# 22-185) that recently opened to enrollment; all patients will receive tucatinib\nplus trastuzumab induction HER2-targeted therapy for 6 weeks and continue tucatinib plus trastuzumab with\naddition of standard-of-care chemotherapy for 4 months, followed by disease reassessment before standard\nchemoradiation and before surgery. Patients with clinical complete response to induction HER2 therapy alone\nor combined with chemotherapy, or to the combination followed by chemoradiation, will undergo observation\nwith a chance for an organ-sparing management approach. Our central hypothesis is that the primary tumor will\nbe highly sensitive to HER2-targeted therapy alone or in combination with standard chemotherapy, leading to a\nhigher frequency of clinical complete response than with standard total neoadjuvant therapy. Treatment of rectal\ncancer in patients provides the unique opportunity to obtain on-treatment longitudinal tumor and blood samples\nto evaluate mechanisms of response and resistance. We hypothesize that levels of HER2 expression and\nconsequent dependence on HER2 homodimers underlie drug response and will determine HER2 expression in\nbiopsy samples and with 89Zr-trastuzumab PET/MRI and correlate with response rate and progression-free\nsurvival. Circulating tumor DNA will be tested as a biomarker for response. Established and newly generated\npatient-derived HER2-amplified colorectal cancer organoids will be used to model and study acquired resistance,\ntaking advantage of our team's expertise in generating these three-dimensional, multi-cellular structures, which\nboth recapitulate the biology of rectal cancer and provide a needed resource that expands the limited HER2-\namplified rectal cancer models currently available. We hypothesize that key resistance mechanisms will consist\nof decreased HER2 expression, secondary alterations that activate ERK, and shifts in tumor transcriptional\nprograms. Together, we will define the efficacy and biological effects of biomarker-directed therapy and aim to\ntransform treatment for patients with HER2-amplified locally advanced rectal cancer.",
+      "award_amount": 402600,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "Andrea Cercek, Rona Yaeger",
+      "pi_details": [
+        {
+          "name": "Andrea Cercek",
+          "profile_id": 9547139
+        },
+        {
+          "name": "Rona Yaeger",
+          "profile_id": 9547233
+        }
+      ],
+      "organization_name": "SLOAN-KETTERING INST CAN RESEARCH",
+      "organization_city": "NEW YORK",
+      "organization_state": "NY",
+      "project_start_date": "2024-03-01T00:00:00",
+      "project_end_date": "2029-02-28T00:00:00",
+      "award_notice_date": "2026-03-09T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "208c29b4e8c81b631280a74cd11558f3"
+    },
+    "11305700": {
+      "appl_id": 11305700,
+      "project_num": "2R01DE023641-09",
+      "project_title": "Signaling and Targeting of CRTC1-MAML2 Fusion Oncoprotein in Salivary Gland Tumor",
+      "abstract_text": "Project summary\n This competing renewal aims to elucidate how the CRTC1-MAML2 fusion oncogene drives malignancy\nthrough tumor-intrinsic mechanisms and immune evasion while evaluating novel therapeutic strategies. CRTC1-\nMAML2 is a major oncogenic driver of mucoepidermoid carcinoma (MEC), the most common salivary gland\nmalignancy. Patients with unresectable, recurrent, or metastatic MEC have poor prognoses and limited treatment\noptions, with no targeted therapies currently available. While immune checkpoint inhibitors (ICIs) have shown\nsome efficacy, responses remain inconsistent. Due to the low prevalence of MEC, large-scale clinical trials are\nchallenging, underscoring the need for a deeper mechanistic understanding to inform new treatment strategies.\n We originally cloned the CRTC1-MAML2 fusion from a t(11;19) translocation in human MEC cell lines\nand have since made significant progress in characterizing its oncogenic role. We developed the first genetically\nengineered mouse model (GEMM) in which a Cre-regulated CRTC1-MAML2 transgene induces salivary gland\ntumors that recapitulate the histological and molecular features of human MEC. Furthermore, inducible CRTC1-\nMAML2 knockdown in human MEC xenografts suppressed tumor growth. Mechanistically, CRTC1-MAML2 binds\nCREB through its CRTC1 CREB-binding domain (CBD) and constitutively activates transcription via its MAML2\ntranscriptional activation domain (TAD). Disrupting the CRTC1-MAML2/CREB interaction or inhibiting its\ndownstream amphiregulin (AREG)-EGFR signaling suppressed the growth of human MEC cells and xenograft\ntumors, establishing this fusion-CREB interaction as a key oncogenic driver and a promising therapeutic target.\nGene expression profiling reveals that CRTC1-MAML2 silencing or CRTC1-MAML2/CREB disruption not only\nrepresses pro-proliferative CREB target genes but also induces a proinflammatory gene signature, suggesting\na role in TME modulation. Single-cell RNA sequencing analysis using our GEMM model reveal that CRTC1-\nMAML2 fosters an immunosuppressive TME. Also, our newly established syngeneic MEC model exhibited\nresistance to anti-PD1 therapy. Therefore, we hypothesize that CRTC1-MAML2 promotes both tumor-intrinsic\ngrowth and TME reprogramming to enable immune evasion. Targeting this fusion axis, alone or in combination\nwith ICIs, may provide more effective therapies for MEC. This hypothesis will be tested by two specific aims. Aim\n1 will investigate the role of the CRTC1-MAML2 fusion in MEC tumor progression and immune landscape and\nAim 2 will evaluate strategies to inhibit the CRTC1-MAML2 fusion axis alone and with ICI-based immunotherapy.\n Completion of these aims will provide critical insights into CRTC1-MAML2’s oncogenic function and its\ndual role in tumor-intrinsic growth and immune evasion. These findings will advance our understanding of MEC\nbiology and guide the development of more effective therapies for CRTC1-MAML2 fusion-positive MEC patients.",
+      "award_amount": 383750,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NIDCR",
+      "pi_names": "Lizi Wu",
+      "pi_details": [
+        {
+          "name": "Lizi Wu",
+          "profile_id": 6090625
+        }
+      ],
+      "organization_name": "UNIVERSITY OF FLORIDA",
+      "organization_city": "GAINESVILLE",
+      "organization_state": "FL",
+      "project_start_date": "2014-08-08T00:00:00",
+      "project_end_date": "2030-11-30T00:00:00",
+      "award_notice_date": "2026-02-27T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "274fb3e3c44ad09f0b497884d3819dc7"
+    },
+    "11322132": {
+      "appl_id": 11322132,
+      "project_num": "5P01CA022443-48",
+      "project_title": "Project 4 - Defining the Role of EBV in DLBCL Pathogenesis and Identification of Therapeutic Targets",
+      "abstract_text": "PROJECT 4 – PROJECT SUMMARY/ABSTRACT\nProject 4. Defining the Role of EBV in DLBCL Pathogenesis and Identification of Therapeutic Targets\nEric Johannsen, Project Leader; Shannon Kenney and Bill Sugden, Co-Leaders\nPeople living with HIV are at substantially increased risk of developing diffuse large B cell lymphoma (DLBCL),\nthe most prevalent aggressive B cell lymphoma. DLBCL is not a single disease, but a group of histologically\nsimilar, but genetically distinct cancers. Defining DLBCL subtypes has shown distinct molecular pathways drive\neach subtype and has led to improvements in therapy. Although 5-10% of DLBCLs are EBV+, we lack an\nunderstanding of whether EBV associates with any of these genetic subtypes or is a distinct entity. We have\ndiscovered that about one-third of EBV+ DLBCLs correspond to the BCL6+Notch2 (BN2) DLBCL subtype and\nthe remaining two-thirds fall outside of current DLBCL genetic classification. This project will: (1) fully define the\ngenetic subtype(s) of DLBCL, including BN2, that are EBV associated; (2) determine the molecular mechanisms\nby which EBV latent genes interact with BN2 associated driver mutations to cause DLBCL; and (3) define the\nrole of EBV in DLBCL and identify dependency factors in EBV+ DLBCL that can be targeted therapeutically.",
+      "award_amount": 430044,
+      "fiscal_year": 2026,
+      "activity_code": "P01",
+      "agency": "NCI",
+      "pi_names": "ERIC JOHANNSEN",
+      "pi_details": [
+        {
+          "name": "ERIC JOHANNSEN",
+          "profile_id": 6712292
+        }
+      ],
+      "organization_name": "UNIVERSITY OF WISCONSIN-MADISON",
+      "organization_city": "MADISON",
+      "organization_state": "WI",
+      "project_start_date": "1997-02-01T00:00:00",
+      "project_end_date": "2029-02-28T00:00:00",
+      "award_notice_date": "2026-03-20T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "30c275010f4c6a64c37c967fa4bae179"
+    },
+    "11323870": {
+      "appl_id": 11323870,
+      "project_num": "5R01ES029294-07",
+      "project_title": "Metabolic activation of nitroarenes and Nrf2-Keap1",
+      "abstract_text": "Nitroarenes are carcinogens found in car exhaust and prominent in diesel exhaust. They pollute the air we breathe, contribute to air pollution which is rising due to extreme weather. Nitroarenes of concern are 1-nitropyrene (1-NP), 1,8-dinitropyrene (1,8-DNP), 3-nitrobenzanthrone (3-NBA) and 6-nitrochyrsene (6-NC). Nitroarenes undergo metabolic activation by nitroreduction via a nitroso- and hydroxylamino- intermediate and amine product and numerous enzymes have been implicated. In the last funding period, we found that prominent nitroreductases involved in the metabolic activation of 1-NP, 1,8-DNP and 3-NBA in human lung cells were the aldo-keto reductases AKR1C1-AKR1C3; furthermore, the genes encoding these enzymes were induced by the NRF2-KEAP1 stress response pathway and genetic knock out of this pathway eliminated nitroarene activation. These findings were among the first to demonstrate that activation of the NRF2-KEAP1 pathway may be harmful in the context of nitroarene exposure and could initiate the carcinogenesis process rather than prevent it. In this renewal we hypothesize that AKR1C enzymes induced by the NRF2-KEAP1 pathway activate nitroarenes to intermediates that adduct proteins and DNA, with a resultant increase in mutation, that ultimately leads to increased carcinogenesis. This hypothesis will be tested by using the following human lung cell lines: A549 (human adenocarcinoma cells with constitutive expression of NRF2 due to hypermethylation and mutation of KEAP1); A549 cells with NFE2L2/NRF2 heterozygous and homozygous knockout generated by CRISPR/Cas9, and HBEC3-KT cells (immortalized human bronchial epithelial cells with inducible NRF2). In Aim 1: We will determine whether human AKRs metabolically activate 6-nitrochrysene (6-NC) in the human lung cells described using both genetic and pharmacological approaches. 6-NC is unique in that it can be activated by monooxygenation and nitroreduction. We will determine whether human AKR1C enzymes reduce the nitro group of 6-NC-1,2-DHD to form 6-aminochrysene-1,2-DHD (6-AC-1,2-DHD) on route to DNA adducts or whether their dihydrodiol dehydrogenase activity will yield a highly reactive 6-nitrochysene-1,2-dione. In Aim 2: We will use a targeted proteomics approach to determine whether nitrosoarenes generated by AKR1C enzymes adduct proteins that control redox-state including KEAP1 itself in HBEC3-KT cells. Detection of sulfinamide and sulfonamide adducts in human lung cells would demonstrate that nitrosoarenes may modify the proteome and affect tumorigenesis. In Aim 3: We will determine whether the adductome resulting from nitroarene exposure in A549 and HBEC3-KT cells is NRF2 dependent. Covalent and oxidatively damaged DNA adducts will be measured by stable-isotope dilution liquid chromatography mass spectrometry. In Aim 4: We will determine for the first time if AKR1C enzymes increase the mutagenicity of nitroarenes on the HPRT gene. We will determine the mutation frequency, potency, pattern, spectrum, and signature and whether the distribution of single base substitutions is similar to COSMIC (catalog of somatic mutations in cancer) observed in human cancers.",
+      "award_amount": 621879,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NIEHS",
+      "pi_names": "KARAM EL-BAYOUMY, Trevor Penning",
+      "pi_details": [
+        {
+          "name": "KARAM EL-BAYOUMY",
+          "profile_id": 1867513
+        },
+        {
+          "name": "Trevor Penning",
+          "profile_id": 1861653
+        }
+      ],
+      "organization_name": "UNIVERSITY OF PENNSYLVANIA",
+      "organization_city": "PHILADELPHIA",
+      "organization_state": "PA",
+      "project_start_date": "2019-05-08T00:00:00",
+      "project_end_date": "2030-02-28T00:00:00",
+      "award_notice_date": "2026-03-05T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "9e67315279d1640d7f255ed59309e7ad"
+    },
+    "11330300": {
+      "appl_id": 11330300,
+      "project_num": "5R01CA285980-03",
+      "project_title": "Use of Noninvasive Biomarkers and Advanced MRI for early detection of NF1-associated MPNSTs",
+      "abstract_text": "ABSTRACT\nApproximately 120,000 Americans with neurofibromatosis type I (NF1) suffer a constellation of\nclinical manifestations, including aberrant proliferation of neural tissues leading to malignant\nperipheral nerve sheath tumors (MPNSTs). MPNSTs are highly aggressive sarcomas with a\nhigh risk of recurring and spreading, resulting in a 5-year survival rate of less than 25%. Early\ndiagnosis and intervention offer the best outcomes. However, the lack of convenient and\nspecific diagnostic tools is a major barrier to optimal therapeutic intervention. Conventional\nimaging modalities such as computed tomography (CT scan) and 18F-fluoro-d-glucose positron\nemission tomography scans (PET scan) are insufficiently specific. Further, lesion biopsies are\nextremely painful and have limited value due to the heterogeneity of these tumors. Therefore,\naccurate biomarkers for diagnosis and post-treatment monitoring of MPNSTs are critically\nneeded. The long-term goal of this proposal is to deploy cfDNA-based biomarkers in patients\nwith NF1 into routine clinical use to improve early detection of malignant transformation and\nmonitor responses to therapy. The objective of this proposal is to establish a diagnostic panel\nof DNA methylation markers, cfDNA-derived tumor fraction, and aneuploidy profiles that\ncorrelate with and complement imaging-based modalities for a clinically effective tool to\ndistinguish the presence of MPNSTs from plexiform neurofibromas. Our central hypothesis is\nthat MPNSTs arising in patients with NF1 have unique DNA methylation and somatic\nchromosomal copy number profiles (aneuploidy) that can be detected in the plasma and serve\nas clinical biomarkers for early diagnosis or guide therapeutic strategies. We propose 4\nSpecific Aims: 1) Demonstrate methylation profiles as biomarkers of MPNST in plasma\nsamples; 2) Establish aneuploidy and tumor fraction as biomarkers of MPNST; 3) Evaluate the\nrole of advanced MRI in the early detection of MPNST; 4) Determine the feasibility of cfDNA\nbiomarkers to predict malignant transformation and recurrent disease. Upon conclusion, we\nanticipate the development and validation of cfDNA methylation markers, cfDNA-derived tumor\nfraction, and aneuploidy profiles that can complement imaging-based modalities and can help\nphysicians in the early detection of MPNST. Our studies are significant because they will\nfacilitate early and accurate diagnosis of these aggressive tumors and, consequently,\nexpedite appropriate treatment, thereby improving patient quality of life, including survival.",
+      "award_amount": 580422,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NCI",
+      "pi_names": "Paul Scheet, Keila Torres",
+      "pi_details": [
+        {
+          "name": "Paul Scheet",
+          "profile_id": 9586232
+        },
+        {
+          "name": "Keila Torres",
+          "profile_id": 1879992
+        }
+      ],
+      "organization_name": "UNIVERSITY OF TX MD ANDERSON CAN CTR",
+      "organization_city": "HOUSTON",
+      "organization_state": "TX",
+      "project_start_date": "2024-03-11T00:00:00",
+      "project_end_date": "2029-02-28T00:00:00",
+      "award_notice_date": "2026-03-03T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "ac51d7055d96b9252b776ac6263ab50e"
+    },
+    "11372006": {
+      "appl_id": 11372006,
+      "project_num": "5R01DK135671-04",
+      "project_title": "Genetics and Immune Predictors for Recurrent Glomerular Diseases in the Kidney Allograft",
+      "abstract_text": "The recent development of potent immunosuppressive regimens has led to decreased incidence of acute rejection and increased incidence of non-rejection complications, including recurrent immune-mediated glomerular diseases (GD) which have emerged as leading causes of kidney allograft failure. \nIgA nephropathy (IgAN), membranous nephropathy (MN), and diffuse podocytopathy (DP) are the most common causes of primary GD in the native kidney and these same GD can recur after transplantation. In the native kidney, it is apparent that immune and genetic factors are important contributors to each of these GD. \nAlthough little is known about the pathogenesis of recurrent GD after transplantation, few studies have shown that rigorous donor-recipient HLA matching and steroid-free immunosuppressive regimens are risk factors for recurrent GD. Therefore, we hypothesized that, similar to GD in the native kidney, recurrent GD are mediated by genomic and immune factors. To define the role of genomic and immune factors in recurrent IgAN, MN, and DP, we have begun collecting clinical data, DNA from donor-recipient pairs, recipients’ sera, and kidney allograft biopsies from multiple transplant centers to assemble the largest cohort of transplant patients with recurrent and non-recurrent GD (n=1,035 at least). To ensure adequate power and eliminate the need for replication studies, we are using genetic risk scores (GRS) and serologic studies that has been previously validated in the native kidney. Hence, we developed a research plan composed of three aims that follow parallel approaches. \nIn Specific Aim-1, we will (1) use genome wide SNP arrays to genotype donor-recipient pairs in patients with recurrent and non-recurrent IgAN, generate individual 30-SNP IgAN GRS, and test these GRS as predictors of recurrent disease, (2) test the values of pre-transplant serum levels of galactose-deficient IgA1, IgG anti-glycan antibodies (Ab), and combined IgAN risk scores (which integrate the IgAN GRS with the above pre-transplant serum levels) as predictors for recurrent disease, and (3) compare transcriptomic profiling of different post-transplantation GD to identify immune signals specific for recurrent IgAN.\nIn Specific Aim-2, we will test the values of donor and recipient MN GRS, anti-phospholipase A2 receptor Ab and combined MN risk scores in predicting recurrent MN, and identify specific immune signals for recurrent MN.\nIn Specific Aim-3, we will test the values of donor and recipient DP GRS and anti-nephrin Ab as predictors for recurrent DP, and identify immune signals specific for recurrent disease.",
+      "award_amount": 365766,
+      "fiscal_year": 2026,
+      "activity_code": "R01",
+      "agency": "NIDDK",
+      "pi_names": "Ibrahim Batal",
+      "pi_details": [
+        {
+          "name": "Ibrahim Batal",
+          "profile_id": 11467497
+        }
+      ],
+      "organization_name": "COLUMBIA UNIVERSITY HEALTH SCIENCES",
+      "organization_city": "NEW YORK",
+      "organization_state": "NY",
+      "project_start_date": "2023-04-01T00:00:00",
+      "project_end_date": "2028-01-31T00:00:00",
+      "award_notice_date": "2026-02-25T00:00:00",
+      "clinical_trial_ncts": [],
+      "relevance_group": "B",
+      "first_seen": "2026-03-22T18:45:36.542Z",
+      "last_updated": "2026-03-22T18:45:36.542Z",
+      "hash": "4adcbd48b868d3c80161119e0ce2c409"
+    }
+  },
+  "meta": {
+    "last_run": "2026-03-22T18:45:36.542Z",
+    "total_grants_tracked": 21,
+    "total_funding": 10992735,
+    "queries_run": 5
+  }
+}

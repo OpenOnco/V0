@@ -111,17 +111,35 @@ describe('ScreeningGaps', () => {
 });
 
 describe('GeneticFactors', () => {
-  it('renders genetic factor buttons', () => {
+  it('renders collapsed genetic dropdown', () => {
     render(<GeneticFactors activeFactors={new Set()} onToggle={() => {}} sex="female" />);
-    expect(screen.getByText('BRCA1 or BRCA2')).toBeInTheDocument();
-    expect(screen.getByText('MUTYH')).toBeInTheDocument();
-    expect(screen.getByText('Lynch syndrome')).toBeInTheDocument();
+    expect(screen.getByText('Select genetic results...')).toBeInTheDocument();
   });
 
-  it('calls onToggle when factor clicked', () => {
+  it('opens dropdown and shows genetic checkboxes', () => {
+    render(<GeneticFactors activeFactors={new Set()} onToggle={() => {}} sex="female" />);
+    fireEvent.click(screen.getByText('Select genetic results...'));
+    expect(screen.getByLabelText('BRCA1 / BRCA2 / PALB2')).toBeInTheDocument();
+    expect(screen.getByLabelText('Lynch syndrome')).toBeInTheDocument();
+    expect(screen.getByLabelText('MUTYH-associated polyposis')).toBeInTheDocument();
+  });
+
+  it('calls onToggle when checkbox is clicked', () => {
     const onToggle = vi.fn();
     render(<GeneticFactors activeFactors={new Set()} onToggle={onToggle} sex="female" />);
-    fireEvent.click(screen.getByText('BRCA1 or BRCA2'));
+    fireEvent.click(screen.getByText('Select genetic results...'));
+    fireEvent.click(screen.getByLabelText('BRCA1 / BRCA2 / PALB2'));
+    expect(onToggle).toHaveBeenCalledWith('brca');
+  });
+
+  it('shows selected count, checked state, and removes tag on click', () => {
+    const onToggle = vi.fn();
+    render(<GeneticFactors activeFactors={new Set(['brca'])} onToggle={onToggle} sex="female" />);
+    expect(screen.getByText('1 genetic result selected')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('1 genetic result selected'));
+    expect(screen.getByLabelText('BRCA1 / BRCA2 / PALB2')).toBeChecked();
+    const tagButton = screen.getByRole('button', { name: /BRCA1 \/ BRCA2 \/ PALB2/i });
+    fireEvent.click(tagButton);
     expect(onToggle).toHaveBeenCalledWith('brca');
   });
 

@@ -1,0 +1,615 @@
+{
+  "source": "nih",
+  "generatedAt": "2026-03-22T18:45:36.544Z",
+  "discoveries": [
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: An exosome-based liquid biopsy assay for the non-invasive early detection of colorectal adenomas and cancers",
+      "summary": "U01 | $739K | NCI | BECKMAN RESEARCH INSTITUTE/CITY OF HOPE | PI: Ajay Goel",
+      "url": "https://reporter.nih.gov/project-details/11281739",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11281739,
+        "project_num": "1U01CA299594-01A1",
+        "activity_code": "U01",
+        "agency": "NCI",
+        "award_amount": 738675,
+        "fiscal_year": 2026,
+        "pi_names": "Ajay Goel",
+        "organization": "BECKMAN RESEARCH INSTITUTE/CITY OF HOPE",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: A Clinical Trial of Cancer Prevention by Biomarker Based Detections of Barrett's Esophagus and Its Progression",
+      "summary": "R01 | $1401K | NCI | CASE WESTERN RESERVE UNIVERSITY | PI: AMITABH CHAK, SANFORD MARKOWITZ, JOSEPH WILLIS",
+      "url": "https://reporter.nih.gov/project-details/11253304",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11253304,
+        "project_num": "5R01CA295877-02",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 1400846,
+        "fiscal_year": 2026,
+        "pi_names": "AMITABH CHAK, SANFORD MARKOWITZ, JOSEPH WILLIS",
+        "organization": "CASE WESTERN RESERVE UNIVERSITY",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Ink4a/ARF/Ink4b locus in Neurofibromatosis Type 1",
+      "summary": "R01 | $526K | NINDS | UNIVERSITY OF IOWA | PI: Benjamin Darbro, Rebecca Dodd, DAWN QUELLE",
+      "url": "https://reporter.nih.gov/project-details/11290319",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11290319,
+        "project_num": "5R01NS119322-05",
+        "activity_code": "R01",
+        "agency": "NINDS",
+        "award_amount": 526144,
+        "fiscal_year": 2026,
+        "pi_names": "Benjamin Darbro, Rebecca Dodd, DAWN QUELLE",
+        "organization": "UNIVERSITY OF IOWA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Circulating cell-free DNA methylation as an accurate tool for detection and clinical follow-up of glioma",
+      "summary": "R01 | $577K | NCI | HENRY FORD HEALTH SYSTEM | PI: Houtan Noushmehr",
+      "url": "https://reporter.nih.gov/project-details/11285303",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11285303,
+        "project_num": "5R01CA270365-04",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 577365,
+        "fiscal_year": 2026,
+        "pi_names": "Houtan Noushmehr",
+        "organization": "HENRY FORD HEALTH SYSTEM",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Use of Noninvasive Biomarkers and Advanced MRI for early detection of NF1-associated MPNSTs",
+      "summary": "R01 | $580K | NCI | UNIVERSITY OF TX MD ANDERSON CAN CTR | PI: Paul Scheet, Keila Torres",
+      "url": "https://reporter.nih.gov/project-details/11330300",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11330300,
+        "project_num": "5R01CA285980-03",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 580422,
+        "fiscal_year": 2026,
+        "pi_names": "Paul Scheet, Keila Torres",
+        "organization": "UNIVERSITY OF TX MD ANDERSON CAN CTR",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Structure and Relations of Proteins and Nucleic Acids",
+      "summary": "R35 | $404K | NIGMS | UNIVERSITY OF OREGON | PI: Andrew Marcus",
+      "url": "https://reporter.nih.gov/project-details/11259163",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11259163,
+        "project_num": "1R35GM161360-01",
+        "activity_code": "R35",
+        "agency": "NIGMS",
+        "award_amount": 403836,
+        "fiscal_year": 2026,
+        "pi_names": "Andrew Marcus",
+        "organization": "UNIVERSITY OF OREGON",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Neoadjuvant Tucatinib plus Trastuzumab in HER2-amplified Locally Advanced Rectal Cancer",
+      "summary": "R01 | $403K | NCI | SLOAN-KETTERING INST CAN RESEARCH | PI: Andrea Cercek, Rona Yaeger",
+      "url": "https://reporter.nih.gov/project-details/11302663",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11302663,
+        "project_num": "5R01CA288880-03",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 402600,
+        "fiscal_year": 2026,
+        "pi_names": "Andrea Cercek, Rona Yaeger",
+        "organization": "SLOAN-KETTERING INST CAN RESEARCH",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Use of radioprotector in rectal cancer",
+      "summary": "R01 | $544K | NCI | UNIVERSITY OF NEBRASKA MEDICAL CENTER | PI: Chi Lin, REBECCA OBERLEY-DEEGAN",
+      "url": "https://reporter.nih.gov/project-details/11285329",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11285329,
+        "project_num": "5R01CA255618-05",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 543558,
+        "fiscal_year": 2026,
+        "pi_names": "Chi Lin, REBECCA OBERLEY-DEEGAN",
+        "organization": "UNIVERSITY OF NEBRASKA MEDICAL CENTER",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Genomic and Epigenomic Regulation",
+      "summary": "P30 | $69K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Bodour Salhia",
+      "url": "https://reporter.nih.gov/project-details/11238020",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11238020,
+        "project_num": "5P30CA014089-50",
+        "activity_code": "P30",
+        "agency": "NCI",
+        "award_amount": 69288,
+        "fiscal_year": 2026,
+        "pi_names": "Bodour Salhia",
+        "organization": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Genetics and Immune Predictors for Recurrent Glomerular Diseases in the Kidney Allograft",
+      "summary": "R01 | $366K | NIDDK | COLUMBIA UNIVERSITY HEALTH SCIENCES | PI: Ibrahim Batal",
+      "url": "https://reporter.nih.gov/project-details/11372006",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11372006,
+        "project_num": "5R01DK135671-04",
+        "activity_code": "R01",
+        "agency": "NIDDK",
+        "award_amount": 365766,
+        "fiscal_year": 2026,
+        "pi_names": "Ibrahim Batal",
+        "organization": "COLUMBIA UNIVERSITY HEALTH SCIENCES",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Flow Cytometry Core",
+      "summary": "P30 | $196K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Fumito Ito",
+      "url": "https://reporter.nih.gov/project-details/11238040",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11238040,
+        "project_num": "5P30CA014089-50",
+        "activity_code": "P30",
+        "agency": "NCI",
+        "award_amount": 195542,
+        "fiscal_year": 2026,
+        "pi_names": "Fumito Ito",
+        "organization": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Metabolic activation of nitroarenes and Nrf2-Keap1",
+      "summary": "R01 | $622K | NIEHS | UNIVERSITY OF PENNSYLVANIA | PI: KARAM EL-BAYOUMY, Trevor Penning",
+      "url": "https://reporter.nih.gov/project-details/11323870",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11323870,
+        "project_num": "5R01ES029294-07",
+        "activity_code": "R01",
+        "agency": "NIEHS",
+        "award_amount": 621879,
+        "fiscal_year": 2026,
+        "pi_names": "KARAM EL-BAYOUMY, Trevor Penning",
+        "organization": "UNIVERSITY OF PENNSYLVANIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: The enabler of tumor cell immortality in TERT promoter mutant cancers",
+      "summary": "R01 | $659K | NCI | UNIVERSITY OF CALIFORNIA, SAN FRANCISCO | PI: Joseph Costello",
+      "url": "https://reporter.nih.gov/project-details/11296639",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11296639,
+        "project_num": "1R01CA300766-01A1",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 658722,
+        "fiscal_year": 2026,
+        "pi_names": "Joseph Costello",
+        "organization": "UNIVERSITY OF CALIFORNIA, SAN FRANCISCO",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Signaling and Targeting of CRTC1-MAML2 Fusion Oncoprotein in Salivary Gland Tumor",
+      "summary": "R01 | $384K | NIDCR | UNIVERSITY OF FLORIDA | PI: Lizi Wu",
+      "url": "https://reporter.nih.gov/project-details/11305700",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11305700,
+        "project_num": "2R01DE023641-09",
+        "activity_code": "R01",
+        "agency": "NIDCR",
+        "award_amount": 383750,
+        "fiscal_year": 2026,
+        "pi_names": "Lizi Wu",
+        "organization": "UNIVERSITY OF FLORIDA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Dissecting innate immune signaling in pre-leukemia evolution",
+      "summary": "R01 | $638K | NCI | CINCINNATI CHILDRENS HOSP MED CTR | PI: Iannis Aifantis, Daniel Starczynowski",
+      "url": "https://reporter.nih.gov/project-details/11296907",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11296907,
+        "project_num": "5R01CA271455-05",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 638243,
+        "fiscal_year": 2026,
+        "pi_names": "Iannis Aifantis, Daniel Starczynowski",
+        "organization": "CINCINNATI CHILDRENS HOSP MED CTR",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Oral Dysplasia and Oral Cavity Cancer Risk in Dental and Medical Surveillance Settings Using a Chairside Chip-Based Cytopathology Tool",
+      "summary": "R01 | $723K | NIDCR | NEW YORK UNIVERSITY | PI: JOHN MCDEVITT",
+      "url": "https://reporter.nih.gov/project-details/11301800",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11301800,
+        "project_num": "5R01DE031319-05",
+        "activity_code": "R01",
+        "agency": "NIDCR",
+        "award_amount": 722544,
+        "fiscal_year": 2026,
+        "pi_names": "JOHN MCDEVITT",
+        "organization": "NEW YORK UNIVERSITY",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Project 4 - Defining the Role of EBV in DLBCL Pathogenesis and Identification of Therapeutic Targets",
+      "summary": "P01 | $430K | NCI | UNIVERSITY OF WISCONSIN-MADISON | PI: ERIC JOHANNSEN",
+      "url": "https://reporter.nih.gov/project-details/11322132",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11322132,
+        "project_num": "5P01CA022443-48",
+        "activity_code": "P01",
+        "agency": "NCI",
+        "award_amount": 430044,
+        "fiscal_year": 2026,
+        "pi_names": "ERIC JOHANNSEN",
+        "organization": "UNIVERSITY OF WISCONSIN-MADISON",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Data Science Core",
+      "summary": "P30 | $518K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Ming Li",
+      "url": "https://reporter.nih.gov/project-details/11238051",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11238051,
+        "project_num": "5P30CA014089-50",
+        "activity_code": "P30",
+        "agency": "NCI",
+        "award_amount": 517824,
+        "fiscal_year": 2026,
+        "pi_names": "Ming Li",
+        "organization": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: A systems-level approach to therapeutically target STING in cancer",
+      "summary": "R01 | $702K | NCI | WEILL MEDICAL COLL OF CORNELL UNIV | PI: JOHN BLENIS, Ashley Laughney",
+      "url": "https://reporter.nih.gov/project-details/11291340",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11291340,
+        "project_num": "5R01CA282762-02",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 701876,
+        "fiscal_year": 2026,
+        "pi_names": "JOHN BLENIS, Ashley Laughney",
+        "organization": "WEILL MEDICAL COLL OF CORNELL UNIV",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: Mutations and Target Genes in Adenoid Cystic Carcinoma",
+      "summary": "R01 | $431K | NIDCR | UNIVERSITY OF NEW MEXICO HEALTH SCIS CTR | PI: Viswanathan Palanisamy",
+      "url": "https://reporter.nih.gov/project-details/11294168",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11294168,
+        "project_num": "5R01DE023222-13",
+        "activity_code": "R01",
+        "agency": "NIDCR",
+        "award_amount": 431067,
+        "fiscal_year": 2026,
+        "pi_names": "Viswanathan Palanisamy",
+        "organization": "UNIVERSITY OF NEW MEXICO HEALTH SCIS CTR",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    },
+    {
+      "source": "nih",
+      "type": "nih_new_grant",
+      "title": "New NIH Grant: The impact of pyruvate metabolic fate in myofibroblast differentiation in myelofibrosis.",
+      "summary": "F32 | $83K | NHLBI | UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH | PI: Nathan Krah",
+      "url": "https://reporter.nih.gov/project-details/11290283",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11290283,
+        "project_num": "5F32HL177926-02",
+        "activity_code": "F32",
+        "agency": "NHLBI",
+        "award_amount": 82744,
+        "fiscal_year": 2026,
+        "pi_names": "Nathan Krah",
+        "organization": "UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      },
+      "detectedAt": "2026-03-22T18:45:36.544Z",
+      "triageHint": {
+        "daemonScore": 5,
+        "reason": "",
+        "suggestedAction": "nih_new_grant",
+        "suggestedTestName": null,
+        "confidence": 0.6
+      }
+    }
+  ]
+}

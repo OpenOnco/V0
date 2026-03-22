@@ -57,7 +57,7 @@ function Hero({ onNavigate }) {
           </div>
           <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.1] text-stone-900 mb-4">
             You finished treatment. <br />
-            <span className="italic text-brand-700">Now there's a way to keep watch.</span>
+            <span className="italic text-brand-700">Now there's a way to keep watch: MRD</span>
           </h1>
           <p className="text-base text-stone-600 mb-3 leading-relaxed">
             <strong>MRD testing</strong> lets you and your care team monitor for recurrence with a simple blood test — so you can be proactive if it's ever needed.
