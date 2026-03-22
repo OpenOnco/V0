@@ -18,7 +18,8 @@ export default function FamilyDropdown({ cancers, selected, onToggle }) {
 
   return (
     <div className="mb-3.5" ref={ref}>
-      <div className="text-xs text-gray-500 font-medium mb-1.5">Family cancer history</div>
+      <div className="text-xs text-gray-500 font-medium mb-0.5">Family cancer history</div>
+      <div className="text-[11px] text-gray-400 mb-1.5">(Check all that apply)</div>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
