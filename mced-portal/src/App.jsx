@@ -111,7 +111,7 @@ export default function App() {
 
           <SmokingToggle on={smokeOn} onToggle={toggleSmoke} />
           <ScreeningGaps sex={sex} gapSet={gapSet} onToggle={toggleGap} />
-          <GeneticFactors activeFactors={geneticFactors} onToggle={toggleGenetic} />
+          <GeneticFactors activeFactors={geneticFactors} onToggle={toggleGenetic} sex={sex} />
           <ResetButton onReset={resetAll} />
         </>
       )}

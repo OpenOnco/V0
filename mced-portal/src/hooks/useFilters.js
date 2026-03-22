@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { SMOKING_CANCERS } from '../data/smokingCancers';
 import { GENETIC_MAPPINGS } from '../data/geneticMappings';
+import { GENETIC_MALE_EXCLUDE, GENETIC_FEMALE_EXCLUDE } from '../data/genderExclusions';
 
 export function useFilters() {
   const [sex, setSexState] = useState(null);
@@ -63,12 +64,16 @@ export function useFilters() {
     famEntries.forEach((e) => s.add(e.cancer));
     gapSet.forEach((c) => s.add(c));
     if (smokeOn) SMOKING_CANCERS.forEach((c) => s.add(c));
+    const geneticExclude = sex === 'male' ? GENETIC_MALE_EXCLUDE
+      : sex === 'female' ? GENETIC_FEMALE_EXCLUDE : [];
     geneticFactors.forEach((id) => {
       const mapping = GENETIC_MAPPINGS[id];
-      if (mapping) mapping.cancers.forEach((c) => s.add(c));
+      if (mapping) mapping.cancers
+        .filter((c) => !geneticExclude.includes(c))
+        .forEach((c) => s.add(c));
     });
     return Array.from(s);
-  }, [famEntries, gapSet, smokeOn, geneticFactors]);
+  }, [famEntries, gapSet, smokeOn, geneticFactors, sex]);
 
   return {
     sex,

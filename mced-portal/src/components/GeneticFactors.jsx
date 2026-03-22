@@ -1,10 +1,14 @@
 import { GENETIC_MAPPINGS } from '../data/geneticMappings';
+import { GENETIC_MALE_EXCLUDE, GENETIC_FEMALE_EXCLUDE } from '../data/genderExclusions';
 
-export default function GeneticFactors({ activeFactors, onToggle }) {
-  // Deduplicated cancers across all active factors
+export default function GeneticFactors({ activeFactors, onToggle, sex }) {
+  const exclude = sex === 'male' ? GENETIC_MALE_EXCLUDE
+    : sex === 'female' ? GENETIC_FEMALE_EXCLUDE : [];
+
+  // Deduplicated cancers across all active factors, filtered by sex
   const addedCancers = [...new Set(
     [...activeFactors].flatMap((id) => GENETIC_MAPPINGS[id]?.cancers || [])
-  )].sort();
+  )].filter((c) => !exclude.includes(c)).sort();
 
   return (
     <div className="mb-4">
