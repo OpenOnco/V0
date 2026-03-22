@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-mn23orkk",
+  "type": "new-test",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.516Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testData": {
+    "name": "Caris AI Insights for Ovarian Cancer Platinum Resistance",
+    "vendor": "Caris Life Sciences",
+    "category": "Comprehensive Genomic Profiling",
+    "description": "AI-powered tool to identify early platinum resistance in ovarian cancer",
+    "launchDate": "March 2026"
+  },
+  "source": "https://www.carislifesciences.com/news-and-events/news",
+  "sourceTitle": "Caris Life Sciences: Launches Caris AI Insights for Ovarian Cancer Platinum Resistance",
+  "confidence": 0.7,
+  "snippet": "AI-powered tool to identify early platinum resistance in ovarian cancer"
+}

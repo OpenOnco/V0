@@ -1,0 +1,14 @@
+{
+  "artifactId": "highmark_highmark-l267-navdx_2026-03-22_66bdeb4a45d0",
+  "payerId": "highmark",
+  "policyId": "highmark-l267-navdx",
+  "fetchedAt": "2026-03-22T18:41:56.234Z",
+  "contentType": "static_html",
+  "sourceUrl": "https://securecms.highmark.com/content/medpolicy/en/highmark/pa/commercial/policies/Laboratory/L-267/L-267-001.html",
+  "contentLength": 8793,
+  "contentHash": "66bdeb4a45d0ff6f3f97dc97d48083b27b7909e08f36c4a5f957f1848609a560",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

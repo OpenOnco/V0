@@ -1,0 +1,14 @@
+{
+  "artifactId": "humana_humana-mcp-search_2026-03-22_4cf5348ce180",
+  "payerId": "humana",
+  "policyId": "humana-mcp-search",
+  "fetchedAt": "2026-03-22T18:40:26.140Z",
+  "contentType": "html",
+  "sourceUrl": "https://mcp.humana.com/tad/tad_new/Search.aspx?docbegin=M&policyType=medical&searchtype=beginswith",
+  "contentLength": 3663,
+  "contentHash": "4cf5348ce1802941780143b4cd1f43e566a3a415b23aea6ed6554e2b5b996296",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

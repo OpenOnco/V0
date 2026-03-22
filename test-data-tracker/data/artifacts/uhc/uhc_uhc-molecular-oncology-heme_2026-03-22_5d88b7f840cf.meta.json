@@ -1,0 +1,14 @@
+{
+  "artifactId": "uhc_uhc-molecular-oncology-heme_2026-03-22_5d88b7f840cf",
+  "payerId": "uhc",
+  "policyId": "uhc-molecular-oncology-heme",
+  "fetchedAt": "2026-03-22T18:39:36.417Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-hematologic-cancer-diagnosis.pdf",
+  "contentLength": 85424,
+  "contentHash": "5d88b7f840cfc5aff231591f51907269875a5fd13775657fe539e73ba697dc87",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

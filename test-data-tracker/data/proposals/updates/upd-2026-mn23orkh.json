@@ -1,0 +1,24 @@
+{
+  "id": "upd-2026-mn23orkh",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.513Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "FoundationOne®CDx",
+  "testId": null,
+  "changes": {
+    "regulatory": {
+      "action": "FDA approval",
+      "indication": "Companion diagnostic for OJEMDA™ (tovorafenib) to treat the most common form of childhood brain tumor in pediatric patients",
+      "date": "2025-01-17"
+    }
+  },
+  "source": "https://www.foundationmedicine.com/press-releases",
+  "sourceTitle": "Foundation Medicine: FoundationOne®CDx FDA approval",
+  "confidence": 0.75,
+  "snippet": "FDA approval for Companion diagnostic for OJEMDA™ (tovorafenib) to treat the most common form of childhood brain tumor in pediatric patients"
+}

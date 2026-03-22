@@ -20,6 +20,7 @@ import { createProposal } from './proposals/queue.js';
 import { PROPOSAL_TYPES } from './proposals/schema.js';
 
 // v5: Weekly submissions aggregation
+import { Resend } from 'resend';
 import { buildWeeklySubmissions, cleanupStagingFiles } from './submissions/writer.js';
 import { sendWeeklySummaryEmail } from './email/weekly-summary.js';
 
@@ -35,6 +36,8 @@ try {
 }
 
 const logger = createLogger('scheduler');
+
+const CRON_OPTIONS = { timezone: 'America/Los_Angeles' };
 
 // Store active cron jobs
 const jobs = new Map();
@@ -69,7 +72,7 @@ function scheduleCrawler(source, schedule) {
       logger.error(`Scheduled crawl failed: ${crawlerConfig.name}`, { error });
       errors.push(error.message);
     }
-  });
+  }, CRON_OPTIONS);
 
   jobs.set(`crawler:${source}`, job);
   return job;
@@ -92,7 +95,7 @@ function scheduleCleanup() {
     } catch (error) {
       logger.error('Queue cleanup failed', { error });
     }
-  });
+  }, CRON_OPTIONS);
 
   jobs.set('cleanup', job);
   return job;
@@ -136,7 +139,7 @@ function scheduleDiscovery() {
     } catch (error) {
       logger.error('Discovery job failed', { error });
     }
-  });
+  }, CRON_OPTIONS);
 
   jobs.set('discovery', job);
   return job;
@@ -190,7 +193,7 @@ function schedulePublicationIndex() {
     } catch (error) {
       logger.error('Publication-index crawl failed', { error: error.message });
     }
-  });
+  }, CRON_OPTIONS);
 
   jobs.set('publication-index', job);
   return job;
@@ -217,6 +220,12 @@ function scheduleAggregation() {
         bySource: weeklyFile.stats.bySource,
       });
 
+      // Alert if the entire crawler cycle produced zero discoveries
+      if (weeklyFile.stats.total === 0) {
+        logger.warn('Zero submissions this week — sending alert');
+        await sendZeroResultAlert();
+      }
+
       // Send single weekly summary email
       await sendWeeklySummaryEmail(weeklyFile);
 
@@ -235,10 +244,41 @@ function scheduleAggregation() {
     } catch (error) {
       logger.error('Weekly aggregation failed', { error: error.message });
     }
-  });
+  }, CRON_OPTIONS);
 
   jobs.set('aggregation', job);
   return job;
+}
+
+/**
+ * Send alert when full crawler cycle produces zero submissions
+ */
+async function sendZeroResultAlert() {
+  if (!config.email.apiKey) {
+    logger.warn('RESEND_API_KEY not configured, skipping zero-result alert');
+    return;
+  }
+
+  const resend = new Resend(config.email.apiKey);
+
+  try {
+    await resend.emails.send({
+      from: config.email.from,
+      to: config.email.alertRecipient,
+      subject: '[OpenOnco] ⚠️ Zero crawler results this week',
+      text: [
+        'The full weekly crawler cycle completed but produced 0 submissions.',
+        '',
+        'This likely means crawlers are failing silently or source sites have changed.',
+        '',
+        'Check Railway logs: railway logs --follow',
+        'Or run crawlers manually: node src/index.js crawl:all',
+      ].join('\n'),
+    });
+    logger.info('Zero-result alert email sent');
+  } catch (error) {
+    logger.error('Failed to send zero-result alert', { error: error.message });
+  }
 }
 
 /**
@@ -265,18 +305,22 @@ export function startScheduler() {
   // v5: Schedule weekly aggregation
   scheduleAggregation();
 
-  logger.info('Scheduler started', {
-    jobs: Array.from(jobs.keys()),
-    schedules: {
-      publicationIndex: process.env.PUBINDEX_SCHEDULE || '0 21 * * 0',
-      cms: config.schedules.cms,
-      vendor: config.schedules.vendor,
-      payers: config.schedules.payers,
-      nih: config.schedules.nih || '0 23 * * 0',
-      discovery: config.schedules.discovery || '0 22 * * 0',
-      aggregation: config.schedules.aggregation || '30 0 * * 1',
-    },
-  });
+  // Startup self-test: log each registered job
+  logger.info(`Scheduler started — ${jobs.size} jobs registered (timezone: America/Los_Angeles)`);
+  const scheduleMap = {
+    'publication-index': process.env.PUBINDEX_SCHEDULE || '0 21 * * 0',
+    'crawler:cms': config.schedules.cms,
+    'crawler:vendor': config.schedules.vendor,
+    'crawler:payers': config.schedules.payers,
+    'crawler:nih': config.schedules.nih || '0 23 * * 0',
+    cleanup: '0 0 * * *',
+    discovery: config.schedules.discovery || '0 22 * * 0',
+    aggregation: config.schedules.aggregation || '30 0 * * 1',
+  };
+  for (const [name] of jobs) {
+    const expr = scheduleMap[name] || 'unknown';
+    logger.info(`  ✓ ${name} — cron: ${expr}`);
+  }
 
   return jobs;
 }

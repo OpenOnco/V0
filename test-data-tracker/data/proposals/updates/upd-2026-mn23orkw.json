@@ -1,0 +1,24 @@
+{
+  "id": "upd-2026-mn23orkw",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.528Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Hematology Profile Plus, Solid Tumor and Liquid Biopsy Profiles",
+  "testId": null,
+  "changes": {
+    "regulatory": {
+      "action": "UKCA Mark approval",
+      "indication": "Hematology, solid tumors and liquid biopsy profiles covering DNA and RNA",
+      "date": "2025-04-08"
+    }
+  },
+  "source": "https://genomictestingcooperative.com/category/press-release/",
+  "sourceTitle": "Genomic Testing Cooperative: Hematology Profile Plus, Solid Tumor and Liquid Biopsy Profiles UKCA Mark approval",
+  "confidence": 0.75,
+  "snippet": "UKCA Mark approval for Hematology, solid tumors and liquid biopsy profiles covering DNA and RNA"
+}
