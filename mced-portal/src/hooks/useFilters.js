@@ -1,17 +1,20 @@
 import { useState, useCallback, useMemo } from 'react';
 import { SMOKING_CANCERS } from '../data/smokingCancers';
+import { GENETIC_MAPPINGS } from '../data/geneticMappings';
 
 export function useFilters() {
   const [sex, setSexState] = useState(null);
   const [famEntries, setFamEntries] = useState([]); // [{cancer, side}]
   const [smokeOn, setSmokeOn] = useState(false);
   const [gapSet, setGapSet] = useState(new Set());
+  const [geneticFactors, setGeneticFactors] = useState(new Set());
 
   const setSex = useCallback((s) => {
     setSexState(s);
     setFamEntries([]);
     setSmokeOn(false);
     setGapSet(new Set());
+    setGeneticFactors(new Set());
   }, []);
 
   const addFamily = useCallback((cancer, side) => {
@@ -38,11 +41,21 @@ export function useFilters() {
     });
   }, []);
 
+  const toggleGenetic = useCallback((id) => {
+    setGeneticFactors((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
   const resetAll = useCallback(() => {
     setSexState(null);
     setFamEntries([]);
     setSmokeOn(false);
     setGapSet(new Set());
+    setGeneticFactors(new Set());
   }, []);
 
   const selectedCancers = useMemo(() => {
@@ -50,8 +63,12 @@ export function useFilters() {
     famEntries.forEach((e) => s.add(e.cancer));
     gapSet.forEach((c) => s.add(c));
     if (smokeOn) SMOKING_CANCERS.forEach((c) => s.add(c));
+    geneticFactors.forEach((id) => {
+      const mapping = GENETIC_MAPPINGS[id];
+      if (mapping) mapping.cancers.forEach((c) => s.add(c));
+    });
     return Array.from(s);
-  }, [famEntries, gapSet, smokeOn]);
+  }, [famEntries, gapSet, smokeOn, geneticFactors]);
 
   return {
     sex,
@@ -63,6 +80,8 @@ export function useFilters() {
     toggleSmoke,
     gapSet,
     toggleGap,
+    geneticFactors,
+    toggleGenetic,
     resetAll,
     selectedCancers,
   };

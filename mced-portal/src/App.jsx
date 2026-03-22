@@ -8,6 +8,7 @@ import GenderToggle from './components/GenderToggle';
 import FamilyDropdown from './components/FamilyDropdown';
 import SmokingToggle from './components/SmokingToggle';
 import ScreeningGaps from './components/ScreeningGaps';
+import GeneticFactors from './components/GeneticFactors';
 import TestCard from './components/TestCard';
 import ThresholdLegend from './components/ThresholdLegend';
 import Methodology from './components/Methodology';
@@ -20,6 +21,7 @@ export default function App() {
     famEntries, addFamily, removeFamily,
     smokeOn, toggleSmoke,
     gapSet, toggleGap,
+    geneticFactors, toggleGenetic,
     resetAll,
     selectedCancers,
   } = useFilters();
@@ -109,6 +111,7 @@ export default function App() {
 
           <SmokingToggle on={smokeOn} onToggle={toggleSmoke} />
           <ScreeningGaps sex={sex} gapSet={gapSet} onToggle={toggleGap} />
+          <GeneticFactors activeFactors={geneticFactors} onToggle={toggleGenetic} />
           <ResetButton onReset={resetAll} />
         </>
       )}
