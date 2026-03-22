@@ -15,7 +15,7 @@ import Methodology from './components/Methodology';
 import ResetButton from './components/ResetButton';
 
 export default function App() {
-  const { tests, source } = useTestData();
+  const { tests, source, error } = useTestData();
   const {
     sex, setSex,
     famEntries, addFamily, removeFamily,
@@ -43,14 +43,16 @@ export default function App() {
   // Apply data mode: swap cancers object based on early vs all-stage
   const displayTests = useMemo(() => {
     if (dataMode === 'all') {
-      return tests.map((t) => ({
-        ...t,
-        cancers: Object.keys(t.allStageCancers || {}).length > 0
-          ? t.allStageCancers
-          : t.cancers, // fallback to early if no all-stage data
-      }));
+      return tests.map((t) => {
+        const hasAllStage = Object.keys(t.allStageCancers || {}).length > 0;
+        return {
+          ...t,
+          cancers: hasAllStage ? t.allStageCancers : t.cancers,
+          stageLabel: hasAllStage ? 'Stage I-IV' : 'Stage I-II',
+        };
+      });
     }
-    return tests;
+    return tests.map((t) => ({ ...t, stageLabel: 'Stage I-II' }));
   }, [tests, dataMode]);
 
   // Build detectable cancers list from current display data
@@ -75,6 +77,28 @@ export default function App() {
     }
     return sortDefault(displayTests);
   }, [displayTests, selectedCancers]);
+
+  if (source === 'loading') {
+    return (
+      <div className="max-w-[640px] mx-auto px-5 py-16 text-center">
+        <p className="text-sm text-gray-400">Loading test data from OpenOnco…</p>
+      </div>
+    );
+  }
+
+  if (source === 'error') {
+    return (
+      <div className="max-w-[640px] mx-auto px-5 py-16 text-center">
+        <p className="text-sm text-red-500 mb-2">Unable to load test data.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-800"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
@@ -120,7 +144,7 @@ export default function App() {
 
       <div className="flex flex-col gap-2.5">
         {sorted.map((t) => (
-          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} dataMode={dataMode} />
+          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} />
         ))}
       </div>
 

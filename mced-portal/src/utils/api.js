@@ -41,12 +41,16 @@ function computeAllStageCancers(rawArray) {
 }
 
 export async function fetchMcedTests() {
-  const cached = sessionStorage.getItem(CACHE_KEY);
-  if (cached) {
-    const { data, timestamp } = JSON.parse(cached);
-    if (Date.now() - timestamp < CACHE_TTL_MS) {
-      return data;
+  try {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_TTL_MS && Array.isArray(data)) {
+        return data;
+      }
     }
+  } catch {
+    sessionStorage.removeItem(CACHE_KEY);
   }
 
   const res = await fetch(`${API_BASE}/tests?category=ecd`);

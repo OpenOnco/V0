@@ -10,7 +10,7 @@ function slugify(name) {
     .trim();
 }
 
-export default function TestCard({ test, selectedCancers, thresholds, dataMode = 'early' }) {
+export default function TestCard({ test, selectedCancers, thresholds }) {
   const hasData = Object.keys(test.cancers).length > 0;
   const hasSel = selectedCancers.length > 0;
 
@@ -27,14 +27,15 @@ export default function TestCard({ test, selectedCancers, thresholds, dataMode =
         <div className="w-[130px] shrink-0">
           <div className="text-[15px] font-medium text-gray-900 leading-tight truncate" title={test.name}>{test.name}</div>
           <span className="text-xs text-gray-400 block mt-0.5 truncate" title={test.vendor}>{test.vendor}</span>
-          <button
-            onClick={() => window.open(`https://openonco.org/screen/${slugify(test.name)}`, '_blank')}
-            className="text-xs mt-1.5 px-2 py-0.5 rounded border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-300 transition-colors cursor-pointer"
+          <a
+            href={`https://openonco.org/screen/${slugify(test.name)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-xs mt-1.5 px-2 py-0.5 rounded border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-300 transition-colors no-underline"
             title={`View ${test.name} on OpenOnco`}
-            aria-label={`View ${test.name} on OpenOnco`}
           >
             OpenOnco ↗
-          </button>
+          </a>
         </div>
 
         {/* Column 2: Traffic lights */}
@@ -47,7 +48,7 @@ export default function TestCard({ test, selectedCancers, thresholds, dataMode =
                     Your selected cancers
                   </span>
                   <span className="text-[10px] text-slate-400 font-medium">
-                    {dataMode === 'all' ? 'Stage I-IV' : 'Stage I-II'}
+                    {test.stageLabel || 'Stage I-II'}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1.5 mt-1">

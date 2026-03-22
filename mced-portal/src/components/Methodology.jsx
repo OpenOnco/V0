@@ -62,7 +62,7 @@ export default function Methodology({ tests, dataMode, onDataModeChange }) {
             <strong className="text-gray-600">Data sources:</strong> {sourceLine}.
             {dataMode === 'early'
               ? ' All values are Stage I-II where available; some values are estimated from published stage-specific breakdowns.'
-              : ' All values are overall (all-stage) sensitivity computed from published validation data.'}
+              : ' Showing all-stage (I-IV) sensitivity where published. Tests without all-stage data fall back to early-stage (I-II) values.'}
           </p>
         )}
         <p>
