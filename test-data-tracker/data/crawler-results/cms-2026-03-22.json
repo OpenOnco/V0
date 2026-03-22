@@ -1,0 +1,37 @@
+{
+  "source": "cms",
+  "generatedAt": "2026-03-22T18:40:28.155Z",
+  "discoveries": [
+    {
+      "source": "cms",
+      "type": "coverage_change",
+      "title": "Superficial Radiation Therapy (SRT) for the Treatment of Nonmelanoma Skin Cancers (NMSC)",
+      "summary": "Article update",
+      "url": "",
+      "relevance": "low",
+      "metadata": {
+        "documentId": "",
+        "documentType": "Article",
+        "contractor": "",
+        "effectiveDate": "",
+        "version": 1,
+        "aiAnalysis": {
+          "coverageDecision": "unknown",
+          "affectedTests": [],
+          "isMolDXRelevant": false,
+          "keyChanges": "This LCD covers superficial radiation therapy for nonmelanoma skin cancers, not molecular diagnostic testing",
+          "analysisNotes": "This coverage determination is for a treatment modality (superficial radiation therapy) rather than diagnostic testing. It does not appear to have any relevance to molecular diagnostics, ctDNA testing, liquid biopsy, MRD testing, or tumor profiling. The document focuses on radiation therapy coverage criteria for skin cancer treatment.",
+          "plaCodes": []
+        }
+      },
+      "detectedAt": "2026-03-22T18:40:28.155Z",
+      "triageHint": {
+        "daemonScore": 3,
+        "reason": "",
+        "suggestedAction": "coverage_change",
+        "suggestedTestName": null,
+        "confidence": 0.35
+      }
+    }
+  ]
+}

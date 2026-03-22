@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-mn23orkv",
+  "type": "new-test",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.527Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testData": {
+    "name": "Multiomic Blood-Based Screening Test for Lung Cancer",
+    "vendor": "Freenome",
+    "category": "Early Cancer Detection",
+    "description": "Blood-based screening test for lung cancer using multiomics approach",
+    "launchDate": null
+  },
+  "source": "https://www.freenome.com/news",
+  "sourceTitle": "Freenome: Launches Multiomic Blood-Based Screening Test for Lung Cancer",
+  "confidence": 0.7,
+  "snippet": "Blood-based screening test for lung cancer using multiomics approach"
+}

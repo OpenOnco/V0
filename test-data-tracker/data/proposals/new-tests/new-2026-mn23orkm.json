@@ -1,0 +1,22 @@
+{
+  "id": "new-2026-mn23orkm",
+  "type": "new-test",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.518Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testData": {
+    "name": "AI Companion for Lab Test Results",
+    "vendor": "Quest Diagnostics",
+    "category": "other",
+    "description": "AI Companion based on Google's Gemini that seamlessly analyzes up to five years of personal lab data to help explain results and uncover potential health risks",
+    "launchDate": "2026-03-02"
+  },
+  "source": "https://newsroom.questdiagnostics.com/press-releases",
+  "sourceTitle": "Quest Diagnostics: Launches AI Companion for Lab Test Results",
+  "confidence": 0.7,
+  "snippet": "AI Companion based on Google's Gemini that seamlessly analyzes up to five years of personal lab data to help explain results and uncover potential health risks"
+}

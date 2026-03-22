@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbsnc_bcbsnc-liquid-biopsy-g2054_2026-03-22_a1c8540075f9",
+  "payerId": "bcbsnc",
+  "policyId": "bcbsnc-liquid-biopsy-g2054",
+  "fetchedAt": "2026-03-22T18:42:47.048Z",
+  "contentType": "static_html",
+  "sourceUrl": "https://www.bluecrossnc.com/providers/policies-guidelines-codes/commercial/laboratory/updates/liquid-biopsy",
+  "contentLength": 184101,
+  "contentHash": "a1c8540075f9adc955a83276086ea579b34f9982bb71bb7afb40eff875dad3db",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

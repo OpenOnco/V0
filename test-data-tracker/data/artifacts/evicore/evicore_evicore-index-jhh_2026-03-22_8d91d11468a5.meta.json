@@ -1,0 +1,14 @@
+{
+  "artifactId": "evicore_evicore-index-jhh_2026-03-22_8d91d11468a5",
+  "payerId": "evicore",
+  "policyId": "evicore-index-jhh",
+  "fetchedAt": "2026-03-22T18:40:49.771Z",
+  "contentType": "html",
+  "sourceUrl": "https://www.evicore.com/provider/clinical-guidelines-details?hPlan=Johns+Hopkins+Healthcare&solution=laboratory+management",
+  "contentLength": 1629,
+  "contentHash": "8d91d11468a54b61cf7da66ddd7c0f163861d4b2548d6a0e29097ac3878c3cd0",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

@@ -1,0 +1,14 @@
+{
+  "artifactId": "wellcare_wellcare-ctdna-liquid-biopsy_2026-03-22_ba1b50a65ccd",
+  "payerId": "wellcare",
+  "policyId": "wellcare-ctdna-liquid-biopsy",
+  "fetchedAt": "2026-03-22T18:44:37.888Z",
+  "contentType": "pdf",
+  "sourceUrl": "https://www.policies-wellcare.com/content/dam/centene/wellcare/Medicare/clinicalpolicies/CG-Onc-Liquid-Biopsy-2025.1.pdf",
+  "contentLength": 51670,
+  "contentHash": "ba1b50a65ccd7edbd5c382a2f8f2fce23946f78e0eaab8932446d862fa4bfd1b",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}

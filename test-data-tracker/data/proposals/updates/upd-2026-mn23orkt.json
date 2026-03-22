@@ -1,0 +1,25 @@
+{
+  "id": "upd-2026-mn23orkt",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.525Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Colorectal Cancer Blood Test",
+  "testId": null,
+  "changes": {
+    "performance": {
+      "sensitivity": "22%",
+      "cancerType": "colorectal",
+      "stage": "Advanced Precancerous Lesions",
+      "population": "Large case-control validation study of nearly 1,000 samples"
+    }
+  },
+  "source": "https://www.freenome.com/news",
+  "sourceTitle": "Freenome: Colorectal Cancer Blood Test sensitivity 22%",
+  "confidence": 0.75,
+  "snippet": "sensitivity: 22% in colorectal (Advanced Precancerous Lesions)"
+}

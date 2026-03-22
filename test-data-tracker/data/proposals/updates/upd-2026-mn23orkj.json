@@ -1,0 +1,25 @@
+{
+  "id": "upd-2026-mn23orkj",
+  "type": "update",
+  "status": "pending",
+  "createdAt": "2026-03-22T18:38:50.515Z",
+  "createdBy": "daemon",
+  "reviewedAt": null,
+  "reviewedBy": null,
+  "appliedAt": null,
+  "rejectionReason": null,
+  "testName": "Caris Detect",
+  "testId": null,
+  "changes": {
+    "performance": {
+      "specificity": "superior",
+      "cancerType": "multiple",
+      "stage": null,
+      "population": "Achieve 1 study population"
+    }
+  },
+  "source": "https://www.carislifesciences.com/news-and-events/news",
+  "sourceTitle": "Caris Life Sciences: Caris Detect specificity superior",
+  "confidence": 0.75,
+  "snippet": "specificity: superior in multiple"
+}

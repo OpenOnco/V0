@@ -1,0 +1,14 @@
+{
+  "artifactId": "bcbsmn_bcbsmn-evicore-lab-mgmt_2026-03-22_eeedae0854d3",
+  "payerId": "bcbsmn",
+  "policyId": "bcbsmn-evicore-lab-mgmt",
+  "fetchedAt": "2026-03-22T18:43:35.105Z",
+  "contentType": "html",
+  "sourceUrl": "https://www.evicore.com/provider/clinical-guidelines-details?solution=laboratory+management&hPlan=BCBS+MN",
+  "contentLength": 1602,
+  "contentHash": "eeedae0854d3188099606c07edbffea6195137d816aa4c7faef583132e8323f4",
+  "anchors": [],
+  "policyTitle": null,
+  "effectiveDate": null,
+  "httpHeaders": null
+}
