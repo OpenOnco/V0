@@ -14,7 +14,7 @@ import http from 'http';
 import { createLogger } from './utils/logger.js';
 import { startScheduler, stopScheduler } from './scheduler.js';
 import { getHealthSummary } from './health.js';
-import { close as closeDb, healthCheck } from './db/client.js';
+import { close as closeDb } from './db/client.js';
 
 const logger = createLogger('physician-system');
 
@@ -101,17 +101,27 @@ async function main() {
     // Log status every hour
     setInterval(logStatus, 60 * 60 * 1000);
 
-    // Supabase keepalive: ping every 3 days to prevent free-tier auto-pause
+    // Supabase REST API keepalive — hits PostgREST so Supabase counts it as activity
     const KEEPALIVE_INTERVAL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
-    setInterval(async () => {
+    const supabaseKeepalive = async () => {
       try {
-        const result = await healthCheck();
-        logger.info('Supabase keepalive ping', { connected: result.connected });
+        const res = await fetch(
+          'https://wwktaeudowiasojodtla.supabase.co/rest/v1/mrd_crawler_runs?select=id&limit=1',
+          {
+            headers: {
+              'apikey': process.env.SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+            },
+          }
+        );
+        logger.info('Supabase REST keepalive ping', { status: res.status });
       } catch (err) {
-        logger.warn('Supabase keepalive ping failed', { error: err.message });
+        logger.warn('Supabase REST keepalive ping failed', { error: err.message });
       }
-    }, KEEPALIVE_INTERVAL_MS);
-    logger.info('Supabase keepalive scheduled (every 3 days)');
+    };
+    supabaseKeepalive(); // fire immediately on startup
+    setInterval(supabaseKeepalive, KEEPALIVE_INTERVAL_MS);
+    logger.info('Supabase REST keepalive scheduled (every 3 days)');
 
     logger.info('Physician System started successfully');
     logger.info('Manual CLI commands:');
