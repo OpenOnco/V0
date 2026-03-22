@@ -7,6 +7,28 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "mrd.openonco.org"
+        }
+      ],
+      "destination": "https://www.openonco.org/patient",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mrd.openonco.org"
+        }
+      ],
+      "destination": "https://www.openonco.org/patient/:path*",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "has": [
         {
