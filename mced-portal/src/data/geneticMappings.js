@@ -4,6 +4,6 @@
  */
 export const GENETIC_MAPPINGS = {
   brca: { label: 'BRCA1 or BRCA2', cancers: ['Breast', 'Ovary', 'Pancreas', 'Prostate'] },
-  mutyh: { label: 'MUTYH', cancers: ['Colon/Rectum'] },
-  lynch: { label: 'Lynch syndrome', cancers: ['Colon/Rectum', 'Endometrial', 'Ovary', 'Gastric'] },
+  mutyh: { label: 'MUTYH', cancers: ['Colon/Rectum', 'Gastric', 'Endometrial', 'Uterus', 'Ovary', 'Bladder', 'Liver', 'Thyroid'] },
+  lynch: { label: 'Lynch syndrome', cancers: ['Colon/Rectum', 'Endometrial', 'Uterus', 'Ovary', 'Gastric', 'Pancreas', 'Prostate'] },
 };

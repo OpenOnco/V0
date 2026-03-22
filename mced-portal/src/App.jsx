@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { SENSITIVITY_TIERS } from './data/thresholds';
-import { MALE_EXCLUDE, FEMALE_EXCLUDE } from './data/genderExclusions';
+// Family history dropdowns: no sex-based exclusions (lineage, not biology)
 import { sortDefault, sortBySelection } from './logic/sortTests';
 import { useFilters } from './hooks/useFilters';
 import { useTestData } from './hooks/useTestData';
@@ -62,14 +62,9 @@ export default function App() {
     return [...detectable].sort();
   }, [displayTests]);
 
-  const motherCancers = useMemo(
-    () => detectableCancers.filter((c) => !FEMALE_EXCLUDE.includes(c)),
-    [detectableCancers]
-  );
-  const fatherCancers = useMemo(
-    () => detectableCancers.filter((c) => !MALE_EXCLUDE.includes(c)),
-    [detectableCancers]
-  );
+  // Both parents get all cancers — family history is about lineage, not biology
+  const motherCancers = detectableCancers;
+  const fatherCancers = detectableCancers;
 
   const sorted = useMemo(() => {
     if (selectedCancers.length > 0) {
