@@ -5,28 +5,26 @@ import { GENETIC_MALE_EXCLUDE, GENETIC_FEMALE_EXCLUDE } from '../data/genderExcl
 
 export function useFilters() {
   const [sex, setSexState] = useState(null);
-  const [famEntries, setFamEntries] = useState([]); // [{cancer, side}]
+  const [familyCancers, setFamilyCancers] = useState(new Set());
   const [smokeOn, setSmokeOn] = useState(false);
   const [gapSet, setGapSet] = useState(new Set());
   const [geneticFactors, setGeneticFactors] = useState(new Set());
 
   const setSex = useCallback((s) => {
     setSexState(s);
-    setFamEntries([]);
+    setFamilyCancers(new Set());
     setSmokeOn(false);
     setGapSet(new Set());
     setGeneticFactors(new Set());
   }, []);
 
-  const addFamily = useCallback((cancer, side) => {
-    setFamEntries((prev) => {
-      if (prev.some((e) => e.cancer === cancer && e.side === side)) return prev;
-      return [...prev, { cancer, side }];
+  const toggleFamily = useCallback((cancer) => {
+    setFamilyCancers((prev) => {
+      const next = new Set(prev);
+      if (next.has(cancer)) next.delete(cancer);
+      else next.add(cancer);
+      return next;
     });
-  }, []);
-
-  const removeFamily = useCallback((idx) => {
-    setFamEntries((prev) => prev.filter((_, i) => i !== idx));
   }, []);
 
   const toggleSmoke = useCallback(() => {
@@ -53,7 +51,7 @@ export function useFilters() {
 
   const resetAll = useCallback(() => {
     setSexState(null);
-    setFamEntries([]);
+    setFamilyCancers(new Set());
     setSmokeOn(false);
     setGapSet(new Set());
     setGeneticFactors(new Set());
@@ -61,7 +59,7 @@ export function useFilters() {
 
   const selectedCancers = useMemo(() => {
     const s = new Set();
-    famEntries.forEach((e) => s.add(e.cancer));
+    familyCancers.forEach((c) => s.add(c));
     gapSet.forEach((c) => s.add(c));
     if (smokeOn) SMOKING_CANCERS.forEach((c) => s.add(c));
     const geneticExclude = sex === 'male' ? GENETIC_MALE_EXCLUDE
@@ -73,14 +71,13 @@ export function useFilters() {
         .forEach((c) => s.add(c));
     });
     return Array.from(s);
-  }, [famEntries, gapSet, smokeOn, geneticFactors, sex]);
+  }, [familyCancers, gapSet, smokeOn, geneticFactors, sex]);
 
   return {
     sex,
     setSex,
-    famEntries,
-    addFamily,
-    removeFamily,
+    familyCancers,
+    toggleFamily,
     smokeOn,
     toggleSmoke,
     gapSet,

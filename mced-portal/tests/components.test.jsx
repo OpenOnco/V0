@@ -8,49 +8,51 @@ import GeneticFactors from '../src/components/GeneticFactors';
 describe('FamilyDropdown', () => {
   const cancers = ['Lung', 'Breast', 'Liver'];
 
-  it('renders label and dropdown', () => {
-    render(
-      <FamilyDropdown label="Mother's side" side="mom" cancers={cancers} entries={[]} onAdd={() => {}} onRemove={() => {}} />
-    );
-    expect(screen.getByText("Mother's side")).toBeInTheDocument();
-    expect(screen.getByText('Select cancer type...')).toBeInTheDocument();
+  it('renders label and collapsed dropdown', () => {
+    render(<FamilyDropdown cancers={cancers} selected={new Set()} onToggle={() => {}} />);
+    expect(screen.getByText('Family cancer history')).toBeInTheDocument();
+    expect(screen.getByText('Select cancer types...')).toBeInTheDocument();
   });
 
-  it('calls onAdd when cancer selected', () => {
-    const onAdd = vi.fn();
-    render(
-      <FamilyDropdown label="Mother's side" side="mom" cancers={cancers} entries={[]} onAdd={onAdd} onRemove={() => {}} />
-    );
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'Lung' } });
-    expect(onAdd).toHaveBeenCalledWith('Lung', 'mom');
+  it('opens dropdown and shows checkboxes on click', () => {
+    render(<FamilyDropdown cancers={cancers} selected={new Set()} onToggle={() => {}} />);
+    fireEvent.click(screen.getByText('Select cancer types...'));
+    expect(screen.getByLabelText('Lung')).toBeInTheDocument();
+    expect(screen.getByLabelText('Breast')).toBeInTheDocument();
+    expect(screen.getByLabelText('Liver')).toBeInTheDocument();
   });
 
-  it('renders tags for entries and calls onRemove', () => {
-    const entries = [
-      { cancer: 'Lung', side: 'mom' },
-      { cancer: 'Breast', side: 'dad' }, // different side, should not show
-    ];
-    const onRemove = vi.fn();
-    render(
-      <FamilyDropdown label="Mother's side" side="mom" cancers={cancers} entries={entries} onAdd={() => {}} onRemove={onRemove} />
-    );
-    // Only mom's entry should be visible as a tag button
+  it('calls onToggle when checkbox clicked', () => {
+    const onToggle = vi.fn();
+    render(<FamilyDropdown cancers={cancers} selected={new Set()} onToggle={onToggle} />);
+    fireEvent.click(screen.getByText('Select cancer types...'));
+    fireEvent.click(screen.getByLabelText('Lung'));
+    expect(onToggle).toHaveBeenCalledWith('Lung');
+  });
+
+  it('shows selected count and tags', () => {
+    render(<FamilyDropdown cancers={cancers} selected={new Set(['Lung', 'Breast'])} onToggle={() => {}} />);
+    expect(screen.getByText('2 cancer types selected')).toBeInTheDocument();
+    // Tags should be visible
     const lungTags = screen.getAllByText('Lung');
-    const lungButton = lungTags.find((el) => el.closest('button.bg-purple-100'));
-    expect(lungButton).toBeTruthy();
-    fireEvent.click(lungButton.closest('button'));
-    expect(onRemove).toHaveBeenCalledWith(0);
+    const lungTag = lungTags.find((el) => el.closest('button.bg-purple-100'));
+    expect(lungTag).toBeTruthy();
   });
 
-  it('does not show tags section when no entries for this side', () => {
-    const entries = [{ cancer: 'Breast', side: 'dad' }];
-    render(
-      <FamilyDropdown label="Mother's side" side="mom" cancers={cancers} entries={entries} onAdd={() => {}} onRemove={() => {}} />
-    );
-    // Breast is dad's side, should not appear as a tag button under mom
-    const breastElements = screen.queryAllByText('Breast');
-    const breastTag = breastElements.find((el) => el.closest('button.bg-purple-100'));
-    expect(breastTag).toBeUndefined();
+  it('calls onToggle when tag × clicked', () => {
+    const onToggle = vi.fn();
+    render(<FamilyDropdown cancers={cancers} selected={new Set(['Lung'])} onToggle={onToggle} />);
+    const lungTags = screen.getAllByText('Lung');
+    const lungTag = lungTags.find((el) => el.closest('button.bg-purple-100'));
+    fireEvent.click(lungTag.closest('button'));
+    expect(onToggle).toHaveBeenCalledWith('Lung');
+  });
+
+  it('shows checkboxes as checked for selected items', () => {
+    render(<FamilyDropdown cancers={cancers} selected={new Set(['Lung'])} onToggle={() => {}} />);
+    fireEvent.click(screen.getByText('1 cancer type selected'));
+    expect(screen.getByLabelText('Lung')).toBeChecked();
+    expect(screen.getByLabelText('Breast')).not.toBeChecked();
   });
 });
 
