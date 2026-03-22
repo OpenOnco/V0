@@ -1,10 +1,18 @@
-export default function Methodology({ tests, dataMode, onOpenSettings }) {
+export default function Methodology({ tests, dataMode, onDataModeChange }) {
   const sourceLine = (tests || [])
     .filter((t) => t.source)
     .map((t) => `${t.name} — ${t.source}`)
     .join('. ');
 
-  const stageLabel = dataMode === 'all' ? 'all stages' : 'Stage I-II';
+  const activeClass = 'font-medium underline underline-offset-2 text-gray-600';
+  const linkClass = 'text-blue-600 underline underline-offset-2 cursor-pointer hover:text-blue-800';
+
+  const toggleTo = (mode) => ({
+    role: 'button',
+    tabIndex: 0,
+    onClick: () => onDataModeChange(mode),
+    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onDataModeChange(mode); } },
+  });
 
   return (
     <div className="mt-8 pt-5 border-t border-gray-300">
@@ -12,12 +20,20 @@ export default function Methodology({ tests, dataMode, onOpenSettings }) {
       <div className="text-xs text-gray-500 leading-relaxed space-y-2">
         <p>
           Sensitivity values represent the percentage of cancers correctly
-          identified at <strong className="text-gray-600">{stageLabel}</strong>{' '}
-          {dataMode === 'early'
-            ? '(early-stage disease), the stages where treatment is most effective.'
-            : '(across all cancer stages I-IV).'}
-          {' '}Values are derived from published clinical validation studies for each
-          test.
+          identified at either{' '}
+          {dataMode === 'early' ? (
+            <span className={activeClass}>early stage I-II</span>
+          ) : (
+            <span className={linkClass} {...toggleTo('early')}>early stage I-II</span>
+          )}{' '}
+          or{' '}
+          {dataMode === 'all' ? (
+            <span className={activeClass}>all stages I-IV</span>
+          ) : (
+            <span className={linkClass} {...toggleTo('all')}>all stages I-IV</span>
+          )}
+          , the stages where treatment is most effective. Values are derived from
+          published clinical validation studies for each test.
         </p>
         <p>Detection strength is classified using two thresholds:</p>
         <p>
@@ -34,23 +50,19 @@ export default function Methodology({ tests, dataMode, onOpenSettings }) {
           has not published per-cancer sensitivity data for this cancer type.
         </p>
         <p>
+          These thresholds (&gt;50% and 25%) are defaults. Use the sensitivity
+          threshold slider above the test cards to adjust them.
+        </p>
+        <p>
           Only cancer types with a sample size of at least 5 patients in the
           validation study are included.
-          Sensitivity thresholds and data mode can be adjusted via{' '}
-          <button
-            onClick={onOpenSettings}
-            className="underline text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            settings
-          </button>
-          .
         </p>
         {sourceLine && (
           <p className="pt-2.5 border-t border-gray-200">
             <strong className="text-gray-600">Data sources:</strong> {sourceLine}.
             {dataMode === 'early'
               ? ' All values are Stage I-II where available; some values are estimated from published stage-specific breakdowns.'
-              : ' All values are overall (all-stage) sensitivity computed from published validation data.'}
+              : ' Showing all-stage (I-IV) sensitivity where published. Tests without all-stage data fall back to early-stage (I-II) values.'}
           </p>
         )}
         <p>

@@ -8,19 +8,20 @@ import GenderToggle from './components/GenderToggle';
 import FamilyDropdown from './components/FamilyDropdown';
 import SmokingToggle from './components/SmokingToggle';
 import ScreeningGaps from './components/ScreeningGaps';
+import GeneticFactors from './components/GeneticFactors';
 import TestCard from './components/TestCard';
-import Legend from './components/Legend';
+import ThresholdLegend from './components/ThresholdLegend';
 import Methodology from './components/Methodology';
 import ResetButton from './components/ResetButton';
-import SettingsPanel from './components/SettingsPanel';
 
 export default function App() {
-  const { tests, source } = useTestData();
+  const { tests, source, error } = useTestData();
   const {
     sex, setSex,
     famEntries, addFamily, removeFamily,
     smokeOn, toggleSmoke,
     gapSet, toggleGap,
+    geneticFactors, toggleGenetic,
     resetAll,
     selectedCancers,
   } = useFilters();
@@ -28,24 +29,30 @@ export default function App() {
   const [strongThreshold, setStrongThreshold] = useState(SENSITIVITY_TIERS.GOOD);
   const [moderateThreshold, setModerateThreshold] = useState(SENSITIVITY_TIERS.OK);
   const [dataMode, setDataMode] = useState('early'); // 'early' | 'all'
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const thresholds = useMemo(
     () => ({ strong: strongThreshold, moderate: moderateThreshold }),
     [strongThreshold, moderateThreshold]
   );
 
+  const handleThresholdsChange = useCallback(({ strong, moderate }) => {
+    setStrongThreshold(strong);
+    setModerateThreshold(moderate);
+  }, []);
+
   // Apply data mode: swap cancers object based on early vs all-stage
   const displayTests = useMemo(() => {
     if (dataMode === 'all') {
-      return tests.map((t) => ({
-        ...t,
-        cancers: Object.keys(t.allStageCancers || {}).length > 0
-          ? t.allStageCancers
-          : t.cancers, // fallback to early if no all-stage data
-      }));
+      return tests.map((t) => {
+        const hasAllStage = Object.keys(t.allStageCancers || {}).length > 0;
+        return {
+          ...t,
+          cancers: hasAllStage ? t.allStageCancers : t.cancers,
+          stageLabel: hasAllStage ? 'Stage I-IV' : 'Stage I-II',
+        };
+      });
     }
-    return tests;
+    return tests.map((t) => ({ ...t, stageLabel: 'Stage I-II' }));
   }, [tests, dataMode]);
 
   // Build detectable cancers list from current display data
@@ -71,17 +78,36 @@ export default function App() {
     return sortDefault(displayTests);
   }, [displayTests, selectedCancers]);
 
-  const openSettings = useCallback(() => setSettingsOpen(true), []);
-  const closeSettings = useCallback(() => setSettingsOpen(false), []);
+  if (source === 'loading') {
+    return (
+      <div className="max-w-[640px] mx-auto px-5 py-16 text-center">
+        <p className="text-sm text-gray-400">Loading test data from OpenOnco…</p>
+      </div>
+    );
+  }
 
+  if (source === 'error') {
+    return (
+      <div className="max-w-[640px] mx-auto px-5 py-16 text-center">
+        <p className="text-sm text-red-500 mb-2">Unable to load test data.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-800"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
-      <h1 className="text-lg font-medium text-gray-900 mb-1">MCED Per-Cancer Data Filter</h1>
+      <h1 className="text-lg font-medium text-gray-900 mb-1">Cancer Early Detection Test Comparison</h1>
       <p className="text-[13px] text-gray-500 mb-3 leading-relaxed">
-        This tool models a typical screening candidate&apos;s profile — family history,
-        lifestyle factors, and screening gaps — then shows how each MCED test&apos;s
-        published per-cancer sensitivity maps to that profile.
+        These tests vary widely in their ability to detect different cancers. This
+        analyzer gathers some basic family health information to help a user identify
+        cancers of interest, and then compares how sensitive each test is for those
+        cancers.
       </p>
       <div className="text-[13px] font-medium text-gray-700 mb-2">Start here by selecting gender:</div>
       <GenderToggle sex={sex} onSelect={setSex} />
@@ -109,29 +135,20 @@ export default function App() {
 
           <SmokingToggle on={smokeOn} onToggle={toggleSmoke} />
           <ScreeningGaps sex={sex} gapSet={gapSet} onToggle={toggleGap} />
+          <GeneticFactors activeFactors={geneticFactors} onToggle={toggleGenetic} sex={sex} />
           <ResetButton onReset={resetAll} />
         </>
       )}
 
-      <div className="flex flex-col gap-2.5 mt-5">
+      <ThresholdLegend thresholds={thresholds} onThresholdsChange={handleThresholdsChange} />
+
+      <div className="flex flex-col gap-2.5">
         {sorted.map((t) => (
-          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} dataMode={dataMode} />
+          <TestCard key={t.name} test={t} selectedCancers={selectedCancers} thresholds={thresholds} />
         ))}
       </div>
 
-      <Legend source={source} />
-      <Methodology tests={displayTests} dataMode={dataMode} onOpenSettings={openSettings} />
-
-      <SettingsPanel
-        open={settingsOpen}
-        onClose={closeSettings}
-        strongThreshold={strongThreshold}
-        moderateThreshold={moderateThreshold}
-        onChangeStrong={setStrongThreshold}
-        onChangeModerate={setModerateThreshold}
-        dataMode={dataMode}
-        onChangeDataMode={setDataMode}
-      />
+      <Methodology tests={displayTests} dataMode={dataMode} onDataModeChange={setDataMode} />
     </div>
   );
 }

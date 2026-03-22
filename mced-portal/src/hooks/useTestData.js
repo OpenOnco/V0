@@ -22,5 +22,5 @@ export function useTestData() {
     return () => { cancelled = true; };
   }, []);
 
-  return { tests, source };
+  return { tests, source, error: source === 'error' };
 }
