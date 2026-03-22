@@ -14,7 +14,7 @@ import http from 'http';
 import { createLogger } from './utils/logger.js';
 import { startScheduler, stopScheduler } from './scheduler.js';
 import { getHealthSummary } from './health.js';
-import { close as closeDb } from './db/client.js';
+import { close as closeDb, healthCheck } from './db/client.js';
 
 const logger = createLogger('physician-system');
 
@@ -100,6 +100,18 @@ async function main() {
 
     // Log status every hour
     setInterval(logStatus, 60 * 60 * 1000);
+
+    // Supabase keepalive: ping every 3 days to prevent free-tier auto-pause
+    const KEEPALIVE_INTERVAL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
+    setInterval(async () => {
+      try {
+        const result = await healthCheck();
+        logger.info('Supabase keepalive ping', { connected: result.connected });
+      } catch (err) {
+        logger.warn('Supabase keepalive ping failed', { error: err.message });
+      }
+    }, KEEPALIVE_INTERVAL_MS);
+    logger.info('Supabase keepalive scheduled (every 3 days)');
 
     logger.info('Physician System started successfully');
     logger.info('Manual CLI commands:');
