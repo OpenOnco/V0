@@ -15,22 +15,24 @@ describe('useFilters', () => {
     expect(result.current.sex).toBe('male');
   });
 
-  it('adds and removes family entries', () => {
+  it('toggles family cancers', () => {
     const { result } = renderHook(() => useFilters());
-    act(() => result.current.addFamily('Lung', 'mom'));
-    expect(result.current.famEntries).toHaveLength(1);
+    act(() => result.current.toggleFamily('Lung'));
+    expect(result.current.familyCancers.has('Lung')).toBe(true);
     expect(result.current.selectedCancers).toContain('Lung');
 
-    act(() => result.current.removeFamily(0));
-    expect(result.current.famEntries).toHaveLength(0);
+    act(() => result.current.toggleFamily('Lung'));
+    expect(result.current.familyCancers.has('Lung')).toBe(false);
     expect(result.current.selectedCancers).not.toContain('Lung');
   });
 
-  it('deduplicates family entries', () => {
+  it('allows multiple family cancers', () => {
     const { result } = renderHook(() => useFilters());
-    act(() => result.current.addFamily('Lung', 'mom'));
-    act(() => result.current.addFamily('Lung', 'mom'));
-    expect(result.current.famEntries).toHaveLength(1);
+    act(() => result.current.toggleFamily('Lung'));
+    act(() => result.current.toggleFamily('Breast'));
+    expect(result.current.familyCancers.size).toBe(2);
+    expect(result.current.selectedCancers).toContain('Lung');
+    expect(result.current.selectedCancers).toContain('Breast');
   });
 
   it('toggles smoking and adds cancers', () => {
@@ -56,7 +58,7 @@ describe('useFilters', () => {
 
   it('deduplicates across sources', () => {
     const { result } = renderHook(() => useFilters());
-    act(() => result.current.addFamily('Lung', 'mom'));
+    act(() => result.current.toggleFamily('Lung'));
     act(() => result.current.toggleSmoke());
     // Lung from both family + smoking, should appear once
     const lungCount = result.current.selectedCancers.filter((c) => c === 'Lung').length;
@@ -66,13 +68,13 @@ describe('useFilters', () => {
   it('resets everything', () => {
     const { result } = renderHook(() => useFilters());
     act(() => result.current.setSex('female'));
-    act(() => result.current.addFamily('Breast', 'mom'));
+    act(() => result.current.toggleFamily('Breast'));
     act(() => result.current.toggleSmoke());
     act(() => result.current.toggleGap('Cervix'));
     act(() => result.current.resetAll());
 
     expect(result.current.sex).toBeNull();
-    expect(result.current.famEntries).toEqual([]);
+    expect(result.current.familyCancers.size).toBe(0);
     expect(result.current.smokeOn).toBe(false);
     expect(result.current.gapSet.size).toBe(0);
     expect(result.current.selectedCancers).toEqual([]);

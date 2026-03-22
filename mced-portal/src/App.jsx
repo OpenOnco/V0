@@ -18,7 +18,7 @@ export default function App() {
   const { tests, source, error } = useTestData();
   const {
     sex, setSex,
-    famEntries, addFamily, removeFamily,
+    familyCancers, toggleFamily,
     smokeOn, toggleSmoke,
     gapSet, toggleGap,
     geneticFactors, toggleGenetic,
@@ -62,9 +62,6 @@ export default function App() {
     return [...detectable].sort();
   }, [displayTests]);
 
-  // Both parents get all cancers — family history is about lineage, not biology
-  const motherCancers = detectableCancers;
-  const fatherCancers = detectableCancers;
 
   const sorted = useMemo(() => {
     if (selectedCancers.length > 0) {
@@ -109,24 +106,11 @@ export default function App() {
 
       {sex && (
         <>
-          <div className="mb-4">
-            <FamilyDropdown
-              label="Family cancer history (mother's side)"
-              side="mom"
-              cancers={motherCancers}
-              entries={famEntries}
-              onAdd={addFamily}
-              onRemove={removeFamily}
-            />
-            <FamilyDropdown
-              label="Family cancer history (father's side)"
-              side="dad"
-              cancers={fatherCancers}
-              entries={famEntries}
-              onAdd={addFamily}
-              onRemove={removeFamily}
-            />
-          </div>
+          <FamilyDropdown
+            cancers={detectableCancers}
+            selected={familyCancers}
+            onToggle={toggleFamily}
+          />
 
           <SmokingToggle on={smokeOn} onToggle={toggleSmoke} />
           <ScreeningGaps sex={sex} gapSet={gapSet} onToggle={toggleGap} />

@@ -33,14 +33,13 @@ describe('App', () => {
 
   it('hides controls until gender selected', () => {
     render(<App />);
-    expect(screen.queryByText("Family cancer history (mother's side)")).not.toBeInTheDocument();
+    expect(screen.queryByText('Family cancer history')).not.toBeInTheDocument();
   });
 
   it('shows controls after selecting female', () => {
     render(<App />);
     fireEvent.click(screen.getByText('female'));
-    expect(screen.getByText("Family cancer history (mother's side)")).toBeInTheDocument();
-    expect(screen.getByText("Family cancer history (father's side)")).toBeInTheDocument();
+    expect(screen.getByText('Family cancer history')).toBeInTheDocument();
     expect(screen.getByText('Smoker / former smoker')).toBeInTheDocument();
     expect(screen.getByText('No mammogram')).toBeInTheDocument();
   });
@@ -61,7 +60,7 @@ describe('App', () => {
     render(<App />);
     fireEvent.click(screen.getByText('female'));
     fireEvent.click(screen.getByText('Reset all'));
-    expect(screen.queryByText("Family cancer history (mother's side)")).not.toBeInTheDocument();
+    expect(screen.queryByText('Family cancer history')).not.toBeInTheDocument();
   });
 
   it('does not use prohibited language', () => {
@@ -97,15 +96,63 @@ describe('App', () => {
   });
 });
 
-describe('Stage label', () => {
-  it('shows Stage I-II label when cancers are selected', () => {
-    mockUseTestData.mockReturnValue({ tests: MOCK_TESTS, source: 'api', error: false });
+describe('Stage mode and traffic lights', () => {
+  it('shows Stage I-II labels on cards when cancer is selected via smoking toggle', () => {
     render(<App />);
     fireEvent.click(screen.getByText('female'));
-    // Select a family cancer to trigger cancer selection
-    const motherDropdown = screen.getByText("Family cancer history (mother's side)").closest('div').parentElement;
-    // The stage label only shows in the traffic light column, which requires selectedCancers
-    // Just verify cards render — stage label tested via unit rendering
+    fireEvent.click(screen.getByText('Smoker / former smoker'));
+    // Smoking adds Lung (among others) — traffic lights should appear
+    const stageLabels = screen.getAllByText('Stage I-II');
+    expect(stageLabels.length).toBeGreaterThan(0);
+  });
+
+  it('shows traffic light dots after selecting a cancer via smoking', () => {
+    render(<App />);
+    fireEvent.click(screen.getByText('female'));
+    fireEvent.click(screen.getByText('Smoker / former smoker'));
+    // Test A has Lung: 80 → should show 80.0%
+    expect(screen.getAllByText('80.0%').length).toBeGreaterThan(0);
+  });
+
+  it('switches to all-stage via methodology link', () => {
+    render(<App />);
+    fireEvent.click(screen.getByText('female'));
+    fireEvent.click(screen.getByText('Smoker / former smoker'));
+    // Click "all stages I-IV" link in Methodology
+    fireEvent.click(screen.getByText('all stages I-IV'));
+    // Test A has allStageCancers for Lung: 90 → should show 90.0%
+    expect(screen.getAllByText('90.0%').length).toBeGreaterThan(0);
+    // Stage label should show I-IV for tests with all-stage data
+    expect(screen.getAllByText('Stage I-IV').length).toBeGreaterThan(0);
+  });
+
+  it('falls back to early-stage label for tests without all-stage data', () => {
+    // Test Empty has allStageCancers: {} so should keep Stage I-II even in all mode
+    const testsWithMixed = [
+      { name: 'Has All', vendor: 'V1', source: '', cancers: { Lung: 80 }, allStageCancers: { Lung: 90 } },
+      { name: 'No All', vendor: 'V2', source: '', cancers: { Lung: 40 }, allStageCancers: {} },
+    ];
+    mockUseTestData.mockReturnValue({ tests: testsWithMixed, source: 'api', error: false });
+    render(<App />);
+    fireEvent.click(screen.getByText('female'));
+    fireEvent.click(screen.getByText('Smoker / former smoker'));
+    // Switch to all-stage mode
+    fireEvent.click(screen.getByText('all stages I-IV'));
+    // "Has All" should show Stage I-IV, "No All" should show Stage I-II
+    expect(screen.getByText('Stage I-IV')).toBeInTheDocument();
+    expect(screen.getByText('Stage I-II')).toBeInTheDocument();
+  });
+
+  it('family checkbox dropdown adds cancer and traffic lights update', () => {
+    render(<App />);
+    fireEvent.click(screen.getByText('female'));
+    // Open the family dropdown
+    fireEvent.click(screen.getByText('Select cancer types...'));
+    // Check Lung
+    const lungCheckbox = screen.getByLabelText('Lung');
+    fireEvent.click(lungCheckbox);
+    // Traffic lights should now show for Lung
+    expect(screen.getAllByText('80.0%').length).toBeGreaterThan(0);
   });
 });
 
