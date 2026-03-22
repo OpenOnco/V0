@@ -19,6 +19,14 @@ export default function Methodology({ tests, dataMode, onDataModeChange }) {
       <h2 className="text-sm font-medium text-gray-900 mb-2.5">Methodology</h2>
       <div className="text-xs text-gray-500 leading-relaxed space-y-2">
         <p>
+          This tool sorts and displays published clinical data. It does not
+          analyze patient data, compute risk, generate diagnoses, or make
+          treatment recommendations. All user inputs are processed entirely
+          within the browser — no personal information is collected,
+          transmitted, or stored by any server. Test performance data is sourced
+          from published peer-reviewed studies via the OpenOnco.org database.
+        </p>
+        <p>
           Sensitivity values represent the percentage of cancers correctly
           identified at either{' '}
           {dataMode === 'early' ? (
