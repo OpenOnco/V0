@@ -76,12 +76,12 @@ export default function App() {
 
   return (
     <div className="max-w-[640px] mx-auto px-5 py-5 relative">
-      <h1 className="text-lg font-medium text-gray-900 mb-1">Early Cancer Detection Filter</h1>
+      <h1 className="text-lg font-medium text-gray-900 mb-1">Cancer Early Detection Test Comparison</h1>
       <p className="text-[13px] text-gray-500 mb-3 leading-relaxed">
-        Early cancer detection tests vary widely in their ability to detect different
-        cancers. This analyzer gathers some basic family health information to help a
-        user identify cancers of interest, and then shows how well each test detects
-        those cancers.
+        These tests vary widely in their ability to detect different cancers. This
+        analyzer gathers some basic family health information to help a user identify
+        cancers of interest, and then compares how sensitive each test is for those
+        cancers.
       </p>
       <div className="text-[13px] font-medium text-gray-700 mb-2">Start here by selecting gender:</div>
       <GenderToggle sex={sex} onSelect={setSex} />
