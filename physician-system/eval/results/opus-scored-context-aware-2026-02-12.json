@@ -1,0 +1,167 @@
+{
+  "timestamp": "2026-02-12T03:15:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-12-0243.json",
+  "description": "Context-aware eval — questions with [Patient context: ...] prefix and cancerType filter, simulating real UI usage.",
+  "summary": {
+    "averageScore": 9.0,
+    "passRate": "8/10",
+    "passPercentage": 80,
+    "averageAutomated": 3.0,
+    "averageLLM": 6.0,
+    "perDimension": {
+      "accuracy": 1.8,
+      "completeness": 1.8,
+      "evidence_quality": 1.5,
+      "automation_bias_mitigation": 1.0
+    },
+    "failures": [
+      {
+        "id": 105,
+        "score": 7,
+        "variant_of": 5,
+        "issues": "Thin HR+ breast evidence. Missing molecular relapse term, median lead time, Parsons et al. c-TRAK TN cross-subtype extrapolation not adequately flagged."
+      },
+      {
+        "id": 108,
+        "score": 7,
+        "variant_of": 8,
+        "issues": "Sparse HNSCC DB content — only 1/8 sources head_neck-specific. HPV ctDNA as distinct analyte not mentioned. Cross-indication broadening defeated the cancer type filter."
+      }
+    ],
+    "systemicIssues": [
+      "Cancer type filter significantly improves CRC questions (clean sources, no contamination)",
+      "Filter helps non-CRC when DB has adequate content (breast 8→9, bladder 8→10)",
+      "Filter cannot help with sparse DB content — HNSCC, pancreatic, melanoma still get cross-indication sources via broadening",
+      "RUBY trial (endometrial) still leaks through NSCLC filter — contamination gate issue",
+      "System handles sparse-evidence cancer types gracefully — honest about limitations, labels cross-indication data"
+    ],
+    "comparisonToBaseline": {
+      "note": "Compared to C9 non-filtered equivalents",
+      "improvements": [
+        "Q104 TNBC: 8→9 (breast filter eliminated CRC contamination)",
+        "Q106 NSCLC: 8→9 (RUBY not cited in body despite appearing in sources)",
+        "Q110 Bladder: 8→10 (IMvigor011 PMID correctly cited, bladder-specific sources)"
+      ],
+      "regressions": [
+        "Q108 HNSCC: 8→7 (fewer on-topic sources retrieved with filter)"
+      ],
+      "unchanged": [
+        "Q101/Q102 CRC: 10/10 (CRC already strong without filter)",
+        "Q105 HR+ breast: 7/7 (persistent thin evidence for this subtype)"
+      ]
+    }
+  },
+  "results": [
+    {
+      "id": 101,
+      "variant_of": 1,
+      "context": "Colorectal, Stage III, Post-surgical",
+      "filter": "colorectal",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent CRC escalation response. GALAXY, IDEA, CIRCULATE-US, CLAUDIA all cited. Clean CRC-only sources. No cross-indication contamination."
+    },
+    {
+      "id": 102,
+      "variant_of": 2,
+      "context": "Colorectal, Stage III, Adjuvant (active)",
+      "filter": "colorectal",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Strong de-escalation response. IDEA HR 1.16, GALAXY, CIRCULATE-US cited. CAPOX/FOLFOX distinction correct. CRC-specific sources only."
+    },
+    {
+      "id": 104,
+      "variant_of": 4,
+      "context": "Breast, Stage III, Post-surgical",
+      "filter": "breast",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "Improved over non-filtered Q4. All 8 sources breast-specific — no CRC contamination. c-TRAK TN and Artemis correctly described. Missing olaparib/BRCA. PERSEVERE in references."
+    },
+    {
+      "id": 105,
+      "variant_of": 5,
+      "context": "Breast, Stage IIA, Surveillance",
+      "filter": "breast",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 4 },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL: Assay misattribution resolved (no Signatera/RaDaR confusion), but evidence thin. Missing molecular relapse term, median lead time, Parsons et al. c-TRAK TN cross-subtype extrapolation inadequately flagged. TREAT ctDNA trial correctly surfaced for HR+."
+    },
+    {
+      "id": 106,
+      "variant_of": 6,
+      "context": "Lung (NSCLC), Stage IIB, Post-surgical",
+      "filter": "lung",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "ADAURA correctly described. MERMAID-1 EGFR+ exclusion noted. RUBY trial (endometrial) still in sources [6] but not cited in body — contamination gate issue persists but doesn't affect response quality."
+    },
+    {
+      "id": 108,
+      "variant_of": 8,
+      "context": "Head and Neck, Stage II, Pre-treatment",
+      "filter": "head and neck",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 4 },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL: HPV ctDNA as distinct analyte not mentioned. Only 1/8 sources HNSCC-specific. Sparse DB content — filter triggered broadening that filled sources with CRC/gastric/bladder. NavDx correctly identified."
+    },
+    {
+      "id": 110,
+      "variant_of": 10,
+      "context": "Bladder, Stage III, Post-surgical",
+      "filter": "bladder",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Major improvement over non-filtered Q10 (8→10). IMvigor011 PMID 41124204 cited correctly. First positive ctDNA-guided immunotherapy RCT described accurately. Bladder-specific sources prioritized."
+    },
+    {
+      "id": 111,
+      "variant_of": null,
+      "context": "Pancreatic, Stage IIB, Post-surgical",
+      "filter": "pancreatic",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "Graceful handling of sparse-evidence cancer type. AMPLIFY-201 (KRAS) correctly cited. Cross-indication CRC data clearly labeled. Honest about pancreatic-specific gaps."
+    },
+    {
+      "id": 112,
+      "variant_of": null,
+      "context": "Colorectal, Stage II, Post-surgical",
+      "filter": "colorectal",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "subtotal": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding nuanced response. Both sides of MSI-H + MRD- interaction presented with clinical sophistication. GALAXY, ASCO, NCCN all correctly cited. Evidence gaps precisely identified."
+    },
+    {
+      "id": 113,
+      "variant_of": null,
+      "context": "Melanoma, Stage IIIC, Post-surgical",
+      "filter": "melanoma",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "subtotal": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "Honest about minimal melanoma ctDNA data. NCT05060003 (7 patients) correctly cited. COMBI-AD standard 12-month duration referenced. Cross-indication data clearly labeled."
+    }
+  ]
+}

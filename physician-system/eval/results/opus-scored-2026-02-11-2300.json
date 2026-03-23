@@ -1,0 +1,200 @@
+{
+  "timestamp": "2026-02-12T00:15:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-2300.json",
+  "notes": "Post no-hedge rewriter + tightened templates + insurance scope changes",
+  "summary": {
+    "averageScore": 8.40,
+    "passRate": "14/20",
+    "passCount": 14,
+    "totalQuestions": 20,
+    "perDimension": {
+      "accuracy": 1.85,
+      "completeness": 1.60,
+      "evidence_quality": 1.30,
+      "automation_bias": 1,
+      "criterion3": 1.90,
+      "criterion4": 0.75
+    },
+    "perCategory": {
+      "clinical_scenario": "8.60",
+      "test_interpretation": "8.67",
+      "guideline": "8.75",
+      "trial_evidence": "8.00"
+    },
+    "failures": [
+      {
+        "id": 2,
+        "score": 6,
+        "summary": "Good clinical content but C3 false positive on 'stopping therapy' in analytical context. Over target word count."
+      },
+      {
+        "id": 4,
+        "score": 7,
+        "summary": "c-TRAK TN well-used. Missing KEYNOTE-522 and BRCA/olaparib options. Wrong NCCN nodes retrieved."
+      },
+      {
+        "id": 5,
+        "score": 7,
+        "summary": "Honest about gaps. Cross-indication TNBC data used for HR+ without early caveat. Missing monarchE context."
+      },
+      {
+        "id": 14,
+        "score": 6,
+        "summary": "VAF/MTM conflation factual error. Response structurally corrupted (orphaned text fragment)."
+      },
+      {
+        "id": 19,
+        "score": 7,
+        "summary": "Confused identity — half scope redirect, half answer. Should commit to one approach."
+      },
+      {
+        "id": 22,
+        "score": 6,
+        "summary": "Missing ALTAIR. Structural formatting issues. Duplicate citations. Thin on design details."
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": 1,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent CRC response. Tighter than previous. GALAXY/IDEA well-cited. No hedging."
+    },
+    {
+      "id": 2,
+      "automated": { "criterion3": 0, "criterion4": 0, "automatedScore": 0 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 6, "pass": false,
+      "summary": "Good clinical content but C3 false positive on 'stopping therapy' in analytical context. Over target word count."
+    },
+    {
+      "id": 3,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 9, "pass": true,
+      "summary": "Best answer. DYNAMIC correctly applied to stage II. NCCN tension well-framed."
+    },
+    {
+      "id": 4,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 7, "pass": false,
+      "summary": "c-TRAK TN well-used. Missing KEYNOTE-522 and BRCA/olaparib options. Wrong NCCN nodes retrieved."
+    },
+    {
+      "id": 5,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 7, "pass": false,
+      "summary": "Honest about gaps. Cross-indication TNBC data for HR+ without early caveat. Missing monarchE."
+    },
+    {
+      "id": 6,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 9, "pass": true,
+      "summary": "Good ADAURA/MERMAID-1 handling. Endometrial paper in references (contamination)."
+    },
+    {
+      "id": 7,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 9, "pass": true,
+      "summary": "Practical monitoring guidance. Insurance content leaked into one sentence."
+    },
+    {
+      "id": 8,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. Cross-indication properly flagged. NavDx specs accurate. Big improvement."
+    },
+    {
+      "id": 9,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 9, "pass": true,
+      "summary": "Handles understudied scenario well. Honest about evidence poverty."
+    },
+    {
+      "id": 10,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 8, "pass": true,
+      "summary": "Honest about KB limitations. Thin but passes. Missing CheckMate 274 comparator."
+    },
+    {
+      "id": 11,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent comparison. Clean, well-structured, clinically useful."
+    },
+    {
+      "id": 14,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 4 },
+      "total": 6, "pass": false,
+      "summary": "VAF/MTM conflation factual error. Response structurally corrupted."
+    },
+    {
+      "id": 15,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Clinically sophisticated. 16-fold quantitative analysis excellent."
+    },
+    {
+      "id": 16,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent guideline summary. NCCN vs ASCO nuance well-handled."
+    },
+    {
+      "id": 17,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 8, "pass": true,
+      "summary": "Strong ESMO coverage. ESCAT Level III correctly cited. Missing some inline citations."
+    },
+    {
+      "id": 19,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 7, "pass": false,
+      "summary": "Confused identity — half scope redirect, half answer. Should commit to one approach."
+    },
+    {
+      "id": 21,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 9, "pass": true,
+      "summary": "DYNAMIC facts all correct. Minor formatting issues (doubled citation)."
+    },
+    {
+      "id": 22,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 4 },
+      "total": 6, "pass": false,
+      "summary": "Missing ALTAIR. Structural formatting issues. Duplicate citations. Thin on design."
+    },
+    {
+      "id": 23,
+      "automated": { "criterion3": 2, "criterion4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Comprehensive breast trial landscape. Clean and well-organized."
+    },
+    {
+      "id": 24,
+      "automated": { "criterion3": 2, "criterion4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 7, "pass": false,
+      "summary": "Accurate but thin. Heavy single-source reliance. Missing MERMAID-2 context."
+    }
+  ]
+}

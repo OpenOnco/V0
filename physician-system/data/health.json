@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "startedAt": "2026-02-04T02:00:00.029Z",
+  "lastUpdated": "2026-02-04T02:00:11.107Z",
+  "crawlers": {
+    "daily-report": {
+      "status": "success",
+      "lastRun": "2026-02-04T02:00:11.107Z",
+      "lastSuccess": "2026-02-04T02:00:11.107Z",
+      "stats": {
+        "duration": 11081
+      }
+    }
+  },
+  "errors": [],
+  "digestsSent": 0,
+  "lastDigestSent": null
+}

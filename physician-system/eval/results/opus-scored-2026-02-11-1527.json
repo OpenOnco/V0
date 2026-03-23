@@ -1,0 +1,181 @@
+{
+  "timestamp": "2026-02-11T15:45:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-1527.json",
+  "context": "Post source enrichment (trial acronyms, PMIDs, journal/year in buildSourcesContext). IMvigor011 title+summary enriched. c-TRAK TN linked to trial.",
+  "summary": {
+    "averageScore": 8.5,
+    "passRate": "7/10",
+    "passPercentage": 70,
+    "maxScore": 10,
+    "passThreshold": 8,
+    "failing": 3,
+    "errors": 0,
+    "dimensionAverages": {
+      "accuracy": 1.6,
+      "completeness": 1.5,
+      "evidence_quality": 1.5,
+      "automation_bias_mitigation": 1.0,
+      "criterion3_nondirective": 2.0,
+      "criterion4_transparency": 1.0
+    },
+    "comparisonToPriorRun": {
+      "priorFile": "record-2026-02-11-1458.json",
+      "priorAvg": 8.0,
+      "priorPassRate": "6/10",
+      "delta": "+0.5 avg, +1 pass"
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. CIRCULATE-US named with enrollment details, GALAXY with specific HRs. DYNAMIC absence acceptable since question is stage III."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL. IDEA trial (3v6 months adjuvant) is the most relevant trial for this exact question and is completely absent. DYNAMIC also missing. Only GALAXY cited."
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL. DYNAMIC trial is THE definitive trial for stage II CRC ctDNA-guided management and is absent. Heavy guideline citations without the key RCT."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL. Pembrolizumab/KEYNOTE-522 missing — most important therapeutic consideration for TNBC with residual disease. Generic 'immunotherapy' mention insufficient."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Marginal pass. Accurate content but lead time not quantified (published median ~8.9 months). CDK4/6 inhibitor mention is appropriate."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. ADAURA, APPROACH, MERMAID-1 all named with specific context. MERMAID-1 EGFR exclusion is an outstanding nuance."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Solid practical answer with three differentiated monitoring options. Evidence quality docked for missing trial-specific monitoring protocols."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Major improvement (7→10). All expected content found. NavDx, HPV ctDNA, de-intensification trials, cross-indication evidence. Source enrichment clearly helped."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "subtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. ALTAIR with specific HRs/CIs/p-values. GALAXY with HRs. CLAUDE trial termination adds context. Best evidence utilization in the set."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "automated": { "criterion3": 2, "criterion4": 1, "subtotal": 3 },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "subtotal": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "FAIL. Source [3] IS IMvigor011 but Sonnet says 'could not be verified through database search.' Seeded results (DFS HR 0.64, OS HR 0.59) not reported despite being in source."
+    }
+  ]
+}

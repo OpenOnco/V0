@@ -1,0 +1,375 @@
+{
+  "timestamp": "2026-02-11T20:45:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-2027.json",
+  "summary": {
+    "averageScore": 7.25,
+    "passRate": "13/20",
+    "passThreshold": 8,
+    "totalEntries": 20,
+    "categoryAverages": {
+      "clinical_scenario": 8.5,
+      "test_interpretation": 6.0,
+      "guideline": 7.0
+    },
+    "dimensionAverages": {
+      "accuracy": 1.40,
+      "completeness": 1.35,
+      "evidence_quality": 1.10,
+      "automation_bias_mitigation": 0.80,
+      "criterion3": 1.90,
+      "criterion4": 0.65
+    },
+    "failures": [
+      {"id": 4, "score": 5, "reason": "Citation coverage 0%. Content adequate but uncited. Missing KEYNOTE-522/pembrolizumab."},
+      {"id": 9, "score": 6, "reason": "Citation coverage 33%. Missing treatment failure and immunotherapy options."},
+      {"id": 12, "score": 0, "reason": "Empty response — complete retrieval failure for Signatera LOD question."},
+      {"id": 13, "score": 2, "reason": "Empty response — retrieval failure for basic test selection question (Guardant Reveal)."},
+      {"id": 18, "score": 2, "reason": "Empty response — no ASCO content in database."},
+      {"id": 20, "score": 2, "reason": "Empty response — cross-guideline survey retrieval failure."}
+    ],
+    "systemicIssues": [
+      "3/20 empty responses persisting (Q12, Q13, Q18, Q20) — retrieval failure for test-specific and cross-guideline queries",
+      "Q12 regressed from 4/10 (had VAF/MTM errors) to 0/10 (empty response) — retrieval completely lost",
+      "Q10 bladder cancer RECOVERED (7→10) — cancer-type tagging fix confirmed working for clinical scenarios",
+      "Q3 RECOVERED from timeout (0→8) — no longer 502 error",
+      "Q19 auto-score dropped from 3 to 2 due to stricter citation coverage threshold, but content remains excellent (8/10)",
+      "DYNAMIC trial now consistently cited in CRC questions (Q2, Q3) — major improvement",
+      "Retrieval contamination appears eliminated for clinical scenarios — no wrong-organ sources visible",
+      "Test-specific queries (Q12 Signatera LOD, Q13 tissue requirements) still failing — these need test data in DB, not guidelines",
+      "Cross-guideline survey queries (Q20 de-escalation across NCCN/ESMO/ASCO) still failing — need broader keyword matching or multi-guideline retrieval"
+    ],
+    "comparisonToPrior": {
+      "priorFile": "opus-scored-2026-02-11-1845.json",
+      "priorAvg": 7.35,
+      "priorPassRate": "13/20",
+      "deltaAvg": -0.10,
+      "deltaPass": 0,
+      "improvements": ["Q3: 0→8 (timeout recovered)", "Q10: 7→10 (contamination fixed)", "Q2: DYNAMIC now cited"],
+      "regressions": ["Q12: 4→0 (was VAF errors, now empty)", "Q19: 10→8 (stricter citation scoring)"],
+      "stable_failures": ["Q13 (empty)", "Q18 (empty)", "Q20 (empty)"]
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. 8 sources, GALAXY/IDEA/CIRCULATE correctly cited. Three options with trial enrollment. Missing DYNAMIC but comprehensive otherwise."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding. DYNAMIC correctly scoped to stage II, IDEA HR cited (1.07/1.16). Colon vs rectal distinction made. Best de-escalation answer."
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Recovered from timeout (was 0/10). Endpoint misattribution on OS knocks accuracy and evidence quality. Core DYNAMIC message correct."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 0,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 3
+      },
+      "total": 5,
+      "pass": false,
+      "summary": "Citation failure — 0% coverage. Missing KEYNOTE-522/pembrolizumab. Content adequate but uncited."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Good molecular relapse handling. Overconfident negation warning but overall epistemic calibration adequate."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Excellent ADAURA/MRD integration. MERMAID-1 bonus. Citation coverage 33% drags automated score but content is strong."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Adequate serial monitoring discussion. Correctly states no established optimal retesting interval. Missing specific surveillance guidance."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Strong HPV-specific ctDNA response despite sparse evidence. Cross-indication properly flagged. NavDx mentioned."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 4
+      },
+      "total": 6,
+      "pass": false,
+      "summary": "Missing treatment failure and immunotherapy options. Citation coverage low. Limited depth for challenging persistent MRD+ scenario."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Major recovery — was 7/10 with PDAC contamination. IMvigor011 correctly cited. Cancer-type tagging fix confirmed working."
+    },
+    {
+      "id": 11,
+      "category": "test_interpretation",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Adequate assay comparison. Missing specificity data. Guideline-only sources, no primary validation studies."
+    },
+    {
+      "id": 12,
+      "category": "test_interpretation",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 0, "criterion4": 0, "automatedScore": 0},
+      "llm": {
+        "accuracy": 0,
+        "completeness": 0,
+        "evidence_quality": 0,
+        "automation_bias_mitigation": 0,
+        "llmSubtotal": 0
+      },
+      "total": 0,
+      "pass": false,
+      "summary": "Complete retrieval failure — empty response for Signatera LOD question. Regressed from 4/10 (VAF errors) to 0/10 (no content). Needs test-specific data in DB."
+    },
+    {
+      "id": 13,
+      "category": "test_interpretation",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 0,
+        "completeness": 0,
+        "evidence_quality": 0,
+        "automation_bias_mitigation": 0,
+        "llmSubtotal": 0
+      },
+      "total": 2,
+      "pass": false,
+      "summary": "Empty response for basic test selection question. Guardant Reveal tissue-free advantage not discussed. Persistent retrieval failure."
+    },
+    {
+      "id": 14,
+      "category": "test_interpretation",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent. c-TRAK TN correctly attributed to RaDaR. Coverage details accurate. Multiple ongoing trials. Best test comparison answer."
+    },
+    {
+      "id": 15,
+      "category": "test_interpretation",
+      "difficulty": "challenging",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent ctDNA kinetics response. GALAXY HRs cited. Kinetics vs stable positivity well discussed."
+    },
+    {
+      "id": 16,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent NCCN CRC surveillance summary. Category 2A mentioned. Direct quotes from NCCN."
+    },
+    {
+      "id": 17,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 1, "automatedScore": 3},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent ESMO MRD guidance. ESCAT III classification correct. Prognostic vs predictive distinction. NCCN comparison."
+    },
+    {
+      "id": 18,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 0,
+        "completeness": 0,
+        "evidence_quality": 0,
+        "automation_bias_mitigation": 0,
+        "llmSubtotal": 0
+      },
+      "total": 2,
+      "pass": false,
+      "summary": "Empty response for ASCO guidance question. No ASCO MRD-specific content in database. Persistent failure."
+    },
+    {
+      "id": 19,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmSubtotal": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Excellent NCCN NSCLC ctDNA summary. Clear advanced vs early-stage distinction. Auto-score penalized for citation coverage heuristic but content is strong."
+    },
+    {
+      "id": 20,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": {"criterion3": 2, "criterion4": 0, "automatedScore": 2},
+      "llm": {
+        "accuracy": 0,
+        "completeness": 0,
+        "evidence_quality": 0,
+        "automation_bias_mitigation": 0,
+        "llmSubtotal": 0
+      },
+      "total": 2,
+      "pass": false,
+      "summary": "Empty response for cross-guideline de-escalation survey. Same retrieval failure as prior run."
+    }
+  ]
+}

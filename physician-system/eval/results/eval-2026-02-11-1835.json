@@ -1,0 +1,115 @@
+{
+  "timestamp": "2026-02-11T18:35:40.456Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "config": {
+    "cdsOnly": true,
+    "adversarialOnly": false,
+    "category": null,
+    "limit": 5
+  },
+  "summary": {
+    "totalQuestions": 5,
+    "averageScore": 0,
+    "passRate": "0/5",
+    "passPercentage": 0,
+    "passThreshold": 8,
+    "maxScore": 10,
+    "passing": 0,
+    "failing": 5,
+    "errors": 5
+  },
+  "cdsCompliance": {
+    "criterion3PassRate": "0/0",
+    "criterion4PassRate": "0/0",
+    "totalViolations": 0,
+    "violations": []
+  },
+  "categoryAverages": {
+    "clinical_scenario": null
+  },
+  "dimensionAverages": {
+    "accuracy": null,
+    "completeness": null,
+    "evidence_quality": null,
+    "automation_bias_mitigation": null,
+    "criterion3_nondirective": null,
+    "criterion4_transparency": null
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+      "answer": null,
+      "total": 0,
+      "pass": false,
+      "automated": null,
+      "llm": null,
+      "cdsViolations": 0,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": "fetch failed"
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery. Signatera just came back MRD-negative. Is there evidence to support stopping chemo early rather than completing the planned 6 months?",
+      "answer": null,
+      "total": 0,
+      "pass": false,
+      "automated": null,
+      "llm": null,
+      "cdsViolations": 0,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": "fetch failed"
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "64-year-old, stage II colon cancer, pT4aN0, MSS, no high-risk features besides T4a. Post-surgery Signatera is MRD-positive. Standard guidelines wouldn't call for adjuvant chemo here. What does the MRD data say about treating these patients?",
+      "answer": null,
+      "total": 0,
+      "pass": false,
+      "automated": null,
+      "llm": null,
+      "cdsViolations": 0,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": "fetch failed"
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "TNBC patient, had neoadjuvant AC-T, partial response, then surgery with residual disease. Post-op Signatera is MRD-positive. She already got capecitabine per CREATE-X. Any ctDNA-guided options beyond that?",
+      "answer": null,
+      "total": 0,
+      "pass": false,
+      "automated": null,
+      "llm": null,
+      "cdsViolations": 0,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": "fetch failed"
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "query": "HR+/HER2- breast cancer, stage IIA, had lumpectomy + adjuvant ET. Now 18 months out, surveillance Signatera just turned positive. No imaging findings yet. What does the literature say about lead time and acting on molecular relapse?",
+      "answer": null,
+      "total": 0,
+      "pass": false,
+      "automated": null,
+      "llm": null,
+      "cdsViolations": 0,
+      "mustMentionMissing": [],
+      "llmSummary": null,
+      "error": "fetch failed"
+    }
+  ]
+}

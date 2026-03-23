@@ -1,0 +1,178 @@
+{
+  "timestamp": "2026-02-11T16:45:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-1603.json",
+  "summary": {
+    "averageScore": 8.45,
+    "passRate": "15/20",
+    "passPercentage": 75,
+    "totalQuestions": 20,
+    "perCategory": {
+      "clinical_scenario": { "count": 10, "pass": 9, "avg": 9.0 },
+      "test_interpretation": { "count": 5, "pass": 4, "avg": 8.4 },
+      "guideline": { "count": 5, "pass": 2, "avg": 7.4 }
+    },
+    "perDimension": {
+      "accuracy": 1.90,
+      "completeness": 1.60,
+      "evidence_quality": 1.45,
+      "automation_bias_mitigation": 1.00,
+      "c3_avg": 1.70,
+      "c4_avg": 0.75
+    },
+    "failures": [
+      { "id": 4, "score": 7, "issue": "TNBC evidence gap: missing pembrolizumab/KEYNOTE-522, c-TRAK TN" },
+      { "id": 12, "score": 7, "issue": "No evidence level characterization. C4=0" },
+      { "id": 17, "score": 7, "issue": "C3=0 false positive: guideline query penalized for missing OPTION structure" },
+      { "id": 18, "score": 5, "issue": "C3=0 + C4=0 structural penalty. Missing provisional clinical opinion" },
+      { "id": 20, "score": 5, "issue": "C3=0 + C4=0 structural penalty. ESMO/ASCO de-escalation positions underspecified" }
+    ],
+    "systemicIssues": [
+      "Automated checker C3 penalizes guideline queries for missing OPTION structure (3/5 failures)",
+      "TNBC-specific therapy evidence (pembrolizumab/KEYNOTE-522) not in RAG",
+      "Evidence quality trending up (1.45 vs 1.2 baseline) from pgvector ORDER BY fix"
+    ]
+  },
+  "results": [
+    {
+      "id": 1, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. GALAXY HR, IDEA HRs, CLAUDIA, CIRCULATE-US all cited. Comprehensive CRC escalation response."
+    },
+    {
+      "id": 2, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. IDEA with specific HRs, DYNAMIC stage II data (92.5% RFS), CIRCULATE-US, oral fluoropyrimidine option. Major improvement from prior 7/10."
+    },
+    {
+      "id": 3, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 1, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 8, "pass": true,
+      "summary": "Borderline pass. DYNAMIC trial not named despite being the key stage II CRC evidence. Guideline positions accurate. RAG stochasticity may explain DYNAMIC absence."
+    },
+    {
+      "id": 4, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 4 },
+      "total": 7, "pass": false,
+      "summary": "FAIL. Missing pembrolizumab/KEYNOTE-522 and c-TRAK TN. Options too generic for TNBC. RAG evidence gap for breast-specific therapies."
+    },
+    {
+      "id": 5, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 8, "pass": true,
+      "summary": "Borderline pass. Correct on no RCT evidence. Lacks lead time quantification and breast-specific MRD trials."
+    },
+    {
+      "id": 6, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. ADAURA, APPROACH, MERMAID-1, CONTINUE all named. EGFR-specific considerations well-handled."
+    },
+    {
+      "id": 7, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 9, "pass": true,
+      "summary": "Strong practical monitoring advice. Three options with good pros/cons. DYNAMIC would have strengthened evidence dimension."
+    },
+    {
+      "id": 8, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. HPV ctDNA as distinct analyte, NPV >95%, de-intensification trials, cross-indication data properly flagged."
+    },
+    {
+      "id": 9, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 8, "pass": true,
+      "summary": "Borderline pass. GALAXY HR 11.99, FINE trial cited. Missing immunotherapy discussion for MSI-H patients."
+    },
+    {
+      "id": 10, "category": "clinical_scenario",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "MAJOR IMPROVEMENT. IMvigor011 now correctly identified with PMID 41124204 and DFS results. Was unverifiable in prior runs."
+    },
+    {
+      "id": 11, "category": "test_interpretation",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 8, "pass": true,
+      "summary": "Adequate comparison. Missing specificity numbers. Over-hedging on well-established sensitivity claims."
+    },
+    {
+      "id": 12, "category": "test_interpretation",
+      "automated": { "c3": 2, "c4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 7, "pass": false,
+      "summary": "FAIL. C4=0 for missing evidence level characterization. Good CDS compliance (avoids patient-specific interpretation). Missing MTM/mL explanation."
+    },
+    {
+      "id": 13, "category": "test_interpretation",
+      "automated": { "c3": 2, "c4": 0, "automatedScore": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 8, "pass": true,
+      "summary": "Borderline pass. Good meta-analysis data (59% vs 88%). Doesn't name Signatera explicitly or describe methylation-based mechanism. C4=0 for structure."
+    },
+    {
+      "id": 14, "category": "test_interpretation",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent comparison. Panel sizes, turnaround times, c-TRAK TN 72%, BESPOKE, coverage differences. Balanced, non-directive."
+    },
+    {
+      "id": 15, "category": "test_interpretation",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 9, "pass": true,
+      "summary": "Strong. Rising trajectory discussion, 300-day lead time, exponential pattern. Excellent CDS — avoids interpreting specific patient results."
+    },
+    {
+      "id": 16, "category": "guideline",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. Direct NCCN quotes with citations, Category 2A, ESMO alignment. Uses OPTION format for guideline query."
+    },
+    {
+      "id": 17, "category": "guideline",
+      "automated": { "c3": 0, "c4": 1, "automatedScore": 1 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 6 },
+      "total": 7, "pass": false,
+      "summary": "FAIL due to C3=0 (false positive — guideline query penalized for no OPTION structure). Content quality is actually strong: ESCAT III, NCCN alignment."
+    },
+    {
+      "id": 18, "category": "guideline",
+      "automated": { "c3": 0, "c4": 0, "automatedScore": 0 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 5, "pass": false,
+      "summary": "FAIL. C3=0 + C4=0 structural penalty. Content is adequate — ASCO/NCCN/ESMO compared. Missing 'provisional clinical opinion' and specific ASCO document types."
+    },
+    {
+      "id": 19, "category": "guideline",
+      "automated": { "c3": 2, "c4": 1, "automatedScore": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "llmScore": 7 },
+      "total": 10, "pass": true,
+      "summary": "Excellent. Clear advanced vs early-stage distinction. NCCN quotes with categories. Strong use of structural format."
+    },
+    {
+      "id": 20, "category": "guideline",
+      "automated": { "c3": 0, "c4": 0, "automatedScore": 0 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "llmScore": 5 },
+      "total": 5, "pass": false,
+      "summary": "FAIL. C3=0 + C4=0 structural penalty. Good prognostic vs predictive distinction. ESMO/ASCO positions on de-escalation underspecified."
+    }
+  ]
+}

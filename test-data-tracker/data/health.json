@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "startedAt": "2026-01-30T20:20:28.964Z",
+  "lastUpdated": "2026-03-22T18:45:36.587Z",
+  "crawlers": {
+    "vendors": {
+      "lastRun": "2026-02-01T19:17:24.752Z",
+      "lastSuccess": "2026-02-01T19:21:26.341Z",
+      "discoveriesFound": 7,
+      "discoveriesAdded": 0,
+      "duration": 241589,
+      "status": "success",
+      "updatedAt": "2026-02-01T19:21:26.342Z"
+    },
+    "cms": {
+      "lastRun": "2026-03-22T18:31:48.727Z",
+      "lastSuccess": "2026-03-22T18:32:24.354Z",
+      "discoveriesFound": 1,
+      "discoveriesAdded": 1,
+      "duration": 35627,
+      "status": "success",
+      "updatedAt": "2026-03-22T18:32:24.355Z"
+    },
+    "payers": {
+      "lastRun": "2026-03-22T18:39:02.314Z",
+      "lastSuccess": "2026-03-22T18:45:32.090Z",
+      "discoveriesFound": 22,
+      "discoveriesAdded": 0,
+      "duration": 389776,
+      "status": "success",
+      "updatedAt": "2026-03-22T18:45:32.090Z"
+    },
+    "vendor": {
+      "lastRun": "2026-03-22T18:32:24.356Z",
+      "lastSuccess": "2026-03-22T18:39:02.312Z",
+      "discoveriesFound": 66,
+      "discoveriesAdded": 19,
+      "duration": 397956,
+      "status": "success",
+      "updatedAt": "2026-03-22T18:39:02.313Z"
+    },
+    "nih": {
+      "lastRun": "2026-03-22T18:45:32.090Z",
+      "lastSuccess": "2026-03-22T18:45:36.587Z",
+      "discoveriesFound": 21,
+      "discoveriesAdded": 21,
+      "duration": 4497,
+      "status": "success",
+      "updatedAt": "2026-03-22T18:45:36.587Z"
+    }
+  },
+  "errors": [],
+  "digestsSent": 0,
+  "lastDigestSent": null
+}

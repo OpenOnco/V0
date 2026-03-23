@@ -1,0 +1,203 @@
+{
+  "timestamp": "2026-02-11T15:54:55.023Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "description": "Eval recording for Opus scoring in Claude Code. Each entry has the question, chat answer, automated CDS results, and accuracy check. LLM scoring was skipped — score these in CC.",
+  "scoring_instructions": {
+    "dimensions": {
+      "accuracy": "0-2: Does response match ground truth? Correct or fabricated? 0=hallucinations, 1=mostly correct, 2=fully accurate",
+      "completeness": "0-2: Major options covered? Gaps acknowledged? 0=major omissions, 1=adequate, 2=comprehensive",
+      "evidence_quality": "0-2: Sources relevant? Evidence levels characterized? 0=poor, 1=adequate, 2=excellent",
+      "automation_bias_mitigation": "0-1: Defers to clinical judgment? 0=no deference, 1=appropriately defers"
+    },
+    "automated_scores": "criterion3 (0-2) + criterion4 (0-1) already computed. Total = automated (0-3) + LLM (0-7) = 10 points. Pass >= 8."
+  },
+  "entries": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+      "answer": "CLINICAL SCENARIO: 58-year-old with stage III colon cancer (T3N2), 6 weeks post-right hemicolectomy, MRD-positive on Signatera, planning CAPOX.\nDECISION: The indexed evidence does not specifically address whether adjuvant therapy should be intensified to FOLFOXIRI based on MRD-positive status.\n\nOPTION A: Intensify to FOLFOXIRI based on MRD-positive result\n- Evidence: While ctDNA is recognized as prognostic in stage III CRC, current guidelines do not support treatment escalation based on MRD results. ESMO classifies ctDNA MRD as a level III biomarker (investigational) for treatment decisions and notes that while prospective data on ctDNA-guided treatment is promising, additional randomized evidence is needed before incorporation into standard practice [4].\n- Caveats: No completed randomized trial has demonstrated that intensifying adjuvant therapy based on MRD-positive status improves overall survival in stage III CRC. The patient's T3N2 disease already represents high-risk pathology warranting standard adjuvant chemotherapy.\n\nOPTION B: Proceed with planned CAPOX and serial MRD monitoring\n- Evidence: NCCN guidelines explicitly state that \"treatment decision-making is not recommended based on ctDNA results\" and that there is \"currently insufficient evidence to recommend routine use of ctDNA assays outside of a clinical trial\" [2,3,5]. CAPOX remains appropriate first-line adjuvant therapy for stage III disease per current guidelines [1]. Based on the available sources, it is unclear whether serial MRD monitoring during treatment can provide prognostic information or what the specific performance characteristics are for detecting recurrence and lead time advantage over imaging in CRC.\n- Caveats: While MRD-positive status confers worse prognosis, guidelines have not yet incorporated this into treatment selection algorithms.\n\nOPTION C: Clinical trial enrollment for MRD-guided therapy\n- Evidence: Both NCCN and ESMO acknowledge that MRD-guided treatment decisions remain investigational [3,4]. Clinical trials specifically designed for MRD-positive patients may offer access to escalation strategies with appropriate controls to determine efficacy.\n- Caveats: Trial availability is institution-dependent and enrollment criteria vary.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No prospective randomized controlled trial has demonstrated overall survival benefit from MRD-guided therapy escalation in stage III CRC. The optimal MRD threshold for clinical action and whether intensification benefits vary by RAS mutation status remain undefined.\n\nTEST-SPECIFIC NOTE: Based on the available sources, it is unclear what the specific technical approach and performance characteristics are for commercially available MRD assays in CRC recurrence surveillance. The assay is covered by Medicare for CRC stage II-IV monitoring and has partial commercial coverage from several payers for adjuvant therapy guidance, though current guidelines do not endorse treatment decisions based on results.",
+      "expected_content": {
+        "must_mention": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "CIRCULATE",
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "bonus_mention": [
+          "NRG-GI005",
+          "COBRA",
+          "BESPOKE"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial enrolled stage II colon cancer patients, not stage III",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "No completed RCT shows survival benefit from ctDNA-guided escalation in stage III CRC"
+          },
+          {
+            "claim": "NRG-GI005 is testing ctDNA-guided therapy escalation in stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial included stage III patients",
+          "RCT evidence supports escalation to FOLFOXIRI based on MRD status in stage III"
+        ]
+      },
+      "notes": "Core use case — MRD+ post-resection CRC with treatment intensification question.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "DECISION: The indexed evidence does not specifically address whether adjuvant therapy should be intensified to FOLFOXIRI",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 2,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "adjuvant",
+          "ctDNA",
+          "intensification"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "Signatera",
+          "FOLFOXIRI"
+        ],
+        "shouldMentionMissing": [
+          "DYNAMIC",
+          "CIRCULATE"
+        ],
+        "bonusFound": []
+      }
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "query": "Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery. Signatera just came back MRD-negative. Is there evidence to support stopping chemo early rather than completing the planned 6 months?",
+      "answer": "CLINICAL SCENARIO: Stage III rectal cancer, 3 months post-surgery, completed 3 months FOLFOX, Signatera MRD-negative.\nDECISION: Based on the available evidence, the key question is whether adjuvant chemotherapy should be stopped at 3 months versus continuing to standard 6 months in MRD-negative patients.\n\nOPTION A: Stop chemotherapy early based on MRD-negative status.\n- Evidence: The DYNAMIC trial demonstrated that ctDNA-negative patients can safely avoid adjuvant chemotherapy in stage II colon cancer, with 3-year recurrence-free survival of 92.5% among MRD-negative patients who received no chemotherapy [4]. GALAXY data show that ctDNA clearance during adjuvant chemotherapy is associated with improved outcomes compared to persistent ctDNA positivity [6]. Serial ctDNA negativity (initial post-surgical negative result followed by on-treatment negative) further strengthens the negative predictive value beyond single timepoint assessment.\n- Caveats: No completed randomized trial has validated adjuvant therapy de-escalation in MRD-negative stage III CRC patients. Based on available sources, the DYNAMIC trial enrolled only stage II patients [4], and cross-indication application to higher-risk stage III disease remains unproven.\n\nOPTION B: Complete standard 6-month adjuvant therapy regardless of MRD status.\n- Evidence: The IDEA collaboration established that 6 months remains the standard duration for stage III colon cancer overall, as 3 months did not meet non-inferiority in the general population (3-year DFS 74.6% vs 75.5%, HR 1.07) [7]. Based on the IDEA data, 6 months was superior to 3 months across all risk subgroups [7]. The indexed evidence does not specifically address current guideline recommendations regarding biomarker status for treatment duration decisions.\n- Caveats: This approach does not incorporate MRD information that may identify patients at very low recurrence risk who could safely de-escalate.\n\nOPTION C: Clinical trial enrollment for MRD-guided management.\n- Evidence: CIRCULATE-US is actively enrolling stage III CRC patients for ctDNA-guided adjuvant therapy decisions, including potential de-escalation in MRD-negative patients [8]. This phase II/III trial may provide access to MRD-guided duration modification within a protocol setting where safety and efficacy can be rigorously evaluated.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo completed randomized trial has validated stopping adjuvant therapy early in MRD-negative stage III CRC patients. The safety of de-escalation specifically in rectal cancer (which may have different biology than colon cancer) is unknown. Whether high-risk stage III features (T4, N2) override MRD-negative status for treatment duration decisions has not been studied.\n\nTEST-SPECIFIC NOTE: Based on the available sources, it is unclear what the specific technical specifications are for the Signatera assay. The strong negative predictive value observed in GALAXY studies (ctDNA clearance associated with favorable outcomes) [6] supports confidence in serial negative results during active treatment. However, this represents the most favorable interpretation of MRD-negative status given the robust CRC validation data available for this assay compared to other available assays.",
+      "expected_content": {
+        "must_mention": [
+          "de-escalation",
+          "MRD-negative",
+          "adjuvant"
+        ],
+        "should_mention": [
+          "DYNAMIC",
+          "IDEA",
+          "3 months",
+          "6 months"
+        ],
+        "bonus_mention": [
+          "CIRCULATE-Japan",
+          "VEGA",
+          "recurrence-free survival"
+        ]
+      },
+      "ground_truth": {
+        "facts": [
+          {
+            "claim": "DYNAMIC trial showed ctDNA-guided approach was non-inferior to standard management for recurrence-free survival in stage II CRC",
+            "source": "PMID: 36856617"
+          },
+          {
+            "claim": "IDEA trial showed 3 months of adjuvant therapy was non-inferior to 6 months for low-risk stage III CRC"
+          }
+        ],
+        "forbidden_facts": [
+          "DYNAMIC trial proved de-escalation is safe in stage III rectal cancer"
+        ]
+      },
+      "notes": "Tests de-escalation scenario.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 1,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "citation_missing",
+              "sentence": "DECISION: Based on the available evidence, the key question is whether adjuvant chemotherapy should be stopped at 3 mont",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(recommend|should|indicated|"
+            },
+            {
+              "check": "citation_missing",
+              "sentence": "Based on the IDEA data, 6 months was superior to 3 months across all risk subgroups [7].",
+              "reason": "Clinical claim without citation",
+              "detail": "\\b(effective|superior|preferre"
+            }
+          ]
+        },
+        "automatedScore": 3
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 3,
+        "mustMentionMiss": 0,
+        "shouldMentionHit": 4,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 2
+      },
+      "mustMention": {
+        "found": [
+          "de-escalation",
+          "MRD-negative",
+          "adjuvant"
+        ],
+        "missing": [],
+        "shouldMentionFound": [
+          "DYNAMIC",
+          "IDEA",
+          "3 months",
+          "6 months"
+        ],
+        "shouldMentionMissing": [],
+        "bonusFound": [
+          "recurrence-free survival"
+        ]
+      }
+    }
+  ]
+}

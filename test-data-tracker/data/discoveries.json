@@ -1,0 +1,4221 @@
+[
+  {
+    "id": "1774204344352-apfhnlo1v",
+    "source": "cms",
+    "type": "coverage_change",
+    "title": "Superficial Radiation Therapy (SRT) for the Treatment of Nonmelanoma Skin Cancers (NMSC)",
+    "summary": "Article update",
+    "url": "",
+    "data": {
+      "title": "Superficial Radiation Therapy (SRT) for the Treatment of Nonmelanoma Skin Cancers (NMSC)",
+      "summary": "Article update",
+      "url": "",
+      "relevance": "low",
+      "metadata": {
+        "documentId": "",
+        "documentType": "Article",
+        "contractor": "",
+        "effectiveDate": "",
+        "version": 1,
+        "aiAnalysis": {
+          "coverageDecision": "unknown",
+          "affectedTests": [],
+          "isMolDXRelevant": false,
+          "keyChanges": "This LCD covers superficial radiation therapy for nonmelanoma skin cancers and does not address molecular diagnostic testing",
+          "analysisNotes": "This coverage determination is specific to superficial radiation therapy as a treatment modality for nonmelanoma skin cancers. It does not contain any provisions, criteria, or mentions related to molecular diagnostics, ctDNA testing, liquid biopsy, MRD monitoring, or tumor profiling. The document appears to be purely focused on radiation therapy coverage and would not impact molecular diagnostic test coverage decisions.",
+          "plaCodes": []
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:32:24.352Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742295-l94porcak",
+    "source": "vendor",
+    "type": "vendor_pap_update",
+    "title": "Natera: Financial assistance programs Program",
+    "summary": "Qualified patients",
+    "url": "https://www.natera.com/oncology/billing/",
+    "data": {
+      "title": "Natera: Financial assistance programs Program",
+      "summary": "Qualified patients",
+      "url": "https://www.natera.com/oncology/billing/",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "natera",
+        "vendorName": "Natera",
+        "papProgram": {
+          "name": "Financial assistance programs",
+          "url": null,
+          "phone": null,
+          "eligibility": "Qualified patients",
+          "maxDiscount": null,
+          "reducedPriceRange": null,
+          "incomeThreshold": null,
+          "uninsuredOnly": false,
+          "underinsuredEligible": true,
+          "documentsRequired": []
+        },
+        "copayAssistance": {
+          "available": null,
+          "maxAmount": null,
+          "forCommercial": null,
+          "forMedicare": false,
+          "notes": null
+        },
+        "changes": [],
+        "rawQuotes": [
+          "Natera has robust financial assistance programs that can be offered to qualified patients to ensure that cost is not a barrier to testing",
+          "Natera accepts commercial and public insurances",
+          "Signatera™ is covered by Medicare for monitoring disease progression, disease recurrence, or relapse",
+          "Medicare patients diagnosed with solid tumors are fully covered if they meet one of these criteria: either recurrent, relapsed, refractory, metastatic, or advanced stages III or IV cancer",
+          "Natera is an in-network provider with most health plans, including Cigna and UnitedHealthcare. Natera also offers self-pay pricing and financial assistance options"
+        ]
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.295Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742296-mo9dx97gh",
+    "source": "vendor",
+    "type": "vendor_pap_update",
+    "title": "Tempus: Financial Assistance Program Program",
+    "summary": "Based on patient's household income and takes into account relevant life circumstances, such as medical debt or loss of income due to a patient's diagnosis",
+    "url": "https://www.tempus.com/patients/billing/",
+    "data": {
+      "title": "Tempus: Financial Assistance Program Program",
+      "summary": "Based on patient's household income and takes into account relevant life circumstances, such as medical debt or loss of income due to a patient's diagnosis",
+      "url": "https://www.tempus.com/patients/billing/",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "tempus",
+        "vendorName": "Tempus",
+        "papProgram": {
+          "name": "Financial Assistance Program",
+          "url": "access.tempus.com",
+          "phone": "800-739-4137",
+          "eligibility": "Based on patient's household income and takes into account relevant life circumstances, such as medical debt or loss of income due to a patient's diagnosis",
+          "maxDiscount": null,
+          "reducedPriceRange": null,
+          "incomeThreshold": null,
+          "uninsuredOnly": false,
+          "underinsuredEligible": true,
+          "documentsRequired": []
+        },
+        "copayAssistance": {
+          "available": null,
+          "maxAmount": null,
+          "forCommercial": null,
+          "forMedicare": null,
+          "notes": "No specific copay assistance program mentioned"
+        },
+        "changes": [],
+        "rawQuotes": [
+          "Tempus accepts all insurance plans. Your out-of-pocket costs may vary depending on your plan benefits.",
+          "Through our financial assistance program, we help provide access to our tests and services to patients in financial need.",
+          "Approval is based on a patient's household income and takes into account relevant life circumstances, such as medical debt or loss of income due to a patient's diagnosis.",
+          "Payment must be made prior to testing. The test will be canceled if Tempus does not receive payment.",
+          "Online & Phone Applicants: You will receive an application decision at the time of submission.",
+          "Applications are available at access.tempus.com",
+          "Our Customer Support Team is available from 8:00 am CT – 5:00 pm CT, Monday through Friday at 800-739-4137"
+        ]
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.296Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742297-zna6db2ao",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "Natera: SINERGY",
+    "summary": "Successful readout of prospective Phase 2 trial supports MRD-guided treatment",
+    "url": "https://www.natera.com/company/news",
+    "data": {
+      "title": "Natera: SINERGY",
+      "summary": "Successful readout of prospective Phase 2 trial supports MRD-guided treatment",
+      "url": "https://www.natera.com/company/news",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "natera",
+        "vendorName": "Natera",
+        "trialName": "SINERGY",
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "Signatera™",
+        "cancerType": "head and neck cancer",
+        "findings": "Successful readout of prospective Phase 2 trial supports MRD-guided treatment"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.297Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742298-0ir8ox248",
+    "source": "vendor",
+    "type": "vendor_regulatory",
+    "title": "Foundation Medicine: FoundationOne®CDx FDA approval",
+    "summary": "FDA approval for Companion diagnostic for OJEMDA™ (tovorafenib) to treat the most common form of childhood brain tumor in pediatric patients",
+    "url": "https://www.foundationmedicine.com/press-releases",
+    "data": {
+      "title": "Foundation Medicine: FoundationOne®CDx FDA approval",
+      "summary": "FDA approval for Companion diagnostic for OJEMDA™ (tovorafenib) to treat the most common form of childhood brain tumor in pediatric patients",
+      "url": "https://www.foundationmedicine.com/press-releases",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "foundation",
+        "vendorName": "Foundation Medicine",
+        "testName": "FoundationOne®CDx",
+        "action": "FDA approval",
+        "indication": "Companion diagnostic for OJEMDA™ (tovorafenib) to treat the most common form of childhood brain tumor in pediatric patients",
+        "date": "2025-01-17"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.298Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742299-7x9ujpp9m",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "Tempus: JCO Precision Oncology",
+    "summary": "Advanced features of comprehensive genomic profiling (CGP) expand treatment options for cancer patients in community oncology settings",
+    "url": "https://www.tempus.com/news",
+    "data": {
+      "title": "Tempus: JCO Precision Oncology",
+      "summary": "Advanced features of comprehensive genomic profiling (CGP) expand treatment options for cancer patients in community oncology settings",
+      "url": "https://www.tempus.com/news",
+      "relevance": "medium",
+      "metadata": {
+        "vendorId": "tempus",
+        "vendorName": "Tempus",
+        "trialName": null,
+        "nctId": null,
+        "journal": "JCO Precision Oncology",
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": "2026-03",
+        "testName": null,
+        "cancerType": "cancer",
+        "findings": "Advanced features of comprehensive genomic profiling (CGP) expand treatment options for cancer patients in community oncology settings"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.299Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742299-9vnorukjr",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "Caris Life Sciences: Achieve 1",
+    "summary": "Superior sensitivity and specificity demonstrated in interim readout",
+    "url": "https://www.carislifesciences.com/news-and-events/news",
+    "data": {
+      "title": "Caris Life Sciences: Achieve 1",
+      "summary": "Superior sensitivity and specificity demonstrated in interim readout",
+      "url": "https://www.carislifesciences.com/news-and-events/news",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "caris",
+        "vendorName": "Caris Life Sciences",
+        "trialName": "Achieve 1",
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "Caris Detect",
+        "cancerType": "multiple",
+        "findings": "Superior sensitivity and specificity demonstrated in interim readout"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.299Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742301-u7wlydi1z",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "GRAIL: NHS-Galleri Trial",
+    "summary": "Substantial reduction in Stage IV cancer diagnoses, increased Stage I and II detection of deadly cancers, and four-fold higher cancer detection rate. Primary endpoint of statistically significant combined Stage III-IV reduction was not met, however a favorable trend was observed over time",
+    "url": "https://www.grail.com/press-releases",
+    "data": {
+      "title": "GRAIL: NHS-Galleri Trial",
+      "summary": "Substantial reduction in Stage IV cancer diagnoses, increased Stage I and II detection of deadly cancers, and four-fold higher cancer detection rate. Primary endpoint of statistically significant combined Stage III-IV reduction was not met, however a favorable trend was observed over time",
+      "url": "https://www.grail.com/press-releases",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "grail",
+        "vendorName": "GRAIL",
+        "trialName": "NHS-Galleri Trial",
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "Galleri",
+        "cancerType": "Multi-cancer",
+        "findings": "Substantial reduction in Stage IV cancer diagnoses, increased Stage I and II detection of deadly cancers, and four-fold higher cancer detection rate. Primary endpoint of statistically significant combined Stage III-IV reduction was not met, however a favorable trend was observed over time"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.301Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742301-maxlhbyhd",
+    "source": "vendor",
+    "type": "vendor_coverage_announcement",
+    "title": "Exact Sciences Applauds Passage of Legislation Establishing Medicare Coverage Pathway for Multi-Cancer Early Detection Tests",
+    "summary": "Legislation passed establishing Medicare coverage pathway for multi-cancer early detection tests",
+    "url": "https://www.exactsciences.com/newsroom",
+    "data": {
+      "title": "Exact Sciences Applauds Passage of Legislation Establishing Medicare Coverage Pathway for Multi-Cancer Early Detection Tests",
+      "summary": "Legislation passed establishing Medicare coverage pathway for multi-cancer early detection tests",
+      "url": "https://www.exactsciences.com/newsroom",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "exact-sciences",
+        "vendorName": "Exact Sciences",
+        "payerName": "Medicare",
+        "testName": null,
+        "coverageType": "medicare",
+        "effectiveDate": null,
+        "changeType": "coverage_announcement",
+        "deterministicMatches": [],
+        "llmSuggestedTests": [
+          "Oncodetect MRD Test",
+          "Oncotype DX Breast Recurrence Score Test"
+        ]
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.301Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742302-akvdj76gf",
+    "source": "vendor",
+    "type": "vendor_regulatory",
+    "title": "Labcorp: Blood Test for Alzheimer's Disease Assessment FDA clearance",
+    "summary": "FDA clearance for Alzheimer's Disease Assessment in Primary Care",
+    "url": "https://www.labcorp.com/newsroom",
+    "data": {
+      "title": "Labcorp: Blood Test for Alzheimer's Disease Assessment FDA clearance",
+      "summary": "FDA clearance for Alzheimer's Disease Assessment in Primary Care",
+      "url": "https://www.labcorp.com/newsroom",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "labcorp",
+        "vendorName": "Labcorp",
+        "testName": "Blood Test for Alzheimer's Disease Assessment",
+        "action": "FDA clearance",
+        "indication": "Alzheimer's Disease Assessment in Primary Care",
+        "date": "11 February 2026"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.302Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742302-xcza5fiwq",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "Quest Diagnostics: Clinical Evidence",
+    "summary": "Data featuring Haystack MRD® from Quest Diagnostics to be presented at the 2026 ASCO Gastrointestinal Cancers Symposium",
+    "url": "https://newsroom.questdiagnostics.com/press-releases",
+    "data": {
+      "title": "Quest Diagnostics: Clinical Evidence",
+      "summary": "Data featuring Haystack MRD® from Quest Diagnostics to be presented at the 2026 ASCO Gastrointestinal Cancers Symposium",
+      "url": "https://newsroom.questdiagnostics.com/press-releases",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "quest",
+        "vendorName": "Quest Diagnostics",
+        "trialName": null,
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "Haystack MRD®",
+        "cancerType": "gastrointestinal cancers",
+        "findings": "Data featuring Haystack MRD® from Quest Diagnostics to be presented at the 2026 ASCO Gastrointestinal Cancers Symposium"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.302Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742303-t8dszc1vi",
+    "source": "vendor",
+    "type": "vendor_performance_data",
+    "title": "Adaptive Biotechnologies: clonoSEQ revenue growth 46%",
+    "summary": "revenue growth: 46% in hematologic malignancies",
+    "url": "https://investors.adaptivebiotech.com/rss/news-releases.xml",
+    "data": {
+      "title": "Adaptive Biotechnologies: clonoSEQ revenue growth 46%",
+      "summary": "revenue growth: 46% in hematologic malignancies",
+      "url": "https://investors.adaptivebiotech.com/rss/news-releases.xml",
+      "relevance": "medium",
+      "metadata": {
+        "vendorId": "adaptive",
+        "vendorName": "Adaptive Biotechnologies",
+        "testName": "clonoSEQ",
+        "metric": "revenue growth",
+        "value": "46%",
+        "cancerType": "hematologic malignancies",
+        "stage": null,
+        "population": "MRD testing patients"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.303Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742304-yuxzcqhu8",
+    "source": "vendor",
+    "type": "vendor_coverage_announcement",
+    "title": "NeoGenomics' PanTracer LBx Receives Medicare Coverage, Expanding Access to Comprehensive Liquid Biopsy Profiling",
+    "summary": "Medicare coverage approved for PanTracer LBx liquid biopsy profiling test, expanding patient access to comprehensive liquid biopsy testing",
+    "url": "https://neogenomics.com/newsroom",
+    "data": {
+      "title": "NeoGenomics' PanTracer LBx Receives Medicare Coverage, Expanding Access to Comprehensive Liquid Biopsy Profiling",
+      "summary": "Medicare coverage approved for PanTracer LBx liquid biopsy profiling test, expanding patient access to comprehensive liquid biopsy testing",
+      "url": "https://neogenomics.com/newsroom",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "neogenomics",
+        "vendorName": "NeoGenomics",
+        "payerName": "Medicare",
+        "testName": "PanTracer LBx",
+        "coverageType": "medicare",
+        "effectiveDate": null,
+        "changeType": "coverage_announcement",
+        "deterministicMatches": [],
+        "llmSuggestedTests": [
+          "PanTracer LBx",
+          "RaDaR ST",
+          "PanTracer Pro"
+        ]
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.304Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742305-vefbr7w3e",
+    "source": "vendor",
+    "type": "vendor_coverage_announcement",
+    "title": "Personalis Receives Medicare Coverage for NeXT Personal® in Lung Cancer Surveillance",
+    "summary": "Medicare approves coverage for Personalis' lung cancer surveillance test",
+    "url": "https://www.personalis.com/news",
+    "data": {
+      "title": "Personalis Receives Medicare Coverage for NeXT Personal® in Lung Cancer Surveillance",
+      "summary": "Medicare approves coverage for Personalis' lung cancer surveillance test",
+      "url": "https://www.personalis.com/news",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "personalis",
+        "vendorName": "Personalis",
+        "payerName": "Medicare",
+        "testName": "NeXT Personal",
+        "coverageType": "medicare",
+        "effectiveDate": null,
+        "changeType": "coverage_announcement",
+        "deterministicMatches": [],
+        "llmSuggestedTests": []
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.305Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742306-pbok5jw4s",
+    "source": "vendor",
+    "type": "vendor_regulatory",
+    "title": "Invitae: Alzheimer's Disease Blood Test FDA clearance",
+    "summary": "FDA clearance for Alzheimer's Disease Assessment in Primary Care",
+    "url": "https://www.invitae.com/en/press",
+    "data": {
+      "title": "Invitae: Alzheimer's Disease Blood Test FDA clearance",
+      "summary": "FDA clearance for Alzheimer's Disease Assessment in Primary Care",
+      "url": "https://www.invitae.com/en/press",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "invitae",
+        "vendorName": "Invitae",
+        "testName": "Alzheimer's Disease Blood Test",
+        "action": "FDA clearance",
+        "indication": "Alzheimer's Disease Assessment in Primary Care",
+        "date": "2026-02-11"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.306Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742307-275a64868",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "Freenome: Clinical Evidence",
+    "summary": "Data generated from a study designed to optimize ongoing test refinement",
+    "url": "https://www.freenome.com/news",
+    "data": {
+      "title": "Freenome: Clinical Evidence",
+      "summary": "Data generated from a study designed to optimize ongoing test refinement",
+      "url": "https://www.freenome.com/news",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "freenome",
+        "vendorName": "Freenome",
+        "trialName": null,
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "Multiomic Blood-Based Screening Test for Lung Cancer",
+        "cancerType": "lung",
+        "findings": "Data generated from a study designed to optimize ongoing test refinement"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.307Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742308-gaeeiif1b",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "Genomic Testing Cooperative: Clinical Evidence",
+    "summary": "Studies demonstrating power of liquid biopsy and tissue-based targeted transcriptomic approach when combined with artificial intelligence",
+    "url": "https://genomictestingcooperative.com/category/press-release/",
+    "data": {
+      "title": "Genomic Testing Cooperative: Clinical Evidence",
+      "summary": "Studies demonstrating power of liquid biopsy and tissue-based targeted transcriptomic approach when combined with artificial intelligence",
+      "url": "https://genomictestingcooperative.com/category/press-release/",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "gtc",
+        "vendorName": "Genomic Testing Cooperative",
+        "trialName": null,
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "GTC liquid biopsy and tissue-based targeted transcriptomic tests",
+        "cancerType": "multiple",
+        "findings": "Studies demonstrating power of liquid biopsy and tissue-based targeted transcriptomic approach when combined with artificial intelligence"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.308Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742309-c51190bj8",
+    "source": "vendor",
+    "type": "vendor_coverage_announcement",
+    "title": "Illumina secures CMS reimbursement for TruSight™ Oncology Comprehensive, expanding access to precision oncology",
+    "summary": "CMS approved reimbursement for TruSight Oncology Comprehensive test to expand precision oncology access",
+    "url": "https://www.illumina.com/company/news-center/press-releases.html",
+    "data": {
+      "title": "Illumina secures CMS reimbursement for TruSight™ Oncology Comprehensive, expanding access to precision oncology",
+      "summary": "CMS approved reimbursement for TruSight Oncology Comprehensive test to expand precision oncology access",
+      "url": "https://www.illumina.com/company/news-center/press-releases.html",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "illumina",
+        "vendorName": "Illumina",
+        "payerName": "CMS",
+        "testName": "TruSight Oncology Comprehensive",
+        "coverageType": "medicare",
+        "effectiveDate": null,
+        "changeType": "coverage_announcement",
+        "deterministicMatches": [],
+        "llmSuggestedTests": [
+          "TruSight Oncology Comprehensive",
+          "TruPath Genome",
+          "Billion Cell Atlas"
+        ]
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.309Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742310-nq0g8t4j9",
+    "source": "vendor",
+    "type": "vendor_clinical_evidence",
+    "title": "QIAGEN: Clinical Evidence",
+    "summary": "Supporting efficacy for TB prevention",
+    "url": "https://corporate.qiagen.com/newsroom/press-releases/default.aspx",
+    "data": {
+      "title": "QIAGEN: Clinical Evidence",
+      "summary": "Supporting efficacy for TB prevention",
+      "url": "https://corporate.qiagen.com/newsroom/press-releases/default.aspx",
+      "relevance": "low",
+      "metadata": {
+        "vendorId": "qiagen",
+        "vendorName": "QIAGEN",
+        "trialName": null,
+        "nctId": null,
+        "journal": null,
+        "pmid": null,
+        "doi": null,
+        "firstAuthor": null,
+        "publicationDate": null,
+        "testName": "QuantiFERON",
+        "cancerType": null,
+        "findings": "Supporting efficacy for TB prevention"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.310Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774204742311-6zdw0pkof",
+    "source": "vendor",
+    "type": "vendor_new_test",
+    "title": "Thermo Fisher Scientific: Launches Color-Based (Chromogenic) Culture Media for Candida Detection",
+    "summary": "New culture media to help detect Candida infections faster, including drug-resistant Candida auris",
+    "url": "https://newsroom.thermofisher.com/newsroom/press-releases/default.aspx",
+    "data": {
+      "title": "Thermo Fisher Scientific: Launches Color-Based (Chromogenic) Culture Media for Candida Detection",
+      "summary": "New culture media to help detect Candida infections faster, including drug-resistant Candida auris",
+      "url": "https://newsroom.thermofisher.com/newsroom/press-releases/default.aspx",
+      "relevance": "high",
+      "metadata": {
+        "vendorId": "thermofisher",
+        "vendorName": "Thermo Fisher Scientific",
+        "testName": "Color-Based (Chromogenic) Culture Media for Candida Detection",
+        "category": "ecd",
+        "description": "New culture media to help detect Candida infections faster, including drug-resistant Candida auris",
+        "launchDate": "2026-03-02"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:39:02.311Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132007-u2t97c38q",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Aetna: Tumor Markers (CPB 0352) Updated",
+    "summary": "This Aetna policy document primarily denies coverage for ctDNA, liquid biopsy, and MRD testing approaches, with the content focusing on traditional tumor markers rather than circulating tumor DNA technologies. The policy lists multiple named tests (signatera, guardant-reveal, foundationone-liquid, etc.) and MRD billing codes but appears to classify them as not medically necessary.",
+    "url": "https://www.aetna.com/cpb/medical/data/300_399/0352.html",
+    "data": {
+      "title": "Aetna: Tumor Markers (CPB 0352) Updated",
+      "summary": "This Aetna policy document primarily denies coverage for ctDNA, liquid biopsy, and MRD testing approaches, with the content focusing on traditional tumor markers rather than circulating tumor DNA technologies. The policy lists multiple named tests (signatera, guardant-reveal, foundationone-liquid, etc.) and MRD billing codes but appears to classify them as not medically necessary.",
+      "url": "https://www.aetna.com/cpb/medical/data/300_399/0352.html",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:39:14.812Z",
+      "metadata": {
+        "payerId": "aetna",
+        "payerName": "Aetna",
+        "policyId": "aetna-cpb-0352",
+        "policyName": "Tumor Markers (CPB 0352)",
+        "policyType": "tumor_markers",
+        "docType": "medical_policy",
+        "contentType": "html",
+        "testsFound": [
+          "mrd-7",
+          "mrd-6",
+          "trm-5",
+          "tds-6",
+          "mrd-14",
+          "mrd-19",
+          "mrd-3",
+          "mrd-1",
+          "trm-1",
+          "tds-2",
+          "ecd-7",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "This Aetna policy document primarily denies coverage for ctDNA, liquid biopsy, and MRD testing approaches, with the content focusing on traditional tumor markers rather than circulating tumor DNA technologies. The policy lists multiple named tests (signatera, guardant-reveal, foundationone-liquid, etc.) and MRD billing codes but appears to classify them as not medically necessary.",
+          "coverageStatus": "denies",
+          "keyConditions": [
+            "Policy focuses on traditional tumor markers and somatic mutations in oncology",
+            "Covers specific biomarkers like ALK, BRAF, BCR/ABL for targeted cancer types",
+            "Requires medical necessity criteria to be met for covered tumor markers",
+            "Excludes germline mutations (refers to separate policy CPB 0140)",
+            "Covers some circulating biomarkers like AR-V7 in CTCs for specific prostate cancer cases"
+          ],
+          "testsExplicitlyMentioned": [
+            "signatera",
+            "guardant-reveal",
+            "radar",
+            "next-personal",
+            "navdx",
+            "clonoseq",
+            "oncodetect",
+            "haystack-mrd",
+            "guardant360",
+            "foundationone-liquid",
+            "ctdx",
+            "galleri",
+            "mced"
+          ],
+          "significantChanges": [
+            "Cannot determine changes as this appears to be a current policy snapshot rather than a comparison document",
+            "Multiple cancer types mentioned suggest broad scope but restrictive coverage for liquid biopsy approaches"
+          ],
+          "confidence": 0.8
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "All",
+            "Aml",
+            "Breast",
+            "CRC",
+            "Cml",
+            "Gastric",
+            "Hepatocellular",
+            "Leukemia",
+            "Lung",
+            "Lymphoma",
+            "Melanoma",
+            "Myeloma",
+            "NSCLC",
+            "Ovarian",
+            "Pancreatic",
+            "Prostate",
+            "Thyroid"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2014-11-03"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "codes",
+            "metadata",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Codes, Metadata, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "aetna_aetna-cpb-0352_2026-03-22_69fb856a08da",
+          "artifactPath": "data/artifacts/aetna/aetna_aetna-cpb-0352_2026-03-22_69fb856a08da",
+          "contentHash": "69fb856a08dae855f8c67e3ced8b7ef6af031e797398b089910fa5e1407d7c1d"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.007Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132009-23t9b972w",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "UnitedHealthcare: Molecular Oncology Testing for Cancer (Solid Tumors) Updated",
+    "summary": "UnitedHealthcare denies coverage for most ctDNA and liquid biopsy tests, explicitly listing MRD assays (including Signatera, Guardant Reveal, RaDaR, Haystack MRD) and multi-cancer early detection tests (like Galleri) as unproven and not medically necessary. Limited coverage is provided only for liquid biopsy multigene profiling (≤50 genes) specifically for non-small cell lung cancer.",
+    "url": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
+    "data": {
+      "title": "UnitedHealthcare: Molecular Oncology Testing for Cancer (Solid Tumors) Updated",
+      "summary": "UnitedHealthcare denies coverage for most ctDNA and liquid biopsy tests, explicitly listing MRD assays (including Signatera, Guardant Reveal, RaDaR, Haystack MRD) and multi-cancer early detection tests (like Galleri) as unproven and not medically necessary. Limited coverage is provided only for liquid biopsy multigene profiling (≤50 genes) specifically for non-small cell lung cancer.",
+      "url": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-testing-for-cancer.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:39:32.654Z",
+      "metadata": {
+        "payerId": "uhc",
+        "payerName": "UnitedHealthcare",
+        "policyId": "uhc-molecular-oncology",
+        "policyName": "Molecular Oncology Testing for Cancer (Solid Tumors)",
+        "policyType": "molecular_oncology",
+        "docType": "medical_policy",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-7",
+          "mrd-6",
+          "trm-5",
+          "mrd-14",
+          "mrd-1",
+          "tds-1",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "UnitedHealthcare denies coverage for most ctDNA and liquid biopsy tests, explicitly listing MRD assays (including Signatera, Guardant Reveal, RaDaR, Haystack MRD) and multi-cancer early detection tests (like Galleri) as unproven and not medically necessary. Limited coverage is provided only for liquid biopsy multigene profiling (≤50 genes) specifically for non-small cell lung cancer.",
+          "coverageStatus": "denies",
+          "keyConditions": [
+            "MRD assays in solid tumor cancers are unproven and not medically necessary",
+            "Multi-cancer early detection/screening tests are not covered",
+            "Liquid biopsy multigene profiling limited to ≤50 genes for NSCLC only",
+            "NGS panels >50 genes or CGP generally not covered unless otherwise specified"
+          ],
+          "testsExplicitlyMentioned": [
+            "Signatera - denied as MRD assay",
+            "Guardant Reveal - denied as MRD assay",
+            "RaDaR - denied as MRD assay",
+            "Haystack MRD - denied as MRD assay",
+            "Galleri - denied as multi-cancer early detection test",
+            "NavDx - denied in unproven tests list",
+            "FoundationOne Liquid - not explicitly mentioned but likely covered only for NSCLC ≤50 genes"
+          ],
+          "significantChanges": [
+            "Policy effective 2026-01-01 represents updated stance",
+            "Explicit denial of MRD assays across all solid tumor cancers",
+            "Clear restriction on liquid biopsy to NSCLC with gene count limitations"
+          ],
+          "confidence": 0.95
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "All",
+            "Breast",
+            "Lung",
+            "NSCLC",
+            "Prostate",
+            "Thyroid"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2026-01-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "uhc_uhc-molecular-oncology_2026-03-22_12543c739d43",
+          "artifactPath": "data/artifacts/uhc/uhc_uhc-molecular-oncology_2026-03-22_12543c739d43",
+          "contentHash": "12543c739d43d2c1919b5a8953a2e117d77511d4aab1dddfbb724b71d340dd42"
+        },
+        "pdfDiff": {
+          "summary": "New document: 92 PLA codes, 28 CPT codes, 27 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0005U",
+              "0018U",
+              "0019U",
+              "0022U",
+              "0026U",
+              "0036U",
+              "0037U",
+              "0045U",
+              "0047U",
+              "0048U",
+              "0069U",
+              "0089U",
+              "0090U",
+              "0091U",
+              "0113U",
+              "0153U",
+              "0179U",
+              "0211U",
+              "0239U",
+              "0242U",
+              "0244U",
+              "0245U",
+              "0250U",
+              "0262U",
+              "0287U",
+              "0288U",
+              "0296U",
+              "0297U",
+              "0298U",
+              "0299U",
+              "0300U",
+              "0306U",
+              "0307U",
+              "0313U",
+              "0314U",
+              "0315U",
+              "0326U",
+              "0329U",
+              "0332U",
+              "0333U",
+              "0334U",
+              "0339U",
+              "0340U",
+              "0343U",
+              "0356U",
+              "0362U",
+              "0363U",
+              "0368U",
+              "0379U",
+              "0388U",
+              "0391U",
+              "0409U",
+              "0420U",
+              "0421U",
+              "0422U",
+              "0424U",
+              "0433U",
+              "0444U",
+              "0452U",
+              "0453U",
+              "0467U",
+              "0478U",
+              "0485U",
+              "0486U",
+              "0487U",
+              "0496U",
+              "0497U",
+              "0498U",
+              "0499U",
+              "0501U",
+              "0507U",
+              "0510U",
+              "0523U",
+              "0530U",
+              "0537U",
+              "0538U",
+              "0539U",
+              "0549U",
+              "0562U",
+              "0565U",
+              "0566U",
+              "0569U",
+              "0571U",
+              "0572U",
+              "0578U",
+              "0585U",
+              "0586U",
+              "0592U",
+              "0597U",
+              "0611U",
+              "0612U",
+              "0613U"
+            ],
+            "cpt": [
+              "81445",
+              "81449",
+              "81455",
+              "81456",
+              "81457",
+              "81458",
+              "81459",
+              "81462",
+              "81463",
+              "81464",
+              "81479",
+              "81504",
+              "81518",
+              "81519",
+              "81520",
+              "81521",
+              "81522",
+              "81523",
+              "81524",
+              "81525",
+              "81529",
+              "81540",
+              "81541",
+              "81542",
+              "81546",
+              "81551",
+              "81552",
+              "81599"
+            ],
+            "hcpcs": [
+              "G0327"
+            ]
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.009Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132010-paoouv5j7",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "UnitedHealthcare: Molecular Oncology Testing for Hematologic Cancer Diagnosis Updated",
+    "summary": "This policy focuses on hematologic cancer testing and explicitly denies coverage for molecular tests other than clonoSEQ for MRD assessment. While it covers clonoSEQ for MRD testing in specific blood cancers, it restricts other molecular oncology tests and references a separate policy for solid tumor testing.",
+    "url": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-hematologic-cancer-diagnosis.pdf",
+    "data": {
+      "title": "UnitedHealthcare: Molecular Oncology Testing for Hematologic Cancer Diagnosis Updated",
+      "summary": "This policy focuses on hematologic cancer testing and explicitly denies coverage for molecular tests other than clonoSEQ for MRD assessment. While it covers clonoSEQ for MRD testing in specific blood cancers, it restricts other molecular oncology tests and references a separate policy for solid tumor testing.",
+      "url": "https://www.uhcprovider.com/content/dam/provider/docs/public/policies/comm-medical-drug/molecular-oncology-hematologic-cancer-diagnosis.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:39:44.878Z",
+      "metadata": {
+        "payerId": "uhc",
+        "payerName": "UnitedHealthcare",
+        "policyId": "uhc-molecular-oncology-heme",
+        "policyName": "Molecular Oncology Testing for Hematologic Cancer Diagnosis",
+        "policyType": "molecular_oncology",
+        "docType": "medical_policy",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-19"
+        ],
+        "isNewPolicy": true,
+        "analysis": {
+          "summary": "This policy focuses on hematologic cancer testing and explicitly denies coverage for molecular tests other than clonoSEQ for MRD assessment. While it covers clonoSEQ for MRD testing in specific blood cancers, it restricts other molecular oncology tests and references a separate policy for solid tumor testing.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Must be ordered by hematologist or oncologist",
+            "Limited to specific hematologic cancers (ALL, multiple myeloma, CLL)",
+            "Only clonoSEQ approved for MRD assessment",
+            "Multigene panels limited to 50 genes or fewer",
+            "Comprehensive genomic profiling limited to specific platforms"
+          ],
+          "testsExplicitlyMentioned": [
+            "clonoSEQ - covered for clonality assessment and MRD in ALL, multiple myeloma, and CLL",
+            "Other MRD tests - explicitly denied ('molecular tests other than clonoSEQ is unproven and not medically necessary for MRD')"
+          ],
+          "significantChanges": [
+            "Policy effective 2026-01-01 suggests recent update",
+            "Specific exclusion of optical genome mapping and whole transcriptome sequencing",
+            "Clear restriction to clonoSEQ only for MRD testing"
+          ],
+          "confidence": 0.85
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "All",
+            "Aml",
+            "Leukemia",
+            "Myeloma",
+            "Solid tumor"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2026-01-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "new_document"
+          ],
+          "summary": "[HIGH] Changed: New document"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "uhc_uhc-molecular-oncology-heme_2026-03-22_5d88b7f840cf",
+          "artifactPath": "data/artifacts/uhc/uhc_uhc-molecular-oncology-heme_2026-03-22_5d88b7f840cf",
+          "contentHash": "5d88b7f840cfc5aff231591f51907269875a5fd13775657fe539e73ba697dc87"
+        },
+        "pdfDiff": {
+          "summary": "New document: 12 PLA codes, 7 CPT codes, 6 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0050U",
+              "0120U",
+              "0171U",
+              "0298U",
+              "0299U",
+              "0300U",
+              "0331U",
+              "0364U",
+              "0413U",
+              "0485U",
+              "0560U",
+              "0561U"
+            ],
+            "cpt": [
+              "81195",
+              "81450",
+              "81451",
+              "81455",
+              "81456",
+              "81479",
+              "81599"
+            ],
+            "hcpcs": []
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.010Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132012-piu6wd91s",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Humana: Humana Medical Coverage Policies Search Updated",
+    "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+    "url": "https://mcp.humana.com/tad/tad_new/Search.aspx?docbegin=M&policyType=medical&searchtype=beginswith",
+    "data": {
+      "title": "Humana: Humana Medical Coverage Policies Search Updated",
+      "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+      "url": "https://mcp.humana.com/tad/tad_new/Search.aspx?docbegin=M&policyType=medical&searchtype=beginswith",
+      "relevance": "low",
+      "discoveredAt": "2026-03-22T18:40:26.144Z",
+      "metadata": {
+        "payerId": "humana",
+        "payerName": "Humana",
+        "policyId": "humana-mcp-search",
+        "policyName": "Humana Medical Coverage Policies Search",
+        "policyType": "molecular_oncology",
+        "docType": "index_page",
+        "contentType": "html",
+        "testsFound": [],
+        "isNewPolicy": false,
+        "analysis": null,
+        "extraction": {
+          "stance": "unclear",
+          "stanceConfidence": 0.3,
+          "cancerTypes": [
+            "Prostate"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": null
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "humana_humana-mcp-search_2026-03-22_4cf5348ce180",
+          "artifactPath": "data/artifacts/humana/humana_humana-mcp-search_2026-03-22_4cf5348ce180",
+          "contentHash": "4cf5348ce1802941780143b4cd1f43e566a3a415b23aea6ed6554e2b5b996296"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.012Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132013-sao4zcgd3",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "EviCore (Evernorth): Multi-Cancer Early Detection Screening (MOL.TS.396.A) Updated",
+    "summary": "EviCore denies coverage for multi-cancer early detection (MCED) screening tests, classifying them as experimental, investigational, or unproven due to insufficient evidence of clinical utility. The policy specifically states there is no evidence supporting ctDNA assays for cancer screening outside of clinical trials.",
+    "url": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-12/MOL.TS_.396.A_Multi-Cancer%20Early%20Detection%20Screening_V1.0.2026_Eff01.01.2026_Pub09.26.2025_Upd12.08.2025_0.pdf",
+    "data": {
+      "title": "EviCore (Evernorth): Multi-Cancer Early Detection Screening (MOL.TS.396.A) Updated",
+      "summary": "EviCore denies coverage for multi-cancer early detection (MCED) screening tests, classifying them as experimental, investigational, or unproven due to insufficient evidence of clinical utility. The policy specifically states there is no evidence supporting ctDNA assays for cancer screening outside of clinical trials.",
+      "url": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-12/MOL.TS_.396.A_Multi-Cancer%20Early%20Detection%20Screening_V1.0.2026_Eff01.01.2026_Pub09.26.2025_Upd12.08.2025_0.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:40:43.733Z",
+      "metadata": {
+        "payerId": "evicore",
+        "payerName": "EviCore (Evernorth)",
+        "policyId": "evicore-mced-2026",
+        "policyName": "Multi-Cancer Early Detection Screening (MOL.TS.396.A)",
+        "policyType": "liquid_biopsy",
+        "docType": "lbm_guideline",
+        "contentType": "pdf",
+        "testsFound": [
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "EviCore denies coverage for multi-cancer early detection (MCED) screening tests, classifying them as experimental, investigational, or unproven due to insufficient evidence of clinical utility. The policy specifically states there is no evidence supporting ctDNA assays for cancer screening outside of clinical trials.",
+          "coverageStatus": "denies",
+          "keyConditions": [
+            "Tests considered experimental, investigational, or unproven",
+            "Insufficient data to demonstrate overall health benefit",
+            "Lack of evidence for analytical validity, clinical validity, and clinical utility",
+            "Not generally accepted as standard of care",
+            "Prior authorization required but coverage denied"
+          ],
+          "testsExplicitlyMentioned": [
+            "Multi-cancer early detection (MCED) screening tests - denied",
+            "ctDNA assays for cancer screening - denied",
+            "Liquid biopsy screening tests for early cancer detection - denied"
+          ],
+          "significantChanges": [
+            "This appears to be a new 2026 guideline (v1.0.2026) establishing clear denial of coverage for MCED tests",
+            "Specifically addresses liquid biopsy screening tests with explicit experimental/investigational classification"
+          ],
+          "confidence": 0.95
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "Solid tumor"
+          ],
+          "priorAuth": "required",
+          "effectiveDate": null
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": true,
+        "artifactId": {
+          "artifactId": "evicore_evicore-mced-2026_2026-03-22_c7436f8f60e4",
+          "artifactPath": "data/artifacts/evicore/evicore_evicore-mced-2026_2026-03-22_c7436f8f60e4",
+          "contentHash": "c7436f8f60e4bd20d9f62e0f6d7312d8fb48a8d5f4ae5583eac74d7c2cf234fb"
+        },
+        "pdfDiff": {
+          "summary": "New document: 0 PLA codes, 2 CPT codes, 0 named tests.",
+          "addedCodes": {
+            "pla": [],
+            "cpt": [
+              "81479",
+              "81599"
+            ],
+            "hcpcs": []
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.013Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132014-cxybq0lju",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Carelon (formerly AIM Specialty Health): Genetic Liquid Biopsy in Cancer Management - Landing Page Updated",
+    "summary": "Carelon has established clinical appropriateness guidelines for genetic liquid biopsy testing in cancer management and surveillance, effective November 15, 2025, with updated codes as of January 1, 2026. The policy appears to take a restrictive stance, requiring specific clinical criteria to be met and stating that genetic tests not specifically mentioned in the guidelines are considered not medically necessary.",
+    "url": "https://guidelines.carelonmedicalbenefitsmanagement.com/genetic-liquid-biopsy-in-the-management-of-cancer-and-cancer-surveillance-2025-11-15-updated-2026-01-01/",
+    "data": {
+      "title": "Carelon (formerly AIM Specialty Health): Genetic Liquid Biopsy in Cancer Management - Landing Page Updated",
+      "summary": "Carelon has established clinical appropriateness guidelines for genetic liquid biopsy testing in cancer management and surveillance, effective November 15, 2025, with updated codes as of January 1, 2026. The policy appears to take a restrictive stance, requiring specific clinical criteria to be met and stating that genetic tests not specifically mentioned in the guidelines are considered not medically necessary.",
+      "url": "https://guidelines.carelonmedicalbenefitsmanagement.com/genetic-liquid-biopsy-in-the-management-of-cancer-and-cancer-surveillance-2025-11-15-updated-2026-01-01/",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:41:03.809Z",
+      "metadata": {
+        "payerId": "carelon",
+        "payerName": "Carelon (formerly AIM Specialty Health)",
+        "policyId": "carelon-liquid-biopsy-landing",
+        "policyName": "Genetic Liquid Biopsy in Cancer Management - Landing Page",
+        "policyType": "liquid_biopsy",
+        "docType": "index_page",
+        "contentType": "html",
+        "testsFound": [
+          "mrd-7",
+          "mrd-6",
+          "mrd-14",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Carelon has established clinical appropriateness guidelines for genetic liquid biopsy testing in cancer management and surveillance, effective November 15, 2025, with updated codes as of January 1, 2026. The policy appears to take a restrictive stance, requiring specific clinical criteria to be met and stating that genetic tests not specifically mentioned in the guidelines are considered not medically necessary.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Genomic testing must have established analytical and clinical validity",
+            "Must be performed in an appropriately certified laboratory",
+            "Testing limited to evaluation following an intervention or when there is a change in clinical status",
+            "Must demonstrate reasonable likelihood that intervention will change management and/or lead to improved patient outcomes",
+            "Genetic tests not specifically mentioned in guidelines are considered not medically necessary",
+            "May require peer-to-peer conversation for appropriateness determination"
+          ],
+          "testsExplicitlyMentioned": [
+            "signatera",
+            "guardant-reveal",
+            "navdx",
+            "galleri",
+            "mced"
+          ],
+          "significantChanges": [
+            "New effective date of November 15, 2025",
+            "Code updates implemented January 1, 2026",
+            "Includes specific MRD billing codes: 0239U, 0306U, 0340U, 0356U, 0569U, 81479"
+          ],
+          "confidence": 0.75
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [],
+          "priorAuth": "not_required",
+          "effectiveDate": "2025-11-15"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "carelon_carelon-liquid-biopsy-landing_2026-03-22_4d734edd7856",
+          "artifactPath": "data/artifacts/carelon/carelon_carelon-liquid-biopsy-landing_2026-03-22_4d734edd7856",
+          "contentHash": "4d734edd78561c825fd9219d7283fe73988e1475ca5b6ea4f26774be0e31efa5"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.014Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132015-bkwmrcofs",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Carelon (formerly AIM Specialty Health): Genetic Liquid Biopsy in Cancer Management (UC0126) Updated",
+    "summary": "Carelon maintains a restrictive stance on genetic liquid biopsy testing including ctDNA and MRD testing, requiring specific clinical criteria and peer-to-peer review for approval. The policy establishes that genetic tests not specifically mentioned in guidelines are considered not medically necessary.",
+    "url": "https://guidelines.carelonmedicalbenefitsmanagement.com/wp-content/uploads/2025/11/PDF-Genetic-Liquid-Biopsy-in-the-Management-of-Cancer-and-Cancer-Surveillance-2025-11-15-UC0126.pdf",
+    "data": {
+      "title": "Carelon (formerly AIM Specialty Health): Genetic Liquid Biopsy in Cancer Management (UC0126) Updated",
+      "summary": "Carelon maintains a restrictive stance on genetic liquid biopsy testing including ctDNA and MRD testing, requiring specific clinical criteria and peer-to-peer review for approval. The policy establishes that genetic tests not specifically mentioned in guidelines are considered not medically necessary.",
+      "url": "https://guidelines.carelonmedicalbenefitsmanagement.com/wp-content/uploads/2025/11/PDF-Genetic-Liquid-Biopsy-in-the-Management-of-Cancer-and-Cancer-Surveillance-2025-11-15-UC0126.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:41:14.075Z",
+      "metadata": {
+        "payerId": "carelon",
+        "payerName": "Carelon (formerly AIM Specialty Health)",
+        "policyId": "carelon-liquid-biopsy-2025",
+        "policyName": "Genetic Liquid Biopsy in Cancer Management (UC0126)",
+        "policyType": "liquid_biopsy",
+        "docType": "lbm_guideline",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-7",
+          "mrd-6",
+          "mrd-14",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Carelon maintains a restrictive stance on genetic liquid biopsy testing including ctDNA and MRD testing, requiring specific clinical criteria and peer-to-peer review for approval. The policy establishes that genetic tests not specifically mentioned in guidelines are considered not medically necessary.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Complete evaluation including history, physical examination, and review of relevant studies required",
+            "Anticipated benefit must outweigh potential harms",
+            "Must be supported by widely used treatment guidelines and current clinical literature",
+            "Reasonable likelihood that intervention will change management and improve patient outcomes",
+            "Providers may be required to submit clinical documentation",
+            "Peer-to-peer conversation may be required for appropriateness determination",
+            "Genetic tests not specifically mentioned in guidelines considered not medically necessary"
+          ],
+          "testsExplicitlyMentioned": [
+            "signatera",
+            "guardant-reveal",
+            "navdx",
+            "galleri",
+            "mced"
+          ],
+          "significantChanges": [
+            "Updated billing codes effective 01/01/2026",
+            "Document shows status as 'Updated codes' indicating recent revision to covered/tracked procedures"
+          ],
+          "confidence": 0.85
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [],
+          "priorAuth": "unknown",
+          "effectiveDate": "2025-11-15"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "carelon_carelon-liquid-biopsy-2025_2026-03-22_7b656afb3d46",
+          "artifactPath": "data/artifacts/carelon/carelon_carelon-liquid-biopsy-2025_2026-03-22_7b656afb3d46",
+          "contentHash": "7b656afb3d466bd2bfc44accdb1c341bf767c1ffb733b9189293e28c8058e9c1"
+        },
+        "pdfDiff": {
+          "summary": "New document: 42 PLA codes, 5 CPT codes, 15 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0177U",
+              "0179U",
+              "0229U",
+              "0239U",
+              "0242U",
+              "0285U",
+              "0306U",
+              "0307U",
+              "0326U",
+              "0332U",
+              "0333U",
+              "0340U",
+              "0356U",
+              "0368U",
+              "0388U",
+              "0397U",
+              "0405U",
+              "0409U",
+              "0410U",
+              "0422U",
+              "0428U",
+              "0452U",
+              "0453U",
+              "0467U",
+              "0485U",
+              "0486U",
+              "0487U",
+              "0496U",
+              "0507U",
+              "0530U",
+              "0537U",
+              "0539U",
+              "0560U",
+              "0561U",
+              "0562U",
+              "0565U",
+              "0566U",
+              "0569U",
+              "0571U",
+              "0585U",
+              "0611U",
+              "0612U"
+            ],
+            "cpt": [
+              "81327",
+              "81462",
+              "81463",
+              "81464",
+              "81479"
+            ],
+            "hcpcs": []
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.015Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132016-xwtzxceyj",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "BCBS Michigan: Circulating Tumor DNA Updated",
+    "summary": "BCBS Michigan covers ctDNA/liquid biopsy testing only for selecting targeted therapy in advanced solid cancers when specific criteria are met, but denies coverage for MRD testing and cancer screening applications including the Galleri test. Coverage requires advanced/metastatic cancer, inability to perform tissue testing or FDA-approved companion diagnostic status, and no prior testing with the same panel.",
+    "url": "https://www.bcbsm.com/amslibs/content/dam/public/mpr/mprsearch/pdf/2002479.pdf",
+    "data": {
+      "title": "BCBS Michigan: Circulating Tumor DNA Updated",
+      "summary": "BCBS Michigan covers ctDNA/liquid biopsy testing only for selecting targeted therapy in advanced solid cancers when specific criteria are met, but denies coverage for MRD testing and cancer screening applications including the Galleri test. Coverage requires advanced/metastatic cancer, inability to perform tissue testing or FDA-approved companion diagnostic status, and no prior testing with the same panel.",
+      "url": "https://www.bcbsm.com/amslibs/content/dam/public/mpr/mprsearch/pdf/2002479.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:41:32.298Z",
+      "metadata": {
+        "payerId": "bcbsm",
+        "payerName": "BCBS Michigan",
+        "policyId": "bcbsm-ctdna",
+        "policyName": "Circulating Tumor DNA",
+        "policyType": "ctdna",
+        "contentType": "pdf",
+        "testsFound": [
+          "trm-1",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "BCBS Michigan covers ctDNA/liquid biopsy testing only for selecting targeted therapy in advanced solid cancers when specific criteria are met, but denies coverage for MRD testing and cancer screening applications including the Galleri test. Coverage requires advanced/metastatic cancer, inability to perform tissue testing or FDA-approved companion diagnostic status, and no prior testing with the same panel.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Advanced solid cancer (metastatic, inoperable locally advanced, refractory, recurrent, or stages III-IV)",
+            "Tissue-based testing cannot be performed OR FDA-approved companion diagnostic device available",
+            "No previous testing with same liquid biopsy panel unless new primary cancer or relapse",
+            "For guidance in selecting appropriate FDA therapeutic options",
+            "Must be FDA-approved companion diagnostic test for PLA codes"
+          ],
+          "testsExplicitlyMentioned": [
+            "Galleri - explicitly denied as investigational for cancer screening",
+            "Guardant360 - not explicitly mentioned but likely covered under established codes if criteria met",
+            "MRD testing - explicitly denied as investigational"
+          ],
+          "significantChanges": [
+            "Policy effective date shows 1/1/26 suggesting this is a future policy update",
+            "Clear separation of established vs investigational uses with specific inclusion/exclusion criteria",
+            "Addition of specific FDA companion diagnostic requirements for coverage"
+          ],
+          "confidence": 0.9
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "All",
+            "Solid tumor"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": null
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "bcbsm_bcbsm-ctdna_2026-03-22_00cdf7069ec7",
+          "artifactPath": "data/artifacts/bcbsm/bcbsm_bcbsm-ctdna_2026-03-22_00cdf7069ec7",
+          "contentHash": "00cdf7069ec7c9ee402b12d376003f2a27c3b4581eae9bb9b251d31490980c03"
+        },
+        "pdfDiff": {
+          "summary": "New document: 15 PLA codes, 8 CPT codes, 9 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0091U",
+              "0239U",
+              "0242U",
+              "0326U",
+              "0338U",
+              "0388U",
+              "0485U",
+              "0486U",
+              "0487U",
+              "0491U",
+              "0492U",
+              "0530U",
+              "0539U",
+              "0571U",
+              "0585U"
+            ],
+            "cpt": [
+              "81445",
+              "81450",
+              "81455",
+              "81462",
+              "81463",
+              "81464",
+              "86152",
+              "86153"
+            ],
+            "hcpcs": []
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.016Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132018-et30kxtzj",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Highmark BCBS: NavDx HPV ctDNA Testing (L-267) Updated",
+    "summary": "Highmark BCBS covers NavDx HPV ctDNA testing for patients with HPV-driven head and neck cancer when performed either prior to surgery or within 5 years post-operatively. The policy establishes specific medical necessity criteria for this liquid biopsy test rather than denying coverage outright.",
+    "url": "https://securecms.highmark.com/content/medpolicy/en/highmark/pa/commercial/policies/Laboratory/L-267/L-267-001.html",
+    "data": {
+      "title": "Highmark BCBS: NavDx HPV ctDNA Testing (L-267) Updated",
+      "summary": "Highmark BCBS covers NavDx HPV ctDNA testing for patients with HPV-driven head and neck cancer when performed either prior to surgery or within 5 years post-operatively. The policy establishes specific medical necessity criteria for this liquid biopsy test rather than denying coverage outright.",
+      "url": "https://securecms.highmark.com/content/medpolicy/en/highmark/pa/commercial/policies/Laboratory/L-267/L-267-001.html",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:42:01.920Z",
+      "metadata": {
+        "payerId": "highmark",
+        "payerName": "Highmark BCBS",
+        "policyId": "highmark-l267-navdx",
+        "policyName": "NavDx HPV ctDNA Testing (L-267)",
+        "policyType": "mrd",
+        "docType": "um_criteria",
+        "contentType": "static_html",
+        "testsFound": [
+          "mrd-14"
+        ],
+        "isNewPolicy": true,
+        "analysis": {
+          "summary": "Highmark BCBS covers NavDx HPV ctDNA testing for patients with HPV-driven head and neck cancer when performed either prior to surgery or within 5 years post-operatively. The policy establishes specific medical necessity criteria for this liquid biopsy test rather than denying coverage outright.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Patient must have HPV-driven head and neck cancer",
+            "Testing must occur either prior to surgery OR within 5 years post-operative",
+            "Uses procedure code 0356U",
+            "Covers extensive list of head and neck cancer diagnosis codes",
+            "Typically performed as outpatient procedure unless special circumstances require inpatient monitoring"
+          ],
+          "testsExplicitlyMentioned": [
+            "NavDx HPV ctDNA testing"
+          ],
+          "significantChanges": [
+            "This appears to be a new policy establishing coverage criteria for NavDx testing, effective January 29, 2024"
+          ],
+          "confidence": 0.9
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.5999999999999999,
+          "cancerTypes": [
+            "Head and neck"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2024-01-29"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "new_document"
+          ],
+          "summary": "[HIGH] Changed: New document"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "highmark_highmark-l267-navdx_2026-03-22_66bdeb4a45d0",
+          "artifactPath": "data/artifacts/highmark/highmark_highmark-l267-navdx_2026-03-22_66bdeb4a45d0",
+          "contentHash": "66bdeb4a45d0ff6f3f97dc97d48083b27b7909e08f36c4a5f957f1848609a560"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.018Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132019-epoq1o0dy",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Geisinger Health Plan: Minimal Residual Disease NGS Testing (MP360) Updated",
+    "summary": "Geisinger Health Plan provides limited coverage for specific MRD and ctDNA tests but only for designated cancer types and clinical scenarios. The policy covers Signatera, ClonoSeq, Guardant Reveal, and NavDx for specific indications while explicitly excluding MRD NGS tests not specified in the policy.",
+    "url": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+    "data": {
+      "title": "Geisinger Health Plan: Minimal Residual Disease NGS Testing (MP360) Updated",
+      "summary": "Geisinger Health Plan provides limited coverage for specific MRD and ctDNA tests but only for designated cancer types and clinical scenarios. The policy covers Signatera, ClonoSeq, Guardant Reveal, and NavDx for specific indications while explicitly excluding MRD NGS tests not specified in the policy.",
+      "url": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:42:32.534Z",
+      "metadata": {
+        "payerId": "geisinger",
+        "payerName": "Geisinger Health Plan",
+        "policyId": "geisinger-mp360-mrd",
+        "policyName": "Minimal Residual Disease NGS Testing (MP360)",
+        "policyType": "mrd",
+        "docType": "um_criteria",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-7",
+          "mrd-6",
+          "mrd-14",
+          "mrd-19",
+          "mrd-1"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Geisinger Health Plan provides limited coverage for specific MRD and ctDNA tests but only for designated cancer types and clinical scenarios. The policy covers Signatera, ClonoSeq, Guardant Reveal, and NavDx for specific indications while explicitly excluding MRD NGS tests not specified in the policy.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Coverage limited to specific named tests (Signatera, ClonoSeq, Guardant Reveal, NavDx)",
+            "Must be used for designated cancer types and stages only",
+            "Requires specific clinical scenarios (adjuvant, recurrence monitoring, post-treatment surveillance)",
+            "Frequency limitations apply (e.g., every 3-6 months depending on timeframe)",
+            "Must meet medical necessity criteria",
+            "Excludes MRD NGS tests not explicitly specified in policy"
+          ],
+          "testsExplicitlyMentioned": [
+            "signatera - covered for specific solid tumors and clinical scenarios",
+            "guardant-reveal - covered for breast, colorectal, and lung cancer recurrence monitoring",
+            "navdx - covered for HPV-driven oropharyngeal and anal cancer surveillance",
+            "clonoseq - covered for hematologic malignancies (ALL, AML, CLL, multiple myeloma)"
+          ],
+          "significantChanges": [
+            "References Medicare coverage determination effective 12/26/2021 from Palmetto GBA",
+            "Establishes formal coverage criteria aligned with national Medicare policy",
+            "Incorporates specific billing codes (0340U, 0364U, 0569U, 0356U) for covered tests"
+          ],
+          "confidence": 0.9
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "Bladder",
+            "Breast",
+            "CRC",
+            "Leukemia",
+            "Lymphoma",
+            "Myeloma",
+            "Solid tumor"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2021-12-26"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "geisinger_geisinger-mp360-mrd_2026-03-22_8ee18649e967",
+          "artifactPath": "data/artifacts/geisinger/geisinger_geisinger-mp360-mrd_2026-03-22_8ee18649e967",
+          "contentHash": "8ee18649e9678bfca988e0b9f6ef4ecd031fdd75e6125c896bce87ff2bce8c24"
+        },
+        "pdfDiff": {
+          "summary": "New document: 14 PLA codes, 3 CPT codes, 8 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0285U",
+              "0306U",
+              "0307U",
+              "0340U",
+              "0356U",
+              "0364U",
+              "0470U",
+              "0502U",
+              "0543U",
+              "0558U",
+              "0559U",
+              "0560U",
+              "0561U",
+              "0569U"
+            ],
+            "cpt": [
+              "81445",
+              "81450",
+              "81479"
+            ],
+            "hcpcs": [
+              "G2124"
+            ]
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.019Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132020-tzd3awfad",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Geisinger Health Plan: Policy Updates - February 2025 Updated",
+    "summary": "This document does not contain any coverage changes related to ctDNA, liquid biopsy, or MRD testing. Despite the pre-extracted data indicating these tests were found, the actual document content focuses on other medical policies including deep brain stimulation, genetic testing for colorectal cancer, and organ transplant rejection testing.",
+    "url": "https://www.geisinger.org/-/media/onegeisinger/files/policy-pdfs/whats-new-updates/whats-new-february-2025.pdf",
+    "data": {
+      "title": "Geisinger Health Plan: Policy Updates - February 2025 Updated",
+      "summary": "This document does not contain any coverage changes related to ctDNA, liquid biopsy, or MRD testing. Despite the pre-extracted data indicating these tests were found, the actual document content focuses on other medical policies including deep brain stimulation, genetic testing for colorectal cancer, and organ transplant rejection testing.",
+      "url": "https://www.geisinger.org/-/media/onegeisinger/files/policy-pdfs/whats-new-updates/whats-new-february-2025.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:42:40.074Z",
+      "metadata": {
+        "payerId": "geisinger",
+        "payerName": "Geisinger Health Plan",
+        "policyId": "geisinger-whats-new-feb2025",
+        "policyName": "Policy Updates - February 2025",
+        "policyType": "mrd",
+        "docType": "provider_bulletin",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-7",
+          "mrd-6",
+          "mrd-19",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "This document does not contain any coverage changes related to ctDNA, liquid biopsy, or MRD testing. Despite the pre-extracted data indicating these tests were found, the actual document content focuses on other medical policies including deep brain stimulation, genetic testing for colorectal cancer, and organ transplant rejection testing.",
+          "coverageStatus": "unclear",
+          "keyConditions": [],
+          "testsExplicitlyMentioned": [],
+          "significantChanges": [],
+          "confidence": 0.95
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "Endometrial",
+            "Solid tumor"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2025-03-15"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "geisinger_geisinger-whats-new-feb2025_2026-03-22_d44d3d92c0ca",
+          "artifactPath": "data/artifacts/geisinger/geisinger_geisinger-whats-new-feb2025_2026-03-22_d44d3d92c0ca",
+          "contentHash": "d44d3d92c0cae4f05629be9f26b4b1f018812d9eaf09fca0f1becea773c8b689"
+        },
+        "pdfDiff": {
+          "summary": "New document: 12 PLA codes, 1 CPT codes, 6 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0206U",
+              "0207U",
+              "0289U",
+              "0340U",
+              "0346U",
+              "0358U",
+              "0359U",
+              "0364U",
+              "0403U",
+              "0412U",
+              "0445U",
+              "0459U"
+            ],
+            "cpt": [
+              "81406"
+            ],
+            "hcpcs": []
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.020Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132022-8rp6yxkmx",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "BCBS Tennessee: Circulating Tumor DNA (Liquid Biopsy) Updated",
+    "summary": "Policy document has been updated. 2 monitored tests mentioned.",
+    "url": "https://www.bcbst.com/mpmanual/!ssl!/webhelp/Circulating_Tumor_DNA_Liquid_Biopsy.htm",
+    "data": {
+      "title": "BCBS Tennessee: Circulating Tumor DNA (Liquid Biopsy) Updated",
+      "summary": "Policy document has been updated. 2 monitored tests mentioned.",
+      "url": "https://www.bcbst.com/mpmanual/!ssl!/webhelp/Circulating_Tumor_DNA_Liquid_Biopsy.htm",
+      "relevance": "medium",
+      "discoveredAt": "2026-03-22T18:42:43.318Z",
+      "metadata": {
+        "payerId": "bcbst",
+        "payerName": "BCBS Tennessee",
+        "policyId": "bcbst-ctdna-liquid-biopsy",
+        "policyName": "Circulating Tumor DNA (Liquid Biopsy)",
+        "policyType": "liquid_biopsy",
+        "contentType": "static_html",
+        "testsFound": [
+          "trm-1",
+          "tds-2"
+        ],
+        "isNewPolicy": false,
+        "analysis": null,
+        "extraction": {
+          "stance": "supports",
+          "stanceConfidence": 0.9,
+          "cancerTypes": [],
+          "priorAuth": "unknown",
+          "effectiveDate": "2025-09-30"
+        },
+        "change": {
+          "priority": "low",
+          "changedHashes": [
+            "content"
+          ],
+          "summary": "[LOW] Changed: Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "bcbst_bcbst-ctdna-liquid-biopsy_2026-03-22_51c74c58b017",
+          "artifactPath": "data/artifacts/bcbst/bcbst_bcbst-ctdna-liquid-biopsy_2026-03-22_51c74c58b017",
+          "contentHash": "51c74c58b0171b63f46767a140efaeeb1f1dec8c966e09a846672835ff3c987a"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.022Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132023-ymbfstzed",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Blue Cross NC: Liquid Biopsy (AHS-G2054) Updated",
+    "summary": "Blue Cross NC provides coverage for liquid biopsy/ctDNA testing in specific clinical scenarios for NSCLC (when tissue testing is inadequate), HR-positive/HER2-negative breast cancer (PIK3CA testing), and castration-resistant prostate cancer (AR-V7, BRCA1/2). However, screening tests like Galleri and most other liquid biopsy applications are considered investigational and not covered.",
+    "url": "https://www.bluecrossnc.com/providers/policies-guidelines-codes/commercial/laboratory/updates/liquid-biopsy",
+    "data": {
+      "title": "Blue Cross NC: Liquid Biopsy (AHS-G2054) Updated",
+      "summary": "Blue Cross NC provides coverage for liquid biopsy/ctDNA testing in specific clinical scenarios for NSCLC (when tissue testing is inadequate), HR-positive/HER2-negative breast cancer (PIK3CA testing), and castration-resistant prostate cancer (AR-V7, BRCA1/2). However, screening tests like Galleri and most other liquid biopsy applications are considered investigational and not covered.",
+      "url": "https://www.bluecrossnc.com/providers/policies-guidelines-codes/commercial/laboratory/updates/liquid-biopsy",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:42:55.222Z",
+      "metadata": {
+        "payerId": "bcbsnc",
+        "payerName": "Blue Cross NC",
+        "policyId": "bcbsnc-liquid-biopsy-g2054",
+        "policyName": "Liquid Biopsy (AHS-G2054)",
+        "policyType": "liquid_biopsy",
+        "contentType": "static_html",
+        "testsFound": [
+          "trm-1",
+          "tds-23",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Blue Cross NC provides coverage for liquid biopsy/ctDNA testing in specific clinical scenarios for NSCLC (when tissue testing is inadequate), HR-positive/HER2-negative breast cancer (PIK3CA testing), and castration-resistant prostate cancer (AR-V7, BRCA1/2). However, screening tests like Galleri and most other liquid biopsy applications are considered investigational and not covered.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "NSCLC patients when tissue-based testing is infeasible or insufficient",
+            "HR-positive/HER2-negative breast cancer patients being considered for targeted therapy (PIK3CA testing)",
+            "Castration-resistant prostate cancer patients (AR-V7 and BRCA1/2 testing)",
+            "Annual testing frequency limit for qualifying patients",
+            "Must be for treatment selection, not screening or general monitoring"
+          ],
+          "testsExplicitlyMentioned": [
+            "Galleri - explicitly denied for screening",
+            "Guardant360 - mentioned in pre-extracted data but not explicitly addressed in policy text",
+            "ctDX - mentioned in pre-extracted data but not explicitly addressed in policy text"
+          ],
+          "significantChanges": [
+            "Cannot determine changes as this appears to be a current policy document rather than an update showing before/after positions"
+          ],
+          "confidence": 0.9
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "Breast",
+            "NSCLC",
+            "Prostate"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2019-04-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "bcbsnc_bcbsnc-liquid-biopsy-g2054_2026-03-22_a1c8540075f9",
+          "artifactPath": "data/artifacts/bcbsnc/bcbsnc_bcbsnc-liquid-biopsy-g2054_2026-03-22_a1c8540075f9",
+          "contentHash": "a1c8540075f9adc955a83276086ea579b34f9982bb71bb7afb40eff875dad3db"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.023Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132025-y5p0ix8io",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Excellus BCBS (NY): Circulating Tumor DNA for Management of Cancer (Liquid Biopsy) Updated",
+    "summary": "Excellus BCBS provides limited coverage for ctDNA/liquid biopsy testing only for specific cancer types and targeted genes when tissue biopsy is contraindicated or insufficient, but explicitly considers comprehensive genomic profiling tests like FoundationOne Liquid CDx and Guardant 360 as investigational and non-covered.",
+    "url": "https://www.excellusbcbs.com/documents/d/global/exc-prv-circulating-tumor-dna-for-management-of-cancer-liquid-biopsy-",
+    "data": {
+      "title": "Excellus BCBS (NY): Circulating Tumor DNA for Management of Cancer (Liquid Biopsy) Updated",
+      "summary": "Excellus BCBS provides limited coverage for ctDNA/liquid biopsy testing only for specific cancer types and targeted genes when tissue biopsy is contraindicated or insufficient, but explicitly considers comprehensive genomic profiling tests like FoundationOne Liquid CDx and Guardant 360 as investigational and non-covered.",
+      "url": "https://www.excellusbcbs.com/documents/d/global/exc-prv-circulating-tumor-dna-for-management-of-cancer-liquid-biopsy-",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:43:14.719Z",
+      "metadata": {
+        "payerId": "excellus",
+        "payerName": "Excellus BCBS (NY)",
+        "policyId": "excellus-ctdna-liquid-biopsy",
+        "policyName": "Circulating Tumor DNA for Management of Cancer (Liquid Biopsy)",
+        "policyType": "liquid_biopsy",
+        "contentType": "pdf",
+        "testsFound": [
+          "trm-1",
+          "tds-2",
+          "ecd-7"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Excellus BCBS provides limited coverage for ctDNA/liquid biopsy testing only for specific cancer types and targeted genes when tissue biopsy is contraindicated or insufficient, but explicitly considers comprehensive genomic profiling tests like FoundationOne Liquid CDx and Guardant 360 as investigational and non-covered.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Must direct targeted therapy",
+            "Only when tissue biopsy is contraindicated or insufficient tissue available",
+            "Must have FDA approval for specific tumor type",
+            "Results must guide patient management",
+            "Limited to specific cancer types: metastatic colorectal, NSCLC, stage III/IV melanoma, metastatic pancreatic, ovarian, metastatic prostate, and breast cancer",
+            "Only covers specific targeted gene mutations listed for each cancer type",
+            "Should not be used simultaneously with tissue testing",
+            "Negative results require reflex to tissue testing"
+          ],
+          "testsExplicitlyMentioned": [
+            "FoundationOne Liquid CDx - considered investigational",
+            "Guardant 360 - considered investigational"
+          ],
+          "significantChanges": [
+            "Policy effective date is February 19, 2026 (future date suggests this may be a planned update)",
+            "Comprehensive genomic profiling platforms explicitly deemed investigational despite some coverage for targeted testing"
+          ],
+          "confidence": 0.95
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "All",
+            "Melanoma"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2026-02-19"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "metadata",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Metadata, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "excellus_excellus-ctdna-liquid-biopsy_2026-03-22_f04931f27c51",
+          "artifactPath": "data/artifacts/excellus/excellus_excellus-ctdna-liquid-biopsy_2026-03-22_f04931f27c51",
+          "contentHash": "f04931f27c515661fdb90469c7511fbd7a751157e256b5fda943b0c09e6eea42"
+        },
+        "pdfDiff": {
+          "summary": "New document: 21 PLA codes, 30 CPT codes, 9 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0177U",
+              "0179U",
+              "0229U",
+              "0239U",
+              "0242U",
+              "0326U",
+              "0337U",
+              "0338U",
+              "0388U",
+              "0409U",
+              "0485U",
+              "0487U",
+              "0490U",
+              "0491U",
+              "0498U",
+              "0499U",
+              "0530U",
+              "0539U",
+              "0562U",
+              "0571U",
+              "0585U"
+            ],
+            "cpt": [
+              "81162",
+              "81191",
+              "81192",
+              "81193",
+              "81194",
+              "81210",
+              "81235",
+              "81272",
+              "81275",
+              "81276",
+              "81277",
+              "81307",
+              "81309",
+              "81311",
+              "81401",
+              "81402",
+              "81403",
+              "81404",
+              "81405",
+              "81406",
+              "81445",
+              "81449",
+              "81455",
+              "81456",
+              "81462",
+              "81463",
+              "81464",
+              "81479",
+              "86152",
+              "86153"
+            ],
+            "hcpcs": [
+              "S0003"
+            ]
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.025Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132026-p0sxgzd5w",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "BCBS Minnesota: BCBS MN Lab Management Guidelines (via eviCore) Updated",
+    "summary": "This document is an index page for BCBS Minnesota's Lab Management Guidelines administered through eviCore, but does not contain the actual clinical guidelines or coverage policies. No specific coverage information for ctDNA, liquid biopsy, or MRD testing can be determined from this navigation page.",
+    "url": "https://www.evicore.com/provider/clinical-guidelines-details?solution=laboratory+management&hPlan=BCBS+MN",
+    "data": {
+      "title": "BCBS Minnesota: BCBS MN Lab Management Guidelines (via eviCore) Updated",
+      "summary": "This document is an index page for BCBS Minnesota's Lab Management Guidelines administered through eviCore, but does not contain the actual clinical guidelines or coverage policies. No specific coverage information for ctDNA, liquid biopsy, or MRD testing can be determined from this navigation page.",
+      "url": "https://www.evicore.com/provider/clinical-guidelines-details?solution=laboratory+management&hPlan=BCBS+MN",
+      "relevance": "low",
+      "discoveredAt": "2026-03-22T18:43:38.895Z",
+      "metadata": {
+        "payerId": "bcbsmn",
+        "payerName": "BCBS Minnesota",
+        "policyId": "bcbsmn-evicore-lab-mgmt",
+        "policyName": "BCBS MN Lab Management Guidelines (via eviCore)",
+        "policyType": "liquid_biopsy",
+        "docType": "index_page",
+        "contentType": "html",
+        "testsFound": [],
+        "isNewPolicy": true,
+        "analysis": {
+          "summary": "This document is an index page for BCBS Minnesota's Lab Management Guidelines administered through eviCore, but does not contain the actual clinical guidelines or coverage policies. No specific coverage information for ctDNA, liquid biopsy, or MRD testing can be determined from this navigation page.",
+          "coverageStatus": "unclear",
+          "keyConditions": [],
+          "testsExplicitlyMentioned": [],
+          "significantChanges": [
+            "The document notes that EviCore.com recently upgraded and some bookmarked Clinical Guidelines might have changed, suggesting users should verify they are accessing the most recent guidelines"
+          ],
+          "confidence": 0.1
+        },
+        "extraction": {
+          "stance": "unclear",
+          "stanceConfidence": 0.3,
+          "cancerTypes": [],
+          "priorAuth": "unknown",
+          "effectiveDate": null
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "new_document"
+          ],
+          "summary": "[HIGH] Changed: New document"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "bcbsmn_bcbsmn-evicore-lab-mgmt_2026-03-22_eeedae0854d3",
+          "artifactPath": "data/artifacts/bcbsmn/bcbsmn_bcbsmn-evicore-lab-mgmt_2026-03-22_eeedae0854d3",
+          "contentHash": "eeedae0854d3188099606c07edbffea6195137d816aa4c7faef583132e8323f4"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.026Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132027-466uesswj",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "BlueCross BlueShield South Carolina: Liquid Biopsy Updated",
+    "summary": "BlueCross BlueShield South Carolina provides limited coverage for ctDNA/liquid biopsy testing in specific clinical scenarios for NSCLC, advanced breast cancer, and castration-resistant prostate cancer, but denies coverage for screening applications and most other uses. The policy explicitly states that liquid biopsy testing for screening (including GRAIL Galleri) and most other malignancy detection/monitoring is considered not medically necessary.",
+    "url": "https://www.southcarolinablues.com/web/public/brands/medicalpolicy/external/external-policies/liquid-biopsy/",
+    "data": {
+      "title": "BlueCross BlueShield South Carolina: Liquid Biopsy Updated",
+      "summary": "BlueCross BlueShield South Carolina provides limited coverage for ctDNA/liquid biopsy testing in specific clinical scenarios for NSCLC, advanced breast cancer, and castration-resistant prostate cancer, but denies coverage for screening applications and most other uses. The policy explicitly states that liquid biopsy testing for screening (including GRAIL Galleri) and most other malignancy detection/monitoring is considered not medically necessary.",
+      "url": "https://www.southcarolinablues.com/web/public/brands/medicalpolicy/external/external-policies/liquid-biopsy/",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:44:01.314Z",
+      "metadata": {
+        "payerId": "bcbssc",
+        "payerName": "BlueCross BlueShield South Carolina",
+        "policyId": "bcbssc-liquid-biopsy",
+        "policyName": "Liquid Biopsy",
+        "policyType": "liquid_biopsy",
+        "contentType": "static_html",
+        "testsFound": [
+          "trm-1",
+          "tds-23",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "BlueCross BlueShield South Carolina provides limited coverage for ctDNA/liquid biopsy testing in specific clinical scenarios for NSCLC, advanced breast cancer, and castration-resistant prostate cancer, but denies coverage for screening applications and most other uses. The policy explicitly states that liquid biopsy testing for screening (including GRAIL Galleri) and most other malignancy detection/monitoring is considered not medically necessary.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "NSCLC: Coverage when tissue-based testing is infeasible, insufficient tissue available, incomplete biomarker assessment, or concurrent with tissue testing",
+            "Advanced breast cancer (recurrent/unresectable or stage IV): Coverage for specific mutations (AKT1, ESR1, PIK3CA, NTRK, RET, PTEN) when concurrent with tissue testing or tissue testing was negative",
+            "Castration-resistant prostate cancer: Coverage for AR-V7 and BRCA1/BRCA2 testing for therapy selection",
+            "Intermediate-risk microhematuria: Coverage for Cxbladder Triage with specific patient acknowledgment conditions",
+            "Annual testing allowed for qualifying individuals"
+          ],
+          "testsExplicitlyMentioned": [
+            "GRAIL Galleri - explicitly denied for screening",
+            "Cxbladder Triage - covered for specific intermediate-risk microhematuria cases",
+            "CELLSEARCH CTC - explicitly denied",
+            "Various urine-based tests (AssureMDx, Bladder CARE, etc.) - explicitly denied"
+          ],
+          "significantChanges": [
+            "Effective date 2026-01-01 suggests this is a future policy update",
+            "Specific coverage criteria established for breast cancer and prostate cancer ctDNA testing",
+            "Explicit denial of screening applications including multi-cancer early detection tests"
+          ],
+          "confidence": 0.95
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.7,
+          "cancerTypes": [
+            "All",
+            "Breast",
+            "NSCLC",
+            "Prostate"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2026-01-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "codes",
+            "metadata",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Codes, Metadata, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "bcbssc_bcbssc-liquid-biopsy_2026-03-22_fc389b663979",
+          "artifactPath": "data/artifacts/bcbssc/bcbssc_bcbssc-liquid-biopsy_2026-03-22_fc389b663979",
+          "contentHash": "fc389b663979ca686a210cd40ba69d5a4b15b6e409237f3136b7c53464a30984"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.027Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132029-hbsszt6rt",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Wellmark BCBS (Iowa/South Dakota): Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsies) Updated",
+    "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+    "url": "https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx",
+    "data": {
+      "title": "Wellmark BCBS (Iowa/South Dakota): Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsies) Updated",
+      "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+      "url": "https://www.wellmark.com/Provider/MedPoliciesAndAuthorizations/MedicalPolicies/policies/Detection_Quantification.aspx",
+      "relevance": "low",
+      "discoveredAt": "2026-03-22T18:44:05.024Z",
+      "metadata": {
+        "payerId": "wellmark",
+        "payerName": "Wellmark BCBS (Iowa/South Dakota)",
+        "policyId": "wellmark-ctdna-liquid-biopsy",
+        "policyName": "Circulating Tumor DNA and Circulating Tumor Cells for Cancer Management (Liquid Biopsies)",
+        "policyType": "liquid_biopsy",
+        "contentType": "html",
+        "testsFound": [],
+        "isNewPolicy": false,
+        "analysis": null,
+        "extraction": {
+          "stance": "unclear",
+          "stanceConfidence": 0.3,
+          "cancerTypes": [],
+          "priorAuth": "unknown",
+          "effectiveDate": null
+        },
+        "change": {
+          "priority": "low",
+          "changedHashes": [
+            "content"
+          ],
+          "summary": "[LOW] Changed: Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "wellmark_wellmark-ctdna-liquid-biopsy_2026-03-22_22aa09cabb21",
+          "artifactPath": "data/artifacts/wellmark/wellmark_wellmark-ctdna-liquid-biopsy_2026-03-22_22aa09cabb21",
+          "contentHash": "22aa09cabb218022255219351c9755a242f64978a09e905298fef64d80bb8526"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.029Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132030-tcgfe7dep",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Regence BCBS (OR/WA/UT/ID): Circulating Tumor DNA and Circulating Tumor Cells (LAB46) Updated",
+    "summary": "Regence BCBS restricts coverage for ctDNA/liquid biopsy tests to very limited targeted treatment selection scenarios, primarily for advanced/metastatic breast cancer or when tissue testing is not feasible. All MRD testing and cancer screening applications are explicitly considered investigational and not covered.",
+    "url": "http://blue.regence.com/trgmedpol/lab/lab46.pdf",
+    "data": {
+      "title": "Regence BCBS (OR/WA/UT/ID): Circulating Tumor DNA and Circulating Tumor Cells (LAB46) Updated",
+      "summary": "Regence BCBS restricts coverage for ctDNA/liquid biopsy tests to very limited targeted treatment selection scenarios, primarily for advanced/metastatic breast cancer or when tissue testing is not feasible. All MRD testing and cancer screening applications are explicitly considered investigational and not covered.",
+      "url": "http://blue.regence.com/trgmedpol/lab/lab46.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:44:17.830Z",
+      "metadata": {
+        "payerId": "regence",
+        "payerName": "Regence BCBS (OR/WA/UT/ID)",
+        "policyId": "regence-lab46",
+        "policyName": "Circulating Tumor DNA and Circulating Tumor Cells (LAB46)",
+        "policyType": "liquid_biopsy",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-7",
+          "tds-6",
+          "trm-1",
+          "ecd-2",
+          "ecd-33"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Regence BCBS restricts coverage for ctDNA/liquid biopsy tests to very limited targeted treatment selection scenarios, primarily for advanced/metastatic breast cancer or when tissue testing is not feasible. All MRD testing and cancer screening applications are explicitly considered investigational and not covered.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Advanced or metastatic breast cancer that is ER-positive and HER2-negative",
+            "Tissue-based testing cannot be performed due to insufficient sample or inaccessible tumor",
+            "Test must include genes with FDA-approved targeted therapy for the specific cancer indication",
+            "Limited to targeted treatment selection only"
+          ],
+          "testsExplicitlyMentioned": [
+            "Guardant360 CDx - covered for limited targeted treatment selection criteria",
+            "Signatera - listed as investigational for MRD testing",
+            "Galleri - listed as investigational for cancer screening"
+          ],
+          "significantChanges": [
+            "Policy effective January 1, 2026 suggests this is a new or updated policy",
+            "Explicit exclusion of MRD testing as investigational",
+            "Comprehensive list of investigational tests including named MRD and screening tests"
+          ],
+          "confidence": 0.95
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "All",
+            "Breast",
+            "Solid tumor"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2026-01-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria"
+          ],
+          "summary": "[HIGH] Changed: Criteria"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "regence_regence-lab46_2026-03-22_f122c3a56cb1",
+          "artifactPath": "data/artifacts/regence/regence_regence-lab46_2026-03-22_f122c3a56cb1",
+          "contentHash": "f122c3a56cb1d78f8fc9b2a76caa64e8a86f94c88b48dcf30a08b3caa23e74a0"
+        },
+        "pdfDiff": {
+          "summary": "New document: 36 PLA codes, 5 CPT codes, 16 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0091U",
+              "0179U",
+              "0229U",
+              "0239U",
+              "0242U",
+              "0285U",
+              "0306U",
+              "0307U",
+              "0317U",
+              "0326U",
+              "0333U",
+              "0338U",
+              "0340U",
+              "0388U",
+              "0405U",
+              "0409U",
+              "0410U",
+              "0422U",
+              "0485U",
+              "0486U",
+              "0487U",
+              "0490U",
+              "0491U",
+              "0492U",
+              "0507U",
+              "0530U",
+              "0539U",
+              "0560U",
+              "0561U",
+              "0562U",
+              "0565U",
+              "0569U",
+              "0571U",
+              "0585U",
+              "0611U",
+              "0612U"
+            ],
+            "cpt": [
+              "81462",
+              "81463",
+              "81464",
+              "86152",
+              "86153"
+            ],
+            "hcpcs": [
+              "S0500"
+            ]
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.030Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132031-98s60qilp",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Molina Healthcare: Genetic Testing (Policy No. 051) Updated",
+    "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+    "url": "https://www.molinaclinicalpolicy.com/molinaclinicalpolicy/-/media/Molina/PublicWebsite/PDF/Common/Molina-Clinical-Policy/Genetic-Testing_R.pdf",
+    "data": {
+      "title": "Molina Healthcare: Genetic Testing (Policy No. 051) Updated",
+      "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+      "url": "https://www.molinaclinicalpolicy.com/molinaclinicalpolicy/-/media/Molina/PublicWebsite/PDF/Common/Molina-Clinical-Policy/Genetic-Testing_R.pdf",
+      "relevance": "low",
+      "discoveredAt": "2026-03-22T18:44:34.093Z",
+      "metadata": {
+        "payerId": "molina",
+        "payerName": "Molina Healthcare",
+        "policyId": "molina-genetic-testing-051",
+        "policyName": "Genetic Testing (Policy No. 051)",
+        "policyType": "molecular_oncology",
+        "contentType": "pdf",
+        "testsFound": [],
+        "isNewPolicy": false,
+        "analysis": null,
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.7,
+          "cancerTypes": [
+            "All"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2026-04-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "codes",
+            "metadata",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Codes, Metadata, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "molina_molina-genetic-testing-051_2026-03-22_fa1cc27bf738",
+          "artifactPath": "data/artifacts/molina/molina_molina-genetic-testing-051_2026-03-22_fa1cc27bf738",
+          "contentHash": "fa1cc27bf738b01b86fc300fa8cb89999e7c5a553e792d686dc02bba2e0bc936"
+        },
+        "pdfDiff": {
+          "summary": "New document: 366 PLA codes, 306 CPT codes, 19 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0001U",
+              "0003U",
+              "0005U",
+              "0007U",
+              "0008U",
+              "0009U",
+              "0010U",
+              "0016U",
+              "0017U",
+              "0018U",
+              "0019U",
+              "0021U",
+              "0022U",
+              "0023U",
+              "0026U",
+              "0027U",
+              "0029U",
+              "0030U",
+              "0031U",
+              "0032U",
+              "0034U",
+              "0035U",
+              "0036U",
+              "0037U",
+              "0040U",
+              "0045U",
+              "0046U",
+              "0047U",
+              "0048U",
+              "0049U",
+              "0050U",
+              "0055U",
+              "0058U",
+              "0059U",
+              "0060U",
+              "0067U",
+              "0069U",
+              "0070U",
+              "0071U",
+              "0072U",
+              "0073U",
+              "0074U",
+              "0075U",
+              "0076U",
+              "0079U",
+              "0080U",
+              "0084U",
+              "0087U",
+              "0088U",
+              "0089U",
+              "0090U",
+              "0091U",
+              "0092U",
+              "0094U",
+              "0101U",
+              "0102U",
+              "0103U",
+              "0105U",
+              "0108U",
+              "0109U",
+              "0111U",
+              "0112U",
+              "0113U",
+              "0114U",
+              "0115U",
+              "0117U",
+              "0118U",
+              "0119U",
+              "0120U",
+              "0129U",
+              "0130U",
+              "0133U",
+              "0134U",
+              "0136U",
+              "0137U",
+              "0138U",
+              "0140U",
+              "0141U",
+              "0142U",
+              "0152U",
+              "0153U",
+              "0154U",
+              "0155U",
+              "0156U",
+              "0157U",
+              "0158U",
+              "0159U",
+              "0160U",
+              "0161U",
+              "0162U",
+              "0163U",
+              "0166U",
+              "0169U",
+              "0170U",
+              "0171U",
+              "0172U",
+              "0173U",
+              "0174U",
+              "0175U",
+              "0177U",
+              "0179U",
+              "0180U",
+              "0181U",
+              "0182U",
+              "0183U",
+              "0184U",
+              "0185U",
+              "0186U",
+              "0187U",
+              "0188U",
+              "0189U",
+              "0190U",
+              "0191U",
+              "0192U",
+              "0193U",
+              "0194U",
+              "0195U",
+              "0196U",
+              "0197U",
+              "0198U",
+              "0199U",
+              "0200U",
+              "0201U",
+              "0202U",
+              "0203U",
+              "0205U",
+              "0206U",
+              "0207U",
+              "0209U",
+              "0211U",
+              "0212U",
+              "0213U",
+              "0214U",
+              "0215U",
+              "0216U",
+              "0217U",
+              "0218U",
+              "0219U",
+              "0220U",
+              "0221U",
+              "0222U",
+              "0223U",
+              "0225U",
+              "0228U",
+              "0229U",
+              "0230U",
+              "0231U",
+              "0232U",
+              "0233U",
+              "0234U",
+              "0235U",
+              "0236U",
+              "0237U",
+              "0238U",
+              "0239U",
+              "0242U",
+              "0244U",
+              "0245U",
+              "0246U",
+              "0249U",
+              "0250U",
+              "0252U",
+              "0253U",
+              "0254U",
+              "0258U",
+              "0260U",
+              "0261U",
+              "0262U",
+              "0263U",
+              "0264U",
+              "0265U",
+              "0266U",
+              "0267U",
+              "0268U",
+              "0269U",
+              "0270U",
+              "0271U",
+              "0272U",
+              "0273U",
+              "0274U",
+              "0276U",
+              "0277U",
+              "0278U",
+              "0279U",
+              "0280U",
+              "0281U",
+              "0282U",
+              "0285U",
+              "0286U",
+              "0287U",
+              "0288U",
+              "0289U",
+              "0290U",
+              "0291U",
+              "0292U",
+              "0293U",
+              "0294U",
+              "0295U",
+              "0296U",
+              "0297U",
+              "0298U",
+              "0299U",
+              "0300U",
+              "0301U",
+              "0302U",
+              "0306U",
+              "0307U",
+              "0308U",
+              "0309U",
+              "0310U",
+              "0312U",
+              "0313U",
+              "0314U",
+              "0315U",
+              "0317U",
+              "0318U",
+              "0319U",
+              "0320U",
+              "0321U",
+              "0322U",
+              "0323U",
+              "0326U",
+              "0327U",
+              "0329U",
+              "0330U",
+              "0331U",
+              "0332U",
+              "0333U",
+              "0334U",
+              "0335U",
+              "0336U",
+              "0337U",
+              "0338U",
+              "0339U",
+              "0340U",
+              "0341U",
+              "0342U",
+              "0343U",
+              "0345U",
+              "0347U",
+              "0348U",
+              "0349U",
+              "0355U",
+              "0356U",
+              "0360U",
+              "0362U",
+              "0363U",
+              "0364U",
+              "0365U",
+              "0366U",
+              "0367U",
+              "0368U",
+              "0371U",
+              "0372U",
+              "0375U",
+              "0378U",
+              "0379U",
+              "0387U",
+              "0388U",
+              "0389U",
+              "0390U",
+              "0391U",
+              "0392U",
+              "0393U",
+              "0394U",
+              "0395U",
+              "0398U",
+              "0399U",
+              "0400U",
+              "0401U",
+              "0403U",
+              "0404U",
+              "0405U",
+              "0406U",
+              "0407U",
+              "0409U",
+              "0410U",
+              "0411U",
+              "0412U",
+              "0413U",
+              "0414U",
+              "0415U",
+              "0417U",
+              "0418U",
+              "0419U",
+              "0420U",
+              "0421U",
+              "0422U",
+              "0423U",
+              "0424U",
+              "0425U",
+              "0426U",
+              "0433U",
+              "0434U",
+              "0436U",
+              "0437U",
+              "0438U",
+              "0439U",
+              "0440U",
+              "0444U",
+              "0449U",
+              "0452U",
+              "0453U",
+              "0454U",
+              "0458U",
+              "0460U",
+              "0461U",
+              "0463U",
+              "0464U",
+              "0465U",
+              "0466U",
+              "0467U",
+              "0469U",
+              "0470U",
+              "0471U",
+              "0472U",
+              "0473U",
+              "0474U",
+              "0475U",
+              "0476U",
+              "0477U",
+              "0478U",
+              "0480U",
+              "0481U",
+              "0484U",
+              "0485U",
+              "0486U",
+              "0487U",
+              "0488U",
+              "0489U",
+              "0490U",
+              "0491U",
+              "0492U",
+              "0493U",
+              "0494U",
+              "0495U",
+              "0496U",
+              "0497U",
+              "0498U",
+              "0499U",
+              "0500U",
+              "0501U",
+              "0502U",
+              "0503U",
+              "0504U",
+              "0505U",
+              "0506U",
+              "0507U",
+              "0510U",
+              "0516U",
+              "0614U",
+              "0616U",
+              "0617U",
+              "0618U",
+              "0619U",
+              "0620U",
+              "0621U",
+              "0622U",
+              "0623U",
+              "0624U",
+              "0625U",
+              "0626U",
+              "0627U",
+              "0628U",
+              "0629U",
+              "0630U"
+            ],
+            "cpt": [
+              "81105",
+              "81106",
+              "81107",
+              "81108",
+              "81109",
+              "81110",
+              "81111",
+              "81112",
+              "81120",
+              "81121",
+              "81161",
+              "81162",
+              "81163",
+              "81164",
+              "81165",
+              "81166",
+              "81167",
+              "81168",
+              "81170",
+              "81171",
+              "81172",
+              "81173",
+              "81174",
+              "81175",
+              "81176",
+              "81177",
+              "81178",
+              "81179",
+              "81180",
+              "81181",
+              "81182",
+              "81183",
+              "81184",
+              "81185",
+              "81186",
+              "81187",
+              "81188",
+              "81189",
+              "81190",
+              "81191",
+              "81192",
+              "81193",
+              "81194",
+              "81200",
+              "81201",
+              "81202",
+              "81203",
+              "81204",
+              "81205",
+              "81206",
+              "81207",
+              "81208",
+              "81209",
+              "81210",
+              "81212",
+              "81215",
+              "81216",
+              "81217",
+              "81218",
+              "81219",
+              "81220",
+              "81221",
+              "81222",
+              "81223",
+              "81224",
+              "81225",
+              "81226",
+              "81227",
+              "81228",
+              "81229",
+              "81230",
+              "81231",
+              "81232",
+              "81233",
+              "81234",
+              "81235",
+              "81236",
+              "81237",
+              "81238",
+              "81239",
+              "81240",
+              "81241",
+              "81242",
+              "81243",
+              "81244",
+              "81245",
+              "81246",
+              "81247",
+              "81248",
+              "81249",
+              "81250",
+              "81251",
+              "81252",
+              "81253",
+              "81254",
+              "81255",
+              "81256",
+              "81257",
+              "81258",
+              "81259",
+              "81260",
+              "81261",
+              "81262",
+              "81263",
+              "81264",
+              "81265",
+              "81266",
+              "81267",
+              "81268",
+              "81269",
+              "81270",
+              "81271",
+              "81272",
+              "81273",
+              "81274",
+              "81275",
+              "81276",
+              "81277",
+              "81278",
+              "81279",
+              "81283",
+              "81284",
+              "81285",
+              "81286",
+              "81287",
+              "81288",
+              "81289",
+              "81290",
+              "81291",
+              "81292",
+              "81293",
+              "81294",
+              "81295",
+              "81296",
+              "81297",
+              "81298",
+              "81299",
+              "81300",
+              "81301",
+              "81302",
+              "81303",
+              "81304",
+              "81305",
+              "81306",
+              "81307",
+              "81308",
+              "81309",
+              "81310",
+              "81311",
+              "81312",
+              "81313",
+              "81314",
+              "81315",
+              "81316",
+              "81317",
+              "81318",
+              "81319",
+              "81320",
+              "81321",
+              "81322",
+              "81323",
+              "81324",
+              "81325",
+              "81326",
+              "81327",
+              "81328",
+              "81329",
+              "81330",
+              "81331",
+              "81332",
+              "81333",
+              "81334",
+              "81335",
+              "81336",
+              "81337",
+              "81338",
+              "81339",
+              "81340",
+              "81341",
+              "81342",
+              "81343",
+              "81344",
+              "81345",
+              "81346",
+              "81347",
+              "81348",
+              "81349",
+              "81350",
+              "81351",
+              "81352",
+              "81353",
+              "81354",
+              "81355",
+              "81357",
+              "81360",
+              "81361",
+              "81362",
+              "81363",
+              "81364",
+              "81370",
+              "81371",
+              "81372",
+              "81373",
+              "81374",
+              "81375",
+              "81376",
+              "81377",
+              "81378",
+              "81379",
+              "81380",
+              "81381",
+              "81382",
+              "81383",
+              "81400",
+              "81401",
+              "81402",
+              "81403",
+              "81404",
+              "81405",
+              "81406",
+              "81407",
+              "81408",
+              "81410",
+              "81411",
+              "81412",
+              "81413",
+              "81414",
+              "81415",
+              "81416",
+              "81417",
+              "81418",
+              "81419",
+              "81420",
+              "81422",
+              "81425",
+              "81426",
+              "81427",
+              "81430",
+              "81431",
+              "81432",
+              "81434",
+              "81435",
+              "81437",
+              "81439",
+              "81440",
+              "81441",
+              "81442",
+              "81443",
+              "81445",
+              "81448",
+              "81449",
+              "81450",
+              "81451",
+              "81455",
+              "81456",
+              "81457",
+              "81458",
+              "81459",
+              "81460",
+              "81462",
+              "81463",
+              "81464",
+              "81465",
+              "81470",
+              "81471",
+              "81479",
+              "81493",
+              "81500",
+              "81503",
+              "81504",
+              "81507",
+              "81518",
+              "81519",
+              "81520",
+              "81521",
+              "81522",
+              "81523",
+              "81524",
+              "81525",
+              "81528",
+              "81529",
+              "81535",
+              "81536",
+              "81538",
+              "81539",
+              "81540",
+              "81541",
+              "81542",
+              "81546",
+              "81551",
+              "81552",
+              "81554",
+              "81595",
+              "81599",
+              "86386",
+              "88120",
+              "88121",
+              "88364",
+              "88365",
+              "88366",
+              "88367",
+              "88368",
+              "88369",
+              "88373",
+              "88374",
+              "88377"
+            ],
+            "hcpcs": [
+              "G9143",
+              "S0265",
+              "S3840",
+              "S3841",
+              "S3842",
+              "S3844",
+              "S3845",
+              "S3846",
+              "S3849",
+              "S3850",
+              "S3852",
+              "S3853",
+              "S3861",
+              "S3865",
+              "S3866",
+              "S3870"
+            ]
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.031Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132034-zm09txi8m",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "WellCare (Centene): Oncology: Circulating Tumor DNA and Circulating Tumor Cells (Liquid Biopsy) Updated",
+    "summary": "WellCare provides coverage for ctDNA/liquid biopsy testing but with significant restrictions to specific advanced cancer types and clinical scenarios. Broad molecular profiling panels are covered for stage IV/metastatic cancers including lung, pancreatic, gastric, prostate, melanoma, colorectal, and several other advanced malignancies, while single gene tests have more limited indications.",
+    "url": "https://www.policies-wellcare.com/content/dam/centene/wellcare/Medicare/clinicalpolicies/CG-Onc-Liquid-Biopsy-2025.1.pdf",
+    "data": {
+      "title": "WellCare (Centene): Oncology: Circulating Tumor DNA and Circulating Tumor Cells (Liquid Biopsy) Updated",
+      "summary": "WellCare provides coverage for ctDNA/liquid biopsy testing but with significant restrictions to specific advanced cancer types and clinical scenarios. Broad molecular profiling panels are covered for stage IV/metastatic cancers including lung, pancreatic, gastric, prostate, melanoma, colorectal, and several other advanced malignancies, while single gene tests have more limited indications.",
+      "url": "https://www.policies-wellcare.com/content/dam/centene/wellcare/Medicare/clinicalpolicies/CG-Onc-Liquid-Biopsy-2025.1.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:44:49.431Z",
+      "metadata": {
+        "payerId": "wellcare",
+        "payerName": "WellCare (Centene)",
+        "policyId": "wellcare-ctdna-liquid-biopsy",
+        "policyName": "Oncology: Circulating Tumor DNA and Circulating Tumor Cells (Liquid Biopsy)",
+        "policyType": "liquid_biopsy",
+        "contentType": "pdf",
+        "testsFound": [
+          "tds-6",
+          "trm-1",
+          "tds-2",
+          "ecd-7"
+        ],
+        "isNewPolicy": true,
+        "analysis": {
+          "summary": "WellCare provides coverage for ctDNA/liquid biopsy testing but with significant restrictions to specific advanced cancer types and clinical scenarios. Broad molecular profiling panels are covered for stage IV/metastatic cancers including lung, pancreatic, gastric, prostate, melanoma, colorectal, and several other advanced malignancies, while single gene tests have more limited indications.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Advanced or metastatic cancer diagnosis required (Stage IV, locally advanced, unresectable, or recurrent)",
+            "Specific cancer types only: lung adenocarcinoma, pancreatic, gastric, esophageal, prostate, melanoma, colorectal, cervical, biliary tract, ovarian, breast cancers",
+            "Simultaneous tissue and liquid biopsy testing only allowed for lung cancers",
+            "Single gene tests limited to specific scenarios (e.g., EGFR testing when tyrosine kinase inhibitor therapy being considered)",
+            "Tests considered investigational for all other indications not explicitly listed"
+          ],
+          "testsExplicitlyMentioned": [
+            "FoundationOne Liquid CDx - covered for specified advanced cancers",
+            "Guardant360 CDx and 83+ genes - covered for specified advanced cancers",
+            "Tempus xF - covered for specified advanced cancers"
+          ],
+          "significantChanges": [
+            "Document version V1.2025 with last revision 11/2024 suggests recent updates",
+            "Expanded list of covered cancer types beyond traditional lung cancer focus",
+            "Specific restriction that simultaneous tissue and liquid biopsy only allowed for lung cancers"
+          ],
+          "confidence": 0.9
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [
+            "CRC",
+            "Cervical",
+            "Gastric",
+            "Melanoma",
+            "NSCLC",
+            "Prostate"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": null
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "new_document"
+          ],
+          "summary": "[HIGH] Changed: New document"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "wellcare_wellcare-ctdna-liquid-biopsy_2026-03-22_ba1b50a65ccd",
+          "artifactPath": "data/artifacts/wellcare/wellcare_wellcare-ctdna-liquid-biopsy_2026-03-22_ba1b50a65ccd",
+          "contentHash": "ba1b50a65ccd7edbd5c382a2f8f2fce23946f78e0eaab8932446d862fa4bfd1b"
+        },
+        "pdfDiff": {
+          "summary": "New document: 15 PLA codes, 13 CPT codes, 8 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0177U",
+              "0179U",
+              "0239U",
+              "0242U",
+              "0326U",
+              "0337U",
+              "0338U",
+              "0388U",
+              "0409U",
+              "0485U",
+              "0487U",
+              "0490U",
+              "0491U",
+              "0492U",
+              "0499U"
+            ],
+            "cpt": [
+              "81210",
+              "81235",
+              "81275",
+              "81276",
+              "81309",
+              "81445",
+              "81455",
+              "81462",
+              "81463",
+              "81464",
+              "81479",
+              "86152",
+              "86153"
+            ],
+            "hcpcs": []
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.034Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132036-jhk2j1ao6",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Kaiser Permanente: Genetic Screening and Testing Clinical Review Criteria Updated",
+    "summary": "Kaiser Permanente's policy provides coverage for specific FDA-approved ctDNA/liquid biopsy tests for Medicare members through CMS guidelines, including FoundationOne Liquid CDx and Guardant360 CDx. For non-Medicare members, the policy appears restrictive with limited guidance on liquid biopsy coverage outside of advanced cancer NGS testing.",
+    "url": "https://wa-provider.kaiserpermanente.org/static/pdf/hosting/clinical/criteria/pdf/genetic_screening.pdf",
+    "data": {
+      "title": "Kaiser Permanente: Genetic Screening and Testing Clinical Review Criteria Updated",
+      "summary": "Kaiser Permanente's policy provides coverage for specific FDA-approved ctDNA/liquid biopsy tests for Medicare members through CMS guidelines, including FoundationOne Liquid CDx and Guardant360 CDx. For non-Medicare members, the policy appears restrictive with limited guidance on liquid biopsy coverage outside of advanced cancer NGS testing.",
+      "url": "https://wa-provider.kaiserpermanente.org/static/pdf/hosting/clinical/criteria/pdf/genetic_screening.pdf",
+      "relevance": "high",
+      "discoveredAt": "2026-03-22T18:45:12.583Z",
+      "metadata": {
+        "payerId": "kaiser",
+        "payerName": "Kaiser Permanente",
+        "policyId": "kaiser-wa-genetic-screening",
+        "policyName": "Genetic Screening and Testing Clinical Review Criteria",
+        "policyType": "molecular_oncology",
+        "contentType": "pdf",
+        "testsFound": [
+          "mrd-7",
+          "mrd-19",
+          "trm-1",
+          "tds-1",
+          "ecd-2"
+        ],
+        "isNewPolicy": false,
+        "analysis": {
+          "summary": "Kaiser Permanente's policy provides coverage for specific FDA-approved ctDNA/liquid biopsy tests for Medicare members through CMS guidelines, including FoundationOne Liquid CDx and Guardant360 CDx. For non-Medicare members, the policy appears restrictive with limited guidance on liquid biopsy coverage outside of advanced cancer NGS testing.",
+          "coverageStatus": "restricts",
+          "keyConditions": [
+            "Must meet CMS National Coverage Determinations for Medicare members",
+            "Non-Medicare members must use preferred labs (Prevention, Invitae/LabCorp) when available",
+            "Advanced cancer NGS testing allowed at specified labs (CellNetix, Oncoplex, Caris Life Sciences)",
+            "Must meet general genetic testing criteria including clinical risk, scientific validity, and direct impact on clinical management"
+          ],
+          "testsExplicitlyMentioned": [
+            "FoundationOne Liquid CDx (0239U) - covered for Medicare under CMS guidelines",
+            "Guardant360 CDx (0242U) - covered for Medicare under CMS guidelines",
+            "Galleri - mentioned in pre-extracted data but no explicit coverage decision in document"
+          ],
+          "significantChanges": [
+            "Document effective 2022-01-01 with recent CMS updates through 08/21/2025",
+            "Addition of newer CDx codes including oncoReveal CDx (0523U) effective 1/1/2025",
+            "Broad spectrum tumor molecular profiling listed as having insufficient evidence"
+          ],
+          "confidence": 0.85
+        },
+        "extraction": {
+          "stance": "denies",
+          "stanceConfidence": 0.8,
+          "cancerTypes": [],
+          "priorAuth": "not_required",
+          "effectiveDate": "2022-01-01"
+        },
+        "change": {
+          "priority": "high",
+          "changedHashes": [
+            "criteria",
+            "content"
+          ],
+          "summary": "[HIGH] Changed: Criteria, Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "kaiser_kaiser-wa-genetic-screening_2026-03-22_ab205ac0ecc8",
+          "artifactPath": "data/artifacts/kaiser/kaiser_kaiser-wa-genetic-screening_2026-03-22_ab205ac0ecc8",
+          "contentHash": "ab205ac0ecc840b67bb8fe58018d654042cc2a3fc1a61aedc721b955ff20b651"
+        },
+        "pdfDiff": {
+          "summary": "New document: 21 PLA codes, 70 CPT codes, 19 named tests.",
+          "addedCodes": {
+            "pla": [
+              "0018U",
+              "0022U",
+              "0026U",
+              "0034U",
+              "0037U",
+              "0060U",
+              "0111U",
+              "0169U",
+              "0172U",
+              "0211U",
+              "0236U",
+              "0239U",
+              "0242U",
+              "0245U",
+              "0339U",
+              "0364U",
+              "0422U",
+              "0473U",
+              "0485U",
+              "0523U",
+              "0543U"
+            ],
+            "cpt": [
+              "80299",
+              "81162",
+              "81210",
+              "81211",
+              "81212",
+              "81213",
+              "81220",
+              "81225",
+              "81226",
+              "81227",
+              "81228",
+              "81229",
+              "81232",
+              "81235",
+              "81247",
+              "81249",
+              "81275",
+              "81276",
+              "81283",
+              "81291",
+              "81311",
+              "81328",
+              "81329",
+              "81331",
+              "81335",
+              "81336",
+              "81337",
+              "81346",
+              "81350",
+              "81355",
+              "81381",
+              "81401",
+              "81403",
+              "81405",
+              "81406",
+              "81420",
+              "81422",
+              "81443",
+              "81445",
+              "81457",
+              "81458",
+              "81459",
+              "81462",
+              "81463",
+              "81464",
+              "81479",
+              "81507",
+              "81518",
+              "81519",
+              "81520",
+              "81522",
+              "81535",
+              "81536",
+              "81540",
+              "81541",
+              "81546",
+              "81551",
+              "82148",
+              "84433",
+              "84999",
+              "85576",
+              "87900",
+              "87901",
+              "87906",
+              "87999",
+              "88360",
+              "88374",
+              "88377",
+              "88381",
+              "89240"
+            ],
+            "hcpcs": [
+              "G0452",
+              "G9143",
+              "S3852",
+              "S3854"
+            ]
+          },
+          "removedCodes": {
+            "pla": [],
+            "cpt": [],
+            "hcpcs": []
+          }
+        }
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.036Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205132038-uhyz2mpb6",
+    "source": "payers",
+    "type": "payer_policy_update",
+    "title": "Centers for Medicare & Medicaid Services: Next Generation Sequencing (NCD 90.2) Updated",
+    "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+    "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=372",
+    "data": {
+      "title": "Centers for Medicare & Medicaid Services: Next Generation Sequencing (NCD 90.2) Updated",
+      "summary": "Policy document has been updated. 0 monitored tests mentioned.",
+      "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=372",
+      "relevance": "low",
+      "discoveredAt": "2026-03-22T18:45:29.004Z",
+      "metadata": {
+        "payerId": "cms",
+        "payerName": "Centers for Medicare & Medicaid Services",
+        "policyId": "cms-ncd-90-2",
+        "policyName": "Next Generation Sequencing (NCD 90.2)",
+        "policyType": "molecular_oncology",
+        "contentType": "html",
+        "testsFound": [],
+        "isNewPolicy": false,
+        "analysis": null,
+        "extraction": {
+          "stance": "restricts",
+          "stanceConfidence": 0.7,
+          "cancerTypes": [
+            "All",
+            "Breast",
+            "Ovarian"
+          ],
+          "priorAuth": "unknown",
+          "effectiveDate": "2022-07-01"
+        },
+        "change": {
+          "priority": "low",
+          "changedHashes": [
+            "content"
+          ],
+          "summary": "[LOW] Changed: Content"
+        },
+        "delegationDetected": false,
+        "artifactId": {
+          "artifactId": "cms_cms-ncd-90-2_2026-03-22_3b96d6e16a26",
+          "artifactPath": "data/artifacts/cms/cms_cms-ncd-90-2_2026-03-22_3b96d6e16a26",
+          "contentHash": "3b96d6e16a265dcdd8f79b5835f4a3e96a56a3b7222c57d775493742c20d0341"
+        },
+        "pdfDiff": null
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:32.038Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136545-xkdwvow3p",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: An exosome-based liquid biopsy assay for the non-invasive early detection of colorectal adenomas and cancers",
+    "summary": "U01 | $739K | NCI | BECKMAN RESEARCH INSTITUTE/CITY OF HOPE | PI: Ajay Goel",
+    "url": "https://reporter.nih.gov/project-details/11281739",
+    "data": {
+      "title": "New NIH Grant: An exosome-based liquid biopsy assay for the non-invasive early detection of colorectal adenomas and cancers",
+      "summary": "U01 | $739K | NCI | BECKMAN RESEARCH INSTITUTE/CITY OF HOPE | PI: Ajay Goel",
+      "url": "https://reporter.nih.gov/project-details/11281739",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11281739,
+        "project_num": "1U01CA299594-01A1",
+        "activity_code": "U01",
+        "agency": "NCI",
+        "award_amount": 738675,
+        "fiscal_year": 2026,
+        "pi_names": "Ajay Goel",
+        "organization": "BECKMAN RESEARCH INSTITUTE/CITY OF HOPE",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.545Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136548-q4n3h379m",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: A Clinical Trial of Cancer Prevention by Biomarker Based Detections of Barrett's Esophagus and Its Progression",
+    "summary": "R01 | $1401K | NCI | CASE WESTERN RESERVE UNIVERSITY | PI: AMITABH CHAK, SANFORD MARKOWITZ, JOSEPH WILLIS",
+    "url": "https://reporter.nih.gov/project-details/11253304",
+    "data": {
+      "title": "New NIH Grant: A Clinical Trial of Cancer Prevention by Biomarker Based Detections of Barrett's Esophagus and Its Progression",
+      "summary": "R01 | $1401K | NCI | CASE WESTERN RESERVE UNIVERSITY | PI: AMITABH CHAK, SANFORD MARKOWITZ, JOSEPH WILLIS",
+      "url": "https://reporter.nih.gov/project-details/11253304",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11253304,
+        "project_num": "5R01CA295877-02",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 1400846,
+        "fiscal_year": 2026,
+        "pi_names": "AMITABH CHAK, SANFORD MARKOWITZ, JOSEPH WILLIS",
+        "organization": "CASE WESTERN RESERVE UNIVERSITY",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.548Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136550-o7mav81kr",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Ink4a/ARF/Ink4b locus in Neurofibromatosis Type 1",
+    "summary": "R01 | $526K | NINDS | UNIVERSITY OF IOWA | PI: Benjamin Darbro, Rebecca Dodd, DAWN QUELLE",
+    "url": "https://reporter.nih.gov/project-details/11290319",
+    "data": {
+      "title": "New NIH Grant: Ink4a/ARF/Ink4b locus in Neurofibromatosis Type 1",
+      "summary": "R01 | $526K | NINDS | UNIVERSITY OF IOWA | PI: Benjamin Darbro, Rebecca Dodd, DAWN QUELLE",
+      "url": "https://reporter.nih.gov/project-details/11290319",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11290319,
+        "project_num": "5R01NS119322-05",
+        "activity_code": "R01",
+        "agency": "NINDS",
+        "award_amount": 526144,
+        "fiscal_year": 2026,
+        "pi_names": "Benjamin Darbro, Rebecca Dodd, DAWN QUELLE",
+        "organization": "UNIVERSITY OF IOWA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.550Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136552-fqlziy5sb",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Circulating cell-free DNA methylation as an accurate tool for detection and clinical follow-up of glioma",
+    "summary": "R01 | $577K | NCI | HENRY FORD HEALTH SYSTEM | PI: Houtan Noushmehr",
+    "url": "https://reporter.nih.gov/project-details/11285303",
+    "data": {
+      "title": "New NIH Grant: Circulating cell-free DNA methylation as an accurate tool for detection and clinical follow-up of glioma",
+      "summary": "R01 | $577K | NCI | HENRY FORD HEALTH SYSTEM | PI: Houtan Noushmehr",
+      "url": "https://reporter.nih.gov/project-details/11285303",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11285303,
+        "project_num": "5R01CA270365-04",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 577365,
+        "fiscal_year": 2026,
+        "pi_names": "Houtan Noushmehr",
+        "organization": "HENRY FORD HEALTH SYSTEM",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.552Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136554-j0q953q0s",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Use of Noninvasive Biomarkers and Advanced MRI for early detection of NF1-associated MPNSTs",
+    "summary": "R01 | $580K | NCI | UNIVERSITY OF TX MD ANDERSON CAN CTR | PI: Paul Scheet, Keila Torres",
+    "url": "https://reporter.nih.gov/project-details/11330300",
+    "data": {
+      "title": "New NIH Grant: Use of Noninvasive Biomarkers and Advanced MRI for early detection of NF1-associated MPNSTs",
+      "summary": "R01 | $580K | NCI | UNIVERSITY OF TX MD ANDERSON CAN CTR | PI: Paul Scheet, Keila Torres",
+      "url": "https://reporter.nih.gov/project-details/11330300",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11330300,
+        "project_num": "5R01CA285980-03",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 580422,
+        "fiscal_year": 2026,
+        "pi_names": "Paul Scheet, Keila Torres",
+        "organization": "UNIVERSITY OF TX MD ANDERSON CAN CTR",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.554Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136556-tajswrogb",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Structure and Relations of Proteins and Nucleic Acids",
+    "summary": "R35 | $404K | NIGMS | UNIVERSITY OF OREGON | PI: Andrew Marcus",
+    "url": "https://reporter.nih.gov/project-details/11259163",
+    "data": {
+      "title": "New NIH Grant: Structure and Relations of Proteins and Nucleic Acids",
+      "summary": "R35 | $404K | NIGMS | UNIVERSITY OF OREGON | PI: Andrew Marcus",
+      "url": "https://reporter.nih.gov/project-details/11259163",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11259163,
+        "project_num": "1R35GM161360-01",
+        "activity_code": "R35",
+        "agency": "NIGMS",
+        "award_amount": 403836,
+        "fiscal_year": 2026,
+        "pi_names": "Andrew Marcus",
+        "organization": "UNIVERSITY OF OREGON",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.556Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136558-qb0ovamm6",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Neoadjuvant Tucatinib plus Trastuzumab in HER2-amplified Locally Advanced Rectal Cancer",
+    "summary": "R01 | $403K | NCI | SLOAN-KETTERING INST CAN RESEARCH | PI: Andrea Cercek, Rona Yaeger",
+    "url": "https://reporter.nih.gov/project-details/11302663",
+    "data": {
+      "title": "New NIH Grant: Neoadjuvant Tucatinib plus Trastuzumab in HER2-amplified Locally Advanced Rectal Cancer",
+      "summary": "R01 | $403K | NCI | SLOAN-KETTERING INST CAN RESEARCH | PI: Andrea Cercek, Rona Yaeger",
+      "url": "https://reporter.nih.gov/project-details/11302663",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11302663,
+        "project_num": "5R01CA288880-03",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 402600,
+        "fiscal_year": 2026,
+        "pi_names": "Andrea Cercek, Rona Yaeger",
+        "organization": "SLOAN-KETTERING INST CAN RESEARCH",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.558Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136560-ce313dro3",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Use of radioprotector in rectal cancer",
+    "summary": "R01 | $544K | NCI | UNIVERSITY OF NEBRASKA MEDICAL CENTER | PI: Chi Lin, REBECCA OBERLEY-DEEGAN",
+    "url": "https://reporter.nih.gov/project-details/11285329",
+    "data": {
+      "title": "New NIH Grant: Use of radioprotector in rectal cancer",
+      "summary": "R01 | $544K | NCI | UNIVERSITY OF NEBRASKA MEDICAL CENTER | PI: Chi Lin, REBECCA OBERLEY-DEEGAN",
+      "url": "https://reporter.nih.gov/project-details/11285329",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11285329,
+        "project_num": "5R01CA255618-05",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 543558,
+        "fiscal_year": 2026,
+        "pi_names": "Chi Lin, REBECCA OBERLEY-DEEGAN",
+        "organization": "UNIVERSITY OF NEBRASKA MEDICAL CENTER",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.560Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136562-yy5rb5bjg",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Genomic and Epigenomic Regulation",
+    "summary": "P30 | $69K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Bodour Salhia",
+    "url": "https://reporter.nih.gov/project-details/11238020",
+    "data": {
+      "title": "New NIH Grant: Genomic and Epigenomic Regulation",
+      "summary": "P30 | $69K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Bodour Salhia",
+      "url": "https://reporter.nih.gov/project-details/11238020",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11238020,
+        "project_num": "5P30CA014089-50",
+        "activity_code": "P30",
+        "agency": "NCI",
+        "award_amount": 69288,
+        "fiscal_year": 2026,
+        "pi_names": "Bodour Salhia",
+        "organization": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.562Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136563-z8npayfl7",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Genetics and Immune Predictors for Recurrent Glomerular Diseases in the Kidney Allograft",
+    "summary": "R01 | $366K | NIDDK | COLUMBIA UNIVERSITY HEALTH SCIENCES | PI: Ibrahim Batal",
+    "url": "https://reporter.nih.gov/project-details/11372006",
+    "data": {
+      "title": "New NIH Grant: Genetics and Immune Predictors for Recurrent Glomerular Diseases in the Kidney Allograft",
+      "summary": "R01 | $366K | NIDDK | COLUMBIA UNIVERSITY HEALTH SCIENCES | PI: Ibrahim Batal",
+      "url": "https://reporter.nih.gov/project-details/11372006",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11372006,
+        "project_num": "5R01DK135671-04",
+        "activity_code": "R01",
+        "agency": "NIDDK",
+        "award_amount": 365766,
+        "fiscal_year": 2026,
+        "pi_names": "Ibrahim Batal",
+        "organization": "COLUMBIA UNIVERSITY HEALTH SCIENCES",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.563Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136565-me4e95mo6",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Flow Cytometry Core",
+    "summary": "P30 | $196K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Fumito Ito",
+    "url": "https://reporter.nih.gov/project-details/11238040",
+    "data": {
+      "title": "New NIH Grant: Flow Cytometry Core",
+      "summary": "P30 | $196K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Fumito Ito",
+      "url": "https://reporter.nih.gov/project-details/11238040",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11238040,
+        "project_num": "5P30CA014089-50",
+        "activity_code": "P30",
+        "agency": "NCI",
+        "award_amount": 195542,
+        "fiscal_year": 2026,
+        "pi_names": "Fumito Ito",
+        "organization": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.565Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136567-qqnr49tck",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Metabolic activation of nitroarenes and Nrf2-Keap1",
+    "summary": "R01 | $622K | NIEHS | UNIVERSITY OF PENNSYLVANIA | PI: KARAM EL-BAYOUMY, Trevor Penning",
+    "url": "https://reporter.nih.gov/project-details/11323870",
+    "data": {
+      "title": "New NIH Grant: Metabolic activation of nitroarenes and Nrf2-Keap1",
+      "summary": "R01 | $622K | NIEHS | UNIVERSITY OF PENNSYLVANIA | PI: KARAM EL-BAYOUMY, Trevor Penning",
+      "url": "https://reporter.nih.gov/project-details/11323870",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11323870,
+        "project_num": "5R01ES029294-07",
+        "activity_code": "R01",
+        "agency": "NIEHS",
+        "award_amount": 621879,
+        "fiscal_year": 2026,
+        "pi_names": "KARAM EL-BAYOUMY, Trevor Penning",
+        "organization": "UNIVERSITY OF PENNSYLVANIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.567Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136569-g6cs3x9bn",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: The enabler of tumor cell immortality in TERT promoter mutant cancers",
+    "summary": "R01 | $659K | NCI | UNIVERSITY OF CALIFORNIA, SAN FRANCISCO | PI: Joseph Costello",
+    "url": "https://reporter.nih.gov/project-details/11296639",
+    "data": {
+      "title": "New NIH Grant: The enabler of tumor cell immortality in TERT promoter mutant cancers",
+      "summary": "R01 | $659K | NCI | UNIVERSITY OF CALIFORNIA, SAN FRANCISCO | PI: Joseph Costello",
+      "url": "https://reporter.nih.gov/project-details/11296639",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11296639,
+        "project_num": "1R01CA300766-01A1",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 658722,
+        "fiscal_year": 2026,
+        "pi_names": "Joseph Costello",
+        "organization": "UNIVERSITY OF CALIFORNIA, SAN FRANCISCO",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.569Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136570-oqlc2xxht",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Signaling and Targeting of CRTC1-MAML2 Fusion Oncoprotein in Salivary Gland Tumor",
+    "summary": "R01 | $384K | NIDCR | UNIVERSITY OF FLORIDA | PI: Lizi Wu",
+    "url": "https://reporter.nih.gov/project-details/11305700",
+    "data": {
+      "title": "New NIH Grant: Signaling and Targeting of CRTC1-MAML2 Fusion Oncoprotein in Salivary Gland Tumor",
+      "summary": "R01 | $384K | NIDCR | UNIVERSITY OF FLORIDA | PI: Lizi Wu",
+      "url": "https://reporter.nih.gov/project-details/11305700",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11305700,
+        "project_num": "2R01DE023641-09",
+        "activity_code": "R01",
+        "agency": "NIDCR",
+        "award_amount": 383750,
+        "fiscal_year": 2026,
+        "pi_names": "Lizi Wu",
+        "organization": "UNIVERSITY OF FLORIDA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.570Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136572-8djjr68of",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Dissecting innate immune signaling in pre-leukemia evolution",
+    "summary": "R01 | $638K | NCI | CINCINNATI CHILDRENS HOSP MED CTR | PI: Iannis Aifantis, Daniel Starczynowski",
+    "url": "https://reporter.nih.gov/project-details/11296907",
+    "data": {
+      "title": "New NIH Grant: Dissecting innate immune signaling in pre-leukemia evolution",
+      "summary": "R01 | $638K | NCI | CINCINNATI CHILDRENS HOSP MED CTR | PI: Iannis Aifantis, Daniel Starczynowski",
+      "url": "https://reporter.nih.gov/project-details/11296907",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11296907,
+        "project_num": "5R01CA271455-05",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 638243,
+        "fiscal_year": 2026,
+        "pi_names": "Iannis Aifantis, Daniel Starczynowski",
+        "organization": "CINCINNATI CHILDRENS HOSP MED CTR",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.572Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136574-0qfhy48y1",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Oral Dysplasia and Oral Cavity Cancer Risk in Dental and Medical Surveillance Settings Using a Chairside Chip-Based Cytopathology Tool",
+    "summary": "R01 | $723K | NIDCR | NEW YORK UNIVERSITY | PI: JOHN MCDEVITT",
+    "url": "https://reporter.nih.gov/project-details/11301800",
+    "data": {
+      "title": "New NIH Grant: Oral Dysplasia and Oral Cavity Cancer Risk in Dental and Medical Surveillance Settings Using a Chairside Chip-Based Cytopathology Tool",
+      "summary": "R01 | $723K | NIDCR | NEW YORK UNIVERSITY | PI: JOHN MCDEVITT",
+      "url": "https://reporter.nih.gov/project-details/11301800",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11301800,
+        "project_num": "5R01DE031319-05",
+        "activity_code": "R01",
+        "agency": "NIDCR",
+        "award_amount": 722544,
+        "fiscal_year": 2026,
+        "pi_names": "JOHN MCDEVITT",
+        "organization": "NEW YORK UNIVERSITY",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.574Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136576-ocx0bva5t",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Project 4 - Defining the Role of EBV in DLBCL Pathogenesis and Identification of Therapeutic Targets",
+    "summary": "P01 | $430K | NCI | UNIVERSITY OF WISCONSIN-MADISON | PI: ERIC JOHANNSEN",
+    "url": "https://reporter.nih.gov/project-details/11322132",
+    "data": {
+      "title": "New NIH Grant: Project 4 - Defining the Role of EBV in DLBCL Pathogenesis and Identification of Therapeutic Targets",
+      "summary": "P01 | $430K | NCI | UNIVERSITY OF WISCONSIN-MADISON | PI: ERIC JOHANNSEN",
+      "url": "https://reporter.nih.gov/project-details/11322132",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11322132,
+        "project_num": "5P01CA022443-48",
+        "activity_code": "P01",
+        "agency": "NCI",
+        "award_amount": 430044,
+        "fiscal_year": 2026,
+        "pi_names": "ERIC JOHANNSEN",
+        "organization": "UNIVERSITY OF WISCONSIN-MADISON",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.576Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136577-9c1tliuip",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Data Science Core",
+    "summary": "P30 | $518K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Ming Li",
+    "url": "https://reporter.nih.gov/project-details/11238051",
+    "data": {
+      "title": "New NIH Grant: Data Science Core",
+      "summary": "P30 | $518K | NCI | UNIVERSITY OF SOUTHERN CALIFORNIA | PI: Ming Li",
+      "url": "https://reporter.nih.gov/project-details/11238051",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11238051,
+        "project_num": "5P30CA014089-50",
+        "activity_code": "P30",
+        "agency": "NCI",
+        "award_amount": 517824,
+        "fiscal_year": 2026,
+        "pi_names": "Ming Li",
+        "organization": "UNIVERSITY OF SOUTHERN CALIFORNIA",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.577Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136580-133sjk8is",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: A systems-level approach to therapeutically target STING in cancer",
+    "summary": "R01 | $702K | NCI | WEILL MEDICAL COLL OF CORNELL UNIV | PI: JOHN BLENIS, Ashley Laughney",
+    "url": "https://reporter.nih.gov/project-details/11291340",
+    "data": {
+      "title": "New NIH Grant: A systems-level approach to therapeutically target STING in cancer",
+      "summary": "R01 | $702K | NCI | WEILL MEDICAL COLL OF CORNELL UNIV | PI: JOHN BLENIS, Ashley Laughney",
+      "url": "https://reporter.nih.gov/project-details/11291340",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11291340,
+        "project_num": "5R01CA282762-02",
+        "activity_code": "R01",
+        "agency": "NCI",
+        "award_amount": 701876,
+        "fiscal_year": 2026,
+        "pi_names": "JOHN BLENIS, Ashley Laughney",
+        "organization": "WEILL MEDICAL COLL OF CORNELL UNIV",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.580Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136582-0hkd4qcix",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: Mutations and Target Genes in Adenoid Cystic Carcinoma",
+    "summary": "R01 | $431K | NIDCR | UNIVERSITY OF NEW MEXICO HEALTH SCIS CTR | PI: Viswanathan Palanisamy",
+    "url": "https://reporter.nih.gov/project-details/11294168",
+    "data": {
+      "title": "New NIH Grant: Mutations and Target Genes in Adenoid Cystic Carcinoma",
+      "summary": "R01 | $431K | NIDCR | UNIVERSITY OF NEW MEXICO HEALTH SCIS CTR | PI: Viswanathan Palanisamy",
+      "url": "https://reporter.nih.gov/project-details/11294168",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11294168,
+        "project_num": "5R01DE023222-13",
+        "activity_code": "R01",
+        "agency": "NIDCR",
+        "award_amount": 431067,
+        "fiscal_year": 2026,
+        "pi_names": "Viswanathan Palanisamy",
+        "organization": "UNIVERSITY OF NEW MEXICO HEALTH SCIS CTR",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.582Z",
+    "reviewedAt": null,
+    "status": "pending"
+  },
+  {
+    "id": "1774205136585-ccvvytdxw",
+    "source": "nih",
+    "type": "nih_new_grant",
+    "title": "New NIH Grant: The impact of pyruvate metabolic fate in myofibroblast differentiation in myelofibrosis.",
+    "summary": "F32 | $83K | NHLBI | UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH | PI: Nathan Krah",
+    "url": "https://reporter.nih.gov/project-details/11290283",
+    "data": {
+      "title": "New NIH Grant: The impact of pyruvate metabolic fate in myofibroblast differentiation in myelofibrosis.",
+      "summary": "F32 | $83K | NHLBI | UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH | PI: Nathan Krah",
+      "url": "https://reporter.nih.gov/project-details/11290283",
+      "relevance": "medium",
+      "metadata": {
+        "appl_id": 11290283,
+        "project_num": "5F32HL177926-02",
+        "activity_code": "F32",
+        "agency": "NHLBI",
+        "award_amount": 82744,
+        "fiscal_year": 2026,
+        "pi_names": "Nathan Krah",
+        "organization": "UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH",
+        "clinical_trial_ncts": [],
+        "relevance_group": "B",
+        "change_type": "new"
+      }
+    },
+    "discoveredAt": "2026-03-22T18:45:36.585Z",
+    "reviewedAt": null,
+    "status": "pending"
+  }
+]

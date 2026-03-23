@@ -1,0 +1,409 @@
+{
+  "timestamp": "2026-02-11T21:42:07.665Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-2126.json",
+  "summary": {
+    "averageScore": 8.55,
+    "passRate": "16/20",
+    "passCount": 16,
+    "totalQuestions": 20,
+    "perDimension": {
+      "accuracy": 1.85,
+      "completeness": 1.8,
+      "evidence_quality": 1.35,
+      "automation_bias": 1,
+      "criterion3": 2,
+      "criterion4": 0.55
+    },
+    "perCategory": {
+      "clinical_scenario": "8.70",
+      "test_interpretation": "8.00",
+      "guideline": "9.33",
+      "trial_evidence": "8.00"
+    },
+    "failures": [
+      {
+        "id": 4,
+        "score": 7,
+        "summary": "c-TRAK TN well-covered. Retrieval contamination (endometrial, irrelevant DDR paper). Missing KEYNOTE-522."
+      },
+      {
+        "id": 8,
+        "score": 7,
+        "summary": "Missing HPV vs somatic ctDNA distinction. Heavy retrieval contamination (endometrial, bladder)."
+      },
+      {
+        "id": 11,
+        "score": 7,
+        "summary": "Good out-of-scope redirect to OpenOnco. Missing sensitivity/specificity."
+      },
+      {
+        "id": 22,
+        "score": 7,
+        "summary": "Endpoint misattribution flagged. Missing ALTAIR. Screening model contamination."
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": 1,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent CRC response. Minor VAF/MTM artifact in trailing text."
+    },
+    {
+      "id": 2,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Strong de-escalation response. Missing DYNAMIC mention but no inaccuracy."
+    },
+    {
+      "id": 3,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Good DYNAMIC application. VAF artifact and endpoint warning cost a point."
+    },
+    {
+      "id": 4,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 5
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "c-TRAK TN well-covered. Retrieval contamination (endometrial, irrelevant DDR paper). Missing KEYNOTE-522."
+    },
+    {
+      "id": 5,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Clinically sophisticated ESR1 angle. 300-day lead time unsourced. One contaminated source."
+    },
+    {
+      "id": 6,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "ADAURA/MERMAID-1 correctly handled. Endometrial paper in references (contamination)."
+    },
+    {
+      "id": 7,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent practical monitoring guidance. Three clear options with costs."
+    },
+    {
+      "id": 8,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 5
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "Missing HPV vs somatic ctDNA distinction. Heavy retrieval contamination (endometrial, bladder)."
+    },
+    {
+      "id": 9,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Strong persistent-MRD response. Anti-EGFR hypothesis well-framed."
+    },
+    {
+      "id": 10,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 5
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Honest about evidence gaps. Short response. AMPLIFY-201 contamination."
+    },
+    {
+      "id": 11,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 5
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "Good out-of-scope redirect to OpenOnco. Missing sensitivity/specificity."
+    },
+    {
+      "id": 14,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "Good comparison framework. Three off-topic sources in references."
+    },
+    {
+      "id": 15,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "16-fold quantitative analysis useful. HCC paper in references."
+    },
+    {
+      "id": 16,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent NCCN vs ASCO nuance. Version numbers cited."
+    },
+    {
+      "id": 17,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "ESMO position accurately captured. Guideline citations lack DOIs/versions."
+    },
+    {
+      "id": 19,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 2,
+        "automation_bias_mitigation": 1,
+        "llmScore": 7
+      },
+      "total": 10,
+      "pass": true,
+      "summary": "Clear advanced vs early-stage distinction. NCCN v3.2026 well-cited."
+    },
+    {
+      "id": 21,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "DYNAMIC facts all correct. Myeloma economics paper in references."
+    },
+    {
+      "id": 22,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 1,
+        "completeness": 1,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 4
+      },
+      "total": 7,
+      "pass": false,
+      "summary": "Endpoint misattribution flagged. Missing ALTAIR. Screening model contamination."
+    },
+    {
+      "id": 23,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 0,
+        "automatedScore": 2
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 8,
+      "pass": true,
+      "summary": "Comprehensive breast trial landscape. Three contaminated sources."
+    },
+    {
+      "id": 24,
+      "automated": {
+        "criterion3": 2,
+        "criterion4": 1,
+        "automatedScore": 3
+      },
+      "llm": {
+        "accuracy": 2,
+        "completeness": 2,
+        "evidence_quality": 1,
+        "automation_bias_mitigation": 1,
+        "llmScore": 6
+      },
+      "total": 9,
+      "pass": true,
+      "summary": "MERMAID-1 design accurate. Limited supporting literature diversity."
+    }
+  ]
+}

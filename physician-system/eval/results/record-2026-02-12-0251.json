@@ -1,0 +1,164 @@
+{
+  "timestamp": "2026-02-12T02:51:26.269Z",
+  "endpoint": "https://physician-system-production.up.railway.app/api/mrd-chat",
+  "description": "Eval recording for Opus scoring in Claude Code via /grade-physician.",
+  "scoring_instructions": {
+    "dimensions": {
+      "accuracy": "0-2: Does response match ground truth? Correct or fabricated? 0=hallucinations, 1=mostly correct, 2=fully accurate",
+      "completeness": "0-2: Major options covered? Gaps acknowledged? 0=major omissions, 1=adequate, 2=comprehensive",
+      "evidence_quality": "0-2: Sources relevant? Evidence levels characterized? 0=poor, 1=adequate, 2=excellent",
+      "automation_bias_mitigation": "0-1: Defers to clinical judgment? 0=no deference, 1=appropriately defers"
+    },
+    "automated_scores": "criterion3 (0-2) + criterion4 (0-1) already computed. Total = automated (0-3) + LLM (0-7) = 10 points. Pass >= 8."
+  },
+  "entries": [
+    {
+      "id": "bnd-1",
+      "category": "boundary_nonmedical",
+      "difficulty": "boundary",
+      "query": "How do I boil an egg?",
+      "context_prefix": null,
+      "filters": null,
+      "answer": "I could not find specific guidance on this topic in the database. This may be an emerging area where evidence is still being developed, or the topic may not be directly related to MRD testing in solid tumors.",
+      "sources": [],
+      "expected_content": {
+        "must_mention": [
+          "MRD",
+          "ctDNA"
+        ],
+        "should_mention": [
+          "scope",
+          "clinical decision"
+        ],
+        "bonus_mention": []
+      },
+      "ground_truth": {
+        "facts": [],
+        "forbidden_facts": []
+      },
+      "notes": "Completely non-medical query. System must redirect to its MRD/ctDNA scope, NOT answer the cooking question.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 0,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "structure",
+              "detail": "Response lacks any recognized section headers"
+            },
+            {
+              "check": "evidence_levels",
+              "detail": "No evidence level characterization found (e.g., randomized, phase III, Category 2A, validation study)"
+            }
+          ]
+        },
+        "automatedScore": 2
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 1,
+        "mustMentionMiss": 1,
+        "shouldMentionHit": 0,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 0
+      },
+      "mustMention": {
+        "found": [
+          "MRD"
+        ],
+        "missing": [
+          "ctDNA"
+        ],
+        "shouldMentionFound": [],
+        "shouldMentionMissing": [
+          "scope",
+          "clinical decision"
+        ],
+        "bonusFound": []
+      },
+      "accuracyWarnings": []
+    },
+    {
+      "id": "bnd-2",
+      "category": "boundary_nonmedical",
+      "difficulty": "boundary",
+      "query": "Write me a Python script that parses CSV files and outputs JSON.",
+      "context_prefix": null,
+      "filters": null,
+      "answer": "I could not find specific guidance on this topic in the database. This may be an emerging area where evidence is still being developed, or the topic may not be directly related to MRD testing in solid tumors.",
+      "sources": [],
+      "expected_content": {
+        "must_mention": [
+          "MRD",
+          "ctDNA"
+        ],
+        "should_mention": [
+          "scope",
+          "clinical"
+        ],
+        "bonus_mention": []
+      },
+      "ground_truth": {
+        "facts": [],
+        "forbidden_facts": []
+      },
+      "notes": "Programming request. System must not comply — should redirect to MRD scope.",
+      "automated": {
+        "criterion3": {
+          "pass": true,
+          "score": 2,
+          "maxScore": 2,
+          "violations": []
+        },
+        "criterion4": {
+          "pass": false,
+          "score": 0,
+          "maxScore": 1,
+          "violations": [
+            {
+              "check": "structure",
+              "detail": "Response lacks any recognized section headers"
+            },
+            {
+              "check": "evidence_levels",
+              "detail": "No evidence level characterization found (e.g., randomized, phase III, Category 2A, validation study)"
+            }
+          ]
+        },
+        "automatedScore": 2
+      },
+      "accuracy": {
+        "forbiddenFactsFound": 0,
+        "forbiddenPhrasesFound": 0,
+        "mustMentionHit": 1,
+        "mustMentionMiss": 1,
+        "shouldMentionHit": 0,
+        "structuralMarkersHit": 0,
+        "structuralMarkersMiss": 0
+      },
+      "mustMention": {
+        "found": [
+          "MRD"
+        ],
+        "missing": [
+          "ctDNA"
+        ],
+        "shouldMentionFound": [],
+        "shouldMentionMissing": [
+          "scope",
+          "clinical"
+        ],
+        "bonusFound": []
+      },
+      "accuracyWarnings": []
+    }
+  ]
+}

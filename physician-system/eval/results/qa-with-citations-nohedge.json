@@ -1,0 +1,1183 @@
+[
+  {
+    "id": 1,
+    "category": "clinical_scenario",
+    "question": "I have a 58-year-old with stage III colon cancer, T3N2, who underwent right hemicolectomy. Signatera came back MRD-positive at the 4-week post-op timepoint. Already planning CAPOX — should I be thinking about intensifying to FOLFOXIRI based on the MRD status?",
+    "answer": "CLINICAL SCENARIO: 58-year-old with stage III colon cancer (T3N2), 4 weeks post-right hemicolectomy, Signatera MRD-positive, planning CAPOX adjuvant therapy.\nDECISION: Should adjuvant therapy be intensified from CAPOX to FOLFOXIRI based on MRD-positive status?\n\nOPTION A: Intensify to FOLFOXIRI based on MRD status.\n- Evidence: [PROSPECTIVE] The GALAXY study demonstrated that ctDNA-positive patients at 4 weeks post-surgery had significantly worse disease-free survival (HR 10.0) compared to MRD-negative patients [6]. [RCT] Several ongoing trials are specifically testing MRD-guided intensification: CIRCULATE-US is randomizing MRD-positive stage III patients to intensified regimens including mFOLFIRINOX [3], and the FINE trial is testing mFOLFIRINOX versus standard therapy in high-risk MRD-positive patients [8]. The CLAUDIA trial is evaluating treatment intensification specifically in patients who remain MRD-positive during adjuvant chemotherapy [7]. This T3N2 presentation represents high-risk disease (N2 nodal involvement per IDEA criteria indicates high recurrence risk) where intensification strategies are being actively studied [4].\n- Caveats: No completed randomized trial has yet demonstrated that MRD-guided intensification improves overall survival in stage III colon cancer. FOLFOXIRI carries increased toxicity compared to standard doublet therapy.\n\nOPTION B: Proceed with planned CAPOX and serial MRD monitoring.\n- Evidence: [PROSPECTIVE] GALAXY data showed that ctDNA clearance during adjuvant chemotherapy was associated with improved outcomes compared to persistent positivity, suggesting that serial monitoring can track treatment response [6]. [RCT] The IDEA collaboration established that for high-risk stage III patients (including N2 disease), 6 months of oxaliplatin-based therapy remains standard, and CAPOX demonstrated non-inferiority to FOLFOX for 3-month regimens in low-risk patients, though this patient's N2 status qualifies as high-risk requiring 6 months [4]. Serial Signatera monitoring at 3-month intervals can assess for ctDNA clearance, measured as declining MTM/mL levels.\n- Caveats: Standard CAPOX may be insufficient for high-risk MRD-positive disease, though this remains unproven in completed trials.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: [RCT] Multiple MRD-guided trials are actively recruiting stage III patients: CIRCULATE-US specifically enrolls MRD-positive patients for randomized treatment intensification [3], FINE trial targets high-risk stage II/III MRD-positive patients [8], and CLAUDIA evaluates intensification in patients remaining MRD-positive during treatment [7]. Trial participation provides access to structured MRD-guided escalation protocols not available in routine practice.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No prospective RCT has demonstrated overall survival benefit from MRD-guided therapy escalation in stage III colon cancer. The optimal timing for MRD retesting during adjuvant therapy has not been standardized. Whether MRD-guided escalation provides similar benefit in RAS-mutant versus RAS wild-type tumors remains unknown.\n\nThe assay requires tumor tissue from the resection specimen with a 28-day initial turnaround time, then 9-day monitoring intervals. Medicare covers Signatera for stage II-IV CRC under multiple LCDs, with commercial coverage varying by payer (Aetna partial coverage for CRC stage II-III adjuvant guidance, United not covered).\n\nREFERENCES:\n[1] MAP-02 Trial. A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan. Clinical Cancer Research (2023). PMID: 39513962\n[2] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[3] CIRCULATE-US: Colon Adjuvant Chemotherapy Based on Evaluation of Residual Disease. https://clinicaltrials.gov/study/NCT05174169\n[4] Duration of Adjuvant Chemotherapy for Stage III Colon Cancer (IDEA collaboration). New England Journal of Medicine (2017). PMID: 29590544. DOI: 10.1056/NEJMoa1713709\n[5] CIRCA-HPV Trial. Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.. Journal of surgical oncology (2025). PMID: 39865324. DOI: 10.1002/jso.27989\n[6] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[7] CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12). https://clinicaltrials.gov/study/NCT05534087\n[8] NCT05954078: Circulating Tumor DNA Methylation Guided Postoperative Adjuvant Chemotherapy for High-risk Stage II/III Colorectal Cancer. https://clinicaltrials.gov/study/NCT05954078",
+    "sources": [
+      {
+        "index": 1,
+        "title": "A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan",
+        "sourceType": "pubmed",
+        "pmid": "39513962",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "CIRCULATE-US: Colon Adjuvant Chemotherapy Based on Evaluation of Residual Disease",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "Duration of Adjuvant Chemotherapy for Stage III Colon Cancer (IDEA collaboration)",
+        "sourceType": "pubmed",
+        "pmid": "29590544",
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.",
+        "sourceType": "pubmed",
+        "pmid": "39865324",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCT05954078: Circulating Tumor DNA Methylation Guided Postoperative Adjuvant Chemotherapy for High-risk Stage II/III Colorectal Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "category": "clinical_scenario",
+    "question": "Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery. Signatera just came back MRD-negative. Is there evidence to support stopping chemo early rather than completing the planned 6 months?",
+    "answer": "CLINICAL SCENARIO: Stage III rectal cancer patient, completed 3 months of FOLFOX post-surgery, Signatera MRD-negative.\nDECISION: Whether to complete the planned 6-month adjuvant chemotherapy course or stop early based on MRD-negative status.\n\nOPTION A: Complete the planned 6 months of FOLFOX.\n- Evidence: [RCT] The IDEA collaboration demonstrated that for FOLFOX specifically, 3 months was inferior to 6 months in stage III colon cancer (HR 1.16, 95% CI 1.06-1.26), supporting completion of the full 6-month course [5]. [PROSPECTIVE] GALAXY data showed that ctDNA clearance during adjuvant chemotherapy was associated with improved outcomes, but this finding describes the prognostic value of clearance rather than providing evidence that therapy can be safely discontinued once clearance is achieved [4]. The standard 6-month duration remains guideline-recommended for stage III disease.\n- Caveats: The IDEA data are from colon cancer; rectal cancer patients may have different risk profiles and treatment responses.\n\nOPTION B: Consider stopping adjuvant therapy early based on MRD-negative status.\n5% 3-year recurrence-free survival), but this was in stage II colon cancer only and cannot be directly extrapolated to stage III rectal cancer [3]. [PROSPECTIVE] GALAXY data confirm the strong negative predictive value of ctDNA clearance during treatment, though this was observational and patients continued planned therapy regardless of ctDNA status [1][4]. No completed RCT has validated early cessation of adjuvant therapy based on MRD-negative status in stage III CRC.\nRectal cancer has different biology and treatment paradigms compared to colon cancer.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: [RCT] The CIRCULATE-US trial is actively enrolling stage III CRC patients and evaluating ctDNA-guided treatment decisions, including duration modification based on MRD status [7]. Other ongoing trials are investigating MRD-guided adjuvant approaches in stage III disease [2][8].\n- Caveats: Trial availability is site-dependent and eligibility criteria vary.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo completed RCT has demonstrated that stopping adjuvant therapy early based on MRD-negative status is safe in stage III CRC. Additionally, the optimal timing for ctDNA assessment during adjuvant therapy and the durability of a single negative result have not been established in randomized trials.\n\nTEST-SPECIFIC NOTE: Signatera demonstrated 88-93% sensitivity and 98% specificity for recurrence surveillance in CRC, with longitudinal sensitivity reaching 94% with serial monitoring [Test Data]. The assay tracks 16 patient-specific variants and provides a median 300-day lead time over imaging in CRC. A negative result at 3 months has strong negative predictive value based on GALAXY validation data, though this was in the context of patients completing their planned adjuvant therapy course [4].\n\nREFERENCES:\n[1] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[2] NCT05797077: Postoperation Maintenance Therapy for Resectable Liver Metastases of Colorectal Cancer Guided by ctDNA. https://clinicaltrials.gov/study/NCT05797077\n[3] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075\n[4] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[5] Duration of Adjuvant Chemotherapy for Stage III Colon Cancer (IDEA collaboration). New England Journal of Medicine (2017). PMID: 29590544. DOI: 10.1056/NEJMoa1713709\n[6] CIRCA-HPV Trial. Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.. Journal of surgical oncology (2025). PMID: 39865324. DOI: 10.1002/jso.27989\n[7] CIRCULATE-US: Colon Adjuvant Chemotherapy Based on Evaluation of Residual Disease. https://clinicaltrials.gov/study/NCT05174169\n[8] NCT05954078: Circulating Tumor DNA Methylation Guided Postoperative Adjuvant Chemotherapy for High-risk Stage II/III Colorectal Cancer. https://clinicaltrials.gov/study/NCT05954078",
+    "sources": [
+      {
+        "index": 1,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "NCT05797077: Postoperation Maintenance Therapy for Resectable Liver Metastases of Colorectal Cancer Guided by ctDNA",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Duration of Adjuvant Chemotherapy for Stage III Colon Cancer (IDEA collaboration)",
+        "sourceType": "pubmed",
+        "pmid": "29590544",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.",
+        "sourceType": "pubmed",
+        "pmid": "39865324",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "CIRCULATE-US: Colon Adjuvant Chemotherapy Based on Evaluation of Residual Disease",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCT05954078: Circulating Tumor DNA Methylation Guided Postoperative Adjuvant Chemotherapy for High-risk Stage II/III Colorectal Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "category": "clinical_scenario",
+    "question": "64-year-old, stage II colon cancer, pT4aN0, MSS, no high-risk features besides T4a. Post-surgery Signatera is MRD-positive. Standard guidelines wouldn't call for adjuvant chemo here. What does the MRD data say about treating these patients?",
+    "answer": "CLINICAL SCENARIO: 64-year-old with stage II colon cancer (pT4aN0), MSS, no high-risk features beyond T4a status, MRD-positive on post-surgical Signatera testing.\nDECISION: Whether to initiate adjuvant chemotherapy in a patient who would not typically receive treatment per standard guidelines.\n\nOPTION A: Initiate adjuvant chemotherapy based on MRD-positive result.\n- Evidence: [RCT] The DYNAMIC trial specifically addressed this scenario, randomizing 455 stage II colon cancer patients to ctDNA-guided versus standard management [1]. Among ctDNA-positive patients who received adjuvant chemotherapy, 3-year recurrence-free survival was 86.4% compared to much higher recurrence rates when ctDNA-positive patients did not receive treatment [1]. [PROSPECTIVE] The GALAXY study (N>1,500) reinforced that ctDNA positivity at 4 weeks post-surgery carries a hazard ratio of 10.0 for disease-free survival, identifying patients who derive significant benefit from adjuvant therapy [3]. Historical data suggest that untreated ctDNA-positive stage II patients face recurrence rates exceeding 80% [6].\n- Guidelines: [GUIDELINE] NCCN Colon Cancer guidelines now include ctDNA testing as a consideration for adjuvant therapy decisions in stage II disease [TEST-SPECIFIC].\n- Caveats: DYNAMIC demonstrated non-inferiority for recurrence-free survival but has not yet shown overall survival benefit [1]. The study enrolled all stage II patients, not specifically pT4a-only populations.\n\nOPTION B: Forgo adjuvant chemotherapy and intensify surveillance.\n- Evidence: [RCT] In DYNAMIC, the small subset of ctDNA-positive patients who did not receive adjuvant therapy had inferior outcomes, suggesting this approach carries substantial risk [1]. [PROSPECTIVE] GALAXY data show that molecular relapse is detected a median of 5.3 months before radiographic progression, potentially allowing for salvage therapy [3]. However, no data demonstrate that intensified imaging surveillance alone provides equivalent outcomes to upfront adjuvant treatment in MRD-positive patients.\n- Caveats: This approach effectively accepts higher recurrence risk in exchange for avoiding chemotherapy toxicity.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: [RCT] The COBRA trial (NCT04068103) specifically enrolled stage IIA colon cancer patients for ctDNA-guided management and has completed accrual [8]. The CLAUDIA platform study is actively recruiting stage II-III patients with positive MRD for treatment intensification strategies [4]. These trials may offer access to novel approaches not available in standard practice.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No completed RCT has demonstrated overall survival benefit from MRD-guided therapy escalation. The optimal chemotherapy regimen for MRD-positive stage II patients remains undefined—DYNAMIC used physician choice of oxaliplatin-based or fluoropyrimidine therapy [1]. Whether pT4a status modifies the benefit of MRD-guided decisions has not been specifically studied.\n\nTEST-SPECIFIC NOTE: Signatera is a tumor-informed assay tracking 16 patient-specific variants with 94% sensitivity and 98% specificity for MRD detection. The assay requires tumor tissue from the resection specimen with a 28-day initial turnaround time and reports results as mean tumor molecules/mL (MTM/mL), not VAF. Medicare covers Signatera for stage II-IV CRC under multiple LCDs, and major commercial payers provide partial coverage specifically for stage II-III adjuvant therapy guidance [TEST-SPECIFIC].\n\nREFERENCES:\n[1] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075\n[2] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[3] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[4] CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12). https://clinicaltrials.gov/study/NCT05534087\n[5] NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial. https://clinicaltrials.gov/study/NCT04786600\n[6] Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer. Science Translational Medicine (2015). PMID: 39316995. DOI: 10.1016/j.ejca.2024.114314\n[7] MAP-02 Trial. A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan. Clinical Cancer Research (2023). PMID: 39513962\n[8] PECAN Trial. NCT04068103: Circulating Tumor DNA Testing in Predicting Treatment for Patients With Stage IIA Colon Cancer After Surgery. https://clinicaltrials.gov/study/NCT04068103",
+    "sources": [
+      {
+        "index": 1,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer",
+        "sourceType": "pubmed",
+        "pmid": "39316995",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan",
+        "sourceType": "pubmed",
+        "pmid": "39513962",
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCT04068103: Circulating Tumor DNA Testing in Predicting Treatment for Patients With Stage IIA Colon Cancer After Surgery",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "category": "clinical_scenario",
+    "question": "TNBC patient, had neoadjuvant AC-T, partial response, then surgery with residual disease. Post-op Signatera is MRD-positive. She already got capecitabine per CREATE-X. Any ctDNA-guided options beyond that?",
+    "answer": "CLINICAL SCENARIO: Triple-negative breast cancer patient with residual disease after neoadjuvant AC-T, completed CREATE-X capecitabine, now MRD-positive on post-operative Signatera.\nDECISION: What additional therapeutic interventions to consider for a ctDNA-positive TNBC patient who has already received standard post-neoadjuvant therapy.\n\nOPTION A: Pembrolizumab-based immunotherapy intervention.\n- Evidence: [RCT] The c-TRAK TN trial (PMID: 36423745) was the first prospective interventional study using ctDNA to guide therapeutic intervention in early TNBC [1]. Of 161 evaluable patients with residual disease after neoadjuvant therapy, 27.3% had detectable ctDNA by 12 months. ctDNA-positive patients were randomized to pembrolizumab vs observation. However, 72% (23/32) of ctDNA-positive patients already had metastatic disease on staging scans at the time of ctDNA detection, and none of the 5 patients who started pembrolizumab achieved sustained ctDNA clearance [1]. [RCT] KEYNOTE-522 demonstrated efficacy of pembrolizumab added to neoadjuvant chemotherapy in early TNBC (PMID: 35139274) [8], providing biological rationale for checkpoint inhibition in this population.\n- Caveats: Single-agent pembrolizumab was insufficient to clear ctDNA in c-TRAK TN, and most patients with detectable ctDNA already had subclinical metastases [1].\n\nOPTION B: Serial ctDNA monitoring with imaging intensification.\n- Evidence: [GUIDELINE] ESMO breast cancer guidelines note that post-operative ctDNA detection is a strong prognostic factor, though current assays have suboptimal sensitivity with a large proportion of false-negative results [6]. [PROSPECTIVE] c-TRAK TN demonstrated that ctDNA detection often coincides with or follows metastatic spread, highlighting the importance of earlier and more frequent monitoring [1]. Given that 72% of ctDNA-positive patients in c-TRAK TN had occult metastases [1], intensified imaging surveillance may detect asymptomatic progression earlier than standard follow-up.\n- Caveats: No established optimal monitoring frequency, and ctDNA assays remain prognostic but not predictive of treatment outcomes [7].\n\nOPTION C: Clinical trial enrollment for novel MRD-directed interventions.\n- Evidence: [RCT] c-TRAK TN investigators concluded that future trials should consider earlier ctDNA testing with more sensitive assays and combination interventions beyond single-agent immunotherapy [1]. Multiple MRD-directed trials are actively enrolling TNBC patients with novel agents targeting minimal residual disease states.\n- Caveats: Trial availability is site-dependent and may require repeat tissue acquisition for companion diagnostics.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo completed phase III trial has demonstrated survival benefit from MRD-guided therapy escalation in breast cancer. The c-TRAK TN trial revealed a critical limitation: by the time ctDNA becomes detectable with current assays, subclinical metastasis may have already occurred in the majority of TNBC patients [1]. Optimal timing, frequency, and sensitivity thresholds for actionable ctDNA monitoring remain undefined.\n\nTEST-SPECIFIC NOTE: Signatera tracks 16 tumor-specific variants with 88-89% sensitivity and 95-99% specificity in breast cancer, providing a median lead time of approximately 10 months before radiographic recurrence. The assay reports results as mean tumor molecules per mL (MTM/mL), requires tumor tissue from the original resection, and has a 9-day turnaround time for monitoring samples. Coverage includes Medicare under LCD L38779 for breast cancer stage IIb+ and partial commercial coverage through select payers.\n\nREFERENCES:\n[1] c-TRAK-TN Trial. c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer. PMID: 36423745\n[2] NCCN Breast Cancer: biomarker testing for targeted therapy selection. 1.2026. https://www.nccn.org/guidelines/category_1\n[3] NCCN Breast Cancer: metastatic disease progression on endocrine therapy. https://www.nccn.org/guidelines/category_1\n[4] NCCN Breast Cancer: biomarker testing for metastatic disease. 1.2026. https://www.nccn.org/guidelines/category_1\n[5] ESMO breast: Neoadjuvant treatment/prognostication. 2.0\n[6] ESMO breast: Post-operative surveillance/prognostication. 2.0\n[7] ESMO breast: Treatment response monitoring. 2.0\n[8] Event-free Survival with Pembrolizumab in Early Triple-Negative Breast Cancer (KEYNOTE-522). New England Journal of Medicine (2021). PMID: 35139274. DOI: 10.1056/NEJMoa2112651",
+    "sources": [
+      {
+        "index": 1,
+        "title": "c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer",
+        "sourceType": "pubmed",
+        "pmid": "36423745",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "NCCN Breast Cancer: biomarker testing for targeted therapy selection",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "NCCN Breast Cancer: metastatic disease progression on endocrine therapy",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "NCCN Breast Cancer: biomarker testing for metastatic disease",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "ESMO breast: Neoadjuvant treatment/prognostication",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "ESMO breast: Post-operative surveillance/prognostication",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "ESMO breast: Treatment response monitoring",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "Event-free Survival with Pembrolizumab in Early Triple-Negative Breast Cancer (KEYNOTE-522)",
+        "sourceType": "pubmed",
+        "pmid": "35139274",
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "category": "clinical_scenario",
+    "question": "HR+/HER2- breast cancer, stage IIA, had lumpectomy + adjuvant ET. Now 18 months out, surveillance Signatera just turned positive. No imaging findings yet. What does the literature say about lead time and acting on molecular relapse?",
+    "answer": "CLINICAL SCENARIO: HR+/HER2- breast cancer, stage IIA, 18 months post-lumpectomy and adjuvant endocrine therapy, surveillance Signatera now positive with no imaging findings.\nDECISION: How to approach molecular relapse in the absence of radiographic progression.\n\nOPTION A: Initiate systemic therapy based on ctDNA positivity.\n- Evidence: [RCT] The TREAT ctDNA trial is specifically designed for this scenario — enrolling ER+/HER2- breast cancer patients with ctDNA relapse to compare elacestrant versus standard endocrine therapy [4]. This ongoing phase III trial suggests clinical equipoise exists for treating molecular relapse. However, no completed RCT has yet demonstrated survival benefit from treating ctDNA-positive, imaging-negative disease in HR+ breast cancer.\n- Caveats: Without mature trial data, the survival impact of early intervention remains unproven. The optimal therapy choice (CDK4/6 inhibitor combination, SERD, or continuing current ET) lacks evidence-based guidance.\n\n⚠️ **Evidence from Other Indications:**\n- [RCT] The c-TRAK TN trial in triple-negative breast cancer found that 72% (23/32) of ctDNA-positive patients already had detectable metastatic disease on staging scans at the time of molecular detection [1]. While this was a different breast cancer subtype with more aggressive biology, it highlights that ctDNA detection may coincide with early metastatic spread even when initial imaging appears negative.\n\nOPTION B: Intensify surveillance while continuing current endocrine therapy.\n- Evidence: Signatera demonstrates a lead time advantage of approximately 300 days over imaging across solid tumors, with breast cancer-specific sensitivity of 88-89% and specificity of 95-99% for recurrence detection. More frequent imaging (every 3 months instead of standard 6-12 month intervals) combined with serial ctDNA monitoring could detect progression earlier while avoiding potential overtreatment.\n- Caveats: This approach accepts the risk that delayed intervention might compromise long-term outcomes, though this risk has not been quantified in HR+ disease.\n\nOPTION C: Clinical trial enrollment.\n- Evidence: [RCT] The TREAT ctDNA trial is actively recruiting patients with exactly this clinical scenario — ctDNA relapse in ER+/HER2- breast cancer [4]. [RCT] SERENA-6 addresses ESR1 mutation detection and early treatment switching in the metastatic setting, though it focuses on patients already on treatment rather than molecular relapse [3].\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo completed prospective trial has established the survival benefit of treating ctDNA-positive, imaging-negative disease in HR+ breast cancer. The natural history of isolated molecular relapse in this population — particularly lead time to radiographic progression and optimal intervention timing — remains incompletely characterized. Cross-indication data from TNBC suggest molecular and radiographic relapse may be temporally closer than initially anticipated [1], but HR+ disease has fundamentally different biology and kinetics.\n\nTEST-SPECIFIC NOTE: Signatera is a tumor-informed assay tracking up to 16 patient-specific variants with 88-89% sensitivity and 95-99% specificity for breast cancer recurrence surveillance. The assay provides approximately 300 days lead time over imaging across solid tumor types. Medicare covers Signatera for stage IIb+ breast cancer surveillance under LCDs L38779 and L38822, while commercial coverage varies by payer (Aetna partial coverage, United not covered). Results are reported as mean tumor molecules per mL (MTM/mL), not VAF.\n\nREFERENCES:\n[1] c-TRAK-TN Trial. c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer. PMID: 36423745\n[2] Rong G et al.. MONDRIAN Trial. DNA damage response as a prognostic indicator in metastatic breast cancer via mutational analysis.. Annals of translational medicine (2021). PMID: 33708847\n[3] SERENA-6: Phase III Study to Assess AZD9833+ CDK4/6 Inhibitor in HR+/HER2-MBC With Detectable ESR1m Before Progression (SERENA-6). https://clinicaltrials.gov/study/NCT04964934\n[4] TREAT ctDNA: Elacestrant for Treating ER+/HER2- Breast Cancer Patients With ctDNA Relapse (TREAT ctDNA). https://clinicaltrials.gov/study/NCT05512364\n[5] Sentinel Lymph Node Biopsy in Early-Stage Breast Cancer: ASCO Guideline Update. Journal of Clinical Oncology (2024). PMID: 40209128. DOI: 10.1200/JCO-25-00099\n[6] Postmastectomy Radiation Therapy: An ASTRO-ASCO-SSO Clinical Practice Guideline. Journal of Clinical Oncology (2024). PMID: 40955654. DOI: 10.1200/JCO-25-01747\n[7] Artemis: A Prospective, Phase II Trial Using ctDNA to Initiate Post-operation Boost Therapy After Adjuvant Chemotherapy in TNBC. https://clinicaltrials.gov/study/NCT04803539\n[8] BioItaLEE: Study of the Molecular Features of Postmenopausal Women With HR+ HER2-negative aBC on First-line Treatment With Ribociclib and Letrozole and, in Patients With a PIK3CA Mutation, on Second-line Treatment With Alpelisib Plus Fulvestrant. https://clinicaltrials.gov/study/NCT03439046",
+    "sources": [
+      {
+        "index": 1,
+        "title": "c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer",
+        "sourceType": "pubmed",
+        "pmid": "36423745",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "DNA damage response as a prognostic indicator in metastatic breast cancer via mutational analysis.",
+        "sourceType": "pubmed",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "SERENA-6: Phase III Study to Assess AZD9833+ CDK4/6 Inhibitor in HR+/HER2-MBC With Detectable ESR1m Before Progression (SERENA-6)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "TREAT ctDNA: Elacestrant for Treating ER+/HER2- Breast Cancer Patients With ctDNA Relapse (TREAT ctDNA)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Sentinel Lymph Node Biopsy in Early-Stage Breast Cancer: ASCO Guideline Update",
+        "sourceType": "pubmed",
+        "pmid": "40209128",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Postmastectomy Radiation Therapy: An ASTRO-ASCO-SSO Clinical Practice Guideline",
+        "sourceType": "pubmed",
+        "pmid": "40955654",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "Artemis: A Prospective, Phase II Trial Using ctDNA to Initiate Post-operation Boost Therapy After Adjuvant Chemotherapy in TNBC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "BioItaLEE: Study of the Molecular Features of Postmenopausal Women With HR+ HER2-negative aBC on First-line Treatment With Ribociclib and Letrozole and, in Patients With a PIK3CA Mutation, on Second-line Treatment With Alpelisib Plus Fulvestrant",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "category": "clinical_scenario",
+    "question": "Following a stage III CRC patient with serial Signatera. Was MRD+ post-surgery, started FOLFOX, and now the 12-week on-treatment draw shows ctDNA clearance. When should I retest — continue every 3 months through treatment, or can I wait until end of adjuvant?",
+    "answer": "CLINICAL SCENARIO: Stage III CRC patient who was MRD-positive post-surgery, started FOLFOX, and achieved ctDNA clearance at 12 weeks on treatment.\n\nDECISION: Optimal timing for next ctDNA assessment during ongoing adjuvant therapy.\n\nOPTION A: Continue serial monitoring every 3 months through adjuvant treatment.\n- Evidence: [PROSPECTIVE] The GALAXY study (Signatera tumor-informed assay) demonstrated that ctDNA clearance during adjuvant chemotherapy was associated with improved outcomes compared to persistent ctDNA positivity [1]. Serial ctDNA monitoring in GALAXY detected molecular relapse a median of 5.3 months before radiographic relapse [5]. This suggests that continued monitoring during treatment can provide early detection of molecular progression if it occurs [5]. The 12-week clearance is encouraging but does not guarantee sustained response throughout the remaining adjuvant period.\n- Caveats: GALAXY was observational and did not establish the optimal monitoring frequency during active treatment [1][5]. The clinical utility of detecting ctDNA re-emergence during adjuvant therapy (rather than post-treatment surveillance) remains unclear.\n\nOPTION B: Wait until completion of adjuvant therapy, then resume surveillance monitoring.\n- Evidence: [PROSPECTIVE] In GALAXY, the strongest prognostic timepoint was 4 weeks post-surgery, with subsequent monitoring primarily focused on post-treatment surveillance [1][5]. Once ctDNA clearance is achieved during treatment, the primary clinical question shifts to post-adjuvant surveillance for early recurrence detection. Cost-effectiveness considerations may favor spacing out tests during active treatment when therapeutic options are already being deployed.\n- Caveats: This approach could miss early molecular progression during adjuvant therapy, though the clinical significance of such detection during active treatment is unproven.\n\nOPTION C: Single confirmatory test at mid-adjuvant therapy (approximately 3-4 months), then resume post-treatment surveillance.\n- Evidence: [PROSPECTIVE] GALAXY data showed that sustained ctDNA clearance correlates with favorable disease-free survival, suggesting that confirming clearance persistence may provide additional prognostic information [1][5]. A single mid-treatment confirmation balances the prognostic value of serial monitoring with practical considerations.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: No prospective trial has established the optimal monitoring frequency during adjuvant therapy, particularly for patients who achieve early ctDNA clearance. The clinical actionability of ctDNA re-emergence during ongoing adjuvant treatment has not been studied. Whether detecting molecular progression during FOLFOX would prompt treatment modification or intensification is unclear and not evidence-based.\n\nTEST-SPECIFIC NOTE: Signatera (tumor-informed assay) has a monitoring turnaround time of 9 days and demonstrated 94% longitudinal sensitivity in the GALAXY validation cohort [5]. The assay tracks up to 16 patient-specific variants with ~0.01% VAF limit of detection and 98% specificity. For ongoing monitoring, the test requires 20mL blood in Streck cfDNA BCT tubes and is covered by Medicare under multiple LCDs for CRC surveillance.\n\nREFERENCES:\n[1] ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[2] A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan. Clinical Cancer Research (2023). PMID: 39513962\n[3] Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.. Journal of surgical oncology (2025). PMID: 39865324. DOI: 10.1002/jso.27989\n[4] ASCO colorectal: Post-treatment surveillance for recurrence risk assessment. 2.1\n[5] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[6] Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147). Journal of Clinical Oncology (2025). PMID: 41616224. DOI: 10.1200/JCO-25-02086\n[7] NCCN Colorectal Cancer: adjuvant therapy. https://www.nccn.org/guidelines/category_1\n[8] ASCO colorectal: adjuvant treatment decision. 10.3",
+    "sources": [
+      {
+        "index": 1,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan",
+        "sourceType": "pubmed",
+        "pmid": "39513962",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.",
+        "sourceType": "pubmed",
+        "pmid": "39865324",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "ASCO colorectal: Post-treatment surveillance for recurrence risk assessment",
+        "sourceType": "asco",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147)",
+        "sourceType": "pubmed",
+        "pmid": "41616224",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "NCCN Colorectal Cancer: adjuvant therapy",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "ASCO colorectal: adjuvant treatment decision",
+        "sourceType": "asco",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "category": "clinical_scenario",
+    "question": "HPV-positive oropharyngeal SCC, T2N1, planning for definitive chemoradiation. Colleague mentioned NavDx for treatment response assessment. Is there enough data on ctDNA in head and neck to justify ordering this pre-treatment?",
+    "answer": "CLINICAL SCENARIO: HPV-positive oropharyngeal squamous cell carcinoma, T2N1, planning definitive chemoradiation with consideration of pre-treatment NavDx for response assessment.\nDECISION: Whether to order pre-treatment ctDNA testing to guide treatment monitoring in HPV+ OPSCC.\n\nOPTION A: Order NavDx pre-treatment for baseline establishment and subsequent monitoring.\n- Evidence: [PROSPECTIVE] In our current evidence set, we found one small head and neck study (n=17) using a tumor-informed approach (RaDaR assay) that successfully detected ctDNA in 17/17 p16-negative HNSCC patients pre-operatively, with post-operative detection sensitivity down to 0.0006% VAF [3]. However, this study focused on surgical patients with p16-negative disease, limiting direct applicability to your HPV-positive patient receiving definitive chemoradiation.\n- Guidelines: Current NCCN Head and Neck guidelines do not specifically address ctDNA testing for treatment monitoring in the definitive chemoradiation setting.\n- Caveats: NavDx is a tumor-naïve assay with 90.4% clinical sensitivity for recurrent HPV-associated OPSCC and 91.5% sensitivity for pre-treatment diagnosis, but validation data specifically for treatment response monitoring during definitive chemoradiation is limited in our evidence set.\n\nOPTION B: Proceed with standard imaging-based response assessment without ctDNA.\n- Evidence: Standard post-treatment PET/CT at 3 months remains the established method for assessing response to definitive chemoradiation in HPV+ OPSCC. NavDx demonstrates a median 4-month lead time versus imaging for recurrence detection, but this advantage applies primarily to surveillance rather than acute treatment response assessment.\n- Caveats: You would miss the potential for molecular response assessment during treatment and early detection of treatment failure.\n\nOPTION C: Consider clinical trial enrollment for ctDNA-guided management.\n- Evidence: In our current evidence set, we found no active head and neck trials specifically investigating ctDNA-guided treatment modifications during definitive chemoradiation. The Phase II MRD+ study at Memorial Sloan Kettering uses NavDx for HPV16+ HNSCC but focuses on intervention after molecular relapse rather than primary treatment guidance.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: In our current evidence set, we found limited direct data for ctDNA-guided treatment response assessment during definitive chemoradiation in HPV+ OPSCC. The optimal timing and frequency of ctDNA monitoring during active treatment, correlation between ctDNA kinetics and imaging response, and clinical utility of early molecular response assessment remain unstudied in this population. Published ctDNA data may exist outside this database; consider a targeted literature search.\n\n**Evidence from Other Indications:**\nCross-indication data from colorectal and breast cancer suggest ctDNA can effectively guide treatment decisions [1][2]. [RCT] The DYNAMIC trial demonstrated that ctDNA-guided adjuvant therapy decisions in stage II colon cancer reduced chemotherapy use without compromising recurrence-free survival [2]. [RCT] The c-TRAK TN trial in triple-negative breast cancer showed feasibility of ctDNA-triggered interventions, though 72% of ctDNA-positive patients already had detectable metastatic disease at the time of molecular detection [1]. These studies support the general concept of ctDNA utility but involved post-surgical adjuvant settings rather than definitive chemoradiation.\n\nTEST-SPECIFIC NOTE: NavDx is a tumor-naïve assay requiring no tissue, with 7-day turnaround for both initial and monitoring samples. It has 90.4% sensitivity for recurrent HPV+ OPSCC and is covered by Medicare under LCD L38779 for HPV-associated oropharyngeal cancer surveillance, though commercial coverage varies by payer (Aetna and Cigna consider it experimental). The assay's 4-month median lead time over imaging for recurrence detection is its primary validated clinical utility.\n\nREFERENCES:\n[1] c-TRAK-TN Trial. c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer. PMID: 36423745\n[2] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075\n[3] A personalised circulating tumour DNA analysis in head and neck squamous-cell carcinoma: a prospective study. British Journal of Cancer (2021). PMID: 35132238\n[4] NCT04068103: Circulating Tumor DNA Testing in Predicting Treatment for Patients With Stage IIA Colon Cancer After Surgery. https://clinicaltrials.gov/study/NCT04068103\n[5] ALIENOR Trial. Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147). Journal of Clinical Oncology (2025). PMID: 41616224. DOI: 10.1200/JCO-25-02086\n[6] The prognostic significance of circulating tumor DNA in patients with positive lymph node disease after robotic-assisted radical cystectomy: A contemporary analysis.. Urologic Oncology (2023). PMID: 39277526. DOI: 10.1016/j.urolonc.2024.08.006\n[7] NCT06939439: Using ctDNA to Guide Treatment Decisions for Stage III Gastric Cancer. https://clinicaltrials.gov/study/NCT06939439\n[8] CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12). https://clinicaltrials.gov/study/NCT05534087",
+    "sources": [
+      {
+        "index": 1,
+        "title": "c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer",
+        "sourceType": "pubmed",
+        "pmid": "36423745",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "A personalised circulating tumour DNA analysis in head and neck squamous-cell carcinoma: a prospective study",
+        "sourceType": "pubmed",
+        "pmid": "35132238",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "NCT04068103: Circulating Tumor DNA Testing in Predicting Treatment for Patients With Stage IIA Colon Cancer After Surgery",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147)",
+        "sourceType": "pubmed",
+        "pmid": "41616224",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "The prognostic significance of circulating tumor DNA in patients with positive lymph node disease after robotic-assisted radical cystectomy: A contemporary analysis.",
+        "sourceType": "pubmed",
+        "pmid": "39277526",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "NCT06939439: Using ctDNA to Guide Treatment Decisions for Stage III Gastric Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "category": "clinical_scenario",
+    "question": "Stage III CRC, already escalated to FOLFOXIRI after MRD+ finding post-resection. Now 4 cycles in, ctDNA still detectable. Patient is tolerating treatment. Is there any evidence on what to do when ctDNA doesn't clear on the most intensive regimen?",
+    "answer": "CLINICAL SCENARIO: Stage III CRC, FOLFOXIRI for 4 cycles after initial ctDNA-positive finding, ctDNA remains detectable despite intensive therapy.\nDECISION: Management approach when ctDNA persists on maximal adjuvant chemotherapy.\n\nOPTION A: Continue current FOLFOXIRI regimen to completion.\n- Evidence: [PROSPECTIVE] In the GALAXY study, ctDNA clearance during adjuvant chemotherapy was associated with improved outcomes compared to persistent ctDNA positivity [3]. However, the study did not specify optimal duration or regimen intensity for achieving clearance. Some patients may achieve delayed molecular response with continued treatment. The natural history data from GALAXY showed that serial ctDNA monitoring can track treatment response over time, suggesting that persistence at 4 cycles does not preclude later clearance [3].\n- Caveats: No prospective data define the optimal number of cycles needed to achieve ctDNA clearance [3], and persistent positivity after 4 cycles of intensive therapy suggests inherently resistant disease.\n\nOPTION B: Switch to alternative systemic therapy or add targeted agents.\n- Evidence: [HYPOTHESIS] For RAS wild-type tumors, adding anti-EGFR therapy (cetuximab or panitumumab) to backbone chemotherapy represents a biologically rational escalation strategy, though no prospective trials have tested ctDNA-guided addition of targeted agents in the adjuvant setting. For MSI-high tumors, adjuvant immunotherapy could be considered based on recent approvals, though again without specific ctDNA-guided evidence.\n- Caveats: No published data demonstrate that switching regimens based on persistent ctDNA positivity improves outcomes. Cross-resistance between chemotherapy regimens may limit benefit of switching.\n\nOPTION C: Clinical trial enrollment or transition to surveillance.\n- Evidence: [RCT] Active trials are specifically designed for ctDNA-positive patients, including studies evaluating novel agents or extended treatment durations [4][5]. Given the lack of established benefit from further escalation, trial enrollment may provide access to investigational approaches not available in standard care. [PROSPECTIVE] GALAXY data showed that ctDNA-positive patients had significantly worse disease-free survival (HR 11.99), indicating very high recurrence risk regardless of treatment intensity [1].\n- Caveats: Trial availability is site-dependent and may not offer immediate alternatives to current therapy.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo prospective study has evaluated what to do when ctDNA remains positive despite intensive adjuvant chemotherapy. The DYNAMIC trial enrolled only stage II patients and cannot inform stage III management [2]. GALAXY provided natural history data but did not test interventional strategies for persistent ctDNA positivity [1][3]. The optimal definition of \"adequate trial\" of chemotherapy before considering alternative approaches has not been established. Whether persistent ctDNA positivity represents chemo-resistant micrometastatic disease or inadequate treatment duration remains unknown.\n\nTEST-SPECIFIC NOTE: Since this patient is already 4 cycles into FOLFOXIRI, the most critical decision is whether persistent ctDNA positivity (measured in MTM/mL for Signatera) represents treatment failure requiring a change in approach or simply reflects the time needed to achieve molecular clearance with continued therapy.\n\nREFERENCES:\n[1] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[2] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075\n[3] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[4] PECAN Trial. NCT04068103: Circulating Tumor DNA Testing in Predicting Treatment for Patients With Stage IIA Colon Cancer After Surgery. https://clinicaltrials.gov/study/NCT04068103\n[5] NCT05954078: Circulating Tumor DNA Methylation Guided Postoperative Adjuvant Chemotherapy for High-risk Stage II/III Colorectal Cancer. https://clinicaltrials.gov/study/NCT05954078\n[6] Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer. Science Translational Medicine (2015). PMID: 39316995. DOI: 10.1016/j.ejca.2024.114314\n[7] MAP-02 Trial. A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan. Clinical Cancer Research (2023). PMID: 39513962\n[8] NCT05797077: Postoperation Maintenance Therapy for Resectable Liver Metastases of Colorectal Cancer Guided by ctDNA. https://clinicaltrials.gov/study/NCT05797077",
+    "sources": [
+      {
+        "index": 1,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "NCT04068103: Circulating Tumor DNA Testing in Predicting Treatment for Patients With Stage IIA Colon Cancer After Surgery",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "NCT05954078: Circulating Tumor DNA Methylation Guided Postoperative Adjuvant Chemotherapy for High-risk Stage II/III Colorectal Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer",
+        "sourceType": "pubmed",
+        "pmid": "39316995",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan",
+        "sourceType": "pubmed",
+        "pmid": "39513962",
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCT05797077: Postoperation Maintenance Therapy for Resectable Liver Metastases of Colorectal Cancer Guided by ctDNA",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "category": "clinical_scenario",
+    "question": "Muscle-invasive bladder cancer, pT3N0, post-radical cystectomy. Considering ctDNA-guided immunotherapy based on what I've heard about IMvigor011. Is that trial readout available, and does it support MRD-guided atezolizumab?",
+    "answer": "CLINICAL SCENARIO: Muscle-invasive bladder cancer, pT3N0, post-radical cystectomy, considering ctDNA-guided adjuvant immunotherapy.\nDECISION: Whether to pursue ctDNA testing to guide adjuvant atezolizumab therapy.\n\nOPTION A: ctDNA testing with potential ctDNA-guided atezolizumab if positive.\n- Evidence: [RCT] A randomized trial has evaluated ctDNA-guided adjuvant atezolizumab treatment in muscle-invasive bladder cancer patients, though the specific results and whether this represents IMvigor011 data are not detailed in the available source summary [3]. [PROSPECTIVE] Contemporary analysis demonstrates that ctDNA has prognostic significance in bladder cancer patients with positive lymph nodes after cystectomy, establishing the biomarker's relevance in this population [2]. However, your patient is pT3N0 (node-negative), so the direct applicability of node-positive prognostic data requires consideration.\n- Caveats: The specific trial results, primary endpoints, and whether ctDNA-guided therapy improved outcomes compared to standard care are not available in the current evidence set.\n\nOPTION B: Standard surveillance without ctDNA-guided intervention.\n- Evidence: Standard post-cystectomy surveillance remains the established approach for node-negative muscle-invasive bladder cancer. The prognostic utility of ctDNA in node-negative disease (your patient's pT3N0 status) may differ from the node-positive population where stronger prognostic data exist [2].\n- Caveats: This approach foregoes potential early detection of molecular recurrence and any associated therapeutic opportunity.\n\nOPTION C: Clinical trial enrollment if available.\n- Evidence: [RCT] Clinical trials continue to investigate ctDNA-guided approaches in bladder cancer, including studies beyond the completed atezolizumab trial [3]. This may provide access to investigational ctDNA-guided strategies not yet established in routine practice.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS: In our current evidence set, we found limited direct data regarding the specific IMvigor011 trial results you referenced, including whether ctDNA-guided atezolizumab demonstrated efficacy compared to standard care. The available trial summary [3] confirms evaluation of this approach but doesn't provide outcome data or recommendations for clinical implementation. Additionally, most bladder cancer ctDNA data focus on node-positive disease, while your patient is node-negative (pT3N0).\n\nPublished ctDNA data may exist outside this database; consider a targeted literature search or consultation with the treating oncology team regarding the most recent IMvigor011 readout and its implications for pT3N0 disease specifically.\n\nREFERENCES:\n[1] AMPLIFY-201: A Study of ELI-002 in Subjects With KRAS Mutated Pancreatic Ductal Adenocarcinoma (PDAC) and Other Solid Tumors. https://clinicaltrials.gov/study/NCT04853017\n[2] The prognostic significance of circulating tumor DNA in patients with positive lymph node disease after robotic-assisted radical cystectomy: A contemporary analysis.. Urologic Oncology (2023). PMID: 39277526. DOI: 10.1016/j.urolonc.2024.08.006\n[3] Perioperative Durvalumab with Neoadjuvant Chemotherapy in Operable Bladder Cancer.. The New England journal of medicine (2024). PMID: 39282910",
+    "sources": [
+      {
+        "index": 1,
+        "title": "AMPLIFY-201: A Study of ELI-002 in Subjects With KRAS Mutated Pancreatic Ductal Adenocarcinoma (PDAC) and Other Solid Tumors",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "The prognostic significance of circulating tumor DNA in patients with positive lymph node disease after robotic-assisted radical cystectomy: A contemporary analysis.",
+        "sourceType": "pubmed",
+        "pmid": "39277526",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "Perioperative Durvalumab with Neoadjuvant Chemotherapy in Operable Bladder Cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39282910",
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "category": "test_interpretation",
+    "question": "Can you explain the practical difference between tumor-informed and tumor-naive MRD assays for colorectal cancer? Trying to decide what to order for my post-resection patients.",
+    "answer": "COMPARISON: Tumor-informed vs Tumor-naive MRD Assays for Colorectal Cancer\n\nKEY DIFFERENCES:\n**Tumor-informed assays** (like Signatera) require tumor tissue from the resection specimen to identify patient-specific somatic mutations, then track those variants in plasma. This adds approximately 2 weeks to initial turnaround time for assay design but provides highly personalized tracking of 10-16 patient-specific variants.\n\n**Tumor-naive assays** (like Guardant Reveal) analyze plasma only, using a fixed panel of common cancer mutations and methylation markers without requiring tumor tissue. [PROSPECTIVE] A tumor-naive ctDNA assay (xM) that integrates methylation and genomic variant data was validated in 80 GALAXY study participants with stage II-III colorectal cancer, delivering a binary MRD call with faster turnaround time [1]. This plasma-only approach accelerates treatment decisions and enables rapid surveillance [1].\n\nCLINICAL DATA:\nThe largest head-to-head comparison comes from GALAXY, where both approaches were tested in the same patient cohort [1,2]. [PROSPECTIVE] The tumor-informed Signatera assay in GALAXY demonstrated that ctDNA-positive patients had significantly worse disease-free survival (HR: 11.99, P<0.0001) and overall survival (HR: 9.68, P<0.0001) at 23-month follow-up [2]. [PROSPECTIVE] The tumor-naive subset analysis from the same GALAXY cohort showed that 22/36 recurrent patients had detectable ctDNA at 4 weeks post-surgery using the methylation and genomic variant approach [1]. Both assays showed prognostic value, though direct sensitivity comparisons between the two approaches within GALAXY have not been fully published.\n\nPRACTICAL CONSIDERATIONS:\n**Speed**: Tumor-naive assays can begin testing immediately post-surgery, while tumor-informed assays require tissue processing time. **Tissue dependency**: Tumor-naive assays work when adequate tissue is unavailable or tissue analysis fails. **Guideline context**: [GUIDELINE] NCCN Colorectal Cancer v5.2025 states that ctDNA assays are not recommended for routine use outside of clinical trials, regardless of approach [5,7]. **Evidence base**: [RCT] The DYNAMIC trial, which demonstrated non-inferior outcomes with ctDNA-guided therapy in stage II colon cancer, used a tumor-informed approach (SafeSeqS), reducing adjuvant chemotherapy use from 28% to 15% without compromising 2-year recurrence-free survival [8].\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nDirect head-to-head trials comparing tumor-informed vs tumor-naive assays for clinical decision-making in CRC are limited. The optimal detection threshold, monitoring intervals, and clinical action points may differ between approaches but haven't been established in randomized settings. Most MRD-guided therapy trials to date have used tumor-informed assays, so evidence for clinical utility of tumor-naive approaches in treatment decisions remains more limited.\n\nREFERENCES:\n[1] A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan. Clinical Cancer Research (2023). PMID: 39513962\n[2] ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[3] Minimal Residual Disease Detection Using a Plasma-Only Circulating Tumor DNA Assay in Colorectal Cancer Patients. Clinical Cancer Research (2020). DOI: 10.1158/1078-0432.CCR-21-1567\n[4] IMRD Trial. Colorectal Cancer Recurrence Prediction Using a Tissue-Free Epigenomic Minimal Residual Disease Assay. Clinical Cancer Research (2020). https://guardanthealth.com/clinical-studies/early-stage-cancer-studies/\n[5] NCCN Colorectal Cancer: adjuvant therapy decision-making. 5.2025. https://www.nccn.org/guidelines/category_1\n[6] NCCN Colorectal Cancer: high-risk stage II colon cancer adjuvant therapy decision. 5.2025. https://www.nccn.org/guidelines/category_1\n[7] NCCN Colorectal Cancer: adjuvant therapy and surveillance. https://www.nccn.org/guidelines/category_1\n[8] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075",
+    "sources": [
+      {
+        "index": 1,
+        "title": "A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan",
+        "sourceType": "pubmed",
+        "pmid": "39513962",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "Minimal Residual Disease Detection Using a Plasma-Only Circulating Tumor DNA Assay in Colorectal Cancer Patients",
+        "sourceType": "seed_publication",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "Colorectal Cancer Recurrence Prediction Using a Tissue-Free Epigenomic Minimal Residual Disease Assay",
+        "sourceType": "seed_publication",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "NCCN Colorectal Cancer: adjuvant therapy decision-making",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "NCCN Colorectal Cancer: high-risk stage II colon cancer adjuvant therapy decision",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "NCCN Colorectal Cancer: adjuvant therapy and surveillance",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "category": "test_interpretation",
+    "question": "How does FoundationOne Tracker stack up against Signatera for breast cancer MRD monitoring? Any head-to-head data or key differences in the approach?",
+    "answer": "COMPARISON: FoundationOne Tracker vs. Signatera for breast cancer MRD monitoring.\n\n**KEY DIFFERENCES:**\n\n**Technical Approach:** Both are tumor-informed assays requiring tissue for personalized panel design. 01% VAF detection threshold. Signatera Genome, the enhanced version, tracks 64 variants with improved sensitivity at 1 ppm (parts per million).\n\n**Turnaround Time:** FoundationOne Tracker has a faster initial turnaround at 8 days compared to Signatera's 28 days for initial panel design. However, Signatera's monitoring draws are processed in 9 days, while FoundationOne Tracker maintains 8 days for subsequent monitoring.\n\n**Clinical Evidence in Breast Cancer:** In our current evidence set, we found limited head-to-head data comparing these platforms in breast cancer. [RCT] The c-TRAK TN trial used a digital PCR-based ctDNA approach (RaDaR assay by Inivata) for triple-negative breast cancer MRD detection, but this was neither FoundationOne Tracker nor Signatera [1]. The trial demonstrated feasibility of ctDNA-guided intervention but revealed that 72% of ctDNA-positive patients already had metastatic disease at detection, highlighting timing challenges in breast cancer MRD monitoring [1].\n\n**Coverage and Access:** Both platforms face significant coverage limitations. Signatera has Medicare coverage under multiple LCDs (L38779, L38822) for breast cancer stage IIb+ surveillance and partial commercial coverage with Aetna for specific indications. FoundationOne Tracker (MRD) is not covered by Medicare and lacks commercial coverage from major payers (Aetna, Cigna, United all list as not covered or experimental). FoundationOne Tracker (TRM) has Medicare coverage under L38779 for treatment response monitoring but limited commercial coverage.\n\n**What the Evidence Doesn't Address:** No published head-to-head trial has directly compared FoundationOne Tracker and Signatera in the same breast cancer cohort. Published ctDNA data may exist outside this database; consider a targeted literature search. The optimal timing, frequency, and intervention strategies for breast cancer MRD monitoring remain areas of active investigation, as demonstrated by ongoing trials like TREAT ctDNA [4] and Artemis [7].\n\nREFERENCES:\n[1] c-TRAK-TN Trial. c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer. PMID: 36423745\n[2] Rong G et al.. MONDRIAN Trial. DNA damage response as a prognostic indicator in metastatic breast cancer via mutational analysis.. Annals of translational medicine (2021). PMID: 33708847\n[3] SERENA-6: Phase III Study to Assess AZD9833+ CDK4/6 Inhibitor in HR+/HER2-MBC With Detectable ESR1m Before Progression (SERENA-6). https://clinicaltrials.gov/study/NCT04964934\n[4] TREAT ctDNA: Elacestrant for Treating ER+/HER2- Breast Cancer Patients With ctDNA Relapse (TREAT ctDNA). https://clinicaltrials.gov/study/NCT05512364\n[5] Postmastectomy Radiation Therapy: An ASTRO-ASCO-SSO Clinical Practice Guideline. Journal of Clinical Oncology (2024). PMID: 40955654. DOI: 10.1200/JCO-25-01747\n[6] Sentinel Lymph Node Biopsy in Early-Stage Breast Cancer: ASCO Guideline Update. Journal of Clinical Oncology (2024). PMID: 40209128. DOI: 10.1200/JCO-25-00099\n[7] Artemis: A Prospective, Phase II Trial Using ctDNA to Initiate Post-operation Boost Therapy After Adjuvant Chemotherapy in TNBC. https://clinicaltrials.gov/study/NCT04803539\n[8] PERSEVERE: Circulating Tumor DNA Enriched, Genomically Directed Post-neoadjuvant Trial for Patients With Residual Triple Negative Breast Cancer. https://clinicaltrials.gov/study/NCT04849364",
+    "sources": [
+      {
+        "index": 1,
+        "title": "c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer",
+        "sourceType": "pubmed",
+        "pmid": "36423745",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "DNA damage response as a prognostic indicator in metastatic breast cancer via mutational analysis.",
+        "sourceType": "pubmed",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "SERENA-6: Phase III Study to Assess AZD9833+ CDK4/6 Inhibitor in HR+/HER2-MBC With Detectable ESR1m Before Progression (SERENA-6)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "TREAT ctDNA: Elacestrant for Treating ER+/HER2- Breast Cancer Patients With ctDNA Relapse (TREAT ctDNA)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Postmastectomy Radiation Therapy: An ASTRO-ASCO-SSO Clinical Practice Guideline",
+        "sourceType": "pubmed",
+        "pmid": "40955654",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Sentinel Lymph Node Biopsy in Early-Stage Breast Cancer: ASCO Guideline Update",
+        "sourceType": "pubmed",
+        "pmid": "40209128",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "Artemis: A Prospective, Phase II Trial Using ctDNA to Initiate Post-operation Boost Therapy After Adjuvant Chemotherapy in TNBC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "PERSEVERE: Circulating Tumor DNA Enriched, Genomically Directed Post-neoadjuvant Trial for Patients With Residual Triple Negative Breast Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "category": "test_interpretation",
+    "question": "Patient with CRC on surveillance — serial Signatera shows rising ctDNA over three draws: 0.5, 2.1, then 8.4 MTM/mL over 6 months. PET is still negative. What does the trajectory tell us?",
+    "answer": "CLINICAL SCENARIO: CRC patient on surveillance with rising Signatera ctDNA levels (0.5 → 2.1 → 8.4 MTM/mL over 6 months) despite negative imaging.\nDECISION: How to interpret this rising ctDNA trajectory and what clinical actions to consider.\n\nOPTION A: Intensify imaging surveillance to detect occult recurrence.\n- Evidence: [PROSPECTIVE] The GALAXY study demonstrated that ctDNA surveillance detects molecular relapse a median of 5.3 months before radiographic relapse [5]. Your patient's 16-fold increase in ctDNA levels over 6 months (0.5 to 8.4 MTM/mL) suggests active disease despite negative PET. [OBSERVATIONAL] GALAXY data showed that ctDNA positivity during surveillance was associated with significantly worse disease-free survival (HR 11.99) and overall survival (HR 9.68) [2]. The rising trajectory indicates molecular progression that will likely manifest radiographically within months. Consider MRI, CT chest/abdomen/pelvis, or repeat PET with shorter intervals (every 2-3 months rather than standard 6-month surveillance).\n- Caveats: No established threshold for clinical action based on absolute MTM/mL levels or rate of change has been validated prospectively.\n\nOPTION B: Initiate systemic therapy for molecular recurrence.\n- Evidence: [PROSPECTIVE] GALAXY data suggest that patients with detectable ctDNA during surveillance have a very high probability of clinical recurrence [5]. The kinetics of your patient's ctDNA rise (16-fold increase) indicate aggressive molecular disease. Some clinicians initiate treatment for \"molecular recurrence\" based on rising ctDNA before imaging positivity, though this approach lacks prospective validation for improved outcomes. Treatment selection would depend on prior adjuvant therapy received and molecular profiling of the original tumor.\n- Caveats: No completed RCT has demonstrated survival benefit from treating ctDNA-positive, imaging-negative disease. The optimal threshold for intervention and choice of systemic therapy remain investigational.\n\nOPTION C: Serial ctDNA monitoring with clinical trial enrollment.\n- Evidence: [RCT] Several trials are specifically designed for patients with detectable ctDNA during surveillance, including studies evaluating early intervention strategies. The rising ctDNA trajectory makes this patient an ideal candidate for MRD-directed trials that are actively enrolling. Continuing Signatera monitoring every 4-6 weeks can track disease kinetics and response to any intervention.\n- Caveats: Trial availability is site-dependent, and some studies may require imaging-confirmed recurrence for enrollment.\n\nWHAT THE EVIDENCE DOESN'T ADDRESS:\nNo study has established the optimal ctDNA doubling time or absolute threshold that should trigger clinical intervention. The relationship between MTM/mL kinetics and timing to radiographic recurrence has not been precisely defined. Whether early treatment of molecular recurrence improves overall survival compared to waiting for imaging-detectable disease remains unproven.\n\nTEST-SPECIFIC NOTE: Signatera is a tumor-informed assay tracking 16 patient-specific variants with 94% sensitivity and 98% specificity for recurrence surveillance in CRC [1]. 5 → 8.4 MTM/mL) are well above the detection threshold, and the consistent rise over multiple draws reduces the likelihood of assay variability. Medicare covers Signatera for CRC surveillance under LCD L38779, though coverage for treatment decisions based solely on ctDNA results varies by indication.\n\nREFERENCES:\n[1] MAP-02 Trial. A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan. Clinical Cancer Research (2023). PMID: 39513962\n[2] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[3] CIRCA-HPV Trial. Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.. Journal of surgical oncology (2025). PMID: 39865324. DOI: 10.1002/jso.27989\n[4] OLIGOMETS Trial. Circulating tumor DNA using a plasma-only assay predicts survival in patients with oligometastatic colorectal cancer after definitive therapy.. Journal of gastrointestinal oncology (2025). PMID: 40386606. DOI: 10.21037/jgo-24-819\n[5] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[6] ADELOS Trial. Circulating tumour DNA in patients with hepatocellular carcinoma across tumour stages and treatments.. Gut (2024). PMID: 39054058. DOI: 10.1136/gutjnl-2024-331956\n[7] Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer. Science Translational Medicine (2015). PMID: 39316995. DOI: 10.1016/j.ejca.2024.114314\n[8] NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial. https://clinicaltrials.gov/study/NCT04786600",
+    "sources": [
+      {
+        "index": 1,
+        "title": "A Tumor-Naïve ctDNA Assay Detects Minimal Residual Disease in Resected Stage II or III Colorectal Cancer and Predicts Recurrence: Subset Analysis From the GALAXY Study in CIRCULATE-Japan",
+        "sourceType": "pubmed",
+        "pmid": "39513962",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.",
+        "sourceType": "pubmed",
+        "pmid": "39865324",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "Circulating tumor DNA using a plasma-only assay predicts survival in patients with oligometastatic colorectal cancer after definitive therapy.",
+        "sourceType": "pubmed",
+        "pmid": "40386606",
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Circulating tumour DNA in patients with hepatocellular carcinoma across tumour stages and treatments.",
+        "sourceType": "pubmed",
+        "pmid": "39054058",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer",
+        "sourceType": "pubmed",
+        "pmid": "39316995",
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "category": "guideline",
+    "question": "What do the current NCCN guidelines say about using ctDNA for CRC surveillance after curative-intent resection?",
+    "answer": "CLINICAL SCENARIO: Physician seeking guidance on NCCN recommendations for ctDNA use in post-resection CRC surveillance.\nDECISION: Whether to incorporate ctDNA testing into routine surveillance protocols based on current guidelines.\n\n**NCCN POSITION ON ctDNA SURVEILLANCE:**\n\n[GUIDELINE] The NCCN Guidelines for Colorectal Cancer (v5.2025) explicitly state that ctDNA is not recommended for surveillance in post-surgical CRC patients [1][3]. The guidelines indicate there is currently insufficient evidence to recommend routine use of ctDNA assays outside of a clinical trial setting [2]. This represents a Category 2A recommendation, meaning there is uniform NCCN consensus based on lower-level evidence or expert opinion.\n\n**ASCO PERSPECTIVE:**\n\n[GUIDELINE] ASCO guidelines offer a slightly more nuanced view, acknowledging that ctDNA testing has potential to identify patients at higher risk of distant recurrence for minimal residual disease detection [4]. ASCO also notes that ctDNA monitoring can be considered in addition to pathological features and MSI status to further tailor adjuvant decision making in difficult cases [8]. However, this falls short of a formal recommendation for routine surveillance use.\n\n**SUPPORTING EVIDENCE FOR PROGNOSTIC VALUE:**\n\n[PROSPECTIVE] Despite guideline caution, the GALAXY study from CIRCULATE-Japan demonstrated strong prognostic associations, with ctDNA-positive patients showing significantly inferior disease-free survival (HR: 11.99, P<0.0001) and overall survival (HR: 9.68, P<0.0001) in a cohort of 2,240 stage II-III CRC patients [5]. [PROSPECTIVE] Earlier data showed ctDNA positivity predicts very high recurrence risk (>80%) when no adjuvant treatment is given in stage II colon cancer [6].\n\n**WHAT THE EVIDENCE DOESN'T ADDRESS:**\n\nCurrent guidelines reflect the absence of completed randomized trials demonstrating that acting on ctDNA surveillance results improves patient outcomes. While ctDNA has established prognostic value, the clinical utility of surveillance testing—defined as whether knowledge of ctDNA status leads to interventions that improve survival—remains unproven in the post-adjuvant setting.\n\nREFERENCES:\n[1] NCCN Colorectal Cancer: post-surgical surveillance. 5.2025. https://www.nccn.org/guidelines/category_1\n[2] NCCN Colorectal Cancer: adjuvant therapy and surveillance. https://www.nccn.org/guidelines/category_1\n[3] NCCN Colorectal Cancer: surveillance. https://www.nccn.org/guidelines/category_1\n[4] ASCO colorectal: Post-treatment surveillance for recurrence risk assessment. 2.1\n[5] ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[6] Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer. Science Translational Medicine (2015). PMID: 39316995. DOI: 10.1016/j.ejca.2024.114314\n[7] Circulating tumor DNA using a plasma-only assay predicts survival in patients with oligometastatic colorectal cancer after definitive therapy.. Journal of gastrointestinal oncology (2025). PMID: 40386606. DOI: 10.21037/jgo-24-819\n[8] ASCO colorectal: adjuvant treatment decision. 10.3",
+    "sources": [
+      {
+        "index": 1,
+        "title": "NCCN Colorectal Cancer: post-surgical surveillance",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "NCCN Colorectal Cancer: adjuvant therapy and surveillance",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "NCCN Colorectal Cancer: surveillance",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "ASCO colorectal: Post-treatment surveillance for recurrence risk assessment",
+        "sourceType": "asco",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Circulating tumor DNA analysis detects minimal residual disease and predicts recurrence in patients with stage II colon cancer",
+        "sourceType": "pubmed",
+        "pmid": "39316995",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "Circulating tumor DNA using a plasma-only assay predicts survival in patients with oligometastatic colorectal cancer after definitive therapy.",
+        "sourceType": "pubmed",
+        "pmid": "40386606",
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "ASCO colorectal: adjuvant treatment decision",
+        "sourceType": "asco",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "category": "guideline",
+    "question": "Has ESMO issued any position on using MRD testing to guide treatment decisions in early-stage CRC? Or is it still not in their guidelines?",
+    "answer": "CLINICAL SCENARIO: Physician seeking ESMO guidance on MRD testing for treatment decisions in early-stage colorectal cancer.\n\nDECISION: Whether ESMO has endorsed MRD-guided adjuvant therapy decisions in CRC guidelines.\n\n**ESMO'S CURRENT POSITION:**\n[GUIDELINE] ESMO has not issued specific recommendations for MRD-guided adjuvant therapy decisions in early-stage CRC [1]. In their expert consensus on liquid biopsy, ESMO classifies ctDNA MRD as an ESCAT level III biomarker, meaning it remains investigational for treatment decisions [1]. While ESMO acknowledges the prognostic value of ctDNA/MRD in early-stage disease and cites promising data from trials like DYNAMIC, their Precision Medicine Working Group states that additional randomized evidence is needed before incorporation into standard practice [1].\n\n**ESMO'S ESTABLISHED LIQUID BIOPSY RECOMMENDATIONS:**\n[GUIDELINE] ESMO does recommend liquid biopsy for advanced CRC, specifically for RAS/BRAF mutation detection in metastatic disease when tissue is insufficient for molecular profiling [1,2]. For advanced cancer patients, ESMO states that \"validated and adequately sensitive ctDNA assays have utility in identifying actionable mutations to direct targeted therapy, and may be used in routine clinical practice, provided the limitations of the assays are taken into account\" [2]. However, this recommendation applies to metastatic molecular profiling, not early-stage MRD-guided therapy decisions.\n\n**CONTRAST WITH OTHER GUIDELINES:**\n[GUIDELINE] This position aligns with NCCN, which explicitly states that \"ctDNA assays are not recommended for routine use outside of clinical trials\" for adjuvant therapy decision-making (NCCN Colorectal Cancer v4.2025 and v5.2025) [5,6,7]. Both organizations acknowledge the prognostic value of MRD but stop short of endorsing treatment modifications based on ctDNA results.\n\n**WHAT THE EVIDENCE DOESN'T ADDRESS:**\nESMO has not specified when they might update their position on MRD-guided therapy, what level of randomized evidence would be required, or whether they are developing formal guidelines specifically for MRD applications. The distinction between prognostic utility (which ESMO acknowledges) and therapeutic actionability (which remains investigational) is key to understanding current guideline limitations.\n\nREFERENCES:\n[1] ESMO Recommendations on Liquid Biopsy and ctDNA for Clinical Decision-Making in Solid Tumors. https://www.esmo.org/guidelines\n[2] ESMO colorectal: Treatment decision - molecular profiling for targeted therapy\n[3] ESMO colorectal: Treatment decision - choice of molecular profiling method\n[4] ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[5] NCCN Colorectal Cancer: treatment decision-making. 4.2025. https://www.nccn.org/guidelines/category_1\n[6] NCCN Colorectal Cancer: adjuvant therapy decision-making. 5.2025. https://www.nccn.org/guidelines/category_1\n[7] NCCN Colorectal Cancer: adjuvant therapy and surveillance. https://www.nccn.org/guidelines/category_1\n[8] Circulating tumour DNA in colorectal cancer: guiding treatment and research (society editorial). ESMO (2024). https://www.esmo.org/newsroom/editorial/circulating-tumour-dna-in-colorectal-cancer-guiding-treatment-and-research",
+    "sources": [
+      {
+        "index": 1,
+        "title": "ESMO Recommendations on Liquid Biopsy and ctDNA for Clinical Decision-Making in Solid Tumors",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "ESMO colorectal: Treatment decision - molecular profiling for targeted therapy",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "ESMO colorectal: Treatment decision - choice of molecular profiling method",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "NCCN Colorectal Cancer: treatment decision-making",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "NCCN Colorectal Cancer: adjuvant therapy decision-making",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "NCCN Colorectal Cancer: adjuvant therapy and surveillance",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "Circulating tumour DNA in colorectal cancer: guiding treatment and research (society editorial)",
+        "sourceType": "seed_publication",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "category": "guideline",
+    "question": "What's the current NCCN recommendation for ctDNA testing in NSCLC — is it just for advanced disease genotyping or do they address early-stage MRD as well?",
+    "answer": "CONTEXT: NCCN guidance on ctDNA testing in NSCLC across disease stages.\n\nWHAT THE EVIDENCE SAYS:\n\n[GUIDELINE] NCCN Non-Small Cell Lung Cancer Guidelines v3.2026 make a clear distinction between early-stage and advanced disease settings for ctDNA testing. For stages I-III disease, \"ctDNA is not routinely recommended in settings other than advanced/metastatic disease\" and \"tissue-based testing is preferred\" [2,3]. In contrast, for advanced/metastatic NSCLC, NCCN states that \"data support complementary ctDNA and tissue testing to reduce turnaround time and increase yield of targetable alteration detection\" [4,8].\n\n[GUIDELINE] ESMO expert consensus similarly endorses ctDNA for advanced NSCLC genotyping \"when tissue is insufficient for molecular profiling\" but classifies ctDNA MRD as a level III biomarker (investigational) for treatment decisions using their ESCAT framework [6]. ESMO acknowledges emerging MRD data but notes that \"additional randomized evidence is needed before incorporation into standard practice.\"\n\n[PROSPECTIVE] Despite limited guideline endorsement, research data demonstrate potential utility of MRD testing in early-stage NSCLC. Analysis of 363 serial plasma samples from 88 patients with stages I-III NSCLC showed that ctDNA detection rates increased with stage (24% in stage I, 77% in stage II, and 87% in stage III), and residual ctDNA after treatment predicted early relapse [1].\n\nCURRENT CLINICAL LANDSCAPE:\n\nThe current guideline landscape creates a clear demarcation: ctDNA testing in NSCLC has established utility and endorsement for advanced disease genotyping to identify targetable mutations, but MRD applications in early-stage disease remain investigational. NCCN specifically does not recommend routine ctDNA testing outside the advanced/metastatic setting, favoring tissue-based molecular profiling for stages I-III disease [2,3].\n\nLIMITATIONS:\n\nThe guidelines reflect the current evidence gap in early-stage NSCLC MRD applications. While observational data suggest prognostic utility of post-treatment ctDNA detection [1], no completed randomized trials have demonstrated that MRD-guided treatment decisions improve outcomes in early-stage NSCLC. This contrasts with colorectal cancer, where trials like DYNAMIC have generated more mature evidence for MRD-guided approaches.\n\nREFERENCES:\n[1] PETMRIinHCC Trial. Residual ctDNA after treatment predicts early relapse in patients with early-stage non-small cell lung cancer. Annals of Oncology (2021). PMID: 35306155\n[2] NCCN Lung nsclc Cancer: early-stage disease (stages I-III). 3.2026. https://www.nccn.org/guidelines/category_1\n[3] NCCN Lung_nsclc Cancer: early stage disease. https://www.nccn.org/guidelines/category_1\n[4] NCCN Lung_nsclc Cancer: advanced/metastatic disease. https://www.nccn.org/guidelines/category_1\n[5] Mack PC et al.. ADELOS Trial. Spectrum of driver mutations and clinical impact of circulating tumor DNA analysis in non-small cell lung cancer: Analysis of over 8000 cases.. Cancer (2020). PMID: 32365229\n[6] ESMO Recommendations on Liquid Biopsy and ctDNA for Clinical Decision-Making in Solid Tumors. https://www.esmo.org/guidelines\n[7] Rosell R et al.. Liquid biopsy in detecting early non-small cell lung cancer.. The journal of liquid biopsy (2023). PMID: 40027282. DOI: 10.1016/j.jlb.2023.100001\n[8] NCCN Lung nsclc Cancer: advanced/metastatic disease biomarker testing. 3.2026. https://www.nccn.org/guidelines/category_1",
+    "sources": [
+      {
+        "index": 1,
+        "title": "Residual ctDNA after treatment predicts early relapse in patients with early-stage non-small cell lung cancer",
+        "sourceType": "pubmed",
+        "pmid": "35306155",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "NCCN Lung nsclc Cancer: early-stage disease (stages I-III)",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "NCCN Lung_nsclc Cancer: early stage disease",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "NCCN Lung_nsclc Cancer: advanced/metastatic disease",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Spectrum of driver mutations and clinical impact of circulating tumor DNA analysis in non-small cell lung cancer: Analysis of over 8000 cases.",
+        "sourceType": "pubmed",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "ESMO Recommendations on Liquid Biopsy and ctDNA for Clinical Decision-Making in Solid Tumors",
+        "sourceType": "esmo",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "Liquid biopsy in detecting early non-small cell lung cancer.",
+        "sourceType": "pubmed",
+        "pmid": "40027282",
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCCN Lung nsclc Cancer: advanced/metastatic disease biomarker testing",
+        "sourceType": "nccn",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "category": "trial_evidence",
+    "question": "Walk me through the key results from the DYNAMIC trial — the CRC MRD-guided treatment study. What were the primary endpoints and what did they actually show?",
+    "answer": "**TRIAL OVERVIEW**\n\n[RCT] The DYNAMIC trial was a randomized controlled trial in stage II colon cancer that compared ctDNA-guided treatment decisions to standard clinicopathological risk assessment [1]. The primary endpoint was recurrence-free survival (RFS) at 2 years, with a key secondary endpoint of adjuvant chemotherapy use [1].\n\n**KEY FINDINGS**\n\n[RCT] DYNAMIC demonstrated that ctDNA-guided management was non-inferior to standard care for 2-year RFS: 93.5% in the ctDNA-guided group versus 92.4% in standard management [1]. The trial achieved its primary goal of reducing adjuvant chemotherapy use from 28% to 15% without compromising recurrence outcomes [1]. For patients who were ctDNA-positive at 4-7 weeks post-surgery, oxaliplatin-based or fluoropyrimidine chemotherapy was administered, while ctDNA-negative patients received no adjuvant treatment [1].\n\n[RCT] At 3-year follow-up, RFS was 86.4% among ctDNA-positive patients who received adjuvant chemotherapy and 92.5% among ctDNA-negative patients who did not receive treatment [1]. This suggests that ctDNA positivity identifies patients who benefit from adjuvant therapy, while ctDNA negativity identifies patients who can safely forgo chemotherapy [1].\n\nThe trial used a custom SafeSeqS assay rather than commercially available MRD tests, and longer-term follow-up beyond 3 years for overall survival outcomes remains limited. Additionally, the optimal timing and frequency of ctDNA testing for treatment decisions requires further validation.\n\nREFERENCES:\n[1] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075\n[2] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[3] NCT04264702: BESPOKE Study of ctDNA Guided Therapy in Colorectal Cancer. https://clinicaltrials.gov/study/NCT04264702\n[4] NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial. https://clinicaltrials.gov/study/NCT04786600\n[5] Systematic literature review of health economic models developed for multiple myeloma to support future analyses.. Journal of medical economics (2022). PMID: 36346000. DOI: 10.1080/13696998.2022.2144056\n[6] CIRCA-HPV Trial. Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.. Journal of surgical oncology (2025). PMID: 39865324. DOI: 10.1002/jso.27989\n[7] CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12). https://clinicaltrials.gov/study/NCT05534087\n[8] RESPONSE Trial. IMPROVE-IT: IMPROVE Intervention Trial Implementing Non-invasive Circulating Tumor DNA Analysis to Optimize the Operative and Postoperative Treatment for Patients With Colorectal Cancer. https://clinicaltrials.gov/study/NCT03748680",
+    "sources": [
+      {
+        "index": 1,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "NCT04264702: BESPOKE Study of ctDNA Guided Therapy in Colorectal Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "NCT04786600: A Phase II Randomized Therapeutic Optimization Trial for Subjects With Refractory Metastatic Colorectal Cancer Using ctDNA: Rapid 1 Trial",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Systematic literature review of health economic models developed for multiple myeloma to support future analyses.",
+        "sourceType": "pubmed",
+        "pmid": "36346000",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Circulating Tumor DNA as a Marker of Recurrence Risk in Stage III Colorectal Cancer: The &#x3b1;-CORRECT Study.",
+        "sourceType": "pubmed",
+        "pmid": "39865324",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "CLAUDIA: Platform Study of Circulating Tumor DNA Directed Adjuvant Chemotherapy in Colon Cancer (KCSG CO22-12)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "IMPROVE-IT: IMPROVE Intervention Trial Implementing Non-invasive Circulating Tumor DNA Analysis to Optimize the Operative and Postoperative Treatment for Patients With Colorectal Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "category": "trial_evidence",
+    "question": "Is CIRCULATE-Japan still enrolling? I've heard about it but don't know the study design details. Is it similar to DYNAMIC or different?",
+    "answer": "**TRIAL OVERVIEW:**\n\n[RCT] CIRCULATE-Japan is an active phase III program comprising multiple interconnected trials using Signatera (tumor-informed ctDNA) in resected colorectal cancer [7][8]. The program includes GALAXY (observational biomarker validation, N=1,500+) [2], VEGA (de-escalation trial for ctDNA-negative patients) [7], and ALTAIR (escalation trial for ctDNA-positive patients) [8]. Based on the provided sources, VEGA and ALTAIR trials show \"enrollment ongoing\" status, though specific current enrollment numbers are not provided [7][8].\n\n**CIRCULATE-JAPAN vs DYNAMIC COMPARISON:**\n\n**Study Design Similarities:**\nBoth programs use ctDNA-guided treatment decisions in resected CRC, but CIRCULATE-Japan is substantially broader [1][7][8]. [RCT] DYNAMIC enrolled 455 patients with stage II colon cancer only and used a custom SafeSeqS assay, testing ctDNA-guided management versus standard clinicopathological risk assessment [1]. [RCT] CIRCULATE-Japan includes both stage II and III disease across multiple trial arms using Signatera [7][8].\n\n**Key Differences:**\nDYNAMIC was a single 2:1 randomized trial where ctDNA-positive patients received standard adjuvant chemotherapy while ctDNA-negative patients were spared treatment [1]. CIRCULATE-Japan splits this approach: [RCT] VEGA tests whether ctDNA-negative stage II-III patients can safely omit adjuvant chemotherapy entirely [7], while [RCT] ALTAIR tests whether ctDNA-positive patients benefit from intensified therapy (FTD/TPI) beyond standard adjuvant treatment [8]. The GALAXY observational arm provides natural history data showing ctDNA positivity at 4 weeks post-surgery predicted worse DFS (HR 10.0) and molecular relapse detection 5.3 months before imaging [2].\n\n**WHAT THE EVIDENCE DOESN'T ADDRESS:** Current enrollment status for specific CIRCULATE-Japan arms, target accrual numbers, and estimated completion dates are not specified in our current evidence set. Published trial registry data may exist outside this database; consider checking ClinicalTrials.gov for real-time enrollment status.\n\nREFERENCES:\n[1] Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial). New England Journal of Medicine (2021). PMID: 35657320. DOI: 10.1056/NEJMoa2200075\n[2] CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer. Nature Medicine (2024). PMID: 37749153. DOI: 10.1038/s41591-024-03254-6\n[3] MONDRIAN Trial. ctDNA-based molecular residual disease and survival in resectable colorectal cancer.. Nat. Med. (2023). PMID: 39284954. DOI: 10.1038/s41591-024-03254-6\n[4] CIRCULATE: Circulating Tumour DNA Based Decision for Adjuvant Treatment in Colon Cancer Stage II Evaluation. https://clinicaltrials.gov/study/NCT04089631\n[5] CIRCULATE-US Trial. CIRCULATE: CIRCULATING TUMOR DNA BASED DECISION FOR ADJUVANT TREATMENT IN COLON CANCER STAGE II. https://clinicaltrials.gov/study/NCT04120701\n[6] RESPONSE Trial. Population health outcomes of blood-based screening for colorectal cancer in comparison to current screening modalities: insights from a discrete-event simulation model incorporating longitudinal adherence. Journal of Medical Economics. PMID: 39037853. DOI: 10.1080/13696998.2024.2382036\n[7] CIRCULATE-Japan VEGA: Omission of Adjuvant Chemotherapy in ctDNA-Negative Stage II-III CRC. https://circulate-japan.org\n[8] CIRCULATE-Japan ALTAIR: FTD/TPI for ctDNA-Positive Resected CRC. https://circulate-japan.org",
+    "sources": [
+      {
+        "index": 1,
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer (DYNAMIC trial)",
+        "sourceType": "pubmed",
+        "pmid": "35657320",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "CIRCULATE-Japan GALAXY: Prospective ctDNA Surveillance in Resected Colorectal Cancer",
+        "sourceType": "pubmed",
+        "pmid": "37749153",
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "ctDNA-based molecular residual disease and survival in resectable colorectal cancer.",
+        "sourceType": "pubmed",
+        "pmid": "39284954",
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "CIRCULATE: Circulating Tumour DNA Based Decision for Adjuvant Treatment in Colon Cancer Stage II Evaluation",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "CIRCULATE: CIRCULATING TUMOR DNA BASED DECISION FOR ADJUVANT TREATMENT IN COLON CANCER STAGE II",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Population health outcomes of blood-based screening for colorectal cancer in comparison to current screening modalities: insights from a discrete-event simulation model incorporating longitudinal adherence",
+        "sourceType": "pubmed",
+        "pmid": "39037853",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "CIRCULATE-Japan VEGA: Omission of Adjuvant Chemotherapy in ctDNA-Negative Stage II-III CRC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "CIRCULATE-Japan ALTAIR: FTD/TPI for ctDNA-Positive Resected CRC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "category": "trial_evidence",
+    "question": "What trials are testing MRD-guided therapy decisions in breast cancer specifically? I know most ctDNA work has been in CRC but wondering what's active for breast.",
+    "answer": "## TRIAL OVERVIEW\n\n**Completed/Active Trials:**\n- [PROSPECTIVE] **c-TRAK TN**: The first prospective interventional trial using ctDNA mutation tracking to guide therapeutic intervention in early-stage triple-negative breast cancer (TNBC) [1]. This Phase II study enrolled 208 patients with moderate- to high-risk early TNBC and used digital PCR for three-monthly ctDNA surveillance over 12 months. ctDNA-positive patients were randomized 2:1 to pembrolizumab intervention vs observation.\n\n- [RCT] **PERSEVERE**: A terminated Phase II ctDNA-enriched, genomically directed post-neoadjuvant trial for patients with residual TNBC [3]. The study enrolled 52 patients and tested multiple interventions including capecitabine, talazoparib, pembrolizumab, and inavolisib based on ctDNA status.\n\n**Currently Recruiting:**\n- [RCT] **Artemis**: A Phase II/III trial using ctDNA to initiate post-operation boost therapy after adjuvant chemotherapy in TNBC [4]. This study is recruiting 260 patients and testing capecitabine ± camrelizumab + apatinib based on ctDNA detection.\n\n- [RCT] **TREAT ctDNA**: A Phase III trial testing elacestrant for ER+/HER2- breast cancer patients with ctDNA relapse [7]. Recruiting 220 patients to compare elacestrant vs standard endocrine therapy (tamoxifen, letrozole, anastrozole, or exemestane) in the adjuvant setting.\n\n- [RCT] **SERENA-6**: A Phase III double-blind study assessing switching to AZD9833 + CDK4/6 inhibitor vs continuing aromatase inhibitor + CDK4/6 inhibitor in HR+/HER2- metastatic breast cancer patients with detectable ESR1 mutations [8]. This ctDNA-guided early switch study enrolled 315 patients and is no longer recruiting.\n\n## KEY FINDINGS\n\n[PROSPECTIVE] c-TRAK TN revealed critical timing challenges: 72% (23/32) of ctDNA-positive patients already had metastatic disease on staging scans at ctDNA detection, and none of the 5 patients who started pembrolizumab achieved sustained ctDNA clearance [1]. This suggests ctDNA detection in TNBC often coincides with or follows metastatic spread, highlighting the need for earlier and more frequent testing to capture the intervention window [1].\n\n[RCT] The early termination of PERSEVERE after enrolling only 52 of its planned participants suggests challenges in executing ctDNA-guided interventional trials in the post-neoadjuvant TNBC setting [3].\n\n## ONGOING TRIALS\n\nActive enrollment continues in **Artemis** (NCT identifier not provided) for TNBC and **TREAT ctDNA** (NCT identifier not provided) for hormone receptor-positive disease [4,7]. **SERENA-6** has completed enrollment and focuses on ESR1 mutation-guided therapy switching in metastatic disease [8].\n\n## WHAT THE EVIDENCE DOESN'T ADDRESS\n\nCurrent breast cancer MRD trials face significant gaps compared to the mature colorectal cancer evidence base. The optimal timing for ctDNA testing post-treatment remains unclear, as c-TRAK TN demonstrated that quarterly monitoring may be too infrequent to capture the therapeutic window before metastasis [1]. Additionally, the most effective interventions for ctDNA-positive patients are unestablished, with single-agent pembrolizumab showing limited efficacy in c-TRAK TN [1]. Unlike colorectal cancer where multiple completed RCTs (DYNAMIC, CIRCULATE) have validated MRD-guided approaches, breast cancer trials are still in progress with limited mature outcome data.\n\nREFERENCES:\n[1] c-TRAK-TN Trial. c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer. PMID: 36423745\n[2] Rong G et al.. MONDRIAN Trial. DNA damage response as a prognostic indicator in metastatic breast cancer via mutational analysis.. Annals of translational medicine (2021). PMID: 33708847\n[3] PERSEVERE: Circulating Tumor DNA Enriched, Genomically Directed Post-neoadjuvant Trial for Patients With Residual Triple Negative Breast Cancer. https://clinicaltrials.gov/study/NCT04849364\n[4] Artemis: A Prospective, Phase II Trial Using ctDNA to Initiate Post-operation Boost Therapy After Adjuvant Chemotherapy in TNBC. https://clinicaltrials.gov/study/NCT04803539\n[5] Postmastectomy Radiation Therapy: An ASTRO-ASCO-SSO Clinical Practice Guideline. Journal of Clinical Oncology (2024). PMID: 40955654. DOI: 10.1200/JCO-25-01747\n[6] Sentinel Lymph Node Biopsy in Early-Stage Breast Cancer: ASCO Guideline Update. Journal of Clinical Oncology (2024). PMID: 40209128. DOI: 10.1200/JCO-25-00099\n[7] TREAT ctDNA: Elacestrant for Treating ER+/HER2- Breast Cancer Patients With ctDNA Relapse (TREAT ctDNA). https://clinicaltrials.gov/study/NCT05512364\n[8] SERENA-6: Phase III Study to Assess AZD9833+ CDK4/6 Inhibitor in HR+/HER2-MBC With Detectable ESR1m Before Progression (SERENA-6). https://clinicaltrials.gov/study/NCT04964934",
+    "sources": [
+      {
+        "index": 1,
+        "title": "c-TRAK TN: ctDNA Mutation Tracking to Detect MRD and Guide Intervention in Early-Stage Triple-Negative Breast Cancer",
+        "sourceType": "pubmed",
+        "pmid": "36423745",
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "DNA damage response as a prognostic indicator in metastatic breast cancer via mutational analysis.",
+        "sourceType": "pubmed",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "PERSEVERE: Circulating Tumor DNA Enriched, Genomically Directed Post-neoadjuvant Trial for Patients With Residual Triple Negative Breast Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "Artemis: A Prospective, Phase II Trial Using ctDNA to Initiate Post-operation Boost Therapy After Adjuvant Chemotherapy in TNBC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Postmastectomy Radiation Therapy: An ASTRO-ASCO-SSO Clinical Practice Guideline",
+        "sourceType": "pubmed",
+        "pmid": "40955654",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Sentinel Lymph Node Biopsy in Early-Stage Breast Cancer: ASCO Guideline Update",
+        "sourceType": "pubmed",
+        "pmid": "40209128",
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "TREAT ctDNA: Elacestrant for Treating ER+/HER2- Breast Cancer Patients With ctDNA Relapse (TREAT ctDNA)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "SERENA-6: Phase III Study to Assess AZD9833+ CDK4/6 Inhibitor in HR+/HER2-MBC With Detectable ESR1m Before Progression (SERENA-6)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "category": "trial_evidence",
+    "question": "Has the MERMAID-1 trial in NSCLC reported any results? It was testing ctDNA-guided adjuvant durvalumab if I remember correctly.",
+    "answer": "**TRIAL OVERVIEW:**\n\n[RCT] MERMAID-1 (NCT04385368) is a phase III, randomized, double-blind, placebo-controlled trial testing adjuvant durvalumab versus placebo in patients with resected stage II-III NSCLC who are ctDNA-positive after curative-intent surgery [1]. This represents the first phase III trial to prospectively use ctDNA/MRD status as a biomarker for selecting patients for adjuvant immunotherapy in NSCLC [1]. The trial uses a tumor-informed ctDNA assay and excludes EGFR/ALK positive patients who have targeted therapy options [1].\n\n**TRIAL STATUS AND RESULTS:**\n\nMERMAID-1 enrollment is complete, but results have not yet been formally reported as of early 2026 [1]. The primary endpoint is disease-free survival in ctDNA-positive patients [1]. While the trial appears in some databases with 89 patients enrolled [2], this likely represents early or incomplete enrollment data, as the full phase III trial would be expected to have substantially larger enrollment for adequate statistical power.\n\n**CLINICAL SIGNIFICANCE:**\n\n[RCT] MERMAID-1 establishes MRD-guided treatment as a viable clinical trial paradigm in lung cancer and specifically targets the highest-risk population based on molecular residual disease [1]. The trial design addresses the non-driver NSCLC population where treatment options are limited after surgical resection [1]. Several other ctDNA-guided adjuvant trials in NSCLC are ongoing, including ADAPT-E (NCT04585477) using durvalumab in ctDNA-positive patients [3] and additional studies examining ctDNA response-adaptive immunochemotherapy [7].\n\n**WHAT THE EVIDENCE DOESN'T ADDRESS:**\n\nThe pending MERMAID-1 results will provide the first prospective phase III data on whether ctDNA-guided adjuvant immunotherapy improves outcomes in resected NSCLC [1]. However, even when reported, these results will be specific to the ctDNA-positive, high-risk population studied and may not inform decisions about ctDNA-negative patients or alternative adjuvant approaches in the broader resected NSCLC population.\n\nREFERENCES:\n[1] MERMAID-1: ctDNA-Guided Adjuvant Durvalumab in Resected NSCLC. https://clinicaltrials.gov/study/NCT04385368\n[2] ERIS Trial. MERMAID-1: Phase III Study to Determine the Efficacy of Durvalumab in Combination With Chemotherapy in Completely Resected Stage II-III Non-small Cell Lung Cancer (NSCLC). https://clinicaltrials.gov/study/NCT04385368\n[3] ADELOS Trial. NCT04585477: Adjuvant ctDNA-Adapted Personalized Treatment in Early Stage NSCLC (ADAPT-E). https://clinicaltrials.gov/study/NCT04585477\n[4] Liu J et al.. Targeted Therapies in Early-Stage Resectable Non-Small-Cell Lung Cancer: New Kids on the Block.. JCO precision oncology (2023). PMID: 37656950. DOI: 10.1200/PO.22.00445\n[5] Kwon M et al.. Longitudinal monitoring by next-generation sequencing of plasma cell-free DNA in ALK rearranged NSCLC patients treated with ALK tyrosine kinase inhibitors.. Cancer medicine (2022). PMID: 35437925. DOI: 10.1002/cam4.4663\n[6] Mack PC et al.. Spectrum of driver mutations and clinical impact of circulating tumor DNA analysis in non-small cell lung cancer: Analysis of over 8000 cases.. Cancer (2020). PMID: 32365229\n[7] NCT04093167: Study of CTDNA Response Adaptive Immuno-Chemotherapy in NSCLC. https://clinicaltrials.gov/study/NCT04093167\n[8] WHENII Trial. NCT02955758: Pembrolizumab in Patients With Metastatic Non-squamous Non-small Cell Lung Cancer. https://clinicaltrials.gov/study/NCT02955758",
+    "sources": [
+      {
+        "index": 1,
+        "title": "MERMAID-1: ctDNA-Guided Adjuvant Durvalumab in Resected NSCLC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 2,
+        "title": "MERMAID-1: Phase III Study to Determine the Efficacy of Durvalumab in Combination With Chemotherapy in Completely Resected Stage II-III Non-small Cell Lung Cancer (NSCLC)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 3,
+        "title": "NCT04585477: Adjuvant ctDNA-Adapted Personalized Treatment in Early Stage NSCLC (ADAPT-E)",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 4,
+        "title": "Targeted Therapies in Early-Stage Resectable Non-Small-Cell Lung Cancer: New Kids on the Block.",
+        "sourceType": "pubmed",
+        "pmid": "37656950",
+        "trialAcronym": null
+      },
+      {
+        "index": 5,
+        "title": "Longitudinal monitoring by next-generation sequencing of plasma cell-free DNA in ALK rearranged NSCLC patients treated with ALK tyrosine kinase inhibitors.",
+        "sourceType": "pubmed",
+        "pmid": "35437925",
+        "trialAcronym": null
+      },
+      {
+        "index": 6,
+        "title": "Spectrum of driver mutations and clinical impact of circulating tumor DNA analysis in non-small cell lung cancer: Analysis of over 8000 cases.",
+        "sourceType": "pubmed",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 7,
+        "title": "NCT04093167: Study of CTDNA Response Adaptive Immuno-Chemotherapy in NSCLC",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      },
+      {
+        "index": 8,
+        "title": "NCT02955758: Pembrolizumab in Patients With Metastatic Non-squamous Non-small Cell Lung Cancer",
+        "sourceType": "clinicaltrials",
+        "pmid": null,
+        "trialAcronym": null
+      }
+    ]
+  }
+]

@@ -1,0 +1,241 @@
+{
+  "timestamp": "2026-02-11T17:45:00.000Z",
+  "scorer": "opus-4.6-interactive",
+  "source_recording": "record-2026-02-11-1632.json",
+  "fixes_applied": [
+    "guideline_summary query type (physician-questions.json + response-template.js)",
+    "evidence levels broadening (cds-compliance.js: 5 new patterns)",
+    "KEYNOTE-522 seed (PMID 35139274, guidance_item ID 385)"
+  ],
+  "summary": {
+    "averageScore": 8.8,
+    "passRate": "16/20",
+    "passPercent": 80,
+    "totalQuestions": 20,
+    "cds": {
+      "criterion3_avg": 2.0,
+      "criterion4_avg": 0.75,
+      "automated_avg": 2.75
+    },
+    "perCategory": {
+      "clinical_scenario": { "count": 10, "passRate": "8/10", "avg": 8.6 },
+      "test_interpretation": { "count": 5, "passRate": "3/5", "avg": 8.2 },
+      "guideline": { "count": 5, "passRate": "5/5", "avg": 9.8 }
+    },
+    "perDimension": {
+      "accuracy": 1.9,
+      "completeness": 1.55,
+      "evidence_quality": 1.5,
+      "automation_bias_mitigation": 1.0
+    },
+    "vsBaseline": {
+      "baseline": "opus-scored-2026-02-11-1603.json",
+      "passRate_delta": "+1 (15→16)",
+      "avg_delta": "+0.35 (8.45→8.80)",
+      "evidence_quality_delta": "+0.30 (1.20→1.50)",
+      "guideline_passRate_delta": "+3 (2/5→5/5)"
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "Solid CRC escalation response with NCCN/ESMO guidelines. Missing DYNAMIC trial data but clinically accurate."
+    },
+    {
+      "id": 2,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent de-escalation response with IDEA HR 1.16, GALAXY HR 10.0, and 5.3-month lead time. Specific quantitative sourcing."
+    },
+    {
+      "id": 3,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "MAJOR IMPROVEMENT (7→10). DYNAMIC [3] now cited with specific outcomes, GALAXY dual HRs (11.99/9.68), COBRA, CLAUDIA. All 4 should_mention hit."
+    },
+    {
+      "id": 4,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 4 },
+      "total": 7,
+      "pass": false,
+      "summary": "TNBC gap persists — KEYNOTE-522 seeded but not retrieved by RAG. Only generic 'immunotherapy' mentioned, missing pembrolizumab/c-TRAK TN."
+    },
+    {
+      "id": 5,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "Borderline pass. ESR1 mutation discussion strong but missing specific lead time quantification for breast cancer."
+    },
+    {
+      "id": 6,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding NSCLC response. ADAURA OS HR 0.49, CONTINUE, APPROACH, TROPION-Lung12 all named with specific data."
+    },
+    {
+      "id": 7,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent monitoring response with 94% longitudinal sensitivity, 300-day lead time, practical options."
+    },
+    {
+      "id": 8,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "IMPROVEMENT (7→9). HPV ctDNA biology well-explained, >95% NPV, cross-indication evidence (c-TRAK TN, DYNAMIC). De-intensification trials noted."
+    },
+    {
+      "id": 9,
+      "category": "clinical_scenario",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "Adequate persistent ctDNA response with GALAXY HRs and FINE trial. Missing immunotherapy/MSI status discussion."
+    },
+    {
+      "id": 10,
+      "category": "clinical_scenario",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 0, "total": 2 },
+      "llm": { "accuracy": 1, "completeness": 1, "evidence_quality": 0, "automation_bias_mitigation": 1, "total": 3 },
+      "total": 5,
+      "pass": false,
+      "summary": "REGRESSION (10→5). IMvigor011 not named despite being in the question. RAG stochasticity — trial not retrieved. No evidence levels. Vague throughout."
+    },
+    {
+      "id": 11,
+      "category": "test_interpretation",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 0, "total": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 5 },
+      "total": 7,
+      "pass": false,
+      "summary": "Accurate comparison but used OPTION format instead of COMPARISON structure — C4=0 structural penalty. Missing specificity."
+    },
+    {
+      "id": 12,
+      "category": "test_interpretation",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "IMPROVEMENT (7→9). MONDRIAN HR 18, c-TRAK TN 72%, CIRCA-HPV. Evidence levels fix resolved C4=0 false negative."
+    },
+    {
+      "id": 13,
+      "category": "test_interpretation",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 0, "total": 2 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 5 },
+      "total": 7,
+      "pass": false,
+      "summary": "Accurate tissue-availability guidance but used OPTION format instead of COMPARISON — C4=0 structural penalty. Missing tumor-naive keyword and methylation description."
+    },
+    {
+      "id": 14,
+      "category": "test_interpretation",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Model comparison response. COMPARISON + KEY TECHNICAL DIFFERENCES format. 200+ vs 16 variants, turnaround times, coverage differences. Doesn't declare a winner."
+    },
+    {
+      "id": 15,
+      "category": "test_interpretation",
+      "difficulty": "challenging",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 1, "automation_bias_mitigation": 1, "total": 5 },
+      "total": 8,
+      "pass": true,
+      "summary": "Rising trajectory discussion with 88-93% sensitivity, 98% specificity, 300-day lead time. Performance data lack inline citations."
+    },
+    {
+      "id": 16,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Excellent NCCN summary. Category 2A, ESMO comparison, clear clinical trial positioning. guideline_summary fix enabled pass."
+    },
+    {
+      "id": 17,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Strong ESMO positioning. ESCAT III framework, established vs investigational uses clearly distinguished, NCCN comparison."
+    },
+    {
+      "id": 18,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 1, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 6 },
+      "total": 9,
+      "pass": true,
+      "summary": "Good multi-guideline survey (ASCO, NCCN, ESMO). Missing specific ASCO provisional clinical opinion reference."
+    },
+    {
+      "id": 19,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Outstanding NSCLC guideline response. Clear distinction between established genotyping and investigational MRD. All should_mention hit."
+    },
+    {
+      "id": 20,
+      "category": "guideline",
+      "difficulty": "standard",
+      "automated": { "criterion3": 2, "criterion4": 1, "total": 3 },
+      "llm": { "accuracy": 2, "completeness": 2, "evidence_quality": 2, "automation_bias_mitigation": 1, "total": 7 },
+      "total": 10,
+      "pass": true,
+      "summary": "Comprehensive de-escalation guideline survey. Direct NCCN/ESMO quotes. Prognostic vs predictive distinction. DYNAMIC bonus hit."
+    }
+  ]
+}
