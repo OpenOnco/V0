@@ -46,7 +46,7 @@ OpenOnco is a non-profit database of cancer diagnostic tests (liquid biopsy, mol
 ## Architecture
 
 ```
-/
+/                           # This repo (V0) — OpenOnco website
 ├── src/                    # React frontend (Vite + Tailwind)
 │   ├── App.jsx             # Main router (~1,700 lines)
 │   ├── data.js             # TEST DATABASE (~8,500 lines)
@@ -59,21 +59,18 @@ OpenOnco is a non-profit database of cancer diagnostic tests (liquid biopsy, mol
 │   ├── v1/                 # Public REST API
 │   └── _data.js            # Shared API data
 │
-├── physician-system/       # MRD clinical decision support (Railway)
-│   ├── src/crawlers/       # Evidence + guideline crawlers
-│   ├── src/chat/           # MRD chat API server
-│   └── src/triage/         # AI triage + classification
-│
-├── test-data-tracker/      # Coverage & vendor monitoring (Railway)
-│   ├── src/crawlers/       # CMS, payer, vendor, NIH crawlers
-│   ├── src/digest/         # Physician digest (subscribers, curate, send)
-│   ├── src/email/          # Email templates (digest, confirmation, crawl)
-│   └── src/triage/         # AI-powered change detection
-│
 ├── tests/                  # Playwright E2E tests
-├── eval/                   # Chatbot evaluation (Python)
 └── docs/                   # Documentation
 ```
+
+**Sibling repos** (separate private repos under the OpenOnco org):
+
+| Repo | Local path | Description |
+|------|-----------|-------------|
+| `mced-portal` | `/Users/adickinson/Documents/GitHub/mced-portal` | MCED patient portal (React) |
+| `physician-system` | `/Users/adickinson/Documents/GitHub/physician-system` | MRD clinical decision support (Railway) |
+| `test-data-tracker` | `/Users/adickinson/Documents/GitHub/test-data-tracker` | Coverage & vendor monitoring (Railway) |
+| `eval` | `/Users/adickinson/Documents/GitHub/eval` | Chatbot evaluation (Python) |
 
 ## Test Categories
 
@@ -113,15 +110,18 @@ npm run test:api         # API endpoint tests
 ./release                # main branch → production
 ./release "v1.2.0"       # With version tag
 
-# Test Data Tracker (from /test-data-tracker directory)
+# Test Data Tracker (separate repo: /Users/adickinson/Documents/GitHub/test-data-tracker)
 npm run dev              # Run with auto-reload
 npm test                 # Unit tests
 node src/index.js digest:preview   # Generate digest draft
 node src/index.js digest:send [id] # Send approved digest
 
-# Physician System (from /physician-system directory)
+# Physician System (separate repo: /Users/adickinson/Documents/GitHub/physician-system)
 npm start                # Start MRD chat server
 node src/cli.js all      # Run all crawlers
+
+# Eval (separate repo: /Users/adickinson/Documents/GitHub/eval)
+python run_eval.py       # Run chatbot evaluation
 ```
 
 ## Conventions
@@ -193,7 +193,7 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 ### Update system prompts
 1. Edit `api/chat.js` - find `buildSystemPrompt()` or `getPersonaStyle()`
 2. Test with all three personas
-3. Run eval suite: `cd eval && python run_eval.py`
+3. Run eval suite: `cd /Users/adickinson/Documents/GitHub/eval && python run_eval.py`
 
 ### Vendor verification
 1. Set `vendorVerified: true` on test object in `src/data.js`
@@ -202,7 +202,9 @@ grep -n "buildSystemPrompt\|getPersonaStyle" api/chat.js
 
 ### Weekly triage (`/triage`)
 
-The primary workflow for processing crawler results. Each week the daemon crawls CMS, vendors, payers, and NIH, then aggregates ALL findings into a single file at `test-data-tracker/data/submissions/weekly-YYYY-MM-DD.json`.
+The primary workflow for processing crawler results. Each week the daemon crawls CMS, vendors, payers, and NIH, then aggregates ALL findings into a single file. The test-data-tracker lives in a separate repo.
+
+**Submissions file:** `/Users/adickinson/Documents/GitHub/test-data-tracker/data/submissions/weekly-YYYY-MM-DD.json`
 
 **How it works:**
 1. Claude reads the weekly submissions file
@@ -219,7 +221,7 @@ The primary workflow for processing crawler results. Each week the daemon crawls
 
 > **Prefer `/triage`** — `/proposals` is kept for backward compatibility but `/triage` supersedes it.
 
-The test-data-tracker crawls vendor/payer sites and creates proposal JSON files in `test-data-tracker/data/proposals/`.
+The test-data-tracker (separate repo) crawls vendor/payer sites and creates proposal JSON files in `/Users/adickinson/Documents/GitHub/test-data-tracker/data/proposals/`.
 
 **Proposal types:**
 - `coverage/` - Payer coverage updates for existing tests
@@ -227,7 +229,7 @@ The test-data-tracker crawls vendor/payer sites and creates proposal JSON files 
 - `new-tests/` - Entirely new tests to add
 
 **Workflow:**
-1. Read all pending proposals from `test-data-tracker/data/proposals/*/`
+1. Read all pending proposals from `/Users/adickinson/Documents/GitHub/test-data-tracker/data/proposals/*/`
 2. Present each proposal to user with relevant context
 3. **STOP and wait for the user to approve or reject EACH proposal. Do NOT auto-approve. Do NOT batch-process. The human decides.**
 4. Apply ONLY user-approved changes directly to `src/data.js`
@@ -293,9 +295,9 @@ coverageCrossReference: {
 
 ### Policy URL Research
 
-When asked to research payer policy URLs, use parallel agents to search for and verify URLs in `test-data-tracker/src/data/policy-registry.js`.
+When asked to research payer policy URLs, use parallel agents to search for and verify URLs in the test-data-tracker repo's policy registry.
 
-**Registry location:** `test-data-tracker/src/data/policy-registry.js`
+**Registry location:** `/Users/adickinson/Documents/GitHub/test-data-tracker/src/data/policy-registry.js`
 
 **What to do:**
 1. Spawn parallel agents to search for policy URLs at target payers
