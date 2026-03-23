@@ -1367,12 +1367,20 @@ export const mrdTestData = [
           "coveredIndications": [],
           "notes": "UHC Commercial policy effective 01/01/2026 lists ctDNA-based MRD assays for solid tumors as Unproven/Not Medically Necessary",
           "lastReviewed": "2026-01-27"
+        },
+        "geisinger": {
+          "status": "NOT_COVERED",
+          "policy": "MP360",
+          "policyUrl": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+          "coveredIndications": [],
+          "notes": "CPT codes 0560U/0561U listed in coding section but test not specified in covered indications. Policy exclusion: MRD tests not specified are considered unproven and NOT COVERED.",
+          "lastReviewed": "2026-03-23"
         }
       },
       "analysis": {
         "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Emerging",
-        "patientGuidance": "Medicare patients: CRC coverage available. Commercial insurance: expect variable coverage; approximately 70% reimbursement rate reported by vendor.",
-        "keyInsight": "Quest's Haystack is gaining traction with Medicare CRC coverage and FDA Breakthrough designation."
+        "patientGuidance": "Medicare patients: CRC coverage available. Commercial insurance: expect variable coverage; approximately 70% reimbursement rate reported by vendor. Geisinger explicitly does not cover.",
+        "keyInsight": "Quest's Haystack is gaining traction with Medicare CRC coverage and FDA Breakthrough designation, but Geisinger's MP360 excludes it."
       }
     }},
   {
@@ -1442,7 +1450,7 @@ export const mrdTestData = [
     "tatCitations": "Vendor data (Dan Norton, Personalis, Dec 2025)",
     "tatNotes": "Initial report: 21 days; follow-up monitoring: 10 days (vendor-confirmed Dec 2025).",
     "fdaStatus": "CLIA LDT (early access / clinical offering)",
-    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance; additional solid tumor coverage via Tempus xM collaboration expanding.",
+    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance and stage I-III NSCLC surveillance (Feb 2026); additional solid tumor coverage via Tempus xM collaboration expanding.",
     "commercialPayers": [],
     "commercialPayersNotes": "Aetna: Not covered (CPB 0352) — ctDNA MRD classified as not medically necessary under tumor markers policy.",
     "cptCodes": "MolDX with DEX Z-code",
@@ -1465,31 +1473,32 @@ export const mrdTestData = [
       "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
       "coveredIndications": [
         "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
-        "Post-treatment surveillance up to 6 years"
+        "Post-treatment surveillance up to 6 years",
+        "Stage I-III NSCLC surveillance (effective Feb 2026)"
       ],
       "reimbursementRate": "$4,266 (once per diagnosis); $1,164 (up to 6 years post-treatment)",
       "cptCode": null,
-      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025.",
-      "lastVerified": "2026-01-13",
+      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025. NSCLC surveillance coverage announced Feb 2026.",
+      "lastVerified": "2026-03-23",
       "reimbursementDetails": {
         "breastMRDMonitoring": "$4,266 (once per diagnosis)",
         "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
       }
     },
     "coverageCrossReference": {
-      "lastVerified": "2026-01-15",
+      "lastVerified": "2026-03-23",
       "vendorClaims": {
         "url": "https://www.personalis.com/next-personal/",
-        "medicareClaimed": ["Breast Stage II-III"],
+        "medicareClaimed": ["Breast Stage II-III", "NSCLC Stage I-III"],
         "commercialClaimed": "Coverage expanding via Tempus collaboration",
         "cashPay": null
       },
       "medicare": {
         "status": "COVERED",
         "policies": ["L38822"],
-        "indications": ["Stage II-III breast cancer MRD surveillance"],
+        "indications": ["Stage II-III breast cancer MRD surveillance", "Stage I-III NSCLC surveillance (Feb 2026)"],
         "rate": null,
-        "notes": "Breast cancer coverage under MolDX MRD policy; expanding indications"
+        "notes": "Breast cancer coverage under MolDX MRD policy. NSCLC surveillance coverage announced Feb 2026."
       },
       "privatePayers": {
         "aetna": {
@@ -2045,11 +2054,15 @@ export const mrdTestData = [
         },
         "geisinger": {
           "status": "COVERED",
-          "policy": "Medical Policy",
-          "policyUrl": null,
-          "coveredIndications": ["Stage II-III CRC initial (4-6 weeks post-surgery)", "Stage II-III CRC surveillance (q3-6mo x2yr, then q6-12mo x3yr)", "Stage I-III breast cancer (coverage expanding)"],
-          "notes": "Coverage announced July 2023. CRC fully covered; breast cancer (stage I-III) coverage expanding.",
-          "lastReviewed": "2026-02-05"
+          "policy": "MP360",
+          "policyUrl": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+          "coveredIndications": [
+            "Stage I-III breast cancer (recurrence monitoring after curative-intent)",
+            "Stage II-III CRC (recurrence monitoring after curative-intent)",
+            "Stage II-III lung cancer"
+          ],
+          "notes": "MP360 policy. Coverage narrower than Signatera — policy states 'not yet validated in other tumor types.'",
+          "lastReviewed": "2026-03-23"
         },
         "bcbsLouisiana": {
           "status": "COVERED",
@@ -2092,9 +2105,11 @@ export const mrdTestData = [
       "Bladder",
       "NSCLC",
       "Ovarian/Fallopian/Primary peritoneal",
-      "Pan-solid ICI"
+      "Pan-solid ICI",
+      "Anal (ASCC)",
+      "Head & Neck"
     ],
-    "indicationsNotes": "Natera Signatera tumor-informed MRD assay with Medicare coverage for multiple solid-tumor indications: CRC (stage II–IV & oligometastatic, adjuvant & recurrence), breast cancer (neoadjuvant and stage IIb+ adjuvant & recurrence), bladder cancer (MIBC), NSCLC (stage I–III surveillance), and ovarian/fallopian/primary peritoneal cancer (adjuvant & recurrence), plus pan-solid tumor immune-checkpoint inhibitor (ICI) response monitoring.",
+    "indicationsNotes": "Natera Signatera tumor-informed MRD assay with Medicare coverage for multiple solid-tumor indications: CRC (stage II–IV & oligometastatic, adjuvant & recurrence), breast cancer (neoadjuvant and stage IIb+ adjuvant & recurrence), bladder cancer (MIBC), NSCLC (stage I–III surveillance), and ovarian/fallopian/primary peritoneal cancer (adjuvant & recurrence), plus pan-solid tumor immune-checkpoint inhibitor (ICI) response monitoring. Emerging clinical data in anal SCC (n=84, 88% vs 11.5% relapse for MRD+/MRD-) and head & neck cancer (SINERGY Phase 2: 63% response rate with MRD-guided treatment reducing chemotherapy in 74% of patients).",
     "sensitivity": 94.0,
     "sensitivityCitations": "https://investor.natera.com/news/news-details/2025/SignateraTM-Genome-Clinical-Performance-Highlighted-at-ASCO-2025/default.aspx",
     "sensitivityNotes": "Recurrence Surveillance: CRC: 88-93% sens., 98% spec. Breast: 88-89% sens., 95-99% spec. Lung: 80-99% sens., 96-99% spec. Bladder: 99% sens., 98% spec. Ovarian: 99% sens.",
@@ -2150,13 +2165,13 @@ export const mrdTestData = [
     "fdaStatus": "CLIA LDT; PMA submitted for companion diagnostic indication (Feb 2026). Not yet FDA-cleared/approved.",
     "reimbursement": "Medicare (CRC, Breast, Bladder, NSCLC, Ovarian, ICI)",
     "reimbursementNote": "Medicare MolDX coverage for: CRC (stage II-IV, oligometastatic), breast cancer (neoadjuvant, stage IIb+ adjuvant/recurrence), bladder (MIBC), NSCLC (stage I-III surveillance), ovarian/fallopian/peritoneal, and pan-solid ICI response monitoring. ADLT pricing. Coverage varies by indication - verify specific cancer type with payer.",
-    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California"],
+    "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California", "Geisinger Health Plan"],
     "commercialPayersCitations": "https://www.natera.com/oncology/billing/",
-    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan. Aetna: Not covered (CPB 0352). Carelon (formerly AIM Specialty Health): Conditional/restricted (UC0126) — anticipated benefit must outweigh potential harms; must be supported by treatment guidelines. Geisinger Health Plan: Unclear — no explicit coverage decision found in policy update.",
+    "commercialPayersNotes": "Natera is in-network with most major health plans including Cigna, UnitedHealthcare, and Blue Shield of California. BCBS Louisiana provides explicit coverage. Note: Aetna lists Signatera codes as in-network but current policies show non-covered; verify with plan. Aetna: Not covered (CPB 0352). Carelon (formerly AIM Specialty Health): Conditional/restricted (UC0126) — anticipated benefit must outweigh potential harms; must be supported by treatment guidelines. Geisinger Health Plan: Covered (MP360) — CRC stage II-IV, breast IIb+, bladder MIBC, ovarian II-IV, pan-solid ICI, Merkel cell. NSCLC not yet listed. Kaiser Permanente WA: Not covered (explicitly listed since 03/2023).",
     "commercialPayersNonCoverage": ["Aetna"],
     "commercialPayersNonCoverageNotes": "Aetna: CPB 0352 classifies ctDNA/MRD tests as not medically necessary under tumor markers policy.",
-    "commercialPayersNonCoverage": ["Humana", "BCBS Michigan"],
-    "commercialPayersNonCoverageNotes": "Humana: Liquid biopsy policy explicitly excludes Signatera (0340U) as not meeting coverage criteria. BCBS MI: Policy 2002479 (eff. 1/1/26) lists MRD testing as investigational.",
+    "commercialPayersNonCoverage": ["Humana", "BCBS Michigan", "Regence BCBS", "Kaiser Permanente WA"],
+    "commercialPayersNonCoverageNotes": "Humana: Liquid biopsy policy explicitly excludes Signatera (0340U) as not meeting coverage criteria. BCBS MI: Policy 2002479 (eff. 1/1/26) lists MRD testing as investigational. Regence BCBS (LAB46, eff. 1/1/2026): MRD testing explicitly investigational; Signatera named as example. Kaiser WA: Explicitly not covered since 03/2023.",
     "cptCodes": "0340U (ADLT)",
     "cptCodesNotes": "Signatera PLA (ADLT pricing).",
     "codeType": "PLA",
@@ -2252,12 +2267,35 @@ export const mrdTestData = [
           "coveredIndications": ["Genomic testing with established analytical and clinical validity"],
           "notes": "Genomic testing must have established analytical and clinical validity. Repeated testing limited.",
           "lastReviewed": "2026-02-05"
+        },
+        "geisinger": {
+          "status": "COVERED",
+          "policy": "MP360",
+          "policyUrl": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+          "coveredIndications": [
+            "Stage II-IV and oligometastatic CRC (adjuvant + recurrence)",
+            "Stage II-IV breast cancer (neoadjuvant any subtype; stage IIb+ adjuvant + recurrence)",
+            "Muscle invasive bladder cancer (adjuvant + recurrence)",
+            "Stage II-IV ovarian/fallopian/peritoneal (adjuvant + recurrence)",
+            "Any solid tumor ICI response monitoring",
+            "Merkel cell carcinoma (virus-positive and virus-negative)"
+          ],
+          "notes": "Broadest commercial MRD coverage. NSCLC notably absent despite Medicare MolDX coverage.",
+          "lastReviewed": "2026-03-23"
+        },
+        "kaiser": {
+          "status": "NOT_COVERED",
+          "policy": "Genetic Screening & Testing Clinical Review Criteria",
+          "policyUrl": "https://wa-provider.kaiserpermanente.org/static/pdf/hosting/clinical/criteria/pdf/genetic_screening.pdf",
+          "coveredIndications": [],
+          "notes": "Explicitly listed as 'Not covered' since 03/2023. Kaiser WA policy only; other regions may differ.",
+          "lastReviewed": "2026-03-23"
         }
       },
       "analysis": {
-        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
-        "patientGuidance": "Medicare patients: full coverage for all listed indications. Commercial insurance: Aetna covers CRC only; Blue Shield CA covers with restrictions for post-surgical patients; Carelon partial coverage with restrictions; Cigna/UHC likely to deny.",
-        "keyInsight": "Vendor 'in-network' status does not equal covered benefit. Private payer coverage significantly lags Medicare, with most limiting coverage to CRC or classifying as experimental."
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Mixed",
+        "patientGuidance": "Medicare patients: full coverage for all listed indications. Commercial insurance: Geisinger covers broadest indications (CRC, breast, bladder, ovarian, ICI, Merkel cell); Aetna covers CRC only; Blue Shield CA covers with restrictions for post-surgical patients; Carelon partial; Kaiser WA not covered; Cigna/UHC likely to deny.",
+        "keyInsight": "Geisinger MP360 offers the broadest commercial MRD coverage, mirroring most Medicare indications except NSCLC. Kaiser WA explicitly denies. Vendor 'in-network' status does not equal covered benefit."
       }
     }
   },
@@ -2918,9 +2956,9 @@ export const mrdTestData = [
     "fdaStatusCitations": "Naveris website; Diagnostics 2023;13:725.",
     "reimbursement": "Medicare",
     "reimbursementNote": "Medicare coverage via Palmetto GBA MolDX: HPV+ oropharyngeal cancer (Nov 2023), anal squamous cell carcinoma (Nov 2025). CMS ADLT designation effective April 2024.",
-    "commercialPayers": ["Highmark", "Blue Shield of California"],
+    "commercialPayers": ["Highmark", "Blue Shield of California", "Geisinger Health Plan"],
     "commercialPayersCitations": "Naveris press releases Feb 2024, July 2024.",
-    "commercialPayersNotes": "Highmark coverage announced Feb 2024; Blue Shield of California coverage effective July 1, 2024. UnitedHealthcare: Not covered (Molecular Oncology Testing policy). UnitedHealthcare: denies (MRD in solid tumors considered unproven). ",
+    "commercialPayersNotes": "Highmark coverage announced Feb 2024; Blue Shield of California coverage effective July 1, 2024. Geisinger: Covered (MP360) for HPV-driven oropharyngeal and anal SCC surveillance with detailed frequency limits. UnitedHealthcare: Not covered (Molecular Oncology Testing policy).",
     "commercialPayersNonCoverage": ["Humana", "UnitedHealthcare"],
     "commercialPayersNonCoverageNotes": "Humana: Liquid biopsy policy explicitly excludes NavDx (0356U) as not meeting coverage criteria. UnitedHealthcare: Not covered (Molecular Oncology Testing policy).",
     "cptCodes": "0356U",
@@ -3015,12 +3053,30 @@ export const mrdTestData = [
           "coveredIndications": ["HPV-Related Solid Tumor MRD Testing"],
           "notes": "Listed under HPV-Related Solid Tumor MRD Testing. Evidence-based criteria.",
           "lastReviewed": "2026-02-05"
+        },
+        "highmark": {
+          "status": "COVERED",
+          "policy": "L-267",
+          "coveredIndications": ["HPV ctDNA testing for HPV-driven cancers"],
+          "notes": "NavDx HPV ctDNA testing covered per Highmark medical policy L-267.",
+          "lastReviewed": "2026-03-23"
+        },
+        "geisinger": {
+          "status": "COVERED",
+          "policy": "MP360",
+          "policyUrl": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+          "coveredIndications": [
+            "HPV-driven oropharyngeal cancer surveillance (post curative-intent, NED)",
+            "HPV-driven anal squamous cell cancer surveillance (post curative-intent)"
+          ],
+          "notes": "Detailed frequency limits: oropharyngeal q3mo x 24mo then q6mo x 36mo then annually; anal q3mo x 36mo then q6mo x 24mo.",
+          "lastReviewed": "2026-03-23"
         }
       },
       "analysis": {
-        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Overstated",
-        "patientGuidance": "Medicare patients: covered for HPV+ cancers. Commercial: Carelon partial coverage with general criteria; Blue Shield CA covers HPV-related MRD testing; most other payers likely to deny.",
-        "keyInsight": "NavDx fills a unique niche for HPV cancers with Medicare coverage, but commercial payers haven't caught up."
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Growing",
+        "patientGuidance": "Medicare patients: covered for HPV+ cancers. Commercial: Highmark covers per L-267; Geisinger covers oropharyngeal + anal SCC per MP360; Carelon partial coverage with general criteria; Blue Shield CA covers HPV-related MRD testing; most other payers likely to deny.",
+        "keyInsight": "NavDx fills a unique niche for HPV cancers with Medicare coverage. Commercial coverage expanding: Highmark (L-267), Geisinger (MP360), Blue Shield CA."
       }
     }},
   {
@@ -3446,8 +3502,8 @@ export const mrdTestData = [
     "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/category_1",
     "reimbursement": "Medicare",
     "reimbursementNote": "National Medicare coverage for MM, B-ALL, CLL, DLBCL, and MCL via MolDX program. Medicare CLFS rate: $2,007 per test (PLA 0364U); episode pricing $8,029 across all covered indications. Positive coverage from major commercial insurers for MM and ALL. 90% of patients pay $0 for testing.",
-    "commercialPayers": [],
-    "commercialPayersNotes": "UnitedHealthcare: Conditional/restricted (Hematologic Cancer Diagnosis policy) — must be ordered by hematologist or oncologist; limited to specific hematologic cancers (ALL, MM, CLL); only clonoSEQ approved for MRD.",
+    "commercialPayers": ["Geisinger Health Plan"],
+    "commercialPayersNotes": "Geisinger: Covered (MP360) — MM, AML, ALL, CLL/SLL; broadest heme MRD coverage among commercial payers, uniquely covers AML. UnitedHealthcare: Conditional/restricted (Hematologic Cancer Diagnosis policy) — must be ordered by hematologist or oncologist; limited to specific hematologic cancers (ALL, MM, CLL); only clonoSEQ approved for MRD. Kaiser WA: Not covered (commercial); Medicare Advantage may have coverage via MolDX.",
     "reimbursementCitations": "https://investors.adaptivebiotech.com/news-releases/news-release-details/adaptive-biotechnologies-announces-clinical-lab-fee-schedule",
     "cptCodes": "0364U",
     "codeType": "PLA",
@@ -3533,12 +3589,33 @@ export const mrdTestData = [
           "policyUrl": null,
           "coveredIndications": ["Multiple myeloma", "B-ALL", "CLL"],
           "notes": "Generally covered for FDA-cleared hematologic indications"
+        },
+        "geisinger": {
+          "status": "COVERED",
+          "policy": "MP360",
+          "policyUrl": "https://www.geisinger.org/-/media/OneGeisinger/Files/Policy-PDFs/MP/351-400/MP360-Minimal-Residual-Disease-NGS-Testing.pdf",
+          "coveredIndications": [
+            "Multiple myeloma (surveillance, after each treatment phase)",
+            "AML (post-induction, pre-transplant, periodic retesting)",
+            "ALL (post-induction, periodic retesting, molecular relapse monitoring)",
+            "CLL/SLL (post-treatment, lenalidomide consideration)"
+          ],
+          "notes": "Covers AML in addition to FDA-cleared indications. Broadest heme MRD coverage among commercial payers.",
+          "lastReviewed": "2026-03-23"
+        },
+        "kaiser": {
+          "status": "NOT_COVERED",
+          "policy": "Genetic Screening & Testing Clinical Review Criteria",
+          "policyUrl": "https://wa-provider.kaiserpermanente.org/static/pdf/hosting/clinical/criteria/pdf/genetic_screening.pdf",
+          "coveredIndications": [],
+          "notes": "Commercial: 'insufficient evidence' per Kaiser WA. Medicare Advantage members may have coverage via MolDX LCD. Kaiser WA only.",
+          "lastReviewed": "2026-03-23"
         }
       },
       "analysis": {
-        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Accurate",
-        "patientGuidance": "clonoSEQ has the broadest coverage of any MRD test due to FDA clearance. Both Medicare and major commercial payers cover for heme malignancies.",
-        "keyInsight": "FDA clearance translates to commercial coverage. clonoSEQ is the gold standard for heme MRD coverage."
+        "vendorClaimAccuracy": "Medicare: Accurate | Commercial: Mostly Accurate",
+        "patientGuidance": "clonoSEQ has the broadest coverage of any MRD test due to FDA clearance. Aetna, Cigna, UHC, Geisinger all cover for heme malignancies. Kaiser WA denies commercial coverage. Medicare patients fully covered.",
+        "keyInsight": "FDA clearance translates to commercial coverage for most payers. Geisinger uniquely covers AML. Kaiser WA is an outlier in denying coverage."
       }
     }},
   {
@@ -6031,7 +6108,7 @@ export const ecdTestData = [
     "tumorOriginAccuracy": 93,
     "tumorOriginAccuracyNotes": "Cancer Signal Origin (CSO) prediction accuracy: 93% top-1 prediction, 97% top-2 predictions in CCGA validation studies",
     "performanceCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://pmc.ncbi.nlm.nih.gov/articles/PMC11024170/ | https://grail.com/press-releases/final-results-from-pathfinder-study-of-grails-multi-cancer-early-detection-blood-test-published-in-the-lancet/ | PATHFINDER-2 ESMO 2025",
-    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%. PATHFINDER-2 (Oct 2025, n=23,000+): Galleri detected cancers ~7× more often than USPSTF A/B standard screening; ~62% of positive tests (Cancer Signal Detected) confirmed as cancer in follow-up, substantially higher PPV than earlier versions. >50% of Galleri-detected cancers were early-stage; ~75% of Galleri-detected cancers were types without recommended standard screenings.",
+    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%. PATHFINDER-2 (Oct 2025, n=23,000+): Galleri detected cancers ~7× more often than USPSTF A/B standard screening; ~62% of positive tests (Cancer Signal Detected) confirmed as cancer in follow-up, substantially higher PPV than earlier versions. >50% of Galleri-detected cancers were early-stage; ~75% of Galleri-detected cancers were types without recommended standard screenings. NHS-Galleri (Feb 2026, n=142,000): Annual Galleri screening achieved 4× overall cancer detection rate vs standard of care alone with substantial reduction in stage IV diagnoses and increased stage I-II detection for 12 deadly cancer types. However, primary endpoint (statistically significant reduction in stage III-IV diagnoses) was NOT met.",
     "leadTimeNotes": "PATHFINDER and PATHFINDER 2 show ~7-fold increase in cancers detected when added to USPSTF A/B screening; median diagnostic resolution ~1.5 months",
     "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; Breakthrough Device designation; PMA submission filed January 29, 2026 for multi-cancer early detection indication",
     "fdaStatusNotes": "GRAIL submitted premarket approval (PMA) application to FDA on January 29, 2026. This is a major regulatory milestone for the MCED category.",
@@ -8350,6 +8427,53 @@ export const ecdTestData = [
       "notes": "Investigational; not commercially available.",
       "lastVerified": "2026-03-21"
     }
+  },
+  {
+    "id": "ecd-34",
+    "sampleCategory": "Blood/Plasma",
+    "name": "Freenome Lung Cancer Blood Test",
+    "vendor": "Freenome",
+    "testScope": "Single-cancer (Lung)",
+    "approach": "Blood-based cfDNA multiomics (methylation + protein)",
+    "method": "AI/ML analyzing base-resolution methylation sequencing of cfDNA combined with plasma protein immunoassays for lung cancer detection. Same multiomics platform as Freenome CRC test.",
+    "cancerTypes": ["Lung cancer (adenocarcinoma, squamous cell, small-cell)"],
+    "targetPopulation": "Current and former smokers aged 50-80 eligible for LDCT screening",
+    "indicationGroup": "Lung",
+    "sensitivity": null,
+    "sensitivityNotes": "Development data (March 2026): 90.7% adjusted sensitivity at 50% specificity; 80.4% at 75% specificity. Operating-point-based reporting does not map to single sensitivity value.",
+    "stageISensitivity": null,
+    "stageISensitivityNotes": "77.1% Stage I adjusted sensitivity at 50% specificity (development data).",
+    "specificity": null,
+    "specificityNotes": "Sensitivity reported at fixed specificity thresholds (50% and 75%); standalone specificity not separately reported.",
+    "ppv": null,
+    "npv": null,
+    "performanceNotes": "Development data (March 2026, 673 samples: 363 lung cancer + 310 controls): 90.7% adjusted sensitivity at 50% specificity; 80.4% at 75% specificity; Stage I: 77.1% at 50% specificity. Detects adenocarcinoma, squamous cell, and small-cell subtypes. No PPV/NPV yet.",
+    "fdaStatus": "Investigational - no FDA submission yet",
+    "fdaStatusNotes": "LDT launch planned H2 2026. PROACT LUNG validation data intended to support future PMA submission.",
+    "reimbursement": "Not Established",
+    "reimbursementNote": "Pre-commercial; no pricing, CPT code, or coverage established.",
+    "clinicalAvailability": "Investigational - not yet commercially available. LDT launch planned H2 2026.",
+    "clinicalTrials": "NCT06122077 PROACT LUNG - Prospective multi-center observational validation study, up to 20,000 participants at up to 100 US sites, primary completion June 2026",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06122077",
+    "totalParticipants": 20000,
+    "totalParticipantsNotes": "PROACT LUNG enrollment target up to 20,000. Current/former smokers age 50+ eligible for LDCT screening.",
+    "numPublications": 0,
+    "numPublicationsNotes": "No peer-reviewed publications yet. Development data presented via press release March 18, 2026.",
+    "isRUO": false,
+    "isInvestigational": true,
+    "isClinicalLDT": false,
+    "technologyDifferentiator": "Same multiomics platform as Freenome CRC test (cfDNA methylation + proteins). Roche partnership for ex-US commercialization (~$200M deal, Nov 2025). NVIDIA partnership for AI/deep learning acceleration.",
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Investigational; not yet commercially available. LDT launch planned H2 2026.",
+      "lastVerified": "2026-03-23"
+    }
   }
 ];
 
@@ -8435,7 +8559,7 @@ export const cgpTestData = [
     },
     "commercialPayers": ["Aetna", "Anthem BCBS", "Blue Shield of California"],
     "commercialPayersCitations": "Policy crawl 2026-01-31: Aetna CPB 0715, Anthem CG-GENE-14, Blue Shield CA Oncology Algorithmic Testing",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors. 87% of commercially insured patients pay $0 per vendor. 80+ commercial health plans cover Foundation Medicine tests."
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors. 87% of commercially insured patients pay $0 per vendor. 80+ commercial health plans cover Foundation Medicine tests. Kaiser WA: Medicare via NCD 90.2; commercial HMO redirects to preferred labs (CellNetix, Oncoplex UW, Caris); PPO/POS case-by-case."
   },
   {
     "id": "tds-2",
@@ -8529,6 +8653,30 @@ export const cgpTestData = [
           "coveredIndications": [],
           "notes": "ctDNA/CTC testing considered investigational",
           "lastReviewed": "2026-02-05"
+        },
+        "bcbst": {
+          "status": "PARTIAL",
+          "policy": "BCBS TN Liquid Biopsy Policy",
+          "policyUrl": "https://www.bcbst.com/mpmanual/!ssl!/webhelp/Circulating_Tumor_DNA_Liquid_Biopsy.htm",
+          "coveredIndications": ["Advanced/metastatic solid tumors with FDA-approved CDx drug indication"],
+          "notes": "Companion diagnostic only: must have advanced/metastatic cancer, FDA-approved CDx indication for specific drug, no prior somatic testing. Does not cover broad CGP.",
+          "lastReviewed": "2026-03-23"
+        },
+        "excellus": {
+          "status": "NOT_COVERED",
+          "policy": "2.02.56",
+          "policyUrl": "https://www.excellusbcbs.com/documents/d/global/exc-prv-circulating-tumor-dna-for-management-of-cancer-liquid-biopsy-",
+          "coveredIndications": [],
+          "notes": "Policy 2.02.56 (eff. 2/19/2026): Covers targeted ctDNA for specific biomarkers when tissue infeasible. Explicitly states CGP (e.g., FoundationOne Liquid CDx, Guardant360) is investigational.",
+          "lastReviewed": "2026-03-23"
+        },
+        "centene": {
+          "status": "PARTIAL",
+          "policy": "CP.MP.239",
+          "policyUrl": "https://www.superiorhealthplan.com/content/dam/centene/Superior/policies/clinical-policies/CP.MP.239.pdf",
+          "coveredIndications": ["Advanced NSCLC (IIIb+)", "Metastatic pancreatic", "Gastric cancer", "Esophageal/EGJ", "Metastatic prostate"],
+          "notes": "CGP via ctDNA covered when tissue biopsy not feasible for listed cancer types only.",
+          "lastReviewed": "2026-03-23"
         }
       }
     },
@@ -8930,9 +9078,9 @@ export const cgpTestData = [
       "notes": "Liquid biopsy panel - covered under plasma genomic profiling LCD",
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Blue Shield of California"],
-    "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors requiring liquid biopsy CGP.",
+    "commercialPayers": ["Blue Shield of California", "Regence BCBS", "WellCare (Centene)"],
+    "commercialPayersCitations": "Policy crawl 2026-01-31: Blue Shield CA Oncology Algorithmic Testing Policy | Regence LAB46 | Centene CP.MP.239",
+    "commercialPayersNotes": "Blue Shield CA: Conditional for advanced solid tumors. Regence BCBS (LAB46): Named in policy for treatment selection when tissue infeasible and FDA-approved therapy exists. MRD/monitoring NOT covered. WellCare/Centene (CP.MP.239): Covered for advanced NSCLC, metastatic pancreatic/gastric/esophageal/prostate when tissue not feasible.",
     "commercialPayersNonCoverage": ["Aetna"],
     "commercialPayersNonCoverageNotes": "Aetna: Most ctDNA/liquid biopsy tests considered experimental/investigational."
   },
@@ -9115,7 +9263,34 @@ export const cgpTestData = [
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Part of Caris Molecular Intelligence platform (165+ total publications across platform)",
     "numPublicationsCitations": "https://www.carislifesciences.com/publications/",
-    "financialAssistance": "Financial Assistance Program available",
+    "financialAssistance": "Financial Assistance Program available. Contact: PatientBilling@CarisLS.com or 1.888.979.8669",
+    "aiInsights": {
+      "available": true,
+      "signatures": [
+        {
+          "name": "Ovarian Cancer Platinum Resistance",
+          "cancerType": "High-grade serous ovarian cancer (HGSOC)",
+          "prediction": "Platinum sensitive vs platinum resistant",
+          "launchDate": "2026-03-16",
+          "status": "RUO (Molecular Tumor Board Report)"
+        },
+        {
+          "name": "Pancreatic Cancer First-Line Therapy",
+          "cancerType": "Pancreatic ductal adenocarcinoma (PDAC)",
+          "prediction": "Standard vs high risk; FOLFIRINOX vs gemcitabine/nab-paclitaxel selection",
+          "launchDate": "2026-03-09",
+          "status": "RUO (Molecular Tumor Board Report)"
+        },
+        {
+          "name": "Breast Cancer Capecitabine Response",
+          "cancerType": "HER2-negative breast cancer",
+          "prediction": "Response to capecitabine (2,000+ expression and copy number features)",
+          "launchDate": "2026-02-24",
+          "status": "RUO (Molecular Tumor Board Report)"
+        }
+      ],
+      "notes": "AI Insights are RUO signatures delivered via the Caris Molecular Tumor Board Report when ordering MI Cancer Seek or MI Profile. Not part of the FDA-approved CDx report."
+    },
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -10031,9 +10206,9 @@ export const cgpTestData = [
       "notes": "First liquid biopsy NGS approved as CDx for KRAZATI. Performed at Resolution Bioscience CLIA lab (Kirkland, WA). Available through Quest Diagnostics network.",
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Blue Shield of California", "Aetna"],
-    "commercialPayersCitations": "Policy crawl 2026-02-01: Blue Shield CA Oncology ctDNA/Liquid Biopsy Policy, Aetna CPB 0352",
-    "commercialPayersNotes": "Blue Shield CA: covered for stage IV/metastatic lung cancers. Aetna CPB 0352: covered for NSCLC when tissue insufficient (up to 50 genes). BCBS South Carolina: NSCLC ctDNA testing restricted to when tissue-based testing is infeasible or insufficient.",
+    "commercialPayers": ["Blue Shield of California", "Aetna", "Blue Cross NC"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Blue Shield CA Oncology ctDNA/Liquid Biopsy Policy, Aetna CPB 0352 | Blue Cross NC AHS-G2054",
+    "commercialPayersNotes": "Blue Shield CA: covered for stage IV/metastatic lung cancers. Aetna CPB 0352: covered for NSCLC when tissue insufficient (up to 50 genes). Blue Cross NC (AHS-G2054): Covered for NSCLC KRAS G12C CDx when tissue infeasible/insufficient. BCBS South Carolina: NSCLC ctDNA testing restricted to when tissue-based testing is infeasible or insufficient.",
     "commercialPayersNonCoverage": ["BCBS South Carolina (restricted)"],
     "commercialPayersNonCoverageNotes": "BCBS SC: ctDNA testing covered for NSCLC only when tissue-based testing infeasible or insufficient."
   },
@@ -10959,6 +11134,98 @@ export const cgpTestData = [
     "isClinicalLDT": true,
     "technologyDifferentiator": "Most validated genomic classifier for prostate cancer treatment decisions. Predicts metastasis risk post-prostatectomy, radiation therapy benefit (STAMPEDE Phase 3: 36% death risk reduction), and hormone therapy benefit in recurrent disease (BALANCE).",
     "dateAdded": "2026-02-05"
+  },
+  {
+    "id": "tds-30",
+    "name": "NEO PanTracer LBx",
+    "vendor": "NeoGenomics",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood/Plasma",
+    "sampleTubeType": "Streck cfDNA BCT",
+    "sampleTubeCount": 2,
+    "approach": "Liquid CGP",
+    "method": "Comprehensive genomic profiling of cfDNA using Illumina TSO500 ctDNA chemistry; analyzes SNVs/InDels in 514 genes, CNVs in 95 genes, fusions in 23 genes, plus MSI-H and bTMB.",
+    "methodCitations": "https://www.neogenomics.com/providers/test/NTG-PTLB-02SX/neo-pantracer-lbx/",
+    "genesAnalyzed": 514,
+    "genesAnalyzedNotes": "514 genes for SNVs/InDels, 95 genes for CNVs, 23 genes for fusions (ALK, RET, ROS1, NTRK1/2, FGFR2/3, BRAF, EGFR, etc.).",
+    "genesAnalyzedCitations": "https://www.neogenomics.com/providers/test/NTG-PTLB-02SX/neo-pantracer-lbx/",
+    "geneListUrl": "https://www.neogenomics.com/providers/test/NTG-PTLB-02SX/neo-pantracer-lbx/",
+    "biomarkersReported": ["SNVs", "InDels", "CNVs", "Fusions", "MSI-H", "bTMB"],
+    "cancerTypes": ["Advanced solid tumors"],
+    "targetPopulation": "Patients with advanced solid tumors requiring comprehensive genomic profiling when tissue is insufficient or as complement to tissue testing",
+    "sensitivity": 96.9,
+    "sensitivityNotes": "96.9% positive percent agreement (PPA) from AACR 2025 analytical validation (Abstract #4090).",
+    "sensitivityCitations": "https://aacrjournals.org/cancerres/article/85/8_Supplement_1/4090/757477/",
+    "specificity": 99.3,
+    "specificityNotes": "99.3% negative percent agreement (NPA) from AACR 2025 analytical validation.",
+    "specificityCitations": "https://aacrjournals.org/cancerres/article/85/8_Supplement_1/4090/757477/",
+    "lod": "0.17% VAF (SNVs), 0.31% VAF (InDels), 1.23x fold change (CNVs), 0.5% VAF (Fusions)",
+    "lodNotes": "LoD90 values from AACR 2025 analytical validation.",
+    "fdaStatus": "CLIA LDT - NOT FDA approved",
+    "fdaStatusNotes": "CLIA-certified and CAP-accredited laboratory. Not approved by NY State.",
+    "tat": "7 days",
+    "tatNotes": "7-day turnaround time from specimen receipt.",
+    "tatCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/323/",
+    "sampleRequirements": "2 tubes of whole blood in Streck cfDNA BCT tubes",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage via MolDX LCD L38043 (Plasma-Based Genomic Profiling), reimbursement rate $3,289, effective March 10, 2026.",
+    "reimbursementCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/323/",
+    "cptCodes": "81464",
+    "medicareRate": 3289,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2026-Q1",
+    "availableRegions": ["US"],
+    "clinicalAvailability": "Commercially available in US since July 30, 2025",
+    "clinicalAvailabilityCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/305/",
+    "numPublications": 1,
+    "numPublicationsPlus": true,
+    "numPublicationsNotes": "AACR 2025 analytical validation poster (Abstract #4090). ASCO 2025 poster (e15047).",
+    "relatedTests": "NEO PanTracer Tissue (tds-15): tissue CGP complement. NEO PanTracer Pro (tds-31): tissue CGP + IHC bundle. Reflexes from PanTracer Tissue when tissue is insufficient.",
+    "medicareCoverage": {
+      "status": "COVERED",
+      "policyType": "LCD",
+      "policyNumber": "L38043",
+      "policyName": "MolDX: Plasma-Based Genomic Profiling in Solid Tumors",
+      "coveredIndications": ["Advanced solid tumors", "Therapy selection"],
+      "reimbursementRate": "$3,289",
+      "cptCode": "81464",
+      "notes": "Medicare coverage effective March 10, 2026. 514-gene liquid biopsy panel.",
+      "lastVerified": "2026-03-23"
+    },
+    "dateAdded": "2026-03-23"
+  },
+  {
+    "id": "tds-31",
+    "name": "NEO PanTracer Pro",
+    "vendor": "NeoGenomics",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP + IHC",
+    "method": "Comprehensive genomic profiling (DNA + RNA NGS) bundled with diagnosis-directed immunohistochemistry (IHC). DNA: 400+ genes (SNVs/InDels), 50+ genes (CNVs). RNA: 50+ genes (fusions, splice variants). IHC: 13+ markers (ALK, AR, c-MET, Claudin-18, ER, FOLR1, HER2, KI67, PD-L1, PGR, PTEN, ROS1, TP53). Genomic signatures: HRD, MSI, TMB.",
+    "methodCitations": "https://www.neogenomics.com/providers/test/NTG-PTPO-03AX/neo-pantracer-pro",
+    "genesAnalyzed": 500,
+    "genesAnalyzedNotes": "400+ DNA genes (SNVs/InDels), 50+ CNV genes, 50+ RNA fusion genes. Plus 13+ IHC protein markers bundled in single order.",
+    "genesAnalyzedCitations": "https://www.neogenomics.com/providers/test/NTG-PTPO-03AX/neo-pantracer-pro",
+    "biomarkersReported": ["SNVs", "InDels", "CNVs", "Fusions", "Splice Variants", "HRD", "MSI", "TMB"],
+    "biomarkersReportedNotes": "Plus IHC protein expression: ALK, AR, c-MET, Claudin-18, ER, FOLR1, HER2, KI67, PD-L1, PGR, PTEN, ROS1, TP53.",
+    "cancerTypes": ["All solid tumors"],
+    "targetPopulation": "Patients with advanced solid tumors requiring comprehensive genomic profiling and IHC for therapy selection",
+    "fdaStatus": "CLIA LDT - NOT FDA approved",
+    "tat": "8-10 days",
+    "tatNotes": "CGP: 8-10 days, IHC: 2 days, ISH: 5 days, LBx reflex: 7 days.",
+    "tatCitations": "https://www.neogenomics.com/providers/test/NTG-PTPO-03AX/neo-pantracer-pro",
+    "sampleRequirements": "FFPE tissue, minimum 25mm2, >=20% tumor content (>=40% for HRD). 25 unstained slides (4-5 micron) with H&E.",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "CGP component may be covered under Medicare NCD 90.2. IHC markers billed separately per marker.",
+    "cptCodes": "81459 (NGS) + IHC codes per marker",
+    "availableRegions": ["US"],
+    "clinicalAvailability": "Commercially available in US since February 12, 2026",
+    "clinicalAvailabilityCitations": "https://ir.neogenomics.com/news-events/press-releases/detail/319/",
+    "numPublications": 0,
+    "numPublicationsNotes": "Launched February 12, 2026; no publications yet specific to PanTracer Pro.",
+    "relatedTests": "NEO PanTracer Tissue (tds-15): predecessor tissue CGP without bundled IHC. NEO PanTracer LBx (tds-30): liquid biopsy complement. Automatically reflexes to PanTracer LBx when tissue is insufficient.",
+    "technologyDifferentiator": "First CGP test bundling NGS with tumor-type-directed IHC in a single coordinated order. Eliminates sequential testing workflows — physicians get all guideline-relevant biomarkers upfront.",
+    "dateAdded": "2026-03-23"
   }
 ];
 
@@ -11784,12 +12051,217 @@ export const hctTestData = [
     "isClinicalLDT": true,
     "vendorVerified": false,
     "vendorRequestedChanges": ""
+  },
+  {
+    "id": "hct-35",
+    "category": "HCT",
+    "name": "FoundationOne Germline",
+    "vendor": "Foundation Medicine",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood or Saliva",
+    "sampleType": "Peripheral whole blood (EDTA) or saliva swab",
+    "method": "NGS with copy number variant (CNV) analysis; 50-gene hereditary cancer panel powered by Fulgent Genetics",
+    "methodCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "genesAnalyzed": 50,
+    "genesAnalyzedCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "keyGenes": ["BRCA1", "BRCA2", "MLH1", "MSH2", "MSH6", "PMS2", "EPCAM", "APC", "ATM", "PALB2", "CHEK2", "TP53", "PTEN", "CDH1"],
+    "syndromesDetected": ["HBOC", "Lynch Syndrome", "Li-Fraumeni", "Cowden", "FAP"],
+    "cancerTypes": ["Breast", "Ovarian", "Colorectal", "Endometrial", "Pancreatic", "Prostate", "Gastric"],
+    "cancerTypesNotes": "Hereditary cancer syndromes including HBOC, Lynch, Li-Fraumeni, Cowden, FAP, and others.",
+    "cancerTypesCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "deletionDuplicationAnalysis": "Yes",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "CLIA Certified, CAP Accredited (Fulgent Genetics laboratory). Not FDA cleared.",
+    "reimbursement": "Broad Coverage",
+    "reimbursementNote": "Medicare, Medicaid, and commercial insurance accepted. Billing handled by Fulgent Genetics.",
+    "cptCodes": "81432, 81433",
+    "tat": "14-21 days",
+    "tatCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "availableRegions": ["US"],
+    "clinicalAvailability": "Commercially available in US since February 28, 2025",
+    "geneticCounselingIncluded": "Yes - free post-test genetic counseling via DNAvisit for patients with pathogenic variants",
+    "numPublications": 0,
+    "numPublicationsNotes": "Launched February 28, 2025; no peer-reviewed publications yet specific to this product.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "vendorVerified": false,
+    "technologyDifferentiator": "Can be ordered alongside FoundationOne CDx or FoundationOne Liquid CDx for integrated somatic-germline profiling. Powered by Fulgent Genetics. Free post-test genetic counseling via DNAvisit.",
+    "dateAdded": "2026-03-23"
+  },
+  {
+    "id": "hct-36",
+    "category": "HCT",
+    "name": "FoundationOne Germline More",
+    "vendor": "Foundation Medicine",
+    "productType": "Central Lab Service",
+    "sampleCategory": "Blood or Saliva",
+    "sampleType": "Peripheral whole blood (EDTA) or saliva swab",
+    "method": "NGS with copy number variant (CNV) analysis; 154-gene expanded hereditary cancer panel powered by Fulgent Genetics; includes emerging/candidate genes with lower or uncertain risk",
+    "methodCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "genesAnalyzed": 154,
+    "genesAnalyzedCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "genesAnalyzedNotes": "154 genes including established high-risk genes plus emerging/candidate genes. Full gene list not publicly available.",
+    "keyGenes": ["BRCA1", "BRCA2", "MLH1", "MSH2", "MSH6", "PMS2", "EPCAM", "APC", "ATM", "PALB2", "CHEK2", "TP53", "PTEN", "CDH1"],
+    "syndromesDetected": ["HBOC", "Lynch Syndrome", "Li-Fraumeni", "Cowden", "FAP"],
+    "cancerTypes": ["Breast", "Ovarian", "Colorectal", "Endometrial", "Pancreatic", "Prostate", "Gastric"],
+    "cancerTypesNotes": "Expanded panel for complex clinical presentations. Higher VUS rate expected due to emerging/candidate genes.",
+    "cancerTypesCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "deletionDuplicationAnalysis": "Yes",
+    "fdaStatus": "CLIA LDT",
+    "fdaStatusNotes": "CLIA Certified, CAP Accredited (Fulgent Genetics laboratory). Not FDA cleared.",
+    "reimbursement": "Broad Coverage",
+    "reimbursementNote": "Medicare, Medicaid, and commercial insurance accepted. Billing handled by Fulgent Genetics.",
+    "cptCodes": "81432, 81433",
+    "tat": "14-21 days",
+    "tatCitations": "https://www.foundationmedicine.com/test/germline-testing",
+    "availableRegions": ["US"],
+    "clinicalAvailability": "Commercially available in US since February 28, 2025",
+    "geneticCounselingIncluded": "Yes - free post-test genetic counseling via DNAvisit for patients with pathogenic variants",
+    "numPublications": 0,
+    "numPublicationsNotes": "Launched February 28, 2025; no peer-reviewed publications yet specific to this product.",
+    "isRUO": false,
+    "isInvestigational": false,
+    "isClinicalLDT": true,
+    "vendorVerified": false,
+    "technologyDifferentiator": "Expanded 154-gene panel for complex clinical presentations. Includes emerging/candidate genes with newly discovered cancer associations. Can be ordered alongside FoundationOne CDx or FoundationOne Liquid CDx. Powered by Fulgent Genetics.",
+    "dateAdded": "2026-03-23"
   }
 ];
 
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'mrd-7',
+    testName: 'Signatera',
+    vendor: 'Natera',
+    category: 'MRD',
+    description: 'Added anal (ASCC) and head & neck cancer types. Added Geisinger COVERED (MP360: CRC, breast, bladder, ovarian, ICI, Merkel cell) and Kaiser WA NOT_COVERED to coverage cross-reference.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'mrd-6',
+    testName: 'Guardant Reveal',
+    vendor: 'Guardant Health',
+    category: 'MRD',
+    description: 'Updated Geisinger coverage cross-reference with MP360 policy details (breast I-III, CRC II-III, lung II-III).',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'mrd-19',
+    testName: 'clonoSEQ',
+    vendor: 'Adaptive Biotechnologies',
+    category: 'MRD',
+    description: 'Added Geisinger COVERED (MP360: MM, AML, ALL, CLL/SLL — broadest heme coverage) and Kaiser WA NOT_COVERED to coverage cross-reference.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'mrd-1',
+    testName: 'Haystack MRD',
+    vendor: 'Quest/Haystack Oncology',
+    category: 'MRD',
+    description: 'Added Geisinger NOT_COVERED (MP360: CPT codes listed but test not in covered indications).',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'mrd-2',
+    testName: 'NeXT Personal Dx',
+    vendor: 'Personalis',
+    category: 'MRD',
+    description: 'Added Stage I-III NSCLC surveillance to Medicare covered indications (announced Feb 2026).',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'ecd-2',
+    testName: 'Galleri',
+    vendor: 'GRAIL',
+    category: 'ECD',
+    description: 'Added NHS-Galleri topline results (Feb 2026, n=142,000): 4× cancer detection rate vs SOC, but primary endpoint (stage III-IV reduction) not met.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'mrd-14',
+    testName: 'NavDx',
+    vendor: 'Naveris',
+    category: 'MRD',
+    description: 'Added Highmark BCBS coverage cross-reference (policy L-267) and Geisinger COVERED (MP360) for HPV ctDNA testing.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'updated',
+    testId: 'tds-9',
+    testName: 'MI Cancer Seek',
+    vendor: 'Caris Life Sciences',
+    category: 'TDS',
+    description: 'Added 3 Caris AI Insights signatures: ovarian platinum resistance (Mar 2026), pancreatic first-line therapy (Mar 2026), breast capecitabine response (Feb 2026). All RUO via Molecular Tumor Board Report.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'added',
+    testId: 'hct-35',
+    testName: 'FoundationOne Germline',
+    vendor: 'Foundation Medicine',
+    category: 'HCT',
+    description: 'New 50-gene hereditary cancer panel (powered by Fulgent Genetics). Launched Feb 2025. Integrates with FoundationOne CDx/Liquid CDx for somatic-germline profiling.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'added',
+    testId: 'hct-36',
+    testName: 'FoundationOne Germline More',
+    vendor: 'Foundation Medicine',
+    category: 'HCT',
+    description: 'New 154-gene expanded hereditary cancer panel including emerging/candidate genes. Launched Feb 2025.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'added',
+    testId: 'tds-30',
+    testName: 'NEO PanTracer LBx',
+    vendor: 'NeoGenomics',
+    category: 'TDS',
+    description: 'New 514-gene liquid biopsy CGP. Medicare coverage via MolDX L38043, $3,289 (effective Mar 2026). 96.9% PPA, 99.3% NPA.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'added',
+    testId: 'tds-31',
+    testName: 'NEO PanTracer Pro',
+    vendor: 'NeoGenomics',
+    category: 'TDS',
+    description: 'New tissue CGP + IHC bundle (500+ genes + 13 IHC markers in single order). Launched Feb 2026. Reflexes to PanTracer LBx when tissue insufficient.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
+  {
+    date: 'Mar 23, 2026',
+    type: 'added',
+    testId: 'ecd-34',
+    testName: 'Freenome Lung Cancer Blood Test',
+    vendor: 'Freenome',
+    category: 'ECD',
+    description: 'Investigational multiomics lung cancer screening test. Development data: 90.7% sensitivity at 50% specificity. PROACT LUNG trial (NCT06122077, n=20K). LDT launch planned H2 2026.',
+    contributor: 'Crawler (weekly triage 2026-03-23)'
+  },
   {
     date: 'Mar 2, 2026',
     type: 'updated',
