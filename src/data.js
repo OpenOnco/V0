@@ -2227,10 +2227,10 @@ export const mrdTestData = [
       },
       "medicare": {
         "status": "COVERED",
-        "policies": ["L38779", "L38822", "L38835", "L38816"],
+        "policies": ["L38779", "L38822", "L38835", "L38814"],
         "indications": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-cancer ICI monitoring"],
         "rate": "$3,500",
-        "notes": "Full coverage for all vendor-claimed indications under MolDX MRD policies"
+        "notes": "Full coverage for all vendor-claimed indications under MolDX MRD policies. Noridian LCD updated from L38816 to L38814 effective 02/05/2026."
       },
       "privatePayers": {
         "aetna": {
@@ -3727,10 +3727,10 @@ export const mrdTestData = [
       },
       "medicare": {
         "status": "COVERED",
-        "policies": ["L38779", "L38822", "L38835", "L38816"],
+        "policies": ["L38779", "L38822", "L38835", "L38814"],
         "indications": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-cancer ICI monitoring"],
         "rate": "$3,500",
-        "notes": "Same coverage as standard Signatera; WGS-enhanced version"
+        "notes": "Same coverage as standard Signatera; WGS-enhanced version. Noridian LCD updated from L38816 to L38814 effective 02/05/2026."
       },
       "privatePayers": {
         "aetna": {
