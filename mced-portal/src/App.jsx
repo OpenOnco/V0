@@ -128,6 +128,11 @@ export default function App() {
       </div>
 
       <Methodology tests={displayTests} dataMode={dataMode} onDataModeChange={setDataMode} />
+
+      <footer className="mt-10 pb-6 text-center text-xs text-gray-400">
+        <p>© 2026 OpenOnco, Inc. Patent pending.</p>
+        <p>Design and coding by Alex & CC</p>
+      </footer>
     </div>
   );
 }
