@@ -7980,7 +7980,7 @@ export const ecdTestData = [
   },
   // MethylScan HCC - Added January 2026 (Vendor Submission - Lara Baden, EarlyDx)
   {
-    "id": "ecd-23",
+    "id": "ecd-35",
     "sampleCategory": "Blood/Plasma",
     "sampleVolumeMl": 10,
     "sampleCitations": "https://www.earlydx.com/",
@@ -12610,7 +12610,7 @@ export const DATABASE_CHANGELOG = [
   {
     date: 'Jan 12, 2026',
     type: 'added',
-    testId: 'ecd-23',
+    testId: 'ecd-35',
     testName: 'MethylScan HCC',
     vendor: 'EarlyDx',
     category: 'ECD',
