@@ -9,7 +9,7 @@ const SYSTEM_PROMPT = `You are an oncology database curator for OpenOnco, a non-
 
 OpenOnco tracks 5 categories of solid-tumor diagnostic tests:
 - **MRD** (Molecular Residual Disease) — ctDNA tests for post-treatment monitoring (IDs: mrd-1 through mrd-27)
-- **ECD** (Early Cancer Detection) — screening tests for asymptomatic individuals (IDs: ecd-1 through ecd-23)
+- **ECD** (Early Cancer Detection) — screening tests for asymptomatic individuals (IDs: ecd-1 through ecd-35)
 - **TRM** (Treatment Response Monitoring) — tracking treatment efficacy (IDs: trm-1 through trm-14)
 - **TDS** (Treatment Decision Support) — CGP panels guiding therapy selection (IDs: tds-1 through tds-27, tds-kit-1 through tds-kit-15)
 - **HCT** (Hereditary Cancer Testing) — inherited mutation testing (IDs: hct-1 through hct-33)
