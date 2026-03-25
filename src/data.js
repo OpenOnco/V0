@@ -23,6 +23,15 @@
 // │ DATABASE_CHANGELOG         │ ~7070       │ --                  │
 // └─────────────────────────────────────────────────────────────────┘
 //
+// ⚠️  MCED PORTAL SYNC: When updating ECD test data (especially MCED tests),
+//     also update the MCED portal's data source notes:
+//       Repo: /Users/adickinson/Documents/GitHub/mced-portal
+//       File: src/data/testSources.js
+//     That file has per-test commentary, citations, and publication counts
+//     shown in the MCED portal's "Data Sources" popup. It does NOT auto-sync
+//     from this file — manual update required. Deploy separately via
+//     `npx vercel --prod` from the mced-portal directory.
+//
 // ============================================
 // TEMPLATES - Copy, fill in, paste at insertion point
 // ============================================
@@ -6738,18 +6747,18 @@ export const ecdTestData = [
     "sensitivityNotes": "Overall incidence-adjusted sensitivity (IAS) across all stages. IAS is more conservative than observed sensitivity as it weights by cancer incidence.",
     "sensitivityType": "incidence-adjusted (SEER-weighted)",
     "incidenceAdjustedSensitivity": 54.0,
-    "incidenceAdjustedSensitivityNotes": "Vendor-reported IAS. EPISEEK natively reports incidence-adjusted sensitivity weighted by SEER cancer incidence, making it directly comparable to calculated IAS for other MCED tests.",
+    "incidenceAdjustedSensitivityNotes": "Vendor-reported IAS of 54% calculated using linear regression model with parametric bootstrap and 2024 SEER incidence/stage distributions. Independent simple SEER-weighted average of per-cancer-type observed sensitivities yields ~64%, suggesting the regression model (which incorporates stage distributions within each cancer type) produces a more conservative estimate. The 54% figure is from the published ASCO 2025 poster and is used as the primary metric.",
     "incidenceAdjustedSensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
-    "cancerTypeSensitivity": null,
-    "cancerTypeSensitivityNotes": "Per-cancer-type breakdown not yet available. Vendor has been asked to provide.",
-    "perCancerEarlyStageSensitivity": {"Liver":40.0,"Lung":30.0,"Pancreas":25.0,"Colon/Rectum":22.0,"Ovary":20.0,"Gastric":18.0,"Breast":7.0},
-    "perCancerEarlyStageSensitivitySource": "Published data est.",
+    "cancerTypeSensitivity": {"Bladder":55.6,"Brain":42.9,"Breast":61.5,"Cervix":66.7,"Colon":84.2,"Esophagus":83.3,"Head and Neck":100.0,"Kidney":50.0,"Liver":75.0,"Lung":78.6,"Melanoma":50.0,"Ovary":45.5,"Pancreas":75.8,"Prostate":40.0,"Stomach":90.0,"Testis":60.0,"Thyroid":16.7,"Uterus":63.6,"Leukemia":50.0,"Lymphoma":100.0,"Myeloma":100.0},
+    "cancerTypeSensitivityNotes": "Observed sensitivity by cancer type from ASCO 2025 poster validation (n=281 cancer cases at 99.5% specificity). N per cancer type ranges from 2 (Lymphoma, Myeloma) to 42 (Lung). Small N for several types means wide confidence intervals. Strongest: Head & Neck (100%, n=12), Stomach (90%, n=10), Colon (84.2%, n=19). Weakest: Thyroid (16.7%, n=12), Prostate (40%, n=10).",
+    "perCancerEarlyStageSensitivity": {"Bladder":45.0,"Lung":59.0,"Uterus":56.0,"Head and Neck":100.0,"Pancreas":25.0,"Liver":50.0,"Kidney":67.0,"Breast":50.0,"Thyroid":33.0,"Cervix":100.0,"Ovary":0.0,"Colon":100.0,"Testis":75.0},
+    "perCancerEarlyStageSensitivitySource": "ASCO 2025 poster validation data. Stage I observed sensitivity where available; Stage II used where no Stage I data. Small sample sizes — see cancerTypeSensitivityNotes.",
     "stageISensitivity": 45.0,
     "stageISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "stageIISensitivity": 45.0,
     "stageIISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
-    "stageISensitivityNotes": "Combined Stage I/II IAS = 45%. For aggressive unscreened cancers (bladder, esophagus, liver, H&N, lung, pancreas, stomach, uterine) Stage I/II sensitivity is 57%.",
-    "stageIIISensitivity": 73.0,
+    "stageISensitivityNotes": "IAS Stage I/II = 45% (SEER-weighted). Observed Stage I = 52.8% (38/72), Stage II = 60.6% (20/33), combined Stage I+II observed = 55.2% (58/105). For aggressive unscreened cancers (bladder, esophagus, liver, H&N, lung, pancreas, stomach, uterine) Stage I/II sensitivity is 57%.",
+    "stageIIISensitivity": 60.0,
     "stageIIISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "stageIVSensitivity": 74.0,
     "stageIVSensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
@@ -6763,7 +6772,7 @@ export const ecdTestData = [
     "npvCitations": "https://www.prnewswire.com/news-releases/precision-epigenomics-launches-episeek-the-first-blood-based-multi-cancer-screening-test-for-men-302012353.html",
     "npvDefinition": "NPV for absence of cancer in validation cohort",
     "performanceCitations": "Pham TH et al. J Clin Oncol 2025;43(16_suppl):3144. ASCO 2025 Annual Meeting.",
-    "performanceNotes": "Validation included 281 cancer-positive plasma samples across all stages and 201 healthy controls age 40+. Analytical LOD <0.1 ng cfDNA for 8/10 biomarkers. Uses incidence-adjusted sensitivity (more conservative than observed sensitivity).",
+    "performanceNotes": "Validation included 281 cancer cases across 23 cancer types and all 4 stages, plus 201 healthy controls age 40+. Overall observed sensitivity 66.5% (181/272 staged+unstaged cases). IAS 54% (SEER 2024 weighted via regression model). Observed stage sensitivities: Stage I 52.8% (38/72), Stage II 60.6% (20/33), Stage III 72.3% (60/83), Stage IV 79.7% (55/69). Analytical LOD <0.1 ng cfDNA for 8/10 biomarkers. AUC 0.88.",
     "leadTimeNotes": "No lead time vs imaging data reported; designed for asymptomatic screening",
     "fdaStatus": "CLIA LDT – NOT FDA approved",
     "reimbursement": "Self-Pay",
