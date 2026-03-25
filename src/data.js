@@ -18,7 +18,7 @@
 // │ ECD Tests                  │ ~2020       │ ecd-24 next         │
 // │ TRM Tests                  │ ~3140       │ trm-15 next         │
 // │ TDS Tests                  │ ~3490       │ tds-28 next         │
-// │ TDS IVD Kits               │ ~4370       │ tds-kit-16 next     │
+// │ TDS IVD Kits               │ ~4370       │ tds-kit-20 next     │
 // │ HCT Tests                  │ ~6670       │ hct-34 next         │
 // │ DATABASE_CHANGELOG         │ ~7070       │ --                  │
 // └─────────────────────────────────────────────────────────────────┘
@@ -580,6 +580,18 @@ export const VENDOR_VERIFIED = {
     company: 'Viome',
     verifiedDate: '2026-02-24',
     editsSubmitted: 1
+  },
+  'tds-kit-4': {  // Oncomine Comprehensive Assay Plus
+    name: 'Dinesh Cyanam',
+    company: 'Thermo Fisher Scientific',
+    verifiedDate: '2026-03-23',
+    editsSubmitted: 4
+  },
+  'tds-kit-19': {  // Oncomine Comprehensive Assay Plus GX
+    name: 'Dinesh Cyanam',
+    company: 'Thermo Fisher Scientific',
+    verifiedDate: '2026-03-23',
+    editsSubmitted: 0
   },
 };
 
@@ -6754,22 +6766,22 @@ export const ecdTestData = [
     "perCancerEarlyStageSensitivity": {"Bladder":{"pct":45.0,"n":11},"Lung":{"pct":59.0,"n":17},"Uterus":{"pct":56.0,"n":16},"Head and Neck":{"pct":100.0,"n":3},"Pancreas":{"pct":25.0,"n":8},"Liver":{"pct":50.0,"n":2},"Kidney":{"pct":67.0,"n":3},"Breast":{"pct":50.0,"n":2},"Thyroid":{"pct":33.0,"n":3},"Cervix":{"pct":100.0,"n":1},"Ovary":{"pct":0.0,"n":3},"Colon":{"pct":100.0,"n":7},"Testis":{"pct":75.0,"n":4}},
     "perCancerEarlyStageSensitivitySource": "ASCO 2025 poster validation data. Stage I observed sensitivity where available; Stage II used where no Stage I data. Small sample sizes — see cancerTypeSensitivityNotes.",
     "stageISensitivity": 45.0,
-    "stageISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
+    "stageISensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "stageIISensitivity": 45.0,
-    "stageIISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
+    "stageIISensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "stageISensitivityNotes": "IAS Stage I/II = 45% (SEER-weighted). Observed Stage I = 52.8% (38/72), Stage II = 60.6% (20/33), combined Stage I+II observed = 55.2% (58/105). For aggressive unscreened cancers (bladder, esophagus, liver, H&N, lung, pancreas, stomach, uterine) Stage I/II sensitivity is 57%.",
     "stageIIISensitivity": 60.0,
-    "stageIIISensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
+    "stageIIISensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "stageIVSensitivity": 74.0,
-    "stageIVSensitivityCitations": "https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
+    "stageIVSensitivityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "specificity": 99.5,
     "specificityCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144 | https://precision-epigenomics.com/precision-epigenomics-presents-validation-of-episeek-a-multi-cancer-early-detection-test-at-2025-asco-annual-meeting/",
     "specificityNotes": "99.5% specificity (0.5% false positive rate). In a screening population of 100,000 with ~1% cancer prevalence, expect ~495 false positives. Matches Galleri's false positive rate.",
     "ppv": 64.9,
-    "ppvCitations": "https://www.prnewswire.com/news-releases/precision-epigenomics-launches-episeek-the-first-blood-based-multi-cancer-screening-test-for-men-302012353.html",
+    "ppvCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144",
     "ppvDefinition": "PPV in validation cohort (n=482). Modeled PPV of 40% in screening population age 50+.",
     "npv": 99.5,
-    "npvCitations": "https://www.prnewswire.com/news-releases/precision-epigenomics-launches-episeek-the-first-blood-based-multi-cancer-screening-test-for-men-302012353.html",
+    "npvCitations": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.3144",
     "npvDefinition": "NPV for absence of cancer in validation cohort",
     "performanceCitations": "Pham TH et al. J Clin Oncol 2025;43(16_suppl):3144. ASCO 2025 Annual Meeting.",
     "performanceNotes": "Validation included 281 cancer cases across 23 cancer types and all 4 stages, plus 201 healthy controls age 40+. Overall observed sensitivity 66.5% (181/272 staged+unstaged cases). IAS 54% (SEER 2024 weighted via regression model). Observed stage sensitivities: Stage I 52.8% (38/72), Stage II 60.6% (20/33), Stage III 72.3% (60/83), Stage IV 79.7% (55/69). Analytical LOD <0.1 ng cfDNA for 8/10 biomarkers. AUC 0.88.",
@@ -10422,20 +10434,61 @@ export const cgpTestData = [
     "platformRequired": "Ion GeneStudio S5",
     "sampleCategory": "Tissue",
     "approach": "Tissue CGP",
-    "method": "Amplicon-based NGS covering 500+ genes from DNA and RNA; detects SNVs, indels, CNAs, and fusions including novel fusions via RNA",
-    "genesAnalyzed": 500,
+    "method": "Amplicon-based NGS covering 517 genes from DNA and RNA; detects SNVs, indels, CNAs, and fusions including novel fusions via RNA",
+    "genesAnalyzed": 517,
     "cancerTypes": ["Pan-solid tumor"],
     "indicationsNotes": "Primarily positioned for oncology research. DNA+RNA workflow captures both mutation and fusion biomarkers. Popular choice for labs with Ion Torrent infrastructure. CE-IVD/IVDR status requires verification.",
+    "biomarkersReported": "SNVs, Indels, CNVs, Fusions, HRD, TMB, MSI",
     "fdaStatus": "RUO in US; CE-IVD status pending verification",
     "tmb": "Yes",
     "msi": "Yes",
     "reimbursement": "Coverage varies",
     "clinicalAvailability": "CE-IVD kit",
+    "sampleCollectionNotes": "20 ng DNA/RNA from FFPE tissue",
+    "sampleCitations": "https://documents.thermofisher.com/TFS-Assets/CSD/Flyers/oncomine-comprehensive-assay-plus-flyer.pdf",
     "tat": "5-7 days",
     "totalParticipants": 20000,
     "numPublications": 80,
     "numPublicationsPlus": true,
-    "technologyDifferentiator": "Ion Torrent amplicon-based sequencing - lower DNA input requirements than hybrid-capture. DNA+RNA workflow in single assay. Strong in APAC market. Automated Genexus workflow option available."
+    "technologyDifferentiator": "Ion Torrent amplicon-based sequencing - lower DNA input requirements than hybrid-capture. DNA+RNA workflow in single assay. Strong in APAC market. Automated Genexus workflow option available.",
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-03-23: Vendor verified by Dinesh Cyanam, Thermo Fisher Scientific. Updated genes 500→517, added biomarkers, sample requirements, citations."
+  },
+  {
+    "id": "tds-kit-19",
+    "name": "Oncomine Comprehensive Assay Plus GX",
+    "vendor": "Thermo Fisher Scientific",
+    "productType": "Laboratory IVD Kit",
+    "platformRequired": "Ion Torrent Genexus Integrated Sequencer",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Amplicon-based NGS, 517 genes (DNA+RNA), automated sample-to-report workflow on Genexus platform",
+    "methodCitations": "https://www.thermofisher.com/us/en/home/clinical/preclinical-companion-diagnostic-development/oncomine-oncology/oncomine-cancer-research-panel-workflow/oncomine-comprehensive-assay-plus.html",
+    "genesAnalyzed": 517,
+    "cancerTypes": ["Pan-solid tumor"],
+    "cancerTypesNotes": "Same gene content as Oncomine Comprehensive Assay Plus (GeneStudio S5 version). Runs on Genexus automated platform for faster TAT.",
+    "indicationsNotes": null,
+    "biomarkersReported": "SNVs, Indels, CNVs, Fusions, HRD, TMB, MSI",
+    "fdaStatus": "RUO",
+    "isRUO": true,
+    "isClinicalLDT": false,
+    "tmb": "Yes",
+    "msi": "Yes",
+    "reimbursement": null,
+    "clinicalAvailability": null,
+    "sampleCollectionNotes": "20 ng DNA/RNA from FFPE tissue",
+    "sampleCitations": "https://documents.thermofisher.com/TFS-Assets/CSD/Flyers/Oncomine-Comprehensive-Assay-Plus-Genexus-Flyer.pdf",
+    "requiresTumorTissue": "Yes",
+    "requiresMatchedNormal": "No",
+    "tat": "24-27 hours",
+    "tatNotes": "24-27 hours on Genexus automated platform (vs 3-7 days on GeneStudio S5)",
+    "totalParticipants": 20000,
+    "numPublications": 80,
+    "numPublicationsNotes": "Shared publication base with Oncomine Comprehensive Assay Plus (GeneStudio S5)",
+    "numPublicationsPlus": true,
+    "technologyDifferentiator": null,
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-03-23: New test submitted by Dinesh Cyanam, Thermo Fisher Scientific. Genexus platform variant of existing OCA Plus (tds-kit-4)."
   },
   {
     "id": "tds-kit-5",
@@ -12142,6 +12195,26 @@ export const hctTestData = [
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
   {
+    date: 'Mar 25, 2026',
+    type: 'new',
+    testId: 'tds-kit-19',
+    testName: 'Oncomine Comprehensive Assay Plus GX',
+    vendor: 'Thermo Fisher Scientific',
+    category: 'TDS',
+    description: 'New test: Genexus platform variant of Oncomine Comprehensive Assay Plus. 517 genes, automated sample-to-report in 24-27 hours. Submitted by Dinesh Cyanam, Thermo Fisher Scientific.',
+    contributor: 'Dinesh Cyanam (Thermo Fisher Scientific)'
+  },
+  {
+    date: 'Mar 25, 2026',
+    type: 'updated',
+    testId: 'tds-kit-4',
+    testName: 'Oncomine Comprehensive Assay Plus',
+    vendor: 'Thermo Fisher Scientific',
+    category: 'TDS',
+    description: 'Vendor verified by Dinesh Cyanam. Updated genes 500→517, added biomarkers (SNVs, Indels, CNVs, Fusions, HRD, TMB, MSI), sample requirements (20 ng DNA/RNA from FFPE), citations.',
+    contributor: 'Dinesh Cyanam (Thermo Fisher Scientific)'
+  },
+  {
     date: 'Mar 23, 2026',
     type: 'updated',
     testId: 'mrd-7',
@@ -13642,6 +13715,7 @@ export const DATABASE_CHANGELOG = [
 export const RECENTLY_ADDED_TESTS = [
   { id: 'ecd-27', name: 'OncoXPLORE+', vendor: 'OncoDNA', category: 'ECD', dateAdded: 'Jan 8, 2026' },
   { id: 'mrd-26', name: 'MRDVision', vendor: 'Inocras', category: 'MRD', dateAdded: 'Jan 7, 2026' },
+  { id: 'tds-kit-19', name: 'Oncomine Comprehensive Assay Plus GX', vendor: 'Thermo Fisher Scientific', category: 'TDS', dateAdded: 'Mar 25, 2026' },
   { id: 'ecd-26', name: 'Trucheck Intelli', vendor: 'Datar Cancer Genetics', category: 'ECD', dateAdded: 'Jan 7, 2026' },
   { id: 'tds-26', name: 'CellSight DNA', vendor: 'Cancer Cell Dx', category: 'TDS', dateAdded: 'Jan 7, 2026' },
   { id: 'tds-27', name: 'CancerVision', vendor: 'Inocras', category: 'TDS', dateAdded: 'Jan 7, 2026' },
