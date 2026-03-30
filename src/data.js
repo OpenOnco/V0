@@ -2248,10 +2248,10 @@ export const mrdTestData = [
       },
       "medicare": {
         "status": "COVERED",
-        "policies": ["L38779", "L38822", "L38835", "L38816"],
+        "policies": ["L38779", "L38822", "L38835", "L38814"],
         "indications": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-cancer ICI monitoring"],
         "rate": "$3,500",
-        "notes": "Full coverage for all vendor-claimed indications under MolDX MRD policies"
+        "notes": "Full coverage for all vendor-claimed indications under MolDX MRD policies. Noridian LCD L38816 retired 02/05/2026, replaced by L38814."
       },
       "privatePayers": {
         "aetna": {
@@ -3748,10 +3748,10 @@ export const mrdTestData = [
       },
       "medicare": {
         "status": "COVERED",
-        "policies": ["L38779", "L38822", "L38835", "L38816"],
+        "policies": ["L38779", "L38822", "L38835", "L38814"],
         "indications": ["CRC Stage II-IV", "Breast Stage IIb+", "NSCLC Stage I-III", "Bladder MIBC", "Ovarian/Fallopian/Peritoneal", "Pan-cancer ICI monitoring"],
         "rate": "$3,500",
-        "notes": "Same coverage as standard Signatera; WGS-enhanced version"
+        "notes": "Same coverage as standard Signatera; WGS-enhanced version. Noridian LCD L38816 retired 02/05/2026, replaced by L38814."
       },
       "privatePayers": {
         "aetna": {
@@ -8802,13 +8802,13 @@ export const cgpTestData = [
     "fdaStatusCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/guardant360-cdx-p200010s008 | https://www.targetedonc.com/view/fda-approves-guardant360-cdx-for-tumor-mutation-profiling-of-all-solid-cancers",
     "fdaApprovalDate": "2020-08-07",
     "fdaApprovalDateCitations": "https://www.fda.gov/medical-devices/recently-approved-devices/guardant360-cdx-p200010s008",
-    "fdaCompanionDxCount": 6,
-    "fdaCompanionDxCountNotes": "6 CDx indications: NSCLC (osimertinib/EGFR, amivantamab/EGFR exon 20, trastuzumab deruxtecan/ERBB2, sotorasib/KRAS G12C); Breast cancer (elacestrant/ESR1, imlunestrant/ESR1).",
-    "fdaCompanionDxCountCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/FDA-Approves-Guardant360-CDx-as-Companion-Diagnostic-for-Eli-Lilly-and-Companys-Inluriyo-imlunestrant-for-Treatment-of-ESR1-mutated-Advanced-Breast-Cancer/default.aspx | https://www.onclive.com/view/fda-clears-guardant360-cdx-as-companion-diagnostic-for-imlunestrant-in-esr1-mutated-breast-cancer",
+    "fdaCompanionDxCount": 7,
+    "fdaCompanionDxCountNotes": "7 CDx indications: NSCLC (osimertinib/EGFR, amivantamab/EGFR exon 20, trastuzumab deruxtecan/ERBB2, sotorasib/KRAS G12C); Breast cancer (elacestrant/ESR1, imlunestrant/ESR1); CRC (encorafenib+cetuximab/BRAF V600E, approved Jan 22 2026 based on BREAKWATER Phase 3).",
+    "fdaCompanionDxCountCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/FDA-Approves-Guardant360-CDx-as-Companion-Diagnostic-for-Eli-Lilly-and-Companys-Inluriyo-imlunestrant-for-Treatment-of-ESR1-mutated-Advanced-Breast-Cancer/default.aspx | https://investors.guardanthealth.com/press-releases/press-releases/2026/Guardant-Health-Receives-FDA-Approval-for-Guardant360-CDx-as-Companion-Diagnostic-for-BRAFTOVI-encorafenib-Combination-in-Patients-with-BRAF-V600E-Mutant-Metastatic-Colorectal-Cancer/default.aspx",
     "vendorClaimsNCCNAlignment": true,
     "vendorNCCNAlignmentCitation": "https://guardanthealth.com/guardant360-cdx/",
-    "vendorNCCNAlignmentIndications": ["NSCLC", "Breast Cancer"],
-    "vendorNCCNAlignmentNotes": "Covers all genes recommended by NCCN for NSCLC and relevant biomarkers for breast cancer treatment. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
+    "vendorNCCNAlignmentIndications": ["NSCLC", "Breast Cancer", "CRC"],
+    "vendorNCCNAlignmentNotes": "Covers all genes recommended by NCCN for NSCLC, relevant biomarkers for breast cancer treatment, and BRAF V600E for CRC. NCCN guidelines recommend testing specific genes/biomarkers but do not endorse specific commercial assays by name.",
     "tat": "5-7 days",
     "tatNotes": "Actionable results typically within 7 days; as fast as 5 days.",
     "tatCitations": "https://www.onclive.com/view/fda-clears-guardant360-cdx-as-companion-diagnostic-for-imlunestrant-in-esr1-mutated-breast-cancer",
