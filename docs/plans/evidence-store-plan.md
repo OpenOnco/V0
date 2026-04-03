@@ -85,7 +85,15 @@ Each claim is an atomic, verifiable piece of evidence. JSON format.
     "cancer": "colorectal",
     "stages": ["II"],
     "setting": "adjuvant",
-    "test_category": "MRD"
+    "test_category": "MRD",
+    "tests": [
+      {
+        "test_id": "mrd-1",
+        "test_name": "Signatera",
+        "vendor": "Natera",
+        "role": "assay_used"
+      }
+    ]
   },
 
   "finding": {

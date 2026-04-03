@@ -1,0 +1,257 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Clinical validation of droplet digital PCR assays in detecting BRAF V600 -mutant circulating tumour DNA as a prognostic biomarker in patients with resected stage III melanoma receiving adjuvant therapy (COMBI-AD): a biomarker analysis from a double-blind, randomised phase 3 trial.",
+      "journal": "Lancet Oncol",
+      "year": 2025,
+      "authors_short": "Syeda et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Baseline ctDNA detection was associated with worse recurrence-free survival in the placebo group with a median of 3.71 months compared to 24.41 months.",
+      "trial_name": "COMBI-AD",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": 597,
+      "hr": 2.91,
+      "or": null,
+      "rr": null,
+      "ci_lower": 1.99,
+      "ci_upper": 4.25,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 60,
+      "effect_summary": "Baseline ctDNA detection was associated with worse recurrence-free survival in the placebo group.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "As a binary variable, ctDNA detection was associated with worse recurrence-free survival (placebo group: median 3·71 months [95% CI 2·39-6·89] vs 24·41 months [17·28-43·13]; hazard ratio [HR] 2·91 [95% CI 1·99-4·25], p<0·0001)"
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Clinical validation of droplet digital PCR assays in detecting BRAF V600 -mutant circulating tumour DNA as a prognostic biomarker in patients with resected stage III melanoma receiving adjuvant therapy (COMBI-AD): a biomarker analysis from a double-blind, randomised phase 3 trial.",
+      "journal": "Lancet Oncol",
+      "year": 2025,
+      "authors_short": "Syeda et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Baseline ctDNA detection was associated with worse recurrence-free survival in the combination therapy group with a median of 16.59 months compared to 68.11 months.",
+      "trial_name": "COMBI-AD",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": 597,
+      "hr": 2.98,
+      "or": null,
+      "rr": null,
+      "ci_lower": 1.95,
+      "ci_upper": 4.54,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 60,
+      "effect_summary": "Baseline ctDNA detection was associated with worse recurrence-free survival in the combination therapy group.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "combination therapy group: median 16·59 months [95% CI 12·02-26·80] vs 68·11 months [50·36-not reached]; HR 2·98 [1·95-4·54], p<0·0001)"
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Clinical validation of droplet digital PCR assays in detecting BRAF V600 -mutant circulating tumour DNA as a prognostic biomarker in patients with resected stage III melanoma receiving adjuvant therapy (COMBI-AD): a biomarker analysis from a double-blind, randomised phase 3 trial.",
+      "journal": "Lancet Oncol",
+      "year": 2025,
+      "authors_short": "Syeda et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Baseline ctDNA detection was associated with worse overall survival in the placebo group with a median of 33.90 months compared to not reached.",
+      "trial_name": "COMBI-AD",
+      "endpoint": "overall survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": 597,
+      "hr": 3.35,
+      "or": null,
+      "rr": null,
+      "ci_lower": 2.01,
+      "ci_upper": 5.55,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 60,
+      "effect_summary": "Baseline ctDNA detection was associated with worse overall survival in the placebo group.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "overall survival (placebo group: median 33·90 months [13·96-not reached] vs not reached; HR 3·35 [2·01-5·55], p<0·0001)"
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Clinical validation of droplet digital PCR assays in detecting BRAF V600 -mutant circulating tumour DNA as a prognostic biomarker in patients with resected stage III melanoma receiving adjuvant therapy (COMBI-AD): a biomarker analysis from a double-blind, randomised phase 3 trial.",
+      "journal": "Lancet Oncol",
+      "year": 2025,
+      "authors_short": "Syeda et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Baseline ctDNA detection was associated with worse overall survival in the combination therapy group with a median of 40.31 months compared to not reached.",
+      "trial_name": "COMBI-AD",
+      "endpoint": "overall survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": 597,
+      "hr": 4.27,
+      "or": null,
+      "rr": null,
+      "ci_lower": 2.5,
+      "ci_upper": 7.27,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 60,
+      "effect_summary": "Baseline ctDNA detection was associated with worse overall survival in the combination therapy group.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "combination therapy group: median 40·31 months [24·90-not reached] vs not reached; HR 4·27 [2·50-7·27], p<0·0001)"
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Clinical validation of droplet digital PCR assays in detecting BRAF V600 -mutant circulating tumour DNA as a prognostic biomarker in patients with resected stage III melanoma receiving adjuvant therapy (COMBI-AD): a biomarker analysis from a double-blind, randomised phase 3 trial.",
+      "journal": "Lancet Oncol",
+      "year": 2025,
+      "authors_short": "Syeda et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients with adverse longitudinal ctDNA kinetics had markedly shorter median recurrence-free survival of 8.31 months compared to those with favourable kinetics.",
+      "trial_name": "COMBI-AD",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 5.39,
+      "ci_upper": 12.2,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 60,
+      "effect_summary": "Adverse longitudinal ctDNA kinetics were associated with shorter recurrence-free survival.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Patients with adverse longitudinal ctDNA kinetics (molecular relapse or persistently positive) had markedly shorter median recurrence-free survival (8·31 months [95% CI 5·39-12·20] and 5·32 months [2·79-not reached], respectively) compared with patients with favourable kinetics (ie, undetectable after positive baseline result: 19·25 months [16·39-not reached]; and durable undetectable: not reached [38·44-not reached], p<0·0001)."
+  }
+]

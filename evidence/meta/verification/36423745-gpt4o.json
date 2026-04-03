@@ -1,0 +1,158 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36423745",
+      "title": "Results of the c-TRAK TN trial: a clinical trial utilising ctDNA mutation tracking to detect molecular residual disease and trigger intervention in patients with moderate- and high-risk early-stage triple-negative breast cancer.",
+      "journal": "Ann Oncol",
+      "year": 2023,
+      "authors_short": "Turner et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Rate of ctDNA detection by 12 months was 27.3%.",
+      "trial_name": "c-TRAK TN",
+      "endpoint": "ctDNA detection rate",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": 161,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 20.6,
+      "ci_upper": 34.9,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 12,
+      "effect_summary": "ctDNA detection rate by 12 months was 27.3%.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Rate of ctDNA detection by 12 months was 27.3% (44/161, 95% confidence interval 20.6% to 34.9%)."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36423745",
+      "title": "Results of the c-TRAK TN trial: a clinical trial utilising ctDNA mutation tracking to detect molecular residual disease and trigger intervention in patients with moderate- and high-risk early-stage triple-negative breast cancer.",
+      "journal": "Ann Oncol",
+      "year": 2023,
+      "authors_short": "Turner et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "72% of patients allocated to intervention had metastases on staging at the time of ctDNA+.",
+      "trial_name": "c-TRAK TN",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 32,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "72% of intervention patients had metastases at ctDNA+ detection.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Of patients allocated to intervention, 72% (23/32) had metastases on staging at the time of ctDNA+."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36423745",
+      "title": "Results of the c-TRAK TN trial: a clinical trial utilising ctDNA mutation tracking to detect molecular residual disease and trigger intervention in patients with moderate- and high-risk early-stage triple-negative breast cancer.",
+      "journal": "Ann Oncol",
+      "year": 2023,
+      "authors_short": "Turner et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "None of the five patients who commenced pembrolizumab achieved sustained ctDNA clearance.",
+      "trial_name": "c-TRAK TN",
+      "endpoint": "sustained ctDNA clearance rate",
+      "endpoint_type": "primary",
+      "result_direction": "negative",
+      "n": 5,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No sustained ctDNA clearance in pembrolizumab-treated patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Of the five patients who commenced pembrolizumab, none achieved sustained ctDNA clearance."
+  }
+]

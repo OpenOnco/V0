@@ -1,0 +1,426 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Preoperatively, ctDNA was detectable in 108 of 122 patients (88.5%).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 122,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Preoperatively, ctDNA was detectable in 108 of 122 patients (88.5%)."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "After definitive treatment, longitudinal ctDNA analysis identified 14 of 16 relapses (87.5%).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 16,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "After definitive treatment, longitudinal ctDNA analysis identified 14 of 16 relapses (87.5%)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "At postoperative day 30, ctDNA-positive patients were 7 times more likely to relapse than ctDNA-negative patients.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": 7.2,
+      "or": null,
+      "rr": null,
+      "ci_lower": 2.7,
+      "ci_upper": 19,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "At postoperative day 30, ctDNA-positive patients were 7 times more likely to relapse than ctDNA-negative patients (hazard ratio [HR], 7.2; 95% CI, 2.7-19.0; P < .001)."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Shortly after ACT, ctDNA-positive patients were 17 times more likely to relapse.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": 17.5,
+      "or": null,
+      "rr": null,
+      "ci_lower": 5.4,
+      "ci_upper": 56.5,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Similarly, shortly after ACT ctDNA-positive patients were 17 times (HR, 17.5; 95% CI, 5.4-56.5; P < .001) more likely to relapse."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "During surveillance after definitive therapy, ctDNA-positive patients were more than 40 times more likely to experience disease recurrence.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": 43.5,
+      "or": null,
+      "rr": null,
+      "ci_lower": 9.8,
+      "ci_upper": 193.5,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "During surveillance after definitive therapy, ctDNA-positive patients were more than 40 times more likely to experience disease recurrence than ctDNA-negative patients (HR, 43.5; 95% CI, 9.8-193.5 P < .001)."
+  },
+  {
+    "id": "6",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Serial ctDNA analysis during surveillance identified relapse with 88% sensitivity and 98% specificity.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 88,
+      "specificity": 98,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Serial ctDNA analysis during surveillance after definitive treatment of the 75 patients with longitudinal collected plasma samples identified relapse with 88% sensitivity and 98% specificity."
+  },
+  {
+    "id": "7",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Serial ctDNA analyses revealed disease recurrence up to 16.5 months ahead of standard-of-care radiologic imaging.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Serial ctDNA analyses revealed disease recurrence up to 16.5 months ahead of standard-of-care radiologic imaging (mean, 8.7 months; range, 0.8-16.5 months)."
+  },
+  {
+    "id": "8",
+    "type": "trial_result",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+      "journal": "JAMA Oncol",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Actionable mutations were identified in 81.8% of the ctDNA-positive relapse samples.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Actionable mutations were identified in 81.8% of the ctDNA-positive relapse samples."
+  }
+]

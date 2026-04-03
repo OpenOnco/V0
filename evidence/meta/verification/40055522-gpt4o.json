@@ -1,0 +1,257 @@
+[
+  {
+    "id": "claim1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer: 5-year outcomes of the randomized DYNAMIC trial.",
+      "journal": "Nat Med",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "5-year recurrence-free survival was 88% with ctDNA-guided management and 87% with standard management.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": -5.8,
+      "ci_upper": 8,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 59.7,
+      "effect_summary": "No significant difference in 5-year RFS between ctDNA-guided and standard management.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "At a median follow-up of 59.7 months, 5-year RFS was 88% and 87% with ctDNA-guided and standard management, respectively (difference 1.1%, 95% confidence interval -5.8% to 8.0%)."
+  },
+  {
+    "id": "claim2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer: 5-year outcomes of the randomized DYNAMIC trial.",
+      "journal": "Nat Med",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "5-year overall survival was similar between ctDNA-guided and standard management (93.8% vs 93.3%).",
+      "trial_name": "DYNAMIC",
+      "endpoint": "overall survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": 1.05,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.887,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 59.7,
+      "effect_summary": "No significant difference in 5-year OS between ctDNA-guided and standard management.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "5-year overall survival is similar (93.8% versus 93.3%, hazard ratio (HR) 1.05; P = 0.887)."
+  },
+  {
+    "id": "claim3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer: 5-year outcomes of the randomized DYNAMIC trial.",
+      "journal": "Nat Med",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA clearance was observed at the end of ACT in 87.5% of treated ctDNA-positive patients.",
+      "trial_name": "DYNAMIC",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 40,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "High rate of ctDNA clearance at the end of ACT in treated ctDNA-positive patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "For treated ctDNA-positive patients, ctDNA clearance was observed at the end of ACT (EOT) in 35 out of 40 patients (87.5%)."
+  },
+  {
+    "id": "claim4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer: 5-year outcomes of the randomized DYNAMIC trial.",
+      "journal": "Nat Med",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Higher than median postoperative tumor-derived mutant molecules per milliliter plasma was associated with worse 5-year RFS.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 10.62,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.005,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Higher ctDNA levels post-surgery linked to worse 5-year RFS.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A higher than median postoperative tumor-derived mutant molecules per milliliter plasma was associated with worse 5-year RFS (HR 10.62; P = 0.005)."
+  },
+  {
+    "id": "claim5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer: 5-year outcomes of the randomized DYNAMIC trial.",
+      "journal": "Nat Med",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Post hoc analysis showed ctDNA clearance at EOT predicted a 5-year recurrence-free probability of 97% versus 0% for ctDNA persistence.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA clearance at EOT predicts high 5-year RFS.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Post hoc analysis of ctDNA clearance at EOT assessed by a new assay that evaluated an average of 29 tumor-derived mutations per patient predicted for a favorable 5-year recurrence-free probability of 97% versus 0% for ctDNA persistence (P < 0.001)."
+  }
+]

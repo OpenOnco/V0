@@ -1,0 +1,242 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37055640",
+      "title": "Tracking early lung cancer metastatic dissemination in TRACERx using ctDNA.",
+      "journal": "Nature",
+      "year": 2023,
+      "authors_short": "Abbosh et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "II"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Landmark analyses of plasma samples collected within 120 days after surgery revealed ctDNA detection in 25% of patients, including 49% of all patients who experienced clinical relapse.",
+      "trial_name": "TRACERx",
+      "endpoint": "ctDNA detection",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "n": 108,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 49,
+      "specificity": null,
+      "ppv": 93,
+      "npv": 68,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA detection in 25% of patients, including 49% of those who relapsed."
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Landmark analyses of plasma samples collected within 120 days after surgery revealed ctDNA detection in 25% of patients, including 49% of all patients who experienced clinical relapse."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37055640",
+      "title": "Tracking early lung cancer metastatic dissemination in TRACERx using ctDNA.",
+      "journal": "Nature",
+      "year": 2023,
+      "authors_short": "Abbosh et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "II"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "In 102/108 patients evaluable for survival analyses, landmark-positive patients exhibited a HR of 5.3 for OS and an HR of 6.8 for FFR relative to landmark negative patients.",
+      "trial_name": "TRACERx",
+      "endpoint": "overall survival and freedom from recurrence",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": 102,
+      "hr": 5.3,
+      "or": null,
+      "rr": null,
+      "ci_lower": 2.9,
+      "ci_upper": 9.7,
+      "p_value": 1e-9,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Landmark-positive patients had a HR of 5.3 for OS and 6.8 for FFR."
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In 102/108 patients evaluable for survival analyses, landmark-positive patients exhibited a HR of 5.3 (95% CI 2.9 to 9.7, P=1e-09 log-rank test) for OS and an HR of 6.8 for FFR (95% CI 3.7 to 12.3, P=6e-13 log-rank test) relative to landmark negative patients."
+  },
+  {
+    "id": "3",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "37055640",
+      "title": "Tracking early lung cancer metastatic dissemination in TRACERx using ctDNA.",
+      "journal": "Nature",
+      "year": 2023,
+      "authors_short": "Abbosh et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "II"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Sensitivity for variant DNA detection using a 50-variant PSP at 0.01% variant DNA level was >90% at DNA inputs of 20ng and above.",
+      "trial_name": null,
+      "endpoint": "variant DNA detection sensitivity",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 90,
+      "specificity": 100,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Sensitivity >90% for variant DNA detection at 0.01% level with 20ng DNA input."
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Sensitivity for variant DNA detection using a 50-variant PSP at 0.01% variant DNA level (representative of ctDNA levels encountered post-resection of NSCLC, using current MRD assays) was >90% at DNA inputs of 20ng and above."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37055640",
+      "title": "Tracking early lung cancer metastatic dissemination in TRACERx using ctDNA.",
+      "journal": "Nature",
+      "year": 2023,
+      "authors_short": "Abbosh et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "II"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Preoperative ctDNA status was associated with overall survival in adenocarcinoma patients (log-rank P=5e-06).",
+      "trial_name": "TRACERx",
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "n": 88,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.000005,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Preoperative ctDNA status associated with OS in adenocarcinoma patients."
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In patients with adenocarcinoma, ctDNA status was associated with overall survival (OS) (log-rank P=5e-06, Figure 1c)."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37055640",
+      "title": "Tracking early lung cancer metastatic dissemination in TRACERx using ctDNA.",
+      "journal": "Nature",
+      "year": 2023,
+      "authors_short": "Abbosh et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "II"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Postoperative ctDNA detection forecasted impending NSCLC relapse, with 25% of patients being landmark MRD positive and 93% of these patients relapsed a median of 228 days post-ctDNA detection.",
+      "trial_name": "TRACERx",
+      "endpoint": "NSCLC relapse",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": 93,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Postoperative ctDNA detection predicted NSCLC relapse with high PPV."
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Postoperative ctDNA detection forecasted impending NSCLC relapse, agreeing with prior findings. Here, 25% of patients were landmark MRD positive and 93% of these patients relapsed a median of 228 days post-ctDNA detection."
+  }
+]

@@ -1,0 +1,365 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Postsurgical ctDNA positivity at 4 weeks after surgery was associated with higher recurrence risk in patients with stage II or III CRC.",
+      "trial_name": "GALAXY",
+      "endpoint": "recurrence risk",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "n": 1039,
+      "hr": 10.82,
+      "or": null,
+      "rr": null,
+      "ci_lower": 7.07,
+      "ci_upper": 16.6,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 16.74,
+      "effect_summary": "Higher recurrence risk with postsurgical ctDNA positivity.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In this cohort, with a median follow-up of 16.74 months (range 0.49-24.83 months), postsurgical ctDNA positivity (at 4 weeks after surgery) was associated with higher recurrence risk (hazard ratio (HR) 10.0, P < 0.0001) and was the most significant prognostic factor associated with recurrence risk in patients with stage II or III CRC (HR 10.82, P < 0.001)."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Patients with stage II or III CRC and postsurgical ctDNA positivity derived benefit from ACT.",
+      "trial_name": "GALAXY",
+      "endpoint": "benefit from ACT",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": 6.59,
+      "or": null,
+      "rr": null,
+      "ci_lower": 3.53,
+      "ci_upper": 12.3,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Benefit from ACT in ctDNA-positive patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Furthermore, postsurgical ctDNA positivity identified patients with stage II or III CRC who derived benefit from ACT (HR 6.59, P < 0.0001)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "18-month DFS was 38.4% for ctDNA-positive patients versus 90.5% for ctDNA-negative patients.",
+      "trial_name": "GALAXY",
+      "endpoint": "18-month DFS",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 10,
+      "or": null,
+      "rr": null,
+      "ci_lower": 7.7,
+      "ci_upper": 14,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 18,
+      "effect_summary": "Inferior DFS for ctDNA-positive patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Among 187 patients who were ctDNA positive 4 weeks after surgery, 61.4% (115 out of 187) experienced recurrence, whereas only 9.5% (81 out of 852) of patients who were ctDNA negative 4 weeks after surgery experienced recurrence (hazard ratio (HR) 10.0, 95% confidence interval (CI) 7.7–14.0, P < 0.0001), demonstrating an 18-month DFS of 38.4% (95% CI 31.4–45.5%) versus 90.5% (95% CI 88.3–92.3%), respectively."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "No significant benefit from ACT in ctDNA-negative patients.",
+      "trial_name": "GALAXY",
+      "endpoint": "benefit from ACT",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": 1.71,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.8,
+      "ci_upper": 3.7,
+      "p_value": "0.167",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No significant benefit from ACT in ctDNA-negative patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In ctDNA-negative patients, after accounting for potentially confounding factors (age, sex, pathological stage, MSI and performance status), no statistically significant benefit from ACT was observed (adjusted HR 1.71, 95% CI 0.80–3.7, P = 0.167)."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ACT was associated with a higher cumulative incidence of ctDNA clearance.",
+      "trial_name": "GALAXY",
+      "endpoint": "ctDNA clearance",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": 8.5,
+      "or": null,
+      "rr": null,
+      "ci_lower": 4.2,
+      "ci_upper": 17.3,
+      "p_value": "<0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Higher ctDNA clearance with ACT.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In this analysis, ACT was associated with a higher estimated cumulative incidence of ctDNA clearance in 68.48% (63 out of 92) of patients by week 24 after surgery compared with 12.2% (11 out of 90) of patients who did not receive ACT (adjusted HR 8.50, 95% CI 4.2–17.3, P < 0.0001; HR was adjusted for sex, age, stage, MSI and performance status)."
+  },
+  {
+    "id": "6",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Patients who converted from ctDNA negative to positive had a significantly higher risk of recurrence.",
+      "trial_name": "GALAXY",
+      "endpoint": "recurrence risk",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": 14,
+      "or": null,
+      "rr": null,
+      "ci_lower": 8.5,
+      "ci_upper": 24,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Higher recurrence risk for patients converting from ctDNA negative to positive.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Compared with the risk of recurrence for patients who were persistently negative, a significantly higher risk of recurrence was observed for patients who converted from ctDNA negative to positive (HR 14.0, 95% CI 8.5–24.0, P < 0.001), with an 18-month DFS of 33.8% (95% CI 18.1–50.2%)."
+  },
+  {
+    "id": "7",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": "36646802",
+      "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+      "journal": "Nat Med",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "The American Society of Clinical Oncology (ASCO) panel states that the current definition of ‘high-risk’ stage II cancer is inadequate.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": "ASCO",
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "The American Society of Clinical Oncology (ASCO) panel states that the current definition of ‘high-risk’ stage II cancer is inadequate as many patients with high-risk features do not experience recurrence, whereas some patients with average-risk features do."
+  }
+]

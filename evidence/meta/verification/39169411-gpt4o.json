@@ -1,0 +1,210 @@
+[
+  {
+    "id": "1",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "39169411",
+      "title": "Circulating tumour DNA dynamics predict recurrence in stage III melanoma patients receiving neoadjuvant immunotherapy.",
+      "journal": "J Exp Clin Cancer Res",
+      "year": 2024,
+      "authors_short": "Chan et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "IIIB",
+        "IIIC"
+      ],
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Post-surgery ctDNA positivity was 100% predictive of recurrence.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 40,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 44,
+      "specificity": 100,
+      "ppv": 100,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Post-surgery ctDNA positivity accurately predicts recurrence.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Post-surgery ctDNA positivity and zero-conversion are highly predictive of recurrence, offering a window for personalised modification of adjuvant therapy."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "39169411",
+      "title": "Circulating tumour DNA dynamics predict recurrence in stage III melanoma patients receiving neoadjuvant immunotherapy.",
+      "journal": "J Exp Clin Cancer Res",
+      "year": 2024,
+      "authors_short": "Chan et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "IIIB",
+        "IIIC"
+      ],
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Median RFS was 8.0 months in patients with detectable ctDNA post-surgery compared with median not reached in patients with undetectable ctDNA.",
+      "trial_name": null,
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": 40,
+      "hr": 10.8,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.8,
+      "ci_upper": 142.4,
+      "p_value": "< 0.0001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Detectable ctDNA post-surgery is associated with shorter RFS.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Median RFS was 8.0 months in patients with detectable ctDNA post-surgery compared with median not reached in patients with undetectable ctDNA [HR 10.8 (95% CI 0.8-142.4); p < 0.0001]."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "39169411",
+      "title": "Circulating tumour DNA dynamics predict recurrence in stage III melanoma patients receiving neoadjuvant immunotherapy.",
+      "journal": "J Exp Clin Cancer Res",
+      "year": 2024,
+      "authors_short": "Chan et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "IIIB",
+        "IIIC"
+      ],
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Median MSS was 43.0 months for patients who were positive for ctDNA post-surgery compared with median not reached for those with undetectable ctDNA.",
+      "trial_name": null,
+      "endpoint": "melanoma-specific survival",
+      "endpoint_type": "secondary",
+      "result_direction": "inferior",
+      "n": 40,
+      "hr": 8,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.4,
+      "ci_upper": 182,
+      "p_value": "0.0124",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Detectable ctDNA post-surgery is associated with shorter MSS.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Median MSS was 43.0 months for patients who were positive for ctDNA post-surgery compared with median not reached (approximately 4.5 year follow up) for those with undetectable ctDNA [HR 8.0 (95% CI 0.4–182.0); p = 0.0124]."
+  },
+  {
+    "id": "4",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "39169411",
+      "title": "Circulating tumour DNA dynamics predict recurrence in stage III melanoma patients receiving neoadjuvant immunotherapy.",
+      "journal": "J Exp Clin Cancer Res",
+      "year": 2024,
+      "authors_short": "Chan et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "IIIB",
+        "IIIC"
+      ],
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "For patients with detectable pre-treatment ctDNA, the sensitivity and specificity of ctDNA post-surgery in predicting recurrence were both 100%.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 19,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 100,
+      "specificity": 100,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "High sensitivity and specificity of ctDNA post-surgery for recurrence prediction in patients with detectable pre-treatment ctDNA.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Thus, when pre-treatment ctDNA was detectable, the sensitivity and specificity of ctDNA post-surgery in predicting recurrence were both 1.000 (95% CI: 0.1777–1.000 and 0.8157–1.000, respectively)."
+  }
+]

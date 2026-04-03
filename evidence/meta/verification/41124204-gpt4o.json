@@ -1,0 +1,198 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41124204",
+      "title": "ctDNA-Guided Adjuvant Atezolizumab in Muscle-Invasive Bladder Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2025,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "The median disease-free survival was 9.9 months with atezolizumab, compared to 4.8 months with placebo.",
+      "trial_name": "IMvigor011",
+      "endpoint": "disease-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": 250,
+      "hr": 0.64,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.47,
+      "ci_upper": 0.87,
+      "p_value": 0.005,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Atezolizumab significantly improved disease-free survival compared to placebo.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "The median disease-free survival was 9.9 months with atezolizumab, as compared with 4.8 months with placebo (hazard ratio for first event of disease recurrence or death, 0.64; 95% confidence interval [CI], 0.47 to 0.87; P=0.005)."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41124204",
+      "title": "ctDNA-Guided Adjuvant Atezolizumab in Muscle-Invasive Bladder Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2025,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "The median overall survival was 32.8 months with atezolizumab, compared to 21.1 months with placebo.",
+      "trial_name": "IMvigor011",
+      "endpoint": "overall survival",
+      "endpoint_type": "secondary",
+      "result_direction": "superior",
+      "n": 250,
+      "hr": 0.59,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.39,
+      "ci_upper": 0.9,
+      "p_value": 0.01,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Atezolizumab significantly improved overall survival compared to placebo.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "The median overall survival was 32.8 months with atezolizumab, as compared with 21.1 months with placebo (hazard ratio for death, 0.59; 95% CI, 0.39 to 0.90; P=0.01)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41124204",
+      "title": "ctDNA-Guided Adjuvant Atezolizumab in Muscle-Invasive Bladder Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2025,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "28% of patients receiving atezolizumab and 22% of those receiving placebo had grade 3 or 4 adverse events.",
+      "trial_name": "IMvigor011",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Higher incidence of grade 3 or 4 adverse events with atezolizumab compared to placebo.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A total of 28% of the patients who received atezolizumab and 22% of those who received placebo had adverse events of grade 3 or 4."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41124204",
+      "title": "ctDNA-Guided Adjuvant Atezolizumab in Muscle-Invasive Bladder Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2025,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Disease-free survival was 95% at 1 year and 88% at 2 years among patients with persistent ctDNA-negative status.",
+      "trial_name": "IMvigor011",
+      "endpoint": "disease-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": 357,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 24,
+      "effect_summary": "High disease-free survival rates among ctDNA-negative patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Among 357 patients with persistent ctDNA-negative status, disease-free survival was 95% at the end of the 1-year monitoring period and 88% at 2 years."
+  }
+]

@@ -1,0 +1,206 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "A ctDNA-guided approach reduced adjuvant chemotherapy use without compromising recurrence-free survival.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "non-inferior",
+      "n": 455,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 37,
+      "effect_summary": "ctDNA-guided management was noninferior to standard management in recurrence-free survival.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A ctDNA-guided approach to the treatment of stage II colon cancer reduced adjuvant chemotherapy use without compromising recurrence-free survival."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "The percentage of patients receiving adjuvant chemotherapy was lower in the ctDNA-guided group (15%) compared to the standard-management group (28%).",
+      "trial_name": "DYNAMIC",
+      "endpoint": "adjuvant chemotherapy use",
+      "endpoint_type": "secondary",
+      "result_direction": "superior",
+      "n": 455,
+      "hr": null,
+      "or": null,
+      "rr": 1.82,
+      "ci_lower": 1.25,
+      "ci_upper": 2.65,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 37,
+      "effect_summary": "Lower adjuvant chemotherapy use in ctDNA-guided group compared to standard management.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A lower percentage of patients in the ctDNA-guided group than in the standard-management group received adjuvant chemotherapy (15% vs. 28%; relative risk, 1.82; 95% confidence interval [CI], 1.25 to 2.65)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "2-year recurrence-free survival was 93.5% in the ctDNA-guided group and 92.4% in the standard-management group.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "non-inferior",
+      "n": 455,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": -4.1,
+      "ci_upper": 6.2,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 24,
+      "effect_summary": "Noninferior 2-year recurrence-free survival in ctDNA-guided group compared to standard management.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the evaluation of 2-year recurrence-free survival, ctDNA-guided management was noninferior to standard management (93.5% and 92.4%, respectively; absolute difference, 1.1 percentage points; 95% CI, -4.1 to 6.2 [noninferiority margin, -8.5 percentage points])."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
+      "journal": "N Engl J Med",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "3-year recurrence-free survival was 86.4% among ctDNA-positive patients who received adjuvant chemotherapy and 92.5% among ctDNA-negative patients who did not.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": 1.83,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.79,
+      "ci_upper": 4.27,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 36,
+      "effect_summary": "Higher 3-year recurrence-free survival in ctDNA-negative patients compared to ctDNA-positive patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-03",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Three-year recurrence-free survival was 86.4% among ctDNA-positive patients who received adjuvant chemotherapy and 92.5% among ctDNA-negative patients who did not."
+  }
+]
