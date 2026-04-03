@@ -73,8 +73,12 @@ function loadClaims() {
   for (const file of files) {
     try {
       const raw = readFileSync(resolve(CLAIMS_DIR, file), "utf-8");
-      const claim = JSON.parse(raw);
-      claims.push(claim);
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        claims.push(...parsed);
+      } else {
+        claims.push(parsed);
+      }
     } catch (err) {
       console.warn(`Skipping ${file}: ${err.message}`);
     }
