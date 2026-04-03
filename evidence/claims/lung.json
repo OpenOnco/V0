@@ -3,7 +3,7 @@
     "id": "LNG-NO-EVIDENCE-001",
     "type": "trial_result",
     "source": {
-      "pmid": "37379158",
+      "pmid": null,
       "title": "IMpower010 — ctDNA and adjuvant atezolizumab",
       "journal": null,
       "year": null,
@@ -46,7 +46,7 @@
     "id": "LNG-NO-EVIDENCE-002",
     "type": "trial_result",
     "source": {
-      "pmid": "36108067",
+      "pmid": "37055640",
       "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
       "journal": null,
       "year": null,
@@ -85,7 +85,7 @@
     "id": "LNG-NO-EVIDENCE-003",
     "type": "diagnostic_performance",
     "source": {
-      "pmid": "36108067",
+      "pmid": "37055640",
       "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
       "journal": null,
       "year": null,
@@ -124,7 +124,7 @@
     "id": "LNG-NO-EVIDENCE-004",
     "type": "diagnostic_performance",
     "source": {
-      "pmid": "36108067",
+      "pmid": "37055640",
       "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
       "journal": null,
       "year": null,
@@ -163,7 +163,7 @@
     "id": "LNG-NO-EVIDENCE-005",
     "type": "clinical_utility",
     "source": {
-      "pmid": "36108067",
+      "pmid": "37055640",
       "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
       "journal": null,
       "year": null,
@@ -358,7 +358,7 @@
     "id": "LNG-WHAT-TO-DO-POSITIVE-001",
     "type": "clinical_utility",
     "source": {
-      "pmid": "36108067",
+      "pmid": "37055640",
       "title": "TRACERx — lead time in NSCLC",
       "journal": null,
       "year": null,
@@ -397,7 +397,7 @@
     "id": "LNG-NOT-VALIDATED-001",
     "type": "diagnostic_performance",
     "source": {
-      "pmid": "36108067",
+      "pmid": "37055640",
       "title": "TRACERx — Signatera validation in NSCLC",
       "journal": null,
       "year": null,

@@ -167,7 +167,7 @@
     "id": "MEL-EVIDENCE-005",
     "type": "clinical_utility",
     "source": {
-      "pmid": "36853306",
+      "pmid": "39169411",
       "title": "ctDNA in resected melanoma",
       "journal": null,
       "year": null,
@@ -206,7 +206,7 @@
     "id": "MEL-EVIDENCE-006",
     "type": "diagnostic_performance",
     "source": {
-      "pmid": "36853306",
+      "pmid": "39169411",
       "title": "ctDNA in resected melanoma",
       "journal": null,
       "year": null,
@@ -247,7 +247,7 @@
     "id": "MEL-EVIDENCE-007",
     "type": "trial_result",
     "source": {
-      "pmid": "36853306",
+      "pmid": "39169411",
       "title": "ctDNA in resected melanoma",
       "journal": null,
       "year": null,

@@ -1,4 +1,14 @@
 {
+  "31070691": {
+    "title": "Analysis of Plasma Cell-Free DNA by Ultradeep Sequencing in Patients With Stages I to III Colorectal Cancer.",
+    "authors_short": "Reinert et al.",
+    "journal": "JAMA Oncol",
+    "year": 2019,
+    "doi": "10.1001/jamaoncol.2019.0528",
+    "pmcid": "PMC6512280",
+    "raw_file": "raw/papers/31070691.md",
+    "fetched_date": "2026-04-03"
+  },
   "35657320": {
     "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
     "authors_short": "Tie et al.",
@@ -7,6 +17,76 @@
     "doi": "10.1056/NEJMoa2200075",
     "pmcid": "PMC9701133",
     "raw_file": "raw/papers/35657320.md",
+    "fetched_date": "2026-04-03"
+  },
+  "36423745": {
+    "title": "Results of the c-TRAK TN trial: a clinical trial utilising ctDNA mutation tracking to detect molecular residual disease and trigger intervention in patients with moderate- and high-risk early-stage triple-negative breast cancer.",
+    "authors_short": "Turner et al.",
+    "journal": "Ann Oncol",
+    "year": 2023,
+    "doi": "10.1016/j.annonc.2022.11.005",
+    "pmcid": null,
+    "raw_file": "raw/papers/36423745.md",
+    "fetched_date": "2026-04-03"
+  },
+  "36646802": {
+    "title": "Molecular residual disease and efficacy of adjuvant chemotherapy in patients with colorectal cancer.",
+    "authors_short": "Kotani et al.",
+    "journal": "Nat Med",
+    "year": 2023,
+    "doi": "10.1038/s41591-022-02115-4",
+    "pmcid": "PMC9873552",
+    "raw_file": "raw/papers/36646802.md",
+    "fetched_date": "2026-04-03"
+  },
+  "37055640": {
+    "title": "Tracking early lung cancer metastatic dissemination in TRACERx using ctDNA.",
+    "authors_short": "Abbosh et al.",
+    "journal": "Nature",
+    "year": 2023,
+    "doi": "10.1038/s41586-023-05776-4",
+    "pmcid": "PMC7614605",
+    "raw_file": "raw/papers/37055640.md",
+    "fetched_date": "2026-04-03"
+  },
+  "39169411": {
+    "title": "Circulating tumour DNA dynamics predict recurrence in stage III melanoma patients receiving neoadjuvant immunotherapy.",
+    "authors_short": "Chan et al.",
+    "journal": "J Exp Clin Cancer Res",
+    "year": 2024,
+    "doi": "10.1186/s13046-024-03153-1",
+    "pmcid": "PMC11337884",
+    "raw_file": "raw/papers/39169411.md",
+    "fetched_date": "2026-04-03"
+  },
+  "40055522": {
+    "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer: 5-year outcomes of the randomized DYNAMIC trial.",
+    "authors_short": "Tie et al.",
+    "journal": "Nat Med",
+    "year": 2025,
+    "doi": "10.1038/s41591-025-03579-w",
+    "pmcid": "PMC12974608",
+    "raw_file": "raw/papers/40055522.md",
+    "fetched_date": "2026-04-03"
+  },
+  "40250457": {
+    "title": "Clinical validation of droplet digital PCR assays in detecting BRAF V600 -mutant circulating tumour DNA as a prognostic biomarker in patients with resected stage III melanoma receiving adjuvant therapy (COMBI-AD): a biomarker analysis from a double-blind, randomised phase 3 trial.",
+    "authors_short": "Syeda et al.",
+    "journal": "Lancet Oncol",
+    "year": 2025,
+    "doi": "10.1016/S1470-2045(25)00139-1",
+    "pmcid": null,
+    "raw_file": "raw/papers/40250457.md",
+    "fetched_date": "2026-04-03"
+  },
+  "41124204": {
+    "title": "ctDNA-Guided Adjuvant Atezolizumab in Muscle-Invasive Bladder Cancer.",
+    "authors_short": "Powles et al.",
+    "journal": "N Engl J Med",
+    "year": 2025,
+    "doi": "10.1056/NEJMoa2511885",
+    "pmcid": null,
+    "raw_file": "raw/papers/41124204.md",
     "fetched_date": "2026-04-03"
   }
 }

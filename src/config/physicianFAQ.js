@@ -53,7 +53,7 @@ export const PHYSICIAN_FAQ_DATA = {
       sources: [
         { label: 'Tie et al., NEJM 2022 — DYNAMIC trial', pmid: '35657320' },
         { label: 'DYNAMIC 5-year follow-up, Nat Med 2025', pmid: '40055522' },
-        { label: 'Kotani et al., Nat Med 2023 — GALAXY/VEGA', pmid: '37264205' },
+        { label: 'Kotani et al., Nat Med 2023 — GALAXY/VEGA', pmid: '36646802' },
         { label: 'ALTAIR trial — ASCO GI 2026', url: 'https://www.natera.com/company/news/natera-presents-updated-analyses-from-altair-clinical-trial-at-asco-gi/' },
         { label: 'Guardant Reveal stage III CRC — JCO Feb 2026', url: 'https://investors.guardanthealth.com/press-releases/press-releases/2026/Largest-Published-Study-of-Molecular-Residual-Disease-MRD-in-Stage-III-Colon-Cancer-Shows-Guardant-Reveal-Blood-Test-More-Precisely-Identifies-Risk-of-Recurrence-After-Surgery-to-Support-Timely-Treatment-Decisions/default.aspx' },
       ],
@@ -87,7 +87,7 @@ export const PHYSICIAN_FAQ_DATA = {
       sources: [
         { label: 'Reinert et al., JAMA Oncology 2019 — lead time', pmid: '31070691' },
         { label: 'Tie et al., NEJM 2022 — ctDNA+ treatment', pmid: '35657320' },
-        { label: 'Kotani et al., Nat Med 2023 — GALAXY', pmid: '37264205' },
+        { label: 'Kotani et al., Nat Med 2023 — GALAXY', pmid: '36646802' },
       ],
       guidelines: 'Multiple active trials enroll ctDNA+ CRC patients: CIRCULATE-US (NCT05174169), COBRA (NCT04068103), PEGASUS.',
     },
@@ -120,7 +120,7 @@ export const PHYSICIAN_FAQ_DATA = {
         'stage-3': 'Stage III breast cancer (especially TNBC) is where MRD testing has the strongest rationale — high recurrence risk and actionable treatment options if ctDNA positive.',
       },
       sources: [
-        { label: 'c-TRAK TN — ctDNA surveillance in TNBC', pmid: '36720083' },
+        { label: 'c-TRAK TN — ctDNA surveillance in TNBC', pmid: '36423745' },
         { label: 'ZEST trial design', url: 'https://clinicaltrials.gov/ct2/show/NCT04915755' },
         { label: 'DARE trial — ASCO 2025 interim', url: 'https://clinicaltrials.gov/ct2/show/NCT04567420' },
       ],
@@ -148,7 +148,7 @@ export const PHYSICIAN_FAQ_DATA = {
         'stage-3': 'Stage III breast cancer with ctDNA positivity after neoadjuvant/adjuvant therapy is high risk. Consider clinical trial enrollment (ZEST) or subtype-specific escalation.',
       },
       sources: [
-        { label: 'c-TRAK TN — lead time in TNBC', pmid: '36720083' },
+        { label: 'c-TRAK TN — lead time in TNBC', pmid: '36423745' },
         { label: 'ZEST trial — ctDNA-guided escalation', url: 'https://clinicaltrials.gov/ct2/show/NCT04915755' },
       ],
       guidelines: 'No formal guideline yet. ZEST trial provides a structured ctDNA-guided escalation framework.',
@@ -158,7 +158,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forPatient: 'MRD tests are validated for breast cancer, with the strongest data in triple-negative breast cancer. Tests like Signatera and Guardant Reveal have published validation studies in breast cancer specifically.',
       forDoctor: 'Tumor-informed ctDNA assays (Signatera, RaDaR) have published analytical and clinical validation in breast cancer. Signatera has demonstrated high sensitivity for MRD detection in early-stage breast cancer (c-TRAK TN, observational cohorts). Sensitivity varies by subtype — highest in TNBC (higher ctDNA shedding) and lower in HR+/lobular histologies. Medicare coverage via MolDX extends to breast cancer for tumor-informed assays. Analytical considerations: tumor-informed approaches are preferred in breast cancer due to lower ctDNA fraction compared to CRC.',
       sources: [
-        { label: 'Signatera breast cancer validation', pmid: '36720083' },
+        { label: 'Signatera breast cancer validation', pmid: '36423745' },
         { label: 'CMS MolDX LCD L39256', url: 'https://www.cms.gov/medicare-coverage-database' },
       ],
       guidelines: 'Signatera has Medicare coverage for breast cancer via MolDX. FDA Breakthrough Device Designation for pan-cancer MRD.',
@@ -178,8 +178,8 @@ export const PHYSICIAN_FAQ_DATA = {
         'stage-3': 'Stage IIIA NSCLC has the strongest rationale — high recurrence risk, multiple adjuvant options (chemo, immunotherapy), and ctDNA can identify who truly needs them.',
       },
       sources: [
-        { label: 'IMpower010 — ctDNA and adjuvant atezolizumab', pmid: '37379158' },
-        { label: 'TRACERx — ultrasensitive ctDNA in NSCLC', pmid: '36108067' },
+        { label: 'IMpower010 — ctDNA and adjuvant atezolizumab', pmid: '37467930' },
+        { label: 'TRACERx — ultrasensitive ctDNA in NSCLC', pmid: '37055640' },
         { label: 'TRACERx PhasED-Seq — Nature Medicine', url: 'https://www.nature.com/articles/s41591-024-03216-y' },
         { label: 'NSCLC ctDNA meta-analysis — JCO Precision Oncology 2025', url: 'https://ascopubs.org/doi/10.1200/PO-25-00489' },
         { label: 'AEGEAN MRD analysis — ASCO 2025', url: 'https://www.lungcancerstoday.com/post/how-mrd-status-affects-agean-trial-regimen-in-patients-with-resectable-nsclc' },
@@ -196,7 +196,7 @@ export const PHYSICIAN_FAQ_DATA = {
       },
       sources: [
         { label: 'NCCN NSCLC Guidelines v3.2025', url: 'https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1450' },
-        { label: 'IMpower010 ctDNA analysis', pmid: '37379158' },
+        { label: 'IMpower010 ctDNA analysis', pmid: '37467930' },
         { label: 'AEGEAN MRD analysis — ASCO 2025', url: 'https://www.lungcancerstoday.com/post/how-mrd-status-affects-agean-trial-regimen-in-patients-with-resectable-nsclc' },
       ],
       guidelines: 'Not yet a specific NCCN recommendation. IMpower010 provides Level I ctDNA evidence. MERMAID-1/2 discontinued; AEGEAN and perioperative trials advancing.',
@@ -211,8 +211,8 @@ export const PHYSICIAN_FAQ_DATA = {
         'stage-3': 'Stage IIIA ctDNA positivity post-surgery strongly argues for adjuvant treatment. Multiple options: immunotherapy, chemo, or targeted therapy based on molecular profile.',
       },
       sources: [
-        { label: 'TRACERx — lead time in NSCLC', pmid: '36108067' },
-        { label: 'IMpower010 — adjuvant atezolizumab', pmid: '37379158' },
+        { label: 'TRACERx — lead time in NSCLC', pmid: '37055640' },
+        { label: 'IMpower010 — adjuvant atezolizumab', pmid: '37467930' },
         { label: 'ADAURA — adjuvant osimertinib', pmid: '32955177' },
       ],
       guidelines: 'NCCN recommends adjuvant osimertinib (EGFR+), nivolumab, pembrolizumab, and atezolizumab for resected NSCLC. ctDNA can guide selection.',
@@ -222,7 +222,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forPatient: 'MRD tests are validated for lung cancer. Major trials like TRACERx and IMpower010 used ctDNA testing in lung cancer patients, and Medicare covers MRD tests for lung cancer.',
       forDoctor: 'ctDNA MRD assays validated in NSCLC include: Signatera (tumor-informed, validated in TRACERx cohort; Signatera Genome WGS-based assay shows strong prognostic value in NSCLC per ASCO 2025), FoundationOne Tracker (tumor-informed), Guardant Reveal (tumor-naive, methylation-based). Ultrasensitive approaches like PhasED-Seq (TRACERx) achieve LOD95 of 1 ppm with 67% clinical sensitivity vs. 28% for standard SNV-based methods. Analytical sensitivity in NSCLC is generally good for squamous histology and adenocarcinoma, though lower ctDNA shedding in some early-stage adenocarcinomas may reduce sensitivity. Medicare coverage via MolDX extends to NSCLC for tumor-informed assays.',
       sources: [
-        { label: 'TRACERx — Signatera validation in NSCLC', pmid: '36108067' },
+        { label: 'TRACERx — Signatera validation in NSCLC', pmid: '37055640' },
         { label: 'CMS MolDX LCD L39256', url: 'https://www.cms.gov/medicare-coverage-database' },
       ],
       guidelines: 'Medicare covers tumor-informed ctDNA in NSCLC via MolDX. Multiple FDA Breakthrough Device Designations.',
@@ -237,7 +237,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forPatient: 'There is strong evidence for MRD testing in bladder cancer. The IMvigor011 trial — presented at a major international conference and published in the New England Journal of Medicine — showed that giving immunotherapy to patients with a positive ctDNA test after surgery significantly improved survival. This is a landmark result: the first proof that acting on a positive MRD test helps patients live longer.',
       forDoctor: 'IMvigor011 (Powles et al., NEJM; ESMO 2025 Presidential Symposium) is the landmark Phase III trial: 761 patients in ctDNA surveillance, 250 ctDNA+ randomized (2:1) to adjuvant atezolizumab vs. placebo. Median DFS 9.9 vs. 4.8 months (HR 0.64; P=0.0047). Median OS 32.8 vs. 21.1 months. 12-month DFS 44.7% vs. 30.0%; 12-month OS 85.1% vs. 70.0%. ctDNA-negative patients had 12-month DFS of 95.4% and 12-month OS of 100%. This is the first Level 1 evidence for intervening on positive ctDNA in an adjuvant setting in any cancer type. Natera submitted FDA PMA for Signatera CDx in MIBC (Feb 2026). ASCO GU 2026: INDIBLADE and RETAIN trials showed ctDNA clearance after neoadjuvant therapy associated with better survival even with bladder-sparing strategies.',
       sources: [
-        { label: 'Powles et al., NEJM 2024 — IMvigor011', pmid: '38507753' },
+        { label: 'Powles et al., NEJM 2024 — IMvigor011', pmid: '41124204' },
       ],
       guidelines: 'IMvigor011 provides Level I evidence for ctDNA-guided adjuvant immunotherapy in bladder cancer.',
     },
@@ -246,7 +246,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forPatient: 'Bladder cancer MRD testing is expected to enter the NCCN guidelines soon. IMvigor011 provided the highest level of evidence — a randomized Phase III trial — and the FDA is now reviewing the companion diagnostic test (Signatera) for bladder cancer.',
       forDoctor: 'NCCN Bladder Cancer guidelines do not yet include a specific ctDNA recommendation, but IMvigor011 (Powles et al., NEJM; ESMO 2025 Presidential) provides Phase III randomized evidence for ctDNA-guided adjuvant atezolizumab in MIBC with significant DFS (HR 0.64, P=0.0047) and OS benefit. This is expected to be incorporated in upcoming guideline updates. Natera submitted Signatera CDx PMA to FDA (Feb 2026) based on IMvigor011 data. The EAU guidelines reference ctDNA as a promising biomarker for MIBC management.',
       sources: [
-        { label: 'Powles et al., NEJM 2024 — IMvigor011', pmid: '38507753' },
+        { label: 'Powles et al., NEJM 2024 — IMvigor011', pmid: '41124204' },
       ],
       guidelines: 'Phase III evidence (IMvigor011) expected to drive guideline updates. EAU references ctDNA in MIBC.',
     },
@@ -255,7 +255,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forPatient: 'A positive MRD test in bladder cancer means your care team can consider starting immunotherapy — even before a scan shows recurrence. IMvigor011 showed this approach works.',
       forDoctor: 'ctDNA positivity post-cystectomy in MIBC: (1) Adjuvant immunotherapy — IMvigor011 showed DFS (HR 0.64) and OS benefit for atezolizumab in ctDNA+ patients (median OS 32.8 vs. 21.1 months). Consider nivolumab (CheckMate 274) as alternative. (2) Bladder-sparing approaches — ASCO GU 2026 data (INDIBLADE, RETAIN) showed ctDNA clearance after neoadjuvant therapy supports bladder-sparing strategies. (3) Intensified surveillance — serial ctDNA + imaging. (4) MODERN trial (Phase 2/3, ctDNA-guided treatment in urothelial carcinoma, completion expected 2026). (5) Erdafitinib or other targeted therapy if FGFR alterations detected.',
       sources: [
-        { label: 'Powles et al., NEJM 2024', pmid: '38507753' },
+        { label: 'Powles et al., NEJM 2024', pmid: '41124204' },
       ],
       guidelines: 'IMvigor011 supports adjuvant atezolizumab in ctDNA+ MIBC post-cystectomy.',
     },
@@ -264,7 +264,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forPatient: 'MRD tests are validated for bladder cancer. Signatera and other tests have been used in major bladder cancer clinical trials.',
       forDoctor: 'Tumor-informed ctDNA assays (Signatera, primary assay in IMvigor010/011) have clinical validation in MIBC. Natera submitted FDA PMA for Signatera CDx in MIBC (Feb 2026) — the first ctDNA companion diagnostic PMA for any cancer type based on interventional data. Analytical sensitivity is generally high in bladder cancer due to elevated ctDNA shedding. Myriad Precise MRD also showed high sensitivity across bladder and urothelial cancer (ASCO GU 2026). Medicare coverage via MolDX extends to bladder cancer.',
       sources: [
-        { label: 'Powles et al., NEJM 2024 — Signatera in MIBC', pmid: '38507753' },
+        { label: 'Powles et al., NEJM 2024 — Signatera in MIBC', pmid: '41124204' },
       ],
       guidelines: 'Medicare covers tumor-informed ctDNA in bladder cancer via MolDX.',
     },
@@ -279,7 +279,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forDoctor: 'ctDNA MRD in melanoma: The COMBI-AD biomarker analysis (Lancet Oncology 2026, PMID 40250457) is the most comprehensive dataset — 597 stage III melanoma patients with 60-month median follow-up. Baseline ctDNA detection rate: 13% (79/597). ctDNA+ recurrence risk: HR 2.91 (placebo, P<0.0001); HR 2.98 (targeted therapy, P<0.0001). ~80% of ctDNA+ patients recurred; disease returned >4x faster than ctDNA-. ctDNA concentration was more reliable than substage or tissue measures at 5 years. Lee et al. demonstrated ctDNA dynamics during adjuvant immunotherapy correlate with clinical outcomes. In stage IV, pre-ICI ctDNA positivity is 91.7%; 6-month clearance (47.4%) associated with improved PFS (HR 10.0, P=0.03). DETECTION trial (NCT04901988) is an ongoing phase II/III in stage IIB/C.',
       sources: [
         { label: 'COMBI-AD biomarker analysis — Lancet Oncol 2026', pmid: '40250457' },
-        { label: 'Lee et al. — ctDNA in resected melanoma', pmid: '36853306' },
+        { label: 'Lee et al. — ctDNA in resected melanoma', pmid: '39169411' },
       ],
       guidelines: 'No specific NCCN recommendation yet. COMBI-AD provides the strongest prognostic validation (5-year, N=597). DETECTION trial in progress.',
     },
@@ -298,7 +298,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forDoctor: 'ctDNA positivity in resected melanoma: (1) Adjuvant immunotherapy — COMBI-AD showed ctDNA+ patients have HR ~2.9 for recurrence regardless of treatment arm; consider initiating or extending nivolumab/pembrolizumab. (2) Adjuvant targeted therapy — if BRAF V600 mutated, consider dabrafenib/trametinib; COMBI-AD validated ctDNA prognostic value in this setting. (3) Intensified surveillance — serial ctDNA + imaging q3 months; ctDNA concentration is more predictive than substage at 5 years. (4) In stage IV, 6-month ctDNA clearance on immunotherapy is strongly associated with improved PFS (HR 10.0, 2-year PFS 89% vs. 30%). (5) Clinical trial enrollment — DETECTION trial (NCT04901988) in stage IIB/C.',
       sources: [
         { label: 'COMBI-AD — Lancet Oncol 2026', pmid: '40250457' },
-        { label: 'Lee et al. — ctDNA-guided melanoma management', pmid: '36853306' },
+        { label: 'Lee et al. — ctDNA-guided melanoma management', pmid: '39169411' },
       ],
       guidelines: 'NCCN recommends adjuvant nivolumab or pembrolizumab for resected stage III-IV melanoma. ctDNA can guide timing and selection.',
     },
@@ -322,7 +322,7 @@ export const PHYSICIAN_FAQ_DATA = {
       forDoctor: 'ctDNA MRD detection is biologically valid across solid tumors — tumor DNA shedding into circulation is a universal cancer phenomenon. The deepest clinical utility evidence exists in CRC (DYNAMIC 5-year, ALTAIR interventional, GALAXY), breast (DARE, SERENA-6, c-TRAK TN), NSCLC (IMpower010, TRACERx, AEGEAN), bladder (IMvigor011 — first Level 1 interventional evidence), and melanoma (COMBI-AD 5-year). Signatera SINERGY trial (Feb 2026) showed successful Phase 2 readout in head and neck cancer, expanding the evidence base. Tumor-informed assays (Signatera, RaDaR) have pan-cancer analytical validation. Key consideration: ctDNA shedding rates vary by tumor type, histology, and stage, affecting analytical sensitivity.',
       sources: [
         { label: 'Tie et al., NEJM 2022 — CRC landmark', pmid: '35657320' },
-        { label: 'Powles et al., NEJM 2024 — bladder', pmid: '38507753' },
+        { label: 'Powles et al., NEJM 2024 — bladder', pmid: '41124204' },
       ],
       guidelines: 'Evidence strongest in CRC, breast, lung, bladder. Pan-cancer validation data exists for tumor-informed assays.',
     },

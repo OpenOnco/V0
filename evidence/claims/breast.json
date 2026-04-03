@@ -3,7 +3,7 @@
     "id": "BRC-SURVEILLANCE-001",
     "type": "clinical_utility",
     "source": {
-      "pmid": "36720083",
+      "pmid": "36423745",
       "title": "c-TRAK TN — ctDNA surveillance in TNBC",
       "journal": null,
       "year": null,
@@ -42,7 +42,7 @@
     "id": "BRC-SURVEILLANCE-002",
     "type": "clinical_utility",
     "source": {
-      "pmid": "36720083",
+      "pmid": "36423745",
       "title": "c-TRAK TN — ctDNA surveillance in TNBC",
       "journal": null,
       "year": null,
@@ -198,7 +198,7 @@
     "id": "BRC-PROGNOSIS-001",
     "type": "diagnostic_performance",
     "source": {
-      "pmid": "36720083",
+      "pmid": "36423745",
       "title": "c-TRAK TN — ctDNA surveillance in TNBC",
       "journal": null,
       "year": null,
@@ -237,7 +237,7 @@
     "id": "BRC-SURVEILLANCE-003",
     "type": "clinical_utility",
     "source": {
-      "pmid": "36720083",
+      "pmid": "36423745",
       "title": "c-TRAK TN — lead time in TNBC",
       "journal": null,
       "year": null,
