@@ -60,6 +60,7 @@ import OpennessAward from './components/OpennessAward';
 import FAQPage from './pages/FAQPage';
 import LearnPage from './pages/LearnPage';
 import AboutPage from './pages/AboutPage';
+import EvidencePage from './pages/EvidencePage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import HowItWorksPage from './pages/HowItWorksPage';
@@ -1067,7 +1068,8 @@ export default function App() {
     '/patient/choosing': 'patient-choosing',
     '/patient/measuring': 'patient-measuring',
     '/patient/insurance-denied': 'patient-insurance-denied',
-    '/patient/financial-assistance': 'patient-financial-assistance'
+    '/patient/financial-assistance': 'patient-financial-assistance',
+    '/evidence': 'evidence'
   };
 
   // Map URL paths to personas (for direct persona access)
@@ -1122,7 +1124,8 @@ export default function App() {
     'patient-choosing': '/patient/choosing',
     'patient-measuring': '/patient/measuring',
     'patient-insurance-denied': '/patient/insurance-denied',
-    'patient-financial-assistance': '/patient/financial-assistance'
+    'patient-financial-assistance': '/patient/financial-assistance',
+    'evidence': '/evidence'
   };
 
   // Category URL prefixes for test routes (supports both old and new URLs)
@@ -1419,6 +1422,7 @@ export default function App() {
       case 'learn': return <LearnPage onNavigate={handleNavigate} />;
       case 'compare': return <ComparePage comparisonSlug={currentCompareSlug} onNavigate={handleNavigate} />;
       case 'MRD': case 'ECD': case 'CGP': case 'HCT': case 'ALZ-BLOOD': return <CategoryPage key={`${currentPage}-${persona}`} category={currentPage} initialSelectedTestId={initialSelectedTestId} initialCompareIds={initialCompareIds} onClearInitialTest={() => { setInitialSelectedTestId(null); setInitialCompareIds(null); }} />;
+      case 'evidence': return <EvidencePage onNavigate={handleNavigate} />;
       case 'data-sources': return <SourceDataPage />;
       case 'how-it-works': return <HowItWorksPage />;
       case 'submissions': return <SubmissionsPage prefill={submissionPrefill} onClearPrefill={() => setSubmissionPrefill(null)} vendorInvite={vendorInvite} onClearVendorInvite={() => setVendorInvite(null)} />;

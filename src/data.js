@@ -14930,6 +14930,11 @@ export const PAGE_SEO = {
     description: 'Compare comprehensive genomic profiling tests: FoundationOne, Tempus xT, Guardant360. Genes analyzed, FDA companion diagnostics.',
     path: '/treat'
   },
+  evidence: {
+    title: 'Evidence Explorer - Peer-Reviewed Cancer Diagnostic Evidence',
+    description: 'Search peer-reviewed clinical evidence on MRD testing, ctDNA, and liquid biopsy. Every claim traces to a PubMed citation.',
+    path: '/evidence'
+  },
   learn: {
     title: 'Learn About Cancer Blood Tests',
     description: 'Educational guides on liquid biopsy, MRD testing, early cancer detection, and how to interpret test results.',
