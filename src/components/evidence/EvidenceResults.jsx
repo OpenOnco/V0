@@ -39,7 +39,7 @@ const EvidenceResults = ({ results, onTestClick, isLoading }) => {
 
   if (!results) return null;
 
-  const { framing, claims = [], source_count, fallback, test_specific_claims, general_claims } = results;
+  const { framing, claims = [], totalSources, fallback, test_specific_claims, general_claims } = results;
   const hasTestSplit = test_specific_claims?.length > 0 || general_claims?.length > 0;
 
   return (
@@ -58,7 +58,7 @@ const EvidenceResults = ({ results, onTestClick, isLoading }) => {
 
       {/* Stats line */}
       <p className="text-sm text-slate-500">
-        {claims.length} claim{claims.length !== 1 ? 's' : ''} from {source_count ?? '?'} peer-reviewed source{source_count !== 1 ? 's' : ''}
+        {claims.length} claim{claims.length !== 1 ? 's' : ''} from {totalSources ?? '?'} peer-reviewed source{totalSources !== 1 ? 's' : ''}
       </p>
 
       {/* Claims list */}
