@@ -7,7 +7,7 @@
 // Vendor Badges - Awards and recognition
 // ============================================
 export const VENDOR_BADGES = {
-  'Exact Sciences': [
+  'Abbott (Exact Sciences)': [
     { id: 'openness-leader', icon: '📊', label: 'Openness Leader', tooltip: 'Top 3 in OpenOnco Data Openness Ranking' }
   ],
 };
@@ -32,7 +32,7 @@ export const VENDOR_AVAILABILITY_US = {
   'Guardant Health': 'widespread',
   'Foundation Medicine': 'widespread',
   'Natera': 'widespread',
-  'Exact Sciences': 'widespread',
+  'Abbott (Exact Sciences)': 'widespread',
   'Labcorp': 'widespread',
   'Labcorp (Invitae)': 'widespread',
   'Labcorp/PGDx': 'widespread',
@@ -66,7 +66,7 @@ export const VENDOR_AVAILABILITY_US = {
   'Allelica': 'limited',                  // Specialty
   'SOPHiA GENETICS': 'limited',           // Platform company
   'Agilent / Resolution Bioscience': 'limited',
-  'Helio Genomics, Exact Sciences': 'moderate',  // Joint venture with Exact
+  'Helio Genomics, Abbott (Exact Sciences)': 'moderate',  // Joint venture, formerly Exact Sciences
 };
 
 // ============================================
